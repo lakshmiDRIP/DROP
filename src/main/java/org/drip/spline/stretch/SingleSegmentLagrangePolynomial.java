@@ -1,6 +1,17 @@
 	
 package org.drip.spline.stretch;
 
+import org.drip.function.definition.R1ToR1;
+import org.drip.function.r1tor1solver.FixedPointFinderBrent;
+import org.drip.function.r1tor1solver.FixedPointFinderOutput;
+import org.drip.function.r1tor1solver.InitializationHeuristics;
+import org.drip.numerical.common.NumberUtil;
+import org.drip.numerical.differentiation.WengertJacobian;
+import org.drip.numerical.integration.R1ToR1Integrator;
+import org.drip.spline.params.SegmentResponseValueConstraint;
+import org.drip.spline.params.StretchBestFitResponse;
+import org.drip.spline.segment.Monotonocity;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
@@ -116,318 +127,346 @@ public class SingleSegmentLagrangePolynomial
 	private static final int MINIMA_PREDICTOR_ORDINATE_NODE = 2;
 	private static final int MONOTONE_PREDICTOR_ORDINATE_NODE = 4;
 
-	private double[] _adblResponseValue = null;
-	private double[] _adblPredictorOrdinate = null;
+	private double[] _responseValueArray = null;
+	private double[] _predictorOrdinateArray = null;
 
 	private static final double CalcAbsoluteMin (
-		final double[] adblY)
-		throws java.lang.Exception
+		final double[] yArray)
+		throws Exception
 	{
-		if (null == adblY)
-			throw new java.lang.Exception
-				("SingleSegmentLagrangePolynomial::CalcAbsoluteMin => Invalid Inputs");
-
-		int iNumPoints = adblY.length;
-
-		if (1 >= iNumPoints)
-			throw new java.lang.Exception
-				("SingleSegmentLagrangePolynomial::CalcAbsoluteMin => Invalid Inputs");
-
-		double dblMin = java.lang.Math.abs (adblY[0]);
-
-		for (int i = 0; i < iNumPoints; ++i) {
-			double dblValue = java.lang.Math.abs (adblY[i]);
-
-			dblMin = dblMin > dblValue ? dblValue : dblMin;
+		if (null == yArray) {
+			throw new Exception ("SingleSegmentLagrangePolynomial::CalcAbsoluteMin => Invalid Inputs");
 		}
 
-		return dblMin;
+		int pointCount = yArray.length;
+
+		if (1 >= pointCount) {
+			throw new Exception ("SingleSegmentLagrangePolynomial::CalcAbsoluteMin => Invalid Inputs");
+		}
+
+		double minimum = Math.abs (yArray[0]);
+
+		for (int pointIndex = 0; pointIndex < pointCount; ++pointIndex) {
+			double value = Math.abs (yArray[pointIndex]);
+
+			minimum = minimum > value ? value : minimum;
+		}
+
+		return minimum;
 	}
 
 	private static final double CalcMinDifference (
-		final double[] adblY)
-		throws java.lang.Exception
+		final double[] yArray)
+		throws Exception
 	{
-		if (null == adblY)
-			throw new java.lang.Exception
-				("SingleSegmentLagrangePolynomial::CalcMinDifference => Invalid Inputs");
+		if (null == yArray) {
+			throw new Exception ("SingleSegmentLagrangePolynomial::CalcMinDifference => Invalid Inputs");
+		}
 
-		int iNumPoints = adblY.length;
+		int pointCount = yArray.length;
 
-		if (1 >= iNumPoints)
-			throw new java.lang.Exception
-				("SingleSegmentLagrangePolynomial::CalcMinDifference => Invalid Inputs");
+		if (1 >= pointCount) {
+			throw new Exception ("SingleSegmentLagrangePolynomial::CalcMinDifference => Invalid Inputs");
+		}
 
-		double dblMinDiff = java.lang.Math.abs (adblY[0] - adblY[1]);
+		double minimumDifference = Math.abs (yArray[0] - yArray[1]);
 
-		for (int i = 0; i < iNumPoints; ++i) {
-			for (int j = i + 1; j < iNumPoints; ++j) {
-				double dblDiff = java.lang.Math.abs (adblY[i] - adblY[j]);
+		for (int pointIndexI = 0; pointIndexI < pointCount; ++pointIndexI) {
+			for (int pointIndexJ = pointIndexI + 1; pointIndexJ < pointCount; ++pointIndexJ) {
+				double difference = Math.abs (yArray[pointIndexI] - yArray[pointIndexJ]);
 
-				dblMinDiff = dblMinDiff > dblDiff ? dblDiff : dblMinDiff;
+				minimumDifference = minimumDifference > difference ? difference : minimumDifference;
 			}
 		}
 
-		return dblMinDiff;
+		return minimumDifference;
 	}
 
 	private static final double EstimateBumpDelta (
-		final double[] adblY)
-		throws java.lang.Exception
+		final double[] yArray)
+		throws Exception
 	{
-		double dblBumpDelta = CalcMinDifference (adblY);
+		double bumpDelta = CalcMinDifference (yArray);
 
-		if (!org.drip.numerical.common.NumberUtil.IsValid (dblBumpDelta) || 0. == dblBumpDelta)
-			dblBumpDelta = CalcAbsoluteMin (adblY);
+		if (!NumberUtil.IsValid (bumpDelta) || 0. == bumpDelta) {
+			bumpDelta = CalcAbsoluteMin (yArray);
+		}
 
-		return 0. == dblBumpDelta ? DIFF_SCALE : dblBumpDelta * DIFF_SCALE;
+		return 0. == bumpDelta ? DIFF_SCALE : bumpDelta * DIFF_SCALE;
 	}
 
 	/**
 	 * <i>SingleSegmentLagrangePolynomial</i> constructor
 	 * 
-	 * @param adblPredictorOrdinate Array of Predictor Ordinates
+	 * @param predictorOrdinateArray Array of Predictor Ordinates
 	 * 
-	 * @throws java.lang.Exception Thrown if inputs are invalid
+	 * @throws Exception Thrown if inputs are invalid
 	 */
 
 	public SingleSegmentLagrangePolynomial (
-		final double[] adblPredictorOrdinate)
-		throws java.lang.Exception
+		final double[] predictorOrdinateArray)
+		throws Exception
 	{
-		if (null == (_adblPredictorOrdinate = adblPredictorOrdinate))
-			throw new java.lang.Exception ("SingleSegmentLagrangePolynomial ctr: Invalid Inputs");
+		if (null == (_predictorOrdinateArray = predictorOrdinateArray)) {
+			throw new Exception ("SingleSegmentLagrangePolynomial ctr: Invalid Inputs");
+		}
 
-		int iNumPredictorOrdinate = _adblPredictorOrdinate.length;
+		int predictorOrdinateCount = _predictorOrdinateArray.length;
 
-		if (1 >= iNumPredictorOrdinate)
-			throw new java.lang.Exception ("SingleSegmentLagrangePolynomial ctr: Invalid Inputs");
+		if (1 >= predictorOrdinateCount) {
+			throw new Exception ("SingleSegmentLagrangePolynomial ctr: Invalid Inputs");
+		}
 
-		for (int i = 0; i < iNumPredictorOrdinate; ++i) {
-			for (int j = i + 1; j < iNumPredictorOrdinate; ++j) {
-				if (_adblPredictorOrdinate[i] == _adblPredictorOrdinate[j])
-					throw new java.lang.Exception ("SingleSegmentLagrangePolynomial ctr: Invalid Inputs");
+		for (int predictorOrdinateIndexI = 0; predictorOrdinateIndexI < predictorOrdinateCount;
+			++predictorOrdinateIndexI) {
+			for (int predictorOrdinateIndexJ = predictorOrdinateIndexI + 1;
+				predictorOrdinateIndexJ < predictorOrdinateCount; ++predictorOrdinateIndexJ) {
+				if (_predictorOrdinateArray[predictorOrdinateIndexI] ==
+					_predictorOrdinateArray[predictorOrdinateIndexJ]) {
+					throw new Exception ("SingleSegmentLagrangePolynomial ctr: Invalid Inputs");
+				}
 			}
 		}
 	}
 
 	@Override public boolean setup (
-		final double dblYLeading,
-		final double[] adblResponseValue,
-		final org.drip.spline.params.StretchBestFitResponse rbfr,
-		final org.drip.spline.stretch.BoundarySettings bs,
-		final int iCalibrationDetail)
+		final double leadingY,
+		final double[] responseValueArray,
+		final StretchBestFitResponse stretchBestFitResponse,
+		final BoundarySettings boundarySettings,
+		final int calibrationDetail)
 	{
-		return null != (_adblResponseValue = adblResponseValue) && _adblResponseValue.length ==
-			_adblPredictorOrdinate.length;
+		return null != (_responseValueArray = responseValueArray) &&
+			_responseValueArray.length == _predictorOrdinateArray.length;
 	}
 
 	@Override public double responseValue (
-		final double dblPredictorOrdinate)
-		throws java.lang.Exception
+		final double predictorOrdinate)
+		throws Exception
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (dblPredictorOrdinate))
-			throw new java.lang.Exception
-				("SingleSegmentLagrangePolynomial::responseValue => Invalid inputs!");
-
-		int iNumPredictorOrdinate = _adblPredictorOrdinate.length;
-
-		if (_adblPredictorOrdinate[0] > dblPredictorOrdinate ||
-			_adblPredictorOrdinate[iNumPredictorOrdinate - 1] < dblPredictorOrdinate)
-			throw new java.lang.Exception
-				("SingleSegmentLagrangePolynomial::responseValue => Input out of range!");
-
-		double dblResponse = 0;
-
-		for (int i = 0; i < iNumPredictorOrdinate; ++i) {
-			double dblResponsePredictorOrdinateContribution = _adblResponseValue[i];
-
-			for (int j = 0; j < iNumPredictorOrdinate; ++j) {
-				if (i != j)
-					dblResponsePredictorOrdinateContribution = dblResponsePredictorOrdinateContribution *
-						(dblPredictorOrdinate - _adblPredictorOrdinate[j]) / (_adblPredictorOrdinate[i] -
-							_adblPredictorOrdinate[j]);
-			}
-
-			dblResponse += dblResponsePredictorOrdinateContribution;
+		if (!NumberUtil.IsValid (predictorOrdinate)) {
+			throw new Exception ("SingleSegmentLagrangePolynomial::responseValue => Invalid inputs!");
 		}
 
-		return dblResponse;
+		int predictorOrdinateCount = _predictorOrdinateArray.length;
+
+		if (_predictorOrdinateArray[0] > predictorOrdinate ||
+			_predictorOrdinateArray[predictorOrdinateCount - 1] < predictorOrdinate) {
+			throw new Exception ("SingleSegmentLagrangePolynomial::responseValue => Input out of range!");
+		}
+
+		double response = 0;
+
+		for (int predictorOrdinateIndexI = 0; predictorOrdinateIndexI < predictorOrdinateCount;
+			++predictorOrdinateIndexI) {
+			double responsePredictorOrdinateContribution = _responseValueArray[predictorOrdinateIndexI];
+
+			for (int predictorOrdinateIndexJ = 0; predictorOrdinateIndexJ < predictorOrdinateCount;
+				++predictorOrdinateIndexJ) {
+				if (predictorOrdinateIndexI != predictorOrdinateIndexJ) {
+					responsePredictorOrdinateContribution = responsePredictorOrdinateContribution *
+						(predictorOrdinate - _predictorOrdinateArray[predictorOrdinateIndexJ]) / (
+							_predictorOrdinateArray[predictorOrdinateIndexI] -
+							_predictorOrdinateArray[predictorOrdinateIndexJ]
+						);
+				}
+			}
+
+			response += responsePredictorOrdinateContribution;
+		}
+
+		return response;
 	}
 
 	@Override public double responseValueDerivative (
-		final double dblPredictorOrdinate,
-		final int iOrder)
-		throws java.lang.Exception
+		final double predictorOrdinate,
+		final int order)
+		throws Exception
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (dblPredictorOrdinate) || 0 >= iOrder)
-			throw new java.lang.Exception
-				("SingleSegmentLagrangePolynomial::responseValueDerivative => Invalid inputs!");
+		if (!NumberUtil.IsValid (predictorOrdinate) || 0 >= order) {
+			throw new Exception (
+				"SingleSegmentLagrangePolynomial::responseValueDerivative => Invalid inputs!"
+			);
+		}
 
-		org.drip.function.definition.R1ToR1 au = new org.drip.function.definition.R1ToR1
-			(null) {
+		return new R1ToR1 (null) {
 			@Override public double evaluate (
-				double dblX)
-				throws java.lang.Exception
+				double x)
+				throws Exception
 			{
-				return responseValue (dblX);
+				return responseValue (x);
 			}
-		};
-
-		return au.derivative (dblPredictorOrdinate, iOrder);
+		}.derivative (predictorOrdinate, order);
 	}
 
-	@Override public org.drip.numerical.differentiation.WengertJacobian jackDResponseDCalibrationInput (
-		final double dblPredictorOrdinate,
-		final int iOrder)
+	@Override public WengertJacobian jackDResponseDCalibrationInput (
+		final double predictorOrdinate,
+		final int order)
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (dblPredictorOrdinate)) return null;
-
-		int iNumPredictorOrdinate = _adblPredictorOrdinate.length;
-		double dblInputResponseSensitivityShift = java.lang.Double.NaN;
-		double dblResponseWithUnadjustedResponseInput = java.lang.Double.NaN;
-		org.drip.numerical.differentiation.WengertJacobian wjDResponseDResponseInput = null;
-
-		if (_adblPredictorOrdinate[0] > dblPredictorOrdinate ||
-			_adblPredictorOrdinate[iNumPredictorOrdinate - 1] < dblPredictorOrdinate)
+		if (!NumberUtil.IsValid (predictorOrdinate)) {
 			return null;
+		}
+
+		double inputResponseSensitivityShift = Double.NaN;
+		WengertJacobian responseToInputWengertJacobian = null;
+		double responseWithUnadjustedResponseInput = Double.NaN;
+		int predictorOrdinateCount = _predictorOrdinateArray.length;
+
+		if (_predictorOrdinateArray[0] > predictorOrdinate ||
+			_predictorOrdinateArray[predictorOrdinateCount - 1] < predictorOrdinate) {
+			return null;
+		}
 
 		try {
-			if (!org.drip.numerical.common.NumberUtil.IsValid (dblInputResponseSensitivityShift =
-				EstimateBumpDelta (_adblResponseValue)) || !org.drip.numerical.common.NumberUtil.IsValid
-					(dblResponseWithUnadjustedResponseInput = responseValue (dblPredictorOrdinate)))
+			if (!NumberUtil.IsValid (
+					inputResponseSensitivityShift = EstimateBumpDelta (_responseValueArray)
+				) || !NumberUtil.IsValid (
+					responseWithUnadjustedResponseInput = responseValue (predictorOrdinate)
+				)
+			) {
 				return null;
+			}
 
-			wjDResponseDResponseInput = new org.drip.numerical.differentiation.WengertJacobian (1,
-				iNumPredictorOrdinate);
-		} catch (java.lang.Exception e) {
+			responseToInputWengertJacobian = new WengertJacobian (1, predictorOrdinateCount);
+		} catch (Exception e) {
 			e.printStackTrace();
 
 			return null;
 		}
 
-		for (int i = 0; i < iNumPredictorOrdinate; ++i) {
-			double[] adblSensitivityShiftedInputResponse = new double[iNumPredictorOrdinate];
+		for (int predictorOrdinateIndexI = 0; predictorOrdinateIndexI < predictorOrdinateCount;
+			++predictorOrdinateIndexI) {
+			double[] adblSensitivityShiftedInputResponse = new double[predictorOrdinateCount];
 
-			for (int j = 0; j < iNumPredictorOrdinate; ++j)
-				adblSensitivityShiftedInputResponse[j] = i == j ? _adblResponseValue[j] +
-					dblInputResponseSensitivityShift : _adblResponseValue[j];
+			for (int predictorOrdinateIndexJ = 0; predictorOrdinateIndexJ < predictorOrdinateCount;
+				++predictorOrdinateIndexJ) {
+				adblSensitivityShiftedInputResponse[predictorOrdinateIndexJ] =
+					predictorOrdinateIndexI == predictorOrdinateIndexJ ?
+						_responseValueArray[predictorOrdinateIndexJ] + inputResponseSensitivityShift :
+						_responseValueArray[predictorOrdinateIndexJ];
+			}
 
 			try {
-				SingleSegmentLagrangePolynomial lps = new SingleSegmentLagrangePolynomial
-					(_adblPredictorOrdinate);
+				SingleSegmentLagrangePolynomial singleSegmentLagrangePolynomial =
+					new SingleSegmentLagrangePolynomial (_predictorOrdinateArray);
 
-				if (!lps.setup (adblSensitivityShiftedInputResponse[0], adblSensitivityShiftedInputResponse,
-					null, org.drip.spline.stretch.BoundarySettings.FloatingStandard(),
-						org.drip.spline.stretch.MultiSegmentSequence.CALIBRATE) ||
-							!wjDResponseDResponseInput.accumulatePartialFirstDerivative (0, i,
-								(lps.responseValue (dblPredictorOrdinate) -
-									dblResponseWithUnadjustedResponseInput) /
-										dblInputResponseSensitivityShift))
+				if (!singleSegmentLagrangePolynomial.setup (
+						adblSensitivityShiftedInputResponse[0],
+						adblSensitivityShiftedInputResponse,
+						null,
+						BoundarySettings.FloatingStandard(),
+						MultiSegmentSequence.CALIBRATE
+					) || !responseToInputWengertJacobian.accumulatePartialFirstDerivative (
+						0,
+						predictorOrdinateIndexI,
+						(
+							singleSegmentLagrangePolynomial.responseValue (predictorOrdinate) -
+							responseWithUnadjustedResponseInput
+						) / inputResponseSensitivityShift
+					)
+				) {
 					return null;
-			} catch (java.lang.Exception e) {
+				}
+			} catch (Exception e) {
 				e.printStackTrace();
 
 				return null;
 			}
 		}
 
-		return wjDResponseDResponseInput;
+		return responseToInputWengertJacobian;
 	}
 
-	@Override public org.drip.numerical.differentiation.WengertJacobian jackDResponseDManifestMeasure (
-		final java.lang.String strManifestMeasure,
-		final double dblPredictorOrdinate,
-		final int iOrder)
+	@Override public WengertJacobian jackDResponseDManifestMeasure (
+		final String manifestMeasure,
+		final double predictorOrdinate,
+		final int order)
 	{
 		return null;
 	}
 
-	@Override public org.drip.spline.segment.Monotonocity monotoneType (
-		final double dblPredictorOrdinate)
+	@Override public Monotonocity monotoneType (
+		final double predictorOrdinate)
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (dblPredictorOrdinate)) return null;
+		if (!NumberUtil.IsValid (predictorOrdinate)) {
+			return null;
+		}
 
-		int iNumPredictorOrdinate = _adblPredictorOrdinate.length;
+		int predictorOrdinateCount = _predictorOrdinateArray.length;
 
-		if (_adblPredictorOrdinate[0] > dblPredictorOrdinate ||
-			_adblPredictorOrdinate[iNumPredictorOrdinate - 1] < dblPredictorOrdinate)
+		if (_predictorOrdinateArray[0] > predictorOrdinate ||
+			_predictorOrdinateArray[predictorOrdinateCount - 1] < predictorOrdinate)
 			return null;
 
-		if (2 == iNumPredictorOrdinate) {
+		if (2 == predictorOrdinateCount) {
 			try {
-				return new org.drip.spline.segment.Monotonocity
-					(org.drip.spline.segment.Monotonocity.MONOTONIC);
-			} catch (java.lang.Exception e) {
+				return new Monotonocity (Monotonocity.MONOTONIC);
+			} catch (Exception e) {
 				e.printStackTrace();
 
 				return null;
 			}
 		}
 
-		org.drip.function.definition.R1ToR1 auDeriv = new
-			org.drip.function.definition.R1ToR1 (null) {
-			@Override public double evaluate (
-				final double dblX)
-				throws java.lang.Exception
-			{
-				double dblDeltaX = CalcMinDifference (_adblPredictorOrdinate) * DIFF_SCALE;
-
-				return (responseValue (dblX + dblDeltaX) - responseValue (dblX)) / dblDeltaX;
-			}
-
-			@Override public double integrate (
-				final double dblBegin,
-				final double dblEnd)
-				throws java.lang.Exception
-			{
-				return org.drip.numerical.integration.R1ToR1Integrator.Boole (this, dblBegin, dblEnd);
-			}
-		};
-
 		try {
-			org.drip.function.r1tor1solver.FixedPointFinderOutput fpop = new
-				org.drip.function.r1tor1solver.FixedPointFinderBrent (0., auDeriv, true).findRoot
-					(org.drip.function.r1tor1solver.InitializationHeuristics.FromHardSearchEdges (0., 1.));
+			FixedPointFinderOutput fixedPointFinderOutput = new FixedPointFinderBrent (
+				0.,
+				new R1ToR1 (null) {
+					@Override public double evaluate (
+						final double x)
+						throws Exception
+					{
+						double deltaX = CalcMinDifference (_predictorOrdinateArray) * DIFF_SCALE;
 
-			if (null == fpop || !fpop.containsRoot())
-				return new org.drip.spline.segment.Monotonocity
-					(org.drip.spline.segment.Monotonocity.MONOTONIC);
+						return (responseValue (x + deltaX) - responseValue (x)) / deltaX;
+					}
 
-			double dblExtremum = fpop.getRoot();
+					@Override public double integrate (
+						final double begin,
+						final double end)
+						throws Exception
+					{
+						return R1ToR1Integrator.Boole (this, begin, end);
+					}
+				},
+				true
+			).findRoot (InitializationHeuristics.FromHardSearchEdges (0., 1.));
 
-			if (!org.drip.numerical.common.NumberUtil.IsValid (dblExtremum) || dblExtremum <= 0. || dblExtremum
-				>= 1.)
-				return new org.drip.spline.segment.Monotonocity
-					(org.drip.spline.segment.Monotonocity.MONOTONIC);
+			if (null == fixedPointFinderOutput || !fixedPointFinderOutput.containsRoot()) {
+				return new Monotonocity (Monotonocity.MONOTONIC);
+			}
 
-			double dblDeltaX = CalcMinDifference (_adblPredictorOrdinate) * DIFF_SCALE;
+			double extremum = fixedPointFinderOutput.getRoot();
 
-			double dbl2ndDeriv = responseValue (dblExtremum + dblDeltaX) + responseValue (dblExtremum -
-				dblDeltaX) - 2. * responseValue (dblPredictorOrdinate);
+			if (!NumberUtil.IsValid (extremum) || 0. >= extremum || 1. <= extremum) {
+				return new Monotonocity (Monotonocity.MONOTONIC);
+			}
 
-			if (0. > dbl2ndDeriv)
-				return new org.drip.spline.segment.Monotonocity
-					(org.drip.spline.segment.Monotonocity.MAXIMA);
+			double deltaX = CalcMinDifference (_predictorOrdinateArray) * DIFF_SCALE;
 
-			if (0. < dbl2ndDeriv)
-				return new org.drip.spline.segment.Monotonocity
-					(org.drip.spline.segment.Monotonocity.MINIMA);
+			double secondDerivative = responseValue (extremum + deltaX) + responseValue (extremum - deltaX) -
+				2. * responseValue (predictorOrdinate);
 
-			if (0. == dbl2ndDeriv)
-				return new org.drip.spline.segment.Monotonocity
-					(org.drip.spline.segment.Monotonocity.INFLECTION);
+			if (0. > secondDerivative) {
+				return new Monotonocity (Monotonocity.MAXIMA);
+			}
 
-			return new org.drip.spline.segment.Monotonocity
-				(org.drip.spline.segment.Monotonocity.NON_MONOTONIC);
-		} catch (java.lang.Exception e) {
+			if (0. < secondDerivative) {
+				return new Monotonocity (Monotonocity.MINIMA);
+			}
+
+			if (0. == secondDerivative) {
+				return new Monotonocity (Monotonocity.INFLECTION);
+			}
+
+			return new Monotonocity (Monotonocity.NON_MONOTONIC);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
 		try {
-			return new org.drip.spline.segment.Monotonocity
-				(org.drip.spline.segment.Monotonocity.MONOTONIC);
-		} catch (java.lang.Exception e) {
+			return new Monotonocity (Monotonocity.MONOTONIC);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -435,56 +474,70 @@ public class SingleSegmentLagrangePolynomial
 	}
 
 	@Override public boolean isLocallyMonotone()
-		throws java.lang.Exception
+		throws Exception
 	{
-		org.drip.spline.segment.Monotonocity sm = monotoneType (0.5 * (_adblPredictorOrdinate[0] +
-			_adblPredictorOrdinate[_adblPredictorOrdinate.length - 1]));
+		Monotonocity monotonocity = monotoneType (
+			0.5 * (_predictorOrdinateArray[0] + _predictorOrdinateArray[_predictorOrdinateArray.length - 1])
+		);
 
-		return null != sm && org.drip.spline.segment.Monotonocity.MONOTONIC == sm.type();
+		return null != monotonocity && Monotonocity.MONOTONIC == monotonocity.type();
 	}
 
 	@Override public boolean isCoMonotone (
-		final double[] adblMeasuredResponse)
-		throws java.lang.Exception
+		final double[] measuredResponseArray)
+		throws Exception
 	{
-		if (null == adblMeasuredResponse) return false;
-
-		int iNumMeasuredResponse = adblMeasuredResponse.length;
-
-		if (2 >= iNumMeasuredResponse) return false;
-
-		int[] aiNodeMiniMax = new int[iNumMeasuredResponse];
-		int[] aiMonotoneType = new int[iNumMeasuredResponse];
-
-		for (int i = 0; i < iNumMeasuredResponse; ++i) {
-			if (0 == i || iNumMeasuredResponse - 1 == i)
-				aiNodeMiniMax[i] = 0;
-			else {
-				if (adblMeasuredResponse[i - 1] < adblMeasuredResponse[i] && adblMeasuredResponse[i + 1] <
-					adblMeasuredResponse[i])
-					aiNodeMiniMax[i] = MAXIMA_PREDICTOR_ORDINATE_NODE;
-				else if (adblMeasuredResponse[i - 1] > adblMeasuredResponse[i] && adblMeasuredResponse[i + 1]
-					> adblMeasuredResponse[i])
-					aiNodeMiniMax[i] = MINIMA_PREDICTOR_ORDINATE_NODE;
-				else
-					aiNodeMiniMax[i] = MONOTONE_PREDICTOR_ORDINATE_NODE;
-			}
-
-			org.drip.spline.segment.Monotonocity sm = monotoneType (adblMeasuredResponse[i]);
-
-			aiMonotoneType[i] = null != sm ? sm.type() :
-				org.drip.spline.segment.Monotonocity.NON_MONOTONIC;
+		if (null == measuredResponseArray) {
+			return false;
 		}
 
-		for (int i = 1; i < iNumMeasuredResponse - 1; ++i) {
-			if (MAXIMA_PREDICTOR_ORDINATE_NODE == aiNodeMiniMax[i]) {
-				if (org.drip.spline.segment.Monotonocity.MAXIMA != aiMonotoneType[i] &&
-					org.drip.spline.segment.Monotonocity.MAXIMA != aiMonotoneType[i - 1])
+		int measuredResponseCount = measuredResponseArray.length;
+
+		if (2 >= measuredResponseCount) {
+			return false;
+		}
+
+		int[] monotoneTypeArray = new int[measuredResponseCount];
+		int[] miniMaxMarkerArray = new int[measuredResponseCount];
+
+		for (int measuredResponseIndex = 0; measuredResponseIndex < measuredResponseCount;
+			++measuredResponseIndex) {
+			if (0 == measuredResponseIndex || measuredResponseCount - 1 == measuredResponseIndex) {
+				miniMaxMarkerArray[measuredResponseIndex] = 0;
+			} else {
+				if (measuredResponseArray[measuredResponseIndex - 1] <
+						measuredResponseArray[measuredResponseIndex] &&
+					measuredResponseArray[measuredResponseIndex + 1] <
+						measuredResponseArray[measuredResponseIndex]) {
+					miniMaxMarkerArray[measuredResponseIndex] = MAXIMA_PREDICTOR_ORDINATE_NODE;
+				} else if (measuredResponseArray[measuredResponseIndex - 1] >
+						measuredResponseArray[measuredResponseIndex] &&
+					measuredResponseArray[measuredResponseIndex + 1] >
+						measuredResponseArray[measuredResponseIndex]) {
+					miniMaxMarkerArray[measuredResponseIndex] = MINIMA_PREDICTOR_ORDINATE_NODE;
+				} else {
+					miniMaxMarkerArray[measuredResponseIndex] = MONOTONE_PREDICTOR_ORDINATE_NODE;
+				}
+			}
+
+			Monotonocity monotonocity = monotoneType (measuredResponseArray[measuredResponseIndex]);
+
+			monotoneTypeArray[measuredResponseIndex] = null != monotonocity ?
+				monotonocity.type() : Monotonocity.NON_MONOTONIC;
+		}
+
+		for (int measuredResponseIndex = 1; measuredResponseIndex < measuredResponseCount - 1;
+			++measuredResponseIndex) {
+			if (MAXIMA_PREDICTOR_ORDINATE_NODE == miniMaxMarkerArray[measuredResponseIndex]) {
+				if (Monotonocity.MAXIMA != monotoneTypeArray[measuredResponseIndex] &&
+					Monotonocity.MAXIMA != monotoneTypeArray[measuredResponseIndex - 1]) {
 					return false;
-			} else if (MINIMA_PREDICTOR_ORDINATE_NODE == aiNodeMiniMax[i]) {
-				if (org.drip.spline.segment.Monotonocity.MINIMA != aiMonotoneType[i] &&
-					org.drip.spline.segment.Monotonocity.MINIMA != aiMonotoneType[i - 1])
+				}
+			} else if (MINIMA_PREDICTOR_ORDINATE_NODE == miniMaxMarkerArray[measuredResponseIndex]) {
+				if (Monotonocity.MINIMA != monotoneTypeArray[measuredResponseIndex] &&
+					Monotonocity.MINIMA != monotoneTypeArray[measuredResponseIndex - 1]) {
 					return false;
+				}
 			}
 		}
 
@@ -492,73 +545,76 @@ public class SingleSegmentLagrangePolynomial
 	}
 
 	@Override public boolean isKnot (
-		final double dblPredictorOrdinate)
+		final double predictorOrdinate)
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (dblPredictorOrdinate)) return false;
-
-		int iNumPredictorOrdinate = _adblPredictorOrdinate.length;
-
-		if (_adblPredictorOrdinate[0] > dblPredictorOrdinate ||
-			_adblPredictorOrdinate[iNumPredictorOrdinate - 1] < dblPredictorOrdinate)
+		if (!NumberUtil.IsValid (predictorOrdinate)) {
 			return false;
+		}
 
-		for (int i = 0; i < iNumPredictorOrdinate; ++i) {
-			if (dblPredictorOrdinate == _adblPredictorOrdinate[i]) return true;
+		int predictorOrdinateCount = _predictorOrdinateArray.length;
+
+		if (_predictorOrdinateArray[0] > predictorOrdinate ||
+			_predictorOrdinateArray[predictorOrdinateCount - 1] < predictorOrdinate) {
+			return false;
+		}
+
+		for (int predictorOrdinateIndex = 0; predictorOrdinateIndex < predictorOrdinateCount;
+			++predictorOrdinateIndex) {
+			if (predictorOrdinate == _predictorOrdinateArray[predictorOrdinateIndex]) {
+				return true;
+			}
 		}
 
 		return false;
 	}
 
 	@Override public boolean resetNode (
-		final int iPredictorOrdinateNodeIndex,
-		final double dblResetResponse)
+		final int predictorOrdinateNodeIndex,
+		final double resetResponse)
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (dblResetResponse)) return false;
+		if (!NumberUtil.IsValid (resetResponse) ||
+			predictorOrdinateNodeIndex > _predictorOrdinateArray.length) {
+			return false;
+		}
 
-		if (iPredictorOrdinateNodeIndex > _adblPredictorOrdinate.length) return false;
-
-		_adblResponseValue[iPredictorOrdinateNodeIndex] = dblResetResponse;
+		_responseValueArray[predictorOrdinateNodeIndex] = resetResponse;
 		return true;
 	}
 
 	@Override public boolean resetNode (
-		final int iPredictorOrdinateNodeIndex,
-		final org.drip.spline.params.SegmentResponseValueConstraint sprcReset)
+		final int predictorOrdinateNodeIndex,
+		final SegmentResponseValueConstraint resetSegmentResponseValueConstraint)
 	{
 		return false;
 	}
 
-	@Override public org.drip.function.definition.R1ToR1 toAU()
+	@Override public R1ToR1 toAU()
 	{
-		org.drip.function.definition.R1ToR1 au = new
-			org.drip.function.definition.R1ToR1 (null)
-		{
+		return new R1ToR1 (null) {
 			@Override public double evaluate (
-				final double dblVariate)
-				throws java.lang.Exception
+				final double variate)
+				throws Exception
 			{
-				return responseValue (dblVariate);
+				return responseValue (variate);
 			}
 
 			@Override public double derivative (
-				final double dblVariate,
-				final int iOrder)
-				throws java.lang.Exception
+				final double variate,
+				final int order)
+				throws Exception
 			{
-				return responseValueDerivative (dblVariate, iOrder);
+				return responseValueDerivative (variate, order);
 			}
 		};
-
-		return au;
 	}
 
 	@Override public double getLeftPredictorOrdinateEdge()
 	{
-		return _adblPredictorOrdinate[0];
+		return _predictorOrdinateArray[0];
 	}
 
 	@Override public double getRightPredictorOrdinateEdge()
 	{
-		return _adblPredictorOrdinate[_adblPredictorOrdinate.length - 1];
+		return _predictorOrdinateArray[_predictorOrdinateArray.length - 1];
 	}
 }

@@ -1,11 +1,20 @@
 	
 package org.drip.spline.stretch;
 
+import org.drip.spline.params.SegmentCustomBuilderControl;
+import org.drip.spline.params.SegmentPredictorResponseDerivative;
+import org.drip.spline.params.SegmentResponseValueConstraint;
+import org.drip.spline.params.StretchBestFitResponse;
+import org.drip.spline.segment.LatentStateResponseModel;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -84,59 +93,55 @@ package org.drip.spline.stretch;
 
 /**
  * <i>MultiSegmentSequence</i> is the interface that exposes functionality that spans multiple segments. Its
- * derived instances hold the ordered segment sequence, the segment control parameters, and, if available,
- * the spanning Jacobian. MultiSegmentSequence exports the following group of functionality:
+ * 	derived instances hold the ordered segment sequence, the segment control parameters, and, if available,
+ * 	the spanning Jacobian. <i>MultiSegmentSequence</i> exports the following group of functionality:
  *
- * <br><br>
+ * <br>
  *  <ul>
- *  	<li>
- * 			Retrieve the Segments and their Builder Parameters
- *  	</li>
- *  	<li>
- * 			Compute the monotonicity details - segment/Stretch level monotonicity, co-monotonicity, local
- * 				monotonicity
- *  	</li>
- *  	<li>
- * 			Check if the Predictor Ordinate is in the Stretch Range, and return the segment index in that
- * 				case
- *  	</li>
- *  	<li>
- * 			Set up (i.e., calibrate) the individual Segments in the Stretch by specifying one/or more of the
- * 				node parameters and Target Constraints
- *  	</li>
- *  	<li>
- * 			Set up (i.e., calibrate) the individual Segment in the Stretch to the Target Segment Edge Values
- * 				and Constraints. This is also called the Hermite setup - where the segment boundaries are
- * 				entirely locally set
- *  	</li>
- *  	<li>
- * 			Generate a new Stretch by clipping all the Segments to the Left/Right of the specified Predictor
- * 				Ordinate. Smoothness Constraints will be maintained
- *  	</li>
- *  	<li>
- * 			Retrieve the Span Curvature/Length, and the Best Fit DPE's
- *  	</li>
- *  	<li>
- * 			Retrieve the Merge Stretch Manager
- *  	</li>
- *  	<li>
- *  		Display the Segments
- *  	</li>
+ * 		<li>CALIBRATE</li>
+ * 		<li>CALIBRATE_JACOBIAN</li>
+ * 		<li>Retrieve the Stretch Name</li>
+ * 		<li>Retrieve the Segment Builder Parameters</li>
+ * 		<li>Set up (i.e., calibrate) the individual Segment in the Stretch to the Target Segment Edge Values and Constraints. This is also called the Hermite setup - where the segment boundaries are entirely locally set</li>
+ * 		<li>Set the Slope at the left Edge of the Stretch</li>
+ * 		<li>Calculate the <i>SegmentPredictorResponseDerivative</i> at the specified Predictor Ordinate</li>
+ * 		<li>Calculate the Derivative of the requested order at the Left Edge of the Stretch</li>
+ * 		<li>Calculate the Derivative of the requested order at the Right Edge of the Stretch</li>
+ * 		<li>Check if the Predictor Ordinate is in the Stretch Range</li>
+ * 		<li>Return the Index for the Segment containing specified Predictor Ordinate</li>
+ * 		<li>Set up (i.e., calibrate) the individual Segments in the Stretch to the Stretch Edge, the Target Constraints, and the custom segment sequence builder</li>
+ * 		<li>Set up (i.e., calibrate) the individual Segments in the Stretch to the Stretch Left Edge and the Target Constraints</li>
+ * 		<li>Set up (i.e., calibrate) the individual Segments in the Stretch to the Stretch Left Edge Response and the Target Constraints</li>
+ * 		<li>Generate a new Stretch by clipping all the Segments to the Left of the specified Predictor Ordinate. Smoothness Constraints will be maintained</li>
+ * 		<li>Generate a new Stretch by clipping all the Segments to the Right of the specified Predictor Ordinate. Smoothness Constraints will be maintained</li>
+ * 		<li>Retrieve the Span Curvature DPE</li>
+ * 		<li>Retrieve the Span Length DPE</li>
+ * 		<li>Retrieve the Stretch Best Fit DPE</li>
+ * 		<li>Retrieve the Merge Stretch Manager if it exists</li>
+ * 		<li>Display the Segments</li>
  *  </ul>
  *
- * <br><br>
- *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/SplineBuilderLibrary.md">Spline Builder Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/README.md">Basis Splines and Linear Compounders across a Broad Family of Spline Basis Functions</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/stretch/README.md">Multi-Segment Sequence Spline Stretch</a></li>
- *  </ul>
- * <br><br>
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/README.md">Basis Splines and Linear Compounders across a Broad Family of Spline Basis Functions</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/stretch/README.md">Multi-Segment Sequence Spline Stretch</a></td></tr>
+ *  </table>
+ *  <br>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public interface MultiSegmentSequence extends org.drip.spline.stretch.SingleSegmentSequence {
+public interface MultiSegmentSequence
+	extends SingleSegmentSequence
+{
 
 	/**
 	 * Calibration Detail: Calibrate the Stretch as part of the set up
@@ -156,7 +161,7 @@ public interface MultiSegmentSequence extends org.drip.spline.stretch.SingleSegm
 	 * @return The Stretch Name
 	 */
 
-	public abstract java.lang.String name();
+	public abstract String name();
 
 	/**
 	 * Retrieve the Segment Builder Parameters
@@ -164,7 +169,7 @@ public interface MultiSegmentSequence extends org.drip.spline.stretch.SingleSegm
 	 * @return The Segment Builder Parameters
 	 */
 
-	public abstract org.drip.spline.params.SegmentCustomBuilderControl[] segmentBuilderControl();
+	public abstract SegmentCustomBuilderControl[] segmentBuilderControl();
 
 	/**
 	 * Retrieve the Stretch Segments
@@ -172,30 +177,31 @@ public interface MultiSegmentSequence extends org.drip.spline.stretch.SingleSegm
 	 * @return The Stretch Segments
 	 */
 
-	public abstract org.drip.spline.segment.LatentStateResponseModel[] segments();
+	public abstract LatentStateResponseModel[] segments();
 
 	/**
 	 * Set up (i.e., calibrate) the individual Segment in the Stretch to the Target Segment Edge Values and
 	 * 	Constraints. This is also called the Hermite setup - where the segment boundaries are entirely
 	 * 	locally set.
 	 * 
-	 * @param aSPRDLeft Array of Left Segment Edge Values
-	 * @param aSPRDRight Array of Right Segment Edge Values
-	 * @param aaSRVC Double Array of Constraints - Outer Index corresponds to Segment Index, and the Inner
-	 * 		Index to Constraint Array within each Segment
-	 * @param sbfr Stretch Fitness Weighted Response
-	 * @param iSetupMode Set up Mode (i.e., set up ITEP only, or fully calibrate the Stretch, or calibrate
-	 * 	 	Stretch plus compute Jacobian)
+	 * @param leftSegmentPredictorResponseDerivativeArray Array of Left Segment Edge Values
+	 * @param rightSegmentPredictorResponseDerivativeArray Array of Right Segment Edge Values
+	 * @param segmentResponseValueConstraintGrid Double Array of Constraints - Outer Index corresponds to
+	 *  Segment Index, and the Inner Index to Constraint Array within each Segment
+	 * @param stretchBestFitResponse Stretch Fitness Weighted Response
+	 * @param setupMode Set up Mode (i.e., set up ITEP only, or fully calibrate the Stretch, or calibrate
+	 *  Stretch plus compute Jacobian)
 	 * 
 	 * @return TRUE - Set up was successful
 	 */
 
 	public abstract boolean setupHermite (
-		final org.drip.spline.params.SegmentPredictorResponseDerivative[] aSPRDLeft,
-		final org.drip.spline.params.SegmentPredictorResponseDerivative[] aSPRDRight,
-		final org.drip.spline.params.SegmentResponseValueConstraint[][] aaSRVC,
-		final org.drip.spline.params.StretchBestFitResponse sbfr,
-		final int iSetupMode);
+		final SegmentPredictorResponseDerivative[] leftSegmentPredictorResponseDerivativeArray,
+		final SegmentPredictorResponseDerivative[] rightSegmentPredictorResponseDerivativeArray,
+		final SegmentResponseValueConstraint[][] segmentResponseValueConstraintGrid,
+		final StretchBestFitResponse stretchBestFitResponse,
+		final int setupMode
+	);
 
 	/**
 	 * Set the Slope at the left Edge of the Stretch
@@ -215,7 +221,7 @@ public interface MultiSegmentSequence extends org.drip.spline.stretch.SingleSegm
 		final org.drip.spline.params.StretchBestFitResponse sbfr);
 
 	/**
-	 * Calculate the SPRD at the specified Predictor Ordinate
+	 * Calculate the <i>SegmentPredictorResponseDerivative</i> at the specified Predictor Ordinate
 	 * 
 	 * @param dblPredictorOrdinate The Predictor Ordinate
 	 * 
@@ -414,7 +420,7 @@ public interface MultiSegmentSequence extends org.drip.spline.stretch.SingleSegm
 	/**
 	 * Display the Segments
 	 * 
-	 * @return The Segements String
+	 * @return The Segments String
 	 */
 
 	public abstract java.lang.String displayString();
