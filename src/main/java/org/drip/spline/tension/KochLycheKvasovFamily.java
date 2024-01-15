@@ -1,11 +1,20 @@
 
 package org.drip.spline.tension;
 
+import org.drip.function.definition.R1ToR1;
+import org.drip.numerical.common.NumberUtil;
+import org.drip.spline.basis.ExponentialTensionSetParams;
+import org.drip.spline.basis.FunctionSet;
+import org.drip.spline.bspline.SegmentBasisFunctionSet;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -87,164 +96,167 @@ package org.drip.spline.tension;
  * in Koch and Lyche (1989), Koch and Lyche (1993), and Kvasov (2000) Papers. Functions exposed here
  * implement the Basis Function Set from:
  *
- *  <br><br>
+ *  <br>
  *  <ul>
- *  	<li>
- * 			Hyperbolic Hat Primitive Set
- *  	</li>
- *  	<li>
- * 			Cubic Polynomial Numerator and Linear Rational Denominator
- *  	</li>
- *  	<li>
- * 			Cubic Polynomial Numerator and Quadratic Rational Denominator
- *  	</li>
- *  	<li>
- * 			Cubic Polynomial Numerator and Exponential Denominator
- *  	</li>
+ *  	<li>Hyperbolic Hat Primitive Set</li>
+ *  	<li>Cubic Polynomial Numerator and Linear Rational Denominator</li>
+ *  	<li>Cubic Polynomial Numerator and Quadratic Rational Denominator</li>
+ *  	<li>Cubic Polynomial Numerator and Exponential Denominator</li>
  *  </ul>
  *
- *  <br><br>
- *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/SplineBuilderLibrary.md">Spline Builder Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/README.md">Basis Splines and Linear Compounders across a Broad Family of Spline Basis Functions</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/tension/README.md">Koch Lyche Kvasov Tension Splines</a></li>
- *  </ul>
- * <br><br>
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/README.md">Basis Splines and Linear Compounders across a Broad Family of Spline Basis Functions</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/tension/README.md">Koch Lyche Kvasov Tension Splines</a></td></tr>
+ *  </table>
+ *  <br>
  * 
  * @author Lakshmi Krishnamurthy
  */
 
-public class KochLycheKvasovFamily {
+public class KochLycheKvasovFamily
+{
 
 	/**
 	 * Implement the Basis Function Set from the Hyperbolic Hat Primitive Set
 	 * 
-	 * @param etsp The Tension Function Set Parameters
+	 * @param exponentialTensionSetParams The Tension Function Set Parameters
 	 * 
 	 * @return Instance of the Basis Function Set
 	 */
 
-	public static final org.drip.spline.basis.FunctionSet FromHyperbolicPrimitive (
-		final org.drip.spline.basis.ExponentialTensionSetParams etsp)
+	public static final FunctionSet FromHyperbolicPrimitive (
+		final ExponentialTensionSetParams exponentialTensionSetParams)
 	{
-		if (null == etsp) return null;
+		if (null == exponentialTensionSetParams) {
+			return null;
+		}
 
-		org.drip.function.definition.R1ToR1 auPhy = new org.drip.function.definition.R1ToR1
-			(null) {
+		R1ToR1 tensionBasisPhy = new R1ToR1 (null) {
 			@Override public double evaluate (
-				final double dblX)
-				throws java.lang.Exception
+				final double x)
+				throws Exception
 			{
-				if (!org.drip.numerical.common.NumberUtil.IsValid (dblX))
-					throw new java.lang.Exception
-						("KLKF::FromHyperbolicPrimitive.Phy::evaluate => Invalid Inputs!");
+				if (!NumberUtil.IsValid (x)) {
+					throw new Exception ("KLKF::FromHyperbolicPrimitive.Phy::evaluate => Invalid Inputs!");
+				}
 
-				double dblTension = etsp.tension();
+				double tension = exponentialTensionSetParams.tension();
 
-				return (java.lang.Math.sinh (dblTension * dblX) - dblTension * dblX) / (dblTension *
-					dblTension * java.lang.Math.sinh (dblTension));
+				return (Math.sinh (tension * x) - tension * x) / (tension * tension * Math.sinh (tension));
 			}
 
 			@Override public double derivative (
-				final double dblX,
-				final int iOrder)
-				throws java.lang.Exception
+				final double x,
+				final int order)
+				throws Exception
 			{
-				if (!org.drip.numerical.common.NumberUtil.IsValid (dblX))
-					throw new java.lang.Exception
-						("KLKF::FromHyperbolicPrimitive.Phy::derivative => Invalid Inputs!");
+				if (!NumberUtil.IsValid (x)) {
+					throw new Exception ("KLKF::FromHyperbolicPrimitive.Phy::derivative => Invalid Inputs!");
+				}
 
-				double dblTension = etsp.tension();
+				double tension = exponentialTensionSetParams.tension();
 
-				if (1 == iOrder)
-					return (java.lang.Math.cosh (dblTension * dblX) - 1.) / (dblTension * java.lang.Math.sinh
-						(dblTension));
+				if (1 == order) {
+					return (Math.cosh (tension * x) - 1.) / (tension * Math.sinh (tension));
+				}
 
-				if (2 == iOrder)
-					return java.lang.Math.sinh (dblTension * dblX) / java.lang.Math.sinh (dblTension);
+				if (2 == order) {
+					return Math.sinh (tension * x) / Math.sinh (tension);
+				}
 
-				return derivative (dblX, iOrder);
+				return derivative (x, order);
 			}
 
 			@Override public double integrate (
-				final double dblBegin,
-				final double dblEnd)
-				throws java.lang.Exception
+				final double begin,
+				final double end)
+				throws Exception
 			{
-				if (!org.drip.numerical.common.NumberUtil.IsValid (dblBegin) ||
-					!org.drip.numerical.common.NumberUtil.IsValid (dblEnd))
-					throw new java.lang.Exception
-						("KLKF::FromHyperbolicPrimitive.Phy::integrate => Invalid Inputs");
+				if (!NumberUtil.IsValid (begin) || !NumberUtil.IsValid (end)) {
+					throw new Exception ("KLKF::FromHyperbolicPrimitive.Phy::integrate => Invalid Inputs");
+				}
 
-				double dblTension = etsp.tension();
+				double tension = exponentialTensionSetParams.tension();
 
-				return (java.lang.Math.cosh (dblTension * dblEnd) - java.lang.Math.cosh (dblTension *
-					dblBegin) - 0.5 * dblTension * (dblEnd * dblEnd - dblBegin * dblBegin)) / (dblTension *
-						dblTension * dblTension * java.lang.Math.sinh (dblTension));
+				return (
+					Math.cosh (tension * end) - Math.cosh (tension * begin) - 0.5 * tension * (
+						end * end - begin * begin
+					)
+				) / (tension * tension * tension * java.lang.Math.sinh (tension));
 			}
 		};
 
-		org.drip.function.definition.R1ToR1 auPsy = new org.drip.function.definition.R1ToR1
-			(null) {
+		R1ToR1 tensionBasisPsy = new R1ToR1 (null) {
 			@Override public double evaluate (
-				final double dblX)
+				final double x)
 				throws java.lang.Exception
 			{
-				if (!org.drip.numerical.common.NumberUtil.IsValid (dblX))
-					throw new java.lang.Exception
-						("KLKF.Psy::FromHyperbolicPrimitive::evaluate => Invalid Inputs!");
+				if (!NumberUtil.IsValid (x)) {
+					throw new Exception ("KLKF.Psy::FromHyperbolicPrimitive::evaluate => Invalid Inputs!");
+				}
 
-				double dblTension = etsp.tension();
+				double tension = exponentialTensionSetParams.tension();
 
-				return (java.lang.Math.sinh (dblTension * (1. - dblX)) - dblTension * (1. - dblX)) /
-					(dblTension * dblTension * java.lang.Math.sinh (dblTension));
+				return (Math.sinh (tension * (1. - x)) - tension * (1. - x)) /
+					(tension * tension * Math.sinh (tension));
 			}
 
 			@Override public double derivative (
-				final double dblX,
-				final int iOrder)
-				throws java.lang.Exception
+				final double x,
+				final int order)
+				throws Exception
 			{
-				if (!org.drip.numerical.common.NumberUtil.IsValid (dblX))
-					throw new java.lang.Exception
-						("KLKF::FromHyperbolicPrimitive.Psy::derivative => Invalid Inputs!");
+				if (!NumberUtil.IsValid (x)) {
+					throw new Exception ("KLKF::FromHyperbolicPrimitive.Psy::derivative => Invalid Inputs!");
+				}
 
-				double dblTension = etsp.tension();
+				double tension = exponentialTensionSetParams.tension();
 
-				if (1 == iOrder)
-					return (1. - java.lang.Math.cosh (dblTension * (1. - dblX))) / (dblTension *
-						java.lang.Math.cosh (dblTension));
+				if (1 == order) {
+					return (1. - Math.cosh (tension * (1. - x))) / (tension * Math.cosh (tension));
+				}
 
-				if (2 == iOrder)
-					return java.lang.Math.sinh (dblTension * (1. - dblX)) / java.lang.Math.sinh (dblTension);
+				if (2 == order) {
+					return Math.sinh (tension * (1. - x)) / Math.sinh (tension);
+				}
 
-				return derivative (dblX, iOrder);
+				return derivative (x, order);
 			}
 
 			@Override public double integrate (
-				final double dblBegin,
-				final double dblEnd)
+				final double begin,
+				final double end)
 				throws java.lang.Exception
 			{
-				if (!org.drip.numerical.common.NumberUtil.IsValid (dblBegin) ||
-					!org.drip.numerical.common.NumberUtil.IsValid (dblEnd))
-					throw new java.lang.Exception
-						("KLKF::FromHyperbolicPrimitive.Psy::integrate => Invalid Inputs");
+				if (!NumberUtil.IsValid (begin) || !NumberUtil.IsValid (end)) {
+					throw new Exception ("KLKF::FromHyperbolicPrimitive.Psy::integrate => Invalid Inputs");
+				}
 
-				double dblTension = etsp.tension();
+				double tension = exponentialTensionSetParams.tension();
 
-				return -1. * (java.lang.Math.sinh (dblTension * (1. - dblEnd)) - java.lang.Math.sinh 
-					(dblTension * (1. - dblBegin)) - 0.5 * dblTension * ((1. - dblEnd) * (1. - dblEnd) - (1.
-						- dblBegin) * (1. - dblBegin))) / (dblTension * dblTension * dblTension *
-							java.lang.Math.sinh (dblTension));
+				return -1. * (
+					Math.sinh (tension * (1. - end)) - Math.sinh  (tension * (1. - begin)) -
+						0.5 * tension * ((1. - end) * (1. - end) - (1. - begin) * (1. - begin))
+					) / (tension * tension * tension * Math.sinh (tension));
 			}
 		};
 
 		try {
-			return new org.drip.spline.bspline.SegmentBasisFunctionSet (2, etsp.tension(), new
-				org.drip.function.definition.R1ToR1[] {auPhy, auPsy});
-		} catch (java.lang.Exception e) {
+			return new SegmentBasisFunctionSet (
+				2,
+				exponentialTensionSetParams.tension(),
+				new R1ToR1[] {tensionBasisPhy, tensionBasisPsy}
+			);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 

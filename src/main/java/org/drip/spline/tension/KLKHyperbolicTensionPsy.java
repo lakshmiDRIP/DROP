@@ -1,11 +1,17 @@
 
 package org.drip.spline.tension;
 
+import org.drip.function.definition.R1ToR1;
+import org.drip.numerical.common.NumberUtil;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -88,72 +94,88 @@ package org.drip.spline.tension;
  * KLKHyperbolicTensionPsy implements the custom evaluator, differentiator, and integrator for the KLK
  * Tension Psy Functions outlined in the publications above.
  *
- *  <br><br>
+ * <br>
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/SplineBuilderLibrary.md">Spline Builder Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/README.md">Basis Splines and Linear Compounders across a Broad Family of Spline Basis Functions</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/tension/README.md">Koch Lyche Kvasov Tension Splines</a></li>
+ * 		<li><i>KLKHyperbolicTensionPsy</i> constructor</li>
+ * 		<li>Retrieve the Tension Parameter</li>
  *  </ul>
- * <br><br>
+ *
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/README.md">Basis Splines and Linear Compounders across a Broad Family of Spline Basis Functions</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/tension/README.md">Koch Lyche Kvasov Tension Splines</a></td></tr>
+ *  </table>
+ *  <br>
  *  
  * @author Lakshmi Krishnamurthy
  */
 
-public class KLKHyperbolicTensionPsy extends org.drip.function.definition.R1ToR1 {
-	private double _dblTension = java.lang.Double.NaN;
+public class KLKHyperbolicTensionPsy
+	extends R1ToR1
+{
+	private double _tension = java.lang.Double.NaN;
 
 	/**
-	 * KLKHyperbolicTensionPsy constructor
+	 * <i>KLKHyperbolicTensionPsy</i> constructor
 	 * 
-	 * @param dblTension Tension of the HyperbolicTension Function
+	 * @param tension Tension of the HyperbolicTension Function
 	 * 
-	 * @throws java.lang.Exception Thrown if the input is invalid
+	 * @throws Exception Thrown if the input is invalid
 	 */
 
 	public KLKHyperbolicTensionPsy (
-		final double dblTension)
-		throws java.lang.Exception
+		final double tension)
+		throws Exception
 	{
 		super (null);
 
-		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblTension = dblTension))
-			throw new java.lang.Exception ("KLKHyperbolicTensionPsy ctr: Invalid Inputs");
+		if (!NumberUtil.IsValid (_tension = tension)) {
+			throw new Exception ("KLKHyperbolicTensionPsy ctr: Invalid Inputs");
+		}
 	}
 
 	@Override public double evaluate (
-		final double dblVariate)
-		throws java.lang.Exception
+		final double variate)
+		throws Exception
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (dblVariate))
-			throw new java.lang.Exception ("KLKHyperbolicTensionPsy::evaluate => Invalid Inputs");
+		if (!NumberUtil.IsValid (variate)) {
+			throw new Exception ("KLKHyperbolicTensionPsy::evaluate => Invalid Inputs");
+		}
 
-		return java.lang.Math.sinh (_dblTension * (1. - dblVariate)) / java.lang.Math.sinh (_dblTension);
+		return Math.sinh (_tension * (1. - variate)) / Math.sinh (_tension);
 	}
 
 	@Override public double derivative (
-		final double dblVariate,
-		final int iOrder)
-		throws java.lang.Exception
+		final double variate,
+		final int order)
+		throws Exception
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (dblVariate) || 0 > iOrder)
-			throw new java.lang.Exception ("KLKHyperbolicTensionPsy::derivative => Invalid Inputs");
+		if (!NumberUtil.IsValid (variate) || 0 > order) {
+			throw new Exception ("KLKHyperbolicTensionPsy::derivative => Invalid Inputs");
+		}
 
-		return java.lang.Math.pow (-_dblTension, iOrder) * java.lang.Math.sinh (_dblTension * (1. -
-			dblVariate)) / java.lang.Math.sinh (_dblTension);
+		return Math.pow (-_tension, order) * Math.sinh (_tension * (1. - variate)) / Math.sinh (_tension);
 	}
 
 	@Override public double integrate (
-		final double dblBegin,
-		final double dblEnd)
-		throws java.lang.Exception
+		final double begin,
+		final double end)
+		throws Exception
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (dblBegin) || !org.drip.numerical.common.NumberUtil.IsValid
-			(dblEnd))
-			throw new java.lang.Exception ("KLKHyperbolicTensionPsy::integrate => Invalid Inputs");
+		if (!NumberUtil.IsValid (begin) || !NumberUtil.IsValid (end)) {
+			throw new Exception ("KLKHyperbolicTensionPsy::integrate => Invalid Inputs");
+		}
 
-		return -1. * (java.lang.Math.cosh (_dblTension * (1. - dblEnd)) - java.lang.Math.cosh (_dblTension *
-			(1. - dblBegin))) / (_dblTension * java.lang.Math.sinh (_dblTension));
+		return -1. * (Math.cosh (_tension * (1. - end)) - Math.cosh (_tension * (1. - begin))) /
+			(_tension * Math.sinh (_tension));
 	}
 
 	/**
@@ -164,33 +186,6 @@ public class KLKHyperbolicTensionPsy extends org.drip.function.definition.R1ToR1
 
 	public double getTension()
 	{
-		return _dblTension;
-	}
-
-	/**
-	 * Entry Point
-	 * 
-	 * @param astrArgs Argument Array
-	 * 
-	 * @throws java.lang.Exception Propagate the Exception Encountered
-	 */
-
-	public static final void main (
-		final java.lang.String[] astrArgs)
-		throws java.lang.Exception
-	{
-		KLKHyperbolicTensionPsy khtp = new KLKHyperbolicTensionPsy (2.);
-
-		System.out.println ("KLKHyperbolicTensionPsy[0.0] = " + khtp.evaluate (0.0));
-
-		System.out.println ("KLKHyperbolicTensionPsy[0.5] = " + khtp.evaluate (0.5));
-
-		System.out.println ("KLKHyperbolicTensionPsy[1.0] = " + khtp.evaluate (1.0));
-
-		System.out.println ("KLKHyperbolicTensionPsyDeriv[0.0] = " + khtp.derivative (0.0, 2));
-
-		System.out.println ("KLKHyperbolicTensionPsyDeriv[0.5] = " + khtp.derivative (0.5, 2));
-
-		System.out.println ("KLKHyperbolicTensionPsyDeriv[1.0] = " + khtp.derivative (1.0, 2));
+		return _tension;
 	}
 }

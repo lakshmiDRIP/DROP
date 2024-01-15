@@ -1,6 +1,7 @@
 
 package org.drip.spline.stretch;
 
+import org.drip.numerical.common.NumberUtil;
 import org.drip.spline.basis.ExponentialMixtureSetParams;
 import org.drip.spline.basis.ExponentialRationalSetParams;
 import org.drip.spline.basis.ExponentialTensionSetParams;
@@ -615,108 +616,136 @@ public class MultiSegmentSequenceBuilder {
 	 * Create a calibrated Stretch Instance over the specified Predictor Ordinates and the Response Value
 	 * 	Constraints, with the Segment Builder Parameters.
 	 * 
-	 * @param strName Name of the Stretch
-	 * @param adblPredictorOrdinate Predictor Ordinate Array
-	 * @param srvcStretchLeft Stretch Left Constraint
-	 * @param aSRVC Array of Segment Constraints - One per Segment
-	 * @param aSCBC Array of Segment Builder Parameters - One per Segment
-	 * @param sbfr Stretch Fitness Weighted Response
-	 * @param bs The Calibration Boundary Condition
-	 * @param iCalibrationDetail The Calibration Detail
+	 * @param name Name of the Stretch
+	 * @param predictorOrdinateArray Predictor Ordinate Array
+	 * @param stretchLeftSegmentResponseValueConstraint Stretch Left Constraint
+	 * @param segmentResponseValueConstraintArray Array of Response Value Constraints - One per Segment
+	 * @param segmentCustomBuilderControlArray Array of Segment Builder Parameters - One per Segment
+	 * @param stretchBestFitResponse Stretch Fitness Weighted Response
+	 * @param boundarySettings The Calibration Boundary Condition
+	 * @param calibrationDetail The Calibration Detail
 	 * 
 	 * @return Stretch Instance
 	 */
 
-	public static final org.drip.spline.stretch.MultiSegmentSequence CreateCalibratedStretchEstimator (
-		final java.lang.String strName,
-		final double[] adblPredictorOrdinate,
-		final org.drip.spline.params.SegmentResponseValueConstraint srvcStretchLeft,
-		final org.drip.spline.params.SegmentResponseValueConstraint[] aSRVC,
-		final org.drip.spline.params.SegmentCustomBuilderControl[] aSCBC,
-		final org.drip.spline.params.StretchBestFitResponse sbfr,
-		final org.drip.spline.stretch.BoundarySettings bs,
-		final int iCalibrationDetail)
+	public static final MultiSegmentSequence CreateCalibratedStretchEstimator (
+		final String name,
+		final double[] predictorOrdinateArray,
+		final SegmentResponseValueConstraint stretchLeftSegmentResponseValueConstraint,
+		final SegmentResponseValueConstraint[] segmentResponseValueConstraintArray,
+		final SegmentCustomBuilderControl[] segmentCustomBuilderControlArray,
+		final StretchBestFitResponse stretchBestFitResponse,
+		final BoundarySettings boundarySettings,
+		final int calibrationDetail)
 	{
-		org.drip.spline.stretch.MultiSegmentSequence mss = CreateUncalibratedStretchEstimator (strName,
-			adblPredictorOrdinate, aSCBC);
+		MultiSegmentSequence multiSegmentSequence = CreateUncalibratedStretchEstimator (
+			name,
+			predictorOrdinateArray,
+			segmentCustomBuilderControlArray
+		);
 
-		return null == mss ? null : mss.setup (srvcStretchLeft, aSRVC, sbfr, bs, iCalibrationDetail) ? mss :
-			null;
+		return null == multiSegmentSequence ? null : multiSegmentSequence.setup (
+			stretchLeftSegmentResponseValueConstraint,
+			segmentResponseValueConstraintArray,
+			stretchBestFitResponse,
+			boundarySettings,
+			calibrationDetail
+		) ? multiSegmentSequence : null;
 	}
 
 	/**
 	 * Create a Calibrated Stretch Instance from the Array of Predictor Ordinates and a flat Response Value
 	 * 
-	 * @param strName Name of the Stretch
-	 * @param adblPredictorOrdinate Predictor Ordinate Array
-	 * @param dblResponseValue Response Value
-	 * @param scbc Segment Builder Parameters - One per Segment
-	 * @param sbfr Stretch Fitness Weighted Response
-	 * @param bs The Calibration Boundary Condition
-	 * @param iCalibrationDetail The Calibration Detail
+	 * @param name Name of the Stretch
+	 * @param predictorOrdinateArray Predictor Ordinate Array
+	 * @param responseValue Response Value
+	 * @param segmentCustomBuilderControl Segment Builder Parameters
+	 * @param stretchBestFitResponse Stretch Fitness Weighted Response
+	 * @param boundarySettings The Calibration Boundary Condition
+	 * @param calibrationDetail The Calibration Detail
 	 * 
 	 * @return Stretch Instance
 	 */
 
-	public static final org.drip.spline.stretch.MultiSegmentSequence CreateCalibratedStretchEstimator (
-		final java.lang.String strName,
-		final double[] adblPredictorOrdinate,
-		final double dblResponseValue,
-		final org.drip.spline.params.SegmentCustomBuilderControl scbc,
-		final org.drip.spline.params.StretchBestFitResponse sbfr,
-		final org.drip.spline.stretch.BoundarySettings bs,
-		final int iCalibrationDetail)
+	public static final MultiSegmentSequence CreateCalibratedStretchEstimator (
+		final String name,
+		final double[] predictorOrdinateArray,
+		final double responseValue,
+		final SegmentCustomBuilderControl segmentCustomBuilderControl,
+		final StretchBestFitResponse stretchBestFitResponse,
+		final BoundarySettings boundarySettings,
+		final int calibrationDetail)
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (dblResponseValue) || null == adblPredictorOrdinate ||
-			null == scbc)
+		if (!NumberUtil.IsValid (responseValue) ||
+			null == predictorOrdinateArray ||
+			null == segmentCustomBuilderControl) {
 			return null;
-
-		int iNumPredictorOrdinate = adblPredictorOrdinate.length;
-
-		if (1 >= iNumPredictorOrdinate) return null;
-
-		double[] adblResponseValue = new double[iNumPredictorOrdinate];
-		org.drip.spline.params.SegmentCustomBuilderControl[] aSCBC = new
-			org.drip.spline.params.SegmentCustomBuilderControl[iNumPredictorOrdinate - 1];
-
-		for (int i = 0; i < iNumPredictorOrdinate; ++i) {
-			adblResponseValue[i] = dblResponseValue;
-
-			if (0 != i) aSCBC[i - 1] = scbc;
 		}
 
-		return CreateCalibratedStretchEstimator (strName, adblPredictorOrdinate, adblResponseValue, aSCBC,
-			sbfr, bs, iCalibrationDetail);
+		int predictorOrdinateCount = predictorOrdinateArray.length;
+
+		if (1 >= predictorOrdinateCount) {
+			return null;
+		}
+
+		double[] responseValueArray = new double[predictorOrdinateCount];
+		SegmentCustomBuilderControl[] segmentCustomBuilderControlArray =
+			new SegmentCustomBuilderControl[predictorOrdinateCount - 1];
+
+		for (int predictorOrdinateIndex = 0; predictorOrdinateIndex < predictorOrdinateCount;
+			++predictorOrdinateIndex) {
+			responseValueArray[predictorOrdinateIndex] = responseValue;
+
+			if (0 != predictorOrdinateIndex) {
+				segmentCustomBuilderControlArray[predictorOrdinateIndex - 1] = segmentCustomBuilderControl;
+			}
+		}
+
+		return CreateCalibratedStretchEstimator (
+			name,
+			predictorOrdinateArray,
+			responseValueArray,
+			segmentCustomBuilderControlArray,
+			stretchBestFitResponse,
+			boundarySettings,
+			calibrationDetail
+		);
 	}
 
 	/**
 	 * Create a Regression Spline Instance over the specified array of Predictor Ordinate Knot Points and the
 	 *  Set of the Points to be Best Fit.
-	 * <li>Create a Regression Spline Instance over the specified array of Predictor Ordinate Knot Points and the Set of the Points to be Best Fit</li>
 	 * 
-	 * @param strName Name of the Stretch
-	 * @param adblKnotPredictorOrdinate Array of the Predictor Ordinate Knots
-	 * @param aSCBC Array of Segment Builder Parameters
-	 * @param sbfr Stretch Fitness Weighted Response
-	 * @param bs The Calibration Boundary Condition
-	 * @param iCalibrationDetail The Calibration Detail
+	 * @param name Name of the Stretch
+	 * @param knotPredictorOrdinateArray Array of the Predictor Ordinate Knots
+	 * @param segmentCustomBuilderControlArray Array of Segment Builder Parameters
+	 * @param stretchBestFitResponse Stretch Fitness Weighted Response
+	 * @param boundarySettings The Calibration Boundary Condition
+	 * @param calibrationDetail The Calibration Detail
 	 * 
 	 * @return Stretch instance
 	 */
 
-	public static final org.drip.spline.stretch.MultiSegmentSequence CreateRegressionSplineEstimator (
-		final java.lang.String strName,
-		final double[] adblKnotPredictorOrdinate,
-		final org.drip.spline.params.SegmentCustomBuilderControl[] aSCBC,
-		final org.drip.spline.params.StretchBestFitResponse sbfr,
-		final org.drip.spline.stretch.BoundarySettings bs,
-		final int iCalibrationDetail)
+	public static final MultiSegmentSequence CreateRegressionSplineEstimator (
+		final String name,
+		final double[] knotPredictorOrdinateArray,
+		final SegmentCustomBuilderControl[] segmentCustomBuilderControlArray,
+		final StretchBestFitResponse stretchBestFitResponse,
+		final BoundarySettings boundarySettings,
+		final int calibrationDetail)
 	{
-		org.drip.spline.stretch.MultiSegmentSequence mss = CreateUncalibratedStretchEstimator (strName,
-			adblKnotPredictorOrdinate, aSCBC);
+		MultiSegmentSequence multiSegmentSequence = CreateUncalibratedStretchEstimator (
+			name,
+			knotPredictorOrdinateArray,
+			segmentCustomBuilderControlArray
+		);
 
-		if (null == mss) return null;
-
-		return mss.setup (null, null, sbfr, bs, iCalibrationDetail) ? mss : null;
+		return null == multiSegmentSequence ? null : multiSegmentSequence.setup (
+			null,
+			null,
+			stretchBestFitResponse,
+			boundarySettings,
+			calibrationDetail
+		) ? multiSegmentSequence : null;
 	}
 }

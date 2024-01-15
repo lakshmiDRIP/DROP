@@ -1,11 +1,16 @@
 
 package org.drip.spline.tension;
 
+import org.drip.function.definition.R1ToR1;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -84,39 +89,53 @@ package org.drip.spline.tension;
 
 /**
  * <i>KochLycheKvasovBasis</i> implements the basic framework and the family of C2 Tension Splines outlined
- * in Koch and Lyche (1989), Koch and Lyche (1993), and Kvasov (2000) Papers. Currently, this class exposes
- * functions to create monic and quadratic tension B Spline Basis Function Set.
+ * 	in Koch and Lyche (1989), Koch and Lyche (1993), and Kvasov (2000) Papers. Currently, this class exposes
+ * 	functions to create monic and quadratic tension B Spline Basis Function Set.
  *
- *  <br><br>
+ * <br>
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/SplineBuilderLibrary.md">Spline Builder Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/README.md">Basis Splines and Linear Compounders across a Broad Family of Spline Basis Functions</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/tension/README.md">Koch Lyche Kvasov Tension Splines</a></li>
+ * 		<li>Generate the Quadratic Monic Basis Function Set</li>
+ * 		<li>Generate the Quadratic BSpline Basis Function Set</li>
  *  </ul>
- * <br><br>
+ *
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/README.md">Basis Splines and Linear Compounders across a Broad Family of Spline Basis Functions</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/tension/README.md">Koch Lyche Kvasov Tension Splines</a></td></tr>
+ *  </table>
+ *  <br>
  * 
  * @author Lakshmi Krishnamurthy
  */
 
-public class KochLycheKvasovBasis {
+public class KochLycheKvasovBasis
+{
 
 	/**
 	 * Generate the Monic BSpline Basis Function Set
 	 * 
-	 * @param dblTension The Tension Parameter
+	 * @param tension The Tension Parameter
 	 * 
 	 * @return The Monic BSpline Basis Function Set
 	 */
 
-	public static final org.drip.function.definition.R1ToR1[] GenerateMonicBSplineSet (
-		final double dblTension)
+	public static final R1ToR1[] GenerateMonicBSplineSet (
+		final double tension)
 	{
 		try {
-			return new org.drip.function.definition.R1ToR1[] {new
-				org.drip.spline.tension.KLKHyperbolicTensionPhy (dblTension), new
-					org.drip.spline.tension.KLKHyperbolicTensionPsy (dblTension)};
-		} catch (java.lang.Exception e) {
+			return new R1ToR1[] {
+				new KLKHyperbolicTensionPhy (tension),
+				new KLKHyperbolicTensionPsy (tension)
+			};
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -126,19 +145,20 @@ public class KochLycheKvasovBasis {
 	/**
 	 * Generate the Quadratic BSpline Basis Function Set
 	 * 
-	 * @param dblTension The Tension Parameter
+	 * @param tension The Tension Parameter
 	 * 
 	 * @return The Quadratic BSpline Basis Function Set
 	 */
 
-	public static final org.drip.function.definition.R1ToR1[] GenerateQuadraticBSplineSet (
-		final double dblTension)
+	public static final R1ToR1[] GenerateQuadraticBSplineSet (
+		final double tension)
 	{
 		try {
-			return new org.drip.function.definition.R1ToR1[] {new
-				org.drip.spline.tension.KLKHyperbolicTensionPhy (dblTension), new
-					org.drip.spline.tension.KLKHyperbolicTensionPsy (dblTension)};
-		} catch (java.lang.Exception e) {
+			return new R1ToR1[] {
+				new KLKHyperbolicTensionPhy (tension),
+				new KLKHyperbolicTensionPsy (tension)
+			};
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
