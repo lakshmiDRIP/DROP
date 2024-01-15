@@ -3,6 +3,7 @@ package org.drip.oms.switchable;
 
 import java.util.Date;
 
+import org.drip.oms.transaction.DisplaySettings;
 import org.drip.oms.transaction.OrderFillWholeSettings;
 import org.drip.oms.transaction.OrderIssuer;
 import org.drip.oms.transaction.Side;
@@ -131,6 +132,7 @@ public class StopOrderATC
 	 * @param side Order Side
 	 * @param size Order Size
 	 * @param fillWholeSettings Order Fill-Whole Settings
+	 * @param displaySettings Order Display Settings
 	 * @param switchPrice Switch-to-Market Price
 	 * 
 	 * @return Standard Instance of At-The-Close (ATC) Stop Order
@@ -142,6 +144,7 @@ public class StopOrderATC
 		final Side side,
 		final double size,
 		final OrderFillWholeSettings fillWholeSettings,
+		final DisplaySettings displaySettings,
 		final double switchPrice)
 	{
 		try
@@ -154,6 +157,7 @@ public class StopOrderATC
 				side,
 				size,
 				fillWholeSettings,
+				displaySettings,
 				switchPrice
 			);
 		}
@@ -172,6 +176,7 @@ public class StopOrderATC
 	 * @param ticker Security Identifier/Ticker
 	 * @param size Order Size
 	 * @param fillWholeSettings Order Fill-Whole Settings
+	 * @param displaySettings Order Display Settings
 	 * @param switchPrice Switch-to-Market Price
 	 * 
 	 * @return Standard Instance of Buy At-The-Close (ATC) Limit Order
@@ -182,6 +187,7 @@ public class StopOrderATC
 		final String ticker,
 		final double size,
 		final OrderFillWholeSettings fillWholeSettings,
+		final DisplaySettings displaySettings,
 		final double switchPrice)
 	{
 		try
@@ -194,6 +200,7 @@ public class StopOrderATC
 				Side.Buy(),
 				size,
 				fillWholeSettings,
+				displaySettings,
 				switchPrice
 			);
 		}
@@ -212,6 +219,7 @@ public class StopOrderATC
 	 * @param ticker Security Identifier/Ticker
 	 * @param size Order Size
 	 * @param fillWholeSettings Order Fill-Whole Settings
+	 * @param displaySettings Order Display Settings
 	 * @param switchPrice Switch-to-Market Price
 	 * 
 	 * @return Standard Instance of Sell At-The-Close (ATC) Limit Order
@@ -222,6 +230,7 @@ public class StopOrderATC
 		final String ticker,
 		final double size,
 		final OrderFillWholeSettings fillWholeSettings,
+		final DisplaySettings displaySettings,
 		final double switchPrice)
 	{
 		try
@@ -234,6 +243,7 @@ public class StopOrderATC
 				Side.Sell(),
 				size,
 				fillWholeSettings,
+				displaySettings,
 				switchPrice
 			);
 		}
@@ -255,6 +265,7 @@ public class StopOrderATC
 	 * @param side Order Side
 	 * @param size Order Size
 	 * @param fillWholeSettings Order Fill-Whole Settings
+	 * @param displaySettings Order Display Settings
 	 * @param switchPrice Switch-to-Market Price
 	 * 
 	 * @throws Exception Thrown if the Inputs are Invalid
@@ -268,6 +279,7 @@ public class StopOrderATC
 		final Side side,
 		final double size,
 		final OrderFillWholeSettings fillWholeSettings,
+		final DisplaySettings displaySettings,
 		final double switchPrice)
 		throws Exception
 	{
@@ -280,6 +292,7 @@ public class StopOrderATC
 			size,
 			TimeInForce.CreateMarketClose(),
 			fillWholeSettings,
+			displaySettings,
 			switchPrice
 		);
 	}

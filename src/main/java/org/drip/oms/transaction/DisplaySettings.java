@@ -1,21 +1,14 @@
 
-package org.drip.oms.unthresholded;
+package org.drip.oms.transaction;
 
-import java.util.Date;
-
-import org.drip.oms.transaction.Side;
-import org.drip.oms.transaction.DisplaySettings;
-import org.drip.oms.transaction.OrderFillWholeSettings;
-import org.drip.oms.transaction.OrderIssuer;
-import org.drip.oms.transaction.TimeInForce;
-import org.drip.service.common.StringUtil;
+import org.drip.numerical.common.NumberUtil;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
- * Copyright (C) 2023 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
  * 
  *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
  *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
@@ -83,17 +76,13 @@ import org.drip.service.common.StringUtil;
  */
 
 /**
- * <i>MarketOrderDAY</i> holds the Details of a DAY Market Order. The References are:
+ * <i>DisplaySettings</i> contains the Details of Order Display. The References are:
  *  
  * 	<br><br>
  *  <ul>
  * 		<li>
  * 			Berkowitz, S. A., D. E. Logue, and E. A. J. Noser (1988): The Total Cost of Transactions on the
  * 				NYSE <i>Journal of Finance</i> <b>43 (1)</b> 97-112
- * 		</li>
- * 		<li>
- * 			Cont, R., and A. Kukanov (2017): Optimal Order Placement in Limit Order Markets <i>Quantitative
- * 				Finance</i> <b>17 (1)</b> 21-39
  * 		</li>
  * 		<li>
  * 			Vassilis, P. (2005a): A Realistic Model of Market Liquidity and Depth <i>Journal of Futures
@@ -107,6 +96,9 @@ import org.drip.service.common.StringUtil;
  * 			Weiss, D. (2006): <i>After the Trade is Made: Processing Securities Transactions</i> <b>Portfolio
  * 				Publishing</b> London UK
  * 		</li>
+ * 		<li>
+ * 			Wikipedia (2023): Order (Exchange) https://en.wikipedia.org/wiki/Order_(exchange)
+ * 		</li>
  *  </ul>
  *
  *	<br><br>
@@ -114,174 +106,58 @@ import org.drip.service.common.StringUtil;
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/TransactionCostAnalyticsLibrary.md">Transaction Cost Analytics</a></li>
  *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/oms/README.md">R<sup>d</sup> Order Specification, Handling, and Management</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/oms/unthresholded/README.md">Implementation of Unthresholded Market Variants</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/oms/transaction/README.md">Order Specification and Session Metrics</a></li>
  *  </ul>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class MarketOrderDAY
-	extends MarketOrder
+public class DisplaySettings
 {
+	private boolean _hide = false;
+	private double _icebergBelowTheSurfaceRatio = Double.NaN;
 
 	/**
-	 * Create a Standard Instance of DAY Market Order
+	 * <i>DisplaySettings</i> Constructor
 	 * 
-	 * @param issuer Order Issuer
-	 * @param ticker Security Identifier/Ticker
-	 * @param side Order Side
-	 * @param size Order Size
-	 * @param fillWholeSettings Order Fill-Whole Settings
-	 * @param displaySettings Order Display Settings
-	 * 
-	 * @return Standard Instance of DAY Market Order
-	 */
-
-	public static final MarketOrderDAY Standard (
-		final OrderIssuer issuer,
-		final String ticker,
-		final Side side,
-		final double size,
-		final OrderFillWholeSettings fillWholeSettings,
-		final DisplaySettings displaySettings)
-	{
-		try
-		{
-			return new MarketOrderDAY (
-				issuer,
-				ticker,
-				StringUtil.GUID(),
-				new Date(),
-				side,
-				size,
-				fillWholeSettings,
-				displaySettings
-			);
-		}
-		catch (Exception e)
-		{
-			e.printStackTrace();
-		}
-
-		return null;
-	}
-
-	/**
-	 * Create a Standard Instance of Buy DAY Market Order
-	 * 
-	 * @param issuer Order Issuer
-	 * @param ticker Security Identifier/Ticker
-	 * @param size Order Size
-	 * @param fillWholeSettings Order Fill-Whole Settings
-	 * @param displaySettings Order Display Settings
-	 * 
-	 * @return Standard Instance of Buy DAY Market Order
-	 */
-
-	public static final MarketOrderDAY StandardBuy (
-		final OrderIssuer issuer,
-		final String ticker,
-		final double size,
-		final OrderFillWholeSettings fillWholeSettings,
-		final DisplaySettings displaySettings)
-	{
-		try
-		{
-			return new MarketOrderDAY (
-				issuer,
-				ticker,
-				StringUtil.GUID(),
-				new Date(),
-				Side.Buy(),
-				size,
-				fillWholeSettings,
-				displaySettings
-			);
-		}
-		catch (Exception e)
-		{
-			e.printStackTrace();
-		}
-
-		return null;
-	}
-
-	/**
-	 * Create a Standard Instance of Sell DAY Market Order
-	 * 
-	 * @param issuer Order Issuer
-	 * @param ticker Security Identifier/Ticker
-	 * @param size Order Size
-	 * @param fillWholeSettings Order Fill-Whole Settings
-	 * @param displaySettings Order Display Settings
-	 * 
-	 * @return Standard Instance of Sell DAY Market Order
-	 */
-
-	public static final MarketOrderDAY StandardSell (
-		final OrderIssuer issuer,
-		final String ticker,
-		final double size,
-		final OrderFillWholeSettings fillWholeSettings,
-		final DisplaySettings displaySettings)
-	{
-		try
-		{
-			return new MarketOrderDAY (
-				issuer,
-				ticker,
-				StringUtil.GUID(),
-				new Date(),
-				Side.Sell(),
-				size,
-				fillWholeSettings,
-				displaySettings
-			);
-		}
-		catch (Exception e)
-		{
-			e.printStackTrace();
-		}
-
-		return null;
-	}
-
-	/**
-	 * DAY Market Order Constructor
-	 * 
-	 * @param issuer Order Issuer
-	 * @param ticker Security Identifier/Ticker
-	 * @param id Order ID
-	 * @param creationTime Creation Time
-	 * @param side Order Side
-	 * @param size Order Size
-	 * @param fillWholeSettings Order Fill-Whole Settings
-	 * @param displaySettings Order Display Settings
+	 * @param hide FALSE - The Order is to be Displayed
+	 * @param icebergBelowTheSurfaceRatio Below the Surface Iceberg Display Ratio
 	 * 
 	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
-	public MarketOrderDAY (
-		final OrderIssuer issuer,
-		final String ticker,
-		final String id,
-		final Date creationTime,
-		final Side side,
-		final double size,
-		final OrderFillWholeSettings fillWholeSettings,
-		final DisplaySettings displaySettings)
+	public DisplaySettings (
+		final boolean hide,
+		final double icebergBelowTheSurfaceRatio)
 		throws Exception
 	{
-		super (
-			issuer,
-			ticker,
-			id,
-			creationTime,
-			side,
-			size,
-			TimeInForce.CreateDay(),
-			fillWholeSettings,
-			displaySettings
-		);
+		if (!NumberUtil.IsValid (_icebergBelowTheSurfaceRatio = icebergBelowTheSurfaceRatio) ||
+			0. > _icebergBelowTheSurfaceRatio || 1. < _icebergBelowTheSurfaceRatio) {
+			throw new Exception ("DisplaySettings Constructor => Invalid Inputs");
+		}
+
+		_hide = hide;
+	}
+
+	/**
+	 * Indicate if the Order is to be Displayed
+	 * 
+	 * @return FALSE - The Order is to be Displayed
+	 */
+
+	public boolean hide()
+	{
+		return _hide;
+	}
+
+	/**
+	 * Retrieve the Below the Surface Iceberg Display Ratio
+	 * 
+	 * @return The Below the Surface Iceberg Display Ratio
+	 */
+
+	public double icebergBelowTheSurfaceRatio()
+	{
+		return _icebergBelowTheSurfaceRatio;
 	}
 }

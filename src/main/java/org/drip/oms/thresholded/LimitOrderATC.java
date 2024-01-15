@@ -5,6 +5,7 @@ import java.util.Date;
 
 import org.drip.oms.transaction.Side;
 import org.drip.oms.benchmark.PegScheme;
+import org.drip.oms.transaction.DisplaySettings;
 import org.drip.oms.transaction.OrderFillWholeSettings;
 import org.drip.oms.transaction.OrderIssuer;
 import org.drip.oms.transaction.TimeInForce;
@@ -132,6 +133,7 @@ public class LimitOrderATC
 	 * @param side Order Side
 	 * @param size Order Size
 	 * @param fillWholeSettings Order Fill-Whole Settings
+	 * @param displaySettings Order Display Settings
 	 * @param pegScheme Peg Price Generation Scheme
 	 * 
 	 * @return Standard Instance of At-The-Close (ATC) Limit Order
@@ -143,6 +145,7 @@ public class LimitOrderATC
 		final Side side,
 		final double size,
 		final OrderFillWholeSettings fillWholeSettings,
+		final DisplaySettings displaySettings,
 		final PegScheme pegScheme)
 	{
 		try
@@ -155,6 +158,7 @@ public class LimitOrderATC
 				side,
 				size,
 				fillWholeSettings,
+				displaySettings,
 				pegScheme
 			);
 		}
@@ -173,6 +177,7 @@ public class LimitOrderATC
 	 * @param ticker Security Identifier/Ticker
 	 * @param size Order Size
 	 * @param fillWholeSettings Order Fill-Whole Settings
+	 * @param displaySettings Order Display Settings
 	 * @param pegScheme Peg Price Generation Scheme
 	 * 
 	 * @return Standard Instance of Buy At-The-Close (ATC) Limit Order
@@ -183,6 +188,7 @@ public class LimitOrderATC
 		final String ticker,
 		final double size,
 		final OrderFillWholeSettings fillWholeSettings,
+		final DisplaySettings displaySettings,
 		final PegScheme pegScheme)
 	{
 		try
@@ -195,6 +201,7 @@ public class LimitOrderATC
 				Side.Buy(),
 				size,
 				fillWholeSettings,
+				displaySettings,
 				pegScheme
 			);
 		}
@@ -213,6 +220,7 @@ public class LimitOrderATC
 	 * @param ticker Security Identifier/Ticker
 	 * @param size Order Size
 	 * @param fillWholeSettings Order Fill-Whole Settings
+	 * @param displaySettings Order Display Settings
 	 * @param pegScheme Peg Price Generation Scheme
 	 * 
 	 * @return Standard Instance of Sell At-The-Close (ATC) Limit Order
@@ -223,6 +231,7 @@ public class LimitOrderATC
 		final String ticker,
 		final double size,
 		final OrderFillWholeSettings fillWholeSettings,
+		final DisplaySettings displaySettings,
 		final PegScheme pegScheme)
 	{
 		try
@@ -235,6 +244,7 @@ public class LimitOrderATC
 				Side.Sell(),
 				size,
 				fillWholeSettings,
+				displaySettings,
 				pegScheme
 			);
 		}
@@ -256,6 +266,7 @@ public class LimitOrderATC
 	 * @param side Order Side
 	 * @param size Order Size
 	 * @param fillWholeSettings Order Fill-Whole Settings
+	 * @param displaySettings Order Display Settings
 	 * @param pegScheme Peg Price Generation Scheme
 	 * 
 	 * @throws Exception Thrown if the Inputs are Invalid
@@ -269,6 +280,7 @@ public class LimitOrderATC
 		final Side side,
 		final double size,
 		final OrderFillWholeSettings fillWholeSettings,
+		final DisplaySettings displaySettings,
 		final PegScheme pegScheme)
 		throws Exception
 	{
@@ -281,6 +293,7 @@ public class LimitOrderATC
 			size,
 			TimeInForce.CreateMarketClose(),
 			fillWholeSettings,
+			displaySettings,
 			pegScheme
 		);
 	}

@@ -4,6 +4,7 @@ package org.drip.oms.unthresholded;
 import java.util.Date;
 
 import org.drip.oms.transaction.Side;
+import org.drip.oms.transaction.DisplaySettings;
 import org.drip.oms.transaction.OrderFillWholeSettings;
 import org.drip.oms.transaction.OrderIssuer;
 import org.drip.oms.transaction.TimeInForce;
@@ -132,6 +133,7 @@ public class MarketOrderAON
 	 * @param size Order Size
 	 * @param timeInForce Time-in-Force Settings
 	 * @param fulfillTryLimit Fulfill Try Limit
+	 * @param displaySettings Order Display Settings
 	 * 
 	 * @return Instance of Buy All-or-None (AON) Market Order
 	 */
@@ -142,7 +144,8 @@ public class MarketOrderAON
 		final Side side,
 		final double size,
 		final TimeInForce timeInForce,
-		final int fulfillTryLimit)
+		final int fulfillTryLimit,
+		final DisplaySettings displaySettings)
 	{
 		try
 		{
@@ -154,7 +157,8 @@ public class MarketOrderAON
 				side,
 				size,
 				timeInForce,
-				fulfillTryLimit
+				fulfillTryLimit,
+				displaySettings
 			);
 		}
 		catch (Exception e)
@@ -173,6 +177,7 @@ public class MarketOrderAON
 	 * @param size Order Size
 	 * @param timeInForce Time-in-Force Settings
 	 * @param fulfillTryLimit Fulfill Try Limit
+	 * @param displaySettings Order Display Settings
 	 * 
 	 * @return Standard Instance of Buy All-or-None (AON) Market Order
 	 */
@@ -182,7 +187,8 @@ public class MarketOrderAON
 		final String ticker,
 		final double size,
 		final TimeInForce timeInForce,
-		final int fulfillTryLimit)
+		final int fulfillTryLimit,
+		final DisplaySettings displaySettings)
 	{
 		return Standard (
 			issuer,
@@ -190,7 +196,8 @@ public class MarketOrderAON
 			Side.Buy(),
 			size,
 			timeInForce,
-			fulfillTryLimit
+			fulfillTryLimit,
+			displaySettings
 		);
 	}
 
@@ -202,6 +209,7 @@ public class MarketOrderAON
 	 * @param size Order Size
 	 * @param timeInForce Time-in-Force Settings
 	 * @param fulfillTryLimit Fulfill Try Limit
+	 * @param displaySettings Order Display Settings
 	 * 
 	 * @return Standard Instance of Sell All-or-None (AON) Market Order
 	 */
@@ -211,7 +219,8 @@ public class MarketOrderAON
 		final String ticker,
 		final double size,
 		final TimeInForce timeInForce,
-		final int fulfillTryLimit)
+		final int fulfillTryLimit,
+		final DisplaySettings displaySettings)
 	{
 		return Standard (
 			issuer,
@@ -219,7 +228,8 @@ public class MarketOrderAON
 			Side.Sell(),
 			size,
 			timeInForce,
-			fulfillTryLimit
+			fulfillTryLimit,
+			displaySettings
 		);
 	}
 
@@ -234,6 +244,7 @@ public class MarketOrderAON
 	 * @param size Order Size
 	 * @param timeInForce Time-in-Force Settings
 	 * @param fulfillTryLimit Fulfill Try Limit
+	 * @param displaySettings Order Display Settings
 	 * 
 	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
@@ -246,7 +257,8 @@ public class MarketOrderAON
 		final Side side,
 		final double size,
 		final TimeInForce timeInForce,
-		final int fulfillTryLimit)
+		final int fulfillTryLimit,
+		final DisplaySettings displaySettings)
 		throws Exception
 	{
 		super (
@@ -259,7 +271,8 @@ public class MarketOrderAON
 			timeInForce,
 			OrderFillWholeSettings.AllOrNone (
 				fulfillTryLimit
-			)
+			),
+			displaySettings
 		);
 	}
 }

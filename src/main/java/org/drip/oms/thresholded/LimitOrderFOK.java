@@ -5,6 +5,7 @@ import java.util.Date;
 
 import org.drip.oms.transaction.Side;
 import org.drip.oms.benchmark.PegScheme;
+import org.drip.oms.transaction.DisplaySettings;
 import org.drip.oms.transaction.OrderFillWholeSettings;
 import org.drip.oms.transaction.OrderIssuer;
 import org.drip.oms.transaction.TimeInForce;
@@ -132,6 +133,7 @@ public class LimitOrderFOK
 	 * @param side Order Side
 	 * @param size Order Size
 	 * @param timeInForce Time-in-Force Settings
+	 * @param displaySettings Order Display Settings
 	 * @param pegScheme Peg Price Generation Scheme
 	 * 
 	 * @return Instance of Buy Fill-Or-Kill (FOK) Limit Order
@@ -143,6 +145,7 @@ public class LimitOrderFOK
 		final Side side,
 		final double size,
 		final TimeInForce timeInForce,
+		final DisplaySettings displaySettings,
 		final PegScheme pegScheme)
 	{
 		try
@@ -155,6 +158,7 @@ public class LimitOrderFOK
 				side,
 				size,
 				timeInForce,
+				displaySettings,
 				pegScheme
 			);
 		}
@@ -173,6 +177,7 @@ public class LimitOrderFOK
 	 * @param ticker Security Identifier/Ticker
 	 * @param size Order Size
 	 * @param timeInForce Time-in-Force Settings
+	 * @param displaySettings Order Display Settings
 	 * @param pegScheme Peg Price Generation Scheme
 	 * 
 	 * @return Standard Instance of Buy Fill-Or-Kill (FOK) Limit Order
@@ -183,6 +188,7 @@ public class LimitOrderFOK
 		final String ticker,
 		final double size,
 		final TimeInForce timeInForce,
+		final DisplaySettings displaySettings,
 		final PegScheme pegScheme)
 	{
 		return Standard (
@@ -191,6 +197,7 @@ public class LimitOrderFOK
 			Side.Buy(),
 			size,
 			timeInForce,
+			displaySettings,
 			pegScheme
 		);
 	}
@@ -202,6 +209,7 @@ public class LimitOrderFOK
 	 * @param ticker Security Identifier/Ticker
 	 * @param size Order Size
 	 * @param timeInForce Time-in-Force Settings
+	 * @param displaySettings Order Display Settings
 	 * @param pegScheme Peg Price Generation Scheme
 	 * 
 	 * @return Standard Instance of Sell Fill-Or-Kill (FOK) Limit Order
@@ -212,6 +220,7 @@ public class LimitOrderFOK
 		final String ticker,
 		final double size,
 		final TimeInForce timeInForce,
+		final DisplaySettings displaySettings,
 		final PegScheme pegScheme)
 	{
 		return Standard (
@@ -220,6 +229,7 @@ public class LimitOrderFOK
 			Side.Sell(),
 			size,
 			timeInForce,
+			displaySettings,
 			pegScheme
 		);
 	}
@@ -234,6 +244,7 @@ public class LimitOrderFOK
 	 * @param side Order Side
 	 * @param size Order Size
 	 * @param timeInForce Time-in-Force Settings
+	 * @param displaySettings Order Display Settings
 	 * @param pegScheme Peg Price Generation Scheme
 	 * 
 	 * @throws Exception Thrown if the Inputs are Invalid
@@ -247,6 +258,7 @@ public class LimitOrderFOK
 		final Side side,
 		final double size,
 		final TimeInForce timeInForce,
+		final DisplaySettings displaySettings,
 		final PegScheme pegScheme)
 		throws Exception
 	{
@@ -259,6 +271,7 @@ public class LimitOrderFOK
 			size,
 			timeInForce,
 			OrderFillWholeSettings.FillOrKill(),
+			displaySettings,
 			pegScheme
 		);
 	}

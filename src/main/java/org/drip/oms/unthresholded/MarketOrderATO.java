@@ -4,6 +4,7 @@ package org.drip.oms.unthresholded;
 import java.util.Date;
 
 import org.drip.oms.transaction.Side;
+import org.drip.oms.transaction.DisplaySettings;
 import org.drip.oms.transaction.OrderFillWholeSettings;
 import org.drip.oms.transaction.OrderIssuer;
 import org.drip.oms.transaction.TimeInForce;
@@ -131,6 +132,7 @@ public class MarketOrderATO
 	 * @param side Order Side
 	 * @param size Order Size
 	 * @param fillWholeSettings Order Fill-Whole Settings
+	 * @param displaySettings Order Display Settings
 	 * 
 	 * @return Standard Instance of At-The-Open (ATO) Market Order
 	 */
@@ -140,7 +142,8 @@ public class MarketOrderATO
 		final String ticker,
 		final Side side,
 		final double size,
-		final OrderFillWholeSettings fillWholeSettings)
+		final OrderFillWholeSettings fillWholeSettings,
+		final DisplaySettings displaySettings)
 	{
 		try
 		{
@@ -151,7 +154,8 @@ public class MarketOrderATO
 				new Date(),
 				side,
 				size,
-				fillWholeSettings
+				fillWholeSettings,
+				displaySettings
 			);
 		}
 		catch (Exception e)
@@ -169,6 +173,7 @@ public class MarketOrderATO
 	 * @param ticker Security Identifier/Ticker
 	 * @param size Order Size
 	 * @param fillWholeSettings Order Fill-Whole Settings
+	 * @param displaySettings Order Display Settings
 	 * 
 	 * @return Standard Instance of Buy At-The-Open (ATO) Market Order
 	 */
@@ -177,7 +182,8 @@ public class MarketOrderATO
 		final OrderIssuer issuer,
 		final String ticker,
 		final double size,
-		final OrderFillWholeSettings fillWholeSettings)
+		final OrderFillWholeSettings fillWholeSettings,
+		final DisplaySettings displaySettings)
 	{
 		try
 		{
@@ -188,7 +194,8 @@ public class MarketOrderATO
 				new Date(),
 				Side.Buy(),
 				size,
-				fillWholeSettings
+				fillWholeSettings,
+				displaySettings
 			);
 		}
 		catch (Exception e)
@@ -206,6 +213,7 @@ public class MarketOrderATO
 	 * @param ticker Security Identifier/Ticker
 	 * @param size Order Size
 	 * @param fillWholeSettings Order Fill-Whole Settings
+	 * @param displaySettings Order Display Settings
 	 * 
 	 * @return Standard Instance of Sell At-The-Open (ATO) Market Order
 	 */
@@ -214,7 +222,8 @@ public class MarketOrderATO
 		final OrderIssuer issuer,
 		final String ticker,
 		final double size,
-		final OrderFillWholeSettings fillWholeSettings)
+		final OrderFillWholeSettings fillWholeSettings,
+		final DisplaySettings displaySettings)
 	{
 		try
 		{
@@ -225,7 +234,8 @@ public class MarketOrderATO
 				new Date(),
 				Side.Sell(),
 				size,
-				fillWholeSettings
+				fillWholeSettings,
+				displaySettings
 			);
 		}
 		catch (Exception e)
@@ -246,6 +256,7 @@ public class MarketOrderATO
 	 * @param side Order Side
 	 * @param size Order Size
 	 * @param fillWholeSettings Order Fill-Whole Settings
+	 * @param displaySettings Order Display Settings
 	 * 
 	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
@@ -257,7 +268,8 @@ public class MarketOrderATO
 		final Date creationTime,
 		final Side side,
 		final double size,
-		final OrderFillWholeSettings fillWholeSettings)
+		final OrderFillWholeSettings fillWholeSettings,
+		final DisplaySettings displaySettings)
 		throws Exception
 	{
 		super (
@@ -268,7 +280,8 @@ public class MarketOrderATO
 			side,
 			size,
 			TimeInForce.CreateMarketOpen(),
-			fillWholeSettings
+			fillWholeSettings,
+			displaySettings
 		);
 	}
 }

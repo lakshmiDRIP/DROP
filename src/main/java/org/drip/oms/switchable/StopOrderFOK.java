@@ -3,6 +3,7 @@ package org.drip.oms.switchable;
 
 import java.util.Date;
 
+import org.drip.oms.transaction.DisplaySettings;
 import org.drip.oms.transaction.OrderFillWholeSettings;
 import org.drip.oms.transaction.OrderIssuer;
 import org.drip.oms.transaction.Side;
@@ -131,6 +132,7 @@ public class StopOrderFOK
 	 * @param side Order Side
 	 * @param size Order Size
 	 * @param timeInForce Time-in-Force Settings
+	 * @param displaySettings Order Display Settings
 	 * @param switchPrice Switch-to-Market Price
 	 * 
 	 * @return Instance of Buy Fill-Or-Kill (FOK) Stop Order
@@ -142,6 +144,7 @@ public class StopOrderFOK
 		final Side side,
 		final double size,
 		final TimeInForce timeInForce,
+		final DisplaySettings displaySettings,
 		final double switchPrice)
 	{
 		try
@@ -154,6 +157,7 @@ public class StopOrderFOK
 				side,
 				size,
 				timeInForce,
+				displaySettings,
 				switchPrice
 			);
 		}
@@ -172,6 +176,7 @@ public class StopOrderFOK
 	 * @param ticker Security Identifier/Ticker
 	 * @param size Order Size
 	 * @param timeInForce Time-in-Force Settings
+	 * @param displaySettings Order Display Settings
 	 * @param switchPrice Switch-to-Market Price
 	 * 
 	 * @return Standard Instance of Buy Fill-Or-Kill (FOK) Stop Order
@@ -182,6 +187,7 @@ public class StopOrderFOK
 		final String ticker,
 		final double size,
 		final TimeInForce timeInForce,
+		final DisplaySettings displaySettings,
 		final double switchPrice)
 	{
 		return Standard (
@@ -190,6 +196,7 @@ public class StopOrderFOK
 			Side.Buy(),
 			size,
 			timeInForce,
+			displaySettings,
 			switchPrice
 		);
 	}
@@ -201,6 +208,7 @@ public class StopOrderFOK
 	 * @param ticker Security Identifier/Ticker
 	 * @param size Order Size
 	 * @param timeInForce Time-in-Force Settings
+	 * @param displaySettings Order Display Settings
 	 * @param switchPrice Switch-to-Market Price
 	 * 
 	 * @return Standard Instance of Sell Fill-Or-Kill (FOK) Stop Order
@@ -211,6 +219,7 @@ public class StopOrderFOK
 		final String ticker,
 		final double size,
 		final TimeInForce timeInForce,
+		final DisplaySettings displaySettings,
 		final double switchPrice)
 	{
 		return Standard (
@@ -219,6 +228,7 @@ public class StopOrderFOK
 			Side.Sell(),
 			size,
 			timeInForce,
+			displaySettings,
 			switchPrice
 		);
 	}
@@ -233,6 +243,7 @@ public class StopOrderFOK
 	 * @param side Order Side
 	 * @param size Order Size
 	 * @param timeInForce Time-in-Force Settings
+	 * @param displaySettings Order Display Settings
 	 * @param switchPrice Switch-to-Market Price
 	 * 
 	 * @throws Exception Thrown if the Inputs are Invalid
@@ -246,6 +257,7 @@ public class StopOrderFOK
 		final Side side,
 		final double size,
 		final TimeInForce timeInForce,
+		final DisplaySettings displaySettings,
 		final double switchPrice)
 		throws Exception
 	{
@@ -258,6 +270,7 @@ public class StopOrderFOK
 			size,
 			timeInForce,
 			OrderFillWholeSettings.FillOrKill(),
+			displaySettings,
 			switchPrice
 		);
 	}

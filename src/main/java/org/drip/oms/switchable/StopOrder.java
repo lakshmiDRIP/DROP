@@ -6,6 +6,7 @@ import java.util.Date;
 import org.drip.numerical.common.NumberUtil;
 import org.drip.oms.depth.MontageL1Manager;
 import org.drip.oms.exchange.CrossVenueMontageDigest;
+import org.drip.oms.transaction.DisplaySettings;
 import org.drip.oms.transaction.Order;
 import org.drip.oms.transaction.OrderFillWholeSettings;
 import org.drip.oms.transaction.OrderIssuer;
@@ -139,6 +140,7 @@ public class StopOrder
 	 * @param size Order Size
 	 * @param timeInForce Time-in-Force Settings
 	 * @param fillWholeSettings Order Fill-Whole Settings
+	 * @param displaySettings Order Display Settings
 	 * @param switchPrice Switch-to-Market Price
 	 * 
 	 * @return Standard Instance of Stop Order
@@ -151,6 +153,7 @@ public class StopOrder
 		final double size,
 		final TimeInForce timeInForce,
 		final OrderFillWholeSettings fillWholeSettings,
+		final DisplaySettings displaySettings,
 		final double switchPrice)
 	{
 		try
@@ -164,6 +167,7 @@ public class StopOrder
 				size,
 				timeInForce,
 				fillWholeSettings,
+				displaySettings,
 				switchPrice
 			);
 		}
@@ -183,6 +187,7 @@ public class StopOrder
 	 * @param size Order Size
 	 * @param timeInForce Time-in-Force Settings
 	 * @param fillWholeSettings Order Fill-Whole Settings
+	 * @param displaySettings Order Display Settings
 	 * @param switchPrice Switch-to-Market Price
 	 * 
 	 * @return Instance of Buy Stop Order
@@ -194,6 +199,7 @@ public class StopOrder
 		final double size,
 		final TimeInForce timeInForce,
 		final OrderFillWholeSettings fillWholeSettings,
+		final DisplaySettings displaySettings,
 		final double switchPrice)
 	{
 		try
@@ -207,6 +213,7 @@ public class StopOrder
 				size,
 				timeInForce,
 				fillWholeSettings,
+				displaySettings,
 				switchPrice
 			);
 		}
@@ -226,6 +233,7 @@ public class StopOrder
 	 * @param size Order Size
 	 * @param timeInForce Time-in-Force Settings
 	 * @param fillWholeSettings Order Fill-Whole Settings
+	 * @param displaySettings Order Display Settings
 	 * @param switchPrice Switch-to-Market Price
 	 * 
 	 * @return Instance of Sell Stop Order
@@ -237,6 +245,7 @@ public class StopOrder
 		final double size,
 		final TimeInForce timeInForce,
 		final OrderFillWholeSettings fillWholeSettings,
+		final DisplaySettings displaySettings,
 		final double switchPrice)
 	{
 		try
@@ -250,6 +259,7 @@ public class StopOrder
 				size,
 				timeInForce,
 				fillWholeSettings,
+				displaySettings,
 				switchPrice
 			);
 		}
@@ -272,6 +282,7 @@ public class StopOrder
 	 * @param size Order Size
 	 * @param timeInForce Time-in-Force Settings
 	 * @param fillWholeSettings Order Fill-Whole Settings
+	 * @param displaySettings Order Display Settings
 	 * @param switchPrice Switch-to-Market Price
 	 * 
 	 * @throws Exception Thrown if the Inputs are Invalid
@@ -286,6 +297,7 @@ public class StopOrder
 		final double size,
 		final TimeInForce timeInForce,
 		final OrderFillWholeSettings fillWholeSettings,
+		final DisplaySettings displaySettings,
 		final double switchPrice)
 		throws Exception
 	{
@@ -298,7 +310,8 @@ public class StopOrder
 			side,
 			size,
 			timeInForce,
-			fillWholeSettings
+			fillWholeSettings,
+			displaySettings
 		);
 
 		if (!NumberUtil.IsValid (
@@ -370,7 +383,8 @@ public class StopOrder
 				side(),
 				size(),
 				null,
-				null
+				null,
+				displaySettings()
 			);
 		} catch (Exception e) {
 			e.printStackTrace();
