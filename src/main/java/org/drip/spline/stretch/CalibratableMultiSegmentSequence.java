@@ -15,6 +15,7 @@ import org.drip.spline.params.SegmentStateCalibrationInputs;
 import org.drip.spline.params.StretchBestFitResponse;
 import org.drip.spline.segment.LatentStateResponseModel;
 import org.drip.spline.segment.Monotonocity;
+import org.drip.state.representation.MergeSubStretchManager;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -884,70 +885,78 @@ public class CalibratableMultiSegmentSequence
 
 	@Override public double calcRightEdgeDerivative (
 		final int order)
-		throws java.lang.Exception
+		throws Exception
 	{
-		org.drip.spline.segment.LatentStateResponseModel lsrm = _latentStateResponseModelArray[_latentStateResponseModelArray.length - 1];
-
-		return lsrm.calcResponseValueDerivative (lsrm.right(), order);
+		return _latentStateResponseModelArray[_latentStateResponseModelArray.length - 1].calcResponseValueDerivative (
+			_latentStateResponseModelArray[_latentStateResponseModelArray.length - 1].right(),
+			order
+		);
 	}
 
 	@Override public boolean resetNode (
-		final int iPredictorOrdinateIndex,
-		final double dblResponseReset)
+		final int predictorOrdinateIndex,
+		final double responseReset)
 	{
-		if (0 == iPredictorOrdinateIndex || 1 == iPredictorOrdinateIndex || _latentStateResponseModelArray.length <
-			iPredictorOrdinateIndex || !org.drip.numerical.common.NumberUtil.IsValid (dblResponseReset))
+		if (0 == predictorOrdinateIndex || 1 == predictorOrdinateIndex ||
+			_latentStateResponseModelArray.length < predictorOrdinateIndex ||
+			!NumberUtil.IsValid (responseReset)) {
 			return false;
+		}
 
-		return _latentStateResponseModelArray[iPredictorOrdinateIndex - 1].calibrate (_latentStateResponseModelArray[iPredictorOrdinateIndex - 2],
-			dblResponseReset, null);
+		return 0 != predictorOrdinateIndex && 1 != predictorOrdinateIndex &&
+			_latentStateResponseModelArray.length >= predictorOrdinateIndex &&
+			NumberUtil.IsValid (responseReset) &&
+			_latentStateResponseModelArray[predictorOrdinateIndex - 1].calibrate (
+				_latentStateResponseModelArray[predictorOrdinateIndex - 2],
+				responseReset,
+				null
+			);
 	}
 
 	@Override public boolean resetNode (
-		final int iPredictorOrdinateIndex,
-		final org.drip.spline.params.SegmentResponseValueConstraint srvcReset)
+		final int predictorOrdinateIndex,
+		final SegmentResponseValueConstraint resetSegmentResponseValueConstraint)
 	{
-		if (0 == iPredictorOrdinateIndex || 1 == iPredictorOrdinateIndex || _latentStateResponseModelArray.length <
-			iPredictorOrdinateIndex || null == srvcReset)
-			return false;
-
-		return _latentStateResponseModelArray[iPredictorOrdinateIndex - 1].calibrate (_latentStateResponseModelArray[iPredictorOrdinateIndex - 2], srvcReset,
-			null);
+		return 0 != predictorOrdinateIndex && 1 != predictorOrdinateIndex &&
+			_latentStateResponseModelArray.length >= predictorOrdinateIndex &&
+			null == resetSegmentResponseValueConstraint &&
+			_latentStateResponseModelArray[predictorOrdinateIndex - 1].calibrate (
+			_latentStateResponseModelArray[predictorOrdinateIndex - 2],
+			resetSegmentResponseValueConstraint,
+			null
+		);
 	}
 
-	@Override public org.drip.function.definition.R1ToR1 toAU()
+	@Override public R1ToR1 toAU()
 	{
-		org.drip.function.definition.R1ToR1 au = new
-			org.drip.function.definition.R1ToR1 (null)
-		{
+		return new R1ToR1 (null) {
 			@Override public double evaluate (
-				final double dblVariate)
-				throws java.lang.Exception
+				final double variate)
+				throws Exception
 			{
-				return responseValue (dblVariate);
+				return responseValue (variate);
 			}
 
 			@Override public double derivative (
-				final double dblVariate,
-				final int iOrder)
-				throws java.lang.Exception
+				final double variate,
+				final int order)
+				throws Exception
 			{
-				return responseValueDerivative (dblVariate, iOrder);
+				return responseValueDerivative (variate, order);
 			}
 		};
-
-		return au;
 	}
 
 	@Override public boolean in (
-		final double dblPredictorOrdinate)
-		throws java.lang.Exception
+		final double predictorOrdinate)
+		throws Exception
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (dblPredictorOrdinate))
-			throw new java.lang.Exception ("CalibratableMultiSegmentSequence::in => Invalid inputs");
+		if (!NumberUtil.IsValid (predictorOrdinate)) {
+			throw new Exception ("CalibratableMultiSegmentSequence::in => Invalid inputs");
+		}
 
-		return dblPredictorOrdinate >= getLeftPredictorOrdinateEdge() && dblPredictorOrdinate <=
-			getRightPredictorOrdinateEdge();
+		return predictorOrdinate >= getLeftPredictorOrdinateEdge() &&
+			predictorOrdinate <= getRightPredictorOrdinateEdge();
 	}
 
 	@Override public double getLeftPredictorOrdinateEdge()
@@ -961,64 +970,82 @@ public class CalibratableMultiSegmentSequence
 	}
 
 	@Override public int containingIndex (
-		final double dblPredictorOrdinate,
-		final boolean bIncludeLeft,
-		final boolean bIncludeRight)
-		throws java.lang.Exception
+		final double predictorOrdinate,
+		final boolean includeLeft,
+		final boolean includeRight)
+		throws Exception
 	{
-		if (!in (dblPredictorOrdinate))
-			throw new java.lang.Exception
-				("CalibratableMultiSegmentSequence::containingIndex => Predictor Ordinate not in the Stretch Range");
-
-		int iNumSegment = _latentStateResponseModelArray.length;
-
-		for (int i = 0 ; i < iNumSegment; ++i) {
-			boolean bLeftValid = bIncludeLeft ? _latentStateResponseModelArray[i].left() <= dblPredictorOrdinate : _latentStateResponseModelArray[i].left() <
-				dblPredictorOrdinate;
-
-			boolean bRightValid = bIncludeRight ? _latentStateResponseModelArray[i].right() >= dblPredictorOrdinate :
-				_latentStateResponseModelArray[i].right() > dblPredictorOrdinate;
-
-			if (bLeftValid && bRightValid) return i;
+		if (!in (predictorOrdinate)) {
+			throw new Exception (
+				"CalibratableMultiSegmentSequence::containingIndex => Predictor Ordinate not in the Stretch Range"
+			);
 		}
 
-		throw new java.lang.Exception
-			("CalibratableMultiSegmentSequence::containingIndex => Cannot locate Containing Index");
+		int segmentCount = _latentStateResponseModelArray.length;
+
+		for (int segmentIndex = 0 ; segmentIndex < segmentCount; ++segmentIndex) {
+			boolean leftValid = includeLeft ?
+				_latentStateResponseModelArray[segmentIndex].left() <= predictorOrdinate :
+				_latentStateResponseModelArray[segmentIndex].left() < predictorOrdinate;
+
+			boolean rightValid = includeRight ?
+				_latentStateResponseModelArray[segmentIndex].right() >= predictorOrdinate :
+				_latentStateResponseModelArray[segmentIndex].right() > predictorOrdinate;
+
+			if (leftValid && rightValid) {
+				return segmentIndex;
+			}
+		}
+
+		throw new Exception (
+			"CalibratableMultiSegmentSequence::containingIndex => Cannot locate Containing Index"
+		);
 	}
 
 	@Override public CalibratableMultiSegmentSequence clipLeft (
-		final java.lang.String strName,
-		final double dblPredictorOrdinate)
+		final String name,
+		final double predictorOrdinate)
 	{
-		int iNumSegment = _latentStateResponseModelArray.length;
-		int iContainingPredictorOrdinateIndex = 0;
+		int containingPredictorOrdinateIndex = 0;
+		int segmentCount = _latentStateResponseModelArray.length;
 
 		try {
-			iContainingPredictorOrdinateIndex = containingIndex (dblPredictorOrdinate, true, false);
-		} catch (java.lang.Exception e) {
+			containingPredictorOrdinateIndex = containingIndex (predictorOrdinate, true, false);
+		} catch (Exception e) {
 			e.printStackTrace();
 
 			return null;
 		}
 
-		int iNumClippedSegment = iNumSegment - iContainingPredictorOrdinateIndex;
-		org.drip.spline.segment.LatentStateResponseModel[] aCS = new
-			org.drip.spline.segment.LatentStateResponseModel[iNumClippedSegment];
-		org.drip.spline.params.SegmentCustomBuilderControl[] aSCBC = new
-			org.drip.spline.params.SegmentCustomBuilderControl[iNumClippedSegment];
+		int clippedSegmentCount = segmentCount - containingPredictorOrdinateIndex;
+		LatentStateResponseModel[] latentStateResponseModelArray =
+			new LatentStateResponseModel[clippedSegmentCount];
+		SegmentCustomBuilderControl[] segmentCustomBuilderControlArray =
+			new SegmentCustomBuilderControl[clippedSegmentCount];
 
-		for (int i = 0; i < iNumClippedSegment; ++i) {
-			if (null == (aCS[i] = 0 == i ?
-				_latentStateResponseModelArray[iContainingPredictorOrdinateIndex].clipLeftOfPredictorOrdinate (dblPredictorOrdinate)
-					: _latentStateResponseModelArray[i + iContainingPredictorOrdinateIndex]))
+		for (int clippedSegmentIndex = 0; clippedSegmentIndex < clippedSegmentCount; ++clippedSegmentIndex) {
+			if (null == (
+				latentStateResponseModelArray[clippedSegmentIndex] = 0 == clippedSegmentIndex ?
+					_latentStateResponseModelArray[containingPredictorOrdinateIndex].clipLeftOfPredictorOrdinate (
+						predictorOrdinate
+					) :
+					_latentStateResponseModelArray[clippedSegmentIndex + containingPredictorOrdinateIndex]
+				)
+			) {
 				return null;
+			}
 
-			aSCBC[i] = _segmentCustomBuilderControlArray[i + iContainingPredictorOrdinateIndex];
+			segmentCustomBuilderControlArray[clippedSegmentIndex] =
+				_segmentCustomBuilderControlArray[clippedSegmentIndex + containingPredictorOrdinateIndex];
 		}
 
 		try {
-			return new CalibratableMultiSegmentSequence (strName, aCS, aSCBC);
-		} catch (java.lang.Exception e) {
+			return new CalibratableMultiSegmentSequence (
+				name,
+				latentStateResponseModelArray,
+				segmentCustomBuilderControlArray
+			);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -1026,36 +1053,44 @@ public class CalibratableMultiSegmentSequence
 	}
 
 	@Override public CalibratableMultiSegmentSequence clipRight (
-		final java.lang.String strName,
-		final double dblPredictorOrdinate)
+		final String name,
+		final double predictorOrdinate)
 	{
-		int iContainingPredictorOrdinateIndex = 0;
+		int containingPredictorOrdinateIndex = 0;
 
 		try {
-			iContainingPredictorOrdinateIndex = containingIndex (dblPredictorOrdinate, false, true);
-		} catch (java.lang.Exception e) {
+			containingPredictorOrdinateIndex = containingIndex (predictorOrdinate, false, true);
+		} catch (Exception e) {
 			e.printStackTrace();
 
 			return null;
 		}
 
-		org.drip.spline.segment.LatentStateResponseModel[] aCS = new
-			org.drip.spline.segment.LatentStateResponseModel[iContainingPredictorOrdinateIndex + 1];
-		org.drip.spline.params.SegmentCustomBuilderControl[] aSCBC = new
-			org.drip.spline.params.SegmentCustomBuilderControl[iContainingPredictorOrdinateIndex + 1];
+		LatentStateResponseModel[] latentStateResponseModelArray =
+			new LatentStateResponseModel[containingPredictorOrdinateIndex + 1];
+		SegmentCustomBuilderControl[] segmentCustomBuilderControlArray =
+			new SegmentCustomBuilderControl[containingPredictorOrdinateIndex + 1];
 
-		for (int i = 0; i <= iContainingPredictorOrdinateIndex; ++i) {
-			if (null == (aCS[i] = iContainingPredictorOrdinateIndex == i ?
-				_latentStateResponseModelArray[iContainingPredictorOrdinateIndex].clipRightOfPredictorOrdinate (dblPredictorOrdinate)
-					: _latentStateResponseModelArray[i]))
+		for (int i = 0; i <= containingPredictorOrdinateIndex; ++i) {
+			if (null == (
+				latentStateResponseModelArray[i] = containingPredictorOrdinateIndex == i ?
+					_latentStateResponseModelArray[containingPredictorOrdinateIndex].clipRightOfPredictorOrdinate (
+						predictorOrdinate
+					) : _latentStateResponseModelArray[i]
+			)) {
 				return null;
+			}
 
-			aSCBC[i] = _segmentCustomBuilderControlArray[i];
+			segmentCustomBuilderControlArray[i] = _segmentCustomBuilderControlArray[i];
 		}
 
 		try {
-			return new CalibratableMultiSegmentSequence (strName, aCS, aSCBC);
-		} catch (java.lang.Exception e) {
+			return new CalibratableMultiSegmentSequence (
+				name,
+				latentStateResponseModelArray,
+				segmentCustomBuilderControlArray
+			);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -1063,53 +1098,65 @@ public class CalibratableMultiSegmentSequence
 	}
 
 	@Override public double curvatureDPE()
-		throws java.lang.Exception
+		throws Exception
 	{
-		double dblDPE = 0.;
+		double dpe = 0.;
 
-		for (org.drip.spline.segment.LatentStateResponseModel lsrm : _latentStateResponseModelArray)
-			dblDPE += lsrm.curvatureDPE();
+		for (LatentStateResponseModel latentStateResponseModel : _latentStateResponseModelArray) {
+			dpe += latentStateResponseModel.curvatureDPE();
+		}
 
-		return dblDPE;
+		return dpe;
 	}
 
 	@Override public double lengthDPE()
-		throws java.lang.Exception
+		throws Exception
 	{
-		double dblDPE = 0.;
+		double dpe = 0.;
 
-		for (org.drip.spline.segment.LatentStateResponseModel lsrm : _latentStateResponseModelArray)
-			dblDPE += lsrm.lengthDPE();
+		for (LatentStateResponseModel latentStateResponseModel : _latentStateResponseModelArray) {
+			dpe += latentStateResponseModel.lengthDPE();
+		}
 
-		return dblDPE;
+		return dpe;
 	}
 
 	@Override public double bestFitDPE (
-		final org.drip.spline.params.StretchBestFitResponse rbfr)
-		throws java.lang.Exception
+		final StretchBestFitResponse stretchBestFitResponse)
+		throws Exception
 	{
-		if (null == rbfr) return 0.;
+		if (null == stretchBestFitResponse) {
+			return 0.;
+		}
 
-		double dblDPE = 0.;
+		double dpe = 0.;
 
-		for (org.drip.spline.segment.LatentStateResponseModel lsrm : _latentStateResponseModelArray)
-			dblDPE += lsrm.bestFitDPE (rbfr.sizeToSegment (lsrm));
+		for (LatentStateResponseModel latentStateResponseModel : _latentStateResponseModelArray) {
+			dpe += latentStateResponseModel.bestFitDPE (
+				stretchBestFitResponse.sizeToSegment (latentStateResponseModel)
+			);
+		}
 
-		return dblDPE;
+		return dpe;
 	}
 
-	@Override public org.drip.state.representation.MergeSubStretchManager msm()
+	@Override public MergeSubStretchManager msm()
 	{
 		return null;
 	}
 
-	@Override public java.lang.String displayString()
+	@Override public String displayString()
 	{
-		java.lang.StringBuffer sb = new java.lang.StringBuffer();
+		StringBuffer stringBuffer = new StringBuffer();
 
-		for (int i = 0; i < _latentStateResponseModelArray.length; ++i)
-			sb.append (_latentStateResponseModelArray[i].displayString() + " \n");
+		for (int latentStateResponseModelIndex = 0;
+			latentStateResponseModelIndex < _latentStateResponseModelArray.length;
+			++latentStateResponseModelIndex) {
+			stringBuffer.append (
+				_latentStateResponseModelArray[latentStateResponseModelIndex].displayString() + " \n"
+			);
+		}
 
-		return sb.toString();
+		return stringBuffer.toString();
 	}
 }
