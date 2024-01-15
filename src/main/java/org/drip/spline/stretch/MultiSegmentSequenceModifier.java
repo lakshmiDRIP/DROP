@@ -1,11 +1,20 @@
 
 package org.drip.spline.stretch;
 
+import org.drip.numerical.common.NumberUtil;
+import org.drip.spline.params.SegmentCustomBuilderControl;
+import org.drip.spline.params.SegmentPredictorResponseDerivative;
+import org.drip.spline.params.SegmentResponseValueConstraint;
+import org.drip.spline.segment.LatentStateResponseModel;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -87,331 +96,400 @@ package org.drip.spline.stretch;
  * basis splines, with customized segment behavior using the segment control. It exposes the following
  * stretch modification methods:
  *
- * <br><br>
+ * <br>
  *  <ul>
- *  	<li>
- *  		Insert the specified Predictor Ordinate Knot into the specified Stretch, using the specified
- *  			Response Value
- *  	</li>
- *  	<li>
- * 			Append a Segment to the Right of the Specified Stretch using the Supplied Constraint
- *  	</li>
- *  	<li>
- * 			Insert the Predictor Ordinate Knot into the specified Stretch
- *  	</li>
- *  	<li>
- * 			Insert a Cardinal Knot into the specified Stretch at the specified Predictor Ordinate Location
- *  	</li>
- *  	<li>
- * 			Insert a Catmull-Rom Knot into the specified Stretch at the specified Predictor Ordinate Location
- *  	</li>
+ *  	<li>Insert the specified Predictor Ordinate Knot into the specified Stretch, using the specified Response Value</li>
+ *  	<li>Append a Segment to the Right of the Specified Stretch using the Supplied Constraint</li>
+ *  	<li>Insert the Predictor Ordinate Knot into the specified Stretch</li>
+ *  	<li>Insert a Cardinal Knot into the specified Stretch at the specified Predictor Ordinate Location</li>
+ *  	<li>Insert a Catmull-Rom Knot into the specified Stretch at the specified Predictor Ordinate Location</li>
  *  </ul>
  *
- * <br><br>
- *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/SplineBuilderLibrary.md">Spline Builder Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/README.md">Basis Splines and Linear Compounders across a Broad Family of Spline Basis Functions</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/stretch/README.md">Multi-Segment Sequence Spline Stretch</a></li>
- *  </ul>
- * <br><br>
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/README.md">Basis Splines and Linear Compounders across a Broad Family of Spline Basis Functions</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spline/stretch/README.md">Multi-Segment Sequence Spline Stretch</a></td></tr>
+ *  </table>
+ *  <br>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class MultiSegmentSequenceModifier {
+public class MultiSegmentSequenceModifier
+{
 
 	/**
 	 * Insert the specified Predictor Ordinate Knot into the specified Stretch, using the specified Response
 	 * 	Value
 	 * 
-	 * @param mssIn Input Stretch
-	 * @param dblPredictorOrdinate Predictor Ordinate Knot
-	 * @param dblResponseValue Response Value
-	 * @param bs The Calibration Boundary Condition
-	 * @param iCalibrationDetail The Calibration Detail
+	 * @param inputMultiSegmentSequence Input Stretch
+	 * @param predictorOrdinate Predictor Ordinate Knot
+	 * @param responseValue Response Value
+	 * @param boundarySettings The Calibration Boundary Condition
+	 * @param calibrationDetail The Calibration Detail
 	 * 
 	 * @return The Stretch with the Knot inserted
 	 */
 
-	public static final org.drip.spline.stretch.MultiSegmentSequence InsertKnot (
-		final org.drip.spline.stretch.MultiSegmentSequence mssIn,
-		final double dblPredictorOrdinate,
-		final double dblResponseValue,
-		final org.drip.spline.stretch.BoundarySettings bs,
-		final int iCalibrationDetail)
+	public static final MultiSegmentSequence InsertKnot (
+		final MultiSegmentSequence inputMultiSegmentSequence,
+		final double predictorOrdinate,
+		final double responseValue,
+		final BoundarySettings boundarySettings,
+		final int calibrationDetail)
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (dblPredictorOrdinate) ||
-			!org.drip.numerical.common.NumberUtil.IsValid (dblResponseValue) || null == mssIn || mssIn.isKnot
-				(dblPredictorOrdinate))
+		if (!NumberUtil.IsValid (predictorOrdinate) ||
+			!NumberUtil.IsValid (responseValue) ||
+			null == inputMultiSegmentSequence || inputMultiSegmentSequence.isKnot (predictorOrdinate)) {
 			return null;
-
-		org.drip.spline.segment.LatentStateResponseModel[] aCS = mssIn.segments();
-
-		int iNewIndex = 0;
-		int iNumSegmentIn = aCS.length;
-		double[] adblResponseValue = new double[iNumSegmentIn + 2];
-		double[] adblPredictorOrdinate = new double[iNumSegmentIn + 2];
-		org.drip.spline.params.SegmentCustomBuilderControl[] aSCBCOut = new
-			org.drip.spline.params.SegmentCustomBuilderControl[iNumSegmentIn + 1];
-
-		org.drip.spline.params.SegmentCustomBuilderControl[] aSCBCIn = mssIn.segmentBuilderControl();
-
-		if (dblPredictorOrdinate < aCS[0].left()) {
-			adblPredictorOrdinate[iNewIndex] = dblPredictorOrdinate;
-			adblResponseValue[iNewIndex] = dblResponseValue;
-			aSCBCOut[iNewIndex++] = aSCBCIn[0];
 		}
 
-		for (int i = 0; i < iNumSegmentIn; ++i) {
-			aSCBCOut[iNewIndex] = aSCBCIn[i];
+		LatentStateResponseModel[] latentStateResponseModelArray = inputMultiSegmentSequence.segments();
 
-			adblPredictorOrdinate[iNewIndex] = aCS[i].left();
+		int newIndex = 0;
+		int inputSegmentCount = latentStateResponseModelArray.length;
+		double[] responseValueArray = new double[inputSegmentCount + 2];
+		double[] predictorOrdinateArray = new double[inputSegmentCount + 2];
+		SegmentCustomBuilderControl[] outputSegmentCustomBuilderControlArray =
+			new SegmentCustomBuilderControl[inputSegmentCount + 1];
+
+		SegmentCustomBuilderControl[] inputSegmentCustomBuilderControlArray =
+			inputMultiSegmentSequence.segmentBuilderControl();
+
+		if (predictorOrdinate < latentStateResponseModelArray[0].left()) {
+			responseValueArray[newIndex] = responseValue;
+			predictorOrdinateArray[newIndex] = predictorOrdinate;
+			outputSegmentCustomBuilderControlArray[newIndex++] = inputSegmentCustomBuilderControlArray[0];
+		}
+
+		for (int inputSegmentIndex = 0; inputSegmentIndex < inputSegmentCount; ++inputSegmentIndex) {
+			outputSegmentCustomBuilderControlArray[newIndex] =
+				inputSegmentCustomBuilderControlArray[inputSegmentIndex];
+
+			predictorOrdinateArray[newIndex] = latentStateResponseModelArray[inputSegmentIndex].left();
 
 			try {
-				adblResponseValue[iNewIndex++] = mssIn.responseValue (aCS[i].left());
-			} catch (java.lang.Exception e) {
+				responseValueArray[newIndex++] = inputMultiSegmentSequence.responseValue (
+					latentStateResponseModelArray[inputSegmentIndex].left()
+				);
+			} catch (Exception e) {
 				e.printStackTrace();
 
 				return null;
 			}
 
-			if (dblPredictorOrdinate > aCS[i].left() && dblPredictorOrdinate < aCS[i].right()) {
-				adblPredictorOrdinate[iNewIndex] = dblPredictorOrdinate;
-				adblResponseValue[iNewIndex] = dblResponseValue;
-				aSCBCOut[iNewIndex++] = aSCBCIn[i];
+			if (predictorOrdinate > latentStateResponseModelArray[inputSegmentIndex].left() &&
+				predictorOrdinate < latentStateResponseModelArray[inputSegmentIndex].right()) {
+				responseValueArray[newIndex] = responseValue;
+				predictorOrdinateArray[newIndex] = predictorOrdinate;
+				outputSegmentCustomBuilderControlArray[newIndex++] =
+					inputSegmentCustomBuilderControlArray[inputSegmentIndex];
 			}
 		}
 
-		adblPredictorOrdinate[iNewIndex] = aCS[iNumSegmentIn - 1].right();
+		predictorOrdinateArray[newIndex] = latentStateResponseModelArray[inputSegmentCount - 1].right();
 
 		try {
-			adblResponseValue[iNewIndex++] = mssIn.responseValue (aCS[iNumSegmentIn - 1].right());
-		} catch (java.lang.Exception e) {
+			responseValueArray[newIndex++] = inputMultiSegmentSequence.responseValue (
+				latentStateResponseModelArray[inputSegmentCount - 1].right()
+			);
+		} catch (Exception e) {
 			e.printStackTrace();
 
 			return null;
 		}
 
-		if (dblPredictorOrdinate > aCS[iNumSegmentIn - 1].right()) {
-			adblResponseValue[iNewIndex] = dblResponseValue;
-			adblPredictorOrdinate[iNewIndex] = dblPredictorOrdinate;
-			aSCBCOut[aSCBCOut.length - 1] = aSCBCIn[aSCBCIn.length - 1];
+		if (predictorOrdinate > latentStateResponseModelArray[inputSegmentCount - 1].right()) {
+			responseValueArray[newIndex] = responseValue;
+			predictorOrdinateArray[newIndex] = predictorOrdinate;
+			outputSegmentCustomBuilderControlArray[outputSegmentCustomBuilderControlArray.length - 1] =
+				inputSegmentCustomBuilderControlArray[inputSegmentCustomBuilderControlArray.length - 1];
 		}
 
-		return org.drip.spline.stretch.MultiSegmentSequenceBuilder.CreateCalibratedStretchEstimator
-			(mssIn.name(), adblPredictorOrdinate, adblResponseValue, aSCBCOut, null, bs, iCalibrationDetail);
+		return MultiSegmentSequenceBuilder.CreateCalibratedStretchEstimator (
+			inputMultiSegmentSequence.name(),
+			predictorOrdinateArray,
+			responseValueArray,
+			outputSegmentCustomBuilderControlArray,
+			null,
+			boundarySettings,
+			calibrationDetail
+		);
 	}
 
 	/**
 	 * Append a Segment to the Right of the Specified Stretch using the Supplied Constraint
 	 * 
-	 * @param mssIn Input Stretch
-	 * @param dblPredictorOrdinateAppendRight The Predictor Ordinate at the Right Edge of the Segment to be
+	 * @param inputMultiSegmentSequence Input Stretch
+	 * @param predictorOrdinateAppendRight The Predictor Ordinate at the Right Edge of the Segment to be
 	 * 	appended
-	 * @param srvc The Segment Response Value Constraint
-	 * @param scbc Segment Builder Parameters
-	 * @param bs The Calibration Boundary Condition
-	 * @param iCalibrationDetail The Calibration Detail
+	 * @param segmentResponseValueConstraint The Segment Response Value Constraint
+	 * @param segmentCustomBuilderControl Segment Builder Parameters
+	 * @param boundarySettings The Calibration Boundary Condition
+	 * @param calibrationDetail The Calibration Detail
 	 * 
 	 * @return The Stretch with the Segment Appended
 	 */
 
-	public static final org.drip.spline.stretch.MultiSegmentSequence AppendSegment (
-		final org.drip.spline.stretch.MultiSegmentSequence mssIn,
-		final double dblPredictorOrdinateAppendRight,
-		final org.drip.spline.params.SegmentResponseValueConstraint srvc,
-		final org.drip.spline.params.SegmentCustomBuilderControl scbc,
-		final org.drip.spline.stretch.BoundarySettings bs,
-		final int iCalibrationDetail)
+	public static final MultiSegmentSequence AppendSegment (
+		final MultiSegmentSequence inputMultiSegmentSequence,
+		final double predictorOrdinateAppendRight,
+		final SegmentResponseValueConstraint segmentResponseValueConstraint,
+		final SegmentCustomBuilderControl segmentCustomBuilderControl,
+		final BoundarySettings boundarySettings,
+		final int calibrationDetail)
 	{
-		if (null == mssIn || null == srvc || null == scbc || !org.drip.numerical.common.NumberUtil.IsValid
-			(dblPredictorOrdinateAppendRight))
+		if (null == inputMultiSegmentSequence || null == segmentResponseValueConstraint ||
+			null == segmentCustomBuilderControl || !NumberUtil.IsValid (predictorOrdinateAppendRight)) {
 			return null;
-
-		double dblStretchPredictorOrdinateRight = mssIn.getRightPredictorOrdinateEdge();
-
-		double[] adblConstraintOrdinate = srvc.predictorOrdinates();
-
-		for (int i = 0; i < adblConstraintOrdinate.length; ++i) {
-			if (adblConstraintOrdinate[i] <= dblStretchPredictorOrdinateRight) return null;
 		}
 
-		org.drip.spline.segment.LatentStateResponseModel[] aCS = mssIn.segments();
+		double stretchPredictorOrdinateRight = inputMultiSegmentSequence.getRightPredictorOrdinateEdge();
 
-		org.drip.spline.params.SegmentCustomBuilderControl[] aSCBCIn = mssIn.segmentBuilderControl();
+		double[] constraintOrdinateArray = segmentResponseValueConstraint.predictorOrdinates();
 
-		int iNumSegmentIn = aCS.length;
-		double dblStretchResponseValueLeft = java.lang.Double.NaN;
-		double[] adblPredictorOrdinateOut = new double[iNumSegmentIn + 2];
-		org.drip.spline.params.SegmentCustomBuilderControl[] aSCBCOut = new
-			org.drip.spline.params.SegmentCustomBuilderControl[iNumSegmentIn + 1];
-		org.drip.spline.params.SegmentResponseValueConstraint[] aSRVCOut = new
-			org.drip.spline.params.SegmentResponseValueConstraint[iNumSegmentIn + 1];
+		for (int constraintOrdinateIndex = 0; constraintOrdinateIndex < constraintOrdinateArray.length;
+			++constraintOrdinateIndex) {
+			if (constraintOrdinateArray[constraintOrdinateIndex] <= stretchPredictorOrdinateRight) {
+				return null;
+			}
+		}
+
+		LatentStateResponseModel[] latentStateResponseModelArray = inputMultiSegmentSequence.segments();
+
+		SegmentCustomBuilderControl[] inputSegmentCustomBuilderControlArray =
+			inputMultiSegmentSequence.segmentBuilderControl();
+
+		double stretchResponseValueLeft = Double.NaN;
+		int inputSegmentCount = latentStateResponseModelArray.length;
+		double[] outputPredictorOrdinateArray = new double[inputSegmentCount + 2];
+		SegmentCustomBuilderControl[] outputSegmentCustomBuilderControlArray =
+			new SegmentCustomBuilderControl[inputSegmentCount + 1];
+		SegmentResponseValueConstraint[] outputSegmentResponseValueConstraintArray =
+			new SegmentResponseValueConstraint[inputSegmentCount + 1];
 
 		try {
-			dblStretchResponseValueLeft = mssIn.responseValue (mssIn.getLeftPredictorOrdinateEdge());
-		} catch (java.lang.Exception e) {
+			stretchResponseValueLeft = inputMultiSegmentSequence.responseValue (
+				inputMultiSegmentSequence.getLeftPredictorOrdinateEdge()
+			);
+		} catch (Exception e) {
 			e.printStackTrace();
 
 			return null;
 		}
 
-		for (int i = 0; i < iNumSegmentIn; ++i) {
-			aSCBCOut[i] = aSCBCIn[i];
+		for (int inputSegmentIndex = 0; inputSegmentIndex < inputSegmentCount; ++inputSegmentIndex) {
+			outputSegmentCustomBuilderControlArray[inputSegmentIndex] =
+				inputSegmentCustomBuilderControlArray[inputSegmentIndex];
 
-			adblPredictorOrdinateOut[i] = aCS[i].left();
+			outputPredictorOrdinateArray[inputSegmentIndex] =
+				latentStateResponseModelArray[inputSegmentIndex].left();
 
-			double dblPredictorOrdinateRight = aCS[i].right();
+			double dblPredictorOrdinateRight = latentStateResponseModelArray[inputSegmentIndex].right();
 
 			try {
-				aSRVCOut[i] = new org.drip.spline.params.SegmentResponseValueConstraint (new double[]
-					{dblPredictorOrdinateRight}, new double[] {1.}, mssIn.responseValue
-						(dblPredictorOrdinateRight));
-			} catch (java.lang.Exception e) {
+				outputSegmentResponseValueConstraintArray[inputSegmentIndex] =
+					new SegmentResponseValueConstraint (
+						new double[] {dblPredictorOrdinateRight},
+						new double[] {1.},
+						inputMultiSegmentSequence.responseValue (dblPredictorOrdinateRight)
+					);
+			} catch (Exception e) {
 				e.printStackTrace();
 
 				return null;
 			}
 		}
 
-		aSRVCOut[iNumSegmentIn] = srvc;
-		aSCBCOut[iNumSegmentIn] = scbc;
-		adblPredictorOrdinateOut[iNumSegmentIn + 1] = dblPredictorOrdinateAppendRight;
+		outputSegmentResponseValueConstraintArray[inputSegmentCount] = segmentResponseValueConstraint;
+		outputSegmentCustomBuilderControlArray[inputSegmentCount] = segmentCustomBuilderControl;
+		outputPredictorOrdinateArray[inputSegmentCount + 1] = predictorOrdinateAppendRight;
 
-		adblPredictorOrdinateOut[iNumSegmentIn] = aCS[iNumSegmentIn - 1].right();
+		outputPredictorOrdinateArray[inputSegmentCount] =
+			latentStateResponseModelArray[inputSegmentCount - 1].right();
 
-		return org.drip.spline.stretch.MultiSegmentSequenceBuilder.CreateCalibratedStretchEstimator
-			(mssIn.name(), adblPredictorOrdinateOut, dblStretchResponseValueLeft, aSRVCOut, aSCBCOut, null,
-				bs, iCalibrationDetail);
+		return MultiSegmentSequenceBuilder.CreateCalibratedStretchEstimator (
+			inputMultiSegmentSequence.name(),
+			outputPredictorOrdinateArray,
+			stretchResponseValueLeft,
+			outputSegmentResponseValueConstraintArray,
+			outputSegmentCustomBuilderControlArray,
+			null,
+			boundarySettings,
+			calibrationDetail
+		);
 	}
 
 	/**
 	 * Insert the Predictor Ordinate Knot into the specified Stretch
 	 * 
-	 * @param mssIn Input Stretch
-	 * @param dblPredictorOrdinate Knot Predictor Ordinate
-	 * @param sprdLeftSegmentRightEdge Response Values for the Right Edge of the Left Segment
-	 * @param sprdRightSegmentLeftEdge Response Values for the Left Edge of the Right segment
+	 * @param inputMultiSegmentSequence Input Stretch
+	 * @param predictorOrdinate Knot Predictor Ordinate
+	 * @param leftSegmentRightEdgePredictorResponseDerivative Response Values for the Right Edge of the Left
+	 *  Segment
+	 * @param rightSegmentLeftEdgePredictorResponseDerivative Response Values for the Left Edge of the Right
+	 *  Segment
 	 * 
 	 * @return The Stretch with the Predictor Ordinate Knot inserted
 	 */
 
-	public static final org.drip.spline.stretch.MultiSegmentSequence InsertKnot (
-		final org.drip.spline.stretch.MultiSegmentSequence mssIn,
-		final double dblPredictorOrdinate,
-		final org.drip.spline.params.SegmentPredictorResponseDerivative sprdLeftSegmentRightEdge,
-		final org.drip.spline.params.SegmentPredictorResponseDerivative sprdRightSegmentLeftEdge)
+	public static final MultiSegmentSequence InsertKnot (
+		final MultiSegmentSequence inputMultiSegmentSequence,
+		final double predictorOrdinate,
+		final SegmentPredictorResponseDerivative leftSegmentRightEdgePredictorResponseDerivative,
+		final SegmentPredictorResponseDerivative rightSegmentLeftEdgePredictorResponseDerivative)
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (dblPredictorOrdinate) || null == mssIn ||
-			mssIn.isKnot (dblPredictorOrdinate) || null == sprdLeftSegmentRightEdge || null ==
-				sprdRightSegmentLeftEdge)
+		if (!NumberUtil.IsValid (predictorOrdinate) ||
+			null == inputMultiSegmentSequence || inputMultiSegmentSequence.isKnot (predictorOrdinate) ||
+			null == leftSegmentRightEdgePredictorResponseDerivative ||
+			null == rightSegmentLeftEdgePredictorResponseDerivative) {
 			return null;
-
-		org.drip.spline.segment.LatentStateResponseModel[] aCSIn = mssIn.segments();
-
-		int iOutSegmentIndex = 1;
-		int iNumSegmentIn = aCSIn.length;
-		double[] adblPredictorOrdinateOut = new double[iNumSegmentIn + 2];
-		org.drip.spline.params.SegmentPredictorResponseDerivative[] aSPRDOutLeft = new
-			org.drip.spline.params.SegmentPredictorResponseDerivative[iNumSegmentIn + 1];
-		org.drip.spline.params.SegmentPredictorResponseDerivative[] aSPRDOutRight = new
-			org.drip.spline.params.SegmentPredictorResponseDerivative[iNumSegmentIn + 1];
-		org.drip.spline.params.SegmentCustomBuilderControl[] aSCBCOut = new
-			org.drip.spline.params.SegmentCustomBuilderControl[iNumSegmentIn + 1];
-
-		if (dblPredictorOrdinate < aCSIn[0].left() || dblPredictorOrdinate >
-			aCSIn[iNumSegmentIn - 1].right())
-			return null;
-
-		adblPredictorOrdinateOut[0] = aCSIn[0].left();
-
-		org.drip.spline.params.SegmentCustomBuilderControl[] aSCBCIn = mssIn.segmentBuilderControl();
-
-		for (int i = 0; i < iNumSegmentIn; ++i) {
-			aSCBCOut[iOutSegmentIndex - 1] = aSCBCIn[i];
-
-			aSPRDOutLeft[iOutSegmentIndex - 1] = mssIn.calcSPRD (aCSIn[i].left());
-
-			if (dblPredictorOrdinate > aCSIn[i].left() && dblPredictorOrdinate < aCSIn[i].right()) {
-				aSPRDOutRight[iOutSegmentIndex - 1] = sprdLeftSegmentRightEdge;
-				adblPredictorOrdinateOut[iOutSegmentIndex++] = dblPredictorOrdinate;
-				aSCBCOut[iOutSegmentIndex - 1] = aSCBCIn[i];
-				aSPRDOutLeft[iOutSegmentIndex - 1] = sprdRightSegmentLeftEdge;
-			}
-
-			aSPRDOutRight[iOutSegmentIndex - 1] = mssIn.calcSPRD (aCSIn[i].right());
-
-			adblPredictorOrdinateOut[iOutSegmentIndex++] = aCSIn[i].right();
 		}
 
-		org.drip.spline.stretch.MultiSegmentSequence mssOut =
-			org.drip.spline.stretch.MultiSegmentSequenceBuilder.CreateUncalibratedStretchEstimator
-				(mssIn.name(), adblPredictorOrdinateOut, aSCBCOut);
+		LatentStateResponseModel[] inputLatentStateResponseModelArray = inputMultiSegmentSequence.segments();
 
-		if (null == mssOut) return null;
+		int outputSegmentIndex = 1;
+		int inputSegmentCount = inputLatentStateResponseModelArray.length;
+		double[] outputPredictorOrdinateArray = new double[inputSegmentCount + 2];
+		SegmentPredictorResponseDerivative[] outputLeftSegmentPredictorResponseDerivativeArray =
+			new SegmentPredictorResponseDerivative[inputSegmentCount + 1];
+		SegmentPredictorResponseDerivative[] outputRightSegmentPredictorResponseDerivativeArray =
+			new SegmentPredictorResponseDerivative[inputSegmentCount + 1];
+		SegmentCustomBuilderControl[] outputSegmentCustomBuilderControlArray =
+			new SegmentCustomBuilderControl[inputSegmentCount + 1];
 
-		return mssOut.setupHermite (aSPRDOutLeft, aSPRDOutRight, null, null,
-			org.drip.spline.stretch.MultiSegmentSequence.CALIBRATE) ? mssOut : null;
+		if (predictorOrdinate < inputLatentStateResponseModelArray[0].left() ||
+			predictorOrdinate > inputLatentStateResponseModelArray[inputSegmentCount - 1].right()) {
+			return null;
+		}
+
+		outputPredictorOrdinateArray[0] = inputLatentStateResponseModelArray[0].left();
+
+		SegmentCustomBuilderControl[] inputSegmentCustomBuilderControlArray =
+			inputMultiSegmentSequence.segmentBuilderControl();
+
+		for (int inputSegmentIndex = 0; inputSegmentIndex < inputSegmentCount; ++inputSegmentIndex) {
+			outputSegmentCustomBuilderControlArray[outputSegmentIndex - 1] = inputSegmentCustomBuilderControlArray[inputSegmentIndex];
+
+			outputLeftSegmentPredictorResponseDerivativeArray[outputSegmentIndex - 1] =
+				inputMultiSegmentSequence.calcSPRD (
+					inputLatentStateResponseModelArray[inputSegmentIndex].left()
+				);
+
+			if (predictorOrdinate > inputLatentStateResponseModelArray[inputSegmentIndex].left() &&
+				predictorOrdinate < inputLatentStateResponseModelArray[inputSegmentIndex].right()) {
+				outputRightSegmentPredictorResponseDerivativeArray[outputSegmentIndex - 1] =
+					leftSegmentRightEdgePredictorResponseDerivative;
+				outputPredictorOrdinateArray[outputSegmentIndex++] = predictorOrdinate;
+				outputSegmentCustomBuilderControlArray[outputSegmentIndex - 1] =
+					inputSegmentCustomBuilderControlArray[inputSegmentIndex];
+				outputLeftSegmentPredictorResponseDerivativeArray[outputSegmentIndex - 1] =
+					rightSegmentLeftEdgePredictorResponseDerivative;
+			}
+
+			outputRightSegmentPredictorResponseDerivativeArray[outputSegmentIndex - 1] =
+				inputMultiSegmentSequence.calcSPRD (
+					inputLatentStateResponseModelArray[inputSegmentIndex].right()
+				);
+
+			outputPredictorOrdinateArray[outputSegmentIndex++] =
+				inputLatentStateResponseModelArray[inputSegmentIndex].right();
+		}
+
+		MultiSegmentSequence outputMultiSegmentSequence =
+			MultiSegmentSequenceBuilder.CreateUncalibratedStretchEstimator (
+				inputMultiSegmentSequence.name(),
+				outputPredictorOrdinateArray,
+				outputSegmentCustomBuilderControlArray
+			);
+
+		return null == outputMultiSegmentSequence ? null : outputMultiSegmentSequence.setupHermite (
+			outputLeftSegmentPredictorResponseDerivativeArray,
+			outputRightSegmentPredictorResponseDerivativeArray,
+			null,
+			null,
+			MultiSegmentSequence.CALIBRATE
+		) ? outputMultiSegmentSequence : null;
 	}
 
 	/**
 	 * Insert a Cardinal Knot into the specified Stretch at the specified Predictor Ordinate Location
 	 * 
-	 * @param mssIn Input Stretch
-	 * @param dblPredictorOrdinate Knot Predictor Ordinate
-	 * @param dblCardinalTension Cardinal Tension Parameter
+	 * @param inputMultiSegmentSequence Input Stretch
+	 * @param predictorOrdinate Knot Predictor Ordinate
+	 * @param cardinalTension Cardinal Tension Parameter
 	 * 
 	 * @return The Stretch with the Knot inserted
 	 */
 
-	public static final org.drip.spline.stretch.MultiSegmentSequence InsertCardinalKnot (
-		final org.drip.spline.stretch.MultiSegmentSequence mssIn,
-		final double dblPredictorOrdinate,
-		final double dblCardinalTension)
+	public static final MultiSegmentSequence InsertCardinalKnot (
+		final MultiSegmentSequence inputMultiSegmentSequence,
+		final double predictorOrdinate,
+		final double cardinalTension)
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (dblPredictorOrdinate) ||
-			!org.drip.numerical.common.NumberUtil.IsValid (dblCardinalTension) || null == mssIn || mssIn.isKnot
-				(dblPredictorOrdinate))
+		if (!NumberUtil.IsValid (predictorOrdinate) ||
+			!NumberUtil.IsValid (cardinalTension) ||
+			null == inputMultiSegmentSequence || inputMultiSegmentSequence.isKnot (predictorOrdinate)) {
 			return null;
-
-		org.drip.spline.segment.LatentStateResponseModel[] aCSIn = mssIn.segments();
-
-		int iOutSegmentIndex = 0;
-		int iNumSegmentIn = aCSIn.length;
-
-		if (dblPredictorOrdinate < aCSIn[0].left() || dblPredictorOrdinate >
-			aCSIn[iNumSegmentIn - 1].right())
-			return null;
-
-		for (; iOutSegmentIndex < iNumSegmentIn; ++iOutSegmentIndex) {
-			if (dblPredictorOrdinate > aCSIn[iOutSegmentIndex].left() && dblPredictorOrdinate <
-				aCSIn[iOutSegmentIndex].right())
-				break;
 		}
 
-		org.drip.spline.params.SegmentPredictorResponseDerivative sprdCardinalOut =
-			org.drip.spline.params.SegmentPredictorResponseDerivative.CardinalEdgeAggregate
-				(mssIn.calcSPRD (aCSIn[iOutSegmentIndex].left()), mssIn.calcSPRD
-					(aCSIn[iOutSegmentIndex].right()), dblCardinalTension);
+		LatentStateResponseModel[] inputLatentStateResponseModelArray = inputMultiSegmentSequence.segments();
 
-		return null == sprdCardinalOut ? null : InsertKnot (mssIn, dblPredictorOrdinate, sprdCardinalOut,
-			sprdCardinalOut);
+		int outputSegmentIndex = 0;
+		int inputSegmentCount = inputLatentStateResponseModelArray.length;
+
+		if (predictorOrdinate < inputLatentStateResponseModelArray[0].left() ||
+			predictorOrdinate > inputLatentStateResponseModelArray[inputSegmentCount - 1].right()) {
+			return null;
+		}
+
+		for (; outputSegmentIndex < inputSegmentCount; ++outputSegmentIndex) {
+			if (predictorOrdinate > inputLatentStateResponseModelArray[outputSegmentIndex].left() &&
+				predictorOrdinate < inputLatentStateResponseModelArray[outputSegmentIndex].right()) {
+				break;
+			}
+		}
+
+		SegmentPredictorResponseDerivative outputSegmentPredictorResponseDerivativeCardinal =
+			SegmentPredictorResponseDerivative.CardinalEdgeAggregate (
+				inputMultiSegmentSequence.calcSPRD (
+					inputLatentStateResponseModelArray[outputSegmentIndex].left()
+				),
+				inputMultiSegmentSequence.calcSPRD (
+					inputLatentStateResponseModelArray[outputSegmentIndex].right()
+				),
+				cardinalTension
+			);
+
+		return null == outputSegmentPredictorResponseDerivativeCardinal ? null : InsertKnot (
+			inputMultiSegmentSequence,
+			predictorOrdinate,
+			outputSegmentPredictorResponseDerivativeCardinal,
+			outputSegmentPredictorResponseDerivativeCardinal
+		);
 	}
 
 	/**
 	 * Insert a Catmull-Rom Knot into the specified Stretch at the specified Predictor Ordinate Location
 	 * 
-	 * @param mssIn Input Stretch
-	 * @param dblPredictorOrdinate Knot Predictor Ordinate
+	 * @param inputMultiSegmentSequence Input Stretch
+	 * @param knotOrdinate Knot Predictor Ordinate
 	 * 
 	 * @return The Stretch with the Knot inserted
 	 */
 
-	public static final org.drip.spline.stretch.MultiSegmentSequence InsertCatmullRomKnot (
-		final org.drip.spline.stretch.MultiSegmentSequence mssIn,
-		final double dblPredictorOrdinate)
+	public static final MultiSegmentSequence InsertCatmullRomKnot (
+		final MultiSegmentSequence inputMultiSegmentSequence,
+		final double knotOrdinate)
 	{
-		return InsertCardinalKnot (mssIn, dblPredictorOrdinate, 0.);
+		return InsertCardinalKnot (inputMultiSegmentSequence, knotOrdinate, 0.);
 	}
 }

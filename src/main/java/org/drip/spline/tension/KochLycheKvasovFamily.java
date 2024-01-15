@@ -3,6 +3,7 @@ package org.drip.spline.tension;
 
 import org.drip.function.definition.R1ToR1;
 import org.drip.numerical.common.NumberUtil;
+import org.drip.numerical.integration.R1ToR1Integrator;
 import org.drip.spline.basis.ExponentialTensionSetParams;
 import org.drip.spline.basis.FunctionSet;
 import org.drip.spline.bspline.SegmentBasisFunctionSet;
@@ -266,134 +267,141 @@ public class KochLycheKvasovFamily
 	/**
 	 * Implement the Basis Function Set from the Cubic Polynomial Numerator and Linear Rational Denominator
 	 * 
-	 * @param etsp The Tension Function Set Parameters
+	 * @param exponentialTensionSetParams The Tension Function Set Parameters
 	 * 
 	 * @return Instance of the Basis Function Set
 	 */
 
-	public static final org.drip.spline.basis.FunctionSet FromRationalLinearPrimitive (
-		final org.drip.spline.basis.ExponentialTensionSetParams etsp)
+	public static final FunctionSet FromRationalLinearPrimitive (
+		final ExponentialTensionSetParams exponentialTensionSetParams)
 	{
-		if (null == etsp) return null;
+		if (null == exponentialTensionSetParams) {
+			return null;
+		}
 
-		org.drip.function.definition.R1ToR1 auPhy = new org.drip.function.definition.R1ToR1
-			(null) {
+		R1ToR1 tensionPhyFunction = new R1ToR1 (null) {
 			@Override public double evaluate (
-				final double dblX)
-				throws java.lang.Exception
+				final double x)
+				throws Exception
 			{
-				if (!org.drip.numerical.common.NumberUtil.IsValid (dblX))
-					throw new java.lang.Exception
-						("KLKF::FromRationalLinearPrimitive.Phy::evaluate => Invalid Inputs!");
+				if (!NumberUtil.IsValid (x)) {
+					throw new Exception ("KLKF::FromRationalLinearPrimitive.Phy::evaluate => Invalid Inputs!");
+				}
 
-				double dblTension = etsp.tension();
+				double tension = exponentialTensionSetParams.tension();
 
-				return dblX * dblX * dblX / (1. + dblTension * (1. - dblX)) / (6. + 8. * dblTension);
+				return x * x * x / (1. + tension * (1. - x)) / (6. + 8. * tension);
 			}
 
 			@Override public double derivative (
-				final double dblX,
-				final int iOrder)
-				throws java.lang.Exception
+				final double x,
+				final int order)
+				throws Exception
 			{
-				if (!org.drip.numerical.common.NumberUtil.IsValid (dblX))
-					throw new java.lang.Exception
-						("KLKF::FromRationalLinearPrimitive.Phy::derivative => Invalid Inputs!");
-
-				double dblTension = etsp.tension();
-
-				if (1 == iOrder) {
-					double dblDLDX = -1. * dblTension;
-					double dblL = 1. + dblTension * (1. - dblX);
-
-					return 1. / (dblL * dblL * (6. + 8. * dblTension)) * (3. * dblL * dblX * dblX - dblDLDX *
-						dblX * dblX * dblX);
+				if (!NumberUtil.IsValid (x)) {
+					throw new Exception (
+						"KLKF::FromRationalLinearPrimitive.Phy::derivative => Invalid Inputs!"
+					);
 				}
 
-				if (2 == iOrder) {
-					double dblD2LDX2 = 0.;
-					double dblDLDX = -1. * dblTension;
-					double dblL = 1. + dblTension * (1. - dblX);
+				double tension = exponentialTensionSetParams.tension();
 
-					return 1. / (dblL * dblL * (6. + 8. * dblTension)) * (6. * dblL * dblX - dblD2LDX2 * dblX
-						* dblX * dblX) - 2. / (dblL * dblL * dblL * (6. + 8. * dblTension)) *
-							(3. * dblL * dblX * dblX - dblDLDX * dblX * dblX * dblX);
+				if (1 == order) {
+					double dblDLDX = -1. * tension;
+					double dblL = 1. + tension * (1. - x);
+
+					return 1. /
+						(dblL * dblL * (6. + 8. * tension)) * (3. * dblL * x * x - dblDLDX * x * x * x);
 				}
 
-				return derivative (dblX, iOrder);
+				if (2 == order) {
+					double d2ldx2 = 0.;
+					double l = 1. + tension * (1. - x);
+
+					return 1. / (l * l * (6. + 8. * tension)) * (6. * l * x - d2ldx2 * x * x * x) - 2. /
+						(l * l * l * (6. + 8. * tension)) * (3. * l * x * x + tension * x * x * x);
+				}
+
+				return derivative (x, order);
 			}
 
 			@Override public double integrate (
-				final double dblBegin,
-				final double dblEnd)
-				throws java.lang.Exception
+				final double begin,
+				final double end)
+				throws Exception
 			{
-				return org.drip.numerical.integration.R1ToR1Integrator.Boole (this, dblBegin, dblEnd);
+				return R1ToR1Integrator.Boole (this, begin, end);
 			}
 		};
 
-		org.drip.function.definition.R1ToR1 auPsy = new org.drip.function.definition.R1ToR1
-			(null) {
+		R1ToR1 tensionPsyFunction = new R1ToR1 (null) {
 			@Override public double evaluate (
-				final double dblX)
-				throws java.lang.Exception
+				final double x)
+				throws Exception
 			{
-				if (!org.drip.numerical.common.NumberUtil.IsValid (dblX))
-					throw new java.lang.Exception
-						("KLKF::FromRationalLinearPrimitive.Psy::evaluate => Invalid Inputs!");
+				if (!NumberUtil.IsValid (x)) {
+					throw new Exception (
+						"KLKF::FromRationalLinearPrimitive.Psy::evaluate => Invalid Inputs!"
+					);
+				}
 
-				double dblTension = etsp.tension();
+				double tension = exponentialTensionSetParams.tension();
 
-				return (1. - dblX) * (1. - dblX) * (1. - dblX) / (1. + dblTension * dblX) / (6. + 8. *
-					dblTension);
+				return (1. - x) * (1. - x) * (1. - x) / (1. + tension * x) / (6. + 8. * tension);
 			}
 
 			@Override public double derivative (
-				final double dblX,
-				final int iOrder)
-				throws java.lang.Exception
+				final double x,
+				final int order)
+				throws Exception
 			{
-				if (!org.drip.numerical.common.NumberUtil.IsValid (dblX))
-					throw new java.lang.Exception
-						("KLKF::FromRationalLinearPrimitive.Psy::derivative => Invalid Inputs!");
-
-				double dblTension = etsp.tension();
-
-				if (1 == iOrder) {
-					double dblDLDX = dblTension;
-					double dblL = 1. + dblTension * dblX;
-
-					return -1. / (dblL * dblL * (6. + 8. * dblTension)) * (3. * dblL * (1. - dblX) *
-						(1. - dblX) + dblDLDX * (1. - dblX) * (1. - dblX) * (1. - dblX));
+				if (!NumberUtil.IsValid (x)) {
+					throw new Exception (
+						"KLKF::FromRationalLinearPrimitive.Psy::derivative => Invalid Inputs!"
+					);
 				}
 
-				if (2 == iOrder) {
-					double dblD2LDX2 = 0.;
-					double dblDLDX = dblTension;
-					double dblL = 1. + dblTension * dblX;
+				double tension = exponentialTensionSetParams.tension();
 
-					return 1. / (dblL * dblL * (6. + 8. * dblTension)) * (6. * dblL * (1. - dblX) - dblD2LDX2
-						* (1. - dblX) * (1. - dblX) * (1. - dblX)) - 2. / (dblL * dblL * dblL *
-							(6. + 8. * dblTension)) * (3. * dblL * (1. - dblX) * (1. - dblX) + dblDLDX *
-								(1. - dblX) * (1. - dblX) * (1. - dblX));
+				if (1 == order) {
+					double l = 1. + tension * x;
+
+					return -1. / (l * l * (6. + 8. * tension)) * (
+						3. * l * (1. - x) * (1. - x) + tension * (1. - x) * (1. - x) * (1. - x)
+					);
 				}
 
-				return derivative (dblX, iOrder);
+				if (2 == order) {
+					double d2ldx2 = 0.;
+					double dldx = tension;
+					double l = 1. + tension * x;
+
+					return 1. / (l * l * (6. + 8. * tension)) * (
+						6. * l * (1. - x) - d2ldx2 * (1. - x) * (1. - x) * (1. - x)
+					) - 2. / (l * l * l * (6. + 8. * tension)) * (
+						3. * l * (1. - x) * (1. - x) + dldx * (1. - x) * (1. - x) * (1. - x)
+					);
+				}
+
+				return derivative (x, order);
 			}
 
 			@Override public double integrate (
-				final double dblBegin,
-				final double dblEnd)
-				throws java.lang.Exception
+				final double begin,
+				final double end)
+				throws Exception
 			{
-				return org.drip.numerical.integration.R1ToR1Integrator.Boole (this, dblBegin, dblEnd);
+				return R1ToR1Integrator.Boole (this, begin, end);
 			}
 		};
 
 		try {
-			return new org.drip.spline.bspline.SegmentBasisFunctionSet (2, etsp.tension(), new
-				org.drip.function.definition.R1ToR1[] {auPhy, auPsy});
-		} catch (java.lang.Exception e) {
+			return new SegmentBasisFunctionSet (
+				2,
+				exponentialTensionSetParams.tension(),
+				new R1ToR1[] {tensionPhyFunction, tensionPsyFunction}
+			);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -404,134 +412,142 @@ public class KochLycheKvasovFamily
 	 * Implement the Basis Function Set from the Cubic Polynomial Numerator and Quadratic Rational
 	 *  Denominator
 	 * 
-	 * @param etsp The Tension Function Set Parameters
+	 * @param exponentialTensionSetParams The Tension Function Set Parameters
 	 * 
 	 * @return Instance of the Basis Function Set
 	 */
 
-	public static final org.drip.spline.basis.FunctionSet FromRationalQuadraticPrimitive (
-		final org.drip.spline.basis.ExponentialTensionSetParams etsp)
+	public static final FunctionSet FromRationalQuadraticPrimitive (
+		final ExponentialTensionSetParams exponentialTensionSetParams)
 	{
-		if (null == etsp) return null;
+		if (null == exponentialTensionSetParams) {
+			return null;
+		}
 
-		org.drip.function.definition.R1ToR1 auPhy = new org.drip.function.definition.R1ToR1
-			(null) {
+		R1ToR1 phyBasisFunction = new R1ToR1 (null) {
 			@Override public double evaluate (
-				final double dblX)
-				throws java.lang.Exception
+				final double x)
+				throws Exception
 			{
-				if (!org.drip.numerical.common.NumberUtil.IsValid (dblX))
-					throw new java.lang.Exception
-						("KLKF::FromRationalQuadraticPrimitive.Phy::evaluate => Invalid Inputs!");
+				if (!NumberUtil.IsValid (x)) {
+					throw new Exception (
+						"KLKF::FromRationalQuadraticPrimitive.Phy::evaluate => Invalid Inputs!"
+					);
+				}
 
-				double dblTension = etsp.tension();
+				double tension = exponentialTensionSetParams.tension();
 
-				return dblX * dblX * dblX / (1. + dblTension * dblX * (1. - dblX)) / (6. + 8. * dblTension);
+				return x * x * x / (1. + tension * x * (1. - x)) / (6. + 8. * tension);
 			}
 
 			@Override public double derivative (
-				final double dblX,
-				final int iOrder)
-				throws java.lang.Exception
+				final double x,
+				final int order)
+				throws Exception
 			{
-				if (!org.drip.numerical.common.NumberUtil.IsValid (dblX))
-					throw new java.lang.Exception
-						("KLKF::FromRationalQuadraticPrimitive.Phy::derivative => Invalid Inputs!");
-
-				double dblTension = etsp.tension();
-
-				if (1 == iOrder) {
-					double dblDLDX = dblTension * (1. - 2. * dblX);
-					double dblL = 1. + dblTension * dblX * (1. - dblX);
-
-					return 1. / (dblL * dblL * (6. + 8. * dblTension)) * (3. * dblL * dblX * dblX - dblDLDX *
-						dblX * dblX * dblX);
+				if (!NumberUtil.IsValid (x)) {
+					throw new Exception (
+						"KLKF::FromRationalQuadraticPrimitive.Phy::derivative => Invalid Inputs!"
+					);
 				}
 
-				if (2 == iOrder) {
-					double dblD2LDX2 = -2. * dblTension;
-					double dblDLDX = dblTension * (1. - 2. * dblX);
-					double dblL = 1. + dblTension * dblX * (1. - dblX);
+				double tension = exponentialTensionSetParams.tension();
 
-					return 1. / (dblL * dblL * (6. + 8. * dblTension)) * (6. * dblL * dblX - dblD2LDX2 * dblX
-						* dblX * dblX) - 2. / (dblL * dblL * dblL * (6. + 8. * dblTension)) *
-							(3. * dblL * dblX * dblX - dblDLDX * dblX * dblX * dblX);
+				if (1 == order) {
+					double dldx = tension * (1. - 2. * x);
+					double l = 1. + tension * x * (1. - x);
+					return 1. / (l * l * (6. + 8. * tension)) * (3. * l * x * x - dldx * x * x * x);
 				}
 
-				return derivative (dblX, iOrder);
+				if (2 == order) {
+					double d2ldx2 = -2. * tension;
+					double dldx = tension * (1. - 2. * x);
+					double l = 1. + tension * x * (1. - x);
+
+					return 1. / (l * l * (6. + 8. * tension)) * (6. * l * x - d2ldx2 * x * x * x) -
+						2. / (l * l * l * (6. + 8. * tension)) * (3. * l * x * x - dldx * x * x * x);
+				}
+
+				return derivative (x, order);
 			}
 
 			@Override public double integrate (
-				final double dblBegin,
-				final double dblEnd)
-				throws java.lang.Exception
+				final double begin,
+				final double end)
+				throws Exception
 			{
-				return org.drip.numerical.integration.R1ToR1Integrator.Boole (this, dblBegin, dblEnd);
+				return R1ToR1Integrator.Boole (this, begin, end);
 			}
 		};
 
-		org.drip.function.definition.R1ToR1 auPsy = new org.drip.function.definition.R1ToR1
-			(null) {
+		R1ToR1 psyBasisFunction = new R1ToR1 (null) {
 			@Override public double evaluate (
-				final double dblX)
-				throws java.lang.Exception
+				final double x)
+				throws Exception
 			{
-				if (!org.drip.numerical.common.NumberUtil.IsValid (dblX))
-					throw new java.lang.Exception
-						("KLKF::FromRationalQuadraticPrimitive.Psy::evaluate => Invalid Inputs!");
+				if (!NumberUtil.IsValid (x)) {
+					throw new Exception (
+						"KLKF::FromRationalQuadraticPrimitive.Psy::evaluate => Invalid Inputs!"
+					);
+				}
 
-				double dblTension = etsp.tension();
+				double tension = exponentialTensionSetParams.tension();
 
-				return (1. - dblX) * (1. - dblX) * (1. - dblX) / (1. + dblTension * dblX * (1. - dblX)) / (6.
-					+ 8. * dblTension);
+				return (1. - x) * (1. - x) * (1. - x) / (1. + tension * x * (1. - x)) / (6. + 8. * tension);
 			}
 
 			@Override public double derivative (
-				final double dblX,
-				final int iOrder)
-				throws java.lang.Exception
+				final double x,
+				final int order)
+				throws Exception
 			{
-				if (!org.drip.numerical.common.NumberUtil.IsValid (dblX))
-					throw new java.lang.Exception
-						("KLKF::FromRationalQuadraticPrimitive.Psy::derivative => Invalid Inputs!");
-
-				double dblTension = etsp.tension();
-
-				if (1 == iOrder) {
-					double dblDLDX = dblTension * (1. - 2. * dblX);
-					double dblL = 1. + dblTension * dblX * (1. - dblX);
-
-					return -1. / (dblL * dblL * (6. + 8. * dblTension)) * (3. * dblL * (1. - dblX) *
-						(1. - dblX) + dblDLDX * (1. - dblX) * (1. - dblX) * (1. - dblX));
+				if (!NumberUtil.IsValid (x)) {
+					throw new Exception (
+						"KLKF::FromRationalQuadraticPrimitive.Psy::derivative => Invalid Inputs!"
+					);
 				}
 
-				if (2 == iOrder) {
-					double dblD2LDX2 = -2. * dblTension * dblX;
-					double dblDLDX = dblTension * (1. - 2. * dblX);
-					double dblL = 1. + dblTension * dblX * (1. - dblX);
+				double tension = exponentialTensionSetParams.tension();
 
-					return 1. / (dblL * dblL * (6. + 8. * dblTension)) * (6. * dblL * (1. - dblX) - dblD2LDX2
-						* (1. - dblX) * (1. - dblX) * (1. - dblX)) - 2. / (dblL * dblL * dblL *
-							(6. + 8. * dblTension)) * (3. * dblL * (1. - dblX) * (1. - dblX) + dblDLDX *
-								(1. - dblX) * (1. - dblX) * (1. - dblX));
+				if (1 == order) {
+					double dldx = tension * (1. - 2. * x);
+					double l = 1. + tension * x * (1. - x);
+					return -1. / (l * l * (6. + 8. * tension)) * (
+						3. * l * (1. - x) * (1. - x) + dldx * (1. - x) * (1. - x) * (1. - x)
+					);
 				}
 
-				return derivative (dblX, iOrder);
+				if (2 == order) {
+					double d2ldx2 = -2. * tension * x;
+					double dldx = tension * (1. - 2. * x);
+					double l = 1. + tension * x * (1. - x);
+
+					return 1. / (l * l * (6. + 8. * tension)) * (
+						6. * l * (1. - x) - d2ldx2 * (1. - x) * (1. - x) * (1. - x)
+					) - 2. / (l * l * l * (6. + 8. * tension)) * (
+						3. * l * (1. - x) * (1. - x) + dldx * (1. - x) * (1. - x) * (1. - x)
+					);
+				}
+
+				return derivative (x, order);
 			}
 
 			@Override public double integrate (
-				final double dblBegin,
-				final double dblEnd)
-				throws java.lang.Exception
+				final double begin,
+				final double end)
+				throws Exception
 			{
-				return org.drip.numerical.integration.R1ToR1Integrator.Boole (this, dblBegin, dblEnd);
+				return R1ToR1Integrator.Boole (this, begin, end);
 			}
 		};
 
 		try {
-			return new org.drip.spline.bspline.SegmentBasisFunctionSet (2, etsp.tension(), new
-				org.drip.function.definition.R1ToR1[] {auPhy, auPsy});
-		} catch (java.lang.Exception e) {
+			return new SegmentBasisFunctionSet (
+				2,
+				exponentialTensionSetParams.tension(),
+				new R1ToR1[] {phyBasisFunction, psyBasisFunction}
+			);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -541,115 +557,121 @@ public class KochLycheKvasovFamily
 	/**
 	 * Implement the Basis Function Set from the Cubic Polynomial Numerator and Exponential Denominator
 	 * 
-	 * @param etsp The Tension Function Set Parameters
+	 * @param exponentialTensionSetParams The Tension Function Set Parameters
 	 * 
 	 * @return Instance of the Basis Function Set
 	 */
 
-	public static final org.drip.spline.basis.FunctionSet FromExponentialPrimitive (
-		final org.drip.spline.basis.ExponentialTensionSetParams etsp)
+	public static final FunctionSet FromExponentialPrimitive (
+		final ExponentialTensionSetParams exponentialTensionSetParams)
 	{
-		if (null == etsp) return null;
+		if (null == exponentialTensionSetParams) {
+			return null;
+		}
 
-		org.drip.function.definition.R1ToR1 auPhy = new org.drip.function.definition.R1ToR1
-			(null) {
+		R1ToR1 phyBasisFunction = new R1ToR1 (null) {
 			@Override public double evaluate (
-				final double dblX)
-				throws java.lang.Exception
+				final double x)
+				throws Exception
 			{
-				if (!org.drip.numerical.common.NumberUtil.IsValid (dblX))
-					throw new java.lang.Exception
-						("KLKF::FromExponentialPrimitive.Phy::evaluate => Invalid Inputs!");
+				if (!NumberUtil.IsValid (x)) {
+					throw new Exception ("KLKF::FromExponentialPrimitive.Phy::evaluate => Invalid Inputs!");
+				}
 
-				double dblTension = etsp.tension();
+				double tension = exponentialTensionSetParams.tension();
 
-				return dblX * dblX * dblX * java.lang.Math.exp (-1. * dblTension * (1. - dblX)) / (6. + 7. *
-					dblTension);
+				return x * x * x * Math.exp (-1. * tension * (1. - x)) / (6. + 7. * tension);
 			}
 
 			@Override public double derivative (
-				final double dblX,
-				final int iOrder)
-				throws java.lang.Exception
+				final double x,
+				final int order)
+				throws Exception
 			{
-				if (!org.drip.numerical.common.NumberUtil.IsValid (dblX))
-					throw new java.lang.Exception
-						("KLKF::FromExponentialPrimitive.Phy::derivative => Invalid Inputs!");
+				if (!NumberUtil.IsValid (x)) {
+					throw new Exception ("KLKF::FromExponentialPrimitive.Phy::derivative => Invalid Inputs!");
+				}
 
-				double dblTension = etsp.tension();
+				double tension = exponentialTensionSetParams.tension();
 
-				if (1 == iOrder)
-					return (3. + dblTension * dblX) / (6. + 7. * dblTension) * dblX * dblX *
-						java.lang.Math.exp (-1. * dblTension * (1. - dblX));
+				if (1 == order) {
+					return (3. + tension * x) /
+						(6. + 7. * tension) * x * x * Math.exp (-1. * tension * (1. - x));
+				}
 
-				if (2 == iOrder)
-					return (dblTension * dblTension * dblX * dblX + 6. * dblTension * dblX + 6.) / (6. + 7. *
-						dblTension) * dblX * java.lang.Math.exp (-1. * dblTension * (1. - dblX));
+				if (2 == order) {
+					return (tension * tension * x * x + 6. * tension * x + 6.) / (6. + 7. * tension) * x *
+						Math.exp (-1. * tension * (1. - x));
+				}
 
-				return derivative (dblX, iOrder);
+				return derivative (x, order);
 			}
 
 			@Override public double integrate (
-				final double dblBegin,
-				final double dblEnd)
-				throws java.lang.Exception
+				final double begin,
+				final double end)
+				throws Exception
 			{
-				return org.drip.numerical.integration.R1ToR1Integrator.Boole (this, dblBegin, dblEnd);
+				return R1ToR1Integrator.Boole (this, begin, end);
 			}
 		};
 
-		org.drip.function.definition.R1ToR1 auPsy = new org.drip.function.definition.R1ToR1
-			(null) {
+		R1ToR1 psyBasisFunction = new R1ToR1 (null) {
 			@Override public double evaluate (
-				final double dblX)
-				throws java.lang.Exception
+				final double x)
+				throws Exception
 			{
-				if (!org.drip.numerical.common.NumberUtil.IsValid (dblX))
-					throw new java.lang.Exception
-						("KLKF::FromExponentialPrimitive.Psy::evaluate => Invalid Inputs!");
+				if (!NumberUtil.IsValid (x)) {
+					throw new Exception ("KLKF::FromExponentialPrimitive.Psy::evaluate => Invalid Inputs!");
+				}
 
-				double dblTension = etsp.tension();
+				double tension = exponentialTensionSetParams.tension();
 
-				return (1. - dblX) * (1. - dblX) * (1. - dblX) * java.lang.Math.exp (-1. * dblTension * dblX)
-					/ (6. + 7. * dblTension);
+				return (1. - x) * (1. - x) * (1. - x) * Math.exp (-1. * tension * x) / (6. + 7. * tension);
 			}
 
 			@Override public double derivative (
-				final double dblX,
-				final int iOrder)
-				throws java.lang.Exception
+				final double x,
+				final int order)
+				throws Exception
 			{
-				if (!org.drip.numerical.common.NumberUtil.IsValid (dblX))
-					throw new java.lang.Exception
-						("KLKF::FromExponentialPrimitive.Psy::derivative => Invalid Inputs!");
+				if (!NumberUtil.IsValid (x)) {
+					throw new Exception (
+						"KLKF::FromExponentialPrimitive.Psy::derivative => Invalid Inputs!"
+					);
+				}
 
-				double dblTension = etsp.tension();
+				double tension = exponentialTensionSetParams.tension();
 
-				if (1 == iOrder)
-					return -1. * (3. + dblTension * (1. - dblX)) / (6. + 7. * dblTension) * (1. - dblX) *
-						(1. - dblX) * java.lang.Math.exp (-1. * dblTension * dblX);
+				if (1 == order) {
+					return -1. * (3. + tension * (1. - x)) / (6. + 7. * tension) * (1. - x) *
+						(1. - x) * Math.exp (-1. * tension * x);
+				}
 
-				if (2 == iOrder)
-					return (dblTension * dblTension * (1. - dblX) * (1. - dblX) + 6. * dblTension *
-						(1. - dblX) + 6.) / (6. + 7. * dblTension) * (1. - dblX) * java.lang.Math.exp (-1. *
-							dblTension * dblX);
+				if (2 == order) {
+					return (tension * tension * (1. - x) * (1. - x) + 6. * tension * (1. - x) + 6.) /
+						(6. + 7. * tension) * (1. - x) * Math.exp (-1. * tension * x);
+				}
 
-				return derivative (dblX, iOrder);
+				return derivative (x, order);
 			}
 
 			@Override public double integrate (
-				final double dblBegin,
-				final double dblEnd)
-				throws java.lang.Exception
+				final double begin,
+				final double end)
+				throws Exception
 			{
-				return org.drip.numerical.integration.R1ToR1Integrator.Boole (this, dblBegin, dblEnd);
+				return R1ToR1Integrator.Boole (this, begin, end);
 			}
 		};
 
 		try {
-			return new org.drip.spline.bspline.SegmentBasisFunctionSet (2, etsp.tension(), new
-				org.drip.function.definition.R1ToR1[] {auPhy, auPsy});
-		} catch (java.lang.Exception e) {
+			return new SegmentBasisFunctionSet (
+				2,
+				exponentialTensionSetParams.tension(),
+				new R1ToR1[] {phyBasisFunction, psyBasisFunction}
+			);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
