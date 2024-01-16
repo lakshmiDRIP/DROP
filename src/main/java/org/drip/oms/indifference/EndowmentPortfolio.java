@@ -1,10 +1,7 @@
 
 package org.drip.oms.indifference;
 
-import org.drip.function.definition.R1ToR1;
-import org.drip.measure.continuous.R1Univariate;
-import org.drip.measure.discrete.R1Distribution;
-import org.drip.numerical.integration.R1ToR1Integrator;
+import org.drip.numerical.common.NumberUtil;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -79,7 +76,7 @@ import org.drip.numerical.integration.R1ToR1Integrator;
  */
 
 /**
- * <i>ReservationPricer</i> holds the main Private Reservation Pricer and its Parameters. The References are:
+ * <i>EndowmentPortfolio</i> contains the Endowment Portfolio of the Underlier Inventory. The References are:
  *  
  * 	<br><br>
  *  <ul>
@@ -114,148 +111,75 @@ import org.drip.numerical.integration.R1ToR1Integrator;
  * @author Lakshmi Krishnamurthy
  */
 
-public class ReservationPricer
+public class EndowmentPortfolio
 {
-	private double _endowmentValue = Double.NaN;
-	private R1ToR1 _privateValuationUtilityFunction = null;
+	private double _risklessUnits = Double.NaN;
+	private double _underlierUnits = Double.NaN;
 
-	private double expectedTerminalUtilityPrice (
-		final R1Distribution terminalDistribution)
+	/**
+	 * <i>EndowmentPortfolio</i> Constructor
+	 * 
+	 * @param risklessUnits Number of Units of the Riskless Security
+	 * @param underlierUnits Number of Units of the Underlier Security
+	 * 
+	 * @throws Exception Thrown if the Inputs are Invalid
+	 */
+
+	public EndowmentPortfolio (
+		final double risklessUnits,
+		final double underlierUnits)
 		throws Exception
 	{
-		if (null == terminalDistribution)
+		if (!NumberUtil.IsValid (_risklessUnits = risklessUnits) ||
+			!NumberUtil.IsValid (_underlierUnits = underlierUnits))
 		{
-			throw new Exception (
-				"ReservationPricer::expectedTerminalUtilityPrice => Invalid Terminal Distribution"
-			);
+			throw new Exception ("EndowmentPortfolio Constructor => Invalid Inputs");
+		}
+	}
+
+	/**
+	 * Retrieve the Number of Units of the Riskless Security
+	 * 
+	 * @return Number of Units of the Riskless Security
+	 */
+
+	public double risklessUnits()
+	{
+		return _risklessUnits;
+	}
+
+	/**
+	 * Retrieve the Number of Units of the Underlier Security
+	 * 
+	 * @return Number of Units of the Underlier Security
+	 */
+
+	public double underlierUnits()
+	{
+		return _underlierUnits;
+	}
+
+	/**
+	 * Value the Portfolio using the Prices
+	 * 
+	 * @param risklessPrice Riskless Security Unit Price
+	 * @param underlierPrice Underlier Security Unit Price
+	 * 
+	 * @return The Portfolio Value
+	 * 
+	 * @throws Exception Thrown if the Inputs are Invalid
+	 */
+
+	public double value (
+		final double risklessPrice,
+		final double underlierPrice)
+		throws Exception
+	{
+		if (!NumberUtil.IsValid (risklessPrice) || !NumberUtil.IsValid (underlierPrice))
+		{
+			throw new Exception ("EndowmentPortfolio::value => Invalid Inputs");
 		}
 
-		double expectedTerminalUtilityPrice = 0.;
-
-		for (double terminalInstance : terminalDistribution.probabilityMap().keySet())
-		{
-			expectedTerminalUtilityPrice += _privateValuationUtilityFunction.evaluate (terminalInstance) *
-				terminalDistribution.probability (terminalInstance);
-		}
-
-		return expectedTerminalUtilityPrice;
-	}
-
-	public double expectedTerminalUtilityPrice (
-		final R1Univariate terminalDistribution)
-		throws Exception
-	{
-		if (null == terminalDistribution)
-		{
-			throw new Exception (
-				"ReservationPricer::expectedUtility => Invalid Terminal  Distribution"
-			);
-		}
-
-		double[] terminalSupportArray = terminalDistribution.support();
-
-		return R1ToR1Integrator.Boole (
-			new R1ToR1 (null) {
-				@Override public double evaluate (
-					double terminalInstance)
-					throws Exception
-				{
-					return _privateValuationUtilityFunction.evaluate (terminalInstance) *
-						terminalDistribution.density (terminalInstance);
-				}
-			},
-			terminalSupportArray[0],
-			terminalSupportArray[1]
-		);
-	}
-
-	/**
-	 * Retrieve the Private Valuation Utility Function
-	 * 
-	 * @return The Private Valuation Utility Function
-	 */
-
-	public R1ToR1 privateValuationUtilityFunction()
-	{
-		return _privateValuationUtilityFunction;
-	}
-
-	/**
-	 * Retrieve the Endowment Value
-	 * 
-	 * @return The Endowment Value
-	 */
-
-	public double endowmentValue()
-	{
-		return _endowmentValue;
-	}
-
-	/**
-	 * Evaluate the Expected Terminal Endowment Utility Price
-	 * 
-	 * @param terminalEndowmentDistribution The Terminal Endowment Distribution
-	 * 
-	 * @return The Expected Terminal Endowment Utility Price
-	 * 
-	 * @throws Exception The Expected Terminal Endowment Utility Price cannot be estimated
-	 */
-
-	public double expectedTerminalEndowmentUtilityPrice (
-		final R1Distribution terminalEndowmentDistribution)
-		throws Exception
-	{
-		return expectedTerminalUtilityPrice (terminalEndowmentDistribution);
-	}
-
-	/**
-	 * Evaluate the Expected Terminal Endowment Utility Price
-	 * 
-	 * @param terminalEndowmentDistribution The Terminal Endowment Distribution
-	 * 
-	 * @return The Expected Terminal Endowment Utility Price
-	 * 
-	 * @throws Exception The Expected Terminal Endowment Utility Price cannot be estimated
-	 */
-
-	public double expectedTerminalEndowmentUtilityPrice (
-		final R1Univariate terminalEndowmentDistribution)
-		throws Exception
-	{
-		return expectedTerminalUtilityPrice (terminalEndowmentDistribution);
-	}
-
-	/**
-	 * Evaluate the Expected Terminal Claims Utility Price
-	 * 
-	 * @param terminalClaimsDistribution The Terminal Claims Distribution
-	 * 
-	 * @return The Expected Terminal Claims Utility Price
-	 * 
-	 * @throws Exception The Expected Terminal Claims Utility Price cannot be estimated
-	 */
-
-	public double expectedTerminalClaimsUtilityPrice (
-		final R1Distribution terminalClaimsDistribution)
-		throws Exception
-	{
-		return expectedTerminalUtilityPrice (terminalClaimsDistribution);
-	}
-
-	/**
-	 * Evaluate the Expected Terminal Claims Utility Price
-	 * 
-	 * @param terminalClaimsDistribution The Terminal Claims Distribution
-	 * 
-	 * @return The Expected Terminal Claims Utility Price
-	 * 
-	 * @throws Exception The Expected Terminal Claims Utility Price cannot be estimated
-	 */
-
-	public double expectedTerminalClaimsUtilityPrice (
-		final R1Univariate terminalClaimsDistribution)
-		throws Exception
-	{
-		return expectedTerminalUtilityPrice (terminalClaimsDistribution);
+		return _risklessUnits * risklessPrice + _underlierUnits * underlierPrice;
 	}
 }

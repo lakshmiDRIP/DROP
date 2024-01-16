@@ -2,9 +2,6 @@
 package org.drip.oms.indifference;
 
 import org.drip.function.definition.R1ToR1;
-import org.drip.measure.continuous.R1Univariate;
-import org.drip.measure.discrete.R1Distribution;
-import org.drip.numerical.integration.R1ToR1Integrator;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -79,7 +76,8 @@ import org.drip.numerical.integration.R1ToR1Integrator;
  */
 
 /**
- * <i>ReservationPricer</i> holds the main Private Reservation Pricer and its Parameters. The References are:
+ * <i>BidAskClaimsHandler</i> works the Bid/Ask Sided Claims Price using the Indifference Pricing Scheme. The
+ *  References are:
  *  
  * 	<br><br>
  *  <ul>
@@ -114,148 +112,30 @@ import org.drip.numerical.integration.R1ToR1Integrator;
  * @author Lakshmi Krishnamurthy
  */
 
-public class ReservationPricer
+public class BidAskClaimsHandler
 {
-	private double _endowmentValue = Double.NaN;
-	private R1ToR1 _privateValuationUtilityFunction = null;
+	private double _units = Double.NaN;
+	private R1ToR1 _payoffFunction = null;
 
-	private double expectedTerminalUtilityPrice (
-		final R1Distribution terminalDistribution)
-		throws Exception
+	/**
+	 * Retrieve the Claims Payoff Function
+	 * 
+	 * @return The Claims Payoff Function
+	 */
+
+	public R1ToR1 payoffFunction()
 	{
-		if (null == terminalDistribution)
-		{
-			throw new Exception (
-				"ReservationPricer::expectedTerminalUtilityPrice => Invalid Terminal Distribution"
-			);
-		}
-
-		double expectedTerminalUtilityPrice = 0.;
-
-		for (double terminalInstance : terminalDistribution.probabilityMap().keySet())
-		{
-			expectedTerminalUtilityPrice += _privateValuationUtilityFunction.evaluate (terminalInstance) *
-				terminalDistribution.probability (terminalInstance);
-		}
-
-		return expectedTerminalUtilityPrice;
-	}
-
-	public double expectedTerminalUtilityPrice (
-		final R1Univariate terminalDistribution)
-		throws Exception
-	{
-		if (null == terminalDistribution)
-		{
-			throw new Exception (
-				"ReservationPricer::expectedUtility => Invalid Terminal  Distribution"
-			);
-		}
-
-		double[] terminalSupportArray = terminalDistribution.support();
-
-		return R1ToR1Integrator.Boole (
-			new R1ToR1 (null) {
-				@Override public double evaluate (
-					double terminalInstance)
-					throws Exception
-				{
-					return _privateValuationUtilityFunction.evaluate (terminalInstance) *
-						terminalDistribution.density (terminalInstance);
-				}
-			},
-			terminalSupportArray[0],
-			terminalSupportArray[1]
-		);
+		return _payoffFunction;
 	}
 
 	/**
-	 * Retrieve the Private Valuation Utility Function
+	 * Retrieve the Sided Units
 	 * 
-	 * @return The Private Valuation Utility Function
+	 * @return The Sided Units
 	 */
 
-	public R1ToR1 privateValuationUtilityFunction()
+	public double units()
 	{
-		return _privateValuationUtilityFunction;
-	}
-
-	/**
-	 * Retrieve the Endowment Value
-	 * 
-	 * @return The Endowment Value
-	 */
-
-	public double endowmentValue()
-	{
-		return _endowmentValue;
-	}
-
-	/**
-	 * Evaluate the Expected Terminal Endowment Utility Price
-	 * 
-	 * @param terminalEndowmentDistribution The Terminal Endowment Distribution
-	 * 
-	 * @return The Expected Terminal Endowment Utility Price
-	 * 
-	 * @throws Exception The Expected Terminal Endowment Utility Price cannot be estimated
-	 */
-
-	public double expectedTerminalEndowmentUtilityPrice (
-		final R1Distribution terminalEndowmentDistribution)
-		throws Exception
-	{
-		return expectedTerminalUtilityPrice (terminalEndowmentDistribution);
-	}
-
-	/**
-	 * Evaluate the Expected Terminal Endowment Utility Price
-	 * 
-	 * @param terminalEndowmentDistribution The Terminal Endowment Distribution
-	 * 
-	 * @return The Expected Terminal Endowment Utility Price
-	 * 
-	 * @throws Exception The Expected Terminal Endowment Utility Price cannot be estimated
-	 */
-
-	public double expectedTerminalEndowmentUtilityPrice (
-		final R1Univariate terminalEndowmentDistribution)
-		throws Exception
-	{
-		return expectedTerminalUtilityPrice (terminalEndowmentDistribution);
-	}
-
-	/**
-	 * Evaluate the Expected Terminal Claims Utility Price
-	 * 
-	 * @param terminalClaimsDistribution The Terminal Claims Distribution
-	 * 
-	 * @return The Expected Terminal Claims Utility Price
-	 * 
-	 * @throws Exception The Expected Terminal Claims Utility Price cannot be estimated
-	 */
-
-	public double expectedTerminalClaimsUtilityPrice (
-		final R1Distribution terminalClaimsDistribution)
-		throws Exception
-	{
-		return expectedTerminalUtilityPrice (terminalClaimsDistribution);
-	}
-
-	/**
-	 * Evaluate the Expected Terminal Claims Utility Price
-	 * 
-	 * @param terminalClaimsDistribution The Terminal Claims Distribution
-	 * 
-	 * @return The Expected Terminal Claims Utility Price
-	 * 
-	 * @throws Exception The Expected Terminal Claims Utility Price cannot be estimated
-	 */
-
-	public double expectedTerminalClaimsUtilityPrice (
-		final R1Univariate terminalClaimsDistribution)
-		throws Exception
-	{
-		return expectedTerminalUtilityPrice (terminalClaimsDistribution);
+		return _units;
 	}
 }

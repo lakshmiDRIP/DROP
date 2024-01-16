@@ -100,16 +100,77 @@ import org.drip.numerical.common.NumberUtil;
 
 public class R1Distribution
 {
-	private TreeMap<Double, Double> _probabilityMap = new TreeMap<Double, Double>();
+	private TreeMap<Double, Double> _probabilityMap = null;
+
+	/**
+	 * Generate an Standard Instance of Discrete <i>R1Distribution</i>
+	 * 
+	 * @param instanceArray Instance Array
+	 * @param probabilityArray Probability Array
+	 * 
+	 * @return Standard Instance of Discrete <i>R1Distribution</i>
+	 */
+
+	public static R1Distribution Standard (
+		final double[] instanceArray,
+		final double[] probabilityArray)
+	{
+		if (null == instanceArray ||
+			null == probabilityArray)
+		{
+			return null;
+		}
+
+		int instanceCount = instanceArray.length;
+
+		if (0 == instanceCount || instanceCount != probabilityArray.length)
+		{
+			return null;
+		}
+
+		TreeMap<Double, Double> probabilityMap = new TreeMap<Double, Double>();
+
+		double cumulativeProbability = 0.;
+
+		for (double probability : probabilityArray)
+		{
+			if (!NumberUtil.IsValid (probability) || 0. > probability)
+			{
+				return null;
+			}
+
+			cumulativeProbability += probability;
+		}
+
+		if (0. == cumulativeProbability)
+		{
+			return null;
+		}
+
+		for (int i = 0; i < instanceCount; ++i)
+		{
+			if (!NumberUtil.IsValid (instanceArray[i]))
+			{
+				return null;
+			}
+
+			probabilityMap.put (instanceArray[i], probabilityArray[i] / cumulativeProbability);
+		}
+
+		try
+		{
+			return new R1Distribution (probabilityMap);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return null;
+	}
 
 	private R1Distribution (
 		final TreeMap<Double, Double> probabilityMap)
-		throws Exception
 	{
-		if (null == (_probabilityMap = probabilityMap) || 0 == _probabilityMap.size())
-		{
-			throw new Exception ("R1Distribution Constructor => Invalid Inputs");
-		}
+		_probabilityMap = probabilityMap;
 	}
 
 	/**
@@ -139,7 +200,7 @@ public class R1Distribution
 	{
 		if (!NumberUtil.IsValid (x) || !_probabilityMap.containsKey (x))
 		{
-			throw new Exception ("R1Distribution::probability =>_probabilityMap");
+			throw new Exception ("R1Distribution::probability => Input Instance is Invalid");
 		}
 
 		return _probabilityMap.get (x);
