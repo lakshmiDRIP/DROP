@@ -62,6 +62,12 @@ Transaction Cost Analytics Library contains the Functionality to estimate single
 	* Types of TIF Orders
 	* Example of Time-in-Force
 	* Reference
+ * Indifference Price
+	* Overview
+	* Mathematics
+	* Example
+	* Notes
+	* Reference
  * Inverted Price Venues
 	* Reference
  * Smart Order Routing
