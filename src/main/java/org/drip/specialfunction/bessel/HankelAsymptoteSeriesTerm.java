@@ -1,11 +1,17 @@
 
 package org.drip.specialfunction.bessel;
 
+import org.drip.numerical.common.NumberUtil;
+import org.drip.numerical.estimation.R2ToR1SeriesTerm;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -78,7 +84,7 @@ package org.drip.specialfunction.bessel;
 
 /**
  * <i>HankelAsymptoteSeriesTerm</i> implements the Large z Asymptotic Series Term used for Modified Bessel
- * Functions. The References are:
+ * 	Functions. The References are:
  * 
  * <br><br>
  * 	<ul>
@@ -102,24 +108,37 @@ package org.drip.specialfunction.bessel;
  * 			Wikipedia (2019): Bessel Function https://en.wikipedia.org/wiki/Bessel_function
  * 		</li>
  * 	</ul>
+ * 
+ * 	It provides the following functionality:
  *
- *	<br><br>
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FunctionAnalysisLibrary.md">Function Analysis Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md">Special Function Implementation Analysis</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/bessel/README.md">Ordered Bessel Function Variant Estimators</a></li>
+ * 		<li><i>HankelAsymptoteSeriesTerm</i> Constructor</li>
+ * 		<li>Odd/Even Term Sign Flip</li>
  *  </ul>
+ *
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md">Special Function Implementation and Analysis</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/bessel/README.md">Ordered Bessel Function Variant Estimators</a></td></tr>
+ *  </table>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class HankelAsymptoteSeriesTerm extends org.drip.numerical.estimation.R2ToR1SeriesTerm
+public class HankelAsymptoteSeriesTerm extends R2ToR1SeriesTerm
 {
 	private boolean _flip = false;
 
 	/**
-	 * HankelAsymptoteSeriesTerm Constructor
+	 * <i>HankelAsymptoteSeriesTerm</i> Constructor
 	 * 
 	 * @param flip TRUE - Apply the Odd/Even Term Sign Flip
 	 */
@@ -145,30 +164,23 @@ public class HankelAsymptoteSeriesTerm extends org.drip.numerical.estimation.R2T
 		final int order,
 		final double alpha,
 		final double z)
-		throws java.lang.Exception
+		throws Exception
 	{
-		if (0 > order ||
-			!org.drip.numerical.common.NumberUtil.IsValid (alpha) ||
-			!org.drip.numerical.common.NumberUtil.IsValid (z))
-		{
-			throw new java.lang.Exception ("HankelAsymptoteSeriesTerm::value => Invalid Inputs");
+		if (0 > order || !NumberUtil.IsValid (alpha) || !NumberUtil.IsValid (z)) {
+			throw new Exception ("HankelAsymptoteSeriesTerm::value => Invalid Inputs");
 		}
 
-		if (0 == order)
-		{
+		if (0 == order) {
 			return 1.;
 		}
 
 		double subOrderProduct = 1.;
 
-		for (int subOrderIndex = 1; subOrderIndex <= order; ++subOrderIndex)
-		{
+		for (int subOrderIndex = 1; subOrderIndex <= order; ++subOrderIndex) {
 			subOrderProduct = subOrderProduct * (4 * alpha * alpha - (2. * subOrderIndex - 1.));
 		}
 	
-		return (0 != order % 2 && _flip ? -1. : 1.) * subOrderProduct * java.lang.Math.pow (
-			8. * z,
-			-1. * order
-		) / org.drip.numerical.common.NumberUtil.Factorial (order);
+		return (0 != order % 2 && _flip ? -1. : 1.) * subOrderProduct * Math.pow (8. * z, -1. * order) /
+			NumberUtil.Factorial (order);
 	}
 }

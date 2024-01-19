@@ -1,11 +1,19 @@
 
 package org.drip.specialfunction.bessel;
 
+import org.drip.function.definition.R1ToR1;
+import org.drip.numerical.common.NumberUtil;
+import org.drip.numerical.integration.NewtonCotesQuadratureGenerator;
+import org.drip.specialfunction.definition.BesselFirstKindEstimator;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -78,7 +86,7 @@ package org.drip.specialfunction.bessel;
 
 /**
  * <i>FirstSchlafliIntegralEstimator</i> implements the Integral Estimator for the Cylindrical Bessel
- * Function of the First Kind. The References are:
+ * 	Function of the First Kind. The References are:
  * 
  * <br><br>
  * 	<ul>
@@ -102,20 +110,33 @@ package org.drip.specialfunction.bessel;
  * 			Wikipedia (2019): Bessel Function https://en.wikipedia.org/wiki/Bessel_function
  * 		</li>
  * 	</ul>
+ * 
+ * 	It provides the following functionality:
  *
- *	<br><br>
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FunctionAnalysisLibrary.md">Function Analysis Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md">Special Function Implementation Analysis</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/bessel/README.md">Ordered Bessel Function Variant Estimators</a></li>
+ * 		<li>Construct the Bessel First Kind Estimator from the Schlafli Integer Integral Form</li>
+ * 		<li>Construct the Bessel First Kind Estimator from the Schlafli Non-Integer Integral Form</li>
+ * 		<li>Retrieve the Quadrature Count</li>
  *  </ul>
+ *
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md">Special Function Implementation and Analysis</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/bessel/README.md">Ordered Bessel Function Variant Estimators</a></td></tr>
+ *  </table>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public abstract class FirstSchlafliIntegralEstimator extends
-	org.drip.specialfunction.definition.BesselFirstKindEstimator
+public abstract class FirstSchlafliIntegralEstimator extends BesselFirstKindEstimator
 {
 	private int _quadratureCount = -1;
 
@@ -130,42 +151,36 @@ public abstract class FirstSchlafliIntegralEstimator extends
 	public static final FirstSchlafliIntegralEstimator IntegerForm (
 		final int quadratureCount)
 	{
-		try
-		{
-			return new FirstSchlafliIntegralEstimator (quadratureCount)
-			{
+		try {
+			return new FirstSchlafliIntegralEstimator (quadratureCount) {
 				@Override public double bigJ (
 					final double alpha,
 					final double z)
-					throws java.lang.Exception
+					throws Exception
 				{
-					if (!org.drip.numerical.common.NumberUtil.IsInteger (alpha) ||
-						!org.drip.numerical.common.NumberUtil.IsValid (z))
-					{
-						throw new java.lang.Exception
-							("FirstSchlafliIntegralEstimator::IntegerForm::evaluate => Invalid Inputs");
+					if (!NumberUtil.IsInteger (alpha) || !NumberUtil.IsValid (z)) {
+						throw new Exception (
+							"FirstSchlafliIntegralEstimator::IntegerForm::evaluate => Invalid Inputs"
+						);
 					}
 
-					return org.drip.numerical.integration.NewtonCotesQuadratureGenerator.Zero_PlusOne (
+					return NewtonCotesQuadratureGenerator.Zero_PlusOne (
 						0.,
-						java.lang.Math.PI,
+						Math.PI,
 						quadratureCount
 					).integrate (
-						new org.drip.function.definition.R1ToR1 (null)
-						{
+						new R1ToR1 (null) {
 							@Override public double evaluate (
 								final double theta)
-								throws java.lang.Exception
+								throws Exception
 							{
-								return java.lang.Math.cos (alpha * theta - z * java.lang.Math.sin (theta));
+								return Math.cos (alpha * theta - z * Math.sin (theta));
 							}
 						}
-					) / java.lang.Math.PI;
+					) / Math.PI;
 				}
 			};
-		}
-		catch (java.lang.Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -183,56 +198,52 @@ public abstract class FirstSchlafliIntegralEstimator extends
 	public static final FirstSchlafliIntegralEstimator NonIntegerForm (
 		final int quadratureCount)
 	{
-		try
-		{
-			return new FirstSchlafliIntegralEstimator (quadratureCount)
-			{
+		try {
+			return new FirstSchlafliIntegralEstimator (quadratureCount) {
 				@Override public double bigJ (
 					final double alpha,
 					final double z)
-					throws java.lang.Exception
+					throws Exception
 				{
-					if (!org.drip.numerical.common.NumberUtil.IsValid (alpha) ||
-						!org.drip.numerical.common.NumberUtil.IsValid (z))
-					{
-						throw new java.lang.Exception
-							("FirstSchlafliIntegralEstimator::NonIntegerForm::evaluate => Invalid Inputs");
+					if (!NumberUtil.IsValid (alpha) || NumberUtil.IsValid (z)) {
+						throw new Exception (
+							"FirstSchlafliIntegralEstimator::NonIntegerForm::evaluate => Invalid Inputs"
+						);
 					}
 
-					return (org.drip.numerical.integration.NewtonCotesQuadratureGenerator.Zero_PlusOne (
-						0.,
-						java.lang.Math.PI,
-						quadratureCount
-					).integrate (
-						new org.drip.function.definition.R1ToR1 (null)
-						{
-							@Override public double evaluate (
-								final double theta)
-								throws java.lang.Exception
-							{
-								return java.lang.Math.cos (alpha * theta - z * java.lang.Math.sin (theta));
+					return (
+						NewtonCotesQuadratureGenerator.Zero_PlusOne (
+							0.,
+							Math.PI,
+							quadratureCount
+						).integrate (
+							new R1ToR1 (null) {
+								@Override public double evaluate (
+									final double theta)
+									throws Exception
+								{
+									return Math.cos (alpha * theta - z * Math.sin (theta));
+								}
 							}
-						}
-					) / java.lang.Math.PI) - (0. == alpha ? 0. :
-					org.drip.numerical.integration.NewtonCotesQuadratureGenerator.GaussLaguerreLeftDefinite (
-						0.,
-						quadratureCount
-					).integrate (
-						new org.drip.function.definition.R1ToR1 (null)
-						{
-							@Override public double evaluate (
-								final double t)
-								throws java.lang.Exception
-							{
-								return java.lang.Math.exp (-z * java.lang.Math.sinh (t) - alpha * t);
+						) / Math.PI
+					) - (
+						0. == alpha ? 0. : NewtonCotesQuadratureGenerator.GaussLaguerreLeftDefinite (
+							0.,
+							quadratureCount
+						).integrate (
+							new R1ToR1 (null) {
+								@Override public double evaluate (
+									final double t)
+									throws Exception
+								{
+									return Math.exp (-z * Math.sinh (t) - alpha * t);
+								}
 							}
-						}
-					) * java.lang.Math.sin (alpha * java.lang.Math.PI) / java.lang.Math.PI);
+						) * Math.sin (alpha * Math.PI) / Math.PI
+					);
 				}
 			};
-		}
-		catch (java.lang.Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -241,11 +252,10 @@ public abstract class FirstSchlafliIntegralEstimator extends
 
 	protected FirstSchlafliIntegralEstimator (
 		final int quadratureCount)
-		throws java.lang.Exception
+		throws Exception
 	{
-		if (0 >= (_quadratureCount = quadratureCount))
-		{
-			throw new java.lang.Exception ("FirstSchlafliIntegralEstimator Constructor => Invalid Inputs");
+		if (0 >= (_quadratureCount = quadratureCount)) {
+			throw new Exception ("FirstSchlafliIntegralEstimator Constructor => Invalid Inputs");
 		} 
 	}
 

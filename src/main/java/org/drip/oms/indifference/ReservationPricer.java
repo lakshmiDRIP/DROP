@@ -4,6 +4,7 @@ package org.drip.oms.indifference;
 import org.drip.function.definition.R1ToR1;
 import org.drip.measure.continuous.R1Univariate;
 import org.drip.measure.discrete.R1Distribution;
+import org.drip.numerical.common.NumberUtil;
 import org.drip.numerical.integration.R1ToR1Integrator;
 
 /*
@@ -118,6 +119,7 @@ public class ReservationPricer
 {
 	private double _endowmentValue = Double.NaN;
 	private R1ToR1 _privateValuationUtilityFunction = null;
+	private BidAskClaimsHandler _bidAskClaimsHandler = null;
 
 	private double expectedTerminalUtilityPrice (
 		final R1Distribution terminalDistribution)
@@ -148,7 +150,7 @@ public class ReservationPricer
 		if (null == terminalDistribution)
 		{
 			throw new Exception (
-				"ReservationPricer::expectedUtility => Invalid Terminal  Distribution"
+				"ReservationPricer::expectedTerminalUtilityPrice => Invalid Terminal Distribution"
 			);
 		}
 
@@ -189,6 +191,17 @@ public class ReservationPricer
 	public double endowmentValue()
 	{
 		return _endowmentValue;
+	}
+
+	/**
+	 * Retrieve the Bid/Ask Claims Handler
+	 * 
+	 * @return The Bid/Ask Claims Handler
+	 */
+
+	public BidAskClaimsHandler bidAskClaimsHandler()
+	{
+		return _bidAskClaimsHandler;
 	}
 
 	/**
@@ -257,5 +270,36 @@ public class ReservationPricer
 		throws Exception
 	{
 		return expectedTerminalUtilityPrice (terminalClaimsDistribution);
+	}
+
+	/**
+	 * Generate the Function to calculate the Riskless Security Units from the Endowment Value
+	 * 
+	 * @param risklessPrice Riskless Security Unit Price
+	 * @param underlierPrice Underlier Security Unit Price
+	 * 
+	 * @return Riskless Units Constraint Function
+	 */
+
+	public R1ToR1 risklessUnitsConstraintFunction (
+		final double risklessPrice,
+		final double underlierPrice)
+	{
+		return !NumberUtil.IsValid (risklessPrice) || !NumberUtil.IsValid (underlierPrice) ?
+			null : new R1ToR1 (null)
+		{
+			@Override public double evaluate (
+				double underlierUnits)
+				throws Exception
+			{
+				return (_endowmentValue - underlierPrice * underlierUnits) / risklessPrice;
+			}
+		};
+	}
+
+	public UtilityOptimizationRun baselineIndifferenceRun (
+		final R1ToR1 risklessUnitsConstraintFunction)
+	{
+		return null;
 	}
 }

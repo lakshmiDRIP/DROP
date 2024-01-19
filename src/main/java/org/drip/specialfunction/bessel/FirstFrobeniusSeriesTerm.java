@@ -1,11 +1,18 @@
 
 package org.drip.specialfunction.bessel;
 
+import org.drip.function.definition.R1ToR1;
+import org.drip.numerical.common.NumberUtil;
+import org.drip.numerical.estimation.R2ToR1SeriesTerm;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -78,7 +85,7 @@ package org.drip.specialfunction.bessel;
 
 /**
  * <i>FirstFrobeniusSeriesTerm</i> implements the Frobenius Series Term for the Cylindrical Bessel Function
- * of the First Kind. The References are:
+ * 	of the First Kind. The References are:
  * 
  * <br><br>
  * 	<ul>
@@ -102,37 +109,49 @@ package org.drip.specialfunction.bessel;
  * 			Wikipedia (2019): Bessel Function https://en.wikipedia.org/wiki/Bessel_function
  * 		</li>
  * 	</ul>
+ * 
+ * 	It provides the following functionality:
  *
- *	<br><br>
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FunctionAnalysisLibrary.md">Function Analysis Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md">Special Function Implementation Analysis</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/bessel/README.md">Ordered Bessel Function Variant Estimators</a></li>
+ * 		<li><i>FirstFrobeniusSeriesTerm</i> Constructor</li>
+ * 		<li>Retrieve the Gamma Estimator</li>
  *  </ul>
+ *
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md">Special Function Implementation and Analysis</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/bessel/README.md">Ordered Bessel Function Variant Estimators</a></td></tr>
+ *  </table>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class FirstFrobeniusSeriesTerm extends org.drip.numerical.estimation.R2ToR1SeriesTerm
+public class FirstFrobeniusSeriesTerm extends R2ToR1SeriesTerm
 {
-	private org.drip.function.definition.R1ToR1 _gammaEstimator = null;
+	private R1ToR1 _gammaEstimator = null;
 
 	/**
-	 * FirstFrobeniusSeriesTerm Constructor
+	 * <i>FirstFrobeniusSeriesTerm</i> Constructor
 	 * 
 	 * @param gammaEstimator The Gamma Estimator
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public FirstFrobeniusSeriesTerm (
-		final org.drip.function.definition.R1ToR1 gammaEstimator)
-		throws java.lang.Exception
+		final R1ToR1 gammaEstimator)
+		throws Exception
 	{
-		if (null == (_gammaEstimator = gammaEstimator))
-		{
-			throw new java.lang.Exception ("FirstFrobeniusSeriesTerm Constructor => Invalid Input");
+		if (null == (_gammaEstimator = gammaEstimator)) {
+			throw new Exception ("FirstFrobeniusSeriesTerm Constructor => Invalid Input");
 		}
 	}
 
@@ -142,7 +161,7 @@ public class FirstFrobeniusSeriesTerm extends org.drip.numerical.estimation.R2To
 	 * @return The Gamma Estimator
 	 */
 
-	public org.drip.function.definition.R1ToR1 gammaEstimator()
+	public R1ToR1 gammaEstimator()
 	{
 		return _gammaEstimator;
 	}
@@ -151,23 +170,14 @@ public class FirstFrobeniusSeriesTerm extends org.drip.numerical.estimation.R2To
 		final int order,
 		final double alpha,
 		final double z)
-		throws java.lang.Exception
+		throws Exception
 	{
-		if (0 > order ||
-			!org.drip.numerical.common.NumberUtil.IsValid (alpha) ||
-			!org.drip.numerical.common.NumberUtil.IsValid (z))
-		{
-			throw new java.lang.Exception ("FirstFrobeniusSeriesTerm::value => Invalid Inputs");
+		if (0 > order || !NumberUtil.IsValid (alpha) || !NumberUtil.IsValid (z)) {
+			throw new Exception ("FirstFrobeniusSeriesTerm::value => Invalid Inputs");
 		}
 
-		return (0 == order % 2 ? 1. : -1.) *
-			java.lang.Math.pow (
-				0.5 * z,
-				2. * order + alpha
-			) /
-			(
-				_gammaEstimator.evaluate (order + 1) *
-				_gammaEstimator.evaluate (order + alpha + 1)
-			);
+		return (0 == order % 2 ? 1. : -1.) * Math.pow (0.5 * z, 2. * order + alpha) / (
+			_gammaEstimator.evaluate (order + 1) * _gammaEstimator.evaluate (order + alpha + 1)
+		);
 	}
 }
