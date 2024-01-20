@@ -1,11 +1,17 @@
 
 package org.drip.specialfunction.bessel;
 
+import org.drip.specialfunction.definition.BesselSecondKindEstimator;
+import org.drip.specialfunction.definition.SphericalBesselSecondKindEstimator;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -78,7 +84,7 @@ package org.drip.specialfunction.bessel;
 
 /**
  * <i>SphericalSecondEstimator</i> implements the Integral Estimator for the Spherical Bessel Function of the
- * Second Kind. The References are:
+ * 	Second Kind. The References are:
  * 
  * <br><br>
  * 	<ul>
@@ -102,22 +108,37 @@ package org.drip.specialfunction.bessel;
  * 			Wikipedia (2019): Bessel Function https://en.wikipedia.org/wiki/Bessel_function
  * 		</li>
  * 	</ul>
+ * 
+ * It provides the following functionality:
  *
- *	<br><br>
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FunctionAnalysisLibrary.md">Function Analysis Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md">Special Function Implementation Analysis</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/bessel/README.md">Ordered Bessel Function Variant Estimators</a></li>
+	 * <li>Retrieve the Order 0 Spherical Bessel Second Kind Estimator</li>
+	 * <li>Retrieve the Order +2 Spherical Bessel Second Kind Estimator</li>
+	 * <li>Retrieve the Order +3 Spherical Bessel Second Kind Estimator</li>
+	 * <li><i>SphericalSecondEstimator</i> Constructor</li>
+	 * <li>Retrieve the Bessel Function Second Kind Estimator</li>
  *  </ul>
+ *
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md">Special Function Implementation and Analysis</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/bessel/README.md">Ordered Bessel Function Variant Estimators</a></td></tr>
+ *  </table>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class SphericalSecondEstimator extends
-	org.drip.specialfunction.definition.SphericalBesselSecondKindEstimator
+public class SphericalSecondEstimator extends SphericalBesselSecondKindEstimator
 {
-	private org.drip.specialfunction.definition.BesselSecondKindEstimator _besselSecondKindEstimator = null;
+	private BesselSecondKindEstimator _besselSecondKindEstimator = null;
 
 	/**
 	 * Retrieve the Order 0 Spherical Bessel Second Kind Estimator
@@ -240,32 +261,28 @@ public class SphericalSecondEstimator extends
 	}
 
 	/**
-	 * SphericalSecondEstimator Constructor
+	 * <i>SphericalSecondEstimator</i> Constructor
 	 * 
 	 * @param besselSecondKindEstimator Bessel Function Second Kind Estimator
 	 * 
-	 * @throws java.lang.Exception Thrown if Inputs are Invalid
+	 * @throws Exception Thrown if Inputs are Invalid
 	 */
 
 	public SphericalSecondEstimator (
-		final org.drip.specialfunction.definition.BesselSecondKindEstimator besselSecondKindEstimator)
-		throws java.lang.Exception
+		final BesselSecondKindEstimator besselSecondKindEstimator)
+		throws Exception
 	{
-		if (null == (_besselSecondKindEstimator = besselSecondKindEstimator))
-		{
-			throw new java.lang.Exception ("SphericalSecondEstimator Constructor => Invalid Inputs");
+		if (null == (_besselSecondKindEstimator = besselSecondKindEstimator)) {
+			throw new Exception ("SphericalSecondEstimator Constructor => Invalid Inputs");
 		}
 	}
 
 	@Override public double smallY (
 		final double alpha,
 		final double z)
-		throws java.lang.Exception
+		throws Exception
 	{
-		return java.lang.Math.sqrt (0.5 * java.lang.Math.PI / z) * _besselSecondKindEstimator.bigY (
-			alpha + 0.5,
-			z
-		);
+		return Math.sqrt (0.5 * Math.PI / z) * _besselSecondKindEstimator.bigY (alpha + 0.5, z);
 	}
 
 	/**
@@ -274,7 +291,7 @@ public class SphericalSecondEstimator extends
 	 * @return Bessel Function Second Kind Estimator
 	 */
 
-	public org.drip.specialfunction.definition.BesselSecondKindEstimator besselSecondKindEstimator()
+	public BesselSecondKindEstimator besselSecondKindEstimator()
 	{
 		return _besselSecondKindEstimator;
 	}

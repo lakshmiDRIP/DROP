@@ -1,11 +1,18 @@
 
 package org.drip.specialfunction.bessel;
 
+import org.drip.numerical.common.NumberUtil;
+import org.drip.specialfunction.definition.BesselFirstKindEstimator;
+import org.drip.specialfunction.definition.BesselSecondKindEstimator;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -78,7 +85,7 @@ package org.drip.specialfunction.bessel;
 
 /**
  * <i>SecondWeberEstimator</i> implements the Weber Estimation for the Cylindrical Bessel Function of the
- * Second Kind. The References are:
+ * 	Second Kind. The References are:
  * 
  * <br><br>
  * 	<ul>
@@ -102,37 +109,49 @@ package org.drip.specialfunction.bessel;
  * 			Wikipedia (2019): Bessel Function https://en.wikipedia.org/wiki/Bessel_function
  * 		</li>
  * 	</ul>
+ * 
+ * It provides the following functionality:
  *
- *	<br><br>
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FunctionAnalysisLibrary.md">Function Analysis Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md">Special Function Implementation Analysis</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/bessel/README.md">Ordered Bessel Function Variant Estimators</a></li>
+ * 		<li><i>SecondWeberEstimator</i> Constructor</li>
+ * 		<li>Retrieve the Bessel Function First Kind Estimator</li>
  *  </ul>
+ *
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md">Special Function Implementation and Analysis</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/bessel/README.md">Ordered Bessel Function Variant Estimators</a></td></tr>
+ *  </table>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class SecondWeberEstimator extends org.drip.specialfunction.definition.BesselSecondKindEstimator
+public class SecondWeberEstimator extends BesselSecondKindEstimator
 {
-	private org.drip.specialfunction.definition.BesselFirstKindEstimator _besselFirstKindEstimator = null;
+	private BesselFirstKindEstimator _besselFirstKindEstimator = null;
 
 	/**
-	 * SecondWeberEstimator Constructor
+	 * <i>SecondWeberEstimator</i> Constructor
 	 * 
 	 * @param besselFirstKindEstimator Bessel Function First Kind Estimator
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public SecondWeberEstimator (
-		final org.drip.specialfunction.definition.BesselFirstKindEstimator besselFirstKindEstimator)
-		throws java.lang.Exception
+		final BesselFirstKindEstimator besselFirstKindEstimator)
+		throws Exception
 	{
-		if (null == (_besselFirstKindEstimator = besselFirstKindEstimator))
-		{
-			throw new java.lang.Exception ("SecondWeberEstimator Constructor => Invalid Inputs");
+		if (null == (_besselFirstKindEstimator = besselFirstKindEstimator)) {
+			throw new Exception ("SecondWeberEstimator Constructor => Invalid Inputs");
 		}
 	}
 
@@ -142,7 +161,7 @@ public class SecondWeberEstimator extends org.drip.specialfunction.definition.Be
 	 * @return The Bessel Function First Kind Estimator
 	 */
 
-	public org.drip.specialfunction.definition.BesselFirstKindEstimator besselFirstKindEstimator()
+	public BesselFirstKindEstimator besselFirstKindEstimator()
 	{
 		return _besselFirstKindEstimator;
 	}
@@ -150,22 +169,15 @@ public class SecondWeberEstimator extends org.drip.specialfunction.definition.Be
 	@Override public double bigY (
 		final double alpha,
 		final double z)
-		throws java.lang.Exception
+		throws Exception
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (alpha) ||
-			!org.drip.numerical.common.NumberUtil.IsValid (z))
-		{
-			throw new java.lang.Exception ("SecondWeberEstimator::bigY => Invalid Inputs");
+		if (!NumberUtil.IsValid (alpha) || !NumberUtil.IsValid (z)) {
+			throw new Exception ("SecondWeberEstimator::bigY => Invalid Inputs");
 		}
 
 		return (
-			java.lang.Math.cos (java.lang.Math.PI * alpha) * _besselFirstKindEstimator.bigJ (
-				alpha,
-				z
-			) - _besselFirstKindEstimator.bigJ (
-				-1. * alpha,
-				z
-			)
-		) / java.lang.Math.sin (java.lang.Math.PI * alpha);
+			Math.cos (Math.PI * alpha) * _besselFirstKindEstimator.bigJ (alpha, z) -
+			_besselFirstKindEstimator.bigJ (-1. * alpha, z)
+		) / Math.sin (Math.PI * alpha);
 	}
 }

@@ -1,11 +1,19 @@
 
 package org.drip.specialfunction.bessel;
 
+import org.drip.function.definition.R1ToR1;
+import org.drip.numerical.common.NumberUtil;
+import org.drip.numerical.integration.NewtonCotesQuadratureGenerator;
+import org.drip.specialfunction.definition.BesselSecondKindEstimator;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -78,7 +86,7 @@ package org.drip.specialfunction.bessel;
 
 /**
  * <i>SecondWatsonIntegralEstimator</i> implements the Integral Estimator for the Cylindrical Bessel Function
- * of the Second Kind. The References are:
+ * 	of the Second Kind. The References are:
  * 
  * <br><br>
  * 	<ul>
@@ -102,20 +110,32 @@ package org.drip.specialfunction.bessel;
  * 			Wikipedia (2019): Bessel Function https://en.wikipedia.org/wiki/Bessel_function
  * 		</li>
  * 	</ul>
+ * 
+ * It provides the following functionality:
  *
- *	<br><br>
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FunctionAnalysisLibrary.md">Function Analysis Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md">Special Function Implementation Analysis</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/bessel/README.md">Ordered Bessel Function Variant Estimators</a></li>
+ * 		<li>Construct the Bessel Second Kind Estimator from the Watson Integer Integral Form</li>
+ * 		<li>Retrieve the Quadrature Count</li>
  *  </ul>
+ *
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md">Special Function Implementation and Analysis</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/bessel/README.md">Ordered Bessel Function Variant Estimators</a></td></tr>
+ *  </table>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public abstract class SecondWatsonIntegralEstimator extends
-	org.drip.specialfunction.definition.BesselSecondKindEstimator
+public abstract class SecondWatsonIntegralEstimator extends BesselSecondKindEstimator
 {
 	private int _quadratureCount = -1;
 
@@ -130,71 +150,59 @@ public abstract class SecondWatsonIntegralEstimator extends
 	public static final SecondWatsonIntegralEstimator IntegerForm (
 		final int quadratureCount)
 	{
-		try
-		{
-			return new SecondWatsonIntegralEstimator (quadratureCount)
-			{
+		try {
+			return new SecondWatsonIntegralEstimator (quadratureCount) {
 				@Override public double bigY (
 					final double alpha,
 					final double z)
-					throws java.lang.Exception
+					throws Exception
 				{
-					if (!org.drip.numerical.common.NumberUtil.IsInteger (alpha) ||
-						!org.drip.numerical.common.NumberUtil.IsValid (z))
-					{
+					if (!NumberUtil.IsInteger (alpha) || !NumberUtil.IsValid (z)) {
 						throw new java.lang.Exception
 							("SecondWatsonIntegralEstimator::IntegerForm::evaluate => Invalid Inputs " + alpha);
 					}
 
-					return (org.drip.numerical.integration.NewtonCotesQuadratureGenerator.Zero_PlusOne (
-						0.,
-						java.lang.Math.PI,
-						quadratureCount
-					).integrate (
-						new org.drip.function.definition.R1ToR1 (null)
-						{
-							@Override public double evaluate (
-								final double theta)
-								throws java.lang.Exception
-							{
-								if (java.lang.Double.isInfinite (theta))
+					return (
+						NewtonCotesQuadratureGenerator.Zero_PlusOne (
+							0.,
+							Math.PI,
+							quadratureCount
+						).integrate (
+							new R1ToR1 (null) {
+								@Override public double evaluate (
+									final double theta)
+									throws Exception
 								{
-									return 0.;
+									return Double.isInfinite (theta) ? 0. :
+										Math.sin (z * Math.sin (theta) - alpha * theta);
 								}
-
-								return java.lang.Math.sin (z * java.lang.Math.sin (theta) - alpha * theta);
 							}
-						}
-					) / java.lang.Math.PI) -
-					org.drip.numerical.integration.NewtonCotesQuadratureGenerator.GaussLaguerreLeftDefinite (
+						) / Math.PI
+					) - NewtonCotesQuadratureGenerator.GaussLaguerreLeftDefinite (
 						0.,
 						quadratureCount
 					).integrate (
-						new org.drip.function.definition.R1ToR1 (null)
-						{
+						new R1ToR1 (null) {
 							@Override public double evaluate (
 								final double t)
-								throws java.lang.Exception
+								throws Exception
 							{
-								if (java.lang.Double.isInfinite (t))
-								{
+								if (Double.isInfinite (t)) {
 									return 0.;
 								}
 
-								double ePowerAlphaT = java.lang.Math.exp (alpha * t);
+								double ePowerAlphaT = Math.exp (alpha * t);
 
 								double expPrefix = 0 == (alpha % 2) ? ePowerAlphaT + 1. / ePowerAlphaT :
 									ePowerAlphaT - 1. / ePowerAlphaT;
 
-								return expPrefix * java.lang.Math.exp (-z * java.lang.Math.sinh (t));
+								return expPrefix * Math.exp (-z * Math.sinh (t));
 							}
 						}
-					) / java.lang.Math.PI;
+					) / Math.PI;
 				}
 			};
-		}
-		catch (java.lang.Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -203,11 +211,10 @@ public abstract class SecondWatsonIntegralEstimator extends
 
 	protected SecondWatsonIntegralEstimator (
 		final int quadratureCount)
-		throws java.lang.Exception
+		throws Exception
 	{
-		if (0 >= (_quadratureCount = quadratureCount))
-		{
-			throw new java.lang.Exception ("SecondWatsonIntegralEstimator Constructor => Invalid Inputs");
+		if (0 >= (_quadratureCount = quadratureCount)) {
+			throw new Exception ("SecondWatsonIntegralEstimator Constructor => Invalid Inputs");
 		}
 	}
 
