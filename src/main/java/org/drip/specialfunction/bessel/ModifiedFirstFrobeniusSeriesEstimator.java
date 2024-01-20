@@ -1,11 +1,18 @@
 
 package org.drip.specialfunction.bessel;
 
+import org.drip.function.definition.R1ToR1;
+import org.drip.numerical.estimation.R2ToR1Series;
+import org.drip.specialfunction.definition.ModifiedBesselFirstKindEstimator;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -78,7 +85,7 @@ package org.drip.specialfunction.bessel;
 
 /**
  * <i>ModifiedFirstFrobeniusSeriesEstimator</i> implements the Frobenius Series Estimator for the Modified
- * Bessel Function of the First Kind. The References are:
+ * 	Bessel Function of the First Kind. The References are:
  * 
  * <br><br>
  * 	<ul>
@@ -102,47 +109,54 @@ package org.drip.specialfunction.bessel;
  * 			Wikipedia (2019): Bessel Function https://en.wikipedia.org/wiki/Bessel_function
  * 		</li>
  * 	</ul>
+ * 
+ * 	It provides the following functionality:
  *
- *	<br><br>
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FunctionAnalysisLibrary.md">Function Analysis Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md">Special Function Implementation Analysis</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/bessel/README.md">Ordered Bessel Function Variant Estimators</a></li>
+ * 		<li>Construct a Standard Instance of Bessel <i>ModifiedFirstFrobeniusSeriesEstimator</i></li>
+ * 		<li>Retrieve the Frobenius Series</li>
  *  </ul>
+ *
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md">Special Function Implementation and Analysis</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/bessel/README.md">Ordered Bessel Function Variant Estimators</a></td></tr>
+ *  </table>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class ModifiedFirstFrobeniusSeriesEstimator extends
-	org.drip.specialfunction.definition.ModifiedBesselFirstKindEstimator
+public class ModifiedFirstFrobeniusSeriesEstimator extends ModifiedBesselFirstKindEstimator
 {
-	private org.drip.numerical.estimation.R2ToR1Series _frobeniusSeries = null;
+	private R2ToR1Series _frobeniusSeries = null;
 
 	/**
-	 * Construct a Standard Instance of Bessel ModifiedFirstFrobeniusSeriesEstimator
+	 * Construct a Standard Instance of Bessel <i>ModifiedFirstFrobeniusSeriesEstimator</i>
 	 * 
 	 * @param gammaEstimator The Gamma Estimator
 	 * @param termCount Count of the Number of Terms
 	 * 
-	 * @return The Standard Instance of Bessel ModifiedFirstFrobeniusSeriesEstimator
+	 * @return The Standard Instance of Bessel <i>ModifiedFirstFrobeniusSeriesEstimator</i>
 	 */
 
 	public static final ModifiedFirstFrobeniusSeriesEstimator Standard (
-		final org.drip.function.definition.R1ToR1 gammaEstimator,
+		final R1ToR1 gammaEstimator,
 		final int termCount)
 	{
 		try
 		{
 			return new ModifiedFirstFrobeniusSeriesEstimator (
-				org.drip.specialfunction.bessel.ModifiedFirstFrobeniusSeries.Summation (
-					gammaEstimator,
-					termCount
-				)
+				ModifiedFirstFrobeniusSeries.Summation (gammaEstimator, termCount)
 			);
-		}
-		catch (java.lang.Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -150,13 +164,11 @@ public class ModifiedFirstFrobeniusSeriesEstimator extends
 	}
 
 	protected ModifiedFirstFrobeniusSeriesEstimator (
-		final org.drip.numerical.estimation.R2ToR1Series frobeniusSeries)
-		throws java.lang.Exception
+		final R2ToR1Series frobeniusSeries)
+		throws Exception
 	{
-		if (null == (_frobeniusSeries = frobeniusSeries))
-		{
-			throw new java.lang.Exception
-				("ModifiedFirstFrobeniusSeriesEstimator Constructor => Invalid Inputs");
+		if (null == (_frobeniusSeries = frobeniusSeries)) {
+			throw new Exception ("ModifiedFirstFrobeniusSeriesEstimator Constructor => Invalid Inputs");
 		}
 	}
 
@@ -166,7 +178,7 @@ public class ModifiedFirstFrobeniusSeriesEstimator extends
 	 * @return The Frobenius Series
 	 */
 
-	public org.drip.numerical.estimation.R2ToR1Series frobeniusSeries()
+	public R2ToR1Series frobeniusSeries()
 	{
 		return _frobeniusSeries;
 	}
@@ -174,11 +186,8 @@ public class ModifiedFirstFrobeniusSeriesEstimator extends
 	@Override public double bigI (
 		final double alpha,
 		final double z)
-		throws java.lang.Exception
+		throws Exception
 	{
-		return _frobeniusSeries.evaluate (
-			alpha,
-			z
-		);
+		return _frobeniusSeries.evaluate (alpha, z);
 	}
 }

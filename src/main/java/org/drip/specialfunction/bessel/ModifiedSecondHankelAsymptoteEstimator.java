@@ -1,11 +1,17 @@
 
 package org.drip.specialfunction.bessel;
 
+import org.drip.numerical.estimation.R2ToR1Series;
+import org.drip.specialfunction.definition.ModifiedBesselSecondKindEstimator;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -78,7 +84,7 @@ package org.drip.specialfunction.bessel;
 
 /**
  * <i>ModifiedSecondHankelAsymptoteEstimator</i> implements the Hankel Large z Asymptote Series Estimator for
- * the Modified Bessel Function of the Second Kind. The References are:
+ * 	the Modified Bessel Function of the Second Kind. The References are:
  * 
  * <br><br>
  * 	<ul>
@@ -102,45 +108,51 @@ package org.drip.specialfunction.bessel;
  * 			Wikipedia (2019): Bessel Function https://en.wikipedia.org/wiki/Bessel_function
  * 		</li>
  * 	</ul>
+ * 
+ * 	It provides the following functionality:
  *
- *	<br><br>
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FunctionAnalysisLibrary.md">Function Analysis Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md">Special Function Implementation Analysis</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/bessel/README.md">Ordered Bessel Function Variant Estimators</a></li>
+ * 		<li>Construct a Standard Instance of Bessel <i>ModifiedSecondHankelAsymptoteEstimator</i></li>
+ * 		<li>Retrieve the Hankel Asymptote Series</li>
  *  </ul>
+ *
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md">Special Function Implementation and Analysis</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/bessel/README.md">Ordered Bessel Function Variant Estimators</a></td></tr>
+ *  </table>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class ModifiedSecondHankelAsymptoteEstimator extends
-	org.drip.specialfunction.definition.ModifiedBesselSecondKindEstimator
+public class ModifiedSecondHankelAsymptoteEstimator extends ModifiedBesselSecondKindEstimator
 {
-	private org.drip.numerical.estimation.R2ToR1Series _hankelAsymptoteSeries = null;
+	private R2ToR1Series _hankelAsymptoteSeries = null;
 
 	/**
-	 * Construct a Standard Instance of Bessel ModifiedSecondHankelAsymptoteEstimator
+	 * Construct a Standard Instance of Bessel <i>ModifiedSecondHankelAsymptoteEstimator</i>
 	 * 
 	 * @param termCount Count of the Number of Terms
 	 * 
-	 * @return The Standard Instance of Bessel ModifiedSecondHankelAsymptoteEstimator
+	 * @return The Standard Instance of Bessel <i>ModifiedSecondHankelAsymptoteEstimator</i>
 	 */
 
 	public static final ModifiedSecondHankelAsymptoteEstimator Standard (
 		final int termCount)
 	{
-		try
-		{
+		try {
 			return new ModifiedSecondHankelAsymptoteEstimator (
-				org.drip.specialfunction.bessel.HankelAsymptoteSeries.Summation (
-					false,
-					termCount
-				)
+				HankelAsymptoteSeries.Summation (false, termCount)
 			);
-		}
-		catch (java.lang.Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -148,13 +160,11 @@ public class ModifiedSecondHankelAsymptoteEstimator extends
 	}
 
 	protected ModifiedSecondHankelAsymptoteEstimator (
-		final org.drip.numerical.estimation.R2ToR1Series hankelAsymptoteSeries)
-		throws java.lang.Exception
+		final R2ToR1Series hankelAsymptoteSeries)
+		throws Exception
 	{
-		if (null == (_hankelAsymptoteSeries = hankelAsymptoteSeries))
-		{
-			throw new java.lang.Exception
-				("ModifiedSecondHankelAsymptoteEstimator Constructor => Invalid Inputs");
+		if (null == (_hankelAsymptoteSeries = hankelAsymptoteSeries)) {
+			throw new Exception ("ModifiedSecondHankelAsymptoteEstimator Constructor => Invalid Inputs");
 		}
 	}
 
@@ -164,7 +174,7 @@ public class ModifiedSecondHankelAsymptoteEstimator extends
 	 * @return The Hankel Asymptote Series
 	 */
 
-	public org.drip.numerical.estimation.R2ToR1Series hankelAsymptoteSeries()
+	public R2ToR1Series hankelAsymptoteSeries()
 	{
 		return _hankelAsymptoteSeries;
 	}
@@ -172,11 +182,9 @@ public class ModifiedSecondHankelAsymptoteEstimator extends
 	@Override public double bigK (
 		final double alpha,
 		final double z)
-		throws java.lang.Exception
+		throws Exception
 	{
-		return java.lang.Math.exp (-1. * z) * _hankelAsymptoteSeries.evaluate (
-			alpha,
-			z
-		) * java.lang.Math.sqrt (0.5 * java.lang.Math.PI / z);
+		return Math.exp (-1. * z) * _hankelAsymptoteSeries.evaluate (alpha, z) *
+			Math.sqrt (0.5 * Math.PI / z);
 	}
 }

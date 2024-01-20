@@ -1,11 +1,17 @@
 
 package org.drip.specialfunction.bessel;
 
+import org.drip.specialfunction.definition.ModifiedBesselFirstKindEstimator;
+import org.drip.specialfunction.definition.ModifiedBesselSecondKindEstimator;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -78,7 +84,7 @@ package org.drip.specialfunction.bessel;
 
 /**
  * <i>ModifiedSecondEstimator</i> implements the Estimator for the Modified Bessel Function of the Second
- * Kind. The References are:
+ * 	Kind. The References are:
  * 
  * <br><br>
  * 	<ul>
@@ -102,40 +108,49 @@ package org.drip.specialfunction.bessel;
  * 			Wikipedia (2019): Bessel Function https://en.wikipedia.org/wiki/Bessel_function
  * 		</li>
  * 	</ul>
+ * 
+ * 	It provides the following functionality:
  *
- *	<br><br>
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FunctionAnalysisLibrary.md">Function Analysis Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md">Special Function Implementation Analysis</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/bessel/README.md">Ordered Bessel Function Variant Estimators</a></li>
+ * 		<li><i>ModifiedSecondEstimator</i> Constructor</li>
+ * 		<li>Retrieve the Modified Bessel First Kind Estimator</li>
  *  </ul>
+ *
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md">Special Function Implementation and Analysis</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/bessel/README.md">Ordered Bessel Function Variant Estimators</a></td></tr>
+ *  </table>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class ModifiedSecondEstimator extends
-	org.drip.specialfunction.definition.ModifiedBesselSecondKindEstimator
+public class ModifiedSecondEstimator extends ModifiedBesselSecondKindEstimator
 {
-	private org.drip.specialfunction.definition.ModifiedBesselFirstKindEstimator
-		_modifiedBesselFirstKindEstimator = null;
+	private ModifiedBesselFirstKindEstimator _modifiedBesselFirstKindEstimator = null;
 
 	/**
-	 * ModifiedSecondEstimator Constructor
+	 * <i>ModifiedSecondEstimator</i> Constructor
 	 * 
 	 * @param modifiedBesselFirstKindEstimator The Modified Bessel First Kind Estimator
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are In valid
+	 * @throws Exception Thrown if the Inputs are In valid
 	 */
 
 	public ModifiedSecondEstimator (
-		final org.drip.specialfunction.definition.ModifiedBesselFirstKindEstimator
-			modifiedBesselFirstKindEstimator)
-		throws java.lang.Exception
+		final ModifiedBesselFirstKindEstimator modifiedBesselFirstKindEstimator)
+		throws Exception
 	{
-		if (null == (_modifiedBesselFirstKindEstimator = modifiedBesselFirstKindEstimator))
-		{
-			throw new java.lang.Exception ("ModifiedSecondEstimator Constructor => Invalid Inputs");
+		if (null == (_modifiedBesselFirstKindEstimator = modifiedBesselFirstKindEstimator)) {
+			throw new Exception ("ModifiedSecondEstimator Constructor => Invalid Inputs");
 		}
 	}
 
@@ -145,8 +160,7 @@ public class ModifiedSecondEstimator extends
 	 * @return Modified Bessel First Kind Estimator
 	 */
 
-	public org.drip.specialfunction.definition.ModifiedBesselFirstKindEstimator
-		modifiedBesselFirstKindEstimator()
+	public ModifiedBesselFirstKindEstimator modifiedBesselFirstKindEstimator()
 	{
 		return _modifiedBesselFirstKindEstimator;
 	}
@@ -154,16 +168,11 @@ public class ModifiedSecondEstimator extends
 	@Override public double bigK (
 		final double alpha,
 		final double z)
-		throws java.lang.Exception
+		throws Exception
 	{
-		return 0.5 * java.lang.Math.PI* (
-			_modifiedBesselFirstKindEstimator.evaluate (
-				-1. * alpha,
-				z
-			) - _modifiedBesselFirstKindEstimator.evaluate (
-				alpha,
-				z
-			)
-		) / java.lang.Math.sin (java.lang.Math.PI * alpha);
+		return 0.5 * Math.PI * (
+			_modifiedBesselFirstKindEstimator.evaluate (-1. * alpha, z) -
+			_modifiedBesselFirstKindEstimator.evaluate (alpha, z)
+		) / Math.sin (Math.PI * alpha);
 	}
 }

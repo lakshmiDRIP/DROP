@@ -2,6 +2,7 @@
 package org.drip.specialfunction.bessel;
 
 import org.drip.function.definition.R1ToR1;
+import org.drip.numerical.common.NumberUtil;
 import org.drip.numerical.estimation.R2ToR1SeriesTerm;
 
 /*
@@ -171,20 +172,12 @@ public class ModifiedFirstFrobeniusSeriesTerm extends R2ToR1SeriesTerm
 		final double z)
 		throws java.lang.Exception
 	{
-		if (0 > order ||
-			!org.drip.numerical.common.NumberUtil.IsValid (alpha) ||
-			!org.drip.numerical.common.NumberUtil.IsValid (z))
-		{
-			throw new java.lang.Exception ("ModifiedFirstFrobeniusSeriesTerm::value => Invalid Inputs");
+		if (0 > order || !NumberUtil.IsValid (alpha) || !NumberUtil.IsValid (z)) {
+			throw new Exception ("ModifiedFirstFrobeniusSeriesTerm::value => Invalid Inputs");
 		}
 
-		return java.lang.Math.pow (
-			0.5 * z,
-			2. * order + alpha
-		) /
-		(
-			_gammaEstimator.evaluate (order + 1) *
-			_gammaEstimator.evaluate (order + alpha + 1)
+		return Math.pow (0.5 * z, 2. * order + alpha) / (
+			_gammaEstimator.evaluate (order + 1) * _gammaEstimator.evaluate (order + alpha + 1)
 		);
 	}
 }

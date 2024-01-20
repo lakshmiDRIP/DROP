@@ -1,11 +1,19 @@
 
 package org.drip.specialfunction.bessel;
 
+import java.util.TreeMap;
+
+import org.drip.function.definition.R1ToR1;
+import org.drip.numerical.estimation.R2ToR1Series;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -78,7 +86,7 @@ package org.drip.specialfunction.bessel;
 
 /**
  * <i>ModifiedFirstFrobeniusSeries</i> implements the Frobenius Series for the Modified Bessel Function of
- * the First Kind. The References are:
+ * 	the First Kind. The References are:
  * 
  * <br><br>
  * 	<ul>
@@ -102,14 +110,26 @@ package org.drip.specialfunction.bessel;
  * 			Wikipedia (2019): Bessel Function https://en.wikipedia.org/wiki/Bessel_function
  * 		</li>
  * 	</ul>
+ * 
+ * 	It provides the following functionality:
  *
- *	<br><br>
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FunctionAnalysisLibrary.md">Function Analysis Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md">Special Function Implementation Analysis</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/bessel/README.md">Ordered Bessel Function Variant Estimators</a></li>
+ * 		<li>Construct the R<sup>2</sup> To R<sup>1</sup> Modified Bessel First Kind Frobenius Summation Series</li>
  *  </ul>
+ *
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md">Special Function Implementation and Analysis</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/bessel/README.md">Ordered Bessel Function Variant Estimators</a></td></tr>
+ *  </table>
  *
  * @author Lakshmi Krishnamurthy
  */
@@ -126,31 +146,23 @@ public class ModifiedFirstFrobeniusSeries
 	 * @return The R<sup>2</sup> To R<sup>1</sup> Modified Bessel First Kind Frobenius Summation Series
 	 */
 
-	public static final org.drip.numerical.estimation.R2ToR1Series Summation (
-		final org.drip.function.definition.R1ToR1 gammaEstimator,
+	public static final R2ToR1Series Summation (
+		final R1ToR1 gammaEstimator,
 		final int termCount)
 	{
-		try
-		{
-			java.util.TreeMap<java.lang.Integer, java.lang.Double> termWeightMap = new
-				java.util.TreeMap<java.lang.Integer, java.lang.Double>();
+		try {
+			TreeMap<Integer, Double> termWeightMap = new TreeMap<Integer, Double>();
 
-			for (int termIndex = 0; termIndex <= termCount; ++termIndex)
-			{
-				termWeightMap.put (
-					termIndex,
-					1.
-				);
+			for (int termIndex = 0; termIndex <= termCount; ++termIndex) {
+				termWeightMap.put (termIndex, 1.);
 			}
 
-			return new org.drip.numerical.estimation.R2ToR1Series (
-				new org.drip.specialfunction.bessel.ModifiedFirstFrobeniusSeriesTerm (gammaEstimator),
+			return new R2ToR1Series (
+				new ModifiedFirstFrobeniusSeriesTerm (gammaEstimator),
 				false,
 				termWeightMap
 			);
-		}
-		catch (java.lang.Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
