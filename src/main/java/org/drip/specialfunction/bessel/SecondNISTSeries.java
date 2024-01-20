@@ -1,6 +1,11 @@
 
 package org.drip.specialfunction.bessel;
 
+import java.util.TreeMap;
+
+import org.drip.function.definition.R1ToR1;
+import org.drip.numerical.estimation.R2ToR1Series;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
@@ -78,7 +83,7 @@ package org.drip.specialfunction.bessel;
 
 /**
  * <i>SecondNISTSeries</i> implements the Series for the Cylindrical Bessel Function of the Second Kind using
- * the NIST Series. The References are:
+ * 	the NIST Series. The References are:
  * 
  * <br><br>
  * 	<ul>
@@ -103,13 +108,19 @@ package org.drip.specialfunction.bessel;
  * 		</li>
  * 	</ul>
  *
- *	<br><br>
- *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FunctionAnalysisLibrary.md">Function Analysis Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md">Special Function Implementation Analysis</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/bessel/README.md">Ordered Bessel Function Variant Estimators</a></li>
- *  </ul>
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md">Special Function Implementation and Analysis</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/bessel/README.md">Ordered Bessel Function Variant Estimators</a></td></tr>
+ *  </table>
  *
  * @author Lakshmi Krishnamurthy
  */
@@ -127,35 +138,24 @@ public class SecondNISTSeries
 	 * @return The R<sup>2</sup> To R<sup>1</sup> Bessel Second Kind NIST Summation Series
 	 */
 
-	public static final org.drip.numerical.estimation.R2ToR1Series SecondKind (
-		final org.drip.function.definition.R1ToR1 digammaEstimator,
-		final org.drip.function.definition.R1ToR1 gammaEstimator,
+	public static final R2ToR1Series SecondKind (
+		final R1ToR1 digammaEstimator,
+		final R1ToR1 gammaEstimator,
 		final int termCount)
 	{
-		try
-		{
-			java.util.TreeMap<java.lang.Integer, java.lang.Double> termWeightMap = new
-				java.util.TreeMap<java.lang.Integer, java.lang.Double>();
+		try {
+			TreeMap<Integer, Double> termWeightMap = new TreeMap<Integer, Double>();
 
-			for (int termIndex = 0; termIndex <= termCount; ++termIndex)
-			{
-				termWeightMap.put (
-					termIndex,
-					1.
-				);
+			for (int termIndex = 0; termIndex <= termCount; ++termIndex) {
+				termWeightMap.put (termIndex, 1.);
 			}
 
-			return new org.drip.numerical.estimation.R2ToR1Series (
-				new org.drip.specialfunction.bessel.SecondNISTSeriesTerm (
-					digammaEstimator,
-					gammaEstimator
-				),
+			return new R2ToR1Series (
+				new SecondNISTSeriesTerm (digammaEstimator, gammaEstimator),
 				false,
 				termWeightMap
 			);
-		}
-		catch (java.lang.Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 

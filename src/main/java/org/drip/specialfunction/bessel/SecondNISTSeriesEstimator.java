@@ -1,11 +1,19 @@
 
 package org.drip.specialfunction.bessel;
 
+import org.drip.function.definition.R1ToR1;
+import org.drip.numerical.estimation.R2ToR1Series;
+import org.drip.specialfunction.definition.BesselFirstKindEstimator;
+import org.drip.specialfunction.definition.BesselSecondKindEstimator;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -78,7 +86,7 @@ package org.drip.specialfunction.bessel;
 
 /**
  * <i>SecondNISTSeriesEstimator</i> implements the NIST Series Estimator for the Cylindrical Bessel Function
- * of the Second Kind. The References are:
+ * 	of the Second Kind. The References are:
  * 
  * <br><br>
  * 	<ul>
@@ -102,54 +110,60 @@ package org.drip.specialfunction.bessel;
  * 			Wikipedia (2019): Bessel Function https://en.wikipedia.org/wiki/Bessel_function
  * 		</li>
  * 	</ul>
+ * 
+ * It provides the following functionality:
  *
- *	<br><br>
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FunctionAnalysisLibrary.md">Function Analysis Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md">Special Function Implementation Analysis</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/bessel/README.md">Ordered Bessel Function Variant Estimators</a></li>
+ * 		<li>Construct a Standard Instance of <i>SecondNISTSeriesEstimator</i></li>
+ * 		<li>Retrieve the Bessel Second Kind NIST Series</li>
+ * 		<li>Retrieve the Bessel Function First Kind Estimator</li>
  *  </ul>
+ *
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md">Special Function Implementation and Analysis</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/bessel/README.md">Ordered Bessel Function Variant Estimators</a></td></tr>
+ *  </table>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class SecondNISTSeriesEstimator extends
-	org.drip.specialfunction.definition.BesselSecondKindEstimator
+public class SecondNISTSeriesEstimator extends BesselSecondKindEstimator
 {
-	private org.drip.numerical.estimation.R2ToR1Series _besselSecondKindNISTSeries = null;
-	private org.drip.specialfunction.definition.BesselFirstKindEstimator _besselFirstKindEstimator = null;
+	private R2ToR1Series _besselSecondKindNISTSeries = null;
+	private BesselFirstKindEstimator _besselFirstKindEstimator = null;
 
 	/**
-	 * Construct a Standard Instance of SecondNISTSeriesEstimator
+	 * Construct a Standard Instance of <i>SecondNISTSeriesEstimator</i>
 	 * 
 	 * @param digammaEstimator The Digamma Estimator
 	 * @param gammaEstimator The Gamma Estimator
 	 * @param besselFirstKindEstimator The Bessel Function First Kind Estimator
 	 * @param termCount Count of the Number of Terms
 	 * 
-	 * @return The Standard Instance of SecondNISTSeriesEstimator
+	 * @return The Standard Instance of <i>SecondNISTSeriesEstimator</i>
 	 */
 
 	public static final SecondNISTSeriesEstimator Standard (
-		final org.drip.function.definition.R1ToR1 digammaEstimator,
-		final org.drip.function.definition.R1ToR1 gammaEstimator,
-		final org.drip.specialfunction.definition.BesselFirstKindEstimator besselFirstKindEstimator,
+		final R1ToR1 digammaEstimator,
+		final R1ToR1 gammaEstimator,
+		final BesselFirstKindEstimator besselFirstKindEstimator,
 		final int termCount)
 	{
-		try
-		{
+		try {
 			return new SecondNISTSeriesEstimator (
-				org.drip.specialfunction.bessel.SecondNISTSeries.SecondKind (
-					digammaEstimator,
-					gammaEstimator,
-					termCount
-				),
+				SecondNISTSeries.SecondKind (digammaEstimator, gammaEstimator, termCount),
 				besselFirstKindEstimator
 			);
-		}
-		catch (java.lang.Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -157,14 +171,13 @@ public class SecondNISTSeriesEstimator extends
 	}
 
 	protected SecondNISTSeriesEstimator (
-		final org.drip.numerical.estimation.R2ToR1Series besselSecondKindNISTSeries,
-		final org.drip.specialfunction.definition.BesselFirstKindEstimator besselFirstKindEstimator)
-		throws java.lang.Exception
+		final R2ToR1Series besselSecondKindNISTSeries,
+		final BesselFirstKindEstimator besselFirstKindEstimator)
+		throws Exception
 	{
 		if (null == (_besselSecondKindNISTSeries = besselSecondKindNISTSeries) ||
-			null == (_besselFirstKindEstimator = besselFirstKindEstimator))
-		{
-			throw new java.lang.Exception ("SecondNISTSeriesEstimator Constructor => Invalid Inputs");
+			null == (_besselFirstKindEstimator = besselFirstKindEstimator)) {
+			throw new Exception ("SecondNISTSeriesEstimator Constructor => Invalid Inputs");
 		}
 	}
 
@@ -174,7 +187,7 @@ public class SecondNISTSeriesEstimator extends
 	 * @return The Bessel Second Kind NIST Series
 	 */
 
-	public org.drip.numerical.estimation.R2ToR1Series besselSecondKindNISTSeries()
+	public R2ToR1Series besselSecondKindNISTSeries()
 	{
 		return _besselSecondKindNISTSeries;
 	}
@@ -185,7 +198,7 @@ public class SecondNISTSeriesEstimator extends
 	 * @return The Bessel Function First Kind Estimator
 	 */
 
-	public org.drip.specialfunction.definition.BesselFirstKindEstimator besselFirstKindEstimator()
+	public BesselFirstKindEstimator besselFirstKindEstimator()
 	{
 		return _besselFirstKindEstimator;
 	}
@@ -193,14 +206,9 @@ public class SecondNISTSeriesEstimator extends
 	@Override public double bigY (
 		final double alpha,
 		final double z)
-		throws java.lang.Exception
+		throws Exception
 	{
-		return _besselSecondKindNISTSeries.evaluate (
-			alpha,
-			z
-		) + 2. / java.lang.Math.PI * java.lang.Math.log (0.5 * z) * _besselFirstKindEstimator.bigJ (
-			alpha,
-			z
-		);
+		return _besselSecondKindNISTSeries.evaluate (alpha, z) +
+			2. / Math.PI * Math.log (0.5 * z) * _besselFirstKindEstimator.bigJ (alpha, z);
 	}
 }

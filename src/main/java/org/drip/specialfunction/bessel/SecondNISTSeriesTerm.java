@@ -1,11 +1,18 @@
 
 package org.drip.specialfunction.bessel;
 
+import org.drip.function.definition.R1ToR1;
+import org.drip.numerical.common.NumberUtil;
+import org.drip.numerical.estimation.R2ToR1SeriesTerm;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -78,7 +85,7 @@ package org.drip.specialfunction.bessel;
 
 /**
  * <i>SecondNISTSeriesTerm</i> implements the Series Term for the Cylindrical Bessel Function of the Second
- * Kind using the NIST Series. The References are:
+ * 	Kind using the NIST Series. The References are:
  * 
  * <br><br>
  * 	<ul>
@@ -102,41 +109,53 @@ package org.drip.specialfunction.bessel;
  * 			Wikipedia (2019): Bessel Function https://en.wikipedia.org/wiki/Bessel_function
  * 		</li>
  * 	</ul>
+ * 
+ * It provides the following functionality:
  *
- *	<br><br>
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FunctionAnalysisLibrary.md">Function Analysis Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md">Special Function Implementation Analysis</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/bessel/README.md">Ordered Bessel Function Variant Estimators</a></li>
+ * 		<li><i>SecondNISTSeriesTerm</i> Constructor</li>
+ * 		<li>Retrieve the Digamma Function Estimator</li>
+ * 		<li>Retrieve the Gamma Estimator</li>
  *  </ul>
+ *
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md">Special Function Implementation and Analysis</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/bessel/README.md">Ordered Bessel Function Variant Estimators</a></td></tr>
+ *  </table>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class SecondNISTSeriesTerm extends org.drip.numerical.estimation.R2ToR1SeriesTerm
+public class SecondNISTSeriesTerm extends R2ToR1SeriesTerm
 {
-	private org.drip.function.definition.R1ToR1 _gammaEstimator = null;
-	private org.drip.function.definition.R1ToR1 _digammaEstimator = null;
+	private R1ToR1 _gammaEstimator = null;
+	private R1ToR1 _digammaEstimator = null;
 
 	/**
-	 * SecondNISTSeriesTerm Constructor
+	 * <i>SecondNISTSeriesTerm</i> Constructor
 	 * 
 	 * @param digammaEstimator Digamma Function Estimator
 	 * @param gammaEstimator Gamma Estimator
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public SecondNISTSeriesTerm (
-		final org.drip.function.definition.R1ToR1 digammaEstimator,
-		final org.drip.function.definition.R1ToR1 gammaEstimator)
-		throws java.lang.Exception
+		final R1ToR1 digammaEstimator,
+		final R1ToR1 gammaEstimator)
+		throws Exception
 	{
-		if (null == (_digammaEstimator = digammaEstimator) ||
-			null == (_gammaEstimator = gammaEstimator))
-		{
-			throw new java.lang.Exception ("SecondNISTSeriesTerm Constructor => Invalid Input");
+		if (null == (_digammaEstimator = digammaEstimator) || null == (_gammaEstimator = gammaEstimator)) {
+			throw new Exception ("SecondNISTSeriesTerm Constructor => Invalid Input");
 		}
 	}
 
@@ -146,7 +165,7 @@ public class SecondNISTSeriesTerm extends org.drip.numerical.estimation.R2ToR1Se
 	 * @return The Digamma Function Estimator
 	 */
 
-	public org.drip.function.definition.R1ToR1 digammaEstimator()
+	public R1ToR1 digammaEstimator()
 	{
 		return _digammaEstimator;
 	}
@@ -157,7 +176,7 @@ public class SecondNISTSeriesTerm extends org.drip.numerical.estimation.R2ToR1Se
 	 * @return The Gamma Estimator
 	 */
 
-	public org.drip.function.definition.R1ToR1 gammaEstimator()
+	public R1ToR1 gammaEstimator()
 	{
 		return _gammaEstimator;
 	}
@@ -166,39 +185,25 @@ public class SecondNISTSeriesTerm extends org.drip.numerical.estimation.R2ToR1Se
 		final int order,
 		final double alpha,
 		final double z)
-		throws java.lang.Exception
+		throws Exception
 	{
-		if (0 > order ||
-			!org.drip.numerical.common.NumberUtil.IsValid (alpha) ||
-			!org.drip.numerical.common.NumberUtil.IsValid (z))
-		{
-			throw new java.lang.Exception ("SecondNISTSeriesTerm::value => Invalid Inputs");
+		if (0 > order || !NumberUtil.IsValid (alpha) || !NumberUtil.IsValid (z)) {
+			throw new Exception ("SecondNISTSeriesTerm::value => Invalid Inputs");
 		}
 
-		double oneOverPI = 1. / java.lang.Math.PI;
+		double oneOverPI = 1. / Math.PI;
 
-		double _zOver2_PowerAlpha = java.lang.Math.pow (
-			0.5 * z,
-			alpha
-		);
+		double _zOver2_PowerAlpha = Math.pow (0.5 * z, alpha);
 
-		double _zSquaredOver4_PowerOrder = java.lang.Math.pow (
-			0.25 * z * z,
-			order
-		);
+		double _zSquaredOver4_PowerOrder = Math.pow (0.25 * z * z, order);
 
-		double bigY = (
-			0 == order % 2 ? -1. : 1.
-		) * _zOver2_PowerAlpha * oneOverPI * (
-			_digammaEstimator.evaluate (order + 1) +
-			_digammaEstimator.evaluate (alpha + order + 1)
+		double bigY = (0 == order % 2 ? -1. : 1.) * _zOver2_PowerAlpha * oneOverPI * (
+			_digammaEstimator.evaluate (order + 1) + _digammaEstimator.evaluate (alpha + order + 1)
 		) * _zSquaredOver4_PowerOrder / (
-			_gammaEstimator.evaluate (order + 1) *
-			_gammaEstimator.evaluate (alpha + order + 1)
+			_gammaEstimator.evaluate (order + 1) * _gammaEstimator.evaluate (alpha + order + 1)
 		);
 
-		if (order < alpha)
-		{
+		if (order < alpha) {
 			bigY = bigY - 1. / _zOver2_PowerAlpha * oneOverPI * _gammaEstimator.evaluate (alpha - order) /
 				_gammaEstimator.evaluate (order + 1) * _zSquaredOver4_PowerOrder;
 		}

@@ -1,11 +1,17 @@
 
 package org.drip.specialfunction.bessel;
 
+import org.drip.specialfunction.definition.BesselFirstKindEstimator;
+import org.drip.specialfunction.definition.RiccatiBesselSEstimator;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -78,7 +84,7 @@ package org.drip.specialfunction.bessel;
 
 /**
  * <i>RiccatiSEstimator</i> implements the Riccati-Bessel S Function Estimator using the Cylindrical Bessel
- * Function of the First Kind. The References are:
+ * 	Function of the First Kind. The References are:
  * 
  * <br><br>
  * 	<ul>
@@ -102,49 +108,58 @@ package org.drip.specialfunction.bessel;
  * 			Wikipedia (2019): Bessel Function https://en.wikipedia.org/wiki/Bessel_function
  * 		</li>
  * 	</ul>
+ * 
+ * It provides the following functionality:
  *
- *	<br><br>
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FunctionAnalysisLibrary.md">Function Analysis Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md">Special Function Implementation Analysis</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/bessel/README.md">Ordered Bessel Function Variant Estimators</a></li>
+ * 		<li><i>RiccatiSEstimator</i> Constructor</li>
+ * 		<li>Retrieve the Bessel Function First Kind</li>
  *  </ul>
+ *
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md">Special Function Implementation and Analysis</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/bessel/README.md">Ordered Bessel Function Variant Estimators</a></td></tr>
+ *  </table>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class RiccatiSEstimator extends org.drip.specialfunction.definition.RiccatiBesselSEstimator
+public class RiccatiSEstimator extends RiccatiBesselSEstimator
 {
-	private org.drip.specialfunction.definition.BesselFirstKindEstimator _besselFirstKindEstimator = null;
+	private BesselFirstKindEstimator _besselFirstKindEstimator = null;
 
 	/**
-	 * RiccatiSEstimator Constructor
+	 * <i>RiccatiSEstimator</i> Constructor
 	 * 
 	 * @param besselFirstKindEstimator Bessel Function First Kind
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public RiccatiSEstimator (
-		final org.drip.specialfunction.definition.BesselFirstKindEstimator besselFirstKindEstimator)
-		throws java.lang.Exception
+		final BesselFirstKindEstimator besselFirstKindEstimator)
+		throws Exception
 	{
-		if (null == (_besselFirstKindEstimator = besselFirstKindEstimator))
-		{
-			throw new java.lang.Exception ("RiccatiSEstimator Constructor => Invalid Inputs");
+		if (null == (_besselFirstKindEstimator = besselFirstKindEstimator)) {
+			throw new Exception ("RiccatiSEstimator Constructor => Invalid Inputs");
 		}
 	}
 
 	@Override public double bigS (
 		final double alpha,
 		final double z)
-		throws java.lang.Exception
+		throws Exception
 	{
-		return java.lang.Math.sqrt (0.5 * java.lang.Math.PI * z) * _besselFirstKindEstimator.bigJ (
-			alpha + 0.5,
-			z
-		);
+		return Math.sqrt (0.5 * Math.PI * z) * _besselFirstKindEstimator.bigJ (alpha + 0.5, z);
 	}
 
 	/**
@@ -153,7 +168,7 @@ public class RiccatiSEstimator extends org.drip.specialfunction.definition.Ricca
 	 * @return The Bessel Function First Kind
 	 */
 
-	public org.drip.specialfunction.definition.BesselFirstKindEstimator besselFirstKindEstimator()
+	public BesselFirstKindEstimator besselFirstKindEstimator()
 	{
 		return _besselFirstKindEstimator;
 	}
