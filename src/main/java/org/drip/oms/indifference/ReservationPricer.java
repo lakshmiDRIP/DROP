@@ -2,6 +2,8 @@
 package org.drip.oms.indifference;
 
 import org.drip.function.definition.R1ToR1;
+import org.drip.function.r1tor1solver.FixedPointFinderOutput;
+import org.drip.function.r1tor1solver.FixedPointFinderZheng;
 import org.drip.measure.continuous.R1Univariate;
 import org.drip.numerical.common.NumberUtil;
 import org.drip.numerical.integration.R1ToR1Integrator;
@@ -117,7 +119,7 @@ import org.drip.numerical.integration.R1ToR1Integrator;
 
 public class ReservationPricer
 {
-	private BidAskClaimsHandler _bidAskClaimsHandler = null;
+	private R1ToR1 _payoffFunction = null;
 	private R1ToR1 _privateValuationObjectiveFunction = null;
 
 	/**
@@ -132,17 +134,74 @@ public class ReservationPricer
 	}
 
 	/**
-	 * Retrieve the Bid/Ask Claims Handler
+	 * Retrieve the Payoff Function
 	 * 
-	 * @return The Bid/Ask Claims Handler
+	 * @return The Payoff Function
 	 */
 
-	public BidAskClaimsHandler bidAskClaimsHandler()
+	public R1ToR1 payoffFunction()
 	{
-		return _bidAskClaimsHandler;
+		return _payoffFunction;
 	}
 
-	public double baselineIndifferenceFunction (
+	public double claimsAdjustedPrice (
+		final R1ToR1 claimsAdjustedUnderlierUnitFunction,
+		final double indifferencePrice)
+		throws Exception
+	{
+		if (null == claimsAdjustedUnderlierUnitFunction) {
+			throw new Exception ("ReservationPricer::claimsAdjustedPrice => Cannot find Root");
+		}
+
+		FixedPointFinderOutput fixedPointFinderOutput = new FixedPointFinderZheng (
+			indifferencePrice,
+			new R1ToR1 (null) {
+				@Override public final double evaluate (
+					final double claimsAdjustedPrice)
+					throws Exception
+				{
+					return claimsAdjustedUnderlierUnitFunction.evaluate (claimsAdjustedPrice);
+				}
+			},
+			false
+		).findRoot();
+
+		if (null == fixedPointFinderOutput) {
+			throw new Exception ("ReservationPricer::claimsAdjustedEndowmentPortfolio => Cannot find Root");
+		}
+
+		return fixedPointFinderOutput.getRoot();
+	}
+
+	public double baselineUtilityValue (
+		final R1ToR1 risklessUnitsFunction,
+		final double terminalRisklessPrice,
+		final double terminalUnderlierPrice,
+		final double underlierUnits)
+		throws Exception
+	{
+		return _privateValuationObjectiveFunction.evaluate (
+			terminalRisklessPrice * risklessUnitsFunction.evaluate (underlierUnits) +
+				terminalUnderlierPrice * underlierUnits
+		);
+	}
+
+	public double claimsAdjustedUtilityValue (
+		final R1ToR1 risklessUnitsFunction,
+		final double terminalRisklessPrice,
+		final double terminalUnderlierPrice,
+		final double underlierUnits,
+		final double claimUnits)
+		throws Exception
+	{
+		return _privateValuationObjectiveFunction.evaluate (
+			terminalRisklessPrice * risklessUnitsFunction.evaluate (underlierUnits) +
+				terminalUnderlierPrice * underlierUnits +
+				claimUnits * _payoffFunction.evaluate (terminalUnderlierPrice)
+		);
+	}
+
+	public double baselineUtilityFunction (
 		final R1ToR1 risklessUnitsFunction,
 		final R1Univariate terminalUnderlierDistribution,
 		final double terminalRisklessPrice,
@@ -154,7 +213,7 @@ public class ReservationPricer
 			!NumberUtil.IsValid (terminalRisklessPrice) ||
 			!NumberUtil.IsValid (underlierUnits)) {
 			throw new Exception (
-				"ReservationPricer::baselineIndifferenceFunction => Invalid Terminal Distribution"
+				"ReservationPricer::baselineUtilityFunction => Invalid Terminal Distribution"
 			);
 		}
 
@@ -166,9 +225,51 @@ public class ReservationPricer
 					double terminalUnderlierPrice)
 					throws Exception
 				{
-					return _privateValuationObjectiveFunction.evaluate (
-						terminalRisklessPrice * risklessUnitsFunction.evaluate (underlierUnits) +
-							terminalUnderlierPrice * underlierUnits
+					return baselineUtilityValue (
+						risklessUnitsFunction,
+						terminalRisklessPrice,
+						terminalUnderlierPrice,
+						underlierUnits
+					) * terminalUnderlierDistribution.density (terminalUnderlierPrice);
+				}
+			},
+			terminalUnderlierSupportArray[0],
+			terminalUnderlierSupportArray[1]
+		);
+	}
+
+	public double claimsAdjustedUtilityFunction (
+		final R1ToR1 risklessUnitsFunction,
+		final R1Univariate terminalUnderlierDistribution,
+		final double terminalRisklessPrice,
+		final double underlierUnits,
+		final double claimsUnits)
+		throws Exception
+	{
+		if (null == risklessUnitsFunction ||
+			null == terminalUnderlierDistribution ||
+			!NumberUtil.IsValid (terminalRisklessPrice) ||
+			!NumberUtil.IsValid (underlierUnits) ||
+			!NumberUtil.IsValid (claimsUnits)) {
+			throw new Exception (
+				"ReservationPricer::claimsAdjustedUtilityFunction => Invalid Terminal Distribution"
+			);
+		}
+
+		double[] terminalUnderlierSupportArray = terminalUnderlierDistribution.support();
+
+		return R1ToR1Integrator.Boole (
+			new R1ToR1 (null) {
+				@Override public double evaluate (
+					double terminalUnderlierPrice)
+					throws Exception
+				{
+					return claimsAdjustedUtilityValue (
+						risklessUnitsFunction,
+						terminalRisklessPrice,
+						terminalUnderlierPrice,
+						underlierUnits,
+						claimsUnits
 					) * terminalUnderlierDistribution.density (terminalUnderlierPrice);
 				}
 			},

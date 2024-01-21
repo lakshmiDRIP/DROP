@@ -114,49 +114,49 @@ import org.drip.numerical.common.NumberUtil;
 
 public class UtilityOptimizationRun
 {
-	private double _reservationValue = Double.NaN;
-	private EndowmentPortfolio _endowmentPortfolio = null;
+	private double _underlierUnits = Double.NaN;
+	private double _optimalExpectationValue = Double.NaN;
 
 	/**
 	 * UtilityOptimizationRun Constructor
 	 * 
-	 * @param endowmentPortfolio Optimal Endowment Portfolio
-	 * @param reservationValue Optimal Utility Indifference/Reservation Value
+	 * @param optimalExpectationValue Optimal Expectation Value
+	 * @param underlierUnits Optimal Underlier Units
 	 * 
 	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public UtilityOptimizationRun (
-		final EndowmentPortfolio endowmentPortfolio,
-		final double reservationValue)
+		final double optimalExpectationValue,
+		final double underlierUnits)
 		throws Exception
 	{
-		if (null == (_endowmentPortfolio = endowmentPortfolio) ||
-			!NumberUtil.IsValid (_reservationValue = reservationValue))
+		if (!NumberUtil.IsValid (_optimalExpectationValue = optimalExpectationValue) ||
+			!NumberUtil.IsValid (_underlierUnits = underlierUnits))
 		{
 			throw new Exception ("UtilityOptimizationRun Contructor => Invalid Inputs");
 		}
 	}
 
 	/**
-	 * Retrieve the Optimal Endowment Portfolio
+	 * Retrieve the Optimal Expectation Value
 	 * 
-	 * @return The Optimal Endowment Portfolio
+	 * @return The Optimal Expectation Value
 	 */
 
-	public EndowmentPortfolio endowmentPortfolio()
+	public double optimalExpectationValue()
 	{
-		return _endowmentPortfolio;
+		return _optimalExpectationValue;
 	}
 
 	/**
-	 * Retrieve the Optimal Utility Indifference/Reservation Value
+	 * Retrieve the Optimal Underlier Units
 	 * 
-	 * @return The Optimal Utility Indifference/Reservation Value
+	 * @return The Optimal Underlier Units
 	 */
 
-	public double reservationValue()
+	public double underlierUnits()
 	{
-		return _reservationValue;
+		return _underlierUnits;
 	}
 }

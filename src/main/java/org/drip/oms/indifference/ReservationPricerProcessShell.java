@@ -125,6 +125,13 @@ public abstract class ReservationPricerProcessShell
 		final double terminalRisklessPrice)
 		throws Exception;
 
+	protected abstract R1ToR1 claimsAdjustedUnderlierUnitFunction (
+		final R1ToR1 risklessUnitsFunction,
+		final R1Univariate terminalUnderlierDistribution,
+		final double terminalRisklessPrice,
+		final double claimsUnits
+	);
+
 	/**
 	 * Retrieve the Endowment Value
 	 * 
@@ -174,19 +181,61 @@ public abstract class ReservationPricerProcessShell
 
 	public UtilityOptimizationRun baselineFlow (
 		final double terminalRisklessPrice,
+		final double terminalUnderlierPrice,
 		final R1ToR1 risklessUnitsFunction,
-		final R1Univariate terminalUnderlierDistribution)
+		final R1Univariate terminalUnderlierDistribution,
+		final double[] claimsUnitArray)
 	{
-		double optimalBaselineUnderlierUnits = Double.NaN;
+		if (null == claimsUnitArray || !NumberUtil.IsValid (claimsUnitArray)) {
+			return null;
+		}
+
+		int claimsUnitCount = claimsUnitArray.length;
+		double[] claimsUnitAdjustedPriceArray = new double[claimsUnitCount];
+
+		if (0 == claimsUnitCount) {
+			return null;
+		}
 
 		try {
-			if (!NumberUtil.IsValid (
-				optimalBaselineUnderlierUnits = optimalBaselineUnderlierUnits (
+			double optimalBaselineUnderlierUnits = optimalBaselineUnderlierUnits (
+				risklessUnitsFunction,
+				terminalUnderlierDistribution,
+				terminalRisklessPrice
+			);
+
+			if (!NumberUtil.IsValid (optimalBaselineUnderlierUnits)) {
+				return null;
+			}
+
+			double indifferencePrice = _reservationPricer.baselineUtilityValue (
+				risklessUnitsFunction,
+				terminalRisklessPrice,
+				terminalUnderlierPrice,
+				optimalBaselineUnderlierUnits
+			);
+
+			if (!NumberUtil.IsValid (indifferencePrice)) {
+				return null;
+			}
+
+			for (int claimsUnitIndex = 0; claimsUnitIndex < claimsUnitCount; ++claimsUnitIndex) {
+				R1ToR1 claimsAdjustedUnderlierUnitFunction = claimsAdjustedUnderlierUnitFunction (
 					risklessUnitsFunction,
 					terminalUnderlierDistribution,
-					terminalRisklessPrice
-				)
-			));
+					terminalRisklessPrice,
+					claimsUnitArray[claimsUnitIndex]
+				);
+
+				if (null == claimsAdjustedUnderlierUnitFunction) {
+					return null;
+				}
+
+				claimsUnitAdjustedPriceArray[claimsUnitIndex] = _reservationPricer.claimsAdjustedPrice (
+					claimsAdjustedUnderlierUnitFunction,
+					indifferencePrice
+				);
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 

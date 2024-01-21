@@ -1,8 +1,6 @@
 
 package org.drip.oms.indifference;
 
-import org.drip.function.definition.R1ToR1;
-
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
@@ -76,8 +74,8 @@ import org.drip.function.definition.R1ToR1;
  */
 
 /**
- * <i>BidAskClaimsHandler</i> works the Bid/Ask Sided Claims Price using the Indifference Pricing Scheme. The
- *  References are:
+ * <i>ReservationPriceRun</i> captures the Results of a Claims Adjusted Indifference Pricing Run.
+ *  The References are:
  *  
  * 	<br><br>
  *  <ul>
@@ -112,30 +110,7 @@ import org.drip.function.definition.R1ToR1;
  * @author Lakshmi Krishnamurthy
  */
 
-public class BidAskClaimsHandler
+public class ReservationPriceRun
 {
-	private double _units = Double.NaN;
-	private R1ToR1 _payoffFunction = null;
 
-	/**
-	 * Retrieve the Claims Payoff Function
-	 * 
-	 * @return The Claims Payoff Function
-	 */
-
-	public R1ToR1 payoffFunction()
-	{
-		return _payoffFunction;
-	}
-
-	/**
-	 * Retrieve the Sided Units
-	 * 
-	 * @return The Sided Units
-	 */
-
-	public double units()
-	{
-		return _units;
-	}
 }
