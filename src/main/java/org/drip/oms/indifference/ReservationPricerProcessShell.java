@@ -4,7 +4,6 @@ package org.drip.oms.indifference;
 import org.drip.function.definition.R1ToR1;
 import org.drip.measure.continuous.R1Univariate;
 import org.drip.numerical.common.NumberUtil;
-import org.drip.numerical.integration.R1ToR1Integrator;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -79,8 +78,8 @@ import org.drip.numerical.integration.R1ToR1Integrator;
  */
 
 /**
- * <i>ReservationPricer</i> implements the Expectation of the Utility Function using Units of Underlying
- *  Asset. The References are:
+ * <i>ReservationPricerProcessShell</i> holds the main Private Reservation Pricer and its Parameters. The
+ *  References are:
  *  
  * 	<br><br>
  *  <ul>
@@ -115,65 +114,85 @@ import org.drip.numerical.integration.R1ToR1Integrator;
  * @author Lakshmi Krishnamurthy
  */
 
-public class ReservationPricer
+public abstract class ReservationPricerProcessShell
 {
-	private BidAskClaimsHandler _bidAskClaimsHandler = null;
-	private R1ToR1 _privateValuationObjectiveFunction = null;
+	private double _endowmentValue = Double.NaN;
+	private ReservationPricer _reservationPricer = null;
 
-	/**
-	 * Retrieve the Private Valuation Utility Function
-	 * 
-	 * @return The Private Valuation Utility Function
-	 */
-
-	public R1ToR1 privateValuationObjectiveFunction()
-	{
-		return _privateValuationObjectiveFunction;
-	}
-
-	/**
-	 * Retrieve the Bid/Ask Claims Handler
-	 * 
-	 * @return The Bid/Ask Claims Handler
-	 */
-
-	public BidAskClaimsHandler bidAskClaimsHandler()
-	{
-		return _bidAskClaimsHandler;
-	}
-
-	public double baselineIndifferenceFunction (
+	protected abstract double optimalBaselineUnderlierUnits (
 		final R1ToR1 risklessUnitsFunction,
 		final R1Univariate terminalUnderlierDistribution,
-		final double terminalRisklessPrice,
-		final double underlierUnits)
-		throws Exception
+		final double terminalRisklessPrice)
+		throws Exception;
+
+	/**
+	 * Retrieve the Endowment Value
+	 * 
+	 * @return The Endowment Value
+	 */
+
+	public double endowmentValue()
 	{
-		if (null == risklessUnitsFunction ||
-			null == terminalUnderlierDistribution ||
-			!NumberUtil.IsValid (terminalRisklessPrice) ||
-			!NumberUtil.IsValid (underlierUnits)) {
-			throw new Exception (
-				"ReservationPricer::baselineIndifferenceFunction => Invalid Terminal Distribution"
-			);
+		return _endowmentValue;
+	}
+
+	/**
+	 * Retrieve the Reservation Pricer
+	 * 
+	 * @return The Reservation Pricer
+	 */
+
+	public ReservationPricer reservationPricer()
+	{
+		return _reservationPricer;
+	}
+
+	/**
+	 * Generate the Function to calculate the Riskless Security Units from the Endowment Value
+	 * 
+	 * @param initialRisklessPrice Initial Riskless Security Unit Price
+	 * @param initialUnderlierPrice Initial Underlier Security Unit Price
+	 * 
+	 * @return Riskless Units Function
+	 */
+
+	public R1ToR1 risklessUnitsFunction (
+		final double initialRisklessPrice,
+		final double initialUnderlierPrice)
+	{
+		return !NumberUtil.IsValid (initialRisklessPrice) || !NumberUtil.IsValid (initialUnderlierPrice) ?
+			null : new R1ToR1 (null)
+		{
+			@Override public double evaluate (
+				final double underlierUnits)
+				throws Exception
+			{
+				return (_endowmentValue - initialUnderlierPrice * underlierUnits) / initialRisklessPrice;
+			}
+		};
+	}
+
+	public UtilityOptimizationRun baselineFlow (
+		final double terminalRisklessPrice,
+		final R1ToR1 risklessUnitsFunction,
+		final R1Univariate terminalUnderlierDistribution)
+	{
+		double optimalBaselineUnderlierUnits = Double.NaN;
+
+		try {
+			if (!NumberUtil.IsValid (
+				optimalBaselineUnderlierUnits = optimalBaselineUnderlierUnits (
+					risklessUnitsFunction,
+					terminalUnderlierDistribution,
+					terminalRisklessPrice
+				)
+			));
+		} catch (Exception e) {
+			e.printStackTrace();
+
+			return null;
 		}
 
-		double[] terminalUnderlierSupportArray = terminalUnderlierDistribution.support();
-
-		return R1ToR1Integrator.Boole (
-			new R1ToR1 (null) {
-				@Override public double evaluate (
-					double terminalUnderlierPrice)
-					throws Exception
-				{
-					return _privateValuationObjectiveFunction.evaluate (
-						terminalRisklessPrice * risklessUnitsFunction.evaluate (underlierUnits) +
-							terminalUnderlierPrice * underlierUnits
-					) * terminalUnderlierDistribution.density (terminalUnderlierPrice);
-				}
-			},
-			terminalUnderlierSupportArray[0],
-			terminalUnderlierSupportArray[1]
-		);
+		return null;
 	}
 }
