@@ -1,7 +1,7 @@
 
 package org.drip.oms.indifference;
 
-import org.drip.numerical.common.NumberUtil;
+import org.drip.function.definition.R1ToR1;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -76,7 +76,8 @@ import org.drip.numerical.common.NumberUtil;
  */
 
 /**
- * <i>EndowmentPortfolio</i> contains the Endowment Portfolio of the Underlier Inventory. The References are:
+ * <i>ClaimsAdjustedOptimizationRun</i> produces Optimal Underlier Units and Utility Expectation as a
+ *  Function of the Claims Value. The References are:
  *  
  * 	<br><br>
  *  <ul>
@@ -111,75 +112,50 @@ import org.drip.numerical.common.NumberUtil;
  * @author Lakshmi Krishnamurthy
  */
 
-public class EndowmentPortfolio
+public class ClaimsAdjustedOptimizationRun
 {
-	private double _risklessUnits = Double.NaN;
-	private double _underlierUnits = Double.NaN;
+	private R1ToR1 _optimalUnderlierUnitsFunction = null;
+	private R1ToR1 _optimalUtilityExpectationFunction = null;
 
 	/**
-	 * <i>EndowmentPortfolio</i> Constructor
+	 * ClaimsAdjustedOptimizationRun Constructor
 	 * 
-	 * @param risklessUnits Number of Units of the Riskless Security
-	 * @param underlierUnits Number of Units of the Underlier Security
+	 * @param optimalUnderlierUnitsFunction Optimal Underlier Units Function
+	 * @param optimalUtilityExpectationFunction Optimal Utility Expectation Function
 	 * 
 	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
-	public EndowmentPortfolio (
-		final double risklessUnits,
-		final double underlierUnits)
+	public ClaimsAdjustedOptimizationRun (
+		final R1ToR1 optimalUnderlierUnitsFunction,
+		final R1ToR1 optimalUtilityExpectationFunction)
 		throws Exception
 	{
-		if (!NumberUtil.IsValid (_risklessUnits = risklessUnits) ||
-			!NumberUtil.IsValid (_underlierUnits = underlierUnits))
-		{
-			throw new Exception ("EndowmentPortfolio Constructor => Invalid Inputs");
+		if (null == (_optimalUnderlierUnitsFunction = optimalUnderlierUnitsFunction) ||
+			null == (_optimalUnderlierUnitsFunction = optimalUnderlierUnitsFunction)) {
+			throw new Exception ("ClaimsAdjustedOptimizationRun Constructor => Invalid Inputs");
 		}
 	}
 
 	/**
-	 * Retrieve the Number of Units of the Riskless Security
+	 * Retrieve the Optimal Underlier Units Function
 	 * 
-	 * @return Number of Units of the Riskless Security
-	 */
+	 * @return The Optimal Underlier Units Function
 
-	public double risklessUnits()
+	 */
+	public R1ToR1 optimalUnderlierUnitsFunction()
 	{
-		return _risklessUnits;
+		return _optimalUnderlierUnitsFunction;
 	}
 
 	/**
-	 * Retrieve the Number of Units of the Underlier Security
+	 * Retrieve the Optimal Utility Expectation Function
 	 * 
-	 * @return Number of Units of the Underlier Security
+	 * @return The Optimal Utility Expectation Function
+
 	 */
-
-	public double underlierUnits()
+	public R1ToR1 optimalUtilityExpectationFunction()
 	{
-		return _underlierUnits;
-	}
-
-	/**
-	 * Value the Portfolio using the Prices
-	 * 
-	 * @param risklessPrice Riskless Security Unit Price
-	 * @param underlierPrice Underlier Security Unit Price
-	 * 
-	 * @return The Portfolio Value
-	 * 
-	 * @throws Exception Thrown if the Inputs are Invalid
-	 */
-
-	public double value (
-		final double risklessPrice,
-		final double underlierPrice)
-		throws Exception
-	{
-		if (!NumberUtil.IsValid (risklessPrice) || !NumberUtil.IsValid (underlierPrice))
-		{
-			throw new Exception ("EndowmentPortfolio::value => Invalid Inputs");
-		}
-
-		return _risklessUnits * risklessPrice + _underlierUnits * underlierPrice;
+		return _optimalUtilityExpectationFunction;
 	}
 }

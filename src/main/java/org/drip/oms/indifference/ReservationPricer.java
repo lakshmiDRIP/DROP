@@ -123,6 +123,26 @@ public class ReservationPricer
 	private R1ToR1 _privateValuationObjectiveFunction = null;
 
 	/**
+	 * ReservationPricer Constructor
+	 * 
+	 * @param privateValuationObjectiveFunction Private Valuation Utility Function
+	 * @param payoffFunction Payoff Function
+	 * 
+	 * @throws Exception Thrown if the Inputs are Invalid
+	 */
+
+	public ReservationPricer (
+		final R1ToR1 privateValuationObjectiveFunction,
+		final R1ToR1 payoffFunction)
+		throws Exception
+	{
+		if (null == (_privateValuationObjectiveFunction = privateValuationObjectiveFunction) ||
+			null == (_payoffFunction = payoffFunction)) {
+			throw new Exception ("ReservationPricer Constructor => Invalid Inputs");
+		}
+	}
+
+	/**
 	 * Retrieve the Private Valuation Utility Function
 	 * 
 	 * @return The Private Valuation Utility Function
@@ -144,12 +164,23 @@ public class ReservationPricer
 		return _payoffFunction;
 	}
 
+	/**
+	 * Compute the Claims Adjusted Price
+	 * 
+	 * @param optimalUtilityExpectationFunction The Optimal Utility Expectation Function
+	 * @param indifferencePrice Indifference Price
+	 * 
+	 * @return Claims Adjusted Price
+	 * 
+	 * @throws Exception Thrown if the Inputs are Invalid
+	 */
+
 	public double claimsAdjustedPrice (
-		final R1ToR1 claimsAdjustedUnderlierUnitFunction,
+		final R1ToR1 optimalUtilityExpectationFunction,
 		final double indifferencePrice)
 		throws Exception
 	{
-		if (null == claimsAdjustedUnderlierUnitFunction) {
+		if (null == optimalUtilityExpectationFunction) {
 			throw new Exception ("ReservationPricer::claimsAdjustedPrice => Cannot find Root");
 		}
 
@@ -160,7 +191,7 @@ public class ReservationPricer
 					final double claimsAdjustedPrice)
 					throws Exception
 				{
-					return claimsAdjustedUnderlierUnitFunction.evaluate (claimsAdjustedPrice);
+					return optimalUtilityExpectationFunction.evaluate (claimsAdjustedPrice);
 				}
 			},
 			false
@@ -173,7 +204,20 @@ public class ReservationPricer
 		return fixedPointFinderOutput.getRoot();
 	}
 
-	public double baselineUtilityValue (
+	/**
+	 * Compute the Claims Unadjusted Utility Value
+	 * 
+	 * @param risklessUnitsFunction Riskless Units Function
+	 * @param terminalRisklessPrice Terminal Riskless Price
+	 * @param terminalUnderlierPrice Terminal Underlier Price
+	 * @param underlierUnits Underlier Units
+	 * 
+	 * @return Baseline Utility Value
+	 * 
+	 * @throws Exception Thrown if the Inputs are Invalid
+	 */
+
+	public double claimsUnadjustedUtilityValue (
 		final R1ToR1 risklessUnitsFunction,
 		final double terminalRisklessPrice,
 		final double terminalUnderlierPrice,
@@ -185,6 +229,20 @@ public class ReservationPricer
 				terminalUnderlierPrice * underlierUnits
 		);
 	}
+
+	/**
+	 * Compute the Claims Adjusted Utility Value
+	 * 
+	 * @param risklessUnitsFunction Riskless Units Function
+	 * @param terminalRisklessPrice Terminal Riskless Price
+	 * @param terminalUnderlierPrice Terminal Underlier Price
+	 * @param underlierUnits Underlier Units
+	 * @param claimUnits Claims Units
+	 * 
+	 * @return Claims Adjusted Utility Value
+	 * 
+	 * @throws Exception Thrown if the Inputs are Invalid
+	 */
 
 	public double claimsAdjustedUtilityValue (
 		final R1ToR1 risklessUnitsFunction,
@@ -201,7 +259,20 @@ public class ReservationPricer
 		);
 	}
 
-	public double baselineUtilityFunction (
+	/**
+	 * Compute the Indifference Utility Value
+	 * 
+	 * @param risklessUnitsFunction Riskless Units Function
+	 * @param terminalUnderlierDistribution Terminal Underlier Distribution
+	 * @param terminalRisklessPrice Terminal Riskless Price
+	 * @param underlierUnits Underlier Units
+	 * 
+	 * @return The Indifference Utility Value
+	 * 
+	 * @throws Exception Thrown if the Inputs are Invalid
+	 */
+
+	public double indifferenceUtilityValue (
 		final R1ToR1 risklessUnitsFunction,
 		final R1Univariate terminalUnderlierDistribution,
 		final double terminalRisklessPrice,
@@ -213,7 +284,7 @@ public class ReservationPricer
 			!NumberUtil.IsValid (terminalRisklessPrice) ||
 			!NumberUtil.IsValid (underlierUnits)) {
 			throw new Exception (
-				"ReservationPricer::baselineUtilityFunction => Invalid Terminal Distribution"
+				"ReservationPricer::indifferenceUtilityValue => Invalid Terminal Distribution"
 			);
 		}
 
@@ -225,7 +296,7 @@ public class ReservationPricer
 					double terminalUnderlierPrice)
 					throws Exception
 				{
-					return baselineUtilityValue (
+					return claimsUnadjustedUtilityValue (
 						risklessUnitsFunction,
 						terminalRisklessPrice,
 						terminalUnderlierPrice,
@@ -238,21 +309,35 @@ public class ReservationPricer
 		);
 	}
 
-	public double claimsAdjustedUtilityFunction (
+	/**
+	 * Compute Claims Adjusted Utility Value
+	 * 
+	 * @param risklessUnitsFunction Riskless Units Function
+	 * @param terminalUnderlierDistribution Terminal Underlier Distribution
+	 * @param terminalRisklessPrice Terminal Riskless Price
+	 * @param underlierUnits Underlier Units
+	 * @param claimUnits Claims Units
+	 * 
+	 * @return Claims Adjusted Utility Value
+	 * 
+	 * @throws Exception Thrown if the Inputs are Invalid
+	 */
+
+	public double claimsAdjustedUtilityValue (
 		final R1ToR1 risklessUnitsFunction,
 		final R1Univariate terminalUnderlierDistribution,
 		final double terminalRisklessPrice,
 		final double underlierUnits,
-		final double claimsUnits)
+		final double claimUnits)
 		throws Exception
 	{
 		if (null == risklessUnitsFunction ||
 			null == terminalUnderlierDistribution ||
 			!NumberUtil.IsValid (terminalRisklessPrice) ||
 			!NumberUtil.IsValid (underlierUnits) ||
-			!NumberUtil.IsValid (claimsUnits)) {
+			!NumberUtil.IsValid (claimUnits)) {
 			throw new Exception (
-				"ReservationPricer::claimsAdjustedUtilityFunction => Invalid Terminal Distribution"
+				"ReservationPricer::claimsAdjustedUtilityValue => Invalid Terminal Distribution"
 			);
 		}
 
@@ -269,7 +354,7 @@ public class ReservationPricer
 						terminalRisklessPrice,
 						terminalUnderlierPrice,
 						underlierUnits,
-						claimsUnits
+						claimUnits
 					) * terminalUnderlierDistribution.density (terminalUnderlierPrice);
 				}
 			},

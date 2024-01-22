@@ -119,18 +119,38 @@ public abstract class ReservationPricerProcessShell
 	private double _endowmentValue = Double.NaN;
 	private ReservationPricer _reservationPricer = null;
 
-	protected abstract double optimalBaselineUnderlierUnits (
+	protected abstract double indifferenceUnderlierUnits (
 		final R1ToR1 risklessUnitsFunction,
 		final R1Univariate terminalUnderlierDistribution,
 		final double terminalRisklessPrice)
 		throws Exception;
 
-	protected abstract R1ToR1 claimsAdjustedUnderlierUnitFunction (
+	protected abstract ClaimsAdjustedOptimizationRun claimsAdjustedOptimizationRun (
 		final R1ToR1 risklessUnitsFunction,
 		final R1Univariate terminalUnderlierDistribution,
 		final double terminalRisklessPrice,
 		final double claimsUnits
 	);
+
+	/**
+	 * ReservationPricerProcessShell Constructor
+	 * 
+	 * @param endowmentValue Endowment Value
+	 * @param reservationPricer Reservation Pricer
+	 * 
+	 * @throws Exception Thrown if the Inputs are Invalid
+	 */
+
+	public ReservationPricerProcessShell (
+		final double endowmentValue,
+		final ReservationPricer reservationPricer)
+		throws Exception
+	{
+		if (!NumberUtil.IsValid (_endowmentValue = endowmentValue) ||
+			null == (_reservationPricer = reservationPricer)) {
+			throw new Exception ("ReservationPricerProcessShell Constructor => Invalid Inputs");
+		}
+	}
 
 	/**
 	 * Retrieve the Endowment Value
@@ -179,10 +199,24 @@ public abstract class ReservationPricerProcessShell
 		};
 	}
 
-	public UtilityOptimizationRun baselineFlow (
+	/**
+	 * Run a Reservation Pricing Flow
+	 * 
+	 * @param initialRisklessPrice Initial Riskless Security Unit Price
+	 * @param initialUnderlierPrice Initial Underlier Security Unit Price
+	 * @param terminalRisklessPrice Riskless Entity Terminal Price
+	 * @param terminalUnderlierPrice Risky Underlier Terminal Price
+	 * @param terminalUnderlierDistribution Terminal Underlier Distribution
+	 * @param claimsUnitArray Array of the Claims Unit
+	 * 
+	 * @return The Reservation Pricing Run
+	 */
+
+	public ReservationPriceRun flow (
+		final double initialRisklessPrice,
+		final double initialUnderlierPrice,
 		final double terminalRisklessPrice,
 		final double terminalUnderlierPrice,
-		final R1ToR1 risklessUnitsFunction,
 		final R1Univariate terminalUnderlierDistribution,
 		final double[] claimsUnitArray)
 	{
@@ -191,55 +225,72 @@ public abstract class ReservationPricerProcessShell
 		}
 
 		int claimsUnitCount = claimsUnitArray.length;
-		double[] claimsUnitAdjustedPriceArray = new double[claimsUnitCount];
 
 		if (0 == claimsUnitCount) {
 			return null;
 		}
 
+		R1ToR1 risklessUnitsFunction = risklessUnitsFunction (
+			initialRisklessPrice,
+			initialUnderlierPrice
+		);
+
+		if (null == risklessUnitsFunction) {
+			return null;
+		}
+
 		try {
-			double optimalBaselineUnderlierUnits = optimalBaselineUnderlierUnits (
+			double indifferenceUnderlierUnits = indifferenceUnderlierUnits (
 				risklessUnitsFunction,
 				terminalUnderlierDistribution,
 				terminalRisklessPrice
 			);
 
-			if (!NumberUtil.IsValid (optimalBaselineUnderlierUnits)) {
-				return null;
-			}
-
-			double indifferencePrice = _reservationPricer.baselineUtilityValue (
+			double indifferenceValue = _reservationPricer.claimsUnadjustedUtilityValue (
 				risklessUnitsFunction,
 				terminalRisklessPrice,
 				terminalUnderlierPrice,
-				optimalBaselineUnderlierUnits
+				indifferenceUnderlierUnits
 			);
 
-			if (!NumberUtil.IsValid (indifferencePrice)) {
-				return null;
-			}
+			ReservationPriceRun reservationPriceRun = new ReservationPriceRun (
+				new UtilityOptimizationRun (
+					indifferenceValue,
+					indifferenceUnderlierUnits
+				)
+			);
 
 			for (int claimsUnitIndex = 0; claimsUnitIndex < claimsUnitCount; ++claimsUnitIndex) {
-				R1ToR1 claimsAdjustedUnderlierUnitFunction = claimsAdjustedUnderlierUnitFunction (
+				ClaimsAdjustedOptimizationRun claimsAdjustedOptimizationRun = claimsAdjustedOptimizationRun (
 					risklessUnitsFunction,
 					terminalUnderlierDistribution,
 					terminalRisklessPrice,
 					claimsUnitArray[claimsUnitIndex]
 				);
 
-				if (null == claimsAdjustedUnderlierUnitFunction) {
+				if (null == claimsAdjustedOptimizationRun) {
 					return null;
 				}
 
-				claimsUnitAdjustedPriceArray[claimsUnitIndex] = _reservationPricer.claimsAdjustedPrice (
-					claimsAdjustedUnderlierUnitFunction,
-					indifferencePrice
+				double claimsAdjustedIndifferenceValue = _reservationPricer.claimsAdjustedPrice (
+					claimsAdjustedOptimizationRun.optimalUtilityExpectationFunction(),
+					indifferenceValue
+				);
+
+				reservationPriceRun.addClaimsAdjustedIndifferenceUtility (
+					claimsUnitArray[claimsUnitIndex],
+					new UtilityOptimizationRun (
+						claimsAdjustedIndifferenceValue,
+						claimsAdjustedOptimizationRun.optimalUnderlierUnitsFunction().evaluate (
+							claimsAdjustedIndifferenceValue
+						)
+					)
 				);
 			}
+
+			return reservationPriceRun;
 		} catch (Exception e) {
 			e.printStackTrace();
-
-			return null;
 		}
 
 		return null;
