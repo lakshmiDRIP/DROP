@@ -1,13 +1,6 @@
 
 package org.drip.oms.indifference;
 
-import org.drip.function.definition.R1ToR1;
-import org.drip.function.r1tor1solver.FixedPointFinderOutput;
-import org.drip.function.r1tor1solver.FixedPointFinderZheng;
-import org.drip.measure.continuous.R1Univariate;
-import org.drip.numerical.common.NumberUtil;
-import org.drip.numerical.integration.R1ToR1Integrator;
-
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
@@ -81,8 +74,8 @@ import org.drip.numerical.integration.R1ToR1Integrator;
  */
 
 /**
- * <i>ReservationPricer</i> implements the Expectation of the Utility Function using Units of Underlying
- *  Asset. The References are:
+ * <i>ReservationPricer</i> implements the Expectation of the Utility Function using the Endowment and aT
+ * 	Payoff on the Underlying Asset. The References are:
  *  
  * 	<br><br>
  *  <ul>
@@ -119,247 +112,16 @@ import org.drip.numerical.integration.R1ToR1Integrator;
 
 public class ReservationPricer
 {
-	private R1ToR1 _payoffFunction = null;
-	private R1ToR1 _privateValuationObjectiveFunction = null;
+	private InventoryVertex _initialInventory = null;
 
 	/**
-	 * ReservationPricer Constructor
+	 * Retrieve the Initial Inventory Vertex
 	 * 
-	 * @param privateValuationObjectiveFunction Private Valuation Utility Function
-	 * @param payoffFunction Payoff Function
-	 * 
-	 * @throws Exception Thrown if the Inputs are Invalid
+	 * @return The Initial Inventory Vertex
 	 */
 
-	public ReservationPricer (
-		final R1ToR1 privateValuationObjectiveFunction,
-		final R1ToR1 payoffFunction)
-		throws Exception
+	public InventoryVertex initialInventory()
 	{
-		if (null == (_privateValuationObjectiveFunction = privateValuationObjectiveFunction) ||
-			null == (_payoffFunction = payoffFunction)) {
-			throw new Exception ("ReservationPricer Constructor => Invalid Inputs");
-		}
-	}
-
-	/**
-	 * Retrieve the Private Valuation Utility Function
-	 * 
-	 * @return The Private Valuation Utility Function
-	 */
-
-	public R1ToR1 privateValuationObjectiveFunction()
-	{
-		return _privateValuationObjectiveFunction;
-	}
-
-	/**
-	 * Retrieve the Payoff Function
-	 * 
-	 * @return The Payoff Function
-	 */
-
-	public R1ToR1 payoffFunction()
-	{
-		return _payoffFunction;
-	}
-
-	/**
-	 * Compute the Claims Adjusted Price
-	 * 
-	 * @param optimalUtilityExpectationFunction The Optimal Utility Expectation Function
-	 * @param indifferencePrice Indifference Price
-	 * 
-	 * @return Claims Adjusted Price
-	 * 
-	 * @throws Exception Thrown if the Inputs are Invalid
-	 */
-
-	public double claimsAdjustedPrice (
-		final R1ToR1 optimalUtilityExpectationFunction,
-		final double indifferencePrice)
-		throws Exception
-	{
-		if (null == optimalUtilityExpectationFunction) {
-			throw new Exception ("ReservationPricer::claimsAdjustedPrice => Cannot find Root");
-		}
-
-		FixedPointFinderOutput fixedPointFinderOutput = new FixedPointFinderZheng (
-			indifferencePrice,
-			new R1ToR1 (null) {
-				@Override public final double evaluate (
-					final double claimsAdjustedPrice)
-					throws Exception
-				{
-					return optimalUtilityExpectationFunction.evaluate (claimsAdjustedPrice);
-				}
-			},
-			false
-		).findRoot();
-
-		if (null == fixedPointFinderOutput) {
-			throw new Exception ("ReservationPricer::claimsAdjustedEndowmentPortfolio => Cannot find Root");
-		}
-
-		return fixedPointFinderOutput.getRoot();
-	}
-
-	/**
-	 * Compute the Claims Unadjusted Utility Value
-	 * 
-	 * @param risklessUnitsFunction Riskless Units Function
-	 * @param terminalRisklessPrice Terminal Riskless Price
-	 * @param terminalUnderlierPrice Terminal Underlier Price
-	 * @param underlierUnits Underlier Units
-	 * 
-	 * @return Baseline Utility Value
-	 * 
-	 * @throws Exception Thrown if the Inputs are Invalid
-	 */
-
-	public double claimsUnadjustedUtilityValue (
-		final R1ToR1 risklessUnitsFunction,
-		final double terminalRisklessPrice,
-		final double terminalUnderlierPrice,
-		final double underlierUnits)
-		throws Exception
-	{
-		return _privateValuationObjectiveFunction.evaluate (
-			terminalRisklessPrice * risklessUnitsFunction.evaluate (underlierUnits) +
-				terminalUnderlierPrice * underlierUnits
-		);
-	}
-
-	/**
-	 * Compute the Claims Adjusted Utility Value
-	 * 
-	 * @param risklessUnitsFunction Riskless Units Function
-	 * @param terminalRisklessPrice Terminal Riskless Price
-	 * @param terminalUnderlierPrice Terminal Underlier Price
-	 * @param underlierUnits Underlier Units
-	 * @param claimUnits Claims Units
-	 * 
-	 * @return Claims Adjusted Utility Value
-	 * 
-	 * @throws Exception Thrown if the Inputs are Invalid
-	 */
-
-	public double claimsAdjustedUtilityValue (
-		final R1ToR1 risklessUnitsFunction,
-		final double terminalRisklessPrice,
-		final double terminalUnderlierPrice,
-		final double underlierUnits,
-		final double claimUnits)
-		throws Exception
-	{
-		return _privateValuationObjectiveFunction.evaluate (
-			terminalRisklessPrice * risklessUnitsFunction.evaluate (underlierUnits) +
-				terminalUnderlierPrice * underlierUnits +
-				claimUnits * _payoffFunction.evaluate (terminalUnderlierPrice)
-		);
-	}
-
-	/**
-	 * Compute the Indifference Utility Value
-	 * 
-	 * @param risklessUnitsFunction Riskless Units Function
-	 * @param terminalUnderlierDistribution Terminal Underlier Distribution
-	 * @param terminalRisklessPrice Terminal Riskless Price
-	 * @param underlierUnits Underlier Units
-	 * 
-	 * @return The Indifference Utility Value
-	 * 
-	 * @throws Exception Thrown if the Inputs are Invalid
-	 */
-
-	public double indifferenceUtilityValue (
-		final R1ToR1 risklessUnitsFunction,
-		final R1Univariate terminalUnderlierDistribution,
-		final double terminalRisklessPrice,
-		final double underlierUnits)
-		throws Exception
-	{
-		if (null == risklessUnitsFunction ||
-			null == terminalUnderlierDistribution ||
-			!NumberUtil.IsValid (terminalRisklessPrice) ||
-			!NumberUtil.IsValid (underlierUnits)) {
-			throw new Exception (
-				"ReservationPricer::indifferenceUtilityValue => Invalid Terminal Distribution"
-			);
-		}
-
-		double[] terminalUnderlierSupportArray = terminalUnderlierDistribution.support();
-
-		return R1ToR1Integrator.Boole (
-			new R1ToR1 (null) {
-				@Override public double evaluate (
-					double terminalUnderlierPrice)
-					throws Exception
-				{
-					return claimsUnadjustedUtilityValue (
-						risklessUnitsFunction,
-						terminalRisklessPrice,
-						terminalUnderlierPrice,
-						underlierUnits
-					) * terminalUnderlierDistribution.density (terminalUnderlierPrice);
-				}
-			},
-			terminalUnderlierSupportArray[0],
-			terminalUnderlierSupportArray[1]
-		);
-	}
-
-	/**
-	 * Compute Claims Adjusted Utility Value
-	 * 
-	 * @param risklessUnitsFunction Riskless Units Function
-	 * @param terminalUnderlierDistribution Terminal Underlier Distribution
-	 * @param terminalRisklessPrice Terminal Riskless Price
-	 * @param underlierUnits Underlier Units
-	 * @param claimUnits Claims Units
-	 * 
-	 * @return Claims Adjusted Utility Value
-	 * 
-	 * @throws Exception Thrown if the Inputs are Invalid
-	 */
-
-	public double claimsAdjustedUtilityValue (
-		final R1ToR1 risklessUnitsFunction,
-		final R1Univariate terminalUnderlierDistribution,
-		final double terminalRisklessPrice,
-		final double underlierUnits,
-		final double claimUnits)
-		throws Exception
-	{
-		if (null == risklessUnitsFunction ||
-			null == terminalUnderlierDistribution ||
-			!NumberUtil.IsValid (terminalRisklessPrice) ||
-			!NumberUtil.IsValid (underlierUnits) ||
-			!NumberUtil.IsValid (claimUnits)) {
-			throw new Exception (
-				"ReservationPricer::claimsAdjustedUtilityValue => Invalid Terminal Distribution"
-			);
-		}
-
-		double[] terminalUnderlierSupportArray = terminalUnderlierDistribution.support();
-
-		return R1ToR1Integrator.Boole (
-			new R1ToR1 (null) {
-				@Override public double evaluate (
-					double terminalUnderlierPrice)
-					throws Exception
-				{
-					return claimsAdjustedUtilityValue (
-						risklessUnitsFunction,
-						terminalRisklessPrice,
-						terminalUnderlierPrice,
-						underlierUnits,
-						claimUnits
-					) * terminalUnderlierDistribution.density (terminalUnderlierPrice);
-				}
-			},
-			terminalUnderlierSupportArray[0],
-			terminalUnderlierSupportArray[1]
-		);
+		return _initialInventory;
 	}
 }

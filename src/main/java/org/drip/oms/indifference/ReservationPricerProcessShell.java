@@ -117,7 +117,7 @@ import org.drip.numerical.common.NumberUtil;
 public abstract class ReservationPricerProcessShell
 {
 	private double _endowmentValue = Double.NaN;
-	private ReservationPricer _reservationPricer = null;
+	private ReservationPricer2 _reservationPricer = null;
 
 	protected abstract double indifferenceUnderlierUnits (
 		final R1ToR1 risklessUnitsFunction,
@@ -143,7 +143,7 @@ public abstract class ReservationPricerProcessShell
 
 	public ReservationPricerProcessShell (
 		final double endowmentValue,
-		final ReservationPricer reservationPricer)
+		final ReservationPricer2 reservationPricer)
 		throws Exception
 	{
 		if (!NumberUtil.IsValid (_endowmentValue = endowmentValue) ||
@@ -169,7 +169,7 @@ public abstract class ReservationPricerProcessShell
 	 * @return The Reservation Pricer
 	 */
 
-	public ReservationPricer reservationPricer()
+	public ReservationPricer2 reservationPricer()
 	{
 		return _reservationPricer;
 	}
