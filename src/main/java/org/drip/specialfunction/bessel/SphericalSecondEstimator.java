@@ -113,11 +113,11 @@ import org.drip.specialfunction.definition.SphericalBesselSecondKindEstimator;
  * It provides the following functionality:
  *
  *  <ul>
-	 * <li>Retrieve the Order 0 Spherical Bessel Second Kind Estimator</li>
-	 * <li>Retrieve the Order +2 Spherical Bessel Second Kind Estimator</li>
-	 * <li>Retrieve the Order +3 Spherical Bessel Second Kind Estimator</li>
-	 * <li><i>SphericalSecondEstimator</i> Constructor</li>
-	 * <li>Retrieve the Bessel Function Second Kind Estimator</li>
+ * 		<li>Retrieve the Order 0 Spherical Bessel Second Kind Estimator</li>
+ * 		<li>Retrieve the Order +2 Spherical Bessel Second Kind Estimator</li>
+ *		<li>Retrieve the Order +3 Spherical Bessel Second Kind Estimator</li>
+ * 		<li><i>SphericalSecondEstimator</i> Constructor</li>
+ * 		<li>Retrieve the Bessel Function Second Kind Estimator</li>
  *  </ul>
  *
  *  <br>

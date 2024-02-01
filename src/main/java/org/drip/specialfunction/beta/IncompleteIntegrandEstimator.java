@@ -1,11 +1,19 @@
 
 package org.drip.specialfunction.beta;
 
+import org.drip.function.definition.R1ToR1;
+import org.drip.function.definition.R3ToR1;
+import org.drip.numerical.common.NumberUtil;
+import org.drip.numerical.integration.NewtonCotesQuadratureGenerator;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -78,7 +86,7 @@ package org.drip.specialfunction.beta;
 
 /**
  * <i>IncompleteIntegrandEstimator</i> implements the Incomplete Beta Function using Integrand Estimation
- * Schemes. The References are:
+ * 	Schemes. The References are:
  * 
  * <br><br>
  * 	<ul>
@@ -101,19 +109,32 @@ package org.drip.specialfunction.beta;
  * 			Wikipedia (2019): Gamma Function https://en.wikipedia.org/wiki/Gamma_function
  * 		</li>
  * 	</ul>
+ * 
+ * 	It provides the following functionality:
  *
- *	<br><br>
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FunctionAnalysisLibrary.md">Function Analysis Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md">Special Function Implementation Analysis</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/beta/README.md">Estimation Techniques for Beta Function</a></li>
+ * 		<li>Construct the Incomplete Beta Estimator from the Euler Integral of the First Kind</li>
+ * 		<li>Retrieve the Quadrature Count</li>
  *  </ul>
+ *
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md">Special Function Implementation and Analysis</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/beta/README.md">Estimation Techniques for Beta Function</a></td></tr>
+ *  </table>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public abstract class IncompleteIntegrandEstimator implements org.drip.function.definition.R3ToR1
+public abstract class IncompleteIntegrandEstimator implements R3ToR1
 {
 	private int _quadratureCount = -1;
 
@@ -128,51 +149,37 @@ public abstract class IncompleteIntegrandEstimator implements org.drip.function.
 	public static final IncompleteIntegrandEstimator EulerFirst (
 		final int quadratureCount)
 	{
-		try
-		{
-			return new IncompleteIntegrandEstimator (quadratureCount)
-			{
+		try {
+			return new IncompleteIntegrandEstimator (quadratureCount) {
 				@Override public double evaluate (
 					final double x,
 					final double a,
 					final double b)
-					throws java.lang.Exception
+					throws Exception
 				{
-					if (!org.drip.numerical.common.NumberUtil.IsValid (x) || 0. > x || 1. < x ||
-						!org.drip.numerical.common.NumberUtil.IsValid (a) || 0. >= a ||
-						!org.drip.numerical.common.NumberUtil.IsValid (b) || 0. >= b)
-					{
-						throw new java.lang.Exception
-							("IncompleteIntegrandEstimator::EulerFirst::evaluate => Invalid Inputs");
+					if (!NumberUtil.IsValid (x) || 0. > x || 1. < x ||
+						!NumberUtil.IsValid (a) || 0. >= a ||
+						!NumberUtil.IsValid (b) || 0. >= b) {
+						throw new Exception (
+							"IncompleteIntegrandEstimator::EulerFirst::evaluate => Invalid Inputs"
+						);
 					}
 
 					return 0. == x ? 0. :
-						org.drip.numerical.integration.NewtonCotesQuadratureGenerator.Zero_PlusOne (
-							0.,
-							x,
-							quadratureCount
-					).integrate (
-						new org.drip.function.definition.R1ToR1 (null)
-						{
-							@Override public double evaluate (
-								final double t)
-								throws java.lang.Exception
-							{
-								return 0. == t || 1. == t ? 0. : java.lang.Math.pow (
-									t,
-									a - 1.
-								) * java.lang.Math.pow (
-									1. - t,
-									b - 1.
-								);
+						NewtonCotesQuadratureGenerator.Zero_PlusOne (0., x, quadratureCount).integrate (
+							new R1ToR1 (null) {
+								@Override public double evaluate (
+									final double t)
+									throws Exception
+								{
+									return 0. == t || 1. == t ? 0. :
+										Math.pow (t, a - 1.) * Math.pow (1. - t, b - 1.);
+								}
 							}
-						}
-					);
+						);
 				}
 			};
-		}
-		catch (java.lang.Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -181,11 +188,10 @@ public abstract class IncompleteIntegrandEstimator implements org.drip.function.
 
 	protected IncompleteIntegrandEstimator (
 		final int quadratureCount)
-		throws java.lang.Exception
+		throws Exception
 	{
-		if (0 >= (_quadratureCount = quadratureCount))
-		{
-			throw new java.lang.Exception ("IncompleteIntegrandEstimator Constructor => Invalid Inputs");
+		if (0 >= (_quadratureCount = quadratureCount)) {
+			throw new Exception ("IncompleteIntegrandEstimator Constructor => Invalid Inputs");
 		}
 	}
 

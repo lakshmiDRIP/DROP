@@ -1,11 +1,18 @@
 
 package org.drip.specialfunction.beta;
 
+import org.drip.function.definition.R1ToR1;
+import org.drip.function.definition.R2ToR1;
+import org.drip.numerical.common.NumberUtil;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -78,7 +85,7 @@ package org.drip.specialfunction.beta;
 
 /**
  * <i>AsymptoticLogEstimator</i> implements the various Asymptotic Estimators for the Log Beta Function. The
- * References are:
+ * 	References are:
  * 
  * <br><br>
  * 	<ul>
@@ -101,14 +108,27 @@ package org.drip.specialfunction.beta;
  * 			Wikipedia (2019): Gamma Function https://en.wikipedia.org/wiki/Gamma_function
  * 		</li>
  * 	</ul>
+ * 
+ * 	It provides the following functionality:
  *
- *	<br><br>
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FunctionAnalysisLibrary.md">Function Analysis Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md">Special Function Implementation Analysis</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/beta/README.md">Estimation Techniques for Beta Function</a></li>
+ * 		<li>Construct the Stirling Asymptote Estimate for the Log Beta Function</li>
+ * 		<li>Construct the Large X Asymptote Estimate for the Log Beta Function</li>
  *  </ul>
+ *
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md">Special Function Implementation and Analysis</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/beta/README.md">Estimation Techniques for Beta Function</a></td></tr>
+ *  </table>
  *
  * @author Lakshmi Krishnamurthy
  */
@@ -121,30 +141,24 @@ public class AsymptoticLogEstimator
 	 * 
 	 * @return The Stirling Asymptote Estimate for the Log Beta Function
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
-	public static final org.drip.function.definition.R2ToR1 Stirling()
-		throws java.lang.Exception
+	public static final R2ToR1 Stirling()
+		throws Exception
 	{
-		return new org.drip.function.definition.R2ToR1()
-		{
+		return new R2ToR1() {
 			@Override public double evaluate (
 				final double x,
 				final double y)
-				throws java.lang.Exception
+				throws Exception
 			{
-				if (!org.drip.numerical.common.NumberUtil.IsValid (x) ||
-					!org.drip.numerical.common.NumberUtil.IsValid (y))
-				{
-					throw new java.lang.Exception
-						("AsymptoticLogEstimator::Stirling::evaluate => Invalid Inputs");
+				if (!NumberUtil.IsValid (x) || !NumberUtil.IsValid (y)) {
+					throw new Exception ("AsymptoticLogEstimator::Stirling::evaluate => Invalid Inputs");
 				}
 
-				return 0.5 * java.lang.Math.log (2. * java.lang.Math.PI) +
-					(x - 0.5) * java.lang.Math.log (x) +
-					(y - 0.5) * java.lang.Math.log (y) -
-					(x + y - 0.5) * java.lang.Math.log (x + y);
+				return 0.5 * Math.log (2. * Math.PI) + (x - 0.5) * Math.log (x) + (y - 0.5) * Math.log (y) -
+					(x + y - 0.5) * Math.log (x + y);
 			}
 		};
 	}
@@ -156,33 +170,28 @@ public class AsymptoticLogEstimator
 	 * 
 	 * @return The Large X Asymptote Estimate for the Log Beta Function
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
-	public static final org.drip.function.definition.R2ToR1 LargeX (
-		final org.drip.function.definition.R1ToR1 logGammaEstimator)
+	public static final R2ToR1 LargeX (
+		final R1ToR1 logGammaEstimator)
 		throws java.lang.Exception
 	{
-		if (null == logGammaEstimator)
-		{
+		if (null == logGammaEstimator) {
 			return null;
 		}
 
-		return new org.drip.function.definition.R2ToR1()
-		{
+		return new R2ToR1() {
 			@Override public double evaluate (
 				final double x,
 				final double y)
-				throws java.lang.Exception
+				throws Exception
 			{
-				if (!org.drip.numerical.common.NumberUtil.IsValid (x) ||
-					!org.drip.numerical.common.NumberUtil.IsValid (y))
-				{
-					throw new java.lang.Exception
-						("AsymptoticLogEstimator::LargeX::evaluate => Invalid Inputs");
+				if (!NumberUtil.IsValid (x) || !NumberUtil.IsValid (y)) {
+					throw new Exception ("AsymptoticLogEstimator::LargeX::evaluate => Invalid Inputs");
 				}
 
-				return logGammaEstimator.evaluate (y) - y * java.lang.Math.log (x);
+				return logGammaEstimator.evaluate (y) - y * Math.log (x);
 			}
 		};
 	}

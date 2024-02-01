@@ -76,8 +76,8 @@ import org.drip.function.definition.R1ToR1;
  */
 
 /**
- * <i>ClaimsAdjustedOptimizationRun</i> produces Optimal Underlier Units and Utility Expectation as a
- *  Function of the Claims Value. The References are:
+ * <i>UtilityFunction</i> implements the Utility Function for the Realized Position Vertex. The References
+ *  are:
  *  
  * 	<br><br>
  *  <ul>
@@ -112,50 +112,56 @@ import org.drip.function.definition.R1ToR1;
  * @author Lakshmi Krishnamurthy
  */
 
-public class ClaimsAdjustedOptimizationRun
+public class UtilityFunction
 {
-	private R1ToR1 _optimalUnderlierUnitsFunction = null;
-	private R1ToR1 _optimalUtilityExpectationFunction = null;
+	private R1ToR1 _agentObjective = null;
 
 	/**
-	 * ClaimsAdjustedOptimizationRun Constructor
+	 * UtilityFunction Constructor
 	 * 
-	 * @param optimalUnderlierUnitsFunction Optimal Underlier Units Function
-	 * @param optimalUtilityExpectationFunction Optimal Utility Expectation Function
+	 * @param agentObjective Agent Objective Function
 	 * 
 	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
-	public ClaimsAdjustedOptimizationRun (
-		final R1ToR1 optimalUnderlierUnitsFunction,
-		final R1ToR1 optimalUtilityExpectationFunction)
+	public UtilityFunction (
+		final R1ToR1 agentObjective)
 		throws Exception
 	{
-		if (null == (_optimalUnderlierUnitsFunction = optimalUnderlierUnitsFunction) ||
-			null == (_optimalUnderlierUnitsFunction = optimalUnderlierUnitsFunction)) {
-			throw new Exception ("ClaimsAdjustedOptimizationRun Constructor => Invalid Inputs");
+		if (null == (_agentObjective = agentObjective)) {
+			throw new Exception ("UtilityFunction Constructor => Invalid Inputs");
 		}
 	}
 
 	/**
-	 * Retrieve the Optimal Underlier Units Function
+	 * Retrieve the Agent's Objective Function
 	 * 
-	 * @return The Optimal Underlier Units Function
-
+	 * @return The Agent's Objective Function
 	 */
-	public R1ToR1 optimalUnderlierUnitsFunction()
+
+	public R1ToR1 agentObjective()
 	{
-		return _optimalUnderlierUnitsFunction;
+		return _agentObjective;
 	}
 
 	/**
-	 * Retrieve the Optimal Utility Expectation Function
+	 * Evaluate the Utility Function at the Position Vertex
 	 * 
-	 * @return The Optimal Utility Expectation Function
-
+	 * @param positionVertex Position Vertex
+	 * 
+	 * @return Utility Function Value
+	 * 
+	 * @throws Exception Thrown if the Utility Function cannot be calculated
 	 */
-	public R1ToR1 optimalUtilityExpectationFunction()
+
+	public double evaluate (
+		final PositionVertex positionVertex)
+		throws Exception
 	{
-		return _optimalUtilityExpectationFunction;
+		if (null == positionVertex) {
+			throw new Exception ("UtilityFunction::evaluate => Invald Position Vertex");
+		}
+
+		return _agentObjective.evaluate (positionVertex.value());
 	}
 }

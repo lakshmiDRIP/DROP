@@ -1,6 +1,8 @@
 
 package org.drip.oms.indifference;
 
+import org.drip.function.definition.R1ToR1;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
@@ -112,6 +114,7 @@ package org.drip.oms.indifference;
 
 public class ReservationPricer
 {
+	private R1ToR1 _utilityFunction = null;
 	private InventoryVertex _initialInventory = null;
 
 	/**
@@ -123,5 +126,16 @@ public class ReservationPricer
 	public InventoryVertex initialInventory()
 	{
 		return _initialInventory;
+	}
+
+	/**
+	 * Retrieve the Utility Function
+	 * 
+	 * @return The Utility Function
+	 */
+
+	public R1ToR1 utilityFunction()
+	{
+		return _utilityFunction;
 	}
 }

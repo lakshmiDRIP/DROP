@@ -1,11 +1,6 @@
 
 package org.drip.oms.indifference;
 
-import java.util.Map;
-import java.util.TreeMap;
-
-import org.drip.numerical.common.NumberUtil;
-
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
@@ -79,8 +74,8 @@ import org.drip.numerical.common.NumberUtil;
  */
 
 /**
- * <i>ReservationPriceRun</i> captures the Results of a Claims Adjusted Indifference Pricing Run.
- *  The References are:
+ * <i>UtilityFunctionExpectation</i> implements the Expectation of Utility Function across Realized Underlier
+ *  Values using its Terminal Measure. The References are:
  *  
  * 	<br><br>
  *  <ul>
@@ -115,99 +110,7 @@ import org.drip.numerical.common.NumberUtil;
  * @author Lakshmi Krishnamurthy
  */
 
-public class ReservationPriceRun
+public class UtilityFunctionExpectation
 {
-	private UtilityOptimizationRun _indifferenceUtilityRun = null;
-	private Map<Double, UtilityOptimizationRun> _claimsAdjustedIndifferenceRunMap = null;
-
-	/**
-	 * ReservationPriceRun Constructor
-	 * 
-	 * @param indifferenceUtilityRun Indifference Utility Run
-	 * 
-	 * @throws Exception Thrown if the Inputs are Invalid
-	 */
-
-	public ReservationPriceRun (
-		final UtilityOptimizationRun indifferenceUtilityRun)
-		throws Exception
-	{
-		if (null == (_indifferenceUtilityRun = indifferenceUtilityRun)) {
-			throw new Exception ("ReservationPriceRun Constructor => Invalid Inputs");
-		}
-
-		_claimsAdjustedIndifferenceRunMap = new TreeMap<Double, UtilityOptimizationRun>();
-	}
-
-	/**
-	 * Retrieve the Indifference Utility Run
-	 * 
-	 * @return The Indifference Utility Run
-	 */
-
-	public UtilityOptimizationRun indifferenceUtilityRun()
-	{
-		return _indifferenceUtilityRun;
-	}
-
-	/**
-	 * Retrieve the Claims Adjusted Indifference Run Map
-	 * 
-	 * @return The Claims Adjusted Indifference Run Map
-	 */
-
-	public Map<Double, UtilityOptimizationRun> claimsAdjustedIndifferenceRunMap()
-	{
-		return _claimsAdjustedIndifferenceRunMap;
-	}
-
-	/**
-	 * Add the Claims Unit Adjusted Utility Optimization Run
-	 * 
-	 * @param claimsUnit Claims Unit
-	 * @param claimsAdjustedUtilityOptimizationRun Claims Unit Adjusted Utility Optimization Run
-	 * 
-	 * @return TRUE - Claims Unit Adjusted Utility Optimization Run successfully added
-	 */
-
-	public boolean addClaimsAdjustedIndifferenceUtility (
-		final double claimsUnit,
-		final UtilityOptimizationRun claimsAdjustedUtilityOptimizationRun)
-	{
-		if (!NumberUtil.IsValid (claimsUnit) || null == claimsAdjustedUtilityOptimizationRun) {
-			return false;
-		}
-
-		_claimsAdjustedIndifferenceRunMap.put (claimsUnit, claimsAdjustedUtilityOptimizationRun);
-
-		return true;
-	}
-
-	/**
-	 * Indicate if the Indifference Run is available for the Claims Unit
-	 * 
-	 * @param claimsUnit The Claims Unit
-	 * 
-	 * @return TRUE - Indifference Run is available for the Claims Unit
-	 */
-
-	public boolean containsClaimsUnit (
-		final double claimsUnit)
-	{
-		return NumberUtil.IsValid (claimsUnit) && _claimsAdjustedIndifferenceRunMap.containsKey (claimsUnit);
-	}
-
-	/**
-	 * Retrieve the Indifference Run for the Claims Unit
-	 * 
-	 * @param claimsUnit The Claims Unit
-	 * 
-	 * @return Indifference Run for the Claims Unit
-	 */
-
-	public UtilityOptimizationRun getClaimsAdjustedIndifferenceUtility (
-		final double claimsUnit)
-	{
-		return containsClaimsUnit (claimsUnit) ? _claimsAdjustedIndifferenceRunMap.get (claimsUnit) : null;
-	}
+	private UtilityFunction _utilityFunction = null;
 }

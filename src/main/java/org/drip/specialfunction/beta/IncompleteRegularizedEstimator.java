@@ -1,11 +1,17 @@
 
 package org.drip.specialfunction.beta;
 
+import org.drip.function.definition.R3ToR1;
+import org.drip.specialfunction.definition.BetaEstimator;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -78,7 +84,7 @@ package org.drip.specialfunction.beta;
 
 /**
  * <i>IncompleteRegularizedEstimator</i> implements the Regularized Incomplete Beta Function Estimator. The
- * References are:
+ * 	References are:
  * 
  * <br><br>
  * 	<ul>
@@ -101,41 +107,54 @@ package org.drip.specialfunction.beta;
  * 			Wikipedia (2019): Gamma Function https://en.wikipedia.org/wiki/Gamma_function
  * 		</li>
  * 	</ul>
+ * 
+ * 	It provides the following functionality:
  *
- *	<br><br>
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FunctionAnalysisLibrary.md">Function Analysis Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md">Special Function Implementation Analysis</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/beta/README.md">Estimation Techniques for Beta Function</a></li>
+ * 		<li><i>IncompleteRegularizedEstimator</i> Constructor</li>
+ * 		<li>Retrieve the Beta Estimator</li>
+ * 		<li>Retrieve the Incomplete Beta Estimator</li>
  *  </ul>
+ *
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md">Special Function Implementation and Analysis</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/beta/README.md">Estimation Techniques for Beta Function</a></td></tr>
+ *  </table>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class IncompleteRegularizedEstimator implements org.drip.function.definition.R3ToR1
+public class IncompleteRegularizedEstimator implements R3ToR1
 {
-	private org.drip.function.definition.R3ToR1 _incompleteBetaEstimator = null;
-	private org.drip.specialfunction.definition.BetaEstimator _betaEstimator = null;
+	private BetaEstimator _betaEstimator = null;
+	private R3ToR1 _incompleteBetaEstimator = null;
 
 	/**
-	 * IncompleteRegularizedEstimator Constructor
+	 * <i>IncompleteRegularizedEstimator</i> Constructor
 	 * 
 	 * @param incompleteBetaEstimator Incomplete Beta Estimator
 	 * @param betaEstimator Beta Estimator
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public IncompleteRegularizedEstimator (
-		final org.drip.function.definition.R3ToR1 incompleteBetaEstimator,
-		final org.drip.specialfunction.definition.BetaEstimator betaEstimator)
-		throws java.lang.Exception
+		final R3ToR1 incompleteBetaEstimator,
+		final BetaEstimator betaEstimator)
+		throws Exception
 	{
 		if (null == (_incompleteBetaEstimator = incompleteBetaEstimator) ||
-			null == (_betaEstimator = betaEstimator))
-		{
-			throw new java.lang.Exception ("IncompleteRegularizedEstimator Constructor => Invalid Inputs");
+			null == (_betaEstimator = betaEstimator)) {
+			throw new Exception ("IncompleteRegularizedEstimator Constructor => Invalid Inputs");
 		}
 	}
 
@@ -145,7 +164,7 @@ public class IncompleteRegularizedEstimator implements org.drip.function.definit
 	 * @return The Beta Estimator
 	 */
 
-	public org.drip.specialfunction.definition.BetaEstimator betaEstimator()
+	public BetaEstimator betaEstimator()
 	{
 		return _betaEstimator;
 	}
@@ -156,7 +175,7 @@ public class IncompleteRegularizedEstimator implements org.drip.function.definit
 	 * @return The Incomplete Beta Estimator
 	 */
 
-	public org.drip.function.definition.R3ToR1 incompleteBetaEstimator()
+	public R3ToR1 incompleteBetaEstimator()
 	{
 		return _incompleteBetaEstimator;
 	}
@@ -165,15 +184,8 @@ public class IncompleteRegularizedEstimator implements org.drip.function.definit
 		final double x,
 		final double a,
 		final double b)
-		throws java.lang.Exception
+		throws Exception
 	{
-		return _incompleteBetaEstimator.evaluate (
-			x,
-			a,
-			b
-		) / _betaEstimator.evaluate (
-			a,
-			b
-		);
+		return _incompleteBetaEstimator.evaluate (x, a, b) / _betaEstimator.evaluate (a, b);
 	}
 }

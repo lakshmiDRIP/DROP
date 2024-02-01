@@ -1,11 +1,18 @@
 
 package org.drip.specialfunction.beta;
 
+import org.drip.function.definition.R1ToR1;
+import org.drip.function.definition.R2ToR1;
+import org.drip.numerical.common.NumberUtil;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -78,7 +85,7 @@ package org.drip.specialfunction.beta;
 
 /**
  * <i>CombinatorialEstimate</i> implements the Combinatorial Function Estimate using Beta-based Schemes. The
- * References are:
+ * 	References are:
  * 
  * <br><br>
  * 	<ul>
@@ -101,14 +108,28 @@ package org.drip.specialfunction.beta;
  * 			Wikipedia (2019): Gamma Function https://en.wikipedia.org/wiki/Gamma_function
  * 		</li>
  * 	</ul>
+ * 
+ * 	It provides the following functionality:
  *
- *	<br><br>
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FunctionAnalysisLibrary.md">Function Analysis Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md">Special Function Implementation Analysis</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/beta/README.md">Estimation Techniques for Beta Function</a></li>
+ * 		<li>Estimate the Binomial Coefficient Using the Beta Function</li>
+ * 		<li>Estimate the Binomial Coefficient Using a Continuous Interpolation Function</li>
+ * 		<li>Compute the Cumulative Binomial Distribution Function for the specified n, k, and p</li>
  *  </ul>
+ *
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md">Special Function Implementation and Analysis</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/beta/README.md">Estimation Techniques for Beta Function</a></td></tr>
+ *  </table>
  *
  * @author Lakshmi Krishnamurthy
  */
@@ -125,29 +146,21 @@ public class CombinatorialEstimate
 	 * 
 	 * @return Binomial Coefficient Using the Beta Function
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public static final double BetaBinomial (
 		final double n,
 		final double k,
-		final org.drip.function.definition.R2ToR1 betaEstimator)
-		throws java.lang.Exception
+		final R2ToR1 betaEstimator)
+		throws Exception
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (n) || 0. >= n ||
-			!org.drip.numerical.common.NumberUtil.IsValid (k) || 0. >= k ||
-			n < k ||
-			null == betaEstimator)
-		{
-			throw new java.lang.Exception ("CombinatorialEstimate::BetaBinomial => Invalid Inputs");
+		if (!NumberUtil.IsValid (n) || 0. >= n || !NumberUtil.IsValid (k) || 0. >= k || n < k ||
+			null == betaEstimator) {
+			throw new Exception ("CombinatorialEstimate::BetaBinomial => Invalid Inputs");
 		}
 
-		return 1. / (
-			(n + 1.) * betaEstimator.evaluate (
-				n - k + 1.,
-				k + 1.
-			)
-		);
+		return 1. / ((n + 1.) * betaEstimator.evaluate (n - k + 1., k + 1.));
 	}
 
 	/**
@@ -159,28 +172,24 @@ public class CombinatorialEstimate
 	 * 
 	 * @return Binomial Coefficient Using a Continuous Interpolation Function
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public static final double GammaBinomial (
 		final double n,
 		final double k,
-		final org.drip.function.definition.R1ToR1 gammaEstimator)
-		throws java.lang.Exception
+		final R1ToR1 gammaEstimator)
+		throws Exception
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (n) || 0. >= n ||
-			!org.drip.numerical.common.NumberUtil.IsValid (k) || 0. >= k ||
-			n < k ||
-			null == gammaEstimator)
-		{
-			throw new java.lang.Exception ("CombinatorialEstimate::GammaBinomial => Invalid Inputs");
+		if (!NumberUtil.IsValid (n) || 0. >= n || !NumberUtil.IsValid (k) || 0. >= k || n < k ||
+			null == gammaEstimator) {
+			throw new Exception ("CombinatorialEstimate::GammaBinomial => Invalid Inputs");
 		}
 
 		double gammaBinomial = (1 == n % 2 ? -1. : 1.) * gammaEstimator.evaluate (n + 1.) *
-			java.lang.Math.sin (java.lang.Math.PI * k) / java.lang.Math.PI;
+			Math.sin (Math.PI * k) / Math.PI;
 
-		for (int i = 0; i <= n; ++i)
-		{
+		for (int i = 0; i <= n; ++i) {
 			gammaBinomial = gammaBinomial / (k - i);
 		}
 
@@ -197,30 +206,21 @@ public class CombinatorialEstimate
 	 * 
 	 * @return The Cumulative Binomial Distribution Function Value
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public static final double CumulativeBinomialDistribution (
 		final double n,
 		final double k,
 		final double p,
-		final org.drip.specialfunction.beta.IncompleteRegularizedEstimator incompleteRegularizedEstimator)
-		throws java.lang.Exception
+		final IncompleteRegularizedEstimator incompleteRegularizedEstimator)
+		throws Exception
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (n) || 0. >= n ||
-			!org.drip.numerical.common.NumberUtil.IsValid (k) || 0. >= k ||
-			n < k ||
-			!org.drip.numerical.common.NumberUtil.IsValid (p) || 0. > p || 1. < p ||
-			null == incompleteRegularizedEstimator)
-		{
-			throw new java.lang.Exception
-				("CombinatorialEstimate::CumulativeBinomialDistribution => Invalid Inputs");
+		if (!NumberUtil.IsValid (n) || 0. >= n || !NumberUtil.IsValid (k) || 0. >= k || n < k ||
+			!NumberUtil.IsValid (p) || 0. > p || 1. < p || null == incompleteRegularizedEstimator) {
+			throw new Exception ("CombinatorialEstimate::CumulativeBinomialDistribution => Invalid Inputs");
 		}
 
-		return incompleteRegularizedEstimator.evaluate (
-			1. - p,
-			n - k,
-			k + 1.
-		);
+		return incompleteRegularizedEstimator.evaluate (1. - p, n - k, k + 1.);
 	}
 }
