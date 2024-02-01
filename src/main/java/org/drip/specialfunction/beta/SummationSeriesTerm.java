@@ -1,11 +1,17 @@
 
 package org.drip.specialfunction.beta;
 
+import org.drip.numerical.common.NumberUtil;
+import org.drip.numerical.estimation.R2ToR1SeriesTerm;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -100,14 +106,26 @@ package org.drip.specialfunction.beta;
  * 			Wikipedia (2019): Gamma Function https://en.wikipedia.org/wiki/Gamma_function
  * 		</li>
  * 	</ul>
+ * 
+ * 	It provides the following functionality:
  *
- *	<br><br>
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FunctionAnalysisLibrary.md">Function Analysis Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md">Special Function Implementation Analysis</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/beta/README.md">Estimation Techniques for Beta Function</a></li>
+ * 		<li>Construct the Abramowitz-Stegun (2007) Summation Sum Series Term for Beta</li>
  *  </ul>
+ *
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md">Special Function Implementation and Analysis</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/beta/README.md">Estimation Techniques for Beta Function</a></td></tr>
+ *  </table>
  *
  * @author Lakshmi Krishnamurthy
  */
@@ -121,32 +139,27 @@ public class SummationSeriesTerm
 	 * @return The Abramowitz-Stegun (2007) Summation Sum Series Term for Beta
 	 */
 
-	public static final org.drip.numerical.estimation.R2ToR1SeriesTerm AbramowitzStegun2007()
+	public static final R2ToR1SeriesTerm AbramowitzStegun2007()
 	{
-		try
-		{
-			return new org.drip.numerical.estimation.R2ToR1SeriesTerm()
-			{
+		try {
+			return new R2ToR1SeriesTerm() {
 				@Override public double value (
 					final int order,
 					final double x,
 					final double y)
-					throws java.lang.Exception
+					throws Exception
 				{
-					if (0 >= order ||
-						!org.drip.numerical.common.NumberUtil.IsValid (x) || 0. >= x ||
-						!org.drip.numerical.common.NumberUtil.IsValid (y) || 0. >= y)
-					{
-						throw new java.lang.Exception
-							("SummationSeriesTerm::AbramowitzStegun2007::value => Invalid Inputs");
+					if (0 >= order || !NumberUtil.IsValid (x) || 0. >= x ||
+						!NumberUtil.IsValid (y) || 0. >= y) {
+						throw new Exception (
+							"SummationSeriesTerm::AbramowitzStegun2007::value => Invalid Inputs"
+						);
 					}
 
-					return -1. * java.lang.Math.log (1. + (x * y / (order * (x + y + order))));
+					return -1. * Math.log (1. + (x * y / (order * (x + y + order))));
 				}
 			};
-		}
-		catch (java.lang.Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 

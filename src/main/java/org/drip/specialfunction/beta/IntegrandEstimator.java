@@ -1,11 +1,19 @@
 
 package org.drip.specialfunction.beta;
 
+import org.drip.function.definition.R1ToR1;
+import org.drip.numerical.common.NumberUtil;
+import org.drip.numerical.integration.NewtonCotesQuadratureGenerator;
+import org.drip.specialfunction.definition.BetaEstimator;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -78,7 +86,7 @@ package org.drip.specialfunction.beta;
 
 /**
  * <i>IntegrandEstimator</i> implements the Beta Function using Integrand Estimation Schemes. The References
- * are:
+ * 	are:
  * 
  * <br><br>
  * 	<ul>
@@ -101,19 +109,35 @@ package org.drip.specialfunction.beta;
  * 			Wikipedia (2019): Gamma Function https://en.wikipedia.org/wiki/Gamma_function
  * 		</li>
  * 	</ul>
+ * 
+ * 	It provides the following functionality:
  *
- *	<br><br>
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FunctionAnalysisLibrary.md">Function Analysis Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md">Special Function Implementation Analysis</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/beta/README.md">Estimation Techniques for Beta Function</a></li>
+ * 		<li>Construct the Beta Estimator from the Trigonometric Integral</li>
+ * 		<li>Construct the Beta Estimator from the Euler Integral of the First Kind</li>
+ * 		<li>Construct the Beta Estimator from the Euler Integral of the First Kind Exponent N</li>
+ * 		<li>Construct the Beta Estimator from the Euler Integral of the First Kind over the Right Half Plane</li>
+ * 		<li>Retrieve the Quadrature Count</li>
  *  </ul>
+ *
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md">Special Function Implementation and Analysis</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/beta/README.md">Estimation Techniques for Beta Function</a></td></tr>
+ *  </table>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public abstract class IntegrandEstimator extends org.drip.specialfunction.definition.BetaEstimator
+public abstract class IntegrandEstimator extends BetaEstimator
 {
 	private int _quadratureCount = -1;
 
@@ -128,49 +152,38 @@ public abstract class IntegrandEstimator extends org.drip.specialfunction.defini
 	public static final IntegrandEstimator Trigonometric (
 		final int quadratureCount)
 	{
-		try
-		{
-			return new IntegrandEstimator (quadratureCount)
-			{
+		try {
+			return new IntegrandEstimator (quadratureCount) {
 				@Override public double evaluate (
 					final double x,
 					final double y)
-					throws java.lang.Exception
+					throws Exception
 				{
-					if (!org.drip.numerical.common.NumberUtil.IsValid (x) ||
-						!org.drip.numerical.common.NumberUtil.IsValid (y))
-					{
-						throw new java.lang.Exception
-							("IntegrandEstimator::Trigonometric::evaluate => Invalid Inputs");
+					if (!NumberUtil.IsValid (x) || !NumberUtil.IsValid (y)) {
+						throw new Exception (
+							"IntegrandEstimator::Trigonometric::evaluate => Invalid Inputs"
+						);
 					}
 
-					return 2. * org.drip.numerical.integration.NewtonCotesQuadratureGenerator.Zero_PlusOne (
+					return 2. * NewtonCotesQuadratureGenerator.Zero_PlusOne (
 						0.,
-						0.5 * java.lang.Math.PI,
+						0.5 * Math.PI,
 						quadratureCount
 					).integrate (
-						new org.drip.function.definition.R1ToR1 (null)
-						{
+						new R1ToR1 (null) {
 							@Override public double evaluate (
 								final double theta)
-								throws java.lang.Exception
+								throws Exception
 							{
-								return 0. == theta || 0.5 * java.lang.Math.PI == theta ? 0. :
-									java.lang.Math.pow (
-										java.lang.Math.sin (theta),
-										2. * x - 1.
-									) * java.lang.Math.pow (
-										java.lang.Math.cos (theta),
-										2. * y - 1.
-									);
+								return 0. == theta || 0.5 * Math.PI == theta ? 0. :
+									Math.pow (Math.sin (theta), 2. * x - 1.) *
+									Math.pow (Math.cos (theta), 2. * y - 1.);
 							}
 						}
 					);
 				}
 			};
-		}
-		catch (java.lang.Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -188,48 +201,31 @@ public abstract class IntegrandEstimator extends org.drip.specialfunction.defini
 	public static final IntegrandEstimator EulerFirst (
 		final int quadratureCount)
 	{
-		try
-		{
-			return new IntegrandEstimator (quadratureCount)
-			{
+		try {
+			return new IntegrandEstimator (quadratureCount) {
 				@Override public double evaluate (
 					final double x,
 					final double y)
-					throws java.lang.Exception
+					throws Exception
 				{
-					if (!org.drip.numerical.common.NumberUtil.IsValid (x) ||
-						!org.drip.numerical.common.NumberUtil.IsValid (y))
-					{
-						throw new java.lang.Exception
-							("IntegrandEstimator::EulerFirst::evaluate => Invalid Inputs");
+					if (!NumberUtil.IsValid (x) || !NumberUtil.IsValid (y)) {
+						throw new Exception ("IntegrandEstimator::EulerFirst::evaluate => Invalid Inputs");
 					}
 
-					return org.drip.numerical.integration.NewtonCotesQuadratureGenerator.Zero_PlusOne (
-						0.,
-						1.,
-						1000000
-					).integrate (
-						new org.drip.function.definition.R1ToR1 (null)
-						{
+					return NewtonCotesQuadratureGenerator.Zero_PlusOne (0., 1., 1000000).integrate (
+						new R1ToR1 (null) {
 							@Override public double evaluate (
 								final double t)
-								throws java.lang.Exception
+								throws Exception
 							{
-								return 0. == t || 1. == t ? 0. : java.lang.Math.pow (
-									t,
-									x - 1.
-								) * java.lang.Math.pow (
-									1. - t,
-									y - 1.
-								);
+								return 0. == t || 1. == t ? 0. :
+									Math.pow (t, x - 1.) * Math.pow (1. - t, y - 1.);
 							}
 						}
 					);
 				}
 			};
-		}
-		catch (java.lang.Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -237,7 +233,7 @@ public abstract class IntegrandEstimator extends org.drip.specialfunction.defini
 	}
 
 	/**
-	 * Construct the Beta Estimator from the Euler Integral of the First Kind
+	 * Construct the Beta Estimator from the Euler Integral of the First Kind Exponent N
 	 * 
 	 * @param quadratureCount Count of the Integrand Quadrature
 	 * @param exponent Exponent
@@ -249,56 +245,40 @@ public abstract class IntegrandEstimator extends org.drip.specialfunction.defini
 		final int quadratureCount,
 		final double exponent)
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (exponent) || 0. >= exponent)
-		{
+		if (!NumberUtil.IsValid (exponent) || 0. >= exponent) {
 			return null;
 		}
 
-		try
-		{
-			return new IntegrandEstimator (quadratureCount)
-			{
+		try {
+			return new IntegrandEstimator (quadratureCount) {
 				@Override public double evaluate (
 					final double x,
 					final double y)
-					throws java.lang.Exception
+					throws Exception
 				{
-					if (!org.drip.numerical.common.NumberUtil.IsValid (x) ||
-						!org.drip.numerical.common.NumberUtil.IsValid (y))
-					{
-						throw new java.lang.Exception
-							("IntegrandEstimator::EulerFirstN::evaluate => Invalid Inputs");
+					if (!NumberUtil.IsValid (x) || !NumberUtil.IsValid (y)) {
+						throw new Exception ("IntegrandEstimator::EulerFirstN::evaluate => Invalid Inputs");
 					}
 
-					return exponent * org.drip.numerical.integration.NewtonCotesQuadratureGenerator.Zero_PlusOne (
+					return exponent * NewtonCotesQuadratureGenerator.Zero_PlusOne (
 						0.,
 						1.,
 						quadratureCount
 					).integrate (
-						new org.drip.function.definition.R1ToR1 (null)
-						{
+						new R1ToR1 (null) {
 							@Override public double evaluate (
 								final double t)
-								throws java.lang.Exception
+								throws Exception
 							{
-								return 0. == t || 1. == t ? 0. : java.lang.Math.pow (
-									t,
-									exponent * x - 1.
-								) * java.lang.Math.pow (
-									java.lang.Math.pow (
-										1. - t,
-										exponent
-									),
-									y - 1.
-								);
+								return 0. == t || 1. == t ? 0. :
+									Math.pow (t, exponent * x - 1.) *
+									Math.pow (Math.pow (1. - t, exponent), y - 1.);
 							}
 						}
 					);
 				}
 			};
-		}
-		catch (java.lang.Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -316,48 +296,37 @@ public abstract class IntegrandEstimator extends org.drip.specialfunction.defini
 	public static final IntegrandEstimator EulerFirstRightPlane (
 		final int quadratureCount)
 	{
-		try
-		{
+		try {
 			return new IntegrandEstimator (quadratureCount)
 			{
 				@Override public double evaluate (
 					final double x,
 					final double y)
-					throws java.lang.Exception
+					throws Exception
 				{
-					if (!org.drip.numerical.common.NumberUtil.IsValid (x) ||
-						!org.drip.numerical.common.NumberUtil.IsValid (y))
-					{
-						throw new java.lang.Exception
-							("IntegrandEstimator::EulerFirstRightPlane::evaluate => Invalid Inputs");
+					if (!NumberUtil.IsValid (x) || !NumberUtil.IsValid (y)) {
+						throw new Exception (
+							"IntegrandEstimator::EulerFirstRightPlane::evaluate => Invalid Inputs"
+						);
 					}
 
-					return org.drip.numerical.integration.NewtonCotesQuadratureGenerator.GaussLaguerreLeftDefinite (
+					return NewtonCotesQuadratureGenerator.GaussLaguerreLeftDefinite (
 						0.,
 						quadratureCount
 					).integrate (
-						new org.drip.function.definition.R1ToR1 (null)
-						{
+						new R1ToR1 (null) {
 							@Override public double evaluate (
 								final double t)
-								throws java.lang.Exception
+								throws Exception
 							{
-								return 0. == t || java.lang.Double.isInfinite (t) ? 0. :
-									java.lang.Math.pow (
-										t,
-										x - 1.
-									) / java.lang.Math.pow (
-										1. + t,
-										x + y
-									);
+								return 0. == t || Double.isInfinite (t) ? 0. :
+									Math.pow (t, x - 1.) / Math.pow (1. + t, x + y);
 							}
 						}
 					);
 				}
 			};
-		}
-		catch (java.lang.Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -366,11 +335,10 @@ public abstract class IntegrandEstimator extends org.drip.specialfunction.defini
 
 	protected IntegrandEstimator (
 		final int quadratureCount)
-		throws java.lang.Exception
+		throws Exception
 	{
-		if (0 >= (_quadratureCount = quadratureCount))
-		{
-			throw new java.lang.Exception ("IntegrandEstimator Constructor => Invalid Inputs");
+		if (0 >= (_quadratureCount = quadratureCount)) {
+			throw new Exception ("IntegrandEstimator Constructor => Invalid Inputs");
 		}
 	}
 

@@ -1,11 +1,18 @@
 
 package org.drip.specialfunction.beta;
 
+import org.drip.numerical.common.NumberUtil;
+import org.drip.numerical.estimation.R2ToR1Series;
+import org.drip.specialfunction.definition.BetaEstimator;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -100,21 +107,34 @@ package org.drip.specialfunction.beta;
  * 			Wikipedia (2019): Gamma Function https://en.wikipedia.org/wiki/Gamma_function
  * 		</li>
  * 	</ul>
+ * 
+ * 	It provides the following functionality:
  *
- *	<br><br>
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FunctionAnalysisLibrary.md">Function Analysis Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md">Special Function Implementation Analysis</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/beta/README.md">Estimation Techniques for Beta Function</a></li>
+ * 		<li>Compute the Abramowitz-Stegun (2007) Summation Series of Beta Estimator</li>
+ * 		<li>Retrieve the Underlying Summation Series</li>
  *  </ul>
+ *
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md">Special Function Implementation and Analysis</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/beta/README.md">Estimation Techniques for Beta Function</a></td></tr>
+ *  </table>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public abstract class SummationSeriesEstimator extends org.drip.specialfunction.definition.BetaEstimator
+public abstract class SummationSeriesEstimator extends BetaEstimator
 {
-	private org.drip.numerical.estimation.R2ToR1Series _summationSeries = null;
+	private R2ToR1Series _summationSeries = null;
 
 	/**
 	 * Compute the Abramowitz-Stegun (2007) Summation Series of Beta Estimator
@@ -127,35 +147,23 @@ public abstract class SummationSeriesEstimator extends org.drip.specialfunction.
 	public static final SummationSeriesEstimator AbramowitzStegun2007 (
 		final int termCount)
 	{
-		try
-		{
-			return new SummationSeriesEstimator (
-				org.drip.specialfunction.beta.SummationSeries.AbramowitzStegun2007 (termCount)
-			)
-			{
+		try {
+			return new SummationSeriesEstimator (SummationSeries.AbramowitzStegun2007 (termCount)) {
 				@Override public double evaluate (
 					final double x,
 					final double y)
-					throws java.lang.Exception
+					throws Exception
 				{
-					if (!org.drip.numerical.common.NumberUtil.IsValid (x) || 0. >= x ||
-						!org.drip.numerical.common.NumberUtil.IsValid (y) || 0. >= y)
-					{
-						throw new java.lang.Exception
-							("SummationSeriesEstimator::AbramowitzStegun2007::evaluate => Invalid Inputs");
+					if (!NumberUtil.IsValid (x) || 0. >= x || !NumberUtil.IsValid (y) || 0. >= y) {
+						throw new Exception (
+							"SummationSeriesEstimator::AbramowitzStegun2007::evaluate => Invalid Inputs"
+						);
 					}
 
-					return (x + y) * java.lang.Math.exp (
-						summationSeries().evaluate (
-							x,
-							y
-						)
-					) / (x * y);
+					return (x + y) * Math.exp (summationSeries().evaluate (x, y)) / (x * y);
 				}
 			};
-		}
-		catch (java.lang.Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -163,7 +171,7 @@ public abstract class SummationSeriesEstimator extends org.drip.specialfunction.
 	}
 
 	protected SummationSeriesEstimator (
-		final org.drip.numerical.estimation.R2ToR1Series summationSeries)
+		final R2ToR1Series summationSeries)
 	{
 		_summationSeries = summationSeries;
 	}
@@ -174,7 +182,7 @@ public abstract class SummationSeriesEstimator extends org.drip.specialfunction.
 	 * @return The Underlying Summation Series
 	 */
 
-	public org.drip.numerical.estimation.R2ToR1Series summationSeries()
+	public R2ToR1Series summationSeries()
 	{
 		return _summationSeries;
 	}

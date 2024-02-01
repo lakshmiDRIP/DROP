@@ -1,11 +1,19 @@
 
 package org.drip.specialfunction.beta;
 
+import org.drip.function.definition.R1ToR1;
+import org.drip.function.definition.R2ToR1;
+import org.drip.numerical.common.NumberUtil;
+import org.drip.specialfunction.loggamma.InfiniteSumEstimator;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -78,7 +86,7 @@ package org.drip.specialfunction.beta;
 
 /**
  * <i>LogGammaEstimator</i> implements the Log Beta Function using the Log Gamma Function. The References
- * are:
+ * 	are:
  * 
  * <br><br>
  * 	<ul>
@@ -101,21 +109,35 @@ package org.drip.specialfunction.beta;
  * 			Wikipedia (2019): Gamma Function https://en.wikipedia.org/wiki/Gamma_function
  * 		</li>
  * 	</ul>
+ * 
+ * 	It provides the following functionality:
  *
- *	<br><br>
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FunctionAnalysisLibrary.md">Function Analysis Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md">Special Function Implementation Analysis</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/beta/README.md">Estimation Techniques for Beta Function</a></li>
+ * 		<li>Generate the Weierstrass Infinite Product Series Version of Log Beta Estimator</li>
+ * 		<li><i>LogGammaEstimator</i> Constructor</li>
+ * 		<li>Retrieve the Log Gamma Function</li>
  *  </ul>
+ *
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md">Special Function Implementation and Analysis</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/beta/README.md">Estimation Techniques for Beta Function</a></td></tr>
+ *  </table>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class LogGammaEstimator implements org.drip.function.definition.R2ToR1
+public class LogGammaEstimator implements R2ToR1
 {
-	private org.drip.function.definition.R1ToR1 _r1ToR1LogGamma = null;
+	private R1ToR1 _r1ToR1LogGamma = null;
 
 	/**
 	 * Generate the Weierstrass Infinite Product Series Version of Log Beta Estimator
@@ -128,16 +150,9 @@ public class LogGammaEstimator implements org.drip.function.definition.R2ToR1
 	public static final LogGammaEstimator Weierstrass (
 		final int termCount)
 	{
-		try
-		{
-			return new LogGammaEstimator (
-				org.drip.specialfunction.loggamma.InfiniteSumEstimator.Weierstrass (
-					termCount
-				)
-			);
-		}
-		catch (java.lang.Exception e)
-		{
+		try {
+			return new LogGammaEstimator (InfiniteSumEstimator.Weierstrass (termCount));
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -145,20 +160,19 @@ public class LogGammaEstimator implements org.drip.function.definition.R2ToR1
 	}
 
 	/**
-	 * LogGammaBased Constructor
+	 * <i>LogGammaEstimator</i> Constructor
 	 * 
 	 * @param r1ToR1LogGamma The Log Gamma Function
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public LogGammaEstimator (
-		final org.drip.function.definition.R1ToR1 r1ToR1LogGamma)
-		throws java.lang.Exception
+		final R1ToR1 r1ToR1LogGamma)
+		throws Exception
 	{
-		if (null == (_r1ToR1LogGamma = r1ToR1LogGamma))
-		{
-			throw new java.lang.Exception ("LogGammaEstimator Constructor => Invalid Inputs");
+		if (null == (_r1ToR1LogGamma = r1ToR1LogGamma)) {
+			throw new Exception ("LogGammaEstimator Constructor => Invalid Inputs");
 		}
 	}
 
@@ -168,7 +182,7 @@ public class LogGammaEstimator implements org.drip.function.definition.R2ToR1
 	 * @return The Log Gamma Function
 	 */
 
-	public org.drip.function.definition.R1ToR1 r1ToR1LogGamma()
+	public R1ToR1 r1ToR1LogGamma()
 	{
 		return _r1ToR1LogGamma;
 	}
@@ -176,15 +190,13 @@ public class LogGammaEstimator implements org.drip.function.definition.R2ToR1
 	@Override public double evaluate (
 		final double x,
 		final double y)
-		throws java.lang.Exception
+		throws Exception
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (x) ||
-			!org.drip.numerical.common.NumberUtil.IsValid (y))
-		{
-			throw new java.lang.Exception ("LogGammaEstimator::evaluate => Invalid Inputs");
+		if (!NumberUtil.IsValid (x) || !NumberUtil.IsValid (y)) {
+			throw new Exception ("LogGammaEstimator::evaluate => Invalid Inputs");
 		}
 
-		return 0. == x || 0. == y ? 0. : _r1ToR1LogGamma.evaluate (x) + _r1ToR1LogGamma.evaluate (y) -
-			_r1ToR1LogGamma.evaluate (x + y);
+		return 0. == x || 0. == y ? 0. :
+			_r1ToR1LogGamma.evaluate (x) + _r1ToR1LogGamma.evaluate (y) - _r1ToR1LogGamma.evaluate (x + y);
 	}
 }

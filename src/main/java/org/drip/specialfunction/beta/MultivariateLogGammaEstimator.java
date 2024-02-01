@@ -1,11 +1,17 @@
 
 package org.drip.specialfunction.beta;
 
+import org.drip.function.definition.R1ToR1;
+import org.drip.numerical.common.NumberUtil;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -78,7 +84,7 @@ package org.drip.specialfunction.beta;
 
 /**
  * <i>MultivariateLogGammaEstimator</i> implements the Multi-variate Log Beta Function using the Log Gamma
- * Function. The References are:
+ * 	Function. The References are:
  * 
  * <br><br>
  * 	<ul>
@@ -101,21 +107,52 @@ package org.drip.specialfunction.beta;
  * 			Wikipedia (2019): Gamma Function https://en.wikipedia.org/wiki/Gamma_function
  * 		</li>
  * 	</ul>
+ * 
+ * 	It provides the following functionality:
  *
- *	<br><br>
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FunctionAnalysisLibrary.md">Function Analysis Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md">Special Function Implementation Analysis</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/beta/README.md">Estimation Techniques for Beta Function</a></li>
+ * 		<li><i>MultivariateLogGammaEstimator</i> Constructor</li>
+ * 		<li>Retrieve the Log Gamma Estimator</li>
+ * 		<li>Evaluate the Multi-variate Log Beta Function using the Log Gamma Function</li>
  *  </ul>
+ *
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md">Special Function Implementation and Analysis</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/beta/README.md">Estimation Techniques for Beta Function</a></td></tr>
+ *  </table>
  *
  * @author Lakshmi Krishnamurthy
  */
 
 public class MultivariateLogGammaEstimator
 {
-	private org.drip.function.definition.R1ToR1 _logGammaEstimator = null;
+	private R1ToR1 _logGammaEstimator = null;
+
+	/**
+	 * <i>MultivariateLogGammaEstimator</i> Constructor
+	 * 
+	 * @param logGammaEstimator Log Gamma Estimator
+	 * 
+	 * @throws Exception Thrown if the Inputs are Invalid
+	 */
+
+	public MultivariateLogGammaEstimator (
+		final org.drip.function.definition.R1ToR1 logGammaEstimator)
+		throws Exception
+	{
+		if (null == (_logGammaEstimator = logGammaEstimator)) {
+			throw new Exception ("MultivariateLogGammaEstimator Constructor => Invalid Inputs");
+		}
+	}
 
 	/**
 	 * Retrieve the Log Gamma Estimator
@@ -123,7 +160,7 @@ public class MultivariateLogGammaEstimator
 	 * @return The Log Gamma Estimator
 	 */
 
-	public org.drip.function.definition.R1ToR1 logGammaEstimator()
+	public R1ToR1 logGammaEstimator()
 	{
 		return _logGammaEstimator;
 	}
@@ -135,30 +172,26 @@ public class MultivariateLogGammaEstimator
 	 * 
 	 * @return The Multi-variate Log Beta Function using the LogGamma Function
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public double evaluate (
 		final double[] variateArray)
-		throws java.lang.Exception
+		throws Exception
 	{
-		if (null == variateArray)
-		{
-			throw new java.lang.Exception ("MultivariateLogGammaEstimator::evaluate => Invalid Inputs");
-		}
-
-		int variateDimension = variateArray.length;
-
-		if (0 == variateDimension || !org.drip.numerical.common.NumberUtil.IsValid (variateArray))
-		{
-			throw new java.lang.Exception ("MultivariateLogGammaEstimator::evaluate => Invalid Inputs");
+		if (null == variateArray) {
+			throw new Exception ("MultivariateLogGammaEstimator::evaluate => Invalid Inputs");
 		}
 
 		double variateSum = 0.;
 		double logGammaSum = 0.;
+		int variateDimension = variateArray.length;
 
-		for (int variateIndex = 0; variateIndex < variateDimension; ++variateIndex)
-		{
+		if (0 == variateDimension || !NumberUtil.IsValid (variateArray)) {
+			throw new Exception ("MultivariateLogGammaEstimator::evaluate => Invalid Inputs");
+		}
+
+		for (int variateIndex = 0; variateIndex < variateDimension; ++variateIndex) {
 			variateSum = variateSum + variateArray[variateIndex];
 
 			logGammaSum = logGammaSum + _logGammaEstimator.evaluate (variateArray[variateIndex]);
