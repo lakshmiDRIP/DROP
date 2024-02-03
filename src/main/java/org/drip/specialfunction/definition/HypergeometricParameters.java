@@ -1,11 +1,16 @@
 
 package org.drip.specialfunction.definition;
 
+import org.drip.numerical.common.NumberUtil;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -78,7 +83,7 @@ package org.drip.specialfunction.definition;
 
 /**
  * <i>HypergeometricParameters</i> holds the A-B-C Parameterization that the Hyper-geometric Function uses.
- * The References are:
+ * 	The References are:
  * 
  * <br><br>
  * 	<ul>
@@ -103,45 +108,57 @@ package org.drip.specialfunction.definition;
  * 			Wikipedia (2019): Hyper-geometric Function https://en.wikipedia.org/wiki/Hypergeometric_function
  * 		</li>
  * 	</ul>
+ * 
+ * 	It provides the following functionality:
  *
- *	<br><br>
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FunctionAnalysisLibrary.md">Function Analysis Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md">Special Function Implementation Analysis</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/definition/README.md">Definition of Special Function Estimators</a></li>
+ * 		<li><i>HypergeometricParameters</i> Constructor</li>
+ * 		<li>Retrieve 'a'</li>
+ * 		<li>Retrieve 'b'</li>
+ * 		<li>Retrieve 'c'</li>
  *  </ul>
+ *
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md">Special Function Implementation and Analysis</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/definition/README.md">Definition of Special Function Estimators</a></td></tr>
+ *  </table>
  *
  * @author Lakshmi Krishnamurthy
  */
 
 public class HypergeometricParameters
 {
-	private double _a = java.lang.Double.NaN;
-	private double _b = java.lang.Double.NaN;
-	private double _c = java.lang.Double.NaN;
+	private double _a = Double.NaN;
+	private double _b = Double.NaN;
+	private double _c = Double.NaN;
 
 	/**
-	 * HypergeometricParameters Constructor
+	 * <i>HypergeometricParameters</i> Constructor
 	 * 
 	 * @param a a
 	 * @param b b
 	 * @param c c
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public HypergeometricParameters (
 		final double a,
 		final double b,
 		final double c)
-		throws java.lang.Exception
+		throws Exception
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (_a = a) ||
-			!org.drip.numerical.common.NumberUtil.IsValid (_b = b) ||
-			!org.drip.numerical.common.NumberUtil.IsValid (_c = c))
-		{
-			throw new java.lang.Exception ("HypergeometricParameters Constructor => Invalid Inputs");
+		if (!NumberUtil.IsValid (_a = a) || !NumberUtil.IsValid (_b = b) || !NumberUtil.IsValid (_c = c)) {
+			throw new Exception ("HypergeometricParameters Constructor => Invalid Inputs");
 		}
 	}
 

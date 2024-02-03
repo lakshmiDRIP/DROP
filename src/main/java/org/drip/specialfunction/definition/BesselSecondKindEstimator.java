@@ -1,11 +1,19 @@
 
 package org.drip.specialfunction.definition;
 
+import org.drip.function.definition.R1ToR1;
+import org.drip.function.definition.R2ToR1;
+import org.drip.numerical.common.NumberUtil;
+import org.drip.specialfunction.gamma.Definitions;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -78,7 +86,7 @@ package org.drip.specialfunction.definition;
 
 /**
  * <i>BesselSecondKindEstimator</i> exposes the Estimator for the Bessel Function of the Second Kind. The
- * References are:
+ * 	References are:
  * 
  * <br><br>
  * 	<ul>
@@ -102,19 +110,35 @@ package org.drip.specialfunction.definition;
  * 			Wikipedia (2019): Bessel Function https://en.wikipedia.org/wiki/Bessel_function
  * 		</li>
  * 	</ul>
+ * 
+ * 	It provides the following functionality:
  *
- *	<br><br>
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FunctionAnalysisLibrary.md">Function Analysis Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md">Special Function Implementation Analysis</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/definition/README.md">Definition of Special Function Estimators</a></li>
+ * 		<li>Construct the Alpha Zero Asymptotic Version of <i>BesselSecondKindEstimator</i></li>
+ * 		<li>Construct the Alpha Non-Negative Integer Asymptotic Version of <i>BesselSecondKindEstimator</i></li>
+ * 		<li>Construct the Alpha Negative Integer Asymptotic Version of <i>BesselSecondKindEstimator</i></li>
+ * 		<li>Construct the High z Asymptotic Version of <i>BesselSecondKindEstimator</i></li>
+ * 		<li>Evaluate Bessel Function Second Kind Y given Alpha and z</li>
  *  </ul>
+ *
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md">Special Function Implementation and Analysis</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/definition/README.md">Definition of Special Function Estimators</a></td></tr>
+ *  </table>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public abstract class BesselSecondKindEstimator implements org.drip.function.definition.R2ToR1
+public abstract class BesselSecondKindEstimator implements R2ToR1
 {
 
 	/**
@@ -125,92 +149,76 @@ public abstract class BesselSecondKindEstimator implements org.drip.function.def
 
 	public static final BesselSecondKindEstimator AlphaZeroAsymptote()
 	{
-		return new BesselSecondKindEstimator()
-		{
+		return new BesselSecondKindEstimator() {
 			@Override public double bigY (
 				final double alpha,
 				final double z)
-				throws java.lang.Exception
+				throws Exception
 			{
-				if (0. != alpha ||
-					!org.drip.numerical.common.NumberUtil.IsValid (z))
-				{
-					throw new java.lang.Exception
-						("BesselSecondKindEstimator::AlphaZeroAsymptote => Invalid Inputs");
+				if (0. != alpha || !NumberUtil.IsValid (z)) {
+					throw new Exception ("BesselSecondKindEstimator::AlphaZeroAsymptote => Invalid Inputs");
 				}
 
-				return 2. / java.lang.Math.PI * (java.lang.Math.log (0.5 * z) +
-					org.drip.specialfunction.gamma.Definitions.EULER_MASCHERONI);
+				return 2. / Math.PI * (Math.log (0.5 * z) + Definitions.EULER_MASCHERONI);
 			}
 		};
 	}
 
 	/**
-	 * Construct the Alpha Non-Negative Integer Asymptotic Version of BesselSecondKindEstimator
+	 * Construct the Alpha Non-Negative Integer Asymptotic Version of <i>BesselSecondKindEstimator</i>
 	 * 
 	 * @param gammaEstimator Gamma Estimator
 	 * 
-	 * @return Alpha Non-Negative Integer Asymptotic Version of BesselSecondKindEstimator
+	 * @return Alpha Non-Negative Integer Asymptotic Version of <i>BesselSecondKindEstimator</i>
 	 */
 
 	public static final BesselSecondKindEstimator AlphaNonNegativeIntegerAsymptote (
-		final org.drip.function.definition.R1ToR1 gammaEstimator)
+		final R1ToR1 gammaEstimator)
 	{
-		return null == gammaEstimator ? null : new BesselSecondKindEstimator()
-		{
+		return null == gammaEstimator ? null : new BesselSecondKindEstimator() {
 			@Override public double bigY (
 				final double alpha,
 				final double z)
-				throws java.lang.Exception
+				throws Exception
 			{
-				if (!org.drip.numerical.common.NumberUtil.IsNonNegativeInteger (alpha) ||
-					!org.drip.numerical.common.NumberUtil.IsValid (z))
-				{
-					throw new java.lang.Exception
-						("BesselSecondKindEstimator::AlphaNonNegativeIntegerAsymptote => Invalid Inputs");
+				if (!NumberUtil.IsNonNegativeInteger (alpha) || !NumberUtil.IsValid (z)) {
+					throw new Exception (
+						"BesselSecondKindEstimator::AlphaNonNegativeIntegerAsymptote => Invalid Inputs"
+					);
 				}
 
-				return -1. * gammaEstimator.evaluate (alpha) / java.lang.Math.PI * java.lang.Math.pow (
-					2. / z,
-					alpha
-				) + java.lang.Math.pow (
-					0.5 * z,
-					alpha
-				) / java.lang.Math.tan (java.lang.Math.PI * alpha) / gammaEstimator.evaluate (alpha + 1.);
+				return -1. * gammaEstimator.evaluate (alpha) / Math.PI * Math.pow (2. / z, alpha) +
+					Math.pow (0.5 * z, alpha) / Math.tan (Math.PI * alpha) /
+					gammaEstimator.evaluate (alpha + 1.);
 			}
 		};
 	}
 
 	/**
-	 * Construct the Alpha Negative Integer Asymptotic Version of BesselSecondKindEstimator
+	 * Construct the Alpha Negative Integer Asymptotic Version of <i>BesselSecondKindEstimator</i>
 	 * 
 	 * @param gammaEstimator Gamma Estimator
 	 * 
-	 * @return Alpha Negative Integer Asymptotic Version of BesselSecondKindEstimator
+	 * @return Alpha Negative Integer Asymptotic Version of <i>BesselSecondKindEstimator</i>
 	 */
 
 	public static final BesselSecondKindEstimator AlphaNegativeIntegerAsymptote (
-		final org.drip.function.definition.R1ToR1 gammaEstimator)
+		final R1ToR1 gammaEstimator)
 	{
-		return null == gammaEstimator ? null : new BesselSecondKindEstimator()
-		{
+		return null == gammaEstimator ? null : new BesselSecondKindEstimator() {
 			@Override public double bigY (
 				final double alpha,
 				final double z)
-				throws java.lang.Exception
+				throws Exception
 			{
-				if (!org.drip.numerical.common.NumberUtil.IsNegativeInteger (alpha) ||
-					!org.drip.numerical.common.NumberUtil.IsValid (z))
-				{
-					throw new java.lang.Exception
-						("BesselSecondKindEstimator::AlphaNegativeIntegerAsymptote => Invalid Inputs");
+				if (!NumberUtil.IsNegativeInteger (alpha) || !NumberUtil.IsValid (z)) {
+					throw new Exception (
+						"BesselSecondKindEstimator::AlphaNegativeIntegerAsymptote => Invalid Inputs"
+					);
 				}
 
 				return (0 == alpha % 2 ? -1. : 1.) * gammaEstimator.evaluate (-1. * alpha) /
-					java.lang.Math.PI * java.lang.Math.pow (
-						0.5 * z,
-						alpha
-					);
+					Math.PI * Math.pow (0.5 * z, alpha);
 			}
 		};
 	}
@@ -218,7 +226,7 @@ public abstract class BesselSecondKindEstimator implements org.drip.function.def
 	/**
 	 * Construct the High z Asymptotic Version of BesselSecondKindEstimator
 	 * 
-	 * @return High z Asymptotic Version of BesselSecondKindEstimator
+	 * @return High z Asymptotic Version of <i>BesselSecondKindEstimator</i>
 	 */
 
 	public static final BesselSecondKindEstimator HighZAsymptote()
@@ -228,18 +236,13 @@ public abstract class BesselSecondKindEstimator implements org.drip.function.def
 			@Override public double bigY (
 				final double alpha,
 				final double z)
-				throws java.lang.Exception
+				throws Exception
 			{
-				if (!org.drip.numerical.common.NumberUtil.IsValid (alpha) ||
-					!org.drip.numerical.common.NumberUtil.IsValid (z))
-				{
-					throw new java.lang.Exception
-						("BesselSecondKindEstimator::HighZAsymptote => Invalid Inputs");
+				if (!NumberUtil.IsValid (alpha) || !NumberUtil.IsValid (z)) {
+					throw new Exception ("BesselSecondKindEstimator::HighZAsymptote => Invalid Inputs");
 				}
 
-				return java.lang.Math.sqrt (2. / java.lang.Math.PI / z) * java.lang.Math.sin (
-					z - 0.5 * java.lang.Math.PI * alpha - 0.25 * java.lang.Math.PI
-				);
+				return Math.sqrt (2. / Math.PI / z) * Math.sin (z - 0.5 * Math.PI * alpha - 0.25 * Math.PI);
 			}
 		};
 	}
@@ -252,7 +255,7 @@ public abstract class BesselSecondKindEstimator implements org.drip.function.def
 	 *  
 	 * @return Bessel Function Second Kind Y Value
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public abstract double bigY (
@@ -263,11 +266,8 @@ public abstract class BesselSecondKindEstimator implements org.drip.function.def
 	@Override public double evaluate (
 		final double alpha,
 		final double z)
-		throws java.lang.Exception
+		throws Exception
 	{
-		return bigY (
-			alpha,
-			z
-		);
+		return bigY (alpha, z);
 	}
 }
