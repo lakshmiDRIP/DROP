@@ -1,11 +1,18 @@
 
 package org.drip.specialfunction.definition;
 
+import org.drip.function.definition.R1ToR1;
+import org.drip.function.definition.R2ToR1;
+import org.drip.numerical.common.NumberUtil;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -78,7 +85,7 @@ package org.drip.specialfunction.definition;
 
 /**
  * <i>ModifiedBesselFirstKindEstimator</i> exposes the Estimator for the Modified Bessel Function of the
- * First Kind. The References are:
+ * 	First Kind. The References are:
  * 
  * <br><br>
  * 	<ul>
@@ -102,19 +109,32 @@ package org.drip.specialfunction.definition;
  * 			Wikipedia (2019): Bessel Function https://en.wikipedia.org/wiki/Bessel_function
  * 		</li>
  * 	</ul>
+ * 
+ * 	It provides the following functionality:
  *
- *	<br><br>
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FunctionAnalysisLibrary.md">Function Analysis Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md">Special Function Implementation Analysis</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/definition/README.md">Definition of Special Function Estimators</a></li>
+ * 		<li>Construct the Alpha Positive Asymptotic Version of <i>ModifiedBesselFirstKindEstimator</i></li>
+ * 		<li>Evaluate Modified Bessel Function First Kind I given Alpha and z</li>
  *  </ul>
+ *
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md">Special Function Implementation and Analysis</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/definition/README.md">Definition of Special Function Estimators</a></td></tr>
+ *  </table>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public abstract class ModifiedBesselFirstKindEstimator implements org.drip.function.definition.R2ToR1
+public abstract class ModifiedBesselFirstKindEstimator implements R2ToR1
 {
 
 	/**
@@ -126,26 +146,21 @@ public abstract class ModifiedBesselFirstKindEstimator implements org.drip.funct
 	 */
 
 	public static final ModifiedBesselFirstKindEstimator AlphaPositiveAsymptote (
-		final org.drip.function.definition.R1ToR1 gammaEstimator)
+		final R1ToR1 gammaEstimator)
 	{
-		return null == gammaEstimator ? null : new ModifiedBesselFirstKindEstimator()
-		{
+		return null == gammaEstimator ? null : new ModifiedBesselFirstKindEstimator() {
 			@Override public double bigI (
 				final double alpha,
 				final double z)
-				throws java.lang.Exception
+				throws Exception
 			{
-				if (0. > alpha ||
-					!org.drip.numerical.common.NumberUtil.IsValid (z))
-				{
-					throw new java.lang.Exception
-						("ModifiedBesselFirstKindEstimator::AlphaPositiveAsymptote => Invalid Inputs");
+				if (0. > alpha || !NumberUtil.IsValid (z)) {
+					throw new Exception (
+						"ModifiedBesselFirstKindEstimator::AlphaPositiveAsymptote => Invalid Inputs"
+					);
 				}
 
-				return java.lang.Math.pow (
-					0.5 * z,
-					alpha
-				) / gammaEstimator.evaluate (alpha + 1.);
+				return Math.pow (0.5 * z, alpha) / gammaEstimator.evaluate (alpha + 1.);
 			}
 		};
 	}
@@ -158,22 +173,19 @@ public abstract class ModifiedBesselFirstKindEstimator implements org.drip.funct
 	 *  
 	 * @return Modified Bessel Function First Kind I Value
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public abstract double bigI (
 		final double alpha,
 		final double z)
-		throws java.lang.Exception;
+		throws Exception;
 
 	@Override public double evaluate (
 		final double alpha,
 		final double z)
-		throws java.lang.Exception
+		throws Exception
 	{
-		return bigI (
-			alpha,
-			z
-		);
+		return bigI (alpha, z);
 	}
 }

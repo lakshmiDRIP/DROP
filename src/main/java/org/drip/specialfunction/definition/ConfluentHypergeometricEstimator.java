@@ -134,8 +134,8 @@ public abstract class ConfluentHypergeometricEstimator extends HypergeometricEst
 {
 
 	protected ConfluentHypergeometricEstimator (
-		final org.drip.specialfunction.definition.HypergeometricParameters hypergeometricParameters)
-		throws java.lang.Exception
+		final HypergeometricParameters hypergeometricParameters)
+		throws Exception
 	{
 		super (hypergeometricParameters);
 	}
@@ -154,10 +154,10 @@ public abstract class ConfluentHypergeometricEstimator extends HypergeometricEst
 	 *  
 	 * @return Confluent Hyper-geometric Value
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public abstract double confluentHypergeometric (
 		final double z)
-		throws java.lang.Exception;
+		throws Exception;
 }

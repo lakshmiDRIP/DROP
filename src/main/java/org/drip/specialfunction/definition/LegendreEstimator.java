@@ -6,6 +6,9 @@ package org.drip.specialfunction.definition;
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -78,7 +81,7 @@ package org.drip.specialfunction.definition;
 
 /**
  * <i>LegendreEstimator</i> exposes the Stubs for estimating the Legendre Function and its Jacobian using the
- * 2F1 Hyper-geometric Function. The References are:
+ * 	2F1 Hyper-geometric Function. The References are:
  * 
  * <br><br>
  * 	<ul>
@@ -103,33 +106,41 @@ package org.drip.specialfunction.definition;
  * 			Wikipedia (2019): Hyper-geometric Function https://en.wikipedia.org/wiki/Hypergeometric_function
  * 		</li>
  * 	</ul>
+ * 
+ * 	It provides the following functionality:
  *
- *	<br><br>
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FunctionAnalysisLibrary.md">Function Analysis Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md">Special Function Implementation Analysis</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/definition/README.md">Definition of Special Function Estimators</a></li>
+ * 		<li>Retrieve Legendre Alpha</li>
+ * 		<li>Retrieve Legendre Ceta</li>
+ * 		<li>Evaluate the Legendre Function</li>
  *  </ul>
+ *
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md">Special Function Implementation and Analysis</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/definition/README.md">Definition of Special Function Estimators</a></td></tr>
+ *  </table>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public abstract class LegendreEstimator extends org.drip.specialfunction.definition.HypergeometricEstimator
+public abstract class LegendreEstimator extends HypergeometricEstimator
 {
 
 	protected LegendreEstimator (
 		final double alpha,
 		final double ceta)
-		throws java.lang.Exception
+		throws Exception
 	{
-		super (
-			new org.drip.specialfunction.definition.HypergeometricParameters (
-				-1. * alpha,
-				1. + alpha,
-				1. - ceta
-			)
-		);
+		super (new HypergeometricParameters (-1. * alpha, 1. + alpha, 1. - ceta));
 	}
 
 	/**
@@ -156,7 +167,7 @@ public abstract class LegendreEstimator extends org.drip.specialfunction.definit
 
 	@Override public double evaluate (
 		final double z)
-		throws java.lang.Exception
+		throws Exception
 	{
 		return legendre (z);
 	}
@@ -168,10 +179,10 @@ public abstract class LegendreEstimator extends org.drip.specialfunction.definit
 	 *  
 	 * @return The Legendre Function Value
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public abstract double legendre (
 		final double z)
-		throws java.lang.Exception;
+		throws Exception;
 }

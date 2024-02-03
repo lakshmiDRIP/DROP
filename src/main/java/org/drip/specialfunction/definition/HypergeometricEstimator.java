@@ -137,14 +137,13 @@ public abstract class HypergeometricEstimator extends R1ToR1
 	private HypergeometricParameters _hypergeometricParameters = null;
 
 	protected HypergeometricEstimator (
-		final org.drip.specialfunction.definition.HypergeometricParameters hypergeometricParameters)
-		throws java.lang.Exception
+		final HypergeometricParameters hypergeometricParameters)
+		throws Exception
 	{
 		super (null);
 
-		if (null == (_hypergeometricParameters = hypergeometricParameters))
-		{
-			throw new java.lang.Exception ("HypergeometricEstimator Constructor => Invalid Inputs");
+		if (null == (_hypergeometricParameters = hypergeometricParameters)) {
+			throw new Exception ("HypergeometricEstimator Constructor => Invalid Inputs");
 		}
 	}
 

@@ -1,11 +1,18 @@
 
 package org.drip.specialfunction.definition;
 
+import org.drip.function.definition.CartesianComplexNumber;
+import org.drip.function.definition.R2ToZ1;
+import org.drip.numerical.common.NumberUtil;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -78,7 +85,7 @@ package org.drip.specialfunction.definition;
 
 /**
  * <i>HankelFirstKindEstimator</i> exposes the Estimator for the Hankel Function of the First Kind. The
- * References are:
+ * 	References are:
  * 
  * <br><br>
  * 	<ul>
@@ -102,19 +109,32 @@ package org.drip.specialfunction.definition;
  * 			Wikipedia (2019): Bessel Function https://en.wikipedia.org/wiki/Bessel_function
  * 		</li>
  * 	</ul>
+ * 
+ * 	It provides the following functionality:
  *
- *	<br><br>
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FunctionAnalysisLibrary.md">Function Analysis Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md">Special Function Implementation Analysis</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/definition/README.md">Definition of Special Function Estimators</a></li>
+ * 		<li>Construct the Large z Asymptotic Form of Hankel First Kind Estimator</li>
+ * 		<li>Evaluate Hankel Function First Kind H1 given Alpha and z</li>
  *  </ul>
+ *
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md">Special Function Implementation and Analysis</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/definition/README.md">Definition of Special Function Estimators</a></td></tr>
+ *  </table>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public abstract class HankelFirstKindEstimator implements org.drip.function.definition.R2ToZ1
+public abstract class HankelFirstKindEstimator implements R2ToZ1
 {
 
 	/**
@@ -125,17 +145,15 @@ public abstract class HankelFirstKindEstimator implements org.drip.function.defi
 
 	public static final HankelFirstKindEstimator LargeZAsymptote()
 	{
-		return new HankelFirstKindEstimator()
-		{
-			@Override public org.drip.function.definition.CartesianComplexNumber bigH1 (
+		return new HankelFirstKindEstimator() {
+			@Override public CartesianComplexNumber bigH1 (
 				final double alpha,
 				final double z)
 			{
-				return !org.drip.numerical.common.NumberUtil.IsValid (alpha) ||
-					!org.drip.numerical.common.NumberUtil.IsValid (z) ? null :
-					org.drip.function.definition.CartesianComplexNumber.FromPolar (
-						java.lang.Math.sqrt (2. / java.lang.Math.PI / z),
-						z - 0.5 * java.lang.Math.PI * alpha - 0.25 * java.lang.Math.PI
+				return !NumberUtil.IsValid (alpha) || !NumberUtil.IsValid (z) ? null :
+					CartesianComplexNumber.FromPolar (
+						Math.sqrt (2. / Math.PI / z),
+						z - 0.5 * Math.PI * alpha - 0.25 * Math.PI
 					);
 			}
 		};
@@ -150,17 +168,15 @@ public abstract class HankelFirstKindEstimator implements org.drip.function.defi
 	 * @return Hankel Function First Kind H1 Value
 	 */
 
-	public abstract org.drip.function.definition.CartesianComplexNumber bigH1 (
+	public abstract CartesianComplexNumber bigH1 (
 		final double alpha,
-		final double z);
+		final double z
+	);
 
-	@Override public org.drip.function.definition.CartesianComplexNumber evaluate (
+	@Override public CartesianComplexNumber evaluate (
 		final double alpha,
 		final double z)
 	{
-		return bigH1 (
-			alpha,
-			z
-		);
+		return bigH1 (alpha, z);
 	}
 }
