@@ -1,6 +1,11 @@
 
 package org.drip.specialfunction.definition;
 
+import org.drip.function.definition.R1ToR1;
+import org.drip.function.definition.R2ToR1;
+import org.drip.numerical.common.NumberUtil;
+import org.drip.specialfunction.gamma.Definitions;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
@@ -131,68 +136,58 @@ package org.drip.specialfunction.definition;
  * @author Lakshmi Krishnamurthy
  */
 
-public abstract class ModifiedBesselSecondKindEstimator implements org.drip.function.definition.R2ToR1
+public abstract class ModifiedBesselSecondKindEstimator implements R2ToR1
 {
 
 	/**
-	 * Construct the Alpha Zero Asymptotic Version of ModifiedBesselSecondKindEstimator
+	 * Construct the Alpha Zero Asymptotic Version of <i>ModifiedBesselSecondKindEstimator</i>
 	 * 
-	 * @return Alpha Zero Asymptotic Version of ModifiedBesselSecondKindEstimator
+	 * @return Alpha Zero Asymptotic Version of <i>ModifiedBesselSecondKindEstimator</i>
 	 */
 
 	public static final ModifiedBesselSecondKindEstimator AlphaZeroAsymptote()
 	{
-		return new ModifiedBesselSecondKindEstimator()
-		{
+		return new ModifiedBesselSecondKindEstimator() {
 			@Override public double bigK (
 				final double alpha,
 				final double z)
-				throws java.lang.Exception
+				throws Exception
 			{
-				if (0. != alpha ||
-					!org.drip.numerical.common.NumberUtil.IsValid (z))
-				{
-					throw new java.lang.Exception
-						("ModifiedBesselSecondKindEstimator::AlphaZeroAsymptote => Invalid Inputs");
+				if (0. != alpha || !NumberUtil.IsValid (z)) {
+					throw new Exception (
+						"ModifiedBesselSecondKindEstimator::AlphaZeroAsymptote => Invalid Inputs"
+							);
 				}
 
-				return -1. * (
-					java.lang.Math.log (0.5 * z) +
-					org.drip.specialfunction.gamma.Definitions.EULER_MASCHERONI
-				);
+				return -1. * (Math.log (0.5 * z) + Definitions.EULER_MASCHERONI);
 			}
 		};
 	}
 
 	/**
-	 * Construct the Alpha Strictly Positive Asymptotic Version of ModifiedBesselSecondKindEstimator
+	 * Construct the Alpha Strictly Positive Asymptotic Version of <i>ModifiedBesselSecondKindEstimator</i>
 	 * 
 	 * @param gammaEstimator Gamma Estimator
 	 * 
-	 * @return Alpha Strictly Positive Asymptotic Version of ModifiedBesselSecondKindEstimator
+	 * @return Alpha Strictly Positive Asymptotic Version of <i>ModifiedBesselSecondKindEstimator</i>
 	 */
 
 	public static final ModifiedBesselSecondKindEstimator AlphaStrictlyPositiveAsymptote (
-		final org.drip.function.definition.R1ToR1 gammaEstimator)
+		final R1ToR1 gammaEstimator)
 	{
-		return null == gammaEstimator ? null : new ModifiedBesselSecondKindEstimator()
-		{
+		return null == gammaEstimator ? null : new ModifiedBesselSecondKindEstimator() {
 			@Override public double bigK (
 				final double alpha,
 				final double z)
 				throws java.lang.Exception
 			{
-				if (!org.drip.numerical.common.NumberUtil.IsPositiveInteger (alpha) ||
-					!org.drip.numerical.common.NumberUtil.IsValid (z))
-				{
-					throw new java.lang.Exception
-						("ModifiedBesselSecondKindEstimator::AlphaStrictlyPositiveAsymptote => Invalid Inputs");
+				if (!NumberUtil.IsPositiveInteger (alpha) || !NumberUtil.IsValid (z)) {
+					throw new Exception (
+						"ModifiedBesselSecondKindEstimator::AlphaStrictlyPositiveAsymptote => Invalid Inputs"
+					);
 				}
 
-				return 0.5 * gammaEstimator.evaluate (alpha) * java.lang.Math.pow (
-					2. / z,
-					alpha
-				);
+				return 0.5 * gammaEstimator.evaluate (alpha) * Math.pow (2. / z, alpha);
 			}
 		};
 	}
@@ -205,22 +200,19 @@ public abstract class ModifiedBesselSecondKindEstimator implements org.drip.func
 	 *  
 	 * @return Modified Bessel Function Second Kind K Value
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public abstract double bigK (
 		final double alpha,
 		final double z)
-		throws java.lang.Exception;
+		throws Exception;
 
 	@Override public double evaluate (
 		final double alpha,
 		final double z)
-		throws java.lang.Exception
+		throws Exception
 	{
-		return bigK (
-			alpha,
-			z
-		);
+		return bigK (alpha, z);
 	}
 }

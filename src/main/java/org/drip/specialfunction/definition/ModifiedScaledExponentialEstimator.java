@@ -1,11 +1,17 @@
 
 package org.drip.specialfunction.definition;
 
+import org.drip.function.definition.R1ToR1;
+import org.drip.numerical.common.NumberUtil;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -78,7 +84,7 @@ package org.drip.specialfunction.definition;
 
 /**
  * <i>ModifiedScaledExponentialEstimator</i> exposes the Estimator for the Modified Scaled Exponential
- * Function. The References are:
+ * 	Function. The References are:
  * 
  * <br><br>
  * 	<ul>
@@ -104,45 +110,57 @@ package org.drip.specialfunction.definition;
  * 				Physics</i> <b>116 (8)</b> 3204-3209
  * 		</li>
  * 	</ul>
+ * 
+ * 	It provides the following functionality:
  *
- *	<br><br>
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FunctionAnalysisLibrary.md">Function Analysis Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md">Special Function Implementation Analysis</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/definition/README.md">Definition of Special Function Estimators</a></li>
+ * 		<li><i>ModifiedScaledExponentialEstimator</i> Constructor</li>
+ * 		<li>Retrieve the Exponent Function</li>
+ * 		<li>Retrieve the Characteristic Relaxation Time</li>
  *  </ul>
+ *
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md">Special Function Implementation and Analysis</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/definition/README.md">Definition of Special Function Estimators</a></td></tr>
+ *  </table>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class ModifiedScaledExponentialEstimator extends org.drip.function.definition.R1ToR1
+public class ModifiedScaledExponentialEstimator extends R1ToR1
 {
-	private double _characteristicRelaxationTime = java.lang.Double.NaN;
-	private org.drip.function.definition.R1ToR1 _exponentFunction = null;
+	private R1ToR1 _exponentFunction = null;
+	private double _characteristicRelaxationTime = Double.NaN;
 
 	/**
-	 * ModifiedScaledExponentialEstimator Constructor
+	 * <i>ModifiedScaledExponentialEstimator</i> Constructor
 	 * 
 	 * @param exponentFunction The Exponent Function
 	 * @param characteristicRelaxationTime The Characteristic Relaxation Time
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public ModifiedScaledExponentialEstimator (
-		final org.drip.function.definition.R1ToR1 exponentFunction,
+		final R1ToR1 exponentFunction,
 		final double characteristicRelaxationTime)
-		throws java.lang.Exception
+		throws Exception
 	{
 		super (null);
 
 		if (null == (_exponentFunction = exponentFunction) ||
-			!org.drip.numerical.common.NumberUtil.IsValid (_characteristicRelaxationTime =
-				characteristicRelaxationTime) || 0. > _characteristicRelaxationTime)
-		{
-			throw new java.lang.Exception
-				("ModifiedScaledExponentialEstimator Constructor => Invalid Inputs");
+			!NumberUtil.IsValid (_characteristicRelaxationTime = characteristicRelaxationTime) ||
+			0. > _characteristicRelaxationTime) {
+			throw new Exception ("ModifiedScaledExponentialEstimator Constructor => Invalid Inputs");
 		}
 	}
 
@@ -170,18 +188,12 @@ public class ModifiedScaledExponentialEstimator extends org.drip.function.defini
 
 	@Override public double evaluate (
 		final double t)
-		throws java.lang.Exception
+		throws Exception
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (t) || 0. > t)
-		{
-			throw new java.lang.Exception ("ModifiedScaledExponentialEstimator::evaluate => Invalid Inputs");
+		if (!NumberUtil.IsValid (t) || 0. > t) {
+			throw new Exception ("ModifiedScaledExponentialEstimator::evaluate => Invalid Inputs");
 		}
 
-		return java.lang.Math.exp (
-			-1. * java.lang.Math.pow (
-				t / _characteristicRelaxationTime,
-				_exponentFunction.evaluate (t)
-			)
-		);
+		return Math.exp (-1. * Math.pow (t / _characteristicRelaxationTime, _exponentFunction.evaluate (t)));
 	}
 }

@@ -1,11 +1,16 @@
 
 package org.drip.specialfunction.definition;
 
+import org.drip.function.definition.R1ToR1;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -78,7 +83,7 @@ package org.drip.specialfunction.definition;
 
 /**
  * <i>RegularHypergeometricEstimator</i> exposes the Stubs for estimating the 2F1 Hyper-geometric Function
- * and its Jacobian using the 2F1 Hyper-geometric Function. The References are:
+ * 	and its Jacobian using the 2F1 Hyper-geometric Function. The References are:
  * 
  * <br><br>
  * 	<ul>
@@ -103,24 +108,39 @@ package org.drip.specialfunction.definition;
  * 			Wikipedia (2019): Hyper-geometric Function https://en.wikipedia.org/wiki/Hypergeometric_function
  * 		</li>
  * 	</ul>
+ * 
+ * 	It provides the following functionality:
  *
- *	<br><br>
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FunctionAnalysisLibrary.md">Function Analysis Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md">Special Function Implementation Analysis</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/definition/README.md">Definition of Special Function Estimators</a></li>
+ * 		<li>Evaluate Regular Hyper-geometric Function</li>
+ * 		<li>Albinate (i.e., Clone + Mutate) an Instance of Regular Hyper-geometric Estimator</li>
+ * 		<li>Construct the Kummer24 Euler Transformation on 2F1</li>
+ * 		<li>Construct the Kummer24 Pfaff First Transformation on 2F1</li>
+ * 		<li>Construct the Kummer24 Pfaff Second Transformation on 2F1</li>
  *  </ul>
+ *
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md">Special Function Implementation and Analysis</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/definition/README.md">Definition of Special Function Estimators</a></td></tr>
+ *  </table>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public abstract class RegularHypergeometricEstimator extends
-	org.drip.specialfunction.definition.HypergeometricEstimator
+public abstract class RegularHypergeometricEstimator extends HypergeometricEstimator
 {
 
 	protected RegularHypergeometricEstimator (
-		final org.drip.specialfunction.definition.HypergeometricParameters hypergeometricParameters)
+		final HypergeometricParameters hypergeometricParameters)
 		throws java.lang.Exception
 	{
 		super (hypergeometricParameters);
@@ -128,7 +148,7 @@ public abstract class RegularHypergeometricEstimator extends
 
 	@Override public double evaluate (
 		final double z)
-		throws java.lang.Exception
+		throws Exception
 	{
 		return regularHypergeometric (z);
 	}
@@ -140,12 +160,12 @@ public abstract class RegularHypergeometricEstimator extends
 	 *  
 	 * @return Regular Hyper-geometric Value
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public abstract double regularHypergeometric (
 		final double z)
-		throws java.lang.Exception;
+		throws Exception;
 
 	/**
 	 * Albinate (i.e., Clone + Mutate) an Instance of Regular Hyper-geometric Estimator
@@ -157,10 +177,11 @@ public abstract class RegularHypergeometricEstimator extends
 	 * @return Albinated Instance of Regular Hyper-geometric Estimator
 	 */
 
-	public abstract org.drip.specialfunction.definition.RegularHypergeometricEstimator albinate (
-		final org.drip.specialfunction.definition.HypergeometricParameters hypergeometricParametersAlbinate,
-		final org.drip.function.definition.R1ToR1 valueScaler,
-		final org.drip.function.definition.R1ToR1 zTransformer);
+	public abstract RegularHypergeometricEstimator albinate (
+		final HypergeometricParameters hypergeometricParametersAlbinate,
+		final R1ToR1 valueScaler,
+		final R1ToR1 zTransformer
+	);
 
 	/**
 	 * Construct the Kummer24 Euler Transformation on 2F1
@@ -168,10 +189,9 @@ public abstract class RegularHypergeometricEstimator extends
 	 * @return The Kummer24 Euler Transformation on 2F1
 	 */
 
-	public org.drip.specialfunction.definition.RegularHypergeometricEstimator albinateEuler()
+	public RegularHypergeometricEstimator albinateEuler()
 	{
-		org.drip.specialfunction.definition.HypergeometricParameters hypergeometricParameters =
-			hypergeometricParameters();
+		HypergeometricParameters hypergeometricParameters = hypergeometricParameters();
 
 		final double a = hypergeometricParameters.a();
 
@@ -179,31 +199,20 @@ public abstract class RegularHypergeometricEstimator extends
 
 		final double c = hypergeometricParameters.c();
 
-		try
-		{
+		try {
 			return albinate (
-				new org.drip.specialfunction.definition.HypergeometricParameters (
-					c - a,
-					c - b,
-					c
-				),
-				new org.drip.function.definition.R1ToR1 (null)
-				{
+				new HypergeometricParameters (c - a, c - b, c),
+				new R1ToR1 (null) {
 					@Override public double evaluate (
 						final double z)
-						throws java.lang.Exception
+						throws Exception
 					{
-						return java.lang.Math.pow (
-							1. - z,
-							c - a - b
-						);
+						return Math.pow (1. - z, c - a - b);
 					}
 				},
 				null
 			);
-		}
-		catch (java.lang.Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -216,48 +225,35 @@ public abstract class RegularHypergeometricEstimator extends
 	 * @return The Kummer24 Pfaff First Transformation on 2F1
 	 */
 
-	public org.drip.specialfunction.definition.RegularHypergeometricEstimator albinatePfaffFirst()
+	public RegularHypergeometricEstimator albinatePfaffFirst()
 	{
-		org.drip.specialfunction.definition.HypergeometricParameters hypergeometricParameters =
-			hypergeometricParameters();
+		HypergeometricParameters hypergeometricParameters = hypergeometricParameters();
 
 		final double a = hypergeometricParameters.a();
 
 		final double c = hypergeometricParameters.c();
 
-		try
-		{
+		try {
 			return albinate (
-				new org.drip.specialfunction.definition.HypergeometricParameters (
-					a,
-					c - hypergeometricParameters.b(),
-					c
-				),
-				new org.drip.function.definition.R1ToR1 (null)
-				{
+				new HypergeometricParameters (a, c - hypergeometricParameters.b(), c),
+				new R1ToR1 (null) {
 					@Override public double evaluate (
 						final double z)
-						throws java.lang.Exception
+						throws Exception
 					{
-						return java.lang.Math.pow (
-							1. - z,
-							-a
-						);
+						return Math.pow (1. - z, -a);
 					}
 				},
-				new org.drip.function.definition.R1ToR1 (null)
-				{
+				new R1ToR1 (null) {
 					@Override public double evaluate (
 						final double z)
-						throws java.lang.Exception
+						throws Exception
 					{
 						return z / (z - 1.);
 					}
 				}
 			);
-		}
-		catch (java.lang.Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -270,10 +266,9 @@ public abstract class RegularHypergeometricEstimator extends
 	 * @return The Kummer24 Pfaff Second Transformation on 2F1
 	 */
 
-	public org.drip.specialfunction.definition.RegularHypergeometricEstimator albinatePfaffSecond()
+	public RegularHypergeometricEstimator albinatePfaffSecond()
 	{
-		org.drip.specialfunction.definition.HypergeometricParameters hypergeometricParameters =
-			hypergeometricParameters();
+		HypergeometricParameters hypergeometricParameters = hypergeometricParameters();
 
 		final double b = hypergeometricParameters.b();
 
@@ -281,36 +276,25 @@ public abstract class RegularHypergeometricEstimator extends
 
 		try {
 			return albinate (
-				new org.drip.specialfunction.definition.HypergeometricParameters (
-					c - hypergeometricParameters.a(),
-					b,
-					c
-				),
-				new org.drip.function.definition.R1ToR1 (null)
-				{
+				new HypergeometricParameters (c - hypergeometricParameters.a(), b, c),
+				new R1ToR1 (null) {
 					@Override public double evaluate (
 						final double z)
-						throws java.lang.Exception
+						throws Exception
 					{
-						return java.lang.Math.pow (
-							1. - z,
-							-b
-						);
+						return Math.pow (1. - z, -b);
 					}
 				},
-				new org.drip.function.definition.R1ToR1 (null)
-				{
+				new R1ToR1 (null) {
 					@Override public double evaluate (
 						final double z)
-						throws java.lang.Exception
+						throws Exception
 					{
 						return z / (z - 1.);
 					}
 				}
 			);
-		}
-		catch (java.lang.Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
