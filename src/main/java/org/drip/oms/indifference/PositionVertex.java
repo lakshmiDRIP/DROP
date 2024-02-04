@@ -1,8 +1,6 @@
 
 package org.drip.oms.indifference;
 
-import org.drip.function.definition.R1ToR1;
-
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
@@ -114,15 +112,15 @@ import org.drip.function.definition.R1ToR1;
 public class PositionVertex
 {
 	private InventoryVertex _inventory = null;
-	private R1ToR1 _claimsPayoffFunction = null;
 	private RealizationVertex _realization = null;
+	private ClaimsPositionPricer _claimsPositionPricer = null;
 
 	/**
 	 * PositionVertex Constructor
 	 * 
 	 * @param inventory Inventory Vertex
 	 * @param realization Realization Vertex
-	 * @param claimsPayoffFunction Claims Payoff Function
+	 * @param claimsPositionPricer Claims Position Pricer
 	 * 
 	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
@@ -130,14 +128,14 @@ public class PositionVertex
 	public PositionVertex (
 		final InventoryVertex inventory,
 		final RealizationVertex realization,
-		final R1ToR1 claimsPayoffFunction)
+		final ClaimsPositionPricer claimsPositionPricer)
 		throws Exception
 	{
 		if (null == (_inventory = inventory) || null == (_realization = realization)) {
 			throw new Exception ("PositionVertex Constructor => Invalid Inputs");
 		}
 
-		_claimsPayoffFunction = claimsPayoffFunction;
+		_claimsPositionPricer = claimsPositionPricer;
 	}
 
 	/**
@@ -168,9 +166,9 @@ public class PositionVertex
 	 * @return The Claims Payoff Function
 	 */
 
-	public R1ToR1 claimsPayoffFunction()
+	public ClaimsPositionPricer claimsPositionPricer()
 	{
-		return _claimsPayoffFunction;
+		return _claimsPositionPricer;
 	}
 
 	/**
@@ -206,8 +204,8 @@ public class PositionVertex
 	public double claimsValue()
 		throws Exception
 	{
-		return null == _claimsPayoffFunction ? 0. :
-			_inventory.claimUnits() * _claimsPayoffFunction.evaluate (_realization.underlierPrice());
+		return null == _claimsPositionPricer ? 0. :
+			_claimsPositionPricer.payoffFunction().evaluate (_realization.underlierPrice());
 	}
 
 	/**

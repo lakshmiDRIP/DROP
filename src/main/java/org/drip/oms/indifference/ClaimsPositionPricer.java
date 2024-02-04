@@ -1,7 +1,8 @@
 
 package org.drip.oms.indifference;
 
-import org.drip.measure.continuous.R1Univariate;
+import org.drip.function.definition.R1ToR1;
+import org.drip.numerical.common.NumberUtil;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -76,8 +77,8 @@ import org.drip.measure.continuous.R1Univariate;
  */
 
 /**
- * <i>ReservationPricer</i> implements the Expectation of the Utility Function using the Endowment and at
- * 	Payoff on the Underlying Asset. The References are:
+ * <i>ClaimsPositionPricer</i> prices the Claims Position using Payoff on the Underlying Asset. The
+ * 	References are:
  *  
  * 	<br><br>
  *  <ul>
@@ -112,160 +113,89 @@ import org.drip.measure.continuous.R1Univariate;
  * @author Lakshmi Krishnamurthy
  */
 
-public class ReservationPricer
+public class ClaimsPositionPricer
 {
-	private InventoryVertex _inventoryVertex = null;
-	private UtilityFunction _utilityFunction = null;
-	private ClaimsPositionPricer _askClaimsPositionPricer = null;
-	private ClaimsPositionPricer _bidClaimsPositionPricer = null;
+	private double _size = Double.NaN;
+	private R1ToR1 _payoffFunction = null;
 
 	/**
-	 * Retrieve the Inventory Vertex
+	 * Construct a Unit Bid ClaimsPositionPricer Instance
 	 * 
-	 * @return The Inventory Vertex
+	 * @param payoffFunction Claims Payoff Function
+	 * 
+	 * @return Unit Bid ClaimsPositionPricer Instance
 	 */
 
-	public InventoryVertex inventoryVertex()
+	public ClaimsPositionPricer UnitBid (
+		final R1ToR1 payoffFunction)
 	{
-		return _inventoryVertex;
-	}
+		try {
+			return new ClaimsPositionPricer (payoffFunction, 1.);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 
-	/**
-	 * Retrieve the Utility Function
-	 * 
-	 * @return The Utility Function
-	 */
-
-	public UtilityFunction utilityFunction()
-	{
-		return _utilityFunction;
-	}
-
-	/**
-	 * Retrieve the Bid Claims Position Pricer
-	 * 
-	 * @return The Bid Claims Position Pricer
-	 */
-
-	public ClaimsPositionPricer bidClaimsPositionPricer()
-	{
-		return _bidClaimsPositionPricer;
-	}
-
-	/**
-	 * Retrieve the Ask Claims Position Pricer
-	 * 
-	 * @return The Ask Claims Position Pricer
-	 */
-
-	public ClaimsPositionPricer askClaimsPositionPricer()
-	{
-		return _askClaimsPositionPricer;
-	}
-
-	/**
-	 * Retrieve the Optimal No-claims Inventory Vertex
-	 * 
-	 * @return Optimal No-claims Inventory Vertex
-	 */
-
-	public InventoryVertex optimalNoClaimsInventoryVertex()
-	{
-		return _inventoryVertex;
-	}
-
-	/**
-	 * Retrieve the Optimal Claims Based Inventory Vertex
-	 * 
-	 * @return Optimal Claims Based Inventory Vertex
-	 */
-
-	public InventoryVertex optimalClaimsInventoryVertex()
-	{
-		return _inventoryVertex;
-	}
-
-	/**
-	 * Compute the No-Claims Inventory-based Optimal Utility Value
-	 * 
-	 * @param underlierPriceDistribution Discrete Underlier Price Distribution
-	 * @param moneyMarketPrice Price of Money Market Entity
-	 * 
-	 * @return The No-Claims Inventory-based Optimal Utility Value
-	 * 
-	 * @throws Exception Thrown if the No-Claims Inventory-based Optimal Utility Value cannot be calculated
-	 */
-
-	public double noClaimsInventoryUtilityExpectation (
-		final R1Univariate underlierPriceDistribution,
-		final double moneyMarketPrice)
-		throws Exception
-	{
-		return new UtilityFunctionExpectation (
-			_utilityFunction,
-			null,
-			optimalNoClaimsInventoryVertex(),
-			moneyMarketPrice
-		).optimalValue (underlierPriceDistribution, 0.);
-	}
-
-	/**
-	 * Compute the Bid Claims Inventory-based Position Value Adjustment
-	 * 
-	 * @param underlierPriceDistribution Discrete Underlier Price Distribution
-	 * @param noClaimsInventoryUtilityExpectation No-Claims Inventory Utility Expectation
-	 * 
-	 * @return The Bid Claims Inventory-based Position Value Adjustment
-	 * 
-	 * @throws Exception Thrown if the Bid Claims Inventory-based Position Value Adjustment cannot be
-	 *  calculated
-	 */
-
-	public double bidClaimsPositionValueAdjustment (
-		final R1Univariate underlierPriceDistribution,
-		final double moneyMarketPrice,
-		final double noClaimsInventoryUtilityExpectation)
-		throws Exception
-	{
-		return new UtilityFunctionExpectation (
-			_utilityFunction,
-			_bidClaimsPositionPricer,
-			optimalClaimsInventoryVertex(),
-			moneyMarketPrice
-		).inferPositionValueAdjustment (underlierPriceDistribution, noClaimsInventoryUtilityExpectation);
-	}
-
-	/**
-	 * Compute the Ask Claims Inventory-based Position Value Adjustment
-	 * 
-	 * @param underlierPriceDistribution Discrete Underlier Price Distribution
-	 * @param noClaimsInventoryUtilityExpectation No-Claims Inventory Utility Expectation
-	 * 
-	 * @return The Ask Claims Inventory-based Position Value Adjustment
-	 * 
-	 * @throws Exception Thrown if the Ask Claims Inventory-based Position Value Adjustment cannot be
-	 *  calculated
-	 */
-
-	public double askClaimsPositionValueAdjustment (
-		final R1Univariate underlierPriceDistribution,
-		final double moneyMarketPrice,
-		final double noClaimsInventoryUtilityExpectation)
-		throws Exception
-	{
-		return new UtilityFunctionExpectation (
-			_utilityFunction,
-			_askClaimsPositionPricer,
-			optimalClaimsInventoryVertex(),
-			moneyMarketPrice
-		).inferPositionValueAdjustment (underlierPriceDistribution, noClaimsInventoryUtilityExpectation);
-	}
-
-	public ReservationPricingRun reservationPricingRun (
-		final R1Univariate underlierPriceDistribution,
-		final double moneyMarketPrice)
-		throws Exception
-	{
 		return null;
+	}
+
+	/**
+	 * Construct a Unit Ask ClaimsPositionPricer Instance
+	 * 
+	 * @param payoffFunction Claims Payoff Function
+	 * 
+	 * @return Unit Ask ClaimsPositionPricer Instance
+	 */
+
+	public ClaimsPositionPricer UnitAsk (
+		final R1ToR1 payoffFunction)
+	{
+		try {
+			return new ClaimsPositionPricer (payoffFunction, -1.);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
+	 * ClaimsPositionPricer Constructor
+	 * 
+	 * @param payoffFunction Claims Payoff Function
+	 * @param size Claims Size
+	 * 
+	 * @throws Exception Thrown if the Inputs are Invalid
+	 */
+
+	public ClaimsPositionPricer (
+		final R1ToR1 payoffFunction,
+		final double size)
+		throws Exception
+	{
+		if (null == (_payoffFunction = payoffFunction) || !NumberUtil.IsValid (_size = size)) {
+			throw new Exception ("ClaimsPositionPricer Constructor => Invalid Inputs");
+		}
+	}
+
+	/**
+	 * Retrieve the Claims Payoff Function
+	 * 
+	 * @return The Claims Payoff Function
+	 */
+
+	public R1ToR1 payoffFunction()
+	{
+		return _payoffFunction;
+	}
+
+	/**
+	 * Retrieve the Claims Size
+	 * 
+	 * @return The Claims Size
+	 */
+
+	public double size()
+	{
+		return _size;
 	}
 }

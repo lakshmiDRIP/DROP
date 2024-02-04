@@ -1,7 +1,7 @@
 
 package org.drip.oms.indifference;
 
-import org.drip.measure.continuous.R1Univariate;
+import org.drip.numerical.common.NumberUtil;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -76,8 +76,7 @@ import org.drip.measure.continuous.R1Univariate;
  */
 
 /**
- * <i>ReservationPricer</i> implements the Expectation of the Utility Function using the Endowment and at
- * 	Payoff on the Underlying Asset. The References are:
+ * <i>ReservationPricingRun</i> holds the Results of a Bid/Ask Reservation Pricing Run. The References are:
  *  
  * 	<br><br>
  *  <ul>
@@ -112,160 +111,51 @@ import org.drip.measure.continuous.R1Univariate;
  * @author Lakshmi Krishnamurthy
  */
 
-public class ReservationPricer
+public class ReservationPricingRun
 {
-	private InventoryVertex _inventoryVertex = null;
-	private UtilityFunction _utilityFunction = null;
-	private ClaimsPositionPricer _askClaimsPositionPricer = null;
-	private ClaimsPositionPricer _bidClaimsPositionPricer = null;
+	private double _askPrivateValue = Double.NaN;
+	private double _bidPrivateValue = Double.NaN;
+	private double _noClaimsInventoryUtilityExpectation = Double.NaN;
 
 	/**
-	 * Retrieve the Inventory Vertex
+	 * ReservationPricingRun Constructor
 	 * 
-	 * @return The Inventory Vertex
+	 * @param bidPrivateValue Bid Reservation Value
+	 * @param askPrivateValue Ask Reservation Value
+	 * 
+	 * @throws Exception Thrown if the Private Values are Invalid
 	 */
 
-	public InventoryVertex inventoryVertex()
-	{
-		return _inventoryVertex;
-	}
-
-	/**
-	 * Retrieve the Utility Function
-	 * 
-	 * @return The Utility Function
-	 */
-
-	public UtilityFunction utilityFunction()
-	{
-		return _utilityFunction;
-	}
-
-	/**
-	 * Retrieve the Bid Claims Position Pricer
-	 * 
-	 * @return The Bid Claims Position Pricer
-	 */
-
-	public ClaimsPositionPricer bidClaimsPositionPricer()
-	{
-		return _bidClaimsPositionPricer;
-	}
-
-	/**
-	 * Retrieve the Ask Claims Position Pricer
-	 * 
-	 * @return The Ask Claims Position Pricer
-	 */
-
-	public ClaimsPositionPricer askClaimsPositionPricer()
-	{
-		return _askClaimsPositionPricer;
-	}
-
-	/**
-	 * Retrieve the Optimal No-claims Inventory Vertex
-	 * 
-	 * @return Optimal No-claims Inventory Vertex
-	 */
-
-	public InventoryVertex optimalNoClaimsInventoryVertex()
-	{
-		return _inventoryVertex;
-	}
-
-	/**
-	 * Retrieve the Optimal Claims Based Inventory Vertex
-	 * 
-	 * @return Optimal Claims Based Inventory Vertex
-	 */
-
-	public InventoryVertex optimalClaimsInventoryVertex()
-	{
-		return _inventoryVertex;
-	}
-
-	/**
-	 * Compute the No-Claims Inventory-based Optimal Utility Value
-	 * 
-	 * @param underlierPriceDistribution Discrete Underlier Price Distribution
-	 * @param moneyMarketPrice Price of Money Market Entity
-	 * 
-	 * @return The No-Claims Inventory-based Optimal Utility Value
-	 * 
-	 * @throws Exception Thrown if the No-Claims Inventory-based Optimal Utility Value cannot be calculated
-	 */
-
-	public double noClaimsInventoryUtilityExpectation (
-		final R1Univariate underlierPriceDistribution,
-		final double moneyMarketPrice)
+	public ReservationPricingRun (
+		final double bidPrivateValue,
+		final double askPrivateValue)
 		throws Exception
 	{
-		return new UtilityFunctionExpectation (
-			_utilityFunction,
-			null,
-			optimalNoClaimsInventoryVertex(),
-			moneyMarketPrice
-		).optimalValue (underlierPriceDistribution, 0.);
+		if (!NumberUtil.IsValid (_bidPrivateValue = bidPrivateValue) ||
+			!NumberUtil.IsValid (_askPrivateValue = askPrivateValue)) {
+			throw new Exception ("ReservationPricingRun Constructor => Invalid Inputs");
+		}
 	}
 
 	/**
-	 * Compute the Bid Claims Inventory-based Position Value Adjustment
+	 * Retrieve the Bid Reservation Value
 	 * 
-	 * @param underlierPriceDistribution Discrete Underlier Price Distribution
-	 * @param noClaimsInventoryUtilityExpectation No-Claims Inventory Utility Expectation
-	 * 
-	 * @return The Bid Claims Inventory-based Position Value Adjustment
-	 * 
-	 * @throws Exception Thrown if the Bid Claims Inventory-based Position Value Adjustment cannot be
-	 *  calculated
+	 * @return Bid Reservation Value
 	 */
 
-	public double bidClaimsPositionValueAdjustment (
-		final R1Univariate underlierPriceDistribution,
-		final double moneyMarketPrice,
-		final double noClaimsInventoryUtilityExpectation)
-		throws Exception
+	public double bidPrivateValue()
 	{
-		return new UtilityFunctionExpectation (
-			_utilityFunction,
-			_bidClaimsPositionPricer,
-			optimalClaimsInventoryVertex(),
-			moneyMarketPrice
-		).inferPositionValueAdjustment (underlierPriceDistribution, noClaimsInventoryUtilityExpectation);
+		return _bidPrivateValue;
 	}
 
 	/**
-	 * Compute the Ask Claims Inventory-based Position Value Adjustment
+	 * Retrieve the Ask Reservation Value
 	 * 
-	 * @param underlierPriceDistribution Discrete Underlier Price Distribution
-	 * @param noClaimsInventoryUtilityExpectation No-Claims Inventory Utility Expectation
-	 * 
-	 * @return The Ask Claims Inventory-based Position Value Adjustment
-	 * 
-	 * @throws Exception Thrown if the Ask Claims Inventory-based Position Value Adjustment cannot be
-	 *  calculated
+	 * @return Ask Reservation Value
 	 */
 
-	public double askClaimsPositionValueAdjustment (
-		final R1Univariate underlierPriceDistribution,
-		final double moneyMarketPrice,
-		final double noClaimsInventoryUtilityExpectation)
-		throws Exception
+	public double askPrivateValue()
 	{
-		return new UtilityFunctionExpectation (
-			_utilityFunction,
-			_askClaimsPositionPricer,
-			optimalClaimsInventoryVertex(),
-			moneyMarketPrice
-		).inferPositionValueAdjustment (underlierPriceDistribution, noClaimsInventoryUtilityExpectation);
-	}
-
-	public ReservationPricingRun reservationPricingRun (
-		final R1Univariate underlierPriceDistribution,
-		final double moneyMarketPrice)
-		throws Exception
-	{
-		return null;
+		return _askPrivateValue;
 	}
 }

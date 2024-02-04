@@ -4,6 +4,7 @@ package org.drip.oms.indifference;
 import org.drip.function.definition.R1ToR1;
 import org.drip.function.r1tor1solver.FixedPointFinderBrent;
 import org.drip.function.r1tor1solver.FixedPointFinderOutput;
+import org.drip.function.r1tor1solver.InitializationHeuristics;
 import org.drip.measure.continuous.R1Univariate;
 import org.drip.measure.discrete.R1Distribution;
 import org.drip.numerical.common.NumberUtil;
@@ -120,16 +121,16 @@ import org.drip.numerical.integration.NewtonCotesQuadratureGenerator;
 
 public class UtilityFunctionExpectation
 {
-	private R1ToR1 _claimsPayoffFunction = null;
 	private double _moneyMarketPrice = Double.NaN;
 	private UtilityFunction _agentOptimizer = null;
 	private InventoryVertex _inventoryVertex = null;
+	private ClaimsPositionPricer _claimsPositionPricer = null;
 
 	/**
 	 * UtilityFunctionExpectation Constructor
 	 * 
 	 * @param agentOptimizer Agent Optimization Utility Function
-	 * @param claimsPayoffFunction Claims Payoff Function
+	 * @param claimsPositionPricer Claims Position Pricer
 	 * @param inventoryVertex Inventory Vertex
 	 * @param moneyMarketPrice Price of Money Market Entity
 	 * 
@@ -138,7 +139,7 @@ public class UtilityFunctionExpectation
 
 	public UtilityFunctionExpectation (
 		final UtilityFunction agentOptimizer,
-		final R1ToR1 claimsPayoffFunction,
+		final ClaimsPositionPricer claimsPositionPricer,
 		final InventoryVertex inventoryVertex,
 		final double moneyMarketPrice)
 		throws Exception
@@ -148,7 +149,7 @@ public class UtilityFunctionExpectation
 			throw new Exception ("UtilityFunctionExpectation Constructor => Invalid Inputs");
 		}
 
-		_claimsPayoffFunction = claimsPayoffFunction;
+		_claimsPositionPricer = claimsPositionPricer;
 	}
 
 	/**
@@ -185,14 +186,14 @@ public class UtilityFunctionExpectation
 	}
 
 	/**
-	 * Retrieve the Claims Payoff Function
+	 * Retrieve the Claims Position Pricer
 	 * 
-	 * @return The Claims Payoff Function
+	 * @return The Claims Position Pricer
 	 */
 
-	public R1ToR1 claimsPayoffFunction()
+	public ClaimsPositionPricer claimsPositionPricer()
 	{
-		return _claimsPayoffFunction;
+		return _claimsPositionPricer;
 	}
 
 	/**
@@ -215,7 +216,7 @@ public class UtilityFunctionExpectation
 			new PositionVertex (
 				_inventoryVertex,
 				new RealizationVertex (_moneyMarketPrice, underlierPrice),
-				_claimsPayoffFunction
+				_claimsPositionPricer
 			),
 			positionValueAdjustment
 		);
@@ -256,7 +257,61 @@ public class UtilityFunctionExpectation
 	}
 
 	/**
-	 * Compute the Optimal  Expectation of the Agent Utility Function given the Underlier Price Array and
+	 * Infer the Position Value Adjustment given the Target Utility Expectation Value
+	 * 
+	 * @param underlierPriceDistribution Discrete Underlier Price Distribution
+	 * @param targetUtilityExpectationValue Target Utility Expectation Value
+	 * 
+	 * @return The Position Value Adjustment
+	 * 
+	 * @throws Exception Thrown if the Position Value Adjustment cannot be inferred
+	 */
+
+	public double inferPositionValueAdjustment (
+		final R1Distribution underlierPriceDistribution,
+		final double[] underlierPriceArray,
+		final double targetUtilityExpectationValue)
+		throws Exception
+	{
+		if (null == underlierPriceDistribution || !NumberUtil.IsValid (targetUtilityExpectationValue)) {
+			throw new Exception (
+				"UtilityFunctionExpectation::inferPositionValueAdjustment => Invalid Inputs"
+			);
+		}
+
+		FixedPointFinderOutput fixedPointFinderOutput = new FixedPointFinderBrent (
+			0.,
+			new R1ToR1 (null) {
+				@Override public double evaluate (
+					final double positionValueAdjustment)
+					throws Exception
+				{
+					return optimalValue (
+						underlierPriceDistribution,
+						underlierPriceArray,
+						positionValueAdjustment
+					) - targetUtilityExpectationValue;
+				}
+			},
+			false
+		).findRoot (
+			InitializationHeuristics.FromBracketingMidHint (
+				optimalValue (underlierPriceDistribution, underlierPriceArray, 0.) -
+					targetUtilityExpectationValue
+			)
+		);
+
+		if (null == fixedPointFinderOutput || !fixedPointFinderOutput.containsRoot()) {
+			throw new Exception (
+				"UtilityFunctionExpectation::inferPositionValueAdjustment => Cannot Infer Root"
+			);
+		}
+
+		return fixedPointFinderOutput.getRoot();
+	}
+
+	/**
+	 * Compute the Optimal Expectation of the Agent Utility Function given the Underlier Price Array and
 	 *  Discrete Distribution
 	 * 
 	 * @param underlierPriceDistribution Discrete Underlier Price Distribution
@@ -323,7 +378,11 @@ public class UtilityFunctionExpectation
 				}
 			},
 			false
-		).findRoot();
+		).findRoot (
+			InitializationHeuristics.FromBracketingMidHint (
+				optimalValue (underlierPriceDistribution, 0.) - targetUtilityExpectationValue
+			)
+		);
 
 		if (null == fixedPointFinderOutput || !fixedPointFinderOutput.containsRoot()) {
 			throw new Exception (

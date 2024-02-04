@@ -114,7 +114,6 @@ import org.drip.numerical.common.NumberUtil;
 
 public class InventoryVertex
 {
-	private double _claimUnits = Double.NaN;
 	private double _underlierUnits = Double.NaN;
 	private double _moneyMarketUnits = Double.NaN;
 
@@ -123,20 +122,17 @@ public class InventoryVertex
 	 * 
 	 * @param moneyMarketUnits Number of Money Market Units
 	 * @param underlierUnits Number of Underlier Units
-	 * @param claimUnits Number of Claim Units
 	 * 
 	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public InventoryVertex (
 		final double moneyMarketUnits,
-		final double underlierUnits,
-		final double claimUnits)
+		final double underlierUnits)
 		throws Exception
 	{
 		if (!NumberUtil.IsValid (_moneyMarketUnits = moneyMarketUnits) ||
-			!NumberUtil.IsValid (_underlierUnits = underlierUnits) ||
-			!NumberUtil.IsValid (_claimUnits = claimUnits)) {
+			!NumberUtil.IsValid (_underlierUnits = underlierUnits)) {
 			throw new Exception ("InventoryVertex Constructor => Invalid Inputs");
 		}
 	}
@@ -161,16 +157,5 @@ public class InventoryVertex
 	public double underlierUnits()
 	{
 		return _underlierUnits;
-	}
-
-	/**
-	 * Retrieve the Number of Claim Units
-	 * 
-	 * @return Number of Claim Units
-	 */
-
-	public double claimUnits()
-	{
-		return _claimUnits;
 	}
 }
