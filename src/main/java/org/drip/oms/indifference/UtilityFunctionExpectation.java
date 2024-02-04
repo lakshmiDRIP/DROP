@@ -223,173 +223,182 @@ public class UtilityFunctionExpectation
 	}
 
 	/**
-	 * Compute the Optimal Expectation of the Agent Utility Function given the Underlier Price Array and
+	 * Generate the Utility Expectation Optimization Run given the Underlier Price Array and
 	 *  Discrete Distribution
 	 * 
 	 * @param underlierPriceDistribution Discrete Underlier Price Distribution
 	 * @param underlierPriceArray Underlier Price Array
 	 * @param positionValueAdjustment Position Value Adjustment
 	 * 
-	 * @return Expectation of the Agent Utility Function
-	 * 
-	 * @throws Exception Thrown if the Inputs are Invalid
+	 * @return The Utility Expectation Optimization Run Results
 	 */
 
-	public double optimalValue (
+	public UtilityExpectationOptimizationRun optimizationRun (
 		final R1Distribution underlierPriceDistribution,
 		final double[] underlierPriceArray,
 		final double positionValueAdjustment)
-		throws Exception
 	{
 		if (null == underlierPriceDistribution ||
 			null == underlierPriceArray || 0 == underlierPriceArray.length) {
-			throw new Exception ("UtilityFunctionExpectation::evaluate => Invalid Inputs");
+			return null;
 		}
 
-		double utilityFunctionExpectationValue = 0.;
+		try {
+			double utilityFunctionExpectationValue = 0.;
 
-		for (double underlierPrice : underlierPriceArray) {
-			utilityFunctionExpectationValue += underlierPriceDistribution.probability (underlierPrice) *
-				agentObjectiveValue (underlierPrice, positionValueAdjustment);
+			for (double underlierPrice : underlierPriceArray) {
+				utilityFunctionExpectationValue += underlierPriceDistribution.probability (underlierPrice) *
+					agentObjectiveValue (underlierPrice, positionValueAdjustment);
+			}
+
+			return new UtilityExpectationOptimizationRun (utilityFunctionExpectationValue);
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 
-		return utilityFunctionExpectationValue;
+		return null;
 	}
 
 	/**
-	 * Infer the Position Value Adjustment given the Target Utility Expectation Value
+	 * Run the Position Value Inference for the Claims given the Target Utility Expectation Value
 	 * 
 	 * @param underlierPriceDistribution Discrete Underlier Price Distribution
 	 * @param targetUtilityExpectationValue Target Utility Expectation Value
 	 * 
-	 * @return The Position Value Adjustment
-	 * 
-	 * @throws Exception Thrown if the Position Value Adjustment cannot be inferred
+	 * @return Claims Position Value Inference
 	 */
 
-	public double inferPositionValueAdjustment (
+	public ClaimsUtilityExpectationInferenceRun inferPositionAdjustment (
 		final R1Distribution underlierPriceDistribution,
 		final double[] underlierPriceArray,
 		final double targetUtilityExpectationValue)
-		throws Exception
 	{
 		if (null == underlierPriceDistribution || !NumberUtil.IsValid (targetUtilityExpectationValue)) {
-			throw new Exception (
-				"UtilityFunctionExpectation::inferPositionValueAdjustment => Invalid Inputs"
-			);
+			return null;
 		}
 
-		FixedPointFinderOutput fixedPointFinderOutput = new FixedPointFinderBrent (
-			0.,
-			new R1ToR1 (null) {
-				@Override public double evaluate (
-					final double positionValueAdjustment)
-					throws Exception
-				{
-					return optimalValue (
-						underlierPriceDistribution,
-						underlierPriceArray,
-						positionValueAdjustment
-					) - targetUtilityExpectationValue;
-				}
-			},
-			false
-		).findRoot (
-			InitializationHeuristics.FromBracketingMidHint (
-				optimalValue (underlierPriceDistribution, underlierPriceArray, 0.) -
-					targetUtilityExpectationValue
-			)
-		);
-
-		if (null == fixedPointFinderOutput || !fixedPointFinderOutput.containsRoot()) {
-			throw new Exception (
-				"UtilityFunctionExpectation::inferPositionValueAdjustment => Cannot Infer Root"
+		try {
+			FixedPointFinderOutput fixedPointFinderOutput = new FixedPointFinderBrent (
+				0.,
+				new R1ToR1 (null) {
+					@Override public double evaluate (
+						final double positionValueAdjustment)
+						throws Exception
+					{
+						return optimizationRun (
+							underlierPriceDistribution,
+							underlierPriceArray,
+							positionValueAdjustment
+						).optimalValue() - targetUtilityExpectationValue;
+					}
+				},
+				false
+			).findRoot (
+				InitializationHeuristics.FromBracketingMidHint (
+					optimizationRun (underlierPriceDistribution, underlierPriceArray, 0.).optimalValue() -
+						targetUtilityExpectationValue
+				)
 			);
+
+			return null == fixedPointFinderOutput || !fixedPointFinderOutput.containsRoot() ? null :
+				new ClaimsUtilityExpectationInferenceRun (
+					targetUtilityExpectationValue,
+					fixedPointFinderOutput.getRoot()
+				);
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 
-		return fixedPointFinderOutput.getRoot();
+		return null;
 	}
 
 	/**
-	 * Compute the Optimal Expectation of the Agent Utility Function given the Underlier Price Array and
-	 *  Discrete Distribution
+	 * Generate the Utility Expectation Optimization Run given the Underlier Price Distribution
 	 * 
 	 * @param underlierPriceDistribution Discrete Underlier Price Distribution
 	 * @param positionValueAdjustment Position Value Adjustment
 	 * 
-	 * @return Expectation of the Agent Utility Function
-	 * 
-	 * @throws Exception Thrown if the Inputs are Invalid
+	 * @return Utility Expectation Optimization Run
 	 */
 
-	public double optimalValue (
+	public UtilityExpectationOptimizationRun optimizationRun (
 		final R1Univariate underlierPriceDistribution,
 		final double positionValueAdjustment)
-		throws Exception
 	{
 		if (null == underlierPriceDistribution) {
-			throw new Exception ("UtilityFunctionExpectation::evaluate => Invalid Inputs");
+			return null;
 		}
 
-		return NewtonCotesQuadratureGenerator.GaussLaguerreLeftDefinite (0., 100).integrate (
-			new R1ToR1 (null) {
-				@Override public double evaluate (
-					final double underlierPrice)
-					throws Exception
-				{
-					return underlierPriceDistribution.density (underlierPrice) *
-						agentObjectiveValue (underlierPrice, positionValueAdjustment);
-				}
-			}
-		);
+		try {
+			return new UtilityExpectationOptimizationRun (
+				NewtonCotesQuadratureGenerator.GaussLaguerreLeftDefinite (0., 100).integrate (
+					new R1ToR1 (null) {
+						@Override public double evaluate (
+							final double underlierPrice)
+							throws Exception
+						{
+							return underlierPriceDistribution.density (underlierPrice) *
+								agentObjectiveValue (underlierPrice, positionValueAdjustment);
+						}
+					}
+				)
+			);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return null;
 	}
 
 	/**
-	 * Infer the Position Value Adjustment given the Target Utility Expectation Value
+	 * Run the Position Adjustment Inference for the Claims given the Target Utility Expectation Value
 	 * 
 	 * @param underlierPriceDistribution Discrete Underlier Price Distribution
 	 * @param targetUtilityExpectationValue Target Utility Expectation Value
 	 * 
-	 * @return The Position Value Adjustment
-	 * 
-	 * @throws Exception Thrown if the Position Value Adjustment cannot be inferred
+	 * @return The Position Adjustment Inference Run
 	 */
 
-	public double inferPositionValueAdjustment (
+	public ClaimsUtilityExpectationInferenceRun inferPositionAdjustment (
 		final R1Univariate underlierPriceDistribution,
 		final double targetUtilityExpectationValue)
 		throws Exception
 	{
 		if (null == underlierPriceDistribution || !NumberUtil.IsValid (targetUtilityExpectationValue)) {
-			throw new Exception (
-				"UtilityFunctionExpectation::inferPositionValueAdjustment => Invalid Inputs"
-			);
+			return null;
 		}
 
-		FixedPointFinderOutput fixedPointFinderOutput = new FixedPointFinderBrent (
-			0.,
-			new R1ToR1 (null) {
-				@Override public double evaluate (
-					final double positionValueAdjustment)
-					throws Exception
-				{
-					return optimalValue (underlierPriceDistribution, positionValueAdjustment) -
-						targetUtilityExpectationValue;
-				}
-			},
-			false
-		).findRoot (
-			InitializationHeuristics.FromBracketingMidHint (
-				optimalValue (underlierPriceDistribution, 0.) - targetUtilityExpectationValue
-			)
-		);
-
-		if (null == fixedPointFinderOutput || !fixedPointFinderOutput.containsRoot()) {
-			throw new Exception (
-				"UtilityFunctionExpectation::inferPositionValueAdjustment => Cannot Infer Root"
+		try {
+			FixedPointFinderOutput fixedPointFinderOutput = new FixedPointFinderBrent (
+				0.,
+				new R1ToR1 (null) {
+					@Override public double evaluate (
+						final double positionValueAdjustment)
+						throws Exception
+					{
+						return optimizationRun (
+							underlierPriceDistribution,
+							positionValueAdjustment
+						).optimalValue() - targetUtilityExpectationValue;
+					}
+				},
+				false
+			).findRoot (
+				InitializationHeuristics.FromBracketingMidHint (
+					optimizationRun (underlierPriceDistribution, 0.).optimalValue() -
+						targetUtilityExpectationValue
+				)
 			);
+
+			return null == fixedPointFinderOutput || !fixedPointFinderOutput.containsRoot() ? null :
+				new ClaimsUtilityExpectationInferenceRun (
+					targetUtilityExpectationValue,
+					fixedPointFinderOutput.getRoot()
+				);
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 
-		return fixedPointFinderOutput.getRoot();
+		return null;
 	}
 }

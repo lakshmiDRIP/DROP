@@ -76,7 +76,8 @@ import org.drip.numerical.common.NumberUtil;
  */
 
 /**
- * <i>ReservationPricingRun</i> holds the Results of a Bid/Ask Reservation Pricing Run. The References are:
+ * <i>ClaimsUtilityExpectationInferenceRun</i> holds the Results of the Optimal Utility Expectation Inference
+ *  Run on the Claims-Based Agent Utility Function. The References are:
  *  
  * 	<br><br>
  *  <ul>
@@ -111,66 +112,41 @@ import org.drip.numerical.common.NumberUtil;
  * @author Lakshmi Krishnamurthy
  */
 
-public class ReservationPricingRun
+public class ClaimsUtilityExpectationInferenceRun extends UtilityExpectationOptimizationRun
 {
-	private double _askPrivateValue = Double.NaN;
-	private double _bidPrivateValue = Double.NaN;
-	private double _noClaimsInventoryUtilityExpectation = Double.NaN;
+	private double _reservationValue = Double.NaN;
 
 	/**
-	 * ReservationPricingRun Constructor
+	 * ClaimsUtilityExpectationInferenceRun Constructor
 	 * 
-	 * @param bidPrivateValue Bid Reservation Value
-	 * @param askPrivateValue Ask Reservation Value
-	 * @param noClaimsInventoryUtilityExpectation No-Claims Inventory Utility Expectation
+	 * @param optimalValue Optimal Value of the Utility Expectation Optimization Run
+	 * @param reservationValue Claims Reservation Value
 	 * 
-	 * @throws Exception Thrown if the Private Values are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
-	public ReservationPricingRun (
-		final double bidPrivateValue,
-		final double askPrivateValue,
-		final double noClaimsInventoryUtilityExpectation)
+	public ClaimsUtilityExpectationInferenceRun (
+		final double optimalValue,
+		final double reservationValue)
 		throws Exception
 	{
-		if (!NumberUtil.IsValid (_bidPrivateValue = bidPrivateValue) ||
-			!NumberUtil.IsValid (_askPrivateValue = askPrivateValue) ||
-			!NumberUtil.IsValid (_noClaimsInventoryUtilityExpectation = noClaimsInventoryUtilityExpectation))
-		{
-			throw new Exception ("ReservationPricingRun Constructor => Invalid Inputs");
+		super (optimalValue);
+
+		if (!NumberUtil.IsValid (_reservationValue = reservationValue)) {
+			throw new Exception (
+				"ClaimsUtilityExpectationInferenceRun Constructor => Invalid Reservation Value"
+			);
 		}
 	}
 
 	/**
-	 * Retrieve the Bid Reservation Value
+	 * Retrieve the Claims Reservation Value
 	 * 
-	 * @return Bid Reservation Value
+	 * @return Claims Reservation Value
 	 */
 
-	public double bidPrivateValue()
+	public double reservationValue()
 	{
-		return _bidPrivateValue;
-	}
-
-	/**
-	 * Retrieve the Ask Reservation Value
-	 * 
-	 * @return Ask Reservation Value
-	 */
-
-	public double askPrivateValue()
-	{
-		return _askPrivateValue;
-	}
-
-	/**
-	 * Retrieve the No-Claims Inventory Utility Expectation
-	 * 
-	 * @return No-Claims Inventory Utility Expectation
-	 */
-
-	public double noClaimsInventoryUtilityExpectation()
-	{
-		return _noClaimsInventoryUtilityExpectation;
+		return _reservationValue;
 	}
 }

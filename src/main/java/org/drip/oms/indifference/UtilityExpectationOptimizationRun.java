@@ -76,7 +76,8 @@ import org.drip.numerical.common.NumberUtil;
  */
 
 /**
- * <i>ReservationPricingRun</i> holds the Results of a Bid/Ask Reservation Pricing Run. The References are:
+ * <i>UtilityExpectationOptimizationRun</i> holds the Results of the Optimal Expectation Run of the Agent
+ * 	Utility Function. The References are:
  *  
  * 	<br><br>
  *  <ul>
@@ -111,66 +112,35 @@ import org.drip.numerical.common.NumberUtil;
  * @author Lakshmi Krishnamurthy
  */
 
-public class ReservationPricingRun
+public class UtilityExpectationOptimizationRun
 {
-	private double _askPrivateValue = Double.NaN;
-	private double _bidPrivateValue = Double.NaN;
-	private double _noClaimsInventoryUtilityExpectation = Double.NaN;
+	private double _optimalValue = Double.NaN;
 
 	/**
-	 * ReservationPricingRun Constructor
+	 * UtilityExpectationOptimizationRun Constructor
 	 * 
-	 * @param bidPrivateValue Bid Reservation Value
-	 * @param askPrivateValue Ask Reservation Value
-	 * @param noClaimsInventoryUtilityExpectation No-Claims Inventory Utility Expectation
+	 * @param optimalValue Optimal Value of the Utility Expectation Optimization Run
 	 * 
-	 * @throws Exception Thrown if the Private Values are Invalid
+	 * @throws Exception Thrown if Inputs are Invalid
 	 */
 
-	public ReservationPricingRun (
-		final double bidPrivateValue,
-		final double askPrivateValue,
-		final double noClaimsInventoryUtilityExpectation)
+	public UtilityExpectationOptimizationRun (
+		final double optimalValue)
 		throws Exception
 	{
-		if (!NumberUtil.IsValid (_bidPrivateValue = bidPrivateValue) ||
-			!NumberUtil.IsValid (_askPrivateValue = askPrivateValue) ||
-			!NumberUtil.IsValid (_noClaimsInventoryUtilityExpectation = noClaimsInventoryUtilityExpectation))
-		{
-			throw new Exception ("ReservationPricingRun Constructor => Invalid Inputs");
+		if (!NumberUtil.IsValid (_optimalValue = optimalValue)) {
+			throw new Exception ("UtilityExpectationOptimizationRun Constructor => Invalid Optimal Value");
 		}
 	}
 
 	/**
-	 * Retrieve the Bid Reservation Value
+	 * Retrieve the Optimal Value of the Utility Expectation Optimization Run
 	 * 
-	 * @return Bid Reservation Value
+	 * @return Optimal Value of the Utility Expectation Optimization Run
 	 */
 
-	public double bidPrivateValue()
+	public double optimalValue()
 	{
-		return _bidPrivateValue;
-	}
-
-	/**
-	 * Retrieve the Ask Reservation Value
-	 * 
-	 * @return Ask Reservation Value
-	 */
-
-	public double askPrivateValue()
-	{
-		return _askPrivateValue;
-	}
-
-	/**
-	 * Retrieve the No-Claims Inventory Utility Expectation
-	 * 
-	 * @return No-Claims Inventory Utility Expectation
-	 */
-
-	public double noClaimsInventoryUtilityExpectation()
-	{
-		return _noClaimsInventoryUtilityExpectation;
+		return _optimalValue;
 	}
 }

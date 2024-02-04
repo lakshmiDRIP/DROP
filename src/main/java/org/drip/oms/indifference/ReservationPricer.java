@@ -2,6 +2,7 @@
 package org.drip.oms.indifference;
 
 import org.drip.measure.continuous.R1Univariate;
+import org.drip.measure.discrete.R1Distribution;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -175,12 +176,23 @@ public class ReservationPricer
 	}
 
 	/**
-	 * Retrieve the Optimal Claims Based Inventory Vertex
+	 * Retrieve the Optimal Bid Claims Based Inventory Vertex
 	 * 
-	 * @return Optimal Claims Based Inventory Vertex
+	 * @return Optimal Bid Claims Based Inventory Vertex
 	 */
 
-	public InventoryVertex optimalClaimsInventoryVertex()
+	public InventoryVertex optimalBidClaimsInventoryVertex()
+	{
+		return _inventoryVertex;
+	}
+
+	/**
+	 * Retrieve the Optimal Ask Claims Based Inventory Vertex
+	 * 
+	 * @return Optimal Ask Claims Based Inventory Vertex
+	 */
+
+	public InventoryVertex optimalAskClaimsInventoryVertex()
 	{
 		return _inventoryVertex;
 	}
@@ -206,13 +218,40 @@ public class ReservationPricer
 			null,
 			optimalNoClaimsInventoryVertex(),
 			moneyMarketPrice
-		).optimalValue (underlierPriceDistribution, 0.);
+		).optimizationRun (underlierPriceDistribution, 0.).optimalValue();
+	}
+
+	/**
+	 * Compute the No-Claims Inventory-based Optimal Utility Value
+	 * 
+	 * @param underlierPriceDistribution Discrete Underlier Price Distribution
+	 * @param underlierPriceArray Underlier Price Array
+	 * @param moneyMarketPrice Price of Money Market Entity
+	 * 
+	 * @return The No-Claims Inventory-based Optimal Utility Value
+	 * 
+	 * @throws Exception Thrown if the No-Claims Inventory-based Optimal Utility Value cannot be calculated
+	 */
+
+	public double noClaimsInventoryUtilityExpectation (
+		final R1Distribution underlierPriceDistribution,
+		final double[] underlierPriceArray,
+		final double moneyMarketPrice)
+		throws Exception
+	{
+		return new UtilityFunctionExpectation (
+			_utilityFunction,
+			null,
+			optimalNoClaimsInventoryVertex(),
+			moneyMarketPrice
+		).optimizationRun (underlierPriceDistribution, underlierPriceArray, 0.).optimalValue();
 	}
 
 	/**
 	 * Compute the Bid Claims Inventory-based Position Value Adjustment
 	 * 
 	 * @param underlierPriceDistribution Discrete Underlier Price Distribution
+	 * @param moneyMarketPrice Price of Money Market Entity
 	 * @param noClaimsInventoryUtilityExpectation No-Claims Inventory Utility Expectation
 	 * 
 	 * @return The Bid Claims Inventory-based Position Value Adjustment
@@ -227,18 +266,69 @@ public class ReservationPricer
 		final double noClaimsInventoryUtilityExpectation)
 		throws Exception
 	{
-		return new UtilityFunctionExpectation (
-			_utilityFunction,
-			_bidClaimsPositionPricer,
-			optimalClaimsInventoryVertex(),
-			moneyMarketPrice
-		).inferPositionValueAdjustment (underlierPriceDistribution, noClaimsInventoryUtilityExpectation);
+		ClaimsUtilityExpectationInferenceRun claimsUtilityExpectationInferenceRun =
+			new UtilityFunctionExpectation (
+				_utilityFunction,
+				_bidClaimsPositionPricer,
+				optimalBidClaimsInventoryVertex(),
+				moneyMarketPrice
+			).inferPositionAdjustment (
+				underlierPriceDistribution,
+				noClaimsInventoryUtilityExpectation
+			);
+
+		if (null == claimsUtilityExpectationInferenceRun) {
+			throw new Exception (" Cannot generate Claims Utility Expectation Inference Run");
+		}
+
+		return claimsUtilityExpectationInferenceRun.optimalValue();
+	}
+
+	/**
+	 * Compute the Bid Claims Inventory-based Position Value Adjustment
+	 * 
+	 * @param underlierPriceDistribution Discrete Underlier Price Distribution
+	 * @param underlierPriceArray Underlier Price Array
+	 * @param moneyMarketPrice Price of Money Market Entity
+	 * @param noClaimsInventoryUtilityExpectation No-Claims Inventory Utility Expectation
+	 * 
+	 * @return The Bid Claims Inventory-based Position Value Adjustment
+	 * 
+	 * @throws Exception Thrown if the Bid Claims Inventory-based Position Value Adjustment cannot be
+	 *  calculated
+	 */
+
+	public double bidClaimsPositionValueAdjustment (
+		final R1Distribution underlierPriceDistribution,
+		final double[] underlierPriceArray,
+		final double moneyMarketPrice,
+		final double noClaimsInventoryUtilityExpectation)
+		throws Exception
+	{
+		ClaimsUtilityExpectationInferenceRun claimsUtilityExpectationInferenceRun =
+			new UtilityFunctionExpectation (
+				_utilityFunction,
+				_bidClaimsPositionPricer,
+				optimalBidClaimsInventoryVertex(),
+				moneyMarketPrice
+			).inferPositionAdjustment (
+				underlierPriceDistribution,
+				underlierPriceArray,
+				noClaimsInventoryUtilityExpectation
+			);
+
+		if (null == claimsUtilityExpectationInferenceRun) {
+			throw new Exception (" Cannot generate Claims Utility Expectation Inference Run");
+		}
+
+		return claimsUtilityExpectationInferenceRun.optimalValue();
 	}
 
 	/**
 	 * Compute the Ask Claims Inventory-based Position Value Adjustment
 	 * 
 	 * @param underlierPriceDistribution Discrete Underlier Price Distribution
+	 * @param moneyMarketPrice Price of Money Market Entity
 	 * @param noClaimsInventoryUtilityExpectation No-Claims Inventory Utility Expectation
 	 * 
 	 * @return The Ask Claims Inventory-based Position Value Adjustment
@@ -253,19 +343,144 @@ public class ReservationPricer
 		final double noClaimsInventoryUtilityExpectation)
 		throws Exception
 	{
-		return new UtilityFunctionExpectation (
-			_utilityFunction,
-			_askClaimsPositionPricer,
-			optimalClaimsInventoryVertex(),
-			moneyMarketPrice
-		).inferPositionValueAdjustment (underlierPriceDistribution, noClaimsInventoryUtilityExpectation);
+		ClaimsUtilityExpectationInferenceRun claimsUtilityExpectationInferenceRun =
+			new UtilityFunctionExpectation (
+				_utilityFunction,
+				_bidClaimsPositionPricer,
+				optimalBidClaimsInventoryVertex(),
+				moneyMarketPrice
+			).inferPositionAdjustment (
+				underlierPriceDistribution,
+				noClaimsInventoryUtilityExpectation
+			);
+
+		if (null == claimsUtilityExpectationInferenceRun) {
+			throw new Exception (" Cannot generate Claims Utility Expectation Inference Run");
+		}
+
+		return claimsUtilityExpectationInferenceRun.optimalValue();
 	}
+
+	/**
+	 * Compute the Ask Claims Inventory-based Position Value Adjustment
+	 * 
+	 * @param underlierPriceDistribution Discrete Underlier Price Distribution
+	 * @param underlierPriceArray Underlier Price Array
+	 * @param moneyMarketPrice Price of Money Market Entity
+	 * @param noClaimsInventoryUtilityExpectation No-Claims Inventory Utility Expectation
+	 * 
+	 * @return The Ask Claims Inventory-based Position Value Adjustment
+	 * 
+	 * @throws Exception Thrown if the Bid Claims Inventory-based Position Value Adjustment cannot be
+	 *  calculated
+	 */
+
+	public double askClaimsPositionValueAdjustment (
+		final R1Distribution underlierPriceDistribution,
+		final double[] underlierPriceArray,
+		final double moneyMarketPrice,
+		final double noClaimsInventoryUtilityExpectation)
+		throws Exception
+	{
+		ClaimsUtilityExpectationInferenceRun claimsUtilityExpectationInferenceRun =
+			new UtilityFunctionExpectation (
+				_utilityFunction,
+				_askClaimsPositionPricer,
+				optimalAskClaimsInventoryVertex(),
+				moneyMarketPrice
+			).inferPositionAdjustment (
+				underlierPriceDistribution,
+				underlierPriceArray,
+				noClaimsInventoryUtilityExpectation
+			);
+
+		if (null == claimsUtilityExpectationInferenceRun) {
+			throw new Exception (" Cannot generate Claims Utility Expectation Inference Run");
+		}
+
+		return claimsUtilityExpectationInferenceRun.optimalValue();
+	}
+
+	/**
+	 * Run a Reservation Pricing Flow
+	 * 
+	 * @param underlierPriceDistribution Discrete Underlier Price Distribution
+	 * @param moneyMarketPrice Price of Money Market Entity
+	 * 
+	 * @return Reservation Pricing Flow
+	 */
 
 	public ReservationPricingRun reservationPricingRun (
 		final R1Univariate underlierPriceDistribution,
 		final double moneyMarketPrice)
-		throws Exception
 	{
+		try {
+			double noClaimsInventoryUtilityExpectation = noClaimsInventoryUtilityExpectation (
+				underlierPriceDistribution,
+				moneyMarketPrice
+			);
+
+			return new ReservationPricingRun (
+				bidClaimsPositionValueAdjustment (
+					underlierPriceDistribution,
+					moneyMarketPrice,
+					noClaimsInventoryUtilityExpectation
+				),
+				askClaimsPositionValueAdjustment (
+					underlierPriceDistribution,
+					moneyMarketPrice,
+					noClaimsInventoryUtilityExpectation
+				),
+				noClaimsInventoryUtilityExpectation
+			);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
+	 * Run a Reservation Pricing Flow
+	 * 
+	 * @param underlierPriceDistribution Discrete Underlier Price Distribution
+	 * @param underlierPriceArray Underlier Price Array
+	 * @param moneyMarketPrice Price of Money Market Entity
+	 * 
+	 * @return Reservation Pricing Flow
+	 */
+
+	public ReservationPricingRun reservationPricingRun (
+		final R1Distribution underlierPriceDistribution,
+		final double[] underlierPriceArray,
+		final double moneyMarketPrice)
+	{
+		try {
+			double noClaimsInventoryUtilityExpectation = noClaimsInventoryUtilityExpectation (
+				underlierPriceDistribution,
+				underlierPriceArray,
+				moneyMarketPrice
+			);
+
+			return new ReservationPricingRun (
+				bidClaimsPositionValueAdjustment (
+					underlierPriceDistribution,
+					underlierPriceArray,
+					moneyMarketPrice,
+					noClaimsInventoryUtilityExpectation
+				),
+				askClaimsPositionValueAdjustment (
+					underlierPriceDistribution,
+					underlierPriceArray,
+					moneyMarketPrice,
+					noClaimsInventoryUtilityExpectation
+				),
+				noClaimsInventoryUtilityExpectation
+			);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
 		return null;
 	}
 }
