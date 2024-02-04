@@ -2,6 +2,7 @@
 package org.drip.oms.indifference;
 
 import org.drip.function.definition.R1ToR1;
+import org.drip.measure.continuous.R1Univariate;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -76,7 +77,7 @@ import org.drip.function.definition.R1ToR1;
  */
 
 /**
- * <i>ReservationPricer</i> implements the Expectation of the Utility Function using the Endowment and aT
+ * <i>ReservationPricer</i> implements the Expectation of the Utility Function using the Endowment and at
  * 	Payoff on the Underlying Asset. The References are:
  *  
  * 	<br><br>
@@ -114,18 +115,19 @@ import org.drip.function.definition.R1ToR1;
 
 public class ReservationPricer
 {
-	private R1ToR1 _utilityFunction = null;
-	private InventoryVertex _initialInventory = null;
+	private R1ToR1 _claimsPayoffFunction = null;
+	private InventoryVertex _inventoryVertex = null;
+	private UtilityFunction _utilityFunction = null;
 
 	/**
-	 * Retrieve the Initial Inventory Vertex
+	 * Retrieve the Inventory Vertex
 	 * 
-	 * @return The Initial Inventory Vertex
+	 * @return The Inventory Vertex
 	 */
 
-	public InventoryVertex initialInventory()
+	public InventoryVertex inventoryVertex()
 	{
-		return _initialInventory;
+		return _inventoryVertex;
 	}
 
 	/**
@@ -134,8 +136,43 @@ public class ReservationPricer
 	 * @return The Utility Function
 	 */
 
-	public R1ToR1 utilityFunction()
+	public UtilityFunction utilityFunction()
 	{
 		return _utilityFunction;
+	}
+
+	/**
+	 * Retrieve the Claims Payoff Function
+	 * 
+	 * @return The Claims Payoff Function
+	 */
+
+	public R1ToR1 claimsPayoffFunction()
+	{
+		return _claimsPayoffFunction;
+	}
+
+	/**
+	 * Compute the No-Claims Inventory-based Optimal Utility Value
+	 * 
+	 * @param underlierPriceDistribution Discrete Underlier Price Distribution
+	 * @param moneyMarketPrice Price of Money Market Entity
+	 * 
+	 * @return The No-Claims Inventory-based Optimal Utility Value
+	 * 
+	 * @throws Exception Thrown if the No-Claims Inventory-based Optimal Utility Value cannot be calculated
+	 */
+
+	public double baselineInventoryUtilityExpectation (
+		final R1Univariate underlierPriceDistribution,
+		final double moneyMarketPrice)
+		throws Exception
+	{
+		return new UtilityFunctionExpectation (
+			_utilityFunction,
+			null,
+			_inventoryVertex,
+			moneyMarketPrice
+		).optimalValue (underlierPriceDistribution, 0.);
 	}
 }

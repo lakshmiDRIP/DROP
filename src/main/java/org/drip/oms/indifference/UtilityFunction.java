@@ -145,9 +145,10 @@ public class UtilityFunction
 	}
 
 	/**
-	 * Evaluate the Utility Function at the Position Vertex
+	 * Evaluate the Utility Function at the Position Vertex using the Position Adjustment
 	 * 
 	 * @param positionVertex Position Vertex
+	 * @param positionValueAdjustment Position Value Adjustment
 	 * 
 	 * @return Utility Function Value
 	 * 
@@ -155,13 +156,14 @@ public class UtilityFunction
 	 */
 
 	public double evaluate (
-		final PositionVertex positionVertex)
+		final PositionVertex positionVertex,
+		final double positionValueAdjustment)
 		throws Exception
 	{
 		if (null == positionVertex) {
-			throw new Exception ("UtilityFunction::evaluate => Invald Position Vertex");
+			throw new Exception ("UtilityFunction::evaluate => Invalid Position Vertex");
 		}
 
-		return _privateValuationObjective.evaluate (positionVertex.value());
+		return _privateValuationObjective.evaluate (positionVertex.value() + positionValueAdjustment);
 	}
 }

@@ -132,7 +132,8 @@ public class RealizationVertex
 		throws Exception
 	{
 		if (!NumberUtil.IsValid (_moneyMarketPrice = moneyMarketPrice) ||
-			!NumberUtil.IsValid (_underlierPrice = underlierPrice)) {
+			!NumberUtil.IsValid (_underlierPrice = underlierPrice) ||
+			0. >= _moneyMarketPrice || 0. > _underlierPrice) {
 			throw new Exception ("RealizationVertex Constructor => Invalid Inputs");
 		}
 	}

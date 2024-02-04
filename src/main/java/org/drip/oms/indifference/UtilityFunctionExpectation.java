@@ -1,8 +1,13 @@
 
 package org.drip.oms.indifference;
 
+import org.drip.function.definition.R1ToR1;
+import org.drip.function.r1tor1solver.FixedPointFinderBrent;
+import org.drip.function.r1tor1solver.FixedPointFinderOutput;
 import org.drip.measure.continuous.R1Univariate;
 import org.drip.measure.discrete.R1Distribution;
+import org.drip.numerical.common.NumberUtil;
+import org.drip.numerical.integration.NewtonCotesQuadratureGenerator;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -115,9 +120,36 @@ import org.drip.measure.discrete.R1Distribution;
 
 public class UtilityFunctionExpectation
 {
+	private R1ToR1 _claimsPayoffFunction = null;
 	private double _moneyMarketPrice = Double.NaN;
 	private UtilityFunction _agentOptimizer = null;
 	private InventoryVertex _inventoryVertex = null;
+
+	/**
+	 * UtilityFunctionExpectation Constructor
+	 * 
+	 * @param agentOptimizer Agent Optimization Utility Function
+	 * @param claimsPayoffFunction Claims Payoff Function
+	 * @param inventoryVertex Inventory Vertex
+	 * @param moneyMarketPrice Price of Money Market Entity
+	 * 
+	 * @throws Exception Thrown if the Inputs are Invalid
+	 */
+
+	public UtilityFunctionExpectation (
+		final UtilityFunction agentOptimizer,
+		final R1ToR1 claimsPayoffFunction,
+		final InventoryVertex inventoryVertex,
+		final double moneyMarketPrice)
+		throws Exception
+	{
+		if (null == (_agentOptimizer = agentOptimizer) || null == (_inventoryVertex = inventoryVertex) ||
+			!NumberUtil.IsValid (_moneyMarketPrice = moneyMarketPrice) || 0. >= _moneyMarketPrice) {
+			throw new Exception ("UtilityFunctionExpectation Constructor => Invalid Inputs");
+		}
+
+		_claimsPayoffFunction = claimsPayoffFunction;
+	}
 
 	/**
 	 * Retrieve the Agent Optimization Utility Function
@@ -144,7 +176,7 @@ public class UtilityFunctionExpectation
 	/**
 	 * Retrieve the Price of Money Market Entity
 	 * 
-	 * @return Number of Money Market Entity
+	 * @return Price of Money Market Entity
 	 */
 
 	public double moneyMarketPrice()
@@ -153,43 +185,59 @@ public class UtilityFunctionExpectation
 	}
 
 	/**
+	 * Retrieve the Claims Payoff Function
+	 * 
+	 * @return The Claims Payoff Function
+	 */
+
+	public R1ToR1 claimsPayoffFunction()
+	{
+		return _claimsPayoffFunction;
+	}
+
+	/**
 	 * Compute the Agent's Objective Function Value For the Underlier Price
 	 * 
 	 * @param underlierPrice The Underlier Price
+	 * @param positionValueAdjustment Position Value Adjustment
 	 * 
 	 * @return The Agent's Objective Function Value For the Underlier Price
 	 * 
 	 * @throws Exception Thrown if the Agent's Objective Function Value cannot be calculated
 	 */
 
-	public double objectiveValue (
-		final double underlierPrice)
+	public double agentObjectiveValue (
+		final double underlierPrice,
+		final double positionValueAdjustment)
 		throws Exception
 	{
 		return _agentOptimizer.evaluate (
 			new PositionVertex (
 				_inventoryVertex,
 				new RealizationVertex (_moneyMarketPrice, underlierPrice),
-				_agentOptimizer.privateValuationObjective()
-			)
+				_claimsPayoffFunction
+			),
+			positionValueAdjustment
 		);
 	}
 
 	/**
-	 * Compute the Expectation of the Agent Utility Function given the Underlier Price Array and Discrete
-	 * 	Distribution
+	 * Compute the Optimal Expectation of the Agent Utility Function given the Underlier Price Array and
+	 *  Discrete Distribution
 	 * 
 	 * @param underlierPriceDistribution Discrete Underlier Price Distribution
 	 * @param underlierPriceArray Underlier Price Array
+	 * @param positionValueAdjustment Position Value Adjustment
 	 * 
 	 * @return Expectation of the Agent Utility Function
 	 * 
 	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
-	public double evaluate (
+	public double optimalValue (
 		final R1Distribution underlierPriceDistribution,
-		final double[] underlierPriceArray)
+		final double[] underlierPriceArray,
+		final double positionValueAdjustment)
 		throws Exception
 	{
 		if (null == underlierPriceDistribution ||
@@ -201,28 +249,88 @@ public class UtilityFunctionExpectation
 
 		for (double underlierPrice : underlierPriceArray) {
 			utilityFunctionExpectationValue += underlierPriceDistribution.probability (underlierPrice) *
-				_agentOptimizer.evaluate (
-					new PositionVertex (
-						_inventoryVertex,
-						new RealizationVertex (_moneyMarketPrice, underlierPrice),
-						_agentOptimizer.privateValuationObjective()
-					)
-				);
+				agentObjectiveValue (underlierPrice, positionValueAdjustment);
 		}
 
 		return utilityFunctionExpectationValue;
 	}
 
-	public double evaluate (
-		final R1Univariate underlierPriceDistribution)
+	/**
+	 * Compute the Optimal  Expectation of the Agent Utility Function given the Underlier Price Array and
+	 *  Discrete Distribution
+	 * 
+	 * @param underlierPriceDistribution Discrete Underlier Price Distribution
+	 * @param positionValueAdjustment Position Value Adjustment
+	 * 
+	 * @return Expectation of the Agent Utility Function
+	 * 
+	 * @throws Exception Thrown if the Inputs are Invalid
+	 */
+
+	public double optimalValue (
+		final R1Univariate underlierPriceDistribution,
+		final double positionValueAdjustment)
 		throws Exception
 	{
 		if (null == underlierPriceDistribution) {
 			throw new Exception ("UtilityFunctionExpectation::evaluate => Invalid Inputs");
 		}
 
-		double utilityFunctionExpectationValue = 0.;
+		return NewtonCotesQuadratureGenerator.GaussLaguerreLeftDefinite (0., 100).integrate (
+			new R1ToR1 (null) {
+				@Override public double evaluate (
+					final double underlierPrice)
+					throws Exception
+				{
+					return underlierPriceDistribution.density (underlierPrice) *
+						agentObjectiveValue (underlierPrice, positionValueAdjustment);
+				}
+			}
+		);
+	}
 
-		return utilityFunctionExpectationValue;
+	/**
+	 * Infer the Position Value Adjustment given the Target Utility Expectation Value
+	 * 
+	 * @param underlierPriceDistribution Discrete Underlier Price Distribution
+	 * @param targetUtilityExpectationValue Target Utility Expectation Value
+	 * 
+	 * @return The Position Value Adjustment
+	 * 
+	 * @throws Exception Thrown if the Position Value Adjustment cannot be inferred
+	 */
+
+	public double inferPositionValueAdjustment (
+		final R1Univariate underlierPriceDistribution,
+		final double targetUtilityExpectationValue)
+		throws Exception
+	{
+		if (null == underlierPriceDistribution || !NumberUtil.IsValid (targetUtilityExpectationValue)) {
+			throw new Exception (
+				"UtilityFunctionExpectation::inferPositionValueAdjustment => Invalid Inputs"
+			);
+		}
+
+		FixedPointFinderOutput fixedPointFinderOutput = new FixedPointFinderBrent (
+			0.,
+			new R1ToR1 (null) {
+				@Override public double evaluate (
+					final double positionValueAdjustment)
+					throws Exception
+				{
+					return optimalValue (underlierPriceDistribution, positionValueAdjustment) -
+						targetUtilityExpectationValue;
+				}
+			},
+			false
+		).findRoot();
+
+		if (null == fixedPointFinderOutput || !fixedPointFinderOutput.containsRoot()) {
+			throw new Exception (
+				"UtilityFunctionExpectation::inferPositionValueAdjustment => Cannot Infer Root"
+			);
+		}
+
+		return fixedPointFinderOutput.getRoot();
 	}
 }
