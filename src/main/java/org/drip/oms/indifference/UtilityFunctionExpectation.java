@@ -1,6 +1,9 @@
 
 package org.drip.oms.indifference;
 
+import org.drip.measure.continuous.R1Univariate;
+import org.drip.measure.discrete.R1Distribution;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
@@ -112,5 +115,114 @@ package org.drip.oms.indifference;
 
 public class UtilityFunctionExpectation
 {
-	private UtilityFunction _utilityFunction = null;
+	private double _moneyMarketPrice = Double.NaN;
+	private UtilityFunction _agentOptimizer = null;
+	private InventoryVertex _inventoryVertex = null;
+
+	/**
+	 * Retrieve the Agent Optimization Utility Function
+	 * 
+	 * @return Agent Optimization Utility Function
+	 */
+
+	public UtilityFunction agentOptimizer()
+	{
+		return _agentOptimizer;
+	}
+
+	/**
+	 * Retrieve the Inventory Vertex
+	 * 
+	 * @return The Inventory Vertex
+	 */
+
+	public InventoryVertex inventoryVertex()
+	{
+		return _inventoryVertex;
+	}
+
+	/**
+	 * Retrieve the Price of Money Market Entity
+	 * 
+	 * @return Number of Money Market Entity
+	 */
+
+	public double moneyMarketPrice()
+	{
+		return _moneyMarketPrice;
+	}
+
+	/**
+	 * Compute the Agent's Objective Function Value For the Underlier Price
+	 * 
+	 * @param underlierPrice The Underlier Price
+	 * 
+	 * @return The Agent's Objective Function Value For the Underlier Price
+	 * 
+	 * @throws Exception Thrown if the Agent's Objective Function Value cannot be calculated
+	 */
+
+	public double objectiveValue (
+		final double underlierPrice)
+		throws Exception
+	{
+		return _agentOptimizer.evaluate (
+			new PositionVertex (
+				_inventoryVertex,
+				new RealizationVertex (_moneyMarketPrice, underlierPrice),
+				_agentOptimizer.privateValuationObjective()
+			)
+		);
+	}
+
+	/**
+	 * Compute the Expectation of the Agent Utility Function given the Underlier Price Array and Discrete
+	 * 	Distribution
+	 * 
+	 * @param underlierPriceDistribution Discrete Underlier Price Distribution
+	 * @param underlierPriceArray Underlier Price Array
+	 * 
+	 * @return Expectation of the Agent Utility Function
+	 * 
+	 * @throws Exception Thrown if the Inputs are Invalid
+	 */
+
+	public double evaluate (
+		final R1Distribution underlierPriceDistribution,
+		final double[] underlierPriceArray)
+		throws Exception
+	{
+		if (null == underlierPriceDistribution ||
+			null == underlierPriceArray || 0 == underlierPriceArray.length) {
+			throw new Exception ("UtilityFunctionExpectation::evaluate => Invalid Inputs");
+		}
+
+		double utilityFunctionExpectationValue = 0.;
+
+		for (double underlierPrice : underlierPriceArray) {
+			utilityFunctionExpectationValue += underlierPriceDistribution.probability (underlierPrice) *
+				_agentOptimizer.evaluate (
+					new PositionVertex (
+						_inventoryVertex,
+						new RealizationVertex (_moneyMarketPrice, underlierPrice),
+						_agentOptimizer.privateValuationObjective()
+					)
+				);
+		}
+
+		return utilityFunctionExpectationValue;
+	}
+
+	public double evaluate (
+		final R1Univariate underlierPriceDistribution)
+		throws Exception
+	{
+		if (null == underlierPriceDistribution) {
+			throw new Exception ("UtilityFunctionExpectation::evaluate => Invalid Inputs");
+		}
+
+		double utilityFunctionExpectationValue = 0.;
+
+		return utilityFunctionExpectationValue;
+	}
 }

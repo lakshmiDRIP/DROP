@@ -1,11 +1,19 @@
 
 package org.drip.specialfunction.definition;
 
+import org.drip.function.definition.R1ToR1;
+import org.drip.numerical.common.NumberUtil;
+import org.drip.numerical.integration.NewtonCotesQuadratureGenerator;
+import org.drip.specialfunction.gamma.Definitions;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -78,7 +86,7 @@ package org.drip.specialfunction.definition;
 
 /**
  * <i>ScaledExponentialEstimator</i> exposes the Estimator for the Scaled (i.e., Stretched/Compressed)
- * Exponential Function. The References are:
+ * 	Exponential Function. The References are:
  * 
  * <br><br>
  * 	<ul>
@@ -104,44 +112,66 @@ package org.drip.specialfunction.definition;
  * 				Physics</i> <b>116 (8)</b> 3204-3209
  * 		</li>
  * 	</ul>
+ * 
+ * 	It provides the following functionality:
  *
- *	<br><br>
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FunctionAnalysisLibrary.md">Function Analysis Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md">Special Function Implementation Analysis</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/definition/README.md">Definition of Special Function Estimators</a></li>
+ * 		<li><i>ScaledExponentialEstimator</i> Constructor</li>
+ * 		<li>Retrieve the Exponent</li>
+ * 		<li>Retrieve the Characteristic Relaxation Time</li>
+ * 		<li>Evaluate using the Relaxation Time Density</li>
+ * 		<li>Indicate if the Function is Compressed Exponential</li>
+ * 		<li>Indicate if the Function is Stretched Exponential</li>
+ * 		<li>Indicate if the Function is Unscaled (i.e., Standard) Exponential</li>
+ * 		<li>Indicate if the Function is Normal (i.e., Gaussian) Exponential</li>
+ * 		<li>Compute the First Moment</li>
+ * 		<li>Compute the Higher Moment</li>
+ * 		<li>Compute the Higher Moment using the Relaxation Time Density</li>
+ * 		<li>Compute the First Moment of Log Relaxation Time</li>
  *  </ul>
+ *
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md">Special Function Implementation and Analysis</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/definition/README.md">Definition of Special Function Estimators</a></td></tr>
+ *  </table>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class ScaledExponentialEstimator extends org.drip.function.definition.R1ToR1
+public class ScaledExponentialEstimator extends R1ToR1
 {
-	private double _exponent = java.lang.Double.NaN;
-	private double _characteristicRelaxationTime = java.lang.Double.NaN;
+	private double _exponent = Double.NaN;
+	private double _characteristicRelaxationTime = Double.NaN;
 
 	/**
-	 * ScaledExponentialEstimator Constructor
+	 * <i>ScaledExponentialEstimator</i> Constructor
 	 * 
 	 * @param exponent The Exponent
 	 * @param characteristicRelaxationTime The Characteristic Relaxation Time
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public ScaledExponentialEstimator (
 		final double exponent,
 		final double characteristicRelaxationTime)
-		throws java.lang.Exception
+		throws Exception
 	{
 		super (null);
 
-		if (!org.drip.numerical.common.NumberUtil.IsValid (_exponent = exponent) || 0. > _exponent ||
-			!org.drip.numerical.common.NumberUtil.IsValid (_characteristicRelaxationTime =
-				characteristicRelaxationTime) || 0. > _characteristicRelaxationTime)
-		{
-			throw new java.lang.Exception ("ScaledExponentialEstimator Constructor => Invalid Inputs");
+		if (!NumberUtil.IsValid (_exponent = exponent) || 0. > _exponent ||
+			!NumberUtil.IsValid (_characteristicRelaxationTime = characteristicRelaxationTime) ||
+			0. > _characteristicRelaxationTime) {
+			throw new Exception ("ScaledExponentialEstimator Constructor => Invalid Inputs");
 		}
 	}
 
@@ -169,19 +199,13 @@ public class ScaledExponentialEstimator extends org.drip.function.definition.R1T
 
 	@Override public double evaluate (
 		final double t)
-		throws java.lang.Exception
+		throws Exception
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (t) || 0. > t)
-		{
-			throw new java.lang.Exception ("ScaledExponentialEstimator::evaluate => Invalid Inputs");
+		if (!NumberUtil.IsValid (t) || 0. > t) {
+			throw new Exception ("ScaledExponentialEstimator::evaluate => Invalid Inputs");
 		}
 
-		return java.lang.Math.exp (
-			-1. * java.lang.Math.pow (
-				t / _characteristicRelaxationTime,
-				_exponent
-			)
-		);
+		return Math.exp (-1. * Math.pow (t / _characteristicRelaxationTime, _exponent));
 	}
 
 	/**
@@ -192,33 +216,25 @@ public class ScaledExponentialEstimator extends org.drip.function.definition.R1T
 	 * 
 	 * @return The Evaluation using the Relaxation Time Density
 	 * 
-	 * @throws java.lang.Exception Thrown if the Evaluation cannot be done
+	 * @throws Exception Thrown if the Evaluation cannot be done
 	 */
 
 	public double evaluateUsingDensity (
 		final double t,
-		final org.drip.specialfunction.definition.RelaxationTimeDistributionEstimator
-			relaxationTimeDistributionEstimator)
-		throws java.lang.Exception
+		final RelaxationTimeDistributionEstimator relaxationTimeDistributionEstimator)
+		throws Exception
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (t) || 0. > t ||
-			null == relaxationTimeDistributionEstimator)
-		{
-			throw new java.lang.Exception
-				("ScaledExponentialEstimator::evaluateUsingDensity => Invalid Inputs");
+		if (!NumberUtil.IsValid (t) || 0. > t || null == relaxationTimeDistributionEstimator) {
+			throw new Exception ("ScaledExponentialEstimator::evaluateUsingDensity => Invalid Inputs");
 		}
 
-		return org.drip.numerical.integration.NewtonCotesQuadratureGenerator.GaussLaguerreLeftDefinite (
-			0.,
-			100
-		).integrate (
-			new org.drip.function.definition.R1ToR1 (null)
-			{
+		return NewtonCotesQuadratureGenerator.GaussLaguerreLeftDefinite (0., 100).integrate (
+			new R1ToR1 (null) {
 				@Override public double evaluate (
 					final double u)
-					throws java.lang.Exception
+					throws Exception
 				{
-					return java.lang.Double.isInfinite (u) || 0. == u ? 0. : java.lang.Math.exp (-t / u) *
+					return Double.isInfinite (u) || 0. == u ? 0. : Math.exp (-t / u) *
 						relaxationTimeDistributionEstimator.relaxationTimeDensity (u);
 				}
 			}
@@ -276,16 +292,15 @@ public class ScaledExponentialEstimator extends org.drip.function.definition.R1T
 	 * 
 	 * @return The First Moment
 	 * 
-	 * @throws java.lang.Exception Thrown if the First Moment cannot be calculated
+	 * @throws Exception Thrown if the First Moment cannot be calculated
 	 */
 
 	public double firstMoment (
-		final org.drip.function.definition.R1ToR1 gammaEstimator)
-		throws java.lang.Exception
+		final R1ToR1 gammaEstimator)
+		throws Exception
 	{
-		if (null == gammaEstimator)
-		{
-			throw new java.lang.Exception ("ScaledExponentialEstimator::firstMoment => Invalid Inputs");
+		if (null == gammaEstimator) {
+			throw new Exception ("ScaledExponentialEstimator::firstMoment => Invalid Inputs");
 		}
 
 		double inverseExponent = 1. / _exponent;
@@ -301,26 +316,22 @@ public class ScaledExponentialEstimator extends org.drip.function.definition.R1T
 	 * 
 	 * @return The Higher Moment
 	 * 
-	 * @throws java.lang.Exception Thrown if the Higher Moment cannot be calculated
+	 * @throws Exception Thrown if the Higher Moment cannot be calculated
 	 */
 
 	public double higherMoment (
 		final int momentOrder,
-		final org.drip.function.definition.R1ToR1 gammaEstimator)
-		throws java.lang.Exception
+		final R1ToR1 gammaEstimator)
+		throws Exception
 	{
-		if (0 > momentOrder ||
-			null == gammaEstimator)
-		{
-			throw new java.lang.Exception ("ScaledExponentialEstimator::higherMoment => Invalid Inputs");
+		if (0 > momentOrder || null == gammaEstimator) {
+			throw new Exception ("ScaledExponentialEstimator::higherMoment => Invalid Inputs");
 		}
 
 		double inverseExponent = 1. / _exponent;
 
-		return java.lang.Math.pow (
-			_characteristicRelaxationTime,
-			momentOrder
-		) * inverseExponent * gammaEstimator.evaluate (momentOrder * inverseExponent);
+		return Math.pow (_characteristicRelaxationTime, momentOrder) * inverseExponent *
+			gammaEstimator.evaluate (momentOrder * inverseExponent);
 	}
 
 	/**
@@ -332,41 +343,30 @@ public class ScaledExponentialEstimator extends org.drip.function.definition.R1T
 	 * 
 	 * @return The Higher Moment using the Relaxation Time Density
 	 * 
-	 * @throws java.lang.Exception Thrown if the Higher Moment cannot be calculated
+	 * @throws Exception Thrown if the Higher Moment cannot be calculated
 	 */
 
 	public double higherMomentUsingDensity (
 		final int momentOrder,
-		final org.drip.specialfunction.definition.RelaxationTimeDistributionEstimator
-			relaxationTimeDistributionEstimator,
-		final org.drip.function.definition.R1ToR1 gammaEstimator)
-		throws java.lang.Exception
+		final RelaxationTimeDistributionEstimator relaxationTimeDistributionEstimator,
+		final R1ToR1 gammaEstimator)
+		throws Exception
 	{
-		if (0 > momentOrder ||
-			null == relaxationTimeDistributionEstimator ||
-			null == gammaEstimator)
-		{
-			throw new java.lang.Exception
-				("ScaledExponentialEstimator::higherMomentUsingDensity => Invalid Inputs");
+		if (0 > momentOrder || null == relaxationTimeDistributionEstimator || null == gammaEstimator) {
+			throw new Exception ("ScaledExponentialEstimator::higherMomentUsingDensity => Invalid Inputs");
 		}
 
-		return org.drip.numerical.integration.NewtonCotesQuadratureGenerator.GaussLaguerreLeftDefinite (
-			0.,
-			100
-		).integrate (
-			new org.drip.function.definition.R1ToR1 (null)
-			{
+		return NewtonCotesQuadratureGenerator.GaussLaguerreLeftDefinite (0., 100).integrate (
+			new R1ToR1 (null) {
 				@Override public double evaluate (
 					final double t)
-					throws java.lang.Exception
+					throws Exception
 				{
-					return java.lang.Double.isInfinite (t) || 0. == t ? 0. : java.lang.Math.pow (
-						t,
-						momentOrder
-					) * relaxationTimeDistributionEstimator.relaxationTimeDensity (t);
+					return Double.isInfinite (t) || 0. == t ? 0. : Math.pow (t, momentOrder) *
+						relaxationTimeDistributionEstimator.relaxationTimeDensity (t);
 				}
 			}
-		) * gammaEstimator.evaluate (momentOrder + 1.) * java.lang.Math.pow (
+		) * gammaEstimator.evaluate (momentOrder + 1.) * Math.pow (
 			_characteristicRelaxationTime,
 			momentOrder
 		);
@@ -380,7 +380,7 @@ public class ScaledExponentialEstimator extends org.drip.function.definition.R1T
 
 	public double logRelaxationFirstMoment()
 	{
-		return (1. - (1. / _exponent)) * org.drip.specialfunction.gamma.Definitions.EULER_MASCHERONI +
-			java.lang.Math.log (_characteristicRelaxationTime);
+		return (1. - (1. / _exponent)) * Definitions.EULER_MASCHERONI +
+			Math.log (_characteristicRelaxationTime);
 	}
 }

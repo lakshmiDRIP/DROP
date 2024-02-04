@@ -114,34 +114,34 @@ import org.drip.function.definition.R1ToR1;
 
 public class UtilityFunction
 {
-	private R1ToR1 _agentObjective = null;
+	private R1ToR1 _privateValuationObjective = null;
 
 	/**
 	 * UtilityFunction Constructor
 	 * 
-	 * @param agentObjective Agent Objective Function
+	 * @param privateValuationObjective Agent Objective Function
 	 * 
 	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public UtilityFunction (
-		final R1ToR1 agentObjective)
+		final R1ToR1 privateValuationObjective)
 		throws Exception
 	{
-		if (null == (_agentObjective = agentObjective)) {
+		if (null == (_privateValuationObjective = privateValuationObjective)) {
 			throw new Exception ("UtilityFunction Constructor => Invalid Inputs");
 		}
 	}
 
 	/**
-	 * Retrieve the Agent's Objective Function
+	 * Retrieve the Agent's Private Valuation Function
 	 * 
-	 * @return The Agent's Objective Function
+	 * @return The Agent's Private Valuation Function
 	 */
 
-	public R1ToR1 agentObjective()
+	public R1ToR1 privateValuationObjective()
 	{
-		return _agentObjective;
+		return _privateValuationObjective;
 	}
 
 	/**
@@ -162,6 +162,6 @@ public class UtilityFunction
 			throw new Exception ("UtilityFunction::evaluate => Invald Position Vertex");
 		}
 
-		return _agentObjective.evaluate (positionVertex.value());
+		return _privateValuationObjective.evaluate (positionVertex.value());
 	}
 }
