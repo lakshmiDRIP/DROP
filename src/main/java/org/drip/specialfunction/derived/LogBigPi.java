@@ -1,11 +1,18 @@
 
 package org.drip.specialfunction.derived;
 
+import org.drip.function.definition.R1ToR1;
+import org.drip.numerical.common.NumberUtil;
+import org.drip.specialfunction.loggamma.InfiniteSumEstimator;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -101,21 +108,36 @@ package org.drip.specialfunction.derived;
  * 			Wikipedia (2019): Gamma Function https://en.wikipedia.org/wiki/Gamma_function
  * 		</li>
  * 	</ul>
+ * 
+ * 	It provides the following functionality:
  *
- *	<br><br>
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FunctionAnalysisLibrary.md">Function Analysis Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md">Special Function Implementation Analysis</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/derived/README.md">Special Functions Derived using Others</a></li>
+ * 		<li>Generate the Weierstrass Infinite Sum Series Version of Log Big Pi Estimator</li>
+ * 		<li>Compute the Volume of the N-Ellipsoid</li>
+ * 		<li><i>LogBigPi</i> Constructor</li>
+ * 		<li>Retrieve the Log Gamma Estimator</li>
  *  </ul>
+ *
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md">Special Function Implementation and Analysis</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/derived/README.md">Special Functions Derived using Others</a></td></tr>
+ *  </table>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class LogBigPi extends org.drip.function.definition.R1ToR1
+public class LogBigPi extends R1ToR1
 {
-	private org.drip.function.definition.R1ToR1 _logGammaEstimator = null;
+	private R1ToR1 _logGammaEstimator = null;
 
 	/**
 	 * Generate the Weierstrass Infinite Sum Series Version of Log Big Pi Estimator
@@ -128,12 +150,9 @@ public class LogBigPi extends org.drip.function.definition.R1ToR1
 	public static final LogBigPi Weierstrass (
 		final int termCount)
 	{
-		try
-		{
-			return new LogBigPi (org.drip.specialfunction.loggamma.InfiniteSumEstimator.Weierstrass (termCount));
-		}
-		catch (java.lang.Exception e)
-		{
+		try {
+			return new LogBigPi (InfiniteSumEstimator.Weierstrass (termCount));
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -148,56 +167,51 @@ public class LogBigPi extends org.drip.function.definition.R1ToR1
 	 * 
 	 * @return The Volume of the N-Ellipsoid
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public static final double NEllipsoidVolume (
 		final int termCount,
 		final double[] radiusArray)
-		throws java.lang.Exception
+		throws Exception
 	{
-		if (null == radiusArray)
-		{
-			throw new java.lang.Exception ("LogBigPi::NEllipsoidVolume => Invalid Inputs");
+		if (null == radiusArray) {
+			throw new Exception ("LogBigPi::NEllipsoidVolume => Invalid Inputs");
 		}
 
 		int radiusCount = radiusArray.length;
 
-		if (0 == radiusCount || org.drip.numerical.common.NumberUtil.IsValid (radiusArray))
-		{
-			throw new java.lang.Exception ("LogBigPi::NEllipsoidVolume => Invalid Inputs");
+		if (0 == radiusCount || NumberUtil.IsValid (radiusArray)) {
+			throw new Exception ("LogBigPi::NEllipsoidVolume => Invalid Inputs");
 		}
 
 		double halfN = 0.5 * radiusCount;
 
-		double logNEllipsoidVolume = halfN * java.lang.Math.log (java.lang.Math.PI) -
-			Weierstrass (termCount).evaluate (halfN);
+		double logNEllipsoidVolume = halfN * Math.log (Math.PI) - Weierstrass (termCount).evaluate (halfN);
 
-		for (int radiusIndex = 0; radiusIndex < radiusCount; ++radiusIndex)
-		{
+		for (int radiusIndex = 0; radiusIndex < radiusCount; ++radiusIndex) {
 			logNEllipsoidVolume = logNEllipsoidVolume + radiusArray[radiusIndex];
 		}
 
-		return java.lang.Math.exp (logNEllipsoidVolume);
+		return Math.exp (logNEllipsoidVolume);
 	}
 
 	/**
-	 * LogBigPi Constructor
+	 * <i>LogBigPi</i> Constructor
 	 * 
 	 * @param logGammaEstimator The Log Gamma Estimator
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public LogBigPi (
-		final org.drip.function.definition.R1ToR1 logGammaEstimator)
-		throws java.lang.Exception
+		final R1ToR1 logGammaEstimator)
+		throws Exception
 	{
 		super (null);
 
-		if (null == (_logGammaEstimator = logGammaEstimator))
-		{
-			throw new java.lang.Exception ("LogBigPi Constructor => Invalid Inputs");
+		if (null == (_logGammaEstimator = logGammaEstimator)) {
+			throw new Exception ("LogBigPi Constructor => Invalid Inputs");
 		}
 	}
 
@@ -207,18 +221,17 @@ public class LogBigPi extends org.drip.function.definition.R1ToR1
 	 * @return The Log Gamma Estimator
 	 */
 
-	public org.drip.function.definition.R1ToR1 logGammaEstimator()
+	public R1ToR1 logGammaEstimator()
 	{
 		return _logGammaEstimator;
 	}
 
 	@Override public double evaluate (
 		final double z)
-		throws java.lang.Exception
+		throws Exception
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (z))
-		{
-			throw new java.lang.Exception ("LogBigPi::evaluate => Invalid Inputs");
+		if (!NumberUtil.IsValid (z)) {
+			throw new Exception ("LogBigPi::evaluate => Invalid Inputs");
 		}
 
 		return _logGammaEstimator.evaluate (z + 1.);

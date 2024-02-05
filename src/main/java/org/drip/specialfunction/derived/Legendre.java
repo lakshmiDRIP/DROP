@@ -1,11 +1,19 @@
 
 package org.drip.specialfunction.derived;
 
+import org.drip.function.definition.R1ToR1;
+import org.drip.function.definition.R2ToR1;
+import org.drip.specialfunction.definition.LegendreEstimator;
+import org.drip.specialfunction.hypergeometric.EulerQuadratureEstimator;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -78,7 +86,7 @@ package org.drip.specialfunction.derived;
 
 /**
  * <i>Legendre</i> implements the Legendre Function from the 2F1 Hyper-geometric Function. The References
- * are:
+ * 	are:
  * 
  * <br><br>
  * 	<ul>
@@ -103,21 +111,35 @@ package org.drip.specialfunction.derived;
  * 			Wikipedia (2019): Hyper-geometric Function https://en.wikipedia.org/wiki/Hypergeometric_function
  * 		</li>
  * 	</ul>
+ * 
+ * 	It provides the following functionality:
  *
- *	<br><br>
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FunctionAnalysisLibrary.md">Function Analysis Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md">Special Function Implementation Analysis</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/derived/README.md">Special Functions Derived using Others</a></li>
+ * 		<li><i>Legendre</i> Constructor</li>
+ * 		<li>Retrieve the 2F1 Hyper-geometric Function Estimator</li>
+ * 		<li>Retrieve the Gamma Estimator</li>
  *  </ul>
+ *
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md">Special Function Implementation and Analysis</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/derived/README.md">Special Functions Derived using Others</a></td></tr>
+ *  </table>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class Legendre extends org.drip.specialfunction.definition.LegendreEstimator
+public class Legendre extends LegendreEstimator
 {
-	private org.drip.function.definition.R1ToR1 _gammaEstimator = null;
+	private R1ToR1 _gammaEstimator = null;
 	private org.drip.specialfunction.definition.RegularHypergeometricEstimator
 		_regularHypergeometricEstimator = null;
 
@@ -130,33 +152,28 @@ public class Legendre extends org.drip.specialfunction.definition.LegendreEstima
 	 * @param quadratureCount Quadrature Count
 	 * @param gammaEstimator Gamma Estimator
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public Legendre (
 		final double alpha,
 		final double ceta,
-		final org.drip.function.definition.R2ToR1 logBetaEstimator,
+		final R2ToR1 logBetaEstimator,
 		final int quadratureCount,
-		final org.drip.function.definition.R1ToR1 gammaEstimator)
+		final R1ToR1 gammaEstimator)
 		throws java.lang.Exception
 	{
-		super (
-			alpha,
-			ceta
-		);
+		super (alpha, ceta);
 
-		if (null == (_gammaEstimator = gammaEstimator))
-		{
-			throw new java.lang.Exception ("Legendre Constructor => Invalid Inputs");
+		if (null == (_gammaEstimator = gammaEstimator)) {
+			throw new Exception ("Legendre Constructor => Invalid Inputs");
 		}
 
-		_regularHypergeometricEstimator = new
-			org.drip.specialfunction.hypergeometric.EulerQuadratureEstimator (
-				hypergeometricParameters(),
-				logBetaEstimator,
-				quadratureCount
-			);
+		_regularHypergeometricEstimator = new EulerQuadratureEstimator (
+			hypergeometricParameters(),
+			logBetaEstimator,
+			quadratureCount
+		);
 	}
 
 	/**
@@ -177,20 +194,20 @@ public class Legendre extends org.drip.specialfunction.definition.LegendreEstima
 	 * @return The Gamma Estimator
 	 */
 
-	public org.drip.function.definition.R1ToR1 gammaEstimator()
+	public R1ToR1 gammaEstimator()
 	{
 		return _gammaEstimator;
 	}
 
 	@Override public double legendre (
 		final double z)
-		throws java.lang.Exception
+		throws Exception
 	{
 		double c = hypergeometricParameters().c();
 
 		double z2F1 = 1. - 2. * z;
 
-		return _regularHypergeometricEstimator.regularHypergeometric (z2F1) * java.lang.Math.pow (
+		return _regularHypergeometricEstimator.regularHypergeometric (z2F1) * Math.pow (
 			z2F1 / (1. - z2F1),
 			0.5 * (c - 1.)
 		) / _gammaEstimator.evaluate (c);

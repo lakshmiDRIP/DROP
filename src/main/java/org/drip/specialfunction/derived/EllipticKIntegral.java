@@ -1,11 +1,19 @@
 
 package org.drip.specialfunction.derived;
 
+import org.drip.function.definition.R2ToR1;
+import org.drip.specialfunction.definition.EllipticKIntegralEstimator;
+import org.drip.specialfunction.definition.RegularHypergeometricEstimator;
+import org.drip.specialfunction.hypergeometric.EulerQuadratureEstimator;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -78,7 +86,7 @@ package org.drip.specialfunction.derived;
 
 /**
  * <i>EllipticKIntegral</i> implements the Elliptic K Integral Function from the 2F1 Hyper-geometric
- * Function. The References are:
+ * 	Function. The References are:
  * 
  * <br><br>
  * 	<ul>
@@ -103,45 +111,56 @@ package org.drip.specialfunction.derived;
  * 			Wikipedia (2019): Hyper-geometric Function https://en.wikipedia.org/wiki/Hypergeometric_function
  * 		</li>
  * 	</ul>
+ * 
+ * 	It provides the following functionality:
  *
- *	<br><br>
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FunctionAnalysisLibrary.md">Function Analysis Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md">Special Function Implementation Analysis</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/derived/README.md">Special Functions Derived using Others</a></li>
+ * 		<li><i>EllipticKIntegral</i> Constructor</li>
+ * 		<li>Retrieve the 2F1 Hyper-geometric Function Estimator</li>
  *  </ul>
+ *
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md">Special Function Implementation and Analysis</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/derived/README.md">Special Functions Derived using Others</a></td></tr>
+ *  </table>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class EllipticKIntegral extends org.drip.specialfunction.definition.EllipticKIntegralEstimator
+public class EllipticKIntegral extends EllipticKIntegralEstimator
 {
-	private org.drip.specialfunction.definition.RegularHypergeometricEstimator
-		_regularHypergeometricEstimator = null;
+	private RegularHypergeometricEstimator _regularHypergeometricEstimator = null;
 
 	/**
-	 * EllipticKIntegral Constructor
+	 * <i>EllipticKIntegral</i> Constructor
 	 * 
 	 * @param logBetaEstimator Log Beta Estimator
 	 * @param quadratureCount Quadrature Count
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public EllipticKIntegral (
-		final org.drip.function.definition.R2ToR1 logBetaEstimator,
+		final R2ToR1 logBetaEstimator,
 		final int quadratureCount)
-		throws java.lang.Exception
+		throws Exception
 	{
 		super();
 
-		_regularHypergeometricEstimator = new
-			org.drip.specialfunction.hypergeometric.EulerQuadratureEstimator (
-				hypergeometricParameters(),
-				logBetaEstimator,
-				quadratureCount
-			);
+		_regularHypergeometricEstimator = new EulerQuadratureEstimator (
+			hypergeometricParameters(),
+			logBetaEstimator,
+			quadratureCount
+		);
 	}
 
 	/**
@@ -150,16 +169,15 @@ public class EllipticKIntegral extends org.drip.specialfunction.definition.Ellip
 	 * @return The 2F1 Hyper-geometric Function Estimator
 	 */
 
-	public org.drip.specialfunction.definition.RegularHypergeometricEstimator
-		regularHypergeometricEstimator()
+	public RegularHypergeometricEstimator regularHypergeometricEstimator()
 	{
 		return _regularHypergeometricEstimator;
 	}
 
 	@Override public double ellipticKIntegral (
 		final double k)
-		throws java.lang.Exception
+		throws Exception
 	{
-		return 0.5 * java.lang.Math.PI * _regularHypergeometricEstimator.regularHypergeometric (k * k);
+		return 0.5 * Math.PI * _regularHypergeometricEstimator.regularHypergeometric (k * k);
 	}
 }
