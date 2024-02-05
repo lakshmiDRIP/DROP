@@ -1,11 +1,17 @@
 
 package org.drip.specialfunction.derived;
 
+import org.drip.function.definition.R1ToR1;
+import org.drip.numerical.common.NumberUtil;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -78,7 +84,7 @@ package org.drip.specialfunction.derived;
 
 /**
  * <i>LogSmallPi</i> implements the Log Small Pi Function - the Reciprocal of the Log Big Pi Function. The
- * References are:
+ * 	References are:
  * 
  * <br><br>
  * 	<ul>
@@ -102,21 +108,35 @@ package org.drip.specialfunction.derived;
  * 			Wikipedia (2019): Gamma Function https://en.wikipedia.org/wiki/Gamma_function
  * 		</li>
  * 	</ul>
+ * 
+ * 	It provides the following functionality:
  *
- *	<br><br>
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FunctionAnalysisLibrary.md">Function Analysis Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md">Special Function Implementation Analysis</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/derived/README.md">Special Functions Derived using Others</a></li>
+ * 		<li>Generate the Weierstrass Infinite Sum Series Version of Log Small Pi Estimator</li>
+ * 		<li><i>LogSmallPi</i> Constructor</li>
+ * 		<li>Retrieve the <i>LogBigPi</i> Estimator</li>
  *  </ul>
+ *
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md">Special Function Implementation and Analysis</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/derived/README.md">Special Functions Derived using Others</a></td></tr>
+ *  </table>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class LogSmallPi extends org.drip.function.definition.R1ToR1
+public class LogSmallPi extends R1ToR1
 {
-	private org.drip.function.definition.R1ToR1 _logBigPiEstimator = null;
+	private R1ToR1 _logBigPiEstimator = null;
 
 	/**
 	 * Generate the Weierstrass Infinite Sum Series Version of Log Small Pi Estimator
@@ -129,12 +149,9 @@ public class LogSmallPi extends org.drip.function.definition.R1ToR1
 	public static final LogSmallPi Weierstrass (
 		final int termCount)
 	{
-		try
-		{
-			return new LogSmallPi (org.drip.specialfunction.derived.LogBigPi.Weierstrass (termCount));
-		}
-		catch (java.lang.Exception e)
-		{
+		try {
+			return new LogSmallPi (LogBigPi.Weierstrass (termCount));
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -142,22 +159,21 @@ public class LogSmallPi extends org.drip.function.definition.R1ToR1
 	}
 
 	/**
-	 * LogSmallPi Constructor
+	 * <i>LogSmallPi</i> Constructor
 	 * 
 	 * @param logBigPiEstimator The Log Big Pi Estimator
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public LogSmallPi (
-		final org.drip.function.definition.R1ToR1 logBigPiEstimator)
-		throws java.lang.Exception
+		final R1ToR1 logBigPiEstimator)
+		throws Exception
 	{
 		super (null);
 
-		if (null == (_logBigPiEstimator = logBigPiEstimator))
-		{
-			throw new java.lang.Exception ("LogSmallPi Constructor => Invalid Inputs");
+		if (null == (_logBigPiEstimator = logBigPiEstimator)) {
+			throw new Exception ("LogSmallPi Constructor => Invalid Inputs");
 		}
 	}
 
@@ -167,18 +183,17 @@ public class LogSmallPi extends org.drip.function.definition.R1ToR1
 	 * @return The Log Big Pi Estimator
 	 */
 
-	public org.drip.function.definition.R1ToR1 logBigPiEstimator()
+	public R1ToR1 logBigPiEstimator()
 	{
 		return _logBigPiEstimator;
 	}
 
 	@Override public double evaluate (
 		final double z)
-		throws java.lang.Exception
+		throws Exception
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (z))
-		{
-			throw new java.lang.Exception ("LogSmallPi::evaluate => Invalid Inputs");
+		if (!NumberUtil.IsValid (z)) {
+			throw new Exception ("LogSmallPi::evaluate => Invalid Inputs");
 		}
 
 		return -1. * _logBigPiEstimator.evaluate (z);

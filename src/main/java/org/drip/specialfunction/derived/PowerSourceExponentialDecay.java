@@ -1,11 +1,19 @@
 
 package org.drip.specialfunction.derived;
 
+import org.drip.function.definition.R1ToR1;
+import org.drip.numerical.common.NumberUtil;
+import org.drip.numerical.differentiation.DerivativeControl;
+import org.drip.numerical.integration.NewtonCotesQuadratureGenerator;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -78,7 +86,7 @@ package org.drip.specialfunction.derived;
 
 /**
  * <i>PowerSourceExponentialDecay</i> implements the Power Source Exponential Decay Function. The References
- * are:
+ * 	are:
  * 
  * <br><br>
  * 	<ul>
@@ -102,29 +110,43 @@ package org.drip.specialfunction.derived;
  * 			Wikipedia (2019): Gamma Function https://en.wikipedia.org/wiki/Gamma_function
  * 		</li>
  * 	</ul>
+ * 
+ * 	It provides the following functionality:
  *
- *	<br><br>
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FunctionAnalysisLibrary.md">Function Analysis Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md">Special Function Implementation Analysis</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/derived/README.md">Special Functions Derived using Others</a></li>
+ * 		<li>Construct the Analytic Version of <i>PowerSourceExponentialDecay</i></li>
+ * 		<li><i>PowerSourceExponentialDecay</i> Constructor</li>
+ * 		<li>Retrieve the Source Power Coefficient</li>
  *  </ul>
+ *
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md">Special Function Implementation and Analysis</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/derived/README.md">Special Functions Derived using Others</a></td></tr>
+ *  </table>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class PowerSourceExponentialDecay extends org.drip.function.definition.R1ToR1
+public class PowerSourceExponentialDecay extends R1ToR1
 {
-	private double _sourcePowerCoefficient = java.lang.Double.NaN;
+	private double _sourcePowerCoefficient = Double.NaN;
 
 	/**
-	 * Construct the Analytic Version of PowerSourceExponentialDecay
+	 * Construct the Analytic Version of <i>PowerSourceExponentialDecay</i>
 	 * 
 	 * @param logGammaEstimator The Log Gamma Estimator
 	 * @param sourcePowerCoefficient The Source Power Coefficient
 	 * 
-	 * @return The Analytic Version of PowerSourceExponentialDecay
+	 * @return The Analytic Version of <i>PowerSourceExponentialDecay</i>
 	 */
 
 	public static final PowerSourceExponentialDecay Analytic (
@@ -172,25 +194,24 @@ public class PowerSourceExponentialDecay extends org.drip.function.definition.R1
 	}
 
 	/**
-	 * PowerSourceExponentialDecay Constructor
+	 * <i>PowerSourceExponentialDecay</i> Constructor
 	 * 
-	 * @param dc The Derivative Control
+	 * @param derivativeControl The Derivative Control
 	 * @param sourcePowerCoefficient The Source Power Coefficient
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public PowerSourceExponentialDecay (
-		final org.drip.numerical.differentiation.DerivativeControl dc,
+		final DerivativeControl derivativeControl,
 		final double sourcePowerCoefficient)
 		throws java.lang.Exception
 	{
-		super (dc);
+		super (derivativeControl);
 
-		if (!org.drip.numerical.common.NumberUtil.IsValid (_sourcePowerCoefficient = sourcePowerCoefficient)
-			|| 0. >= _sourcePowerCoefficient)
-		{
-			throw new java.lang.Exception ("PowerSourceExponentialDecay Constructor => Invalid Inputs");
+		if (!NumberUtil.IsValid (_sourcePowerCoefficient = sourcePowerCoefficient) ||
+			0. >= _sourcePowerCoefficient) {
+			throw new Exception ("PowerSourceExponentialDecay Constructor => Invalid Inputs");
 		}
 	}
 
@@ -207,28 +228,20 @@ public class PowerSourceExponentialDecay extends org.drip.function.definition.R1
 
 	@Override public double evaluate (
 		final double exponentialDecayCoefficient)
-		throws java.lang.Exception
+		throws Exception
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (exponentialDecayCoefficient) ||
-			0. >= exponentialDecayCoefficient)
-		{
-			throw new java.lang.Exception ("PowerSourceExponentialDecay::evaluate => Invalid Inputs");
+		if (!NumberUtil.IsValid (exponentialDecayCoefficient) || 0. >= exponentialDecayCoefficient) {
+			throw new Exception ("PowerSourceExponentialDecay::evaluate => Invalid Inputs");
 		}
 
-		return org.drip.numerical.integration.NewtonCotesQuadratureGenerator.GaussLaguerreLeftDefinite (
-			0.,
-			100
-		).integrate (
-			new org.drip.function.definition.R1ToR1 (null)
-			{
+		return NewtonCotesQuadratureGenerator.GaussLaguerreLeftDefinite (0., 100).integrate (
+			new R1ToR1 (null) {
 				@Override public double evaluate (
 					final double t)
-					throws java.lang.Exception
+					throws Exception
 				{
-					return java.lang.Double.isInfinite (t) ? 0. : java.lang.Math.pow (
-						t,
-						_sourcePowerCoefficient
-					) * java.lang.Math.exp (-1. * exponentialDecayCoefficient * t);
+					return Double.isInfinite (t) ? 0. : Math.pow (t, _sourcePowerCoefficient) *
+						Math.exp (-1. * exponentialDecayCoefficient * t);
 				}
 			}
 		);

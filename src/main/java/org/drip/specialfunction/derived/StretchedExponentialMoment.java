@@ -1,11 +1,20 @@
 
 package org.drip.specialfunction.derived;
 
+import org.drip.function.definition.R1ToR1;
+import org.drip.numerical.common.NumberUtil;
+import org.drip.numerical.differentiation.DerivativeControl;
+import org.drip.numerical.integration.NewtonCotesQuadratureGenerator;
+import org.drip.specialfunction.loggamma.InfiniteSumEstimator;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -78,7 +87,7 @@ package org.drip.specialfunction.derived;
 
 /**
  * <i>StretchedExponentialMoment</i> estimates the specified Moment Stretched Exponential Integral Function.
- * The References are:
+ * 	The References are:
  * 
  * <br><br>
  * 	<ul>
@@ -102,31 +111,46 @@ package org.drip.specialfunction.derived;
  * 			Wikipedia (2019): Gamma Function https://en.wikipedia.org/wiki/Gamma_function
  * 		</li>
  * 	</ul>
+ * 
+ * 	It provides the following functionality:
  *
- *	<br><br>
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FunctionAnalysisLibrary.md">Function Analysis Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md">Special Function Implementation Analysis</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/derived/README.md">Special Functions Derived using Others</a></li>
+ * 		<i>Construct the Weierstrass Version of the Log of <i>StretchedExponentialMoment</i> Estimator</i>
+ * 		<i>StretchedExponentialMoment Constructor</i>
+ * 		<i>Retrieve Tau</i>
+ * 		<i>Retrieve Beta</i>
  *  </ul>
+ *
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md">Special Function Implementation and Analysis</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/derived/README.md">Special Functions Derived using Others</a></td></tr>
+ *  </table>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class StretchedExponentialMoment extends org.drip.function.definition.R1ToR1
+public class StretchedExponentialMoment extends R1ToR1
 {
-	private double _tau = java.lang.Double.NaN;
-	private double _beta = java.lang.Double.NaN;
+	private double _tau = Double.NaN;
+	private double _beta = Double.NaN;
 
 	/**
-	 * Construct the Weierstrass Version of the Log of StretchedExponentialMoment Estimator
+	 * Construct the Weierstrass Version of the Log of <i>StretchedExponentialMoment</i> Estimator
 	 * 
 	 * @param tau Tau
 	 * @param beta Beta
 	 * @param termCount Number of Terms in the Estimation
 	 * 
-	 * @return Weierstrass Version of the Log of StretchedExponentialMoment Estimator
+	 * @return Weierstrass Version of the Log of <i>StretchedExponentialMoment</i> Estimator
 	 */
 
 	public static final StretchedExponentialMoment Weierstrass (
@@ -134,42 +158,31 @@ public class StretchedExponentialMoment extends org.drip.function.definition.R1T
 		final double beta,
 		final int termCount)
 	{
-		final org.drip.specialfunction.loggamma.InfiniteSumEstimator weierstrassLogGamma =
-			org.drip.specialfunction.loggamma.InfiniteSumEstimator.Weierstrass (termCount);
+		final InfiniteSumEstimator weierstrassLogGamma = InfiniteSumEstimator.Weierstrass (termCount);
 
-		if (null == weierstrassLogGamma)
-		{
+		if (null == weierstrassLogGamma) {
 			return null;
 		}
 
-		try
-		{
-			return new StretchedExponentialMoment (
-				null,
-				tau,
-				beta
-			)
-			{
+		try {
+			return new StretchedExponentialMoment (null, tau, beta) {
 				@Override public double evaluate (
 					final double moment)
-					throws java.lang.Exception
+					throws Exception
 				{
-					if (!org.drip.numerical.common.NumberUtil.IsValid (moment) || 1. > moment)
-					{
-						throw new java.lang.Exception
-							("StretchedExponentialMoment::Weierstrass::evaluate => Invalid Inputs");
+					if (!NumberUtil.IsValid (moment) || 1. > moment) {
+						throw new  Exception (
+							"StretchedExponentialMoment::Weierstrass::evaluate => Invalid Inputs"
+						);
 					}
 
-					return java.lang.Math.exp (
-						moment * java.lang.Math.log (tau) +
-						weierstrassLogGamma.evaluate (moment / beta) -
-						java.lang.Math.log (beta)
+					return Math.exp (
+						moment * Math.log (tau) + weierstrassLogGamma.evaluate (moment / beta) -
+							Math.log (beta)
 					);
 				}
 			};
-		}
-		catch (java.lang.Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -177,27 +190,26 @@ public class StretchedExponentialMoment extends org.drip.function.definition.R1T
 	}
 
 	/**
-	 * StretchedExponentialMoment Constructor
+	 * <i>StretchedExponentialMoment</i> Constructor
 	 * 
-	 * @param dc The Derivative Control
+	 * @param derivativeControl The Derivative Control
 	 * @param tau Tau
 	 * @param beta Beta
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public StretchedExponentialMoment (
-		final org.drip.numerical.differentiation.DerivativeControl dc,
+		final DerivativeControl derivativeControl,
 		final double tau,
 		final double beta)
-		throws java.lang.Exception
+		throws Exception
 	{
-		super (dc);
+		super (derivativeControl);
 
-		if (!org.drip.numerical.common.NumberUtil.IsValid (_tau = tau) || 0. >= _tau ||
-			!org.drip.numerical.common.NumberUtil.IsValid (_beta = beta) || 0. >= _beta)
-		{
-			throw new java.lang.Exception ("StretchedExponentialMoment Constructor => Invalid Inputs");
+		if (!NumberUtil.IsValid (_tau = tau) || 0. >= _tau ||
+			!NumberUtil.IsValid (_beta = beta) || 0. >= _beta) {
+			throw new Exception ("StretchedExponentialMoment Constructor => Invalid Inputs");
 		}
 	}
 
@@ -225,32 +237,20 @@ public class StretchedExponentialMoment extends org.drip.function.definition.R1T
 
 	@Override public double evaluate (
 		final double moment)
-		throws java.lang.Exception
+		throws Exception
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (moment) || 1. > moment)
-		{
-			throw new java.lang.Exception ("StretchedExponentialMoment::evaluate => Invalid Inputs");
+		if (!NumberUtil.IsValid (moment) || 1. > moment) {
+			throw new Exception ("StretchedExponentialMoment::evaluate => Invalid Inputs");
 		}
 
-		return org.drip.numerical.integration.NewtonCotesQuadratureGenerator.GaussLaguerreLeftDefinite (
-			0.,
-			100
-		).integrate (
-			new org.drip.function.definition.R1ToR1 (null)
-			{
+		return NewtonCotesQuadratureGenerator.GaussLaguerreLeftDefinite (0., 100).integrate (
+			new R1ToR1 (null) {
 				@Override public double evaluate (
 					final double t)
-					throws java.lang.Exception
+					throws Exception
 				{
-					return java.lang.Double.isInfinite (t) || 0. == t ? 0. : java.lang.Math.pow (
-						t,
-						moment - 1
-					) * java.lang.Math.exp (
-						-java.lang.Math.pow (
-							t / _tau,
-							_beta
-						)
-					);
+					return Double.isInfinite (t) || 0. == t ? 0. : Math.pow (t, moment - 1) *
+						Math.exp (-Math.pow (t / _tau, _beta));
 				}
 			}
 		);

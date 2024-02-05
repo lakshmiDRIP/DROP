@@ -1,11 +1,18 @@
 
 package org.drip.specialfunction.digamma;
 
+import org.drip.function.definition.R1ToR1;
+import org.drip.numerical.common.NumberUtil;
+import org.drip.numerical.laplacian.LaplaceTransformGaussLegendre;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -78,7 +85,7 @@ package org.drip.specialfunction.digamma;
 
 /**
  * <i>BinetFirstIntegral</i> demonstrates the Estimation of the Digamma Function using the Binet's First
- * Integral. The References are:
+ * 	Integral. The References are:
  * 
  * <br><br>
  * 	<ul>
@@ -102,14 +109,26 @@ package org.drip.specialfunction.digamma;
  * 			Wikipedia (2019): Digamma Function https://en.wikipedia.org/wiki/Digamma_function
  * 		</li>
  * 	</ul>
+ * 
+ * 	It provides the following functionality:
  *
- *	<br><br>
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FunctionAnalysisLibrary.md">Function Analysis Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md">Special Function Implementation Analysis</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/digamma/README.md">Estimation Techniques for Digamma Function</a></li>
+ * 		<i><i>BinetFirstIntegral</i> Constructor</i>
  *  </ul>
+ *
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md">Special Function Implementation and Analysis</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/digamma/README.md">Estimation Techniques for Digamma Function</a></td></tr>
+ *  </table>
  *
  * @author Lakshmi Krishnamurthy
  */
@@ -118,37 +137,35 @@ public class BinetFirstIntegral extends org.drip.function.definition.R1ToR1
 {
 
 	/**
-	 * BinetFirstIntegral Constructor
+	 * <i>BinetFirstIntegral</i> Constructor
 	 * 
-	 * @param dc The Derivative Control
+	 * @param derivativeControl The Derivative Control
 	 */
 
 	public BinetFirstIntegral (
-		final org.drip.numerical.differentiation.DerivativeControl dc)
+		final org.drip.numerical.differentiation.DerivativeControl derivativeControl)
 	{
-		super (dc);
+		super (derivativeControl);
 	}
 
 	@Override public double evaluate (
 		final double z)
-		throws java.lang.Exception
+		throws Exception
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (z))
-		{
-			throw new java.lang.Exception ("BinetFirstIntegral::evaluate => Invalid Inputs");
+		if (!NumberUtil.IsValid (z)) {
+			throw new Exception ("BinetFirstIntegral::evaluate => Invalid Inputs");
 		}
 
-		return -1. * new org.drip.numerical.laplacian.LaplaceTransformGaussLegendre (
+		return -1. * new LaplaceTransformGaussLegendre (
 			null,
-			new org.drip.function.definition.R1ToR1 (null)
-			{
+			new R1ToR1 (null) {
 				@Override public double evaluate (
 					final double t)
-					throws java.lang.Exception
+					throws Exception
 				{
-					return 0 == t ? 0. : 0.5 - (1. / t) + 1. / (java.lang.Math.exp (t) - 1.);
+					return 0 == t ? 0. : 0.5 - (1. / t) + 1. / (Math.exp (t) - 1.);
 				}
 			}
-		).evaluate (z) + java.lang.Math.log (z) - 0.5 / z;
+		).evaluate (z) + Math.log (z) - 0.5 / z;
 	}
 }
