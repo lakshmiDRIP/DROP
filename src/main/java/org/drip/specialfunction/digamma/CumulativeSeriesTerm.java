@@ -1,6 +1,10 @@
 
 package org.drip.specialfunction.digamma;
 
+import org.drip.function.definition.R1ToR1;
+import org.drip.numerical.common.NumberUtil;
+import org.drip.numerical.estimation.R1ToR1SeriesTerm;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
@@ -145,30 +149,25 @@ public class CumulativeSeriesTerm
 	 * @return The Abramowitz-Stegun (2007) Cumulative Sum Series Term for DiGamma
 	 */
 
-	public static final org.drip.numerical.estimation.R1ToR1SeriesTerm AbramowitzStegun2007()
+	public static final R1ToR1SeriesTerm AbramowitzStegun2007()
 	{
-		try
-		{
-			return new org.drip.numerical.estimation.R1ToR1SeriesTerm()
-			{
+		try {
+			return new R1ToR1SeriesTerm() {
 				@Override public double value (
 					final int order,
 					final double z)
-					throws java.lang.Exception
+					throws Exception
 				{
-					if (0 >= order ||
-						!org.drip.numerical.common.NumberUtil.IsValid (z) || order == -z)
-					{
-						throw new java.lang.Exception
-							("CumulativeSeriesTerm::AbramowitzStegun2007::value => Invalid Inputs");
+					if (0 >= order || !NumberUtil.IsValid (z) || order == -z) {
+						throw new Exception (
+							"CumulativeSeriesTerm::AbramowitzStegun2007::value => Invalid Inputs"
+						);
 					}
 
 					return z / (order * (order + z));
 				}
 			};
-		}
-		catch (java.lang.Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -183,45 +182,38 @@ public class CumulativeSeriesTerm
 	 * @return The Mezo-Hoffman (2017) Cumulative Sum Series Term for DiGamma
 	 */
 
-	public static final org.drip.numerical.estimation.R1ToR1SeriesTerm MezoHoffman2017 (
+	public static final R1ToR1SeriesTerm MezoHoffman2017 (
 		final double[] saddlePointArray)
 	{
-		if (null == saddlePointArray)
-		{
+		if (null == saddlePointArray) {
 			return null;
 		}
 
 		final int saddlePointCount = saddlePointArray.length;
 
-		if (0 == saddlePointCount || !org.drip.numerical.common.NumberUtil.IsValid (saddlePointArray))
-		{
+		if (0 == saddlePointCount || !NumberUtil.IsValid (saddlePointArray)) {
 			return null;
 		}
 
-		try
-		{
-			return new org.drip.numerical.estimation.R1ToR1SeriesTerm()
-			{
+		try {
+			return new R1ToR1SeriesTerm() {
 				@Override public double value (
 					final int order,
 					final double z)
-					throws java.lang.Exception
+					throws Exception
 				{
-					if (0 > order || order >= saddlePointCount ||
-						!org.drip.numerical.common.NumberUtil.IsValid (z) || 0. >= z)
-					{
-						throw new java.lang.Exception
-							("CumulativeSeriesTerm::MezoHoffman2017::value => Invalid Inputs");
+					if (0 > order || order >= saddlePointCount || !NumberUtil.IsValid (z) || 0. >= z) {
+						throw new Exception (
+							"CumulativeSeriesTerm::MezoHoffman2017::value => Invalid Inputs"
+						);
 					}
 
 					double zOverSaddlePoint = z / saddlePointArray[order];
 
-					return zOverSaddlePoint * java.lang.Math.log (1. - zOverSaddlePoint);
+					return zOverSaddlePoint * Math.log (1. - zOverSaddlePoint);
 				}
 			};
-		}
-		catch (java.lang.Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -236,32 +228,25 @@ public class CumulativeSeriesTerm
 	 * @return The Gauss Cumulative Sum Series Term for DiGamma
 	 */
 
-	public static final org.drip.numerical.estimation.R1ToR1SeriesTerm Gauss (
+	public static final R1ToR1SeriesTerm Gauss (
 		final int termCount)
 	{
-		try
-		{
-			return new org.drip.numerical.estimation.R1ToR1SeriesTerm()
-			{
+		try {
+			return new R1ToR1SeriesTerm() {
 				@Override public double value (
 					final int order,
 					final double z)
-					throws java.lang.Exception
+					throws Exception
 				{
-					if (1 > order ||
-						!org.drip.numerical.common.NumberUtil.IsValid (z))
-					{
-						throw new java.lang.Exception
-							("CumulativeSeriesTerm::Gauss::value => Invalid Inputs");
+					if (1 > order || !NumberUtil.IsValid (z)) {
+						throw new Exception ("CumulativeSeriesTerm::Gauss::value => Invalid Inputs");
 					}
 
-					return java.lang.Math.cos (2. * java.lang.Math.PI * order * z) *
-						java.lang.Math.log (java.lang.Math.sin (java.lang.Math.PI * order / termCount));
+					return Math.cos (2. * Math.PI * order * z) *
+						Math.log (Math.sin (Math.PI * order / termCount));
 				}
 			};
-		}
-		catch (java.lang.Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -274,33 +259,23 @@ public class CumulativeSeriesTerm
 	 * @return The Asymptotic Cumulative Sum Series Term for DiGamma
 	 */
 
-	public static final org.drip.numerical.estimation.R1ToR1SeriesTerm Asymptotic()
+	public static final R1ToR1SeriesTerm Asymptotic()
 	{
-		try
-		{
-			return new org.drip.numerical.estimation.R1ToR1SeriesTerm()
-			{
+		try {
+			return new R1ToR1SeriesTerm() {
 				@Override public double value (
 					final int order,
 					final double z)
-					throws java.lang.Exception
+					throws Exception
 				{
-					if (0 >= order ||
-						!org.drip.numerical.common.NumberUtil.IsValid (z) || 0 == z)
-					{
-						throw new java.lang.Exception
-							("CumulativeSeriesTerm::Asymptotic::value => Invalid Inputs");
+					if (0 >= order || !NumberUtil.IsValid (z) || 0. == z) {
+						throw new Exception ("CumulativeSeriesTerm::Asymptotic::value => Invalid Inputs");
 					}
 
-					return java.lang.Math.pow (
-						z,
-						-2 * order
-					);
+					return Math.pow (z, -2 * order);
 				}
 			};
-		}
-		catch (java.lang.Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -313,33 +288,25 @@ public class CumulativeSeriesTerm
 	 * @return The Asymptotic Cumulative Sum Series Term for exp (-diGamma)
 	 */
 
-	public static final org.drip.numerical.estimation.R1ToR1SeriesTerm ExponentialAsymptote()
+	public static final R1ToR1SeriesTerm ExponentialAsymptote()
 	{
-		try
-		{
-			return new org.drip.numerical.estimation.R1ToR1SeriesTerm()
-			{
+		try {
+			return new R1ToR1SeriesTerm() {
 				@Override public double value (
 					final int order,
 					final double z)
-					throws java.lang.Exception
+					throws Exception
 				{
-					if (0 >= order ||
-						!org.drip.numerical.common.NumberUtil.IsValid (z) || 0 == z)
-					{
-						throw new java.lang.Exception
-							("CumulativeSeriesTerm::ExponentialAsymptote::value => Invalid Inputs");
+					if (0 >= order || !NumberUtil.IsValid (z) || 0 == z) {
+						throw new Exception (
+							"CumulativeSeriesTerm::ExponentialAsymptote::value => Invalid Inputs"
+						);
 					}
 
-					return java.lang.Math.pow (
-						z,
-						-1 * order
-					);
+					return Math.pow (z, -1 * order);
 				}
 			};
-		}
-		catch (java.lang.Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -352,33 +319,25 @@ public class CumulativeSeriesTerm
 	 * @return The Asymptotic Cumulative Sum Series Term for exp (-diGamma + 0.5)
 	 */
 
-	public static final org.drip.numerical.estimation.R1ToR1SeriesTerm ExponentialAsymptoteHalfShifted()
+	public static final R1ToR1SeriesTerm ExponentialAsymptoteHalfShifted()
 	{
-		try
-		{
-			return new org.drip.numerical.estimation.R1ToR1SeriesTerm()
-			{
+		try {
+			return new R1ToR1SeriesTerm() {
 				@Override public double value (
 					final int order,
 					final double z)
-					throws java.lang.Exception
+					throws Exception
 				{
-					if (0 >= order ||
-						!org.drip.numerical.common.NumberUtil.IsValid (z))
-					{
-						throw new java.lang.Exception
-							("CumulativeSeriesTerm::ExponentialAsymptoteHalfShifted::value => Invalid Inputs");
+					if (0 >= order || !NumberUtil.IsValid (z)) {
+						throw new Exception (
+							"CumulativeSeriesTerm::ExponentialAsymptoteHalfShifted::value => Invalid Inputs"
+						);
 					}
 
-					return java.lang.Math.pow (
-						z,
-						1 - 2 * order
-					);
+					return Math.pow (z, 1 - 2 * order);
 				}
 			};
-		}
-		catch (java.lang.Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -393,40 +352,31 @@ public class CumulativeSeriesTerm
 	 * @return The Taylor-Riemann Zeta Series Term for Digamma
 	 */
 
-	public static final org.drip.numerical.estimation.R1ToR1SeriesTerm TaylorRiemannZeta (
-		final org.drip.function.definition.R1ToR1 riemannZetaEstimator)
+	public static final R1ToR1SeriesTerm TaylorRiemannZeta (
+		final R1ToR1 riemannZetaEstimator)
 	{
-		if (null == riemannZetaEstimator)
-		{
+		if (null == riemannZetaEstimator) {
 			return null;
 		}
 
-		try
-		{
-			return new org.drip.numerical.estimation.R1ToR1SeriesTerm()
-			{
+		try {
+			return new R1ToR1SeriesTerm() {
 				@Override public double value (
 					final int order,
 					final double z)
-					throws java.lang.Exception
+					throws Exception
 				{
-					if (0 >= order ||
-						!org.drip.numerical.common.NumberUtil.IsValid (z))
-					{
-						throw new java.lang.Exception
-							("CumulativeSeriesTerm::TaylorRiemannZeta::value => Invalid Inputs");
+					if (0 >= order || !NumberUtil.IsValid (z)) {
+						throw new Exception (
+							"CumulativeSeriesTerm::TaylorRiemannZeta::value => Invalid Inputs"
+						);
 					}
 
-					return (1 == order % 2 ? -1. : 1.) *
-						riemannZetaEstimator.evaluate (order + 1) * java.lang.Math.pow (
-							z,
-							order
-						);
+					return (1 == order % 2 ? -1. : 1.) * riemannZetaEstimator.evaluate (order + 1) *
+						Math.pow (z, order);
 				}
 			};
-		}
-		catch (java.lang.Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -439,33 +389,25 @@ public class CumulativeSeriesTerm
 	 * @return The Newton-Stern Series Term for Digamma
 	 */
 
-	public static final org.drip.numerical.estimation.R1ToR1SeriesTerm NewtonStern()
+	public static final R1ToR1SeriesTerm NewtonStern()
 	{
-		try
-		{
-			return new org.drip.numerical.estimation.R1ToR1SeriesTerm()
-			{
+		try {
+			return new R1ToR1SeriesTerm() {
 				@Override public double value (
 					final int order,
 					final double z)
-					throws java.lang.Exception
+					throws Exception
 				{
-					if (0 >= order ||
-						!org.drip.numerical.common.NumberUtil.IsValid (z))
-					{
-						throw new java.lang.Exception
-							("CumulativeSeriesTerm::TaylorRiemannZeta::value => Invalid Inputs");
+					if (0 >= order || !NumberUtil.IsValid (z)) {
+						throw new Exception (
+							"CumulativeSeriesTerm::TaylorRiemannZeta::value => Invalid Inputs"
+						);
 					}
 
-					return (1 == order % 2 ? -1. : 1.) * org.drip.numerical.common.NumberUtil.NCK (
-						(int) z,
-						order
-					) / order;
+					return (1 == order % 2 ? -1. : 1.) * NumberUtil.NCK ((int) z, order) / order;
 				}
 			};
-		}
-		catch (java.lang.Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
