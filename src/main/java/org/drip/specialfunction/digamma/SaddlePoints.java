@@ -1,11 +1,19 @@
 
 package org.drip.specialfunction.digamma;
 
+import java.util.TreeSet;
+
+import org.drip.function.definition.R1ToR1;
+import org.drip.specialfunction.gamma.Definitions;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -78,7 +86,7 @@ package org.drip.specialfunction.digamma;
 
 /**
  * <i>SaddlePoints</i> contains the Hermite Based Saddle Point Roots of the Digamma Function. The References
- * are:
+ * 	are:
  * 
  * <br><br>
  * 	<ul>
@@ -102,14 +110,31 @@ package org.drip.specialfunction.digamma;
  * 			Wikipedia (2019): Digamma Function https://en.wikipedia.org/wiki/Digamma_function
  * 		</li>
  * 	</ul>
+ * 
+ * 	It provides the following functionality:
  *
- *	<br><br>
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FunctionAnalysisLibrary.md">Function Analysis Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md">Special Function Implementation Analysis</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/digamma/README.md">Estimation Techniques for Digamma Function</a></li>
+ * 		<li>Generate the Set of Leading Digamma Saddle Points</li>
+ * 		<li>Construct the R<sup>1</sup> to R<sup>1</sup> Hermite Digamma Root Function</li>
+ * 		<li>Construct the R<sup>1</sup> to R<sup>1</sup> Hermite Extension Digamma Root Function</li>
+ * 		<li>Construct the R<sup>1</sup> to R<sup>1</sup> Hermite Enhancement Digamma Root Function</li>
+ * 		<li>Construct the R<sup>1</sup> to R<sup>1</sup> Mezo-Hoffman (2017) Digamma Root Function</li>
+ * 		<li>Generate the Array of Leading Roots</li>
  *  </ul>
+ *
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md">Special Function Implementation and Analysis</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/digamma/README.md">Estimation Techniques for Digamma Function</a></td></tr>
+ *  </table>
  *
  * @author Lakshmi Krishnamurthy
  */
@@ -123,9 +148,9 @@ public class SaddlePoints
 	 * @return Set of Leading Digamma Saddle Points
 	 */
 
-	public static final java.util.TreeSet<java.lang.Double> LeadingZeros()
+	public static final TreeSet<Double> LeadingZeros()
 	{
-		java.util.TreeSet<java.lang.Double> zeroSet = new java.util.TreeSet<java.lang.Double>();
+		TreeSet<Double> zeroSet = new TreeSet<Double>();
 
 		zeroSet.add ( 1.461632144968);
 
@@ -146,27 +171,22 @@ public class SaddlePoints
 	 * @return The R<sup>1</sup> to R<sup>1</sup> Hermite Digamma Root Function
 	 */
 
-	public static final org.drip.function.definition.R1ToR1 Hermite()
+	public static final R1ToR1 Hermite()
 	{
-		try
-		{
-			return new org.drip.function.definition.R1ToR1 (null)
-			{
+		try {
+			return new R1ToR1 (null) {
 				@Override public double evaluate (
 					final double z)
-					throws java.lang.Exception
+					throws Exception
 				{
-					if (1. > z)
-					{
-						throw new java.lang.Exception ("SaddlePoints::Hermite::evaluate => Invalid Inputs");
+					if (1. > z) {
+						throw new Exception ("SaddlePoints::Hermite::evaluate => Invalid Inputs");
 					}
 
-					return 1. / java.lang.Math.log (z) - z;
+					return 1. / Math.log (z) - z;
 				}
 			};
-		}
-		catch (java.lang.Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -179,29 +199,22 @@ public class SaddlePoints
 	 * @return The R<sup>1</sup> to R<sup>1</sup> Hermite Extension Digamma Root Function
 	 */
 
-	public static final org.drip.function.definition.R1ToR1 HermiteExtension()
+	public static final R1ToR1 HermiteExtension()
 	{
-		try
-		{
-			return new org.drip.function.definition.R1ToR1 (null)
-			{
+		try {
+			return new R1ToR1 (null) {
 				@Override public double evaluate (
 					final double z)
-					throws java.lang.Exception
+					throws Exception
 				{
-					if (1. > z)
-					{
-						throw new java.lang.Exception
-							("SaddlePoints::HermiteExtension::evaluate => Invalid Inputs");
+					if (1. > z) {
+						throw new Exception ("SaddlePoints::HermiteExtension::evaluate => Invalid Inputs");
 					}
 
-					return java.lang.Math.atan (java.lang.Math.PI / java.lang.Math.log (z)) /
-						java.lang.Math.PI - z;
+					return Math.atan (Math.PI / Math.log (z)) / Math.PI - z;
 				}
 			};
-		}
-		catch (java.lang.Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -214,29 +227,22 @@ public class SaddlePoints
 	 * @return The R<sup>1</sup> to R<sup>1</sup> Hermite Enhancement Digamma Root Function
 	 */
 
-	public static final org.drip.function.definition.R1ToR1 HermiteEnhancement()
+	public static final R1ToR1 HermiteEnhancement()
 	{
-		try
-		{
-			return new org.drip.function.definition.R1ToR1 (null)
-			{
+		try {
+			return new R1ToR1 (null) {
 				@Override public double evaluate (
 					final double z)
-					throws java.lang.Exception
+					throws Exception
 				{
-					if (1. > z)
-					{
-						throw new java.lang.Exception
-							("SaddlePoints::HermiteEnhancement::evaluate => Invalid Inputs");
+					if (1. > z) {
+						throw new Exception ("SaddlePoints::HermiteEnhancement::evaluate => Invalid Inputs");
 					}
 
-					return java.lang.Math.atan (java.lang.Math.PI / (java.lang.Math.log (z) + (0.125 / z))) /
-						java.lang.Math.PI - z;
+					return Math.atan (Math.PI / (Math.log (z) + (0.125 / z))) / Math.PI - z;
 				}
 			};
-		}
-		catch (java.lang.Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -249,30 +255,24 @@ public class SaddlePoints
 	 * @return The R<sup>1</sup> to R<sup>1</sup> Mezo-Hoffman (2017) Digamma Root Function
 	 */
 
-	public static final org.drip.function.definition.R1ToR1 MezoHoffman2017()
+	public static final R1ToR1 MezoHoffman2017()
 	{
-		try
-		{
-			return new org.drip.function.definition.R1ToR1 (null)
-			{
+		try {
+			return new R1ToR1 (null) {
 				@Override public double evaluate (
 					final double z)
-					throws java.lang.Exception
+					throws Exception
 				{
-					if (1. > z)
-					{
-						throw new java.lang.Exception
-							("SaddlePoints::MezoHoffman2017::evaluate => Invalid Inputs");
+					if (1. > z) {
+						throw new Exception ("SaddlePoints::MezoHoffman2017::evaluate => Invalid Inputs");
 					}
 
-					double logZReciprocal = 1. / java.lang.Math.log (z);
+					double logZReciprocal = 1. / Math.log (z);
 
 					return logZReciprocal - z - 0.5 * logZReciprocal * logZReciprocal / z;
 				}
 			};
-		}
-		catch (java.lang.Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -289,26 +289,20 @@ public class SaddlePoints
 	 */
 
 	public static final double[] LeadingRoots (
-		final org.drip.function.definition.R1ToR1 rootFunction,
+		final R1ToR1 rootFunction,
 		final int rootCount)
 	{
-		if (null == rootFunction ||
-			0 >= rootCount)
-		{
+		if (null == rootFunction || 0 >= rootCount) {
 			return null;
 		}
 
 		double[] leadingRootArray = new double[rootCount + 1];
-		leadingRootArray[0] = org.drip.specialfunction.gamma.Definitions.MINIMUM_VARIATE_LOCATION;
+		leadingRootArray[0] = Definitions.MINIMUM_VARIATE_LOCATION;
 
-		for (int rootIndex = 1; rootIndex <= rootCount; ++rootIndex)
-		{
-			try
-			{
+		for (int rootIndex = 1; rootIndex <= rootCount; ++rootIndex) {
+			try {
 				leadingRootArray[rootIndex] = rootFunction.evaluate (rootIndex);
-			}
-			catch (java.lang.Exception e)
-			{
+			} catch (Exception e) {
 				e.printStackTrace();
 			}
 		}

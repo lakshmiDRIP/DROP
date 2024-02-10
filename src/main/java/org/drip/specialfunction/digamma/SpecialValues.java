@@ -1,11 +1,20 @@
 
 package org.drip.specialfunction.digamma;
 
+import java.util.Map;
+import java.util.TreeMap;
+
+import org.drip.function.definition.CartesianComplexNumber;
+import org.drip.specialfunction.gamma.Definitions;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -78,7 +87,7 @@ package org.drip.specialfunction.digamma;
 
 /**
  * <i>SpecialValues</i> holds a specific Collection of Special Values of the Digamma Function. The References
- * are:
+ * 	are:
  * 
  * <br><br>
  * 	<ul>
@@ -102,14 +111,27 @@ package org.drip.specialfunction.digamma;
  * 			Wikipedia (2019): Digamma Function https://en.wikipedia.org/wiki/Digamma_function
  * 		</li>
  * 	</ul>
+ * 
+ * 	It provides the following functionality:
  *
- *	<br><br>
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FunctionAnalysisLibrary.md">Function Analysis Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md">Special Function Implementation Analysis</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/digamma/README.md">Estimation Techniques for Digamma Function</a></li>
+ * 		<i>Construct the Fractionals Map for Leading Digamma Fractions</i>
+ * 		<i>Construct the Unit Imaginary Digamma Complex Number</i>
  *  </ul>
+ *
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md">Special Function Implementation and Analysis</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/digamma/README.md">Estimation Techniques for Digamma Function</a></td></tr>
+ *  </table>
  *
  * @author Lakshmi Krishnamurthy
  */
@@ -123,53 +145,35 @@ public class SpecialValues
 	 * @return Fractionals Map for Leading Digamma Fractions
 	 */
 
-	public static final java.util.Map<java.lang.Double, java.lang.Double> Fractionals()
+	public static final Map<Double, Double> Fractionals()
 	{
-		java.util.Map<java.lang.Double, java.lang.Double> fractionalsMap = new
-			java.util.TreeMap<java.lang.Double, java.lang.Double>();
+		Map<Double, Double> fractionalsMap = new TreeMap<Double, Double>();
 
 		double log2 = java.lang.Math.log (2.);
 
-		double log3 = java.lang.Math.log (3.);
+		double log3 = Math.log (3.);
 
-		double sqrt2 = java.lang.Math.sqrt (2.);
+		double sqrt2 = Math.sqrt (2.);
 
-		double sqrt3 = java.lang.Math.sqrt (3.);
+		double sqrt3 = Math.sqrt (3.);
 
-		fractionalsMap.put (
-			1.,
-			-org.drip.specialfunction.gamma.Definitions.EULER_MASCHERONI
-		);
+		fractionalsMap.put (1., -Definitions.EULER_MASCHERONI);
 
-		fractionalsMap.put (
-			1. / 2.,
-			-2. * log2 - org.drip.specialfunction.gamma.Definitions.EULER_MASCHERONI
-		);
+		fractionalsMap.put (1. / 2., -2. * log2 - Definitions.EULER_MASCHERONI);
 
-		fractionalsMap.put (
-			1. / 3.,
-			-0.5 * java.lang.Math.PI / sqrt3 - 1.5 * log3 -
-				org.drip.specialfunction.gamma.Definitions.EULER_MASCHERONI
-		);
+		fractionalsMap.put (1. / 3., -0.5 * Math.PI / sqrt3 - 1.5 * log3 - Definitions.EULER_MASCHERONI);
 
-		fractionalsMap.put (
-			1. / 4.,
-			-0.5 * java.lang.Math.PI - 3. * log2 -
-				org.drip.specialfunction.gamma.Definitions.EULER_MASCHERONI
-		);
+		fractionalsMap.put (1. / 4., -0.5 * Math.PI - 3. * log2 - Definitions.EULER_MASCHERONI);
 
 		fractionalsMap.put (
 			1. / 6.,
-			-0.5 * java.lang.Math.PI * log3 - 2. * log2 - 1.5 * log3 -
-				org.drip.specialfunction.gamma.Definitions.EULER_MASCHERONI
+			-0.5 * Math.PI * log3 - 2. * log2 - 1.5 * log3 - Definitions.EULER_MASCHERONI
 		);
 
 		fractionalsMap.put (
 			1. / 8.,
-			-0.5 * java.lang.Math.PI - 4. * log2 -
-				(java.lang.Math.PI + java.lang.Math.log (2. + sqrt2) - java.lang.Math.log (2. - sqrt2)) /
-					sqrt2 -
-				org.drip.specialfunction.gamma.Definitions.EULER_MASCHERONI
+			-0.5 * Math.PI - 4. * log2 - (Math.PI + Math.log (2. + sqrt2) - Math.log (2. - sqrt2)) / sqrt2 -
+				Definitions.EULER_MASCHERONI
 		);
 
 		return fractionalsMap;
@@ -183,30 +187,22 @@ public class SpecialValues
 	 * @return Unit Imaginary Digamma Complex Number
 	 */
 
-	public static final org.drip.function.definition.CartesianComplexNumber UnitImaginary (
+	public static final CartesianComplexNumber UnitImaginary (
 		final int termCount)
 	{
-		if (0 >= termCount)
-		{
+		if (0 >= termCount) {
 			return null;
 		}
 
-		double realPart = -1. * org.drip.specialfunction.gamma.Definitions.EULER_MASCHERONI;
+		double realPart = -1. * Definitions.EULER_MASCHERONI;
 
-		for (int n = 1; n <= termCount; ++n)
-		{
+		for (int n = 1; n <= termCount; ++n) {
 			realPart = realPart + (1. - n) / (n * n * n + n * n + n + 1);
 		}
 
-		try
-		{
-			return new org.drip.function.definition.CartesianComplexNumber (
-				realPart,
-				0.5 + 0.5 * java.lang.Math.PI / java.lang.Math.tanh (java.lang.Math.PI)
-			);
-		}
-		catch (java.lang.Exception e)
-		{
+		try {
+			return new CartesianComplexNumber (realPart, 0.5 + 0.5 * Math.PI / Math.tanh (Math.PI));
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 

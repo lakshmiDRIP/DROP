@@ -1,11 +1,18 @@
 
 package org.drip.specialfunction.digamma;
 
+import org.drip.numerical.differentiation.DerivativeControl;
+import org.drip.numerical.estimation.R1ToR1Estimator;
+import org.drip.numerical.estimation.R1ToR1Series;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -78,7 +85,7 @@ package org.drip.specialfunction.digamma;
 
 /**
  * <i>CumulativeSeriesEstimator</i> implements the Cumulative Series Based Digamma Estimation. The References
- * are:
+ * 	are:
  * 
  * <br><br>
  * 	<ul>
@@ -102,21 +109,42 @@ package org.drip.specialfunction.digamma;
  * 			Wikipedia (2019): Digamma Function https://en.wikipedia.org/wiki/Digamma_function
  * 		</li>
  * 	</ul>
+ * 
+ * 	It provides the following functionality:
  *
- *	<br><br>
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FunctionAnalysisLibrary.md">Function Analysis Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md">Special Function Implementation Analysis</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/digamma/README.md">Estimation Techniques for Digamma Function</a></li>
+ * 		<li>Compute the Abramowitz-Stegun (2007) Cumulative Series of Digamma Estimator</li>
+ * 		<li>Compute the Harmonic Cumulative Series of Digamma Estimator</li>
+ * 		<li>Compute the Half-Integer Cumulative Series of Digamma Estimator</li>
+ * 		<li>Compute the Saddle-Point Cumulative Series of Digamma Estimator</li>
+ * 		<li>Compute the Gauss Cumulative Series of Digamma Estimator</li>
+ * 		<li>Compute the Asymptotic Cumulative Series of Digamma Estimator</li>
+ * 		<li>Compute the Exponential Asymptotic Cumulative Series of Digamma Estimator</li>
+ * 		<li>Compute the Exponential Asymptotic Cumulative Series of Digamma + 0.5 Estimator</li>
+ * 		<li>Compute the Taylor-Riemann Zeta Cumulative Series of Digamma Estimator</li>
+ * 		<li>Retrieve the Underlying Cumulative Series</li>
  *  </ul>
+ *
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md">Special Function Implementation and Analysis</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/digamma/README.md">Estimation Techniques for Digamma Function</a></td></tr>
+ *  </table>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public abstract class CumulativeSeriesEstimator extends org.drip.numerical.estimation.R1ToR1Estimator
+public abstract class CumulativeSeriesEstimator extends R1ToR1Estimator
 {
-	private org.drip.numerical.estimation.R1ToR1Series _cumulativeSeries = null;
+	private R1ToR1Series _cumulativeSeries = null;
 
 	/**
 	 * Compute the Abramowitz-Stegun (2007) Cumulative Series of Digamma Estimator
@@ -129,8 +157,7 @@ public abstract class CumulativeSeriesEstimator extends org.drip.numerical.estim
 	public static final CumulativeSeriesEstimator AbramowitzStegun2007 (
 		final int termCount)
 	{
-		try
-		{
+		try {
 			return new CumulativeSeriesEstimator (
 				org.drip.specialfunction.digamma.CumulativeSeries.AbramowitzStegun2007 (termCount),
 				null
@@ -505,11 +532,11 @@ public abstract class CumulativeSeriesEstimator extends org.drip.numerical.estim
 	}
 
 	protected CumulativeSeriesEstimator (
-		final org.drip.numerical.estimation.R1ToR1Series cumulativeSeries,
-		final org.drip.numerical.differentiation.DerivativeControl dc)
-		throws java.lang.Exception
+		final R1ToR1Series cumulativeSeries,
+		final DerivativeControl derivativeControl)
+		throws Exception
 	{
-		super (dc);
+		super (derivativeControl);
 
 		_cumulativeSeries = cumulativeSeries;
 	}
@@ -520,7 +547,7 @@ public abstract class CumulativeSeriesEstimator extends org.drip.numerical.estim
 	 * @return The Underlying Cumulative Series
 	 */
 
-	public org.drip.numerical.estimation.R1ToR1Series cumulativeSeries()
+	public R1ToR1Series cumulativeSeries()
 	{
 		return _cumulativeSeries;
 	}

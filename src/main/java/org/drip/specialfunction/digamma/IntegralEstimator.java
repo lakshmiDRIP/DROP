@@ -1,11 +1,19 @@
 
 package org.drip.specialfunction.digamma;
 
+import org.drip.numerical.estimation.R1ToR1Estimator;
+import org.drip.numerical.estimation.R1ToR1IntegrandEstimator;
+import org.drip.numerical.estimation.R1ToR1IntegrandGenerator;
+import org.drip.specialfunction.gamma.Definitions;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -78,7 +86,7 @@ package org.drip.specialfunction.digamma;
 
 /**
  * <i>IntegralEstimator</i> demonstrates the Estimation of the Digamma Function using the Integral
- * Representations. The References are:
+ * 	Representations. The References are:
  * 
  * <br><br>
  * 	<ul>
@@ -102,14 +110,29 @@ package org.drip.specialfunction.digamma;
  * 			Wikipedia (2019): Digamma Function https://en.wikipedia.org/wiki/Digamma_function
  * 		</li>
  * 	</ul>
+ * 
+ * 	It provides the following functionality:
  *
- *	<br><br>
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FunctionAnalysisLibrary.md">Function Analysis Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md">Special Function Implementation Analysis</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/digamma/README.md">Estimation Techniques for Digamma Function</a></li>
+ * 		<li>Generate the Gaussian Integral Digamma Estimator</li>
+ * 		<li>Generate the Gauss-Euler-Mascheroni Integral Digamma Estimator</li>
+ * 		<li>Generate the Dirichlet Integral Digamma Estimator</li>
+ * 		<li>Generate the Binet Second Integral Digamma Estimator</li>
  *  </ul>
+ *
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md">Special Function Implementation and Analysis</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/digamma/README.md">Estimation Techniques for Digamma Function</a></td></tr>
+ *  </table>
  *
  * @author Lakshmi Krishnamurthy
  */
@@ -123,56 +146,46 @@ public class IntegralEstimator
 	 * @return The Gaussian Integral Digamma Estimator
 	 */
 
-	public static final org.drip.numerical.estimation.R1ToR1IntegrandEstimator Gauss()
+	public static final R1ToR1IntegrandEstimator Gauss()
 	{
-		try
-		{
-			return new org.drip.numerical.estimation.R1ToR1IntegrandEstimator (
+		try {
+			return new R1ToR1IntegrandEstimator (
 				null,
-				new org.drip.numerical.estimation.R1ToR1IntegrandGenerator()
-				{
-					@Override public org.drip.numerical.estimation.R1ToR1Estimator integrand (
+				new R1ToR1IntegrandGenerator() {
+					@Override public R1ToR1Estimator integrand (
 						final double z)
 					{
-						try
-						{
-							return new org.drip.numerical.estimation.R1ToR1Estimator (null)
-							{
+						try {
+							return new R1ToR1Estimator (null) {
 								@Override public double evaluate (
 									final double t)
-									throws java.lang.Exception
+									throws Exception
 								{
-									double ePowerMinusT = java.lang.Math.exp (-t);
+									double ePowerMinusT = Math.exp (-t);
 
-									return 0. == t || java.lang.Double.isInfinite (t) ? 0. :
-										(ePowerMinusT / t) - (java.lang.Math.exp (-z * t) /
-											(1. - ePowerMinusT));
+									return 0. == t || Double.isInfinite (t) ? 0. :
+										(ePowerMinusT / t) - (Math.exp (-z * t) / (1. - ePowerMinusT));
 								}
 							};
-						}
-						catch (java.lang.Exception e)
-						{
+						} catch (Exception e) {
 							e.printStackTrace();
 						}
 
 						return null;
 					}
 				},
-				org.drip.numerical.estimation.R1ToR1IntegrandEstimator.INTEGRAND_LIMITS_SETTING_ZERO_INFINITY,
+				R1ToR1IntegrandEstimator.INTEGRAND_LIMITS_SETTING_ZERO_INFINITY,
 				1.,
-				new org.drip.numerical.estimation.R1ToR1Estimator (null)
-				{
+				new R1ToR1Estimator (null) {
 					@Override public double evaluate (
 						final double z)
-						throws java.lang.Exception
+						throws Exception
 					{
 						return 0.;
 					}
 				}
 			);
-		}
-		catch (java.lang.Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -185,59 +198,45 @@ public class IntegralEstimator
 	 * @return The Gauss-Euler-Mascheroni Integral Digamma Estimator
 	 */
 
-	public static final org.drip.numerical.estimation.R1ToR1IntegrandEstimator GaussEulerMascheroni()
+	public static final R1ToR1IntegrandEstimator GaussEulerMascheroni()
 	{
-		try
-		{
-			return new org.drip.numerical.estimation.R1ToR1IntegrandEstimator (
+		try {
+			return new R1ToR1IntegrandEstimator (
 				null,
-				new org.drip.numerical.estimation.R1ToR1IntegrandGenerator()
-				{
-					@Override public org.drip.numerical.estimation.R1ToR1Estimator integrand (
+				new R1ToR1IntegrandGenerator() {
+					@Override public R1ToR1Estimator integrand (
 						final double z)
 					{
-						try
-						{
-							return new org.drip.numerical.estimation.R1ToR1Estimator (null)
-							{
+						try {
+							return new R1ToR1Estimator (null) {
 								@Override public double evaluate (
 									final double t)
-									throws java.lang.Exception
+									throws Exception
 								{
-									return 0. == t ? 1. -
-										org.drip.specialfunction.gamma.Definitions.EULER_MASCHERONI : 1. == t
-										? -org.drip.specialfunction.gamma.Definitions.EULER_MASCHERONI : (
-											1. - java.lang.Math.pow (
-												t,
-												z - 1.
-											)
-										) / (1. - t);
+									return 0. == t ? 1. - Definitions.EULER_MASCHERONI : 1. == t ?
+										-Definitions.EULER_MASCHERONI :
+										(1. - Math.pow (t, z - 1.)) / (1. - t);
 								}
 							};
-						}
-						catch (java.lang.Exception e)
-						{
+						} catch (Exception e) {
 							e.printStackTrace();
 						}
 
 						return null;
 					}
 				},
-				org.drip.numerical.estimation.R1ToR1IntegrandEstimator.INTEGRAND_LIMITS_SETTING_ZERO_ONE,
+				R1ToR1IntegrandEstimator.INTEGRAND_LIMITS_SETTING_ZERO_ONE,
 				1.,
-				new org.drip.numerical.estimation.R1ToR1Estimator (null)
-				{
+				new R1ToR1Estimator (null) {
 					@Override public double evaluate (
 						final double z)
-						throws java.lang.Exception
+						throws Exception
 					{
-						return -org.drip.specialfunction.gamma.Definitions.EULER_MASCHERONI;
+						return -Definitions.EULER_MASCHERONI;
 					}
 				}
 			);
-		}
-		catch (java.lang.Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -250,57 +249,44 @@ public class IntegralEstimator
 	 * @return The Dirichlet Integral Digamma Estimator
 	 */
 
-	public static final org.drip.numerical.estimation.R1ToR1IntegrandEstimator Dirichlet()
+	public static final R1ToR1IntegrandEstimator Dirichlet()
 	{
-		try
-		{
-			return new org.drip.numerical.estimation.R1ToR1IntegrandEstimator (
+		try {
+			return new R1ToR1IntegrandEstimator (
 				null,
-				new org.drip.numerical.estimation.R1ToR1IntegrandGenerator()
-				{
-					@Override public org.drip.numerical.estimation.R1ToR1Estimator integrand (
+				new R1ToR1IntegrandGenerator() {
+					@Override public R1ToR1Estimator integrand (
 						final double z)
 					{
-						try
-						{
-							return new org.drip.numerical.estimation.R1ToR1Estimator (null)
-							{
+						try {
+							return new R1ToR1Estimator (null) {
 								@Override public double evaluate (
 									final double t)
-									throws java.lang.Exception
+									throws Exception
 								{
-									return 0. == t || java.lang.Double.isInfinite (t) ? 0. : (
-										java.lang.Math.exp (-t) - java.lang.Math.pow (
-											1. + t,
-											-z
-										)
-									) / t;
+									return 0. == t || Double.isInfinite (t) ? 0. :
+										(Math.exp (-t) - Math.pow (1. + t, -z)) / t;
 								}
 							};
-						}
-						catch (java.lang.Exception e)
-						{
+						} catch (Exception e) {
 							e.printStackTrace();
 						}
 
 						return null;
 					}
 				},
-				org.drip.numerical.estimation.R1ToR1IntegrandEstimator.INTEGRAND_LIMITS_SETTING_ZERO_INFINITY,
+				R1ToR1IntegrandEstimator.INTEGRAND_LIMITS_SETTING_ZERO_INFINITY,
 				1.,
-				new org.drip.numerical.estimation.R1ToR1Estimator (null)
-				{
+				new R1ToR1Estimator (null) {
 					@Override public double evaluate (
 						final double z)
-						throws java.lang.Exception
+						throws Exception
 					{
 						return 0.;
 					}
 				}
 			);
-		}
-		catch (java.lang.Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -313,55 +299,44 @@ public class IntegralEstimator
 	 * @return The Binet Second Integral Digamma Estimator
 	 */
 
-	public static final org.drip.numerical.estimation.R1ToR1IntegrandEstimator BinetSecond()
+	public static final R1ToR1IntegrandEstimator BinetSecond()
 	{
-		try
-		{
-			return new org.drip.numerical.estimation.R1ToR1IntegrandEstimator (
+		try {
+			return new R1ToR1IntegrandEstimator (
 				null,
-				new org.drip.numerical.estimation.R1ToR1IntegrandGenerator()
-				{
-					@Override public org.drip.numerical.estimation.R1ToR1Estimator integrand (
+				new R1ToR1IntegrandGenerator() {
+					@Override public R1ToR1Estimator integrand (
 						final double z)
 					{
-						try
-						{
-							return new org.drip.numerical.estimation.R1ToR1Estimator (null)
-							{
+						try {
+							return new R1ToR1Estimator (null) {
 								@Override public double evaluate (
 									final double t)
-									throws java.lang.Exception
+									throws Exception
 								{
-									return 0. == t || java.lang.Double.isInfinite (t) ? 0. : t / (
-										(t * t + z * z) *
-											(java.lang.Math.exp (2. * java.lang.Math.PI * t) - 1.)
-									);
+									return 0. == t || Double.isInfinite (t) ? 0. :
+										t / ((t * t + z * z) * (Math.exp (2. * Math.PI * t) - 1.));
 								}
 							};
-						}
-						catch (java.lang.Exception e)
-						{
+						} catch (Exception e) {
 							e.printStackTrace();
 						}
 
 						return null;
 					}
 				},
-				org.drip.numerical.estimation.R1ToR1IntegrandEstimator.INTEGRAND_LIMITS_SETTING_ZERO_INFINITY,
+				R1ToR1IntegrandEstimator.INTEGRAND_LIMITS_SETTING_ZERO_INFINITY,
 				-2.,
-				new org.drip.numerical.estimation.R1ToR1Estimator (null)
-				{
+				new R1ToR1Estimator (null) {
 					@Override public double evaluate (
 						final double z)
-						throws java.lang.Exception
+						throws Exception
 					{
-						return 0. == z ? 0. : java.lang.Math.log (z) - 0.5 / z;
+						return 0. == z ? 0. : Math.log (z) - 0.5 / z;
 					}
 				}
 			);
-		}
-		catch (java.lang.Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
