@@ -11,7 +11,7 @@ Asset Allocation Analytics Library implements Optimal Portfolio Construction and
 
  |        Document         | Link |
  |-------------------------|------|
- | Technical Specification | [*Latest*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/AssetAllocationAnalytics/AssetAllocationAnalytics_v3.08.pdf) [*Previous*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/AssetAllocationAnalytics) |
+ | Technical Specification | [*Latest*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/AssetAllocationAnalytics/AssetAllocationAnalytics_v6.11.pdf) [*Previous*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/AssetAllocationAnalytics) |
  | User Guide              |  |
  | API                     | [*Javadoc*](https://lakshmidrip.github.io/DROP/Javadoc/index.html)|
 
@@ -31,6 +31,12 @@ Asset Allocation Analytics Library implements Optimal Portfolio Construction and
 	* Asset Pricing
 	* Criticisms
 	* Other Applications
+	* References
+ * Factor Investing
+	* Introduction
+	* Value Factor
+	* Low-volatility Factor
+	* Momentum Factor
 	* References
  * The Black Litterman Model
 	* Overview
