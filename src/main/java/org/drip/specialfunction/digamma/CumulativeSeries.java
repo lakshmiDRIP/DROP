@@ -1,6 +1,12 @@
 
 package org.drip.specialfunction.digamma;
 
+import java.util.TreeMap;
+
+import org.drip.function.definition.R1ToR1;
+import org.drip.numerical.common.NumberUtil;
+import org.drip.numerical.estimation.R1ToR1Series;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
@@ -145,30 +151,18 @@ public class CumulativeSeries
 	 * @return The R<sup>1</sup> To R<sup>1</sup> Infinite Abramowitz-Stegun (2007) Cumulative Series
 	 */
 
-	public static final org.drip.numerical.estimation.R1ToR1Series AbramowitzStegun2007 (
+	public static final R1ToR1Series AbramowitzStegun2007 (
 		final int termCount)
 	{
-		try
-		{
-			java.util.TreeMap<java.lang.Integer, java.lang.Double> termWeightMap = new
-				java.util.TreeMap<java.lang.Integer, java.lang.Double>();
+		try {
+			TreeMap<Integer, Double> termWeightMap = new TreeMap<Integer, Double>();
 
-			for (int termIndex = 1; termIndex <= termCount; ++termIndex)
-			{
-				termWeightMap.put (
-					termIndex,
-					1.
-				);
+			for (int termIndex = 1; termIndex <= termCount; ++termIndex) {
+				termWeightMap.put (termIndex, 1.);
 			}
 
-			return new org.drip.numerical.estimation.R1ToR1Series (
-				org.drip.specialfunction.digamma.CumulativeSeriesTerm.AbramowitzStegun2007(),
-				false,
-				termWeightMap
-			);
-		}
-		catch (java.lang.Exception e)
-		{
+			return new R1ToR1Series ( CumulativeSeriesTerm.AbramowitzStegun2007(), false, termWeightMap);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -184,36 +178,25 @@ public class CumulativeSeries
 	 * @return The R<sup>1</sup> To R<sup>1</sup> Infinite Saddle Point Cumulative Series
 	 */
 
-	public static final org.drip.numerical.estimation.R1ToR1Series MezoHoffman2017 (
-		final org.drip.function.definition.R1ToR1 saddlePointFunction,
+	public static final R1ToR1Series MezoHoffman2017 (
+		final R1ToR1 saddlePointFunction,
 		final int saddlePointCount)
 	{
-		try
-		{
-			java.util.TreeMap<java.lang.Integer, java.lang.Double> termWeightMap = new
-				java.util.TreeMap<java.lang.Integer, java.lang.Double>();
+		try {
+			TreeMap<Integer, Double> termWeightMap = new TreeMap<Integer, Double>();
 
-			for (int termIndex = 0; termIndex <= saddlePointCount; ++termIndex)
-			{
-				termWeightMap.put (
-					termIndex,
-					1.
-				);
+			for (int termIndex = 0; termIndex <= saddlePointCount; ++termIndex) {
+				termWeightMap.put (termIndex, 1.);
 			}
 
-			return new org.drip.numerical.estimation.R1ToR1Series (
-				org.drip.specialfunction.digamma.CumulativeSeriesTerm.MezoHoffman2017 (
-					org.drip.specialfunction.digamma.SaddlePoints.LeadingRoots (
-						saddlePointFunction,
-						saddlePointCount
-					)
+			return new R1ToR1Series (
+				CumulativeSeriesTerm.MezoHoffman2017 (
+					SaddlePoints.LeadingRoots (saddlePointFunction, saddlePointCount)
 				),
 				false,
 				termWeightMap
 			);
-		}
-		catch (java.lang.Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -228,32 +211,20 @@ public class CumulativeSeries
 	 * @return The R<sup>1</sup> To R<sup>1</sup> Gauss Cumulative Series
 	 */
 
-	public static final org.drip.numerical.estimation.R1ToR1Series Gauss (
+	public static final R1ToR1Series Gauss (
 		final int termCount)
 	{
 		int seriesCount = (termCount - 1) / 2;
 
-		try
-		{
-			java.util.TreeMap<java.lang.Integer, java.lang.Double> termWeightMap = new
-				java.util.TreeMap<java.lang.Integer, java.lang.Double>();
+		try {
+			TreeMap<Integer, Double> termWeightMap = new TreeMap<Integer, Double>();
 
-			for (int termIndex = 1; termIndex <= seriesCount; ++termIndex)
-			{
-				termWeightMap.put (
-					termIndex,
-					1.
-				);
+			for (int termIndex = 1; termIndex <= seriesCount; ++termIndex) {
+				termWeightMap.put (termIndex, 1.);
 			}
 
-			return new org.drip.numerical.estimation.R1ToR1Series (
-				org.drip.specialfunction.digamma.CumulativeSeriesTerm.Gauss (termCount),
-				false,
-				termWeightMap
-			);
-		}
-		catch (java.lang.Exception e)
-		{
+			return new R1ToR1Series (CumulativeSeriesTerm.Gauss (termCount), false, termWeightMap);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -266,56 +237,27 @@ public class CumulativeSeries
 	 * @return The R<sup>1</sup> To R<sup>1</sup> Asymptotic Cumulative Series
 	 */
 
-	public static final org.drip.numerical.estimation.R1ToR1Series Asymptotic()
+	public static final R1ToR1Series Asymptotic()
 	{
-		try
-		{
-			java.util.TreeMap<java.lang.Integer, java.lang.Double> termWeightMap = new
-				java.util.TreeMap<java.lang.Integer, java.lang.Double>();
+		try {
+			TreeMap<Integer, Double> termWeightMap = new TreeMap<Integer, Double>();
 
-			termWeightMap.put (
-				1,
-				-1. / 12.
-			);
+			termWeightMap.put (1, -1. / 12.);
 
-			termWeightMap.put (
-				2,
-				1. / 120.
-			);
+			termWeightMap.put (2, 1. / 120.);
 
-			termWeightMap.put (
-				3,
-				-1. / 252.
-			);
+			termWeightMap.put (3, -1. / 252.);
 
-			termWeightMap.put (
-				4,
-				1. / 240.
-			);
+			termWeightMap.put (4, 1. / 240.);
 
-			termWeightMap.put (
-				5,
-				-1. / 132.
-			);
+			termWeightMap.put (5, -1. / 132.);
 
-			termWeightMap.put (
-				6,
-				691. / 32760.
-			);
+			termWeightMap.put (6, 691. / 32760.);
 
-			termWeightMap.put (
-				7,
-				-1. / 12.
-			);
+			termWeightMap.put (7, -1. / 12.);
 
-			return new org.drip.numerical.estimation.R1ToR1Series (
-				org.drip.specialfunction.digamma.CumulativeSeriesTerm.Asymptotic(),
-				false,
-				termWeightMap
-			);
-		}
-		catch (java.lang.Exception e)
-		{
+			return new R1ToR1Series (CumulativeSeriesTerm.Asymptotic(), false, termWeightMap);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -328,51 +270,25 @@ public class CumulativeSeries
 	 * @return The R<sup>1</sup> To R<sup>1</sup> Exponential Asymptotic Cumulative Series
 	 */
 
-	public static final org.drip.numerical.estimation.R1ToR1Series ExponentialAsymptote()
+	public static final R1ToR1Series ExponentialAsymptote()
 	{
-		try
-		{
-			java.util.TreeMap<java.lang.Integer, java.lang.Double> termWeightMap = new
-				java.util.TreeMap<java.lang.Integer, java.lang.Double>();
+		try {
+			TreeMap<Integer, Double> termWeightMap = new TreeMap<Integer, Double>();
 
-			termWeightMap.put (
-				1,
-				1.
-			);
+			termWeightMap.put (1, 1.);
 
-			termWeightMap.put (
-				2,
-				1. / 2.
-			);
+			termWeightMap.put (2, 1. / 2.);
 
-			termWeightMap.put (
-				3,
-				5. / 24.
-			);
+			termWeightMap.put (3, 5. / 24.);
 
-			termWeightMap.put (
-				4,
-				1. / 16.
-			);
+			termWeightMap.put (4, 1. / 16.);
 
-			termWeightMap.put (
-				5,
-				47. / (48. * 120.)
-			);
+			termWeightMap.put (5, 47. / (48. * 120.));
 
-			termWeightMap.put (
-				6,
-				1. / (16. * 144.)
-			);
+			termWeightMap.put (6, 1. / (16. * 144.));
 
-			return new org.drip.numerical.estimation.R1ToR1Series (
-				org.drip.specialfunction.digamma.CumulativeSeriesTerm.ExponentialAsymptote(),
-				false,
-				termWeightMap
-			);
-		}
-		catch (java.lang.Exception e)
-		{
+			return new R1ToR1Series (CumulativeSeriesTerm.ExponentialAsymptote(), false, termWeightMap);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -385,51 +301,29 @@ public class CumulativeSeries
 	 * @return The R<sup>1</sup> To R<sup>1</sup> Exponential Half-Shifted Asymptotic Cumulative Series
 	 */
 
-	public static final org.drip.numerical.estimation.R1ToR1Series ExponentialAsymptoteHalfShifted()
+	public static final R1ToR1Series ExponentialAsymptoteHalfShifted()
 	{
-		try
-		{
-			java.util.TreeMap<java.lang.Integer, java.lang.Double> termWeightMap = new
-				java.util.TreeMap<java.lang.Integer, java.lang.Double>();
+		try {
+			TreeMap<Integer, Double> termWeightMap = new TreeMap<Integer, Double>();
 
-			termWeightMap.put (
-				1,
-				1. / org.drip.numerical.common.NumberUtil.Factorial (4)
-			);
+			termWeightMap.put (1, 1. / NumberUtil.Factorial (4));
 
-			termWeightMap.put (
-				2,
-				-37. / (8. * org.drip.numerical.common.NumberUtil.Factorial (6))
-			);
+			termWeightMap.put (2, -37. / (8. * NumberUtil.Factorial (6)));
 
-			termWeightMap.put (
-				3,
-				10313. / (72. * org.drip.numerical.common.NumberUtil.Factorial (8))
-			);
+			termWeightMap.put (3, 10313. / (72. * NumberUtil.Factorial (8)));
 
-			termWeightMap.put (
-				4,
-				-5509121. / (384. * org.drip.numerical.common.NumberUtil.Factorial (10))
-			);
+			termWeightMap.put (4, -5509121. / (384. * NumberUtil.Factorial (10)));
 
-			termWeightMap.put (
-				5,
-				47. / (48. * 120.)
-			);
+			termWeightMap.put (5, 47. / (48. * 120.));
 
-			termWeightMap.put (
-				6,
-				1. / (16. * 144.)
-			);
+			termWeightMap.put (6, 1. / (16. * 144.));
 
-			return new org.drip.numerical.estimation.R1ToR1Series (
-				org.drip.specialfunction.digamma.CumulativeSeriesTerm.ExponentialAsymptoteHalfShifted(),
+			return new R1ToR1Series (
+				CumulativeSeriesTerm.ExponentialAsymptoteHalfShifted(),
 				false,
 				termWeightMap
 			);
-		}
-		catch (java.lang.Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -445,32 +339,23 @@ public class CumulativeSeries
 	 * @return The R<sup>1</sup> To R<sup>1</sup> Taylor Riemann-Zeta Cumulative Series
 	 */
 
-	public static final org.drip.numerical.estimation.R1ToR1Series TaylorRiemannZeta (
-		final org.drip.function.definition.R1ToR1 riemannZetaEstimator,
+	public static final R1ToR1Series TaylorRiemannZeta (
+		final R1ToR1 riemannZetaEstimator,
 		final int termCount)
 	{
-		try
-		{
-			java.util.TreeMap<java.lang.Integer, java.lang.Double> termWeightMap = new
-				java.util.TreeMap<java.lang.Integer, java.lang.Double>();
+		try {
+			TreeMap<Integer, Double> termWeightMap = new TreeMap<Integer, Double>();
 
-			for (int termIndex = 1; termIndex <= termCount; ++termIndex)
-			{
-				termWeightMap.put (
-					termIndex,
-					1.
-				);
+			for (int termIndex = 1; termIndex <= termCount; ++termIndex) {
+				termWeightMap.put (termIndex, 1.);
 			}
 
-			return new org.drip.numerical.estimation.R1ToR1Series (
-				org.drip.specialfunction.digamma.CumulativeSeriesTerm.TaylorRiemannZeta
-					(riemannZetaEstimator),
+			return new R1ToR1Series (
+				CumulativeSeriesTerm.TaylorRiemannZeta (riemannZetaEstimator),
 				false,
 				termWeightMap
 			);
-		}
-		catch (java.lang.Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 

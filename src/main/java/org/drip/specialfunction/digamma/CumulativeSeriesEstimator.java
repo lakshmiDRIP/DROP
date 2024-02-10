@@ -1,9 +1,12 @@
 
 package org.drip.specialfunction.digamma;
 
+import org.drip.function.definition.R1ToR1;
+import org.drip.numerical.common.NumberUtil;
 import org.drip.numerical.differentiation.DerivativeControl;
 import org.drip.numerical.estimation.R1ToR1Estimator;
 import org.drip.numerical.estimation.R1ToR1Series;
+import org.drip.specialfunction.gamma.Definitions;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -158,28 +161,21 @@ public abstract class CumulativeSeriesEstimator extends R1ToR1Estimator
 		final int termCount)
 	{
 		try {
-			return new CumulativeSeriesEstimator (
-				org.drip.specialfunction.digamma.CumulativeSeries.AbramowitzStegun2007 (termCount),
-				null
-			)
-			{
+			return new CumulativeSeriesEstimator (CumulativeSeries.AbramowitzStegun2007 (termCount), null) {
 				@Override public double evaluate (
 					final double z)
-					throws java.lang.Exception
+					throws Exception
 				{
-					if (!org.drip.numerical.common.NumberUtil.IsValid (z))
-					{
-						throw new java.lang.Exception
-							("CumulativeSeriesEstimator::AbramowitzStegun2007::evaluate => Invalid Inputs");
+					if (!NumberUtil.IsValid (z)) {
+						throw new Exception (
+							"CumulativeSeriesEstimator::AbramowitzStegun2007::evaluate => Invalid Inputs"
+						);
 					}
 
-					return cumulativeSeries().evaluate (z - 1.) -
-						org.drip.specialfunction.gamma.Definitions.EULER_MASCHERONI;
+					return cumulativeSeries().evaluate (z - 1.) - Definitions.EULER_MASCHERONI;
 				}
 			};
-		}
-		catch (java.lang.Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -194,36 +190,28 @@ public abstract class CumulativeSeriesEstimator extends R1ToR1Estimator
 
 	public static final CumulativeSeriesEstimator Harmonic()
 	{
-		try
-		{
-			return new CumulativeSeriesEstimator (
-				null,
-				null
-			)
-			{
+		try {
+			return new CumulativeSeriesEstimator (null, null) {
 				@Override public double evaluate (
 					final double z)
-					throws java.lang.Exception
+					throws Exception
 				{
-					if (!org.drip.numerical.common.NumberUtil.IsValid (z) || 0. >= z)
-					{
-						throw new java.lang.Exception
-							("CumulativeSeriesEstimator::Harmonic::evaluate => Invalid Inputs");
+					if (!NumberUtil.IsValid (z) || 0. >= z) {
+						throw new Exception (
+							"CumulativeSeriesEstimator::Harmonic::evaluate => Invalid Inputs"
+						);
 					}
 
 					double harmonicEstimate = 0.;
 
-					for (int i = 1; i < (int) z; ++i)
-					{
+					for (int i = 1; i < (int) z; ++i) {
 						harmonicEstimate = harmonicEstimate + (1. / i);
 					}
 
-					return harmonicEstimate - org.drip.specialfunction.gamma.Definitions.EULER_MASCHERONI;
+					return harmonicEstimate - Definitions.EULER_MASCHERONI;
 				}
 			};
-		}
-		catch (java.lang.Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -238,37 +226,28 @@ public abstract class CumulativeSeriesEstimator extends R1ToR1Estimator
 
 	public static final CumulativeSeriesEstimator HalfInteger()
 	{
-		try
-		{
-			return new CumulativeSeriesEstimator (
-				null,
-				null
-			)
-			{
+		try {
+			return new CumulativeSeriesEstimator (null, null) {
 				@Override public double evaluate (
 					final double z)
-					throws java.lang.Exception
+					throws Exception
 				{
-					if (!org.drip.numerical.common.NumberUtil.IsValid (z) || 0. > z || 0.5 != z - (int) z)
-					{
-						throw new java.lang.Exception
-							("CumulativeSeriesEstimator::HalfInteger::evaluate => Invalid Inputs");
+					if (!NumberUtil.IsValid (z) || 0. > z || 0.5 != z - (int) z) {
+						throw new Exception (
+							"CumulativeSeriesEstimator::HalfInteger::evaluate => Invalid Inputs"
+						);
 					}
 
 					double halfIntegerEstimate = 0.;
 
-					for (int i = 1; i <= (int) z; ++i)
-					{
+					for (int i = 1; i <= (int) z; ++i) {
 						halfIntegerEstimate = halfIntegerEstimate + (1. / (-0.5 + i));
 					}
 
-					return halfIntegerEstimate - org.drip.specialfunction.gamma.Definitions.EULER_MASCHERONI
-						- java.lang.Math.log (4.);
+					return halfIntegerEstimate - Definitions.EULER_MASCHERONI - Math.log (4.);
 				}
 			};
-		}
-		catch (java.lang.Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -286,45 +265,35 @@ public abstract class CumulativeSeriesEstimator extends R1ToR1Estimator
 	 */
 
 	public static final CumulativeSeriesEstimator MezoHoffman2017 (
-		final org.drip.function.definition.R1ToR1 logGammaEstimator,
-		final org.drip.function.definition.R1ToR1 saddlePointFunction,
+		final R1ToR1 logGammaEstimator,
+		final R1ToR1 saddlePointFunction,
 		final int saddlePointCount)
 	{
-		if (null == logGammaEstimator)
-		{
+		if (null == logGammaEstimator) {
 			return null;
 		}
 
-		try
-		{
+		try {
 			return new CumulativeSeriesEstimator (
-				org.drip.specialfunction.digamma.CumulativeSeries.MezoHoffman2017 (
-					saddlePointFunction,
-					saddlePointCount
-				),
-				null
-			)
-			{
+				CumulativeSeries.MezoHoffman2017 (saddlePointFunction, saddlePointCount),
+				null) {
 				@Override public double evaluate (
 					final double z)
-					throws java.lang.Exception
+					throws Exception
 				{
-					if (!org.drip.numerical.common.NumberUtil.IsValid (z))
-					{
-						throw new java.lang.Exception
-							("CumulativeSeriesEstimator::MezoHoffman2017::evaluate => Invalid Inputs");
+					if (!NumberUtil.IsValid (z)) {
+						throw new Exception (
+							"CumulativeSeriesEstimator::MezoHoffman2017::evaluate => Invalid Inputs"
+						);
 					}
 
-					return -1. * java.lang.Math.exp (
-						logGammaEstimator.evaluate (z) + 
-						cumulativeSeries().evaluate (z) +
-						2. * org.drip.specialfunction.gamma.Definitions.EULER_MASCHERONI * z
+					return -1. * Math.exp (
+						logGammaEstimator.evaluate (z) + cumulativeSeries().evaluate (z) +
+							2. * Definitions.EULER_MASCHERONI * z
 					);
 				}
 			};
-		}
-		catch (java.lang.Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -344,30 +313,20 @@ public abstract class CumulativeSeriesEstimator extends R1ToR1Estimator
 	{
 		try
 		{
-			return new CumulativeSeriesEstimator (
-				org.drip.specialfunction.digamma.CumulativeSeries.Gauss (termCount),
-				null
-			)
-			{
+			return new CumulativeSeriesEstimator (CumulativeSeries.Gauss (termCount), null) {
 				@Override public double evaluate (
 					final double z)
-					throws java.lang.Exception
+					throws Exception
 				{
-					if (!org.drip.numerical.common.NumberUtil.IsValid (z) || 0. > z || 1. < z)
-					{
-						throw new java.lang.Exception
-							("CumulativeSeriesEstimator::Gauss::evaluate => Invalid Inputs");
+					if (!NumberUtil.IsValid (z) || 0. > z || 1. < z) {
+						throw new Exception ("CumulativeSeriesEstimator::Gauss::evaluate => Invalid Inputs");
 					}
 
-					return 2. * cumulativeSeries().evaluate (z) -
-						org.drip.specialfunction.gamma.Definitions.EULER_MASCHERONI -
-						java.lang.Math.log (2. * termCount) -
-						0.5 * java.lang.Math.PI / java.lang.Math.tan (java.lang.Math.PI * z);
+					return 2. * cumulativeSeries().evaluate (z) - Definitions.EULER_MASCHERONI -
+						Math.log (2. * termCount) - 0.5 * Math.PI / Math.tan (Math.PI * z);
 				}
 			};
-		}
-		catch (java.lang.Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -382,29 +341,22 @@ public abstract class CumulativeSeriesEstimator extends R1ToR1Estimator
 
 	public static final CumulativeSeriesEstimator Asymptotic()
 	{
-		try
-		{
-			return new CumulativeSeriesEstimator (
-				org.drip.specialfunction.digamma.CumulativeSeries.Asymptotic(),
-				null
-			)
-			{
+		try {
+			return new CumulativeSeriesEstimator (CumulativeSeries.Asymptotic(), null) {
 				@Override public double evaluate (
 					final double z)
-					throws java.lang.Exception
+					throws Exception
 				{
-					if (!org.drip.numerical.common.NumberUtil.IsValid (z) || 0. > z)
-					{
-						throw new java.lang.Exception
-							("CumulativeSeriesEstimator::Asymptotic::evaluate => Invalid Inputs");
+					if (!NumberUtil.IsValid (z) || 0. > z) {
+						throw new Exception (
+							"CumulativeSeriesEstimator::Asymptotic::evaluate => Invalid Inputs"
+						);
 					}
 
-					return java.lang.Math.log (z) - 0.5 / z + cumulativeSeries().evaluate (z);
+					return Math.log (z) - 0.5 / z + cumulativeSeries().evaluate (z);
 				}
 			};
-		}
-		catch (java.lang.Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -419,29 +371,22 @@ public abstract class CumulativeSeriesEstimator extends R1ToR1Estimator
 
 	public static final CumulativeSeriesEstimator ExponentialAsymptote()
 	{
-		try
-		{
-			return new CumulativeSeriesEstimator (
-				org.drip.specialfunction.digamma.CumulativeSeries.ExponentialAsymptote(),
-				null
-			)
-			{
+		try {
+			return new CumulativeSeriesEstimator (CumulativeSeries.ExponentialAsymptote(), null) {
 				@Override public double evaluate (
 					final double z)
-					throws java.lang.Exception
+					throws Exception
 				{
-					if (!org.drip.numerical.common.NumberUtil.IsValid (z) || 0. > z)
-					{
-						throw new java.lang.Exception
-							("CumulativeSeriesEstimator::ExponentialAsymptote::evaluate => Invalid Inputs");
+					if (!NumberUtil.IsValid (z) || 0. > z) {
+						throw new Exception (
+							"CumulativeSeriesEstimator::ExponentialAsymptote::evaluate => Invalid Inputs"
+						);
 					}
 
 					return cumulativeSeries().evaluate (z);
 				}
 			};
-		}
-		catch (java.lang.Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -456,29 +401,22 @@ public abstract class CumulativeSeriesEstimator extends R1ToR1Estimator
 
 	public static final CumulativeSeriesEstimator ExponentialAsymptoteHalfShifted()
 	{
-		try
-		{
-			return new CumulativeSeriesEstimator (
-				org.drip.specialfunction.digamma.CumulativeSeries.ExponentialAsymptoteHalfShifted(),
-				null
-			)
-			{
+		try {
+			return new CumulativeSeriesEstimator (CumulativeSeries.ExponentialAsymptoteHalfShifted(), null) {
 				@Override public double evaluate (
 					final double z)
-					throws java.lang.Exception
+					throws Exception
 				{
-					if (!org.drip.numerical.common.NumberUtil.IsValid (z))
-					{
-						throw new java.lang.Exception
-							("CumulativeSeriesEstimator::ExponentialAsymptoteHalfShifted::evaluate => Invalid Inputs");
+					if (!NumberUtil.IsValid (z)) {
+						throw new Exception (
+							"CumulativeSeriesEstimator::ExponentialAsymptoteHalfShifted::evaluate => Invalid Inputs"
+						);
 					}
 
 					return z - 0.5 + cumulativeSeries().evaluate (z - 0.5);
 				}
 			};
-		}
-		catch (java.lang.Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -495,36 +433,27 @@ public abstract class CumulativeSeriesEstimator extends R1ToR1Estimator
 	 */
 
 	public static final CumulativeSeriesEstimator TaylorRiemannZeta (
-		final org.drip.function.definition.R1ToR1 riemannZetaEstimator,
+		final R1ToR1 riemannZetaEstimator,
 		final int termCount)
 	{
-		try
-		{
+		try {
 			return new CumulativeSeriesEstimator (
-				org.drip.specialfunction.digamma.CumulativeSeries.TaylorRiemannZeta (
-					riemannZetaEstimator,
-					termCount
-				),
-				null
-			)
-			{
+				CumulativeSeries.TaylorRiemannZeta (riemannZetaEstimator, termCount),
+				null) {
 				@Override public double evaluate (
 					final double z)
-					throws java.lang.Exception
+					throws Exception
 				{
-					if (!org.drip.numerical.common.NumberUtil.IsValid (z) || 0. > z)
-					{
-						throw new java.lang.Exception
-							("CumulativeSeriesEstimator::TaylorRiemannZeta::evaluate => Invalid Inputs");
+					if (!NumberUtil.IsValid (z) || 0. > z) {
+						throw new Exception (
+							"CumulativeSeriesEstimator::TaylorRiemannZeta::evaluate => Invalid Inputs"
+						);
 					}
 
-					return -1. * cumulativeSeries().evaluate (z - 1.) -
-						org.drip.specialfunction.gamma.Definitions.EULER_MASCHERONI;
+					return -1. * cumulativeSeries().evaluate (z - 1.) - Definitions.EULER_MASCHERONI;
 				}
 			};
-		}
-		catch (java.lang.Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
