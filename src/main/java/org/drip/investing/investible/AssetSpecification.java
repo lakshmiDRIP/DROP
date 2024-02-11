@@ -1,6 +1,8 @@
 
 package org.drip.investing.investible;
 
+import org.drip.portfolioconstruction.core.Asset;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
@@ -74,7 +76,8 @@ package org.drip.investing.investible;
  */
 
 /**
- * <i>AssetType</i> contains Asset Type Specifications. The References are:
+ * <i>AssetSpecification</i> holds the Characteristics of Asset/Fund whose Behavior is Benchmarked to
+ * 	Specific Factors. The References are:
  *
  *	<br><br>
  * <ul>
@@ -110,48 +113,216 @@ package org.drip.investing.investible;
  * @author Lakshmi Krishnamurthy
  */
 
-public class AssetType
+public class AssetSpecification extends Asset
 {
+	private int _type = Integer.MIN_VALUE;
+	private int _termCategory = Integer.MIN_VALUE;
+	private int _carryCategory = Integer.MIN_VALUE;
+	private int _valueCategory = Integer.MIN_VALUE;
+	private int _growthCategory = Integer.MIN_VALUE;
+	private int _leverageCategory = Integer.MIN_VALUE;
+	private int _momentumCategory = Integer.MIN_VALUE;
+	private int _investingCategory = Integer.MIN_VALUE;
+	private int _liquidityCategory = Integer.MIN_VALUE;
+	private int _volatilityCategory = Integer.MIN_VALUE;
+	private int _profitabilityCategory = Integer.MIN_VALUE;
+	private int _capitalizationCategory = Integer.MIN_VALUE;
 
 	/**
-	 * Asset Type <i>STOCK</i>
+	 * AssetSpecification Constructor
+	 * 
+	 * @param name The Asset Name
+	 * @param id The Asset ID
+	 * @param description The Asset Description
+	 * @param currency The Asset Currency
+	 * @param sector The Asset Sector
+	 * @param type The Asset Type
+	 * @param capitalizationCategory The Capitalization Category
+	 * @param volatilityCategory The Volatility Category
+	 * @param valueCategory The Value Category
+	 * @param momentumCategory The Momentum Category
+	 * @param growthCategory The Growth Category
+	 * @param profitabilityCategory The Profitability Category
+	 * @param leverageCategory The Leverage Category
+	 * @param liquidityCategory The Liquidity Category
+	 * @param termCategory The Term Category
+	 * @param carryCategory The Carry Category
+	 * @param investingCategory The Investing Category
+	 * 
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
-	public static final int STOCK = 0;
+	public AssetSpecification (
+		final String name,
+		final String id,
+		final String description,
+		final String currency,
+		final String sector,
+		final int type,
+		final int capitalizationCategory,
+		final int volatilityCategory,
+		final int valueCategory,
+		final int momentumCategory,
+		final int growthCategory,
+		final int profitabilityCategory,
+		final int leverageCategory,
+		final int liquidityCategory,
+		final int termCategory,
+		final int carryCategory,
+		final int investingCategory)
+		throws Exception
+	{
+		super (
+			name,
+			id,
+			description,
+			currency,
+			sector
+		);
+
+		_type = type;
+		_termCategory = termCategory;
+		_carryCategory = carryCategory;
+		_valueCategory = valueCategory;
+		_growthCategory = growthCategory;
+		_leverageCategory = leverageCategory;
+		_momentumCategory = momentumCategory;
+		_investingCategory = investingCategory;
+		_liquidityCategory = liquidityCategory;
+		_volatilityCategory = volatilityCategory;
+		_profitabilityCategory = profitabilityCategory;
+		_capitalizationCategory = capitalizationCategory;
+	}
 
 	/**
-	 * Asset Type <i>STOCK INDEX</i>
+	 * Retrieve the Asset Type
+	 * 
+	 * @return The Asset Type
 	 */
 
-	public static final int STOCK_INDEX = 1;
+	public int type()
+	{
+		return _type;
+	}
 
 	/**
-	 * Asset Type <i>STOCK FUND</i>
+	 * Retrieve the Capitalization Category
+	 * 
+	 * @return The Capitalization Category
 	 */
 
-	public static final int STOCK_FUND = 2;
+	public int capitalizationCategory()
+	{
+		return _capitalizationCategory;
+	}
 
 	/**
-	 * Asset Type <i>STOCK FUND OF FUNDS</i>
+	 * Retrieve the Volatility Category
+	 * 
+	 * @return The Volatility Category
 	 */
 
-	public static final int STOCK_FUND_OF_FUNDS = 3;
+	public int volatilityCategory()
+	{
+		return _volatilityCategory;
+	}
 
 	/**
-	 * Asset Type <i>CORPORATE BOND</i>
+	 * Retrieve the Value Category
+	 * 
+	 * @return The Value Category
 	 */
 
-	public static final int CORPORATE_BOND = 4;
+	public int valueCategory()
+	{
+		return _valueCategory;
+	}
 
 	/**
-	 * Asset Type <i>GOVERNMENT BOND</i>
+	 * Retrieve the Momentum Category
+	 * 
+	 * @return The Momentum Category
 	 */
 
-	public static final int GOVERNMENT_BOND = 5;
+	public int momentumCategory()
+	{
+		return _momentumCategory;
+	}
 
 	/**
-	 * Asset Type <i>COMMODITY</i>
+	 * Retrieve the Growth Category
+	 * 
+	 * @return The Growth Category
 	 */
 
-	public static final int COMMODITY = 6;
+	public int growthCategory()
+	{
+		return _growthCategory;
+	}
+
+	/**
+	 * Retrieve the Profitability Category
+	 * 
+	 * @return The Profitability Category
+	 */
+
+	public int profitabilityCategory()
+	{
+		return _profitabilityCategory;
+	}
+
+	/**
+	 * Retrieve the Leverage Category
+	 * 
+	 * @return The Leverage Category
+	 */
+
+	public int leverageCategory()
+	{
+		return _leverageCategory;
+	}
+
+	/**
+	 * Retrieve the Liquidity Category
+	 * 
+	 * @return The Liquidity Category
+	 */
+
+	public int liquidityCategory()
+	{
+		return _liquidityCategory;
+	}
+
+	/**
+	 * Retrieve the Term Category
+	 * 
+	 * @return The Term Category
+	 */
+
+	public int termCategory()
+	{
+		return _termCategory;
+	}
+
+	/**
+	 * Retrieve the Carry Category
+	 * 
+	 * @return The Carry Category
+	 */
+
+	public int carryCategory()
+	{
+		return _carryCategory;
+	}
+
+	/**
+	 * Retrieve the Investing Category
+	 * 
+	 * @return The Investing Category
+	 */
+
+	public int investingCategory()
+	{
+		return _investingCategory;
+	}
 }

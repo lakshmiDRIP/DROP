@@ -74,8 +74,7 @@ package org.drip.investing.factors;
  */
 
 /**
- * <i>AssetCharacteristics</i> holds the Characteristics of Asset/Fund whose Behavior will be Benchmarked to
- * 	specified Factors. The References are:
+ * <i>FactorMeta</i> maintains the Meta Attributes of every Factor. The References are:
  *
  *	<br><br>
  * <ul>
@@ -111,18 +110,30 @@ package org.drip.investing.factors;
  * @author Lakshmi Krishnamurthy
  */
 
-public class AssetCharacteristics
+public class FactorMeta
 {
-	private String _name = "";
+	private String _code = "";
+	private String _description = "";
 
 	/**
-	 * Retrieve the Asset Name
+	 * Retrieve the Factor Code
 	 * 
-	 * @return The Asset Name
+	 * @return The Factor Code
 	 */
 
-	public String name()
+	public String code()
 	{
-		return _name;
+		return _code;
+	}
+
+	/**
+	 * Retrieve the Factor Description
+	 * 
+	 * @return The Factor Description
+	 */
+
+	public String description()
+	{
+		return _description;
 	}
 }
