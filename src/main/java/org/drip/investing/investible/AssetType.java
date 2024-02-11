@@ -1,5 +1,5 @@
 
-package org.drip.investing.factors;
+package org.drip.investing.investible;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -74,8 +74,7 @@ package org.drip.investing.factors;
  */
 
 /**
- * <i>AssetCharacteristics</i> holds the Characteristics of Asset/Fund whose Behavior will be Benchmarked to
- * 	specified Factors. The References are:
+ * <i>AssetType</i> contains Asset Type Specifications. The References are:
  *
  *	<br><br>
  * <ul>
@@ -105,24 +104,36 @@ package org.drip.investing.factors;
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md">Portfolio Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/AssetAllocationAnalyticsLibrary.md">Asset Allocation Analytics</a></li>
  *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/investing/README.md">Factor/Style Based Quantitative Investing</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/investing/factors/README.md">Factor Types, Characteristics, and Constitution</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/investing/investible/README.md">Quantitative Description of Investible Assets</a></li>
  *  </ul>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class AssetCharacteristics
+public class AssetType
 {
-	private String _name = "";
 
 	/**
-	 * Retrieve the Asset Name
-	 * 
-	 * @return The Asset Name
+	 * Asset Type <i>STOCK</i>
 	 */
 
-	public String name()
-	{
-		return _name;
-	}
+	public static final int STOCK = 0;
+
+	/**
+	 * Asset Type <i>STOCK INDEX</i>
+	 */
+
+	public static final int STOCK_INDEX = 1;
+
+	/**
+	 * Asset Type <i>STOCK FUND</i>
+	 */
+
+	public static final int STOCK_FUND = 2;
+
+	/**
+	 * Asset Type <i>STOCK FUND OF FUNDS</i>
+	 */
+
+	public static final int STOCK_FUND_OF_FUNDS = 3;
 }
