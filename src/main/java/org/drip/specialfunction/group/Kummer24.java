@@ -1,11 +1,18 @@
 
 package org.drip.specialfunction.group;
 
+import org.drip.function.definition.R1ToR1;
+import org.drip.specialfunction.definition.HypergeometricParameters;
+import org.drip.specialfunction.definition.RegularHypergeometricEstimator;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -78,7 +85,7 @@ package org.drip.specialfunction.group;
 
 /**
  * <i>Kummer24</i> contains the Isomorphic Klein-4 Group of the Transformations built out of the Solutions
- * emanating from the Singularities of the Hyper-geometric 2F1 Function. The References are:
+ * 	emanating from the Singularities of the Hyper-geometric 2F1 Function. The References are:
  * 
  * <br><br>
  * 	<ul>
@@ -103,19 +110,34 @@ package org.drip.specialfunction.group;
  * 			Wikipedia (2019): Hyper-geometric Function https://en.wikipedia.org/wiki/Hypergeometric_function
  * 		</li>
  * 	</ul>
+ * 
+ * 	It provides the following functionality:
  *
- *	<br><br>
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FunctionAnalysisLibrary.md">Function Analysis Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md">Special Function Implementation Analysis</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/group/README.md">Special Function Singularity Solution Group</a></li>
+ * 		<li>Construct the Kummer24 Isomorphic Array Version of the Fuchsian Equation</li>
+ * 		<li>Generate the Transposition (12) under the Fuchsian Isomorphism with Symmetry Group on points 1, 2, 3</li>
+ * 		<li>Generate the Transposition (23) under the Fuchsian Isomorphism with Symmetry Group on points 1, 2, 3</li>
+ * 		<li>Generate the Transposition (34) under the Fuchsian Isomorphism with Symmetry Group on points 1, 2, 3</li>
  *  </ul>
+ *
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FunctionAnalysisLibrary.md">Function Analysis Library</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md">Special Function Implementation and Analysis</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/group/README.md">Special Function Singularity Solution Group</a></td></tr>
+ *  </table>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class Kummer24 extends org.drip.specialfunction.group.FuchsianEquation
+public class Kummer24 extends FuchsianEquation
 {
 
 	/**
@@ -127,15 +149,13 @@ public class Kummer24 extends org.drip.specialfunction.group.FuchsianEquation
 	 */
 
 	public static final Kummer24 Standard (
-		final org.drip.specialfunction.definition.RegularHypergeometricEstimator
-			regularHypergeometricEstimator)
+		final RegularHypergeometricEstimator regularHypergeometricEstimator)
 	{
-		if (null == regularHypergeometricEstimator)
-		{
+		if (null == regularHypergeometricEstimator) {
 			return null;
 		}
 
-		org.drip.specialfunction.definition.HypergeometricParameters hypergeometricParameters =
+		HypergeometricParameters hypergeometricParameters =
 			regularHypergeometricEstimator.hypergeometricParameters();
 
 		final double a = hypergeometricParameters.a();
@@ -144,79 +164,54 @@ public class Kummer24 extends org.drip.specialfunction.group.FuchsianEquation
 
 		final double c = hypergeometricParameters.c();
 
-		try
-		{
+		try {
 			return new Kummer24 (
-				new org.drip.function.definition.R1ToR1[]
-				{
+				new R1ToR1[] {
 					regularHypergeometricEstimator.albinate (
-						new org.drip.specialfunction.definition.HypergeometricParameters (
-							a,
-							c - b,
-							c
-						),
-						new org.drip.function.definition.R1ToR1 (null)
-						{
+						new HypergeometricParameters (a, c - b, c),
+						new R1ToR1 (null) {
 							@Override public double evaluate (
 								final double z)
-								throws java.lang.Exception
+								throws Exception
 							{
-								return java.lang.Math.pow (
-									1. - z,
-									-a
-								);
+								return Math.pow (1. - z, -a);
 							}
 						},
-						new org.drip.function.definition.R1ToR1 (null)
-						{
+						new R1ToR1 (null) {
 							@Override public double evaluate (
 								final double z)
-								throws java.lang.Exception
+								throws Exception
 							{
 								return z / (z - 1.);
 							}
 						}
 					),
 					regularHypergeometricEstimator.albinate (
-						new org.drip.specialfunction.definition.HypergeometricParameters (
-							a,
-							b,
-							1. + a + b - c
-						),
+						new HypergeometricParameters (a, b, 1. + a + b - c),
 						null,
-						new org.drip.function.definition.R1ToR1 (null)
-						{
+						new R1ToR1 (null) {
 							@Override public double evaluate (
 								final double z)
-								throws java.lang.Exception
+								throws Exception
 							{
 								return 1. - z;
 							}
 						}
 					),
 					regularHypergeometricEstimator.albinate (
-						new org.drip.specialfunction.definition.HypergeometricParameters (
-							c - a,
-							b,
-							c
-						),
-						new org.drip.function.definition.R1ToR1 (null)
-						{
+						new HypergeometricParameters (c - a, b, c),
+						new R1ToR1 (null) {
 							@Override public double evaluate (
 								final double z)
-								throws java.lang.Exception
+								throws Exception
 							{
-								return java.lang.Math.pow (
-									1. - z,
-									-b
-								);
+								return Math.pow (1. - z, b);
 							}
 						},
-						new org.drip.function.definition.R1ToR1 (null)
-						{
+						new R1ToR1 (null) {
 							@Override public double evaluate (
 								final double z)
-								throws java.lang.Exception
+								throws Exception
 							{
 								return z / (z - 1.);
 							}
@@ -224,9 +219,7 @@ public class Kummer24 extends org.drip.specialfunction.group.FuchsianEquation
 					),
 				}
 			);
-		}
-		catch (java.lang.Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -234,8 +227,8 @@ public class Kummer24 extends org.drip.specialfunction.group.FuchsianEquation
 	}
 
 	protected Kummer24 (
-		final org.drip.function.definition.R1ToR1[] kleinGroupFunctionArray)
-		throws java.lang.Exception
+		final R1ToR1[] kleinGroupFunctionArray)
+		throws Exception
 	{
 		super (kleinGroupFunctionArray);
 	}
@@ -246,10 +239,9 @@ public class Kummer24 extends org.drip.specialfunction.group.FuchsianEquation
 	 * @return The Transposition (12) under the Fuchsian Isomorphism with Symmetry Group on points 1, 2, 3
 	 */
 
-	public org.drip.specialfunction.definition.RegularHypergeometricEstimator transposition12()
+	public RegularHypergeometricEstimator transposition12()
 	{
-		return (org.drip.specialfunction.definition.RegularHypergeometricEstimator)
-			kleinGroupFunctionArray()[0];
+		return (RegularHypergeometricEstimator) kleinGroupFunctionArray()[0];
 	}
 
 	/**
@@ -258,10 +250,9 @@ public class Kummer24 extends org.drip.specialfunction.group.FuchsianEquation
 	 * @return The Transposition (23) under the Fuchsian Isomorphism with Symmetry Group on points 1, 2, 3
 	 */
 
-	public org.drip.specialfunction.definition.RegularHypergeometricEstimator transposition23()
+	public RegularHypergeometricEstimator transposition23()
 	{
-		return (org.drip.specialfunction.definition.RegularHypergeometricEstimator)
-			kleinGroupFunctionArray()[1];
+		return (RegularHypergeometricEstimator) kleinGroupFunctionArray()[1];
 	}
 
 	/**
@@ -270,9 +261,8 @@ public class Kummer24 extends org.drip.specialfunction.group.FuchsianEquation
 	 * @return The Transposition (34) under the Fuchsian Isomorphism with Symmetry Group on points 1, 2, 3
 	 */
 
-	public org.drip.specialfunction.definition.RegularHypergeometricEstimator transposition34()
+	public RegularHypergeometricEstimator transposition34()
 	{
-		return (org.drip.specialfunction.definition.RegularHypergeometricEstimator)
-			kleinGroupFunctionArray()[2];
+		return (RegularHypergeometricEstimator) kleinGroupFunctionArray()[2];
 	}
 }

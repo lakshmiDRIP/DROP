@@ -1,11 +1,16 @@
 
 package org.drip.specialfunction.group;
 
+import org.drip.function.definition.CartesianComplexNumber;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -78,7 +83,7 @@ package org.drip.specialfunction.group;
 
 /**
  * <i>MonodromyTransform2F1</i> builds out the Monodromy Loop Solution Transformation Matrices for Paths
- * around the Singular Points. The References are:
+ * 	around the Singular Points. The References are:
  * 
  * <br><br>
  * 	<ul>
@@ -103,14 +108,28 @@ package org.drip.specialfunction.group;
  * 			Wikipedia (2019): Hyper-geometric Function https://en.wikipedia.org/wiki/Hypergeometric_function
  * 		</li>
  * 	</ul>
+ * 
+ * 	It provides the following functionality:
  *
- *	<br><br>
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FunctionAnalysisLibrary.md">Function Analysis Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md">Special Function Implementation Analysis</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/group/README.md">Special Function Singularity Solution Group</a></li>
+ * 		<li>Generate the Monodromy Group Matrix G0 around the '0' Singularity</li>
+ * 		<li>Generate the "Mu" Intermediate for the G1 Monodromy Matrix</li>
+ * 		<li>Generate the Monodromy Group Matrix G1 around the '1' Singularity</li>
  *  </ul>
+ *
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FunctionAnalysisLibrary.md">Function Analysis Library</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md">Special Function Implementation and Analysis</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/group/README.md">Special Function Singularity Solution Group</a></td></tr>
+ *  </table>
  *
  * @author Lakshmi Krishnamurthy
  */
@@ -127,45 +146,29 @@ public class MonodromyTransform2F1
 	 * @return The Monodromy Group Matrix G0 around the '0' Singularity
 	 */
 
-	public static final org.drip.function.definition.CartesianComplexNumber[][] G0 (
-		final org.drip.specialfunction.group.FundamentalGroupPathExponent2F1 pathExponent1,
-		final org.drip.specialfunction.group.FundamentalGroupPathExponent2F1 pathExponent2)
+	public static final CartesianComplexNumber[][] G0 (
+		final FundamentalGroupPathExponent2F1 pathExponent1,
+		final FundamentalGroupPathExponent2F1 pathExponent2)
 	{
-		if (null == pathExponent1 || null == pathExponent2)
-		{
+		if (null == pathExponent1 || null == pathExponent2) {
 			return null;
 		}
 
-		org.drip.function.definition.CartesianComplexNumber[][] g0 = new org.drip.function.definition.CartesianComplexNumber[2][2];
+		CartesianComplexNumber[][] g0 = new CartesianComplexNumber[2][2];
 
-		double theta1 = 2. * java.lang.Math.PI * pathExponent1.alpha();
+		double theta1 = 2. * Math.PI * pathExponent1.alpha();
 
-		double theta2 = 2. * java.lang.Math.PI * pathExponent2.alpha();
+		double theta2 = 2. * Math.PI * pathExponent2.alpha();
 
-		try
-		{
-			g0[0][0] = new org.drip.function.definition.CartesianComplexNumber (
-				java.lang.Math.cos (theta1),
-				java.lang.Math.sin (theta1)
-			);
+		try {
+			g0[0][0] = new CartesianComplexNumber (Math.cos (theta1), Math.sin (theta1));
 
-			g0[0][1] = new org.drip.function.definition.CartesianComplexNumber (
-				0.,
-				0.
-			);
+			g0[0][1] = new CartesianComplexNumber (0., 0.);
 
-			g0[1][0] = new org.drip.function.definition.CartesianComplexNumber (
-				0.,
-				0.
-			);
+			g0[1][0] = new CartesianComplexNumber (0., 0.);
 
-			g0[1][1] = new org.drip.function.definition.CartesianComplexNumber (
-				java.lang.Math.cos (theta2),
-				java.lang.Math.sin (theta2)
-			);
-		}
-		catch (java.lang.Exception e)
-		{
+			g0[1][1] = new CartesianComplexNumber (Math.cos (theta2), Math.sin (theta2));
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -180,17 +183,16 @@ public class MonodromyTransform2F1
 	 * 
 	 * @return The "Mu" Intermediate for the G1 Monodromy Matrix
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public static final double G1Mu (
-		final org.drip.specialfunction.group.FundamentalGroupPathExponent2F1 pathExponent1,
-		final org.drip.specialfunction.group.FundamentalGroupPathExponent2F1 pathExponent2)
-		throws java.lang.Exception
+		final FundamentalGroupPathExponent2F1 pathExponent1,
+		final FundamentalGroupPathExponent2F1 pathExponent2)
+		throws Exception
 	{
-		if (null == pathExponent1 || null == pathExponent2)
-		{
-			throw new java.lang.Exception ("MonodromyTransform2F1::G1Mu => Invalid Inputs");
+		if (null == pathExponent1 || null == pathExponent2) {
+			throw new Exception ("MonodromyTransform2F1::G1Mu => Invalid Inputs");
 		}
 
 		double beta1 = pathExponent1.beta();
@@ -203,10 +205,10 @@ public class MonodromyTransform2F1
 
 		double gamma2 = pathExponent2.gamma();
 
-		return java.lang.Math.sin (java.lang.Math.PI * (alpha1 + beta2 + gamma2)) *
-			java.lang.Math.sin (java.lang.Math.PI * (alpha2 + beta1 + gamma2)) /
-			java.lang.Math.sin (java.lang.Math.PI * (alpha2 + beta2 + gamma2)) /
-			java.lang.Math.sin (java.lang.Math.PI * (alpha1 + beta1 + gamma2));
+		return Math.sin (Math.PI * (alpha1 + beta2 + gamma2)) *
+			Math.sin (Math.PI * (alpha2 + beta1 + gamma2)) /
+			Math.sin (Math.PI * (alpha2 + beta2 + gamma2)) /
+			Math.sin (Math.PI * (alpha1 + beta1 + gamma2));
 	}
 
 	/**
@@ -218,55 +220,46 @@ public class MonodromyTransform2F1
 	 * @return The Monodromy Group Matrix G1 around the '1' Singularity
 	 */
 
-	public static final org.drip.function.definition.CartesianComplexNumber[][] G1 (
-		final org.drip.specialfunction.group.FundamentalGroupPathExponent2F1 pathExponent1,
-		final org.drip.specialfunction.group.FundamentalGroupPathExponent2F1 pathExponent2)
+	public static final CartesianComplexNumber[][] G1 (
+		final FundamentalGroupPathExponent2F1 pathExponent1,
+		final FundamentalGroupPathExponent2F1 pathExponent2)
 	{
-		if (null == pathExponent1 || null == pathExponent2)
-		{
+		if (null == pathExponent1 || null == pathExponent2) {
 			return null;
 		}
 
-		org.drip.function.definition.CartesianComplexNumber[][] g0 = new org.drip.function.definition.CartesianComplexNumber[2][2];
+		CartesianComplexNumber[][] g0 = new CartesianComplexNumber[2][2];
 
-		double theta1 = 2. * java.lang.Math.PI * pathExponent1.beta();
+		double theta1 = 2. * Math.PI * pathExponent1.beta();
 
-		double theta2 = 2. * java.lang.Math.PI * pathExponent2.beta();
+		double theta2 = 2. * Math.PI * pathExponent2.beta();
 
-		try
-		{
-			double g1Mu = G1Mu (
-				pathExponent1,
-				pathExponent2
-			);
+		try {
+			double g1Mu = G1Mu (pathExponent1, pathExponent2);
 
 			double muMinus1 = g1Mu - 1.;
 			double muMinus1Squared = muMinus1 * muMinus1;
 
-			g0[0][0] = new org.drip.function.definition.CartesianComplexNumber (
-				(g1Mu * java.lang.Math.cos (theta1) - java.lang.Math.cos (theta2)) / muMinus1,
-				(g1Mu * java.lang.Math.sin (theta1) - java.lang.Math.sin (theta2)) / muMinus1
+			g0[0][0] = new CartesianComplexNumber (
+				(g1Mu * Math.cos (theta1) - Math.cos (theta2)) / muMinus1,
+				(g1Mu * Math.sin (theta1) - Math.sin (theta2)) / muMinus1
 			);
 
-			g0[0][1] = new org.drip.function.definition.CartesianComplexNumber (
-				java.lang.Math.cos (theta2) - java.lang.Math.cos (theta1),
-				java.lang.Math.sin (theta2) - java.lang.Math.sin (theta1)
+			g0[0][1] = new CartesianComplexNumber (
+				Math.cos (theta2) - Math.cos (theta1),
+				Math.sin (theta2) - Math.sin (theta1)
 			);
 
-			g0[1][0] = new org.drip.function.definition.CartesianComplexNumber (
-				g1Mu * (java.lang.Math.cos (theta2) - java.lang.Math.cos (theta1)) /
-					(muMinus1Squared * muMinus1Squared),
-				g1Mu * (java.lang.Math.sin (theta2) - java.lang.Math.sin (theta1)) /
-					(muMinus1Squared * muMinus1Squared)
+			g0[1][0] = new CartesianComplexNumber (
+				g1Mu * (Math.cos (theta2) - Math.cos (theta1)) / (muMinus1Squared * muMinus1Squared),
+				g1Mu * (Math.sin (theta2) - Math.sin (theta1)) / (muMinus1Squared * muMinus1Squared)
 			);
 
-			g0[1][1] = new org.drip.function.definition.CartesianComplexNumber (
-				(g1Mu * java.lang.Math.cos (theta2) - java.lang.Math.cos (theta1)) / muMinus1,
-				(g1Mu * java.lang.Math.sin (theta2) - java.lang.Math.sin (theta1)) / muMinus1
+			g0[1][1] = new CartesianComplexNumber (
+				(g1Mu * Math.cos (theta2) - Math.cos (theta1)) / muMinus1,
+				(g1Mu * Math.sin (theta2) - Math.sin (theta1)) / muMinus1
 			);
-		}
-		catch (java.lang.Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
