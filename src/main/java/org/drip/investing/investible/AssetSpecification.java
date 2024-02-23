@@ -120,6 +120,7 @@ public class AssetSpecification extends Asset
 	private int _carryCategory = Integer.MIN_VALUE;
 	private int _valueCategory = Integer.MIN_VALUE;
 	private int _growthCategory = Integer.MIN_VALUE;
+	private int _marketCategory = Integer.MIN_VALUE;
 	private int _leverageCategory = Integer.MIN_VALUE;
 	private int _momentumCategory = Integer.MIN_VALUE;
 	private int _investingCategory = Integer.MIN_VALUE;
@@ -137,6 +138,7 @@ public class AssetSpecification extends Asset
 	 * @param currency The Asset Currency
 	 * @param sector The Asset Sector
 	 * @param type The Asset Type
+	 * @param marketCategory The Market Category
 	 * @param capitalizationCategory The Capitalization Category
 	 * @param volatilityCategory The Volatility Category
 	 * @param valueCategory The Value Category
@@ -159,6 +161,7 @@ public class AssetSpecification extends Asset
 		final String currency,
 		final String sector,
 		final int type,
+		final int marketCategory,
 		final int capitalizationCategory,
 		final int volatilityCategory,
 		final int valueCategory,
@@ -185,6 +188,7 @@ public class AssetSpecification extends Asset
 		_carryCategory = carryCategory;
 		_valueCategory = valueCategory;
 		_growthCategory = growthCategory;
+		_marketCategory = marketCategory;
 		_leverageCategory = leverageCategory;
 		_momentumCategory = momentumCategory;
 		_investingCategory = investingCategory;
@@ -203,6 +207,17 @@ public class AssetSpecification extends Asset
 	public int type()
 	{
 		return _type;
+	}
+
+	/**
+	 * Retrieve the Market Category
+	 * 
+	 * @return The Market Category
+	 */
+
+	public int marketCategory()
+	{
+		return _marketCategory;
 	}
 
 	/**

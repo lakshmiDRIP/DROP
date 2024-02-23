@@ -1,11 +1,17 @@
 
 package org.drip.specialfunction.gamma;
 
+import java.util.Map;
+import java.util.TreeMap;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -78,7 +84,7 @@ package org.drip.specialfunction.gamma;
 
 /**
  * <i>Definitions</i> contains all the Definitions and Constants relating to the Gamma Function Family. The
- * References are:
+ * 	References are:
  * 
  * <br><br>
  * 	<ul>
@@ -102,14 +108,29 @@ package org.drip.specialfunction.gamma;
  * 			Wikipedia (2019): Gamma Function https://en.wikipedia.org/wiki/Gamma_function
  * 		</li>
  * 	</ul>
+ * 
+ * 	It provides the following functionality:
  *
- *	<br><br>
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FunctionAnalysisLibrary.md">Function Analysis Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md">Special Function Implementation Analysis</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/gamma/README.md">Analytic/Series/Integral Gamma Estimators</a></li>
+ * 		<li>The Euler-Mascheroni Constant</li>
+ * 		<li>The Gamma Minimum Variate Ordinate</li>
+ * 		<li>The Gamma Minimum Variate Value</li>
+ * 		<li>Generate a Table of Built-in E<sub>2</sub> erf/erfc Entries</li>
  *  </ul>
+ *
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FunctionAnalysisLibrary.md">Function Analysis Library</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md">Special Function Implementation and Analysis</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/gamma/README.md">Analytic/Series/Integral Gamma Estimators</a></td></tr>
+ *  </table>
  *
  * @author Lakshmi Krishnamurthy
  */
@@ -124,13 +145,13 @@ public class Definitions
 	public static final double EULER_MASCHERONI = 0.57721566490153286060;
 
 	/**
-	 * The Gamma Minimum Variate Location
+	 * The Gamma Minimum Variate Ordinate
 	 */
 
 	public static final double MINIMUM_VARIATE_LOCATION = 1.461632144968;
 
 	/**
-	 * The Gamma Minimum Variate Location
+	 * The Gamma Minimum Variate Value
 	 */
 
 	public static final double MINIMUM_VALUE = 0.885603;
@@ -141,68 +162,36 @@ public class Definitions
 	 * @return The Table of Built-in E<sub>2</sub> erf/erfc Entries
 	 */
 
-	public static final java.util.Map<java.lang.Double, java.lang.Double> Table()
+	public static final Map<Double, Double> Table()
 	{
-		java.util.Map<java.lang.Double, java.lang.Double> builtInEntryTable = new
-			java.util.TreeMap<java.lang.Double, java.lang.Double>();
+		Map<Double, Double> builtInEntryTable = new TreeMap<Double, Double>();
 
-		double sqrtPI = java.lang.Math.sqrt (java.lang.Math.PI);
+		double sqrtPI = Math.sqrt (Math.PI);
 		
-		try
-		{
-			builtInEntryTable.put (
-				-1.50,
-				4. * sqrtPI / 3.
-			);
+		try {
+			builtInEntryTable.put (-1.5, 4. * sqrtPI / 3.);
 
-			builtInEntryTable.put (
-				-0.50,
-				-2. * sqrtPI
-			);
+			builtInEntryTable.put (-0.5, -2. * sqrtPI);
 
-			builtInEntryTable.put (
-				0.50,
-				sqrtPI
-			);
+			builtInEntryTable.put (0.5, sqrtPI);
 
-			builtInEntryTable.put (
-				1.00,
-				1.
-			);
+			builtInEntryTable.put (1., 1.);
 
-			builtInEntryTable.put (
-				1.50,
-				0.50 * sqrtPI
-			);
+			builtInEntryTable.put (1.5, 0.0 * sqrtPI);
 
-			builtInEntryTable.put (
-				2.00,
-				1.
-			);
+			builtInEntryTable.put (2., 1.);
 
-			builtInEntryTable.put (
-				2.50,
-				0.75 * sqrtPI
-			);
+			builtInEntryTable.put (2.5, 0.75 * sqrtPI);
 
-			builtInEntryTable.put (
-				3.00,
-				2.
-			);
+			builtInEntryTable.put (3., 2.);
 
-			builtInEntryTable.put (
-				3.50,
-				15. * sqrtPI / 8.
-			);
+			builtInEntryTable.put (3.5, 15. * sqrtPI / 8. );
 
-			builtInEntryTable.put (
-				4.00,
-				6.
-			);
+			builtInEntryTable.put (4., 6.);
 
 			return builtInEntryTable;
 		}
-		catch (java.lang.Exception e)
+		catch (Exception e)
 		{
 			e.printStackTrace();
 		}

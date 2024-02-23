@@ -1,11 +1,20 @@
 
 package org.drip.specialfunction.gamma;
 
+import org.drip.function.definition.PoleResidue;
+import org.drip.function.definition.R1ToR1;
+import org.drip.numerical.common.NumberUtil;
+import org.drip.numerical.differentiation.DerivativeControl;
+import org.drip.numerical.integration.NewtonCotesQuadratureGenerator;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -78,7 +87,7 @@ package org.drip.specialfunction.gamma;
 
 /**
  * <i>EulerIntegralSecondKind</i> implements the Euler's Second Kind Integral Version of the Gamma Function.
- * The References are:
+ * 	The References are:
  * 
  * <br><br>
  * 	<ul>
@@ -102,56 +111,60 @@ package org.drip.specialfunction.gamma;
  * 			Wikipedia (2019): Gamma Function https://en.wikipedia.org/wiki/Gamma_function
  * 		</li>
  * 	</ul>
+ * 
+ * 	It provides the following functionality:
  *
- *	<br><br>
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FunctionAnalysisLibrary.md">Function Analysis Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md">Special Function Implementation Analysis</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/gamma/README.md">Analytic/Series/Integral Gamma Estimators</a></li>
+ * 		<li><i>EulerIntegralSecondKind</i> Constructor</li>
  *  </ul>
+ *
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FunctionAnalysisLibrary.md">Function Analysis Library</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md">Special Function Implementation and Analysis</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/gamma/README.md">Analytic/Series/Integral Gamma Estimators</a></td></tr>
+ *  </table>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class EulerIntegralSecondKind extends org.drip.function.definition.R1ToR1
+public class EulerIntegralSecondKind extends R1ToR1
 {
 
 	/**
-	 * EulerIntegralSecondKind Constructor
+	 * <i>EulerIntegralSecondKind</i> Constructor
 	 * 
-	 * @param dc The Derivative Control
+	 * @param derivativeControl The Derivative Control
 	 */
 
 	public EulerIntegralSecondKind (
-		final org.drip.numerical.differentiation.DerivativeControl dc)
+		final DerivativeControl derivativeControl)
 	{
-		super (dc);
+		super (derivativeControl);
 	}
 
 	@Override public double evaluate (
 		final double s)
-		throws java.lang.Exception
+		throws Exception
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (s))
-		{
-			throw new java.lang.Exception ("EulerIntegralSecondKind::evaluate => Invalid Inputs");
+		if (!NumberUtil.IsValid (s)) {
+			throw new Exception ("EulerIntegralSecondKind::evaluate => Invalid Inputs");
 		}
 
-		return org.drip.numerical.integration.NewtonCotesQuadratureGenerator.GaussLaguerreLeftDefinite (
-			0.,
-			10000
-		).integrate (
-			new org.drip.function.definition.R1ToR1 (null)
-			{
+		return NewtonCotesQuadratureGenerator.GaussLaguerreLeftDefinite (0., 10000).integrate (
+			new R1ToR1 (null) {
 				@Override public double evaluate (
 					final double t)
-					throws java.lang.Exception
+					throws Exception
 				{
-					return java.lang.Double.isInfinite (t) ? 0. : java.lang.Math.pow (
-						t,
-						s - 1
-					) * java.lang.Math.exp (-t);
+					return Double.isInfinite (t) ? 0. : Math.pow (t, s - 1) * Math.exp (-t);
 				}
 			}
 		);
@@ -160,62 +173,43 @@ public class EulerIntegralSecondKind extends org.drip.function.definition.R1ToR1
 	@Override public double derivative (
 		final double z,
 		final int order)
-		throws java.lang.Exception
+		throws Exception
 	{
-		if (1 > order ||
-			!org.drip.numerical.common.NumberUtil.IsValid (z))
-		{
-			throw new java.lang.Exception ("EulerIntegralSecondKind::derivative => Invalid Inputs");
+		if (1 > order || !NumberUtil.IsValid (z)) {
+			throw new Exception ("EulerIntegralSecondKind::derivative => Invalid Inputs");
 		}
 
-		return org.drip.numerical.integration.NewtonCotesQuadratureGenerator.GaussLaguerreLeftDefinite (
-			0.,
-			100
-		).integrate (
-			new org.drip.function.definition.R1ToR1 (null)
-			{
+		return NewtonCotesQuadratureGenerator.GaussLaguerreLeftDefinite (0, 100).integrate (
+			new R1ToR1 (null) {
 				@Override public double evaluate (
 					final double t)
-					throws java.lang.Exception
+					throws Exception
 				{
-					return java.lang.Double.isInfinite (t) || 0. == t ? 0. : java.lang.Math.pow (
-						t,
-						z - 1
-					) * java.lang.Math.exp (-t) * java.lang.Math.pow (
-						java.lang.Math.log (t),
-						order
-					);
+					return Double.isInfinite (t) || 0. == t ? 0. :
+						Math.pow (t, z - 1) * Math.exp (-t) * Math.pow (Math.log (t), order);
 				}
 			}
 		);
 	}
 
-	@Override public org.drip.function.definition.PoleResidue poleResidue (
+	@Override public PoleResidue poleResidue (
 		final double x)
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (x))
-		{
+		if (!NumberUtil.IsValid (x)) {
 			return null;
 		}
 
 		int n = (int) x;
 
-		if (0 != (x - n) || x >= 0.)
-		{
-			return org.drip.function.definition.PoleResidue.NotAPole (x);
+		if (0 != (x - n) || 0. <= x) {
+			return PoleResidue.NotAPole (x);
 		}
 
 		n = -n;
 
-		try
-		{
-			return new org.drip.function.definition.PoleResidue (
-				x,
-				(1 == n % 2 ? -1. : 1.) / new org.drip.specialfunction.gamma.NemesAnalytic (null).evaluate (n + 1.)
-			);
-		}
-		catch (java.lang.Exception e)
-		{
+		try {
+			return new PoleResidue (x, (1 == n % 2 ? -1. : 1.) / new NemesAnalytic (null).evaluate (n + 1.));
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
