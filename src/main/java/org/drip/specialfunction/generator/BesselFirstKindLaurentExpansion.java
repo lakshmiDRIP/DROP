@@ -1,11 +1,19 @@
 
 package org.drip.specialfunction.generator;
 
+import org.drip.numerical.common.NumberUtil;
+import org.drip.numerical.estimation.R2ToR1Series;
+import org.drip.numerical.estimation.R2ToR1SeriesTerm;
+import org.drip.specialfunction.definition.BesselFirstKindEstimator;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -78,7 +86,7 @@ package org.drip.specialfunction.generator;
 
 /**
  * <i>BesselFirstKindLaurentExpansion</i> implements the Laurent-Series Generating Function and the Expansion
- * Terms for the Cylindrical Bessel Function of the First Kind. The References are:
+ * 	Terms for the Cylindrical Bessel Function of the First Kind. The References are:
  * 
  * <br><br>
  * 	<ul>
@@ -102,37 +110,50 @@ package org.drip.specialfunction.generator;
  * 			Wikipedia (2019): Bessel Function https://en.wikipedia.org/wiki/Bessel_function
  * 		</li>
  * 	</ul>
+ * 
+ * 	It provides the following functionality:
  *
- *	<br><br>
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FunctionAnalysisLibrary.md">Function Analysis Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md">Special Function Implementation Analysis</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/generator/README.md">Special Function Series Term Generators</a></li>
+ * 		<li><i>BesselFirstKindLaurentExpansion</i> Constructor</li>
+ * 		<li>Retrieve the Bessel First Kind Function Estimator</li>
+ * 		<li>Generate the Default Series</li>
  *  </ul>
+ *
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FunctionAnalysisLibrary.md">Function Analysis Library</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md">Special Function Implementation and Analysis</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/generator/README.md">Special Function Series Term Generators</a></td></tr>
+ *  </table>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class BesselFirstKindLaurentExpansion extends org.drip.specialfunction.generator.SeriesExpansion
+public class BesselFirstKindLaurentExpansion extends SeriesExpansion
 {
-	private org.drip.specialfunction.definition.BesselFirstKindEstimator _besselFirstKindEstimator = null;
+	private BesselFirstKindEstimator _besselFirstKindEstimator = null;
 
 	/**
-	 * BesselFirstKindLaurentExpansion Constructor
+	 * <i>BesselFirstKindLaurentExpansion</i> Constructor
 	 * 
 	 * @param besselFirstKindEstimator Bessel Function First Kind Estimator
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public BesselFirstKindLaurentExpansion (
-		final org.drip.specialfunction.definition.BesselFirstKindEstimator besselFirstKindEstimator)
-		throws java.lang.Exception
+		final BesselFirstKindEstimator besselFirstKindEstimator)
+		throws Exception
 	{
-		if (null == (_besselFirstKindEstimator = besselFirstKindEstimator))
-		{
-			throw new java.lang.Exception ("BesselFirstKindLaurentExpansion Constructor => Invalid Inputs");
+		if (null == (_besselFirstKindEstimator = besselFirstKindEstimator)) {
+			throw new Exception ("BesselFirstKindLaurentExpansion Constructor => Invalid Inputs");
 		}
 	}
 
@@ -142,7 +163,7 @@ public class BesselFirstKindLaurentExpansion extends org.drip.specialfunction.ge
 	 * @return The Bessel First Kind Function Estimator
 	 */
 
-	public org.drip.specialfunction.definition.BesselFirstKindEstimator besselFirstKindEstimator()
+	public BesselFirstKindEstimator besselFirstKindEstimator()
 	{
 		return _besselFirstKindEstimator;
 	}
@@ -150,43 +171,31 @@ public class BesselFirstKindLaurentExpansion extends org.drip.specialfunction.ge
 	@Override public double evaluate (
 		final double z,
 		final double t)
-		throws java.lang.Exception
+		throws Exception
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (z) ||
-			!org.drip.numerical.common.NumberUtil.IsValid (t))
-		{
-			throw new java.lang.Exception
-				("BesselFirstKindLaurentExpansion::evaluate => Invalid Inputs");
+		if (!NumberUtil.IsValid (z) || !NumberUtil.IsValid (t)) {
+			throw new Exception ("BesselFirstKindLaurentExpansion::evaluate => Invalid Inputs");
 		}
 
-		return java.lang.Math.exp (0.5 * z * (t - (1. / t)));
+		return Math.exp (0.5 * z * (t - (1. / t)));
 	}
 
-	@Override public org.drip.numerical.estimation.R2ToR1SeriesTerm seriesTerm()
+	@Override public R2ToR1SeriesTerm seriesTerm()
 	{
-		return new org.drip.numerical.estimation.R2ToR1SeriesTerm()
-		{
+		return new R2ToR1SeriesTerm() {
 			@Override public double value (
 				final int order,
 				final double z,
 				final double t)
-				throws java.lang.Exception
+				throws Exception
 			{
-				if (0 > order ||
-					!org.drip.numerical.common.NumberUtil.IsValid (z) ||
-					!org.drip.numerical.common.NumberUtil.IsValid (t))
-				{
-					throw new java.lang.Exception
-						("BesselFirstKindLaurentExpansion::seriesTerm::value => Invalid Inputs");
+				if (0 > order || !NumberUtil.IsValid (z) || !NumberUtil.IsValid (t)) {
+					throw new Exception (
+						"BesselFirstKindLaurentExpansion::seriesTerm::value => Invalid Inputs"
+					);
 				}
 
-				return java.lang.Math.pow (
-					t,
-					order
-				) * _besselFirstKindEstimator.evaluate (
-					order,
-					z
-				);
+				return Math.pow (t, order) * _besselFirstKindEstimator.evaluate (order, z);
 			}
 		};
 	}
@@ -197,11 +206,8 @@ public class BesselFirstKindLaurentExpansion extends org.drip.specialfunction.ge
 	 * @return The Default Series
 	 */
 
-	public org.drip.numerical.estimation.R2ToR1Series series()
+	public R2ToR1Series series()
 	{
-		return series (
-			java.lang.Integer.MIN_VALUE,
-			java.lang.Integer.MAX_VALUE
-		);
+		return series (Integer.MIN_VALUE, Integer.MAX_VALUE);
 	}
 }
