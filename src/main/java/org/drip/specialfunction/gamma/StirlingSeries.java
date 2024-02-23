@@ -1,11 +1,23 @@
 
 package org.drip.specialfunction.gamma;
 
+import java.util.TreeMap;
+
+import org.drip.numerical.common.NumberUtil;
+import org.drip.numerical.differentiation.DerivativeControl;
+import org.drip.numerical.estimation.R1Estimate;
+import org.drip.numerical.estimation.R1ToR1Estimator;
+import org.drip.numerical.estimation.R1ToR1Series;
+import org.drip.numerical.estimation.R1ToR1SeriesTerm;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -78,8 +90,7 @@ package org.drip.specialfunction.gamma;
 
 /**
  * <i>StirlingSeries</i> implements the Stirling's Series Approximation of the Gamma Functions. The
- * References are:
- * <br><br>
+ * 	References are:
  * 	<ul>
  * 		<li>
  * 			Mortici, C. (2011): Improved Asymptotic Formulas for the Gamma Function <i>Computers and
@@ -102,31 +113,46 @@ package org.drip.specialfunction.gamma;
  * 				https://en.wikipedia.org/wiki/Stirling%27s_approximation
  * 		</li>
  * 	</ul>
+ * 
+ * 	It provides the following functionality:
  *
- *	<br><br>
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FunctionAnalysisLibrary.md">Function Analysis Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md">Special Function Implementation Analysis</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/gamma/README.md">Analytic/Series/Integral Gamma Estimators</a></li>
+ * 		<li><i>StirlingSeries</i> Constructor</li>
+ * 		<li>Compute the de-Moivre Term</li>
+ * 		<li>Compute the Bounded Function Estimates along with the First Order Laplace Correction</li>
+ * 		<li>Compute the Bounded Function Estimates along with the Higher Order Nemes Correction</li>
  *  </ul>
+ *
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FunctionAnalysisLibrary.md">Function Analysis Library</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md">Special Function Implementation and Analysis</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/gamma/README.md">Analytic/Series/Integral Gamma Estimators</a></td></tr>
+ *  </table>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class StirlingSeries extends org.drip.numerical.estimation.R1ToR1Estimator
+public class StirlingSeries extends R1ToR1Estimator
 {
 
 	/**
-	 * StirlingSeries Constructor
+	 * <i>StirlingSeries</i> Constructor
 	 * 
-	 * @param dc The Derivative Control
+	 * @param derivativeControl The Derivative Control
 	 */
 
 	public StirlingSeries (
-		final org.drip.numerical.differentiation.DerivativeControl dc)
+		final DerivativeControl derivativeControl)
 	{
-		super (dc);
+		super (derivativeControl);
 	}
 
 	/**
@@ -136,48 +162,37 @@ public class StirlingSeries extends org.drip.numerical.estimation.R1ToR1Estimato
 	 * 
 	 * @return The de-Moivre Term
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public double deMoivreTerm (
 		final double x)
-		throws java.lang.Exception
+		throws Exception
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (x) || 0. > x)
-		{
-			throw new java.lang.Exception ("StirlingSeries::deMoivreTerm => Invalid Inputs");
+		if (!NumberUtil.IsValid (x) || 0. > x) {
+			throw new Exception ("StirlingSeries::deMoivreTerm => Invalid Inputs");
 		}
 
-		return java.lang.Math.exp (1. - x) * java.lang.Math.pow (
-			x - 1.,
-			x - 0.5
-		);
+		return Math.exp (1. - x) * Math.pow (x - 1., x - 0.5);
 	}
 
 	@Override public double evaluate (
 		final double x)
-		throws java.lang.Exception
+		throws Exception
 	{
-		return java.lang.Math.sqrt (2. * java.lang.Math.PI) * deMoivreTerm (x);
+		return Math.sqrt (2. * Math.PI) * deMoivreTerm (x);
 	}
 
-	@Override public org.drip.numerical.estimation.R1Estimate boundedEstimate (
+	@Override public R1Estimate boundedEstimate (
 		final double x)
 	{
-		try
-		{
+		try {
 			double deMoivreTerm = deMoivreTerm (x);
 
-			double estimate = java.lang.Math.sqrt (2. * java.lang.Math.PI) * deMoivreTerm;
+			double estimate = Math.sqrt (2. * Math.PI) * deMoivreTerm;
 
-			return new org.drip.numerical.estimation.R1Estimate (
-				estimate,
-				estimate,
-				java.lang.Math.E * deMoivreTerm
-			);
-		}
-		catch (java.lang.Exception e)
-		{
+			return new R1Estimate (estimate, estimate, Math.E * deMoivreTerm);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -192,31 +207,20 @@ public class StirlingSeries extends org.drip.numerical.estimation.R1ToR1Estimato
 	 * @return The Bounded Function Estimates along with the First Order Laplace Correction
 	 */
 
-	public org.drip.numerical.estimation.R1Estimate laplaceCorrectionEstimate (
+	public R1Estimate laplaceCorrectionEstimate (
 		final double x)
 	{
-		java.util.TreeMap<java.lang.Integer, java.lang.Double> termWeightMap = new
-			java.util.TreeMap<java.lang.Integer, java.lang.Double>();
+		TreeMap<Integer, Double> termWeightMap = new TreeMap<Integer, Double>();
 
-		termWeightMap.put (
-			1,
-			1. / 12.
-		);
+		termWeightMap.put (1, 1. / 12.);
 
-		try
-		{
+		try {
 			return seriesEstimate (
 				x,
 				termWeightMap,
-				new org.drip.numerical.estimation.R1ToR1Series (
-					org.drip.numerical.estimation.R1ToR1SeriesTerm.Asymptotic(),
-					true,
-					termWeightMap
-				)
+				new R1ToR1Series (R1ToR1SeriesTerm.Asymptotic(), true, termWeightMap)
 			);
-		}
-		catch (java.lang.Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -231,46 +235,26 @@ public class StirlingSeries extends org.drip.numerical.estimation.R1ToR1Estimato
 	 * @return The Bounded Function Estimates along with the Higher Order Nemes Correction
 	 */
 
-	public org.drip.numerical.estimation.R1Estimate nemesCorrectionEstimate (
+	public R1Estimate nemesCorrectionEstimate (
 		final double x)
 	{
-		java.util.TreeMap<java.lang.Integer, java.lang.Double> termWeightMap = new
-			java.util.TreeMap<java.lang.Integer, java.lang.Double>();
+		TreeMap<Integer, Double> termWeightMap = new TreeMap<Integer, Double>();
 
-		termWeightMap.put (
-			1,
-			1. / 12.
-		);
+		termWeightMap.put (1, 1. / 12.);
 
-		termWeightMap.put (
-			2,
-			1. / 288.
-		);
+		termWeightMap.put (2, 1. / 288.);
 
-		termWeightMap.put (
-			3,
-			-139. / 51840.
-		);
+		termWeightMap.put (3, -139. / 51840.);
 
-		termWeightMap.put (
-			4,
-			-571. / 2488320.
-		);
+		termWeightMap.put (4, -571. / 2488320.);
 
-		try
-		{
+		try {
 			return seriesEstimate (
 				x,
 				termWeightMap,
-				new org.drip.numerical.estimation.R1ToR1Series (
-					org.drip.numerical.estimation.R1ToR1SeriesTerm.Asymptotic(),
-					true,
-					termWeightMap
-				)
+				new R1ToR1Series (R1ToR1SeriesTerm.Asymptotic(), true, termWeightMap)
 			);
-		}
-		catch (java.lang.Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 

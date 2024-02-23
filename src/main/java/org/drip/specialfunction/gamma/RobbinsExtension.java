@@ -1,11 +1,17 @@
 
 package org.drip.specialfunction.gamma;
 
+import org.drip.numerical.differentiation.DerivativeControl;
+import org.drip.numerical.estimation.R1Estimate;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -78,7 +84,7 @@ package org.drip.specialfunction.gamma;
 
 /**
  * <i>RobbinsExtension</i> implements the Robbins (1955) Extension of the Stirling's Approximation of the
- * Gamma Function. The References are:
+ * 	Gamma Function. The References are:
  * 
  * <br><br>
  * 	<ul>
@@ -103,50 +109,57 @@ package org.drip.specialfunction.gamma;
  * 				https://en.wikipedia.org/wiki/Stirling%27s_approximation
  * 		</li>
  * 	</ul>
+ * 
+ * 	It provides the following functionality:
  *
- *	<br><br>
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FunctionAnalysisLibrary.md">Function Analysis Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md">Special Function Implementation Analysis</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/gamma/README.md">Analytic/Series/Integral Gamma Estimators</a></li>
+ * 		<li><i>RobbinsExtension</i> Constructor</li>
  *  </ul>
+ *
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FunctionAnalysisLibrary.md">Function Analysis Library</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md">Special Function Implementation and Analysis</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/gamma/README.md">Analytic/Series/Integral Gamma Estimators</a></td></tr>
+ *  </table>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class RobbinsExtension extends org.drip.specialfunction.gamma.StirlingSeries
+public class RobbinsExtension extends StirlingSeries
 {
 
 	/**
-	 * RobbinsExtension Constructor
+	 * <i>RobbinsExtension</i> Constructor
 	 * 
-	 * @param dc The Derivative Control
+	 * @param derivativeControl The Derivative Control
 	 */
 
 	public RobbinsExtension (
-		final org.drip.numerical.differentiation.DerivativeControl dc)
+		final DerivativeControl derivativeControl)
 	{
-		super (dc);
+		super (derivativeControl);
 	}
 
-	@Override public org.drip.numerical.estimation.R1Estimate boundedEstimate (
+	@Override public R1Estimate boundedEstimate (
 		final double x)
 	{
-		try
-		{
-			double deMoivreTerm = deMoivreTerm (x);
+		try {
+			double estimate = Math.sqrt (2. * Math.PI) * deMoivreTerm (x);
 
-			double estimate = java.lang.Math.sqrt (2. * java.lang.Math.PI) * deMoivreTerm;
-
-			return new org.drip.numerical.estimation.R1Estimate (
+			return new R1Estimate (
 				estimate,
-				estimate * java.lang.Math.exp (1. / (12. * x + 1.)),
-				estimate * java.lang.Math.exp (1. / (12. * x))
+				estimate * Math.exp (1. / (12. * x + 1.)),
+				estimate * Math.exp (1. / (12. * x))
 			);
-		}
-		catch (java.lang.Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
