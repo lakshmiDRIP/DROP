@@ -1,11 +1,17 @@
 
 package org.drip.specialfunction.group;
 
+import org.drip.function.definition.R1ToR1;
+import org.drip.numerical.common.NumberUtil;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -78,7 +84,7 @@ package org.drip.specialfunction.group;
 
 /**
  * <i>FuchsianEquation</i> holds the Isomorphic Order, Coexter Singularity Index, and the Klein-4
- * Transformations of the 2F1 Regular Hyper-geometric Function. The References are:
+ * 	Transformations of the 2F1 Regular Hyper-geometric Function. The References are:
  * 
  * <br><br>
  * 	<ul>
@@ -103,14 +109,29 @@ package org.drip.specialfunction.group;
  * 			Wikipedia (2019): Hyper-geometric Function https://en.wikipedia.org/wiki/Hypergeometric_function
  * 		</li>
  * 	</ul>
+ * 
+ * 	It provides the following functionality:
  *
- *	<br><br>
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FunctionAnalysisLibrary.md">Function Analysis Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md">Special Function Implementation Analysis</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/group/README.md">Special Function Singularity Solution Group</a></li>
+ * 		<li><i>FuchsianEquation</i> Constructor</li>
+ * 		<li>Retrieve the Coxeter Singularity Index</li>
+ * 		<li>Retrieve the Isomorphy Order</li>
+ * 		<li>Retrieve the Klein Group of Isomorphic Functions</li>
  *  </ul>
+ *
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FunctionAnalysisLibrary.md">Function Analysis Library</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md">Special Function Implementation and Analysis</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/group/README.md">Special Function Singularity Solution Group</a></td></tr>
+ *  </table>
  *
  * @author Lakshmi Krishnamurthy
  */
@@ -118,45 +139,40 @@ package org.drip.specialfunction.group;
 public class FuchsianEquation
 {
 	private int _isomorphyOrder = -1;
-	private org.drip.function.definition.R1ToR1[] _kleinGroupFunctionArray = null;
+	private R1ToR1[] _kleinGroupFunctionArray = null;
 
 	/**
-	 * FuchsianEquation Constructor
+	 * <i>FuchsianEquation</i> Constructor
 	 * 
 	 * @param kleinGroupFunctionArray Array of the Klein Group Isomorphic Functions
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public FuchsianEquation (
-		final org.drip.function.definition.R1ToR1[] kleinGroupFunctionArray)
-		throws java.lang.Exception
+		final R1ToR1[] kleinGroupFunctionArray)
+		throws Exception
 	{
-		if (null == (_kleinGroupFunctionArray = kleinGroupFunctionArray))
-		{
-			throw new java.lang.Exception ("FuchsianEquation Constructor => Invalid Inputs");
+		if (null == (_kleinGroupFunctionArray = kleinGroupFunctionArray)) {
+			throw new Exception ("FuchsianEquation Constructor => Invalid Inputs");
 		}
 
 		int coxeterSingularityIndex = _kleinGroupFunctionArray.length;
 
-		if (0 == coxeterSingularityIndex)
-		{
+		if (0 == coxeterSingularityIndex) {
 			throw new java.lang.Exception ("FuchsianEquation Constructor => Invalid Inputs");
 		}
 
-		_isomorphyOrder = org.drip.numerical.common.NumberUtil.Factorial (coxeterSingularityIndex);
+		_isomorphyOrder = NumberUtil.Factorial (coxeterSingularityIndex);
 
-		for (int kleinGroupFunctionIndex = 0;
-			kleinGroupFunctionIndex < coxeterSingularityIndex;
+		for (int kleinGroupFunctionIndex = 0; kleinGroupFunctionIndex < coxeterSingularityIndex;
 			++kleinGroupFunctionIndex)
 		{
-			if (null == _kleinGroupFunctionArray[kleinGroupFunctionIndex])
-			{
-				throw new java.lang.Exception ("FuchsianEquation Constructor => Invalid Inputs");
+			if (null == _kleinGroupFunctionArray[kleinGroupFunctionIndex]) {
+				throw new Exception ("FuchsianEquation Constructor => Invalid Inputs");
 			}
 
-			if (0 != kleinGroupFunctionIndex)
-			{
+			if (0 != kleinGroupFunctionIndex) {
 				_isomorphyOrder = _isomorphyOrder * 2;
 			}
 		}
