@@ -1,11 +1,23 @@
 
 package org.drip.specialfunction.group;
 
+import java.util.List;
+import java.util.Map;
+
+import org.drip.function.definition.R1ToR1;
+import org.drip.specialfunction.definition.RegularHypergeometricEstimator;
+import org.drip.specialfunction.ode.IndependentLinearSolutionList;
+import org.drip.specialfunction.ode.RegularSingularityIndependentSolution;
+import org.drip.specialfunction.ode.RegularSingularityIndependentSolution2F1;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -78,7 +90,7 @@ package org.drip.specialfunction.group;
 
 /**
  * <i>RiemannSphereSpanner</i> determines the Conformality and Tile Scheme of the Schwarz Singular Triangle
- * Maps over the Riemann Sphere composed of the 2F1 Solutions. The References are:
+ * 	Maps over the Riemann Sphere composed of the 2F1 Solutions. The References are:
  * 
  * <br><br>
  * 	<ul>
@@ -103,14 +115,26 @@ package org.drip.specialfunction.group;
  * 			Wikipedia (2019): Hyper-geometric Function https://en.wikipedia.org/wiki/Hypergeometric_function
  * 		</li>
  * 	</ul>
+ * 
+ * 	It provides the following functionality:
  *
- *	<br><br>
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FunctionAnalysisLibrary.md">Function Analysis Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md">Special Function Implementation Analysis</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/group/README.md">Special Function Singularity Solution Group</a></li>
+ * 		<li>Generate the 2F1 Instance of the RiemannSphereSpanner</li>
  *  </ul>
+ *
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FunctionAnalysisLibrary.md">Function Analysis Library</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md">Special Function Implementation and Analysis</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/group/README.md">Special Function Singularity Solution Group</a></td></tr>
+ *  </table>
  *
  * @author Lakshmi Krishnamurthy
  */
@@ -127,51 +151,42 @@ public class RiemannSphereSpanner2F1
 	 * @return The 2F1 Instance of the RiemannSphereSpanner
 	 */
 
-	public static final org.drip.specialfunction.group.RiemannSphereSpanner Generate (
-		final org.drip.specialfunction.definition.RegularHypergeometricEstimator
-			regularHypergeometricEstimator,
+	public static final RiemannSphereSpanner Generate (
+		final RegularHypergeometricEstimator regularHypergeometricEstimator,
 		final double[] connectionCoefficientArray)
 	{
-		if (null == connectionCoefficientArray || 3 != connectionCoefficientArray.length)
-		{
+		if (null == connectionCoefficientArray || 3 != connectionCoefficientArray.length) {
 			return null;
 		}
 
-		org.drip.specialfunction.ode.RegularSingularityIndependentSolution
-			regularSingularityIndependentSolution2F1 =
-				org.drip.specialfunction.ode.RegularSingularityIndependentSolution2F1.Create
-					(regularHypergeometricEstimator);
+		RegularSingularityIndependentSolution regularSingularityIndependentSolution2F1 =
+			RegularSingularityIndependentSolution2F1.Create (regularHypergeometricEstimator);
 
-		if (null == regularSingularityIndependentSolution2F1)
-		{
+		if (null == regularSingularityIndependentSolution2F1) {
 			return null;
 		}
 
-		java.util.Map<java.lang.Double, org.drip.specialfunction.ode.IndependentLinearSolutionList>
-			linearSolutionFunctionMap = regularSingularityIndependentSolution2F1.linearSolutionFunctionMap();
+		Map<Double, IndependentLinearSolutionList> linearSolutionFunctionMap =
+			regularSingularityIndependentSolution2F1.linearSolutionFunctionMap();
 
 		if (null == linearSolutionFunctionMap ||
 			!linearSolutionFunctionMap.containsKey (0.) ||
 			!linearSolutionFunctionMap.containsKey (1.) ||
-			!linearSolutionFunctionMap.containsKey (java.lang.Double.POSITIVE_INFINITY))
+			!linearSolutionFunctionMap.containsKey (Double.POSITIVE_INFINITY))
 		{
 			return null;
 		}
 
-		org.drip.specialfunction.group.SchwarzTriangleMap[] schwarzTriangleMapArray = new
-			org.drip.specialfunction.group.SchwarzTriangleMap[3];
+		SchwarzTriangleMap[] schwarzTriangleMapArray = new SchwarzTriangleMap[3];
 
-		try
-		{
-			java.util.List<org.drip.function.definition.R1ToR1> solutionFunctionList0 =
-				linearSolutionFunctionMap.get (0.).solutionFunctionList();
+		try {
+			List<R1ToR1> solutionFunctionList0 = linearSolutionFunctionMap.get (0.).solutionFunctionList();
 
-			schwarzTriangleMapArray[0] = new org.drip.specialfunction.group.SchwarzTriangleMap (
+			schwarzTriangleMapArray[0] = new SchwarzTriangleMap (
 				0.,
 				solutionFunctionList0.get (0),
 				solutionFunctionList0.get (1),
-				new org.drip.function.definition.R1ToR1 (null)
-				{
+				new R1ToR1 (null) {
 					@Override public double evaluate (
 						final double z)
 					{
@@ -181,15 +196,13 @@ public class RiemannSphereSpanner2F1
 				connectionCoefficientArray[0]
 			);
 
-			java.util.List<org.drip.function.definition.R1ToR1> solutionFunctionList1 =
-				linearSolutionFunctionMap.get (1.).solutionFunctionList();
+			List<R1ToR1> solutionFunctionList1 = linearSolutionFunctionMap.get (1.).solutionFunctionList();
 
-			schwarzTriangleMapArray[1] = new org.drip.specialfunction.group.SchwarzTriangleMap (
+			schwarzTriangleMapArray[1] = new SchwarzTriangleMap (
 				1.,
 				solutionFunctionList1.get (0),
 				solutionFunctionList1.get (1),
-				new org.drip.function.definition.R1ToR1 (null)
-				{
+				new R1ToR1 (null) {
 					@Override public double evaluate (
 						final double z)
 					{
@@ -199,15 +212,15 @@ public class RiemannSphereSpanner2F1
 				connectionCoefficientArray[1]
 			);
 
-			java.util.List<org.drip.function.definition.R1ToR1> solutionFunctionList2 =
-				linearSolutionFunctionMap.get (java.lang.Double.POSITIVE_INFINITY).solutionFunctionList();
+			List<R1ToR1> solutionFunctionList2 = linearSolutionFunctionMap.get (
+				Double.POSITIVE_INFINITY
+			).solutionFunctionList();
 
-			schwarzTriangleMapArray[2] = new org.drip.specialfunction.group.SchwarzTriangleMap (
-				java.lang.Double.POSITIVE_INFINITY,
+			schwarzTriangleMapArray[2] = new SchwarzTriangleMap (
+				Double.POSITIVE_INFINITY,
 				solutionFunctionList2.get (0),
 				solutionFunctionList2.get (1),
-				new org.drip.function.definition.R1ToR1 (null)
-				{
+				new R1ToR1 (null) {
 					@Override public double evaluate (
 						final double z)
 					{
@@ -217,10 +230,8 @@ public class RiemannSphereSpanner2F1
 				connectionCoefficientArray[2]
 			);
 
-			return new org.drip.specialfunction.group.RiemannSphereSpanner (schwarzTriangleMapArray);
-		}
-		catch (java.lang.Exception e)
-		{
+			return new RiemannSphereSpanner (schwarzTriangleMapArray);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
