@@ -1,11 +1,17 @@
 
 package org.drip.specialfunction.group;
 
+import org.drip.function.definition.R1ToR1;
+import org.drip.numerical.common.NumberUtil;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -78,7 +84,7 @@ package org.drip.specialfunction.group;
 
 /**
  * <i>SchwarzTriangleMap</i> contains the Ratio of the Linearly Independent Solution pair corresponding to a
- * given Singularity of the Hyper-geometric 2F1 Function. The References are:
+ * 	given Singularity of the Hyper-geometric 2F1 Function. The References are:
  * 
  * <br><br>
  * 	<ul>
@@ -103,28 +109,48 @@ package org.drip.specialfunction.group;
  * 			Wikipedia (2019): Hyper-geometric Function https://en.wikipedia.org/wiki/Hypergeometric_function
  * 		</li>
  * 	</ul>
+ * 
+ * 	It provides the following functionality:
  *
- *	<br><br>
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FunctionAnalysisLibrary.md">Function Analysis Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md">Special Function Implementation Analysis</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/group/README.md">Special Function Singularity Solution Group</a></li>
+ * 		<li><i>SchwarzTriangleMap</i> Constructor</li>
+ * 		<li>Retrieve the Singularity</li>
+ * 		<li>Retrieve the Singularity Solution 0</li>
+ * 		<li>Retrieve the Singularity Solution 1</li>
+ * 		<li>Retrieve the Singularity Asymptote Order Term</li>
+ * 		<li>Retrieve the Connection Coefficient</li>
+ * 		<li>Indicate if the Triangle Map is Conformal</li>
+ * 		<li>Generate the s-Function corresponding to the Singularity Solution Pair</li>
+ * 		<li>Generate the Schwarz-Christoffel Triangle Vertex</li>
  *  </ul>
+ *
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FunctionAnalysisLibrary.md">Function Analysis Library</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md">Special Function Implementation and Analysis</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/group/README.md">Special Function Singularity Solution Group</a></td></tr>
+ *  </table>
  *
  * @author Lakshmi Krishnamurthy
  */
 
 public class SchwarzTriangleMap
 {
-	private double _singularity = java.lang.Double.NaN;
-	private double _connectionCoefficient = java.lang.Double.NaN;
-	private org.drip.function.definition.R1ToR1 _singularitySolution0 = null;
-	private org.drip.function.definition.R1ToR1 _singularitySolution1 = null;
-	private org.drip.function.definition.R1ToR1 _singularityAsymptoteOrderTerm = null;
+	private double _singularity = Double.NaN;
+	private R1ToR1 _singularitySolution0 = null;
+	private R1ToR1 _singularitySolution1 = null;
+	private double _connectionCoefficient = Double.NaN;
+	private R1ToR1 _singularityAsymptoteOrderTerm = null;
 
 	/**
-	 * SchwarzTriangleMap Constructor
+	 * <i>SchwarzTriangleMap</i> Constructor
 	 * 
 	 * @param singularity The Singularity
 	 * @param singularitySolution0 The Singularity Solution 0
@@ -132,24 +158,24 @@ public class SchwarzTriangleMap
 	 * @param singularityAsymptoteOrderTerm The Singularity Asymptote Order Term
 	 * @param connectionCoefficient The Connection Coefficient
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public SchwarzTriangleMap (
 		final double singularity,
-		final org.drip.function.definition.R1ToR1 singularitySolution0,
-		final org.drip.function.definition.R1ToR1 singularitySolution1,
-		final org.drip.function.definition.R1ToR1 singularityAsymptoteOrderTerm,
+		final R1ToR1 singularitySolution0,
+		final R1ToR1 singularitySolution1,
+		final R1ToR1 singularityAsymptoteOrderTerm,
 		final double connectionCoefficient)
-		throws java.lang.Exception
+		throws Exception
 	{
-		if (java.lang.Double.isNaN (_singularity = singularity) ||
+		if (Double.isNaN (_singularity = singularity) ||
 			null == (_singularitySolution0 = singularitySolution0) ||
 			null == (_singularitySolution1 = singularitySolution1) ||
 			null == (_singularityAsymptoteOrderTerm = singularityAsymptoteOrderTerm) ||
-			!org.drip.numerical.common.NumberUtil.IsValid (_connectionCoefficient = connectionCoefficient))
+			!NumberUtil.IsValid (_connectionCoefficient = connectionCoefficient))
 		{
-			throw new java.lang.Exception ("SchwarzTriangleMap Constructor => Invalid Inputs");
+			throw new Exception ("SchwarzTriangleMap Constructor => Invalid Inputs");
 		}
 	}
 
@@ -170,7 +196,7 @@ public class SchwarzTriangleMap
 	 * @return The Singularity Solution 0
 	 */
 
-	public org.drip.function.definition.R1ToR1 singularitySolution0()
+	public R1ToR1 singularitySolution0()
 	{
 		return _singularitySolution0;
 	}
@@ -181,7 +207,7 @@ public class SchwarzTriangleMap
 	 * @return The Singularity Solution 1
 	 */
 
-	public org.drip.function.definition.R1ToR1 singularitySolution1()
+	public R1ToR1 singularitySolution1()
 	{
 		return _singularitySolution1;
 	}
@@ -192,7 +218,7 @@ public class SchwarzTriangleMap
 	 * @return The Singularity Asymptote Order Term
 	 */
 
-	public org.drip.function.definition.R1ToR1 singularityAsymptoteOrderTerm()
+	public R1ToR1 singularityAsymptoteOrderTerm()
 	{
 		return _singularityAsymptoteOrderTerm;
 	}
@@ -225,13 +251,12 @@ public class SchwarzTriangleMap
 	 * @return The s-Function corresponding to the Singularity Solution Pair
 	 */
 
-	public org.drip.function.definition.R1ToR1 sFunction()
+	public R1ToR1 sFunction()
 	{
-		return new org.drip.function.definition.R1ToR1 (null)
-		{
+		return new R1ToR1 (null) {
 			@Override public double evaluate (
 				final double z)
-				throws java.lang.Exception
+				throws Exception
 			{
 				return _singularitySolution1.evaluate (z) / _singularitySolution0.evaluate (z);
 			}
@@ -244,29 +269,25 @@ public class SchwarzTriangleMap
 	 * @return The Schwarz-Christoffel Triangle Vertex
 	 */
 
-	public org.drip.specialfunction.group.SchwarzChristoffelVertex schwarzChristoffelVertex()
+	public SchwarzChristoffelVertex schwarzChristoffelVertex()
 	{
-		try
-		{
-			return new org.drip.specialfunction.group.SchwarzChristoffelVertex (
-				new org.drip.function.definition.R1ToR1 (null)
-				{
+		try {
+			return new SchwarzChristoffelVertex (
+				new R1ToR1 (null) {
 					@Override public double evaluate (
 						final double z)
-						throws java.lang.Exception
+						throws Exception
 					{
-						return java.lang.Math.pow (
+						return Math.pow (
 							_singularityAsymptoteOrderTerm.evaluate (z),
 							_connectionCoefficient
 						);
 					}
 				},
 				_singularityAsymptoteOrderTerm,
-				java.lang.Math.PI * _connectionCoefficient
+				Math.PI * _connectionCoefficient
 			);
-		}
-		catch (java.lang.Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 

@@ -1,11 +1,17 @@
 
 package org.drip.specialfunction.group;
 
+import org.drip.function.definition.R1ToR1;
+import org.drip.numerical.common.NumberUtil;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -78,7 +84,7 @@ package org.drip.specialfunction.group;
 
 /**
  * <i>SchwarzChristoffelVertex</i> holds the Mobius Form of the s-Function and its Singularity Asymptote. The
- * References are:
+ * 	References are:
  * 
  * <br><br>
  * 	<ul>
@@ -103,45 +109,60 @@ package org.drip.specialfunction.group;
  * 			Wikipedia (2019): Hyper-geometric Function https://en.wikipedia.org/wiki/Hypergeometric_function
  * 		</li>
  * 	</ul>
+ * 
+ * 	It provides the following functionality:
  *
- *	<br><br>
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FunctionAnalysisLibrary.md">Function Analysis Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md">Special Function Implementation Analysis</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/group/README.md">Special Function Singularity Solution Group</a></li>
+ * 		<li><i>SchwarzChristoffelVertex</i> Constructor</li>
+ * 		<li>Retrieve the Mobius Form of the s-Function</li>
+ * 		<li>Retrieve the Singularity Asymptote of the s-Function</li>
+ * 		<li>Retrieve the Circular Arc Angle of a Conformal s-Function</li>
  *  </ul>
+ *
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FunctionAnalysisLibrary.md">Function Analysis Library</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md">Special Function Implementation and Analysis</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/group/README.md">Special Function Singularity Solution Group</a></td></tr>
+ *  </table>
  *
  * @author Lakshmi Krishnamurthy
  */
 
 public class SchwarzChristoffelVertex
 {
-	private double _arcAngle = java.lang.Double.NaN;
-	private org.drip.function.definition.R1ToR1 _mobiusForm = null;
-	private org.drip.function.definition.R1ToR1 _singularityAsymptote = null;
+	private R1ToR1 _mobiusForm = null;
+	private double _arcAngle = Double.NaN;
+	private R1ToR1 _singularityAsymptote = null;
 
 	/**
-	 * SchwarzChristoffelVertex Constructor
+	 * <i>SchwarzChristoffelVertex</i> Constructor
 	 * 
 	 * @param mobiusForm Mobius Form of the s-Function
 	 * @param singularityAsymptote Singularity Asymptote of the s-Function
 	 * @param arcAngle Circular Arc Angle of a Conformal s-Function
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public SchwarzChristoffelVertex (
-		final org.drip.function.definition.R1ToR1 mobiusForm,
-		final org.drip.function.definition.R1ToR1 singularityAsymptote,
+		final R1ToR1 mobiusForm,
+		final R1ToR1 singularityAsymptote,
 		final double arcAngle)
-		throws java.lang.Exception
+		throws Exception
 	{
 		if (null == (_mobiusForm = mobiusForm) ||
 			null == (_singularityAsymptote = singularityAsymptote) ||
-			!org.drip.numerical.common.NumberUtil.IsValid (_arcAngle = arcAngle))
+			!NumberUtil.IsValid (_arcAngle = arcAngle))
 		{
-			throw new java.lang.Exception ("SchwarzChristoffelVertex Constructor => Invalid Inputs");
+			throw new Exception ("SchwarzChristoffelVertex Constructor => Invalid Inputs");
 		}
 	}
 
@@ -151,7 +172,7 @@ public class SchwarzChristoffelVertex
 	 * @return Mobius Form of the s-Function
 	 */
 
-	public org.drip.function.definition.R1ToR1 mobiusForm()
+	public R1ToR1 mobiusForm()
 	{
 		return _mobiusForm;
 	}
@@ -162,7 +183,7 @@ public class SchwarzChristoffelVertex
 	 * @return Singularity Asymptote of the s-Function
 	 */
 
-	public org.drip.function.definition.R1ToR1 singularityAsymptote()
+	public R1ToR1 singularityAsymptote()
 	{
 		return _singularityAsymptote;
 	}

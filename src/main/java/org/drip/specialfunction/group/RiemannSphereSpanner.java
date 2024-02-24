@@ -1,11 +1,16 @@
 
 package org.drip.specialfunction.group;
 
+import org.drip.numerical.common.NumberUtil;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -78,7 +83,7 @@ package org.drip.specialfunction.group;
 
 /**
  * <i>RiemannSphereSpanner</i> determines the Conformality and Tile Scheme of the Schwarz Singular Triangle
- * Maps over the Riemann Sphere. The References are:
+ * 	Maps over the Riemann Sphere. The References are:
  * 
  * <br><br>
  * 	<ul>
@@ -103,14 +108,33 @@ package org.drip.specialfunction.group;
  * 			Wikipedia (2019): Hyper-geometric Function https://en.wikipedia.org/wiki/Hypergeometric_function
  * 		</li>
  * 	</ul>
+ * 
+ * 	It provides the following functionality:
  *
- *	<br><br>
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FunctionAnalysisLibrary.md">Function Analysis Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md">Special Function Implementation Analysis</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/group/README.md">Special Function Singularity Solution Group</a></li>
+ * 		<li>Schwarz Triangle Tiles Nothing</li>
+ * 		<li>Schwarz Triangle Riemann Nothing</li>
+ * 		<li>Schwarz Triangle Complex Nothing</li>
+ * 		<li>Schwarz Triangle Upper Half Nothing</li>
+ * 		<li><i>RiemannSphereSpanner</i> Constructor</li>
+ * 		<li>Retrieve the Schwarz Triangle Map Array</li>
+ * 		<li>Indicate if the Spanner is Conformal</li>
+ * 		<li>Indicate how the Schwarz Triangle Tiles the Riemann Sphere</li>
  *  </ul>
+ *
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FunctionAnalysisLibrary.md">Function Analysis Library</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md">Special Function Implementation and Analysis</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/group/README.md">Special Function Singularity Solution Group</a></td></tr>
+ *  </table>
  *
  * @author Lakshmi Krishnamurthy
  */
@@ -142,37 +166,33 @@ public class RiemannSphereSpanner
 
 	public static final int SCHWARZ_TRIANGLE_TILES_UPPER_HALF_PLANE = 3;
 
-	private org.drip.specialfunction.group.SchwarzTriangleMap[] _schwarzTriangleMapArray = null;
+	private SchwarzTriangleMap[] _schwarzTriangleMapArray = null;
 
 	/**
-	 * RiemannSphereSpanner Constructor
+	 * <i>RiemannSphereSpanner</i> Constructor
 	 * 
 	 * @param schwarzTriangleMapArray The Schwarz Triangle Map Array
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public RiemannSphereSpanner (
-		final org.drip.specialfunction.group.SchwarzTriangleMap[] schwarzTriangleMapArray)
-		throws java.lang.Exception
+		final SchwarzTriangleMap[] schwarzTriangleMapArray)
+		throws Exception
 	{
-		if (null == (_schwarzTriangleMapArray = schwarzTriangleMapArray))
-		{
-			throw new java.lang.Exception ("RiemannSphereSpanner Constructor => Invalid Inputs");
+		if (null == (_schwarzTriangleMapArray = schwarzTriangleMapArray)) {
+			throw new Exception ("RiemannSphereSpanner Constructor => Invalid Inputs");
 		}
 
 		int singularityCount = _schwarzTriangleMapArray.length;
 
-		if (0 == singularityCount)
-		{
-			throw new java.lang.Exception ("RiemannSphereSpanner Constructor => Invalid Inputs");
+		if (0 == singularityCount) {
+			throw new Exception ("RiemannSphereSpanner Constructor => Invalid Inputs");
 		}
 
-		for (int singularityIndex = 0; singularityIndex < singularityCount; ++singularityIndex)
-		{
-			if (null == _schwarzTriangleMapArray[singularityCount])
-			{
-				throw new java.lang.Exception ("RiemannSphereSpanner Constructor => Invalid Inputs");
+		for (int singularityIndex = 0; singularityIndex < singularityCount; ++singularityIndex) {
+			if (null == _schwarzTriangleMapArray[singularityCount]) {
+				throw new Exception ("RiemannSphereSpanner Constructor => Invalid Inputs");
 			}
 		}
 	}
@@ -183,7 +203,7 @@ public class RiemannSphereSpanner
 	 * @return The Schwarz Triangle Map Array
 	 */
 
-	public org.drip.specialfunction.group.SchwarzTriangleMap[] schwarzTriangleMapArray()
+	public SchwarzTriangleMap[] schwarzTriangleMapArray()
 	{
 		return _schwarzTriangleMapArray;
 	}
@@ -196,10 +216,8 @@ public class RiemannSphereSpanner
 
 	public boolean isConformal()
 	{
-		for (org.drip.specialfunction.group.SchwarzTriangleMap schwarzTriangleMap : _schwarzTriangleMapArray)
-		{
-			if (!schwarzTriangleMap.isConformal())
-			{
+		for (SchwarzTriangleMap schwarzTriangleMap : _schwarzTriangleMapArray) {
+			if (!schwarzTriangleMap.isConformal()) {
 				return false;
 			}
 		}
@@ -212,34 +230,28 @@ public class RiemannSphereSpanner
 	 * 
 	 * @return Indicator of how the Schwarz Triangle Tiles the Riemann Sphere
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public int tileIndicator()
-		throws java.lang.Exception
+		throws Exception
 	{
 		double connectionCoefficientCumulative = 0.;
 		int singularityCount = _schwarzTriangleMapArray.length;
 
-		for (int singularityIndex = 0; singularityIndex < singularityCount; ++singularityIndex)
-		{
+		for (int singularityIndex = 0; singularityIndex < singularityCount; ++singularityIndex) {
 			double connectionCoefficient =
 				_schwarzTriangleMapArray[singularityIndex].connectionCoefficient();
 
-			if (!org.drip.numerical.common.NumberUtil.IsInteger (1. / connectionCoefficient))
-			{
+			if (!NumberUtil.IsInteger (1. / connectionCoefficient)) {
 				return SCHWARZ_TRIANGLE_TILES_NOTHING;
 			}
 
 			connectionCoefficientCumulative = connectionCoefficientCumulative + connectionCoefficient;
 		}
 
-		if (0. == connectionCoefficientCumulative)
-		{
-			return SCHWARZ_TRIANGLE_TILES_COMPLEX_PLANE;
-		}
-
-		return 0. > connectionCoefficientCumulative ? SCHWARZ_TRIANGLE_TILES_UPPER_HALF_PLANE :
+		return 0. == connectionCoefficientCumulative ? SCHWARZ_TRIANGLE_TILES_COMPLEX_PLANE :
+			0. > connectionCoefficientCumulative ? SCHWARZ_TRIANGLE_TILES_UPPER_HALF_PLANE :
 			SCHWARZ_TRIANGLE_TILES_COMPLEX_PLANE;
 	}
 }
