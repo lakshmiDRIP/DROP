@@ -1,11 +1,19 @@
 
 package org.drip.specialfunction.hankel;
 
+import org.drip.function.definition.CartesianComplexNumber;
+import org.drip.specialfunction.definition.SphericalBesselFirstKindEstimator;
+import org.drip.specialfunction.definition.SphericalBesselSecondKindEstimator;
+import org.drip.specialfunction.definition.SphericalHankelFirstKindEstimator;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -78,7 +86,7 @@ package org.drip.specialfunction.hankel;
 
 /**
  * <i>SmallH1</i> implements the Estimator for the Spherical Hankel Function of the First Kind. The
- * References are:
+ * 	References are:
  * 
  * <br><br>
  * 	<ul>
@@ -102,45 +110,55 @@ package org.drip.specialfunction.hankel;
  * 			Wikipedia (2019): Bessel Function https://en.wikipedia.org/wiki/Bessel_function
  * 		</li>
  * 	</ul>
+ * 
+ * 	It provides the following functionality:
  *
- *	<br><br>
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FunctionAnalysisLibrary.md">Function Analysis Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md">Special Function Implementation Analysis</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/hankel/README.md">Ordered Hankel Function Variant Estimators</a></li>
+ * 		<li><i>SmallH1</i> Constructor</li>
+ * 		<li>Retrieve the Estimator of the Spherical Bessel Function of the First Kind</li>
+ * 		<li>Retrieve the Estimator of the Spherical Bessel Function of the Second Kind</li>
  *  </ul>
+ *
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FunctionAnalysisLibrary.md">Function Analysis Library</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md">Special Function Implementation and Analysis</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/hankel/README.md">Ordered Hankel Function Variant Estimators</a></td></tr>
+ *  </table>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class SmallH1 extends org.drip.specialfunction.definition.SphericalHankelFirstKindEstimator
+public class SmallH1 extends SphericalHankelFirstKindEstimator
 {
-	private org.drip.specialfunction.definition.SphericalBesselFirstKindEstimator
-		_sphericalBesselFirstKindEstimator = null;
-	private org.drip.specialfunction.definition.SphericalBesselSecondKindEstimator
-		_sphericalBesselSecondKindEstimator = null;
+	private SphericalBesselFirstKindEstimator _sphericalBesselFirstKindEstimator = null;
+	private SphericalBesselSecondKindEstimator _sphericalBesselSecondKindEstimator = null;
 
 	/**
-	 * SmallH1 Constructor
+	 * <i>SmallH1</i> Constructor
 	 * 
 	 * @param sphericalBesselFirstKindEstimator Spherical Bessel Function of the First Kind Estimator
 	 * @param sphericalBesselSecondKindEstimator Spherical Bessel Function of the Second Kind Estimator
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public SmallH1 (
-		final org.drip.specialfunction.definition.SphericalBesselFirstKindEstimator
-			sphericalBesselFirstKindEstimator,
-		final org.drip.specialfunction.definition.SphericalBesselSecondKindEstimator
-			sphericalBesselSecondKindEstimator)
-		throws java.lang.Exception
+		final SphericalBesselFirstKindEstimator sphericalBesselFirstKindEstimator,
+		final SphericalBesselSecondKindEstimator sphericalBesselSecondKindEstimator)
+		throws Exception
 	{
 		if (null == (_sphericalBesselFirstKindEstimator = sphericalBesselFirstKindEstimator) ||
 			null == (_sphericalBesselSecondKindEstimator = sphericalBesselSecondKindEstimator))
 		{
-			throw new java.lang.Exception ("SmallH1 Constructor => Invalid Inputs");
+			throw new Exception ("SmallH1 Constructor => Invalid Inputs");
 		}
 	}
 
@@ -150,8 +168,7 @@ public class SmallH1 extends org.drip.specialfunction.definition.SphericalHankel
 	 * @return Estimator of the Spherical Bessel Function of the First Kind
 	 */
 
-	public org.drip.specialfunction.definition.SphericalBesselFirstKindEstimator
-		sphericalBesselFirstKindEstimator()
+	public SphericalBesselFirstKindEstimator sphericalBesselFirstKindEstimator()
 	{
 		return _sphericalBesselFirstKindEstimator;
 	}
@@ -162,31 +179,21 @@ public class SmallH1 extends org.drip.specialfunction.definition.SphericalHankel
 	 * @return Estimator of the Spherical Bessel Function of the Second Kind
 	 */
 
-	public org.drip.specialfunction.definition.SphericalBesselSecondKindEstimator
-		sphericalBesselSecondKindEstimator()
+	public SphericalBesselSecondKindEstimator sphericalBesselSecondKindEstimator()
 	{
 		return _sphericalBesselSecondKindEstimator;
 	}
 
-	@Override public org.drip.function.definition.CartesianComplexNumber smallH1 (
+	@Override public CartesianComplexNumber smallH1 (
 		final double alpha,
 		final double z)
 	{
-		try
-		{
-			return new org.drip.function.definition.CartesianComplexNumber (
-				_sphericalBesselFirstKindEstimator.smallJ (
-					alpha,
-					z
-				),
-				_sphericalBesselSecondKindEstimator.smallY (
-					alpha,
-					z
-				)
+		try {
+			return new CartesianComplexNumber (
+				_sphericalBesselFirstKindEstimator.smallJ (alpha, z),
+				_sphericalBesselSecondKindEstimator.smallY (alpha, z)
 			);
-		}
-		catch (java.lang.Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 

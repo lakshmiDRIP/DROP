@@ -1,11 +1,19 @@
 
 package org.drip.specialfunction.hankel;
 
+import org.drip.function.definition.CartesianComplexNumber;
+import org.drip.specialfunction.definition.BesselFirstKindEstimator;
+import org.drip.specialfunction.definition.BesselSecondKindEstimator;
+import org.drip.specialfunction.definition.HankelFirstKindEstimator;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -78,7 +86,7 @@ package org.drip.specialfunction.hankel;
 
 /**
  * <i>BigH1FromBigJBigY</i> implements the Estimator for the Cylindrical Hankel Function of the First Kind
- * from the Bessel Functions of the First Kind and the Second Kind. The References are:
+ * 	from the Bessel Functions of the First Kind and the Second Kind. The References are:
  * 
  * <br><br>
  * 	<ul>
@@ -102,41 +110,55 @@ package org.drip.specialfunction.hankel;
  * 			Wikipedia (2019): Bessel Function https://en.wikipedia.org/wiki/Bessel_function
  * 		</li>
  * 	</ul>
+ * 
+ * 	It provides the following functionality:
  *
- *	<br><br>
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FunctionAnalysisLibrary.md">Function Analysis Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md">Special Function Implementation Analysis</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/hankel/README.md">Ordered Hankel Function Variant Estimators</a></li>
+ * 		<li><i>BigH1FromBigJBigY</i> Constructor</li>
+ * 		<li>Retrieve the Estimator of the Bessel Function of the First Kind</li>
+ * 		<li>Retrieve the Estimator of the Bessel Function of the Second Kind</li>
  *  </ul>
+ *
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FunctionAnalysisLibrary.md">Function Analysis Library</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md">Special Function Implementation and Analysis</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/hankel/README.md">Ordered Hankel Function Variant Estimators</a></td></tr>
+ *  </table>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class BigH1FromBigJBigY extends org.drip.specialfunction.definition.HankelFirstKindEstimator
+public class BigH1FromBigJBigY extends HankelFirstKindEstimator
 {
-	private org.drip.specialfunction.definition.BesselFirstKindEstimator _besselFirstKindEstimator = null;
-	private org.drip.specialfunction.definition.BesselSecondKindEstimator _besselSecondKindEstimator = null;
+	private BesselFirstKindEstimator _besselFirstKindEstimator = null;
+	private BesselSecondKindEstimator _besselSecondKindEstimator = null;
 
 	/**
-	 * BigH1FromBigJBigY Constructor
+	 * <i>BigH1FromBigJBigY</i> Constructor
 	 * 
 	 * @param besselFirstKindEstimator Bessel Function of the First Kind Estimator
 	 * @param besselSecondKindEstimator Bessel Function of the Second Kind Estimator
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public BigH1FromBigJBigY (
-		final org.drip.specialfunction.definition.BesselFirstKindEstimator besselFirstKindEstimator,
-		final org.drip.specialfunction.definition.BesselSecondKindEstimator besselSecondKindEstimator)
-		throws java.lang.Exception
+		final BesselFirstKindEstimator besselFirstKindEstimator,
+		final BesselSecondKindEstimator besselSecondKindEstimator)
+		throws Exception
 	{
 		if (null == (_besselFirstKindEstimator = besselFirstKindEstimator) ||
 			null == (_besselSecondKindEstimator = besselSecondKindEstimator))
 		{
-			throw new java.lang.Exception ("BigH1FromBigJBigY Constructor => Invalid Inputs");
+			throw new Exception ("BigH1FromBigJBigY Constructor => Invalid Inputs");
 		}
 	}
 
@@ -146,7 +168,7 @@ public class BigH1FromBigJBigY extends org.drip.specialfunction.definition.Hanke
 	 * @return Estimator of the Bessel Function of the First Kind
 	 */
 
-	public org.drip.specialfunction.definition.BesselFirstKindEstimator besselFirstKindEstimator()
+	public BesselFirstKindEstimator besselFirstKindEstimator()
 	{
 		return _besselFirstKindEstimator;
 	}
@@ -157,30 +179,21 @@ public class BigH1FromBigJBigY extends org.drip.specialfunction.definition.Hanke
 	 * @return Estimator of the Bessel Function of the Second Kind
 	 */
 
-	public org.drip.specialfunction.definition.BesselSecondKindEstimator besselSecondKindEstimator()
+	public BesselSecondKindEstimator besselSecondKindEstimator()
 	{
 		return _besselSecondKindEstimator;
 	}
 
-	@Override public org.drip.function.definition.CartesianComplexNumber bigH1 (
+	@Override public CartesianComplexNumber bigH1 (
 		final double alpha,
 		final double z)
 	{
-		try
-		{
-			return new org.drip.function.definition.CartesianComplexNumber (
-				_besselFirstKindEstimator.bigJ (
-					alpha,
-					z
-				),
-				_besselSecondKindEstimator.bigY (
-					alpha,
-					z
-				)
+		try {
+			return new CartesianComplexNumber (
+				_besselFirstKindEstimator.bigJ (alpha, z),
+				_besselSecondKindEstimator.bigY (alpha, z)
 			);
-		}
-		catch (java.lang.Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
