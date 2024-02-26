@@ -1,11 +1,18 @@
 
 package org.drip.specialfunction.incompletegamma;
 
+import org.drip.function.definition.R1ToR1;
+import org.drip.numerical.common.NumberUtil;
+import org.drip.specialfunction.gamma.NemesAnalytic;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -78,7 +85,7 @@ package org.drip.specialfunction.incompletegamma;
 
 /**
  * <i>LimitAsymptote</i> implements the Asymptotes for the Lower/Upper Incomplete Gamma Function. The
- * References are:
+ * 	References are:
  * 
  * <br><br>
  * 	<ul>
@@ -105,14 +112,29 @@ package org.drip.specialfunction.incompletegamma;
  * 				https://en.wikipedia.org/wiki/Incomplete_gamma_function
  * 		</li>
  * 	</ul>
+ * 
+ * 	It provides the following functionality:
  *
- *	<br><br>
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FunctionAnalysisLibrary.md">Function Analysis Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md">Special Function Implementation Analysis</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/gammaincomplete/README.md">Upper/Lower Incomplete Gamma Functions</a></li>
+ * 		<li>Construct the Lower Incomplete Gamma Asymptote Function</li>
+ * 		<li>Construct the Upper Incomplete Gamma Asymptote Function</li>
+ * 		<li>Retrieve the z tends to Zero Asymptote</li>
+ * 		<li>Retrieve the z tends to Infinity Asymptote</li>
  *  </ul>
+ *
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FunctionAnalysisLibrary.md">Function Analysis Library</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md">Special Function Implementation and Analysis</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/incompletegamma/README.md">Upper/Lower Incomplete Gamma Functions</a></td></tr>
+ *  </table>
  *
  * @author Lakshmi Krishnamurthy
  */
@@ -128,56 +150,45 @@ public abstract class LimitAsymptote
 
 	public static final LimitAsymptote Lower()
 	{
-		return new LimitAsymptote()
-		{
-
-			@Override public org.drip.function.definition.R1ToR1 zZero (
+		return new LimitAsymptote() {
+			@Override public R1ToR1 zZero (
 				final double s)
 			{
-				if (!org.drip.numerical.common.NumberUtil.IsValid (s))
-				{
+				if (!NumberUtil.IsValid (s)) {
 					return null;
 				}
 
-				return new org.drip.function.definition.R1ToR1 (null)
-				{
+				return new R1ToR1 (null) {
 					@Override public double evaluate (
 						final double z)
-						throws java.lang.Exception
+						throws Exception
 					{
-						if (!org.drip.numerical.common.NumberUtil.IsValid (z) || z < 0.)
-						{
-							throw new java.lang.Exception ("LimitAsymptote::Lower::Zero::evaluate");
+						if (!NumberUtil.IsValid (z) || 0. > z) {
+							throw new Exception ("LimitAsymptote::Lower::Zero::evaluate");
 						}
 
-						return java.lang.Math.pow (
-							z,
-							s
-						) / s;
+						return Math.pow (z, s) / s;
 					}
 				};
 			}
 
-			@Override public org.drip.function.definition.R1ToR1 zInfinity (
+			@Override public R1ToR1 zInfinity (
 				final double s)
 			{
-				if (!org.drip.numerical.common.NumberUtil.IsValid (s))
-				{
+				if (!NumberUtil.IsValid (s)) {
 					return null;
 				}
 
-				return new org.drip.function.definition.R1ToR1 (null)
-				{
+				return new R1ToR1 (null) {
 					@Override public double evaluate (
 						final double z)
-						throws java.lang.Exception
+						throws Exception
 					{
-						if (!org.drip.numerical.common.NumberUtil.IsValid (z) || z < 0.)
-						{
-							throw new java.lang.Exception ("LimitAsymptote::Lower::Infinity::evaluate");
+						if (!NumberUtil.IsValid (z) || 0. > z) {
+							throw new Exception ("LimitAsymptote::Lower::Infinity::evaluate");
 						}
 
-						return new org.drip.specialfunction.gamma.NemesAnalytic (null).evaluate (s);
+						return new NemesAnalytic (null).evaluate (s);
 					}
 				};
 			}
@@ -192,38 +203,30 @@ public abstract class LimitAsymptote
 
 	public static final LimitAsymptote Upper()
 	{
-		return new LimitAsymptote()
-		{
-
-			@Override public org.drip.function.definition.R1ToR1 zZero (
+		return new LimitAsymptote() {
+			@Override public R1ToR1 zZero (
 				final double s)
 			{
 				return null;
 			}
 
-			@Override public org.drip.function.definition.R1ToR1 zInfinity (
+			@Override public R1ToR1 zInfinity (
 				final double s)
 			{
-				if (!org.drip.numerical.common.NumberUtil.IsValid (s))
-				{
+				if (!NumberUtil.IsValid (s)) {
 					return null;
 				}
 
-				return new org.drip.function.definition.R1ToR1 (null)
-				{
+				return new R1ToR1 (null) {
 					@Override public double evaluate (
 						final double z)
-						throws java.lang.Exception
+						throws Exception
 					{
-						if (!org.drip.numerical.common.NumberUtil.IsValid (z) || z < 0.)
-						{
-							throw new java.lang.Exception ("LimitAsymptote::Upper::Infinity::evaluate");
+						if (!NumberUtil.IsValid (z) || 0. > z) {
+							throw new Exception ("LimitAsymptote::Upper::Infinity::evaluate");
 						}
 
-						return java.lang.Math.pow (
-							z,
-							s - 1
-						) * java.lang.Math.exp (-z);
+						return Math.pow (z, s - 1) * Math.exp (-z);
 					}
 				};
 			}
@@ -242,8 +245,9 @@ public abstract class LimitAsymptote
 	 * @return The z tends to Zero Asymptote
 	 */
 
-	public abstract org.drip.function.definition.R1ToR1 zZero (
-		final double s);
+	public abstract R1ToR1 zZero (
+		final double s
+	);
 
 	/**
 	 * Retrieve the z tends to Infinity Asymptote
@@ -253,6 +257,7 @@ public abstract class LimitAsymptote
 	 * @return The z tends to Infinity Asymptote
 	 */
 
-	public abstract org.drip.function.definition.R1ToR1 zInfinity (
-		final double s);
+	public abstract R1ToR1 zInfinity (
+		final double s
+	);
 }
