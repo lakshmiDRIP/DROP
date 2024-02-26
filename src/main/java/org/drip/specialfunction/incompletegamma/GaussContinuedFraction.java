@@ -1,11 +1,16 @@
 
 package org.drip.specialfunction.incompletegamma;
 
+import org.drip.numerical.common.NumberUtil;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -78,7 +83,7 @@ package org.drip.specialfunction.incompletegamma;
 
 /**
  * <i>GaussContinuedFraction</i> implements the Gauss Continued Fraction Based Estimates for the Lower/Upper
- * Incomplete Gamma Function. The References are:
+ * 	Incomplete Gamma Function. The References are:
  * 
  * <br><br>
  * 	<ul>
@@ -105,14 +110,28 @@ package org.drip.specialfunction.incompletegamma;
  * 				https://en.wikipedia.org/wiki/Incomplete_gamma_function
  * 		</li>
  * 	</ul>
+ * 
+ * 	It provides the following functionality:
  *
- *	<br><br>
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FunctionAnalysisLibrary.md">Function Analysis Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md">Special Function Implementation Analysis</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/gammaincomplete/README.md">Upper/Lower Incomplete Gamma Functions</a></li>
+ * 		<li>Compute the Lower Incomplete Gamma Function using Gauss Continued Fraction</li>
+ * 		<li>Compute the Upper Incomplete Gamma Function using Abramowitz-Stegun Gauss Continued Fraction</li>
+ * 		<li>Compute the Upper Incomplete Gamma Function using Gauss Continued Fraction</li>
  *  </ul>
+ *
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FunctionAnalysisLibrary.md">Function Analysis Library</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md">Special Function Implementation and Analysis</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/incompletegamma/README.md">Upper/Lower Incomplete Gamma Functions</a></td></tr>
+ *  </table>
  *
  * @author Lakshmi Krishnamurthy
  */
@@ -126,19 +145,8 @@ public class GaussContinuedFraction
 		final int k,
 		final int n)
 	{
-		if (k == n)
-		{
-			return 0;
-		}
-
-		double bottom = s + 2 * k + 1 + ((k + 1) * z) / Lower (
-			z,
-			s,
-			k + 1,
-			n
-		);
-
-		return s + 2 * k - (((k + s) * z) / bottom);
+		return k == n ? 0. :
+			s + 2 * k - (((k + s) * z) / (s + 2 * k + 1 + ((k + 1) * z) / Lower (z, s, k + 1, n)));
 	}
 
 	private static final double UpperAbramowitzStegun2007 (
@@ -147,19 +155,7 @@ public class GaussContinuedFraction
 		final int k,
 		final int n)
 	{
-		if (k == n)
-		{
-			return 0;
-		}
-
-		double bottom = 1 + (k + 1.) / UpperAbramowitzStegun2007 (
-			z,
-			s,
-			k + 1,
-			n
-		);
-
-		return z + (k + 1 - s) / bottom;
+		return k == n ? 0. : z + (k + 1 - s) / (1 + (k + 1.) / UpperAbramowitzStegun2007 (z, s, k + 1, n));
 	}
 
 	private static final double Upper (
@@ -168,17 +164,7 @@ public class GaussContinuedFraction
 		final int k,
 		final int n)
 	{
-		if (k == n)
-		{
-			return 0;
-		}
-
-		return 1. + 2. * k + z - s + (k + 1.) * ((s - k - 1.) / Upper (
-			z,
-			s,
-			k + 1,
-			n
-		));
+		return k == n ? 0. : 1. + 2. * k + z - s + (k + 1.) * ((s - k - 1.) / Upper (z, s, k + 1, n));
 	}
 
 	/**
@@ -197,24 +183,13 @@ public class GaussContinuedFraction
 		final double z,
 		final double s,
 		final int n)
-		throws java.lang.Exception
+		throws Exception
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (z) ||
-			!org.drip.numerical.common.NumberUtil.IsValid (s) ||
-			0 == n)
-		{
-			throw new java.lang.Exception ("GaussContinuedFraction::Lower => Invalid Inputs");
+		if (!NumberUtil.IsValid (z) || !NumberUtil.IsValid (s) || 0 == n) {
+			throw new Exception ("GaussContinuedFraction::Lower => Invalid Inputs");
 		}
 
-		return java.lang.Math.pow (
-			z,
-			s
-		) * java.lang.Math.exp (-z) / Lower (
-			z,
-			s,
-			0,
-			n
-		);
+		return Math.pow (z, s) * Math.exp (-z) / Lower (z, s, 0, n);
 	}
 
 	/**
@@ -226,32 +201,20 @@ public class GaussContinuedFraction
 	 * 
 	 * @return The Upper Incomplete Gamma Function using the Abramowitz-Stegun Gauss Continued Fraction
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public static final double UpperAbramowitzStegun2007 (
 		final double z,
 		final double s,
 		final int n)
-		throws java.lang.Exception
+		throws Exception
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (z) ||
-			!org.drip.numerical.common.NumberUtil.IsValid (s) ||
-			0 == n)
-		{
-			throw new java.lang.Exception
-				("GaussContinuedFraction::UpperAbramowitzStegun2007 => Invalid Inputs");
+		if (!NumberUtil.IsValid (z) || !NumberUtil.IsValid (s) || 0 == n) {
+			throw new Exception ("GaussContinuedFraction::UpperAbramowitzStegun2007 => Invalid Inputs");
 		}
 
-		return java.lang.Math.pow (
-			z,
-			s
-		) * java.lang.Math.exp (-z) / UpperAbramowitzStegun2007 (
-			z,
-			s,
-			0,
-			n
-		);
+		return Math.pow (z, s) * Math.exp (-z) / UpperAbramowitzStegun2007 (z, s, 0, n);
 	}
 
 	/**
@@ -263,30 +226,19 @@ public class GaussContinuedFraction
 	 * 
 	 * @return The Upper Incomplete Gamma Function using Gauss Continued Fraction
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public static final double Upper (
 		final double z,
 		final double s,
 		final int n)
-		throws java.lang.Exception
+		throws Exception
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (z) ||
-			!org.drip.numerical.common.NumberUtil.IsValid (s) ||
-			0 == n)
-		{
-			throw new java.lang.Exception ("GaussContinuedFraction::Upper => Invalid Inputs");
+		if (!NumberUtil.IsValid (z) || !NumberUtil.IsValid (s) || 0 == n) {
+			throw new Exception ("GaussContinuedFraction::Upper => Invalid Inputs");
 		}
 
-		return java.lang.Math.pow (
-			z,
-			s
-		) * java.lang.Math.exp (-z) / Upper (
-			z,
-			s,
-			0,
-			n
-		);
+		return Math.pow (z, s) * Math.exp (-z) / Upper (z, s, 0, n);
 	}
 }

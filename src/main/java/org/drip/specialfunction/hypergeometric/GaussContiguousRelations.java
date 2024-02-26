@@ -1,11 +1,17 @@
 
 package org.drip.specialfunction.hypergeometric;
 
+import org.drip.specialfunction.definition.HypergeometricParameters;
+import org.drip.specialfunction.definition.RegularHypergeometricEstimator;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -78,7 +84,7 @@ package org.drip.specialfunction.hypergeometric;
 
 /**
  * <i>GaussContiguousRelations</i> holds the Gauss Contiguous 2F1 Relations of the Regular Hyper-geometric
- * Function. The References are:
+ * 	Function. The References are:
  * 
  * <br><br>
  * 	<ul>
@@ -103,47 +109,64 @@ package org.drip.specialfunction.hypergeometric;
  * 			Wikipedia (2019): Hyper-geometric Function https://en.wikipedia.org/wiki/Hypergeometric_function
  * 		</li>
  * 	</ul>
+ * 
+ * 	It provides the following functionality:
  *
- *	<br><br>
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FunctionAnalysisLibrary.md">Function Analysis Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md">Special Function Implementation Analysis</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/hypergeometric/README.md">Hyper-geometric Function Estimation Schemes</a></li>
+ * 		<li><i>GaussContiguousRelations</i> Constructor</li>
+ * 		<li>Retrieve the a+ Gauss Contiguous Function</li>
+ * 		<li>Retrieve the a- Gauss Contiguous Function</li>
+ * 		<li>Retrieve the b+ Gauss Contiguous Function</li>
+ * 		<li>Retrieve the b- Gauss Contiguous Function</li>
+ * 		<li>Retrieve the c+ Gauss Contiguous Function</li>
+ * 		<li>Retrieve the c- Gauss Contiguous Function</li>
+ * 		<li>Retrieve the a+b+c+ Gauss Contiguous Function</li>
  *  </ul>
+ *
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FunctionAnalysisLibrary.md">Function Analysis Library</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md">Special Function Implementation and Analysis</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/hypergeometric/README.md">Hyper-geometric Function Estimation Schemes</a></td></tr>
+ *  </table>
  *
  * @author Lakshmi Krishnamurthy
  */
 
 public class GaussContiguousRelations
 {
-	private org.drip.specialfunction.definition.RegularHypergeometricEstimator _aPlus = null;
-	private org.drip.specialfunction.definition.RegularHypergeometricEstimator _bPlus = null;
-	private org.drip.specialfunction.definition.RegularHypergeometricEstimator _cPlus = null;
-	private org.drip.specialfunction.definition.RegularHypergeometricEstimator _aMinus = null;
-	private org.drip.specialfunction.definition.RegularHypergeometricEstimator _bMinus = null;
-	private org.drip.specialfunction.definition.RegularHypergeometricEstimator _cMinus = null;
-	private org.drip.specialfunction.definition.RegularHypergeometricEstimator _aPlusBPlusCPlus = null;
+	private RegularHypergeometricEstimator _aPlus = null;
+	private RegularHypergeometricEstimator _bPlus = null;
+	private RegularHypergeometricEstimator _cPlus = null;
+	private RegularHypergeometricEstimator _aMinus = null;
+	private RegularHypergeometricEstimator _bMinus = null;
+	private RegularHypergeometricEstimator _cMinus = null;
+	private RegularHypergeometricEstimator _aPlusBPlusCPlus = null;
 
 	/**
-	 * GaussContiguousRelations Constructor
+	 * <i>GaussContiguousRelations</i> Constructor
 	 * 
 	 * @param regularHypergeometricEstimator The Regular Hyper-geometric Estimator
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public GaussContiguousRelations (
-		final org.drip.specialfunction.definition.RegularHypergeometricEstimator
-			regularHypergeometricEstimator)
-		throws java.lang.Exception
+		final RegularHypergeometricEstimator regularHypergeometricEstimator)
+		throws Exception
 	{
-		if (null == regularHypergeometricEstimator)
-		{
-			throw new java.lang.Exception ("GaussContiguousRelations Constructor => Invalid Inputs");
+		if (null == regularHypergeometricEstimator) {
+			throw new Exception ("GaussContiguousRelations Constructor => Invalid Inputs");
 		}
 
-		org.drip.specialfunction.definition.HypergeometricParameters hypergeometricParameters =
+		HypergeometricParameters hypergeometricParameters =
 			regularHypergeometricEstimator.hypergeometricParameters();
 
 		double a = hypergeometricParameters.a();
@@ -153,74 +176,46 @@ public class GaussContiguousRelations
 		double c = hypergeometricParameters.c();
 
 		_aPlus = regularHypergeometricEstimator.albinate (
-			new org.drip.specialfunction.definition.HypergeometricParameters (
-				a + 1,
-				b,
-				c
-			),
+			new HypergeometricParameters (a + 1, b, c),
 			null,
 			null
 		);
 
 		_aMinus = regularHypergeometricEstimator.albinate (
-			new org.drip.specialfunction.definition.HypergeometricParameters (
-					a - 1,
-					b,
-					c
-				),
-				null,
-				null
-			);
+			new HypergeometricParameters (a - 1, b, c),
+			null,
+			null
+		);
 
 		_bPlus = regularHypergeometricEstimator.albinate (
-			new org.drip.specialfunction.definition.HypergeometricParameters (
-					a,
-					b + 1,
-					c
-				),
-				null,
-				null
-			);
+			new HypergeometricParameters (a, b + 1, c),
+			null,
+			null
+		);
 
 		_bMinus = regularHypergeometricEstimator.albinate (
-			new org.drip.specialfunction.definition.HypergeometricParameters (
-					a,
-					b - 1,
-					c
-				),
-				null,
-				null
-			);
+			new HypergeometricParameters (a, b - 1, c),
+			null,
+			null
+		);
 
 		_cPlus = regularHypergeometricEstimator.albinate (
-			new org.drip.specialfunction.definition.HypergeometricParameters (
-					a,
-					b,
-					c + 1
-				),
-				null,
-				null
-			);
+			new HypergeometricParameters (a, b, c + 1),
+			null,
+			null
+		);
 
 		_cMinus = regularHypergeometricEstimator.albinate (
-			new org.drip.specialfunction.definition.HypergeometricParameters (
-					a,
-					b,
-					c - 1
-				),
-				null,
-				null
-			);
+			new HypergeometricParameters (a, b, c - 1),
+			null,
+			null
+		);
 
 		_aPlusBPlusCPlus = regularHypergeometricEstimator.albinate (
-			new org.drip.specialfunction.definition.HypergeometricParameters (
-					a + 1,
-					b + 1,
-					c + 1
-				),
-				null,
-				null
-			);
+			new HypergeometricParameters (a + 1, b + 1, c + 1),
+			null,
+			null
+		);
 	}
 
 	/**
@@ -229,7 +224,7 @@ public class GaussContiguousRelations
 	 * @return The a+ Gauss Contiguous Function
 	 */
 
-	public org.drip.specialfunction.definition.RegularHypergeometricEstimator aPlus()
+	public RegularHypergeometricEstimator aPlus()
 	{
 		return _aPlus;
 	}
@@ -240,7 +235,7 @@ public class GaussContiguousRelations
 	 * @return The a- Gauss Contiguous Function
 	 */
 
-	public org.drip.specialfunction.definition.RegularHypergeometricEstimator aMinus()
+	public RegularHypergeometricEstimator aMinus()
 	{
 		return _aMinus;
 	}
@@ -251,7 +246,7 @@ public class GaussContiguousRelations
 	 * @return The b+ Gauss Contiguous Function
 	 */
 
-	public org.drip.specialfunction.definition.RegularHypergeometricEstimator bPlus()
+	public RegularHypergeometricEstimator bPlus()
 	{
 		return _bPlus;
 	}
@@ -262,7 +257,7 @@ public class GaussContiguousRelations
 	 * @return The b- Gauss Contiguous Function
 	 */
 
-	public org.drip.specialfunction.definition.RegularHypergeometricEstimator bMinus()
+	public RegularHypergeometricEstimator bMinus()
 	{
 		return _bMinus;
 	}
@@ -273,7 +268,7 @@ public class GaussContiguousRelations
 	 * @return The c+ Gauss Contiguous Function
 	 */
 
-	public org.drip.specialfunction.definition.RegularHypergeometricEstimator cPlus()
+	public RegularHypergeometricEstimator cPlus()
 	{
 		return _cPlus;
 	}
@@ -284,7 +279,7 @@ public class GaussContiguousRelations
 	 * @return The c- Gauss Contiguous Function
 	 */
 
-	public org.drip.specialfunction.definition.RegularHypergeometricEstimator cMinus()
+	public RegularHypergeometricEstimator cMinus()
 	{
 		return _cMinus;
 	}
@@ -295,7 +290,7 @@ public class GaussContiguousRelations
 	 * @return The a+b+c+ Gauss Contiguous Function
 	 */
 
-	public org.drip.specialfunction.definition.RegularHypergeometricEstimator aPlusBPlusCPlus()
+	public RegularHypergeometricEstimator aPlusBPlusCPlus()
 	{
 		return _aPlusBPlusCPlus;
 	}
