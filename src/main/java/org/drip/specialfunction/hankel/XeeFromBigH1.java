@@ -1,11 +1,18 @@
 
 package org.drip.specialfunction.hankel;
 
+import org.drip.function.definition.CartesianComplexNumber;
+import org.drip.specialfunction.definition.HankelFirstKindEstimator;
+import org.drip.specialfunction.definition.RiccatiBesselXeeEstimator;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -78,7 +85,7 @@ package org.drip.specialfunction.hankel;
 
 /**
  * <i>XeeFromBigH1</i> implements the Estimator for the Riccati-Bessel Xee Function using the Hankel Function
- * of the First Kind. The References are:
+ * 	of the First Kind. The References are:
  * 
  * <br><br>
  * 	<ul>
@@ -102,37 +109,49 @@ package org.drip.specialfunction.hankel;
  * 			Wikipedia (2019): Bessel Function https://en.wikipedia.org/wiki/Bessel_function
  * 		</li>
  * 	</ul>
+ * 
+ * 	It provides the following functionality:
  *
- *	<br><br>
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FunctionAnalysisLibrary.md">Function Analysis Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md">Special Function Implementation Analysis</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/hankel/README.md">Ordered Hankel Function Variant Estimators</a></li>
+ * 		<li><i>XeeFromBigH1</i> Constructor</li>
+ * 		<li>Retrieve the Hankel First Kind Estimator</li>
  *  </ul>
+ *
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FunctionAnalysisLibrary.md">Function Analysis Library</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md">Special Function Implementation and Analysis</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/hankel/README.md">Ordered Hankel Function Variant Estimators</a></td></tr>
+ *  </table>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class XeeFromBigH1 extends org.drip.specialfunction.definition.RiccatiBesselXeeEstimator
+public class XeeFromBigH1 extends RiccatiBesselXeeEstimator
 {
-	private org.drip.specialfunction.definition.HankelFirstKindEstimator _hankelFirstKindEstimator = null;
+	private HankelFirstKindEstimator _hankelFirstKindEstimator = null;
 
 	/**
-	 * XeeFromBigH1 Constructor
+	 * <i>XeeFromBigH1</i> Constructor
 	 * 
 	 * @param hankelFirstKindEstimator Hankel First Kind Estimator
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public XeeFromBigH1 (
-		final org.drip.specialfunction.definition.HankelFirstKindEstimator hankelFirstKindEstimator)
+		final HankelFirstKindEstimator hankelFirstKindEstimator)
 		throws java.lang.Exception
 	{
-		if (null == (_hankelFirstKindEstimator = hankelFirstKindEstimator))
-		{
-			throw new java.lang.Exception ("XeeFromBigH1 Constructor => Invalid Inputs");
+		if (null == (_hankelFirstKindEstimator = hankelFirstKindEstimator)) {
+			throw new Exception ("XeeFromBigH1 Constructor => Invalid Inputs");
 		}
 	}
 
@@ -142,23 +161,17 @@ public class XeeFromBigH1 extends org.drip.specialfunction.definition.RiccatiBes
 	 * @return The Hankel First Kind Estimator
 	 */
 
-	public org.drip.specialfunction.definition.HankelFirstKindEstimator hankelFirstKindEstimator()
+	public HankelFirstKindEstimator hankelFirstKindEstimator()
 	{
 		return _hankelFirstKindEstimator;
 	}
 
-	@Override public org.drip.function.definition.CartesianComplexNumber xee (
+	@Override public CartesianComplexNumber xee (
 		final double alpha,
 		final double z)
 	{
-		org.drip.function.definition.CartesianComplexNumber bigH1 = _hankelFirstKindEstimator.bigH1 (
-			alpha + 0.5,
-			z
-		);
+		CartesianComplexNumber bigH1 = _hankelFirstKindEstimator.bigH1 (alpha + 0.5, z);
 
-		return null == bigH1 ? null : org.drip.function.definition.CartesianComplexNumber.Scale (
-			bigH1,
-			java.lang.Math.sqrt (0.5 * java.lang.Math.PI * z)
-		);
+		return null == bigH1 ? null : CartesianComplexNumber.Scale (bigH1, Math.sqrt (0.5 * Math.PI * z));
 	}
 }

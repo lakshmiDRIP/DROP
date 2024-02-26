@@ -1,11 +1,19 @@
 
 package org.drip.specialfunction.hankel;
 
+import org.drip.function.definition.CartesianComplexNumber;
+import org.drip.specialfunction.definition.RiccatiBesselCEstimator;
+import org.drip.specialfunction.definition.RiccatiBesselSEstimator;
+import org.drip.specialfunction.definition.RiccatiBesselXeeEstimator;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -78,7 +86,7 @@ package org.drip.specialfunction.hankel;
 
 /**
  * <i>XeeFromSC</i> implements the Estimator for the Riccati-Bessel Xee Function using the Riccati-Bessel C
- * and S Functions. The References are:
+ * 	and S Functions. The References are:
  * 
  * <br><br>
  * 	<ul>
@@ -102,41 +110,55 @@ package org.drip.specialfunction.hankel;
  * 			Wikipedia (2019): Bessel Function https://en.wikipedia.org/wiki/Bessel_function
  * 		</li>
  * 	</ul>
+ * 
+ * 	It provides the following functionality:
  *
- *	<br><br>
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FunctionAnalysisLibrary.md">Function Analysis Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md">Special Function Implementation Analysis</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/hankel/README.md">Ordered Hankel Function Variant Estimators</a></li>
+ * 		<li><i>XeeFromSC</i> Constructor</li>
+ * 		<li>Retrieve the Riccati-Bessel C Estimator</li>
+ * 		<li>Retrieve the Riccati-Bessel S Estimator</li>
  *  </ul>
+ *
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FunctionAnalysisLibrary.md">Function Analysis Library</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md">Special Function Implementation and Analysis</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/hankel/README.md">Ordered Hankel Function Variant Estimators</a></td></tr>
+ *  </table>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class XeeFromSC extends org.drip.specialfunction.definition.RiccatiBesselXeeEstimator
+public class XeeFromSC extends RiccatiBesselXeeEstimator
 {
-	private org.drip.specialfunction.definition.RiccatiBesselCEstimator _riccatiBesselCEstimator = null;
-	private org.drip.specialfunction.definition.RiccatiBesselSEstimator _riccatiBesselSEstimator = null;
+	private RiccatiBesselCEstimator _riccatiBesselCEstimator = null;
+	private RiccatiBesselSEstimator _riccatiBesselSEstimator = null;
 
 	/**
-	 * XeeFromSC Constructor
+	 * <i>XeeFromSC</i> Constructor
 	 * 
 	 * @param riccatiBesselCEstimator Riccati-Bessel C Estimator
 	 * @param riccatiBesselSEstimator Riccati-Bessel S Estimator
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public XeeFromSC (
-		final org.drip.specialfunction.definition.RiccatiBesselCEstimator riccatiBesselCEstimator,
-		final org.drip.specialfunction.definition.RiccatiBesselSEstimator riccatiBesselSEstimator)
-		throws java.lang.Exception
+		final RiccatiBesselCEstimator riccatiBesselCEstimator,
+		final RiccatiBesselSEstimator riccatiBesselSEstimator)
+		throws Exception
 	{
 		if (null == (_riccatiBesselCEstimator = riccatiBesselCEstimator) ||
 			null == (_riccatiBesselSEstimator = riccatiBesselSEstimator))
 		{
-			throw new java.lang.Exception ("XeeFromSC Constructor => Invalid Inputs");
+			throw new Exception ("XeeFromSC Constructor => Invalid Inputs");
 		}
 	}
 
@@ -146,7 +168,7 @@ public class XeeFromSC extends org.drip.specialfunction.definition.RiccatiBessel
 	 * @return The Riccati-Bessel C Estimator
 	 */
 
-	public org.drip.specialfunction.definition.RiccatiBesselCEstimator riccatiBesselCEstimator()
+	public RiccatiBesselCEstimator riccatiBesselCEstimator()
 	{
 		return _riccatiBesselCEstimator;
 	}
@@ -157,30 +179,21 @@ public class XeeFromSC extends org.drip.specialfunction.definition.RiccatiBessel
 	 * @return The Riccati-Bessel S Estimator
 	 */
 
-	public org.drip.specialfunction.definition.RiccatiBesselSEstimator riccatiBesselSEstimator()
+	public RiccatiBesselSEstimator riccatiBesselSEstimator()
 	{
 		return _riccatiBesselSEstimator;
 	}
 
-	@Override public org.drip.function.definition.CartesianComplexNumber xee (
+	@Override public CartesianComplexNumber xee (
 		final double alpha,
 		final double z)
 	{
-		try
-		{
-			return new org.drip.function.definition.CartesianComplexNumber (
-				_riccatiBesselSEstimator.bigS (
-					alpha,
-					z
-				),
-				-1. * _riccatiBesselCEstimator.bigC (
-					alpha,
-					z
-				)
+		try {
+			return new CartesianComplexNumber (
+				_riccatiBesselSEstimator.bigS (alpha, z),
+				-1. * _riccatiBesselCEstimator.bigC (alpha, z)
 			);
-		}
-		catch (java.lang.Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
