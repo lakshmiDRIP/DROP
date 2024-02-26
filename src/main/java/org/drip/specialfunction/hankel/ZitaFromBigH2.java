@@ -1,11 +1,18 @@
 
 package org.drip.specialfunction.hankel;
 
+import org.drip.function.definition.CartesianComplexNumber;
+import org.drip.specialfunction.definition.HankelSecondKindEstimator;
+import org.drip.specialfunction.definition.RiccatiBesselZitaEstimator;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -78,7 +85,7 @@ package org.drip.specialfunction.hankel;
 
 /**
  * <i>ZitaFromBigH2</i> implements the Estimator for the Riccati-Bessel Zita Function using the Hankel
- * Function of the Second Kind. The References are:
+ * 	Function of the Second Kind. The References are:
  * 
  * <br><br>
  * 	<ul>
@@ -102,37 +109,49 @@ package org.drip.specialfunction.hankel;
  * 			Wikipedia (2019): Bessel Function https://en.wikipedia.org/wiki/Bessel_function
  * 		</li>
  * 	</ul>
+ * 
+ * 	It provides the following functionality:
  *
- *	<br><br>
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FunctionAnalysisLibrary.md">Function Analysis Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md">Special Function Implementation Analysis</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/hankel/README.md">Ordered Hankel Function Variant Estimators</a></li>
+ * 		<li><i>ZitaFromBigH2</i> Constructor</li>
+ * 		<li>Retrieve the Hankel Second Kind Estimator</li>
  *  </ul>
+ *
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FunctionAnalysisLibrary.md">Function Analysis Library</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md">Special Function Implementation and Analysis</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/hankel/README.md">Ordered Hankel Function Variant Estimators</a></td></tr>
+ *  </table>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class ZitaFromBigH2 extends org.drip.specialfunction.definition.RiccatiBesselZitaEstimator
+public class ZitaFromBigH2 extends RiccatiBesselZitaEstimator
 {
-	private org.drip.specialfunction.definition.HankelSecondKindEstimator _hankelSecondKindEstimator = null;
+	private HankelSecondKindEstimator _hankelSecondKindEstimator = null;
 
 	/**
-	 * ZitaFromBigH2 Constructor
+	 * <i>ZitaFromBigH2</i> Constructor
 	 * 
 	 * @param hankelSecondKindEstimator Hankel Second Kind Estimator
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public ZitaFromBigH2 (
-		final org.drip.specialfunction.definition.HankelSecondKindEstimator hankelSecondKindEstimator)
-		throws java.lang.Exception
+		final HankelSecondKindEstimator hankelSecondKindEstimator)
+		throws Exception
 	{
-		if (null == (_hankelSecondKindEstimator = hankelSecondKindEstimator))
-		{
-			throw new java.lang.Exception ("ZitaFromBigH2 Constructor => Invalid Inputs");
+		if (null == (_hankelSecondKindEstimator = hankelSecondKindEstimator)) {
+			throw new Exception ("ZitaFromBigH2 Constructor => Invalid Inputs");
 		}
 	}
 
@@ -142,23 +161,17 @@ public class ZitaFromBigH2 extends org.drip.specialfunction.definition.RiccatiBe
 	 * @return The Hankel Second Kind Estimator
 	 */
 
-	public org.drip.specialfunction.definition.HankelSecondKindEstimator hankelSecondKindEstimator()
+	public HankelSecondKindEstimator hankelSecondKindEstimator()
 	{
 		return _hankelSecondKindEstimator;
 	}
 
-	@Override public org.drip.function.definition.CartesianComplexNumber zita (
+	@Override public CartesianComplexNumber zita (
 		final double alpha,
 		final double z)
 	{
-		org.drip.function.definition.CartesianComplexNumber bigH2 = _hankelSecondKindEstimator.bigH2 (
-			alpha + 0.5,
-			z
-		);
+		CartesianComplexNumber bigH2 = _hankelSecondKindEstimator.bigH2 (alpha + 0.5, z);
 
-		return null == bigH2 ? null : org.drip.function.definition.CartesianComplexNumber.Scale (
-			bigH2,
-			java.lang.Math.sqrt (0.5 * java.lang.Math.PI * z)
-		);
+		return null == bigH2 ? null : CartesianComplexNumber.Scale (bigH2, Math.sqrt (0.5 * Math.PI * z));
 	}
 }
