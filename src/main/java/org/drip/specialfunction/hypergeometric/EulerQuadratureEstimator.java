@@ -1,11 +1,21 @@
 
 package org.drip.specialfunction.hypergeometric;
 
+import org.drip.function.definition.R1ToR1;
+import org.drip.function.definition.R2ToR1;
+import org.drip.numerical.common.NumberUtil;
+import org.drip.numerical.integration.NewtonCotesQuadratureGenerator;
+import org.drip.specialfunction.definition.HypergeometricParameters;
+import org.drip.specialfunction.definition.RegularHypergeometricEstimator;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -78,7 +88,7 @@ package org.drip.specialfunction.hypergeometric;
 
 /**
  * <i>EulerQuadratureEstimator</i> estimates the Hyper-geometric Function using the Euler Integral
- * Representation. The References are:
+ * 	Representation. The References are:
  * 
  * <br><br>
  * 	<ul>
@@ -103,46 +113,57 @@ package org.drip.specialfunction.hypergeometric;
  * 			Wikipedia (2019): Hyper-geometric Function https://en.wikipedia.org/wiki/Hypergeometric_function
  * 		</li>
  * 	</ul>
+ * 
+ * 	It provides the following functionality:
  *
- *	<br><br>
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FunctionAnalysisLibrary.md">Function Analysis Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md">Special Function Implementation Analysis</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/hypergeometric/README.md">Hyper-geometric Function Estimation Schemes</a></li>
+ * 		<li><i>EulerQuadratureEstimator</i> Constructor</li>
+ * 		<li>Retrieve the Quadrature Count</li>
+ * 		<li>Retrieve the Log Beta Estimator</li>
  *  </ul>
+ *
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FunctionAnalysisLibrary.md">Function Analysis Library</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md">Special Function Implementation and Analysis</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/hypergeometric/README.md">Hyper-geometric Function Estimation Schemes</a></td></tr>
+ *  </table>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class EulerQuadratureEstimator extends
-	org.drip.specialfunction.definition.RegularHypergeometricEstimator
+public class EulerQuadratureEstimator extends RegularHypergeometricEstimator
 {
 	private int _quadratureCount = -1;
-	private org.drip.function.definition.R2ToR1 _logBetaEstimator = null;
+	private R2ToR1 _logBetaEstimator = null;
 
 	/**
-	 * EulerQuadratureEstimator Constructor
+	 * <i>EulerQuadratureEstimator</i> Constructor
 	 * 
 	 * @param hypergeometricParameters Hyper-geometric Parameters
 	 * @param logBetaEstimator Log Beta Estimator
 	 * @param quadratureCount Count of the Integrand Quadrature
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public EulerQuadratureEstimator (
-		final org.drip.specialfunction.definition.HypergeometricParameters hypergeometricParameters,
-		final org.drip.function.definition.R2ToR1 logBetaEstimator,
+		final HypergeometricParameters hypergeometricParameters,
+		final R2ToR1 logBetaEstimator,
 		final int quadratureCount)
-		throws java.lang.Exception
+		throws Exception
 	{
 		super (hypergeometricParameters);
 
-		if (null == (_logBetaEstimator = logBetaEstimator) ||
-			0 >= (_quadratureCount = quadratureCount))
-		{
-			throw new java.lang.Exception ("EulerQuadratureEstimator Constructor => Invalid Inputs");
+		if (null == (_logBetaEstimator = logBetaEstimator) || 0 >= (_quadratureCount = quadratureCount)) {
+			throw new Exception ("EulerQuadratureEstimator Constructor => Invalid Inputs");
 		}
 	}
 
@@ -163,22 +184,20 @@ public class EulerQuadratureEstimator extends
 	 * @return The Log Beta Estimator
 	 */
 
-	public org.drip.function.definition.R2ToR1 logBetaEstimator()
+	public R2ToR1 logBetaEstimator()
 	{
 		return _logBetaEstimator;
 	}
 
 	@Override public double regularHypergeometric (
 		final double z)
-		throws java.lang.Exception
+		throws Exception
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (z) || z < -1. || z > 1.)
-		{
-			throw new java.lang.Exception ("EulerQuadratureEstimator::regularHypergeometric => Invalid Inputs");
+		if (!NumberUtil.IsValid (z) || -1. > z || 1. < z) {
+			throw new Exception ("EulerQuadratureEstimator::regularHypergeometric => Invalid Inputs");
 		}
 
-		org.drip.specialfunction.definition.HypergeometricParameters hypergeometricParameters =
-			hypergeometricParameters();
+		HypergeometricParameters hypergeometricParameters = hypergeometricParameters();
 
 		final double a = hypergeometricParameters.a();
 
@@ -186,36 +205,17 @@ public class EulerQuadratureEstimator extends
 
 		final double c = hypergeometricParameters.c();
 
-		return org.drip.numerical.integration.NewtonCotesQuadratureGenerator.Zero_PlusOne (
-			0.,
-			1.,
-			_quadratureCount
-		).integrate (
-			new org.drip.function.definition.R1ToR1 (null)
-			{
+		return NewtonCotesQuadratureGenerator.Zero_PlusOne (0., 1., _quadratureCount).integrate (
+			new R1ToR1 (null) {
 				@Override public double evaluate (
 					final double t)
-					throws java.lang.Exception
+					throws Exception
 				{
 					return 0. == t || 1. == t ? 0. :
-						java.lang.Math.pow (
-							t,
-							b - 1.
-						) * java.lang.Math.pow (
-							1. - t,
-							c - b - 1.
-						) * java.lang.Math.pow (
-							1. - z * t,
-							-a
-						);
+						Math.pow (t, b - 1.) * Math.pow (1. - t, c - b - 1.) * Math.pow (1. - z * t, -a);
 				}
 			}
-		) * java.lang.Math.exp (
-		-1. * _logBetaEstimator.evaluate (
-				b,
-				c - b
-			)
-		);
+		) * Math.exp (-1. * _logBetaEstimator.evaluate (b, c - b));
 	}
 
 	@Override public double derivative (

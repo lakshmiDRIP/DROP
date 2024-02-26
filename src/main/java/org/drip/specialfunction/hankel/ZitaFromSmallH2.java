@@ -1,11 +1,18 @@
 
 package org.drip.specialfunction.hankel;
 
+import org.drip.function.definition.CartesianComplexNumber;
+import org.drip.specialfunction.definition.RiccatiBesselZitaEstimator;
+import org.drip.specialfunction.definition.SphericalHankelSecondKindEstimator;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -78,7 +85,7 @@ package org.drip.specialfunction.hankel;
 
 /**
  * <i>ZitaFromSmallH2</i> implements the Estimator for the Riccati-Bessel Zita Function using the Spherical
- * Hankel Function of the Second Kind. The References are:
+ * 	Hankel Function of the Second Kind. The References are:
  * 
  * <br><br>
  * 	<ul>
@@ -102,39 +109,49 @@ package org.drip.specialfunction.hankel;
  * 			Wikipedia (2019): Bessel Function https://en.wikipedia.org/wiki/Bessel_function
  * 		</li>
  * 	</ul>
+ * 
+ * 	It provides the following functionality:
  *
- *	<br><br>
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FunctionAnalysisLibrary.md">Function Analysis Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md">Special Function Implementation Analysis</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/hankel/README.md">Ordered Hankel Function Variant Estimators</a></li>
+ * 		<li><i>ZitaFromSmallH2</i> Constructor</li>
+ * 		<li>Retrieve the Spherical Hankel Second Kind Estimator</li>
  *  </ul>
+ *
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FunctionAnalysisLibrary.md">Function Analysis Library</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md">Special Function Implementation and Analysis</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/hankel/README.md">Ordered Hankel Function Variant Estimators</a></td></tr>
+ *  </table>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class ZitaFromSmallH2 extends org.drip.specialfunction.definition.RiccatiBesselZitaEstimator
+public class ZitaFromSmallH2 extends RiccatiBesselZitaEstimator
 {
-	private org.drip.specialfunction.definition.SphericalHankelSecondKindEstimator
-		_sphericalHankelSecondKindEstimator = null;
+	private SphericalHankelSecondKindEstimator _sphericalHankelSecondKindEstimator = null;
 
 	/**
-	 * ZitaFromSmallH2 Constructor
+	 * <i>ZitaFromSmallH2</i> Constructor
 	 * 
 	 * @param sphericalHankelSecondKindEstimator Spherical Hankel Second Kind Estimator
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public ZitaFromSmallH2 (
-		final org.drip.specialfunction.definition.SphericalHankelSecondKindEstimator
-			sphericalHankelSecondKindEstimator)
-		throws java.lang.Exception
+		final SphericalHankelSecondKindEstimator sphericalHankelSecondKindEstimator)
+		throws Exception
 	{
-		if (null == (_sphericalHankelSecondKindEstimator = sphericalHankelSecondKindEstimator))
-		{
-			throw new java.lang.Exception ("ZitaFromSmallH2 Constructor => Invalid Inputs");
+		if (null == (_sphericalHankelSecondKindEstimator = sphericalHankelSecondKindEstimator)) {
+			throw new Exception ("ZitaFromSmallH2 Constructor => Invalid Inputs");
 		}
 	}
 
@@ -144,24 +161,17 @@ public class ZitaFromSmallH2 extends org.drip.specialfunction.definition.Riccati
 	 * @return The Spherical Hankel Second Kind Estimator
 	 */
 
-	public org.drip.specialfunction.definition.SphericalHankelSecondKindEstimator
-		sphericalHankelSecondKindEstimator()
+	public SphericalHankelSecondKindEstimator sphericalHankelSecondKindEstimator()
 	{
 		return _sphericalHankelSecondKindEstimator;
 	}
 
-	@Override public org.drip.function.definition.CartesianComplexNumber zita (
+	@Override public CartesianComplexNumber zita (
 		final double alpha,
 		final double z)
 	{
-		org.drip.function.definition.CartesianComplexNumber smallH2 = _sphericalHankelSecondKindEstimator.smallH2 (
-			alpha,
-			z
-		);
+		CartesianComplexNumber smallH2 = _sphericalHankelSecondKindEstimator.smallH2 (alpha, z);
 
-		return null == smallH2 ? null : org.drip.function.definition.CartesianComplexNumber.Scale (
-			smallH2,
-			z
-		);
+		return null == smallH2 ? null : CartesianComplexNumber.Scale (smallH2, z);
 	}
 }
