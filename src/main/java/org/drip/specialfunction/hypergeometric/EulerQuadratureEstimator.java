@@ -221,10 +221,9 @@ public class EulerQuadratureEstimator extends RegularHypergeometricEstimator
 	@Override public double derivative (
 		final double z,
 		final int order)
-		throws java.lang.Exception
+		throws Exception
 	{
-		org.drip.specialfunction.definition.HypergeometricParameters hypergeometricParameters =
-			hypergeometricParameters();
+		HypergeometricParameters hypergeometricParameters = hypergeometricParameters();
 
 		double a = hypergeometricParameters.a();
 
@@ -233,49 +232,34 @@ public class EulerQuadratureEstimator extends RegularHypergeometricEstimator
 		double c = hypergeometricParameters.c();
 
 		return new EulerQuadratureEstimator (
-			new org.drip.specialfunction.definition.HypergeometricParameters (
-				a + order,
-				b + order,
-				c + order
-			),
+			new HypergeometricParameters (a + order, b + order, c + order),
 			_logBetaEstimator,
 			_quadratureCount
-		).regularHypergeometric (z) * org.drip.numerical.common.NumberUtil.PochhammerSymbol (
-			a,
-			order
-		) * org.drip.numerical.common.NumberUtil.PochhammerSymbol (
-			b,
-			order
-		) / org.drip.numerical.common.NumberUtil.PochhammerSymbol (
-			c,
-			order
-		);
+		).regularHypergeometric (z) * NumberUtil.PochhammerSymbol (a, order) *
+			NumberUtil.PochhammerSymbol (b, order) /
+			NumberUtil.PochhammerSymbol (c, order);
 	}
 
-	@Override public org.drip.specialfunction.definition.RegularHypergeometricEstimator albinate (
-		final org.drip.specialfunction.definition.HypergeometricParameters hypergeometricParametersAlbinate,
-		final org.drip.function.definition.R1ToR1 valueScaler,
-		final org.drip.function.definition.R1ToR1 zTransformer)
+	@Override public RegularHypergeometricEstimator albinate (
+		final HypergeometricParameters hypergeometricParametersAlbinate,
+		final R1ToR1 valueScaler,
+		final R1ToR1 zTransformer)
 	{
-		try
-		{
+		try {
 			return new EulerQuadratureEstimator (
 				hypergeometricParametersAlbinate,
 				_logBetaEstimator,
-				_quadratureCount
-			)
+				_quadratureCount)
 			{
 				@Override public double regularHypergeometric (
 					final double z)
-					throws java.lang.Exception
+					throws Exception
 				{
 					return (null == valueScaler ? 1. : valueScaler.evaluate (z)) *
 						super.regularHypergeometric (null == zTransformer ? z : zTransformer.evaluate (z));
 				}
 			};
-		}
-		catch (java.lang.Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 

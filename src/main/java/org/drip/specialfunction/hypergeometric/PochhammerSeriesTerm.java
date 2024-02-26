@@ -1,11 +1,18 @@
 
 package org.drip.specialfunction.hypergeometric;
 
+import org.drip.numerical.common.NumberUtil;
+import org.drip.numerical.estimation.R1ToR1SeriesTerm;
+import org.drip.specialfunction.definition.HypergeometricParameters;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -78,7 +85,7 @@ package org.drip.specialfunction.hypergeometric;
 
 /**
  * <i>PochhammerSeriesTerm</i> refers to a Single Series Term in the Pochhammer Series Expansion of the
- * Hyper-geometric Function. The References are:
+ * 	Hyper-geometric Function. The References are:
  * 
  * <br><br>
  * 	<ul>
@@ -103,37 +110,49 @@ package org.drip.specialfunction.hypergeometric;
  * 			Wikipedia (2019): Hyper-geometric Function https://en.wikipedia.org/wiki/Hypergeometric_function
  * 		</li>
  * 	</ul>
+ * 
+ * 	It provides the following functionality:
  *
- *	<br><br>
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FunctionAnalysisLibrary.md">Function Analysis Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md">Special Function Implementation Analysis</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/hypergeometric/README.md">Hyper-geometric Function Estimation Schemes</a></li>
+ * 		<li><i>PochhammerSeriesTerm</i> Constructor</li>
+ * 		<li>Retrieve the Hyper-geometric Parameters</li>
  *  </ul>
+ *
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FunctionAnalysisLibrary.md">Function Analysis Library</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md">Special Function Implementation and Analysis</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/hypergeometric/README.md">Hyper-geometric Function Estimation Schemes</a></td></tr>
+ *  </table>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class PochhammerSeriesTerm extends org.drip.numerical.estimation.R1ToR1SeriesTerm
+public class PochhammerSeriesTerm extends R1ToR1SeriesTerm
 {
-	private org.drip.specialfunction.definition.HypergeometricParameters _hypergeometricParameters = null;
+	private HypergeometricParameters _hypergeometricParameters = null;
 
 	/**
-	 * PochhammerSeriesTerm Constructor
+	 * <i>PochhammerSeriesTerm</i> Constructor
 	 * 
 	 * @param hypergeometricParameters The Hyper-geometric Parameters
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public PochhammerSeriesTerm (
-		final org.drip.specialfunction.definition.HypergeometricParameters hypergeometricParameters)
-		throws java.lang.Exception
+		final HypergeometricParameters hypergeometricParameters)
+		throws Exception
 	{
-		if (null == (_hypergeometricParameters = hypergeometricParameters))
-		{
-			throw new java.lang.Exception ("PochhammerSeriesTerm Constructor => Invalid Inputs");
+		if (null == (_hypergeometricParameters = hypergeometricParameters)) {
+			throw new Exception ("PochhammerSeriesTerm Constructor => Invalid Inputs");
 		}
 	}
 
@@ -143,7 +162,7 @@ public class PochhammerSeriesTerm extends org.drip.numerical.estimation.R1ToR1Se
 	 * @return The Hyper-geometric Parameters
 	 */
 
-	public org.drip.specialfunction.definition.HypergeometricParameters hypergeometricParameters()
+	public HypergeometricParameters hypergeometricParameters()
 	{
 		return _hypergeometricParameters;
 	}
@@ -151,28 +170,17 @@ public class PochhammerSeriesTerm extends org.drip.numerical.estimation.R1ToR1Se
 	@Override public double value (
 		final int order,
 		final double z)
-		throws java.lang.Exception
+		throws Exception
 	{
-		if (0 > order)
-		{
-			throw new java.lang.Exception ("PochhammerSeriesTerm::value => Invalid Inputs");
+		if (0 > order) {
+			throw new Exception ("PochhammerSeriesTerm::value => Invalid Inputs");
 		}
 
-		org.drip.specialfunction.definition.HypergeometricParameters hypergeometricParameters =
-			hypergeometricParameters();
+		HypergeometricParameters hypergeometricParameters = hypergeometricParameters();
 
-		return org.drip.numerical.common.NumberUtil.RisingPochhammerSymbol (
-			hypergeometricParameters.a(),
-			order
-		) * org.drip.numerical.common.NumberUtil.RisingPochhammerSymbol (
-			hypergeometricParameters.b(),
-			order
-		) / org.drip.numerical.common.NumberUtil.RisingPochhammerSymbol (
-			hypergeometricParameters.c(),
-			order
-		) * java.lang.Math.pow (
-			z,
-			order
-		) / org.drip.numerical.common.NumberUtil.Factorial (order);
+		return NumberUtil.RisingPochhammerSymbol (hypergeometricParameters.a(), order) *
+			NumberUtil.RisingPochhammerSymbol (hypergeometricParameters.b(), order) /
+			NumberUtil.RisingPochhammerSymbol (hypergeometricParameters.c(), order) *
+			Math.pow (z, order) / NumberUtil.Factorial (order);
 	}
 }

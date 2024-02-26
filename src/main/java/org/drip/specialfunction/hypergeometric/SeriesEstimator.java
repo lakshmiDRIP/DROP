@@ -1,11 +1,20 @@
 
 package org.drip.specialfunction.hypergeometric;
 
+import org.drip.numerical.common.NumberUtil;
+import org.drip.numerical.differentiation.DerivativeControl;
+import org.drip.numerical.estimation.R1ToR1Estimator;
+import org.drip.numerical.estimation.R1ToR1Series;
+import org.drip.specialfunction.definition.HypergeometricParameters;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -78,7 +87,7 @@ package org.drip.specialfunction.hypergeometric;
 
 /**
  * <i>SeriesEstimator</i> estimates the 2F1 Hyper-geometric Function using a Series Expansion. The References
- * are:
+ * 	are:
  * 
  * <br><br>
  * 	<ul>
@@ -103,21 +112,34 @@ package org.drip.specialfunction.hypergeometric;
  * 			Wikipedia (2019): Hyper-geometric Function https://en.wikipedia.org/wiki/Hypergeometric_function
  * 		</li>
  * 	</ul>
+ * 
+ * 	It provides the following functionality:
  *
- *	<br><br>
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FunctionAnalysisLibrary.md">Function Analysis Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md">Special Function Implementation Analysis</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/hypergeometric/README.md">Hyper-geometric Function Estimation Schemes</a></li>
+ * 		<li>Compute the Pochhammer Cumulative Series of Hyper-geometric Estimator</li>
+ * 		<li>Retrieve the Underlying Cumulative Series</li>
  *  </ul>
+ *
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FunctionAnalysisLibrary.md">Function Analysis Library</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md">Special Function Implementation and Analysis</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/hypergeometric/README.md">Hyper-geometric Function Estimation Schemes</a></td></tr>
+ *  </table>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public abstract class SeriesEstimator extends org.drip.numerical.estimation.R1ToR1Estimator
+public abstract class SeriesEstimator extends R1ToR1Estimator
 {
-	private org.drip.numerical.estimation.R1ToR1Series _series = null;
+	private R1ToR1Series _series = null;
 
 	/**
 	 * Compute the Pochhammer Cumulative Series of Hyper-geometric Estimator
@@ -129,35 +151,24 @@ public abstract class SeriesEstimator extends org.drip.numerical.estimation.R1To
 	 */
 
 	public static final SeriesEstimator Pochhammer (
-		final org.drip.specialfunction.definition.HypergeometricParameters hypergeometricParameters,
+		final HypergeometricParameters hypergeometricParameters,
 		final int termCount)
 	{
-		try
-		{
-			return new SeriesEstimator (
-				org.drip.specialfunction.hypergeometric.PochhammerSeries.Create (
-					hypergeometricParameters,
-					termCount
-				),
-				null
-			)
+		try {
+			return new SeriesEstimator (PochhammerSeries.Create (hypergeometricParameters, termCount), null)
 			{
 				@Override public double evaluate (
 					final double z)
-					throws java.lang.Exception
+					throws Exception
 				{
-					if (!org.drip.numerical.common.NumberUtil.IsValid (z))
-					{
-						throw new java.lang.Exception
-							("SeriesEstimator::Pochhammer::evaluate => Invalid Inputs");
+					if (!NumberUtil.IsValid (z)) {
+						throw new Exception ("SeriesEstimator::Pochhammer::evaluate => Invalid Inputs");
 					}
 
 					return series().evaluate (z);
 				}
 			};
-		}
-		catch (java.lang.Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -165,11 +176,11 @@ public abstract class SeriesEstimator extends org.drip.numerical.estimation.R1To
 	}
 
 	protected SeriesEstimator (
-		final org.drip.numerical.estimation.R1ToR1Series series,
-		final org.drip.numerical.differentiation.DerivativeControl dc)
+		final R1ToR1Series series,
+		final DerivativeControl derivativeControl)
 		throws java.lang.Exception
 	{
-		super (dc);
+		super (derivativeControl);
 
 		_series = series;
 	}
@@ -180,7 +191,7 @@ public abstract class SeriesEstimator extends org.drip.numerical.estimation.R1To
 	 * @return The Underlying Cumulative Series
 	 */
 
-	public org.drip.numerical.estimation.R1ToR1Series series()
+	public R1ToR1Series series()
 	{
 		return _series;
 	}
