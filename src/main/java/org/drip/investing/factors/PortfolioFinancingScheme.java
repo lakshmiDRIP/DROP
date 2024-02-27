@@ -1,17 +1,12 @@
 
-package org.drip.portfolioconstruction.core;
+package org.drip.investing.factors;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
- * Copyright (C) 2022 Lakshmi Krishnamurthy
- * Copyright (C) 2021 Lakshmi Krishnamurthy
- * Copyright (C) 2020 Lakshmi Krishnamurthy
- * Copyright (C) 2019 Lakshmi Krishnamurthy
- * Copyright (C) 2018 Lakshmi Krishnamurthy
- * Copyright (C) 2017 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
  * 
  *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
  *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
@@ -79,87 +74,61 @@ package org.drip.portfolioconstruction.core;
  */
 
 /**
- * <i>Asset</i> holds the Details of a given Asset.
+ * <i>PortfolioFinancingScheme</i> maintains the Financing Scheme Settings used in Factor Portfolio
+ * 	Construction. The References are:
+ *
+ *	<br><br>
+ * <ul>
+ * 	<li>
+ *  	Baltussen, G., L. Swinkels, and P. van Vliet (2021): Global Factor Premiums <i>Journal of Financial
+ *  		Economics</i> <b>142 (3)</b> 1128-1154
+ * 	</li>
+ * 	<li>
+ *  	Blitz, D., and P. van Vliet (2007): The Volatility Effect: Lower Risk without Lower Return <i>Journal
+ *  		of Portfolio Management</i> <b>34 (1)</b> 102-113
+ * 	</li>
+ * 	<li>
+ *  	Fisher, G. S., R. Shah, and S. Titman (2017): Combining Value and Momentum
+ *  		<i>https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2472936</i> <b>eSSRN</b>
+ * 	</li>
+ * 	<li>
+ *  	Houweling, P., and J. van Zundert (2017): Factor Investing in the Corporate Bond Market <i>Financial
+ *  		Analysts Journal</i> <b>73 (2)</b> 100-115
+ * 	</li>
+ * 	<li>
+ *  	Wikipedia (2024): Factor Investing <i>https://en.wikipedia.org/wiki/Factor_investing</i>
+ * 	</li>
+ * </ul>
  *
  *	<br><br>
  *  <ul>
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md">Portfolio Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/AssetAllocationAnalyticsLibrary.md">Asset Allocation Analytics</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/portfolioconstruction/README.md">Portfolio Construction under Allocation Constraints</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/portfolioconstruction/core/README.md">Core Portfolio Construction Component Suite</a></li>
+ *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/investing/README.md">Factor/Style Based Quantitative Investing</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/investing/factors/README.md">Factor Types, Characteristics, and Constitution</a></li>
  *  </ul>
- * <br><br>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class Asset
-	extends org.drip.portfolioconstruction.core.Block
+public class PortfolioFinancingScheme
 {
-	private java.lang.String _sector = "";
-	private java.lang.String _currency = "";
 
 	/**
-	 * Asset Constructor
-	 * 
-	 * @param name The Asset Name
-	 * @param id The Asset ID
-	 * @param description The Asset Description
-	 * @param currency The Asset Currency
-	 * @param sector The Asset Sector
-	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * Zero Investment Portfolio Financing Scheme
 	 */
 
-	public Asset (
-		final java.lang.String name,
-		final java.lang.String id,
-		final java.lang.String description,
-		final java.lang.String currency,
-		final java.lang.String sector)
-		throws java.lang.Exception
-	{
-		super (
-			name,
-			id,
-			description
-		);
-
-		if (null == (_currency = currency) || _currency.isEmpty() ||
-			null == (_sector = sector) || _sector.isEmpty())
-		{
-			throw new java.lang.Exception (
-				"Asset Constructor => Invalid Inputs"
-			);
-		}
-	}
+	public static final int ZERO_INVESTMENT = 1;
 
 	/**
-	 * Retrieve the Asset Currency
-	 * 
-	 * @return The Asset Currency
+	 * Zero Cost Portfolio Financing Scheme
 	 */
 
-	public java.lang.String currency()
-	{
-		return _currency;
-	}
+	public static final int ZERO_COST = 2;
 
 	/**
-	 * Retrieve the Asset Sector
-	 * 
-	 * @return The Asset Sector
+	 * Self Funding Portfolio Financing Scheme
 	 */
 
-	public java.lang.String sector()
-	{
-		return _sector;
-	}
-
-	@Override public int hashCode()
-	{
-		int hashCode = _currency.hashCode() + 31 * super.hashCode();
-
-		return _sector.hashCode() + 31 * hashCode;
-	}
+	public static final int SELF_FUNDING = 2;
 }

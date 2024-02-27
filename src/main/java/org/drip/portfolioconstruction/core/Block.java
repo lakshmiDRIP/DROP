@@ -198,4 +198,15 @@ public class Block
 	{
 		return _dateTimeStamp;
 	}
+
+	@Override public int hashCode()
+	{
+		int hashCode = _name.hashCode();
+
+		hashCode += _id.hashCode() + 31 * hashCode;
+
+		hashCode += _description.hashCode() + 31 * hashCode;
+
+		return _dateTimeStamp.hashCode() + 31 * hashCode;
+	}
 }

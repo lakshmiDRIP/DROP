@@ -193,33 +193,22 @@ public class LowerSFixedSeries extends R1ToR1Series
 		final double s,
 		final int termCount)
 	{
-		try
-		{
-			double logGammaS = new org.drip.specialfunction.loggamma.NemesAnalyticEstimator (null).evaluate (s);
+		try {
+			double logGammaS = new NemesAnalyticEstimator (null).evaluate (s);
 
-			java.util.TreeMap<java.lang.Integer, java.lang.Double> termWeightMap = new
-				java.util.TreeMap<java.lang.Integer, java.lang.Double>();
+			TreeMap<Integer, Double> termWeightMap = new TreeMap<Integer, Double>();
 
-			for (int termIndex = 0; termIndex <= termCount; ++termIndex)
-			{
-				termWeightMap.put (
-					termIndex,
-					1.
-				);
+			for (int termIndex = 0; termIndex <= termCount; ++termIndex) {
+				termWeightMap.put (termIndex, 1.);
 			}
 
 			return new LowerSFixedSeries (
-				org.drip.specialfunction.incompletegamma.LowerSFixedSeriesTerm.NIST2019 (
-					s,
-					logGammaS
-				),
+				LowerSFixedSeriesTerm.NIST2019 (s, logGammaS),
 				termWeightMap,
 				s,
 				logGammaS
 			);
-		}
-		catch (java.lang.Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 

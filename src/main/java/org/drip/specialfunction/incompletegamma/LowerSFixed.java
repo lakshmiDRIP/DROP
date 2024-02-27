@@ -1,11 +1,18 @@
 
 package org.drip.specialfunction.incompletegamma;
 
+import org.drip.numerical.differentiation.DerivativeControl;
+import org.drip.numerical.estimation.R1Estimate;
+import org.drip.numerical.estimation.R1ToR1Estimator;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -78,7 +85,7 @@ package org.drip.specialfunction.incompletegamma;
 
 /**
  * <i>LowerSFixed</i> implements the Lower Incomplete Gamma Function using Power Series for a Fixed s. The
- * References are:
+ * 	References are:
  * 
  * <br><br>
  * 	<ul>
@@ -105,21 +112,37 @@ package org.drip.specialfunction.incompletegamma;
  * 				https://en.wikipedia.org/wiki/Incomplete_gamma_function
  * 		</li>
  * 	</ul>
+ * 
+ * 	It provides the following functionality:
  *
- *	<br><br>
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FunctionAnalysisLibrary.md">Function Analysis Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md">Special Function Implementation Analysis</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/gammaincomplete/README.md">Upper/Lower Incomplete Gamma Functions</a></li>
+ * 		<li>Construct the Weierstrass Lower S Fixed Series Incomplete Gamma Estimator</li>
+ * 		<li>Construct the NIST (2019) Lower S Fixed Series Incomplete Gamma Estimator</li>
+ * 		<li><i>LowerSFixed</i> Constructor</li>
+ * 		<li>Compute the Limiting Weierstrass Sum</li>
+ * 		<li>Compute the Non-dimensional Incomplete Gamma (Weierstrass Gamma Star)</li>
  *  </ul>
+ *
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FunctionAnalysisLibrary.md">Function Analysis Library</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md">Special Function Implementation and Analysis</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/incompletegamma/README.md">Upper/Lower Incomplete Gamma Functions</a></td></tr>
+ *  </table>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public abstract class LowerSFixed extends org.drip.numerical.estimation.R1ToR1Estimator
+public abstract class LowerSFixed extends R1ToR1Estimator
 {
-	private org.drip.specialfunction.incompletegamma.LowerSFixedSeries _lowerSFixedSeries = null;
+	private LowerSFixedSeries _lowerSFixedSeries = null;
 
 	/**
 	 * Construct the Weierstrass Lower S Fixed Series Incomplete Gamma Estimator
@@ -134,26 +157,16 @@ public abstract class LowerSFixed extends org.drip.numerical.estimation.R1ToR1Es
 		final double s,
 		final int termCount)
 	{
-		try
-		{
-			return new LowerSFixed (
-				org.drip.specialfunction.incompletegamma.LowerSFixedSeries.WeierstrassLimit (
-					s,
-					termCount
-				),
-				null
-			)
-			{
+		try {
+			return new LowerSFixed (LowerSFixedSeries.WeierstrassLimit (s, termCount), null) {
 				@Override public double nonDimensional (
 					final double z)
-					throws java.lang.Exception
+					throws Exception
 				{
-					return weierstrassLimit (z) * java.lang.Math.exp (-1. * z);
+					return weierstrassLimit (z) * Math.exp (-1. * z);
 				}
 			};
-		}
-		catch (java.lang.Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -175,24 +188,15 @@ public abstract class LowerSFixed extends org.drip.numerical.estimation.R1ToR1Es
 	{
 		try
 		{
-			return new LowerSFixed (
-				org.drip.specialfunction.incompletegamma.LowerSFixedSeries.NIST2019 (
-					s,
-					termCount
-				),
-				null
-			)
-			{
+			return new LowerSFixed (LowerSFixedSeries.NIST2019 (s, termCount), null) {
 				@Override public double nonDimensional (
 					final double z)
-					throws java.lang.Exception
+					throws Exception
 				{
 					return weierstrassLimit (z);
 				}
 			};
-		}
-		catch (java.lang.Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -200,36 +204,29 @@ public abstract class LowerSFixed extends org.drip.numerical.estimation.R1ToR1Es
 	}
 
 	/**
-	 * LowerSFixed Constructor
+	 * <i>LowerSFixed</i> Constructor
 	 * 
 	 * @param lowerSFixedSeries R<sup>1</sup> To R<sup>1</sup> Lower S Fixed Limit Series
-	 * @param dc Differential Control
+	 * @param derivativeControl Differential Control
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public LowerSFixed (
-		final org.drip.specialfunction.incompletegamma.LowerSFixedSeries lowerSFixedSeries,
-		final org.drip.numerical.differentiation.DerivativeControl dc)
-		throws java.lang.Exception
+		final LowerSFixedSeries lowerSFixedSeries,
+		final DerivativeControl derivativeControl)
+		throws Exception
 	{
-		super (dc);
+		super (derivativeControl);
 
 		_lowerSFixedSeries = lowerSFixedSeries;
 	}
 
-	@Override public org.drip.numerical.estimation.R1Estimate seriesEstimateNative (
+	@Override public R1Estimate seriesEstimateNative (
 		final double x)
 	{
-		return null == _lowerSFixedSeries ? seriesEstimate (
-			x,
-			null,
-			null
-		) : seriesEstimate (
-			x,
-			_lowerSFixedSeries.termWeightMap(),
-			_lowerSFixedSeries
-		);
+		return null == _lowerSFixedSeries ? seriesEstimate (x, null, null) :
+			seriesEstimate (x, _lowerSFixedSeries.termWeightMap(), _lowerSFixedSeries);
 	}
 
 	/**
@@ -239,12 +236,12 @@ public abstract class LowerSFixed extends org.drip.numerical.estimation.R1ToR1Es
 	 * 
 	 * @return The Limiting Weierstrass Sum
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public double weierstrassLimit (
 		final double z)
-		throws java.lang.Exception
+		throws Exception
 	{
 		return _lowerSFixedSeries.evaluate (z);
 	}
@@ -256,19 +253,18 @@ public abstract class LowerSFixed extends org.drip.numerical.estimation.R1ToR1Es
 	 * 
 	 * @return The Non-dimensional Incomplete Gamma (Weierstrass Gamma Star)
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public abstract double nonDimensional (
-		final double z)
-		throws java.lang.Exception;
+		final double z
+	) throws Exception;
 
 	@Override public double evaluate (
 		final double z)
-		throws java.lang.Exception
+		throws Exception
 	{
-		return java.lang.Math.exp (
-			_lowerSFixedSeries.s() * java.lang.Math.log (z) + _lowerSFixedSeries.logGammaS()
-		) * nonDimensional (z);
+		return Math.exp (_lowerSFixedSeries.s() * Math.log (z) + _lowerSFixedSeries.logGammaS()) *
+			nonDimensional (z);
 	}
 }

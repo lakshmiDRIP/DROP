@@ -128,7 +128,7 @@ public class FactorComponentLoading
 	 * @param weight Factor Weight
 	 * @param returns Factor Returns
 	 * 
-	 * @throws Exception Thriwn if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public FactorComponentLoading (
@@ -138,9 +138,7 @@ public class FactorComponentLoading
 		final double returns)
 		throws Exception
 	{
-		if (!NumberUtil.IsValid (_weight = weight) ||
-			!NumberUtil.IsValid (_returns = returns))
-		{
+		if (!NumberUtil.IsValid (_weight = weight) || !NumberUtil.IsValid (_returns = returns)) {
 			throw new Exception ("FactorComponentLoading Constructor => Invalid Inputs");
 		}
 
