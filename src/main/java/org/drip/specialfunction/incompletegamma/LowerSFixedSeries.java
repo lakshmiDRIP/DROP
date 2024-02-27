@@ -1,11 +1,21 @@
 
 package org.drip.specialfunction.incompletegamma;
 
+import java.util.TreeMap;
+
+import org.drip.numerical.common.NumberUtil;
+import org.drip.numerical.estimation.R1ToR1Series;
+import org.drip.numerical.estimation.R1ToR1SeriesTerm;
+import org.drip.specialfunction.loggamma.NemesAnalyticEstimator;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -104,22 +114,38 @@ package org.drip.specialfunction.incompletegamma;
  * 				https://en.wikipedia.org/wiki/Incomplete_gamma_function
  * 		</li>
  * 	</ul>
+ * 
+ * 	It provides the following functionality:
  *
- *	<br><br>
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FunctionAnalysisLibrary.md">Function Analysis Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md">Special Function Implementation Analysis</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/gammaincomplete/README.md">Upper/Lower Incomplete Gamma Functions</a></li>
+ * 		<li>Construct the R<sup>1</sup> To R<sup>1</sup> Weierstrass Limit Series</li>
+ * 		<li>Construct the R<sup>1</sup> To R<sup>1</sup> NIST (2019) Limit Series</li>
+ * 		<li><i>LowerSFixedSeries</i> Constructor</li>
+ * 		<li>Retrieve s</li>
+ * 		<li>Retrieve Log (Gamma (s))</li>
  *  </ul>
+ *
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FunctionAnalysisLibrary.md">Function Analysis Library</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md">Special Function Implementation and Analysis</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/incompletegamma/README.md">Upper/Lower Incomplete Gamma Functions</a></td></tr>
+ *  </table>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class LowerSFixedSeries extends org.drip.numerical.estimation.R1ToR1Series
+public class LowerSFixedSeries extends R1ToR1Series
 {
-	private double _s = java.lang.Double.NaN;
-	private double _logGammaS = java.lang.Double.NaN;
+	private double _s = Double.NaN;
+	private double _logGammaS = Double.NaN;
 
 	/**
 	 * Construct the R<sup>1</sup> To R<sup>1</sup> Weierstrass Limit Series
@@ -134,28 +160,20 @@ public class LowerSFixedSeries extends org.drip.numerical.estimation.R1ToR1Serie
 		final double s,
 		final int termCount)
 	{
-		java.util.TreeMap<java.lang.Integer, java.lang.Double> termWeightMap = new
-			java.util.TreeMap<java.lang.Integer, java.lang.Double>();
+		TreeMap<Integer, Double> termWeightMap = new TreeMap<Integer, Double>();
 
-		for (int termIndex = 0; termIndex <= termCount; ++termIndex)
-		{
-			termWeightMap.put (
-				termIndex,
-				1.
-			);
+		for (int termIndex = 0; termIndex <= termCount; ++termIndex) {
+			termWeightMap.put (termIndex, 1.);
 		}
 
-		try
-		{
+		try {
 			return new LowerSFixedSeries (
-				org.drip.specialfunction.incompletegamma.LowerSFixedSeriesTerm.WeierstrassLimit (s),
+				LowerSFixedSeriesTerm.WeierstrassLimit (s),
 				termWeightMap,
 				s,
-				0 == s ? 1. : new org.drip.specialfunction.loggamma.NemesAnalyticEstimator (null).evaluate (s)
+				0 == s ? 1. : new NemesAnalyticEstimator (null).evaluate (s)
 			);
-		}
-		catch (java.lang.Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -209,33 +227,27 @@ public class LowerSFixedSeries extends org.drip.numerical.estimation.R1ToR1Serie
 	}
 
 	/**
-	 * LowerSFixedSeries Constructor
+	 * <i>LowerSFixedSeries</i> Constructor
 	 * 
 	 * @param r1ToR1SeriesTerm R<sup>1</sup> To R<sup>1</sup> Series Expansion Term
 	 * @param termWeightMap Error Term Weight Map
 	 * @param s s
 	 * @param logGammaS Log (Gamma (s))
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public LowerSFixedSeries (
-		final org.drip.numerical.estimation.R1ToR1SeriesTerm r1ToR1SeriesTerm,
-		final java.util.TreeMap<java.lang.Integer, java.lang.Double> termWeightMap,
+		final R1ToR1SeriesTerm r1ToR1SeriesTerm,
+		final TreeMap<Integer, Double> termWeightMap,
 		final double s,
 		final double logGammaS)
-		throws java.lang.Exception
+		throws Exception
 	{
-		super (
-			r1ToR1SeriesTerm,
-			false,
-			termWeightMap
-		);
+		super (r1ToR1SeriesTerm, false, termWeightMap);
 
-		if (!org.drip.numerical.common.NumberUtil.IsValid (_s = s) ||
-			!org.drip.numerical.common.NumberUtil.IsValid (_logGammaS = logGammaS))
-		{
-			throw new java.lang.Exception ("LowerSFixedSeries Constructor => Invalid Inputs");
+		if (!NumberUtil.IsValid (_s = s) || !NumberUtil.IsValid (_logGammaS = logGammaS)) {
+			throw new Exception ("LowerSFixedSeries Constructor => Invalid Inputs");
 		}
 	}
 
