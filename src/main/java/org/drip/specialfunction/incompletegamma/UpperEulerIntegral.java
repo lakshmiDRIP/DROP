@@ -1,11 +1,19 @@
 
 package org.drip.specialfunction.incompletegamma;
 
+import org.drip.function.definition.R1ToR1;
+import org.drip.numerical.common.NumberUtil;
+import org.drip.numerical.differentiation.DerivativeControl;
+import org.drip.numerical.integration.NewtonCotesQuadratureGenerator;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -78,7 +86,7 @@ package org.drip.specialfunction.incompletegamma;
 
 /**
  * <i>UpperEulerIntegral</i> implements the Euler's Second Kind Integral Version of the Upper Incomplete
- * Gamma Function. The References are:
+ * 	Gamma Function. The References are:
  * 
  * <br><br>
  * 	<ul>
@@ -105,41 +113,53 @@ package org.drip.specialfunction.incompletegamma;
  * 				https://en.wikipedia.org/wiki/Incomplete_gamma_function
  * 		</li>
  * 	</ul>
+ * 
+ * 	It provides the following functionality:
  *
- *	<br><br>
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FunctionAnalysisLibrary.md">Function Analysis Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md">Special Function Implementation Analysis</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/gammaincomplete/README.md">Upper/Lower Incomplete Gamma Functions</a></li>
+ * 		<li><i>UpperEulerIntegral</i> Constructor</li>
+ * 		<li>Retrieve the Lower Limit</li>
  *  </ul>
+ *
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FunctionAnalysisLibrary.md">Function Analysis Library</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md">Special Function Implementation and Analysis</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/incompletegamma/README.md">Upper/Lower Incomplete Gamma Functions</a></td></tr>
+ *  </table>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class UpperEulerIntegral extends org.drip.function.definition.R1ToR1
+public class UpperEulerIntegral extends R1ToR1
 {
-	private double _limit = java.lang.Double.NaN;
+	private double _limit = Double.NaN;
 
 	/**
-	 * UpperEulerIntegral Constructor
+	 * <i>UpperEulerIntegral</i> Constructor
 	 * 
-	 * @param dc The Derivative Control
+	 * @param derivativeControl The Derivative Control
 	 * @param limit The Lower Limit
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public UpperEulerIntegral (
-		final org.drip.numerical.differentiation.DerivativeControl dc,
+		final DerivativeControl derivativeControl,
 		final double limit)
-		throws java.lang.Exception
+		throws Exception
 	{
-		super (dc);
+		super (derivativeControl);
 
-		if (!org.drip.numerical.common.NumberUtil.IsValid (_limit = limit))
-		{
-			throw new java.lang.Exception ("UpperEulerIntegral Constructor => Invalid Inputs");
+		if (!NumberUtil.IsValid (_limit = limit)) {
+			throw new Exception ("UpperEulerIntegral Constructor => Invalid Inputs");
 		}
 	}
 
@@ -156,27 +176,19 @@ public class UpperEulerIntegral extends org.drip.function.definition.R1ToR1
 
 	@Override public double evaluate (
 		final double s)
-		throws java.lang.Exception
+		throws Exception
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (s))
-		{
-			throw new java.lang.Exception ("UpperEulerIntegral::evaluate => Invalid Inputs");
+		if (!NumberUtil.IsValid (s)) {
+			throw new Exception ("UpperEulerIntegral::evaluate => Invalid Inputs");
 		}
 
-		return org.drip.numerical.integration.NewtonCotesQuadratureGenerator.GaussLaguerreLeftDefinite (
-			_limit,
-			100
-		).integrate (
-			new org.drip.function.definition.R1ToR1 (null)
-			{
+		return NewtonCotesQuadratureGenerator.GaussLaguerreLeftDefinite (_limit, 100).integrate (
+			new R1ToR1 (null) {
 				@Override public double evaluate (
 					final double t)
-					throws java.lang.Exception
+					throws Exception
 				{
-					return java.lang.Double.isInfinite (t) ? 0. : java.lang.Math.pow (
-						t,
-						s - 1
-					) * java.lang.Math.exp (-t);
+					return Double.isInfinite (t) ? 0. : Math.pow (t, s - 1) * Math.exp (-t);
 				}
 			}
 		);
