@@ -1,11 +1,20 @@
 
 package org.drip.specialfunction.incompletegamma;
 
+import org.drip.numerical.differentiation.DerivativeControl;
+import org.drip.numerical.estimation.R1Estimate;
+import org.drip.numerical.estimation.R1ToR1Estimator;
+import org.drip.numerical.estimation.R1ToR1Series;
+import org.drip.specialfunction.loggamma.NemesAnalyticEstimator;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -78,7 +87,7 @@ package org.drip.specialfunction.incompletegamma;
 
 /**
  * <i>UpperSFixed</i> implements the Upper Incomplete Gamma Function using the Power Expansion Series,
- * starting with s = 0 if Recurrence is employed. The References are:
+ * 	starting with s = 0 if Recurrence is employed. The References are:
  * 
  * <br><br>
  * 	<ul>
@@ -105,21 +114,37 @@ package org.drip.specialfunction.incompletegamma;
  * 				https://en.wikipedia.org/wiki/Incomplete_gamma_function
  * 		</li>
  * 	</ul>
+ * 
+ * 	It provides the following functionality:
  *
- *	<br><br>
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FunctionAnalysisLibrary.md">Function Analysis Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md">Special Function Implementation Analysis</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/gammaincomplete/README.md">Upper/Lower Incomplete Gamma Functions</a></li>
+ * 		<li>Compute the NIST (2019) Version of Upper Incomplete Gamma s = 0 Estimator</li>
+ * 		<li>Compute the Weisstein Version of Upper Incomplete Gamma Estimator</li>
+ * 		<li><i>UpperSFixed</i> Constructor</li>
+ * 		<li>Retrieve the Underlying Upper S Fixed Series</li>
+ * 		<li>Evaluate the Upper Gamma (-n, z) recursively from n = 0</li>
  *  </ul>
+ *
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FunctionAnalysisLibrary.md">Function Analysis Library</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md">Special Function Implementation and Analysis</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/incompletegamma/README.md">Upper/Lower Incomplete Gamma Functions</a></td></tr>
+ *  </table>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public abstract class UpperSFixed extends org.drip.numerical.estimation.R1ToR1Estimator
+public abstract class UpperSFixed extends R1ToR1Estimator
 {
-	private org.drip.numerical.estimation.R1ToR1Series _upperSFixedSeries = null;
+	private R1ToR1Series _upperSFixedSeries = null;
 
 	/**
 	 * Compute the NIST (2019) Version of Upper Incomplete Gamma s = 0 Estimator
@@ -203,20 +228,20 @@ public abstract class UpperSFixed extends org.drip.numerical.estimation.R1ToR1Es
 	}
 
 	/**
-	 * UpperSFixed Constructor
+	 * <i>UpperSFixed</i> Constructor
 	 * 
 	 * @param upperSFixedSeries R<sup>1</sup> To R<sup>1</sup> Upper S Fixed Limit Series
-	 * @param dc Differential Control
+	 * @param derivativeControl Differential Control
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	protected UpperSFixed (
-		final org.drip.numerical.estimation.R1ToR1Series upperSFixedSeries,
-		final org.drip.numerical.differentiation.DerivativeControl dc)
-		throws java.lang.Exception
+		final R1ToR1Series upperSFixedSeries,
+		final DerivativeControl derivativeControl)
+		throws Exception
 	{
-		super (dc);
+		super (derivativeControl);
 
 		_upperSFixedSeries = upperSFixedSeries;
 	}
@@ -227,23 +252,16 @@ public abstract class UpperSFixed extends org.drip.numerical.estimation.R1ToR1Es
 	 * @return The Underlying Upper S Fixed Series
 	 */
 
-	public org.drip.numerical.estimation.R1ToR1Series upperSFixedSeries()
+	public R1ToR1Series upperSFixedSeries()
 	{
 		return _upperSFixedSeries;
 	}
 
-	@Override public org.drip.numerical.estimation.R1Estimate seriesEstimateNative (
+	@Override public R1Estimate seriesEstimateNative (
 		final double x)
 	{
-		return null == _upperSFixedSeries ? seriesEstimate (
-			x,
-			null,
-			null
-		) : seriesEstimate (
-			x,
-			_upperSFixedSeries.termWeightMap(),
-			_upperSFixedSeries
-		);
+		return null == _upperSFixedSeries ? seriesEstimate (x, null, null) :
+			seriesEstimate (x, _upperSFixedSeries.termWeightMap(), _upperSFixedSeries);
 	}
 
 	/**
@@ -254,25 +272,23 @@ public abstract class UpperSFixed extends org.drip.numerical.estimation.R1ToR1Es
 	 * 
 	 * @return Upper Gamma (-n, z)
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public double evaluateRecursive (
 		final int n,
 		final double z)
-		throws java.lang.Exception
+		throws Exception
 	{
-		org.drip.numerical.estimation.R1ToR1Series upperSRecursiveSeries =
-			org.drip.specialfunction.incompletegamma.UpperSFixedSeries.NIST2019Recursive (n);
+		R1ToR1Series upperSRecursiveSeries = UpperSFixedSeries.NIST2019Recursive (n);
 
-		if (null == upperSRecursiveSeries)
-		{
-			throw new java.lang.Exception ("UpperSFixed::evaluateRecursive => Invalid Inputs");
+		if (null == upperSRecursiveSeries) {
+			throw new Exception ("UpperSFixed::evaluateRecursive => Invalid Inputs");
 		}
 
 		return (
-			upperSRecursiveSeries.evaluate (z) * java.lang.Math.exp (-n * java.lang.Math.log (z) - z) +
-			(n % 2 == 0 ? 1. : -1.) * evaluate (z)
-		) / java.lang.Math.exp (new org.drip.specialfunction.loggamma.NemesAnalyticEstimator (null).evaluate (n));
+			upperSRecursiveSeries.evaluate (z) * Math.exp (-n * Math.log (z) - z) +
+				(n % 2 == 0 ? 1. : -1.) * evaluate (z)
+		) / Math.exp (new NemesAnalyticEstimator (null).evaluate (n));
 	}
 }

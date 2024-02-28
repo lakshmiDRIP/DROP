@@ -1,8 +1,6 @@
 
 package org.drip.investing.factors;
 
-import org.drip.numerical.common.NumberUtil;
-
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
@@ -76,8 +74,7 @@ import org.drip.numerical.common.NumberUtil;
  */
 
 /**
- * <i>FactorComponentLoading</i> holds the Weight and the Loading corresponding to each Factor. The
- *  References are:
+ * <i>Factor</i> holds the Named Factor and its Portfolio. The References are:
  *
  *	<br><br>
  * <ul>
@@ -113,124 +110,80 @@ import org.drip.numerical.common.NumberUtil;
  * @author Lakshmi Krishnamurthy
  */
 
-public class FactorComponentLoading
+public abstract class Factor
 {
-	private String _assetID = "";
-	private double _score = Double.NaN;
-	private double _weight = Double.NaN;
-	private double _returns = Double.NaN;
-	private int _assetType = Integer.MIN_VALUE;
-	private int _riskPremiumCategory = Integer.MIN_VALUE;
+	private String _code = "";
+	private String _description = "";
+	private FactorPortfolio _portfolio = null;
+	private int _metricType = Integer.MIN_VALUE;
 
 	/**
-	 * FactorComponentLoading Constructor
+	 * Factor Constructor
 	 * 
-	 * @param assetID Asset ID
-	 * @param assetType Asset Type
-	 * @param riskPremiumCategory Risk Premium Category
-	 * @param weight Factor Weight
-	 * @param returns Factor Returns
-	 * @param score Factor Score
+	 * @param code Factor Code
+	 * @param description Factor Description
+	 * @param metricType Factor Metric Type
+	 * @param portfolio Factor Portfolio
 	 * 
 	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
-	public FactorComponentLoading (
-		final String assetID,
-		final int assetType,
-		final int riskPremiumCategory,
-		final double weight,
-		final double returns,
-		final double score)
+	protected Factor (
+		final String code,
+		final String description,
+		final int metricType,
+		final FactorPortfolio portfolio)
 		throws Exception
 	{
-		if (null == (_assetID = assetID) || _assetID.isEmpty() ||
-			!NumberUtil.IsValid (_weight = weight) ||
-			!NumberUtil.IsValid (_returns = returns) ||
-			!NumberUtil.IsValid (_score = score))
-		{
-			throw new Exception ("FactorComponentLoading Constructor => Invalid Inputs");
+		if (null == (_code = code) || _code.isEmpty() || null == (_portfolio = portfolio)) {
+			throw new Exception ("Factor Constructor => Invalid Inputs");
 		}
 
-		_assetType = assetType;
-		_riskPremiumCategory = riskPremiumCategory;
+		_metricType = metricType;
+		_description = description;
 	}
 
 	/**
-	 * Retrieve the Asset ID
+	 * Retrieve the Factor Code
 	 * 
-	 * @return The Asset ID
+	 * @return The Factor Code
 	 */
 
-	public String assetID()
+	public String code()
 	{
-		return _assetID;
+		return _code;
 	}
 
 	/**
-	 * Retrieve the Asset Type
+	 * Retrieve the Factor Description
 	 * 
-	 * @return The Asset Type
+	 * @return The Factor Description
 	 */
 
-	public int assetType()
+	public String description()
 	{
-		return _assetType;
+		return _description;
 	}
 
 	/**
-	 * Retrieve the Risk Premium Category
+	 * Retrieve the Factor Metric Type
 	 * 
-	 * @return The Risk Premium Category
+	 * @return The Factor Metric Type
 	 */
 
-	public int riskPremiumCategory()
+	public int metricType()
 	{
-		return _riskPremiumCategory;
+		return _metricType;
 	}
 
 	/**
-	 * Retrieve the Factor Weight
+	 * Retrieve the Factor Portfolio
 	 * 
-	 * @return The Factor Weight
+	 * @return The Factor Portfolio
 	 */
 
-	public double weight()
+	public FactorPortfolio portfolio()
 	{
-		return _weight;
-	}
-
-	/**
-	 * Retrieve the Factor Returns
-	 * 
-	 * @return The Factor Returns
-	 */
-
-	public double returns()
-	{
-		return _returns;
-	}
-
-	/**
-	 * Retrieve the Factor Score
-	 * 
-	 * @return The Factor Score
-	 */
-
-	public double score()
-	{
-		return _score;
-	}
-
-	/**
-	 * Flip the Weight Sign
-	 * 
-	 * @return TRUE - The Weight Sign has been Flipped
-	 */
-
-	public boolean flipWeightSign()
-	{
-		_weight = -1. * _weight;
-		return true;
+		return _portfolio;
 	}
 }

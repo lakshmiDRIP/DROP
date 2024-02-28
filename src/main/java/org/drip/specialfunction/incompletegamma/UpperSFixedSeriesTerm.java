@@ -1,11 +1,19 @@
 
 package org.drip.specialfunction.incompletegamma;
 
+import org.drip.numerical.common.NumberUtil;
+import org.drip.numerical.estimation.R1ToR1SeriesTerm;
+import org.drip.specialfunction.gamma.NemesAnalytic;
+import org.drip.specialfunction.loggamma.NemesAnalyticEstimator;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -78,7 +86,7 @@ package org.drip.specialfunction.incompletegamma;
 
 /**
  * <i>UpperSFixedSeriesTerm</i> implements a Single Term in the Upper Incomplete Gamma Expansion Series for a
- * Fixed s, starting from s = 0 if Recurrence is used. The References are:
+ * 	Fixed s, starting from s = 0 if Recurrence is used. The References are:
  * 
  * <br><br>
  * 	<ul>
@@ -105,14 +113,28 @@ package org.drip.specialfunction.incompletegamma;
  * 				https://en.wikipedia.org/wiki/Incomplete_gamma_function
  * 		</li>
  * 	</ul>
+ * 
+ * 	It provides the following functionality:
  *
- *	<br><br>
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FunctionAnalysisLibrary.md">Function Analysis Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md">Special Function Implementation Analysis</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/gammaincomplete/README.md">Upper/Lower Incomplete Gamma Functions</a></li>
+ * 		<li>Construct the NIST (2019) Limit Version of the Upper s = 0 Term</li>
+ * 		<li>Construct the NIST (2019) Limit Version of the Upper s = -n Term</li>
+ * 		<li>Construct the Weisstein Version of the Upper s .gt. 0 Term</li>
  *  </ul>
+ *
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FunctionAnalysisLibrary.md">Function Analysis Library</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md">Special Function Implementation and Analysis</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/incompletegamma/README.md">Upper/Lower Incomplete Gamma Functions</a></td></tr>
+ *  </table>
  *
  * @author Lakshmi Krishnamurthy
  */
@@ -126,34 +148,26 @@ public class UpperSFixedSeriesTerm
 	 * @return The NIST (2019) Limit Version of the Upper s = 0 Term 
 	 */
 
-	public static final org.drip.numerical.estimation.R1ToR1SeriesTerm NIST2019()
+	public static final R1ToR1SeriesTerm NIST2019()
 	{
-		try
-		{
-			return new org.drip.numerical.estimation.R1ToR1SeriesTerm()
-			{
+		try {
+			return new R1ToR1SeriesTerm() {
 				@Override public double value (
 					final int order,
 					final double z)
-					throws java.lang.Exception
+					throws Exception
 				{
-					if (0 >= order ||
-						!org.drip.numerical.common.NumberUtil.IsValid (z) || 0. > z)
-					{
-						throw new java.lang.Exception
-							("UpperSFixedSeriesTerm::NIST2019::value => Invalid Inputs");
+					if (0 >= order || !NumberUtil.IsValid (z) || 0. > z) {
+						throw new Exception ("UpperSFixedSeriesTerm::NIST2019::value => Invalid Inputs");
 					}
 
-					return 0. == z ? (0 == order ? 1. : 0.) : (order % 2 == 0 ? 1. : -1.) *
-						java.lang.Math.exp (
-							order * java.lang.Math.log (z) - java.lang.Math.log (order) -
-							new org.drip.specialfunction.loggamma.NemesAnalyticEstimator (null).evaluate (order + 1)
-						);
+					return 0. == z ? (0 == order ? 1. : 0.) : (order % 2 == 0 ? 1. : -1.) * Math.exp (
+						order * Math.log (z) - Math.log (order) -
+							new NemesAnalyticEstimator (null).evaluate (order + 1)
+					);
 				}
 			};
-		}
-		catch (java.lang.Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -168,40 +182,30 @@ public class UpperSFixedSeriesTerm
 	 * @return The NIST (2019) Limit Version of the Upper s = -n Term 
 	 */
 
-	public static final org.drip.numerical.estimation.R1ToR1SeriesTerm NIST2019 (
+	public static final R1ToR1SeriesTerm NIST2019 (
 		final int n)
 	{
-		if (0 >= n)
-		{
+		if (0 >= n) {
 			return null;
 		}
 
-		try
-		{
-			return new org.drip.numerical.estimation.R1ToR1SeriesTerm()
-			{
+		try {
+			return new R1ToR1SeriesTerm() {
 				@Override public double value (
 					final int order,
 					final double z)
-					throws java.lang.Exception
+					throws Exception
 				{
-					if (0 > order ||
-						!org.drip.numerical.common.NumberUtil.IsValid (z) || 0. > z)
-					{
-						throw new java.lang.Exception
-							("UpperSFixedSeriesTerm::NIST2019::value => Invalid Inputs");
+					if (0 > order || !NumberUtil.IsValid (z) || 0. > z) {
+						throw new Exception ("UpperSFixedSeriesTerm::NIST2019::value => Invalid Inputs");
 					}
 
-					return 0. == z || n <= order + 1 ? 0. : (order % 2 == 0 ? 1. : -1.) *
-						java.lang.Math.exp (
-							order * java.lang.Math.log (z) +
-							new org.drip.specialfunction.loggamma.NemesAnalyticEstimator (null).evaluate (n - order)
-						);
+					return 0. == z || n <= order + 1 ? 0. : (order % 2 == 0 ? 1. : -1.) * Math.exp (
+						order * Math.log (z) + new NemesAnalyticEstimator (null).evaluate (n - order)
+					);
 				}
 			};
-		}
-		catch (java.lang.Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -219,37 +223,26 @@ public class UpperSFixedSeriesTerm
 	public static final org.drip.numerical.estimation.R1ToR1SeriesTerm Weisstein (
 		final int s)
 	{
-		if (0 >= s)
-		{
+		if (0 >= s) {
 			return null;
 		}
 
-		try
-		{
-			return new org.drip.numerical.estimation.R1ToR1SeriesTerm()
-			{
+		try {
+			return new R1ToR1SeriesTerm() {
 				@Override public double value (
 					final int order,
 					final double z)
-					throws java.lang.Exception
+					throws Exception
 				{
-					if (0 > order ||
-						!org.drip.numerical.common.NumberUtil.IsValid (z) || 0. > z)
-					{
-						throw new java.lang.Exception
-							("UpperSFixedSeriesTerm::Weisstein::value => Invalid Inputs");
+					if (0 > order || !NumberUtil.IsValid (z) || 0. > z) {
+						throw new Exception ("UpperSFixedSeriesTerm::Weisstein::value => Invalid Inputs");
 					}
 
-					return 0. == z ? (0 == order ? 1. : 0.) : java.lang.Math.pow (
-						z,
-						order
-					) * java.lang.Math.exp (-z) /
-						new org.drip.specialfunction.gamma.NemesAnalytic (null).evaluate (order + 1);
+					return 0. == z ? (0 == order ? 1. : 0.) : Math.pow (z, order) * Math.exp (-z) /
+						new NemesAnalytic (null).evaluate (order + 1);
 				}
 			};
-		}
-		catch (java.lang.Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 

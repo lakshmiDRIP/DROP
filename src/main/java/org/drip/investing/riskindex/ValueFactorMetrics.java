@@ -1,7 +1,5 @@
 
-package org.drip.investing.factors;
-
-import org.drip.numerical.common.NumberUtil;
+package org.drip.investing.riskindex;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -76,8 +74,7 @@ import org.drip.numerical.common.NumberUtil;
  */
 
 /**
- * <i>FactorComponentLoading</i> holds the Weight and the Loading corresponding to each Factor. The
- *  References are:
+ * <i>ValueFactorMetrics</i> maintains the various Value Factor Metrics. The References are:
  *
  *	<br><br>
  * <ul>
@@ -107,130 +104,36 @@ import org.drip.numerical.common.NumberUtil;
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md">Portfolio Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/AssetAllocationAnalyticsLibrary.md">Asset Allocation Analytics</a></li>
  *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/investing/README.md">Factor/Style Based Quantitative Investing</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/investing/factors/README.md">Factor Types, Characteristics, and Constitution</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/investing/riskindex/README.md">Implementation of Risk Factor Indices</a></li>
  *  </ul>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class FactorComponentLoading
+public class ValueFactorMetrics
 {
-	private String _assetID = "";
-	private double _score = Double.NaN;
-	private double _weight = Double.NaN;
-	private double _returns = Double.NaN;
-	private int _assetType = Integer.MIN_VALUE;
-	private int _riskPremiumCategory = Integer.MIN_VALUE;
 
 	/**
-	 * FactorComponentLoading Constructor
-	 * 
-	 * @param assetID Asset ID
-	 * @param assetType Asset Type
-	 * @param riskPremiumCategory Risk Premium Category
-	 * @param weight Factor Weight
-	 * @param returns Factor Returns
-	 * @param score Factor Score
-	 * 
-	 * @throws Exception Thrown if the Inputs are Invalid
+	 * P/E Ratio
 	 */
 
-	public FactorComponentLoading (
-		final String assetID,
-		final int assetType,
-		final int riskPremiumCategory,
-		final double weight,
-		final double returns,
-		final double score)
-		throws Exception
-	{
-		if (null == (_assetID = assetID) || _assetID.isEmpty() ||
-			!NumberUtil.IsValid (_weight = weight) ||
-			!NumberUtil.IsValid (_returns = returns) ||
-			!NumberUtil.IsValid (_score = score))
-		{
-			throw new Exception ("FactorComponentLoading Constructor => Invalid Inputs");
-		}
-
-		_assetType = assetType;
-		_riskPremiumCategory = riskPremiumCategory;
-	}
+	public static final int PRICE_TO_EARNINGS_RATIO = 1;
 
 	/**
-	 * Retrieve the Asset ID
-	 * 
-	 * @return The Asset ID
+	 * P/B Ratio
 	 */
 
-	public String assetID()
-	{
-		return _assetID;
-	}
+	public static final int PRICE_TO_BOOK_RATIO = 2;
 
 	/**
-	 * Retrieve the Asset Type
-	 * 
-	 * @return The Asset Type
+	 * P/S Ratio
 	 */
 
-	public int assetType()
-	{
-		return _assetType;
-	}
+	public static final int PRICE_TO_SALES_RATIO = 3;
 
 	/**
-	 * Retrieve the Risk Premium Category
-	 * 
-	 * @return The Risk Premium Category
+	 * Dividend Yield
 	 */
 
-	public int riskPremiumCategory()
-	{
-		return _riskPremiumCategory;
-	}
-
-	/**
-	 * Retrieve the Factor Weight
-	 * 
-	 * @return The Factor Weight
-	 */
-
-	public double weight()
-	{
-		return _weight;
-	}
-
-	/**
-	 * Retrieve the Factor Returns
-	 * 
-	 * @return The Factor Returns
-	 */
-
-	public double returns()
-	{
-		return _returns;
-	}
-
-	/**
-	 * Retrieve the Factor Score
-	 * 
-	 * @return The Factor Score
-	 */
-
-	public double score()
-	{
-		return _score;
-	}
-
-	/**
-	 * Flip the Weight Sign
-	 * 
-	 * @return TRUE - The Weight Sign has been Flipped
-	 */
-
-	public boolean flipWeightSign()
-	{
-		_weight = -1. * _weight;
-		return true;
-	}
+	public static final int DIVIDEND_YIELD = 4;
 }
