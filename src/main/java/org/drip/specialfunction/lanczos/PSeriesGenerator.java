@@ -1,11 +1,18 @@
 
 package org.drip.specialfunction.lanczos;
 
+import java.util.TreeMap;
+
+import org.drip.numerical.estimation.R0ToR1Series;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -101,19 +108,34 @@ package org.drip.specialfunction.lanczos;
  * 			Wikipedia (2019): Lanczos Approximation https://en.wikipedia.org/wiki/Lanczos_approximation
  * 		</li>
  * 	</ul>
+ * 
+ * 	It provides the following functionality:
  *
- *	<br><br>
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FunctionAnalysisLibrary.md">Function Analysis Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md">Special Function Implementation Analysis</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/lanczos/README.md">Lanczos Scheme for Gamma Estimate</a></li>
+ * 		<li>Construct a Standard Instance of the Lanczos P Series Generator</li>
+ * 		<li><i>PSeriesGenerator</i> Constructor</li>
+ * 		<li>Retrieve the Chebyshev Coefficient Matrix</li>
+ * 		<li>Retrieve the Series Term Count</li>
  *  </ul>
+ *
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FunctionAnalysisLibrary.md">Function Analysis Library</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md">Special Function Implementation and Analysis</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/lanczos/README.md">Lanczos Scheme for Gamma Estimate</a></td></tr>
+ *  </table>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class PSeriesGenerator extends org.drip.numerical.estimation.R0ToR1Series
+public class PSeriesGenerator extends R0ToR1Series
 {
 	private double[][] _chebyshevCoefficientMatrix = null;
 
@@ -130,37 +152,30 @@ public class PSeriesGenerator extends org.drip.numerical.estimation.R0ToR1Series
 		final int g,
 		final int termCount)
 	{
-		double[][] chebyshevCoefficientMatrix = org.drip.specialfunction.lanczos.ChebyshevCoefficientMatrix.Rollout
-			(2 * termCount);
+		double[][] chebyshevCoefficientMatrix = ChebyshevCoefficientMatrix.Rollout (2 * termCount);
 
-		if (null == chebyshevCoefficientMatrix)
-		{
+		if (null == chebyshevCoefficientMatrix) {
 			return null;
 		}
 
-		java.util.TreeMap<java.lang.Integer, java.lang.Double> chebyshevCoefficientWeightMap = new
-			java.util.TreeMap<java.lang.Integer, java.lang.Double>();
+		TreeMap<Integer, Double> chebyshevCoefficientWeightMap = new TreeMap<Integer, Double>();
 
-		double sqrt2OverPI = java.lang.Math.sqrt (2.) / java.lang.Math.PI;
+		double sqrt2OverPI = Math.sqrt (2.) / Math.PI;
 
-		for (int termIndex = 0; termIndex <= termCount; ++termIndex)
-		{
+		for (int termIndex = 0; termIndex <= termCount; ++termIndex) {
 			chebyshevCoefficientWeightMap.put (
 				termIndex,
 				sqrt2OverPI * chebyshevCoefficientMatrix[2 * termCount][2 * termIndex]
 			);
 		}
 
-		try
-		{
+		try {
 			return new PSeriesGenerator (
-				new org.drip.specialfunction.lanczos.PSeriesTerm (g),
+				new PSeriesTerm (g),
 				chebyshevCoefficientWeightMap,
 				chebyshevCoefficientMatrix
 			);
-		}
-		catch (java.lang.Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -168,27 +183,22 @@ public class PSeriesGenerator extends org.drip.numerical.estimation.R0ToR1Series
 	}
 
 	/**
-	 * PSeriesGenerator Constructor
+	 * <i>PSeriesGenerator</i> Constructor
 	 * 
 	 * @param pSeriesTerm Lanczos P Series Term
 	 * @param chebyshevCoefficientWeightMap Chebyshev Coefficient Term Weight Map
 	 * @param chebyshevCoefficientMatrix Chebyshev Coefficient Matrix
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public PSeriesGenerator (
-		final org.drip.specialfunction.lanczos.PSeriesTerm pSeriesTerm,
-		final java.util.TreeMap<java.lang.Integer, java.lang.Double> chebyshevCoefficientWeightMap,
+		final PSeriesTerm pSeriesTerm,
+		final TreeMap<Integer, Double> chebyshevCoefficientWeightMap,
 		final double[][] chebyshevCoefficientMatrix)
-		throws java.lang.Exception
+		throws Exception
 	{
-		super (
-			pSeriesTerm,
-			false,
-			chebyshevCoefficientWeightMap,
-			true
-		);
+		super (pSeriesTerm, false, chebyshevCoefficientWeightMap, true);
 
 		_chebyshevCoefficientMatrix = chebyshevCoefficientMatrix;
 	}

@@ -1,21 +1,12 @@
 
-package org.drip.specialfunction.lanczos;
-
-import org.drip.numerical.common.NumberUtil;
-import org.drip.numerical.estimation.R1ToR1SeriesTerm;
+package org.drip.investing.riskindex;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
- * Copyright (C) 2025 Lakshmi Krishnamurthy
  * Copyright (C) 2024 Lakshmi Krishnamurthy
- * Copyright (C) 2023 Lakshmi Krishnamurthy
- * Copyright (C) 2022 Lakshmi Krishnamurthy
- * Copyright (C) 2021 Lakshmi Krishnamurthy
- * Copyright (C) 2020 Lakshmi Krishnamurthy
- * Copyright (C) 2019 Lakshmi Krishnamurthy
  * 
  *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
  *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
@@ -83,90 +74,104 @@ import org.drip.numerical.estimation.R1ToR1SeriesTerm;
  */
 
 /**
- * <i>ASeriesTerm</i> holds a Single Term of the Lanczos A Series. The References are:
- * 
- * <br><br>
- * 	<ul>
- * 		<li>
- * 			Godfrey, P. (2001): Lanczos Implementation of the Gamma Function
- * 				http://www.numericana.com/answer/info/godfrey.htm
- * 		</li>
- * 		<li>
- * 			Press, W. H., S. A. Teukolsky, W. T. Vetterling, and B. P. Flannery (2007): <i>Numerical Recipes:
- * 				The Art of Scientific Computing 3rd Edition</i> <b>Cambridge University Press</b> New York
- * 		</li>
- * 		<li>
- * 			Pugh, G. R. (2004): <i>An Analysis of the Lanczos Gamma Approximation</i> Ph. D. <b>University of
- * 				British Columbia</b>
- * 		</li>
- * 		<li>
- * 			Toth V. T. (2016): Programmable Calculators – The Gamma Function
- * 				http://www.rskey.org/CMS/index.php/the-library/11
- * 		</li>
- * 		<li>
- * 			Wikipedia (2019): Lanczos Approximation https://en.wikipedia.org/wiki/Lanczos_approximation
- * 		</li>
- * 	</ul>
- * 
- * 	It provides the following functionality:
+ * <i>MomentumFactorMeta</i> contains the Meta Information behind the Momentum Factor. The References are:
  *
+ *	<br><br>
+ * <ul>
+ * 	<li>
+ *  	Baltussen, G., L. Swinkels, and P. van Vliet (2021): Global Factor Premiums <i>Journal of Financial
+ *  		Economics</i> <b>142 (3)</b> 1128-1154
+ * 	</li>
+ * 	<li>
+ *  	Blitz, D., and P. van Vliet (2007): The Volatility Effect: Lower Risk without Lower Return <i>Journal
+ *  		of Portfolio Management</i> <b>34 (1)</b> 102-113
+ * 	</li>
+ * 	<li>
+ *  	Fisher, G. S., R. Shah, and S. Titman (2017): Combining Value and Momentum
+ *  		<i>https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2472936</i> <b>eSSRN</b>
+ * 	</li>
+ * 	<li>
+ *  	Houweling, P., and J. van Zundert (2017): Factor Investing in the Corporate Bond Market <i>Financial
+ *  		Analysts Journal</i> <b>73 (2)</b> 100-115
+ * 	</li>
+ * 	<li>
+ *  	Wikipedia (2024): Factor Investing <i>https://en.wikipedia.org/wiki/Factor_investing</i>
+ * 	</li>
+ * </ul>
+ *
+ *	<br><br>
  *  <ul>
- * 		<li>Empty <i>ASeriesTerm</i> Constructor</li>
+ *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md">Portfolio Core Module</a></li>
+ *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/AssetAllocationAnalyticsLibrary.md">Asset Allocation Analytics</a></li>
+ *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/investing/README.md">Factor/Style Based Quantitative Investing</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/investing/riskindex/README.md">Implementation of Risk Factor Indices</a></li>
  *  </ul>
- *
- *  <br>
- *  <style>table, td, th {
- *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
- *		text-align: center; color:  #0000ff;
- *  }
- *  </style>
- *  
- *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
- *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
- *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FunctionAnalysisLibrary.md">Function Analysis Library</a></td></tr>
- *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md">Special Function Implementation and Analysis</a></td></tr>
- *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/lanczos/README.md">Lanczos Scheme for Gamma Estimate</a></td></tr>
- *  </table>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class ASeriesTerm extends R1ToR1SeriesTerm
+public class MomentumFactorMeta
 {
+	private String _lagWindowTenor = "";
+	private String _returnsHorizonTenor = "";
 
 	/**
-	 * Empty <i>ASeriesTerm</i> Constructor
+	 * Construct the CRSP Momentum Factor Meta Instance
+	 * 
+	 * @return The CRSP Momentum Factor Meta Instance
 	 */
 
-	public ASeriesTerm()
+	public static final MomentumFactorMeta CRSP()
 	{
+		try {
+			return new MomentumFactorMeta ("12M", "1M");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return null;
 	}
 
-	@Override public double value (
-		final int order,
-		final double z)
+	/**
+	 * MomentumFactorMeta Constructor
+	 * 
+	 * @param returnsHorizonTenor Returns Horizon Tenor
+	 * @param lagWindowTenor Lag Window Tenor
+	 * 
+	 * @throws Exception Thrown if the Inputs are Invalid
+	 */
+
+	public MomentumFactorMeta (
+		final String returnsHorizonTenor,
+		final String lagWindowTenor)
 		throws Exception
 	{
-		if (0 > order || !NumberUtil.IsValid (z)) {
-			throw new Exception ("ASeriesTerm::value => Invalid Inputs");
+		if (null == (_returnsHorizonTenor = returnsHorizonTenor) || _returnsHorizonTenor.isEmpty() ||
+			null == (_lagWindowTenor = lagWindowTenor) || _lagWindowTenor.isEmpty())
+		{
+			throw new Exception ("MomentumFactorMeta Constructor => Invalid Inputs");
 		}
+	}
 
-		if (0 == order) {
-			return 0.5;
-		}
+	/**
+	 * Retrieve the Returns Horizon Tenor
+	 * 
+	 * @return The Returns Horizon Tenor
+	 */
 
-		double numerator = 1.;
-		double denominator = 1.;
+	public String returnsHorizonTenor()
+	{
+		return _returnsHorizonTenor;
+	}
 
-		for (int index = 1; index <= order; ++index) {
-			numerator = numerator * (z - index + 1);
-			denominator = denominator * (z + index);
-		}
+	/**
+	 * Retrieve the Lag Window Tenor
+	 * 
+	 * @return The Lag Window Tenor
+	 */
 
-		if (0. == denominator) {
-			throw new Exception ("ASeriesTerm::value => Invalid Inputs");
-		}
-
-		return numerator / denominator;
+	public String lagWindowTenor()
+	{
+		return _lagWindowTenor;
 	}
 }

@@ -120,14 +120,32 @@ import java.util.TreeMap;
 public class TopDownSegmentRanker implements FactorPortfolioRanker
 {
 	private boolean _flipBottomSign = false;
-	private int _rankingScheme = Integer.MIN_VALUE;
 	private int _topComponentCutoffCount = Integer.MIN_VALUE;
 	private int _bottomComponentCutoffCount = Integer.MIN_VALUE;
 
 	/**
+	 * Build a Full-Suite Top/Bottom Portfolio Ranker
+	 * 
+	 * @param flipBottomSign TRUE - Signs of the Bottom Components must be Flipped
+	 * 
+	 * @return Full-Suite Top/Bottom Portfolio Ranker
+	 */
+
+	public static final TopDownSegmentRanker FullSuite (
+		final boolean flipBottomSign)
+	{
+		try {
+			return new TopDownSegmentRanker (Integer.MIN_VALUE, Integer.MIN_VALUE, flipBottomSign);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
 	 * TopDownSegmentRanker Constructor
 	 * 
-	 * @param rankingScheme The Portfolio Component Ranking Scheme
 	 * @param topComponentCutoffCount The Top Component Cutoff Count
 	 * @param bottomComponentCutoffCount The Bottom Component Cutoff Count
 	 * @param flipBottomSign TRUE - Signs of the Bottom Components must be Flipped
@@ -136,27 +154,14 @@ public class TopDownSegmentRanker implements FactorPortfolioRanker
 	 */
 
 	public TopDownSegmentRanker (
-		final int rankingScheme,
 		final int topComponentCutoffCount,
 		final int bottomComponentCutoffCount,
 		final boolean flipBottomSign)
 		throws Exception
 	{
-		_rankingScheme = rankingScheme;
 		_flipBottomSign = flipBottomSign;
 		_topComponentCutoffCount = topComponentCutoffCount;
 		_bottomComponentCutoffCount = bottomComponentCutoffCount;
-	}
-
-	/**
-	 * Retrieve the Portfolio Component Ranking Scheme
-	 * 
-	 * @return The Portfolio Component Ranking Scheme
-	 */
-
-	public int rankingScheme()
-	{
-		return _rankingScheme;
 	}
 
 	/**
@@ -209,9 +214,20 @@ public class TopDownSegmentRanker implements FactorPortfolioRanker
 
 		int factorComponentCount = factorComponentLoadingMap.size();
 
-		if (0 == factorComponentCount ||
-			_topComponentCutoffCount + _bottomComponentCutoffCount >= factorComponentCount)
-		{
+		if (0 == factorComponentCount) {
+			return factorComponentLoadingMap;
+		}
+
+		int topComponentCount = 0;
+		int bottomComponentCount = 0;
+		boolean topComponentLimitReached = false;
+		boolean bottomComponentLimitReached = false;
+		int topComponentCutoffCount = Integer.MIN_VALUE == _topComponentCutoffCount ?
+			factorComponentCount / 2 : _topComponentCutoffCount;
+		int bottomComponentCutoffCount = Integer.MIN_VALUE == _bottomComponentCutoffCount ?
+			factorComponentCount / 2 : _bottomComponentCutoffCount;
+
+		if (topComponentCutoffCount + bottomComponentCutoffCount > factorComponentCount) {
 			return factorComponentLoadingMap;
 		}
 
@@ -233,11 +249,6 @@ public class TopDownSegmentRanker implements FactorPortfolioRanker
 			}
 		}
 
-		int topComponentCount = 0;
-		int bottomComponentCount = 0;
-		boolean topComponentLimitReached = false;
-		boolean bottomComponentLimitReached = false;
-
 		List<FactorComponentLoading> topFactorComponentLoadingList = new ArrayList<FactorComponentLoading>();
 
 		for (double factorScore : sortedFactorComponentLoadingMap.descendingKeySet()) {
@@ -248,7 +259,7 @@ public class TopDownSegmentRanker implements FactorPortfolioRanker
 					while (!topComponentLimitReached) {
 						topFactorComponentLoadingList.add (factorComponentLoading);
 
-						topComponentLimitReached = ++topComponentCount > _topComponentCutoffCount;
+						topComponentLimitReached = ++topComponentCount > topComponentCutoffCount;
 					}
 				}
 			}
@@ -265,7 +276,7 @@ public class TopDownSegmentRanker implements FactorPortfolioRanker
 					while (!bottomComponentLimitReached) {
 						bottomFactorComponentLoadingList.add (factorComponentLoading);
 
-						bottomComponentLimitReached = ++bottomComponentCount > _bottomComponentCutoffCount;
+						bottomComponentLimitReached = ++bottomComponentCount > bottomComponentCutoffCount;
 					}
 				}
 			}

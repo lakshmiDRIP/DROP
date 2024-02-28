@@ -6,6 +6,9 @@ package org.drip.specialfunction.lanczos;
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -78,7 +81,7 @@ package org.drip.specialfunction.lanczos;
 
 /**
  * <i>ChebyshevCoefficientMatrix</i> holds the Chebyshev Polynomial Coefficient Matrix Entries. The
- * References are:
+ * 	References are:
  * 
  * <br><br>
  * 	<ul>
@@ -102,14 +105,26 @@ package org.drip.specialfunction.lanczos;
  * 			Wikipedia (2019): Lanczos Approximation https://en.wikipedia.org/wiki/Lanczos_approximation
  * 		</li>
  * 	</ul>
+ * 
+ * 	It provides the following functionality:
  *
- *	<br><br>
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FunctionAnalysisLibrary.md">Function Analysis Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md">Special Function Implementation Analysis</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/lanczos/README.md">Lanczos Scheme for Gamma Estimate</a></li>
+ * 		<li>Generate a n X n Chebyshev Coefficient Polynomial Matrix</li>
  *  </ul>
+ *
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FunctionAnalysisLibrary.md">Function Analysis Library</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md">Special Function Implementation and Analysis</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/lanczos/README.md">Lanczos Scheme for Gamma Estimate</a></td></tr>
+ *  </table>
  *
  * @author Lakshmi Krishnamurthy
  */
@@ -128,45 +143,37 @@ public class ChebyshevCoefficientMatrix
 	public static final double[][] Rollout (
 		final int size)
 	{
-		if (0 > size)
-		{
+		if (0 > size) {
 			return null;
 		}
 
 		double[][] coefficientMatrix = new double[size + 1][size + 1];
 
-		for (int indexJ = 0; indexJ <= size; ++indexJ)
-		{
-			for (int indexI = 0; indexI <= size; ++indexI)
-			{
+		for (int indexJ = 0; indexJ <= size; ++indexJ) {
+			for (int indexI = 0; indexI <= size; ++indexI) {
 				coefficientMatrix[indexI][indexJ] = 0.;
 			}
 		}
 
 		coefficientMatrix[0][0] = 1.;
 
-		if (0 == size)
-		{
+		if (0 == size) {
 			return coefficientMatrix;
 		}
 
 		coefficientMatrix[1][1] = 1.;
 
-		if (1 == size)
-		{
+		if (1 == size) {
 			return coefficientMatrix;
 		}
 
-		for (int index = 2; index <= size; ++index)
-		{
+		for (int index = 2; index <= size; ++index) {
 			coefficientMatrix[index][0] = -1. * coefficientMatrix[index - 2][0];
 			coefficientMatrix[index][index] = 2. * coefficientMatrix[index - 1][index - 1];
 		}
 
-		for (int indexJ = 1; indexJ <= size; ++indexJ)
-		{
-			for (int indexI = indexJ + 1; indexI <= size; ++indexI)
-			{
+		for (int indexJ = 1; indexJ <= size; ++indexJ) {
+			for (int indexI = indexJ + 1; indexI <= size; ++indexI) {
 				coefficientMatrix[indexI][indexJ] = 2. * coefficientMatrix[indexI - 1][indexJ - 1] -
 					coefficientMatrix[indexI - 2][indexJ];
 			}
