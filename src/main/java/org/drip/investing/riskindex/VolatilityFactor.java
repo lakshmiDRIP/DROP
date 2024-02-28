@@ -122,7 +122,6 @@ public class VolatilityFactor extends Factor
 	 * 
 	 * @param code Factor Code
 	 * @param metricType Factor Metric Type
-	 * @param factorCategory Factor Category
 	 * @param portfolio Factor Portfolio
 	 * @param portfolioRanker Factor Portfolio Ranker
 	 * 
@@ -132,7 +131,6 @@ public class VolatilityFactor extends Factor
 	public VolatilityFactor (
 		final String code,
 		final int metricType,
-		final int factorCategory,
 		final FactorPortfolio portfolio,
 		final FactorPortfolioRanker portfolioRanker)
 		throws Exception
@@ -141,7 +139,6 @@ public class VolatilityFactor extends Factor
 			code,
 			"Portfolio acquires only those volatility assets of the specified category",
 			metricType,
-			factorCategory,
 			portfolio,
 			portfolioRanker
 		);

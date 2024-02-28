@@ -1,11 +1,19 @@
 
 package org.drip.specialfunction.loggamma;
 
+import org.drip.function.definition.R1ToR1;
+import org.drip.numerical.common.NumberUtil;
+import org.drip.numerical.differentiation.DerivativeControl;
+import org.drip.numerical.laplacian.LaplaceTransformGaussLegendre;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -78,7 +86,7 @@ package org.drip.specialfunction.loggamma;
 
 /**
  * <i>BinetIntegralFirstKindEstimator</i> implements the Binet's Integral Estimator of the First Kind for the
- * Log Gamma Function. The References are:
+ * 	Log Gamma Function. The References are:
  * 
  * <br><br>
  * 	<ul>
@@ -102,54 +110,63 @@ package org.drip.specialfunction.loggamma;
  * 			Wikipedia (2019): Gamma Function https://en.wikipedia.org/wiki/Gamma_function
  * 		</li>
  * 	</ul>
+ * 
+ * 	It provides the following functionality:
  *
- *	<br><br>
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FunctionAnalysisLibrary.md">Function Analysis Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md">Special Function Implementation Analysis</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/loggamma/README.md">Analytic/Series/Integral Log Gamma Estimators</a></li>
+ * 		<li><i>BinetIntegralFirstKindEstimator</i> Constructor</li>
  *  </ul>
+ *
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FunctionAnalysisLibrary.md">Function Analysis Library</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md">Special Function Implementation and Analysis</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/loggamma/README.md">Analytic/Series/Integral Log Gamma Estimators</a></td></tr>
+ *  </table>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class BinetIntegralFirstKindEstimator extends org.drip.function.definition.R1ToR1
+public class BinetIntegralFirstKindEstimator extends R1ToR1
 {
 
 	/**
 	 * BinetIntegralFirstKindEstimator Constructor
 	 * 
-	 * @param dc The Derivative Control
+	 * @param derivativeControl The Derivative Control
 	 */
 
 	public BinetIntegralFirstKindEstimator (
-		final org.drip.numerical.differentiation.DerivativeControl dc)
+		final DerivativeControl derivativeControl)
 	{
-		super (dc);
+		super (derivativeControl);
 	}
 
 	@Override public double evaluate (
 		final double z)
-		throws java.lang.Exception
+		throws Exception
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (z))
-		{
-			throw new java.lang.Exception ("BinetIntegralFirstKindEstimator::evaluate => Invalid Inputs");
+		if (!NumberUtil.IsValid (z)) {
+			throw new Exception ("BinetIntegralFirstKindEstimator::evaluate => Invalid Inputs");
 		}
 
-		return new org.drip.numerical.laplacian.LaplaceTransformGaussLegendre (
+		return new LaplaceTransformGaussLegendre (
 			null,
-			new org.drip.function.definition.R1ToR1 (null)
-			{
+			new R1ToR1 (null) {
 				@Override public double evaluate (
 					final double t)
-					throws java.lang.Exception
+					throws Exception
 				{
-					return 0 == t ? 0. : 0.5 / t - 1. / (t * t) + 1. / (t * (java.lang.Math.exp (t) - 1.));
+					return 0 == t ? 0. : 0.5 / t - 1. / (t * t) + 1. / (t * (Math.exp (t) - 1.));
 				}
 			}
-		).evaluate (z) + (z - 0.5) * java.lang.Math.log (z) - z +
-			0.5 * java.lang.Math.log (2. * java.lang.Math.PI);
+		).evaluate (z) + (z - 0.5) * Math.log (z) - z + 0.5 * Math.log (2. * Math.PI);
 	}
 }

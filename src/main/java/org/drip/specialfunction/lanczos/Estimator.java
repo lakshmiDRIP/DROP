@@ -1,11 +1,19 @@
 
 package org.drip.specialfunction.lanczos;
 
+import org.drip.numerical.common.NumberUtil;
+import org.drip.numerical.differentiation.DerivativeControl;
+import org.drip.numerical.estimation.R1Estimate;
+import org.drip.numerical.estimation.R1ToR1Estimator;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -101,41 +109,53 @@ package org.drip.specialfunction.lanczos;
  * 			Wikipedia (2019): Lanczos Approximation https://en.wikipedia.org/wiki/Lanczos_approximation
  * 		</li>
  * 	</ul>
+ * 
+ * 	It provides the following functionality:
  *
- *	<br><br>
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FunctionAnalysisLibrary.md">Function Analysis Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md">Special Function Implementation Analysis</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/lanczos/README.md">Lanczos Scheme for Gamma Estimate</a></li>
+ * 		<li><i>Estimator</i> Constructor</li>
+ * 		<li>Retrieve the A Series Generator</li>
  *  </ul>
+ *
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FunctionAnalysisLibrary.md">Function Analysis Library</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md">Special Function Implementation and Analysis</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/lanczos/README.md">Lanczos Scheme for Gamma Estimate</a></td></tr>
+ *  </table>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class Estimator extends org.drip.numerical.estimation.R1ToR1Estimator
+public class Estimator extends R1ToR1Estimator
 {
-	private org.drip.specialfunction.lanczos.ASeriesGenerator _aSeriesGenerator = null;
+	private ASeriesGenerator _aSeriesGenerator = null;
 
 	/**
-	 * Estimator Constructor
+	 * <i>Estimator</i> Constructor
 	 * 
 	 * @param aSeriesGenerator Lanczos A Series Generator
-	 * @param dc Derivative Control
+	 * @param derivativeControl Derivative Control
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public Estimator (
-		final org.drip.specialfunction.lanczos.ASeriesGenerator aSeriesGenerator,
-		final org.drip.numerical.differentiation.DerivativeControl dc)
-		throws java.lang.Exception
+		final ASeriesGenerator aSeriesGenerator,
+		final DerivativeControl derivativeControl)
+		throws Exception
 	{
-		super (dc);
+		super (derivativeControl);
 
-		if (null == (_aSeriesGenerator = aSeriesGenerator))
-		{
-			throw new java.lang.Exception ("Estimator Constructor => Invalid Inputs");
+		if (null == (_aSeriesGenerator = aSeriesGenerator)) {
+			throw new Exception ("Estimator Constructor => Invalid Inputs");
 		}
 	}
 
@@ -145,41 +165,30 @@ public class Estimator extends org.drip.numerical.estimation.R1ToR1Estimator
 	 * @return The A Series Generator
 	 */
 
-	public org.drip.specialfunction.lanczos.ASeriesGenerator aSeriesGenerator()
+	public ASeriesGenerator aSeriesGenerator()
 	{
 		return _aSeriesGenerator;
 	}
 
 	@Override public double evaluate (
 		final double z)
-		throws java.lang.Exception
+		throws Exception
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (z) || 0. >= z)
-		{
-			throw new java.lang.Exception ("Estimator::evaluate => Invalid Inputs");
+		if (!NumberUtil.IsValid (z) || 0. >= z) {
+			throw new Exception ("Estimator::evaluate => Invalid Inputs");
 		}
 
-		int g = ((org.drip.specialfunction.lanczos.PSeriesTerm)
-			_aSeriesGenerator.pSeriesGenerator().r0Tor1SeriesTerm()).g();
+		int g = ((PSeriesTerm) _aSeriesGenerator.pSeriesGenerator().r0Tor1SeriesTerm()).g();
 
 		double zPlusGPlusHalf = z + g + 0.5;
 
-		return java.lang.Math.sqrt (2. * java.lang.Math.PI) * java.lang.Math.pow (
-			zPlusGPlusHalf,
-			z + 0.5
-		) * java.lang.Math.exp (-1. * zPlusGPlusHalf) * _aSeriesGenerator.cumulative (
-			0.,
-			z
-		);
+		return Math.sqrt (2. * Math.PI) * Math.pow (zPlusGPlusHalf, z + 0.5) *
+			Math.exp (-1. * zPlusGPlusHalf) * _aSeriesGenerator.cumulative (0., z);
 	}
 
-	@Override public org.drip.numerical.estimation.R1Estimate seriesEstimateNative (
+	@Override public R1Estimate seriesEstimateNative (
 		final double x)
 	{
-		return seriesEstimate (
-			x,
-			_aSeriesGenerator.termWeightMap(),
-			_aSeriesGenerator
-		);
+		return seriesEstimate (x, _aSeriesGenerator.termWeightMap(), _aSeriesGenerator);
 	}
 }

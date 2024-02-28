@@ -118,7 +118,6 @@ public abstract class Factor
 	private String _description = "";
 	private FactorPortfolio _portfolio = null;
 	private int _metricType = Integer.MIN_VALUE;
-	private int _factorCategory = Integer.MIN_VALUE;
 	private FactorPortfolioRanker _portfolioRanker = null;
 
 	/**
@@ -127,7 +126,6 @@ public abstract class Factor
 	 * @param code Factor Code
 	 * @param description Factor Description
 	 * @param metricType Factor Metric Type
-	 * @param factorCategory Factor Category
 	 * @param portfolio Factor Portfolio
 	 * @param portfolioRanker Factor Portfolio Ranker
 	 * 
@@ -138,7 +136,6 @@ public abstract class Factor
 		final String code,
 		final String description,
 		final int metricType,
-		final int factorCategory,
 		final FactorPortfolio portfolio,
 		final FactorPortfolioRanker portfolioRanker)
 		throws Exception
@@ -152,7 +149,6 @@ public abstract class Factor
 
 		_metricType = metricType;
 		_description = description;
-		_factorCategory = factorCategory;
 	}
 
 	/**
@@ -186,17 +182,6 @@ public abstract class Factor
 	public int metricType()
 	{
 		return _metricType;
-	}
-
-	/**
-	 * Retrieve the Factor Category
-	 * 
-	 * @return The Factor Category
-	 */
-
-	public int factorCategory()
-	{
-		return _factorCategory;
 	}
 
 	/**

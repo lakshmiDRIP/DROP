@@ -120,7 +120,6 @@ public class ValueFactor extends Factor
 	/**
 	 * Build a Value Factor Instance based off of the P/E Ratio Metric
 	 * 
-	 * @param factorCategory Factor Category
 	 * @param portfolio The Factor Portfolio
 	 * @param portfolioRanker Factor Portfolio Ranker
 	 * 
@@ -128,7 +127,6 @@ public class ValueFactor extends Factor
 	 */
 
 	public ValueFactor PERatio (
-		final int factorCategory,
 		final FactorPortfolio portfolio,
 		final FactorPortfolioRanker portfolioRanker)
 	{
@@ -136,7 +134,6 @@ public class ValueFactor extends Factor
 			return new ValueFactor (
 				"PE_RATIO_VALUE_FACTOR",
 				ValueFactorMetrics.PRICE_TO_EARNINGS_RATIO,
-				factorCategory,
 				portfolio,
 				portfolioRanker
 			);
@@ -150,7 +147,6 @@ public class ValueFactor extends Factor
 	/**
 	 * Build a Value Factor Instance based off of the P/B Ratio Metric
 	 * 
-	 * @param factorCategory Factor Category
 	 * @param portfolio The Factor Portfolio
 	 * @param portfolioRanker Factor Portfolio Ranker
 	 * 
@@ -158,7 +154,6 @@ public class ValueFactor extends Factor
 	 */
 
 	public ValueFactor PBRatio (
-		final int factorCategory,
 		final FactorPortfolio portfolio,
 		final FactorPortfolioRanker portfolioRanker)
 	{
@@ -166,7 +161,6 @@ public class ValueFactor extends Factor
 			return new ValueFactor (
 				"PB_RATIO_VALUE_FACTOR",
 				ValueFactorMetrics.PRICE_TO_BOOK_RATIO,
-				factorCategory,
 				portfolio,
 				portfolioRanker
 			);
@@ -180,7 +174,6 @@ public class ValueFactor extends Factor
 	/**
 	 * Build a Value Factor Instance based off of the P/S Ratio Metric
 	 * 
-	 * @param factorCategory Factor Category
 	 * @param portfolio The Factor Portfolio
 	 * @param portfolioRanker Factor Portfolio Ranker
 	 * 
@@ -188,7 +181,6 @@ public class ValueFactor extends Factor
 	 */
 
 	public ValueFactor PSRatio (
-		final int factorCategory,
 		final FactorPortfolio portfolio,
 		final FactorPortfolioRanker portfolioRanker)
 	{
@@ -196,7 +188,6 @@ public class ValueFactor extends Factor
 			return new ValueFactor (
 				"PS_RATIO_VALUE_FACTOR",
 				ValueFactorMetrics.PRICE_TO_SALES_RATIO,
-				factorCategory,
 				portfolio,
 				portfolioRanker
 			);
@@ -210,7 +201,6 @@ public class ValueFactor extends Factor
 	/**
 	 * Build a Value Factor Instance based off of the Dividend Yield Metric
 	 * 
-	 * @param factorCategory Factor Category
 	 * @param portfolio The Factor Portfolio
 	 * @param portfolioRanker Factor Portfolio Ranker
 	 * 
@@ -218,7 +208,6 @@ public class ValueFactor extends Factor
 	 */
 
 	public ValueFactor DividendYield (
-		final int factorCategory,
 		final FactorPortfolio portfolio,
 		final FactorPortfolioRanker portfolioRanker)
 	{
@@ -226,7 +215,6 @@ public class ValueFactor extends Factor
 			return new ValueFactor (
 				"DIVIDEND_YIELD_VALUE_FACTOR",
 				ValueFactorMetrics.DIVIDEND_YIELD,
-				factorCategory,
 				portfolio,
 				portfolioRanker
 			);
@@ -242,7 +230,6 @@ public class ValueFactor extends Factor
 	 * 
 	 * @param code Factor Code
 	 * @param metricType Factor Metric Type
-	 * @param factorCategory Factor Category
 	 * @param portfolio Factor Portfolio
 	 * @param portfolioRanker Factor Portfolio Ranker
 	 * 
@@ -252,7 +239,6 @@ public class ValueFactor extends Factor
 	public ValueFactor (
 		final String code,
 		final int metricType,
-		final int factorCategory,
 		final FactorPortfolio portfolio,
 		final FactorPortfolioRanker portfolioRanker)
 		throws Exception
@@ -261,7 +247,6 @@ public class ValueFactor extends Factor
 			code,
 			"Difference between Intrinsic/Fundamental Value and Market Value",
 			metricType,
-			factorCategory,
 			portfolio,
 			portfolioRanker
 		);

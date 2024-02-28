@@ -1,7 +1,9 @@
 
-package org.drip.investing.factors;
+package org.drip.investing.riskindex;
 
-import org.drip.numerical.common.NumberUtil;
+import org.drip.investing.factors.Factor;
+import org.drip.investing.factors.FactorPortfolio;
+import org.drip.investing.factors.FactorPortfolioRanker;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -76,8 +78,7 @@ import org.drip.numerical.common.NumberUtil;
  */
 
 /**
- * <i>FactorComponentLoading</i> holds the Weight and the Loading corresponding to each Factor. The
- *  References are:
+ * <i>MarketFactor</i> is the Implementation of the Market Factor. The References are:
  *
  *	<br><br>
  * <ul>
@@ -107,145 +108,33 @@ import org.drip.numerical.common.NumberUtil;
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md">Portfolio Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/AssetAllocationAnalyticsLibrary.md">Asset Allocation Analytics</a></li>
  *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/investing/README.md">Factor/Style Based Quantitative Investing</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/investing/factors/README.md">Factor Types, Characteristics, and Constitution</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/investing/riskindex/README.md">Implementation of Risk Factor Indices</a></li>
  *  </ul>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class FactorComponentLoading
+public class MarketFactor extends Factor
 {
-	private String _assetID = "";
-	private double _score = Double.NaN;
-	private double _weight = Double.NaN;
-	private double _returns = Double.NaN;
-	private int _assetType = Integer.MIN_VALUE;
-	private int _factorCategory = Integer.MIN_VALUE;
-	private int _riskPremiumCategory = Integer.MIN_VALUE;
 
 	/**
-	 * FactorComponentLoading Constructor
+	 * MarketFactor Constructor
 	 * 
-	 * @param assetID Asset ID
-	 * @param assetType Asset Type
-	 * @param factorCategory Factor Category
-	 * @param riskPremiumCategory Risk Premium Category
-	 * @param weight Factor Weight
-	 * @param returns Factor Returns
-	 * @param score Factor Score
+	 * @param code Factor Code
+	 * @param metricType Factor Metric Type
+	 * @param portfolio Factor Portfolio
+	 * @param portfolioRanker Factor Portfolio Ranker
 	 * 
 	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
-	public FactorComponentLoading (
-		final String assetID,
-		final int assetType,
-		final int factorCategory,
-		final int riskPremiumCategory,
-		final double weight,
-		final double returns,
-		final double score)
+	public MarketFactor (
+		final String code,
+		final int metricType,
+		final FactorPortfolio portfolio,
+		final FactorPortfolioRanker portfolioRanker)
 		throws Exception
 	{
-		if (null == (_assetID = assetID) || _assetID.isEmpty() ||
-			!NumberUtil.IsValid (_weight = weight) ||
-			!NumberUtil.IsValid (_returns = returns) ||
-			!NumberUtil.IsValid (_score = score))
-		{
-			throw new Exception ("FactorComponentLoading Constructor => Invalid Inputs");
-		}
-
-		_assetType = assetType;
-		_factorCategory = factorCategory;
-		_riskPremiumCategory = riskPremiumCategory;
-	}
-
-	/**
-	 * Retrieve the Asset ID
-	 * 
-	 * @return The Asset ID
-	 */
-
-	public String assetID()
-	{
-		return _assetID;
-	}
-
-	/**
-	 * Retrieve the Asset Type
-	 * 
-	 * @return The Asset Type
-	 */
-
-	public int assetType()
-	{
-		return _assetType;
-	}
-
-	/**
-	 * Retrieve the Factor Category
-	 * 
-	 * @return The Factor Category
-	 */
-
-	public int factorCategory()
-	{
-		return _factorCategory;
-	}
-
-	/**
-	 * Retrieve the Risk Premium Category
-	 * 
-	 * @return The Risk Premium Category
-	 */
-
-	public int riskPremiumCategory()
-	{
-		return _riskPremiumCategory;
-	}
-
-	/**
-	 * Retrieve the Factor Weight
-	 * 
-	 * @return The Factor Weight
-	 */
-
-	public double weight()
-	{
-		return _weight;
-	}
-
-	/**
-	 * Retrieve the Factor Returns
-	 * 
-	 * @return The Factor Returns
-	 */
-
-	public double returns()
-	{
-		return _returns;
-	}
-
-	/**
-	 * Retrieve the Factor Score
-	 * 
-	 * @return The Factor Score
-	 */
-
-	public double score()
-	{
-		return _score;
-	}
-
-	/**
-	 * Flip the Weight Sign
-	 * 
-	 * @return TRUE - The Weight Sign has been Flipped
-	 */
-
-	public boolean flipWeightSign()
-	{
-		_weight = -1. * _weight;
-		return true;
+		super (code, "Market Factor", metricType, portfolio, portfolioRanker);
 	}
 }

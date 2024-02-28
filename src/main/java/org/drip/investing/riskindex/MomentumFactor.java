@@ -122,7 +122,6 @@ public class MomentumFactor extends Factor
 	 * Construct a CRSP Instance of the Momentum Factor
 	 * 
 	 * @param metricType Factor Metric Type
-	 * @param momentumCategory Momentum Category
 	 * @param portfolio Factor Portfolio
 	 * 
 	 * @return CRSP Instance of the Momentum Factor
@@ -130,7 +129,6 @@ public class MomentumFactor extends Factor
 
 	public static final MomentumFactor CRSP (
 		final int metricType,
-		final int momentumCategory,
 		final FactorPortfolio portfolio)
 	{
 		try {
@@ -138,7 +136,6 @@ public class MomentumFactor extends Factor
 				"CRSP",
 				"UMD 12M winners minus 12M losers",
 				metricType,
-				momentumCategory,
 				portfolio,
 				MomentumFactorMeta.CRSP()
 			);
@@ -155,7 +152,6 @@ public class MomentumFactor extends Factor
 	 * @param code Factor Code
 	 * @param description Description
 	 * @param metricType Factor Metric Type
-	 * @param momentumCategory Momentum Category
 	 * @param portfolio Factor Portfolio
 	 * @param meta Momentum Factor Meta
 	 * 
@@ -166,7 +162,6 @@ public class MomentumFactor extends Factor
 		final String code,
 		final String description,
 		final int metricType,
-		final int momentumCategory,
 		final FactorPortfolio portfolio,
 		final MomentumFactorMeta meta)
 		throws Exception
@@ -175,7 +170,6 @@ public class MomentumFactor extends Factor
 			code,
 			description,
 			metricType,
-			momentumCategory,
 			portfolio,
 			TopDownSegmentRanker.FullSuite (true)
 		);
