@@ -115,6 +115,8 @@ import org.drip.numerical.common.NumberUtil;
 
 public class FactorComponentLoading
 {
+	private String _assetID = "";
+	private double _score = Double.NaN;
 	private double _weight = Double.NaN;
 	private double _returns = Double.NaN;
 	private int _assetType = Integer.MIN_VALUE;
@@ -123,27 +125,46 @@ public class FactorComponentLoading
 	/**
 	 * FactorComponentLoading Constructor
 	 * 
+	 * @param assetID Asset ID
 	 * @param assetType Asset Type
 	 * @param riskPremiumCategory Risk Premium Category
 	 * @param weight Factor Weight
 	 * @param returns Factor Returns
+	 * @param score Factor Score
 	 * 
 	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public FactorComponentLoading (
+		final String assetID,
 		final int assetType,
 		final int riskPremiumCategory,
 		final double weight,
-		final double returns)
+		final double returns,
+		final double score)
 		throws Exception
 	{
-		if (!NumberUtil.IsValid (_weight = weight) || !NumberUtil.IsValid (_returns = returns)) {
+		if (null == (_assetID = assetID) || _assetID.isEmpty() ||
+			!NumberUtil.IsValid (_weight = weight) ||
+			!NumberUtil.IsValid (_returns = returns) ||
+			!NumberUtil.IsValid (_score = score))
+		{
 			throw new Exception ("FactorComponentLoading Constructor => Invalid Inputs");
 		}
 
 		_assetType = assetType;
 		_riskPremiumCategory = riskPremiumCategory;
+	}
+
+	/**
+	 * Retrieve the Asset ID
+	 * 
+	 * @return The Asset ID
+	 */
+
+	public String assetID()
+	{
+		return _assetID;
 	}
 
 	/**
@@ -210,5 +231,28 @@ public class FactorComponentLoading
 	public boolean tiltAgainst()
 	{
 		return 0. > _weight;
+	}
+
+	/**
+	 * Retrieve the Factor Score
+	 * 
+	 * @return The Factor Score
+	 */
+
+	public double score()
+	{
+		return _score;
+	}
+
+	/**
+	 * Flip the Weight Sign
+	 * 
+	 * @return TRUE - The Weight Sign has been Flipped
+	 */
+
+	public boolean flipWeightSign()
+	{
+		_weight = -1. * _weight;
+		return true;
 	}
 }

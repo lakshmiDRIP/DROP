@@ -117,12 +117,14 @@ public class FactorPortfolio
 	private String _country = "";
 	private boolean _isGlobal = false;
 	private int _financingScheme = Integer.MIN_VALUE;
+	private FactorPortfolioRanker _factorPortfolioRanker = null;
 	private Map<String, FactorComponentLoading> _factorComponentLoadingMap = null;
 
 	/**
 	 * FactorPortfolio Constructor
 	 * 
 	 * @param factorComponentLoadingMap Factor Component Loading Map
+	 * @param factorPortfolioRanker Factor Portfolio Ranker
 	 * @param country Country
 	 * @param isGlobal TRUE - The Portfolio is Global
 	 * @param financingScheme Financing Scheme
@@ -132,13 +134,16 @@ public class FactorPortfolio
 
 	public FactorPortfolio (
 		final Map<String, FactorComponentLoading> factorComponentLoadingMap,
+		final FactorPortfolioRanker factorPortfolioRanker,
 		final String country,
 		final boolean isGlobal,
 		final int financingScheme)
 		throws Exception
 	{
-		if (null == (_factorComponentLoadingMap = factorComponentLoadingMap) ||
-			null == (_country = country) || _country.isEmpty())
+		if (null == (_factorPortfolioRanker = factorPortfolioRanker) ||
+			null == (_country = country) || _country.isEmpty() ||
+			null == (_factorComponentLoadingMap = _factorPortfolioRanker.rank (factorComponentLoadingMap))
+		)
 		{
 			throw new Exception ("FactorPortfolio Constructor => Invalid Inputs");
 		}
@@ -156,6 +161,17 @@ public class FactorPortfolio
 	public Map<String, FactorComponentLoading> factorComponentLoadingMap()
 	{
 		return _factorComponentLoadingMap;
+	}
+
+	/**
+	 * Retrieve the Factor Portfolio Ranker
+	 * 
+	 * @return The Factor Portfolio Ranker
+	 */
+
+	public FactorPortfolioRanker factorPortfolioRanker()
+	{
+		return _factorPortfolioRanker;
 	}
 
 	/**

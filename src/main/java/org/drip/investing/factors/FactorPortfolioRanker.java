@@ -1,6 +1,8 @@
 
 package org.drip.investing.factors;
 
+import java.util.Map;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
@@ -75,7 +77,7 @@ package org.drip.investing.factors;
 
 /**
  * <i>FactorPortfolioRanker</i> contains Functionality for Ranking the Factor Portfolio Constituents. The
- *  References are:
+ * 	References are:
  *
  *	<br><br>
  * <ul>
@@ -111,7 +113,18 @@ package org.drip.investing.factors;
  * @author Lakshmi Krishnamurthy
  */
 
-public class FactorPortfolioRanker
+public interface FactorPortfolioRanker
 {
 
+	/**
+	 * Generate the Map of Ranked Factor Components from the Input Factor Component Loading Map
+	 * 
+	 * @param factorComponentLoadingMap Input Factor Component Loading Map
+	 * 
+	 * @return The Map of Ranked Factor Components
+	 */
+
+	public Map<String, FactorComponentLoading> rank (
+		final Map<String, FactorComponentLoading> factorComponentLoadingMap
+	);
 }
