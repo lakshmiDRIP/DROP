@@ -1,6 +1,8 @@
 
 package org.drip.investing.factors;
 
+import java.util.Map;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
@@ -116,6 +118,8 @@ public abstract class Factor
 	private String _description = "";
 	private FactorPortfolio _portfolio = null;
 	private int _metricType = Integer.MIN_VALUE;
+	private int _factorCategory = Integer.MIN_VALUE;
+	private FactorPortfolioRanker _portfolioRanker = null;
 
 	/**
 	 * Factor Constructor
@@ -123,7 +127,9 @@ public abstract class Factor
 	 * @param code Factor Code
 	 * @param description Factor Description
 	 * @param metricType Factor Metric Type
+	 * @param factorCategory Factor Category
 	 * @param portfolio Factor Portfolio
+	 * @param portfolioRanker Factor Portfolio Ranker
 	 * 
 	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
@@ -132,15 +138,21 @@ public abstract class Factor
 		final String code,
 		final String description,
 		final int metricType,
-		final FactorPortfolio portfolio)
+		final int factorCategory,
+		final FactorPortfolio portfolio,
+		final FactorPortfolioRanker portfolioRanker)
 		throws Exception
 	{
-		if (null == (_code = code) || _code.isEmpty() || null == (_portfolio = portfolio)) {
+		if (null == (_code = code) || _code.isEmpty() ||
+			null == (_portfolio = portfolio) ||
+			null == (_portfolioRanker = portfolioRanker))
+		{
 			throw new Exception ("Factor Constructor => Invalid Inputs");
 		}
 
 		_metricType = metricType;
 		_description = description;
+		_factorCategory = factorCategory;
 	}
 
 	/**
@@ -177,6 +189,17 @@ public abstract class Factor
 	}
 
 	/**
+	 * Retrieve the Factor Category
+	 * 
+	 * @return The Factor Category
+	 */
+
+	public int factorCategory()
+	{
+		return _factorCategory;
+	}
+
+	/**
 	 * Retrieve the Factor Portfolio
 	 * 
 	 * @return The Factor Portfolio
@@ -185,5 +208,27 @@ public abstract class Factor
 	public FactorPortfolio portfolio()
 	{
 		return _portfolio;
+	}
+
+	/**
+	 * Retrieve the Factor Portfolio Ranker
+	 * 
+	 * @return The Factor Portfolio Ranker
+	 */
+
+	public FactorPortfolioRanker portfolioRanker()
+	{
+		return _portfolioRanker;
+	}
+
+	/**
+	 * Generate the Ranked Map of Components in the Factor Portfolio
+	 * 
+	 * @return The Ranked Map of Components
+	 */
+
+	public Map<String, FactorComponentLoading> rankedFactorComponentLoadingMap()
+	{
+		return _portfolioRanker.rank (_portfolio.factorComponentLoadingMasterUniverseMap());
 	}
 }

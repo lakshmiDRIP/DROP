@@ -117,14 +117,12 @@ public class FactorPortfolio
 	private String _country = "";
 	private boolean _isGlobal = false;
 	private int _financingScheme = Integer.MIN_VALUE;
-	private FactorPortfolioRanker _factorPortfolioRanker = null;
-	private Map<String, FactorComponentLoading> _factorComponentLoadingMap = null;
+	private Map<String, FactorComponentLoading> _factorComponentLoadingMasterUniverseMap = null;
 
 	/**
 	 * FactorPortfolio Constructor
 	 * 
-	 * @param factorComponentLoadingMap Factor Component Loading Map
-	 * @param factorPortfolioRanker Factor Portfolio Ranker
+	 * @param factorComponentLoadingMasterUniverseMap Factor Component Loading Master Universe Map
 	 * @param country Country
 	 * @param isGlobal TRUE - The Portfolio is Global
 	 * @param financingScheme Financing Scheme
@@ -133,17 +131,14 @@ public class FactorPortfolio
 	 */
 
 	public FactorPortfolio (
-		final Map<String, FactorComponentLoading> factorComponentLoadingMap,
-		final FactorPortfolioRanker factorPortfolioRanker,
+		final Map<String, FactorComponentLoading> factorComponentLoadingMasterUniverseMap,
 		final String country,
 		final boolean isGlobal,
 		final int financingScheme)
 		throws Exception
 	{
-		if (null == (_factorPortfolioRanker = factorPortfolioRanker) ||
-			null == (_country = country) || _country.isEmpty() ||
-			null == (_factorComponentLoadingMap = _factorPortfolioRanker.rank (factorComponentLoadingMap))
-		)
+		if (null == (_country = country) || _country.isEmpty() ||
+			null == (_factorComponentLoadingMasterUniverseMap = factorComponentLoadingMasterUniverseMap))
 		{
 			throw new Exception ("FactorPortfolio Constructor => Invalid Inputs");
 		}
@@ -153,25 +148,14 @@ public class FactorPortfolio
 	}
 
 	/**
-	 * Retrieve the Factor Component Loading Map
+	 * Retrieve the Factor Component Loading Master Universe Map
 	 * 
-	 * @return The Factor Component Loading Map
+	 * @return The Factor Component Loading Master Universe Map
 	 */
 
-	public Map<String, FactorComponentLoading> factorComponentLoadingMap()
+	public Map<String, FactorComponentLoading> factorComponentLoadingMasterUniverseMap()
 	{
-		return _factorComponentLoadingMap;
-	}
-
-	/**
-	 * Retrieve the Factor Portfolio Ranker
-	 * 
-	 * @return The Factor Portfolio Ranker
-	 */
-
-	public FactorPortfolioRanker factorPortfolioRanker()
-	{
-		return _factorPortfolioRanker;
+		return _factorComponentLoadingMasterUniverseMap;
 	}
 
 	/**

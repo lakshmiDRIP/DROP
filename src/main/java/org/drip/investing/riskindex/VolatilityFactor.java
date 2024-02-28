@@ -1,6 +1,10 @@
 
 package org.drip.investing.riskindex;
 
+import org.drip.investing.factors.Factor;
+import org.drip.investing.factors.FactorPortfolio;
+import org.drip.investing.factors.FactorPortfolioRanker;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
@@ -74,7 +78,7 @@ package org.drip.investing.riskindex;
  */
 
 /**
- * <i>ValueFactorMetrics</i> maintains the various Value Factor Metrics. The References are:
+ * <i>VolatilityFactor</i> is the Implementation of the Volatility Factor. The References are:
  *
  *	<br><br>
  * <ul>
@@ -110,48 +114,36 @@ package org.drip.investing.riskindex;
  * @author Lakshmi Krishnamurthy
  */
 
-public class ValueFactorMetrics
+public class VolatilityFactor extends Factor
 {
 
 	/**
-	 * Price-to-Earnings Ratio
+	 * VolatilityFactor Constructor
+	 * 
+	 * @param code Factor Code
+	 * @param metricType Factor Metric Type
+	 * @param factorCategory Factor Category
+	 * @param portfolio Factor Portfolio
+	 * @param portfolioRanker Factor Portfolio Ranker
+	 * 
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
-	public static final int PRICE_TO_EARNINGS_RATIO = 1;
-
-	/**
-	 * P/E Ratio
-	 */
-
-	public static final int PE_RATIO = 1;
-
-	/**
-	 * Price-to-Book Ratio
-	 */
-
-	public static final int PRICE_TO_BOOK_RATIO = 2;
-
-	/**
-	 * P/B Ratio
-	 */
-
-	public static final int PB_RATIO = 2;
-
-	/**
-	 * Price-to-Sales Ratio
-	 */
-
-	public static final int PRICE_TO_SALES_RATIO = 3;
-
-	/**
-	 * P/S Ratio
-	 */
-
-	public static final int PS_RATIO = 3;
-
-	/**
-	 * Dividend Yield
-	 */
-
-	public static final int DIVIDEND_YIELD = 4;
+	public VolatilityFactor (
+		final String code,
+		final int metricType,
+		final int factorCategory,
+		final FactorPortfolio portfolio,
+		final FactorPortfolioRanker portfolioRanker)
+		throws Exception
+	{
+		super (
+			code,
+			"Portfolio acquires only those volatility assets of the specified category",
+			metricType,
+			factorCategory,
+			portfolio,
+			portfolioRanker
+		);
+	}
 }

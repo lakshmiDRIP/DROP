@@ -1,6 +1,10 @@
 
 package org.drip.investing.riskindex;
 
+import org.drip.investing.factors.Factor;
+import org.drip.investing.factors.FactorPortfolio;
+import org.drip.investing.factors.FactorPortfolioRanker;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
@@ -74,7 +78,7 @@ package org.drip.investing.riskindex;
  */
 
 /**
- * <i>ValueFactorMetrics</i> maintains the various Value Factor Metrics. The References are:
+ * <i>ValueFactor</i> is the Implementation of the Value Factor. The References are:
  *
  *	<br><br>
  * <ul>
@@ -110,48 +114,156 @@ package org.drip.investing.riskindex;
  * @author Lakshmi Krishnamurthy
  */
 
-public class ValueFactorMetrics
+public class ValueFactor extends Factor
 {
 
 	/**
-	 * Price-to-Earnings Ratio
+	 * Build a Value Factor Instance based off of the P/E Ratio Metric
+	 * 
+	 * @param factorCategory Factor Category
+	 * @param portfolio The Factor Portfolio
+	 * @param portfolioRanker Factor Portfolio Ranker
+	 * 
+	 * @return Value Factor Instance based off of the P/E Ratio Metric
 	 */
 
-	public static final int PRICE_TO_EARNINGS_RATIO = 1;
+	public ValueFactor PERatio (
+		final int factorCategory,
+		final FactorPortfolio portfolio,
+		final FactorPortfolioRanker portfolioRanker)
+	{
+		try {
+			return new ValueFactor (
+				"PE_RATIO_VALUE_FACTOR",
+				ValueFactorMetrics.PRICE_TO_EARNINGS_RATIO,
+				factorCategory,
+				portfolio,
+				portfolioRanker
+			);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return null;
+	}
 
 	/**
-	 * P/E Ratio
+	 * Build a Value Factor Instance based off of the P/B Ratio Metric
+	 * 
+	 * @param factorCategory Factor Category
+	 * @param portfolio The Factor Portfolio
+	 * @param portfolioRanker Factor Portfolio Ranker
+	 * 
+	 * @return Value Factor Instance based off of the P/B Ratio Metric
 	 */
 
-	public static final int PE_RATIO = 1;
+	public ValueFactor PBRatio (
+		final int factorCategory,
+		final FactorPortfolio portfolio,
+		final FactorPortfolioRanker portfolioRanker)
+	{
+		try {
+			return new ValueFactor (
+				"PB_RATIO_VALUE_FACTOR",
+				ValueFactorMetrics.PRICE_TO_BOOK_RATIO,
+				factorCategory,
+				portfolio,
+				portfolioRanker
+			);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return null;
+	}
 
 	/**
-	 * Price-to-Book Ratio
+	 * Build a Value Factor Instance based off of the P/S Ratio Metric
+	 * 
+	 * @param factorCategory Factor Category
+	 * @param portfolio The Factor Portfolio
+	 * @param portfolioRanker Factor Portfolio Ranker
+	 * 
+	 * @return Value Factor Instance based off of the P/S Ratio Metric
 	 */
 
-	public static final int PRICE_TO_BOOK_RATIO = 2;
+	public ValueFactor PSRatio (
+		final int factorCategory,
+		final FactorPortfolio portfolio,
+		final FactorPortfolioRanker portfolioRanker)
+	{
+		try {
+			return new ValueFactor (
+				"PS_RATIO_VALUE_FACTOR",
+				ValueFactorMetrics.PRICE_TO_SALES_RATIO,
+				factorCategory,
+				portfolio,
+				portfolioRanker
+			);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return null;
+	}
 
 	/**
-	 * P/B Ratio
+	 * Build a Value Factor Instance based off of the Dividend Yield Metric
+	 * 
+	 * @param factorCategory Factor Category
+	 * @param portfolio The Factor Portfolio
+	 * @param portfolioRanker Factor Portfolio Ranker
+	 * 
+	 * @return Value Factor Instance based off of the Dividend Yield Metric
 	 */
 
-	public static final int PB_RATIO = 2;
+	public ValueFactor DividendYield (
+		final int factorCategory,
+		final FactorPortfolio portfolio,
+		final FactorPortfolioRanker portfolioRanker)
+	{
+		try {
+			return new ValueFactor (
+				"DIVIDEND_YIELD_VALUE_FACTOR",
+				ValueFactorMetrics.DIVIDEND_YIELD,
+				factorCategory,
+				portfolio,
+				portfolioRanker
+			);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return null;
+	}
 
 	/**
-	 * Price-to-Sales Ratio
+	 * ValueFactor Constructor
+	 * 
+	 * @param code Factor Code
+	 * @param metricType Factor Metric Type
+	 * @param factorCategory Factor Category
+	 * @param portfolio Factor Portfolio
+	 * @param portfolioRanker Factor Portfolio Ranker
+	 * 
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
-	public static final int PRICE_TO_SALES_RATIO = 3;
-
-	/**
-	 * P/S Ratio
-	 */
-
-	public static final int PS_RATIO = 3;
-
-	/**
-	 * Dividend Yield
-	 */
-
-	public static final int DIVIDEND_YIELD = 4;
+	public ValueFactor (
+		final String code,
+		final int metricType,
+		final int factorCategory,
+		final FactorPortfolio portfolio,
+		final FactorPortfolioRanker portfolioRanker)
+		throws Exception
+	{
+		super (
+			code,
+			"Difference between Intrinsic/Fundamental Value and Market Value",
+			metricType,
+			factorCategory,
+			portfolio,
+			portfolioRanker
+		);
+	}
 }

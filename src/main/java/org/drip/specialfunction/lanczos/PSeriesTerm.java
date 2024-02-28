@@ -1,11 +1,17 @@
 
 package org.drip.specialfunction.lanczos;
 
+import org.drip.numerical.common.NumberUtil;
+import org.drip.numerical.estimation.R0ToR1SeriesTerm;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -101,19 +107,32 @@ package org.drip.specialfunction.lanczos;
  * 			Wikipedia (2019): Lanczos Approximation https://en.wikipedia.org/wiki/Lanczos_approximation
  * 		</li>
  * 	</ul>
+ * 
+ * 	It provides the following functionality:
  *
- *	<br><br>
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md">Numerical Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md">Numerical Optimizer</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md">Special Function Implementation Suite</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/lanczos/README.md">Lanczos Scheme for Gamma Estimate</a></li>
+ * 		<li>PSeriesTerm Constructor</li>
+ * 		<li>Retrieve Lanczos g Control</li>
  *  </ul>
+ *
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FunctionAnalysisLibrary.md">Function Analysis Library</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md">Special Function Implementation and Analysis</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/lanczos/README.md">Lanczos Scheme for Gamma Estimate</a></td></tr>
+ *  </table>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class PSeriesTerm implements org.drip.numerical.estimation.R0ToR1SeriesTerm
+public class PSeriesTerm implements R0ToR1SeriesTerm
 {
 	private int _g = -1;
 
@@ -122,16 +141,15 @@ public class PSeriesTerm implements org.drip.numerical.estimation.R0ToR1SeriesTe
 	 * 
 	 * @param g Lanczos g Control
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public PSeriesTerm (
 		final int g)
-		throws java.lang.Exception
+		throws Exception
 	{
-		if (0 >= (_g = g))
-		{
-			throw new java.lang.Exception ("PSeriesTerm Constructor => Invalid Inputs");
+		if (0 >= (_g = g)) {
+			throw new Exception ("PSeriesTerm Constructor => Invalid Inputs");
 		}
 	}
 
@@ -148,20 +166,15 @@ public class PSeriesTerm implements org.drip.numerical.estimation.R0ToR1SeriesTe
 
 	@Override public double value (
 		final int order)
-		throws java.lang.Exception
+		throws Exception
 	{
-		if (0 > order)
-		{
-			throw new java.lang.Exception ("PSeriesTerm::value => Invalid Inputs");
+		if (0 > order) {
+			throw new Exception ("PSeriesTerm::value => Invalid Inputs");
 		}
 
 		double aPlusGPlusHalf = 0.5 + order + _g;
 
-		return org.drip.numerical.common.NumberUtil.HalfDownShiftedFactorial (order) *
-			java.lang.Math.pow (
-				aPlusGPlusHalf,
-				-0.5 - order
-			) *
-			java.lang.Math.exp (aPlusGPlusHalf);
+		return NumberUtil.HalfDownShiftedFactorial (order) * Math.pow (aPlusGPlusHalf, -0.5 - order) *
+			Math.exp (aPlusGPlusHalf);
 	}
 }
