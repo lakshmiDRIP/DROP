@@ -1,11 +1,25 @@
 
 package org.drip.specialfunction.loggamma;
 
+import org.drip.function.definition.PoleResidue;
+import org.drip.function.definition.R1ToR1;
+import org.drip.numerical.common.NumberUtil;
+import org.drip.numerical.differentiation.DerivativeControl;
+import org.drip.numerical.estimation.R1Estimate;
+import org.drip.numerical.estimation.R1ToR1Estimator;
+import org.drip.numerical.estimation.R1ToR1Series;
+import org.drip.numerical.integration.NewtonCotesQuadratureGenerator;
+import org.drip.specialfunction.gamma.Definitions;
+import org.drip.specialfunction.gamma.NemesAnalytic;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -78,7 +92,7 @@ package org.drip.specialfunction.loggamma;
 
 /**
  * <i>InfiniteSumEstimator</i> estimates Log Gamma using the Infinite Series Infinite Sum. The References
- * are:
+ * 	are:
  * 
  * <br><br>
  * 	<ul>
@@ -102,21 +116,37 @@ package org.drip.specialfunction.loggamma;
  * 			Wikipedia (2019): Gamma Function https://en.wikipedia.org/wiki/Gamma_function
  * 		</li>
  * 	</ul>
+ * 
+ * 	It provides the following functionality:
  *
- *	<br><br>
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FunctionAnalysisLibrary.md">Function Analysis Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md">Special Function Implementation Analysis</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/loggamma/README.md">Analytic/Series/Integral Log Gamma Estimators</a></li>
+ * 		<li>Compute the Euler Infinite Sum Series of Log Gamma Estimator</li>
+ * 		<li>Compute the Weierstrass Infinite Sum Series of Log Gamma Estimator</li>
+ * 		<li>Compute the Fourier Infinite Sum Series of Log Gamma Estimator</li>
+ * 		<li>Compute the Blagouchine (2015) Infinite Sum Series of Log Gamma Estimator</li>
+ * 		<li><i>InfiniteSumEstimator</i> Constructor</li>
  *  </ul>
+ *
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FunctionAnalysisLibrary.md">Function Analysis Library</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md">Special Function Implementation and Analysis</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/loggamma/README.md">Analytic/Series/Integral Log Gamma Estimators</a></td></tr>
+ *  </table>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public abstract class InfiniteSumEstimator extends org.drip.numerical.estimation.R1ToR1Estimator
+public abstract class InfiniteSumEstimator extends R1ToR1Estimator
 {
-	private org.drip.numerical.estimation.R1ToR1Series _infiniteSumSeries = null;
+	private R1ToR1Series _infiniteSumSeries = null;
 
 	/**
 	 * Compute the Euler Infinite Sum Series of Log Gamma Estimator
@@ -129,29 +159,20 @@ public abstract class InfiniteSumEstimator extends org.drip.numerical.estimation
 	public static final InfiniteSumEstimator Euler (
 		final int termCount)
 	{
-		try
-		{
-			return new InfiniteSumEstimator (
-				org.drip.specialfunction.loggamma.InfiniteSumSeries.Euler (termCount),
-				null
-			)
-			{
+		try {
+			return new InfiniteSumEstimator (InfiniteSumSeries.Euler (termCount), null) {
 				@Override public double evaluate (
 					final double z)
-					throws java.lang.Exception
+					throws Exception
 				{
-					if (!org.drip.numerical.common.NumberUtil.IsValid (z) || z <= 0.)
-					{
-						throw new java.lang.Exception
-							("InfiniteSumEstimator::Euler::evaluate => Invalid Inputs");
+					if (!NumberUtil.IsValid (z) || 0. >= z) {
+						throw new Exception ("InfiniteSumEstimator::Euler::evaluate => Invalid Inputs");
 					}
 
-					return infiniteSumSeries().evaluate (z) - java.lang.Math.log (z);
+					return infiniteSumSeries().evaluate (z) - Math.log (z);
 				}
 			};
-		}
-		catch (java.lang.Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -169,30 +190,23 @@ public abstract class InfiniteSumEstimator extends org.drip.numerical.estimation
 	public static final InfiniteSumEstimator Weierstrass (
 		final int termCount)
 	{
-		try
-		{
-			return new InfiniteSumEstimator (
-				org.drip.specialfunction.loggamma.InfiniteSumSeries.Weierstrass (termCount),
-				null
-			)
-			{
+		try {
+			return new InfiniteSumEstimator (InfiniteSumSeries.Weierstrass (termCount), null) {
 				@Override public double evaluate (
 					final double z)
-					throws java.lang.Exception
+					throws Exception
 				{
-					if (!org.drip.numerical.common.NumberUtil.IsValid (z) || z <= 0.)
-					{
-						throw new java.lang.Exception
-							("InfiniteSumEstimator::Weierstrass::evaluate => Invalid Inputs");
+					if (!NumberUtil.IsValid (z) || 0. >= z) {
+						throw new Exception (
+							"InfiniteSumEstimator::Weierstrass::evaluate => Invalid Inputs"
+						);
 					}
 
-					return infiniteSumSeries().evaluate (z) - java.lang.Math.log (z) -
-						z * org.drip.specialfunction.gamma.Definitions.EULER_MASCHERONI;
+					return infiniteSumSeries().evaluate (z) - Math.log (z) -
+						z * Definitions.EULER_MASCHERONI;
 				}
 			};
-		}
-		catch (java.lang.Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -210,32 +224,22 @@ public abstract class InfiniteSumEstimator extends org.drip.numerical.estimation
 	public static final InfiniteSumEstimator Fourier (
 		final int termCount)
 	{
-		try
-		{
-			return new InfiniteSumEstimator (
-				org.drip.specialfunction.loggamma.InfiniteSumSeries.Fourier (termCount),
-				null
-			)
-			{
+		try {
+			return new InfiniteSumEstimator (InfiniteSumSeries.Fourier (termCount), null) {
 				@Override public double evaluate (
 					final double z)
-					throws java.lang.Exception
+					throws Exception
 				{
-					if (!org.drip.numerical.common.NumberUtil.IsValid (z) || 0. >= z || 1. <= z)
-					{
-						throw new java.lang.Exception
-							("InfiniteSumEstimator::Fourier::evaluate => Invalid Inputs");
+					if (!NumberUtil.IsValid (z) || 0. >= z || 1. <= z) {
+						throw new Exception ("InfiniteSumEstimator::Fourier::evaluate => Invalid Inputs");
 					}
 
-					return (0.5 - z) * (org.drip.specialfunction.gamma.Definitions.EULER_MASCHERONI +
-						java.lang.Math.log (2.)) + (1. - z) * java.lang.Math.log (java.lang.Math.PI) -
-						0.5 * java.lang.Math.log (java.lang.Math.sin (java.lang.Math.PI * z)) +
-						infiniteSumSeries().evaluate (z) / java.lang.Math.PI;
+					return (0.5 - z) * (Definitions.EULER_MASCHERONI + Math.log (2.)) +
+						(1. - z) * Math.log (Math.PI) - 0.5 * Math.log (Math.sin (Math.PI * z)) +
+						infiniteSumSeries().evaluate (z) / Math.PI;
 				}
 			};
-		}
-		catch (java.lang.Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -253,53 +257,36 @@ public abstract class InfiniteSumEstimator extends org.drip.numerical.estimation
 	public static final InfiniteSumEstimator Blagouchine2015 (
 		final int termCount)
 	{
-		try
-		{
-			return new InfiniteSumEstimator (
-				org.drip.specialfunction.loggamma.InfiniteSumSeries.Blagouchine2015 (termCount),
-				null
-			)
-			{
+		try {
+			return new InfiniteSumEstimator (InfiniteSumSeries.Blagouchine2015 (termCount), null) {
 				@Override public double evaluate (
 					final double z)
-					throws java.lang.Exception
+					throws Exception
 				{
-					if (!org.drip.numerical.common.NumberUtil.IsValid (z) || 0. >= z || 1. <= z || 0.5 == z)
-					{
-						throw new java.lang.Exception
-							("InfiniteSumEstimator::Blagouchine2015::evaluate => Invalid Inputs");
+					if (!NumberUtil.IsValid (z) || 0. >= z || 1. <= z || 0.5 == z) {
+						throw new Exception (
+							"InfiniteSumEstimator::Blagouchine2015::evaluate => Invalid Inputs"
+						);
 					}
 
-					return (0.5 - z) * java.lang.Math.log (2. * java.lang.Math.PI) +
-						0.5 * (
-							java.lang.Math.log (java.lang.Math.PI) -
-							java.lang.Math.log (java.lang.Math.sin (java.lang.Math.PI * z))
-						) +
+					return (0.5 - z) * Math.log (2. * Math.PI) + 0.5 * (Math.log (Math.PI) -
+						Math.log (Math.sin (Math.PI * z))) +
 						infiniteSumSeries().evaluate (z) / java.lang.Math.PI +
-						org.drip.numerical.integration.NewtonCotesQuadratureGenerator.GaussLaguerreLeftDefinite (
-							0.,
-							100
-						).integrate (
-							new org.drip.function.definition.R1ToR1 (null)
-							{
+						NewtonCotesQuadratureGenerator.GaussLaguerreLeftDefinite (0., 100).integrate (
+							new R1ToR1 (null) {
 								@Override public double evaluate (
 									final double x)
-									throws java.lang.Exception
+									throws Exception
 								{
-									return 0. == x || java.lang.Double.isInfinite (x) ? 0. :
-										java.lang.Math.exp (-1. * termCount * x) *
-										java.lang.Math.log (x) / (
-											java.lang.Math.cosh (x) -
-											java.lang.Math.cos (2. * java.lang.Math.PI * z)
-										);
+									return 0. == x || Double.isInfinite (x) ? 0. :
+										Math.exp (-1. * termCount * x) * Math.log (x) /
+											(Math.cosh (x) - Math.cos (2. * Math.PI * z));
 								}
 							}
-						) * java.lang.Math.sin (2. * java.lang.Math.PI * z) / (2. * java.lang.Math.PI);
+						) * Math.sin (2. * Math.PI * z) / (2. * Math.PI);
 				}
 			};
-		}
-		catch (java.lang.Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -307,20 +294,20 @@ public abstract class InfiniteSumEstimator extends org.drip.numerical.estimation
 	}
 
 	/**
-	 * InfiniteSum Constructor
+	 * <i>InfiniteSumEstimator</i> Constructor
 	 * 
 	 * @param infiniteSumSeries R<sup>1</sup> To R<sup>1</sup> Infinite Sum Series
-	 * @param dc Differential Control
+	 * @param derivativeControl Differential Control
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	protected InfiniteSumEstimator (
-		final org.drip.numerical.estimation.R1ToR1Series infiniteSumSeries,
-		final org.drip.numerical.differentiation.DerivativeControl dc)
-		throws java.lang.Exception
+		final R1ToR1Series infiniteSumSeries,
+		final DerivativeControl derivativeControl)
+		throws Exception
 	{
-		super (dc);
+		super (derivativeControl);
 
 		_infiniteSumSeries = infiniteSumSeries;
 	}
@@ -331,52 +318,36 @@ public abstract class InfiniteSumEstimator extends org.drip.numerical.estimation
 	 * @return The Underlying Infinite Sum Series
 	 */
 
-	public org.drip.numerical.estimation.R1ToR1Series infiniteSumSeries()
+	public R1ToR1Series infiniteSumSeries()
 	{
 		return _infiniteSumSeries;
 	}
 
-	@Override public org.drip.numerical.estimation.R1Estimate seriesEstimateNative (
+	@Override public R1Estimate seriesEstimateNative (
 		final double x)
 	{
-		return null == _infiniteSumSeries ? seriesEstimate (
-			x,
-			null,
-			null
-		) : seriesEstimate (
-			x,
-			_infiniteSumSeries.termWeightMap(),
-			_infiniteSumSeries
-		);
+		return null == _infiniteSumSeries ? seriesEstimate (x, null, null) :
+			seriesEstimate (x, _infiniteSumSeries.termWeightMap(), _infiniteSumSeries);
 	}
 
-	@Override public org.drip.function.definition.PoleResidue poleResidue (
+	@Override public PoleResidue poleResidue (
 		final double x)
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (x))
-		{
+		if (!NumberUtil.IsValid (x)) {
 			return null;
 		}
 
 		int n = (int) x;
 
-		if (0 != (x - n) || x >= 0.)
-		{
-			return org.drip.function.definition.PoleResidue.NotAPole (x);
+		if (0 != (x - n) || 0. <= x) {
+			return PoleResidue.NotAPole (x);
 		}
 
 		n = -n;
 
-		try
-		{
-			return new org.drip.function.definition.PoleResidue (
-				x,
-				(1 == n % 2 ? -1. : 1.) /
-					new org.drip.specialfunction.gamma.NemesAnalytic (null).evaluate (n + 1.)
-			);
-		}
-		catch (java.lang.Exception e)
-		{
+		try {
+			return new PoleResidue (x, (1 == n % 2 ? -1. : 1.) / new NemesAnalytic (null).evaluate (n + 1.));
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 

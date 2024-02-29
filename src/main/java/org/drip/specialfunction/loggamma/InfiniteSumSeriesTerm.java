@@ -1,11 +1,18 @@
 
 package org.drip.specialfunction.loggamma;
 
+import org.drip.numerical.common.NumberUtil;
+import org.drip.numerical.estimation.R1ToR1SeriesTerm;
+import org.drip.specialfunction.gamma.Definitions;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -78,7 +85,7 @@ package org.drip.specialfunction.loggamma;
 
 /**
  * <i>InfiniteSumSeriesTerm</i> implements a Single Term in the Infinite Series for Log Gamma Estimation. The
- * References are:
+ * 	References are:
  * 
  * <br><br>
  * 	<ul>
@@ -102,14 +109,29 @@ package org.drip.specialfunction.loggamma;
  * 			Wikipedia (2019): Gamma Function https://en.wikipedia.org/wiki/Gamma_function
  * 		</li>
  * 	</ul>
+ * 
+ * 	It provides the following functionality:
  *
- *	<br><br>
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FunctionAnalysisLibrary.md">Function Analysis Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md">Special Function Implementation Analysis</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/loggamma/README.md">Analytic/Series/Integral Log Gamma Estimators</a></li>
+ * 		<li>Construct the Euler Infinite Sum Series Term for Log Gamma</li>
+ * 		<li>Construct the Weierstrass Infinite Sum Series Term for Log Gamma</li>
+ * 		<li>Construct the Malmsten-Blagouchine Fourier Series Term for Log Gamma</li>
+ * 		<li>Construct the Blagouchine (2015) Series Term for Log Gamma</li>
  *  </ul>
+ *
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FunctionAnalysisLibrary.md">Function Analysis Library</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md">Special Function Implementation and Analysis</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/loggamma/README.md">Analytic/Series/Integral Log Gamma Estimators</a></td></tr>
+ *  </table>
  *
  * @author Lakshmi Krishnamurthy
  */
@@ -123,31 +145,23 @@ public class InfiniteSumSeriesTerm
 	 * @return The Euler Infinite Sum Series Term for Log Gamma
 	 */
 
-	public static final org.drip.numerical.estimation.R1ToR1SeriesTerm Euler()
+	public static final R1ToR1SeriesTerm Euler()
 	{
-		try
-		{
-			return new org.drip.numerical.estimation.R1ToR1SeriesTerm()
-			{
+		try {
+			return new R1ToR1SeriesTerm() {
 				@Override public double value (
 					final int order,
 					final double z)
-					throws java.lang.Exception
+					throws Exception
 				{
-					if (0 >= order ||
-						!org.drip.numerical.common.NumberUtil.IsValid (z) || 0. > z)
-					{
-						throw new java.lang.Exception
-							("InfiniteSumSeriesTerm::Euler::value => Invalid Inputs");
+					if (0 >= order || !NumberUtil.IsValid (z) || 0. > z) {
+						throw new Exception ("InfiniteSumSeriesTerm::Euler::value => Invalid Inputs");
 					}
 
-					return 0. == z ? 0. : z * java.lang.Math.log (1. + (1. / order)) -
-						java.lang.Math.log (1. + (z / order));
+					return 0. == z ? 0. : z * Math.log (1. + (1. / order)) - Math.log (1. + (z / order));
 				}
 			};
-		}
-		catch (java.lang.Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -160,32 +174,25 @@ public class InfiniteSumSeriesTerm
 	 * @return The Weierstrass Infinite Sum Series Term for Log Gamma
 	 */
 
-	public static final org.drip.numerical.estimation.R1ToR1SeriesTerm Weierstrass()
+	public static final R1ToR1SeriesTerm Weierstrass()
 	{
-		try
-		{
-			return new org.drip.numerical.estimation.R1ToR1SeriesTerm()
-			{
+		try {
+			return new R1ToR1SeriesTerm() {
 				@Override public double value (
 					final int order,
 					final double z)
-					throws java.lang.Exception
+					throws Exception
 				{
-					if (0 >= order ||
-						!org.drip.numerical.common.NumberUtil.IsValid (z) || 0. > z)
-					{
-						throw new java.lang.Exception
-							("InfiniteSumSeriesTerm::Euler::value => Invalid Inputs");
+					if (0 >= order || !NumberUtil.IsValid (z) || 0. > z) {
+						throw new Exception ("InfiniteSumSeriesTerm::Euler::value => Invalid Inputs");
 					}
 
 					double zOverOrder = z / order;
 
-					return 0. == z ? 0. : zOverOrder - java.lang.Math.log (1. + zOverOrder);
+					return 0. == z ? 0. : zOverOrder - Math.log (1. + zOverOrder);
 				}
 			};
-		}
-		catch (java.lang.Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -198,31 +205,23 @@ public class InfiniteSumSeriesTerm
 	 * @return The Malmsten-Blagouchine Fourier Series Term for Log Gamma
 	 */
 
-	public static final org.drip.numerical.estimation.R1ToR1SeriesTerm Fourier()
+	public static final R1ToR1SeriesTerm Fourier()
 	{
-		try
-		{
-			return new org.drip.numerical.estimation.R1ToR1SeriesTerm()
-			{
+		try {
+			return new R1ToR1SeriesTerm() {
 				@Override public double value (
 					final int order,
 					final double z)
-					throws java.lang.Exception
+					throws Exception
 				{
-					if (0 >= order ||
-						!org.drip.numerical.common.NumberUtil.IsValid (z) || 0. >= z || 1. <= z)
-					{
-						throw new java.lang.Exception
-							("InfiniteSumSeriesTerm::Fourier::value => Invalid Inputs");
+					if (0 >= order || !NumberUtil.IsValid (z) || 0. >= z || 1. <= z) {
+						throw new Exception ("InfiniteSumSeriesTerm::Fourier::value => Invalid Inputs");
 					}
 
-					return java.lang.Math.log (order) *
-						java.lang.Math.sin (2. * java.lang.Math.PI * order * z) / order;
+					return Math.log (order) * Math.sin (2. * Math.PI * order * z) / order;
 				}
 			};
-		}
-		catch (java.lang.Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -235,33 +234,26 @@ public class InfiniteSumSeriesTerm
 	 * @return The Blagouchine (2015) Series Term for Log Gamma
 	 */
 
-	public static final org.drip.numerical.estimation.R1ToR1SeriesTerm Blagouchine2015()
+	public static final R1ToR1SeriesTerm Blagouchine2015()
 	{
-		try
-		{
-			return new org.drip.numerical.estimation.R1ToR1SeriesTerm()
-			{
+		try {
+			return new R1ToR1SeriesTerm() {
 				@Override public double value (
 					final int order,
 					final double z)
-					throws java.lang.Exception
+					throws Exception
 				{
-					if (0 >= order ||
-						!org.drip.numerical.common.NumberUtil.IsValid (z) || 0. >= z || 1. <= z || 0.5 == z)
-					{
-						throw new java.lang.Exception
-							("InfiniteSumSeriesTerm::Blagouchine2015::value => Invalid Inputs");
+					if (0 >= order || !NumberUtil.IsValid (z) || 0. >= z || 1. <= z || 0.5 == z) {
+						throw new Exception (
+							"InfiniteSumSeriesTerm::Blagouchine2015::value => Invalid Inputs"
+						);
 					}
 
-					return (
-						org.drip.specialfunction.gamma.Definitions.EULER_MASCHERONI + java.lang.Math.log
-							(order)
-					) * java.lang.Math.sin (2. * java.lang.Math.PI * order * z) / order;
+					return (Definitions.EULER_MASCHERONI + Math.log (order)) *
+						Math.sin (2. * Math.PI * order * z) / order;
 				}
 			};
-		}
-		catch (java.lang.Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 

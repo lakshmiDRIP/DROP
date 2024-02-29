@@ -1,11 +1,18 @@
 
 package org.drip.specialfunction.loggamma;
 
+import java.util.TreeMap;
+
+import org.drip.numerical.estimation.R1ToR1Series;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -101,14 +108,29 @@ package org.drip.specialfunction.loggamma;
  * 			Wikipedia (2019): Gamma Function https://en.wikipedia.org/wiki/Gamma_function
  * 		</li>
  * 	</ul>
+ * 
+ * 	It provides the following functionality:
  *
- *	<br><br>
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FunctionAnalysisLibrary.md">Function Analysis Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md">Special Function Implementation Analysis</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/loggamma/README.md">Analytic/Series/Integral Log Gamma Estimators</a></li>
+ * 		<li>Construct the R<sup>1</sup> To R<sup>1</sup> Infinite Euler Sum Series</li>
+ * 		<li>Construct the R<sup>1</sup> To R<sup>1</sup> Infinite Weierstrass Sum Series</li>
+ * 		<li>Construct the R<sup>1</sup> To R<sup>1</sup> Malmsten-Blagouchine Fourier Series</li>
+ * 		<li>Construct the R<sup>1</sup> To R<sup>1</sup> Blagouchine (2015) Series</li>
  *  </ul>
+ *
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FunctionAnalysisLibrary.md">Function Analysis Library</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md">Special Function Implementation and Analysis</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/loggamma/README.md">Analytic/Series/Integral Log Gamma Estimators</a></td></tr>
+ *  </table>
  *
  * @author Lakshmi Krishnamurthy
  */
@@ -124,30 +146,18 @@ public class InfiniteSumSeries
 	 * @return The R<sup>1</sup> To R<sup>1</sup> Infinite Euler Sum Series
 	 */
 
-	public static final org.drip.numerical.estimation.R1ToR1Series Euler (
+	public static final R1ToR1Series Euler (
 		final int termCount)
 	{
-		try
-		{
-			java.util.TreeMap<java.lang.Integer, java.lang.Double> termWeightMap = new
-				java.util.TreeMap<java.lang.Integer, java.lang.Double>();
+		try {
+			TreeMap<Integer, Double> termWeightMap = new TreeMap<Integer, Double>();
 
-			for (int termIndex = 1; termIndex <= termCount; ++termIndex)
-			{
-				termWeightMap.put (
-					termIndex,
-					1.
-				);
+			for (int termIndex = 1; termIndex <= termCount; ++termIndex) {
+				termWeightMap.put (termIndex, 1.);
 			}
 
-			return new org.drip.numerical.estimation.R1ToR1Series (
-				org.drip.specialfunction.loggamma.InfiniteSumSeriesTerm.Euler(),
-				false,
-				termWeightMap
-			);
-		}
-		catch (java.lang.Exception e)
-		{
+			return new R1ToR1Series (InfiniteSumSeriesTerm.Euler(), false, termWeightMap);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -162,30 +172,18 @@ public class InfiniteSumSeries
 	 * @return The R<sup>1</sup> To R<sup>1</sup> Infinite Weierstrass Sum Series
 	 */
 
-	public static final org.drip.numerical.estimation.R1ToR1Series Weierstrass (
+	public static final R1ToR1Series Weierstrass (
 		final int termCount)
 	{
-		try
-		{
-			java.util.TreeMap<java.lang.Integer, java.lang.Double> termWeightMap = new
-				java.util.TreeMap<java.lang.Integer, java.lang.Double>();
+		try {
+			TreeMap<Integer, Double> termWeightMap = new TreeMap<Integer, Double>();
 
-			for (int termIndex = 1; termIndex <= termCount; ++termIndex)
-			{
-				termWeightMap.put (
-					termIndex,
-					1.
-				);
+			for (int termIndex = 1; termIndex <= termCount; ++termIndex) {
+				termWeightMap.put (termIndex, 1.);
 			}
 
-			return new org.drip.numerical.estimation.R1ToR1Series (
-				org.drip.specialfunction.loggamma.InfiniteSumSeriesTerm.Weierstrass(),
-				false,
-				termWeightMap
-			);
-		}
-		catch (java.lang.Exception e)
-		{
+			return new R1ToR1Series (InfiniteSumSeriesTerm.Weierstrass(), false, termWeightMap);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -200,30 +198,18 @@ public class InfiniteSumSeries
 	 * @return The R<sup>1</sup> To R<sup>1</sup> Malmsten-Blagouchine Fourier Series
 	 */
 
-	public static final org.drip.numerical.estimation.R1ToR1Series Fourier (
+	public static final R1ToR1Series Fourier (
 		final int termCount)
 	{
-		try
-		{
-			java.util.TreeMap<java.lang.Integer, java.lang.Double> termWeightMap = new
-				java.util.TreeMap<java.lang.Integer, java.lang.Double>();
+		try {
+			TreeMap<Integer, Double> termWeightMap = new TreeMap<Integer, Double>();
 
-			for (int termIndex = 1; termIndex <= termCount; ++termIndex)
-			{
-				termWeightMap.put (
-					termIndex,
-					1.
-				);
+			for (int termIndex = 1; termIndex <= termCount; ++termIndex) {
+				termWeightMap.put (termIndex, 1.);
 			}
 
-			return new org.drip.numerical.estimation.R1ToR1Series (
-				org.drip.specialfunction.loggamma.InfiniteSumSeriesTerm.Fourier(),
-				false,
-				termWeightMap
-			);
-		}
-		catch (java.lang.Exception e)
-		{
+			return new R1ToR1Series (InfiniteSumSeriesTerm.Fourier(), false, termWeightMap);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -241,30 +227,17 @@ public class InfiniteSumSeries
 	public static final org.drip.numerical.estimation.R1ToR1Series Blagouchine2015 (
 		final int termCount)
 	{
-		try
-		{
-			java.util.TreeMap<java.lang.Integer, java.lang.Double> termWeightMap = new
-				java.util.TreeMap<java.lang.Integer, java.lang.Double>();
+		try {
+			TreeMap<Integer, Double> termWeightMap = new TreeMap<Integer, Double>();
 
-			for (int termIndex = 1; termIndex < termCount; ++termIndex)
-			{
-				if (2 * termIndex != termCount)
-				{
-					termWeightMap.put (
-						termIndex,
-						1.
-					);
+			for (int termIndex = 1; termIndex < termCount; ++termIndex) {
+				if (2 * termIndex != termCount) {
+					termWeightMap.put (termIndex, 1.);
 				}
 			}
 
-			return new org.drip.numerical.estimation.R1ToR1Series (
-				org.drip.specialfunction.loggamma.InfiniteSumSeriesTerm.Blagouchine2015(),
-				false,
-				termWeightMap
-			);
-		}
-		catch (java.lang.Exception e)
-		{
+			return new R1ToR1Series (InfiniteSumSeriesTerm.Blagouchine2015(), false, termWeightMap);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
