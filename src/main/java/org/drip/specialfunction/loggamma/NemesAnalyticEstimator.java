@@ -1,11 +1,18 @@
 
 package org.drip.specialfunction.loggamma;
 
+import org.drip.numerical.common.NumberUtil;
+import org.drip.numerical.differentiation.DerivativeControl;
+import org.drip.numerical.estimation.R1ToR1Estimator;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -78,7 +85,7 @@ package org.drip.specialfunction.loggamma;
 
 /**
  * <i>NemesAnalyticEstimator</i> implements the Nemes Analytic Version of the Log Gamma Function. The
- * References are:
+ * 	References are:
  * 
  * <br><br>
  * 	<ul>
@@ -103,43 +110,53 @@ package org.drip.specialfunction.loggamma;
  * 				https://en.wikipedia.org/wiki/Stirling%27s_approximation
  * 		</li>
  * 	</ul>
+ * 
+ * 	It provides the following functionality:
  *
- *	<br><br>
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FunctionAnalysisLibrary.md">Function Analysis Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md">Special Function Implementation Analysis</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/loggamma/README.md">Analytic/Series/Integral Log Gamma Estimators</a></li>
+ * 		<li><i>NemesAnalyticEstimator</i> Constructor</li>
  *  </ul>
+ *
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FunctionAnalysisLibrary.md">Function Analysis Library</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md">Special Function Implementation and Analysis</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/loggamma/README.md">Analytic/Series/Integral Log Gamma Estimators</a></td></tr>
+ *  </table>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class NemesAnalyticEstimator extends org.drip.numerical.estimation.R1ToR1Estimator
+public class NemesAnalyticEstimator extends R1ToR1Estimator
 {
 
 	/**
-	 * NemesAnalyticEstimator Constructor
+	 * <i>NemesAnalyticEstimator</i> Constructor
 	 * 
-	 * @param dc The Derivative Control
+	 * @param derivativeControl The Derivative Control
 	 */
 
 	public NemesAnalyticEstimator (
-		final org.drip.numerical.differentiation.DerivativeControl dc)
+		final DerivativeControl derivativeControl)
 	{
-		super (dc);
+		super (derivativeControl);
 	}
 
 	@Override public double evaluate (
 		final double x)
-		throws java.lang.Exception
+		throws Exception
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (x) || 0. > x)
-		{
-			throw new java.lang.Exception ("NemesAnalyticEstimator::evaluate => Invalid Inputs");
+		if (!NumberUtil.IsValid (x) || 0. > x) {
+			throw new Exception ("NemesAnalyticEstimator::evaluate => Invalid Inputs");
 		}
 
-		return 0.5 * java.lang.Math.log (2. * java.lang.Math.PI / x) +
-			x * (java.lang.Math.log (x + (1. / (12. * x - (0.1 / x)))) - 1.);
+		return 0.5 * Math.log (2. * Math.PI / x) + x * (Math.log (x + (1. / (12. * x - (0.1 / x)))) - 1.);
 	}
 }
