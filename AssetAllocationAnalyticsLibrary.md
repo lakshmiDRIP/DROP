@@ -44,6 +44,10 @@ Asset Allocation Analytics Library implements Optimal Portfolio Construction and
 	* Discussion
 	* Fama-French Five-Factor Model
 	* References
+ * Carhart Four-Factor Model
+	* Introduction
+	* Development
+	* References
  * The Black Litterman Model
 	* Overview
 	* Introduction

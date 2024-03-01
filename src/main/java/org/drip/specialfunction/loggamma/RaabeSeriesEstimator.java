@@ -1,6 +1,15 @@
 
 package org.drip.specialfunction.loggamma;
 
+import java.util.TreeMap;
+
+import org.drip.numerical.common.NumberUtil;
+import org.drip.numerical.differentiation.DerivativeControl;
+import org.drip.numerical.estimation.R1Estimate;
+import org.drip.numerical.estimation.R1ToR1Estimator;
+import org.drip.numerical.estimation.R1ToR1Series;
+import org.drip.numerical.estimation.R1ToR1SeriesTerm;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
@@ -132,31 +141,30 @@ package org.drip.specialfunction.loggamma;
  * @author Lakshmi Krishnamurthy
  */
 
-public class RaabeSeriesEstimator extends org.drip.numerical.estimation.R1ToR1Estimator
+public class RaabeSeriesEstimator extends R1ToR1Estimator
 {
 
 	/**
 	 * <i>RaabeSeriesEstimator</i> Constructor
 	 * 
-	 * @param dc The Derivative Control
+	 * @param derivativeControl The Derivative Control
 	 */
 
 	public RaabeSeriesEstimator (
-		final org.drip.numerical.differentiation.DerivativeControl dc)
+		final DerivativeControl derivativeControl)
 	{
-		super (dc);
+		super (derivativeControl);
 	}
 
 	@Override public double evaluate (
 		final double x)
-		throws java.lang.Exception
+		throws Exception
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (x) || 0. >= x)
-		{
-			throw new java.lang.Exception ("RaabeSeriesEstimator::evaluate => Invalid Inputs");
+		if (!NumberUtil.IsValid (x) || 0. >= x) {
+			throw new Exception ("RaabeSeriesEstimator::evaluate => Invalid Inputs");
 		}
 
-		return x * java.lang.Math.log (x) - x + 0.5 * java.lang.Math.log (2. * java.lang.Math.PI / x);
+		return x * Math.log (x) - x + 0.5 * Math.log (2. * Math.PI / x);
 	}
 
 	/**
@@ -167,46 +175,26 @@ public class RaabeSeriesEstimator extends org.drip.numerical.estimation.R1ToR1Es
 	 * @return The Bounded Function Estimates along with the Higher Order Inverted Rising Exponentials
 	 */
 
-	public org.drip.numerical.estimation.R1Estimate invertedRisingExponentialCorrectionEstimate (
+	public R1Estimate invertedRisingExponentialCorrectionEstimate (
 		final double x)
 	{
-		java.util.TreeMap<java.lang.Integer, java.lang.Double> termWeightMap = new
-			java.util.TreeMap<java.lang.Integer, java.lang.Double>();
+		TreeMap<Integer, Double> termWeightMap = new TreeMap<Integer, Double>();
 
-		termWeightMap.put (
-			1,
-			1. / 12.
-		);
+		termWeightMap.put (1, 1. / 12.);
 
-		termWeightMap.put (
-			2,
-			1. / 12.
-		);
+		termWeightMap.put (2, 1. / 12.);
 
-		termWeightMap.put (
-			3,
-			59. / 360.
-		);
+		termWeightMap.put (3, 59. / 360.);
 
-		termWeightMap.put (
-			4,
-			29. / 60.
-		);
+		termWeightMap.put (4, 29. / 60.);
 
-		try
-		{
+		try {
 			return seriesEstimate (
 				x,
 				termWeightMap,
-				new org.drip.numerical.estimation.R1ToR1Series (
-					org.drip.numerical.estimation.R1ToR1SeriesTerm.InvertedRisingExponential(),
-					false,
-					termWeightMap
-				)
+				new R1ToR1Series (R1ToR1SeriesTerm.InvertedRisingExponential(), false, termWeightMap)
 			);
-		}
-		catch (java.lang.Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -220,18 +208,17 @@ public class RaabeSeriesEstimator extends org.drip.numerical.estimation.R1ToR1Es
 	 * 
 	 * @return The Raabe's Strip Integral between (a, a + 1) for the Log Gamma Function
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public double stripIntegral (
 		final double a)
-		throws java.lang.Exception
+		throws Exception
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (a) || 0. > a)
-		{
-			throw new java.lang.Exception ("RaabeSeriesEstimator::stripIntegral => Invalid Inputs");
+		if (!NumberUtil.IsValid (a) || 0. > a) {
+			throw new Exception ("RaabeSeriesEstimator::stripIntegral => Invalid Inputs");
 		}
 
-		return 0.5 * java.lang.Math.log (2. * java.lang.Math.PI) + a * java.lang.Math.log (a) - a;
+		return 0.5 * Math.log (2. * Math.PI) + a * Math.log (a) - a;
 	}
 }

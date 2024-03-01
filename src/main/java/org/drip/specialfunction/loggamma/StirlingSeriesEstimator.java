@@ -1,11 +1,23 @@
 
 package org.drip.specialfunction.loggamma;
 
+import java.util.TreeMap;
+
+import org.drip.numerical.common.NumberUtil;
+import org.drip.numerical.differentiation.DerivativeControl;
+import org.drip.numerical.estimation.R1Estimate;
+import org.drip.numerical.estimation.R1ToR1Estimator;
+import org.drip.numerical.estimation.R1ToR1Series;
+import org.drip.numerical.estimation.R1ToR1SeriesTerm;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -78,7 +90,7 @@ package org.drip.specialfunction.loggamma;
 
 /**
  * <i>StirlingSeriesEstimator</i> implements the Stirling's Series Approximation of the Gamma Function. The
- * References are:
+ * 	References are:
  * 
  * <br><br>
  * 	<ul>
@@ -103,31 +115,45 @@ package org.drip.specialfunction.loggamma;
  * 				https://en.wikipedia.org/wiki/Stirling%27s_approximation
  * 		</li>
  * 	</ul>
+ * 
+ * 	It provides the following functionality:
  *
- *	<br><br>
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FunctionAnalysisLibrary.md">Function Analysis Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md">Special Function Implementation Analysis</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/loggamma/README.md">Analytic/Series/Integral Log Gamma Estimators</a></li>
+ * 		<li><i>StirlingSeriesEstimator</i> Constructor</li>
+ * 		<li>Compute the Log de-Moivre Term</li>
+ * 		<li>Compute the Bounded Function Estimates along with the Higher Order Nemes Correction</li>
  *  </ul>
+ *
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FunctionAnalysisLibrary.md">Function Analysis Library</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md">Special Function Implementation and Analysis</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/loggamma/README.md">Analytic/Series/Integral Log Gamma Estimators</a></td></tr>
+ *  </table>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class StirlingSeriesEstimator extends org.drip.numerical.estimation.R1ToR1Estimator
+public class StirlingSeriesEstimator extends R1ToR1Estimator
 {
 
 	/**
-	 * StirlingSeriesEstimator Constructor
+	 * <i>StirlingSeriesEstimator</i> Constructor
 	 * 
-	 * @param dc The Derivative Control
+	 * @param derivativeControl The Derivative Control
 	 */
 
 	public StirlingSeriesEstimator (
-		final org.drip.numerical.differentiation.DerivativeControl dc)
+		final DerivativeControl derivativeControl)
 	{
-		super (dc);
+		super (derivativeControl);
 	}
 
 	/**
@@ -137,16 +163,15 @@ public class StirlingSeriesEstimator extends org.drip.numerical.estimation.R1ToR
 	 * 
 	 * @return The Log de-Moivre Term
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public double logDeMoivreTerm (
 		final double x)
-		throws java.lang.Exception
+		throws Exception
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (x) || 0. > x)
-		{
-			throw new java.lang.Exception ("StirlingSeriesEstimator::logDeMoivreTerm => Invalid Inputs");
+		if (!NumberUtil.IsValid (x) || 0. > x) {
+			throw new Exception ("StirlingSeriesEstimator::logDeMoivreTerm => Invalid Inputs");
 		}
 
 		return (x + 0.5) * java.lang.Math.log (x) - x;
@@ -154,9 +179,9 @@ public class StirlingSeriesEstimator extends org.drip.numerical.estimation.R1ToR
 
 	@Override public double evaluate (
 		final double x)
-		throws java.lang.Exception
+		throws Exception
 	{
-		return 0.5 * java.lang.Math.log (2. * java.lang.Math.PI) + logDeMoivreTerm (x);
+		return 0.5 * Math.log (2. * Math.PI) + logDeMoivreTerm (x);
 	}
 
 	/**
@@ -167,46 +192,26 @@ public class StirlingSeriesEstimator extends org.drip.numerical.estimation.R1ToR
 	 * @return The Bounded Function Estimates along with the Higher Order Nemes Correction
 	 */
 
-	public org.drip.numerical.estimation.R1Estimate nemesCorrectionEstimate (
+	public R1Estimate nemesCorrectionEstimate (
 		final double x)
 	{
-		java.util.TreeMap<java.lang.Integer, java.lang.Double> termWeightMap = new
-			java.util.TreeMap<java.lang.Integer, java.lang.Double>();
+		TreeMap<Integer, Double> termWeightMap = new TreeMap<Integer, Double>();
 
-		termWeightMap.put (
-			1,
-			1. / 12.
-		);
+		termWeightMap.put (1, 1. / 12.);
 
-		termWeightMap.put (
-			3,
-			-1. / 360.
-		);
+		termWeightMap.put (3, -1. / 360.);
 
-		termWeightMap.put (
-			5,
-			1. / 1260.
-		);
+		termWeightMap.put (5, 1. / 1260.);
 
-		termWeightMap.put (
-			7,
-			-1. / 1680.
-		);
+		termWeightMap.put (7, -1. / 1680.);
 
-		try
-		{
+		try {
 			return seriesEstimate (
 				x,
 				termWeightMap,
-				new org.drip.numerical.estimation.R1ToR1Series (
-					org.drip.numerical.estimation.R1ToR1SeriesTerm.Asymptotic(),
-					false,
-					termWeightMap
-				)
+				new R1ToR1Series (R1ToR1SeriesTerm.Asymptotic(), false, termWeightMap)
 			);
-		}
-		catch (java.lang.Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
