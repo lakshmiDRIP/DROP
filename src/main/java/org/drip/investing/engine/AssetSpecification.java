@@ -1,5 +1,5 @@
 
-package org.drip.investing.investible;
+package org.drip.investing.engine;
 
 import org.drip.portfolioconstruction.core.Asset;
 
@@ -107,7 +107,7 @@ import org.drip.portfolioconstruction.core.Asset;
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md">Portfolio Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/AssetAllocationAnalyticsLibrary.md">Asset Allocation Analytics</a></li>
  *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/investing/README.md">Factor/Style Based Quantitative Investing</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/investing/investible/README.md">Quantitative Description of Investible Assets</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/investing/engine/README.md">Quantitative Investment Run Execution Engine</a></li>
  *  </ul>
  *
  * @author Lakshmi Krishnamurthy

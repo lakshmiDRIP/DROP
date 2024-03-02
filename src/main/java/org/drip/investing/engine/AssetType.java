@@ -1,5 +1,5 @@
 
-package org.drip.investing.model;
+package org.drip.investing.engine;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -74,29 +74,28 @@ package org.drip.investing.model;
  */
 
 /**
- * <i>FactorBetaType</i> holds the various Kinds of Factor Betas. The References are:
+ * <i>AssetType</i> contains Asset Type Specifications. The References are:
  *
  *	<br><br>
  * <ul>
  * 	<li>
- *  	Blitz, D., M. X. Hanauer, M. Vidojevic, and P. van Vliet (2018): Five-Factors with the Five-Factor
- *  		Model <i>Journal of Portfolio Management</i> <b>44 (4)</b> 71-78
+ *  	Baltussen, G., L. Swinkels, and P. van Vliet (2021): Global Factor Premiums <i>Journal of Financial
+ *  		Economics</i> <b>142 (3)</b> 1128-1154
  * 	</li>
  * 	<li>
- *  	Fama, E. F., and K. R. French (1992): The Cross-section of Expected Stock Returns <i>Journal of
- *  		Finance</i> <b>47 (2)</b> 427-465
+ *  	Blitz, D., and P. van Vliet (2007): The Volatility Effect: Lower Risk without Lower Return <i>Journal
+ *  		of Portfolio Management</i> <b>34 (1)</b> 102-113
  * 	</li>
  * 	<li>
- *  	Fama, E. F., and K. R. French (2015): A Five-Factor Asset Pricing Model <i>Journal of Financial
- *  		Economics</i> <b>116 (1)</b> 1-22
+ *  	Fisher, G. S., R. Shah, and S. Titman (2017): Combining Value and Momentum
+ *  		<i>https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2472936</i> <b>eSSRN</b>
  * 	</li>
  * 	<li>
- *  	Foye, J. (2018): Testing Alternative Versions of the Fama-French Five-Factor Model in the UK <i>Risk
- *  		Management</i> <b>20 (2)</b> 167-183
+ *  	Houweling, P., and J. van Zundert (2017): Factor Investing in the Corporate Bond Market <i>Financial
+ *  		Analysts Journal</i> <b>73 (2)</b> 100-115
  * 	</li>
  * 	<li>
- *  	Wikipedia (2024): Fama–French three-factor model
- *  		<i>https://en.wikipedia.org/wiki/Fama%E2%80%93French_three-factor_model</i>
+ *  	Wikipedia (2024): Factor Investing <i>https://en.wikipedia.org/wiki/Factor_investing</i>
  * 	</li>
  * </ul>
  *
@@ -105,30 +104,54 @@ package org.drip.investing.model;
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md">Portfolio Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/AssetAllocationAnalyticsLibrary.md">Asset Allocation Analytics</a></li>
  *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/investing/README.md">Factor/Style Based Quantitative Investing</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/investing/model/README.md">Multi-Factor Model Suite implementation</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/investing/engine/README.md">Quantitative Investment Run Execution Engine</a></li>
  *  </ul>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class FactorBetaType
+public class AssetType
 {
 
 	/**
-	 * Beta on Gross Factor Returns
+	 * Asset Type <i>STOCK</i>
 	 */
 
-	public static final int ON_GROSS_RETURNS = 1;
+	public static final int STOCK = 0;
 
 	/**
-	 * Beta on Risk Premia
+	 * Asset Type <i>STOCK INDEX</i>
 	 */
 
-	public static final int ON_RISK_PREMIA = 2;
+	public static final int STOCK_INDEX = 1;
 
 	/**
-	 * Beta on Market Premia
+	 * Asset Type <i>STOCK FUND</i>
 	 */
 
-	public static final int ON_MARKET_PREMIA = 3;
+	public static final int STOCK_FUND = 2;
+
+	/**
+	 * Asset Type <i>STOCK FUND OF FUNDS</i>
+	 */
+
+	public static final int STOCK_FUND_OF_FUNDS = 3;
+
+	/**
+	 * Asset Type <i>CORPORATE BOND</i>
+	 */
+
+	public static final int CORPORATE_BOND = 4;
+
+	/**
+	 * Asset Type <i>GOVERNMENT BOND</i>
+	 */
+
+	public static final int GOVERNMENT_BOND = 5;
+
+	/**
+	 * Asset Type <i>COMMODITY</i>
+	 */
+
+	public static final int COMMODITY = 6;
 }

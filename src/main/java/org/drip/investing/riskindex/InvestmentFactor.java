@@ -1,5 +1,9 @@
 
-package org.drip.investing.investible;
+package org.drip.investing.riskindex;
+
+import org.drip.investing.factors.Factor;
+import org.drip.investing.factors.FactorPortfolio;
+import org.drip.investing.factors.FactorPortfolioRanker;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -74,84 +78,71 @@ package org.drip.investing.investible;
  */
 
 /**
- * <i>AssetType</i> contains Asset Type Specifications. The References are:
+ * <i>InvestmentFactor</i> is the Implementation of the Investment Factor. The References are:
  *
  *	<br><br>
- * <ul>
+ * 	<ul>
  * 	<li>
- *  	Baltussen, G., L. Swinkels, and P. van Vliet (2021): Global Factor Premiums <i>Journal of Financial
- *  		Economics</i> <b>142 (3)</b> 1128-1154
+ *  	Carhart, M. M. (1997): On Persistence of Mutual Fund Performance <i>Journal of Finance</i>
+ *  		<b>52 (1)</b> 57-82
  * 	</li>
  * 	<li>
- *  	Blitz, D., and P. van Vliet (2007): The Volatility Effect: Lower Risk without Lower Return <i>Journal
- *  		of Portfolio Management</i> <b>34 (1)</b> 102-113
+ *  	Fama, E. F., and K. R. French (1993): Common Risk Factors in the Returns on Stocks and Bonds
+ *  		<i>Journal of Financial Economics</i> <b>33 (1)</b> 3-56
  * 	</li>
  * 	<li>
- *  	Fisher, G. S., R. Shah, and S. Titman (2017): Combining Value and Momentum
- *  		<i>https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2472936</i> <b>eSSRN</b>
+ *  	Hezbi, H., and A. Salehi (2016): Comparison of Explanatory Power of Carhart Four-factor Model and
+ *  		Fama-French Five-factor Model in Prediction of Expected Stock Returns <i>Financial Engineering
+ *  		and Portfolio Management</i> <b>7 (28)</b> 137-152
  * 	</li>
  * 	<li>
- *  	Houweling, P., and J. van Zundert (2017): Factor Investing in the Corporate Bond Market <i>Financial
- *  		Analysts Journal</i> <b>73 (2)</b> 100-115
+ *  	Low, R. K. Y., and E. Tan (2016): The Role of Analysts’ Forecasts in the Momentum Effect
+ *  		<i>International Review of Financial Analysis</i> <b>48</b> 67-84
  * 	</li>
  * 	<li>
- *  	Wikipedia (2024): Factor Investing <i>https://en.wikipedia.org/wiki/Factor_investing</i>
+ *  	Wikipedia (2024): Carhart Four Factor Model
+ *  		<i>https://en.wikipedia.org/wiki/Carhart_four-factor_model</i>
  * 	</li>
- * </ul>
+ * 	</ul>
  *
  *	<br><br>
  *  <ul>
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md">Portfolio Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/AssetAllocationAnalyticsLibrary.md">Asset Allocation Analytics</a></li>
  *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/investing/README.md">Factor/Style Based Quantitative Investing</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/investing/investible/README.md">Quantitative Description of Investible Assets</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/investing/riskindex/README.md">Implementation of Risk Factor Indices</a></li>
  *  </ul>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class AssetType
+public class InvestmentFactor extends Factor
 {
 
 	/**
-	 * Asset Type <i>STOCK</i>
+	 * InvestmentFactor Constructor
+	 * 
+	 * @param code Factor Code
+	 * @param metricType Factor Metric Type
+	 * @param portfolio Factor Portfolio
+	 * @param portfolioRanker Factor Portfolio Ranker
+	 * 
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
-	public static final int STOCK = 0;
-
-	/**
-	 * Asset Type <i>STOCK INDEX</i>
-	 */
-
-	public static final int STOCK_INDEX = 1;
-
-	/**
-	 * Asset Type <i>STOCK FUND</i>
-	 */
-
-	public static final int STOCK_FUND = 2;
-
-	/**
-	 * Asset Type <i>STOCK FUND OF FUNDS</i>
-	 */
-
-	public static final int STOCK_FUND_OF_FUNDS = 3;
-
-	/**
-	 * Asset Type <i>CORPORATE BOND</i>
-	 */
-
-	public static final int CORPORATE_BOND = 4;
-
-	/**
-	 * Asset Type <i>GOVERNMENT BOND</i>
-	 */
-
-	public static final int GOVERNMENT_BOND = 5;
-
-	/**
-	 * Asset Type <i>COMMODITY</i>
-	 */
-
-	public static final int COMMODITY = 6;
+	public InvestmentFactor (
+		final String code,
+		final int metricType,
+		final FactorPortfolio portfolio,
+		final FactorPortfolioRanker portfolioRanker)
+		throws Exception
+	{
+		super (
+			code,
+			"Investment Factor using suitable Metric",
+			metricType,
+			portfolio,
+			portfolioRanker
+		);
+	}
 }

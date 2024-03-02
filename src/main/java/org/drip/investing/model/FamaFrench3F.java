@@ -2,7 +2,9 @@
 package org.drip.investing.model;
 
 import org.drip.investing.factors.FactorModel;
+import org.drip.investing.riskindex.CapitalizationFactor;
 import org.drip.investing.riskindex.MarketFactor;
+import org.drip.investing.riskindex.ValueFactor;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -121,17 +123,22 @@ public class FamaFrench3F extends FactorModel
 	 * Construct a Standard Instance of the 3F Fama-French Model using the Factor Instances
 	 * 
 	 * @param marketFactor Market Factor
+	 * @param capitalizationFactor Capitalization Factor
+	 * @param valueFactor Value Factor
 	 * 
 	 * @return Standard Instance of the 3F Fama-French Model
 	 */
 
 	public static final FamaFrench3F Standard (
-		final MarketFactor marketFactor)
+		final MarketFactor marketFactor,
+		final CapitalizationFactor capitalizationFactor,
+		final ValueFactor valueFactor)
 	{
 		try {
 			FamaFrench3F famaFrench3F = new FamaFrench3F();
 
-			return famaFrench3F.addFactor (marketFactor) ? famaFrench3F : null;
+			return famaFrench3F.addFactor (marketFactor) && famaFrench3F.addFactor (capitalizationFactor) &&
+				famaFrench3F.addFactor (valueFactor) ? famaFrench3F : null;
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -142,7 +149,7 @@ public class FamaFrench3F extends FactorModel
 	/**
 	 * FamaFrench3F Constructor
 	 * 
-	 * @throws Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Instance cannot be constructed
 	 */
 
 	protected FamaFrench3F()

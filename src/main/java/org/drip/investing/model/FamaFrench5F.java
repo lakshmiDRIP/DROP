@@ -2,7 +2,11 @@
 package org.drip.investing.model;
 
 import org.drip.investing.factors.FactorModel;
+import org.drip.investing.riskindex.CapitalizationFactor;
+import org.drip.investing.riskindex.InvestmentFactor;
 import org.drip.investing.riskindex.MarketFactor;
+import org.drip.investing.riskindex.ProfitabilityFactor;
+import org.drip.investing.riskindex.ValueFactor;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -77,10 +81,10 @@ import org.drip.investing.riskindex.MarketFactor;
  */
 
 /**
- * <i>CapitalAssetPricing1F</i> implements the One-factor Capital Asset Pricing Model. The References are:
+ * <i>FamaFrench3F</i> implements the Five-Factor Fama-French Model. The References are:
  *
  *	<br><br>
- * <ul>
+ * 	<ul>
  * 	<li>
  *  	Blitz, D., M. X. Hanauer, M. Vidojevic, and P. van Vliet (2018): Five-Factors with the Five-Factor
  *  		Model <i>Journal of Portfolio Management</i> <b>44 (4)</b> 71-78
@@ -101,7 +105,7 @@ import org.drip.investing.riskindex.MarketFactor;
  *  	Wikipedia (2024): Fama–French three-factor model
  *  		<i>https://en.wikipedia.org/wiki/Fama%E2%80%93French_three-factor_model</i>
  * 	</li>
- * </ul>
+ * 	</ul>
  *
  *	<br><br>
  *  <ul>
@@ -114,24 +118,36 @@ import org.drip.investing.riskindex.MarketFactor;
  * @author Lakshmi Krishnamurthy
  */
 
-public class CapitalAssetPricing1F extends FactorModel
+public class FamaFrench5F extends FactorModel
 {
 
 	/**
-	 * Construct a Standard Instance of the 1F CAPM using the Market Factor Instance
+	 * Construct a Standard Instance of the 5F Fama-French Model using the Factor Instances
 	 * 
 	 * @param marketFactor Market Factor
+	 * @param capitalizationFactor Capitalization Factor
+	 * @param valueFactor Value Factor
+	 * @param profitabilityFactor Profitability Factor
+	 * @param investmentFactor Investment Factor
 	 * 
-	 * @return Standard Instance of the 1F CAPM
+	 * @return Standard Instance of the 5F Fama-French Model
 	 */
 
-	public static final CapitalAssetPricing1F Standard (
-		final MarketFactor marketFactor)
+	public static final FamaFrench5F Standard (
+		final MarketFactor marketFactor,
+		final CapitalizationFactor capitalizationFactor,
+		final ValueFactor valueFactor,
+		final ProfitabilityFactor profitabilityFactor,
+		final InvestmentFactor investmentFactor)
 	{
 		try {
-			CapitalAssetPricing1F capitalAssetPricing1F = new CapitalAssetPricing1F();
+			FamaFrench5F famaFrench5F = new FamaFrench5F();
 
-			return capitalAssetPricing1F.addFactor (marketFactor) ? capitalAssetPricing1F : null;
+			return famaFrench5F.addFactor (marketFactor) &&
+				famaFrench5F.addFactor (capitalizationFactor) &&
+				famaFrench5F.addFactor (valueFactor) &&
+				famaFrench5F.addFactor (profitabilityFactor) &&
+				famaFrench5F.addFactor (investmentFactor) ? famaFrench5F : null;
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -140,14 +156,14 @@ public class CapitalAssetPricing1F extends FactorModel
 	}
 
 	/**
-	 * CapitalAssetPricing1F Constructor
+	 * FamaFrench5F Constructor
 	 * 
-	 * @throws Exception Thrown if the Instance cannot be constructed
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
-	protected CapitalAssetPricing1F()
+	protected FamaFrench5F()
 		throws Exception
 	{
-		super ("CAPM1F", "Capital Asset Pricing One-factor Model");
+		super ("FF5F", "Fama-French Five-factor Model");
 	}
 }

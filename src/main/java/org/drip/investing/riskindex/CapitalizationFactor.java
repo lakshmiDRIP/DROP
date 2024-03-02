@@ -1,8 +1,9 @@
 
-package org.drip.investing.model;
+package org.drip.investing.riskindex;
 
-import org.drip.investing.factors.FactorModel;
-import org.drip.investing.riskindex.MarketFactor;
+import org.drip.investing.factors.Factor;
+import org.drip.investing.factors.FactorPortfolio;
+import org.drip.investing.factors.FactorPortfolioRanker;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -77,29 +78,30 @@ import org.drip.investing.riskindex.MarketFactor;
  */
 
 /**
- * <i>CapitalAssetPricing1F</i> implements the One-factor Capital Asset Pricing Model. The References are:
+ * <i>CapitalizationFactor</i> is the Implementation of the Capitalization Factor. The References are:
  *
  *	<br><br>
  * <ul>
  * 	<li>
- *  	Blitz, D., M. X. Hanauer, M. Vidojevic, and P. van Vliet (2018): Five-Factors with the Five-Factor
- *  		Model <i>Journal of Portfolio Management</i> <b>44 (4)</b> 71-78
+ *  	Carhart, M. M. (1997): On Persistence of Mutual Fund Performance <i>Journal of Finance</i>
+ *  		<b>52 (1)</b> 57-82
  * 	</li>
  * 	<li>
- *  	Fama, E. F., and K. R. French (1992): The Cross-section of Expected Stock Returns <i>Journal of
- *  		Finance</i> <b>47 (2)</b> 427-465
+ *  	Fama, E. F., and K. R. French (1993): Common Risk Factors in the Returns on Stocks and Bonds
+ *  		<i>Journal of Financial Economics</i> <b>33 (1)</b> 3-56
  * 	</li>
  * 	<li>
- *  	Fama, E. F., and K. R. French (2015): A Five-Factor Asset Pricing Model <i>Journal of Financial
- *  		Economics</i> <b>116 (1)</b> 1-22
+ *  	Hezbi, H., and A. Salehi (2016): Comparison of Explanatory Power of Carhart Four-factor Model and
+ *  		Fama-French Five-factor Model in Prediction of Expected Stock Returns <i>Financial Engineering
+ *  		and Portfolio Management</i> <b>7 (28)</b> 137-152
  * 	</li>
  * 	<li>
- *  	Foye, J. (2018): Testing Alternative Versions of the Fama-French Five-Factor Model in the UK <i>Risk
- *  		Management</i> <b>20 (2)</b> 167-183
+ *  	Low, R. K. Y., and E. Tan (2016): The Role of Analysts’ Forecasts in the Momentum Effect
+ *  		<i>International Review of Financial Analysis</i> <b>48</b> 67-84
  * 	</li>
  * 	<li>
- *  	Wikipedia (2024): Fama–French three-factor model
- *  		<i>https://en.wikipedia.org/wiki/Fama%E2%80%93French_three-factor_model</i>
+ *  	Wikipedia (2024): Carhart Four Factor Model
+ *  		<i>https://en.wikipedia.org/wiki/Carhart_four-factor_model</i>
  * 	</li>
  * </ul>
  *
@@ -108,46 +110,39 @@ import org.drip.investing.riskindex.MarketFactor;
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md">Portfolio Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/AssetAllocationAnalyticsLibrary.md">Asset Allocation Analytics</a></li>
  *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/investing/README.md">Factor/Style Based Quantitative Investing</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/investing/model/README.md">Multi-Factor Model Suite implementation</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/investing/riskindex/README.md">Implementation of Risk Factor Indices</a></li>
  *  </ul>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class CapitalAssetPricing1F extends FactorModel
+public class CapitalizationFactor extends Factor
 {
 
 	/**
-	 * Construct a Standard Instance of the 1F CAPM using the Market Factor Instance
+	 * CapitalizationFactor Constructor
 	 * 
-	 * @param marketFactor Market Factor
+	 * @param code Factor Code
+	 * @param metricType Factor Metric Type
+	 * @param portfolio Factor Portfolio
+	 * @param portfolioRanker Factor Portfolio Ranker
 	 * 
-	 * @return Standard Instance of the 1F CAPM
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
-	public static final CapitalAssetPricing1F Standard (
-		final MarketFactor marketFactor)
-	{
-		try {
-			CapitalAssetPricing1F capitalAssetPricing1F = new CapitalAssetPricing1F();
-
-			return capitalAssetPricing1F.addFactor (marketFactor) ? capitalAssetPricing1F : null;
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-		return null;
-	}
-
-	/**
-	 * CapitalAssetPricing1F Constructor
-	 * 
-	 * @throws Exception Thrown if the Instance cannot be constructed
-	 */
-
-	protected CapitalAssetPricing1F()
+	public CapitalizationFactor (
+		final String code,
+		final int metricType,
+		final FactorPortfolio portfolio,
+		final FactorPortfolioRanker portfolioRanker)
 		throws Exception
 	{
-		super ("CAPM1F", "Capital Asset Pricing One-factor Model");
+		super (
+			code,
+			"Outperformance of Small versus Big Cap",
+			metricType,
+			portfolio,
+			portfolioRanker
+		);
 	}
 }

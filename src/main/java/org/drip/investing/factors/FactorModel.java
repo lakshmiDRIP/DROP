@@ -234,4 +234,15 @@ public class FactorModel
 	{
 		return _factorMap.keySet();
 	}
+
+	/**
+	 * Retrieve the Number of Factors
+	 * 
+	 * @return The Number of Factors
+	 */
+
+	public int numberOfFactors()
+	{
+		return _factorMap.keySet().size();
+	}
 }

@@ -2,7 +2,9 @@
 package org.drip.investing.model;
 
 import org.drip.investing.factors.FactorModel;
+import org.drip.investing.riskindex.CapitalizationFactor;
 import org.drip.investing.riskindex.MarketFactor;
+import org.drip.investing.riskindex.MramorPahorFactor;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -77,10 +79,10 @@ import org.drip.investing.riskindex.MarketFactor;
  */
 
 /**
- * <i>CapitalAssetPricing1F</i> implements the One-factor Capital Asset Pricing Model. The References are:
+ * <i>MramorPahorFoye3F</i> implements the Mramor-Pahor Fama-French Model. The References are:
  *
  *	<br><br>
- * <ul>
+ * 	<ul>
  * 	<li>
  *  	Blitz, D., M. X. Hanauer, M. Vidojevic, and P. van Vliet (2018): Five-Factors with the Five-Factor
  *  		Model <i>Journal of Portfolio Management</i> <b>44 (4)</b> 71-78
@@ -101,7 +103,7 @@ import org.drip.investing.riskindex.MarketFactor;
  *  	Wikipedia (2024): Fama–French three-factor model
  *  		<i>https://en.wikipedia.org/wiki/Fama%E2%80%93French_three-factor_model</i>
  * 	</li>
- * </ul>
+ * 	</ul>
  *
  *	<br><br>
  *  <ul>
@@ -114,24 +116,30 @@ import org.drip.investing.riskindex.MarketFactor;
  * @author Lakshmi Krishnamurthy
  */
 
-public class CapitalAssetPricing1F extends FactorModel
+public class MramorPahorFoye3F extends FactorModel
 {
 
 	/**
-	 * Construct a Standard Instance of the 1F CAPM using the Market Factor Instance
+	 * Construct a Standard Instance of the 3F Mramor-Pahor-Foye Model using the Factor Instances
 	 * 
 	 * @param marketFactor Market Factor
+	 * @param capitalizationFactor Capitalization Factor
+	 * @param mramorPahorFactor Mramor-Pahor Accounting Adjustment Factor
 	 * 
-	 * @return Standard Instance of the 1F CAPM
+	 * @return Standard Instance of the 3F Mramor-Pahor-Foye Model
 	 */
 
-	public static final CapitalAssetPricing1F Standard (
-		final MarketFactor marketFactor)
+	public static final MramorPahorFoye3F Standard (
+		final MarketFactor marketFactor,
+		final CapitalizationFactor capitalizationFactor,
+		final MramorPahorFactor mramorPahorFactor)
 	{
 		try {
-			CapitalAssetPricing1F capitalAssetPricing1F = new CapitalAssetPricing1F();
+			MramorPahorFoye3F mramorPahorFoye3F = new MramorPahorFoye3F();
 
-			return capitalAssetPricing1F.addFactor (marketFactor) ? capitalAssetPricing1F : null;
+			return mramorPahorFoye3F.addFactor (marketFactor) &&
+				mramorPahorFoye3F.addFactor (capitalizationFactor) &&
+				mramorPahorFoye3F.addFactor (mramorPahorFactor) ? mramorPahorFoye3F : null;
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -140,14 +148,14 @@ public class CapitalAssetPricing1F extends FactorModel
 	}
 
 	/**
-	 * CapitalAssetPricing1F Constructor
+	 * MramorPahorFoye3F Constructor
 	 * 
 	 * @throws Exception Thrown if the Instance cannot be constructed
 	 */
 
-	protected CapitalAssetPricing1F()
+	protected MramorPahorFoye3F()
 		throws Exception
 	{
-		super ("CAPM1F", "Capital Asset Pricing One-factor Model");
+		super ("MPF3F", "Mramor-Pahor-Foye Three-factor Model");
 	}
 }

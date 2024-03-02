@@ -1,8 +1,5 @@
 
-package org.drip.investing.model;
-
-import org.drip.investing.factors.FactorModel;
-import org.drip.investing.riskindex.MarketFactor;
+package org.drip.investing.engine;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -77,7 +74,7 @@ import org.drip.investing.riskindex.MarketFactor;
  */
 
 /**
- * <i>CapitalAssetPricing1F</i> implements the One-factor Capital Asset Pricing Model. The References are:
+ * <i>FactorBetaType</i> holds the various Kinds of Factor Betas. The References are:
  *
  *	<br><br>
  * <ul>
@@ -108,46 +105,30 @@ import org.drip.investing.riskindex.MarketFactor;
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md">Portfolio Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/AssetAllocationAnalyticsLibrary.md">Asset Allocation Analytics</a></li>
  *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/investing/README.md">Factor/Style Based Quantitative Investing</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/investing/model/README.md">Multi-Factor Model Suite implementation</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/investing/engine/README.md">Quantitative Investment Run Execution Engine</a></li>
  *  </ul>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class CapitalAssetPricing1F extends FactorModel
+public class FactorBetaType
 {
 
 	/**
-	 * Construct a Standard Instance of the 1F CAPM using the Market Factor Instance
-	 * 
-	 * @param marketFactor Market Factor
-	 * 
-	 * @return Standard Instance of the 1F CAPM
+	 * Beta on Gross Factor Returns
 	 */
 
-	public static final CapitalAssetPricing1F Standard (
-		final MarketFactor marketFactor)
-	{
-		try {
-			CapitalAssetPricing1F capitalAssetPricing1F = new CapitalAssetPricing1F();
-
-			return capitalAssetPricing1F.addFactor (marketFactor) ? capitalAssetPricing1F : null;
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-		return null;
-	}
+	public static final int ON_GROSS_RETURNS = 1;
 
 	/**
-	 * CapitalAssetPricing1F Constructor
-	 * 
-	 * @throws Exception Thrown if the Instance cannot be constructed
+	 * Beta on Risk Premia
 	 */
 
-	protected CapitalAssetPricing1F()
-		throws Exception
-	{
-		super ("CAPM1F", "Capital Asset Pricing One-factor Model");
-	}
+	public static final int ON_RISK_PREMIA = 2;
+
+	/**
+	 * Beta on Market Premia
+	 */
+
+	public static final int ON_MARKET_PREMIA = 3;
 }
