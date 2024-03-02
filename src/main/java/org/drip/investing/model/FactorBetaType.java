@@ -1,5 +1,5 @@
 
-package org.drip.investing.riskindex;
+package org.drip.investing.model;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -74,30 +74,29 @@ package org.drip.investing.riskindex;
  */
 
 /**
- * <i>MomentumFactorMeta</i> contains the Meta Information behind the Momentum Factor. The References are:
+ * <i>FactorBetaType</i> holds the various Kinds of Factor Betas. The References are:
  *
  *	<br><br>
  * <ul>
  * 	<li>
- *  	Carhart, M. M. (1997): On Persistence of Mutual Fund Performance <i>Journal of Finance</i>
- *  		<b>52 (1)</b> 57-82
+ *  	Blitz, D., M. X. Hanauer, M. Vidojevic, and P. van Vliet (2018): Five-Factors with the Five-Factor
+ *  		Model <i>Journal of Portfolio Management</i> <b>44 (4)</b> 71-78
  * 	</li>
  * 	<li>
- *  	Fama, E. F., and K. R. French (1993): Common Risk Factors in the Returns on Stocks and Bonds
- *  		<i>Journal of Financial Economics</i> <b>33 (1)</b> 3-56
+ *  	Fama, E. F., and K. R. French (1992): The Cross-section of Expected Stock Returns <i>Journal of
+ *  		Finance</i> <b>47 (2)</b> 427-465
  * 	</li>
  * 	<li>
- *  	Hezbi, H., and A. Salehi (2016): Comparison of Explanatory Power of Carhart Four-factor Model and
- *  		Fama-French Five-factor Model in Prediction of Expected Stock Returns <i>Financial Engineering
- *  		and Portfolio Management</i> <b>7 (28)</b> 137-152
+ *  	Fama, E. F., and K. R. French (2015): A Five-Factor Asset Pricing Model <i>Journal of Financial
+ *  		Economics</i> <b>116 (1)</b> 1-22
  * 	</li>
  * 	<li>
- *  	Low, R. K. Y., and E. Tan (2016): The Role of Analysts’ Forecasts in the Momentum Effect
- *  		<i>International Review of Financial Analysis</i> <b>48</b> 67-84
+ *  	Foye, J. (2018): Testing Alternative Versions of the Fama-French Five-Factor Model in the UK <i>Risk
+ *  		Management</i> <b>20 (2)</b> 167-183
  * 	</li>
  * 	<li>
- *  	Wikipedia (2024): Carhart Four Factor Model
- *  		<i>https://en.wikipedia.org/wiki/Carhart_four-factor_model</i>
+ *  	Wikipedia (2024): Fama–French three-factor model
+ *  		<i>https://en.wikipedia.org/wiki/Fama%E2%80%93French_three-factor_model</i>
  * 	</li>
  * </ul>
  *
@@ -106,74 +105,30 @@ package org.drip.investing.riskindex;
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md">Portfolio Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/AssetAllocationAnalyticsLibrary.md">Asset Allocation Analytics</a></li>
  *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/investing/README.md">Factor/Style Based Quantitative Investing</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/investing/riskindex/README.md">Implementation of Risk Factor Indices</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/investing/model/README.md">Multi-Factor Model Suite implementation</a></li>
  *  </ul>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class MomentumFactorMeta
+public class FactorBetaType
 {
-	private String _lagWindowTenor = "";
-	private String _returnsHorizonTenor = "";
 
 	/**
-	 * Construct the CRSP Momentum Factor Meta Instance
-	 * 
-	 * @return The CRSP Momentum Factor Meta Instance
+	 * Beta on Gross Factor Returns
 	 */
 
-	public static final MomentumFactorMeta CRSP()
-	{
-		try {
-			return new MomentumFactorMeta ("12M", "1M");
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-		return null;
-	}
+	public static final int ON_GROSS_RETURNS = 1;
 
 	/**
-	 * MomentumFactorMeta Constructor
-	 * 
-	 * @param returnsHorizonTenor Returns Horizon Tenor
-	 * @param lagWindowTenor Lag Window Tenor
-	 * 
-	 * @throws Exception Thrown if the Inputs are Invalid
+	 * Beta on Risk Premia
 	 */
 
-	public MomentumFactorMeta (
-		final String returnsHorizonTenor,
-		final String lagWindowTenor)
-		throws Exception
-	{
-		if (null == (_returnsHorizonTenor = returnsHorizonTenor) || _returnsHorizonTenor.isEmpty() ||
-			null == (_lagWindowTenor = lagWindowTenor) || _lagWindowTenor.isEmpty())
-		{
-			throw new Exception ("MomentumFactorMeta Constructor => Invalid Inputs");
-		}
-	}
+	public static final int ON_RISK_PREMIA = 2;
 
 	/**
-	 * Retrieve the Returns Horizon Tenor
-	 * 
-	 * @return The Returns Horizon Tenor
+	 * Beta on Market Premia
 	 */
 
-	public String returnsHorizonTenor()
-	{
-		return _returnsHorizonTenor;
-	}
-
-	/**
-	 * Retrieve the Lag Window Tenor
-	 * 
-	 * @return The Lag Window Tenor
-	 */
-
-	public String lagWindowTenor()
-	{
-		return _lagWindowTenor;
-	}
+	public static final int ON_MARKET_PREMIA = 3;
 }

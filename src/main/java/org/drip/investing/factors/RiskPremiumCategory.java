@@ -79,23 +79,24 @@ package org.drip.investing.factors;
  *	<br><br>
  * <ul>
  * 	<li>
- *  	Baltussen, G., L. Swinkels, and P. van Vliet (2021): Global Factor Premiums <i>Journal of Financial
- *  		Economics</i> <b>142 (3)</b> 1128-1154
+ *  	Blitz, D., M. X. Hanauer, M. Vidojevic, and P. van Vliet (2018): Five-Factors with the Five-Factor
+ *  		Model <i>Journal of Portfolio Management</i> <b>44 (4)</b> 71-78
  * 	</li>
  * 	<li>
- *  	Blitz, D., and P. van Vliet (2007): The Volatility Effect: Lower Risk without Lower Return <i>Journal
- *  		of Portfolio Management</i> <b>34 (1)</b> 102-113
+ *  	Fama, E. F., and K. R. French (1992): The Cross-section of Expected Stock Returns <i>Journal of
+ *  		Finance</i> <b>47 (2)</b> 427-465
  * 	</li>
  * 	<li>
- *  	Fisher, G. S., R. Shah, and S. Titman (2017): Combining Value and Momentum
- *  		<i>https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2472936</i> <b>eSSRN</b>
+ *  	Fama, E. F., and K. R. French (2015): A Five-Factor Asset Pricing Model <i>Journal of Financial
+ *  		Economics</i> <b>116 (1)</b> 1-22
  * 	</li>
  * 	<li>
- *  	Houweling, P., and J. van Zundert (2017): Factor Investing in the Corporate Bond Market <i>Financial
- *  		Analysts Journal</i> <b>73 (2)</b> 100-115
+ *  	Foye, J. (2018): Testing Alternative Versions of the Fama-French Five-Factor Model in the UK <i>Risk
+ *  		Management</i> <b>20 (2)</b> 167-183
  * 	</li>
  * 	<li>
- *  	Wikipedia (2024): Factor Investing <i>https://en.wikipedia.org/wiki/Factor_investing</i>
+ *  	Wikipedia (2024): Fama–French three-factor model
+ *  		<i>https://en.wikipedia.org/wiki/Fama%E2%80%93French_three-factor_model</i>
  * 	</li>
  * </ul>
  *

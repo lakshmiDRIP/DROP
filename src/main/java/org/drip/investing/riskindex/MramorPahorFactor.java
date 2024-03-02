@@ -1,6 +1,10 @@
 
 package org.drip.investing.riskindex;
 
+import org.drip.investing.factors.Factor;
+import org.drip.investing.factors.FactorPortfolio;
+import org.drip.investing.factors.FactorPortfolioRanker;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
@@ -74,7 +78,8 @@ package org.drip.investing.riskindex;
  */
 
 /**
- * <i>MomentumFactorMeta</i> contains the Meta Information behind the Momentum Factor. The References are:
+ * <i>MramorPahorFactor</i> is the Implementation of the Mramor-Pahor Accounting Manipulation Proxy Factor.
+ * 	The References are:
  *
  *	<br><br>
  * <ul>
@@ -112,68 +117,33 @@ package org.drip.investing.riskindex;
  * @author Lakshmi Krishnamurthy
  */
 
-public class MomentumFactorMeta
+public class MramorPahorFactor extends Factor
 {
-	private String _lagWindowTenor = "";
-	private String _returnsHorizonTenor = "";
 
 	/**
-	 * Construct the CRSP Momentum Factor Meta Instance
+	 * MramorPahorFactor Constructor
 	 * 
-	 * @return The CRSP Momentum Factor Meta Instance
-	 */
-
-	public static final MomentumFactorMeta CRSP()
-	{
-		try {
-			return new MomentumFactorMeta ("12M", "1M");
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-		return null;
-	}
-
-	/**
-	 * MomentumFactorMeta Constructor
-	 * 
-	 * @param returnsHorizonTenor Returns Horizon Tenor
-	 * @param lagWindowTenor Lag Window Tenor
+	 * @param code Factor Code
+	 * @param metricType Factor Metric Type
+	 * @param portfolio Factor Portfolio
+	 * @param portfolioRanker Factor Portfolio Ranker
 	 * 
 	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
-	public MomentumFactorMeta (
-		final String returnsHorizonTenor,
-		final String lagWindowTenor)
+	public MramorPahorFactor (
+		final String code,
+		final int metricType,
+		final FactorPortfolio portfolio,
+		final FactorPortfolioRanker portfolioRanker)
 		throws Exception
 	{
-		if (null == (_returnsHorizonTenor = returnsHorizonTenor) || _returnsHorizonTenor.isEmpty() ||
-			null == (_lagWindowTenor = lagWindowTenor) || _lagWindowTenor.isEmpty())
-		{
-			throw new Exception ("MomentumFactorMeta Constructor => Invalid Inputs");
-		}
-	}
-
-	/**
-	 * Retrieve the Returns Horizon Tenor
-	 * 
-	 * @return The Returns Horizon Tenor
-	 */
-
-	public String returnsHorizonTenor()
-	{
-		return _returnsHorizonTenor;
-	}
-
-	/**
-	 * Retrieve the Lag Window Tenor
-	 * 
-	 * @return The Lag Window Tenor
-	 */
-
-	public String lagWindowTenor()
-	{
-		return _lagWindowTenor;
+		super (
+			code,
+			"Accounting Manipulation Proxy Factor - Replacement for the Value Factor",
+			metricType,
+			portfolio,
+			portfolioRanker
+		);
 	}
 }
