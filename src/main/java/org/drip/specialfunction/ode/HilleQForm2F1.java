@@ -1,11 +1,18 @@
 
 package org.drip.specialfunction.ode;
 
+import org.drip.function.definition.R1ToR1;
+import org.drip.function.definition.R2ToR1;
+import org.drip.numerical.common.NumberUtil;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -78,7 +85,7 @@ package org.drip.specialfunction.ode;
 
 /**
  * <i>HilleQForm2F1</i> exposes the Coefficient Terms on the Q-form 2F1 Hyper-geometric ODE. The References
- * are:
+ * 	are:
  * 
  * <br><br>
  * 	<ul>
@@ -103,22 +110,36 @@ package org.drip.specialfunction.ode;
  * 			Wikipedia (2019): Hyper-geometric Function https://en.wikipedia.org/wiki/Hypergeometric_function
  * 		</li>
  * 	</ul>
+ * 
+ * 	It provides the following functionality:
  *
- *	<br><br>
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FunctionAnalysisLibrary.md">Function Analysis Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md">Special Function Implementation Analysis</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/ode/README.md">Special Function Ordinary Differential Equations</a></li>
+ *  	<li>Construct the Hille Q-Form of 2F1 ODE</li>
+ * 		<li>Retrieve the Q Form Function</li>
+ * 		<li>Retrieve the v Function</li>
  *  </ul>
+ *
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FunctionAnalysisLibrary.md">Function Analysis Library</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md">Special Function Implementation and Analysis</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/ode/README.md">Special Function Ordinary Differential Equations</a></td></tr>
+ *  </table>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class HilleQForm2F1 extends org.drip.specialfunction.ode.SecondOrder
+public class HilleQForm2F1 extends SecondOrder
 {
-	private org.drip.function.definition.R1ToR1 _q = null;
-	private org.drip.function.definition.R1ToR1 _v = null;
+	private R1ToR1 _q = null;
+	private R1ToR1 _v = null;
 
 	/**
 	 * Construct the Hille Q-Form of 2F1 ODE
@@ -135,23 +156,17 @@ public class HilleQForm2F1 extends org.drip.specialfunction.ode.SecondOrder
 		final double b,
 		final double c)
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (a) ||
-			!org.drip.numerical.common.NumberUtil.IsValid (b) ||
-			!org.drip.numerical.common.NumberUtil.IsValid (c))
-		{
+		if (!NumberUtil.IsValid (a) || !NumberUtil.IsValid (b) || !NumberUtil.IsValid (c)) {
 			return null;
 		}
 
-		final org.drip.function.definition.R1ToR1 q = new org.drip.function.definition.R1ToR1 (null)
-		{
+		final R1ToR1 q = new R1ToR1 (null) {
 			@Override public double evaluate (
 				final double z)
-				throws java.lang.Exception
+				throws Exception
 			{
-				if (!org.drip.numerical.common.NumberUtil.IsValid (z))
-				{
-					throw new java.lang.Exception
-						("HilleQForm2F1::Standard::q::evaluate => Invalid Inputs");
+				if (!NumberUtil.IsValid (z)) {
+					throw new Exception ("HilleQForm2F1::Standard::q::evaluate => Invalid Inputs");
 				}
 
 				double aMinusB = a - b;
@@ -162,71 +177,56 @@ public class HilleQForm2F1 extends org.drip.specialfunction.ode.SecondOrder
 			}
 		};
 
-		try
-		{
+		try {
 			return new HilleQForm2F1 (
-				new org.drip.function.definition.R2ToR1()
-				{
+				new R2ToR1() {
 					@Override public double evaluate (
 						final double z,
 						final double u)
-						throws java.lang.Exception
+						throws Exception
 					{
 						return 1.;
 					}
 				},
-				new org.drip.function.definition.R2ToR1()
-				{
+				new R2ToR1() {
 					@Override public double evaluate (
 						final double z,
 						final double w)
-						throws java.lang.Exception
+						throws Exception
 					{
 						return 0.;
 					}
 				},
-				new org.drip.function.definition.R2ToR1()
-				{
+				new R2ToR1() {
 					@Override public double evaluate (
 						final double z,
 						final double u)
-						throws java.lang.Exception
+						throws Exception
 					{
-						if (!org.drip.numerical.common.NumberUtil.IsValid (u))
-						{
-							throw new java.lang.Exception
-								("HilleQForm2F1::Standard::ZeroOrder::evaluate => Invalid Inputs");
+						if (!NumberUtil.IsValid (u)) {
+							throw new Exception (
+								"HilleQForm2F1::Standard::ZeroOrder::evaluate => Invalid Inputs"
+							);
 						}
 
 						return q.evaluate (z) * u;
 					}
 				},
 				q,
-				new org.drip.function.definition.R1ToR1 (null)
-				{
+				new R1ToR1 (null) {
 					@Override public double evaluate (
 						final double z)
-						throws java.lang.Exception
+						throws Exception
 					{
-						if (!org.drip.numerical.common.NumberUtil.IsValid (z))
-						{
-							throw new java.lang.Exception
-								("HilleQForm2F1::Standard::v::evaluate => Invalid Inputs");
+						if (!NumberUtil.IsValid (z)) {
+							throw new Exception ("HilleQForm2F1::Standard::v::evaluate => Invalid Inputs");
 						}
 
-						return java.lang.Math.pow (
-							z,
-							-0.5 * c
-						) * java.lang.Math.pow (
-							1. - z,
-							0.5 * (c - a - b - 1.)
-						);
+						return Math.pow (z, -0.5 * c) * Math.pow (1. - z, 0.5 * (c - a - b - 1.));
 					}
 				}
 			);
-		}
-		catch (java.lang.Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -234,23 +234,17 @@ public class HilleQForm2F1 extends org.drip.specialfunction.ode.SecondOrder
 	}
 
 	private HilleQForm2F1 (
-		final org.drip.function.definition.R2ToR1 secondDerivativeCoefficient,
-		final org.drip.function.definition.R2ToR1 firstDerivativeCoefficient,
-		final org.drip.function.definition.R2ToR1 zeroDerivativeCoefficient,
-		final org.drip.function.definition.R1ToR1 q,
-		final org.drip.function.definition.R1ToR1 v)
-		throws java.lang.Exception
+		final R2ToR1 secondDerivativeCoefficient,
+		final R2ToR1 firstDerivativeCoefficient,
+		final R2ToR1 zeroDerivativeCoefficient,
+		final R1ToR1 q,
+		final R1ToR1 v)
+		throws Exception
 	{
-		super (
-			secondDerivativeCoefficient,
-			firstDerivativeCoefficient,
-			zeroDerivativeCoefficient
-		);
+		super (secondDerivativeCoefficient, firstDerivativeCoefficient, zeroDerivativeCoefficient);
 
-		if (null == (_q = q) ||
-			null == (_v = v))
-		{
-			throw new java.lang.Exception ("HilleQForm2F1 Constructor => Invalid Inputs");
+		if (null == (_q = q) || null == (_v = v)) {
+			throw new Exception ("HilleQForm2F1 Constructor => Invalid Inputs");
 		}
 	}
 
@@ -260,7 +254,7 @@ public class HilleQForm2F1 extends org.drip.specialfunction.ode.SecondOrder
 	 * @return The Q Form Function
 	 */
 
-	public org.drip.function.definition.R1ToR1 q()
+	public R1ToR1 q()
 	{
 		return _q;
 	}
@@ -271,7 +265,7 @@ public class HilleQForm2F1 extends org.drip.specialfunction.ode.SecondOrder
 	 * @return The v Function
 	 */
 
-	public org.drip.function.definition.R1ToR1 v()
+	public R1ToR1 v()
 	{
 		return _v;
 	}

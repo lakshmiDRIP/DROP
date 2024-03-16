@@ -1,11 +1,19 @@
 
 package org.drip.specialfunction.ode;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.drip.function.definition.R1ToR1;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -78,7 +86,7 @@ package org.drip.specialfunction.ode;
 
 /**
  * <i>IndependentLinearSolutionList</i> holds the Array of Linearly Independent Solutions at a Regular
- * Singularity. The References are:
+ * 	Singularity. The References are:
  * 
  * <br><br>
  * 	<ul>
@@ -103,24 +111,38 @@ package org.drip.specialfunction.ode;
  * 			Wikipedia (2019): Hyper-geometric Function https://en.wikipedia.org/wiki/Hypergeometric_function
  * 		</li>
  * 	</ul>
+ * 
+ * 	It provides the following functionality:
  *
- *	<br><br>
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FunctionAnalysisLibrary.md">Function Analysis Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md">Special Function Implementation Analysis</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/ode/README.md">Special Function Ordinary Differential Equations</a></li>
+ *  	<li>Empty <i>IndependentLinearSolutionList</i></li>
+ * 		<li>Add the Solution Function</li>
+ * 		<li>Retrieve the Solution Function List</li>
  *  </ul>
+ *
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FunctionAnalysisLibrary.md">Function Analysis Library</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md">Special Function Implementation and Analysis</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/ode/README.md">Special Function Ordinary Differential Equations</a></td></tr>
+ *  </table>
  *
  * @author Lakshmi Krishnamurthy
  */
 
 public class IndependentLinearSolutionList
 {
-	private java.util.List<org.drip.function.definition.R1ToR1> _solutionFunctionList = null;
+	private List<R1ToR1> _solutionFunctionList = null;
 
 	/**
-	 * Empty IndependentLinearSolutionList
+	 * Empty <i>IndependentLinearSolutionList</i>
 	 */
 
 	public IndependentLinearSolutionList()
@@ -136,16 +158,14 @@ public class IndependentLinearSolutionList
 	 */
 
 	public boolean add (
-		final org.drip.function.definition.R1ToR1 solutionFunction)
+		final R1ToR1 solutionFunction)
 	{
-		if (null == solutionFunction)
-		{
+		if (null == solutionFunction) {
 			return false;
 		}
 
-		if (null == _solutionFunctionList)
-		{
-			_solutionFunctionList = new java.util.ArrayList<org.drip.function.definition.R1ToR1>();
+		if (null == _solutionFunctionList) {
+			_solutionFunctionList = new ArrayList<R1ToR1>();
 		}
 
 		_solutionFunctionList.add (solutionFunction);
@@ -159,7 +179,7 @@ public class IndependentLinearSolutionList
 	 * @return The Solution Function List
 	 */
 
-	public java.util.List<org.drip.function.definition.R1ToR1> solutionFunctionList()
+	public List<R1ToR1> solutionFunctionList()
 	{
 		return _solutionFunctionList;
 	}
