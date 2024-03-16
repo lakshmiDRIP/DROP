@@ -1,11 +1,16 @@
 
 package org.drip.specialfunction.ode;
 
+import org.drip.function.definition.R2ToR1;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -102,45 +107,61 @@ package org.drip.specialfunction.ode;
  * 			Wikipedia (2019): Hyper-geometric Function https://en.wikipedia.org/wiki/Hypergeometric_function
  * 		</li>
  * 	</ul>
+ * 
+ * 	It provides the following functionality:
  *
- *	<br><br>
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FunctionAnalysisLibrary.md">Function Analysis Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md">Special Function Implementation Analysis</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/ode/README.md">Special Function Ordinary Differential Equations</a></li>
+ * 		<li><i>SecondOrder</i> Constructor</li>
+ * 		<li>Retrieve the R<sup>2</sup> to R<sup>1</sup> Second Derivative Coefficient Function</li>
+ * 		<li>Retrieve the R<sup>2</sup> to R<sup>1</sup> First Derivative Coefficient Function</li>
+ * 		<li>Retrieve the R<sup>2</sup> to R<sup>1</sup> Zero Derivative Coefficient Function</li>
+ * 		<li>Retrieve the Ordered Regular Singular Points of the Second Order ODE</li>
  *  </ul>
+ *
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FunctionAnalysisLibrary.md">Function Analysis Library</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md">Special Function Implementation and Analysis</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/ode/README.md">Special Function Ordinary Differential Equations</a></td></tr>
+ *  </table>
  *
  * @author Lakshmi Krishnamurthy
  */
 
 public class SecondOrder
 {
-	private org.drip.function.definition.R2ToR1 _zeroDerivativeCoefficient = null;
-	private org.drip.function.definition.R2ToR1 _firstDerivativeCoefficient = null;
-	private org.drip.function.definition.R2ToR1 _secondDerivativeCoefficient = null;
+	private R2ToR1 _zeroDerivativeCoefficient = null;
+	private R2ToR1 _firstDerivativeCoefficient = null;
+	private R2ToR1 _secondDerivativeCoefficient = null;
 
 	/**
-	 * SecondOrder Constructor
+	 * <i>SecondOrder</i> Constructor
 	 * 
 	 * @param secondDerivativeCoefficient Second Order Derivative Coefficient Term
 	 * @param firstDerivativeCoefficient First Order Derivative Coefficient Term
 	 * @param zeroDerivativeCoefficient Zero Order Derivative Coefficient Term
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public SecondOrder (
-		final org.drip.function.definition.R2ToR1 secondDerivativeCoefficient,
-		final org.drip.function.definition.R2ToR1 firstDerivativeCoefficient,
-		final org.drip.function.definition.R2ToR1 zeroDerivativeCoefficient)
-		throws java.lang.Exception
+		final R2ToR1 secondDerivativeCoefficient,
+		final R2ToR1 firstDerivativeCoefficient,
+		final R2ToR1 zeroDerivativeCoefficient)
+		throws Exception
 	{
 		if (null == (_secondDerivativeCoefficient = secondDerivativeCoefficient) ||
 			null == (_firstDerivativeCoefficient = firstDerivativeCoefficient) ||
 			null == (_zeroDerivativeCoefficient = zeroDerivativeCoefficient))
 		{
-			throw new java.lang.Exception ("SecondOrder Constructor => Invalid Inputs");
+			throw new Exception ("SecondOrder Constructor => Invalid Inputs");
 		}
 	}
 
@@ -150,7 +171,7 @@ public class SecondOrder
 	 * @return The R<sup>2</sup> to R<sup>1</sup> Second Derivative Coefficient Function
 	 */
 
-	public org.drip.function.definition.R2ToR1 secondDerivativeCoefficient()
+	public R2ToR1 secondDerivativeCoefficient()
 	{
 		return _secondDerivativeCoefficient;
 	}
@@ -161,7 +182,7 @@ public class SecondOrder
 	 * @return The R<sup>2</sup> to R<sup>1</sup> First Derivative Coefficient Function
 	 */
 
-	public org.drip.function.definition.R2ToR1 firstDerivativeCoefficient()
+	public R2ToR1 firstDerivativeCoefficient()
 	{
 		return _firstDerivativeCoefficient;
 	}
@@ -172,7 +193,7 @@ public class SecondOrder
 	 * @return The R<sup>2</sup> to R<sup>1</sup> Zero Derivative Coefficient Function
 	 */
 
-	public org.drip.function.definition.R2ToR1 zeroDerivativeCoefficient()
+	public R2ToR1 zeroDerivativeCoefficient()
 	{
 		return _zeroDerivativeCoefficient;
 	}

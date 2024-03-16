@@ -2,6 +2,7 @@
 package org.drip.investing.engine;
 
 import org.drip.investing.factors.Factor;
+import org.drip.numerical.common.NumberUtil;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -116,8 +117,36 @@ public class AssetLoading
 {
 	private Factor _factor = null;
 	private double _factorBeta = Double.NaN;
-	private double _factorReturns = Double.NaN;
 	private int _factorBetaType = Integer.MIN_VALUE;
+	private double _expectedFactorReturns = Double.NaN;
+
+	/**
+	 * AssetLoading Constructor
+	 * 
+	 * @param factor Factor
+	 * @param expectedFactorReturns Expected Factor Returns
+	 * @param factorBeta Factor Beta
+	 * @param factorBetaType Factor Beta Type
+	 * 
+	 * @throws Exception Thrown if the Inputs are Invalid
+	 */
+
+	public AssetLoading (
+		final Factor factor,
+		final double expectedFactorReturns,
+		final double factorBeta,
+		final int factorBetaType)
+		throws Exception
+	{
+		if (null == (_factor = factor) ||
+			!NumberUtil.IsValid (_expectedFactorReturns = expectedFactorReturns) ||
+			!NumberUtil.IsValid (_factorBeta = factorBeta))
+		{
+			throw new Exception ("AssetLoading Constructor => Invalid Inputs");
+		}
+
+		_factorBetaType = factorBetaType;
+	}
 
 	/**
 	 * Retrieve the Underlying Factor
@@ -131,14 +160,14 @@ public class AssetLoading
 	}
 
 	/**
-	 * Retrieve the Factor Returns
+	 * Retrieve the Expected Factor Returns
 	 * 
-	 * @return The Factor Returns
+	 * @return The Expected Factor Returns
 	 */
 
-	public double factorReturns()
+	public double expectedFactorReturns()
 	{
-		return _factorReturns;
+		return _expectedFactorReturns;
 	}
 
 	/**

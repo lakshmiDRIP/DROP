@@ -1,11 +1,17 @@
 
 package org.drip.specialfunction.ode;
 
+import org.drip.function.definition.R2ToR1;
+import org.drip.numerical.common.NumberUtil;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -102,14 +108,26 @@ package org.drip.specialfunction.ode;
  * 			Wikipedia (2019): Hyper-geometric Function https://en.wikipedia.org/wiki/Hypergeometric_function
  * 		</li>
  * 	</ul>
+ * 
+ * 	It provides the following functionality:
  *
- *	<br><br>
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FunctionAnalysisLibrary.md">Function Analysis Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md">Special Function Implementation Analysis</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/ode/README.md">Special Function Ordinary Differential Equations</a></li>
+ * 		<li>Construct the 2F1 Hyper-geometric Equation Second ODE</li>
  *  </ul>
+ *
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FunctionAnalysisLibrary.md">Function Analysis Library</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md">Special Function Implementation and Analysis</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/ode/README.md">Special Function Ordinary Differential Equations</a></td></tr>
+ *  </table>
  *
  * @author Lakshmi Krishnamurthy
  */
@@ -127,76 +145,58 @@ public class SecondOrder2F1
 	 * @return The 2F1 Hyper-geometric Equation Second ODE
 	 */
 
-	public static final org.drip.specialfunction.ode.SecondOrder Create (
+	public static final SecondOrder Create (
 		final double a,
 		final double b,
 		final double c)
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (a) ||
-			!org.drip.numerical.common.NumberUtil.IsValid (b) ||
-			!org.drip.numerical.common.NumberUtil.IsValid (c))
-		{
+		if (!NumberUtil.IsValid (a) || !NumberUtil.IsValid (b) || !NumberUtil.IsValid (c)) {
 			return null;
 		}
 
-		try
-		{
+		try {
 			return new SecondOrder (
-				new org.drip.function.definition.R2ToR1()
-				{
+				new R2ToR1() {
 					@Override public double evaluate (
 						final double z,
 						final double w)
-						throws java.lang.Exception
+						throws Exception
 					{
-						if (!org.drip.numerical.common.NumberUtil.IsValid (z) ||
-							!org.drip.numerical.common.NumberUtil.IsValid (w))
-						{
-							throw new java.lang.Exception
-								("SecondOrder2F1::SecondOrder::evaluate => Invalid Inputs");
+						if (!NumberUtil.IsValid (z) || !NumberUtil.IsValid (w)) {
+							throw new Exception ("SecondOrder2F1::SecondOrder::evaluate => Invalid Inputs");
 						}
 
 						return z * (1. - z);
 					}
 				},
-				new org.drip.function.definition.R2ToR1()
-				{
+				new R2ToR1() {
 					@Override public double evaluate (
 						final double z,
 						final double w)
-						throws java.lang.Exception
+						throws Exception
 					{
-						if (!org.drip.numerical.common.NumberUtil.IsValid (z) ||
-							!org.drip.numerical.common.NumberUtil.IsValid (w))
-						{
-							throw new java.lang.Exception
-								("SecondOrder2F1::SecondOrder::evaluate => Invalid Inputs");
+						if (!NumberUtil.IsValid (z) || !NumberUtil.IsValid (w)) {
+							throw new Exception ("SecondOrder2F1::SecondOrder::evaluate => Invalid Inputs");
 						}
 
 						return c - z * (a + b + 1.);
 					}
 				},
-				new org.drip.function.definition.R2ToR1()
-				{
+				new org.drip.function.definition.R2ToR1() {
 					@Override public double evaluate (
 						final double z,
 						final double w)
-						throws java.lang.Exception
+						throws Exception
 					{
-						if (!org.drip.numerical.common.NumberUtil.IsValid (z) ||
-							!org.drip.numerical.common.NumberUtil.IsValid (w))
-						{
-							throw new java.lang.Exception
-								("SecondOrder2F1::SecondOrder::evaluate => Invalid Inputs");
+						if (!NumberUtil.IsValid (z) || !NumberUtil.IsValid (w)) {
+							throw new Exception ("SecondOrder2F1::SecondOrder::evaluate => Invalid Inputs");
 						}
 
 						return a * b * w;
 					}
 				}
 			);
-		}
-		catch (java.lang.Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
