@@ -1,11 +1,22 @@
 
 package org.drip.specialfunction.property;
 
+import org.drip.function.definition.R1ToR1;
+import org.drip.function.definition.R1ToR1Property;
+import org.drip.function.definition.R2ToR1;
+import org.drip.function.definition.R2ToR1Property;
+import org.drip.function.definition.RxToR1Property;
+import org.drip.numerical.common.NumberUtil;
+import org.drip.specialfunction.beta.SummationSeriesEstimator;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -100,14 +111,31 @@ package org.drip.specialfunction.property;
  * 			Wikipedia (2019): Gamma Function https://en.wikipedia.org/wiki/Gamma_function
  * 		</li>
  * 	</ul>
+ * 
+ * 	It provides the following functionality:
  *
- *	<br><br>
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FunctionAnalysisLibrary.md">Function Analysis Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md">Special Function Implementation Analysis</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/property/README.md">Special Function Property Lemma Verifiers</a></li>
+ *  	<li>Construct the Beta Equality Lemma Identity #1</li>
+ *  	<li>Construct the Beta Equality Lemma Identity #2</li>
+ *  	<li>Construct the Beta Equality Lemma Identity #3</li>
+ *  	<li>Construct the Beta Equality Lemma Identity #4</li>
+ *  	<li>Construct the Beta Equality Lemma Identity #5</li>
+ *  	<li>Construct the Beta Equality Lemma Identity #6</li>
  *  </ul>
+ *
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FunctionAnalysisLibrary.md">Function Analysis Library</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md">Special Function Implementation and Analysis</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/property/README.md">Special Function Property Lemma Verifiers</a></td></tr>
+ *  </table>
  *
  * @author Lakshmi Krishnamurthy
  */
@@ -121,63 +149,43 @@ public class BetaEqualityLemma
 	 * @return The Identity #1 Verifier
 	 */
 
-	public static final org.drip.function.definition.R2ToR1Property Identity1()
+	public static final R2ToR1Property Identity1()
 	{
-		final org.drip.specialfunction.beta.SummationSeriesEstimator summationSeries =
-			org.drip.specialfunction.beta.SummationSeriesEstimator.AbramowitzStegun2007 (1638400);
+		final SummationSeriesEstimator summationSeries =
+			SummationSeriesEstimator.AbramowitzStegun2007 (1638400);
 
-		try
-		{
-			return new org.drip.function.definition.R2ToR1Property (
-				org.drip.function.definition.RxToR1Property.EQ,
-				new org.drip.function.definition.R2ToR1()
-				{
+		try {
+			return new R2ToR1Property (
+				RxToR1Property.EQ,
+				new R2ToR1() {
 					@Override public double evaluate (
 						final double x,
 						final double y)
-						throws java.lang.Exception
+						throws Exception
 					{
-						if (!org.drip.numerical.common.NumberUtil.IsValid (x) || 0. >= x ||
-							!org.drip.numerical.common.NumberUtil.IsValid (y) || 0. >= y)
-						{
-							throw new java.lang.Exception
-								("BetaEqualityLemma::Identity1::evaluate => Invalid Inputs");
+						if (!NumberUtil.IsValid (x) || 0. >= x || !NumberUtil.IsValid (y) || 0. >= y) {
+							throw new Exception ("BetaEqualityLemma::Identity1::evaluate => Invalid Inputs");
 						}
 
-						return summationSeries.evaluate (
-							x,
-							y
-						);
+						return summationSeries.evaluate (x, y);
 					}
 				},
-				new org.drip.function.definition.R2ToR1()
-				{
+				new R2ToR1() {
 					@Override public double evaluate (
 						final double x,
 						final double y)
-						throws java.lang.Exception
+						throws Exception
 					{
-						if (!org.drip.numerical.common.NumberUtil.IsValid (x) || 0. >= x ||
-							!org.drip.numerical.common.NumberUtil.IsValid (y) || 0. >= y)
-						{
-							throw new java.lang.Exception
-								("BetaEqualityLemma::Identity1::evaluate => Invalid Inputs");
+						if (!NumberUtil.IsValid (x) || 0. >= x || !NumberUtil.IsValid (y) || 0. >= y) {
+							throw new Exception ("BetaEqualityLemma::Identity1::evaluate => Invalid Inputs");
 						}
 
-						return summationSeries.evaluate (
-							x + 1,
-							y
-						) + summationSeries.evaluate (
-							x,
-							y + 1
-						);
+						return summationSeries.evaluate (x + 1, y) + summationSeries.evaluate (x, y + 1);
 					}
 				},
-				org.drip.function.definition.R1ToR1Property.MISMATCH_TOLERANCE
+				R1ToR1Property.MISMATCH_TOLERANCE
 			);
-		}
-		catch (java.lang.Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -190,60 +198,43 @@ public class BetaEqualityLemma
 	 * @return The Identity #2 Verifier
 	 */
 
-	public static final org.drip.function.definition.R2ToR1Property Identity2()
+	public static final R2ToR1Property Identity2()
 	{
-		final org.drip.specialfunction.beta.SummationSeriesEstimator summationSeries =
-			org.drip.specialfunction.beta.SummationSeriesEstimator.AbramowitzStegun2007 (1638400);
+		final SummationSeriesEstimator summationSeries =
+			SummationSeriesEstimator.AbramowitzStegun2007 (1638400);
 
-		try
-		{
-			return new org.drip.function.definition.R2ToR1Property (
-				org.drip.function.definition.RxToR1Property.EQ,
-				new org.drip.function.definition.R2ToR1()
-				{
+		try {
+			return new R2ToR1Property (
+				RxToR1Property.EQ,
+				new R2ToR1() {
 					@Override public double evaluate (
 						final double x,
 						final double y)
-						throws java.lang.Exception
+						throws Exception
 					{
-						if (!org.drip.numerical.common.NumberUtil.IsValid (x) || 0. >= x ||
-							!org.drip.numerical.common.NumberUtil.IsValid (y) || 0. >= y)
-						{
-							throw new java.lang.Exception
-								("BetaEqualityLemma::Identity2::evaluate => Invalid Inputs");
+						if (!NumberUtil.IsValid (x) || 0. >= x || !NumberUtil.IsValid (y) || 0. >= y) {
+							throw new Exception ("BetaEqualityLemma::Identity2::evaluate => Invalid Inputs");
 						}
 
-						return summationSeries.evaluate (
-							x + 1,
-							y
-						);
+						return summationSeries.evaluate (x + 1, y);
 					}
 				},
-				new org.drip.function.definition.R2ToR1()
-				{
+				new R2ToR1() {
 					@Override public double evaluate (
 						final double x,
 						final double y)
-						throws java.lang.Exception
+						throws Exception
 					{
-						if (!org.drip.numerical.common.NumberUtil.IsValid (x) || 0. >= x ||
-							!org.drip.numerical.common.NumberUtil.IsValid (y) || 0. >= y)
-						{
-							throw new java.lang.Exception
-								("BetaEqualityLemma::Identity2::evaluate => Invalid Inputs");
+						if (!NumberUtil.IsValid (x) || 0. >= x || !NumberUtil.IsValid (y) || 0. >= y) {
+							throw new Exception ("BetaEqualityLemma::Identity2::evaluate => Invalid Inputs");
 						}
 
-						return summationSeries.evaluate (
-							x,
-							y
-						) * x / (x + y);
+						return summationSeries.evaluate (x, y) * x / (x + y);
 					}
 				},
-				org.drip.function.definition.R1ToR1Property.MISMATCH_TOLERANCE
+				R1ToR1Property.MISMATCH_TOLERANCE
 			);
-		}
-		catch (java.lang.Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -256,60 +247,43 @@ public class BetaEqualityLemma
 	 * @return The Identity #3 Verifier
 	 */
 
-	public static final org.drip.function.definition.R2ToR1Property Identity3()
+	public static final R2ToR1Property Identity3()
 	{
-		final org.drip.specialfunction.beta.SummationSeriesEstimator summationSeries =
-			org.drip.specialfunction.beta.SummationSeriesEstimator.AbramowitzStegun2007 (1638400);
+		final SummationSeriesEstimator summationSeries =
+			SummationSeriesEstimator.AbramowitzStegun2007 (1638400);
 
-		try
-		{
-			return new org.drip.function.definition.R2ToR1Property (
-				org.drip.function.definition.RxToR1Property.EQ,
-				new org.drip.function.definition.R2ToR1()
-				{
+		try {
+			return new R2ToR1Property (
+				RxToR1Property.EQ,
+				new R2ToR1() {
 					@Override public double evaluate (
 						final double x,
 						final double y)
-						throws java.lang.Exception
+						throws Exception
 					{
-						if (!org.drip.numerical.common.NumberUtil.IsValid (x) || 0. >= x ||
-							!org.drip.numerical.common.NumberUtil.IsValid (y) || 0. >= y)
-						{
-							throw new java.lang.Exception
-								("BetaEqualityLemma::Identity3::evaluate => Invalid Inputs");
+						if (!NumberUtil.IsValid (x) || 0. >= x || !NumberUtil.IsValid (y) || 0. >= y) {
+							throw new Exception ("BetaEqualityLemma::Identity3::evaluate => Invalid Inputs");
 						}
 
-						return summationSeries.evaluate (
-							x,
-							y + 1
-						);
+						return summationSeries.evaluate (x, y + 1);
 					}
 				},
-				new org.drip.function.definition.R2ToR1()
-				{
+				new R2ToR1() {
 					@Override public double evaluate (
 						final double x,
 						final double y)
-						throws java.lang.Exception
+						throws Exception
 					{
-						if (!org.drip.numerical.common.NumberUtil.IsValid (x) || 0. >= x ||
-							!org.drip.numerical.common.NumberUtil.IsValid (y) || 0. >= y)
-						{
-							throw new java.lang.Exception
-								("BetaEqualityLemma::Identity3::evaluate => Invalid Inputs");
+						if (!NumberUtil.IsValid (x) || 0. >= x || !NumberUtil.IsValid (y) || 0. >= y) {
+							throw new Exception ("BetaEqualityLemma::Identity3::evaluate => Invalid Inputs");
 						}
 
-						return summationSeries.evaluate (
-							x,
-							y
-						) * y / (x + y);
+						return summationSeries.evaluate (x, y) * y / (x + y);
 					}
 				},
-				org.drip.function.definition.R1ToR1Property.MISMATCH_TOLERANCE
+				R1ToR1Property.MISMATCH_TOLERANCE
 			);
-		}
-		catch (java.lang.Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -322,60 +296,43 @@ public class BetaEqualityLemma
 	 * @return The Identity #4 Verifier
 	 */
 
-	public static final org.drip.function.definition.R2ToR1Property Identity4()
+	public static final R2ToR1Property Identity4()
 	{
-		final org.drip.specialfunction.beta.SummationSeriesEstimator summationSeries =
-			org.drip.specialfunction.beta.SummationSeriesEstimator.AbramowitzStegun2007 (1638400);
+		final SummationSeriesEstimator summationSeries =
+			SummationSeriesEstimator.AbramowitzStegun2007 (1638400);
 
-		try
-		{
-			return new org.drip.function.definition.R2ToR1Property (
-				org.drip.function.definition.RxToR1Property.EQ,
-				new org.drip.function.definition.R2ToR1()
-				{
+		try {
+			return new R2ToR1Property (
+				RxToR1Property.EQ,
+				new R2ToR1() {
 					@Override public double evaluate (
 						final double x,
 						final double y)
-						throws java.lang.Exception
+						throws Exception
 					{
-						if (!org.drip.numerical.common.NumberUtil.IsValid (x) || 0. >= x ||
-							!org.drip.numerical.common.NumberUtil.IsValid (y) || 0. >= y)
-						{
-							throw new java.lang.Exception
-								("BetaEqualityLemma::Identity4::evaluate => Invalid Inputs");
+						if (!NumberUtil.IsValid (x) || 0. >= x || !NumberUtil.IsValid (y) || 0. >= y) {
+							throw new Exception ("BetaEqualityLemma::Identity4::evaluate => Invalid Inputs");
 						}
 
-						return summationSeries.evaluate (
-							x,
-							y
-						) * summationSeries.evaluate (
-							x + y,
-							1. - y
-						);
+						return summationSeries.evaluate (x, y) * summationSeries.evaluate (x + y, 1. - y);
 					}
 				},
-				new org.drip.function.definition.R2ToR1()
-				{
+				new R2ToR1() {
 					@Override public double evaluate (
 						final double x,
 						final double y)
-						throws java.lang.Exception
+						throws Exception
 					{
-						if (!org.drip.numerical.common.NumberUtil.IsValid (x) || 0. >= x ||
-							!org.drip.numerical.common.NumberUtil.IsValid (y) || 0. >= y)
-						{
-							throw new java.lang.Exception
-								("BetaEqualityLemma::Identity4::evaluate => Invalid Inputs");
+						if (!NumberUtil.IsValid (x) || 0. >= x || !NumberUtil.IsValid (y) || 0. >= y) {
+							throw new Exception ("BetaEqualityLemma::Identity4::evaluate => Invalid Inputs");
 						}
 
-						return java.lang.Math.PI / (x * java.lang.Math.sin (java.lang.Math.PI * y));
+						return Math.PI / (x * Math.sin (Math.PI * y));
 					}
 				},
-				org.drip.function.definition.R1ToR1Property.MISMATCH_TOLERANCE
+				R1ToR1Property.MISMATCH_TOLERANCE
 			);
-		}
-		catch (java.lang.Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -388,53 +345,41 @@ public class BetaEqualityLemma
 	 * @return The Identity #5 Verifier
 	 */
 
-	public static final org.drip.function.definition.R1ToR1Property Identity5()
+	public static final R1ToR1Property Identity5()
 	{
-		final org.drip.specialfunction.beta.SummationSeriesEstimator summationSeries =
-			org.drip.specialfunction.beta.SummationSeriesEstimator.AbramowitzStegun2007 (1638400);
+		final SummationSeriesEstimator summationSeries =
+			SummationSeriesEstimator.AbramowitzStegun2007 (1638400);
 
-		try
-		{
-			return new org.drip.function.definition.R1ToR1Property (
-				org.drip.function.definition.R1ToR1Property.EQ,
-				new org.drip.function.definition.R1ToR1 (null)
-				{
+		try {
+			return new R1ToR1Property (
+				R1ToR1Property.EQ,
+				new R1ToR1 (null) {
 					@Override public double evaluate (
 						final double z)
-						throws java.lang.Exception
+						throws Exception
 					{
-						if (!org.drip.numerical.common.NumberUtil.IsValid (z) || 0. >= z)
-						{
-							throw new java.lang.Exception
-								("BetaEqualityLemma::Identity5::evaluate => Invalid Inputs");
+						if (!NumberUtil.IsValid (z) || 0. >= z) {
+							throw new Exception ("BetaEqualityLemma::Identity5::evaluate => Invalid Inputs");
 						}
 
-						return summationSeries.evaluate (
-							z,
-							1. - z
-						);
+						return summationSeries.evaluate (z, 1. - z);
 					}
 				},
-				new org.drip.function.definition.R1ToR1 (null)
-				{
+				new R1ToR1 (null) {
 					@Override public double evaluate (
 						final double z)
-						throws java.lang.Exception
+						throws Exception
 					{
-						if (!org.drip.numerical.common.NumberUtil.IsValid (z) || 0. >= z)
-						{
-							throw new java.lang.Exception
-								("BetaEqualityLemma::Identity5::evaluate => Invalid Inputs");
+						if (!NumberUtil.IsValid (z) || 0. >= z) {
+							throw new Exception ("BetaEqualityLemma::Identity5::evaluate => Invalid Inputs");
 						}
 
-						return java.lang.Math.PI / java.lang.Math.sin (java.lang.Math.PI * z);
+						return Math.PI / Math.sin (Math.PI * z);
 					}
 				},
-				org.drip.function.definition.R1ToR1Property.MISMATCH_TOLERANCE
+				R1ToR1Property.MISMATCH_TOLERANCE
 			);
-		}
-		catch (java.lang.Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 

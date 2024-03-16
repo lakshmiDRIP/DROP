@@ -1,11 +1,27 @@
 
 package org.drip.specialfunction.property;
 
+import org.drip.function.definition.R1ToR1;
+import org.drip.function.definition.R1ToR1Property;
+import org.drip.function.definition.R2ToR1;
+import org.drip.function.definition.R2ToR1Property;
+import org.drip.function.definition.RxToR1Property;
+import org.drip.numerical.common.NumberUtil;
+import org.drip.specialfunction.bessel.FirstFrobeniusSeriesEstimator;
+import org.drip.specialfunction.bessel.SecondNISTSeriesEstimator;
+import org.drip.specialfunction.definition.BesselFirstKindEstimator;
+import org.drip.specialfunction.definition.BesselSecondKindEstimator;
+import org.drip.specialfunction.digamma.BinetFirstIntegral;
+import org.drip.specialfunction.gamma.EulerIntegralSecondKind;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -78,7 +94,7 @@ package org.drip.specialfunction.property;
 
 /**
  * <i>BesselSecondEqualityLemma</i> implements the implements the Equality Lemmas for the Cylindrical Bessel
- * Function of the Second Kind. The References are:
+ * 	Function of the Second Kind. The References are:
  * 
  * <br><br>
  * 	<ul>
@@ -102,14 +118,27 @@ package org.drip.specialfunction.property;
  * 			Wikipedia (2019): Bessel Function https://en.wikipedia.org/wiki/Bessel_function
  * 		</li>
  * 	</ul>
+ * 
+ * 	It provides the following functionality:
  *
- *	<br><br>
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FunctionAnalysisLibrary.md">Function Analysis Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md">Special Function Implementation Analysis</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/property/README.md">Special Function Property Lemma Verifiers</a></li>
+ *  	<li>Construct the Bessel Second Kind Mirror Identity Verifier</li>
+ *  	<li>Construct the Bessel Second Kind Half-Integer Identity Verifier</li>
  *  </ul>
+ *
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FunctionAnalysisLibrary.md">Function Analysis Library</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md">Special Function Implementation and Analysis</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/property/README.md">Special Function Property Lemma Verifiers</a></td></tr>
+ *  </table>
  *
  * @author Lakshmi Krishnamurthy
  */
@@ -123,69 +152,54 @@ public class BesselSecondEqualityLemma
 	 * @return The Bessel Second Kind Mirror Identity Verifier
 	 */
 
-	public static final org.drip.function.definition.R2ToR1Property MirrorIdentity()
+	public static final R2ToR1Property MirrorIdentity()
 	{
-		try
-		{
-			org.drip.function.definition.R1ToR1 gammaEstimator = new
-				org.drip.specialfunction.gamma.EulerIntegralSecondKind (null);
+		try {
+			R1ToR1 gammaEstimator = new EulerIntegralSecondKind (null);
 
-			final org.drip.specialfunction.definition.BesselSecondKindEstimator besselSecondKindEstimator =
-				org.drip.specialfunction.bessel.SecondNISTSeriesEstimator.Standard (
-					new org.drip.specialfunction.digamma.BinetFirstIntegral (null),
-					gammaEstimator,
-					org.drip.specialfunction.bessel.FirstFrobeniusSeriesEstimator.Standard (
-						gammaEstimator,
-						40
-					),
-					40
-				);
-
-			return new org.drip.function.definition.R2ToR1Property (
-				org.drip.function.definition.RxToR1Property.EQ,
-				new org.drip.function.definition.R2ToR1()
-				{
-					@Override public double evaluate (
-						final double alpha,
-						final double z)
-						throws java.lang.Exception
-					{
-						if (!org.drip.numerical.common.NumberUtil.IsInteger (alpha))
-						{
-							throw new java.lang.Exception
-								("BesselFirstEqualityLemma::MirrorIdentity => Invalid Inputs");
-						}
-
-						return besselSecondKindEstimator.bigY (
-							-1. * alpha,
-							z
-						);
-					}
-				},
-				new org.drip.function.definition.R2ToR1()
-				{
-					@Override public double evaluate (
-						final double alpha,
-						final double z)
-						throws java.lang.Exception
-					{
-						if (!org.drip.numerical.common.NumberUtil.IsInteger (alpha))
-						{
-							throw new java.lang.Exception
-								("BesselFirstEqualityLemma::MirrorIdentity => Invalid Inputs");
-						}
-
-						return (0 == ((int) z) % 2 ? 1. : -1.) * besselSecondKindEstimator.bigY (
-							alpha,
-							z
-						);
-					}
-				},
-				org.drip.function.definition.R1ToR1Property.MISMATCH_TOLERANCE
+			final BesselSecondKindEstimator besselSecondKindEstimator = SecondNISTSeriesEstimator.Standard (
+				new BinetFirstIntegral (null),
+				gammaEstimator,
+				FirstFrobeniusSeriesEstimator.Standard (gammaEstimator, 40),
+				40
 			);
-		}
-		catch (java.lang.Exception e)
-		{
+
+			return new R2ToR1Property (
+				RxToR1Property.EQ,
+				new R2ToR1() {
+					@Override public double evaluate (
+						final double alpha,
+						final double z)
+						throws Exception
+					{
+						if (!NumberUtil.IsInteger (alpha)) {
+							throw new Exception (
+								"BesselFirstEqualityLemma::MirrorIdentity => Invalid Inputs"
+							);
+						}
+
+						return besselSecondKindEstimator.bigY (-1. * alpha, z);
+					}
+				},
+				new R2ToR1() {
+					@Override public double evaluate (
+						final double alpha,
+						final double z)
+						throws Exception
+					{
+						if (!NumberUtil.IsInteger (alpha)) {
+							throw new Exception (
+								"BesselFirstEqualityLemma::MirrorIdentity => Invalid Inputs"
+							);
+						}
+
+						return (0 == ((int) z) % 2 ? 1. : -1.) *
+							besselSecondKindEstimator.bigY (alpha, z);
+					}
+				},
+				R1ToR1Property.MISMATCH_TOLERANCE
+			);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -198,75 +212,59 @@ public class BesselSecondEqualityLemma
 	 * @return The Bessel Second Kind Half-Integer Identity Verifier
 	 */
 
-	public static final org.drip.function.definition.R2ToR1Property HalfIntegerIdentity()
+	public static final R2ToR1Property HalfIntegerIdentity()
 	{
-		org.drip.function.definition.R1ToR1 gammaEstimator = new
-			org.drip.specialfunction.gamma.EulerIntegralSecondKind (null);
+		R1ToR1 gammaEstimator = new EulerIntegralSecondKind (null);
 
-		final org.drip.specialfunction.definition.BesselFirstKindEstimator besselFirstKindEstimator =
-			org.drip.specialfunction.bessel.FirstFrobeniusSeriesEstimator.Standard (
+		final BesselFirstKindEstimator besselFirstKindEstimator = FirstFrobeniusSeriesEstimator.Standard (
+			gammaEstimator,
+			50
+		);
+
+		try {
+			final BesselSecondKindEstimator besselSecondKindEstimator = SecondNISTSeriesEstimator.Standard (
+				new BinetFirstIntegral (null),
 				gammaEstimator,
-				50
+				FirstFrobeniusSeriesEstimator.Standard (gammaEstimator, 40),
+				40
 			);
 
-		try
-		{
-			final org.drip.specialfunction.definition.BesselSecondKindEstimator besselSecondKindEstimator =
-				org.drip.specialfunction.bessel.SecondNISTSeriesEstimator.Standard (
-					new org.drip.specialfunction.digamma.BinetFirstIntegral (null),
-					gammaEstimator,
-					org.drip.specialfunction.bessel.FirstFrobeniusSeriesEstimator.Standard (
-						gammaEstimator,
-						40
-					),
-					40
-				);
-
-			return new org.drip.function.definition.R2ToR1Property (
-				org.drip.function.definition.RxToR1Property.EQ,
-				new org.drip.function.definition.R2ToR1()
-				{
+			return new R2ToR1Property (
+				RxToR1Property.EQ,
+				new R2ToR1() {
 					@Override public double evaluate (
 						final double alpha,
 						final double z)
-						throws java.lang.Exception
+						throws Exception
 					{
-						if (!org.drip.numerical.common.NumberUtil.IsInteger (alpha))
-						{
-							throw new java.lang.Exception
-								("BesselSecondEqualityLemma::HalfIntegerIdentity => Invalid Inputs");
+						if (!NumberUtil.IsInteger (alpha)) {
+							throw new Exception (
+								"BesselSecondEqualityLemma::HalfIntegerIdentity => Invalid Inputs"
+							);
 						}
 
-						return besselSecondKindEstimator.bigY (
-							-1. * (alpha + 0.5),
-							z
-						);
+						return besselSecondKindEstimator.bigY (-1. * (alpha + 0.5), z);
 					}
 				},
-				new org.drip.function.definition.R2ToR1()
-				{
+				new R2ToR1() {
 					@Override public double evaluate (
 						final double alpha,
 						final double z)
-						throws java.lang.Exception
+						throws Exception
 					{
-						if (!org.drip.numerical.common.NumberUtil.IsInteger (alpha))
-						{
-							throw new java.lang.Exception
-								("BesselSecondEqualityLemma::HalfIntegerIdentity => Invalid Inputs");
+						if (!NumberUtil.IsInteger (alpha)) {
+							throw new Exception (
+								"BesselSecondEqualityLemma::HalfIntegerIdentity => Invalid Inputs"
+							);
 						}
 
-						return (0 == ((int) (alpha)) % 2 ? 1. : -1.) * besselFirstKindEstimator.bigJ (
-							alpha + 0.5,
-							z
-						);
+						return (0 == ((int) (alpha)) % 2 ? 1. : -1.) *
+							besselFirstKindEstimator.bigJ (alpha + 0.5, z);
 					}
 				},
-				org.drip.function.definition.R1ToR1Property.MISMATCH_TOLERANCE
+				R1ToR1Property.MISMATCH_TOLERANCE
 			);
-		}
-		catch (java.lang.Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
