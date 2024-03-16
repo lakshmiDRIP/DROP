@@ -392,53 +392,41 @@ public class BetaEqualityLemma
 	 * @return The Identity #6 Verifier
 	 */
 
-	public static final org.drip.function.definition.R1ToR1Property Identity6()
+	public static final R1ToR1Property Identity6()
 	{
-		final org.drip.specialfunction.beta.SummationSeriesEstimator summationSeries =
-			org.drip.specialfunction.beta.SummationSeriesEstimator.AbramowitzStegun2007 (1638400);
+		final SummationSeriesEstimator summationSeries =
+			SummationSeriesEstimator.AbramowitzStegun2007 (1638400);
 
-		try
-		{
-			return new org.drip.function.definition.R1ToR1Property (
-				org.drip.function.definition.R1ToR1Property.EQ,
-				new org.drip.function.definition.R1ToR1 (null)
-				{
+		try {
+			return new R1ToR1Property (
+				R1ToR1Property.EQ,
+				new R1ToR1 (null) {
 					@Override public double evaluate (
 						final double z)
-						throws java.lang.Exception
+						throws Exception
 					{
-						if (!org.drip.numerical.common.NumberUtil.IsValid (z) || 0. >= z)
-						{
-							throw new java.lang.Exception
-								("BetaEqualityLemma::Identity6::evaluate => Invalid Inputs");
+						if (!NumberUtil.IsValid (z) || 0. >= z) {
+							throw new Exception ("BetaEqualityLemma::Identity6::evaluate => Invalid Inputs");
 						}
 
-						return summationSeries.evaluate (
-							1.,
-							z
-						);
+						return summationSeries.evaluate (1., z);
 					}
 				},
-				new org.drip.function.definition.R1ToR1 (null)
-				{
+				new R1ToR1 (null) {
 					@Override public double evaluate (
 						final double z)
-						throws java.lang.Exception
+						throws Exception
 					{
-						if (!org.drip.numerical.common.NumberUtil.IsValid (z) || 0. >= z)
-						{
-							throw new java.lang.Exception
-								("BetaEqualityLemma::Identity6::evaluate => Invalid Inputs");
+						if (!NumberUtil.IsValid (z) || 0. >= z) {
+							throw new Exception ("BetaEqualityLemma::Identity6::evaluate => Invalid Inputs");
 						}
 
 						return 1. / z;
 					}
 				},
-				org.drip.function.definition.R1ToR1Property.MISMATCH_TOLERANCE
+				R1ToR1Property.MISMATCH_TOLERANCE
 			);
-		}
-		catch (java.lang.Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 

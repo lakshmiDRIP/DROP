@@ -1,11 +1,20 @@
 
 package org.drip.specialfunction.property;
 
+import org.drip.function.definition.R1ToR1;
+import org.drip.function.definition.R1ToR1Property;
+import org.drip.numerical.common.NumberUtil;
+import org.drip.specialfunction.digamma.CumulativeSeriesEstimator;
+import org.drip.specialfunction.gamma.Definitions;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -78,7 +87,7 @@ package org.drip.specialfunction.property;
 
 /**
  * <i>DigammaEqualityLemma</i> contains the Verifiable Equality Lemmas of the Digamma Function. The
- * References are:
+ * 	References are:
  * 
  * <br><br>
  * 	<ul>
@@ -102,14 +111,36 @@ package org.drip.specialfunction.property;
  * 			Wikipedia (2019): Gamma Function https://en.wikipedia.org/wiki/Gamma_function
  * 		</li>
  * 	</ul>
+ * 
+ * 	It provides the following functionality:
  *
- *	<br><br>
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FunctionAnalysisLibrary.md">Function Analysis Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md">Special Function Implementation Analysis</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/property/README.md">Special Function Property Lemma Verifiers</a></li>
+ *  	<li>Generate the Digamma (0, 1) Reflection Formula Verifier</li>
+ *  	<li>Generate the Blagouchine Finite Summation Identity Verifier #1</li>
+ *  	<li>Generate the Blagouchine Finite Summation Identity Verifier #2</li>
+ *  	<li>Generate the Blagouchine Finite Summation Identity Verifier #3</li>
+ *  	<li>Generate the Blagouchine Finite Summation Identity Verifier #4</li>
+ *  	<li>Generate the Blagouchine Finite Summation Identity Verifier #5</li>
+ *  	<li>Generate the Blagouchine Finite Summation Identity Verifier #6</li>
+ *  	<li>Generate the Blagouchine Finite Summation Identity Verifier #7</li>
+ *  	<li>Generate the Blagouchine Finite Summation Identity Verifier #8</li>
+ *  	<li>Generate the Blagouchine Finite Summation Identity Verifier #9</li>
+ *  	<li>Generate the Blagouchine Finite Summation Identity Verifier #10</li>
  *  </ul>
+ *
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FunctionAnalysisLibrary.md">Function Analysis Library</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md">Special Function Implementation and Analysis</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/property/README.md">Special Function Property Lemma Verifiers</a></td></tr>
+ *  </table>
  *
  * @author Lakshmi Krishnamurthy
  */
@@ -123,50 +154,45 @@ public class DigammaEqualityLemma
 	 * @return The Digamma (0, 1) Reflection Formula Verifier
 	 */
 
-	public static final org.drip.function.definition.R1ToR1Property ReflectionFormula()
+	public static final R1ToR1Property ReflectionFormula()
 	{
-		final org.drip.specialfunction.digamma.CumulativeSeriesEstimator abramowitzStegun2007 =
-			org.drip.specialfunction.digamma.CumulativeSeriesEstimator.AbramowitzStegun2007 (1638400);
+		final CumulativeSeriesEstimator abramowitzStegun2007 =
+			CumulativeSeriesEstimator.AbramowitzStegun2007 (1638400);
 
-		try
-		{
-			return new org.drip.function.definition.R1ToR1Property (
-				org.drip.function.definition.R1ToR1Property.EQ,
-				new org.drip.function.definition.R1ToR1 (null)
-				{
+		try {
+			return new R1ToR1Property (
+				R1ToR1Property.EQ,
+				new R1ToR1 (null) {
 					@Override public double evaluate (
 						final double z)
-						throws java.lang.Exception
+						throws Exception
 					{
-						if (!org.drip.numerical.common.NumberUtil.IsValid (z))
-						{
-							throw new java.lang.Exception
-								("DigammaEqualityLemma::ReflectionFormula::evaluate => Invalid Inputs");
+						if (!NumberUtil.IsValid (z)) {
+							throw new Exception (
+								"DigammaEqualityLemma::ReflectionFormula::evaluate => Invalid Inputs"
+							);
 						}
 
 						return abramowitzStegun2007.evaluate (1. - z) - abramowitzStegun2007.evaluate (z);
 					}
 				},
-				new org.drip.function.definition.R1ToR1 (null)
-				{
+				new R1ToR1 (null) {
 					@Override public double evaluate (
 						final double z)
-						throws java.lang.Exception
+						throws Exception
 					{
-						if (!org.drip.numerical.common.NumberUtil.IsValid (z))
-						{
-							throw new java.lang.Exception
-								("DigammaEqualityLemma::ReflectionFormula::evaluate => Invalid Inputs");
+						if (!NumberUtil.IsValid (z)) {
+							throw new Exception (
+								"DigammaEqualityLemma::ReflectionFormula::evaluate => Invalid Inputs"
+							);
 						}
 
-						return java.lang.Math.PI / java.lang.Math.tan (java.lang.Math.PI * z);
+						return Math.PI / Math.tan (Math.PI * z);
 					}
 				},
-				org.drip.function.definition.R1ToR1Property.MISMATCH_TOLERANCE
+				R1ToR1Property.MISMATCH_TOLERANCE
 			);
-		}
-		catch (java.lang.Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -179,58 +205,52 @@ public class DigammaEqualityLemma
 	 * @return The Gaussian Finite Summation Identity Verifier #1
 	 */
 
-	public static final org.drip.function.definition.R1ToR1Property SummationIdentity1()
+	public static final R1ToR1Property SummationIdentity1()
 	{
-		final org.drip.specialfunction.digamma.CumulativeSeriesEstimator abramowitzStegun2007 =
-			org.drip.specialfunction.digamma.CumulativeSeriesEstimator.AbramowitzStegun2007 (1638400);
+		final CumulativeSeriesEstimator abramowitzStegun2007 =
+			CumulativeSeriesEstimator.AbramowitzStegun2007 (1638400);
 
-		try
-		{
-			return new org.drip.function.definition.R1ToR1Property (
-				org.drip.function.definition.R1ToR1Property.EQ,
-				new org.drip.function.definition.R1ToR1 (null)
-				{
+		try {
+			return new R1ToR1Property (
+				R1ToR1Property.EQ,
+				new R1ToR1 (null) {
 					@Override public double evaluate (
 						final double m)
-						throws java.lang.Exception
+						throws Exception
 					{
-						if (!org.drip.numerical.common.NumberUtil.IsValid (m) || 0. >= m)
-						{
-							throw new java.lang.Exception
-								("DigammaEqualityLemma::SummationIdentity1::evaluate => Invalid Inputs");
+						if (!NumberUtil.IsValid (m) || 0. >= m) {
+							throw new Exception (
+								"DigammaEqualityLemma::SummationIdentity1::evaluate => Invalid Inputs"
+							);
 						}
 
 						double summation = 0.;
 
-						for (int r = 1; r <= m; ++r)
-						{
-							summation = summation + abramowitzStegun2007.evaluate (((double) r) / ((double) m));
+						for (int r = 1; r <= m; ++r) {
+							summation = summation +
+								abramowitzStegun2007.evaluate (((double) r) / ((double) m));
 						}
 
 						return summation;
 					}
 				},
-				new org.drip.function.definition.R1ToR1 (null)
-				{
+				new R1ToR1 (null) {
 					@Override public double evaluate (
 						final double m)
-						throws java.lang.Exception
+						throws Exception
 					{
-						if (!org.drip.numerical.common.NumberUtil.IsValid (m) || 0. >= m)
-						{
-							throw new java.lang.Exception
-								("DigammaEqualityLemma::SummationIdentity1::evaluate => Invalid Inputs");
+						if (!NumberUtil.IsValid (m) || 0. >= m) {
+							throw new Exception (
+								"DigammaEqualityLemma::SummationIdentity1::evaluate => Invalid Inputs"
+							);
 						}
 
-						return -m * (org.drip.specialfunction.gamma.Definitions.EULER_MASCHERONI +
-							java.lang.Math.log (m));
+						return -m * (Definitions.EULER_MASCHERONI + Math.log (m));
 					}
 				},
-				org.drip.function.definition.R1ToR1Property.MISMATCH_TOLERANCE
+				R1ToR1Property.MISMATCH_TOLERANCE
 			);
-		}
-		catch (java.lang.Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -245,62 +265,55 @@ public class DigammaEqualityLemma
 	 * @return The Gaussian Finite Summation Identity Verifier #2
 	 */
 
-	public static final org.drip.function.definition.R1ToR1Property SummationIdentity2 (
+	public static final R1ToR1Property SummationIdentity2 (
 		final int k)
 	{
-		final org.drip.specialfunction.digamma.CumulativeSeriesEstimator abramowitzStegun2007 =
-			org.drip.specialfunction.digamma.CumulativeSeriesEstimator.AbramowitzStegun2007 (1638400);
+		final CumulativeSeriesEstimator abramowitzStegun2007 =
+			CumulativeSeriesEstimator.AbramowitzStegun2007 (1638400);
 
-		try
-		{
-			return new org.drip.function.definition.R1ToR1Property (
-				org.drip.function.definition.R1ToR1Property.EQ,
-				new org.drip.function.definition.R1ToR1 (null)
-				{
+		try {
+			return new R1ToR1Property (
+				R1ToR1Property.EQ,
+				new R1ToR1 (null) {
 					@Override public double evaluate (
 						final double m)
-						throws java.lang.Exception
+						throws Exception
 					{
-						if (!org.drip.numerical.common.NumberUtil.IsValid (m) || 0. >= m || m <= k)
-						{
-							throw new java.lang.Exception
-								("DigammaEqualityLemma::SummationIdentity2::evaluate => Invalid Inputs");
+						if (!NumberUtil.IsValid (m) || 0. >= m || m <= k) {
+							throw new Exception (
+								"DigammaEqualityLemma::SummationIdentity2::evaluate => Invalid Inputs"
+							);
 						}
 
 						double summation = 0.;
 
-						for (int r = 1; r < m; ++r)
-						{
+						for (int r = 1; r < m; ++r) {
 							double z = ((double) r) / ((double) m);
 
 							summation = summation + abramowitzStegun2007.evaluate (z) *
-								java.lang.Math.cos (2. * java.lang.Math.PI * k * z);
+								Math.cos (2. * Math.PI * k * z);
 						}
 
 						return summation;
 					}
 				},
-				new org.drip.function.definition.R1ToR1 (null)
-				{
+				new R1ToR1 (null) {
 					@Override public double evaluate (
 						final double m)
-						throws java.lang.Exception
+						throws Exception
 					{
-						if (!org.drip.numerical.common.NumberUtil.IsValid (m) || 0. >= m || m <= k)
-						{
-							throw new java.lang.Exception
-								("DigammaEqualityLemma::SummationIdentity2::evaluate => Invalid Inputs");
+						if (!NumberUtil.IsValid (m) || 0. >= m || m <= k) {
+							throw new Exception (
+								"DigammaEqualityLemma::SummationIdentity2::evaluate => Invalid Inputs"
+							);
 						}
 
-						return m * java.lang.Math.log (2. * java.lang.Math.sin (java.lang.Math.PI * k / m)) +
-							org.drip.specialfunction.gamma.Definitions.EULER_MASCHERONI;
+						return m * Math.log (2. * Math.sin (Math.PI * k / m)) + Definitions.EULER_MASCHERONI;
 					}
 				},
-				org.drip.function.definition.R1ToR1Property.MISMATCH_TOLERANCE
+				R1ToR1Property.MISMATCH_TOLERANCE
 			);
-		}
-		catch (java.lang.Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -315,61 +328,55 @@ public class DigammaEqualityLemma
 	 * @return The Gaussian Finite Summation Identity Verifier #3
 	 */
 
-	public static final org.drip.function.definition.R1ToR1Property SummationIdentity3 (
+	public static final R1ToR1Property SummationIdentity3 (
 		final int k)
 	{
-		final org.drip.specialfunction.digamma.CumulativeSeriesEstimator abramowitzStegun2007 =
-			org.drip.specialfunction.digamma.CumulativeSeriesEstimator.AbramowitzStegun2007 (1638400);
+		final CumulativeSeriesEstimator abramowitzStegun2007 =
+			CumulativeSeriesEstimator.AbramowitzStegun2007 (1638400);
 
-		try
-		{
-			return new org.drip.function.definition.R1ToR1Property (
-				org.drip.function.definition.R1ToR1Property.EQ,
-				new org.drip.function.definition.R1ToR1 (null)
-				{
+		try {
+			return new R1ToR1Property (
+				R1ToR1Property.EQ,
+				new R1ToR1 (null) {
 					@Override public double evaluate (
 						final double m)
-						throws java.lang.Exception
+						throws Exception
 					{
-						if (!org.drip.numerical.common.NumberUtil.IsValid (m) || 0. >= m || m <= k)
-						{
-							throw new java.lang.Exception
-								("DigammaEqualityLemma::SummationIdentity3::evaluate => Invalid Inputs");
+						if (!NumberUtil.IsValid (m) || 0. >= m || m <= k) {
+							throw new Exception (
+								"DigammaEqualityLemma::SummationIdentity3::evaluate => Invalid Inputs"
+							);
 						}
 
 						double summation = 0.;
 
-						for (int r = 1; r < m; ++r)
-						{
+						for (int r = 1; r < m; ++r) {
 							double z = ((double) r) / ((double) m);
 
 							summation = summation + abramowitzStegun2007.evaluate (z) *
-								java.lang.Math.sin (2. * java.lang.Math.PI * k * z);
+								Math.sin (2. * Math.PI * k * z);
 						}
 
 						return summation;
 					}
 				},
-				new org.drip.function.definition.R1ToR1 (null)
-				{
+				new org.drip.function.definition.R1ToR1 (null) {
 					@Override public double evaluate (
 						final double m)
-						throws java.lang.Exception
+						throws Exception
 					{
-						if (!org.drip.numerical.common.NumberUtil.IsValid (m) || 0. >= m || m <= k)
-						{
-							throw new java.lang.Exception
-								("DigammaEqualityLemma::SummationIdentity3::evaluate => Invalid Inputs");
+						if (!NumberUtil.IsValid (m) || 0. >= m || m <= k) {
+							throw new Exception (
+								"DigammaEqualityLemma::SummationIdentity3::evaluate => Invalid Inputs"
+							);
 						}
 
-						return 0.5 * java.lang.Math.PI * (2. * k - m);
+						return 0.5 * Math.PI * (2. * k - m);
 					}
 				},
-				org.drip.function.definition.R1ToR1Property.MISMATCH_TOLERANCE
+				R1ToR1Property.MISMATCH_TOLERANCE
 			);
-		}
-		catch (java.lang.Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -384,61 +391,55 @@ public class DigammaEqualityLemma
 	 * @return The Blagouchine Finite Summation Identity Verifier #4
 	 */
 
-	public static final org.drip.function.definition.R1ToR1Property SummationIdentity4 (
+	public static final R1ToR1Property SummationIdentity4 (
 		final int k)
 	{
-		final org.drip.specialfunction.digamma.CumulativeSeriesEstimator abramowitzStegun2007 =
-			org.drip.specialfunction.digamma.CumulativeSeriesEstimator.AbramowitzStegun2007 (1638400);
+		final CumulativeSeriesEstimator abramowitzStegun2007 =
+			CumulativeSeriesEstimator.AbramowitzStegun2007 (1638400);
 
-		try
-		{
-			return new org.drip.function.definition.R1ToR1Property (
-				org.drip.function.definition.R1ToR1Property.EQ,
-				new org.drip.function.definition.R1ToR1 (null)
-				{
+		try {
+			return new R1ToR1Property (
+				R1ToR1Property.EQ,
+				new R1ToR1 (null) {
 					@Override public double evaluate (
 						final double m)
-						throws java.lang.Exception
+						throws Exception
 					{
-						if (!org.drip.numerical.common.NumberUtil.IsValid (m) || 0. >= m || m <= k)
-						{
-							throw new java.lang.Exception
-								("DigammaEqualityLemma::SummationIdentity4::evaluate => Invalid Inputs");
+						if (!NumberUtil.IsValid (m) || 0. >= m || m <= k) {
+							throw new Exception (
+								"DigammaEqualityLemma::SummationIdentity4::evaluate => Invalid Inputs"
+							);
 						}
 
 						double summation = 0.;
 
-						for (int r = 0; r < m; ++r)
-						{
+						for (int r = 0; r < m; ++r) {
 							double z = (2. * r + 1.) / (2. * m);
 
 							summation = summation + abramowitzStegun2007.evaluate (z) *
-								java.lang.Math.cos (2. * java.lang.Math.PI * k * z);
+								Math.cos (2. * Math.PI * k * z);
 						}
 
 						return summation;
 					}
 				},
-				new org.drip.function.definition.R1ToR1 (null)
-				{
+				new R1ToR1 (null) {
 					@Override public double evaluate (
 						final double m)
 						throws java.lang.Exception
 					{
-						if (!org.drip.numerical.common.NumberUtil.IsValid (m) || 0. >= m || m <= k)
-						{
-							throw new java.lang.Exception
-								("DigammaEqualityLemma::SummationIdentity4::evaluate => Invalid Inputs");
+						if (!NumberUtil.IsValid (m) || 0. >= m || m <= k) {
+							throw new Exception (
+								"DigammaEqualityLemma::SummationIdentity4::evaluate => Invalid Inputs"
+							);
 						}
 
-						return m * java.lang.Math.log (java.lang.Math.tan (0.5 * java.lang.Math.PI * k / m));
+						return m * Math.log (Math.tan (0.5 * Math.PI * k / m));
 					}
 				},
-				org.drip.function.definition.R1ToR1Property.MISMATCH_TOLERANCE
+				R1ToR1Property.MISMATCH_TOLERANCE
 			);
-		}
-		catch (java.lang.Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -453,61 +454,55 @@ public class DigammaEqualityLemma
 	 * @return The Blagouchine Finite Summation Identity Verifier #5
 	 */
 
-	public static final org.drip.function.definition.R1ToR1Property SummationIdentity5 (
+	public static final R1ToR1Property SummationIdentity5 (
 		final int k)
 	{
-		final org.drip.specialfunction.digamma.CumulativeSeriesEstimator abramowitzStegun2007 =
-			org.drip.specialfunction.digamma.CumulativeSeriesEstimator.AbramowitzStegun2007 (1638400);
+		final CumulativeSeriesEstimator abramowitzStegun2007 =
+			CumulativeSeriesEstimator.AbramowitzStegun2007 (1638400);
 
-		try
-		{
-			return new org.drip.function.definition.R1ToR1Property (
-				org.drip.function.definition.R1ToR1Property.EQ,
-				new org.drip.function.definition.R1ToR1 (null)
-				{
+		try {
+			return new R1ToR1Property (
+				R1ToR1Property.EQ,
+				new R1ToR1 (null) {
 					@Override public double evaluate (
 						final double m)
-						throws java.lang.Exception
+						throws Exception
 					{
-						if (!org.drip.numerical.common.NumberUtil.IsValid (m) || 0. >= m || m <= k)
-						{
-							throw new java.lang.Exception
-								("DigammaEqualityLemma::SummationIdentity5::evaluate => Invalid Inputs");
+						if (!NumberUtil.IsValid (m) || 0. >= m || m <= k) {
+							throw new Exception (
+								"DigammaEqualityLemma::SummationIdentity5::evaluate => Invalid Inputs"
+							);
 						}
 
 						double summation = 0.;
 
-						for (int r = 0; r < m; ++r)
-						{
+						for (int r = 0; r < m; ++r) {
 							double z = (2. * r + 1.) / (2. * m);
 
 							summation = summation + abramowitzStegun2007.evaluate (z) *
-								java.lang.Math.sin (2. * java.lang.Math.PI * k * z);
+								Math.sin (2. * Math.PI * k * z);
 						}
 
 						return summation;
 					}
 				},
-				new org.drip.function.definition.R1ToR1 (null)
-				{
+				new R1ToR1 (null) {
 					@Override public double evaluate (
 						final double m)
-						throws java.lang.Exception
+						throws Exception
 					{
-						if (!org.drip.numerical.common.NumberUtil.IsValid (m) || 0. >= m || m <= k)
-						{
-							throw new java.lang.Exception
-								("DigammaEqualityLemma::SummationIdentity5::evaluate => Invalid Inputs");
+						if (!NumberUtil.IsValid (m) || 0. >= m || m <= k) {
+							throw new Exception (
+								"DigammaEqualityLemma::SummationIdentity5::evaluate => Invalid Inputs"
+							);
 						}
 
-						return -0.5 * java.lang.Math.PI * m;
+						return -0.5 * Math.PI * m;
 					}
 				},
-				org.drip.function.definition.R1ToR1Property.MISMATCH_TOLERANCE
+				R1ToR1Property.MISMATCH_TOLERANCE
 			);
-		}
-		catch (java.lang.Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -520,60 +515,54 @@ public class DigammaEqualityLemma
 	 * @return The Blagouchine Finite Summation Identity Verifier #6
 	 */
 
-	public static final org.drip.function.definition.R1ToR1Property SummationIdentity6()
+	public static final R1ToR1Property SummationIdentity6()
 	{
-		final org.drip.specialfunction.digamma.CumulativeSeriesEstimator abramowitzStegun2007 =
-			org.drip.specialfunction.digamma.CumulativeSeriesEstimator.AbramowitzStegun2007 (1638400);
+		final CumulativeSeriesEstimator abramowitzStegun2007 =
+			CumulativeSeriesEstimator.AbramowitzStegun2007 (1638400);
 
-		try
-		{
-			return new org.drip.function.definition.R1ToR1Property (
-				org.drip.function.definition.R1ToR1Property.EQ,
-				new org.drip.function.definition.R1ToR1 (null)
-				{
+		try {
+			return new R1ToR1Property (
+				R1ToR1Property.EQ,
+				new R1ToR1 (null) {
 					@Override public double evaluate (
 						final double m)
-						throws java.lang.Exception
+						throws Exception
 					{
-						if (!org.drip.numerical.common.NumberUtil.IsValid (m) || 0. >= m)
-						{
-							throw new java.lang.Exception
-								("DigammaEqualityLemma::SummationIdentity6::evaluate => Invalid Inputs");
+						if (!NumberUtil.IsValid (m) || 0. >= m) {
+							throw new Exception (
+								"DigammaEqualityLemma::SummationIdentity6::evaluate => Invalid Inputs"
+							);
 						}
 
 						double summation = 0.;
 
-						for (int r = 1; r < m; ++r)
-						{
+						for (int r = 1; r < m; ++r) {
 							double z = ((double) r) / ((double) m);
 
 							summation = summation + abramowitzStegun2007.evaluate (z) /
-								java.lang.Math.tan (java.lang.Math.PI * z);
+								Math.tan (Math.PI * z);
 						}
 
 						return summation;
 					}
 				},
-				new org.drip.function.definition.R1ToR1 (null)
-				{
+				new R1ToR1 (null) {
 					@Override public double evaluate (
 						final double m)
-						throws java.lang.Exception
+						throws Exception
 					{
-						if (!org.drip.numerical.common.NumberUtil.IsValid (m) || 0. >= m)
-						{
-							throw new java.lang.Exception
-								("DigammaEqualityLemma::SummationIdentity6::evaluate => Invalid Inputs");
+						if (!NumberUtil.IsValid (m) || 0. >= m) {
+							throw new Exception (
+								"DigammaEqualityLemma::SummationIdentity6::evaluate => Invalid Inputs"
+							);
 						}
 
-						return -java.lang.Math.PI * (m - 1.) * (m - 2.) / 6.;
+						return -Math.PI * (m - 1.) * (m - 2.) / 6.;
 					}
 				},
-				org.drip.function.definition.R1ToR1Property.MISMATCH_TOLERANCE
+				R1ToR1Property.MISMATCH_TOLERANCE
 			);
-		}
-		catch (java.lang.Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -586,31 +575,28 @@ public class DigammaEqualityLemma
 	 * @return The Blagouchine Finite Summation Identity Verifier #7
 	 */
 
-	public static final org.drip.function.definition.R1ToR1Property SummationIdentity7()
+	public static final R1ToR1Property SummationIdentity7()
 	{
-		final org.drip.specialfunction.digamma.CumulativeSeriesEstimator abramowitzStegun2007 =
-			org.drip.specialfunction.digamma.CumulativeSeriesEstimator.AbramowitzStegun2007 (1638400);
+		final CumulativeSeriesEstimator abramowitzStegun2007 =
+			CumulativeSeriesEstimator.AbramowitzStegun2007 (1638400);
 
-		try
-		{
-			return new org.drip.function.definition.R1ToR1Property (
-				org.drip.function.definition.R1ToR1Property.EQ,
-				new org.drip.function.definition.R1ToR1 (null)
-				{
+		try {
+			return new R1ToR1Property (
+				R1ToR1Property.EQ,
+				new R1ToR1 (null) {
 					@Override public double evaluate (
 						final double m)
-						throws java.lang.Exception
+						throws Exception
 					{
-						if (!org.drip.numerical.common.NumberUtil.IsValid (m) || 0. >= m)
-						{
-							throw new java.lang.Exception
-								("DigammaEqualityLemma::SummationIdentity7::evaluate => Invalid Inputs");
+						if (!NumberUtil.IsValid (m) || 0. >= m) {
+							throw new Exception (
+								"DigammaEqualityLemma::SummationIdentity7::evaluate => Invalid Inputs"
+							);
 						}
 
 						double summation = 0.;
 
-						for (int r = 1; r < m; ++r)
-						{
+						for (int r = 1; r < m; ++r) {
 							double z = ((double) r) / ((double) m);
 
 							summation = summation + z * abramowitzStegun2007.evaluate (z);
@@ -619,37 +605,32 @@ public class DigammaEqualityLemma
 						return summation;
 					}
 				},
-				new org.drip.function.definition.R1ToR1 (null)
-				{
+				new R1ToR1 (null) {
 					@Override public double evaluate (
 						final double m)
-						throws java.lang.Exception
+						throws Exception
 					{
-						if (!org.drip.numerical.common.NumberUtil.IsValid (m) || 0. >= m)
-						{
-							throw new java.lang.Exception
-								("DigammaEqualityLemma::SummationIdentity7::evaluate => Invalid Inputs");
+						if (!NumberUtil.IsValid (m) || 0. >= m) {
+							throw new Exception (
+								"DigammaEqualityLemma::SummationIdentity7::evaluate => Invalid Inputs"
+							);
 						}
 
 						double summation = 0.;
 
-						for (int r = 1; r < m; ++r)
-						{
+						for (int r = 1; r < m; ++r) {
 							double z = ((double) r) / ((double) m);
 
-							summation = summation + z / java.lang.Math.tan (java.lang.Math.PI * z);
+							summation = summation + z / Math.tan (Math.PI * z);
 						}
 
-						return -0.5 * org.drip.specialfunction.gamma.Definitions.EULER_MASCHERONI * (m - 1.)
-							- 0.5 * m * java.lang.Math.log (m)
-							- 0.5 * java.lang.Math.PI * summation;
+						return -0.5 * Definitions.EULER_MASCHERONI * (m - 1.) - 0.5 * m * Math.log (m) -
+							0.5 * Math.PI * summation;
 					}
 				},
-				org.drip.function.definition.R1ToR1Property.MISMATCH_TOLERANCE
+				R1ToR1Property.MISMATCH_TOLERANCE
 			);
-		}
-		catch (java.lang.Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -664,80 +645,71 @@ public class DigammaEqualityLemma
 	 * @return The Blagouchine Finite Summation Identity Verifier #8
 	 */
 
-	public static final org.drip.function.definition.R1ToR1Property SummationIdentity8 (
+	public static final R1ToR1Property SummationIdentity8 (
 		final double l)
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (l))
-		{
+		if (!NumberUtil.IsValid (l)) {
 			return null;
 		}
 
-		final org.drip.specialfunction.digamma.CumulativeSeriesEstimator abramowitzStegun2007 =
-			org.drip.specialfunction.digamma.CumulativeSeriesEstimator.AbramowitzStegun2007 (1638400);
+		final CumulativeSeriesEstimator abramowitzStegun2007 =
+			CumulativeSeriesEstimator.AbramowitzStegun2007 (1638400);
 
-		try
-		{
-			return new org.drip.function.definition.R1ToR1Property (
-				org.drip.function.definition.R1ToR1Property.EQ,
-				new org.drip.function.definition.R1ToR1 (null)
-				{
+		try {
+			return new R1ToR1Property (
+				R1ToR1Property.EQ,
+				new R1ToR1 (null) {
 					@Override public double evaluate (
 						final double m)
-						throws java.lang.Exception
+						throws Exception
 					{
-						if (!org.drip.numerical.common.NumberUtil.IsValid (m) || 0. >= m)
-						{
-							throw new java.lang.Exception
-								("DigammaEqualityLemma::SummationIdentity8::evaluate => Invalid Inputs");
+						if (!NumberUtil.IsValid (m) || 0. >= m) {
+							throw new Exception (
+								"DigammaEqualityLemma::SummationIdentity8::evaluate => Invalid Inputs"
+							);
 						}
 
 						double summation = 0.;
 
-						for (int r = 1; r < m; ++r)
-						{
+						for (int r = 1; r < m; ++r) {
 							double z = ((double) r) / ((double) m);
 
 							summation = summation + abramowitzStegun2007.evaluate (z) *
-								java.lang.Math.cos ((2. * l + 1.) * java.lang.Math.PI * z);
+								Math.cos ((2. * l + 1.) * Math.PI * z);
 						}
 
 						return summation;
 					}
 				},
-				new org.drip.function.definition.R1ToR1 (null)
-				{
+				new R1ToR1 (null) {
 					@Override public double evaluate (
 						final double m)
-						throws java.lang.Exception
+						throws Exception
 					{
-						if (!org.drip.numerical.common.NumberUtil.IsValid (m) || 0. >= m)
-						{
-							throw new java.lang.Exception
-								("DigammaEqualityLemma::SummationIdentity8::evaluate => Invalid Inputs");
+						if (!NumberUtil.IsValid (m) || 0. >= m) {
+							throw new Exception (
+								"DigammaEqualityLemma::SummationIdentity8::evaluate => Invalid Inputs"
+							);
 						}
 
 						double summation = 0.;
 
-						for (int r = 1; r < m; ++r)
-						{
+						for (int r = 1; r < m; ++r) {
 							double z = ((double) r) / ((double) m);
 
-							double theta = 2. * java.lang.Math.PI * z;
+							double theta = 2. * Math.PI * z;
 
-							summation = summation + r * java.lang.Math.sin (theta) / (
-								java.lang.Math.cos (theta) -
-								java.lang.Math.cos ((2. * l + 1.) * java.lang.Math.PI / m)
+							summation = summation + r * Math.sin (theta) / (
+								Math.cos (theta) - Math.cos ((2. * l + 1.) * Math.PI / m)
 							);
 						}
 
-						return -1. * java.lang.Math.PI / m * summation;
+						return -1. * Math.PI / m * summation;
 					}
 				},
-				org.drip.function.definition.R1ToR1Property.MISMATCH_TOLERANCE
+				R1ToR1Property.MISMATCH_TOLERANCE
 			);
-		}
-		catch (java.lang.Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -752,85 +724,74 @@ public class DigammaEqualityLemma
 	 * @return The Blagouchine Finite Summation Identity Verifier #9
 	 */
 
-	public static final org.drip.function.definition.R1ToR1Property SummationIdentity9 (
+	public static final R1ToR1Property SummationIdentity9 (
 		final double l)
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (l))
-		{
+		if (!NumberUtil.IsValid (l)) {
 			return null;
 		}
 
-		final org.drip.specialfunction.digamma.CumulativeSeriesEstimator abramowitzStegun2007 =
-			org.drip.specialfunction.digamma.CumulativeSeriesEstimator.AbramowitzStegun2007 (1638400);
+		final CumulativeSeriesEstimator abramowitzStegun2007 =
+			CumulativeSeriesEstimator.AbramowitzStegun2007 (1638400);
 
-		try
-		{
-			return new org.drip.function.definition.R1ToR1Property (
-				org.drip.function.definition.R1ToR1Property.EQ,
-				new org.drip.function.definition.R1ToR1 (null)
-				{
+		try {
+			return new R1ToR1Property (
+				R1ToR1Property.EQ,
+				new R1ToR1 (null) {
 					@Override public double evaluate (
 						final double m)
-						throws java.lang.Exception
+						throws Exception
 					{
-						if (!org.drip.numerical.common.NumberUtil.IsValid (m) || 0. >= m)
-						{
-							throw new java.lang.Exception
-								("DigammaEqualityLemma::SummationIdentity9::evaluate => Invalid Inputs");
+						if (!NumberUtil.IsValid (m) || 0. >= m) {
+							throw new Exception (
+								"DigammaEqualityLemma::SummationIdentity9::evaluate => Invalid Inputs"
+							);
 						}
 
 						double summation = 0.;
 
-						for (int r = 1; r < m; ++r)
-						{
+						for (int r = 1; r < m; ++r) {
 							double z = ((double) r) / ((double) m);
 
 							summation = summation + abramowitzStegun2007.evaluate (z) *
-								java.lang.Math.sin ((2. * l + 1.) * java.lang.Math.PI * z);
+								Math.sin ((2. * l + 1.) * Math.PI * z);
 						}
 
 						return summation;
 					}
 				},
-				new org.drip.function.definition.R1ToR1 (null)
-				{
+				new R1ToR1 (null) {
 					@Override public double evaluate (
 						final double m)
-						throws java.lang.Exception
+						throws Exception
 					{
-						if (!org.drip.numerical.common.NumberUtil.IsValid (m) || 0. >= m)
-						{
-							throw new java.lang.Exception
-								("DigammaEqualityLemma::SummationIdentity9::evaluate => Invalid Inputs");
+						if (!NumberUtil.IsValid (m) || 0. >= m) {
+							throw new Exception (
+								"DigammaEqualityLemma::SummationIdentity9::evaluate => Invalid Inputs"
+							);
 						}
 
 						double summation = 0.;
-						double twoLPlus1PiByM = (2. * l + 1.) * java.lang.Math.PI / m;
+						double twoLPlus1PiByM = (2. * l + 1.) * Math.PI / m;
 
-						double cos2LPlus1PiByM = java.lang.Math.cos (twoLPlus1PiByM);
+						double cos2LPlus1PiByM = Math.cos (twoLPlus1PiByM);
 
-						for (int r = 1; r < m; ++r)
-						{
+						for (int r = 1; r < m; ++r) {
 							double z = ((double) r) / ((double) m);
+							double theta = Math.PI * z;
 
-							double theta = java.lang.Math.PI * z;
-
-							summation = summation + java.lang.Math.log (java.lang.Math.sin (theta)) /
-								(java.lang.Math.cos (2. * theta) - cos2LPlus1PiByM);
+							summation = summation + Math.log (Math.sin (theta)) /
+								(Math.cos (2. * theta) - cos2LPlus1PiByM);
 						}
 
-						return java.lang.Math.sin (twoLPlus1PiByM) * summation - 
-							(
-								org.drip.specialfunction.gamma.Definitions.EULER_MASCHERONI +
-								java.lang.Math.log (2. * m)
-							) / java.lang.Math.tan (0.5 * twoLPlus1PiByM);
+						return Math.sin (twoLPlus1PiByM) * summation - (
+							Definitions.EULER_MASCHERONI + Math.log (2. * m)
+						) / Math.tan (0.5 * twoLPlus1PiByM);
 					}
 				},
-				org.drip.function.definition.R1ToR1Property.MISMATCH_TOLERANCE
+				R1ToR1Property.MISMATCH_TOLERANCE
 			);
-		}
-		catch (java.lang.Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -843,31 +804,28 @@ public class DigammaEqualityLemma
 	 * @return The Blagouchine Finite Summation Identity Verifier #10
 	 */
 
-	public static final org.drip.function.definition.R1ToR1Property SummationIdentity10()
+	public static final R1ToR1Property SummationIdentity10()
 	{
-		final org.drip.specialfunction.digamma.CumulativeSeriesEstimator abramowitzStegun2007 =
-			org.drip.specialfunction.digamma.CumulativeSeriesEstimator.AbramowitzStegun2007 (1638400);
+		final CumulativeSeriesEstimator abramowitzStegun2007 =
+			CumulativeSeriesEstimator.AbramowitzStegun2007 (1638400);
 
-		try
-		{
-			return new org.drip.function.definition.R1ToR1Property (
-				org.drip.function.definition.R1ToR1Property.EQ,
-				new org.drip.function.definition.R1ToR1 (null)
-				{
+		try {
+			return new R1ToR1Property (
+				R1ToR1Property.EQ,
+				new R1ToR1 (null) {
 					@Override public double evaluate (
 						final double m)
-						throws java.lang.Exception
+						throws Exception
 					{
-						if (!org.drip.numerical.common.NumberUtil.IsValid (m) || 0. >= m)
-						{
-							throw new java.lang.Exception
-								("DigammaEqualityLemma::SummationIdentity10::evaluate => Invalid Inputs");
+						if (!NumberUtil.IsValid (m) || 0. >= m) {
+							throw new Exception (
+								"DigammaEqualityLemma::SummationIdentity10::evaluate => Invalid Inputs"
+							);
 						}
 
 						double summation = 0.;
 
-						for (int r = 1; r < m; ++r)
-						{
+						for (int r = 1; r < m; ++r) {
 							double digamma = abramowitzStegun2007.evaluate ((double) r) / ((double) m);
 
 							summation = summation + digamma * digamma;
@@ -876,50 +834,36 @@ public class DigammaEqualityLemma
 						return summation;
 					}
 				},
-				new org.drip.function.definition.R1ToR1 (null)
-				{
+				new R1ToR1 (null) {
 					@Override public double evaluate (
 						final double m)
-						throws java.lang.Exception
+						throws Exception
 					{
-						if (!org.drip.numerical.common.NumberUtil.IsValid (m) || 0. >= m)
-						{
-							throw new java.lang.Exception
-								("DigammaEqualityLemma::SummationIdentity10::evaluate => Invalid Inputs");
+						if (!NumberUtil.IsValid (m) || 0. >= m) {
+							throw new Exception (
+								"DigammaEqualityLemma::SummationIdentity10::evaluate => Invalid Inputs"
+							);
 						}
 
 						double summation = 0.;
 
-						for (int l = 1; l < m; ++l)
-						{
-							double logSinPiLByM = java.lang.Math.log (
-								java.lang.Math.sin (
-									java.lang.Math.PI * l / m
-								)
-							);
+						for (int l = 1; l < m; ++l) {
+							double logSinPiLByM = Math.log (Math.sin (Math.PI * l / m));
 
 							summation = summation + logSinPiLByM * logSinPiLByM;
 						}
 
-						double log2 = java.lang.Math.log (2.);
+						double log2 = Math.log (2.);
 
-						return
-							(m - 1.) * org.drip.specialfunction.gamma.Definitions.EULER_MASCHERONI *
-								org.drip.specialfunction.gamma.Definitions.EULER_MASCHERONI +
-							m * (
-								2. * org.drip.specialfunction.gamma.Definitions.EULER_MASCHERONI +
-								java.lang.Math.log (4. * m)
-							) * java.lang.Math.log (m) -
-							log2 * log2 * m * (m - 1.) +
-							java.lang.Math.PI * java.lang.Math.PI / 12. * (2. - 3. * m + m * m) +
-							m * summation;
+						return (m - 1.) * Definitions.EULER_MASCHERONI * Definitions.EULER_MASCHERONI + m * (
+							2. * Definitions.EULER_MASCHERONI + Math.log (4. * m)
+						) * Math.log (m) - log2 * log2 * m * (m - 1.) +
+							Math.PI * Math.PI / 12. * (2. - 3. * m + m * m) + m * summation;
 					}
 				},
-				org.drip.function.definition.R1ToR1Property.MISMATCH_TOLERANCE
+				R1ToR1Property.MISMATCH_TOLERANCE
 			);
-		}
-		catch (java.lang.Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 

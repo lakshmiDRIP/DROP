@@ -1,11 +1,20 @@
 
 package org.drip.specialfunction.property;
 
+import org.drip.function.definition.R1ToR1;
+import org.drip.function.definition.R1ToR1Property;
+import org.drip.function.r1tor1.Sinc;
+import org.drip.numerical.common.NumberUtil;
+import org.drip.specialfunction.derived.LogBigPi;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -78,7 +87,7 @@ package org.drip.specialfunction.property;
 
 /**
  * <i>BigPiEqualityLemma</i> verifies the Specified Property Lemmas of the Big Pi Function. The References
- * are:
+ * 	are:
  * 
  * <br><br>
  * 	<ul>
@@ -102,14 +111,27 @@ package org.drip.specialfunction.property;
  * 			Wikipedia (2019): Gamma Function https://en.wikipedia.org/wiki/Gamma_function
  * 		</li>
  * 	</ul>
+ * 
+ * 	It provides the following functionality:
  *
- *	<br><br>
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FunctionAnalysisLibrary.md">Function Analysis Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md">Special Function Implementation Analysis</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/property/README.md">Special Function Property Lemma Verifiers</a></li>
+ *  	<li>Construct the Reflection Formula Verifier</li>
+ *  	<li>Construct the Multiplication Formula Verifier</li>
  *  </ul>
+ *
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FunctionAnalysisLibrary.md">Function Analysis Library</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md">Special Function Implementation and Analysis</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/property/README.md">Special Function Property Lemma Verifiers</a></td></tr>
+ *  </table>
  *
  * @author Lakshmi Krishnamurthy
  */
@@ -123,51 +145,45 @@ public class BigPiEqualityLemma
 	 * @return The Reflection Formula Verifier
 	 */
 
-	public static final org.drip.function.definition.R1ToR1Property ReflectionFormula()
+	public static final R1ToR1Property ReflectionFormula()
 	{
-		final org.drip.specialfunction.derived.LogBigPi weierstrassBigPi = org.drip.specialfunction.derived.LogBigPi.Weierstrass
-			(1638400);
+		final LogBigPi weierstrassBigPi = LogBigPi.Weierstrass (1638400);
 
-		try
-		{
-			return new org.drip.function.definition.R1ToR1Property (
-				org.drip.function.definition.R1ToR1Property.EQ,
-				new org.drip.function.definition.R1ToR1 (null)
-				{
+		try {
+			return new R1ToR1Property (
+				R1ToR1Property.EQ,
+				new R1ToR1 (null) {
 					@Override public double evaluate (
 						final double z)
-						throws java.lang.Exception
+						throws Exception
 					{
-						if (!org.drip.numerical.common.NumberUtil.IsValid (z))
-						{
-							throw new java.lang.Exception
-								("BigPiEqualityLemma::ReflectionFormula::evaluate => Invalid Inputs");
+						if (!NumberUtil.IsValid (z)) {
+							throw new Exception (
+								"BigPiEqualityLemma::ReflectionFormula::evaluate => Invalid Inputs"
+							);
 						}
 
-						return java.lang.Math.exp (weierstrassBigPi.evaluate (-1. * z) +
+						return Math.exp (weierstrassBigPi.evaluate (-1. * z) +
 							weierstrassBigPi.evaluate (z));
 					}
 				},
-				new org.drip.function.definition.R1ToR1 (null)
-				{
+				new R1ToR1 (null) {
 					@Override public double evaluate (
 						final double z)
-						throws java.lang.Exception
+						throws Exception
 					{
-						if (!org.drip.numerical.common.NumberUtil.IsValid (z))
-						{
-							throw new java.lang.Exception
-								("BigPiEqualityLemma::ReflectionFormula::evaluate => Invalid Inputs");
+						if (!NumberUtil.IsValid (z)) {
+							throw new Exception (
+								"BigPiEqualityLemma::ReflectionFormula::evaluate => Invalid Inputs"
+							);
 						}
 
-						return 1. / new org.drip.function.r1tor1.Sinc (null).evaluate (z);
+						return 1. / new Sinc (null).evaluate (z);
 					}
 				},
-				org.drip.function.definition.R1ToR1Property.MISMATCH_TOLERANCE
+				R1ToR1Property.MISMATCH_TOLERANCE
 			);
-		}
-		catch (java.lang.Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -182,64 +198,57 @@ public class BigPiEqualityLemma
 	 * @return The Multiplication Formula Verifier
 	 */
 
-	public static final org.drip.function.definition.R1ToR1Property MultiplicationFormula (
+	public static final R1ToR1Property MultiplicationFormula (
 		final int m)
 	{
-		if (1 >= m)
-		{
+		if (1 >= m) {
 			return null;
 		}
 
-		final org.drip.specialfunction.derived.LogBigPi weierstrassBigPi = org.drip.specialfunction.derived.LogBigPi.Weierstrass
-			(1638400);
+		final LogBigPi weierstrassBigPi = LogBigPi.Weierstrass (1638400);
 
-		try
-		{
-			return new org.drip.function.definition.R1ToR1Property (
-				org.drip.function.definition.R1ToR1Property.EQ,
-				new org.drip.function.definition.R1ToR1 (null)
-				{
+		try {
+			return new R1ToR1Property (
+				R1ToR1Property.EQ,
+				new R1ToR1 (null) {
 					@Override public double evaluate (
 						final double z)
-						throws java.lang.Exception
+						throws Exception
 					{
-						if (!org.drip.numerical.common.NumberUtil.IsValid (z))
+						if (!NumberUtil.IsValid (z))
 						{
-							throw new java.lang.Exception
-								("BigPiEqualityLemma::MultiplicationFormula::evaluate => Invalid Inputs");
+							throw new Exception (
+								"BigPiEqualityLemma::MultiplicationFormula::evaluate => Invalid Inputs"
+							);
 						}
 
 						double logBigPiSum = 0.;
 
-						for (double i = 0; i < m; ++i)
-						{
+						for (double i = 0; i < m; ++i) {
 							logBigPiSum = logBigPiSum + weierstrassBigPi.evaluate ((z - i) / m);
 						}
 
 						return logBigPiSum;
 					}
 				},
-				new org.drip.function.definition.R1ToR1 (null)
-				{
+				new R1ToR1 (null) {
 					@Override public double evaluate (
 						final double z)
-						throws java.lang.Exception
+						throws Exception
 					{
-						if (!org.drip.numerical.common.NumberUtil.IsValid (z))
-						{
-							throw new java.lang.Exception
-								("BigPiEqualityLemma::MultiplicationFormula::evaluate => Invalid Inputs");
+						if (!NumberUtil.IsValid (z)) {
+							throw new Exception (
+								"BigPiEqualityLemma::MultiplicationFormula::evaluate => Invalid Inputs"
+							);
 						}
 
-						return 0.5 * (m - 1.) * java.lang.Math.log (2. * java.lang.Math.PI) -
-							(0.5 + z) * java.lang.Math.log (m) + weierstrassBigPi.evaluate (z);
+						return 0.5 * (m - 1.) * Math.log (2. * Math.PI) -
+							(0.5 + z) * Math.log (m) + weierstrassBigPi.evaluate (z);
 					}
 				},
-				org.drip.function.definition.R1ToR1Property.MISMATCH_TOLERANCE
+				R1ToR1Property.MISMATCH_TOLERANCE
 			);
-		}
-		catch (java.lang.Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
