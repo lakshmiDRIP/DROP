@@ -1,11 +1,19 @@
 
 package org.drip.specialfunction.ode;
 
+import org.drip.function.definition.R1ToR1;
+import org.drip.numerical.common.NumberUtil;
+import org.drip.specialfunction.definition.HypergeometricParameters;
+import org.drip.specialfunction.definition.RegularHypergeometricEstimator;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -78,7 +86,7 @@ package org.drip.specialfunction.ode;
 
 /**
  * <i>IndependentLinearSolutionList2F1ZInfinity</i> holds the Array of Linearly Independent Solutions at the
- * Regular Singularity z = Infinity for the 2F1 Hyper-geometric Function. The References are:
+ * 	Regular Singularity z = Infinity for the 2F1 Hyper-geometric Function. The References are:
  * 
  * <br><br>
  * 	<ul>
@@ -103,14 +111,26 @@ package org.drip.specialfunction.ode;
  * 			Wikipedia (2019): Hyper-geometric Function https://en.wikipedia.org/wiki/Hypergeometric_function
  * 		</li>
  * 	</ul>
+ * 
+ * 	It provides the following functionality:
  *
- *	<br><br>
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FunctionAnalysisLibrary.md">Function Analysis Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md">Special Function Implementation Analysis</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/ode/README.md">Special Function Ordinary Differential Equations</a></li>
+ *  	<li>Generate the 2F1 Instance of IndependentLinearSolutionList at z = Infinity</li>
  *  </ul>
+ *
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FunctionAnalysisLibrary.md">Function Analysis Library</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md">Special Function Implementation and Analysis</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/ode/README.md">Special Function Ordinary Differential Equations</a></td></tr>
+ *  </table>
  *
  * @author Lakshmi Krishnamurthy
  */
@@ -126,16 +146,14 @@ public class IndependentLinearSolutionList2F1ZInfinity
 	 * @return The 2F1 Instance of IndependentLinearSolutionList at z = Infinity
 	 */
 
-	public static final org.drip.specialfunction.ode.IndependentLinearSolutionList Generate (
-		final org.drip.specialfunction.definition.RegularHypergeometricEstimator
-			regularHypergeometricEstimator)
+	public static final IndependentLinearSolutionList Generate (
+		final RegularHypergeometricEstimator regularHypergeometricEstimator)
 	{
-		if (null == regularHypergeometricEstimator)
-		{
+		if (null == regularHypergeometricEstimator) {
 			return null;
 		}
 
-		org.drip.specialfunction.definition.HypergeometricParameters hypergeometricParameters =
+		HypergeometricParameters hypergeometricParameters =
 			regularHypergeometricEstimator.hypergeometricParameters();
 
 		final double a = hypergeometricParameters.a();
@@ -144,95 +162,66 @@ public class IndependentLinearSolutionList2F1ZInfinity
 
 		final double c = hypergeometricParameters.c();
 
-		try
-		{
-			if (org.drip.numerical.common.NumberUtil.IsInteger (a - b))
-			{
+		try {
+			if (NumberUtil.IsInteger (a - b)) {
 				return null;
 			}
-		}
-		catch (java.lang.Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 
 			return null;
 		}
 
-		org.drip.specialfunction.ode.IndependentLinearSolutionList independentLinearSolutionList2F1ZInfinity
-			= new org.drip.specialfunction.ode.IndependentLinearSolutionList();
+		IndependentLinearSolutionList independentLinearSolutionList2F1ZInfinity =
+			new IndependentLinearSolutionList();
 
-		try
-		{
-			if (!independentLinearSolutionList2F1ZInfinity.add (
-				regularHypergeometricEstimator.albinate (
-					new org.drip.specialfunction.definition.HypergeometricParameters (
-						b,
-						1. + b + c,
-						1. + b - a
-					),
-					new org.drip.function.definition.R1ToR1 (null)
+		try {
+			if (!independentLinearSolutionList2F1ZInfinity.add (regularHypergeometricEstimator.albinate (
+				new HypergeometricParameters (b, 1. + b + c, 1. + b - a),
+				new R1ToR1 (null) {
+					@Override public double evaluate (
+						final double z)
+						throws Exception
 					{
-						@Override public double evaluate (
-							final double z)
-							throws java.lang.Exception
-						{
-							return java.lang.Math.pow (
-								z,
-								-b
-							);
-						}
-					},
-					new org.drip.function.definition.R1ToR1 (null)
-					{
-						@Override public double evaluate (
-							final double z)
-							throws java.lang.Exception
-						{
-							return 1. / z;
-						}
+						return  Math.pow (z, -b);
 					}
-				)
-			))
+				},
+				new R1ToR1 (null) {
+					@Override public double evaluate (
+						final double z)
+						throws Exception
+					{
+						return 1. / z;
+					}
+				}
+			)))
 			{
 				return null;
 			}
 
-			if (!independentLinearSolutionList2F1ZInfinity.add (
-				regularHypergeometricEstimator.albinate (
-					new org.drip.specialfunction.definition.HypergeometricParameters (
-						a,
-						1. + a - c,
-						1. + a - b
-					),
-					new org.drip.function.definition.R1ToR1 (null)
+			if (!independentLinearSolutionList2F1ZInfinity.add (regularHypergeometricEstimator.albinate (
+				new HypergeometricParameters (a, 1. + a - c, 1. + a - b),
+				new R1ToR1 (null) {
+					@Override public double evaluate (
+						final double z)
+						throws Exception
 					{
-						@Override public double evaluate (
-							final double z)
-							throws java.lang.Exception
-						{
-							return java.lang.Math.pow (
-								z,
-								-a
-							);
-						}
-					},
-					new org.drip.function.definition.R1ToR1 (null)
-					{
-						@Override public double evaluate (
-							final double z)
-							throws java.lang.Exception
-						{
-							return 1. / z;
-						}
+						return Math.pow (z, -a);
 					}
-				)
-			))
+				},
+				new R1ToR1 (null) {
+					@Override public double evaluate (
+						final double z)
+						throws Exception
+					{
+						return 1. / z;
+					}
+				}
+			)))
 			{
 				return null;
 			}
-		}
-		catch (java.lang.Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 

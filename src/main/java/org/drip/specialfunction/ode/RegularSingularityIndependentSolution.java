@@ -1,11 +1,19 @@
 
 package org.drip.specialfunction.ode;
 
+import java.util.Map;
+import java.util.TreeMap;
+
+import org.drip.function.definition.R1ToR1;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -78,7 +86,7 @@ package org.drip.specialfunction.ode;
 
 /**
  * <i>RegularSingularityIndependentSolution</i> holds the Array of Linearly Independent Solutions at the
- * specified Regular Singularity. The References are:
+ * 	specified Regular Singularity. The References are:
  * 
  * <br><br>
  * 	<ul>
@@ -103,25 +111,39 @@ package org.drip.specialfunction.ode;
  * 			Wikipedia (2019): Hyper-geometric Function https://en.wikipedia.org/wiki/Hypergeometric_function
  * 		</li>
  * 	</ul>
+ * 
+ * 	It provides the following functionality:
  *
- *	<br><br>
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FunctionAnalysisLibrary.md">Function Analysis Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md">Special Function Implementation Analysis</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/ode/README.md">Special Function Ordinary Differential Equations</a></li>
+ *  	<li>Empty <i>RegularSingularityIndependentSolution</i> Constructor</li>
+ *  	<li>Add a Solution Function corresponding to the Regular Singularity</li>
+ *  	<li>Add an Independent Linear Solution List</li>
+ *  	<li>Retrieve the Map of Regular Singularity Independent Solution List</li>
  *  </ul>
+ *
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FunctionAnalysisLibrary.md">Function Analysis Library</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md">Special Function Implementation and Analysis</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/ode/README.md">Special Function Ordinary Differential Equations</a></td></tr>
+ *  </table>
  *
  * @author Lakshmi Krishnamurthy
  */
 
 public class RegularSingularityIndependentSolution
 {
-	private java.util.Map<java.lang.Double, org.drip.specialfunction.ode.IndependentLinearSolutionList>
-		_linearSolutionFunctionMap = null;
+	private Map<Double, IndependentLinearSolutionList> _linearSolutionFunctionMap = null;
 
 	/**
-	 * Empty RegularSingularityIndependentSolution Constructor
+	 * Empty <i>RegularSingularityIndependentSolution</i> Constructor
 	 */
 
 	public RegularSingularityIndependentSolution()
@@ -139,24 +161,17 @@ public class RegularSingularityIndependentSolution
 
 	public boolean add (
 		final double regularSingularity,
-		final org.drip.specialfunction.ode.IndependentLinearSolutionList independentLinearSolutionList)
+		final IndependentLinearSolutionList independentLinearSolutionList)
 	{
-		if (java.lang.Double.isNaN (regularSingularity) ||
-			null == independentLinearSolutionList)
-		{
+		if (Double.isNaN (regularSingularity) || null == independentLinearSolutionList) {
 			return false;
 		}
 
-		if (null == _linearSolutionFunctionMap)
-		{
-			_linearSolutionFunctionMap = new java.util.TreeMap<java.lang.Double,
-				org.drip.specialfunction.ode.IndependentLinearSolutionList>();
+		if (null == _linearSolutionFunctionMap) {
+			_linearSolutionFunctionMap = new TreeMap<Double, IndependentLinearSolutionList>();
 		}
 
-		_linearSolutionFunctionMap.put (
-			regularSingularity,
-			independentLinearSolutionList
-		);
+		_linearSolutionFunctionMap.put (regularSingularity, independentLinearSolutionList);
 
 		return true;
 	}
@@ -172,36 +187,27 @@ public class RegularSingularityIndependentSolution
 
 	public boolean add (
 		final double regularSingularity,
-		final org.drip.function.definition.R1ToR1 solutionFunction)
+		final R1ToR1 solutionFunction)
 	{
-		if (java.lang.Double.isNaN (regularSingularity))
-		{
+		if (Double.isNaN (regularSingularity)) {
 			return false;
 		}
 
-		if (null == _linearSolutionFunctionMap)
-		{
-			_linearSolutionFunctionMap = new java.util.TreeMap<java.lang.Double,
-				org.drip.specialfunction.ode.IndependentLinearSolutionList>();
+		if (null == _linearSolutionFunctionMap) {
+			_linearSolutionFunctionMap = new TreeMap<Double, IndependentLinearSolutionList>();
 		}
 
 		boolean containsRegularSingularity = _linearSolutionFunctionMap.containsKey (regularSingularity);
 
-		org.drip.specialfunction.ode.IndependentLinearSolutionList independentLinearSolutionList =
-			containsRegularSingularity ? _linearSolutionFunctionMap.get (regularSingularity) :
-				new org.drip.specialfunction.ode.IndependentLinearSolutionList();
+		IndependentLinearSolutionList independentLinearSolutionList = containsRegularSingularity ?
+			_linearSolutionFunctionMap.get (regularSingularity) : new IndependentLinearSolutionList();
 
-		if (!independentLinearSolutionList.add (solutionFunction))
-		{
+		if (!independentLinearSolutionList.add (solutionFunction)) {
 			return false;
 		}
 
-		if (!containsRegularSingularity)
-		{
-			_linearSolutionFunctionMap.put (
-				regularSingularity,
-				independentLinearSolutionList
-			);
+		if (!containsRegularSingularity) {
+			_linearSolutionFunctionMap.put (regularSingularity, independentLinearSolutionList);
 		}
 
 		return true;
@@ -213,8 +219,7 @@ public class RegularSingularityIndependentSolution
 	 * @return The Map of Regular Singularity Independent Solution List
 	 */
 
-	public java.util.Map<java.lang.Double, org.drip.specialfunction.ode.IndependentLinearSolutionList>
-		linearSolutionFunctionMap()
+	public Map<Double, IndependentLinearSolutionList> linearSolutionFunctionMap()
 	{
 		return _linearSolutionFunctionMap;
 	}
