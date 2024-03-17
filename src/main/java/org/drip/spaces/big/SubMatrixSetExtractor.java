@@ -1,11 +1,19 @@
 
 package org.drip.spaces.big;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.drip.numerical.common.NumberUtil;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -82,179 +90,204 @@ package org.drip.spaces.big;
 
 /**
  * <i>SubMatrixSetExtractor</i> contains the Functionality to extract the Set of the Sub-matrices contained
- * inside of the given Matrix.
- * 
- * <br><br>
+ * 	inside of the given Matrix. It provides the following Functionality:
+ *
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/StatisticalLearningLibrary.md">Statistical Learning Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/README.md">R<sup>1</sup> and R<sup>d</sup> Vector/Tensor Spaces (Validated and/or Normed), and Function Classes</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/big/README.md">Big-data In-place Manipulator</a></li>
+ * 		<li>Compute the Aggregate Composite Value of the Supplied Matrix</li>
+ * 		<li>Generate the List of all the sub-matrices contained within a specified Square Matrix starting from the given Row and Column</li>
+ * 		<li>Compute the Maximum Composite Value of all the sub-matrices contained within a specified Square Matrix starting from the given Row and Column</li>
+ * 		<li>Use the "Lean" Method to compute the Maximum Composite Value of all the sub-matrices contained within a specified Square Matrix starting from the given Row and Column</li>
  *  </ul>
- * <br><br>
+ *
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/StatisticalLearningLibrary.md">Statistical Learning Library</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/README.md">R<sup>1</sup> and R<sup>d</sup> Vector/Tensor Spaces (Validated and/or Normed), and Function Classes</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/big/README.md">Big-data In-place Manipulator</a></td></tr>
+ *  </table>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class SubMatrixSetExtractor {
+public class SubMatrixSetExtractor
+{
 
 	/**
 	 * Compute the Aggregate Composite Value of the Supplied Matrix
 	 *  
-	 * @param aadbl The Input Matrix
+	 * @param matrix The Input Matrix
 	 * 
 	 * @return The Aggregate Composite Value
 	 * 
-	 * @throws java.lang.Exception Thrown if the Aggregate Composite Value cannot be compouted
+	 * @throws Exception Thrown if the Aggregate Composite Value cannot be computed
 	 */
 
 	public static final double CompositeValue (
-		final double[][] aadbl)
-		throws java.lang.Exception
+		final double[][] matrix)
+		throws Exception
 	{
-		if (null == aadbl)
-			throw new java.lang.Exception ("SubMatrixSetExtractor::CompositeValue => Invalid Inputs");
+		if (null == matrix) {
+			throw new Exception ("SubMatrixSetExtractor::CompositeValue => Invalid Inputs");
+		}
 
-		int iSize = aadbl.length;
-		double dblCompositeValue = 0.;
+		int size = matrix.length;
+		double compositeValue = 0.;
 
-		if (0 == iSize || 0 == aadbl[0].length)
-			throw new java.lang.Exception ("SubMatrixSetExtractor::CompositeValue => Invalid Inputs");
+		if (0 == size || 0 == matrix[0].length) {
+			throw new Exception ("SubMatrixSetExtractor::CompositeValue => Invalid Inputs");
+		}
 
-		for (int i = 0; i < iSize; ++i) {
-			for (int j = 0; j < iSize; ++j) {
-				if (!org.drip.numerical.common.NumberUtil.IsValid (aadbl[i][j]))
-					throw new java.lang.Exception
-						("SubMatrixSetExtractor::CompositeValue => Invalid Inputs");
+		for (int i = 0; i < size; ++i) {
+			for (int j = 0; j < size; ++j) {
+				if (!NumberUtil.IsValid (matrix[i][j])) {
+					throw new Exception ("SubMatrixSetExtractor::CompositeValue => Invalid Inputs");
+				}
 
-				dblCompositeValue += aadbl[i][j];
+				compositeValue += matrix[i][j];
 			}
 		}
 
-		return dblCompositeValue;
+		return compositeValue;
 	}
 
 	/**
 	 * Generate the List of all the sub-matrices contained within a specified Square Matrix starting from the
 	 * 	given Row and Column
 	 * 
-	 * @param aadblMaster The Master Square Matrix
-	 * @param iStartRow The Starting Row
-	 * @param iStartColumn The Starting Column
+	 * @param masterMatrix The Master Square Matrix
+	 * @param startRow The Starting Row
+	 * @param startColumn The Starting Column
 	 * 
 	 * @return The List of all the sub-matrices
 	 */
 
-	public static final java.util.List<double[][]> SquareSubMatrixList (
-		final double[][] aadblMaster,
-		final int iStartRow,
-		final int iStartColumn)
+	public static final List<double[][]> SquareSubMatrixList (
+		final double[][] masterMatrix,
+		final int startRow,
+		final int startColumn)
 	{
-		if (null == aadblMaster) return null;
-
-		int iMasterSize = aadblMaster.length;
-		int iMaxSubMatrixSize = iMasterSize - (iStartColumn > iStartRow ? iStartColumn : iStartRow);
-
-		if (0 == iMasterSize || 0 == aadblMaster[0].length || 0 == iMaxSubMatrixSize) return null;
-
-		java.util.List<double[][]> lsSubMatrix = new java.util.ArrayList<double[][]>();
-
-		for (int iSubMatrixSize = 1; iSubMatrixSize <= iMaxSubMatrixSize; ++iSubMatrixSize) {
-			double[][] aadblSubMatrix = new double[iSubMatrixSize][iSubMatrixSize];
-
-			for (int i = iStartRow; i < iStartRow + iSubMatrixSize; ++i) {
-				for (int j = iStartColumn; j < iStartColumn + iSubMatrixSize; ++j)
-					aadblSubMatrix[i - iStartRow][j - iStartColumn] = aadblMaster[i][j];
-			}
-
-			lsSubMatrix.add (aadblSubMatrix);
+		if (null == masterMatrix) {
+			return null;
 		}
 
-		return lsSubMatrix;
+		int masterSize = masterMatrix.length;
+		int maxSubMatrixSize = masterSize - (startColumn > startRow ? startColumn : startRow);
+
+		if (0 == masterSize || 0 == masterMatrix[0].length || 0 == maxSubMatrixSize) {
+			return null;
+		}
+
+		List<double[][]> subMatrixList = new ArrayList<double[][]>();
+
+		for (int subMatrixSize = 1; subMatrixSize <= maxSubMatrixSize; ++subMatrixSize) {
+			double[][] subMatrix = new double[subMatrixSize][subMatrixSize];
+
+			for (int i = startRow; i < startRow + subMatrixSize; ++i) {
+				for (int j = startColumn; j < startColumn + subMatrixSize; ++j) {
+					subMatrix[i - startRow][j - startColumn] = masterMatrix[i][j];
+				}
+			}
+
+			subMatrixList.add (subMatrix);
+		}
+
+		return subMatrixList;
 	}
 
 	/**
 	 * Compute the Maximum Composite Value of all the sub-matrices contained within a specified Square Matrix
 	 *  starting from the given Row and Column
 	 * 
-	 * @param aadblMaster The Master Square Matrix
-	 * @param iStartRow The Starting Row
-	 * @param iStartColumn The Starting Column
+	 * @param masterMatrix The Master Square Matrix
+	 * @param startRow The Starting Row
+	 * @param startColumn The Starting Column
 	 * 
-	 * @return The List of all the sub-matrices
+	 * @return Maximum of the Composite sub-matrices
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public static final double MaxCompositeSubMatrix (
-		final double[][] aadblMaster,
-		final int iStartRow,
-		final int iStartColumn)
-		throws java.lang.Exception
+		final double[][] masterMatrix,
+		final int startRow,
+		final int startColumn)
+		throws Exception
 	{
-		java.util.List<double[][]> lsSubMatrix = SquareSubMatrixList (aadblMaster, iStartRow, iStartColumn);
+		List<double[][]> subMatrixList = SquareSubMatrixList (masterMatrix, startRow, startColumn);
 
-		if (null == lsSubMatrix || 0 == lsSubMatrix.size())
-			throw new java.lang.Exception ("SubMatrixSetExtractor::MaxCompositeSubMatrix => Invalid Inputs");
-
-		double dblMaxCompositeSubMatrix = java.lang.Double.NEGATIVE_INFINITY;
-
-		for (double[][] aadblSubMatrix : lsSubMatrix) {
-			double dblCompositeSubMatrix = CompositeValue (aadblSubMatrix);
-
-			if (dblMaxCompositeSubMatrix < dblCompositeSubMatrix)
-				dblMaxCompositeSubMatrix = dblCompositeSubMatrix;
+		if (null == subMatrixList || 0 == subMatrixList.size()) {
+			throw new Exception ("SubMatrixSetExtractor::MaxCompositeSubMatrix => Invalid Inputs");
 		}
 
-		return dblMaxCompositeSubMatrix;
+		double maxCompositeSubMatrix = Double.NEGATIVE_INFINITY;
+
+		for (double[][] subMatrix : subMatrixList) {
+			double compositeSubMatrixValue = CompositeValue (subMatrix);
+
+			if (maxCompositeSubMatrix < compositeSubMatrixValue) {
+				maxCompositeSubMatrix = compositeSubMatrixValue;
+			}
+		}
+
+		return maxCompositeSubMatrix;
 	}
 
 	/**
 	 * Use the "Lean" Method to compute the Maximum Composite Value of all the sub-matrices contained within
 	 *  a specified Square Matrix starting from the given Row and Column
 	 * 
-	 * @param aadblMaster The Master Square Matrix
-	 * @param iStartRow The Starting Row
-	 * @param iStartColumn The Starting Column
+	 * @param masterMatrix The Master Square Matrix
+	 * @param startRow The Starting Row
+	 * @param startColumn The Starting Column
 	 * 
-	 * @return The List of all the sub-matrices
+	 * @return Maximum of the Composite sub-matrices
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public static final double LeanMaxCompositeSubMatrix (
-		final double[][] aadblMaster,
-		final int iStartRow,
-		final int iStartColumn)
-		throws java.lang.Exception
+		final double[][] masterMatrix,
+		final int startRow,
+		final int startColumn)
+		throws Exception
 	{
-		if (null == aadblMaster)
-			throw new java.lang.Exception
-				("SubMatrixSetExtractor::LeanMaxCompositeSubMatrix => Invalid Inputs");
-
-		double dblCompositeSubMatrix = 0.;
-		int iMasterSize = aadblMaster.length;
-		double dblMaxCompositeSubMatrix = java.lang.Double.NEGATIVE_INFINITY;
-		int iMaxSubMatrixSize = iMasterSize - (iStartColumn > iStartRow ? iStartColumn : iStartRow);
-
-		if (0 == iMasterSize || 0 == aadblMaster[0].length || 0 == iMaxSubMatrixSize)
-			throw new java.lang.Exception
-				("SubMatrixSetExtractor::LeanMaxCompositeSubMatrix => Invalid Inputs");
-
-		for (int iSubMatrixSize = 1; iSubMatrixSize <= iMaxSubMatrixSize; ++iSubMatrixSize) {
-			for (int iRow = iStartRow; iRow < iStartRow + iSubMatrixSize - 2; ++iRow)
-				dblCompositeSubMatrix += aadblMaster[iRow][iStartColumn + iSubMatrixSize - 2];
-
-			for (int iColumn = iStartColumn; iColumn < iStartColumn + iSubMatrixSize - 2; ++iColumn)
-				dblCompositeSubMatrix += aadblMaster[iStartRow + iSubMatrixSize - 2][iColumn];
-
-			dblCompositeSubMatrix +=
-				aadblMaster[iStartRow + iSubMatrixSize - 1][iStartColumn + iSubMatrixSize - 1];
-
-			if (dblMaxCompositeSubMatrix < dblCompositeSubMatrix)
-				dblMaxCompositeSubMatrix = dblCompositeSubMatrix;
+		if (null == masterMatrix) {
+			throw new Exception ("SubMatrixSetExtractor::LeanMaxCompositeSubMatrix => Invalid Inputs");
 		}
 
-		return dblMaxCompositeSubMatrix;
+		double compositeSubMatrix = 0.;
+		int masterSize = masterMatrix.length;
+		double maxCompositeSubMatrix = Double.NEGATIVE_INFINITY;
+		int maxSubMatrixSize = masterSize - (startColumn > startRow ? startColumn : startRow);
+
+		if (0 == masterSize || 0 == masterMatrix[0].length || 0 == maxSubMatrixSize) {
+			throw new Exception ("SubMatrixSetExtractor::LeanMaxCompositeSubMatrix => Invalid Inputs");
+		}
+
+		for (int subMatrixSize = 1; subMatrixSize <= maxSubMatrixSize; ++subMatrixSize) {
+			for (int row = startRow; row < startRow + subMatrixSize - 2; ++row) {
+				compositeSubMatrix += masterMatrix[row][startColumn + subMatrixSize - 2];
+			}
+
+			for (int column = startColumn; column < startColumn + subMatrixSize - 2; ++column) {
+				compositeSubMatrix += masterMatrix[startRow + subMatrixSize - 2][column];
+			}
+
+			compositeSubMatrix +=
+				masterMatrix[startRow + subMatrixSize - 1][startColumn + subMatrixSize - 1];
+
+			if (maxCompositeSubMatrix < compositeSubMatrix) {
+				maxCompositeSubMatrix = compositeSubMatrix;
+			}
+		}
+
+		return maxCompositeSubMatrix;
 	}
 }

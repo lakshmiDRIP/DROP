@@ -1,6 +1,8 @@
 
 package org.drip.spaces.big;
 
+import java.util.TreeMap;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
@@ -120,47 +122,32 @@ public class MoviesInFlight
 	 * @param travelTime Travel Time
 	 * @param adjustmentTime Adjustment Time
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public MoviesInFlight (
 		final int[] movieDurationArray,
 		final int travelTime,
 		final int adjustmentTime)
-		throws java.lang.Exception
+		throws Exception
 	{
 		if (null == (_movieDurationArray = movieDurationArray) ||
 			0 >= (_travelTime = travelTime) ||
-			-1 >= (_adjustmentTime = adjustmentTime) || _adjustmentTime >= _travelTime
-		)
+			-1 >= (_adjustmentTime = adjustmentTime) ||
+			_adjustmentTime >= _travelTime)
 		{
-			throw new java.lang.Exception (
-				"MoviesInFlight Constructor => Invalid Inputs"
-			);
+			throw new Exception ("MoviesInFlight Constructor => Invalid Inputs");
 		}
 
 		int movieCount = _movieDurationArray.length;
 
-		if (0 == movieCount)
-		{
-			{
-				throw new java.lang.Exception (
-					"MoviesInFlight Constructor => Invalid Inputs"
-				);
-			}
+		if (0 == movieCount) {
+			throw new Exception ("MoviesInFlight Constructor => Invalid Inputs");
 		}
 
-		for (int movieIndex = 0;
-			movieIndex < movieCount;
-			++movieIndex)
-		{
-			if (0 >= _movieDurationArray[movieIndex])
-			{
-				{
-					throw new java.lang.Exception (
-						"MoviesInFlight Constructor => Invalid Inputs"
-					);
-				}
+		for (int movieIndex = 0; movieIndex < movieCount; ++movieIndex) {
+			if (0 >= _movieDurationArray[movieIndex]) {
+				throw new Exception ("MoviesInFlight Constructor => Invalid Inputs");
 			}
 		}
 	}
@@ -212,53 +199,34 @@ public class MoviesInFlight
 		int movieCount = _movieDurationArray.length;
 		int upperMovieDurationIndex = movieCount - 1;
 		int adjustedTravelTime = _travelTime - _adjustmentTime;
-		java.lang.Integer[] sortedMovieDurationArray = new java.lang.Integer[movieCount];
+		Integer[] sortedMovieDurationArray = new Integer[movieCount];
 
-		java.util.TreeMap<java.lang.Integer, java.lang.Integer> movieDurationTreeMap =
-			new java.util.TreeMap<java.lang.Integer, java.lang.Integer>();
+		TreeMap<Integer, Integer> movieDurationTreeMap = new TreeMap<Integer, Integer>();
 
-		for (int movieIndex = 0;
-			movieIndex < movieCount;
-			++movieIndex)
-		{
-			movieDurationTreeMap.put (
-				_movieDurationArray[movieIndex],
-				movieIndex
-			);
+		for (int movieIndex = 0; movieIndex < movieCount; ++movieIndex) {
+			movieDurationTreeMap.put (_movieDurationArray[movieIndex], movieIndex);
 		}
 
-		movieDurationTreeMap.keySet().toArray (
-			sortedMovieDurationArray
-		);
+		movieDurationTreeMap.keySet().toArray (sortedMovieDurationArray);
 
-		while (lowerMovieDurationIndex <= upperMovieDurationIndex)
-		{
+		while (lowerMovieDurationIndex <= upperMovieDurationIndex) {
 			int lowerDuration = sortedMovieDurationArray[lowerMovieDurationIndex];
-
 			int upperDuration = sortedMovieDurationArray[upperMovieDurationIndex];
-
 			int totalDuration = lowerDuration + upperDuration;
 
-			if (totalDuration < adjustedTravelTime)
-			{
-				if (0 == longestTotalDuration)
-				{
+			if (totalDuration < adjustedTravelTime) {
+				if (0 == longestTotalDuration) {
 					longestTotalDuration = totalDuration;
 					moviePair[1] = upperDuration;
 					moviePair[0] = lowerDuration;
-				}
-				else
-				{
-					if (totalDuration > longestTotalDuration)
-					{
+				} else {
+					if (totalDuration > longestTotalDuration) {
 						longestTotalDuration = totalDuration;
 						moviePair[1] = upperDuration;
 						moviePair[0] = lowerDuration;
 					}
 				}
-			}
-			else
-			{
+			} else {
 				--upperMovieDurationIndex;
 			}
 
