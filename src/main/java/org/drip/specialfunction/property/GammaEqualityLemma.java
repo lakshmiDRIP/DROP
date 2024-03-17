@@ -1,11 +1,19 @@
 
 package org.drip.specialfunction.property;
 
+import org.drip.function.definition.R1ToR1;
+import org.drip.function.definition.R1ToR1Property;
+import org.drip.numerical.common.NumberUtil;
+import org.drip.specialfunction.loggamma.InfiniteSumEstimator;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -78,7 +86,7 @@ package org.drip.specialfunction.property;
 
 /**
  * <i>GammaEqualityLemma</i> contains the Verifiable Equality Lemmas of the Gamma Function. The References
- * are:
+ * 	are:
  * 
  * <br><br>
  * 	<ul>
@@ -102,14 +110,28 @@ package org.drip.specialfunction.property;
  * 			Wikipedia (2019): Gamma Function https://en.wikipedia.org/wiki/Gamma_function
  * 		</li>
  * 	</ul>
+ * 
+ * It provides the following functionality:
  *
- *	<br><br>
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FunctionAnalysisLibrary.md">Function Analysis Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md">Special Function Implementation Analysis</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/property/README.md">Special Function Property Lemma Verifiers</a></li>
+ * 		<li>Construct the Reflection Formula Verifier</li>
+ * 		<li>Construct the Duplication Formula Verifier</li>
+ * 		<li>Construct the Multiplication Formula Verifier</li>
  *  </ul>
+ *
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FunctionAnalysisLibrary.md">Function Analysis Library</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md">Special Function Implementation and Analysis</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/property/README.md">Special Function Property Lemma Verifiers</a></td></tr>
+ *  </table>
  *
  * @author Lakshmi Krishnamurthy
  */
@@ -123,51 +145,48 @@ public class GammaEqualityLemma
 	 * @return The Reflection Formula Verifier
 	 */
 
-	public static final org.drip.function.definition.R1ToR1Property ReflectionFormula()
+	public static final R1ToR1Property ReflectionFormula()
 	{
-		try
-		{
-			return new org.drip.function.definition.R1ToR1Property (
-				org.drip.function.definition.R1ToR1Property.EQ,
-				new org.drip.function.definition.R1ToR1 (null)
-				{
+		try {
+			return new R1ToR1Property (
+				R1ToR1Property.EQ,
+				new R1ToR1 (null) {
 					@Override public double evaluate (
 						final double s)
-						throws java.lang.Exception
+						throws Exception
 					{
-						if (!org.drip.numerical.common.NumberUtil.IsValid (s))
-						{
-							throw new java.lang.Exception
-								("GammaEqualityLemma::ReflectionFormula::evaluate => Invalid Inputs");
+						if (!NumberUtil.IsValid (s)) {
+							throw new Exception (
+								"GammaEqualityLemma::ReflectionFormula::evaluate => Invalid Inputs"
+							);
 						}
 
-						org.drip.specialfunction.loggamma.InfiniteSumEstimator weierstrassInfiniteProduct =
-							org.drip.specialfunction.loggamma.InfiniteSumEstimator.Weierstrass (1638400);
+						InfiniteSumEstimator weierstrassInfiniteProduct =
+							InfiniteSumEstimator.Weierstrass (1638400);
 
-						return java.lang.Math.exp (weierstrassInfiniteProduct.evaluate (1. - s) +
-							weierstrassInfiniteProduct.evaluate (s));
+						return Math.exp (
+							weierstrassInfiniteProduct.evaluate (1. - s) +
+								weierstrassInfiniteProduct.evaluate (s)
+						);
 					}
 				},
-				new org.drip.function.definition.R1ToR1 (null)
-				{
+				new R1ToR1 (null) {
 					@Override public double evaluate (
 						final double s)
-						throws java.lang.Exception
+						throws Exception
 					{
-						if (!org.drip.numerical.common.NumberUtil.IsValid (s))
-						{
-							throw new java.lang.Exception
-								("GammaEqualityLemma::ReflectionFormula::evaluate => Invalid Inputs");
+						if (!NumberUtil.IsValid (s)) {
+							throw new Exception (
+								"GammaEqualityLemma::ReflectionFormula::evaluate => Invalid Inputs"
+							);
 						}
 
-						return java.lang.Math.PI / java.lang.Math.sin (java.lang.Math.PI * s);
+						return Math.PI / Math.sin (Math.PI * s);
 					}
 				},
-				org.drip.function.definition.R1ToR1Property.MISMATCH_TOLERANCE
+				R1ToR1Property.MISMATCH_TOLERANCE
 			);
-		}
-		catch (java.lang.Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -180,53 +199,47 @@ public class GammaEqualityLemma
 	 * @return The Duplication Formula Verifier
 	 */
 
-	public static final org.drip.function.definition.R1ToR1Property DuplicationFormula()
+	public static final R1ToR1Property DuplicationFormula()
 	{
-		try
-		{
-			return new org.drip.function.definition.R1ToR1Property (
-				org.drip.function.definition.R1ToR1Property.EQ,
-				new org.drip.function.definition.R1ToR1 (null)
-				{
+		try {
+			return new R1ToR1Property (
+				R1ToR1Property.EQ,
+				new R1ToR1 (null) {
+					@Override public double evaluate (
+						final double s)
+						throws Exception
+					{
+						if (!NumberUtil.IsValid (s)) {
+							throw new Exception (
+								"GammaEqualityLemma::DuplicationFormula::evaluate => Invalid Inputs"
+							);
+						}
+
+						InfiniteSumEstimator weierstrassInfiniteProduct =
+							InfiniteSumEstimator.Weierstrass (1638400);
+
+						return weierstrassInfiniteProduct.evaluate (s) +
+							weierstrassInfiniteProduct.evaluate (s + 0.5);
+					}
+				},
+				new R1ToR1 (null) {
 					@Override public double evaluate (
 						final double s)
 						throws java.lang.Exception
 					{
-						if (!org.drip.numerical.common.NumberUtil.IsValid (s))
-						{
-							throw new java.lang.Exception
-								("GammaEqualityLemma::DuplicationFormula::evaluate => Invalid Inputs");
+						if (!NumberUtil.IsValid (s)) {
+							throw new Exception (
+								"GammaEqualityLemma::DuplicationFormula::evaluate => Invalid Inputs"
+							);
 						}
 
-						org.drip.specialfunction.loggamma.InfiniteSumEstimator weierstrassInfiniteProduct =
-							org.drip.specialfunction.loggamma.InfiniteSumEstimator.Weierstrass (1638400);
-
-						return weierstrassInfiniteProduct.evaluate (s) + weierstrassInfiniteProduct.evaluate
-							(s + 0.5);
+						return (1. - 2. * s) * Math.log (2.) + 0.5 * Math.log (Math.PI)  +
+							InfiniteSumEstimator.Weierstrass (1638400).evaluate (2. * s);
 					}
 				},
-				new org.drip.function.definition.R1ToR1 (null)
-				{
-					@Override public double evaluate (
-						final double s)
-						throws java.lang.Exception
-					{
-						if (!org.drip.numerical.common.NumberUtil.IsValid (s))
-						{
-							throw new java.lang.Exception
-								("GammaEqualityLemma::DuplicationFormula::evaluate => Invalid Inputs");
-						}
-
-						return (1. - 2. * s) * java.lang.Math.log (2.) +
-							0.5 * java.lang.Math.log (java.lang.Math.PI)  +
-							org.drip.specialfunction.loggamma.InfiniteSumEstimator.Weierstrass (1638400).evaluate (2. * s);
-					}
-				},
-				org.drip.function.definition.R1ToR1Property.MISMATCH_TOLERANCE
+				R1ToR1Property.MISMATCH_TOLERANCE
 			);
-		}
-		catch (java.lang.Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -241,65 +254,57 @@ public class GammaEqualityLemma
 	 * @return The Multiplication Formula Verifier
 	 */
 
-	public static final org.drip.function.definition.R1ToR1Property MultiplicationFormula (
+	public static final R1ToR1Property MultiplicationFormula (
 		final int m)
 	{
-		if (1 >= m)
-		{
+		if (1 >= m) {
 			return null;
 		}
 
-		try
-		{
-			return new org.drip.function.definition.R1ToR1Property (
-				org.drip.function.definition.R1ToR1Property.EQ,
-				new org.drip.function.definition.R1ToR1 (null)
-				{
+		try {
+			return new R1ToR1Property (
+				R1ToR1Property.EQ,
+				new R1ToR1 (null) {
 					@Override public double evaluate (
 						final double s)
-						throws java.lang.Exception
+						throws Exception
 					{
-						if (!org.drip.numerical.common.NumberUtil.IsValid (s))
-						{
-							throw new java.lang.Exception
-								("GammaEqualityLemma::MultiplicationFormula::evaluate => Invalid Inputs");
+						if (!NumberUtil.IsValid (s)) {
+							throw new Exception (
+								"GammaEqualityLemma::MultiplicationFormula::evaluate => Invalid Inputs"
+							);
 						}
 
 						double logGammaSum = 0.;
 
-						org.drip.specialfunction.loggamma.InfiniteSumEstimator weierstrassInfiniteProduct =
-							org.drip.specialfunction.loggamma.InfiniteSumEstimator.Weierstrass (1638400);
+						InfiniteSumEstimator weierstrassInfiniteProduct =
+							InfiniteSumEstimator.Weierstrass (1638400);
 
-						for (double i = 0; i < m; ++i)
-						{
+						for (double i = 0; i < m; ++i) {
 							logGammaSum = logGammaSum + weierstrassInfiniteProduct.evaluate (s + (i / m));
 						}
 
 						return logGammaSum;
 					}
 				},
-				new org.drip.function.definition.R1ToR1 (null)
-				{
+				new R1ToR1 (null) {
 					@Override public double evaluate (
 						final double s)
-						throws java.lang.Exception
+						throws Exception
 					{
-						if (!org.drip.numerical.common.NumberUtil.IsValid (s))
-						{
-							throw new java.lang.Exception
-								("GammaEqualityLemma::MultiplicationFormula::evaluate => Invalid Inputs");
+						if (!NumberUtil.IsValid (s)) {
+							throw new Exception (
+								"GammaEqualityLemma::MultiplicationFormula::evaluate => Invalid Inputs"
+							);
 						}
 
-						return 0.5 * (m - 1.) * java.lang.Math.log (2. * java.lang.Math.PI) +
-							(0.5 - m * s) * java.lang.Math.log (m)  +
-							org.drip.specialfunction.loggamma.InfiniteSumEstimator.Weierstrass (1638400).evaluate (m * s);
+						return 0.5 * (m - 1.) * Math.log (2. * Math.PI) + (0.5 - m * s) * Math.log (m)  +
+							InfiniteSumEstimator.Weierstrass (1638400).evaluate (m * s);
 					}
 				},
-				org.drip.function.definition.R1ToR1Property.MISMATCH_TOLERANCE
+				R1ToR1Property.MISMATCH_TOLERANCE
 			);
-		}
-		catch (java.lang.Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 

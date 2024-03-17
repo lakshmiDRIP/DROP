@@ -1,11 +1,21 @@
 
 package org.drip.specialfunction.property;
 
+import org.drip.function.definition.R1ToR1;
+import org.drip.function.definition.R1ToR1Property;
+import org.drip.numerical.common.NumberUtil;
+import org.drip.specialfunction.derived.RiemannZeta;
+import org.drip.specialfunction.gamma.Definitions;
+import org.drip.specialfunction.gamma.WindschitlTothAnalytic;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -78,7 +88,7 @@ package org.drip.specialfunction.property;
 
 /**
  * <i>DigammaSaddlePointEqualityLemma</i> contains the Verifiable Equality Lemmas for the Digamma Saddle
- * Points. The References are:
+ * 	Points. The References are:
  * 
  * <br><br>
  * 	<ul>
@@ -102,14 +112,30 @@ package org.drip.specialfunction.property;
  * 			Wikipedia (2019): Gamma Function https://en.wikipedia.org/wiki/Gamma_function
  * 		</li>
  * 	</ul>
+ * 
+ * It provides the following functionality:
  *
- *	<br><br>
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FunctionAnalysisLibrary.md">Function Analysis Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md">Special Function Implementation Analysis</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/property/README.md">Special Function Property Lemma Verifiers</a></li>
+ * 		<li>Construct the Quadratic Reciprocal Sum Verifier</li>
+ * 		<li>Construct the Cubic Reciprocal Sum Verifier</li>
+ * 		<li>Construct the Quartic Reciprocal Sum Verifier</li>
+ * 		<li>Construct the First Quadratic Polynomial Reciprocal Sum Verifier</li>
+ * 		<li>Construct the Second Quadratic Polynomial Reciprocal Sum Verifier</li>
  *  </ul>
+ *
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FunctionAnalysisLibrary.md">Function Analysis Library</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md">Special Function Implementation and Analysis</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/property/README.md">Special Function Property Lemma Verifiers</a></td></tr>
+ *  </table>
  *
  * @author Lakshmi Krishnamurthy
  */
@@ -125,37 +151,32 @@ public class DigammaSaddlePointEqualityLemma
 	 * @return The Quadratic Reciprocal Sum Verifier
 	 */
 
-	public static final org.drip.function.definition.R1ToR1Property QuadraticReciprocalSum (
-		final org.drip.function.definition.R1ToR1 digammaSaddlePointsFunction)
+	public static final R1ToR1Property QuadraticReciprocalSum (
+		final R1ToR1 digammaSaddlePointsFunction)
 	{
-		if (null == digammaSaddlePointsFunction)
-		{
+		if (null == digammaSaddlePointsFunction) {
 			return null;
 		}
 
-		try
-		{
-			return new org.drip.function.definition.R1ToR1Property (
-				org.drip.function.definition.R1ToR1Property.EQ,
-				new org.drip.function.definition.R1ToR1 (null)
-				{
+		try {
+			return new R1ToR1Property (
+				R1ToR1Property.EQ,
+				new R1ToR1 (null) {
 					@Override public double evaluate (
 						final double s)
-						throws java.lang.Exception
+						throws Exception
 					{
-						if (!org.drip.numerical.common.NumberUtil.IsValid (s))
-						{
-							throw new java.lang.Exception
-								("DigammaSaddlePointEqualityLemma::QuadraticReciprocalSum::evaluate => Invalid Inputs");
+						if (!NumberUtil.IsValid (s)) {
+							throw new Exception (
+								"DigammaSaddlePointEqualityLemma::QuadraticReciprocalSum::evaluate => Invalid Inputs"
+							);
 						}
 
 						double quadraticReciprocalSum = 1. / (
-							org.drip.specialfunction.gamma.Definitions.MINIMUM_VARIATE_LOCATION *
-							org.drip.specialfunction.gamma.Definitions.MINIMUM_VARIATE_LOCATION
+							Definitions.MINIMUM_VARIATE_LOCATION * Definitions.MINIMUM_VARIATE_LOCATION
 						);
 
-						for (int saddlePointIndex = 1; saddlePointIndex <= s; ++saddlePointIndex)
-						{
+						for (int saddlePointIndex = 1; saddlePointIndex <= s; ++saddlePointIndex) {
 							double saddlePoint = digammaSaddlePointsFunction.evaluate (saddlePointIndex);
 
 							quadraticReciprocalSum = quadraticReciprocalSum + 1. / (
@@ -166,28 +187,24 @@ public class DigammaSaddlePointEqualityLemma
 						return quadraticReciprocalSum;
 					}
 				},
-				new org.drip.function.definition.R1ToR1 (null)
-				{
+				new R1ToR1 (null) {
 					@Override public double evaluate (
 						final double s)
-						throws java.lang.Exception
+						throws Exception
 					{
-						if (!org.drip.numerical.common.NumberUtil.IsValid (s))
-						{
-							throw new java.lang.Exception
-								("DigammaSaddlePointEqualityLemma::QuadraticReciprocalSum::evaluate => Invalid Inputs");
+						if (!NumberUtil.IsValid (s)) {
+							throw new Exception (
+								"DigammaSaddlePointEqualityLemma::QuadraticReciprocalSum::evaluate => Invalid Inputs"
+							);
 						}
 
-						return org.drip.specialfunction.gamma.Definitions.EULER_MASCHERONI *
-							org.drip.specialfunction.gamma.Definitions.EULER_MASCHERONI +
-							0.5 * java.lang.Math.PI * java.lang.Math.PI;
+						return Definitions.EULER_MASCHERONI * Definitions.EULER_MASCHERONI +
+							0.5 * Math.PI * Math.PI;
 					}
 				},
-				org.drip.function.definition.R1ToR1Property.MISMATCH_TOLERANCE
+				R1ToR1Property.MISMATCH_TOLERANCE
 			);
-		}
-		catch (java.lang.Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -202,38 +219,34 @@ public class DigammaSaddlePointEqualityLemma
 	 * @return The Cubic Reciprocal Sum Verifier
 	 */
 
-	public static final org.drip.function.definition.R1ToR1Property CubicReciprocalSum (
-		final org.drip.function.definition.R1ToR1 digammaSaddlePointsFunction)
+	public static final R1ToR1Property CubicReciprocalSum (
+		final R1ToR1 digammaSaddlePointsFunction)
 	{
-		if (null == digammaSaddlePointsFunction)
-		{
+		if (null == digammaSaddlePointsFunction) {
 			return null;
 		}
 
-		try
-		{
-			return new org.drip.function.definition.R1ToR1Property (
-				org.drip.function.definition.R1ToR1Property.EQ,
-				new org.drip.function.definition.R1ToR1 (null)
-				{
+		try {
+			return new R1ToR1Property (
+				R1ToR1Property.EQ,
+				new R1ToR1 (null) {
 					@Override public double evaluate (
 						final double s)
-						throws java.lang.Exception
+						throws Exception
 					{
-						if (!org.drip.numerical.common.NumberUtil.IsValid (s))
-						{
-							throw new java.lang.Exception
-								("DigammaSaddlePointEqualityLemma::CubicReciprocalSum::evaluate => Invalid Inputs");
+						if (!NumberUtil.IsValid (s)) {
+							throw new Exception (
+								"DigammaSaddlePointEqualityLemma::CubicReciprocalSum::evaluate => Invalid Inputs"
+							);
 						}
 
 						double cubicReciprocalSum = 1. / (
-							org.drip.specialfunction.gamma.Definitions.MINIMUM_VARIATE_LOCATION *
-							org.drip.specialfunction.gamma.Definitions.MINIMUM_VARIATE_LOCATION *
-							org.drip.specialfunction.gamma.Definitions.MINIMUM_VARIATE_LOCATION
+							Definitions.MINIMUM_VARIATE_LOCATION *
+							Definitions.MINIMUM_VARIATE_LOCATION *
+							Definitions.MINIMUM_VARIATE_LOCATION
 						);
 
-						for (int saddlePointIndex = 1; saddlePointIndex <= s; ++saddlePointIndex)
-						{
+						for (int saddlePointIndex = 1; saddlePointIndex <= s; ++saddlePointIndex) {
 							double saddlePoint = digammaSaddlePointsFunction.evaluate (saddlePointIndex);
 
 							cubicReciprocalSum = cubicReciprocalSum + 1. / (
@@ -244,34 +257,26 @@ public class DigammaSaddlePointEqualityLemma
 						return cubicReciprocalSum;
 					}
 				},
-				new org.drip.function.definition.R1ToR1 (null)
-				{
+				new R1ToR1 (null) {
 					@Override public double evaluate (
 						final double s)
-						throws java.lang.Exception
+						throws Exception
 					{
-						if (!org.drip.numerical.common.NumberUtil.IsValid (s))
-						{
-							throw new java.lang.Exception
-								("DigammaSaddlePointEqualityLemma::CubicReciprocalSum::evaluate => Invalid Inputs");
+						if (!NumberUtil.IsValid (s)) {
+							throw new Exception (
+								"DigammaSaddlePointEqualityLemma::CubicReciprocalSum::evaluate => Invalid Inputs"
+							);
 						}
 
-						return -4. * new org.drip.specialfunction.derived.RiemannZeta (
-							null,
-							new org.drip.specialfunction.gamma.WindschitlTothAnalytic (null)
-						).evaluate (3.) -
-							org.drip.specialfunction.gamma.Definitions.EULER_MASCHERONI *
-								org.drip.specialfunction.gamma.Definitions.EULER_MASCHERONI *
-								org.drip.specialfunction.gamma.Definitions.EULER_MASCHERONI -
-							0.5 * org.drip.specialfunction.gamma.Definitions.EULER_MASCHERONI *
-								java.lang.Math.PI * java.lang.Math.PI;
+						return -4. * new RiemannZeta (null, new WindschitlTothAnalytic (null)).evaluate (3.)
+							- Definitions.EULER_MASCHERONI * Definitions.EULER_MASCHERONI *
+							Definitions.EULER_MASCHERONI - 0.5 * Definitions.EULER_MASCHERONI * Math.PI *
+							Math.PI;
 					}
 				},
-				org.drip.function.definition.R1ToR1Property.MISMATCH_TOLERANCE
+				R1ToR1Property.MISMATCH_TOLERANCE
 			);
-		}
-		catch (java.lang.Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -286,39 +291,33 @@ public class DigammaSaddlePointEqualityLemma
 	 * @return The Quartic Reciprocal Sum Verifier
 	 */
 
-	public static final org.drip.function.definition.R1ToR1Property QuarticReciprocalSum (
-		final org.drip.function.definition.R1ToR1 digammaSaddlePointsFunction)
+	public static final R1ToR1Property QuarticReciprocalSum (
+		final R1ToR1 digammaSaddlePointsFunction)
 	{
-		if (null == digammaSaddlePointsFunction)
-		{
+		if (null == digammaSaddlePointsFunction) {
 			return null;
 		}
 
-		try
-		{
-			return new org.drip.function.definition.R1ToR1Property (
-				org.drip.function.definition.R1ToR1Property.EQ,
-				new org.drip.function.definition.R1ToR1 (null)
-				{
+		try {
+			return new R1ToR1Property (
+				R1ToR1Property.EQ,
+				new R1ToR1 (null) {
 					@Override public double evaluate (
 						final double s)
-						throws java.lang.Exception
+						throws Exception
 					{
-						if (!org.drip.numerical.common.NumberUtil.IsValid (s))
-						{
-							throw new java.lang.Exception
-								("DigammaSaddlePointEqualityLemma::QuarticReciprocalSum::evaluate => Invalid Inputs");
+						if (!NumberUtil.IsValid (s)) {
+							throw new Exception (
+								"DigammaSaddlePointEqualityLemma::QuarticReciprocalSum::evaluate => Invalid Inputs"
+							);
 						}
 
 						double quarticReciprocalSum = 1. / (
-							org.drip.specialfunction.gamma.Definitions.MINIMUM_VARIATE_LOCATION *
-							org.drip.specialfunction.gamma.Definitions.MINIMUM_VARIATE_LOCATION *
-							org.drip.specialfunction.gamma.Definitions.MINIMUM_VARIATE_LOCATION *
-							org.drip.specialfunction.gamma.Definitions.MINIMUM_VARIATE_LOCATION
+							Definitions.MINIMUM_VARIATE_LOCATION * Definitions.MINIMUM_VARIATE_LOCATION *
+							Definitions.MINIMUM_VARIATE_LOCATION * Definitions.MINIMUM_VARIATE_LOCATION
 						);
 
-						for (int saddlePointIndex = 1; saddlePointIndex <= s; ++saddlePointIndex)
-						{
+						for (int saddlePointIndex = 1; saddlePointIndex <= s; ++saddlePointIndex) {
 							double saddlePoint = digammaSaddlePointsFunction.evaluate (saddlePointIndex);
 
 							quarticReciprocalSum = quarticReciprocalSum + 1. / (
@@ -329,40 +328,29 @@ public class DigammaSaddlePointEqualityLemma
 						return quarticReciprocalSum;
 					}
 				},
-				new org.drip.function.definition.R1ToR1 (null)
-				{
+				new R1ToR1 (null) {
 					@Override public double evaluate (
 						final double s)
-						throws java.lang.Exception
+						throws Exception
 					{
-						if (!org.drip.numerical.common.NumberUtil.IsValid (s))
-						{
-							throw new java.lang.Exception
-								("DigammaSaddlePointEqualityLemma::QuarticReciprocalSum::evaluate => Invalid Inputs");
+						if (!NumberUtil.IsValid (s)) {
+							throw new Exception (
+								"DigammaSaddlePointEqualityLemma::QuarticReciprocalSum::evaluate => Invalid Inputs"
+							);
 						}
 
-						return
-							org.drip.specialfunction.gamma.Definitions.EULER_MASCHERONI *
-								org.drip.specialfunction.gamma.Definitions.EULER_MASCHERONI *
-								org.drip.specialfunction.gamma.Definitions.EULER_MASCHERONI *
-								org.drip.specialfunction.gamma.Definitions.EULER_MASCHERONI +
-							java.lang.Math.PI * java.lang.Math.PI * java.lang.Math.PI * java.lang.Math.PI /
-								9. +
-							2. * org.drip.specialfunction.gamma.Definitions.EULER_MASCHERONI *
-								org.drip.specialfunction.gamma.Definitions.EULER_MASCHERONI *
-								java.lang.Math.PI * java.lang.Math.PI / 3. +
-							4. * org.drip.specialfunction.gamma.Definitions.EULER_MASCHERONI *
-								new org.drip.specialfunction.derived.RiemannZeta (
-									null,
-									new org.drip.specialfunction.gamma.WindschitlTothAnalytic (null)
-								).evaluate (3.);
+						return Definitions.EULER_MASCHERONI * Definitions.EULER_MASCHERONI *
+							Definitions.EULER_MASCHERONI * Definitions.EULER_MASCHERONI +
+							Math.PI * Math.PI * Math.PI * Math.PI / 9. +
+							2. * Definitions.EULER_MASCHERONI * Definitions.EULER_MASCHERONI * Math.PI *
+								Math.PI / 3. +
+							4. * Definitions.EULER_MASCHERONI *
+								new RiemannZeta (null, new WindschitlTothAnalytic (null)).evaluate (3.);
 					}
 				},
-				org.drip.function.definition.R1ToR1Property.MISMATCH_TOLERANCE
+				R1ToR1Property.MISMATCH_TOLERANCE
 			);
-		}
-		catch (java.lang.Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -377,38 +365,33 @@ public class DigammaSaddlePointEqualityLemma
 	 * @return The First Quadratic Polynomial Reciprocal Sum Verifier
 	 */
 
-	public static final org.drip.function.definition.R1ToR1Property QuadraticPolynomialReciprocalSum1 (
-		final org.drip.function.definition.R1ToR1 digammaSaddlePointsFunction)
+	public static final R1ToR1Property QuadraticPolynomialReciprocalSum1 (
+		final R1ToR1 digammaSaddlePointsFunction)
 	{
-		if (null == digammaSaddlePointsFunction)
-		{
+		if (null == digammaSaddlePointsFunction) {
 			return null;
 		}
 
-		try
-		{
-			return new org.drip.function.definition.R1ToR1Property (
-				org.drip.function.definition.R1ToR1Property.EQ,
-				new org.drip.function.definition.R1ToR1 (null)
-				{
+		try {
+			return new R1ToR1Property (
+				R1ToR1Property.EQ,
+				new R1ToR1 (null) {
 					@Override public double evaluate (
 						final double s)
-						throws java.lang.Exception
+						throws Exception
 					{
-						if (!org.drip.numerical.common.NumberUtil.IsValid (s))
-						{
-							throw new java.lang.Exception
-								("DigammaSaddlePointEqualityLemma::QuadraticPolynomialReciprocalSum1::evaluate => Invalid Inputs");
+						if (!NumberUtil.IsValid (s)) {
+							throw new Exception (
+								"DigammaSaddlePointEqualityLemma::QuadraticPolynomialReciprocalSum1::evaluate => Invalid Inputs"
+							);
 						}
 
 						double quadraticReciprocalSum = 1. / (
-							org.drip.specialfunction.gamma.Definitions.MINIMUM_VARIATE_LOCATION *
-							org.drip.specialfunction.gamma.Definitions.MINIMUM_VARIATE_LOCATION +
-							org.drip.specialfunction.gamma.Definitions.MINIMUM_VARIATE_LOCATION
+							Definitions.MINIMUM_VARIATE_LOCATION * Definitions.MINIMUM_VARIATE_LOCATION +
+								Definitions.MINIMUM_VARIATE_LOCATION
 						);
 
-						for (int saddlePointIndex = 1; saddlePointIndex <= s; ++saddlePointIndex)
-						{
+						for (int saddlePointIndex = 1; saddlePointIndex <= s; ++saddlePointIndex) {
 							double saddlePoint = digammaSaddlePointsFunction.evaluate (saddlePointIndex);
 
 							quadraticReciprocalSum = quadraticReciprocalSum + 1. / (
@@ -419,26 +402,23 @@ public class DigammaSaddlePointEqualityLemma
 						return quadraticReciprocalSum;
 					}
 				},
-				new org.drip.function.definition.R1ToR1 (null)
-				{
+				new R1ToR1 (null) {
 					@Override public double evaluate (
 						final double s)
-						throws java.lang.Exception
+						throws Exception
 					{
-						if (!org.drip.numerical.common.NumberUtil.IsValid (s))
-						{
-							throw new java.lang.Exception
-								("DigammaSaddlePointEqualityLemma::QuadraticPolynomialReciprocalSum1::evaluate => Invalid Inputs");
+						if (!NumberUtil.IsValid (s)) {
+							throw new Exception (
+								"DigammaSaddlePointEqualityLemma::QuadraticPolynomialReciprocalSum1::evaluate => Invalid Inputs"
+							);
 						}
 
 						return -2.;
 					}
 				},
-				org.drip.function.definition.R1ToR1Property.MISMATCH_TOLERANCE
+				R1ToR1Property.MISMATCH_TOLERANCE
 			);
-		}
-		catch (java.lang.Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -453,38 +433,33 @@ public class DigammaSaddlePointEqualityLemma
 	 * @return The Second Quadratic Polynomial Reciprocal Sum Verifier
 	 */
 
-	public static final org.drip.function.definition.R1ToR1Property QuadraticPolynomialReciprocalSum2 (
-		final org.drip.function.definition.R1ToR1 digammaSaddlePointsFunction)
+	public static final R1ToR1Property QuadraticPolynomialReciprocalSum2 (
+		final R1ToR1 digammaSaddlePointsFunction)
 	{
-		if (null == digammaSaddlePointsFunction)
-		{
+		if (null == digammaSaddlePointsFunction) {
 			return null;
 		}
 
-		try
-		{
-			return new org.drip.function.definition.R1ToR1Property (
-				org.drip.function.definition.R1ToR1Property.EQ,
-				new org.drip.function.definition.R1ToR1 (null)
-				{
+		try {
+			return new R1ToR1Property (
+				R1ToR1Property.EQ,
+				new R1ToR1 (null) {
 					@Override public double evaluate (
 						final double s)
-						throws java.lang.Exception
+						throws Exception
 					{
-						if (!org.drip.numerical.common.NumberUtil.IsValid (s))
-						{
-							throw new java.lang.Exception
-								("DigammaSaddlePointEqualityLemma::QuadraticPolynomialReciprocalSum2::evaluate => Invalid Inputs");
+						if (!NumberUtil.IsValid (s)) {
+							throw new Exception (
+								"DigammaSaddlePointEqualityLemma::QuadraticPolynomialReciprocalSum2::evaluate => Invalid Inputs"
+							);
 						}
 
 						double quadraticReciprocalSum = 1. / (
-							org.drip.specialfunction.gamma.Definitions.MINIMUM_VARIATE_LOCATION *
-							org.drip.specialfunction.gamma.Definitions.MINIMUM_VARIATE_LOCATION -
-							org.drip.specialfunction.gamma.Definitions.MINIMUM_VARIATE_LOCATION
+							Definitions.MINIMUM_VARIATE_LOCATION * Definitions.MINIMUM_VARIATE_LOCATION -
+								Definitions.MINIMUM_VARIATE_LOCATION
 						);
 
-						for (int saddlePointIndex = 1; saddlePointIndex <= s; ++saddlePointIndex)
-						{
+						for (int saddlePointIndex = 1; saddlePointIndex <= s; ++saddlePointIndex) {
 							double saddlePoint = digammaSaddlePointsFunction.evaluate (saddlePointIndex);
 
 							quadraticReciprocalSum = quadraticReciprocalSum + 1. / (
@@ -495,28 +470,25 @@ public class DigammaSaddlePointEqualityLemma
 						return quadraticReciprocalSum;
 					}
 				},
-				new org.drip.function.definition.R1ToR1 (null)
-				{
+				new R1ToR1 (null) {
 					@Override public double evaluate (
 						final double s)
-						throws java.lang.Exception
+						throws Exception
 					{
-						if (!org.drip.numerical.common.NumberUtil.IsValid (s))
-						{
-							throw new java.lang.Exception
-								("DigammaSaddlePointEqualityLemma::QuadraticPolynomialReciprocalSum2::evaluate => Invalid Inputs");
+						if (!NumberUtil.IsValid (s)) {
+							throw new Exception (
+								"DigammaSaddlePointEqualityLemma::QuadraticPolynomialReciprocalSum2::evaluate => Invalid Inputs"
+							);
 						}
 
-						return org.drip.specialfunction.gamma.Definitions.EULER_MASCHERONI + 
-							(java.lang.Math.PI * java.lang.Math.PI /
-								(6. * org.drip.specialfunction.gamma.Definitions.EULER_MASCHERONI));
+						return Definitions.EULER_MASCHERONI +  (
+							Math.PI * Math.PI / (6. * Definitions.EULER_MASCHERONI)
+						);
 					}
 				},
-				org.drip.function.definition.R1ToR1Property.MISMATCH_TOLERANCE
+				R1ToR1Property.MISMATCH_TOLERANCE
 			);
-		}
-		catch (java.lang.Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 

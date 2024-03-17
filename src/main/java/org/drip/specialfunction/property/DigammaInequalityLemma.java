@@ -615,40 +615,37 @@ public class DigammaInequalityLemma
 	 * @return The Alzer-Jameson (2017) Inequality Verifier
 	 */
 
-	public static final org.drip.function.definition.R1ToR1Property AlzerJameson2017()
+	public static final R1ToR1Property AlzerJameson2017()
 	{
-		final org.drip.specialfunction.digamma.CumulativeSeriesEstimator abramowitzStegun2007 =
-			org.drip.specialfunction.digamma.CumulativeSeriesEstimator.AbramowitzStegun2007 (1638400);
+		final CumulativeSeriesEstimator abramowitzStegun2007 =
+			CumulativeSeriesEstimator.AbramowitzStegun2007 (1638400);
 
-		try
-		{
-			return new org.drip.function.definition.R1ToR1Property (
-				org.drip.function.definition.R1ToR1Property.LTE,
-				new org.drip.function.definition.R1ToR1 (null)
-				{
+		try {
+			return new R1ToR1Property (
+				R1ToR1Property.LTE,
+				new R1ToR1 (null) {
 					@Override public double evaluate (
 						final double z)
-						throws java.lang.Exception
+						throws Exception
 					{
-						if (!org.drip.numerical.common.NumberUtil.IsValid (z))
-						{
-							throw new java.lang.Exception
-								("DigammaInequalityLemma::AlzerJameson2017::evaluate => Invalid Inputs");
+						if (!NumberUtil.IsValid (z)) {
+							throw new Exception (
+								"DigammaInequalityLemma::AlzerJameson2017::evaluate => Invalid Inputs"
+							);
 						}
 
-						return -1. * org.drip.specialfunction.gamma.Definitions.EULER_MASCHERONI;
+						return -1. * Definitions.EULER_MASCHERONI;
 					}
 				},
-				new org.drip.function.definition.R1ToR1 (null)
-				{
+				new R1ToR1 (null) {
 					@Override public double evaluate (
 						final double z)
-						throws java.lang.Exception
+						throws Exception
 					{
-						if (!org.drip.numerical.common.NumberUtil.IsValid (z))
-						{
-							throw new java.lang.Exception
-								("DigammaInequalityLemma::AlzerJameson2017::evaluate => Invalid Inputs");
+						if (!NumberUtil.IsValid (z)) {
+							throw new Exception (
+								"DigammaInequalityLemma::AlzerJameson2017::evaluate => Invalid Inputs"
+							);
 						}
 
 						double digammaZ = abramowitzStegun2007.evaluate (z);
@@ -658,11 +655,9 @@ public class DigammaInequalityLemma
 						return 2. * digammaZ * digammaZInverse / (digammaZ + digammaZInverse);
 					}
 				},
-				org.drip.function.definition.R1ToR1Property.MISMATCH_TOLERANCE
+				R1ToR1Property.MISMATCH_TOLERANCE
 			);
-		}
-		catch (java.lang.Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
