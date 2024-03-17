@@ -6,6 +6,9 @@ package org.drip.spaces.big;
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -82,61 +85,113 @@ package org.drip.spaces.big;
 
 /**
  * <i>BigR2Array</i> contains an Implementation Navigation and Processing Algorithms for Big Double
- * R<sup>2</sup> Arrays.
- * 
- * <br><br>
+ * 	R<sup>2</sup> Arrays. It provides the following Functionality:
+ *
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/StatisticalLearningLibrary.md">Statistical Learning Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/README.md">R<sup>1</sup> and R<sup>d</sup> Vector/Tensor Spaces (Validated and/or Normed), and Function Classes</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/big/README.md">Big-data In-place Manipulator</a></li>
+ * 		<li><i>BigR2Array</i> Constructor</li>
+ * 		<li>Compute the Path Response Associated with all the Nodes in the Path up to the Current One</li>
+ * 		<li>Compute the Maximum Response Associated with all the Left/Right Adjacent Paths starting from the Top Left Node</li>
+ * 		<li>Retrieve the Length of the X R<sup>1</sup> Array</li>
+ * 		<li>Retrieve the Length of the Y R<sup>1</sup> Array</li>
+ * 		<li>Retrieve the R<sup>2</sup> Instance Array</li>
+ * 		<li>Validate the Specified Index Pair</li>
+ * 		<li>Compute the Maximum Response Associated with all the Left/Right Adjacent Paths starting from the Current Node</li>
  *  </ul>
- * <br><br>
+ *
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/StatisticalLearningLibrary.md">Statistical Learning Library</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/README.md">R<sup>1</sup> and R<sup>d</sup> Vector/Tensor Spaces (Validated and/or Normed), and Function Classes</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/big/README.md">Big-data In-place Manipulator</a></td></tr>
+ *  </table>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public abstract class BigR2Array {
-	private int _iXLength = -1;
-	private int _iYLength = -1;
-	private double[][] _aadblR2 = null;
+public abstract class BigR2Array
+{
+	private int _xLength = -1;
+	private int _yLength = -1;
+	private double[][] _r2Grid = null;
 
 	/**
-	 * BigR2Array Constructor
+	 * <i>BigR2Array</i> Constructor
 	 * 
-	 * @param aadblR2 2D Big Array Inputs
+	 * @param r2Grid 2D Big Array Grid Input
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public BigR2Array (
-		final double[][] aadblR2)
-		throws java.lang.Exception
+		final double[][] r2Grid)
+		throws Exception
 	{
-		if (null == (_aadblR2 = aadblR2))
-			throw new java.lang.Exception ("BigR2Array Constructor => Invalid Inputs");
+		if (null == (_r2Grid = r2Grid)) {
+			throw new Exception ("BigR2Array Constructor => Invalid Inputs");
+		}
 
-		if (0 == (_iXLength = _aadblR2.length) || 0 == (_iYLength = _aadblR2[0].length))
-			throw new java.lang.Exception ("BigR2Array Constructor => Invalid Inputs");
+		if (0 == (_xLength = _r2Grid.length) || 0 == (_yLength = _r2Grid[0].length)) {
+			throw new Exception ("BigR2Array Constructor => Invalid Inputs");
+		}
+	}
+
+	/**
+	 * Retrieve the Length of the X R<sup>1</sup> Array
+	 * 
+	 * @return The Length of the X R<sup>1</sup> Array
+	 */
+
+	public int xLength()
+	{
+		return _xLength;
+	}
+
+	/**
+	 * Retrieve the Length of the Y R<sup>1</sup> Array
+	 * 
+	 * @return The Length of the Y R<sup>1</sup> Array
+	 */
+
+	public int yLength()
+	{
+		return _yLength;
+	}
+
+	/**
+	 * Retrieve the R<sup>2</sup> Instance Array
+	 * 
+	 * @return The R<sup>2</sup> Instance Array
+	 */
+
+	public double[][] instance()
+	{
+		return _r2Grid;
 	}
 
 	/**
 	 * Compute the Path Response Associated with all the Nodes in the Path up to the Current One.
 	 *  
-	 * @param iX The Current X Node
-	 * @param iY The Current Y Node
-	 * @param dblPriorPathResponse The Path Product Associated with the Given Prior Navigation Sequence
+	 * @param x The Current X Node
+	 * @param y The Current Y Node
+	 * @param priorPathResponse The Path Product Associated with the Given Prior Navigation Sequence
 	 * 
 	 * @return The Path Response
 	 *  
-	 * @throws java.lang.Exception Thrown if Inputs are Invalid
+	 * @throws Exception Thrown if Inputs are Invalid
 	 */
 
 	abstract public double pathResponse (
-		final int iX,
-		final int iY,
-		final double dblPriorPathResponse)
-		throws java.lang.Exception;
+		final int x,
+		final int y,
+		final double priorPathResponse
+	) throws Exception;
 
 	/**
 	 * Compute the Maximum Response Associated with all the Left/Right Adjacent Paths starting from the Top
@@ -145,99 +200,73 @@ public abstract class BigR2Array {
 	 * @return The Maximum Response Associated with all the Left/Right Adjacent Paths starting from the
 	 *  Current Node
 	 *  
-	 * @throws java.lang.Exception Thrown if Inputs are Invalid
+	 * @throws Exception Thrown if Inputs are Invalid
 	 */
 
 	abstract public double maxPathResponse()
-		throws java.lang.Exception;
-
-	/**
-	 * Retrieve the Length of the X R^1 Array
-	 * 
-	 * @return The Length of the X R^1 Array
-	 */
-
-	public int xLength()
-	{
-		return _iXLength;
-	}
-
-	/**
-	 * Retrieve the Length of the Y R^1 Array
-	 * 
-	 * @return The Length of the Y R^1 Array
-	 */
-
-	public int yLength()
-	{
-		return _iYLength;
-	}
-
-	/**
-	 * Retrieve the R^2 Instance Array
-	 * 
-	 * @return The R^2 Instance Array
-	 */
-
-	public double[][] instance()
-	{
-		return _aadblR2;
-	}
+		throws Exception;
 
 	/**
 	 * Validate the Specified Index Pair.
 	 *  
-	 * @param iX The Current X Node
-	 * @param iY The Current Y Node
+	 * @param x The Current X Node
+	 * @param y The Current Y Node
 	 * 
 	 * @return TRUE - The Index Pair is Valid
 	 */
 
 	public boolean validateIndex (
-		final int iX,
-		final int iY)
+		final int x,
+		final int y)
 	{
-		return iX < 0 || iX >= _iXLength || iY < 0 || iY >= _iYLength ? false : true;
+		return x < 0 || x >= _xLength || y < 0 || y >= _yLength ? false : true;
 	}
 
 	/**
 	 * Compute the Maximum Response Associated with all the Left/Right Adjacent Paths starting from the
 	 *  Current Node.
 	 *  
-	 * @param iX The Current X Node
-	 * @param iY The Current Y Node
-	 * @param dblPriorPathResponse The Path Response Associated with the Given Prior Navigation Sequence
+	 * @param x The Current X Node
+	 * @param y The Current Y Node
+	 * @param priorPathResponse The Path Response Associated with the Given Prior Navigation Sequence
 	 * 
 	 * @return The Maximum Response Associated with all the Left/Right Adjacent Paths starting from the
 	 *  Current Node
 	 *  
-	 * @throws java.lang.Exception Thrown if Inputs are Invalid
+	 * @throws Exception Thrown if Inputs are Invalid
 	 */
 
 	public double maxPathResponse (
-		final int iX,
-		final int iY,
-		final double dblPriorPathResponse)
-		throws java.lang.Exception
+		final int x,
+		final int y,
+		final double priorPathResponse)
+		throws Exception
 	{
-		double dblCurrentPathResponse = pathResponse (iX, iY, dblPriorPathResponse);
+		double currentPathResponse = pathResponse (x, y, priorPathResponse);
 
-		if (iY == _iYLength - 1 && iX == _iXLength - 1) return dblCurrentPathResponse;
+		if (y == _yLength - 1 && x == _xLength - 1) {
+			return currentPathResponse;
+		}
 
-		double dblXShiftMaxPathResponse = java.lang.Double.NaN;
-		double dblYShiftMaxPathResponse = java.lang.Double.NaN;
+		double xShiftMaxPathResponse = Double.NaN;
+		double yShiftMaxPathResponse = Double.NaN;
 
-		if (iX < _iXLength - 1)
-			dblXShiftMaxPathResponse = maxPathResponse (iX + 1, iY, dblCurrentPathResponse);
+		if (x < _xLength - 1) {
+			xShiftMaxPathResponse = maxPathResponse (x + 1, y, currentPathResponse);
+		}
 
-		if (iY < _iYLength - 1)
-			dblYShiftMaxPathResponse = maxPathResponse (iX, iY + 1, dblCurrentPathResponse);
+		if (y < _yLength - 1) {
+			yShiftMaxPathResponse = maxPathResponse (x, y + 1, currentPathResponse);
+		}
 
-		if (iY == _iYLength - 1) return dblXShiftMaxPathResponse;
+		if (y == _yLength - 1) {
+			return xShiftMaxPathResponse;
+		}
 
-		if (iX == _iXLength - 1) return dblYShiftMaxPathResponse;
+		if (x == _xLength - 1) {
+			return yShiftMaxPathResponse;
+		}
 
-		return dblXShiftMaxPathResponse > dblYShiftMaxPathResponse ? dblXShiftMaxPathResponse :
-			dblYShiftMaxPathResponse;
+		return xShiftMaxPathResponse > yShiftMaxPathResponse ? xShiftMaxPathResponse : yShiftMaxPathResponse;
 	}
 }

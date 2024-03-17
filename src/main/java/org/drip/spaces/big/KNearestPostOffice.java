@@ -1,11 +1,17 @@
 
 package org.drip.spaces.big;
 
+import java.util.List;
+import java.util.TreeMap;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -76,16 +82,30 @@ package org.drip.spaces.big;
  */
 
 /**
- * <i>KNearestPostOffice</i> implements a Locator of the k Nearest Services.
- * 
- * <br><br>
+ * <i>KNearestPostOffice</i> implements a Locator of the k Nearest Services. It provides the following
+ * 	Functionality:
+ *
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/StatisticalLearningLibrary.md">Statistical Learning Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/README.md">R<sup>1</sup> and R<sup>d</sup> Vector/Tensor Spaces (Validated and/or Normed), and Function Classes</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/big/README.md">Big-data In-place Manipulator</a></li>
+ * 		<li>KNearestPostOffice Constructor</li>
+ * 		<li>Retrieve List of the Post Office Locations</li>
+ * 		<li>Retrieve my Location</li>
+ * 		<li>Retrieve K</li>
+ * 		<li>Return the k Closest Post Offices</li>
  *  </ul>
- * <br><br>
+ *
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/StatisticalLearningLibrary.md">Statistical Learning Library</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/README.md">R<sup>1</sup> and R<sup>d</sup> Vector/Tensor Spaces (Validated and/or Normed), and Function Classes</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/big/README.md">Big-data In-place Manipulator</a></td></tr>
+ *  </table>
  *
  * @author Lakshmi Krishnamurthy
  */
@@ -93,51 +113,42 @@ package org.drip.spaces.big;
 public class KNearestPostOffice
 {
 	private int _k = -1;
-	private int[] _myLocation = null;
-	private java.util.List<int[]> _postOfficeLocationList = null;
+	private int[] _myLocationCoordinateArray = null;
+	private List<int[]> _postOfficeLocationList = null;
 
 	/**
 	 * KNearestPostOffice Constructor
 	 * 
 	 * @param postOfficeLocationList List of the Post Office Locations
-	 * @param myLocation My Location
+	 * @param myLocationCoordinateArray My Location Coordinate Array
 	 * @param k k
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public KNearestPostOffice (
 		final java.util.List<int[]> postOfficeLocationList,
-		final int[] myLocation,
+		final int[] myLocationCoordinateArray,
 		final int k)
-		throws java.lang.Exception
+		throws Exception
 	{
 		if (null == (_postOfficeLocationList = postOfficeLocationList) ||
-			null == (_myLocation = myLocation) || 2 != _myLocation.length ||
-			0 >= (_k = k)
-		)
+			null == (_myLocationCoordinateArray = myLocationCoordinateArray) ||
+				2 != _myLocationCoordinateArray.length ||
+			0 >= (_k = k))
 		{
-			throw new java.lang.Exception (
-				"KNearestPostOffice Constructor => Invalid Inputs"
-			);
+			throw new Exception ("KNearestPostOffice Constructor => Invalid Inputs");
 		}
 
 		int postOfficeCount = _postOfficeLocationList.size();
 
-		if (_k > postOfficeCount)
-		{
-			throw new java.lang.Exception (
-				"KNearestPostOffice Constructor => Invalid Inputs"
-			);
+		if (_k > postOfficeCount) {
+			throw new Exception ("KNearestPostOffice Constructor => Invalid Inputs");
 		}
 
-		for (int[] postOfficeLocation : _postOfficeLocationList)
-		{
-			if (null == postOfficeLocation || 2 != postOfficeLocation.length)
-			{
-				throw new java.lang.Exception (
-					"KNearestPostOffice Constructor => Invalid Inputs"
-				);
+		for (int[] postOfficeLocation : _postOfficeLocationList) {
+			if (null == postOfficeLocation || 2 != postOfficeLocation.length) {
+				throw new Exception ("KNearestPostOffice Constructor => Invalid Inputs");
 			}
 		}
 	}
@@ -148,20 +159,20 @@ public class KNearestPostOffice
 	 * @return List of the Post Office Locations
 	 */
 
-	public java.util.List<int[]> postOfficeLocationList()
+	public List<int[]> postOfficeLocationList()
 	{
 		return _postOfficeLocationList;
 	}
 
 	/**
-	 * Retrieve My Location
+	 * Retrieve my Location
 	 * 
 	 * @return My Location
 	 */
 
 	public int[] myLocation()
 	{
-		return _myLocation;
+		return _myLocationCoordinateArray;
 	}
 
 	/**
@@ -184,38 +195,27 @@ public class KNearestPostOffice
 	public int[][] closest()
 	{
 		int listIndex = 0;
-		int[][] closest = new int[_k][];
+		int[][] closestPostOfficeIndexOrderArray = new int[_k][];
 
-		java.lang.Integer[] sortedPostOfficeLocationIndexArray =
-			new java.lang.Integer[_postOfficeLocationList.size()];
+		Integer[] sortedPostOfficeLocationIndexArray = new Integer[_postOfficeLocationList.size()];
 
-		java.util.TreeMap<java.lang.Integer, java.lang.Integer> postOfficeDistanceMap =
-			new java.util.TreeMap<java.lang.Integer, java.lang.Integer>();
+		TreeMap<Integer, Integer> postOfficeDistanceMap = new TreeMap<Integer, Integer>();
 
-		for (int[] postOfficeLocation : _postOfficeLocationList)
-		{
-			int xDistance = postOfficeLocation[0] - _myLocation[0];
-			int yDistance = postOfficeLocation[1] - _myLocation[1];
+		for (int[] postOfficeLocation : _postOfficeLocationList) {
+			int xDistance = postOfficeLocation[0] - _myLocationCoordinateArray[0];
+			int yDistance = postOfficeLocation[1] - _myLocationCoordinateArray[1];
 
-			postOfficeDistanceMap.put (
-				xDistance * xDistance + yDistance * yDistance,
-				listIndex++
-			);
+			postOfficeDistanceMap.put (xDistance * xDistance + yDistance * yDistance, listIndex++);
 		}
 
-		postOfficeDistanceMap.values().toArray (
-			sortedPostOfficeLocationIndexArray
-		);
+		postOfficeDistanceMap.values().toArray (sortedPostOfficeLocationIndexArray);
 
-		for (int sortedPostOfficeIndex = 0;
-			sortedPostOfficeIndex < _k;
-			++sortedPostOfficeIndex)
-		{
-			closest[sortedPostOfficeIndex] = _postOfficeLocationList.get (
+		for (int sortedPostOfficeIndex = 0; sortedPostOfficeIndex < _k; ++sortedPostOfficeIndex) {
+			closestPostOfficeIndexOrderArray[sortedPostOfficeIndex] = _postOfficeLocationList.get (
 				sortedPostOfficeLocationIndexArray[sortedPostOfficeIndex]
 			);
 		}
 
-		return closest;
+		return closestPostOfficeIndexOrderArray;
 	}
 }

@@ -110,34 +110,40 @@ package org.drip.spaces.big;
  * @author Lakshmi Krishnamurthy
  */
 
-public class BigC1Array {
-	private int _iLength = -1;
-	private char[] _ach = null;
+public class BigC1Array
+{
+	private int _length = -1;
+	private char[] _charArray = null;
 
 	private int WrapIndex (
-		final int iIndex)
+		final int index)
 	{
-		if (iIndex >= _iLength) return iIndex - _iLength;
+		if (index >= _length) {
+			return index - _length;
+		}
 
-		if (iIndex < 0) return iIndex + _iLength;
+		if (index < 0) {
+			return index + _length;
+		}
 
-		return iIndex;
+		return index;
 	}
 
 	/**
 	 * i>BigC1Array</i> Constructor
 	 * 
-	 * @param ach Character Array
+	 * @param charArray Character Array
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public BigC1Array (
-		final char[] ach)
-		throws java.lang.Exception
+		final char[] charArray)
+		throws Exception
 	{
-		if (null == (_ach = ach) || 0 == (_iLength = _ach.length))
-			throw new java.lang.Exception ("BigC1Array ctr => Invalid Inputs");
+		if (null == (_charArray = charArray) || 0 == (_length = _charArray.length)) {
+			throw new Exception ("BigC1Array ctr => Invalid Inputs");
+		}
 	}
 
 	/**
@@ -148,37 +154,44 @@ public class BigC1Array {
 
 	public char[] charArray()
 	{
-		return _ach;
+		return _charArray;
 	}
 
 	/**
 	 * Translate the String at around the Pivot Index using the String Block
 	 * 
-	 * @param iPivotIndex The Pivot Index
-	 * @param iBlockSize The Block Size
+	 * @param pivotIndex The Pivot Index
+	 * @param blockSize The Block Size
 	 * 
 	 * @return TRUE - The Translation succeeded
 	 */
 
 	public boolean translateAtPivot (
-		final int iPivotIndex,
-		final int iBlockSize)
+		final int pivotIndex,
+		final int blockSize)
 	{
-		if (0 >= iPivotIndex || 0 >= iBlockSize) return false;
+		if (0 >= pivotIndex || 0 >= blockSize) {
+			return false;
+		}
 
-		int iLength = _ach.length;
-		char[] achTemp = new char[iBlockSize];
+		int length = _charArray.length;
+		char[] tempCharArray = new char[blockSize];
 
-		if (iPivotIndex >= iLength || iBlockSize >= iLength - iPivotIndex - 1) return false;
+		if (pivotIndex >= length || blockSize >= length - pivotIndex - 1) {
+			return false;
+		}
 
-		for (int i = iPivotIndex - iBlockSize; i < iPivotIndex; ++i)
-			achTemp[i - iPivotIndex + iBlockSize] = _ach[i];
+		for (int i = pivotIndex - blockSize; i < pivotIndex; ++i) {
+			tempCharArray[i - pivotIndex + blockSize] = _charArray[i];
+		}
 
-		for (int i = 0; i < iLength - iBlockSize; ++i)
-			_ach[WrapIndex (iPivotIndex - iBlockSize + i)] = _ach[WrapIndex (iPivotIndex + i)];
+		for (int i = 0; i < length - blockSize; ++i) {
+			_charArray[WrapIndex (pivotIndex - blockSize + i)] = _charArray[WrapIndex (pivotIndex + i)];
+		}
 
-		for (int i = 0; i < iBlockSize; ++i)
-			_ach[WrapIndex (iPivotIndex - 2 * iBlockSize + i)] = achTemp[i];
+		for (int i = 0; i < blockSize; ++i) {
+			_charArray[WrapIndex (pivotIndex - 2 * blockSize + i)] = tempCharArray[i];
+		}
 
 		return true;
 	}
