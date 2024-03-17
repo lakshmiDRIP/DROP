@@ -1,11 +1,22 @@
 
 package org.drip.specialfunction.property;
 
+import org.drip.function.definition.R1PropertyVerification;
+import org.drip.function.definition.R1ToR1;
+import org.drip.function.definition.R1ToR1Property;
+import org.drip.numerical.common.Array2D;
+import org.drip.numerical.common.NumberUtil;
+import org.drip.specialfunction.gamma.EulerIntegralSecondKind;
+import org.drip.specialfunction.loggamma.InfiniteSumEstimator;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -78,7 +89,7 @@ package org.drip.specialfunction.property;
 
 /**
  * <i>GammaInequalityLemma</i> contains the Verifiable Inequality Lemmas of the Gamma Function. The
- * References are:
+ * 	References are:
  * 
  * <br><br>
  * 	<ul>
@@ -102,14 +113,32 @@ package org.drip.specialfunction.property;
  * 			Wikipedia (2019): Gamma Function https://en.wikipedia.org/wiki/Gamma_function
  * 		</li>
  * 	</ul>
+ * 
+ * It provides the following functionality:
  *
- *	<br><br>
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FunctionAnalysisLibrary.md">Function Analysis Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md">Special Function Implementation Analysis</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/property/README.md">Special Function Property Lemma Verifiers</a></li>
+ * 		<li>Construct the Asymptotic Upper Approximate</li>
+ * 		<li>Generate the Exponentially Convex Inequality Verifier</li>
+ * 		<li>Generate the Spaced Point Convex Inequality Verifier</li>
+ * 		<li>Generate the Logarithmically Convex Inequality Verifier</li>
+ * 		<li>Generate the Gautschi Left Inequality Verifier</li>
+ * 		<li>Generate the Gautschi Right Inequality Verifier</li>
+ * 		<li>Generate the Jensen Multi-Point Interpolant Convexity Verification</li>
  *  </ul>
+ *
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FunctionAnalysisLibrary.md">Function Analysis Library</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md">Special Function Implementation and Analysis</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/property/README.md">Special Function Property Lemma Verifiers</a></td></tr>
+ *  </table>
  *
  * @author Lakshmi Krishnamurthy
  */
@@ -125,55 +154,48 @@ public class GammaInequalityLemma
 	 * @return The Asymptotic Upper Approximate
 	 */
 
-	public static final org.drip.function.definition.R1ToR1Property AsymptoticUpperApproximate (
+	public static final R1ToR1Property AsymptoticUpperApproximate (
 		final double alpha)
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (alpha))
-		{
+		if (!NumberUtil.IsValid (alpha)) {
 			return null;
 		}
 
-		try
-		{
-			return new org.drip.function.definition.R1ToR1Property (
-				org.drip.function.definition.R1ToR1Property.GTE,
-				new org.drip.function.definition.R1ToR1 (null)
-				{
+		try {
+			return new R1ToR1Property (
+				R1ToR1Property.GTE,
+				new R1ToR1 (null) {
 					@Override public double evaluate (
 						final double s)
-						throws java.lang.Exception
+						throws Exception
 					{
-						if (!org.drip.numerical.common.NumberUtil.IsValid (s))
-						{
-							throw new java.lang.Exception
-								("GammaInequalityLemma::AsymptoticUpperApproximate::evaluate => Invalid Inputs");
+						if (!NumberUtil.IsValid (s)) {
+							throw new Exception (
+								"GammaInequalityLemma::AsymptoticUpperApproximate::evaluate => Invalid Inputs"
+							);
 						}
 
-						return org.drip.specialfunction.loggamma.InfiniteSumEstimator.Weierstrass (1638400).evaluate 
-							(s + alpha);
+						return InfiniteSumEstimator.Weierstrass (1638400).evaluate (s + alpha);
 					}
 				},
-				new org.drip.function.definition.R1ToR1 (null)
-				{
+				new R1ToR1 (null) {
 					@Override public double evaluate (
 						final double s)
-						throws java.lang.Exception
+						throws Exception
 					{
-						if (!org.drip.numerical.common.NumberUtil.IsValid (s))
-						{
-							throw new java.lang.Exception
-								("GammaInequalityLemma::AsymptoticUpperApproximate::evaluate => Invalid Inputs");
+						if (!NumberUtil.IsValid (s)) {
+							throw new Exception (
+								"GammaInequalityLemma::AsymptoticUpperApproximate::evaluate => Invalid Inputs"
+							);
 						}
 
-						return alpha * java.lang.Math.log (s)  +
-							org.drip.specialfunction.loggamma.InfiniteSumEstimator.Weierstrass (1638400).evaluate (s);
+						return alpha * Math.log (s) +
+							InfiniteSumEstimator.Weierstrass (1638400).evaluate (s);
 					}
 				},
-				org.drip.function.definition.R1ToR1Property.MISMATCH_TOLERANCE
+				R1ToR1Property.MISMATCH_TOLERANCE
 			);
-		}
-		catch (java.lang.Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -189,59 +211,50 @@ public class GammaInequalityLemma
 	 * @return The Exponentially Convex Inequality Verifier
 	 */
 
-	public static final org.drip.function.definition.R1ToR1Property ExponentiallyConvex (
+	public static final R1ToR1Property ExponentiallyConvex (
 		final double z1,
 		final double z2)
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (z1) ||
-			!org.drip.numerical.common.NumberUtil.IsValid (z2))
-		{
+		if (!NumberUtil.IsValid (z1) || !NumberUtil.IsValid (z2)) {
 			return null;
 		}
 
-		try
-		{
-			return new org.drip.function.definition.R1ToR1Property (
-				org.drip.function.definition.R1ToR1Property.LTE,
-				new org.drip.function.definition.R1ToR1 (null)
-				{
+		try {
+			return new R1ToR1Property (
+				R1ToR1Property.LTE,
+				new R1ToR1 (null) {
 					@Override public double evaluate (
 						final double t)
-						throws java.lang.Exception
+						throws Exception
 					{
-						if (!org.drip.numerical.common.NumberUtil.IsValid (t) || 0. > t || 1. < t)
-						{
-							throw new java.lang.Exception
-								("GammaInequalityLemma::ExponentiallyConvex::evaluate => Invalid Inputs");
+						if (!NumberUtil.IsValid (t) || 0. > t || 1. < t) {
+							throw new Exception (
+								"GammaInequalityLemma::ExponentiallyConvex::evaluate => Invalid Inputs"
+							);
 						}
 
-						return org.drip.specialfunction.loggamma.InfiniteSumEstimator.Weierstrass (1638400).evaluate
-							(t * z1 + (1. - t) * z2);
+						return InfiniteSumEstimator.Weierstrass (1638400).evaluate (t * z1 + (1. - t) * z2);
 					}
 				},
-				new org.drip.function.definition.R1ToR1 (null)
-				{
+				new R1ToR1 (null) {
 					@Override public double evaluate (
 						final double t)
-						throws java.lang.Exception
+						throws Exception
 					{
-						if (!org.drip.numerical.common.NumberUtil.IsValid (t) || 0. > t || 1. < t)
-						{
-							throw new java.lang.Exception
-								("GammaInequalityLemma::ExponentiallyConvex::evaluate => Invalid Inputs");
+						if (!NumberUtil.IsValid (t) || 0. > t || 1. < t) {
+							throw new Exception (
+								"GammaInequalityLemma::ExponentiallyConvex::evaluate => Invalid Inputs"
+							);
 						}
 
-						org.drip.specialfunction.loggamma.InfiniteSumEstimator weierStrass =
-							org.drip.specialfunction.loggamma.InfiniteSumEstimator.Weierstrass (1638400);
+						InfiniteSumEstimator weierStrass = InfiniteSumEstimator.Weierstrass (1638400);
 
 						return t * weierStrass.evaluate (z1) + (1. - t) * weierStrass.evaluate (z2);
 					}
 				},
-				org.drip.function.definition.R1ToR1Property.MISMATCH_TOLERANCE
+				R1ToR1Property.MISMATCH_TOLERANCE
 			);
-		}
-		catch (java.lang.Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -256,64 +269,53 @@ public class GammaInequalityLemma
 	 * @return The Spaced Point Convex Inequality Verifier
 	 */
 
-	public static final org.drip.function.definition.R1ToR1Property SpacedPointConvex (
+	public static final R1ToR1Property SpacedPointConvex (
 		final double y)
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (y))
-		{
+		if (!NumberUtil.IsValid (y)) {
 			return null;
 		}
 
-		final org.drip.specialfunction.loggamma.InfiniteSumEstimator weierStrass =
-			org.drip.specialfunction.loggamma.InfiniteSumEstimator.Weierstrass (1638400);
+		final InfiniteSumEstimator weierStrass = InfiniteSumEstimator.Weierstrass (1638400);
 
-		try
-		{
+		try {
 			final double logGammaY = weierStrass.evaluate (y);
 
-			return new org.drip.function.definition.R1ToR1Property (
-				org.drip.function.definition.R1ToR1Property.GT,
-				new org.drip.function.definition.R1ToR1 (null)
-				{
+			return new R1ToR1Property (
+				R1ToR1Property.GT,
+				new R1ToR1 (null) {
 					@Override public double evaluate (
 						final double x)
-						throws java.lang.Exception
+						throws Exception
 					{
-						if (!org.drip.numerical.common.NumberUtil.IsValid (x) || x >= y)
-						{
-							throw new java.lang.Exception
-								("GammaInequalityLemma::SpacedPointConvex::evaluate => Invalid Inputs");
+						if (!NumberUtil.IsValid (x) || x >= y) {
+							throw new Exception (
+								"GammaInequalityLemma::SpacedPointConvex::evaluate => Invalid Inputs"
+							);
 						}
 
 						return (logGammaY - weierStrass.evaluate (x)) / (y - x);
 					}
 				},
-				new org.drip.function.definition.R1ToR1 (null)
-				{
+				new R1ToR1 (null) {
 					@Override public double evaluate (
 						final double x)
-						throws java.lang.Exception
+						throws Exception
 					{
-						if (!org.drip.numerical.common.NumberUtil.IsValid (x))
-						{
-							throw new java.lang.Exception
-								("GammaInequalityLemma::SpacedPointConvex::evaluate => Invalid Inputs");
+						if (!NumberUtil.IsValid (x)) {
+							throw new Exception (
+								"GammaInequalityLemma::SpacedPointConvex::evaluate => Invalid Inputs"
+							);
 						}
 
-						org.drip.specialfunction.gamma.EulerIntegralSecondKind eulerIntegralSecondKind =
-							new org.drip.specialfunction.gamma.EulerIntegralSecondKind (null);
+						EulerIntegralSecondKind eulerIntegralSecondKind = new EulerIntegralSecondKind (null);
 
-						return eulerIntegralSecondKind.derivative (
-							x,
-							1
-						) - weierStrass.evaluate (x);
+						return eulerIntegralSecondKind.derivative (x, 1) - weierStrass.evaluate (x);
 					}
 				},
-				org.drip.function.definition.R1ToR1Property.MISMATCH_TOLERANCE
+				R1ToR1Property.MISMATCH_TOLERANCE
 			);
-		}
-		catch (java.lang.Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -326,60 +328,45 @@ public class GammaInequalityLemma
 	 * @return The Logarithmically Convex Inequality Verifier
 	 */
 
-	public static final org.drip.function.definition.R1ToR1Property LogarithmicConvex()
+	public static final R1ToR1Property LogarithmicConvex()
 	{
-		final org.drip.specialfunction.loggamma.InfiniteSumEstimator weierStrass =
-			org.drip.specialfunction.loggamma.InfiniteSumEstimator.Weierstrass (1638400);
+		final InfiniteSumEstimator weierStrass = InfiniteSumEstimator.Weierstrass (1638400);
 
-		try
-		{
-			return new org.drip.function.definition.R1ToR1Property (
-				org.drip.function.definition.R1ToR1Property.GT,
-				new org.drip.function.definition.R1ToR1 (null)
-				{
+		try {
+			return new R1ToR1Property (
+				R1ToR1Property.GT,
+				new R1ToR1 (null) {
 					@Override public double evaluate (
 						final double z)
-						throws java.lang.Exception
+						throws Exception
 					{
-						if (!org.drip.numerical.common.NumberUtil.IsValid (z))
-						{
-							throw new java.lang.Exception
-								("GammaInequalityLemma::LogarithmicConvex::evaluate => Invalid Inputs");
+						if (!NumberUtil.IsValid (z)) {
+							throw new Exception (
+								"GammaInequalityLemma::LogarithmicConvex::evaluate => Invalid Inputs"
+							);
 						}
 
-						return java.lang.Math.log (
-							new org.drip.specialfunction.gamma.EulerIntegralSecondKind (null).derivative (
-								z,
-								2
-							)
-						) + weierStrass.evaluate (z);
+						return Math.log (new EulerIntegralSecondKind (null).derivative (z, 2)) +
+							weierStrass.evaluate (z);
 					}
 				},
-				new org.drip.function.definition.R1ToR1 (null)
-				{
+				new R1ToR1 (null) {
 					@Override public double evaluate (
 						final double z)
-						throws java.lang.Exception
+						throws Exception
 					{
-						if (!org.drip.numerical.common.NumberUtil.IsValid (z))
-						{
-							throw new java.lang.Exception
-								("GammaInequalityLemma::LogarithmicConvex::evaluate => Invalid Inputs");
+						if (!NumberUtil.IsValid (z)) {
+							throw new Exception (
+								"GammaInequalityLemma::LogarithmicConvex::evaluate => Invalid Inputs"
+							);
 						}
 
-						return java.lang.Math.log (
-							new org.drip.specialfunction.gamma.EulerIntegralSecondKind (null).derivative (
-								z,
-								1
-							)
-						);
+						return Math.log (new EulerIntegralSecondKind (null).derivative (z, 1));
 					}
 				},
-				org.drip.function.definition.R1ToR1Property.MISMATCH_TOLERANCE
+				R1ToR1Property.MISMATCH_TOLERANCE
 			);
-		}
-		catch (java.lang.Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -394,56 +381,49 @@ public class GammaInequalityLemma
 	 * @return The Gautschi Left Inequality Verifier
 	 */
 
-	public static final org.drip.function.definition.R1ToR1Property GautschiLeft (
+	public static final R1ToR1Property GautschiLeft (
 		final double s)
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (s) || 0. >= s || 1. <= s)
-		{
+		if (!NumberUtil.IsValid (s) || 0. >= s || 1. <= s) {
 			return null;
 		}
 
-		final org.drip.specialfunction.loggamma.InfiniteSumEstimator weierStrass =
-			org.drip.specialfunction.loggamma.InfiniteSumEstimator.Weierstrass (1638400);
+		final InfiniteSumEstimator weierStrass = InfiniteSumEstimator.Weierstrass (1638400);
 
-		try
-		{
-			return new org.drip.function.definition.R1ToR1Property (
-				org.drip.function.definition.R1ToR1Property.LT,
-				new org.drip.function.definition.R1ToR1 (null)
-				{
+		try {
+			return new R1ToR1Property (
+				R1ToR1Property.LT,
+				new R1ToR1 (null) {
 					@Override public double evaluate (
 						final double z)
-						throws java.lang.Exception
+						throws Exception
 					{
-						if (!org.drip.numerical.common.NumberUtil.IsValid (z))
-						{
-							throw new java.lang.Exception
-								("GammaInequalityLemma::GautschiLeft::evaluate => Invalid Inputs");
+						if (!NumberUtil.IsValid (z)) {
+							throw new Exception (
+								"GammaInequalityLemma::GautschiLeft::evaluate => Invalid Inputs"
+							);
 						}
 
-						return (1. - s) * java.lang.Math.log (z);
+						return (1. - s) * Math.log (z);
 					}
 				},
-				new org.drip.function.definition.R1ToR1 (null)
-				{
+				new R1ToR1 (null) {
 					@Override public double evaluate (
 						final double z)
-						throws java.lang.Exception
+						throws Exception
 					{
-						if (!org.drip.numerical.common.NumberUtil.IsValid (z))
-						{
-							throw new java.lang.Exception
-								("GammaInequalityLemma::GautschiLeft::evaluate => Invalid Inputs");
+						if (!NumberUtil.IsValid (z)) {
+							throw new Exception (
+								"GammaInequalityLemma::GautschiLeft::evaluate => Invalid Inputs"
+							);
 						}
 
 						return weierStrass.evaluate (z + 1) - weierStrass.evaluate (z + s);
 					}
 				},
-				org.drip.function.definition.R1ToR1Property.MISMATCH_TOLERANCE
+				R1ToR1Property.MISMATCH_TOLERANCE
 			);
-		}
-		catch (java.lang.Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -458,56 +438,49 @@ public class GammaInequalityLemma
 	 * @return The Gautschi Right Inequality Verifier
 	 */
 
-	public static final org.drip.function.definition.R1ToR1Property GautschiRight (
+	public static final R1ToR1Property GautschiRight (
 		final double s)
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (s) || 0. >= s || 1. <= s)
-		{
+		if (!NumberUtil.IsValid (s) || 0. >= s || 1. <= s) {
 			return null;
 		}
 
-		final org.drip.specialfunction.loggamma.InfiniteSumEstimator weierStrass =
-			org.drip.specialfunction.loggamma.InfiniteSumEstimator.Weierstrass (1638400);
+		final InfiniteSumEstimator weierStrass = InfiniteSumEstimator.Weierstrass (1638400);
 
-		try
-		{
-			return new org.drip.function.definition.R1ToR1Property (
-				org.drip.function.definition.R1ToR1Property.LT,
-				new org.drip.function.definition.R1ToR1 (null)
-				{
+		try {
+			return new R1ToR1Property (
+				R1ToR1Property.LT,
+				new R1ToR1 (null) {
 					@Override public double evaluate (
 						final double z)
-						throws java.lang.Exception
+						throws Exception
 					{
-						if (!org.drip.numerical.common.NumberUtil.IsValid (z))
-						{
-							throw new java.lang.Exception
-								("GammaInequalityLemma::GautschiRight::evaluate => Invalid Inputs");
+						if (!NumberUtil.IsValid (z)) {
+							throw new Exception (
+								"GammaInequalityLemma::GautschiRight::evaluate => Invalid Inputs"
+							);
 						}
 
 						return weierStrass.evaluate (z + 1) - weierStrass.evaluate (z + s);
 					}
 				},
-				new org.drip.function.definition.R1ToR1 (null)
-				{
+				new R1ToR1 (null) {
 					@Override public double evaluate (
 						final double z)
-						throws java.lang.Exception
+						throws Exception
 					{
-						if (!org.drip.numerical.common.NumberUtil.IsValid (z))
-						{
-							throw new java.lang.Exception
-								("GammaInequalityLemma::GautschiRight::evaluate => Invalid Inputs");
+						if (!NumberUtil.IsValid (z)) {
+							throw new Exception (
+								"GammaInequalityLemma::GautschiRight::evaluate => Invalid Inputs"
+							);
 						}
 
 						return (1. - s) * java.lang.Math.log (z + 1.);
 					}
 				},
-				org.drip.function.definition.R1ToR1Property.MISMATCH_TOLERANCE
+				R1ToR1Property.MISMATCH_TOLERANCE
 			);
-		}
-		catch (java.lang.Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -522,16 +495,14 @@ public class GammaInequalityLemma
 	 * @return Jensen Multi-Point Interpolant Convexity Verification
 	 */
 
-	public static final org.drip.function.definition.R1PropertyVerification JensenMultiPointInterpolant (
-		final org.drip.numerical.common.Array2D multiPoint2D)
+	public static final R1PropertyVerification JensenMultiPointInterpolant (
+		final Array2D multiPoint2D)
 	{
-		if (null == multiPoint2D)
-		{
+		if (null == multiPoint2D) {
 			return null;
 		}
 
-		final org.drip.specialfunction.loggamma.InfiniteSumEstimator weierStrass =
-			org.drip.specialfunction.loggamma.InfiniteSumEstimator.Weierstrass (1638400);
+		final InfiniteSumEstimator weierStrass = InfiniteSumEstimator.Weierstrass (1638400);
 
 		double[] xArray = multiPoint2D.x();
 
@@ -542,31 +513,26 @@ public class GammaInequalityLemma
 		int count = aArray.length;
 		double rValue = 0.;
 
-		for (int index = 0; index < count; ++index)
-		{
+		for (int index = 0; index < count; ++index) {
 			interpolantNumerator = interpolantNumerator + aArray[index] * xArray[index];
 			interpolantDenominator = interpolantDenominator + aArray[index];
 		}
 
 		double interpolantDenominatorInverse = 1. / interpolantDenominator;
 
-		try
-		{
+		try {
 			double lValue = weierStrass.evaluate (interpolantNumerator* interpolantDenominatorInverse);
 
-			for (int index = 0; index < count; ++index)
-			{
+			for (int index = 0; index < count; ++index) {
 				rValue = rValue + aArray[index] * weierStrass.evaluate (xArray[index]);
 			}
 
-			return new org.drip.function.definition.R1PropertyVerification (
+			return new R1PropertyVerification (
 				lValue,
 				rValue = rValue * interpolantDenominatorInverse,
 				lValue <= rValue
 			);
-		}
-		catch (java.lang.Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
