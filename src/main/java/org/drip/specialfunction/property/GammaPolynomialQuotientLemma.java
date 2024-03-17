@@ -1,11 +1,19 @@
 
 package org.drip.specialfunction.property;
 
+import org.drip.function.definition.R1PropertyVerification;
+import org.drip.function.definition.R1ToR1Property;
+import org.drip.function.r1tor1.MonicPolynomial;
+import org.drip.specialfunction.loggamma.InfiniteSumEstimator;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -78,7 +86,7 @@ package org.drip.specialfunction.property;
 
 /**
  * <i>GammaPolynomialQuotientLemma</i> contains the Verifiable Gamma Polynomial Quotient Equality Lemma. The
- * References are:
+ * 	References are:
  * 
  * <br><br>
  * 	<ul>
@@ -102,22 +110,57 @@ package org.drip.specialfunction.property;
  * 			Wikipedia (2019): Gamma Function https://en.wikipedia.org/wiki/Gamma_function
  * 		</li>
  * 	</ul>
+ * 
+ * It provides the following functionality:
  *
- *	<br><br>
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FunctionAnalysisLibrary.md">Function Analysis Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md">Special Function Implementation Analysis</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/property/README.md">Special Function Property Lemma Verifiers</a></li>
+ * 		<li><i>GammaPolynomialQuotientLemma</i> Constructor</li>
+ * 		<li>Retrieve the Monic Polynomial "P"</li>
+ * 		<li>Retrieve the Monic Polynomial "Q"</li>
+ * 		<li>Run the Equality Lemma over the specified a and b</li>
  *  </ul>
+ *
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FunctionAnalysisLibrary.md">Function Analysis Library</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md">Special Function Implementation and Analysis</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/property/README.md">Special Function Property Lemma Verifiers</a></td></tr>
+ *  </table>
  *
  * @author Lakshmi Krishnamurthy
  */
 
 public class GammaPolynomialQuotientLemma
 {
-	private org.drip.function.r1tor1.MonicPolynomial _monicPolynomialP = null;
-	private org.drip.function.r1tor1.MonicPolynomial _monicPolynomialQ = null;
+	private MonicPolynomial _monicPolynomialP = null;
+	private MonicPolynomial _monicPolynomialQ = null;
+
+	/**
+	 * <i>GammaPolynomialQuotientLemma</i> Constructor
+	 * 
+	 * @param monicPolynomialP Monic Polynomial "P"
+	 * @param monicPolynomialQ Monic Polynomial "Q"
+	 * 
+	 * @throws Exception Thrown if the Inputs are Invalid
+	 */
+
+	public GammaPolynomialQuotientLemma (
+		final MonicPolynomial monicPolynomialP,
+		final MonicPolynomial monicPolynomialQ)
+		throws Exception
+	{
+		if (null == (_monicPolynomialP = monicPolynomialP) || null == (_monicPolynomialQ = monicPolynomialQ))
+		{
+			throw new Exception ("GammaPolynomialQuotientLemma Constructor => Invalid Inputs");
+		}
+	}
 
 	/**
 	 * Retrieve the Monic Polynomial "P"
@@ -125,7 +168,7 @@ public class GammaPolynomialQuotientLemma
 	 * @return The Monic Polynomial "P"
 	 */
 
-	public org.drip.function.r1tor1.MonicPolynomial _monicPolynomialP()
+	public MonicPolynomial monicPolynomialP()
 	{
 		return _monicPolynomialP;
 	}
@@ -136,7 +179,7 @@ public class GammaPolynomialQuotientLemma
 	 * @return The Monic Polynomial "Q"
 	 */
 
-	public org.drip.function.r1tor1.MonicPolynomial _monicPolynomialQ()
+	public MonicPolynomial monicPolynomialQ()
 	{
 		return _monicPolynomialQ;
 	}
@@ -150,57 +193,38 @@ public class GammaPolynomialQuotientLemma
 	 * @return Result of the Equality Lemma Run
 	 */
 
-	public org.drip.function.definition.R1PropertyVerification equalityLemma (
+	public R1PropertyVerification equalityLemma (
 		final int a,
 		final int b)
 	{
-		if (a >= b)
-		{
+		if (a >= b) {
 			return null;
 		}
 
-		org.drip.specialfunction.loggamma.InfiniteSumEstimator logGammaEstimator =
-			org.drip.specialfunction.loggamma.InfiniteSumEstimator.Weierstrass (1638400);
+		InfiniteSumEstimator logGammaEstimator = InfiniteSumEstimator.Weierstrass (1638400);
 
-		try
-		{
+		try {
 			double lValue = 1.;
 
-			for (int i = a; i <= b; ++i)
-			{
+			for (int i = a; i <= b; ++i) {
 				lValue = lValue * _monicPolynomialP.evaluate (i) / _monicPolynomialQ.evaluate (i);
 			}
 
-			double rValue = java.lang.Math.exp (
-				_monicPolynomialP.logGammaProduct (
-					a,
-					b,
-					logGammaEstimator
-				) - _monicPolynomialQ.logGammaProduct (
-					a,
-					b,
-					logGammaEstimator
-				)
+			double rValue = Math.exp (
+				_monicPolynomialP.logGammaProduct (a, b, logGammaEstimator) -
+					_monicPolynomialQ.logGammaProduct (a, b, logGammaEstimator)
 			);
 
-			double leftTolerance = java.lang.Math.abs (lValue *
-				org.drip.function.definition.R1ToR1Property.MISMATCH_TOLERANCE);
+			double leftTolerance = Math.abs (lValue * R1ToR1Property.MISMATCH_TOLERANCE);
 
-			double rightTolerance = java.lang.Math.abs (rValue *
-				org.drip.function.definition.R1ToR1Property.MISMATCH_TOLERANCE);
+			double rightTolerance = Math.abs (rValue * R1ToR1Property.MISMATCH_TOLERANCE);
 
 			double tolerance = leftTolerance < rightTolerance ? leftTolerance: rightTolerance;
-			tolerance = tolerance < org.drip.function.definition.R1ToR1Property.MISMATCH_TOLERANCE ?
-				org.drip.function.definition.R1ToR1Property.MISMATCH_TOLERANCE : tolerance;
+			tolerance = tolerance < R1ToR1Property.MISMATCH_TOLERANCE ?
+				R1ToR1Property.MISMATCH_TOLERANCE : tolerance;
 
-			return new org.drip.function.definition.R1PropertyVerification (
-				lValue,
-				rValue,
-				java.lang.Math.abs (lValue - rValue) < tolerance
-			);
-		}
-		catch (java.lang.Exception e)
-		{
+			return new R1PropertyVerification (lValue, rValue, Math.abs (lValue - rValue) < tolerance);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 

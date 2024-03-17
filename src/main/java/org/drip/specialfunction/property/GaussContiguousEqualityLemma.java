@@ -1,11 +1,23 @@
 
 package org.drip.specialfunction.property;
 
+import org.drip.function.definition.R1ToR1;
+import org.drip.function.definition.R1ToR1Property;
+import org.drip.function.definition.R2ToR1;
+import org.drip.specialfunction.beta.LogGammaEstimator;
+import org.drip.specialfunction.definition.HypergeometricParameters;
+import org.drip.specialfunction.definition.RegularHypergeometricEstimator;
+import org.drip.specialfunction.hypergeometric.EulerQuadratureEstimator;
+import org.drip.specialfunction.hypergeometric.GaussContiguousRelations;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -78,7 +90,7 @@ package org.drip.specialfunction.property;
 
 /**
  * <i>GaussContiguousEqualityLemma</i> verifies the Hyper-geometric Gauss Contiguous Equality Lemma
- * Properties. The References are:
+ * 	Properties. The References are:
  * 
  * <br><br>
  * 	<ul>
@@ -103,14 +115,31 @@ package org.drip.specialfunction.property;
  * 			Wikipedia (2019): Hyper-geometric Function https://en.wikipedia.org/wiki/Hypergeometric_function
  * 		</li>
  * 	</ul>
+ * 
+ * It provides the following functionality:
  *
- *	<br><br>
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FunctionAnalysisLibrary.md">Function Analysis Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md">Special Function Implementation Analysis</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/property/README.md">Special Function Property Lemma Verifiers</a></li>
+ * 		<li>Construct the Hyper-geometric Gauss Contiguous Identity #2 Verifier</li>
+ * 		<li>Construct the Hyper-geometric Gauss Contiguous Identity #3 Verifier</li>
+ * 		<li>Construct the Hyper-geometric Gauss Contiguous Identity #4 Verifier</li>
+ * 		<li>Construct the Hyper-geometric Gauss Contiguous Identity #5 Verifier</li>
+ * 		<li>Construct the Hyper-geometric Gauss Contiguous Identity #6 Verifier</li>
+ * 		<li>Construct the Hyper-geometric Gauss Contiguous Identity #7 Verifier</li>
  *  </ul>
+ *
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FunctionAnalysisLibrary.md">Function Analysis Library</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md">Special Function Implementation and Analysis</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/property/README.md">Special Function Property Lemma Verifiers</a></td></tr>
+ *  </table>
  *
  * @author Lakshmi Krishnamurthy
  */
@@ -128,68 +157,51 @@ public class GaussContiguousEqualityLemma
 	 * @return The Hyper-geometric Gauss Contiguous Identity #2 Verifier
 	 */
 
-	public static final org.drip.function.definition.R1ToR1Property RelationIdentity2 (
+	public static final R1ToR1Property RelationIdentity2 (
 		final double a,
 		final double b,
 		final double c)
 	{
-		org.drip.function.definition.R2ToR1 logBetaEstimator =
-			org.drip.specialfunction.beta.LogGammaEstimator.Weierstrass (1000);
+		R2ToR1 logBetaEstimator = LogGammaEstimator.Weierstrass (1000);
 
-		if (null == logBetaEstimator)
-		{
+		if (null == logBetaEstimator) {
 			return null;
 		}
 
-		try
-		{
-			final org.drip.specialfunction.hypergeometric.EulerQuadratureEstimator hypergeometricEstimator =
-				new org.drip.specialfunction.hypergeometric.EulerQuadratureEstimator (
-					new org.drip.specialfunction.definition.HypergeometricParameters (
-						a,
-						b,
-						c
-					),
-					logBetaEstimator,
-					10000
-				);
+		try {
+			final EulerQuadratureEstimator hypergeometricEstimator = new EulerQuadratureEstimator (
+				new HypergeometricParameters (a, b, c),
+				logBetaEstimator,
+				10000
+			);
 
-			final org.drip.specialfunction.definition.RegularHypergeometricEstimator
-				aPlusRegularHypergeometricEstimator = new
-					org.drip.specialfunction.hypergeometric.GaussContiguousRelations
-						(hypergeometricEstimator).aPlus();
+			final RegularHypergeometricEstimator aPlusRegularHypergeometricEstimator = new
+				GaussContiguousRelations (hypergeometricEstimator).aPlus();
 
-			return new org.drip.function.definition.R1ToR1Property (
-				org.drip.function.definition.R1ToR1Property.EQ,
-				new org.drip.function.definition.R1ToR1 (null)
-				{
+			return new R1ToR1Property (
+				R1ToR1Property.EQ,
+				new R1ToR1 (null) {
 					@Override public double evaluate (
 						final double z)
-						throws java.lang.Exception
+						throws Exception
 					{
-						return z * hypergeometricEstimator.derivative (
-							z,
-							1
-						);
+						return z * hypergeometricEstimator.derivative (z, 1);
 					}
 				},
-				new org.drip.function.definition.R1ToR1 (null)
-				{
+				new R1ToR1 (null) {
 					@Override public double evaluate (
 						final double z)
-						throws java.lang.Exception
+						throws Exception
 					{
 						return a * (
 							aPlusRegularHypergeometricEstimator.regularHypergeometric (z) -
-							hypergeometricEstimator.regularHypergeometric (z)
+								hypergeometricEstimator.regularHypergeometric (z)
 						);
 					}
 				},
-				org.drip.function.definition.R1ToR1Property.MISMATCH_TOLERANCE
+				R1ToR1Property.MISMATCH_TOLERANCE
 			);
-		}
-		catch (java.lang.Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -206,68 +218,51 @@ public class GaussContiguousEqualityLemma
 	 * @return The Hyper-geometric Gauss Contiguous Identity #3 Verifier
 	 */
 
-	public static final org.drip.function.definition.R1ToR1Property RelationIdentity3 (
+	public static final R1ToR1Property RelationIdentity3 (
 		final double a,
 		final double b,
 		final double c)
 	{
-		org.drip.function.definition.R2ToR1 logBetaEstimator =
-			org.drip.specialfunction.beta.LogGammaEstimator.Weierstrass (1000);
+		R2ToR1 logBetaEstimator = LogGammaEstimator.Weierstrass (1000);
 
-		if (null == logBetaEstimator)
-		{
+		if (null == logBetaEstimator) {
 			return null;
 		}
 
-		try
-		{
-			final org.drip.specialfunction.hypergeometric.EulerQuadratureEstimator hypergeometricEstimator =
-				new org.drip.specialfunction.hypergeometric.EulerQuadratureEstimator (
-					new org.drip.specialfunction.definition.HypergeometricParameters (
-						a,
-						b,
-						c
-					),
-					logBetaEstimator,
-					10000
-				);
+		try {
+			final EulerQuadratureEstimator hypergeometricEstimator = new EulerQuadratureEstimator (
+				new HypergeometricParameters (a, b, c),
+				logBetaEstimator,
+				10000
+			);
 
-			final org.drip.specialfunction.definition.RegularHypergeometricEstimator
-				bPlusHypergeometricEstimator = new
-					org.drip.specialfunction.hypergeometric.GaussContiguousRelations
-						(hypergeometricEstimator).bPlus();
+			final RegularHypergeometricEstimator bPlusHypergeometricEstimator =
+				new GaussContiguousRelations (hypergeometricEstimator).bPlus();
 
-			return new org.drip.function.definition.R1ToR1Property (
-				org.drip.function.definition.R1ToR1Property.EQ,
-				new org.drip.function.definition.R1ToR1 (null)
-				{
+			return new R1ToR1Property (
+				R1ToR1Property.EQ,
+				new R1ToR1 (null) {
 					@Override public double evaluate (
 						final double z)
-						throws java.lang.Exception
+						throws Exception
 					{
-						return z * hypergeometricEstimator.derivative (
-							z,
-							1
-						);
+						return z * hypergeometricEstimator.derivative (z, 1);
 					}
 				},
-				new org.drip.function.definition.R1ToR1 (null)
-				{
+				new R1ToR1 (null) {
 					@Override public double evaluate (
 						final double z)
-						throws java.lang.Exception
+						throws Exception
 					{
 						return b * (
 							bPlusHypergeometricEstimator.regularHypergeometric (z) -
-							hypergeometricEstimator.regularHypergeometric (z)
+								hypergeometricEstimator.regularHypergeometric (z)
 						);
 					}
 				},
-				org.drip.function.definition.R1ToR1Property.MISMATCH_TOLERANCE
+				R1ToR1Property.MISMATCH_TOLERANCE
 			);
-		}
-		catch (java.lang.Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -284,68 +279,51 @@ public class GaussContiguousEqualityLemma
 	 * @return The Hyper-geometric Gauss Contiguous Identity #4 Verifier
 	 */
 
-	public static final org.drip.function.definition.R1ToR1Property RelationIdentity4 (
+	public static final R1ToR1Property RelationIdentity4 (
 		final double a,
 		final double b,
 		final double c)
 	{
-		org.drip.function.definition.R2ToR1 logBetaEstimator =
-			org.drip.specialfunction.beta.LogGammaEstimator.Weierstrass (10000);
+		R2ToR1 logBetaEstimator = LogGammaEstimator.Weierstrass (10000);
 
-		if (null == logBetaEstimator)
-		{
+		if (null == logBetaEstimator) {
 			return null;
 		}
 
-		try
-		{
-			final org.drip.specialfunction.hypergeometric.EulerQuadratureEstimator hypergeometricEstimator =
-				new org.drip.specialfunction.hypergeometric.EulerQuadratureEstimator (
-					new org.drip.specialfunction.definition.HypergeometricParameters (
-						a,
-						b,
-						c
-					),
-					logBetaEstimator,
-					100000
-				);
+		try {
+			final EulerQuadratureEstimator hypergeometricEstimator = new EulerQuadratureEstimator (
+				new HypergeometricParameters (a, b, c),
+				logBetaEstimator,
+				100000
+			);
 
-			final org.drip.specialfunction.definition.RegularHypergeometricEstimator
-				cMinusHypergeometricEstimator = new
-					org.drip.specialfunction.hypergeometric.GaussContiguousRelations
-						(hypergeometricEstimator).cMinus();
+			final RegularHypergeometricEstimator cMinusHypergeometricEstimator =
+				new GaussContiguousRelations (hypergeometricEstimator).cMinus();
 
-			return new org.drip.function.definition.R1ToR1Property (
-				org.drip.function.definition.R1ToR1Property.EQ,
-				new org.drip.function.definition.R1ToR1 (null)
-				{
+			return new R1ToR1Property (
+				R1ToR1Property.EQ,
+				new R1ToR1 (null) {
 					@Override public double evaluate (
 						final double z)
-						throws java.lang.Exception
+						throws Exception
 					{
-						return z * hypergeometricEstimator.derivative (
-							z,
-							1
-						);
+						return z * hypergeometricEstimator.derivative (z, 1);
 					}
 				},
-				new org.drip.function.definition.R1ToR1 (null)
-				{
+				new R1ToR1 (null) {
 					@Override public double evaluate (
 						final double z)
-						throws java.lang.Exception
+						throws Exception
 					{
 						return (c - 1.) * (
 							cMinusHypergeometricEstimator.regularHypergeometric (z) -
-							hypergeometricEstimator.regularHypergeometric (z)
+								hypergeometricEstimator.regularHypergeometric (z)
 						);
 					}
 				},
-				org.drip.function.definition.R1ToR1Property.MISMATCH_TOLERANCE
+				R1ToR1Property.MISMATCH_TOLERANCE
 			);
-		}
-		catch (java.lang.Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -362,68 +340,51 @@ public class GaussContiguousEqualityLemma
 	 * @return The Hyper-geometric Gauss Contiguous Identity #5 Verifier
 	 */
 
-	public static final org.drip.function.definition.R1ToR1Property RelationIdentity5 (
+	public static final R1ToR1Property RelationIdentity5 (
 		final double a,
 		final double b,
 		final double c)
 	{
-		org.drip.function.definition.R2ToR1 logBetaEstimator =
-			org.drip.specialfunction.beta.LogGammaEstimator.Weierstrass (10000);
+		R2ToR1 logBetaEstimator = LogGammaEstimator.Weierstrass (10000);
 
-		if (null == logBetaEstimator)
-		{
+		if (null == logBetaEstimator) {
 			return null;
 		}
 
-		try
-		{
-			final org.drip.specialfunction.hypergeometric.EulerQuadratureEstimator hypergeometricEstimator =
-				new org.drip.specialfunction.hypergeometric.EulerQuadratureEstimator (
-					new org.drip.specialfunction.definition.HypergeometricParameters (
-						a,
-						b,
-						c
-					),
-					logBetaEstimator,
-					100000
-				);
+		try {
+			final EulerQuadratureEstimator hypergeometricEstimator = new EulerQuadratureEstimator (
+				new HypergeometricParameters (a, b, c),
+				logBetaEstimator,
+				100000
+			);
 
-			final org.drip.specialfunction.definition.RegularHypergeometricEstimator
-				aMinusHypergeometricEstimator = new
-					org.drip.specialfunction.hypergeometric.GaussContiguousRelations
-						(hypergeometricEstimator).aMinus();
+			final RegularHypergeometricEstimator aMinusHypergeometricEstimator =
+				new GaussContiguousRelations (hypergeometricEstimator).aMinus();
 
-			return new org.drip.function.definition.R1ToR1Property (
-				org.drip.function.definition.R1ToR1Property.EQ,
-				new org.drip.function.definition.R1ToR1 (null)
-				{
+			return new R1ToR1Property (
+				R1ToR1Property.EQ,
+				new R1ToR1 (null) {
 					@Override public double evaluate (
 						final double z)
-						throws java.lang.Exception
+						throws Exception
 					{
-						return z * hypergeometricEstimator.derivative (
-							z,
-							1
-						);
+						return z * hypergeometricEstimator.derivative (z, 1);
 					}
 				},
-				new org.drip.function.definition.R1ToR1 (null)
-				{
+				new R1ToR1 (null) {
 					@Override public double evaluate (
 						final double z)
-						throws java.lang.Exception
+						throws Exception
 					{
 						return (
 							(c - a) * aMinusHypergeometricEstimator.regularHypergeometric (z) +
-							(a - c + b * z) * hypergeometricEstimator.regularHypergeometric (z)
+								(a - c + b * z) * hypergeometricEstimator.regularHypergeometric (z)
 						) / (1. - z);
 					}
 				},
-				org.drip.function.definition.R1ToR1Property.MISMATCH_TOLERANCE
+				R1ToR1Property.MISMATCH_TOLERANCE
 			);
-		}
-		catch (java.lang.Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -440,68 +401,51 @@ public class GaussContiguousEqualityLemma
 	 * @return The Hyper-geometric Gauss Contiguous Identity #6 Verifier
 	 */
 
-	public static final org.drip.function.definition.R1ToR1Property RelationIdentity6 (
+	public static final R1ToR1Property RelationIdentity6 (
 		final double a,
 		final double b,
 		final double c)
 	{
-		org.drip.function.definition.R2ToR1 logBetaEstimator =
-			org.drip.specialfunction.beta.LogGammaEstimator.Weierstrass (10000);
+		R2ToR1 logBetaEstimator = LogGammaEstimator.Weierstrass (10000);
 
-		if (null == logBetaEstimator)
-		{
+		if (null == logBetaEstimator) {
 			return null;
 		}
 
-		try
-		{
-			final org.drip.specialfunction.hypergeometric.EulerQuadratureEstimator hypergeometricEstimator =
-				new org.drip.specialfunction.hypergeometric.EulerQuadratureEstimator (
-					new org.drip.specialfunction.definition.HypergeometricParameters (
-						a,
-						b,
-						c
-					),
-					logBetaEstimator,
-					100000
-				);
+		try {
+			final EulerQuadratureEstimator hypergeometricEstimator = new EulerQuadratureEstimator (
+				new HypergeometricParameters (a, b, c),
+				logBetaEstimator,
+				100000
+			);
 
-			final org.drip.specialfunction.definition.RegularHypergeometricEstimator
-				bMinusHypergeometricEstimator = new
-					org.drip.specialfunction.hypergeometric.GaussContiguousRelations
-						(hypergeometricEstimator).bMinus();
+			final RegularHypergeometricEstimator bMinusHypergeometricEstimator =
+				new GaussContiguousRelations (hypergeometricEstimator).bMinus();
 
-			return new org.drip.function.definition.R1ToR1Property (
-				org.drip.function.definition.R1ToR1Property.EQ,
-				new org.drip.function.definition.R1ToR1 (null)
-				{
+			return new R1ToR1Property (
+				R1ToR1Property.EQ,
+				new R1ToR1 (null) {
 					@Override public double evaluate (
 						final double z)
-						throws java.lang.Exception
+						throws Exception
 					{
-						return z * hypergeometricEstimator.derivative (
-							z,
-							1
-						);
+						return z * hypergeometricEstimator.derivative (z, 1);
 					}
 				},
-				new org.drip.function.definition.R1ToR1 (null)
-				{
+				new R1ToR1 (null) {
 					@Override public double evaluate (
 						final double z)
-						throws java.lang.Exception
+						throws Exception
 					{
 						return (
 							(c - b) * bMinusHypergeometricEstimator.regularHypergeometric (z) +
-							(b - c + a * z) * hypergeometricEstimator.regularHypergeometric (z)
+								(b - c + a * z) * hypergeometricEstimator.regularHypergeometric (z)
 						) / (1. - z);
 					}
 				},
-				org.drip.function.definition.R1ToR1Property.MISMATCH_TOLERANCE
+				R1ToR1Property.MISMATCH_TOLERANCE
 			);
-		}
-		catch (java.lang.Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -518,56 +462,41 @@ public class GaussContiguousEqualityLemma
 	 * @return The Hyper-geometric Gauss Contiguous Identity #7 Verifier
 	 */
 
-	public static final org.drip.function.definition.R1ToR1Property RelationIdentity7 (
+	public static final R1ToR1Property RelationIdentity7 (
 		final double a,
 		final double b,
 		final double c)
 	{
-		org.drip.function.definition.R2ToR1 logBetaEstimator =
-			org.drip.specialfunction.beta.LogGammaEstimator.Weierstrass (10000);
+		R2ToR1 logBetaEstimator = LogGammaEstimator.Weierstrass (10000);
 
-		if (null == logBetaEstimator)
-		{
+		if (null == logBetaEstimator) {
 			return null;
 		}
 
-		try
-		{
-			final org.drip.specialfunction.hypergeometric.EulerQuadratureEstimator hypergeometricEstimator =
-				new org.drip.specialfunction.hypergeometric.EulerQuadratureEstimator (
-					new org.drip.specialfunction.definition.HypergeometricParameters (
-						a,
-						b,
-						c
-					),
-					logBetaEstimator,
-					100000
-				);
+		try {
+			final EulerQuadratureEstimator hypergeometricEstimator = new EulerQuadratureEstimator (
+				new HypergeometricParameters (a, b, c),
+				logBetaEstimator,
+				100000
+			);
 
-			final org.drip.specialfunction.definition.RegularHypergeometricEstimator
-				cPlusHypergeometricEstimator = new
-					org.drip.specialfunction.hypergeometric.GaussContiguousRelations
-						(hypergeometricEstimator).cPlus();
+			final RegularHypergeometricEstimator cPlusHypergeometricEstimator =
+				new GaussContiguousRelations (hypergeometricEstimator).cPlus();
 
-			return new org.drip.function.definition.R1ToR1Property (
-				org.drip.function.definition.R1ToR1Property.EQ,
-				new org.drip.function.definition.R1ToR1 (null)
-				{
+			return new R1ToR1Property (
+				R1ToR1Property.EQ,
+				new R1ToR1 (null) {
 					@Override public double evaluate (
 						final double z)
-						throws java.lang.Exception
+						throws Exception
 					{
-						return hypergeometricEstimator.derivative (
-							z,
-							1
-						);
+						return hypergeometricEstimator.derivative (z, 1);
 					}
 				},
-				new org.drip.function.definition.R1ToR1 (null)
-				{
+				new R1ToR1 (null) {
 					@Override public double evaluate (
 						final double z)
-						throws java.lang.Exception
+						throws Exception
 					{
 						return (
 							(c - a) * (c - b) * cPlusHypergeometricEstimator.regularHypergeometric (z) +
@@ -575,11 +504,9 @@ public class GaussContiguousEqualityLemma
 						) / (c * (1. - z));
 					}
 				},
-				org.drip.function.definition.R1ToR1Property.MISMATCH_TOLERANCE
+				R1ToR1Property.MISMATCH_TOLERANCE
 			);
-		}
-		catch (java.lang.Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
