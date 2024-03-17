@@ -1,11 +1,25 @@
 
 package org.drip.specialfunction.property;
 
+import org.drip.function.definition.R1ToR1Property;
+import org.drip.function.definition.R2ToR1;
+import org.drip.function.definition.R2ToR1Property;
+import org.drip.function.definition.R3ToR1;
+import org.drip.function.definition.R3ToR1Property;
+import org.drip.function.definition.RxToR1Property;
+import org.drip.numerical.common.NumberUtil;
+import org.drip.specialfunction.beta.IncompleteIntegrandEstimator;
+import org.drip.specialfunction.beta.IncompleteRegularizedEstimator;
+import org.drip.specialfunction.beta.IntegrandEstimator;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -78,7 +92,7 @@ package org.drip.specialfunction.property;
 
 /**
  * <i>IncompleteBetaEqualityLemma</i> implements the Equality Lemmas for the Incomplete Beta Estimation. The
- * References are:
+ * 	References are:
  * 
  * <br><br>
  * 	<ul>
@@ -101,14 +115,34 @@ package org.drip.specialfunction.property;
  * 			Wikipedia (2019): Gamma Function https://en.wikipedia.org/wiki/Gamma_function
  * 		</li>
  * 	</ul>
+ * 
+ * It provides the following functionality:
  *
- *	<br><br>
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FunctionAnalysisLibrary.md">Function Analysis Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md">Special Function Implementation Analysis</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/property/README.md">Special Function Property Lemma Verifiers</a></li>
+ * 		<li>Construct the Identity #1 Verifier</li>
+ * 		<li>Construct the Identity #2 Verifier</li>
+ * 		<li>Construct the Identity #3 Verifier</li>
+ * 		<li>Construct the Identity #4 Verifier</li>
+ * 		<li>Construct the Identity #5 Verifier</li>
+ * 		<li>Construct the Identity #6 Verifier</li>
+ * 		<li>Construct the Identity #7 Verifier</li>
+ * 		<li>Construct the Identity #8 Verifier</li>
+ * 		<li>Construct the Cumulative Binomial Distribution Verifier</li>
  *  </ul>
+ *
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FunctionAnalysisLibrary.md">Function Analysis Library</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md">Special Function Implementation and Analysis</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/property/README.md">Special Function Property Lemma Verifiers</a></td></tr>
+ *  </table>
  *
  * @author Lakshmi Krishnamurthy
  */
@@ -122,61 +156,50 @@ public class IncompleteBetaEqualityLemma
 	 * @return The Identity #1 Verifier
 	 */
 
-	public static final org.drip.function.definition.R2ToR1Property Identity1()
+	public static final R2ToR1Property Identity1()
 	{
-		try
-		{
-			final org.drip.specialfunction.beta.IncompleteRegularizedEstimator incompleteRegularizedEstimator
-				= new org.drip.specialfunction.beta.IncompleteRegularizedEstimator (
-					org.drip.specialfunction.beta.IncompleteIntegrandEstimator.EulerFirst (1000),
-					org.drip.specialfunction.beta.IntegrandEstimator.EulerFirstRightPlane (1000)
-						);
+		try {
+			final IncompleteRegularizedEstimator incompleteRegularizedEstimator =
+				new IncompleteRegularizedEstimator (
+					IncompleteIntegrandEstimator.EulerFirst (1000),
+					IntegrandEstimator.EulerFirstRightPlane (1000)
+				);
 
-			return new org.drip.function.definition.R2ToR1Property (
-				org.drip.function.definition.RxToR1Property.EQ,
-				new org.drip.function.definition.R2ToR1()
-				{
+			return new R2ToR1Property (
+				RxToR1Property.EQ,
+				new R2ToR1() {
 					@Override public double evaluate (
 						final double a,
 						final double b)
-						throws java.lang.Exception
+						throws Exception
 					{
-						if (!org.drip.numerical.common.NumberUtil.IsValid (a) || 0. >= a ||
-							!org.drip.numerical.common.NumberUtil.IsValid (b) || 0. >= b)
-						{
-							throw new java.lang.Exception
-								("IncompleteBetaEqualityLemma::Identity1::evaluate => Invalid Inputs");
+						if (!NumberUtil.IsValid (a) || 0. >= a || !NumberUtil.IsValid (b) || 0. >= b) {
+							throw new Exception (
+								"IncompleteBetaEqualityLemma::Identity1::evaluate => Invalid Inputs"
+							);
 						}
 
-						return incompleteRegularizedEstimator.evaluate (
-							0.,
-							a,
-							b
-						);
+						return incompleteRegularizedEstimator.evaluate (0., a, b);
 					}
 				},
-				new org.drip.function.definition.R2ToR1()
-				{
+				new R2ToR1() {
 					@Override public double evaluate (
 						final double x,
 						final double y)
-						throws java.lang.Exception
+						throws Exception
 					{
-						if (!org.drip.numerical.common.NumberUtil.IsValid (x) || 0. >= x ||
-							!org.drip.numerical.common.NumberUtil.IsValid (y) || 0. >= y)
-						{
-							throw new java.lang.Exception
-								("IncompleteBetaEqualityLemma::Identity1::evaluate => Invalid Inputs");
+						if (!NumberUtil.IsValid (x) || 0. >= x || !NumberUtil.IsValid (y) || 0. >= y) {
+							throw new Exception (
+								"IncompleteBetaEqualityLemma::Identity1::evaluate => Invalid Inputs"
+							);
 						}
 
 						return 0.;
 					}
 				},
-				org.drip.function.definition.R1ToR1Property.MISMATCH_TOLERANCE
+				R1ToR1Property.MISMATCH_TOLERANCE
 			);
-		}
-		catch (java.lang.Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -189,61 +212,50 @@ public class IncompleteBetaEqualityLemma
 	 * @return The Identity #2 Verifier
 	 */
 
-	public static final org.drip.function.definition.R2ToR1Property Identity2()
+	public static final R2ToR1Property Identity2()
 	{
-		try
-		{
-			final org.drip.specialfunction.beta.IncompleteRegularizedEstimator incompleteRegularizedEstimator
-				= new org.drip.specialfunction.beta.IncompleteRegularizedEstimator (
-					org.drip.specialfunction.beta.IncompleteIntegrandEstimator.EulerFirst (1000),
-					org.drip.specialfunction.beta.IntegrandEstimator.EulerFirstRightPlane (1000)
-						);
+		try {
+			final IncompleteRegularizedEstimator incompleteRegularizedEstimator =
+				new IncompleteRegularizedEstimator (
+					IncompleteIntegrandEstimator.EulerFirst (1000),
+					IntegrandEstimator.EulerFirstRightPlane (1000)
+				);
 
-			return new org.drip.function.definition.R2ToR1Property (
-				org.drip.function.definition.RxToR1Property.EQ,
-				new org.drip.function.definition.R2ToR1()
-				{
+			return new R2ToR1Property (
+				RxToR1Property.EQ,
+				new R2ToR1() {
 					@Override public double evaluate (
 						final double a,
 						final double b)
-						throws java.lang.Exception
+						throws Exception
 					{
-						if (!org.drip.numerical.common.NumberUtil.IsValid (a) || 0. >= a ||
-							!org.drip.numerical.common.NumberUtil.IsValid (b) || 0. >= b)
-						{
-							throw new java.lang.Exception
-								("IncompleteBetaEqualityLemma::Identity2::evaluate => Invalid Inputs");
+						if (!NumberUtil.IsValid (a) || 0. >= a || !NumberUtil.IsValid (b) || 0. >= b) {
+							throw new Exception (
+								"IncompleteBetaEqualityLemma::Identity2::evaluate => Invalid Inputs"
+							);
 						}
 
-						return incompleteRegularizedEstimator.evaluate (
-							1.,
-							a,
-							b
-						);
+						return incompleteRegularizedEstimator.evaluate (1., a, b);
 					}
 				},
-				new org.drip.function.definition.R2ToR1()
-				{
+				new R2ToR1() {
 					@Override public double evaluate (
 						final double x,
 						final double y)
-						throws java.lang.Exception
+						throws Exception
 					{
-						if (!org.drip.numerical.common.NumberUtil.IsValid (x) || 0. >= x ||
-							!org.drip.numerical.common.NumberUtil.IsValid (y) || 0. >= y)
-						{
-							throw new java.lang.Exception
-								("IncompleteBetaEqualityLemma::Identity2::evaluate => Invalid Inputs");
+						if (!NumberUtil.IsValid (x) || 0. >= x || !NumberUtil.IsValid (y) || 0. >= y) {
+							throw new Exception (
+								"IncompleteBetaEqualityLemma::Identity2::evaluate => Invalid Inputs"
+							);
 						}
 
 						return 1.;
 					}
 				},
-				org.drip.function.definition.R1ToR1Property.MISMATCH_TOLERANCE
+				R1ToR1Property.MISMATCH_TOLERANCE
 			);
-		}
-		catch (java.lang.Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -256,64 +268,50 @@ public class IncompleteBetaEqualityLemma
 	 * @return The Identity #3 Verifier
 	 */
 
-	public static final org.drip.function.definition.R2ToR1Property Identity3()
+	public static final R2ToR1Property Identity3()
 	{
-		try
-		{
-			final org.drip.specialfunction.beta.IncompleteRegularizedEstimator incompleteRegularizedEstimator
-				= new org.drip.specialfunction.beta.IncompleteRegularizedEstimator (
-					org.drip.specialfunction.beta.IncompleteIntegrandEstimator.EulerFirst (1000),
-					org.drip.specialfunction.beta.IntegrandEstimator.EulerFirstRightPlane (1000)
-						);
+		try {
+			final IncompleteRegularizedEstimator incompleteRegularizedEstimator =
+				new IncompleteRegularizedEstimator (
+					IncompleteIntegrandEstimator.EulerFirst (1000),
+					IntegrandEstimator.EulerFirstRightPlane (1000)
+				);
 
-			return new org.drip.function.definition.R2ToR1Property (
-				org.drip.function.definition.RxToR1Property.EQ,
-				new org.drip.function.definition.R2ToR1()
-				{
+			return new R2ToR1Property (
+				RxToR1Property.EQ,
+				new R2ToR1() {
 					@Override public double evaluate (
 						final double x,
 						final double a)
-						throws java.lang.Exception
+						throws Exception
 					{
-						if (!org.drip.numerical.common.NumberUtil.IsValid (x) || 0. >= x ||
-							!org.drip.numerical.common.NumberUtil.IsValid (a) || 0. >= a)
-						{
-							throw new java.lang.Exception
-								("IncompleteBetaEqualityLemma::Identity3::evaluate => Invalid Inputs");
+						if (!NumberUtil.IsValid (x) || 0. >= x || !NumberUtil.IsValid (a) || 0. >= a) {
+							throw new Exception (
+								"IncompleteBetaEqualityLemma::Identity3::evaluate => Invalid Inputs"
+							);
 						}
 
-						return incompleteRegularizedEstimator.evaluate (
-							x,
-							a,
-							1.
-						);
+						return incompleteRegularizedEstimator.evaluate (x, a, 1.);
 					}
 				},
-				new org.drip.function.definition.R2ToR1()
-				{
+				new R2ToR1() {
 					@Override public double evaluate (
 						final double x,
 						final double a)
-						throws java.lang.Exception
+						throws Exception
 					{
-						if (!org.drip.numerical.common.NumberUtil.IsValid (x) || 0. >= x ||
-							!org.drip.numerical.common.NumberUtil.IsValid (a) || 0. >= a)
-						{
-							throw new java.lang.Exception
-								("IncompleteBetaEqualityLemma::Identity3::evaluate => Invalid Inputs");
+						if (!NumberUtil.IsValid (x) || 0. >= x || !NumberUtil.IsValid (a) || 0. >= a) {
+							throw new Exception (
+								"IncompleteBetaEqualityLemma::Identity3::evaluate => Invalid Inputs"
+							);
 						}
 
-						return java.lang.Math.pow (
-							x,
-							a
-						);
+						return Math.pow (x, a);
 					}
 				},
-				org.drip.function.definition.R1ToR1Property.MISMATCH_TOLERANCE
+				R1ToR1Property.MISMATCH_TOLERANCE
 			);
-		}
-		catch (java.lang.Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -326,64 +324,50 @@ public class IncompleteBetaEqualityLemma
 	 * @return The Identity #4 Verifier
 	 */
 
-	public static final org.drip.function.definition.R2ToR1Property Identity4()
+	public static final R2ToR1Property Identity4()
 	{
-		try
-		{
-			final org.drip.specialfunction.beta.IncompleteRegularizedEstimator incompleteRegularizedEstimator
-				= new org.drip.specialfunction.beta.IncompleteRegularizedEstimator (
-					org.drip.specialfunction.beta.IncompleteIntegrandEstimator.EulerFirst (1000),
-					org.drip.specialfunction.beta.IntegrandEstimator.EulerFirstRightPlane (1000)
-						);
+		try {
+			final IncompleteRegularizedEstimator incompleteRegularizedEstimator =
+				new IncompleteRegularizedEstimator (
+					IncompleteIntegrandEstimator.EulerFirst (1000),
+					IntegrandEstimator.EulerFirstRightPlane (1000)
+				);
 
-			return new org.drip.function.definition.R2ToR1Property (
-				org.drip.function.definition.RxToR1Property.EQ,
-				new org.drip.function.definition.R2ToR1()
-				{
+			return new R2ToR1Property (
+				RxToR1Property.EQ,
+				new R2ToR1() {
 					@Override public double evaluate (
 						final double x,
 						final double b)
-						throws java.lang.Exception
+						throws Exception
 					{
-						if (!org.drip.numerical.common.NumberUtil.IsValid (x) || 0. >= x ||
-							!org.drip.numerical.common.NumberUtil.IsValid (b) || 0. >= b)
-						{
-							throw new java.lang.Exception
-								("IncompleteBetaEqualityLemma::Identity4::evaluate => Invalid Inputs");
+						if (!NumberUtil.IsValid (x) || 0. >= x || !NumberUtil.IsValid (b) || 0. >= b) {
+							throw new Exception (
+								"IncompleteBetaEqualityLemma::Identity4::evaluate => Invalid Inputs"
+							);
 						}
 
-						return incompleteRegularizedEstimator.evaluate (
-							x,
-							1.,
-							b
-						);
+						return incompleteRegularizedEstimator.evaluate (x, 1., b);
 					}
 				},
-				new org.drip.function.definition.R2ToR1()
-				{
+				new R2ToR1() {
 					@Override public double evaluate (
 						final double x,
 						final double b)
-						throws java.lang.Exception
+						throws Exception
 					{
-						if (!org.drip.numerical.common.NumberUtil.IsValid (x) || 0. >= x ||
-							!org.drip.numerical.common.NumberUtil.IsValid (b) || 0. >= b)
-						{
-							throw new java.lang.Exception
-								("IncompleteBetaEqualityLemma::Identity4::evaluate => Invalid Inputs");
+						if (!NumberUtil.IsValid (x) || 0. >= x || !NumberUtil.IsValid (b) || 0. >= b) {
+							throw new Exception (
+								"IncompleteBetaEqualityLemma::Identity4::evaluate => Invalid Inputs"
+							);
 						}
 
-						return 1. - java.lang.Math.pow (
-							1. - x,
-							b
-						);
+						return 1. - Math.pow (1. - x, b);
 					}
 				},
-				org.drip.function.definition.R1ToR1Property.MISMATCH_TOLERANCE
+				R1ToR1Property.MISMATCH_TOLERANCE
 			);
-		}
-		catch (java.lang.Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -396,69 +380,58 @@ public class IncompleteBetaEqualityLemma
 	 * @return The Identity #5 Verifier
 	 */
 
-	public static final org.drip.function.definition.R3ToR1Property Identity5()
+	public static final R3ToR1Property Identity5()
 	{
-		try
-		{
-			final org.drip.specialfunction.beta.IncompleteRegularizedEstimator incompleteRegularizedEstimator
-				= new org.drip.specialfunction.beta.IncompleteRegularizedEstimator (
-					org.drip.specialfunction.beta.IncompleteIntegrandEstimator.EulerFirst (1000),
-					org.drip.specialfunction.beta.IntegrandEstimator.EulerFirstRightPlane (1000)
+		try {
+			final IncompleteRegularizedEstimator incompleteRegularizedEstimator =
+				new IncompleteRegularizedEstimator (
+					IncompleteIntegrandEstimator.EulerFirst (1000),
+					IntegrandEstimator.EulerFirstRightPlane (1000)
 				);
 
-			return new org.drip.function.definition.R3ToR1Property (
-				org.drip.function.definition.RxToR1Property.EQ,
-				new org.drip.function.definition.R3ToR1()
-				{
+			return new R3ToR1Property (
+				RxToR1Property.EQ,
+				new R3ToR1() {
 					@Override public double evaluate (
 						final double x,
 						final double a,
 						final double b)
-						throws java.lang.Exception
+						throws Exception
 					{
-						if (!org.drip.numerical.common.NumberUtil.IsValid (x) || 0. >= x ||
-							!org.drip.numerical.common.NumberUtil.IsValid (a) || 0. >= a ||
-							!org.drip.numerical.common.NumberUtil.IsValid (b) || 0. >= b)
+						if (!NumberUtil.IsValid (x) || 0. >= x ||
+							!NumberUtil.IsValid (a) || 0. >= a ||
+							!NumberUtil.IsValid (b) || 0. >= b)
 						{
-							throw new java.lang.Exception
-								("IncompleteBetaEqualityLemma::Identity5::evaluate => Invalid Inputs");
+							throw new Exception (
+								"IncompleteBetaEqualityLemma::Identity5::evaluate => Invalid Inputs"
+							);
 						}
 
-						return incompleteRegularizedEstimator.evaluate (
-							x,
-							a,
-							b
-						);
+						return incompleteRegularizedEstimator.evaluate (x, a, b);
 					}
 				},
-				new org.drip.function.definition.R3ToR1()
-				{
+				new R3ToR1() {
 					@Override public double evaluate (
 						final double x,
 						final double a,
 						final double b)
-						throws java.lang.Exception
+						throws Exception
 					{
-						if (!org.drip.numerical.common.NumberUtil.IsValid (x) || 0. >= x ||
-							!org.drip.numerical.common.NumberUtil.IsValid (a) || 0. >= a ||
-							!org.drip.numerical.common.NumberUtil.IsValid (b) || 0. >= b)
+						if (!NumberUtil.IsValid (x) || 0. >= x ||
+							!NumberUtil.IsValid (a) || 0. >= a ||
+							!NumberUtil.IsValid (b) || 0. >= b)
 						{
-							throw new java.lang.Exception
-								("IncompleteBetaEqualityLemma::Identity5::evaluate => Invalid Inputs");
+							throw new Exception (
+								"IncompleteBetaEqualityLemma::Identity5::evaluate => Invalid Inputs"
+							);
 						}
 
-						return 1. - incompleteRegularizedEstimator.evaluate (
-							1. - x,
-							b,
-							a
-						);
+						return 1. - incompleteRegularizedEstimator.evaluate (1. - x, b, a);
 					}
 				},
-				org.drip.function.definition.R1ToR1Property.MISMATCH_TOLERANCE
+				R1ToR1Property.MISMATCH_TOLERANCE
 			);
-		}
-		catch (java.lang.Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -471,81 +444,61 @@ public class IncompleteBetaEqualityLemma
 	 * @return The Identity #6 Verifier
 	 */
 
-	public static final org.drip.function.definition.R3ToR1Property Identity6()
+	public static final R3ToR1Property Identity6()
 	{
-		final org.drip.specialfunction.beta.IntegrandEstimator integrandEstimator =
-			org.drip.specialfunction.beta.IntegrandEstimator.EulerFirstRightPlane (1000);
+		final IntegrandEstimator integrandEstimator = IntegrandEstimator.EulerFirstRightPlane (1000);
 
-		try
-		{
-			final org.drip.specialfunction.beta.IncompleteRegularizedEstimator incompleteRegularizedEstimator
-				= new org.drip.specialfunction.beta.IncompleteRegularizedEstimator (
-					org.drip.specialfunction.beta.IncompleteIntegrandEstimator.EulerFirst (1000),
+		try {
+			final IncompleteRegularizedEstimator incompleteRegularizedEstimator =
+				new IncompleteRegularizedEstimator (
+					IncompleteIntegrandEstimator.EulerFirst (1000),
 					integrandEstimator
 				);
 
-			return new org.drip.function.definition.R3ToR1Property (
-				org.drip.function.definition.RxToR1Property.EQ,
-				new org.drip.function.definition.R3ToR1()
-				{
+			return new R3ToR1Property (
+				RxToR1Property.EQ,
+				new R3ToR1() {
 					@Override public double evaluate (
 						final double x,
 						final double a,
 						final double b)
-						throws java.lang.Exception
+						throws Exception
 					{
-						if (!org.drip.numerical.common.NumberUtil.IsValid (x) || 0. >= x ||
-							!org.drip.numerical.common.NumberUtil.IsValid (a) || 0. >= a ||
-							!org.drip.numerical.common.NumberUtil.IsValid (b) || 0. >= b)
+						if (!NumberUtil.IsValid (x) || 0. >= x ||
+							!NumberUtil.IsValid (a) || 0. >= a ||
+							!NumberUtil.IsValid (b) || 0. >= b)
 						{
-							throw new java.lang.Exception
-								("IncompleteBetaEqualityLemma::Identity6::evaluate => Invalid Inputs");
+							throw new Exception (
+								"IncompleteBetaEqualityLemma::Identity6::evaluate => Invalid Inputs"
+							);
 						}
 
-						return incompleteRegularizedEstimator.evaluate (
-							x,
-							a + 1.,
-							b
-						);
+						return incompleteRegularizedEstimator.evaluate (x, a + 1., b);
 					}
 				},
-				new org.drip.function.definition.R3ToR1()
-				{
+				new R3ToR1() {
 					@Override public double evaluate (
 						final double x,
 						final double a,
 						final double b)
-						throws java.lang.Exception
+						throws Exception
 					{
-						if (!org.drip.numerical.common.NumberUtil.IsValid (x) || 0. >= x ||
-							!org.drip.numerical.common.NumberUtil.IsValid (a) || 0. >= a ||
-							!org.drip.numerical.common.NumberUtil.IsValid (b) || 0. >= b)
+						if (!NumberUtil.IsValid (x) || 0. >= x ||
+							!NumberUtil.IsValid (a) || 0. >= a ||
+							!NumberUtil.IsValid (b) || 0. >= b)
 						{
-							throw new java.lang.Exception
-								("IncompleteBetaEqualityLemma::Identity6::evaluate => Invalid Inputs");
+							throw new Exception (
+								"IncompleteBetaEqualityLemma::Identity6::evaluate => Invalid Inputs"
+							);
 						}
 
-						return incompleteRegularizedEstimator.evaluate (
-							x,
-							a,
-							b
-						) - java.lang.Math.pow (
-							x,
-							a
-						) * java.lang.Math.pow (
-							1. - x,
-							b
-						) / a / integrandEstimator.evaluate (
-							a,
-							b
-						);
+						return incompleteRegularizedEstimator.evaluate (x, a, b) -
+							Math.pow (x, a) * Math.pow (1. - x, b) / a / integrandEstimator.evaluate (a, b);
 					}
 				},
-				org.drip.function.definition.R1ToR1Property.MISMATCH_TOLERANCE
+				R1ToR1Property.MISMATCH_TOLERANCE
 			);
-		}
-		catch (java.lang.Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -558,81 +511,61 @@ public class IncompleteBetaEqualityLemma
 	 * @return The Identity #7 Verifier
 	 */
 
-	public static final org.drip.function.definition.R3ToR1Property Identity7()
+	public static final R3ToR1Property Identity7()
 	{
-		final org.drip.specialfunction.beta.IntegrandEstimator integrandEstimator =
-			org.drip.specialfunction.beta.IntegrandEstimator.EulerFirstRightPlane (1000);
+		final IntegrandEstimator integrandEstimator = IntegrandEstimator.EulerFirstRightPlane (1000);
 
-		try
-		{
-			final org.drip.specialfunction.beta.IncompleteRegularizedEstimator incompleteRegularizedEstimator
-				= new org.drip.specialfunction.beta.IncompleteRegularizedEstimator (
-					org.drip.specialfunction.beta.IncompleteIntegrandEstimator.EulerFirst (1000),
+		try {
+			final IncompleteRegularizedEstimator incompleteRegularizedEstimator =
+				new IncompleteRegularizedEstimator (
+					IncompleteIntegrandEstimator.EulerFirst (1000),
 					integrandEstimator
 				);
 
-			return new org.drip.function.definition.R3ToR1Property (
-				org.drip.function.definition.RxToR1Property.EQ,
-				new org.drip.function.definition.R3ToR1()
-				{
+			return new R3ToR1Property (
+				RxToR1Property.EQ,
+				new R3ToR1() {
 					@Override public double evaluate (
 						final double x,
 						final double a,
 						final double b)
-						throws java.lang.Exception
+						throws Exception
 					{
-						if (!org.drip.numerical.common.NumberUtil.IsValid (x) || 0. >= x ||
-							!org.drip.numerical.common.NumberUtil.IsValid (a) || 0. >= a ||
-							!org.drip.numerical.common.NumberUtil.IsValid (b) || 0. >= b)
+						if (!NumberUtil.IsValid (x) || 0. >= x ||
+							!NumberUtil.IsValid (a) || 0. >= a ||
+							!NumberUtil.IsValid (b) || 0. >= b)
 						{
-							throw new java.lang.Exception
-								("IncompleteBetaEqualityLemma::Identity7::evaluate => Invalid Inputs");
+							throw new Exception (
+								"IncompleteBetaEqualityLemma::Identity7::evaluate => Invalid Inputs"
+							);
 						}
 
-						return incompleteRegularizedEstimator.evaluate (
-							x,
-							a,
-							b + 1.
-						);
+						return incompleteRegularizedEstimator.evaluate (x, a, b + 1.);
 					}
 				},
-				new org.drip.function.definition.R3ToR1()
-				{
+				new R3ToR1() {
 					@Override public double evaluate (
 						final double x,
 						final double a,
 						final double b)
-						throws java.lang.Exception
+						throws Exception
 					{
-						if (!org.drip.numerical.common.NumberUtil.IsValid (x) || 0. >= x ||
-							!org.drip.numerical.common.NumberUtil.IsValid (a) || 0. >= a ||
-							!org.drip.numerical.common.NumberUtil.IsValid (b) || 0. >= b)
+						if (!NumberUtil.IsValid (x) || 0. >= x ||
+							!NumberUtil.IsValid (a) || 0. >= a ||
+							!NumberUtil.IsValid (b) || 0. >= b)
 						{
-							throw new java.lang.Exception
-								("IncompleteBetaEqualityLemma::Identity7::evaluate => Invalid Inputs");
+							throw new Exception (
+								"IncompleteBetaEqualityLemma::Identity7::evaluate => Invalid Inputs"
+							);
 						}
 
-						return incompleteRegularizedEstimator.evaluate (
-							x,
-							a,
-							b
-						) + java.lang.Math.pow (
-							x,
-							a
-						) * java.lang.Math.pow (
-							1. - x,
-							b
-						) / b / integrandEstimator.evaluate (
-							a,
-							b
-						);
+						return incompleteRegularizedEstimator.evaluate (x, a, b) +
+							Math.pow (x, a) * Math.pow (1. - x, b) / b / integrandEstimator.evaluate (a, b);
 					}
 				},
-				org.drip.function.definition.R1ToR1Property.MISMATCH_TOLERANCE
+				R1ToR1Property.MISMATCH_TOLERANCE
 			);
-		}
-		catch (java.lang.Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -645,72 +578,60 @@ public class IncompleteBetaEqualityLemma
 	 * @return The Identity #8 Verifier
 	 */
 
-	public static final org.drip.function.definition.R3ToR1Property Identity8()
+	public static final R3ToR1Property Identity8()
 	{
-		final org.drip.specialfunction.beta.IntegrandEstimator integrandEstimator =
-			org.drip.specialfunction.beta.IntegrandEstimator.EulerFirstRightPlane (1000);
+		final IntegrandEstimator integrandEstimator = IntegrandEstimator.EulerFirstRightPlane (1000);
 
-		try
-		{
-			final org.drip.specialfunction.beta.IncompleteRegularizedEstimator incompleteRegularizedEstimator
-				= new org.drip.specialfunction.beta.IncompleteRegularizedEstimator (
-					org.drip.specialfunction.beta.IncompleteIntegrandEstimator.EulerFirst (1000),
+		try {
+			final IncompleteRegularizedEstimator incompleteRegularizedEstimator =
+				new IncompleteRegularizedEstimator (
+					IncompleteIntegrandEstimator.EulerFirst (1000),
 					integrandEstimator
 				);
 
-			return new org.drip.function.definition.R3ToR1Property (
-				org.drip.function.definition.RxToR1Property.EQ,
-				new org.drip.function.definition.R3ToR1()
-				{
+			return new R3ToR1Property (
+				RxToR1Property.EQ,
+				new R3ToR1() {
 					@Override public double evaluate (
 						final double x,
 						final double a,
 						final double b)
-						throws java.lang.Exception
+						throws Exception
 					{
-						if (!org.drip.numerical.common.NumberUtil.IsValid (x) || 0. >= x ||
-							!org.drip.numerical.common.NumberUtil.IsValid (a) || 0. >= a ||
-							!org.drip.numerical.common.NumberUtil.IsValid (b) || 0. >= b)
+						if (!NumberUtil.IsValid (x) || 0. >= x ||
+							!NumberUtil.IsValid (a) || 0. >= a ||
+							!NumberUtil.IsValid (b) || 0. >= b)
 						{
-							throw new java.lang.Exception
-								("IncompleteBetaEqualityLemma::Identity8::evaluate => Invalid Inputs");
+							throw new Exception (
+								"IncompleteBetaEqualityLemma::Identity8::evaluate => Invalid Inputs"
+							);
 						}
 
-						return incompleteRegularizedEstimator.evaluate (
-							x,
-							a,
-							b
-						);
+						return incompleteRegularizedEstimator.evaluate (x, a, b);
 					}
 				},
-				new org.drip.function.definition.R3ToR1()
-				{
+				new R3ToR1() {
 					@Override public double evaluate (
 						final double x,
 						final double a,
 						final double b)
-						throws java.lang.Exception
+						throws Exception
 					{
-						if (!org.drip.numerical.common.NumberUtil.IsValid (x) || 0. >= x ||
-							!org.drip.numerical.common.NumberUtil.IsValid (a) || 0. >= a ||
-							!org.drip.numerical.common.NumberUtil.IsValid (b) || 0. >= b)
+						if (!NumberUtil.IsValid (x) || 0. >= x ||
+							!NumberUtil.IsValid (a) || 0. >= a ||
+							!NumberUtil.IsValid (b) || 0. >= b)
 						{
-							throw new java.lang.Exception
-								("IncompleteBetaEqualityLemma::Identity8::evaluate => Invalid Inputs");
+							throw new Exception (
+								"IncompleteBetaEqualityLemma::Identity8::evaluate => Invalid Inputs"
+							);
 						}
 
-						return incompleteRegularizedEstimator.evaluate (
-							x / (1. - x),
-							a,
-							1. - a - b
-						);
+						return incompleteRegularizedEstimator.evaluate (x / (1. - x), a, 1. - a - b);
 					}
 				},
-				org.drip.function.definition.R1ToR1Property.MISMATCH_TOLERANCE
+				R1ToR1Property.MISMATCH_TOLERANCE
 			);
-		}
-		catch (java.lang.Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -723,69 +644,58 @@ public class IncompleteBetaEqualityLemma
 	 * @return The Cumulative Binomial Distribution Verifier
 	 */
 
-	public static final org.drip.function.definition.R3ToR1Property CumulativeBinomialDistribution()
+	public static final R3ToR1Property CumulativeBinomialDistribution()
 	{
-		try
-		{
-			final org.drip.specialfunction.beta.IncompleteRegularizedEstimator incompleteRegularizedEstimator
-				= new org.drip.specialfunction.beta.IncompleteRegularizedEstimator (
-					org.drip.specialfunction.beta.IncompleteIntegrandEstimator.EulerFirst (1000),
-					org.drip.specialfunction.beta.IntegrandEstimator.EulerFirstRightPlane (1000)
+		try {
+			final IncompleteRegularizedEstimator incompleteRegularizedEstimator =
+				new IncompleteRegularizedEstimator (
+					IncompleteIntegrandEstimator.EulerFirst (1000),
+					IntegrandEstimator.EulerFirstRightPlane (1000)
 				);
 
-			return new org.drip.function.definition.R3ToR1Property (
-				org.drip.function.definition.RxToR1Property.EQ,
-				new org.drip.function.definition.R3ToR1()
-				{
+			return new R3ToR1Property (
+				RxToR1Property.EQ,
+				new R3ToR1() {
 					@Override public double evaluate (
 						final double p,
 						final double n,
 						final double k)
-						throws java.lang.Exception
+						throws Exception
 					{
-						if (!org.drip.numerical.common.NumberUtil.IsValid (p) || 0. >= p ||
-							!org.drip.numerical.common.NumberUtil.IsValid (n) || 0. >= n ||
-							!org.drip.numerical.common.NumberUtil.IsValid (k) || 0. >= k)
+						if (!NumberUtil.IsValid (p) || 0. >= p ||
+							!NumberUtil.IsValid (n) || 0. >= n ||
+							!NumberUtil.IsValid (k) || 0. >= k)
 						{
-							throw new java.lang.Exception
-								("IncompleteBetaEqualityLemma::CumulativeBinomialDistribution::evaluate => Invalid Inputs");
+							throw new Exception (
+								"IncompleteBetaEqualityLemma::CumulativeBinomialDistribution::evaluate => Invalid Inputs"
+							);
 						}
 
-						return incompleteRegularizedEstimator.evaluate (
-							1. - p,
-							n - k,
-							k + 1.
-						);
+						return incompleteRegularizedEstimator.evaluate (1. - p, n - k, k + 1.);
 					}
 				},
-				new org.drip.function.definition.R3ToR1()
-				{
+				new R3ToR1() {
 					@Override public double evaluate (
 						final double p,
 						final double n,
 						final double k)
-						throws java.lang.Exception
+						throws Exception
 					{
-						if (!org.drip.numerical.common.NumberUtil.IsValid (p) || 0. >= p ||
-							!org.drip.numerical.common.NumberUtil.IsValid (n) || 0. >= n ||
-							!org.drip.numerical.common.NumberUtil.IsValid (k) || 0. >= k)
+						if (!NumberUtil.IsValid (p) || 0. >= p ||
+							!NumberUtil.IsValid (n) || 0. >= n ||
+							!NumberUtil.IsValid (k) || 0. >= k)
 						{
-							throw new java.lang.Exception
-								("IncompleteBetaEqualityLemma::CumulativeBinomialDistribution::evaluate => Invalid Inputs");
+							throw new Exception (
+								"IncompleteBetaEqualityLemma::CumulativeBinomialDistribution::evaluate => Invalid Inputs"
+							);
 						}
 
-						return 1. - incompleteRegularizedEstimator.evaluate (
-							p,
-							k + 1.,
-							n - k
-						);
+						return 1. - incompleteRegularizedEstimator.evaluate (p, k + 1., n - k);
 					}
 				},
-				org.drip.function.definition.R1ToR1Property.MISMATCH_TOLERANCE
+				R1ToR1Property.MISMATCH_TOLERANCE
 			);
-		}
-		catch (java.lang.Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
