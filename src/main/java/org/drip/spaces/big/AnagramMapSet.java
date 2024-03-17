@@ -1,11 +1,21 @@
 
 package org.drip.spaces.big;
 
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+
+import org.drip.analytics.support.CaseInsensitiveHashMap;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -77,49 +87,58 @@ package org.drip.spaces.big;
  */
 
 /**
- * <i>AnagramMapSet</i> makes a Set of all the Anagram Groups in the Word Group.
- * 
- * <br><br>
+ * <i>AnagramMapSet</i> makes a Set of all the Anagram Groups in the Word Group. It provides the following
+ * 	Functionality:
+ *
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/StatisticalLearningLibrary.md">Statistical Learning Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/README.md">R<sup>1</sup> and R<sup>d</sup> Vector/Tensor Spaces (Validated and/or Normed), and Function Classes</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/big/README.md">Big-data In-place Manipulator</a></li>
+ * 		<li>Construct an <i>AnagramMapSet</i> Instance from the specified Sentence</li>
+ * 		<li>Empty <i>AnagramMapSet</i> Constructor</li>
+ * 		<li>Update the Anagram Map Set One Word at a Time</li>
+ * 		<li>Return the Map of Anagrams</li>
  *  </ul>
- * <br><br>
+ *
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/StatisticalLearningLibrary.md">Statistical Learning Library</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/README.md">R<sup>1</sup> and R<sup>d</sup> Vector/Tensor Spaces (Validated and/or Normed), and Function Classes</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/big/README.md">Big-data In-place Manipulator</a></td></tr>
+ *  </table>
  *
  * @author Lakshmi Krishnamurthy
  */
 
 public class AnagramMapSet
 {
-	private java.util.Map<java.lang.String, java.util.Set<java.lang.String>> _anagramMap = new
-		org.drip.analytics.support.CaseInsensitiveHashMap<java.util.Set<java.lang.String>>();
+	private Map<String, Set<String>> _anagramMap = new CaseInsensitiveHashMap<Set<String>>();
 
 	/**
-	 * Construct an AnagramMapSet Instance from the specified Sentence
+	 * Construct an <i>AnagramMapSet</i> Instance from the specified Sentence
 	 * 
 	 * @param sentence The Sentence
 	 * 
-	 * @return The AnagramMapSet Instance
+	 * @return The <i>AnagramMapSet</i> Instance
 	 */
 
 	public static final AnagramMapSet FromSentence (
-		final java.lang.String sentence)
+		final String sentence)
 	{
-		java.lang.String[] wordArray = sentence.split (" ");
+		String[] wordArray = sentence.split (" ");
 
-		if (null == wordArray || 0 == wordArray.length)
-		{
+		if (null == wordArray || 0 == wordArray.length) {
 			return null;
 		}
 
 		AnagramMapSet anagramMapSet = new AnagramMapSet();
 
-		for (java.lang.String word : wordArray)
-		{
-			if (!anagramMapSet.update (word))
-			{
+		for (String word : wordArray) {
+			if (!anagramMapSet.update (word)) {
 				return null;
 			}
 		}
@@ -128,7 +147,7 @@ public class AnagramMapSet
 	}
 
 	/**
-	 * Empty AnagramMapSet Constructor
+	 * Empty <i>AnagramMapSet</i> Constructor
 	 */
 
 	public AnagramMapSet()
@@ -144,33 +163,26 @@ public class AnagramMapSet
 	 */
 
 	public boolean update (
-		final java.lang.String word)
+		final String word)
 	{
-		if (null == word || word.isEmpty())
-		{
+		if (null == word || word.isEmpty()) {
 			return false;
 		}
 
 		char[] anagramCharArray = word.toLowerCase().toCharArray();
 
-		java.util.Arrays.sort (anagramCharArray);
+		Arrays.sort (anagramCharArray);
 
-		java.lang.String anagramKey = new java.lang.String (anagramCharArray);
+		String anagramKey = new String (anagramCharArray);
 
-		if (_anagramMap.containsKey (anagramKey))
-		{
+		if (_anagramMap.containsKey (anagramKey)) {
 			_anagramMap.get (anagramKey).add (word);
-		}
-		else
-		{
-			java.util.Set<java.lang.String> anagramSet = new java.util.HashSet<java.lang.String>();
+		} else {
+			Set<String> anagramSet = new HashSet<String>();
 
 			anagramSet.add (word);
 
-			_anagramMap.put (
-				anagramKey,
-				anagramSet
-			);
+			_anagramMap.put (anagramKey, anagramSet);
 		}
 
 		return true;
@@ -182,7 +194,7 @@ public class AnagramMapSet
 	 * @return The Map of Anagrams
 	 */
 
-	public java.util.Map<java.lang.String, java.util.Set<java.lang.String>> anagramMap()
+	public Map<String, Set<String>> anagramMap()
 	{
 		return _anagramMap;
 	}

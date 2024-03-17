@@ -1,11 +1,19 @@
 
 package org.drip.specialfunction.scaledexponential;
 
+import org.drip.function.definition.R1ToR1;
+import org.drip.numerical.common.NumberUtil;
+import org.drip.numerical.estimation.R1ToR1Series;
+import org.drip.specialfunction.definition.RelaxationTimeDistributionEstimator;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -78,7 +86,7 @@ package org.drip.specialfunction.scaledexponential;
 
 /**
  * <i>RelaxationTimeDistributionSeriesEstimator</i> exposes the Series-based Estimator for the Relaxation
- * Time Distribution Function. The References are:
+ * 	Time Distribution Function. The References are:
  * 
  * <br><br>
  * 	<ul>
@@ -104,25 +112,37 @@ package org.drip.specialfunction.scaledexponential;
  * 				Physics</i> <b>116 (8)</b> 3204-3209
  * 		</li>
  * 	</ul>
+ * 
+ * It provides the following functionality:
  *
- *	<br><br>
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FunctionAnalysisLibrary.md">Function Analysis Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md">Special Function Implementation Analysis</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/scaledexponential/README.md">Scaled Exponential Function Implementation Distribution</a></li>
+ * 		<li>Construct a Standard Instance of <i>RelaxationTimeDistributionSeriesEstimator</i></li>
+ * 		<li>Retrieve the R<sup>1</sup> to R<sup>1</sup> Relaxation Time Distribution Series</li>
  *  </ul>
+ *
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FunctionAnalysisLibrary.md">Function Analysis Library</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/README.md">Special Function Implementation and Analysis</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/specialfunction/scaledexponential/README.md">Scaled Exponential Function Implementation Distribution</a></td></tr>
+ *  </table>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class RelaxationTimeDistributionSeriesEstimator extends
-	org.drip.specialfunction.definition.RelaxationTimeDistributionEstimator
+public class RelaxationTimeDistributionSeriesEstimator extends RelaxationTimeDistributionEstimator
 {
-	private org.drip.numerical.estimation.R1ToR1Series _series = null;
+	private R1ToR1Series _series = null;
 
 	/**
-	 * Construct a Standard Instance of RelaxationTimeDistributionSeriesEstimator
+	 * Construct a Standard Instance of <i>RelaxationTimeDistributionSeriesEstimator</i>
 	 * 
 	 * @param beta The beta
 	 * @param gammaEstimator The Gamma Estimator
@@ -133,21 +153,14 @@ public class RelaxationTimeDistributionSeriesEstimator extends
 
 	public static final RelaxationTimeDistributionSeriesEstimator Standard (
 		final double beta,
-		final org.drip.function.definition.R1ToR1 gammaEstimator,
+		final R1ToR1 gammaEstimator,
 		final int termCount)
 	{
-		try
-		{
+		try {
 			return new RelaxationTimeDistributionSeriesEstimator (
-				org.drip.specialfunction.scaledexponential.RelaxationTimeDistributionSeries.Summation (
-					beta,
-					gammaEstimator,
-					termCount
-				)
+				RelaxationTimeDistributionSeries.Summation (beta, gammaEstimator, termCount)
 			);
-		}
-		catch (java.lang.Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -155,13 +168,11 @@ public class RelaxationTimeDistributionSeriesEstimator extends
 	}
 
 	private RelaxationTimeDistributionSeriesEstimator (
-		final org.drip.numerical.estimation.R1ToR1Series series)
-		throws java.lang.Exception
+		final R1ToR1Series series)
+		throws Exception
 	{
-		if (null == (_series = series))
-		{
-			throw new java.lang.Exception
-				("RelaxationTimeDistributionSeriesEstimator Constructor => Invalid Inputs");
+		if (null == (_series = series)) {
+			throw new Exception ("RelaxationTimeDistributionSeriesEstimator Constructor => Invalid Inputs");
 		}
 	}
 
@@ -171,21 +182,21 @@ public class RelaxationTimeDistributionSeriesEstimator extends
 	 * @return The R<sup>1</sup> to R<sup>1</sup> Relaxation Time Distribution Series
 	 */
 
-	public org.drip.numerical.estimation.R1ToR1Series series()
+	public R1ToR1Series series()
 	{
 		return _series;
 	}
 
 	@Override public double relaxationTimeDensity (
 		final double t)
-		throws java.lang.Exception
+		throws Exception
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (t) || 0. > t)
-		{
-			throw new java.lang.Exception
-				("RelaxationTimeDistributionSeriesEstimator::relaxationTimeDensity => Invalid Inputs");
+		if (NumberUtil.IsValid (t) || 0. > t) {
+			throw new Exception (
+				"RelaxationTimeDistributionSeriesEstimator::relaxationTimeDensity => Invalid Inputs"
+			);
 		}
 
-		return -1. * _series.evaluate (t) / java.lang.Math.PI / t;
+		return -1. * _series.evaluate (t) / Math.PI / t;
 	}
 }
