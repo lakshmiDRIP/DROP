@@ -1,11 +1,26 @@
 
 package org.drip.spaces.functionclass;
 
+import org.drip.function.definition.R1ToR1;
+import org.drip.numerical.common.NumberUtil;
+import org.drip.spaces.cover.FunctionClassCoveringBounds;
+import org.drip.spaces.cover.MaureyOperatorCoveringBounds;
+import org.drip.spaces.cover.ScaleSensitiveCoveringBounds;
+import org.drip.spaces.instance.GeneralizedValidatedVector;
+import org.drip.spaces.instance.ValidatedR1;
+import org.drip.spaces.instance.ValidatedRd;
+import org.drip.spaces.metric.GeneralizedMetricVectorSpace;
+import org.drip.spaces.metric.R1Continuous;
+import org.drip.spaces.metric.RdContinuousBanach;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -82,7 +97,7 @@ package org.drip.spaces.functionclass;
 
 /**
  * <i>NormedRxToNormedRxFinite</i> exposes the Space of Functions that are a Transform from the Normed
- * R<sup>x</sup> To Normed R<sup>d</sup> Spaces. The References are:
+ * 	R<sup>x</sup> To Normed R<sup>d</sup> Spaces. The References are:
  *
  * <br><br>
  *  <ul>
@@ -101,28 +116,53 @@ package org.drip.spaces.functionclass;
  *  	</li>
  *  </ul>
  *
- * <br><br>
+ *  It provides the following Functionality:
+ *
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/StatisticalLearningLibrary.md">Statistical Learning Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/README.md">R<sup>1</sup> and R<sup>d</sup> Vector/Tensor Spaces (Validated and/or Normed), and Function Classes</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/functionclass/README.md">Normed Finite Spaces Function Class</a></li>
+ * 		<li>Retrieve the Input Vector Space</li>
+ * 		<li>Retrieve the Output Vector Space</li>
+ * 		<li>Compute the Operator Population Metric Norm</li>
+ * 		<li>Compute the Operator Population Supremum Norm</li>
+ * 		<li>Compute the Operator Sample Metric Norm</li>
+ * 		<li>Compute the Operator Sample Supremum Norm</li>
+ * 		<li>Retrieve the Agnostic Covering Number Upper/Lower Bounds for the Function Class</li>
+ * 		<li>Retrieve the Maurey Constant</li>
+ * 		<li>Retrieve the Scale-Sensitive Covering Number Upper/Lower Bounds given the Specified Sample for the Function Class</li>
+ * 		<li>Compute the Output Dimension</li>
+ * 		<li>Compute the Maurey Covering Number Upper Bounds for Operator Population Metric Norm</li>
+ * 		<li>Compute the Maurey Covering Number Upper Bounds for Operator Population Supremum Norm</li>
+ * 		<li>Compute the Maurey Covering Number Upper Bounds for Operator Sample Metric Norm</li>
+ * 		<li>Compute the Maurey Covering Number Upper Bounds for Operator Sample Supremum Norm</li>
  *  </ul>
- * <br><br>
+ *
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/StatisticalLearningLibrary.md">Statistical Learning Library</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/README.md">R<sup>1</sup> and R<sup>d</sup> Vector/Tensor Spaces (Validated and/or Normed), and Function Classes</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/functionclass/README.md">Normed Finite Spaces Function Class</a></td></tr>
+ *  </table>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public abstract class NormedRxToNormedRxFinite {
-	private double _dblMaureyConstant = java.lang.Double.NaN;
+public abstract class NormedRxToNormedRxFinite
+{
+	private double _maureyConstant = Double.NaN;
 
 	protected NormedRxToNormedRxFinite (
-		final double dblMaureyConstant)
-		throws java.lang.Exception
+		final double maureyConstant)
+		throws Exception
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblMaureyConstant = dblMaureyConstant) || 0. >=
-			_dblMaureyConstant)
-			throw new java.lang.Exception ("NormedRxToNormedRxFinite ctr => Invalid Inputs");
+		if (!NumberUtil.IsValid (_maureyConstant = maureyConstant) || 0. >= _maureyConstant) {
+			throw new Exception ("NormedRxToNormedRxFinite ctr => Invalid Inputs");
+		}
 	}
 
 	/**
@@ -131,7 +171,7 @@ public abstract class NormedRxToNormedRxFinite {
 	 * @return The Input Vector Space
 	 */
 
-	public abstract org.drip.spaces.metric.GeneralizedMetricVectorSpace inputMetricVectorSpace();
+	public abstract GeneralizedMetricVectorSpace inputMetricVectorSpace();
 
 	/**
 	 * Retrieve the Output Vector Space
@@ -139,57 +179,57 @@ public abstract class NormedRxToNormedRxFinite {
 	 * @return The Output Vector Space
 	 */
 
-	public abstract org.drip.spaces.metric.GeneralizedMetricVectorSpace outputMetricVectorSpace();
+	public abstract GeneralizedMetricVectorSpace outputMetricVectorSpace();
 
 	/**
 	 * Compute the Operator Population Metric Norm
 	 * 
 	 * @return The Operator Population Metric Norm
 	 * 
-	 * @throws java.lang.Exception Thrown if the Operator Norm cannot be computed
+	 * @throws Exception Thrown if the Operator Norm cannot be computed
 	 */
 
 	public abstract double operatorPopulationMetricNorm()
-		throws java.lang.Exception;
+		throws Exception;
 
 	/**
 	 * Compute the Operator Population Supremum Norm
 	 * 
 	 * @return The Operator Population Supremum Norm
 	 * 
-	 * @throws java.lang.Exception Thrown if the Operator Population Supremum Norm cannot be computed
+	 * @throws Exception Thrown if the Operator Population Supremum Norm cannot be computed
 	 */
 
 	public abstract double operatorPopulationSupremumNorm()
-		throws java.lang.Exception;
+		throws Exception;
 
 	/**
 	 * Compute the Operator Sample Metric Norm
 	 * 
-	 * @param gvvi The Validated Vector Space Instance
+	 * @param generalizedValidatedVector The Validated Vector Space Instance
 	 * 
 	 * @return The Operator Sample Metric Norm
 	 * 
-	 * @throws java.lang.Exception Thrown if the Operator Norm cannot be computed
+	 * @throws Exception Thrown if the Operator Norm cannot be computed
 	 */
 
 	public abstract double operatorSampleMetricNorm (
-		final org.drip.spaces.instance.GeneralizedValidatedVector gvvi)
-		throws java.lang.Exception;
+		final GeneralizedValidatedVector generalizedValidatedVector
+	) throws Exception;
 
 	/**
 	 * Compute the Operator Sample Supremum Norm
 	 * 
-	 * @param gvvi The Validated Vector Space Instance
+	 * @param generalizedValidatedVector The Validated Vector Space Instance
 	 * 
 	 * @return The Operator Sample Supremum Norm
 	 * 
-	 * @throws java.lang.Exception Thrown if the Operator Sample Supremum Norm cannot be computed
+	 * @throws Exception Thrown if the Operator Sample Supremum Norm cannot be computed
 	 */
 
 	public abstract double operatorSampleSupremumNorm (
-		final org.drip.spaces.instance.GeneralizedValidatedVector gvvi)
-		throws java.lang.Exception;
+		final GeneralizedValidatedVector generalizedValidatedVector
+	) throws Exception;
 
 	/**
 	 * Retrieve the Agnostic Covering Number Upper/Lower Bounds for the Function Class
@@ -197,7 +237,7 @@ public abstract class NormedRxToNormedRxFinite {
 	 * @return The Agnostic Covering Number Upper/Lower Bounds for the Function Class
 	 */
 
-	public abstract org.drip.spaces.cover.FunctionClassCoveringBounds agnosticCoveringNumberBounds();
+	public abstract FunctionClassCoveringBounds agnosticCoveringNumberBounds();
 
 	/**
 	 * Retrieve the Maurey Constant
@@ -207,46 +247,51 @@ public abstract class NormedRxToNormedRxFinite {
 
 	public double maureyConstant()
 	{
-		return _dblMaureyConstant;
+		return _maureyConstant;
 	}
 
 	/**
 	 * Retrieve the Scale-Sensitive Covering Number Upper/Lower Bounds given the Specified Sample for the
 	 *  Function Class
 	 * 
-	 * @param gvvi The Validated Instance Vector Sequence
-	 * @param funcR1ToR1FatShatter The Cover Fat Shattering Coefficient R^1 To R^1
+	 * @param generalizedValidatedVector The Validated Instance Vector Sequence
+	 * @param r1ToR1FatShatteringFunction The Cover Fat Shattering Coefficient R<sup>1</sup> To R<sup>1</sup>
 	 * 
 	 * @return The Scale-Sensitive Covering Number Upper/Lower Bounds given the Specified Sample for the
 	 *  Function Class
 	 */
 
-	public org.drip.spaces.cover.FunctionClassCoveringBounds scaleSensitiveCoveringBounds (
-		final org.drip.spaces.instance.GeneralizedValidatedVector gvvi,
-		final org.drip.function.definition.R1ToR1 funcR1ToR1FatShatter)
+	public FunctionClassCoveringBounds scaleSensitiveCoveringBounds (
+		final GeneralizedValidatedVector generalizedValidatedVector,
+		final R1ToR1 r1ToR1FatShatteringFunction)
 	{
-		if (null == gvvi || null == funcR1ToR1FatShatter) return null;
+		if (null == generalizedValidatedVector || null == r1ToR1FatShatteringFunction) {
+			return null;
+		}
 
-		int iSampleSize = -1;
+		int sampleSize = -1;
 
-		if (gvvi instanceof org.drip.spaces.instance.ValidatedR1) {
-			double[] adblInstance = ((org.drip.spaces.instance.ValidatedR1) gvvi).instance();
+		if (generalizedValidatedVector instanceof ValidatedR1) {
+			double[] instanceArray = ((ValidatedR1) generalizedValidatedVector).instance();
 
-			if (null == adblInstance) return null;
+			if (null == instanceArray) {
+				return null;
+			}
 
-			iSampleSize = adblInstance.length;
-		} else if (gvvi instanceof org.drip.spaces.instance.ValidatedRd) {
-			double[][] aadblInstance = ((org.drip.spaces.instance.ValidatedRd) gvvi).instance();
+			sampleSize = instanceArray.length;
+		} else if (generalizedValidatedVector instanceof ValidatedRd) {
+			double[][] instanceGrid = ((ValidatedRd) generalizedValidatedVector).instance();
 
-			if (null == aadblInstance) return null;
+			if (null == instanceGrid) {
+				return null;
+			}
 
-			iSampleSize = aadblInstance.length;
+			sampleSize = instanceGrid.length;
 		}
 
 		try {
-			return new org.drip.spaces.cover.ScaleSensitiveCoveringBounds (funcR1ToR1FatShatter,
-				iSampleSize);
-		} catch (java.lang.Exception e) {
+			return new ScaleSensitiveCoveringBounds (r1ToR1FatShatteringFunction, sampleSize);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -258,20 +303,22 @@ public abstract class NormedRxToNormedRxFinite {
 	 * 
 	 * @return The Output Dimension
 	 * 
-	 * @throws java.lang.Exception Thrown if the Output Dimension is Invalid
+	 * @throws Exception Thrown if the Output Dimension is Invalid
 	 */
 
 	public int outputDimension()
-		throws java.lang.Exception
+		throws Exception
 	{
-		org.drip.spaces.metric.GeneralizedMetricVectorSpace gmvsOutput = outputMetricVectorSpace();
+		GeneralizedMetricVectorSpace generalizedMetricVectorSpaceOutput = outputMetricVectorSpace();
 
-		if (!(gmvsOutput instanceof org.drip.spaces.metric.R1Continuous) && !(gmvsOutput instanceof
-			org.drip.spaces.metric.RdContinuousBanach))
-			throw new java.lang.Exception ("NormedRxToNormedRxFinite::dimension => Invalid Inputs");
+		if (!(generalizedMetricVectorSpaceOutput instanceof R1Continuous) &&
+			!(generalizedMetricVectorSpaceOutput instanceof RdContinuousBanach))
+		{
+			throw new Exception ("NormedRxToNormedRxFinite::dimension => Invalid Inputs");
+		}
 
-		return gmvsOutput instanceof org.drip.spaces.metric.R1Continuous ? 1 :
-			((org.drip.spaces.metric.RdContinuousBanach) gmvsOutput).dimension();
+		return generalizedMetricVectorSpaceOutput instanceof R1Continuous ? 1 :
+			((RdContinuousBanach) generalizedMetricVectorSpaceOutput).dimension();
 	}
 
 	/**
@@ -281,12 +328,15 @@ public abstract class NormedRxToNormedRxFinite {
 	 *  Population Metric Norm
 	 */
 
-	public org.drip.spaces.cover.MaureyOperatorCoveringBounds populationMetricCoveringBounds()
+	public MaureyOperatorCoveringBounds populationMetricCoveringBounds()
 	{
 		try {
-			return new org.drip.spaces.cover.MaureyOperatorCoveringBounds (_dblMaureyConstant,
-				outputDimension(), operatorPopulationMetricNorm());
-		} catch (java.lang.Exception e) {
+			return new MaureyOperatorCoveringBounds (
+				_maureyConstant,
+				outputDimension(),
+				operatorPopulationMetricNorm()
+			);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -300,12 +350,15 @@ public abstract class NormedRxToNormedRxFinite {
 	 *  Population Supremum Norm
 	 */
 
-	public org.drip.spaces.cover.MaureyOperatorCoveringBounds populationSupremumCoveringBounds()
+	public MaureyOperatorCoveringBounds populationSupremumCoveringBounds()
 	{
 		try {
-			return new org.drip.spaces.cover.MaureyOperatorCoveringBounds (_dblMaureyConstant,
-				outputDimension(), operatorPopulationSupremumNorm());
-		} catch (java.lang.Exception e) {
+			return new MaureyOperatorCoveringBounds (
+				_maureyConstant,
+				outputDimension(),
+				operatorPopulationSupremumNorm()
+			);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -315,19 +368,22 @@ public abstract class NormedRxToNormedRxFinite {
 	/**
 	 * Compute the Maurey Covering Number Upper Bounds for Operator Sample Metric Norm
 	 * 
-	 * @param gvvi The Validated Vector Space Instance
+	 * @param generalizedValidatedVector The Validated Vector Space Instance
 	 * 
 	 * @return The Maurey Operator Covering Number Upper Bounds Instance Corresponding to the Operator Sample
 	 *  Metric Norm
 	 */
 
-	public org.drip.spaces.cover.MaureyOperatorCoveringBounds sampleMetricCoveringBounds (
-		final org.drip.spaces.instance.GeneralizedValidatedVector gvvi)
+	public MaureyOperatorCoveringBounds sampleMetricCoveringBounds (
+		final GeneralizedValidatedVector generalizedValidatedVector)
 	{
 		try {
-			return new org.drip.spaces.cover.MaureyOperatorCoveringBounds (_dblMaureyConstant,
-				outputDimension(), operatorSampleMetricNorm (gvvi));
-		} catch (java.lang.Exception e) {
+			return new MaureyOperatorCoveringBounds (
+				_maureyConstant,
+				outputDimension(),
+				operatorSampleMetricNorm (generalizedValidatedVector)
+			);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -337,19 +393,22 @@ public abstract class NormedRxToNormedRxFinite {
 	/**
 	 * Compute the Maurey Covering Number Upper Bounds for Operator Sample Supremum Norm
 	 * 
-	 * @param gvvi The Validated Vector Space Instance
+	 * @param generalizedValidatedVector The Validated Vector Space Instance
 	 * 
 	 * @return The Maurey Operator Covering Number Upper Bounds Instance Corresponding to the Operator Sample
 	 *  Supremum Norm
 	 */
 
-	public org.drip.spaces.cover.MaureyOperatorCoveringBounds sampleSupremumCoveringBounds (
-		final org.drip.spaces.instance.GeneralizedValidatedVector gvvi)
+	public MaureyOperatorCoveringBounds sampleSupremumCoveringBounds (
+		final GeneralizedValidatedVector generalizedValidatedVector)
 	{
 		try {
-			return new org.drip.spaces.cover.MaureyOperatorCoveringBounds (_dblMaureyConstant,
-				outputDimension(), operatorSampleSupremumNorm (gvvi));
-		} catch (java.lang.Exception e) {
+			return new MaureyOperatorCoveringBounds (
+				_maureyConstant,
+				outputDimension(),
+				operatorSampleSupremumNorm (generalizedValidatedVector)
+			);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 

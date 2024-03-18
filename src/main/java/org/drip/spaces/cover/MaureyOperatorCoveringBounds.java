@@ -1,6 +1,8 @@
 
 package org.drip.spaces.cover;
 
+import org.drip.numerical.common.NumberUtil;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
@@ -152,27 +154,30 @@ public class MaureyOperatorCoveringBounds
 
 	public static final double WILLIAMSON_SMOLA_SCHOLKOPF_CONSTANT = 103.;
 
-	private int _iSupremumDimension = -1;
-	private double _dblOperatorNorm = java.lang.Double.NaN;
-	private double _dblMaureyConstant = java.lang.Double.NaN;
+	private int _supremumDimension = -1;
+	private double _operatorNorm = Double.NaN;
+	private double _maureyConstant = Double.NaN;
 
 	/**
 	 * Construct an Instance Hilbert To Supremum Identity Map based Maurey Operator Covering Bounds
 	 * 
-	 * @param iSupremumDimension The Operator Supremum Output Space Dimension
-	 * @param dblOperatorNorm The Operator Norm of Interest
+	 * @param supremumDimension The Operator Supremum Output Space Dimension
+	 * @param operatorNorm The Operator Norm of Interest
 	 * 
 	 * @return The Instance Hilbert To Supremum Identity Map based Maurey Operator Covering Bounds
 	 */
 
 	public static final MaureyOperatorCoveringBounds HilbertSupremumIdentityMap (
-		final int iSupremumDimension,
-		final double dblOperatorNorm)
+		final int supremumDimension,
+		final double operatorNorm)
 	{
 		try {
-			return new MaureyOperatorCoveringBounds (HILBERT_SUPREMUM_IDENTITY_CONSTANT,
-				iSupremumDimension, dblOperatorNorm);
-		} catch (java.lang.Exception e) {
+			return new MaureyOperatorCoveringBounds (
+				HILBERT_SUPREMUM_IDENTITY_CONSTANT,
+				supremumDimension,
+				operatorNorm
+			);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -183,20 +188,23 @@ public class MaureyOperatorCoveringBounds
 	 * Construct an Instance of the Maurey Operator Covering Bounds based upon the Williamson, Smola, and
 	 *  Scholkopf Estimate
 	 * 
-	 * @param iSupremumDimension The Operator Supremum Output Space Dimension
-	 * @param dblOperatorNorm The Operator Norm of Interest
+	 * @param supremumDimension The Operator Supremum Output Space Dimension
+	 * @param operatorNorm The Operator Norm of Interest
 	 * 
 	 * @return Maurey Operator Covering Bounds based upon the Williamson, Smola, and Scholkopf Estimate
 	 */
 
 	public static final MaureyOperatorCoveringBounds WilliamsonSmolaScholkopfEstimate (
-		final int iSupremumDimension,
-		final double dblOperatorNorm)
+		final int supremumDimension,
+		final double operatorNorm)
 	{
 		try {
-			return new MaureyOperatorCoveringBounds (WILLIAMSON_SMOLA_SCHOLKOPF_CONSTANT,
-				iSupremumDimension, dblOperatorNorm);
-		} catch (java.lang.Exception e) {
+			return new MaureyOperatorCoveringBounds (
+				WILLIAMSON_SMOLA_SCHOLKOPF_CONSTANT,
+				supremumDimension,
+				operatorNorm
+			);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -206,23 +214,25 @@ public class MaureyOperatorCoveringBounds
 	/**
 	 * <i>MaureyOperatorCoveringBounds</i> Constructor
 	 * 
-	 * @param dblMaureyConstant The Maurey Constant
-	 * @param iSupremumDimension The Operator Supremum Output Space Dimension
-	 * @param dblOperatorNorm The Operator Norm of Interest
+	 * @param maureyConstant The Maurey Constant
+	 * @param supremumDimension The Operator Supremum Output Space Dimension
+	 * @param operatorNorm The Operator Norm of Interest
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public MaureyOperatorCoveringBounds (
-		final double dblMaureyConstant,
-		final int iSupremumDimension,
-		final double dblOperatorNorm)
-		throws java.lang.Exception
+		final double maureyConstant,
+		final int supremumDimension,
+		final double operatorNorm)
+		throws Exception
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblMaureyConstant = dblMaureyConstant) || 0 >=
-			(_iSupremumDimension = iSupremumDimension) || !org.drip.numerical.common.NumberUtil.IsValid
-				(_dblOperatorNorm = dblOperatorNorm))
-			throw new java.lang.Exception ("MaureyOperatorCoveringBounds ctr => Invalid Inputs");
+		if (!NumberUtil.IsValid (_maureyConstant = maureyConstant) ||
+			0 >= (_supremumDimension = supremumDimension) ||
+			!NumberUtil.IsValid (_operatorNorm = operatorNorm))
+		{
+			throw new Exception ("MaureyOperatorCoveringBounds ctr => Invalid Inputs");
+		}
 	}
 
 	/**
@@ -233,7 +243,7 @@ public class MaureyOperatorCoveringBounds
 
 	public double maureyConstant()
 	{
-		return _dblMaureyConstant;
+		return _maureyConstant;
 	}
 
 	/**
@@ -244,7 +254,7 @@ public class MaureyOperatorCoveringBounds
 
 	public int supremumDimension()
 	{
-		return _iSupremumDimension;
+		return _supremumDimension;
 	}
 
 	/**
@@ -255,52 +265,55 @@ public class MaureyOperatorCoveringBounds
 
 	public double operatorNorm()
 	{
-		return _dblOperatorNorm;
+		return _operatorNorm;
 	}
 
 	/**
 	 * Compute the Upper Bound for the Dyadic Entropy Number
 	 * 
-	 * @param iEntropyNumberIndex The Entropy Number Index
+	 * @param entropyNumberIndex The Entropy Number Index
 	 * 
 	 * @return The Upper Bound for the DyadicEntropy Number
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public double dyadicEntropyUpperBound (
-		final int iEntropyNumberIndex)
-		throws java.lang.Exception
+		final int entropyNumberIndex)
+		throws Exception
 	{
-		if (0 >= iEntropyNumberIndex)
-			throw new java.lang.Exception
-				("MaureyOperatorCoveringBounds::dyadicEntropyUpperBound => Invalid Inputs");
+		if (0 >= entropyNumberIndex) {
+			throw new Exception ("MaureyOperatorCoveringBounds::dyadicEntropyUpperBound => Invalid Inputs");
+		}
 
-		return _dblMaureyConstant * _dblOperatorNorm * java.lang.Math.sqrt ((java.lang.Math.log (1. +
-			(((double) _iSupremumDimension) / ((double) iEntropyNumberIndex))) / iEntropyNumberIndex));
+		return _maureyConstant * _operatorNorm * Math.sqrt (
+			(Math.log (1. + (((double) _supremumDimension) / ((double) entropyNumberIndex))) /
+				entropyNumberIndex)
+		);
 	}
 
 	/**
 	 * Compute the Upper Bound for the Entropy Number
 	 * 
-	 * @param iEntropyNumberIndex The Entropy Number Index
+	 * @param entropyNumberIndex The Entropy Number Index
 	 * 
 	 * @return The Upper Bound for the Entropy Number
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public double entropyNumberUpperBound (
-		final int iEntropyNumberIndex)
-		throws java.lang.Exception
+		final int entropyNumberIndex)
+		throws Exception
 	{
-		if (0 >= iEntropyNumberIndex)
-			throw new java.lang.Exception
-				("MaureyOperatorCoveringBounds::entropyNumberUpperBound => Invalid Inputs");
+		if (0 >= entropyNumberIndex) {
+			throw new Exception ("MaureyOperatorCoveringBounds::entropyNumberUpperBound => Invalid Inputs");
+		}
 
-		double dblLogNPlus1 = 1. + java.lang.Math.log (iEntropyNumberIndex);
+		double logNPlus1 = 1. + Math.log (entropyNumberIndex);
 
-		return _dblMaureyConstant * _dblOperatorNorm * java.lang.Math.sqrt ((1. + (((double)
-			_iSupremumDimension) / dblLogNPlus1)) / dblLogNPlus1);
+		return _maureyConstant * _operatorNorm * Math.sqrt (
+			(1. + (((double) _supremumDimension) / logNPlus1)) / logNPlus1
+		);
 	}
 }

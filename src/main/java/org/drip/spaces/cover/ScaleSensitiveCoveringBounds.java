@@ -1,11 +1,17 @@
 
 package org.drip.spaces.cover;
 
+import org.drip.function.definition.R1ToR1;
+import org.drip.numerical.common.NumberUtil;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -82,7 +88,7 @@ package org.drip.spaces.cover;
 
 /**
  * <i>ScaleSensitiveCoveringBounds</i> implements the Lower/Upper Bounds for the General Class of Functions
- * in terms of their scale-sensitive dimensions (i.e., the fat shattering coefficients). The References are:
+ * 	in terms of their scale-sensitive dimensions (i.e., the fat shattering coefficients). The References are:
  *
  * <br><br>
  *  <ul>
@@ -100,38 +106,56 @@ package org.drip.spaces.cover;
  *  	</li>
  *  </ul>
  *
- * <br><br>
+ *  It provides the following Functionality:
+ *
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/StatisticalLearningLibrary.md">Statistical Learning Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/README.md">R<sup>1</sup> and R<sup>d</sup> Vector/Tensor Spaces (Validated and/or Normed), and Function Classes</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/cover/README.md">Vector Spaces Covering Number Estimator</a></li>
+ * 		<li><i>ScaleSensitiveCoveringBounds</i> Constructor</li>
+ * 		<li>Retrieve the Fat Shattering Coefficient Function</li>
+ * 		<li>Retrieve the Sample Size</li>
+ * 		<li>Compute the Minimum Sample Size required to Estimate the Cardinality corresponding to the Specified Cover</li>
+ * 		<li>Compute the Cardinality for the Subset T (|x) that possesses the Specified Cover for the Restriction of the Input Function Class Family F (|x)</li>
+ * 		<li>Compute the Log of the Weight Loading Coefficient for the Maximum Cover Term</li>
  *  </ul>
- * <br><br>
+ *
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/StatisticalLearningLibrary.md">Statistical Learning Library</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/README.md">R<sup>1</sup> and R<sup>d</sup> Vector/Tensor Spaces (Validated and/or Normed), and Function Classes</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/cover/README.md">Vector Spaces Covering Number Estimator</a></td></tr>
+ *  </table>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class ScaleSensitiveCoveringBounds implements org.drip.spaces.cover.FunctionClassCoveringBounds {
-	private int _iSampleSize = -1;
-	private org.drip.function.definition.R1ToR1 _r1r1FatShatter = null;
+public class ScaleSensitiveCoveringBounds implements FunctionClassCoveringBounds
+{
+	private int _sampleSize = -1;
+	private R1ToR1 _r1r1FatShatter = null;
 
 	/**
-	 * ScaleSensitiveCoveringBounds Constructor
+	 * <i>ScaleSensitiveCoveringBounds</i> Constructor
 	 * 
 	 * @param r1r1FatShatter The Cover Fat Shattering Coefficient Function
 	 * @param iSampleSize Sample Size
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public ScaleSensitiveCoveringBounds (
-		final org.drip.function.definition.R1ToR1 r1r1FatShatter,
+		final R1ToR1 r1r1FatShatter,
 		final int iSampleSize)
-		throws java.lang.Exception
+		throws Exception
 	{
-		if (null == (_r1r1FatShatter = r1r1FatShatter) || 0 >= (_iSampleSize = iSampleSize))
-			throw new java.lang.Exception ("ScaleSensitiveCoveringBounds ctr: Invalid Inputs");
+		if (null == (_r1r1FatShatter = r1r1FatShatter) || 0 >= (_sampleSize = iSampleSize)) {
+			throw new Exception ("ScaleSensitiveCoveringBounds ctr: Invalid Inputs");
+		}
 	}
 
 	/**
@@ -140,7 +164,7 @@ public class ScaleSensitiveCoveringBounds implements org.drip.spaces.cover.Funct
 	 * @return The Fat Shattering Coefficient Function
 	 */
 
-	public org.drip.function.definition.R1ToR1 fatShatteringFunction()
+	public R1ToR1 fatShatteringFunction()
 	{
 		return _r1r1FatShatter;
 	}
@@ -153,65 +177,70 @@ public class ScaleSensitiveCoveringBounds implements org.drip.spaces.cover.Funct
 
 	public int sampleSize()
 	{
-		return _iSampleSize;
+		return _sampleSize;
 	}
 
 	/**
 	 * Compute the Minimum Sample Size required to Estimate the Cardinality corresponding to the Specified
 	 * 	Cover
 	 * 
-	 * @param dblCover The Cover
+	 * @param cover The Cover
 	 * 
 	 * @return The Minimum Sample Size
 	 * 
-	 * @throws java.lang.Exception Thrown if the Minimum Sample Size Cannot be computed
+	 * @throws Exception Thrown if the Minimum Sample Size Cannot be computed
 	 */
 
 	public double sampleSizeLowerBound (
-		final double dblCover)
-		throws java.lang.Exception
+		final double cover)
+		throws Exception
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (dblCover) || 0. == dblCover)
-			throw new java.lang.Exception
-				("ScaleSensitiveCoveringBounds::sampleSizeLowerBound => Invalid Inputs");
+		if (!NumberUtil.IsValid (cover) || 0. == cover) {
+			throw new Exception ("ScaleSensitiveCoveringBounds::sampleSizeLowerBound => Invalid Inputs");
+		}
 
-		double dblLog2 = java.lang.Math.log (2.);
+		double log2 = Math.log (2.);
 
-		return 2. * _r1r1FatShatter.evaluate (0.25 * dblCover) * java.lang.Math.log (64. * java.lang.Math.E *
-			java.lang.Math.E / (dblCover * dblLog2)) / dblLog2;
+		return 2. * _r1r1FatShatter.evaluate (0.25 * cover) * Math.log (
+			64. * Math.E * Math.E / (cover * log2)
+		) / log2;
 	}
 
 	/**
 	 * Compute the Cardinality for the Subset T (|x) that possesses the Specified Cover for the Restriction
 	 * 	of the Input Function Class Family F (|x).
 	 *  
-	 * @param dblCover The Specified Cover
+	 * @param cover The Specified Cover
 	 * 
 	 * @return The Restricted Subset Cardinality
 	 * 
-	 * @throws java.lang.Exception Thrown if the Restricted Subset Cardinality cannot be computed
+	 * @throws Exception Thrown if the Restricted Subset Cardinality cannot be computed
 	 */
 
 	public double restrictedSubsetCardinality (
-		final double dblCover)
-		throws java.lang.Exception
+		final double cover)
+		throws Exception
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (dblCover) || 0. == dblCover)
-			throw new java.lang.Exception
-				("ScaleSensitiveCoveringBounds::restrictedSubsetCardinality => Invalid Inputs");
+		if (!NumberUtil.IsValid (cover) || 0. == cover) {
+			throw new Exception (
+				"ScaleSensitiveCoveringBounds::restrictedSubsetCardinality => Invalid Inputs"
+			);
+		}
 
-		double dblLog2 = java.lang.Math.log (2.);
+		double log2 = Math.log (2.);
 
-		double dblFatShatteringCoefficient = _r1r1FatShatter.evaluate (0.25 * dblCover);
+		double fatShatteringCoefficient = _r1r1FatShatter.evaluate (0.25 * cover);
 
-		if (_iSampleSize < 2. * dblFatShatteringCoefficient * java.lang.Math.log (64. * java.lang.Math.E *
-			java.lang.Math.E / (dblCover * dblLog2)) / dblLog2)
-			throw new java.lang.Exception
-				("ScaleSensitiveCoveringBounds::restrictedSubsetCardinality => Invalid Inputs");
+		if (_sampleSize <
+			2. * fatShatteringCoefficient * Math.log (64. * Math.E * Math.E / (cover * log2)) / log2)
+		{
+			throw new Exception (
+				"ScaleSensitiveCoveringBounds::restrictedSubsetCardinality => Invalid Inputs"
+			);
+		}
 
-		return 6. * dblFatShatteringCoefficient * java.lang.Math.log (16. / dblCover) * java.lang.Math.log
-			(32. * java.lang.Math.E * _iSampleSize / (dblFatShatteringCoefficient * dblCover)) / dblLog2 +
-				dblLog2;
+		return 6. * fatShatteringCoefficient * Math.log (16. / cover) *
+			Math.log (32. * Math.E * _sampleSize / (fatShatteringCoefficient * cover)) / log2 + log2;
 	}
 
 	/**
@@ -225,35 +254,37 @@ public class ScaleSensitiveCoveringBounds implements org.drip.spaces.cover.Funct
 	 *	- D. Haussler (1995): Sphere Packing Numbers for Subsets of the Boolean n-Cube with Bounded
 	 *		Vapnik-Chervonenkis Dimension, Journal of the COmbinatorial Theory A 69 (2) 217.
 	 *
-	 * @param dblCover The Specified Cover
+	 * @param cover The Specified Cover
 	 * 
 	 * @return Log of the Weight Loading Coefficient for the Maximum Cover Term
 	 * 
-	 * @throws java.lang.Exception Thrown if the Log of the Weight Loading Coefficient cannot be computed
+	 * @throws Exception Thrown if the Log of the Weight Loading Coefficient cannot be computed
 	 */
 
 	public double upperProbabilityBoundWeight (
-		final double dblCover)
-		throws java.lang.Exception
+		final double cover)
+		throws Exception
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (dblCover) || 0. == dblCover)
-			throw new java.lang.Exception
-				("ScaleSensitiveCoveringBounds::upperProbabilityBoundWeight => Invalid Inputs");
+		if (!NumberUtil.IsValid (cover) || 0. == cover) {
+			throw new Exception (
+				"ScaleSensitiveCoveringBounds::upperProbabilityBoundWeight => Invalid Inputs"
+			);
+		}
 
-		return java.lang.Math.log (4.) - (dblCover * dblCover * _iSampleSize / 128.);
+		return Math.log (4.) - (cover * cover * _sampleSize / 128.);
 	}
 
 	@Override public double logLowerBound (
-		final double dblCover)
-		throws java.lang.Exception
+		final double cover)
+		throws Exception
 	{
-		return restrictedSubsetCardinality (dblCover);
+		return restrictedSubsetCardinality (cover);
 	}
 
 	@Override public double logUpperBound (
-		final double dblCover)
-		throws java.lang.Exception
+		final double cover)
+		throws Exception
 	{
-		return _r1r1FatShatter.evaluate (4. * dblCover) / 32.;
+		return _r1r1FatShatter.evaluate (4. * cover) / 32.;
 	}
 }

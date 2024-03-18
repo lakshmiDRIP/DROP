@@ -1,11 +1,16 @@
 
 package org.drip.spaces.cover;
 
+import org.drip.learning.bound.DiagonalOperatorCoveringBound;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -82,7 +87,7 @@ package org.drip.spaces.cover;
 
 /**
  * <i>OperatorClassCoveringBounds</i> implements the estimate Lower/Upper Bounds and/or Absolute Values of
- * the Covering Number for the Operator Class. The Main References are:
+ * 	the Covering Number for the Operator Class. The Main References are:
  *
  * <br><br>
  *  <ul>
@@ -93,41 +98,57 @@ package org.drip.spaces.cover;
  *  	</li>
  *  </ul>
  *
- * <br><br>
+ *  It provides the following Functionality:
+ *
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/StatisticalLearningLibrary.md">Statistical Learning Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/README.md">R<sup>1</sup> and R<sup>d</sup> Vector/Tensor Spaces (Validated and/or Normed), and Function Classes</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/cover/README.md">Vector Spaces Covering Number Estimator</a></li>
+ * 		<li>Lower Bound of the Operator Entropy Number</li>
+ * 		<li>Upper Bound of the Operator Entropy Number</li>
+ * 		<li>Compute the Entropy Number Index of the Operator</li>
+ * 		<li>Compute the Metric Norm of the Operator</li>
+ * 		<li>Compute the Entropy Number Asymptotic Behavior</li>
  *  </ul>
- * <br><br>
+ *
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/StatisticalLearningLibrary.md">Statistical Learning Library</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/README.md">R<sup>1</sup> and R<sup>d</sup> Vector/Tensor Spaces (Validated and/or Normed), and Function Classes</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/cover/README.md">Vector Spaces Covering Number Estimator</a></td></tr>
+ *  </table>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public interface OperatorClassCoveringBounds {
+public interface OperatorClassCoveringBounds
+{
 
 	/**
 	 * Lower Bound of the Operator Entropy Number
 	 * 
 	 * @return Lower Bound of the Operator Entropy Number
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public abstract double entropyNumberLowerBound()
-		throws java.lang.Exception;
+		throws Exception;
 
 	/**
 	 * Upper Bound of the Operator Entropy Number
 	 * 
 	 * @return Upper Bound of the Operator Entropy Number
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public abstract double entropyNumberUpperBound()
-		throws java.lang.Exception;
+		throws Exception;
 
 	/**
 	 * Compute the Entropy Number Index of the Operator
@@ -146,7 +167,7 @@ public interface OperatorClassCoveringBounds {
 	 */
 
 	public abstract double norm()
-		throws java.lang.Exception;
+		throws Exception;
 
 	/**
 	 * Compute the Entropy Number Asymptotic Behavior
@@ -154,5 +175,5 @@ public interface OperatorClassCoveringBounds {
 	 * @return the Entropy Number Asymptote Instance
 	 */
 
-	public abstract org.drip.learning.bound.DiagonalOperatorCoveringBound entropyNumberAsymptote();
+	public abstract DiagonalOperatorCoveringBound entropyNumberAsymptote();
 }
