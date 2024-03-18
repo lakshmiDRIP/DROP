@@ -1,11 +1,16 @@
 
 package org.drip.spaces.cover;
 
+import org.drip.numerical.common.NumberUtil;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -82,7 +87,7 @@ package org.drip.spaces.cover;
 
 /**
  * <i>L1R1CoveringBounds</i> implements the Lower/Upper Bounds for the Class of Non-decreasing R<sup>1</sup>
- * To L<sub>1</sub> R<sup>1</sup> for Functions that are:
+ * 	to L<sub>1</sub> R<sup>1</sup> for Functions that are:
  *
  * <br><br>
  *  <ul>
@@ -108,46 +113,63 @@ package org.drip.spaces.cover;
  *  	</li>
  *  </ul>
  *
- * <br><br>
+ *  It provides the following Functionality:
+ *
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/StatisticalLearningLibrary.md">Statistical Learning Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/README.md">R<sup>1</sup> and R<sup>d</sup> Vector/Tensor Spaces (Validated and/or Normed), and Function Classes</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/cover/README.md">Vector Spaces Covering Number Estimator</a></li>
+ * 		<li><i>L1R1CoveringBounds</i> Constructor</li>
+ * 		<li>Retrieve the Ordinate Support</li>
+ * 		<li>Retrieve the Function Variation</li>
+ * 		<li>Retrieve the Function Bound</li>
  *  </ul>
- * <br><br>
+ *
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/StatisticalLearningLibrary.md">Statistical Learning Library</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/README.md">R<sup>1</sup> and R<sup>d</sup> Vector/Tensor Spaces (Validated and/or Normed), and Function Classes</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/cover/README.md">Vector Spaces Covering Number Estimator</a></td></tr>
+ *  </table>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class L1R1CoveringBounds implements org.drip.spaces.cover.FunctionClassCoveringBounds {
-	private double _dblBound = java.lang.Double.NaN;
-	private double _dblSupport = java.lang.Double.NaN;
-	private double _dblVariation = java.lang.Double.NaN;
+public class L1R1CoveringBounds implements FunctionClassCoveringBounds
+{
+	private double _bound = Double.NaN;
+	private double _support = Double.NaN;
+	private double _variation = Double.NaN;
 
 	/**
-	 * L1R1CoveringBounds Constructor
+	 * <i>L1R1CoveringBounds</i> Constructor
 	 * 
-	 * @param dblSupport The Ordinate Support
-	 * @param dblVariation The Function Variation
-	 * @param dblBound The Function Bound
+	 * @param support The Ordinate Support
+	 * @param variation The Function Variation
+	 * @param bound The Function Bound
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public L1R1CoveringBounds (
-		final double dblSupport,
-		final double dblVariation,
-		final double dblBound)
-		throws java.lang.Exception
+		final double support,
+		final double variation,
+		final double bound)
+		throws Exception
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblSupport = dblSupport) || 0. >= _dblSupport ||
-			!org.drip.numerical.common.NumberUtil.IsValid (_dblVariation = dblVariation) || 0. >= _dblVariation)
-			throw new java.lang.Exception ("L1R1CoveringBounds ctr: Invalid Inputs");
+		if (!NumberUtil.IsValid (_support = support) || 0. >= _support ||
+			!NumberUtil.IsValid (_variation = variation) || 0. >= _variation)
+		{
+			throw new Exception ("L1R1CoveringBounds ctr: Invalid Inputs");
+		}
 
-		if (org.drip.numerical.common.NumberUtil.IsValid (_dblBound = dblBound) && _dblBound <= 0.5 *
-			_dblVariation)
-			throw new java.lang.Exception ("L1R1CoveringBounds ctr: Invalid Inputs");
+		if (NumberUtil.IsValid (_bound = bound) && _bound <= 0.5 * _variation) {
+			throw new Exception ("L1R1CoveringBounds ctr: Invalid Inputs");
+		}
 	}
 
 	/**
@@ -158,7 +180,7 @@ public class L1R1CoveringBounds implements org.drip.spaces.cover.FunctionClassCo
 
 	public double support()
 	{
-		return _dblSupport;
+		return _support;
 	}
 
 	/**
@@ -169,7 +191,7 @@ public class L1R1CoveringBounds implements org.drip.spaces.cover.FunctionClassCo
 
 	public double variation()
 	{
-		return _dblVariation;
+		return _variation;
 	}
 
 	/**
@@ -180,43 +202,44 @@ public class L1R1CoveringBounds implements org.drip.spaces.cover.FunctionClassCo
 
 	public double bound()
 	{
-		return _dblBound;
+		return _bound;
 	}
 
 	@Override public double logLowerBound (
-		final double dblCover)
-		throws java.lang.Exception
+		final double cover)
+		throws Exception
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (dblCover) || 0. == dblCover)
-			throw new java.lang.Exception ("L1R1CoveringBounds::logLowerBound => Invalid Inputs");
+		if (!NumberUtil.IsValid (cover) || 0. == cover) {
+			throw new Exception ("L1R1CoveringBounds::logLowerBound => Invalid Inputs");
+		}
 
-		double dblVariationCoverScale = dblCover / (_dblSupport * _dblVariation);
-		double dblVariationLogLowerBound = 1. / (54. * dblVariationCoverScale);
+		double variationCoverScale = cover / (_support * _variation);
+		double variationLogLowerBound = 1. / (54. * variationCoverScale);
 
-		if (1. < 12. * dblVariationCoverScale)
-			throw new java.lang.Exception ("L1R1CoveringBounds::logLowerBound => Invalid Inputs");
+		if (1. < 12. * variationCoverScale) {
+			throw new Exception ("L1R1CoveringBounds::logLowerBound => Invalid Inputs");
+		}
 
-		return !org.drip.numerical.common.NumberUtil.IsValid (_dblBound) ? dblVariationLogLowerBound : 1. +
-			dblVariationLogLowerBound * java.lang.Math.log (2.) + java.lang.Math.log (_dblSupport * _dblBound
-				/ (6. * dblCover));
+		return !NumberUtil.IsValid (_bound) ? variationLogLowerBound :
+			1. + variationLogLowerBound * Math.log (2.) + Math.log (_support * _bound / (6. * cover));
 	}
 
 	@Override public double logUpperBound (
-		final double dblCover)
-		throws java.lang.Exception
+		final double cover)
+		throws Exception
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (dblCover))
-			throw new java.lang.Exception ("L1R1CoveringBounds::logUpperBound => Invalid Inputs");
+		if (!NumberUtil.IsValid (cover)) {
+			throw new Exception ("L1R1CoveringBounds::logUpperBound => Invalid Inputs");
+		}
 
-		double dblVariationCoverScale = dblCover / (_dblSupport * _dblVariation);
+		double variationCoverScale = cover / (_support * _variation);
 
-		if (1. < 12. * dblVariationCoverScale)
-			throw new java.lang.Exception ("L1R1CoveringBounds::logUpperBound => Invalid Inputs");
+		if (1. < 12. * variationCoverScale) {
+			throw new Exception ("L1R1CoveringBounds::logUpperBound => Invalid Inputs");
+		}
 
-		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblBound))
-			return java.lang.Math.log (2.) * 12. / dblVariationCoverScale;
-
-		return java.lang.Math.log (2.) * 18. / dblVariationCoverScale + 3. * _dblSupport * (2. * _dblBound -
-			_dblVariation) / (8. * dblCover);
+		return !NumberUtil.IsValid (_bound) ? Math.log (2.) * 12. / variationCoverScale :
+			Math.log (2.) * 18. / variationCoverScale +
+				3. * _support * (2. * _bound - _variation) / (8. * cover);
 	}
 }

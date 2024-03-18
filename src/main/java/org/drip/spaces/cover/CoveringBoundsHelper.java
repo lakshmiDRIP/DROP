@@ -1,11 +1,16 @@
 
 package org.drip.spaces.cover;
 
+import org.drip.numerical.common.NumberUtil;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -82,7 +87,7 @@ package org.drip.spaces.cover;
 
 /**
  * <i>CoveringBoundsHelper</i> contains the assortment of Utilities used in the Computation of Upper Bounds
- * for Normed Single Function Spaces and Function Space Products. The References are:
+ * 	for Normed Single Function Spaces and Function Space Products. The References are:
  *
  * <br><br>
  *  <ul>
@@ -101,98 +106,118 @@ package org.drip.spaces.cover;
  *  	</li>
  *  </ul>
  *
- * <br><br>
+ *  It provides the following Functionality:
+ *
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/StatisticalLearningLibrary.md">Statistical Learning Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/README.md">R<sup>1</sup> and R<sup>d</sup> Vector/Tensor Spaces (Validated and/or Normed), and Function Classes</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/cover/README.md">Vector Spaces Covering Number Estimator</a></li>
+ * 		<li>Compute the Dyadic Entropy Number from the n<sup>th</sup> Entropy Number</li>
+ * 		<li>Compute the Upper Bound for the Entropy Number of the Operator Custom Covering Number Metric Product across both the Function Classes</li>
+ * 		<li>Compute the Upper Bound for the Entropy Number of the Operator Custom Covering Number Metric Product across both the Function Classes using the Function Class Norm</li>
  *  </ul>
- * <br><br>
+ *
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/StatisticalLearningLibrary.md">Statistical Learning Library</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/README.md">R<sup>1</sup> and R<sup>d</sup> Vector/Tensor Spaces (Validated and/or Normed), and Function Classes</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/cover/README.md">Vector Spaces Covering Number Estimator</a></td></tr>
+ *  </table>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class CoveringBoundsHelper {
+public class CoveringBoundsHelper
+{
 
 	/**
-	 * Compute the Dyadic Entropy Number from the nth Entropy Number
+	 * Compute the Dyadic Entropy Number from the n<sup>th</sup> Entropy Number
 	 * 
-	 * @param dblLogNEntropyNumber Log of the nth Entropy Number
+	 * @param logNEntropyNumber Log of the n<sup>th</sup> Entropy Number
 	 * 
 	 * @return The Dyadic Entropy Number
 	 * 
-	 * @throws java.lang.Exception Thrown if the Dyadic Entropy Number cannot be calculated
+	 * @throws Exception Thrown if the Dyadic Entropy Number cannot be calculated
 	 */
 
 	public static final double DyadicEntropyNumber (
-		final double dblLogNEntropyNumber)
-		throws java.lang.Exception
+		final double logNEntropyNumber)
+		throws Exception
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (dblLogNEntropyNumber))
-			throw new java.lang.Exception ("CoveringBoundsHelper::DyadicEntropyNumber => Invalid Inputs");
+		if (!NumberUtil.IsValid (logNEntropyNumber)) {
+			throw new Exception ("CoveringBoundsHelper::DyadicEntropyNumber => Invalid Inputs");
+		}
 
-		return 1. + (dblLogNEntropyNumber / java.lang.Math.log (2.));
+		return 1. + (logNEntropyNumber / Math.log (2.));
 	}
 
 	/**
 	 * Compute the Upper Bound for the Entropy Number of the Operator Custom Covering Number Metric Product
 	 *  across both the Function Classes
 	 * 
-	 * @param mocbA The Maurey Operator Covering Bounds for Class A
-	 * @param mocbB The Maurey Operator Covering Bounds for Class B
-	 * @param iEntropyNumberIndexA Entropy Number Index for Class A
-	 * @param iEntropyNumberIndexB Entropy Number Index for Class B
+	 * @param maureyOperatorCoveringBoundsA The Maurey Operator Covering Bounds for Class A
+	 * @param maureyOperatorCoveringBoundsB The Maurey Operator Covering Bounds for Class B
+	 * @param entropyNumberIndexA Entropy Number Index for Class A
+	 * @param entropyNumberIndexB Entropy Number Index for Class B
 	 * 
 	 * @return The Upper Bound for the Entropy Number of the Operator Custom Covering Number Metric Product
 	 *  across both the Function Classes
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public static final double CarlStephaniProductBound (
-		final org.drip.spaces.cover.MaureyOperatorCoveringBounds mocbA,
-		final org.drip.spaces.cover.MaureyOperatorCoveringBounds mocbB,
-		final int iEntropyNumberIndexA,
-		final int iEntropyNumberIndexB)
-		throws java.lang.Exception
+		final MaureyOperatorCoveringBounds maureyOperatorCoveringBoundsA,
+		final MaureyOperatorCoveringBounds maureyOperatorCoveringBoundsB,
+		final int entropyNumberIndexA,
+		final int entropyNumberIndexB)
+		throws Exception
 	{
-		if (null == mocbA || null == mocbB)
-			throw new java.lang.Exception
-				("CoveringBoundsHelper::CarlStephaniProductBound => Invalid Maurey Bounds for the Function Class");
+		if (null == maureyOperatorCoveringBoundsA || null == maureyOperatorCoveringBoundsB) {
+			throw new Exception (
+				"CoveringBoundsHelper::CarlStephaniProductBound => Invalid Maurey Bounds for the Function Class"
+			);
+		}
 
-		return mocbA.entropyNumberUpperBound (iEntropyNumberIndexA) * mocbB.entropyNumberUpperBound
-			(iEntropyNumberIndexB);
+		return maureyOperatorCoveringBoundsA.entropyNumberUpperBound (entropyNumberIndexA) *
+			maureyOperatorCoveringBoundsB.entropyNumberUpperBound (entropyNumberIndexB);
 	}
 
 	/**
 	 * Compute the Upper Bound for the Entropy Number of the Operator Custom Covering Number Metric Product
 	 *  across both the Function Classes using the Function Class Norm
 	 * 
-	 * @param mocbA The Maurey Operator Covering Bounds for Class A
-	 * @param mocbB The Maurey Operator Covering Bounds for Class B
-	 * @param dblNormA The Function Class A Norm
-	 * @param dblNormB The Function Class B Norm
-	 * @param iEntropyNumberIndex Entropy Number Index for either Class
+	 * @param maureyOperatorCoveringBoundsA The Maurey Operator Covering Bounds for Class A
+	 * @param maureyOperatorCoveringBoundsB The Maurey Operator Covering Bounds for Class B
+	 * @param normA The Function Class A Norm
+	 * @param normB The Function Class B Norm
+	 * @param entropyNumberIndex Entropy Number Index for either Class
 	 * 
-	 * @return The Upper Bound for the Entropy Number of the Operator Custom Covering Number Metric
-	 * 	Product across both the Function Classes using the Function Norm
+	 * @return The Upper Bound for the Entropy Number of the Operator Custom Covering Number Metric Product
+	 *  across both the Function Classes using the Function Norm
 	 */
 
-	public static final org.drip.spaces.cover.CarlStephaniNormedBounds CarlStephaniProductNorm (
-		final org.drip.spaces.cover.MaureyOperatorCoveringBounds mocbA,
-		final org.drip.spaces.cover.MaureyOperatorCoveringBounds mocbB,
-		final double dblNormA,
-		final double dblNormB,
-		final int iEntropyNumberIndex)
+	public static final CarlStephaniNormedBounds CarlStephaniProductNorm (
+		final MaureyOperatorCoveringBounds maureyOperatorCoveringBoundsA,
+		final MaureyOperatorCoveringBounds maureyOperatorCoveringBoundsB,
+		final double normA,
+		final double normB,
+		final int entropyNumberIndex)
 	{
-		if (null == mocbA || null == mocbB) return null;
+		if (null == maureyOperatorCoveringBoundsA || null == maureyOperatorCoveringBoundsB) {
+			return null;
+		}
 
 		try {
-			return new org.drip.spaces.cover.CarlStephaniNormedBounds (mocbA.entropyNumberUpperBound
-				(iEntropyNumberIndex) * dblNormB, mocbB.entropyNumberUpperBound (iEntropyNumberIndex) *
-					dblNormA);
-		} catch (java.lang.Exception e) {
+			return new CarlStephaniNormedBounds (
+				maureyOperatorCoveringBoundsA.entropyNumberUpperBound (entropyNumberIndex) * normB,
+				maureyOperatorCoveringBoundsB.entropyNumberUpperBound (entropyNumberIndex) * normA
+			);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 

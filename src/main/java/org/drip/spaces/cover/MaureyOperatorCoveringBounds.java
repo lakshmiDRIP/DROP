@@ -6,6 +6,9 @@ package org.drip.spaces.cover;
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -82,8 +85,8 @@ package org.drip.spaces.cover;
 
 /**
  * <i>MaureyOperatorCoveringBounds</i> implements the estimate the Upper Bounds and/or Absolute Values of the
- * Covering Number for the Hilbert R<sup>d</sup> To Supremum R<sup>d</sup> Operator Class. The Main
- * References are:
+ * 	Covering Number for the Hilbert R<sup>d</sup> To Supremum R<sup>d</sup> Operator Class. The Main
+ * 	References are:
  *
  * <br><br>
  *  <ul>
@@ -102,19 +105,40 @@ package org.drip.spaces.cover;
  *  	</li>
  *  </ul>
  *
- * <br><br>
+ *  It provides the following Functionality:
+ *
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/StatisticalLearningLibrary.md">Statistical Learning Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/README.md">R<sup>1</sup> and R<sup>d</sup> Vector/Tensor Spaces (Validated and/or Normed), and Function Classes</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/cover/README.md">Vector Spaces Covering Number Estimator</a></li>
+ * 		<li>Maurey Constant - from the Hilbert - Supremum Identity Map Estimate</li>
+ * 		<li>Maurey Constant - from the Williamson-Smola-Scholkopf Estimate</li>
+ * 		<li>Construct an Instance Hilbert To Supremum Identity Map based Maurey Operator Covering Bounds</li>
+ * 		<li>Construct an Instance of the Maurey Operator Covering Bounds based upon the Williamson, Smola, and Scholkopf Estimate</li>
+ * 		<li><i>MaureyOperatorCoveringBounds</i> Constructor</li>
+ * 		<li>Retrieve the Maurey Constant</li>
+ * 		<li>Retrieve the Supremum Dimension</li>
+ * 		<li>Retrieve the Operator Norm of Interest</li>
+ * 		<li>Compute the Upper Bound for the Dyadic Entropy Number</li>
+ * 		<li>Compute the Upper Bound for the Entropy Number</li>
  *  </ul>
- * <br><br>
+ *
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/StatisticalLearningLibrary.md">Statistical Learning Library</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/README.md">R<sup>1</sup> and R<sup>d</sup> Vector/Tensor Spaces (Validated and/or Normed), and Function Classes</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/cover/README.md">Vector Spaces Covering Number Estimator</a></td></tr>
+ *  </table>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class MaureyOperatorCoveringBounds {
+public class MaureyOperatorCoveringBounds
+{
 
 	/**
 	 * Maurey Constant - from the Hilbert - Supremum Identity Map Estimate
@@ -180,7 +204,7 @@ public class MaureyOperatorCoveringBounds {
 	}
 
 	/**
-	 * MaureyOperatorCoveringBounds Constructor
+	 * <i>MaureyOperatorCoveringBounds</i> Constructor
 	 * 
 	 * @param dblMaureyConstant The Maurey Constant
 	 * @param iSupremumDimension The Operator Supremum Output Space Dimension

@@ -1,11 +1,17 @@
 
 package org.drip.spaces.cover;
 
+import org.drip.spaces.functionclass.NormedRxToNormedRxFinite;
+import org.drip.spaces.instance.GeneralizedValidatedVector;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -82,7 +88,7 @@ package org.drip.spaces.cover;
 
 /**
  * <i>CarlStephaniProductBounds</i> implements the Bounds that result from the Convolution Product Product of
- * 2 Normed R<sup>x</sup> To Normed R<sup>x</sup> Function Spaces. The References are:
+ * 	2 Normed R<sup>x</sup> To Normed R<sup>x</sup> Function Spaces. The References are:
  *
  * <br><br>
  *  <ul>
@@ -101,38 +107,64 @@ package org.drip.spaces.cover;
  *  	</li>
  *  </ul>
  *
- * <br><br>
+ *  It provides the following Functionality:
+ *
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/StatisticalLearningLibrary.md">Statistical Learning Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/README.md">R<sup>1</sup> and R<sup>d</sup> Vector/Tensor Spaces (Validated and/or Normed), and Function Classes</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/cover/README.md">Vector Spaces Covering Number Estimator</a></li>
+ * 		<li><i>CarlStephaniProductBounds</i> Constructor</li>
+ * 		<li>Retrieve the Function Class A</li>
+ * 		<li>Retrieve the Function Class B</li>
+ * 		<li>Compute the Upper Bound for the Entropy Number of the Operator Population Metric Covering Number Convolution Product Product across both the Function Classes</li>
+ * 		<li>Compute the Upper Bound for the Entropy Number of the Operator Population Supremum Covering Number Convolution Product across both the Function Classes</li>
+ * 		<li>Compute the Upper Bound for the Entropy Number of the Operator Sample Metric Covering Number Convolution Product across both the Function Classes</li>
+ * 		<li>Compute the Upper Bound for the Entropy Number of the Operator Sample Supremum Covering Number Convolution Product across both the Function Classes</li>
+ * 		<li>Compute the Normed Upper Entropy Convolution Product Bound across the Function Classes</li>
+ * 		<li>Compute the Population Supremum Carl-Stephani Entropy Number Upper Bound using either the Metric/Supremum Population Norm</li>
+ * 		<li>Compute the Population Metric Carl-Stephani Entropy Number Upper Bound using either the Metric/Supremum Population Norm</li>
+ * 		<li>Compute the Sample Supremum Carl-Stephani Entropy Number Upper Bound using either the Metric/Supremum Population Norm</li>
+ * 		<li>Compute the Sample Metric Carl-Stephani Entropy Number Upper Bound using either the Metric/Supremum Population Norm</li>
  *  </ul>
- * <br><br>
+ *
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/StatisticalLearningLibrary.md">Statistical Learning Library</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/README.md">R<sup>1</sup> and R<sup>d</sup> Vector/Tensor Spaces (Validated and/or Normed), and Function Classes</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/cover/README.md">Vector Spaces Covering Number Estimator</a></td></tr>
+ *  </table>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class CarlStephaniProductBounds {
-	private org.drip.spaces.functionclass.NormedRxToNormedRxFinite _funcClassRxRxA = null;
-	private org.drip.spaces.functionclass.NormedRxToNormedRxFinite _funcClassRxRxB = null;
+public class CarlStephaniProductBounds
+{
+	private NormedRxToNormedRxFinite _functionClassRxRxA = null;
+	private NormedRxToNormedRxFinite _functionClassRxRxB = null;
 
 	/**
-	 * CarlStephaniProductBounds Constructor
+	 * <i>CarlStephaniProductBounds</i> Constructor
 	 * 
-	 * @param funcClassRxRxA Function Class A
-	 * @param funcClassRxRxB Function Class B
+	 * @param functionClassRxRxA Function Class A
+	 * @param functionClassRxRxB Function Class B
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public CarlStephaniProductBounds (
-		final org.drip.spaces.functionclass.NormedRxToNormedRxFinite funcClassRxRxA,
-		final org.drip.spaces.functionclass.NormedRxToNormedRxFinite funcClassRxRxB)
-		throws java.lang.Exception
+		final NormedRxToNormedRxFinite functionClassRxRxA,
+		final NormedRxToNormedRxFinite functionClassRxRxB)
+		throws Exception
 	{
-		if (null == (_funcClassRxRxA = funcClassRxRxA) || null == (_funcClassRxRxB = funcClassRxRxB))
-			throw new java.lang.Exception ("CarlStephaniProductBounds ctr: Invalid Inputs");
+		if (null == (_functionClassRxRxA = functionClassRxRxA) ||
+			null == (_functionClassRxRxB = functionClassRxRxB))
+		{
+			throw new Exception ("CarlStephaniProductBounds ctr: Invalid Inputs");
+		}
 	}
 
 	/**
@@ -141,9 +173,9 @@ public class CarlStephaniProductBounds {
 	 * @return The Function Class A
 	 */
 
-	public org.drip.spaces.functionclass.NormedRxToNormedRxFinite funcClassA()
+	public NormedRxToNormedRxFinite funcClassA()
 	{
-		return _funcClassRxRxA;
+		return _functionClassRxRxA;
 	}
 
 	/**
@@ -152,143 +184,155 @@ public class CarlStephaniProductBounds {
 	 * @return The Function Class B
 	 */
 
-	public org.drip.spaces.functionclass.NormedRxToNormedRxFinite funcClassB()
+	public NormedRxToNormedRxFinite funcClassB()
 	{
-		return _funcClassRxRxB;
+		return _functionClassRxRxB;
 	}
 
 	/**
 	 * Compute the Upper Bound for the Entropy Number of the Operator Population Metric Covering Number
 	 * 	Convolution Product Product across both the Function Classes
 	 * 
-	 * @param iEntropyNumberIndexA Entropy Number Index for Class A
-	 * @param iEntropyNumberIndexB Entropy Number Index for Class B
+	 * @param entropyNumberIndexA Entropy Number Index for Class A
+	 * @param entropyNumberIndexB Entropy Number Index for Class B
 	 * 
 	 * @return The Upper Bound for the Entropy Number of the Operator Population Metric Covering Number
 	 * 	Convolution Product Product across both the Function Classes
 	 * 
-	 * @throws java.lang.Exception Thrown if the Convolution Product Product Population Metric Entropy Number cannot be
-	 * 	Computed
+	 * @throws Exception Thrown if the Convolution Product Product Population Metric Entropy Number cannot be
+	 *  computed
 	 */
 
 	public double populationMetricEntropyNumber (
-		final int iEntropyNumberIndexA,
-		final int iEntropyNumberIndexB)
-		throws java.lang.Exception
+		final int entropyNumberIndexA,
+		final int entropyNumberIndexB)
+		throws Exception
 	{
-		return org.drip.spaces.cover.CoveringBoundsHelper.CarlStephaniProductBound
-			(_funcClassRxRxA.populationMetricCoveringBounds(),
-				_funcClassRxRxB.populationMetricCoveringBounds(), iEntropyNumberIndexA,
-					iEntropyNumberIndexB);
+		return CoveringBoundsHelper.CarlStephaniProductBound (
+			_functionClassRxRxA.populationMetricCoveringBounds(),
+			_functionClassRxRxB.populationMetricCoveringBounds(),
+			entropyNumberIndexA,
+			entropyNumberIndexB
+		);
 	}
 
 	/**
 	 * Compute the Upper Bound for the Entropy Number of the Operator Population Supremum Covering Number
 	 * 	Convolution Product across both the Function Classes
 	 * 
-	 * @param iEntropyNumberIndexA Entropy Number Index for Class A
-	 * @param iEntropyNumberIndexB Entropy Number Index for Class B
+	 * @param entropyNumberIndexA Entropy Number Index for Class A
+	 * @param entropyNumberIndexB Entropy Number Index for Class B
 	 * 
 	 * @return The Upper Bound for the Entropy Number of the Operator Population Supremum Covering Number
 	 * 	Convolution Product across both the Function Classes
 	 * 
-	 * @throws java.lang.Exception Thrown if the Convolution Product Population Supremum Dyadic Entropy cannot be
+	 * @throws Exception Thrown if the Convolution Product Population Supremum Dyadic Entropy cannot be
 	 * 	Computed
 	 */
 
 	public double populationSupremumEntropyNumber (
-		final int iEntropyNumberIndexA,
-		final int iEntropyNumberIndexB)
-		throws java.lang.Exception
+		final int entropyNumberIndexA,
+		final int entropyNumberIndexB)
+		throws Exception
 	{
-		return org.drip.spaces.cover.CoveringBoundsHelper.CarlStephaniProductBound
-			(_funcClassRxRxA.populationSupremumCoveringBounds(),
-				_funcClassRxRxB.populationSupremumCoveringBounds(), iEntropyNumberIndexA,
-					iEntropyNumberIndexB);
+		return CoveringBoundsHelper.CarlStephaniProductBound (
+			_functionClassRxRxA.populationSupremumCoveringBounds(),
+			_functionClassRxRxB.populationSupremumCoveringBounds(),
+			entropyNumberIndexA,
+			entropyNumberIndexB
+		);
 	}
 
 	/**
 	 * Compute the Upper Bound for the Entropy Number of the Operator Sample Metric Covering Number
 	 * 	Convolution Product across both the Function Classes
 	 * 
-	 * @param gvviA The Validated Input Vector Space Instance for Class A
-	 * @param gvviB The Validated Input Vector Space Instance for Class B
-	 * @param iEntropyNumberIndexA Entropy Number Index for Class A
-	 * @param iEntropyNumberIndexB Entropy Number Index for Class B
+	 * @param generalizedValidatedVectorA The Validated Input Vector Space Instance for Class A
+	 * @param generalizedValidatedVectorB The Validated Input Vector Space Instance for Class B
+	 * @param entropyNumberIndexA Entropy Number Index for Class A
+	 * @param entropyNumberIndexB Entropy Number Index for Class B
 	 * 
 	 * @return The Upper Bound for the Entropy Number of the Operator Sample Metric Covering Number
 	 * 	Convolution Product across both the Function Classes
 	 * 
-	 * @throws java.lang.Exception Thrown if the Convolution Product Sample Metric Entropy Number cannot be
+	 * @throws Exception Thrown if the Convolution Product Sample Metric Entropy Number cannot be
 	 * 	Computed
 	 */
 
 	public double sampleMetricEntropyNumber (
-		final org.drip.spaces.instance.GeneralizedValidatedVector gvviA,
-		final org.drip.spaces.instance.GeneralizedValidatedVector gvviB,
-		final int iEntropyNumberIndexA,
-		final int iEntropyNumberIndexB)
-		throws java.lang.Exception
+		final GeneralizedValidatedVector generalizedValidatedVectorA,
+		final GeneralizedValidatedVector generalizedValidatedVectorB,
+		final int entropyNumberIndexA,
+		final int entropyNumberIndexB)
+		throws Exception
 	{
-		return org.drip.spaces.cover.CoveringBoundsHelper.CarlStephaniProductBound
-			(_funcClassRxRxA.sampleMetricCoveringBounds (gvviA),
-				_funcClassRxRxB.sampleMetricCoveringBounds (gvviB), iEntropyNumberIndexA,
-					iEntropyNumberIndexB);
+		return CoveringBoundsHelper.CarlStephaniProductBound (
+			_functionClassRxRxA.sampleMetricCoveringBounds (generalizedValidatedVectorA),
+			_functionClassRxRxB.sampleMetricCoveringBounds (generalizedValidatedVectorB),
+			entropyNumberIndexA,
+			entropyNumberIndexB
+		);
 	}
 
 	/**
 	 * Compute the Upper Bound for the Entropy Number of the Operator Sample Supremum Covering Number
 	 * 	Convolution Product across both the Function Classes
 	 * 
-	 * @param gvviA The Validated Input Vector Space Instance for Class A
-	 * @param gvviB The Validated Input Vector Space Instance for Class B
-	 * @param iEntropyNumberIndexA Entropy Number Index for Class A
-	 * @param iEntropyNumberIndexB Entropy Number Index for Class B
+	 * @param generalizedValidatedVectorA The Validated Input Vector Space Instance for Class A
+	 * @param generalizedValidatedVectorB The Validated Input Vector Space Instance for Class B
+	 * @param entropyNumberIndexA Entropy Number Index for Class A
+	 * @param entropyNumberIndexB Entropy Number Index for Class B
 	 * 
 	 * @return The Upper Bound for the Entropy Number of the Operator Sample Supremum Covering Number
 	 * 	Convolution Product across both the Function Classes
 	 * 
-	 * @throws java.lang.Exception Thrown if the Convolution Product Sample Supremum Entropy Number cannot be
+	 * @throws Exception Thrown if the Convolution Product Sample Supremum Entropy Number cannot be
 	 * 	Computed
 	 */
 
 	public double sampleSupremumEntropyNumber (
-		final org.drip.spaces.instance.GeneralizedValidatedVector gvviA,
-		final org.drip.spaces.instance.GeneralizedValidatedVector gvviB,
-		final int iEntropyNumberIndexA,
-		final int iEntropyNumberIndexB)
+		final GeneralizedValidatedVector generalizedValidatedVectorA,
+		final GeneralizedValidatedVector generalizedValidatedVectorB,
+		final int entropyNumberIndexA,
+		final int entropyNumberIndexB)
 		throws java.lang.Exception
 	{
-		return org.drip.spaces.cover.CoveringBoundsHelper.CarlStephaniProductBound
-			(_funcClassRxRxA.sampleSupremumCoveringBounds (gvviA),
-				_funcClassRxRxB.sampleSupremumCoveringBounds (gvviB), iEntropyNumberIndexA,
-					iEntropyNumberIndexB);
+		return CoveringBoundsHelper.CarlStephaniProductBound (
+			_functionClassRxRxA.sampleSupremumCoveringBounds (generalizedValidatedVectorA),
+			_functionClassRxRxB.sampleSupremumCoveringBounds (generalizedValidatedVectorB),
+			entropyNumberIndexA,
+			entropyNumberIndexB
+		);
 	}
 
 	/**
 	 * Compute the Normed Upper Entropy Convolution Product Bound across the Function Classes
 	 * 
-	 * @param mocbA The Maurey Operator Covering Bounds for Class A
-	 * @param mocbB The Maurey Operator Covering Bounds for Class B
-	 * @param iEntropyNumberIndex Entropy Number Index for either Class
-	 * @param bUseSupremumNorm TRUE/FALSE - Use the Supremum/Metric Bound as the Operator Function Class
+	 * @param maureyOperatorCoveringBoundsA The Maurey Operator Covering Bounds for Class A
+	 * @param maureyOperatorCoveringBoundsB The Maurey Operator Covering Bounds for Class B
+	 * @param entropyNumberIndex Entropy Number Index for either Class
+	 * @param useSupremumNorm TRUE/FALSE - Use the Supremum/Metric Bound as the Operator Function Class
 	 * 
 	 * @return The Normed Upper Entropy Convolution Product Bound across the Function Classes
 	 */
 
-	public org.drip.spaces.cover.CarlStephaniNormedBounds normedEntropyUpperBound (
-		final org.drip.spaces.cover.MaureyOperatorCoveringBounds mocbA,
-		final org.drip.spaces.cover.MaureyOperatorCoveringBounds mocbB,
-		final int iEntropyNumberIndex,
-		final boolean bUseSupremumNorm)
+	public CarlStephaniNormedBounds normedEntropyUpperBound (
+		final MaureyOperatorCoveringBounds maureyOperatorCoveringBoundsA,
+		final MaureyOperatorCoveringBounds maureyOperatorCoveringBoundsB,
+		final int entropyNumberIndex,
+		final boolean useSupremumNorm)
 	{
 		try {
-			return org.drip.spaces.cover.CoveringBoundsHelper.CarlStephaniProductNorm (mocbA, mocbB,
-				bUseSupremumNorm ? _funcClassRxRxA.operatorPopulationSupremumNorm() :
-					_funcClassRxRxA.operatorPopulationMetricNorm(), bUseSupremumNorm ?
-						_funcClassRxRxB.operatorPopulationSupremumNorm() :
-							_funcClassRxRxB.operatorPopulationMetricNorm(), iEntropyNumberIndex);
-		} catch (java.lang.Exception e) {
+			return CoveringBoundsHelper.CarlStephaniProductNorm (
+				maureyOperatorCoveringBoundsA,
+				maureyOperatorCoveringBoundsB,
+				useSupremumNorm ? _functionClassRxRxA.operatorPopulationSupremumNorm() :
+					_functionClassRxRxA.operatorPopulationMetricNorm(),
+				useSupremumNorm ? _functionClassRxRxB.operatorPopulationSupremumNorm() :
+					_functionClassRxRxB.operatorPopulationMetricNorm(),
+				entropyNumberIndex
+			);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -299,83 +343,99 @@ public class CarlStephaniProductBounds {
 	 * Compute the Population Supremum Carl-Stephani Entropy Number Upper Bound using either the
 	 *  Metric/Supremum Population Norm
 	 *  
-	 * @param iEntropyNumberIndex Entropy Number Index for either Class
-	 * @param bUseSupremumNorm TRUE/FALSE - Use the Supremum/Metric Bound as the Operator Function Class
+	 * @param entropyNumberIndex Entropy Number Index for either Class
+	 * @param useSupremumNorm TRUE/FALSE - Use the Supremum/Metric Bound as the Operator Function Class
 	 * 
 	 * @return The Population Supremum Carl-Stephani Entropy Number Upper Bound using either the
 	 *  Metric/Supremum Population Norm
 	 */
 
-	public org.drip.spaces.cover.CarlStephaniNormedBounds populationSupremumEntropyNorm (
-		final int iEntropyNumberIndex,
-		final boolean bUseSupremumNorm)
+	public CarlStephaniNormedBounds populationSupremumEntropyNorm (
+		final int entropyNumberIndex,
+		final boolean useSupremumNorm)
 	{
-		return normedEntropyUpperBound (_funcClassRxRxA.populationSupremumCoveringBounds(),
-			_funcClassRxRxB.populationSupremumCoveringBounds(), iEntropyNumberIndex, bUseSupremumNorm);
+		return normedEntropyUpperBound (
+			_functionClassRxRxA.populationSupremumCoveringBounds(),
+			_functionClassRxRxB.populationSupremumCoveringBounds(),
+			entropyNumberIndex,
+			useSupremumNorm
+		);
 	}
 
 	/**
 	 * Compute the Population Metric Carl-Stephani Entropy Number Upper Bound using either the
 	 *  Metric/Supremum Population Norm
 	 *  
-	 * @param iEntropyNumberIndex Entropy Number Index for either Class
-	 * @param bUseSupremumNorm TRUE/FALSE - Use the Supremum/Metric Bound as the Operator Function Class
+	 * @param entropyNumberIndex Entropy Number Index for either Class
+	 * @param useSupremumNorm TRUE/FALSE - Use the Supremum/Metric Bound as the Operator Function Class
 	 * 
 	 * @return The Population Metric Carl-Stephani Entropy Number Upper Bound using either the
 	 *  Metric/Supremum Population Norm
 	 */
 
-	public org.drip.spaces.cover.CarlStephaniNormedBounds populationMetricEntropyNorm (
-		final int iEntropyNumberIndex,
-		final boolean bUseSupremumNorm)
+	public CarlStephaniNormedBounds populationMetricEntropyNorm (
+		final int entropyNumberIndex,
+		final boolean useSupremumNorm)
 	{
-		return normedEntropyUpperBound (_funcClassRxRxA.populationMetricCoveringBounds(),
-			_funcClassRxRxB.populationMetricCoveringBounds(), iEntropyNumberIndex, bUseSupremumNorm);
+		return normedEntropyUpperBound (
+			_functionClassRxRxA.populationMetricCoveringBounds(),
+			_functionClassRxRxB.populationMetricCoveringBounds(),
+			entropyNumberIndex,
+			useSupremumNorm
+		);
 	}
 
 	/**
 	 * Compute the Sample Supremum Carl-Stephani Entropy Number Upper Bound using either the Metric/Supremum
 	 *  Population Norm
 	 *  
-	 * @param gvviA The Validated Input Vector Space Instance for Class A
-	 * @param gvviB The Validated Input Vector Space Instance for Class B
-	 * @param iEntropyNumberIndex Entropy Number Index for either Class
-	 * @param bUseSupremumNorm TRUE/FALSE - Use the Supremum/Metric Bound as the Operator Function Class
+	 * @param generalizedValidatedVectorA The Validated Input Vector Space Instance for Class A
+	 * @param generalizedValidatedVectorB The Validated Input Vector Space Instance for Class B
+	 * @param entropyNumberIndex Entropy Number Index for either Class
+	 * @param useSupremumNorm TRUE/FALSE - Use the Supremum/Metric Bound as the Operator Function Class
 	 * 
 	 * @return The Sample Supremum Carl-Stephani Entropy Number Upper Bound using either the Metric/Supremum
 	 *  Population Norm
 	 */
 
-	public org.drip.spaces.cover.CarlStephaniNormedBounds sampleSupremumEntropyNorm (
-		final org.drip.spaces.instance.GeneralizedValidatedVector gvviA,
-		final org.drip.spaces.instance.GeneralizedValidatedVector gvviB,
-		final int iEntropyNumberIndex,
-		final boolean bUseSupremumNorm)
+	public CarlStephaniNormedBounds sampleSupremumEntropyNorm (
+		final GeneralizedValidatedVector generalizedValidatedVectorA,
+		final GeneralizedValidatedVector generalizedValidatedVectorB,
+		final int entropyNumberIndex,
+		final boolean useSupremumNorm)
 	{
-		return normedEntropyUpperBound (_funcClassRxRxA.sampleSupremumCoveringBounds (gvviA),
-			_funcClassRxRxB.sampleSupremumCoveringBounds (gvviB), iEntropyNumberIndex, bUseSupremumNorm);
+		return normedEntropyUpperBound (
+			_functionClassRxRxA.sampleSupremumCoveringBounds (generalizedValidatedVectorA),
+			_functionClassRxRxB.sampleSupremumCoveringBounds (generalizedValidatedVectorB),
+			entropyNumberIndex,
+			useSupremumNorm
+		);
 	}
 
 	/**
 	 * Compute the Sample Metric Carl-Stephani Entropy Number Upper Bound using either the Metric/Supremum
 	 *  Population Norm
 	 *  
-	 * @param gvviA The Validated Input Vector Space Instance for Class A
-	 * @param gvviB The Validated Input Vector Space Instance for Class B
-	 * @param iEntropyNumberIndex Entropy Number Index for either Class
-	 * @param bUseSupremumNorm TRUE/FALSE - Use the Supremum/Metric Bound as the Operator Function Class
+	 * @param generalizedValidatedVectorA The Validated Input Vector Space Instance for Class A
+	 * @param generalizedValidatedVectorB The Validated Input Vector Space Instance for Class B
+	 * @param entropyNumberIndex Entropy Number Index for either Class
+	 * @param useSupremumNorm TRUE/FALSE - Use the Supremum/Metric Bound as the Operator Function Class
 	 * 
 	 * @return The Sample Metric Carl-Stephani Entropy Number Upper Bound using either the Metric/Supremum
 	 *  Population Norm
 	 */
 
-	public org.drip.spaces.cover.CarlStephaniNormedBounds sampleMetricEntropyNorm (
-		final org.drip.spaces.instance.GeneralizedValidatedVector gvviA,
-		final org.drip.spaces.instance.GeneralizedValidatedVector gvviB,
-		final int iEntropyNumberIndex,
-		final boolean bUseSupremumNorm)
+	public CarlStephaniNormedBounds sampleMetricEntropyNorm (
+		final GeneralizedValidatedVector generalizedValidatedVectorA,
+		final GeneralizedValidatedVector generalizedValidatedVectorB,
+		final int entropyNumberIndex,
+		final boolean useSupremumNorm)
 	{
-		return normedEntropyUpperBound (_funcClassRxRxA.sampleMetricCoveringBounds (gvviA),
-			_funcClassRxRxB.sampleMetricCoveringBounds (gvviB), iEntropyNumberIndex, bUseSupremumNorm);
+		return normedEntropyUpperBound (
+			_functionClassRxRxA.sampleMetricCoveringBounds (generalizedValidatedVectorA),
+			_functionClassRxRxB.sampleMetricCoveringBounds (generalizedValidatedVectorB),
+			entropyNumberIndex,
+			useSupremumNorm
+		);
 	}
 }
