@@ -1,11 +1,20 @@
 
 package org.drip.spaces.big;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.drip.spaces.iterator.IterationHelper;
+import org.drip.spaces.iterator.RdExhaustiveStateSpaceScan;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -82,128 +91,147 @@ package org.drip.spaces.big;
 
 /**
  * <i>SubStringSetExtractor</i> contains the Functionality to extract the Full Suite of the Sub-strings
- * contained inside of the given String.
- * 
- * <br><br>
+ * 	contained inside of the given String. It provides the following Functionality:
+ *
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/StatisticalLearningLibrary.md">Statistical Learning Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/README.md">R<sup>1</sup> and R<sup>d</sup> Vector/Tensor Spaces (Validated and/or Normed), and Function Classes</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/big/README.md">Big-data In-place Manipulator</a></li>
+ * 		<li>Locate the String Set of the Target Size using a Receding Permutation Scan</li>
+ * 		<li>Locate the String Set of the Target Size using an Exhaustive Permutation Scan</li>
+ * 		<li>Extract all the Contiguous Strings available inside the specified Master String</li>
  *  </ul>
- * <br><br>
+ *
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/StatisticalLearningLibrary.md">Statistical Learning Library</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/README.md">R<sup>1</sup> and R<sup>d</sup> Vector/Tensor Spaces (Validated and/or Normed), and Function Classes</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/big/README.md">Big-data In-place Manipulator</a></td></tr>
+ *  </table>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class SubStringSetExtractor {
+public class SubStringSetExtractor
+{
 
 	/**
-	 * Locate the String Set of the Target Size using a Receeding Permutation Scan
+	 * Locate the String Set of the Target Size using a Receding Permutation Scan
 	 * 
-	 * @param strMaster The Master String
-	 * @param iTargetStringSize The Target String Size
+	 * @param master The Master String
+	 * @param targetStringSize The Target String Size
 	 * 
 	 * @return The List of the Target String
 	 */
 
-	public static final java.util.List<java.lang.String> ReceedingPermutationScan (
-		final java.lang.String strMaster,
-		final int iTargetStringSize)
+	public static final List<String> ReceedingPermutationScan (
+		final String master,
+		final int targetStringSize)
 	{
-		int[] aiMax = new int[iTargetStringSize];
-		org.drip.spaces.iterator.RdExhaustiveStateSpaceScan mdIter = null;
+		int[] maxSizeArray = new int[targetStringSize];
+		RdExhaustiveStateSpaceScan rdExhaustiveStateSpaceScanIterator = null;
 
-		int iMasterStringSize = strMaster.length();
+		int masterStringSize = master.length();
 
-		for (int i = 0; i < iTargetStringSize; ++i)
-			aiMax[i] = iMasterStringSize;
+		for (int i = 0; i < targetStringSize; ++i) {
+			maxSizeArray[i] = masterStringSize;
+		}
 
 		try {
-			mdIter = new org.drip.spaces.iterator.RdExhaustiveStateSpaceScan (aiMax, false);
-		} catch (java.lang.Exception e) {
+			rdExhaustiveStateSpaceScanIterator = new RdExhaustiveStateSpaceScan (maxSizeArray, false);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
-		java.util.List<java.lang.String> lsTarget = new java.util.ArrayList<java.lang.String>();
+		List<String> targetList = new ArrayList<String>();
 
-		int[] aiIndex = mdIter.stateIndexCursor();
+		int[] indexCursorArray = rdExhaustiveStateSpaceScanIterator.stateIndexCursor();
 
-		while (null != aiIndex) {
-			lsTarget.add (org.drip.spaces.iterator.IterationHelper.ComposeFromIndex (strMaster, aiIndex));
+		while (null != indexCursorArray) {
+			targetList.add (IterationHelper.ComposeFromIndex (master, indexCursorArray));
 
-			aiIndex = mdIter.nextStateIndexCursor();
+			indexCursorArray = rdExhaustiveStateSpaceScanIterator.nextStateIndexCursor();
 		}
 
-		return lsTarget;
+		return targetList;
 	}
 
 	/**
 	 * Locate the String Set of the Target Size using an Exhaustive Permutation Scan
 	 * 
-	 * @param strMaster The Master String
-	 * @param iTargetStringSize The Target String Size
+	 * @param master The Master String
+	 * @param targetStringSize The Target String Size
 	 * 
 	 * @return The List of the Target String
 	 */
 
-	public static final java.util.List<java.lang.String> ExhaustivePermutationScan (
-		final java.lang.String strMaster,
-		final int iTargetStringSize)
+	public static final List<String> ExhaustivePermutationScan (
+		final String master,
+		final int targetStringSize)
 	{
-		int[] aiMax = new int[iTargetStringSize];
-		org.drip.spaces.iterator.RdExhaustiveStateSpaceScan mdIter = null;
+		int[] maxSizeArray = new int[targetStringSize];
+		RdExhaustiveStateSpaceScan rdExhaustiveStateSpaceScanIterator = null;
 
-		int iMasterStringSize = strMaster.length();
+		int masterStringSize = master.length();
 
-		for (int i = 0; i < iTargetStringSize; ++i)
-			aiMax[i] = iMasterStringSize;
+		for (int i = 0; i < targetStringSize; ++i) {
+			maxSizeArray[i] = masterStringSize;
+		}
 
 		try {
-			mdIter = new org.drip.spaces.iterator.RdExhaustiveStateSpaceScan (aiMax, false);
-		} catch (java.lang.Exception e) {
+			rdExhaustiveStateSpaceScanIterator = new RdExhaustiveStateSpaceScan (maxSizeArray, false);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
-		java.util.List<java.lang.String> lsTarget = new java.util.ArrayList<java.lang.String>();
+		List<String> targetList = new ArrayList<String>();
 
-		int[] aiIndex = mdIter.stateIndexCursor();
+		int[] indexCursorArray = rdExhaustiveStateSpaceScanIterator.stateIndexCursor();
 
-		while (null != aiIndex) {
-			if (!org.drip.spaces.iterator.IterationHelper.CheckForRepeatingIndex (aiIndex))
-				lsTarget.add (org.drip.spaces.iterator.IterationHelper.ComposeFromIndex (strMaster,
-					aiIndex));
+		while (null != indexCursorArray) {
+			if (!IterationHelper.CheckForRepeatingIndex (indexCursorArray)) {
+				targetList.add (IterationHelper.ComposeFromIndex (master, indexCursorArray));
+			}
 
-			aiIndex = mdIter.nextStateIndexCursor();
+			indexCursorArray = rdExhaustiveStateSpaceScanIterator.nextStateIndexCursor();
 		}
 
-		return lsTarget;
+		return targetList;
 	}
 
 	/**
 	 * Extract all the Contiguous Strings available inside the specified Master String
 	 * 
-	 * @param strMaster The Master String
+	 * @param master The Master String
 	 * 
-	 * @return The Full Set of Contiguous Strings
+	 * @return The Full List of Contiguous Strings
 	 */
 
-	public static final java.util.List<java.lang.String> Contiguous (
-		final java.lang.String strMaster)
+	public static final List<String> Contiguous (
+		final String master)
 	{
-		if (null == strMaster) return null;
-
-		int iMasterStringLength = strMaster.length();
-
-		java.util.List<java.lang.String> lsTarget = new java.util.ArrayList<java.lang.String>();
-
-		if (0 == iMasterStringLength) return lsTarget;
-
-		for (int iStartIndex = 0; iStartIndex < iMasterStringLength; ++iStartIndex) {
-			for (int iFinishIndex = iStartIndex + 1; iFinishIndex <= iMasterStringLength; ++iFinishIndex)
-				lsTarget.add (strMaster.substring (iStartIndex, iFinishIndex));
+		if (null == master) {
+			return null;
 		}
 
-		return lsTarget;
+		int masterStringLength = master.length();
+
+		List<String> targetList = new ArrayList<String>();
+
+		if (0 == masterStringLength) {
+			return targetList;
+		}
+
+		for (int startIndex = 0; startIndex < masterStringLength; ++startIndex) {
+			for (int finishIndex = startIndex + 1; finishIndex <= masterStringLength; ++finishIndex) {
+				targetList.add (master.substring (startIndex, finishIndex));
+			}
+		}
+
+		return targetList;
 	}
 }

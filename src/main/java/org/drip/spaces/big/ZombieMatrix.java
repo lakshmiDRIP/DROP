@@ -1,11 +1,17 @@
 
 package org.drip.spaces.big;
 
+import java.util.Set;
+import java.util.TreeSet;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -76,16 +82,29 @@ package org.drip.spaces.big;
  */
 
 /**
- * <i>ZombieMatrix</i> implements a Zombie Adjacency Migration.
- * 
- * <br><br>
+ * <i>ZombieMatrix</i> implements a Zombie Adjacency Migration. It provides the following Functionality:
+ *
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/StatisticalLearningLibrary.md">Statistical Learning Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/README.md">R<sup>1</sup> and R<sup>d</sup> Vector/Tensor Spaces (Validated and/or Normed), and Function Classes</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/big/README.md">Big-data In-place Manipulator</a></li>
+ * 		<li><i>ZombieMatrix</i> Constructor</li>
+ * 		<li>Retrieve the Uninfected Cell Set</li>
+ * 		<li>Retrieve the Row Count</li>
+ * 		<li>Retrieve the Column Count</li>
+ * 		<li>Compute the Period for Full Infection</li>
  *  </ul>
- * <br><br>
+ *
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/StatisticalLearningLibrary.md">Statistical Learning Library</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/README.md">R<sup>1</sup> and R<sup>d</sup> Vector/Tensor Spaces (Validated and/or Normed), and Function Classes</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/big/README.md">Big-data In-place Manipulator</a></td></tr>
+ *  </table>
  *
  * @author Lakshmi Krishnamurthy
  */
@@ -95,7 +114,7 @@ public class ZombieMatrix
 	private int _rowCount = -1;
 	private int _columnCount = -1;
 
-	private java.util.Set<java.lang.Integer> _uninfectedCellSet = new java.util.TreeSet<java.lang.Integer>();
+	private Set<Integer> _uninfectedCellSet = new TreeSet<Integer>();
 
 	private boolean infectable (
 		final int cell)
@@ -105,31 +124,19 @@ public class ZombieMatrix
 		int up = cell - _rowCount;
 		int down = cell + _rowCount;
 
-		if (0 < up && !_uninfectedCellSet.contains (
-			up
-		))
-		{
+		if (0 < up && !_uninfectedCellSet.contains (up)) {
 			return true;
 		}
 
-		if (_rowCount * _columnCount > down && !_uninfectedCellSet.contains (
-			down
-		))
-		{
+		if (_rowCount * _columnCount > down && !_uninfectedCellSet.contains (down)) {
 			return true;
 		}
 
-		if (0 < left && !_uninfectedCellSet.contains (
-			left
-		))
-		{
+		if (0 < left && !_uninfectedCellSet.contains (left)) {
 			return true;
 		}
 
-		if (_rowCount * _columnCount > right && !_uninfectedCellSet.contains (
-			right
-		))
-		{
+		if (_rowCount * _columnCount > right && !_uninfectedCellSet.contains (right)) {
 			return true;
 		}
 
@@ -137,65 +144,39 @@ public class ZombieMatrix
 	}
 
 	/**
-	 * ZombieMatrix Constructor
+	 * <i>ZombieMatrix</i> Constructor
 	 * 
-	 * @param a Zombie Matrix Grid
+	 * @param matrix Zombie Matrix Grid
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public ZombieMatrix (
-		final boolean[][] a)
-		throws java.lang.Exception
+		final boolean[][] matrix)
+		throws Exception
 	{
-		if (null == a)
-		{
-			throw new java.lang.Exception (
-				"ZombieMatrix Constructor => Invalid Inputs"
-			);
+		if (null == matrix) {
+			throw new Exception ("ZombieMatrix Constructor => Invalid Inputs");
 		}
 
-		if (0 == (_rowCount = a.length))
-		{
-			throw new java.lang.Exception (
-				"ZombieMatrix Constructor => Invalid Inputs"
-			);
+		if (0 == (_rowCount = matrix.length)) {
+			throw new Exception ("ZombieMatrix Constructor => Invalid Inputs");
 		}
 
-		for (int rowIndex = 0;
-			rowIndex < _rowCount;
-			++rowIndex)
-		{
-			if (-1 == _columnCount)
-			{
-				if (0 == (_columnCount = a[rowIndex].length))
-				{
-					throw new java.lang.Exception (
-						"ZombieMatrix Constructor => Invalid Inputs"
-					);
+		for (int rowIndex = 0; rowIndex < _rowCount; ++rowIndex) {
+			if (-1 == _columnCount) {
+				if (0 == (_columnCount = matrix[rowIndex].length)) {
+					throw new Exception ("ZombieMatrix Constructor => Invalid Inputs");
 				}
-			}
-			else if (_columnCount != a[rowIndex].length)
-			{
-				throw new java.lang.Exception (
-					"ZombieMatrix Constructor => Invalid Inputs"
-				);
+			} else if (_columnCount != matrix[rowIndex].length) {
+				throw new Exception ("ZombieMatrix Constructor => Invalid Inputs");
 			}
 		}
 
-		for (int rowIndex = 0;
-			rowIndex < _rowCount;
-			++rowIndex)
-		{
-			for (int columnIndex = 0;
-				columnIndex < _columnCount;
-				++columnIndex)
-			{
-				if (a[rowIndex][columnIndex])
-				{
-					_uninfectedCellSet.add (
-						rowIndex * _rowCount + columnIndex
-					);
+		for (int rowIndex = 0; rowIndex < _rowCount; ++rowIndex) {
+			for (int columnIndex = 0; columnIndex < _columnCount; ++columnIndex) {
+				if (matrix[rowIndex][columnIndex]) {
+					_uninfectedCellSet.add (rowIndex * _rowCount + columnIndex);
 				}
 			}
 		}
@@ -207,7 +188,7 @@ public class ZombieMatrix
 	 * @return The Uninfected Cell Set
 	 */
 
-	public java.util.Set<java.lang.Integer> uninfectedCellSet()
+	public Set<Integer> uninfectedCellSet()
 	{
 		return _uninfectedCellSet;
 	}
@@ -244,20 +225,12 @@ public class ZombieMatrix
 	{
 		int infectionPeriod = 0;
 
-		while (!_uninfectedCellSet.isEmpty())
-		{
-			java.util.Set<java.lang.Integer> uninfectedCellSetUpdate =
-				new java.util.TreeSet<java.lang.Integer>();
+		while (!_uninfectedCellSet.isEmpty()) {
+			Set<Integer> uninfectedCellSetUpdate = new TreeSet<Integer>();
 
-			for (int cell : _uninfectedCellSet)
-			{
-				if (!infectable (
-					cell
-				))
-				{
-					uninfectedCellSetUpdate.add (
-						cell
-					);
+			for (int cell : _uninfectedCellSet) {
+				if (!infectable (cell)) {
+					uninfectedCellSetUpdate.add (cell);
 				}
 			}
 
