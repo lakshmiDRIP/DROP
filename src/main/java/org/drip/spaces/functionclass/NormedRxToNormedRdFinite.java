@@ -1,11 +1,21 @@
 
 package org.drip.spaces.functionclass;
 
+import org.drip.numerical.common.NumberUtil;
+import org.drip.spaces.cover.FunctionClassCoveringBounds;
+import org.drip.spaces.instance.GeneralizedValidatedVector;
+import org.drip.spaces.metric.GeneralizedMetricVectorSpace;
+import org.drip.spaces.metric.RdNormed;
+import org.drip.spaces.rxtord.NormedRxToNormedRd;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -82,7 +92,7 @@ package org.drip.spaces.functionclass;
 
 /**
  * <i>NormedRxToNormedRdFinite</i> implements the Class F with f E f : Normed R<sup>x</sup> To Normed
- * R<sup>d</sup> Space of Finite Functions. The References are:
+ * 	R<sup>d</sup> Space of Finite Functions. The References are:
  *
  * <br><br>
  *  <ul>
@@ -101,6 +111,21 @@ package org.drip.spaces.functionclass;
  *  	</li>
  *  </ul>
  *
+ *  It provides the following Functionality:
+ *
+ *  <ul>
+ * 		<li><i>NormedRxToNormedRdFinite</i> Constructor</li>
+ * 		<li>Retrieve the Array of Function Spaces in the Class</li>
+ * 		<li>Estimate for the Function Class Population Covering Number Array, one for each dimension</li>
+ * 		<li>Estimate for the Function Class Population Supremum Covering Number Array, one for each dimension</li>
+ * 		<li>Estimate for the Scale-Sensitive Sample Covering Number Array for the specified Cover Size</li>
+ * 		<li>Estimate for the Scale-Sensitive Sample Supremum Covering Number for the specified Cover Size</li>
+ * 		<li>Compute the Population R<sup>d</sup> Metric Norm</li>
+ * 		<li>Compute the Population R<sup>d</sup> Supremum Norm</li>
+ * 		<li>Compute the Sample R<sup>d</sup> Metric Norm</li>
+ * 		<li>Compute the Sample R<sup>d</sup> Supremum Norm</li>
+ *  </ul>
+ *
  * <br><br>
  *  <ul>
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
@@ -113,50 +138,54 @@ package org.drip.spaces.functionclass;
  * @author Lakshmi Krishnamurthy
  */
 
-public class NormedRxToNormedRdFinite extends org.drip.spaces.functionclass.NormedRxToNormedRxFinite {
-	private org.drip.spaces.rxtord.NormedRxToNormedRd[] _aNormedRxToNormedRd = null;
+public class NormedRxToNormedRdFinite extends NormedRxToNormedRxFinite
+{
+	private NormedRxToNormedRd[] _normedRxToNormedRdArray = null;
 
 	/**
-	 * NormedRxToNormedRdFinite Constructor
+	 * <i>NormedRxToNormedRdFinite</i> Constructor
 	 * 
-	 * @param dblMaureyConstant Maurey Constant
-	 * @param aNormedRxToNormedRd Array of the Normed R^x To Normed R^d Spaces
+	 * @param maureyConstant Maurey Constant
+	 * @param normedRxToNormedRdArray Array of the Normed R<sup>x</sup> To Normed R<sup>d</sup> Spaces
 	 *  
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public NormedRxToNormedRdFinite (
-		final double dblMaureyConstant,
-		final org.drip.spaces.rxtord.NormedRxToNormedRd[] aNormedRxToNormedRd)
-		throws java.lang.Exception
+		final double maureyConstant,
+		final NormedRxToNormedRd[] normedRxToNormedRdArray)
+		throws Exception
 	{
-		super (dblMaureyConstant);
+		super (maureyConstant);
 
-		int iClassSize = null == (_aNormedRxToNormedRd = aNormedRxToNormedRd) ? 0 :
-			_aNormedRxToNormedRd.length;
+		int classSize = null == (_normedRxToNormedRdArray = normedRxToNormedRdArray) ? 0 :
+			_normedRxToNormedRdArray.length;
 
-		if (null != _aNormedRxToNormedRd && 0 == iClassSize)
+		if (null != _normedRxToNormedRdArray && 0 == classSize) {
 			throw new java.lang.Exception ("NormedRxToNormedRdFinite ctr: Invalid Inputs");
+		}
 
-		for (int i = 0; i < iClassSize; ++i) {
-			if (null == _aNormedRxToNormedRd[i])
-				throw new java.lang.Exception ("NormedRxToNormedRdFinite ctr: Invalid Inputs");
+		for (int i = 0; i < classSize; ++i) {
+			if (null == _normedRxToNormedRdArray[i])
+				throw new Exception ("NormedRxToNormedRdFinite ctr: Invalid Inputs");
 		}
 	}
 
-	@Override public org.drip.spaces.cover.FunctionClassCoveringBounds agnosticCoveringNumberBounds()
+	@Override public FunctionClassCoveringBounds agnosticCoveringNumberBounds()
 	{
 		return null;
 	}
 
-	@Override public org.drip.spaces.metric.GeneralizedMetricVectorSpace inputMetricVectorSpace()
+	@Override public GeneralizedMetricVectorSpace inputMetricVectorSpace()
 	{
-		return null == _aNormedRxToNormedRd ? null : _aNormedRxToNormedRd[0].inputMetricVectorSpace();
+		return null == _normedRxToNormedRdArray ? null :
+			_normedRxToNormedRdArray[0].inputMetricVectorSpace();
 	}
 
-	@Override public org.drip.spaces.metric.RdNormed outputMetricVectorSpace()
+	@Override public RdNormed outputMetricVectorSpace()
 	{
-		return null == _aNormedRxToNormedRd ? null : _aNormedRxToNormedRd[0].outputMetricVectorSpace();
+		return null == _normedRxToNormedRdArray ?
+			null : _normedRxToNormedRdArray[0].outputMetricVectorSpace();
 	}
 
 	/**
@@ -165,509 +194,596 @@ public class NormedRxToNormedRdFinite extends org.drip.spaces.functionclass.Norm
 	 * @return The Array of Function Spaces in the Class
 	 */
 
-	public org.drip.spaces.rxtord.NormedRxToNormedRd[] functionSpaces()
+	public NormedRxToNormedRd[] functionSpaces()
 	{
-		return _aNormedRxToNormedRd;
+		return _normedRxToNormedRdArray;
 	}
 
 	/**
 	 * Estimate for the Function Class Population Covering Number Array, one for each dimension
 	 * 
-	 * @param adblCover The Size of the Cover Array
+	 * @param coverArray The Size of the Cover Array
 	 * 
 	 * @return Function Class Population Covering Number Estimate Array, one for each dimension
 	 */
 
 	public double[] populationCoveringNumber (
-		final double[] adblCover)
+		final double[] coverArray)
 	{
-		if (null == _aNormedRxToNormedRd || null == adblCover) return null;
+		if (null == _normedRxToNormedRdArray || null == coverArray) {
+			return null;
+		}
 
-		int iFunctionSpaceSize = _aNormedRxToNormedRd.length;
+		int functionSpaceSize = _normedRxToNormedRdArray.length;
 
-		if (iFunctionSpaceSize != adblCover.length) return null;
+		if (functionSpaceSize != coverArray.length) {
+			return null;
+		}
 
-		double[] adblPopulationCoveringNumber = _aNormedRxToNormedRd[0].populationCoveringNumber
-			(adblCover[0]);
+		double[] populationCoveringNumberArray = _normedRxToNormedRdArray[0].populationCoveringNumber
+			(coverArray[0]);
 
-		if (!org.drip.numerical.common.NumberUtil.IsValid (adblPopulationCoveringNumber)) return null;
+		if (!NumberUtil.IsValid (populationCoveringNumberArray)) {
+			return null;
+		}
 
-		for (int i = 1; i < iFunctionSpaceSize; ++i) {
-			double[] adblFunctionPopulationCoveringNumber = _aNormedRxToNormedRd[i].populationCoveringNumber
-				(adblCover[i]);
+		for (int i = 1; i < functionSpaceSize; ++i) {
+			double[] functionPopulationCoveringNumberArray =
+				_normedRxToNormedRdArray[i].populationCoveringNumber (coverArray[i]);
 
-			if (!org.drip.numerical.common.NumberUtil.IsValid (adblFunctionPopulationCoveringNumber))
+			if (!NumberUtil.IsValid (functionPopulationCoveringNumberArray)) {
 				return null;
+			}
 
-			int iDimension = adblFunctionPopulationCoveringNumber.length;
+			int dimension = functionPopulationCoveringNumberArray.length;
 
-			for (int j = 0; j < iDimension; ++j) {
-				if (adblPopulationCoveringNumber[j] < adblFunctionPopulationCoveringNumber[j])
-					adblPopulationCoveringNumber[j] = adblFunctionPopulationCoveringNumber[j];
+			for (int j = 0; j < dimension; ++j) {
+				if (populationCoveringNumberArray[j] < functionPopulationCoveringNumberArray[j])
+					populationCoveringNumberArray[j] = functionPopulationCoveringNumberArray[j];
 			}
 		}
 
-		return adblPopulationCoveringNumber;
+		return populationCoveringNumberArray;
 	}
 
 	/**
 	 * Estimate for the Function Class Population Covering Number Array, one for each dimension
 	 * 
-	 * @param dblCover The Cover
+	 * @param cover The Cover
 	 * 
 	 * @return Function Class Population Covering Number Estimate Array, one for each dimension
 	 */
 
 	public double[] populationCoveringNumber (
-		final double dblCover)
+		final double cover)
 	{
-		int iDimension = outputMetricVectorSpace().dimension();
+		int dimension = outputMetricVectorSpace().dimension();
 
-		double[] adblCover = new double[iDimension];
+		double[] coverArray = new double[dimension];
 
-		for (int i = 0; i < iDimension; ++i)
-			adblCover[i] = dblCover;
+		for (int i = 0; i < dimension; ++i) {
+			coverArray[i] = cover;
+		}
 
-		return populationCoveringNumber (adblCover);
+		return populationCoveringNumber (cover);
 	}
 
 	/**
 	 * Estimate for the Function Class Population Supremum Covering Number Array, one for each dimension
 	 * 
-	 * @param adblCover The Size of the Cover Array
+	 * @param coverArray The Size of the Cover Array
 	 * 
 	 * @return Function Class Population Supremum Covering Number Estimate Array, one for each dimension
 	 */
 
 	public double[] populationSupremumCoveringNumber (
-		final double[] adblCover)
+		final double[] coverArray)
 	{
-		if (null == _aNormedRxToNormedRd || null == adblCover) return null;
+		if (null == _normedRxToNormedRdArray || null == coverArray) {
+			return null;
+		}
 
-		int iFunctionSpaceSize = _aNormedRxToNormedRd.length;
+		int functionSpaceSize = _normedRxToNormedRdArray.length;
 
-		if (iFunctionSpaceSize != adblCover.length) return null;
+		if (functionSpaceSize != coverArray.length) {
+			return null;
+		}
 
-		double[] adblPopulationSupremumCoveringNumber =
-			_aNormedRxToNormedRd[0].populationSupremumCoveringNumber (adblCover[0]);
+		double[] populationSupremumCoveringNumberArray =
+			_normedRxToNormedRdArray[0].populationSupremumCoveringNumber (coverArray[0]);
 
-		if (!org.drip.numerical.common.NumberUtil.IsValid (adblPopulationSupremumCoveringNumber)) return null;
+		if (!NumberUtil.IsValid (populationSupremumCoveringNumberArray)) {
+			return null;
+		}
 
-		for (int i = 1; i < iFunctionSpaceSize; ++i) {
-			double[] adblFunctionPopulationSupremumCoveringNumber =
-				_aNormedRxToNormedRd[i].populationSupremumCoveringNumber (adblCover[i]);
+		for (int i = 1; i < functionSpaceSize; ++i) {
+			double[] functionPopulationSupremumCoveringNumberArray =
+				_normedRxToNormedRdArray[i].populationSupremumCoveringNumber (coverArray[i]);
 
-			if (!org.drip.numerical.common.NumberUtil.IsValid (adblFunctionPopulationSupremumCoveringNumber))
+			if (!NumberUtil.IsValid (functionPopulationSupremumCoveringNumberArray)) {
 				return null;
+			}
 
-			int iDimension = adblFunctionPopulationSupremumCoveringNumber.length;
+			int dimension = functionPopulationSupremumCoveringNumberArray.length;
 
-			for (int j = 0; j < iDimension; ++j) {
-				if (adblPopulationSupremumCoveringNumber[j] <
-					adblFunctionPopulationSupremumCoveringNumber[j])
-					adblPopulationSupremumCoveringNumber[j] =
-						adblFunctionPopulationSupremumCoveringNumber[j];
+			for (int j = 0; j < dimension; ++j) {
+				if (populationSupremumCoveringNumberArray[j] <
+					functionPopulationSupremumCoveringNumberArray[j])
+				{
+					populationSupremumCoveringNumberArray[j] =
+						functionPopulationSupremumCoveringNumberArray[j];
+				}
 			}
 		}
 
-		return adblPopulationSupremumCoveringNumber;
+		return populationSupremumCoveringNumberArray;
 	}
 
 	/**
 	 * Estimate for the Function Class Population Supremum Covering Number Array, one for each dimension
 	 * 
-	 * @param dblCover The Cover
+	 * @param cover The Cover
 	 * 
 	 * @return Function Class Population Covering Supremum Number Estimate Array, one for each dimension
 	 */
 
 	public double[] populationSupremumCoveringNumber (
-		final double dblCover)
+		final double cover)
 	{
-		int iDimension = outputMetricVectorSpace().dimension();
+		int dimension = outputMetricVectorSpace().dimension();
 
-		double[] adblCover = new double[iDimension];
+		double[] coverArray = new double[dimension];
 
-		for (int i = 0; i < iDimension; ++i)
-			adblCover[i] = dblCover;
-
-		return populationSupremumCoveringNumber (adblCover);
-	}
-
-	/**
-	 * Estimate for the Scale-Sensitive Sample Covering Number Array for the specified Cover Size
-	 * 
-	 * @param gvvi The Validated Instance Vector Sequence
-	 * @param adblCover The Size of the Cover Array
-	 * 
-	 * @return The Scale-Sensitive Sample Covering Number Array for the specified Cover Size
-	 */
-
-	public double[] sampleCoveringNumber (
-		final org.drip.spaces.instance.GeneralizedValidatedVector gvvi,
-		final double[] adblCover)
-	{
-		if (null == _aNormedRxToNormedRd || null == adblCover) return null;
-
-		int iFunctionSpaceSize = _aNormedRxToNormedRd.length;
-
-		if (iFunctionSpaceSize != adblCover.length) return null;
-
-		double[] adblSampleCoveringNumber = _aNormedRxToNormedRd[0].sampleCoveringNumber (gvvi,
-			adblCover[0]);
-
-		if (!org.drip.numerical.common.NumberUtil.IsValid (adblSampleCoveringNumber)) return null;
-
-		for (int i = 1; i < iFunctionSpaceSize; ++i) {
-			double[] adblFunctionSampleCoveringNumber = _aNormedRxToNormedRd[i].sampleCoveringNumber (gvvi,
-				adblCover[i]);
-
-			if (!org.drip.numerical.common.NumberUtil.IsValid (adblFunctionSampleCoveringNumber)) return null;
-
-			int iDimension = adblFunctionSampleCoveringNumber.length;
-
-			for (int j = 0; j < iDimension; ++j) {
-				if (adblSampleCoveringNumber[j] < adblFunctionSampleCoveringNumber[j])
-					adblSampleCoveringNumber[j] = adblFunctionSampleCoveringNumber[j];
-			}
+		for (int i = 0; i < dimension; ++i) {
+			coverArray[i] = cover;
 		}
 
-		return adblSampleCoveringNumber;
+		return populationSupremumCoveringNumber (coverArray);
 	}
 
 	/**
 	 * Estimate for the Scale-Sensitive Sample Covering Number Array for the specified Cover Size
 	 * 
-	 * @param gvvi The Validated Instance Vector Sequence
-	 * @param dblCover The Size of the Cover Array
+	 * @param generalizedValidatedVector The Validated Instance Vector Sequence
+	 * @param coverArray The Size of the Cover Array
 	 * 
 	 * @return The Scale-Sensitive Sample Covering Number Array for the specified Cover Size
 	 */
 
 	public double[] sampleCoveringNumber (
-		final org.drip.spaces.instance.GeneralizedValidatedVector gvvi,
-		final double dblCover)
+		final GeneralizedValidatedVector generalizedValidatedVector,
+		final double[] coverArray)
 	{
-		int iDimension = outputMetricVectorSpace().dimension();
+		if (null == _normedRxToNormedRdArray || null == coverArray) {
+			return null;
+		}
 
-		double[] adblCover = new double[iDimension];
+		int functionSpaceSize = _normedRxToNormedRdArray.length;
 
-		for (int i = 0; i < iDimension; ++i)
-			adblCover[i] = dblCover;
+		if (functionSpaceSize != coverArray.length) {
+			return null;
+		}
 
-		return sampleCoveringNumber (gvvi, adblCover);
-	}
+		double[] sampleCoveringNumberArray = _normedRxToNormedRdArray[0].sampleCoveringNumber (
+			generalizedValidatedVector,
+			coverArray[0]
+		);
 
-	/**
-	 * Estimate for the Scale-Sensitive Sample Supremum Covering Number for the specified Cover Size
-	 * 
-	 * @param gvvi The Validated Instance Vector Sequence
-	 * @param adblCover The Size of the Cover Array
-	 * 
-	 * @return The Scale-Sensitive Sample Supremum Covering Number for the specified Cover Size
-	 */
+		if (!NumberUtil.IsValid (sampleCoveringNumberArray)) {
+			return null;
+		}
 
-	public double[] sampleSupremumCoveringNumber (
-		final org.drip.spaces.instance.GeneralizedValidatedVector gvvi,
-		final double[] adblCover)
-	{
-		if (null == _aNormedRxToNormedRd || null == adblCover) return null;
+		for (int i = 1; i < functionSpaceSize; ++i) {
+			double[] functionSampleCoveringNumberArray = _normedRxToNormedRdArray[i].sampleCoveringNumber (
+				generalizedValidatedVector,
+				coverArray[i]
+			);
 
-		int iFunctionSpaceSize = _aNormedRxToNormedRd.length;
-
-		if (iFunctionSpaceSize != adblCover.length) return null;
-
-		double[] adblSampleSupremumCoveringNumber = _aNormedRxToNormedRd[0].sampleSupremumCoveringNumber
-			(gvvi, adblCover[0]);
-
-		if (!org.drip.numerical.common.NumberUtil.IsValid (adblSampleSupremumCoveringNumber)) return null;
-
-		for (int i = 1; i < iFunctionSpaceSize; ++i) {
-			double[] adblFunctionSampleSupremumCoveringNumber =
-				_aNormedRxToNormedRd[i].sampleSupremumCoveringNumber (gvvi, adblCover[i]);
-
-			if (!org.drip.numerical.common.NumberUtil.IsValid (adblFunctionSampleSupremumCoveringNumber))
+			if (!NumberUtil.IsValid (functionSampleCoveringNumberArray)) {
 				return null;
+			}
 
-			int iDimension = adblFunctionSampleSupremumCoveringNumber.length;
+			int dimension = functionSampleCoveringNumberArray.length;
 
-			for (int j = 0; j < iDimension; ++j) {
-				if (adblSampleSupremumCoveringNumber[j] < adblFunctionSampleSupremumCoveringNumber[j])
-					adblSampleSupremumCoveringNumber[j] = adblFunctionSampleSupremumCoveringNumber[j];
+			for (int j = 0; j < dimension; ++j) {
+				if (sampleCoveringNumberArray[j] < functionSampleCoveringNumberArray[j])
+					sampleCoveringNumberArray[j] = functionSampleCoveringNumberArray[j];
 			}
 		}
 
-		return adblSampleSupremumCoveringNumber;
+		return sampleCoveringNumberArray;
+	}
+
+	/**
+	 * Estimate for the Scale-Sensitive Sample Covering Number Array for the specified Cover Size
+	 * 
+	 * @param generalizedValidatedVector The Validated Instance Vector Sequence
+	 * @param cover The Size of the Cover Array
+	 * 
+	 * @return The Scale-Sensitive Sample Covering Number Array for the specified Cover Size
+	 */
+
+	public double[] sampleCoveringNumber (
+		final GeneralizedValidatedVector generalizedValidatedVector,
+		final double cover)
+	{
+		int dimension = outputMetricVectorSpace().dimension();
+
+		double[] coverArray = new double[dimension];
+
+		for (int i = 0; i < dimension; ++i) {
+			coverArray[i] = cover;
+		}
+
+		return sampleCoveringNumber (generalizedValidatedVector, coverArray);
 	}
 
 	/**
 	 * Estimate for the Scale-Sensitive Sample Supremum Covering Number for the specified Cover Size
 	 * 
-	 * @param gvvi The Validated Instance Vector Sequence
-	 * @param dblCover The Cover
+	 * @param generalizedValidatedVector The Validated Instance Vector Sequence
+	 * @param coverArray The Cover Array
 	 * 
 	 * @return The Scale-Sensitive Sample Supremum Covering Number for the specified Cover Size
 	 */
 
 	public double[] sampleSupremumCoveringNumber (
-		final org.drip.spaces.instance.GeneralizedValidatedVector gvvi,
-		final double dblCover)
+		final GeneralizedValidatedVector generalizedValidatedVector,
+		final double[] coverArray)
 	{
-		int iDimension = outputMetricVectorSpace().dimension();
+		if (null == _normedRxToNormedRdArray || null == coverArray) {
+			return null;
+		}
 
-		double[] adblCover = new double[iDimension];
+		int functionSpaceSize = _normedRxToNormedRdArray.length;
 
-		for (int i = 0; i < iDimension; ++i)
-			adblCover[i] = dblCover;
+		if (functionSpaceSize != coverArray.length) {
+			return null;
+		}
 
-		return sampleSupremumCoveringNumber (gvvi, adblCover);
+		double[] sampleSupremumCoveringNumberArray = _normedRxToNormedRdArray[0].sampleSupremumCoveringNumber
+			(generalizedValidatedVector, coverArray[0]);
+
+		if (!NumberUtil.IsValid (sampleSupremumCoveringNumberArray)) {
+			return null;
+		}
+
+		for (int i = 1; i < functionSpaceSize; ++i) {
+			double[] functionSampleSupremumCoveringNumberArray =
+				_normedRxToNormedRdArray[i].sampleSupremumCoveringNumber (
+					generalizedValidatedVector,
+					coverArray[i]
+				);
+
+			if (!NumberUtil.IsValid (functionSampleSupremumCoveringNumberArray)) {
+				return null;
+			}
+
+			int dimension = functionSampleSupremumCoveringNumberArray.length;
+
+			for (int j = 0; j < dimension; ++j) {
+				if (sampleSupremumCoveringNumberArray[j] < functionSampleSupremumCoveringNumberArray[j]) {
+					sampleSupremumCoveringNumberArray[j] = functionSampleSupremumCoveringNumberArray[j];
+				}
+			}
+		}
+
+		return sampleSupremumCoveringNumberArray;
 	}
 
 	/**
-	 * Compute the Population R^d Metric Norm
+	 * Estimate for the Scale-Sensitive Sample Supremum Covering Number for the specified Cover Size
 	 * 
-	 * @return The Population R^d Metric Norm
+	 * @param generalizedValidatedVector The Validated Instance Vector Sequence
+	 * @param cover The Cover
+	 * 
+	 * @return The Scale-Sensitive Sample Supremum Covering Number for the specified Cover Size
+	 */
+
+	public double[] sampleSupremumCoveringNumber (
+		final GeneralizedValidatedVector generalizedValidatedVector,
+		final double cover)
+	{
+		int dimension = outputMetricVectorSpace().dimension();
+
+		double[] coverArray = new double[dimension];
+
+		for (int i = 0; i < dimension; ++i) {
+			coverArray[i] = cover;
+		}
+
+		return sampleSupremumCoveringNumber (generalizedValidatedVector, coverArray);
+	}
+
+	/**
+	 * Compute the Population R<sup>d</sup> Metric Norm
+	 * 
+	 * @return The Population R<sup>d</sup> Metric Norm
 	 */
 
 	public double[] populationRdMetricNorm()
 	{
-		if (null == _aNormedRxToNormedRd) return null;
+		if (null == _normedRxToNormedRdArray) {
+			return null;
+		}
 
-		int iNumFunction = _aNormedRxToNormedRd.length;
+		int functionCount = _normedRxToNormedRdArray.length;
 
-		double[] adblPopulationRdMetricNorm = _aNormedRxToNormedRd[0].populationMetricNorm();
+		double[] populationRdMetricNormArray = _normedRxToNormedRdArray[0].populationMetricNorm();
 
-		if (!org.drip.numerical.common.NumberUtil.IsValid (adblPopulationRdMetricNorm)) return null;
+		if (!NumberUtil.IsValid (populationRdMetricNormArray)) {
+			return null;
+		}
 
-		for (int i = 1; i < iNumFunction; ++i) {
-			double[] adblPopulationMetricNorm = _aNormedRxToNormedRd[i].populationMetricNorm();
+		for (int i = 1; i < functionCount; ++i) {
+			double[] populationMetricNormArray = _normedRxToNormedRdArray[i].populationMetricNorm();
 
-			if (!org.drip.numerical.common.NumberUtil.IsValid (adblPopulationMetricNorm)) return null;
+			if (!org.drip.numerical.common.NumberUtil.IsValid (populationMetricNormArray)) {
+				return null;
+			}
 
-			int iDimension = adblPopulationMetricNorm.length;
+			int dimension = populationMetricNormArray.length;
 
-			for (int j = 0; j < iDimension; ++j) {
-				if (adblPopulationRdMetricNorm[j] < adblPopulationMetricNorm[j])
-					adblPopulationRdMetricNorm[j] = adblPopulationMetricNorm[j];
+			for (int j = 0; j < dimension; ++j) {
+				if (populationRdMetricNormArray[j] < populationMetricNormArray[j]) {
+					populationRdMetricNormArray[j] = populationMetricNormArray[j];
+				}
 			}
 		}
 
-		return adblPopulationRdMetricNorm;
+		return populationRdMetricNormArray;
 	}
 
 	/**
-	 * Compute the Population R^d Supremum Norm
+	 * Compute the Population R<sup>d</sup> Supremum Norm
 	 * 
-	 * @return The Population R^d Supremum Norm
+	 * @return The Population R<sup>d</sup> Supremum Norm
 	 */
 
 	public double[] populationRdSupremumNorm()
 	{
-		if (null == _aNormedRxToNormedRd) return null;
+		if (null == _normedRxToNormedRdArray) {
+			return null;
+		}
 
-		int iNumFunction = _aNormedRxToNormedRd.length;
+		int functionCount = _normedRxToNormedRdArray.length;
 
-		double[] adblPopulationRdSupremumNorm = _aNormedRxToNormedRd[0].populationESS();
+		double[] populationRdSupremumNormArray = _normedRxToNormedRdArray[0].populationESS();
 
-		if (!org.drip.numerical.common.NumberUtil.IsValid (adblPopulationRdSupremumNorm)) return null;
+		if (!NumberUtil.IsValid (populationRdSupremumNormArray)) {
+			return null;
+		}
 
-		for (int i = 1; i < iNumFunction; ++i) {
-			double[] adblPopulationSupremumNorm = _aNormedRxToNormedRd[i].populationESS();
+		for (int i = 1; i < functionCount; ++i) {
+			double[] populationSupremumNormArray = _normedRxToNormedRdArray[i].populationESS();
 
-			if (!org.drip.numerical.common.NumberUtil.IsValid (adblPopulationSupremumNorm)) return null;
+			if (!NumberUtil.IsValid (populationSupremumNormArray)) {
+				return null;
+			}
 
-			int iDimension = adblPopulationSupremumNorm.length;
+			int dimension = populationSupremumNormArray.length;
 
-			for (int j = 0; j < iDimension; ++j) {
-				if (adblPopulationRdSupremumNorm[j] < adblPopulationSupremumNorm[j])
-					adblPopulationRdSupremumNorm[j] = adblPopulationSupremumNorm[j];
+			for (int j = 0; j < dimension; ++j) {
+				if (populationRdSupremumNormArray[j] < populationSupremumNormArray[j]) {
+					populationRdSupremumNormArray[j] = populationSupremumNormArray[j];
+				}
 			}
 		}
 
-		return adblPopulationRdSupremumNorm;
+		return populationRdSupremumNormArray;
 	}
 
 	/**
-	 * Compute the Sample R^d Metric Norm
+	 * Compute the Sample R<sup>d</sup> Metric Norm
 	 * 
-	 * @param gvvi The Validated Vector Space Instance
+	 * @param generalizedValidatedVector The Validated Vector Space Instance
 	 * 
-	 * @return The Sample R^d Metric Norm
+	 * @return The Sample R<sup>d</sup> Metric Norm
 	 */
 
 	public double[] sampleRdMetricNorm (
-		final org.drip.spaces.instance.GeneralizedValidatedVector gvvi)
+		final GeneralizedValidatedVector generalizedValidatedVector)
 	{
-		if (null == _aNormedRxToNormedRd) return null;
+		if (null == _normedRxToNormedRdArray) {
+			return null;
+		}
 
-		int iNumFunction = _aNormedRxToNormedRd.length;
+		int functionCount = _normedRxToNormedRdArray.length;
 
-		double[] adblSampleRdMetricNorm = _aNormedRxToNormedRd[0].sampleMetricNorm (gvvi);
+		double[] sampleRdMetricNormArray = _normedRxToNormedRdArray[0].sampleMetricNorm (
+			generalizedValidatedVector
+		);
 
-		if (!org.drip.numerical.common.NumberUtil.IsValid (adblSampleRdMetricNorm)) return null;
+		if (!NumberUtil.IsValid (sampleRdMetricNormArray)) {
+			return null;
+		}
 
-		for (int i = 1; i < iNumFunction; ++i) {
-			double[] adblSampleMetricNorm = _aNormedRxToNormedRd[i].sampleMetricNorm (gvvi);
+		for (int i = 1; i < functionCount; ++i) {
+			double[] sampleMetricNormArray = _normedRxToNormedRdArray[i].sampleMetricNorm (
+				generalizedValidatedVector
+			);
 
-			if (!org.drip.numerical.common.NumberUtil.IsValid (adblSampleMetricNorm)) return null;
+			if (!NumberUtil.IsValid (sampleMetricNormArray)) {
+				return null;
+			}
 
-			int iDimension = adblSampleMetricNorm.length;
+			int dimension = sampleMetricNormArray.length;
 
-			for (int j = 0; j < iDimension; ++j) {
-				if (adblSampleRdMetricNorm[j] < adblSampleMetricNorm[j])
-					adblSampleRdMetricNorm[j] = adblSampleMetricNorm[j];
+			for (int j = 0; j < dimension; ++j) {
+				if (sampleRdMetricNormArray[j] < sampleMetricNormArray[j]) {
+					sampleRdMetricNormArray[j] = sampleMetricNormArray[j];
+				}
 			}
 		}
 
-		return adblSampleRdMetricNorm;
+		return sampleRdMetricNormArray;
 	}
 
 	/**
-	 * Compute the Sample R^d Supremum Norm
+	 * Compute the Sample R<sup>d</sup> Supremum Norm
 	 * 
-	 * @param gvvi The Validated Vector Space Instance
+	 * @param generalizedValidatedVector The Validated Vector Space Instance
 	 * 
-	 * @return The Sample R^d Supremum Norm
+	 * @return The Sample R<sup>d</sup> Supremum Norm
 	 */
 
 	public double[] sampleRdSupremumNorm (
-		final org.drip.spaces.instance.GeneralizedValidatedVector gvvi)
+		final GeneralizedValidatedVector generalizedValidatedVector)
 	{
-		if (null == _aNormedRxToNormedRd) return null;
+		if (null == _normedRxToNormedRdArray) {
+			return null;
+		}
 
-		int iNumFunction = _aNormedRxToNormedRd.length;
+		int functionCount = _normedRxToNormedRdArray.length;
 
-		double[] adblSampleRdSupremumNorm = _aNormedRxToNormedRd[0].sampleSupremumNorm (gvvi);
+		double[] sampleRdSupremumNormArray = _normedRxToNormedRdArray[0].sampleSupremumNorm (
+			generalizedValidatedVector
+		);
 
-		if (!org.drip.numerical.common.NumberUtil.IsValid (adblSampleRdSupremumNorm)) return null;
+		if (!NumberUtil.IsValid (sampleRdSupremumNormArray)) {
+			return null;
+		}
 
-		for (int i = 1; i < iNumFunction; ++i) {
-			double[] adblSampleSupremumNorm = _aNormedRxToNormedRd[i].sampleSupremumNorm (gvvi);
+		for (int i = 1; i < functionCount; ++i) {
+			double[] sampleSupremumNormArray = _normedRxToNormedRdArray[i].sampleSupremumNorm (
+				generalizedValidatedVector
+			);
 
-			if (!org.drip.numerical.common.NumberUtil.IsValid (adblSampleSupremumNorm)) return null;
+			if (!NumberUtil.IsValid (sampleSupremumNormArray)) {
+				return null;
+			}
 
-			int iDimension = adblSampleSupremumNorm.length;
+			int dimension = sampleSupremumNormArray.length;
 
-			for (int j = 0; j < iDimension; ++j) {
-				if (adblSampleRdSupremumNorm[j] < adblSampleSupremumNorm[j])
-					adblSampleRdSupremumNorm[j] = adblSampleSupremumNorm[j];
+			for (int j = 0; j < dimension; ++j) {
+				if (sampleRdSupremumNormArray[j] < sampleSupremumNormArray[j]) {
+					sampleRdSupremumNormArray[j] = sampleSupremumNormArray[j];
+				}
 			}
 		}
 
-		return adblSampleRdSupremumNorm;
+		return sampleRdSupremumNormArray;
 	}
 
 	@Override public double operatorPopulationMetricNorm()
-		throws java.lang.Exception
+		throws Exception
 	{
-		double[] adblPopulationMetricNorm = populationRdMetricNorm();
+		double[] populationMetricNormArray = populationRdMetricNorm();
 
-		if (null == adblPopulationMetricNorm)
-			throw new java.lang.Exception
-				("NormedRxToNormedRdFinite::operatorPopulationMetricNorm => Invalid Inputs");
+		if (null == populationMetricNormArray) {
+			throw new Exception ("NormedRxToNormedRdFinite::operatorPopulationMetricNorm => Invalid Inputs");
+		}
 
-		int iDimension = adblPopulationMetricNorm.length;
-		double dblOperatorPopulationMetricNorm = java.lang.Double.NaN;
+		double operatorPopulationMetricNorm = Double.NaN;
+		int dimension = populationMetricNormArray.length;
 
-		if (0 == iDimension)
-			throw new java.lang.Exception
-				("NormedRxToNormedRdFinite::operatorPopulationMetricNorm => Invalid Inputs");
+		if (0 == dimension) {
+			throw new Exception ("NormedRxToNormedRdFinite::operatorPopulationMetricNorm => Invalid Inputs");
+		}
 
-		for (int j = 0; j < iDimension; ++j) {
-			if (0 == j)
-				dblOperatorPopulationMetricNorm = adblPopulationMetricNorm[j];
-			else {
-				if (dblOperatorPopulationMetricNorm < adblPopulationMetricNorm[j])
-					dblOperatorPopulationMetricNorm = adblPopulationMetricNorm[j];
+		for (int j = 0; j < dimension; ++j) {
+			if (0 == j) {
+				operatorPopulationMetricNorm = populationMetricNormArray[j];
+			} else {
+				if (operatorPopulationMetricNorm < populationMetricNormArray[j]) {
+					operatorPopulationMetricNorm = populationMetricNormArray[j];
+				}
 			}
 		}
 
-		return dblOperatorPopulationMetricNorm;
+		return operatorPopulationMetricNorm;
 	}
 
 	@Override public double operatorPopulationSupremumNorm()
-		throws java.lang.Exception
+		throws Exception
 	{
-		double[] adblPopulationSupremumNorm = populationRdSupremumNorm();
+		double[] populationSupremumNormArray = populationRdSupremumNorm();
 
-		if (null == adblPopulationSupremumNorm)
-			throw new java.lang.Exception
-				("NormedRxToNormedRdFinite::operatorPopulationSupremumNorm => Invalid Inputs");
+		if (null == populationSupremumNormArray) {
+			throw new Exception (
+				"NormedRxToNormedRdFinite::operatorPopulationSupremumNorm => Invalid Inputs"
+			);
+		}
 
-		int iDimension = adblPopulationSupremumNorm.length;
-		double dblOperatorPopulationSupremumNorm = java.lang.Double.NaN;
+		double operatorPopulationSupremumNorm = Double.NaN;
+		int dimension = populationSupremumNormArray.length;
 
-		if (0 == iDimension)
-			throw new java.lang.Exception
-				("NormedRxToNormedRdFinite::operatorPopulationSupremumNorm => Invalid Inputs");
+		if (0 == dimension) {
+			throw new Exception (
+				"NormedRxToNormedRdFinite::operatorPopulationSupremumNorm => Invalid Inputs"
+			);
+		}
 
-		for (int j = 0; j < iDimension; ++j) {
-			if (0 == j)
-				dblOperatorPopulationSupremumNorm = adblPopulationSupremumNorm[j];
-			else {
-				if (dblOperatorPopulationSupremumNorm < adblPopulationSupremumNorm[j])
-					dblOperatorPopulationSupremumNorm = adblPopulationSupremumNorm[j];
+		for (int j = 0; j < dimension; ++j) {
+			if (0 == j) {
+				operatorPopulationSupremumNorm = populationSupremumNormArray[j];
+			} else {
+				if (operatorPopulationSupremumNorm < populationSupremumNormArray[j]) {
+					operatorPopulationSupremumNorm = populationSupremumNormArray[j];
+				}
 			}
 		}
 
-		return dblOperatorPopulationSupremumNorm;
+		return operatorPopulationSupremumNorm;
 	}
 
 	@Override public double operatorSampleMetricNorm (
-		final org.drip.spaces.instance.GeneralizedValidatedVector gvvi)
-		throws java.lang.Exception
+		final GeneralizedValidatedVector generalizedValidatedVector)
+		throws Exception
 	{
-		double[] adblSampleMetricNorm = sampleRdMetricNorm (gvvi);
+		double[] sampleMetricNormArray = sampleRdMetricNorm (generalizedValidatedVector);
 
-		if (null == adblSampleMetricNorm)
-			throw new java.lang.Exception
-				("NormedRxToNormedRdFinite::operatorSampleMetricNorm => Invalid Inputs");
+		if (null == sampleMetricNormArray) {
+			throw new Exception ("NormedRxToNormedRdFinite::operatorSampleMetricNorm => Invalid Inputs");
+		}
 
-		int iDimension = adblSampleMetricNorm.length;
-		double dblOperatorSampleMetricNorm = java.lang.Double.NaN;
+		double operatorSampleMetricNorm = Double.NaN;
+		int dimension = sampleMetricNormArray.length;
 
-		if (0 == iDimension)
-			throw new java.lang.Exception
-				("NormedRxToNormedRdFinite::operatorSampleMetricNorm => Invalid Inputs");
+		if (0 == dimension) {
+			throw new Exception ("NormedRxToNormedRdFinite::operatorSampleMetricNorm => Invalid Inputs");
+		}
 
-		for (int j = 0; j < iDimension; ++j) {
-			if (0 == j)
-				dblOperatorSampleMetricNorm = adblSampleMetricNorm[j];
-			else {
-				if (dblOperatorSampleMetricNorm < adblSampleMetricNorm[j])
-					dblOperatorSampleMetricNorm = adblSampleMetricNorm[j];
+		for (int j = 0; j < dimension; ++j) {
+			if (0 == j) {
+				operatorSampleMetricNorm = sampleMetricNormArray[j];
+			} else {
+				if (operatorSampleMetricNorm < sampleMetricNormArray[j]) {
+					operatorSampleMetricNorm = sampleMetricNormArray[j];
+				}
 			}
 		}
 
-		return dblOperatorSampleMetricNorm;
+		return operatorSampleMetricNorm;
 	}
 
 	@Override public double operatorSampleSupremumNorm (
-		final org.drip.spaces.instance.GeneralizedValidatedVector gvvi)
-		throws java.lang.Exception
+		final GeneralizedValidatedVector generalizedValidatedVector)
+		throws Exception
 	{
-		double[] adblSampleSupremumNorm = sampleRdSupremumNorm (gvvi);
+		double[] sampleSupremumNormArray = sampleRdSupremumNorm (generalizedValidatedVector);
 
-		if (null == adblSampleSupremumNorm)
-			throw new java.lang.Exception
-				("NormedRxToNormedRdFinite::operatorSampleSupremumNorm => Invalid Inputs");
+		if (null == sampleSupremumNormArray) {
+			throw new Exception ("NormedRxToNormedRdFinite::operatorSampleSupremumNorm => Invalid Inputs");
+		}
 
-		int iDimension = adblSampleSupremumNorm.length;
-		double dblOperatorSampleSupremumNorm = java.lang.Double.NaN;
+		double operatorSampleSupremumNorm = Double.NaN;
+		int dimension = sampleSupremumNormArray.length;
 
-		if (0 == iDimension)
-			throw new java.lang.Exception
-				("NormedRxToNormedRdFinite::operatorSampleSupremumNorm => Invalid Inputs");
+		if (0 == dimension) {
+			throw new Exception ("NormedRxToNormedRdFinite::operatorSampleSupremumNorm => Invalid Inputs");
+		}
 
-		for (int j = 0; j < iDimension; ++j) {
-			if (0 == j)
-				dblOperatorSampleSupremumNorm = adblSampleSupremumNorm[j];
-			else {
-				if (dblOperatorSampleSupremumNorm < adblSampleSupremumNorm[j])
-					dblOperatorSampleSupremumNorm = adblSampleSupremumNorm[j];
+		for (int j = 0; j < dimension; ++j) {
+			if (0 == j) {
+				operatorSampleSupremumNorm = sampleSupremumNormArray[j];
+			} else {
+				if (operatorSampleSupremumNorm < sampleSupremumNormArray[j]) {
+					operatorSampleSupremumNorm = sampleSupremumNormArray[j];
+				}
 			}
 		}
 
-		return dblOperatorSampleSupremumNorm;
+		return operatorSampleSupremumNorm;
 	}
 }
