@@ -1,11 +1,20 @@
 
 package org.drip.spaces.functionclass;
 
+import org.drip.numerical.common.NumberUtil;
+import org.drip.spaces.cover.FunctionClassCoveringBounds;
+import org.drip.spaces.cover.L1R1CoveringBounds;
+import org.drip.spaces.metric.R1Normed;
+import org.drip.spaces.rxtor1.NormedR1ToNormedR1;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -82,7 +91,7 @@ package org.drip.spaces.functionclass;
 
 /**
  * <i>NormedR1ToL1R1Finite</i> implements the Class f E F : Normed R<sup>1</sup> To L<sub>1</sub>
- * R<sup>1</sup> Spaces of Finite Functions. The Reference we've used is:
+ * 	R<sup>1</sup> Spaces of Finite Functions. The Reference we've used is:
  *
  * <br><br>
  *  <ul>
@@ -90,6 +99,12 @@ package org.drip.spaces.functionclass;
  *  		Carl, B., and I. Stephani (1990): <i>Entropy, Compactness, and the Approximation of Operators</i>
  *  			<b>Cambridge University Press</b> Cambridge UK 
  *  	</li>
+ *  </ul>
+ *
+ *  It provides the following Functionality:
+ *
+ *  <ul>
+ * 		<li>Create Bounded R<sup>1</sup> To Bounded L1 R<sup>1</sup> Function Class for the specified Bounded Class of Finite Functions</li>
  *  </ul>
  *
  * <br><br>
@@ -104,22 +119,24 @@ package org.drip.spaces.functionclass;
  * @author Lakshmi Krishnamurthy
  */
 
-public class NormedR1ToL1R1Finite extends org.drip.spaces.functionclass.NormedR1ToNormedR1Finite {
+public class NormedR1ToL1R1Finite extends NormedR1ToNormedR1Finite
+{
 
 	/**
-	 * Create Bounded R^1 To Bounded L1 R^1 Function Class for the specified Bounded Class of Finite
-	 *  Functions
+	 * Create Bounded R<sup>1</sup> To Bounded L1 R<sup>1</sup> Function Class for the specified Bounded
+	 * 	Class of Finite Functions
 	 * 
-	 * @param dblMaureyConstant Maurey Constant
-	 * @param aR1ToR1 The Bounded R^1 To Bounded R^1 Function Set
+	 * @param maureyConstant Maurey Constant
+	 * @param aR1ToR1 The Bounded R<sup>1</sup> To Bounded R<sup>1</sup> Function Set
 	 * @param dblPredictorSupport The Set Predictor Support
 	 * @param dblResponseBound The Set Response Bound
 	 * 
-	 * @return The Bounded R^1 To Bounded R^1 Function Class for the specified Function Set
+	 * @return The Bounded R<sup>1</sup> To Bounded R<sup>1</sup> Function Class for the specified Function
+	 * 	Set
 	 */
 
 	public static final NormedR1ToL1R1Finite BoundedPredictorBoundedResponse (
-		final double dblMaureyConstant,
+		final double maureyConstant,
 		final org.drip.function.definition.R1ToR1[] aR1ToR1,
 		final double dblPredictorSupport,
 		final double dblResponseBound)
@@ -143,7 +160,7 @@ public class NormedR1ToL1R1Finite extends org.drip.spaces.functionclass.NormedR1
 				aR1ToR1FunctionSpace[i] = new org.drip.spaces.rxtor1.NormedR1ContinuousToR1Continuous
 					(r1ContinuousInput, r1ContinuousOutput, aR1ToR1[i]);
 
-			return new NormedR1ToL1R1Finite (dblMaureyConstant, aR1ToR1FunctionSpace);
+			return new NormedR1ToL1R1Finite (maureyConstant, aR1ToR1FunctionSpace);
 		} catch (java.lang.Exception e) {
 			e.printStackTrace();
 		}
@@ -152,76 +169,80 @@ public class NormedR1ToL1R1Finite extends org.drip.spaces.functionclass.NormedR1
 	}
 
 	protected NormedR1ToL1R1Finite (
-		final double dblMaureyConstant,
-		final org.drip.spaces.rxtor1.NormedR1ToNormedR1[] aR1ToR1FunctionSpace)
+		final double maureyConstant,
+		final NormedR1ToNormedR1[] normedR1ToNormedR1Array)
 		throws java.lang.Exception
 	{
-		super (dblMaureyConstant, aR1ToR1FunctionSpace);
+		super (maureyConstant, normedR1ToNormedR1Array);
 	}
 
-	@Override public org.drip.spaces.cover.FunctionClassCoveringBounds agnosticCoveringNumberBounds()
+	@Override public FunctionClassCoveringBounds agnosticCoveringNumberBounds()
 	{
-		org.drip.spaces.rxtor1.NormedR1ToNormedR1[] aNormedR1ToNormedR1 =
-			(org.drip.spaces.rxtor1.NormedR1ToNormedR1[]) functionSpaces();
+		NormedR1ToNormedR1[] normedR1ToNormedR1Array = (NormedR1ToNormedR1[]) functionSpaces();
 
-		int iNumFunction = aNormedR1ToNormedR1.length;
-		double dblResponseLowerBound = java.lang.Double.NaN;
-		double dblResponseUpperBound = java.lang.Double.NaN;
-		double dblPredictorLowerBound = java.lang.Double.NaN;
-		double dblPredictorUpperBound = java.lang.Double.NaN;
+		double responseLowerBound = Double.NaN;
+		double responseUpperBound = Double.NaN;
+		double predictorLowerBound = Double.NaN;
+		double predictorUpperBound = Double.NaN;
+		int functionCount = normedR1ToNormedR1Array.length;
 
-		for (int i = 0; i < iNumFunction; ++i) {
-			org.drip.spaces.rxtor1.NormedR1ToNormedR1 r1Tor1 = aNormedR1ToNormedR1[i];
+		for (int i = 0; i < functionCount; ++i) {
+			NormedR1ToNormedR1 normedR1ToNormedR1 = normedR1ToNormedR1Array[i];
 
-			org.drip.spaces.metric.R1Normed runsInput = r1Tor1.inputMetricVectorSpace();
+			R1Normed inputR1Normed = normedR1ToNormedR1.inputMetricVectorSpace();
 
-			org.drip.spaces.metric.R1Normed runsOutput = r1Tor1.outputMetricVectorSpace();
+			R1Normed outputR1Normed = normedR1ToNormedR1.outputMetricVectorSpace();
 
-			if (!runsInput.isPredictorBounded() || !runsOutput.isPredictorBounded()) return null;
-
-			double dblResponseLeftBound = runsOutput.leftEdge();
-
-			double dblPredictorLeftBound = runsInput.leftEdge();
-
-			double dblResponseRightBound = runsOutput.rightEdge();
-
-			double dblPredictorRightBound = runsInput.rightEdge();
-
-			if (!org.drip.numerical.common.NumberUtil.IsValid (dblPredictorLowerBound))
-				dblPredictorLowerBound = dblPredictorLeftBound;
-			else {
-				if (dblPredictorLowerBound > dblPredictorLeftBound)
-					dblPredictorLowerBound = dblPredictorLeftBound;
+			if (!inputR1Normed.isPredictorBounded() || !outputR1Normed.isPredictorBounded()) {
+				return null;
 			}
 
-			if (!org.drip.numerical.common.NumberUtil.IsValid (dblPredictorUpperBound))
-				dblPredictorUpperBound = dblPredictorRightBound;
-			else {
-				if (dblPredictorUpperBound < dblPredictorRightBound)
-					dblPredictorUpperBound = dblPredictorRightBound;
+			double responseLeftBound = outputR1Normed.leftEdge();
+
+			double predictorLeftBound = inputR1Normed.leftEdge();
+
+			double responseRightBound = outputR1Normed.rightEdge();
+
+			double predictorRightBound = inputR1Normed.rightEdge();
+
+			if (!NumberUtil.IsValid (predictorLowerBound)) {
+				predictorLowerBound = predictorLeftBound;
+			} else {
+				if (predictorLowerBound > predictorLeftBound) {
+					predictorLowerBound = predictorLeftBound;
+				}
 			}
 
-			if (!org.drip.numerical.common.NumberUtil.IsValid (dblResponseLowerBound))
-				dblResponseLowerBound = dblResponseLeftBound;
-			else {
-				if (dblResponseLowerBound > dblResponseLeftBound)
-					dblResponseLowerBound = dblResponseLeftBound;
+			if (!NumberUtil.IsValid (predictorUpperBound)) {
+				predictorUpperBound = predictorRightBound;
+			} else {
+				if (predictorUpperBound < predictorRightBound) {
+					predictorUpperBound = predictorRightBound;
+				}
 			}
 
-			if (!org.drip.numerical.common.NumberUtil.IsValid (dblResponseUpperBound))
-				dblResponseUpperBound = dblResponseRightBound;
-			else {
-				if (dblResponseUpperBound < dblResponseRightBound)
-					dblResponseUpperBound = dblResponseRightBound;
+			if (!NumberUtil.IsValid (responseLowerBound)) {
+				responseLowerBound = responseLeftBound;
+			} else {
+				if (responseLowerBound > responseLeftBound) {
+					responseLowerBound = responseLeftBound;
+				}
+			}
+
+			if (!NumberUtil.IsValid (responseUpperBound)) {
+				responseUpperBound = responseRightBound;
+			} else {
+				if (responseUpperBound < responseRightBound) {
+					responseUpperBound = responseRightBound;
+				}
 			}
 		}
 
-		double dblVariation = dblResponseUpperBound - dblResponseLowerBound;
+		double variation = responseUpperBound - responseLowerBound;
 
 		try {
-			return new org.drip.spaces.cover.L1R1CoveringBounds (dblPredictorUpperBound -
-				dblPredictorLowerBound, dblVariation, dblVariation);
-		} catch (java.lang.Exception e) {
+			return new L1R1CoveringBounds (predictorUpperBound - predictorLowerBound, variation, variation);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 

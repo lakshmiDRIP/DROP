@@ -1,11 +1,17 @@
 
 package org.drip.spaces.functionclass;
 
+import org.drip.function.definition.RdToR1;
+import org.drip.spaces.rxtor1.NormedRdToNormedR1;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -82,7 +88,7 @@ package org.drip.spaces.functionclass;
 
 /**
  * <i>NormedRdToNormedR1Finite</i> implements the Class F of f : Normed R<sup>d</sup> To Normed R<sup>1</sup>
- * Spaces of Finite Functions. The Reference we've used is:
+ * 	Spaces of Finite Functions. The Reference we've used is:
  *
  * <br><br>
  * 	<ul>
@@ -90,6 +96,13 @@ package org.drip.spaces.functionclass;
  *  		Carl, B., and I. Stephani (1990): <i>Entropy, Compactness, and the Approximation of Operators</i>
  *  			<b>Cambridge University Press</b> Cambridge UK 
  *  	</li>
+ *  </ul>
+ *
+ *  It provides the following Functionality:
+ *
+ *  <ul>
+ * 		<li><i>NormedRdToNormedR1Finite</i> Function Class Constructor</li>
+ * 		<li>Retrieve the Finite Class of R<sup>d</sup> To R<sup>1</sup> Functions</li>
  *  </ul>
  *
  * <br><br>
@@ -104,50 +117,53 @@ package org.drip.spaces.functionclass;
  * @author Lakshmi Krishnamurthy
  */
 
-public class NormedRdToNormedR1Finite extends org.drip.spaces.functionclass.NormedRxToNormedR1Finite {
+public class NormedRdToNormedR1Finite extends NormedRxToNormedR1Finite
+{
 
 	/**
-	 * NormedRdToNormedR1Finite Function Class Constructor
+	 * <i>NormedRdToNormedR1Finite</i> Function Class Constructor
 	 * 
-	 * @param dblMaureyConstant The Maurey Constant
-	 * @param aNormedRdToNormedR1 Array of the Function Spaces
+	 * @param maureyConstant The Maurey Constant
+	 * @param normedRdToNormedR1Array Array of the Function Spaces
 	 * 
 	 * @throws java.lang.Exception Thrown if NormedRdToNormedR1Class Instance cannot be created
 	 */
 
 	public NormedRdToNormedR1Finite (
-		final double dblMaureyConstant,
-		final org.drip.spaces.rxtor1.NormedRdToNormedR1[] aNormedRdToNormedR1)
+		final double maureyConstant,
+		final NormedRdToNormedR1[] normedRdToNormedR1Array)
 		throws java.lang.Exception
 	{
-		super (dblMaureyConstant, aNormedRdToNormedR1);
+		super (maureyConstant, normedRdToNormedR1Array);
 
-		for (int i = 0; i < aNormedRdToNormedR1.length; ++i) {
-			if (null == aNormedRdToNormedR1[i])
-				throw new java.lang.Exception ("NormedRdToNormedR1Finite ctr: Invalid Input Function");
+		for (int i = 0; i < normedRdToNormedR1Array.length; ++i) {
+			if (null == normedRdToNormedR1Array[i]) {
+				throw new Exception ("NormedRdToNormedR1Finite ctr: Invalid Input Function");
+			}
 		}
 	}
 
 	/**
-	 * Retrieve the Finite Class of R^d To R^1 Functions
+	 * Retrieve the Finite Class of R<sup>d</sup> To R<sup>1</sup> Functions
 	 * 
-	 * @return The Finite Class of R^d To R^1 Functions
+	 * @return The Finite Class of R<sup>d</sup> To R<sup>1</sup> Functions
 	 */
 
-	public org.drip.function.definition.RdToR1[] functionRdToR1Set()
+	public RdToR1[] functionRdToR1Set()
 	{
-		org.drip.spaces.rxtor1.NormedRdToNormedR1[] aNormedRdToNormedR1 =
-			(org.drip.spaces.rxtor1.NormedRdToNormedR1[]) functionSpaces();
+		NormedRdToNormedR1[] normedRdToNormedR1Array = (NormedRdToNormedR1[]) functionSpaces();
 
-		if (null == aNormedRdToNormedR1) return null;
+		if (null == normedRdToNormedR1Array) {
+			return null;
+		}
 
-		int iNumFunction = aNormedRdToNormedR1.length;
-		org.drip.function.definition.RdToR1[] aRdToR1 = new
-			org.drip.function.definition.RdToR1[iNumFunction];
+		int functionCount = normedRdToNormedR1Array.length;
+		RdToR1[] rdToR1Array = new RdToR1[functionCount];
 
-		for (int i = 0; i < iNumFunction; ++i)
-			aRdToR1[i] = aNormedRdToNormedR1[i].function();
+		for (int i = 0; i < functionCount; ++i) {
+			rdToR1Array[i] = normedRdToNormedR1Array[i].function();
+		}
 
-		return aRdToR1;
+		return rdToR1Array;
 	}
 }

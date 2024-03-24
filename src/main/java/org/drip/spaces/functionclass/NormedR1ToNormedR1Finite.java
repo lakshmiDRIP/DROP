@@ -1,11 +1,17 @@
 
 package org.drip.spaces.functionclass;
 
+import org.drip.function.definition.R1ToR1;
+import org.drip.spaces.rxtor1.NormedR1ToNormedR1;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -82,7 +88,7 @@ package org.drip.spaces.functionclass;
 
 /**
  * <i>NormedR1ToNormedR1Finite</i> implements the Class F of f : Normed R<sup>1</sup> To Normed R<sup>1</sup>
- * Spaces of Finite Functions. The Reference we've used is:
+ * 	Spaces of Finite Functions. The Reference we've used is:
  *
  * <br><br>
  *  <ul>
@@ -90,6 +96,13 @@ package org.drip.spaces.functionclass;
  *  		Carl, B., and I. Stephani (1990): <i>Entropy, Compactness, and the Approximation of Operators</i>
  *  			<b>Cambridge University Press</b> Cambridge UK 
  *  	</li>
+ *  </ul>
+ *
+ *  It provides the following Functionality:
+ *
+ *  <ul>
+ * 		<li><i>NormedR1ToNormedR1Finite</i> Function Class Constructor</li>
+ * 		<li>Retrieve the Finite Class of R<sup>1</sup> To R<sup>1</sup> Functions</li>
  *  </ul>
  *
  * <br><br>
@@ -104,50 +117,53 @@ package org.drip.spaces.functionclass;
  * @author Lakshmi Krishnamurthy
  */
 
-public class NormedR1ToNormedR1Finite extends org.drip.spaces.functionclass.NormedRxToNormedR1Finite {
+public class NormedR1ToNormedR1Finite extends NormedRxToNormedR1Finite
+{
 
 	/**
-	 * NormedR1ToNormedR1Finite Finite Function Class Constructor
+	 * <i>NormedR1ToNormedR1Finite</i> Finite Function Class Constructor
 	 * 
-	 * @param dblMaureyConstant The Maurey Constant
-	 * @param aNormedR1ToNormedR1 Array of the Function Spaces
+	 * @param maureyConstant The Maurey Constant
+	 * @param normedR1ToNormedR1Array Array of the Function Spaces
 	 * 
-	 * @throws java.lang.Exception Thrown if NormedR1ToNormedR1 Class Instance cannot be created
+	 * @throws Exception Thrown if <i>NormedR1ToNormedR1Finite</i> Instance cannot be created
 	 */
 
 	public NormedR1ToNormedR1Finite (
-		final double dblMaureyConstant,
-		final org.drip.spaces.rxtor1.NormedR1ToNormedR1[] aNormedR1ToNormedR1)
-		throws java.lang.Exception
+		final double maureyConstant,
+		final NormedR1ToNormedR1[] normedR1ToNormedR1Array)
+		throws Exception
 	{
-		super (dblMaureyConstant, aNormedR1ToNormedR1);
+		super (maureyConstant, normedR1ToNormedR1Array);
 
-		for (int i = 0; i < aNormedR1ToNormedR1.length; ++i) {
-			if (null == aNormedR1ToNormedR1[i])
-				throw new java.lang.Exception ("NormedR1ToNormedR1Finite ctr: Invalid Input Function");
+		for (int i = 0; i < normedR1ToNormedR1Array.length; ++i) {
+			if (null == normedR1ToNormedR1Array[i]) {
+				throw new Exception ("NormedR1ToNormedR1Finite ctr: Invalid Input Function");
+			}
 		}
 	}
 
 	/**
-	 * Retrieve the Finite Class of R^1 To R^1 Functions
+	 * Retrieve the Finite Class of R<sup>1</sup> To R<sup>1</sup> Functions
 	 * 
-	 * @return The Finite Class of R^1 To R^1 Functions
+	 * @return The Finite Class of R<sup>1</sup> To R<sup>1</sup> Functions
 	 */
 
-	public org.drip.function.definition.R1ToR1[] functionR1ToR1Set()
+	public R1ToR1[] functionR1ToR1Set()
 	{
-		org.drip.spaces.rxtor1.NormedR1ToNormedR1[] aNormedR1ToNormedR1 =
-			(org.drip.spaces.rxtor1.NormedR1ToNormedR1[]) functionSpaces();
+		NormedR1ToNormedR1[] normedR1ToNormedR1Array = (NormedR1ToNormedR1[]) functionSpaces();
 
-		if (null == aNormedR1ToNormedR1) return null;
+		if (null == normedR1ToNormedR1Array) {
+			return null;
+		}
 
-		int iNumFunction = aNormedR1ToNormedR1.length;
-		org.drip.function.definition.R1ToR1[] aR1ToR1 = new
-			org.drip.function.definition.R1ToR1[iNumFunction];
+		int functionCount = normedR1ToNormedR1Array.length;
+		R1ToR1[] r1ToR1Array = new R1ToR1[functionCount];
 
-		for (int i = 0; i < iNumFunction; ++i)
-			aR1ToR1[i] = aNormedR1ToNormedR1[i].function();
+		for (int i = 0; i < functionCount; ++i) {
+			r1ToR1Array[i] = normedR1ToNormedR1Array[i].function();
+		}
 
-		return aR1ToR1;
+		return r1ToR1Array;
 	}
 }
