@@ -6,6 +6,9 @@ package org.drip.spaces.iterator;
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -82,84 +85,101 @@ package org.drip.spaces.iterator;
 
 /**
  * <i>RdReceedingStateSpaceScan</i> is the Abstract Iterator Class that contains the Functionality to conduct
- * a Receeding Scan through a R<sup>d</sup> Space.
+ * 	a Receeding Scan through a R<sup>d</sup> Space.
  *
- * <br><br>
+ *  It provides the following Functionality:
+ *
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/StatisticalLearningLibrary.md">Statistical Learning Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/README.md">R<sup>1</sup> and R<sup>d</sup> Vector/Tensor Spaces (Validated and/or Normed), and Function Classes</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/iterator/README.md">Iterative/Exhaustive Vector Space Scanners</a></li>
+ * 		<li><i>RdReceedingStateSpaceScan</i> Constructor</li>
  *  </ul>
- * <br><br>
+ *
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/StatisticalLearningLibrary.md">Statistical Learning Library</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/README.md">R<sup>1</sup> and R<sup>d</sup> Vector/Tensor Spaces (Validated and/or Normed), and Function Classes</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/iterator/README.md">Iterative/Exhaustive Vector Space Scanners</a></td></tr>
+ *  </table>
  * 
  * @author Lakshmi Krishnamurthy
  */
 
-public class RdReceedingStateSpaceScan extends org.drip.spaces.iterator.RdSpanningStateSpaceScan {
+public class RdReceedingStateSpaceScan extends RdSpanningStateSpaceScan
+{
 
 	/**
-	 * RdReceedingStateSpaceScan Constructor
+	 * <i>RdReceedingStateSpaceScan</i> Constructor
 	 * 
-	 * @param aiTerminalStateIndex Upper Array Bounds for each Dimension
-	 * @param bCyclicalScan TRUE - Cycle Post a Full Scan
+	 * @param terminalStateIndexArray Upper Array Bounds for each Dimension
+	 * @param cyclicalScan TRUE - Cycle Post a Full Scan
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public RdReceedingStateSpaceScan (
-		final int[] aiTerminalStateIndex,
-		final boolean bCyclicalScan)
-		throws java.lang.Exception
+		final int[] terminalStateIndexArray,
+		final boolean cyclicalScan)
+		throws Exception
 	{
-		super (aiTerminalStateIndex, bCyclicalScan);
+		super (terminalStateIndexArray, cyclicalScan);
 
-		if (null == resetStateIndexCursor())
-			throw new java.lang.Exception ("RdReceedingStateSpaceScan ctr => Invalid Inputs");
+		if (null == resetStateIndexCursor()) {
+			throw new Exception ("RdReceedingStateSpaceScan ctr => Invalid Inputs");
+		}
 	}
 
 	@Override public int[] resetStateIndexCursor()
 	{
-		int[] aiStateIndexCursor = stateIndexCursor();
+		int[] stateIndexCursorArray = stateIndexCursor();
 
-		int iDimension = dimension();
+		int dimension = dimension();
 
-		for (int i = 0; i < iDimension; ++i)
-			aiStateIndexCursor[i] = 0 == i ? 0 : aiStateIndexCursor[i - 1] + 1;
+		for (int i = 0; i < dimension; ++i) {
+			stateIndexCursorArray[i] = 0 == i ? 0 : stateIndexCursorArray[i - 1] + 1;
+		}
 
-		return setStateIndexCursor (aiStateIndexCursor) ? aiStateIndexCursor : null;
+		return setStateIndexCursor (stateIndexCursorArray) ? stateIndexCursorArray : null;
 	}
 
 	@Override public int[] nextStateIndexCursor()
 	{
-		int iDimension = dimension();
+		int dimension = dimension();
 
-		int iStateIndexToUpdate = -1;
+		int stateIndexToUpdate = -1;
 
-		int[] aiStateIndexCursor = stateIndexCursor();
+		int[] stateIndexCursorArray = stateIndexCursor();
 
-		int[] aiTerminalStateIndex = terminalStateIndex();
+		int[] terminalStateIndexArray = terminalStateIndex();
 
-		for (int i = iDimension - 1; i >= 0; --i) {
-			if (aiStateIndexCursor[i] != aiTerminalStateIndex[i] - 1) {
-				iStateIndexToUpdate = i;
+		for (int i = dimension - 1; i >= 0; --i) {
+			if (stateIndexCursorArray[i] != terminalStateIndexArray[i] - 1) {
+				stateIndexToUpdate = i;
 				break;
 			}
 		}
 
-		if (-1 == iStateIndexToUpdate) return cyclicalScan() ? resetStateIndexCursor() : null;
-
-		aiStateIndexCursor[iStateIndexToUpdate] = aiStateIndexCursor[iStateIndexToUpdate] + 1;
-
-		for (int i = iStateIndexToUpdate + 1; i < iDimension; ++i) {
-			int iSequentialDimensionIndex = aiStateIndexCursor[i - 1] + 1;
-
-			if (iSequentialDimensionIndex >= aiTerminalStateIndex[i] - 1)
-				return cyclicalScan() ? resetStateIndexCursor() : null;
-
-			aiStateIndexCursor[i] = iSequentialDimensionIndex;
+		if (-1 == stateIndexToUpdate) {
+			return cyclicalScan() ? resetStateIndexCursor() : null;
 		}
 
-		return aiStateIndexCursor;
+		stateIndexCursorArray[stateIndexToUpdate] = stateIndexCursorArray[stateIndexToUpdate] + 1;
+
+		for (int i = stateIndexToUpdate + 1; i < dimension; ++i) {
+			int sequentialDimensionIndex = stateIndexCursorArray[i - 1] + 1;
+
+			if (sequentialDimensionIndex >= terminalStateIndexArray[i] - 1) {
+				return cyclicalScan() ? resetStateIndexCursor() : null;
+			}
+
+			stateIndexCursorArray[i] = sequentialDimensionIndex;
+		}
+
+		return stateIndexCursorArray;
 	}
 }

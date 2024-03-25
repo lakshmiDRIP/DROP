@@ -110,61 +110,66 @@ package org.drip.spaces.iterator;
  * @author Lakshmi Krishnamurthy
  */
 
-public class RdExhaustiveStateSpaceScan extends org.drip.spaces.iterator.RdSpanningStateSpaceScan {
+public class RdExhaustiveStateSpaceScan extends RdSpanningStateSpaceScan
+{
 
 	/**
 	 * <i>RdExhaustiveStateSpaceScan</i> Constructor
 	 * 
-	 * @param aiTerminalStateIndex Upper Array Bounds for each Dimension
-	 * @param bCyclicalScan TRUE - Cycle Post a Full Scan
+	 * @param terminalStateIndexArray Upper Array Bounds for each Dimension
+	 * @param cyclicalScan TRUE - Cycle Post a Full Scan
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public RdExhaustiveStateSpaceScan (
-		final int[] aiTerminalStateIndex,
-		final boolean bCyclicalScan)
-		throws java.lang.Exception
+		final int[] terminalStateIndexArray,
+		final boolean cyclicalScan)
+		throws Exception
 	{
-		super (aiTerminalStateIndex, bCyclicalScan);
+		super (terminalStateIndexArray, cyclicalScan);
 	}
 
 	@Override public int[] resetStateIndexCursor()
 	{
-		int iDimension = dimension();
+		int dimension = dimension();
 
-		int[] aiStateIndexCursor = stateIndexCursor();
+		int[] stateIndexCursorArray = stateIndexCursor();
 
-		for (int i = 0; i < iDimension; ++i)
-			aiStateIndexCursor[i] = 0;
+		for (int i = 0; i < dimension; ++i) {
+			stateIndexCursorArray[i] = 0;
+		}
 
-		return setStateIndexCursor (aiStateIndexCursor) ? aiStateIndexCursor : null;
+		return setStateIndexCursor (stateIndexCursorArray) ? stateIndexCursorArray : null;
 	}
 
 	@Override public int[] nextStateIndexCursor()
 	{
-		int iDimension = dimension();
+		int dimension = dimension();
 
-		int iStateIndexToUpdate = -1;
+		int stateIndexToUpdate = -1;
 
-		int[] aiStateIndexCursor = stateIndexCursor();
+		int[] stateIndexCursorArray = stateIndexCursor();
 
-		int[] aiTerminalStateIndex = terminalStateIndex();
+		int[] terminalStateIndexArray = terminalStateIndex();
 
-		for (int i = iDimension - 1; i >= 0; --i) {
-			if (aiStateIndexCursor[i] != aiTerminalStateIndex[i] - 1) {
-				iStateIndexToUpdate = i;
+		for (int i = dimension - 1; i >= 0; --i) {
+			if (stateIndexCursorArray[i] != terminalStateIndexArray[i] - 1) {
+				stateIndexToUpdate = i;
 				break;
 			}
 		}
 
-		if (-1 == iStateIndexToUpdate) return cyclicalScan() ? resetStateIndexCursor() : null;
+		if (-1 == stateIndexToUpdate) {
+			return cyclicalScan() ? resetStateIndexCursor() : null;
+		}
 
-		aiStateIndexCursor[iStateIndexToUpdate] = aiStateIndexCursor[iStateIndexToUpdate] + 1;
+		stateIndexCursorArray[stateIndexToUpdate] = stateIndexCursorArray[stateIndexToUpdate] + 1;
 
-		for (int i = iStateIndexToUpdate + 1; i < iDimension; ++i)
-			aiStateIndexCursor[i] = 0;
+		for (int i = stateIndexToUpdate + 1; i < dimension; ++i) {
+			stateIndexCursorArray[i] = 0;
+		}
 
-		return setStateIndexCursor (aiStateIndexCursor) ? aiStateIndexCursor : null;
+		return setStateIndexCursor (stateIndexCursorArray) ? stateIndexCursorArray : null;
 	}
 }

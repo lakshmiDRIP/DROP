@@ -1,11 +1,16 @@
 
 package org.drip.spaces.iterator;
 
+import org.drip.spaces.tensor.R1CombinatorialVector;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -82,30 +87,46 @@ package org.drip.spaces.iterator;
 
 /**
  * <i>RdSpanningCombinatorialIterator</i> contains the Functionality to conduct a Spanning Iteration through
- * an R<sup>d</sup> Combinatorial Space.
+ * 	an R<sup>d</sup> Combinatorial Space.
  *
- * <br><br>
+ * It provides the following Functionality:
+ *
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/StatisticalLearningLibrary.md">Statistical Learning Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/README.md">R<sup>1</sup> and R<sup>d</sup> Vector/Tensor Spaces (Validated and/or Normed), and Function Classes</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/iterator/README.md">Iterative/Exhaustive Vector Space Scanners</a></li>
+ * 		<li>Retrieve the <i>RdSpanningCombinatorialIterator</i> Instance associated with the Underlying Vector Space</li>
+ * 		<li><i>RdSpanningCombinatorialIterator</i> Constructor</li>
+ * 		<li>Retrieve the Array of the R<sup>1</sup> Combinatorial Vectors</li>
+ * 		<li>Convert the Vector Space Index Array to the Variate Array</li>
+ * 		<li>Retrieve the Cursor Variate Array</li>
+ * 		<li>Retrieve the Subsequent Variate Array</li>
  *  </ul>
- * <br><br>
+ *
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/StatisticalLearningLibrary.md">Statistical Learning Library</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/README.md">R<sup>1</sup> and R<sup>d</sup> Vector/Tensor Spaces (Validated and/or Normed), and Function Classes</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/iterator/README.md">Iterative/Exhaustive Vector Space Scanners</a></td></tr>
+ *  </table>
  * 
  * @author Lakshmi Krishnamurthy
  */
 
-public class RdSpanningCombinatorialIterator extends
-	org.drip.spaces.iterator.RdExhaustiveStateSpaceScan {
-	private org.drip.spaces.tensor.R1CombinatorialVector[] _aR1CV = null;
+public class RdSpanningCombinatorialIterator extends RdExhaustiveStateSpaceScan
+{
+	private R1CombinatorialVector[] _r1CombinatorialVectorArray = null;
 
 	/**
-	 * Retrieve the RdSpanningCombinatorialIterator Instance associated with the Underlying Vector Space
+	 * Retrieve the <i>RdSpanningCombinatorialIterator</i> Instance associated with the Underlying Vector Space
 	 * 
-	 * @param aR1CV Array of R^1 Combinatorial Vectors
+	 * @param aR1CV Array of R<sup>1</sup> Combinatorial Vectors
 	 * 
-	 * @return The RdSpanningCombinatorialIterator Instance associated with the Underlying Vector Space
+	 * @return The <i>RdSpanningCombinatorialIterator</i> Instance associated with the Underlying Vector Space
 	 */
 
 	public static final RdSpanningCombinatorialIterator Standard (
@@ -131,58 +152,66 @@ public class RdSpanningCombinatorialIterator extends
 	}
 
 	/**
-	 * RdSpanningCombinatorialIterator Constructor
+	 * <i>RdSpanningCombinatorialIterator</i> Constructor
 	 * 
-	 * @param aR1CV Array of the R^1 Combinatorial Vectors
-	 * @param aiMax The Array of Dimension Maximum
+	 * @param r1CombinatorialVectorArray Array of the R<sup>1</sup> Combinatorial Vectors
+	 * @param terminalStateIndexArray The Array of Dimension Maximum
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public RdSpanningCombinatorialIterator (
-		final org.drip.spaces.tensor.R1CombinatorialVector[] aR1CV,
-		final int[] aiMax)
-		throws java.lang.Exception
+		final R1CombinatorialVector[] r1CombinatorialVectorArray,
+		final int[] terminalStateIndexArray)
+		throws Exception
 	{
-		super (aiMax, false);
+		super (terminalStateIndexArray, false);
 
-		if (null == (_aR1CV = aR1CV) || _aR1CV.length != aiMax.length)
-			throw new java.lang.Exception ("RdCombinatorialIterator ctr: Invalid Inputs");
+		if (null == (_r1CombinatorialVectorArray = r1CombinatorialVectorArray) ||
+			_r1CombinatorialVectorArray.length != terminalStateIndexArray.length)
+		{
+			throw new Exception ("RdCombinatorialIterator ctr: Invalid Inputs");
+		}
 	}
 
 	/**
-	 * Retrieve the Array of the R^1 Combinatorial Vectors
+	 * Retrieve the Array of the R<sup>1</sup> Combinatorial Vectors
 	 * 
-	 * @return The Array of the R^1 Combinatorial Vectors
+	 * @return The Array of the R<sup>1</sup> Combinatorial Vectors
 	 */
 
-	public org.drip.spaces.tensor.R1CombinatorialVector[] r1()
+	public R1CombinatorialVector[] r1()
 	{
-		return _aR1CV;
+		return _r1CombinatorialVectorArray;
 	}
 
 	/**
 	 * Convert the Vector Space Index Array to the Variate Array
 	 * 
-	 * @param aiIndex Vector Space Index Array
+	 * @param vectorSpaceIndexArray Vector Space Index Array
 	 * 
 	 * @return Variate Array
 	 */
 
 	public double[] vectorSpaceIndexToVariate (
-		final int[] aiIndex)
+		final int[] vectorSpaceIndexArray)
 	{
-		if (null == aiIndex) return null;
+		if (null == vectorSpaceIndexArray) {
+			return null;
+		}
 
-		int iDimension = _aR1CV.length;
-		double[] adblVariate = new double[iDimension];
+		int dimension = _r1CombinatorialVectorArray.length;
+		double[] variateArray = new double[dimension];
 
-		if (iDimension != aiIndex.length) return null;
+		if (dimension != vectorSpaceIndexArray.length) {
+			return null;
+		}
 
-		for (int i = 0; i < iDimension; ++i)
-			adblVariate[i] = _aR1CV[i].elementSpace().get (aiIndex[i]);
+		for (int i = 0; i < dimension; ++i) {
+			variateArray[i] = _r1CombinatorialVectorArray[i].elementSpace().get (vectorSpaceIndexArray[i]);
+		}
 
-		return adblVariate;
+		return variateArray;
 	}
 
 	/**
