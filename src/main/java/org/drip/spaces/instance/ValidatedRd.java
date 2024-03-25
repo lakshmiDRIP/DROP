@@ -1,11 +1,16 @@
 
 package org.drip.spaces.instance;
 
+import org.drip.spaces.tensor.RdGeneralizedVector;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -82,7 +87,7 @@ package org.drip.spaces.instance;
 
 /**
  * <i>ValidatedRd</i> holds the Validated R<sup>d</sup> Vector Instance Sequence and the Corresponding
- * Generalized Vector Space Type. The Reference we've used is:
+ * 	Generalized Vector Space Type. The Reference we've used is:
  *
  * <br><br>
  *  <ul>
@@ -92,43 +97,59 @@ package org.drip.spaces.instance;
  *  	</li>
  *  </ul>
  *
- * <br><br>
+ *  It provides the following Functionality:
+ *
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/StatisticalLearningLibrary.md">Statistical Learning Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/README.md">R<sup>1</sup> and R<sup>d</sup> Vector/Tensor Spaces (Validated and/or Normed), and Function Classes</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/instance/README.md">Validated Continuous/Combinatorial Metric Spaces</a></li>
+ * 		<li><i>ValidatedRd</i> Constructor</li>
+ * 		<li>Retrieve the Instance Sequence</li>
  *  </ul>
- * <br><br>
+ *
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/StatisticalLearningLibrary.md">Statistical Learning Library</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/README.md">R<sup>1</sup> and R<sup>d</sup> Vector/Tensor Spaces (Validated and/or Normed), and Function Classes</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/instance/README.md">Validated Continuous/Combinatorial Metric Spaces</a></td></tr>
+ *  </table>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class ValidatedRd implements org.drip.spaces.instance.GeneralizedValidatedVector {
-	private double[][] _aadblInstance = null;
-	private org.drip.spaces.tensor.RdGeneralizedVector _gvRd = null;
+public class ValidatedRd implements GeneralizedValidatedVector
+{
+	private double[][] _instanceGrid = null;
+	private RdGeneralizedVector _rdGeneralizedVector = null;
 
 	/**
-	 * ValidatedRd Constructor
+	 * <i>ValidatedRd</i> Constructor
 	 * 
-	 * @param gvRd The R^d Tensor Space Type
-	 * @param aadblInstance The Data Instance
+	 * @param rdGeneralizedVector The R<sup>d</sup> Tensor Space Type
+	 * @param instanceGrid The Data Instance
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public ValidatedRd (
-		final org.drip.spaces.tensor.RdGeneralizedVector gvRd,
-		final double[][] aadblInstance)
+		final RdGeneralizedVector rdGeneralizedVector,
+		final double[][] instanceGrid)
 		throws java.lang.Exception
 	{
-		if (null == (_gvRd = gvRd) || null == (_aadblInstance = aadblInstance) || 0 == _aadblInstance.length)
-			throw new java.lang.Exception ("ValidatedRd ctr: Invalid Inputs");
+		if (null == (_rdGeneralizedVector = rdGeneralizedVector) ||
+			null == (_instanceGrid = instanceGrid) || 0 == _instanceGrid.length)
+		{
+			throw new Exception ("ValidatedRd ctr: Invalid Inputs");
+		}
 	}
 
-	@Override public org.drip.spaces.tensor.RdGeneralizedVector tensorSpaceType()
+	@Override public RdGeneralizedVector tensorSpaceType()
 	{
-		return _gvRd;
+		return _rdGeneralizedVector;
 	}
 
 	/**
@@ -139,11 +160,11 @@ public class ValidatedRd implements org.drip.spaces.instance.GeneralizedValidate
 
 	public double[][] instance()
 	{
-		return _aadblInstance;
+		return _instanceGrid;
 	}
 
 	@Override public int sampleSize()
 	{
-		return _aadblInstance.length;
+		return _instanceGrid.length;
 	}
 }

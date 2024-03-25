@@ -6,6 +6,9 @@ package org.drip.spaces.iterator;
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -82,42 +85,62 @@ package org.drip.spaces.iterator;
 
 /**
  * <i>IterationHelper</i> contains the Functionality that helps perform Checked Multidimensional Iterative
- * Scans.
+ * 	Scans.
  *
- * <br><br>
+ *  It provides the following Functionality:
+ *
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/StatisticalLearningLibrary.md">Statistical Learning Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/README.md">R<sup>1</sup> and R<sup>d</sup> Vector/Tensor Spaces (Validated and/or Normed), and Function Classes</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/iterator/README.md">Iterative/Exhaustive Vector Space Scanners</a></li>
+ * 		<li>Scan through the Integer Array looking for a repeating Index</li>
+ * 		<li>Display the Contents of the Index Array</li>
+ * 		<li>Compose a String constructed from the specified Array Index</li>
  *  </ul>
- * <br><br>
+ *
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/StatisticalLearningLibrary.md">Statistical Learning Library</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/README.md">R<sup>1</sup> and R<sup>d</sup> Vector/Tensor Spaces (Validated and/or Normed), and Function Classes</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/iterator/README.md">Iterative/Exhaustive Vector Space Scanners</a></td></tr>
+ *  </table>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class IterationHelper {
+public class IterationHelper
+{
 
 	/**
 	 * Scan through the Integer Array looking for a repeating Index
 	 * 
-	 * @param ai The Index Array
+	 * @param indexArray The Index Array
 	 * 
 	 * @return TRUE - A Repeating Index exists
 	 */
 
 	public static final boolean CheckForRepeatingIndex (
-		final int[] ai)
+		final int[] indexArray)
 	{
-		if (null == ai) return false;
+		if (null == indexArray) {
+			return false;
+		}
 
-		int iCursorLength = ai.length;
+		int cursorLength = indexArray.length;
 
-		if (1 >= iCursorLength) return false;
+		if (1 >= cursorLength) {
+			return false;
+		}
 
-		for (int i = 0; i < iCursorLength; ++i) {
-			for (int j = i + 1; j < iCursorLength; ++j) {
-				if (ai[i] == ai[j]) return true;
+		for (int i = 0; i < cursorLength; ++i) {
+			for (int j = i + 1; j < cursorLength; ++j) {
+				if (indexArray[i] == indexArray[j]) {
+					return true;
+				}
 			}
 		}
 
@@ -127,50 +150,60 @@ public class IterationHelper {
 	/**
 	 * Display the Contents of the Index Array
 	 * 
-	 * @param strPrefix The Dump Prefix
-	 * @param ai The Index Array
+	 * @param prefix The Dump Prefix
+	 * @param indexArray The Index Array
 	 */
 
 	public static final void DumpIndexArray (
-		final java.lang.String strPrefix,
-		final int[] ai)
+		final String prefix,
+		final int[] indexArray)
 	{
-		if (null == ai) return;
+		if (null == indexArray) {
+			return;
+		}
 
-		int iNumIndex = ai.length;
-		java.lang.String strIndexArray = strPrefix;
+		String indexArrayString = prefix;
+		int indexCount = indexArray.length;
 
-		if (0 >= iNumIndex) return;
+		if (0 >= indexCount) {
+			return;
+		}
 
-		for (int i = 0; i < iNumIndex; ++i)
-			strIndexArray += (0 == i ? "[" : ",") + ai[i];
+		for (int i = 0; i < indexCount; ++i) {
+			indexArrayString += (0 == i ? "[" : ",") + indexArray[i];
+		}
 
-		System.out.println (strIndexArray + "]");
+		System.out.println (indexArrayString + "]");
 	}
 
 	/**
 	 * Compose a String constructed from the specified Array Index
 	 * 
-	 * @param strMaster The Master String
-	 * @param aiIndex The Index Array
+	 * @param master The Master String
+	 * @param indexArray The Index Array
 	 * 
 	 * @return The Composed String
 	 */
 
-	public static final java.lang.String ComposeFromIndex (
-		final java.lang.String strMaster,
-		final int[] aiIndex)
+	public static final String ComposeFromIndex (
+		final String master,
+		final int[] indexArray)
 	{
-		if (null == aiIndex) return null;
+		if (null == indexArray) {
+			return null;
+		}
 
-		int iNumIndex = aiIndex.length;
-		java.lang.String strOffOfIndex = "";
+		String compositionFromIndex = "";
+		int indexCount = indexArray.length;
 
-		if (0 >= iNumIndex) return null;
+		if (0 >= indexCount) {
+			return null;
+		}
 
-		for (int i = 0; i < iNumIndex; ++i)
-			strOffOfIndex += strMaster.charAt (aiIndex[i]);
+		for (int i = 0; i < indexCount; ++i) {
+			compositionFromIndex += master.charAt (indexArray[i]);
+		}
 
-		return strOffOfIndex;
+		return compositionFromIndex;
 	}
 }

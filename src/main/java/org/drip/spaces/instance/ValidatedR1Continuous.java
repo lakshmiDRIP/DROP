@@ -1,11 +1,16 @@
 
 package org.drip.spaces.instance;
 
+import org.drip.spaces.tensor.R1ContinuousVector;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -92,39 +97,51 @@ package org.drip.spaces.instance;
  *  	</li>
  *  </ul>
  *
- * <br><br>
+ *  It provides the following Functionality:
+ *
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/StatisticalLearningLibrary.md">Statistical Learning Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/README.md">R<sup>1</sup> and R<sup>d</sup> Vector/Tensor Spaces (Validated and/or Normed), and Function Classes</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/instance/README.md">Validated Continuous/Combinatorial Metric Spaces</a></li>
+ * 		<li><i>ValidatedR1Continuous</i> Constructor</li>
  *  </ul>
- * <br><br>
+ *
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/StatisticalLearningLibrary.md">Statistical Learning Library</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/README.md">R<sup>1</sup> and R<sup>d</sup> Vector/Tensor Spaces (Validated and/or Normed), and Function Classes</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/instance/README.md">Validated Continuous/Combinatorial Metric Spaces</a></td></tr>
+ *  </table>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class ValidatedR1Continuous extends org.drip.spaces.instance.ValidatedR1 {
+public class ValidatedR1Continuous extends ValidatedR1
+{
 
 	/**
-	 * ValidatedR1Continuous Constructor
+	 * <i>ValidatedR1Continuous</i> Constructor
 	 * 
-	 * @param cvR1 The Continuous R^1 Tensor Space Type
-	 * @param adblInstance The Data Instance
+	 * @param r1ContinuousVector The Continuous R<sup>1</sup> Tensor Space Type
+	 * @param instanceArray The Data Instance
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public ValidatedR1Continuous (
-		final org.drip.spaces.tensor.R1ContinuousVector cvR1,
-		final double[] adblInstance)
-		throws java.lang.Exception
+		final R1ContinuousVector r1ContinuousVector,
+		final double[] instanceArray)
+		throws Exception
 	{
-		super (cvR1, adblInstance);
+		super (r1ContinuousVector, instanceArray);
 	}
 
-	@Override public org.drip.spaces.tensor.R1ContinuousVector tensorSpaceType()
+	@Override public R1ContinuousVector tensorSpaceType()
 	{
-		return (org.drip.spaces.tensor.R1ContinuousVector) super.tensorSpaceType();
+		return (R1ContinuousVector) super.tensorSpaceType();
 	}
 }
