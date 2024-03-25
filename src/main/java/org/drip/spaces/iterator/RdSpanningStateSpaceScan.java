@@ -6,6 +6,9 @@ package org.drip.spaces.iterator;
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -82,56 +85,79 @@ package org.drip.spaces.iterator;
 
 /**
  * <i>RdSpanningStateSpaceScan</i> is the Abstract Iterator Class that contains the Functionality to perform
- * a Spanning Iterative Scan through an R<sup>d</sup> State Space.
+ * 	a Spanning Iterative Scan through an R<sup>d</sup> State Space.
  *
- * <br><br>
+ *  It provides the following Functionality:
+ *
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/StatisticalLearningLibrary.md">Statistical Learning Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/README.md">R<sup>1</sup> and R<sup>d</sup> Vector/Tensor Spaces (Validated and/or Normed), and Function Classes</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/iterator/README.md">Iterative/Exhaustive Vector Space Scanners</a></li>
+ * 		<li>Retrieve the Array of the Terminal State Indexes</li>
+ * 		<li>Retrieve the Dimension</li>
+ * 		<li>Retrieve the State Index Cursor</li>
+ * 		<li>Retrieve the Cyclical Scan Flag</li>
+ * 		<li>Reset and retrieve the State Index Cursor</li>
+ * 		<li>Move to the Subsequent Index Cursor</li>
  *  </ul>
- * <br><br>
+ *
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/StatisticalLearningLibrary.md">Statistical Learning Library</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/README.md">R<sup>1</sup> and R<sup>d</sup> Vector/Tensor Spaces (Validated and/or Normed), and Function Classes</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/iterator/README.md">Iterative/Exhaustive Vector Space Scanners</a></td></tr>
+ *  </table>
  * 
  * @author Lakshmi Krishnamurthy
  */
 
-public abstract class RdSpanningStateSpaceScan {
-	private boolean _bCyclicalScan = false;
-	private int[] _aiStateIndexCursor = null;
-	private int[] _aiTerminalStateIndex = null;
+public abstract class RdSpanningStateSpaceScan
+{
+	private boolean _cyclicalScan = false;
+	private int[] _stateIndexCursorArray = null;
+	private int[] _terminalStateIndexArray = null;
 
 	protected RdSpanningStateSpaceScan (
-		final int[] aiTerminalStateIndex,
-		final boolean bCyclicalScan)
-		throws java.lang.Exception
+		final int[] terminalStateIndexArray,
+		final boolean cyclicalScan)
+		throws Exception
 	{
-		if (null == aiTerminalStateIndex)
-			throw new java.lang.Exception ("RdSpanningStateSpaceScan ctr: Invalid Input");
+		if (null == terminalStateIndexArray) {
+			throw new Exception ("RdSpanningStateSpaceScan ctr: Invalid Input");
+		}
 
-		int iDimension = aiTerminalStateIndex.length;
-		_aiTerminalStateIndex = new int[iDimension];
-		_aiStateIndexCursor = new int[iDimension];
-		_bCyclicalScan = bCyclicalScan;
+		int dimension = terminalStateIndexArray.length;
+		_terminalStateIndexArray = new int[dimension];
+		_stateIndexCursorArray = new int[dimension];
+		_cyclicalScan = cyclicalScan;
 
-		if (0 == iDimension)
-			throw new java.lang.Exception ("RdSpanningStateSpaceScan ctr: Invalid Input");
+		if (0 == dimension) {
+			throw new Exception ("RdSpanningStateSpaceScan ctr: Invalid Input");
+		}
 
-		for (int i = 0; i < iDimension; ++i) {
-			if (0 >= (_aiTerminalStateIndex[i] = aiTerminalStateIndex[i]))
-				throw new java.lang.Exception ("RdSpanningStateSpaceScan ctr: Invalid Input");
+		for (int i = 0; i < dimension; ++i) {
+			if (0 >= (_terminalStateIndexArray[i] = terminalStateIndexArray[i])) {
+				throw new Exception ("RdSpanningStateSpaceScan ctr: Invalid Input");
+			}
 
-			_aiStateIndexCursor[i] = 0;
+			_stateIndexCursorArray[i] = 0;
 		}
 	}
 
 	protected boolean setStateIndexCursor (
-		final int[] aiStateIndexCursor)
+		final int[] stateIndexCursorArray)
 	{
-		if (null == _aiStateIndexCursor || _aiStateIndexCursor.length != _aiTerminalStateIndex.length)
+		if (null == _stateIndexCursorArray ||
+			_stateIndexCursorArray.length != _terminalStateIndexArray.length)
+		{
 			return false;
+		}
 
-		_aiStateIndexCursor = aiStateIndexCursor;
+		_stateIndexCursorArray = stateIndexCursorArray;
 		return true;
 	}
 
@@ -143,7 +169,7 @@ public abstract class RdSpanningStateSpaceScan {
 
 	public int[] terminalStateIndex()
 	{
-		return _aiTerminalStateIndex;
+		return _terminalStateIndexArray;
 	}
 
 	/**
@@ -154,7 +180,7 @@ public abstract class RdSpanningStateSpaceScan {
 
 	public int dimension()
 	{
-		return _aiTerminalStateIndex.length;
+		return _terminalStateIndexArray.length;
 	}
 
 	/**
@@ -165,7 +191,7 @@ public abstract class RdSpanningStateSpaceScan {
 
 	public int[] stateIndexCursor()
 	{
-		return _aiStateIndexCursor;
+		return _stateIndexCursorArray;
 	}
 
 	/**
@@ -176,7 +202,7 @@ public abstract class RdSpanningStateSpaceScan {
 
 	public boolean cyclicalScan()
 	{
-		return _bCyclicalScan;
+		return _cyclicalScan;
 	}
 
 	/**

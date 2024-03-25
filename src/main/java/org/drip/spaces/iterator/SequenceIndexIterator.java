@@ -6,6 +6,9 @@ package org.drip.spaces.iterator;
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -83,47 +86,66 @@ package org.drip.spaces.iterator;
 /**
  * <i>SequenceIndexIterator</i> contains the Functionality to iterate through a List of Sequence Indexes.
  *
- * <br><br>
+ *  It provides the following Functionality:
+ *
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/StatisticalLearningLibrary.md">Statistical Learning Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/README.md">R<sup>1</sup> and R<sup>d</sup> Vector/Tensor Spaces (Validated and/or Normed), and Function Classes</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/iterator/README.md">Iterative/Exhaustive Vector Space Scanners</a></li>
+ * 		<li>Create a Standard Sequence/Index Iterator</li>
+ * 		<li><i>SequenceIndexIterator</i> Constructor</li>
+ * 		<li>Retrieve the First Cursor</li>
+ * 		<li>Retrieve the Next Cursor</li>
+ * 		<li>Retrieve the Size of the Iterator</li>
  *  </ul>
- * <br><br>
+ *
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/StatisticalLearningLibrary.md">Statistical Learning Library</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/README.md">R<sup>1</sup> and R<sup>d</sup> Vector/Tensor Spaces (Validated and/or Normed), and Function Classes</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/iterator/README.md">Iterative/Exhaustive Vector Space Scanners</a></td></tr>
+ *  </table>
  * 
  * @author Lakshmi Krishnamurthy
  */
 
-public class SequenceIndexIterator {
-	private int[] _aiMax = null;
-	private int _iIndexCursor = -1;
-	private boolean _bCycle = false;
-	private int _iSequenceCursor = -1;
+public class SequenceIndexIterator
+{
+	private int _indexCursor = -1;
+	private boolean _cycle = false;
+	private int _sequenceCursor = -1;
+	private int[] _maximumEntriesPerIndexArray = null;
 
 	/**
 	 * Create a Standard Sequence/Index Iterator
 	 * 
-	 * @param iNumSequence Number Variable Sequences
-	 * @param iNumIndex Number of Indexes per Variable Sequence
+	 * @param sequenceCount Number Variable Sequences
+	 * @param indexPerVariableSequence Number of Indexes per Variable Sequence
 	 * 
 	 * @return The Sequence/Index Iterator Instance
 	 */
 
 	public static final SequenceIndexIterator Standard (
-		final int iNumSequence,
-		final int iNumIndex)
+		final int sequenceCount,
+		final int indexPerVariableSequence)
 	{
-		if (0 >= iNumSequence || 0 >= iNumIndex) return null;
+		if (0 >= sequenceCount || 0 >= indexPerVariableSequence) {
+			return null;
+		}
 
-		int[] aiMax = new int[iNumSequence];
+		int[] maximumEntriesPerIndexArray = new int[sequenceCount];
 
-		for (int i = 0; i < iNumSequence; ++i)
-			aiMax[i] = iNumIndex - 1;
+		for (int i = 0; i < sequenceCount; ++i) {
+			maximumEntriesPerIndexArray[i] = indexPerVariableSequence - 1;
+		}
 
 		try {
-			return new SequenceIndexIterator (aiMax, false);
-		} catch (java.lang.Exception e) {
+			return new SequenceIndexIterator (maximumEntriesPerIndexArray, false);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -132,47 +154,53 @@ public class SequenceIndexIterator {
 
 	private int[] setFromCursor()
 	{
-		int iNumSequence = _aiMax.length;
-		int[] aiCurrent = new int[iNumSequence];
+		int sequenceCount = _maximumEntriesPerIndexArray.length;
+		int[] currentIndexArray = new int[sequenceCount];
 
-		for (int i = 0; i < iNumSequence; ++i) {
-			if (i < _iSequenceCursor)
-				aiCurrent[i] = _aiMax[i];
-			else if (i > _iSequenceCursor)
-				aiCurrent[i] = 0;
-			else
-				aiCurrent[i] = _iIndexCursor;
+		for (int sequenceIndex = 0; sequenceIndex < sequenceCount; ++sequenceIndex) {
+			if (sequenceIndex < _sequenceCursor) {
+				currentIndexArray[sequenceIndex] = _maximumEntriesPerIndexArray[sequenceIndex];
+			} else if (sequenceIndex > _sequenceCursor) {
+				currentIndexArray[sequenceIndex] = 0;
+			} else {
+				currentIndexArray[sequenceIndex] = _indexCursor;
+			}
 		}
 
-		return aiCurrent;
+		return currentIndexArray;
 	}
 
 	/**
-	 * IndexIterator Constructor
+	 * <i>SequenceIndexIterator</i> Constructor
 	 * 
-	 * @param aiMax Maximum Entries per Index
-	 * @param bCycle TRUE - Cycle around the Index Entries
+	 * @param maximumEntriesPerIndexArray Maximum Entries per Index
+	 * @param cycle TRUE - Cycle around the Index Entries
 	 * 
-	 * @throws java.lang.Exception Thrown if Inputs are incalid
+	 * @throws Exception Thrown if Inputs are invalid
 	 */
 
 	public SequenceIndexIterator (
-		final int[] aiMax,
-		final boolean bCycle)
-		throws java.lang.Exception
+		final int[] maximumEntriesPerIndexArray,
+		final boolean cycle)
+		throws Exception
 	{
-		if (null == (_aiMax = aiMax))
-			throw new java.lang.Exception ("SequenceIndexIterator ctr => Invalid Inputs");
+		if (null == (_maximumEntriesPerIndexArray = maximumEntriesPerIndexArray)) {
+			throw new Exception ("SequenceIndexIterator ctr => Invalid Inputs");
+		}
 
-		_bCycle = bCycle;
-		_iIndexCursor = 0;
-		_iSequenceCursor = 0;
-		int iNumSequence = _aiMax.length;
+		_cycle = cycle;
+		_indexCursor = 0;
+		_sequenceCursor = 0;
+		int sequenceCount = _maximumEntriesPerIndexArray.length;
 
-		if (0 == iNumSequence) throw new java.lang.Exception ("SequenceIndexIterator ctr => Invalid Inputs");
+		if (0 == sequenceCount) {
+			throw new Exception ("SequenceIndexIterator ctr => Invalid Inputs");
+		}
 
-		for (int i = 0; i < iNumSequence; ++i) {
-			if (0 > _aiMax[i]) throw new java.lang.Exception ("SequenceIndexIterator ctr => Invalid Inputs");
+		for (int i = 0; i < sequenceCount; ++i) {
+			if (0 > _maximumEntriesPerIndexArray[i]) {
+				throw new Exception ("SequenceIndexIterator ctr => Invalid Inputs");
+			}
 		}
 	}
 
@@ -184,8 +212,8 @@ public class SequenceIndexIterator {
 
 	public int[] first()
 	{
-		_iIndexCursor = 0;
-		_iSequenceCursor = 0;
+		_indexCursor = 0;
+		_sequenceCursor = 0;
 
 		return setFromCursor();
 	}
@@ -198,13 +226,17 @@ public class SequenceIndexIterator {
 
 	public int[] next()
 	{
-		if (++_iIndexCursor <= _aiMax[_iSequenceCursor]) return setFromCursor();
+		if (++_indexCursor <= _maximumEntriesPerIndexArray[_sequenceCursor]) {
+			return setFromCursor();
+		}
 
-		_iIndexCursor = 0;
+		_indexCursor = 0;
 
-		if (++_iSequenceCursor < _aiMax.length) return setFromCursor();
+		if (++_sequenceCursor < _maximumEntriesPerIndexArray.length) {
+			return setFromCursor();
+		}
 
-		return _bCycle ? first() : null;
+		return _cycle ? first() : null;
 	}
 
 	/**
@@ -215,12 +247,13 @@ public class SequenceIndexIterator {
 
 	public int size()
 	{
-		int iSize = 0;
-		int iNumSequence = _aiMax.length;
+		int size = 0;
+		int sequenceCount = _maximumEntriesPerIndexArray.length;
 
-		for (int i = 0; i < iNumSequence; ++i)
-			iSize += _aiMax[i] + 1;
+		for (int sequenceIndex = 0; sequenceIndex < sequenceCount; ++sequenceIndex) {
+			size += _maximumEntriesPerIndexArray[sequenceIndex] + 1;
+		}
 
-		return iSize;
+		return size;
 	}
 }
