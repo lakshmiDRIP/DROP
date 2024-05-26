@@ -1,12 +1,18 @@
 
 package org.drip.spaces.metric;
 
+import org.drip.measure.continuous.Rd;
+import org.drip.numerical.common.NumberUtil;
+import org.drip.spaces.tensor.R1CombinatorialVector;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
- * Copyright (C) 2022 Lakshmi Krishnamurthy
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
@@ -82,7 +88,7 @@ package org.drip.spaces.metric;
 
 /**
  * <i>RdCombinatorialBall</i> extends the Combinatorial R<sup>d</sup> Banach Space by enforcing the Closed
- * Bounded Metric. The Reference we've used is:
+ * 	Bounded Metric. The Reference we've used is:
  *
  * <br><br>
  *  <ul>
@@ -92,29 +98,43 @@ package org.drip.spaces.metric;
  *  	</li>
  *  </ul>
  *
- * <br><br>
+ * It provides the following Functionality:
+ *
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/StatisticalLearningLibrary.md">Statistical Learning Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/README.md">R<sup>1</sup> and R<sup>d</sup> Vector/Tensor Spaces (Validated and/or Normed), and Function Classes</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/metric/README.md">Hilbert/Banach Normed Metric Spaces</a></li>
+ * 		<li>Construct a <i>RdCombinatorialBall</i> Instance of Unit Radius</li>
+ * 		<li><i>RdCombinatorialBall</i> Constructor</li>
+ * 		<li>Retrieve the Radius Norm</li>
  *  </ul>
- * <br><br>
+ *
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/StatisticalLearningLibrary.md">Statistical Learning Library</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/README.md">R<sup>1</sup> and R<sup>d</sup> Vector/Tensor Spaces (Validated and/or Normed), and Function Classes</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/metric/README.md">Hilbert/Banach Normed Metric Spaces</a></td></tr>
+ *  </table>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class RdCombinatorialBall extends org.drip.spaces.metric.RdCombinatorialBanach {
-	private double _dblNormRadius = java.lang.Double.NaN;
+public class RdCombinatorialBall extends RdCombinatorialBanach
+{
+	private double _normRadius = Double.NaN;
 
 	/**
-	 * Construct a RdCombinatorialBall Instance of Unit Radius
+	 * Construct a <i>RdCombinatorialBall</i> Instance of Unit Radius
 	 * 
 	 * @param aR1CV Array of Combinatorial R^d Vector Spaces
-	 * @param distRd The R^d Borel Sigma Measure
+	 * @param distRd The R<sup>d</sup> Borel Sigma Measure
 	 * @param iPNorm The p-norm of the Space
 	 * 
-	 * @return RdCombinatorialBall Instance of Unit Radius
+	 * @return <i>RdCombinatorialBall</i> Instance of Unit Radius
 	 */
 
 	public static final RdCombinatorialBall ClosedUnit (
@@ -124,7 +144,7 @@ public class RdCombinatorialBall extends org.drip.spaces.metric.RdCombinatorialB
 	{
 		try {
 			return new RdCombinatorialBall (aR1CV, distRd, iPNorm, 1.);
-		} catch (java.lang.Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -132,28 +152,28 @@ public class RdCombinatorialBall extends org.drip.spaces.metric.RdCombinatorialB
 	}
 
 	/**
-	 * RdCombinatorialBall Constructor
+	 * <i>RdCombinatorialBall</i> Constructor
 	 * 
-	 * @param aR1CV Array of Combinatorial R^d Vector Spaces
-	 * @param distRd The R^d Borel Sigma Measure
-	 * @param iPNorm The p-norm of the Space
-	 * @param dblNormRadius Radius Norm of the Unit Ball
+	 * @param r1CombinatorialVectorArray Array of Combinatorial R<sup>d</sup> Vector Spaces
+	 * @param rdContinuousBorelMeasure The R<sup>d</sup> Borel Sigma Measure
+	 * @param pNorm The p-norm of the Space
+	 * @param normRadius Radius Norm of the Unit Ball
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public RdCombinatorialBall (
-		final org.drip.spaces.tensor.R1CombinatorialVector[] aR1CV,
-		final org.drip.measure.continuous.Rd distRd,
-		final int iPNorm,
-		final double dblNormRadius)
-		throws java.lang.Exception
+		final R1CombinatorialVector[] r1CombinatorialVectorArray,
+		final Rd rdContinuousBorelMeasure,
+		final int pNorm,
+		final double normRadius)
+		throws Exception
 	{
-		super (aR1CV, distRd, iPNorm);
+		super (r1CombinatorialVectorArray, rdContinuousBorelMeasure, pNorm);
 
-		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblNormRadius = dblNormRadius) || 0. >=
-			_dblNormRadius)
+		if (!NumberUtil.IsValid (_normRadius = normRadius) || 0. >=_normRadius) {
 			throw new java.lang.Exception ("RdCombinatorialBall Constructor: Invalid Inputs");
+		}
 	}
 
 	/**
@@ -164,16 +184,15 @@ public class RdCombinatorialBall extends org.drip.spaces.metric.RdCombinatorialB
 
 	public double normRadius()
 	{
-		return _dblNormRadius;
+		return _normRadius;
 	}
 
 	@Override public boolean validateInstance (
-		final double[] adblInstance)
+		final double[] instanceArray)
 	{
 		try {
-			return super.validateInstance (adblInstance) && _dblNormRadius <= sampleMetricNorm
-				(adblInstance);
-		} catch (java.lang.Exception e) {
+			return super.validateInstance (instanceArray) && _normRadius <= sampleMetricNorm (instanceArray);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 

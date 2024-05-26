@@ -1,11 +1,17 @@
 
 package org.drip.spaces.metric;
 
+import org.drip.measure.continuous.Rd;
+import org.drip.spaces.tensor.R1ContinuousVector;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -82,7 +88,7 @@ package org.drip.spaces.metric;
 
 /**
  * <i>RdContinuousHilbert</i> implements the Bounded/Unbounded, Continuous l<sub>2</sub> R<sup>d</sup>
- * Spaces. The Reference we've used is:
+ * 	Spaces. The Reference we've used is:
  *
  * <br><br>
  *  <ul>
@@ -92,27 +98,40 @@ package org.drip.spaces.metric;
  *  	</li>
  *  </ul>
  *
- * <br><br>
+ * It provides the following Functionality:
+ *
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/StatisticalLearningLibrary.md">Statistical Learning Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/README.md">R<sup>1</sup> and R<sup>d</sup> Vector/Tensor Spaces (Validated and/or Normed), and Function Classes</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/metric/README.md">Hilbert/Banach Normed Metric Spaces</a></li>
+ * 		<li>Construct the Standard l<sup>p</sup> R<sup>2</sup> Hilbert Space Instance</li>
+ * 		<li><i>RdContinuousHilbert</i> Space Constructor</li>
  *  </ul>
- * <br><br>
+ *
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/StatisticalLearningLibrary.md">Statistical Learning Library</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/README.md">R<sup>1</sup> and R<sup>d</sup> Vector/Tensor Spaces (Validated and/or Normed), and Function Classes</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/metric/README.md">Hilbert/Banach Normed Metric Spaces</a></td></tr>
+ *  </table>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class RdContinuousHilbert extends org.drip.spaces.metric.RdContinuousBanach {
+public class RdContinuousHilbert extends RdContinuousBanach
+{
 
 	/**
-	 * Construct the Standard l^2 R^d Hilbert Space Instance
+	 * Construct the Standard l<sup>2</sup> R<sup>d</sup> Hilbert Space Instance
 	 * 
 	 * @param iDimension The Space Dimension
-	 * @param distRd The R^d Borel Sigma Measure
+	 * @param distRd The R<sup>d</sup> Borel Sigma Measure
 	 * 
-	 * @return The Standard l^2 R^d Hilbert Space Instance
+	 * @return The Standard l<sup>2</sup> R<sup>d</sup> Hilbert Space Instance
 	 */
 
 	public static final RdContinuousHilbert StandardHilbert (
@@ -130,38 +149,39 @@ public class RdContinuousHilbert extends org.drip.spaces.metric.RdContinuousBana
 	}
 
 	/**
-	 * RdContinuousHilbert Space Constructor
+	 * <i>RdContinuousHilbert</i> Space Constructor
 	 * 
-	 * @param aR1CV Array of R^1 Continuous Vector Spaces
-	 * @param distRd The Multivariate Borel Sigma Measure
+	 * @param r1ContinuousVectorArray Array of R<sup>1</sup> Continuous Vector Spaces
+	 * @param rd The Multivariate Borel Sigma Measure
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public RdContinuousHilbert (
-		final org.drip.spaces.tensor.R1ContinuousVector[] aR1CV,
-		final org.drip.measure.continuous.Rd distRd)
-		throws java.lang.Exception
+		final R1ContinuousVector[] r1ContinuousVectorArray,
+		final Rd rd)
+		throws Exception
 	{
-		super (aR1CV, distRd, 2);
+		super (r1ContinuousVectorArray, rd, 2);
 	}
 
 	@Override public double sampleMetricNorm (
-		final double[] adblX)
-		throws java.lang.Exception
+		final double[] xArray)
+		throws Exception
 	{
-		if (!validateInstance (adblX))
-			throw new java.lang.Exception ("RdContinuousHilbert::sampleMetricNorm => Invalid Inputs");
-
-		double dblNorm = 0.;
-		int iDimension = adblX.length;
-
-		for (int i = 0; i < iDimension; ++i) {
-			double dblAbsoluteX = java.lang.Math.abs (adblX[i]);
-
-			dblNorm += dblAbsoluteX * dblAbsoluteX;
+		if (!validateInstance (xArray)) {
+			throw new Exception ("RdContinuousHilbert::sampleMetricNorm => Invalid Inputs");
 		}
 
-		return dblNorm;
+		double norm = 0.;
+		int dimension = xArray.length;
+
+		for (int i = 0; i < dimension; ++i) {
+			double absoluteX = Math.abs (xArray[i]);
+
+			norm += absoluteX * absoluteX;
+		}
+
+		return norm;
 	}
 }

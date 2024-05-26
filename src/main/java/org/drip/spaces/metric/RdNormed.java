@@ -1,11 +1,18 @@
 
 package org.drip.spaces.metric;
 
+import org.drip.function.definition.RdToR1;
+import org.drip.measure.continuous.Rd;
+import org.drip.spaces.tensor.RdGeneralizedVector;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -82,7 +89,7 @@ package org.drip.spaces.metric;
 
 /**
  * <i>RdNormed</i> Abstract Class implements the Normed, Bounded/Unbounded Continuous/Combinatorial
- * l<sub>p</sub> R<sup>d</sup> Spaces.
+ * 	l<sub>p</sub> R<sup>d</sup> Spaces.
  *
  * <br><br>
  *  <ul>
@@ -92,56 +99,72 @@ package org.drip.spaces.metric;
  *  	</li>
  *  </ul>
  *
- * <br><br>
+ * It provides the following Functionality:
+ *
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/StatisticalLearningLibrary.md">Statistical Learning Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/README.md">R<sup>1</sup> and R<sup>d</sup> Vector/Tensor Spaces (Validated and/or Normed), and Function Classes</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/metric/README.md">Hilbert/Banach Normed Metric Spaces</a></li>
+ * 		<li>Retrieve the Borel Sigma R<sup>d</sup> Probability Measure</li>
+ * 		<li>Compute the Supremum Norm of the Sample</li>
+ * 		<li>Compute the Metric Norm of the Sample</li>
+ * 		<li>Retrieve the Population Mode</li>
+ * 		<li>Compute the Population Supremum Norm of the Sample</li>
+ * 		<li>Compute the Borel Measure Expectation for the specified R<sup>d</sup> To R<sup>1</sup> Function over the full Input Space</li>
  *  </ul>
- * <br><br>
+ *
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/StatisticalLearningLibrary.md">Statistical Learning Library</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/README.md">R<sup>1</sup> and R<sup>d</sup> Vector/Tensor Spaces (Validated and/or Normed), and Function Classes</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/metric/README.md">Hilbert/Banach Normed Metric Spaces</a></td></tr>
+ *  </table>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public interface RdNormed extends org.drip.spaces.metric.GeneralizedMetricVectorSpace,
-	org.drip.spaces.tensor.RdGeneralizedVector {
+public interface RdNormed extends GeneralizedMetricVectorSpace, RdGeneralizedVector
+{
 
 	/**
-	 * Retrieve the Borel Sigma R^d Probability Measure
+	 * Retrieve the Borel Sigma R<sup>d</sup> Probability Measure
 	 * 
-	 * @return The Borel Sigma R^d Probability Measure
+	 * @return The Borel Sigma R<sup>d</sup> Probability Measure
 	 */
 
-	public abstract org.drip.measure.continuous.Rd borelSigmaMeasure();
+	public abstract Rd borelSigmaMeasure();
 
 	/**
 	 * Compute the Supremum Norm of the Sample
 	 * 
-	 * @param adblX The Sample
+	 * @param x The Sample
 	 * 
 	 * @return The Supremum Norm of the Sample
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public abstract double sampleSupremumNorm (
-		final double[] adblX)
-		throws java.lang.Exception;
+		final double[] x
+	) throws Exception;
 
 	/**
 	 * Compute the Metric Norm of the Sample
 	 * 
-	 * @param adblX The Sample
+	 * @param x The Sample
 	 * 
 	 * @return The Metric Norm of the Sample
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public abstract double sampleMetricNorm (
-		final double[] adblX)
-		throws java.lang.Exception;
+		final double[] x
+	) throws Exception;
 
 	/**
 	 * Retrieve the Population Mode
@@ -156,23 +179,25 @@ public interface RdNormed extends org.drip.spaces.metric.GeneralizedMetricVector
 	 * 
 	 * @return The Population Supremum Norm of the Sample
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public abstract double populationSupremumNorm()
-		throws java.lang.Exception;
+		throws Exception;
 
 	/**
-	 * Compute the Borel Measure Expectation for the specified R^d To R^1 Function over the full Input Space
+	 * Compute the Borel Measure Expectation for the specified R<sup>d</sup> To R<sup>1</sup> Function over
+	 * 	 the full Input Space
 	 * 
-	 * @param funcRdToR1 R^d To R^1 Function
+	 * @param rdToR1Function R<sup>d</sup> To R<sup>1</sup> Function
 	 * 
-	 * @return The Borel Measure Expectation for the specified R^d To R^1 Function over the full Input Space
+	 * @return The Borel Measure Expectation for the specified R<sup>d</sup> To R<sup>1</sup> Function over
+	 * 	 the full Input Space
 	 * 
-	 * @throws java.lang.Exception Thrown if the Population Mode cannot be calculated
+	 * @throws Exception Thrown if the Population Mode cannot be calculated
 	 */
 
 	public double borelMeasureSpaceExpectation (
-		final org.drip.function.definition.RdToR1 funcRdToR1)
-		throws java.lang.Exception;
+		final RdToR1 rdToR1Function
+	) throws Exception;
 }

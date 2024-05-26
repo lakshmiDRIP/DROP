@@ -1,11 +1,19 @@
 
 package org.drip.spaces.metric;
 
+import java.util.List;
+
+import org.drip.measure.continuous.R1Univariate;
+import org.drip.numerical.common.NumberUtil;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -82,7 +90,7 @@ package org.drip.spaces.metric;
 
 /**
  * <i>R1CombinatorialBall</i> extends the Combinatorial R<sup>1</sup> Banach Space by enforcing the Closed
- * Bounded Metric. The Reference we've used is:
+ * 	Bounded Metric. The Reference we've used is:
  *
  * <br><br>
  *  <ul>
@@ -92,33 +100,47 @@ package org.drip.spaces.metric;
  *  	</li>
  *  </ul>
  *
- * <br><br>
+ * It provides the following Functionality:
+ *
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/StatisticalLearningLibrary.md">Statistical Learning Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/README.md">R<sup>1</sup> and R<sup>d</sup> Vector/Tensor Spaces (Validated and/or Normed), and Function Classes</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/metric/README.md">Hilbert/Banach Normed Metric Spaces</a></li>
+ * 		<li>Construct a <i>R1CombinatorialBall</i> Instance of Unit Radius</li>
+ * 		<li><i>R1CombinatorialBall</i> Constructor</li>
+ * 		<li>Retrieve the Radius Norm</li>
  *  </ul>
- * <br><br>
+ *
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/StatisticalLearningLibrary.md">Statistical Learning Library</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/README.md">R<sup>1</sup> and R<sup>d</sup> Vector/Tensor Spaces (Validated and/or Normed), and Function Classes</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/metric/README.md">Hilbert/Banach Normed Metric Spaces</a></td></tr>
+ *  </table>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class R1CombinatorialBall extends org.drip.spaces.metric.R1Combinatorial {
-	private double _dblNormRadius = java.lang.Double.NaN;
+public class R1CombinatorialBall extends R1Combinatorial
+{
+	private double _normRadius = Double.NaN;
 
 	/**
-	 * Construct a R1CombinatorialBall Instance of Unit Radius
+	 * Construct a <i>R1CombinatorialBall</i> Instance of Unit Radius
 	 * 
 	 * @param lsElementSpace The List Space of Elements
-	 * @param distR1 The R^1 Borel Sigma Measure
+	 * @param distR1 The R<sup>1</sup> Borel Sigma Measure
 	 * @param iPNorm The p-norm of the Space
 	 * 
-	 * @return ContinuousRealUnidimensionalBall Instance of Unit Radius
+	 * @return <i>R1CombinatorialBall</i> Instance of Unit Radius
 	 */
 
 	public static final R1CombinatorialBall ClosedUnit (
-		final java.util.List<java.lang.Double> lsElementSpace,
+		final java.util.List<Double> lsElementSpace,
 		final org.drip.measure.continuous.R1Univariate distR1,
 		final int iPNorm)
 	{
@@ -132,28 +154,28 @@ public class R1CombinatorialBall extends org.drip.spaces.metric.R1Combinatorial 
 	}
 
 	/**
-	 * R1CombinatorialBall Constructor
+	 * <i>R1CombinatorialBall</i> Constructor
 	 * 
-	 * @param lsElementSpace The List Space of Elements
-	 * @param distR1 The R^1 Borel Sigma Measure
-	 * @param iPNorm The p-norm of the Space
-	 * @param dblNormRadius Radius Norm of the Unit Ball
+	 * @param elementSpaceList The List Space of Elements
+	 * @param r1Distribution The R<sup>1</sup> Borel Sigma Measure
+	 * @param pNorm The p-norm of the Space
+	 * @param normRadius Radius Norm of the Unit Ball
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public R1CombinatorialBall (
-		final java.util.List<java.lang.Double> lsElementSpace,
-		final org.drip.measure.continuous.R1Univariate distR1,
-		final int iPNorm,
-		final double dblNormRadius)
-		throws java.lang.Exception
+		final List<Double> elementSpaceList,
+		final R1Univariate r1Distribution,
+		final int pNorm,
+		final double normRadius)
+		throws Exception
 	{
-		super (lsElementSpace, distR1, iPNorm);
+		super (elementSpaceList, r1Distribution, pNorm);
 
-		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblNormRadius = dblNormRadius) || 0. >=
-			_dblNormRadius)
-			throw new java.lang.Exception ("R1CombinatorialBall Constructor: Invalid Inputs");
+		if (!NumberUtil.IsValid (_normRadius = normRadius) || 0. >= _normRadius) {
+			throw new Exception ("R1CombinatorialBall Constructor: Invalid Inputs");
+		}
 	}
 
 	/**
@@ -164,15 +186,15 @@ public class R1CombinatorialBall extends org.drip.spaces.metric.R1Combinatorial 
 
 	public double normRadius()
 	{
-		return _dblNormRadius;
+		return _normRadius;
 	}
 
 	@Override public boolean validateInstance (
-		final double dblInstance)
+		final double instance)
 	{
 		try {
-			return super.validateInstance (dblInstance) && _dblNormRadius <= sampleMetricNorm (dblInstance);
-		} catch (java.lang.Exception e) {
+			return super.validateInstance (instance) && _normRadius <= sampleMetricNorm (instance);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 

@@ -1,11 +1,17 @@
 
 package org.drip.spaces.metric;
 
+import org.drip.measure.continuous.Rd;
+import org.drip.spaces.tensor.R1CombinatorialVector;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -82,7 +88,7 @@ package org.drip.spaces.metric;
 
 /**
  * <i>RdCombinatorialHilbert</i> implements the Bounded/Unbounded, Combinatorial l<sub>2</sub> R<sup>d</sup>
- * Spaces. The Reference we've used is:
+ * 	Spaces. The Reference we've used is:
  *
  * <br><br>
  *  <ul>
@@ -92,53 +98,64 @@ package org.drip.spaces.metric;
  *  	</li>
  *  </ul>
  *
- * <br><br>
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/StatisticalLearningLibrary.md">Statistical Learning Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/README.md">R<sup>1</sup> and R<sup>d</sup> Vector/Tensor Spaces (Validated and/or Normed), and Function Classes</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/metric/README.md">Hilbert/Banach Normed Metric Spaces</a></li>
+ * 		<li><i>RdCombinatorialHilbert</i> Space Constructor</li>
  *  </ul>
- * <br><br>
+ *
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/StatisticalLearningLibrary.md">Statistical Learning Library</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/README.md">R<sup>1</sup> and R<sup>d</sup> Vector/Tensor Spaces (Validated and/or Normed), and Function Classes</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/metric/README.md">Hilbert/Banach Normed Metric Spaces</a></td></tr>
+ *  </table>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class RdCombinatorialHilbert extends org.drip.spaces.metric.RdCombinatorialBanach {
+public class RdCombinatorialHilbert extends RdCombinatorialBanach
+{
 
 	/**
-	 * RdCombinatorialHilbert Space Constructor
+	 * <i>RdCombinatorialHilbert</i> Space Constructor
 	 * 
-	 * @param aR1CV Array of Combinatorial R^1 Vector Spaces
-	 * @param distRd The R^d Borel Sigma Measure
+	 * @param r1CombinatorialVectorArray Array of Combinatorial R<sup>1</sup> Vector Spaces
+	 * @param rdDistribution The R<sup>d</sup> Borel Sigma Measure
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public RdCombinatorialHilbert (
-		final org.drip.spaces.tensor.R1CombinatorialVector[] aR1CV,
-		final org.drip.measure.continuous.Rd distRd)
-		throws java.lang.Exception
+		final R1CombinatorialVector[] r1CombinatorialVectorArray,
+		final Rd rdDistribution)
+		throws Exception
 	{
-		super (aR1CV, distRd, 2);
+		super (r1CombinatorialVectorArray, rdDistribution, 2);
 	}
 
 	@Override public double sampleMetricNorm (
-		final double[] adblX)
-		throws java.lang.Exception
+		final double[] xArray)
+		throws Exception
 	{
-		if (!validateInstance (adblX))
-			throw new java.lang.Exception ("RdCombinatorialHilbert::sampleMetricNorm => Invalid Inputs");
-
-		double dblNorm = 0.;
-		int iDimension = adblX.length;
-
-		for (int i = 0; i < iDimension; ++i) {
-			double dblAbsoluteX = java.lang.Math.abs (adblX[i]);
-
-			dblNorm += dblAbsoluteX * dblAbsoluteX;
+		if (!validateInstance (xArray)) {
+			throw new Exception ("RdCombinatorialHilbert::sampleMetricNorm => Invalid Inputs");
 		}
 
-		return dblNorm;
+		double norm = 0.;
+		int dimension = xArray.length;
+
+		for (int i = 0; i < dimension; ++i) {
+			double absoluteX = Math.abs (xArray[i]);
+
+			norm += absoluteX * absoluteX;
+		}
+
+		return norm;
 	}
 }

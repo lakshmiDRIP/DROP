@@ -1,11 +1,21 @@
 
 package org.drip.spaces.metric;
 
+import java.util.List;
+
+import org.drip.function.definition.R1ToR1;
+import org.drip.measure.continuous.R1Univariate;
+import org.drip.numerical.common.NumberUtil;
+import org.drip.spaces.tensor.R1CombinatorialVector;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -82,7 +92,7 @@ package org.drip.spaces.metric;
 
 /**
  * <i>R1Combinatorial</i> implements the Normed, Bounded/Unbounded Combinatorial l<sub>p</sub> R<sup>d</sup>
- * Spaces. The Reference we've used is:
+ * 	Spaces. The Reference we've used is:
  *
  * <br><br>
  *  <ul>
@@ -92,31 +102,44 @@ package org.drip.spaces.metric;
  *  	</li>
  *  </ul>
  *
- * <br><br>
+ * It provides the following Functionality:
+ *
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/StatisticalLearningLibrary.md">Statistical Learning Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/README.md">R<sup>1</sup> and R<sup>d</sup> Vector/Tensor Spaces (Validated and/or Normed), and Function Classes</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/metric/README.md">Hilbert/Banach Normed Metric Spaces</a></li>
+ * 		<li>Construct the Standard l<sub>p</sub> R<sub>1</sub> Combinatorial Space Instance</li>
+ * 		<li>Construct the Supremum (i.e., l<sub>Infinity</sub>) R<sub>1</sub> Combinatorial Space Instance</li>
+ * 		<li><i>R1Combinatorial</i> Space Constructor</li>
  *  </ul>
- * <br><br>
+ *
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/StatisticalLearningLibrary.md">Statistical Learning Library</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/README.md">R<sup>1</sup> and R<sup>d</sup> Vector/Tensor Spaces (Validated and/or Normed), and Function Classes</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/metric/README.md">Hilbert/Banach Normed Metric Spaces</a></td></tr>
+ *  </table>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class R1Combinatorial extends org.drip.spaces.tensor.R1CombinatorialVector implements
-	org.drip.spaces.metric.R1Normed {
-	private int _iPNorm = -1;
-	private org.drip.measure.continuous.R1Univariate _distR1 = null;
+public class R1Combinatorial extends R1CombinatorialVector implements R1Normed
+{
+	private int _pNorm = -1;
+	private R1Univariate _r1Distribution = null;
 
 	/**
-	 * Construct the Standard l^p R^1 Combinatorial Space Instance
+	 * Construct the Standard l<sub>p</sub> R<sub>1</sub> Combinatorial Space Instance
 	 * 
 	 * @param lsElementSpace The List Space of Elements
-	 * @param distR1 The R^1 Borel Sigma Measure
+	 * @param distR1 The R<sub>1</sub> Borel Sigma Measure
 	 * @param iPNorm The p-norm of the Space
 	 * 
-	 * @return The Standard l^p R^1 Combinatorial Space Instance
+	 * @return The Standard l<sub>p</sub> R<sub>1</sub> Combinatorial Space Instance
 	 */
 
 	public static final R1Combinatorial Standard (
@@ -134,12 +157,12 @@ public class R1Combinatorial extends org.drip.spaces.tensor.R1CombinatorialVecto
 	}
 
 	/**
-	 * Construct the Supremum (i.e., l^Infinity) R^1 Combinatorial Space Instance
+	 * Construct the Supremum (i.e., l<sub>Infinity</sub>) R<sub>1</sub> Combinatorial Space Instance
 	 * 
 	 * @param lsElementSpace The List Space of Elements
-	 * @param distR1 The R^1 Borel Sigma Measure
+	 * @param distR1 The R<sub>1</sub> Borel Sigma Measure
 	 * 
-	 * @return The Supremum (i.e., l^Infinity) R^1 Combinatorial Space Instance
+	 * @return The Supremum (i.e., l<sub>Infinity</sub>) R<sub>1</sub> Combinatorial Space Instance
 	 */
 
 	public static final R1Combinatorial Supremum (
@@ -156,113 +179,117 @@ public class R1Combinatorial extends org.drip.spaces.tensor.R1CombinatorialVecto
 	}
 
 	/**
-	 * R1Combinatorial Space Constructor
+	 * <i>R1Combinatorial</i> Space Constructor
 	 * 
-	 * @param lsElementSpace The List Space of Elements
-	 * @param distR1 The R^1 Borel Sigma Measure
-	 * @param iPNorm The p-norm of the Space
+	 * @param elementSpaceList The List Space of Elements
+	 * @param r1Distribution The R<sub>1</sub> Borel Sigma Measure
+	 * @param pNorm The p-norm of the Space
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public R1Combinatorial (
-		final java.util.List<java.lang.Double> lsElementSpace,
-		final org.drip.measure.continuous.R1Univariate distR1,
-		final int iPNorm)
-		throws java.lang.Exception
+		final List<Double> elementSpaceList,
+		final R1Univariate r1Distribution,
+		final int pNorm)
+		throws Exception
 	{
-		super (lsElementSpace);
+		super (elementSpaceList);
 
-		if (0 > (_iPNorm = iPNorm))
-			throw new java.lang.Exception ("R1Combinatorial Constructor: Invalid p-norm");
+		if (0 > (_pNorm = pNorm)) {
+			throw new Exception ("R1Combinatorial Constructor: Invalid p-norm");
+		}
 
-		_distR1 = distR1;
+		_r1Distribution = r1Distribution;
 	}
 
 	@Override public int pNorm()
 	{
-		return _iPNorm;
+		return _pNorm;
 	}
 
-	@Override public org.drip.measure.continuous.R1Univariate borelSigmaMeasure()
+	@Override public R1Univariate borelSigmaMeasure()
 	{
-		return _distR1;
+		return _r1Distribution;
 	}
 
 	@Override public double sampleMetricNorm (
-		final double dblX)
-		throws java.lang.Exception
+		final double x)
+		throws Exception
 	{
-		if (!validateInstance (dblX))
-			throw new java.lang.Exception ("R1Combinatorial::sampleMetricNorm => Invalid Inputs");
+		if (!validateInstance (x)) {
+			throw new Exception ("R1Combinatorial::sampleMetricNorm => Invalid Inputs");
+		}
 
-		return java.lang.Math.abs (dblX);
+		return Math.abs (x);
 	}
 
 	@Override public double populationMode()
-		throws java.lang.Exception
+		throws Exception
 	{
-		if (null == _distR1)
-			throw new java.lang.Exception ("R1Combinatorial::populationMode => Invalid Inputs");
+		if (null == _r1Distribution) {
+			throw new Exception ("R1Combinatorial::populationMode => Invalid Inputs");
+		}
 
-		double dblMode = java.lang.Double.NaN;
-		double dblModeProbability = java.lang.Double.NaN;
+		double mode = Double.NaN;
+		double modeProbability = Double.NaN;
 
-		for (double dblElement : elementSpace()) {
-			if (!org.drip.numerical.common.NumberUtil.IsValid (dblMode))
-				dblModeProbability = _distR1.density (dblMode = dblElement);
-			else {
-				double dblElementProbability = _distR1.density (dblElement);
+		for (double element : elementSpace()) {
+			if (!NumberUtil.IsValid (mode)) {
+				modeProbability = _r1Distribution.density (mode = element);
+			} else {
+				double elementProbability = _r1Distribution.density (element);
 
-				if (dblElementProbability > dblModeProbability) {
-					dblMode = dblElement;
-					dblModeProbability = dblElementProbability;
+				if (elementProbability > modeProbability) {
+					mode = element;
+					modeProbability = elementProbability;
 				}
 			}
 		}
 
-		return dblMode;
+		return mode;
 	}
 
 	@Override public double populationMetricNorm()
-		throws java.lang.Exception
+		throws Exception
 	{
-		if (null == _distR1)
-			throw new java.lang.Exception ("R1Combinatorial::populationMetricNorm => Invalid Inputs");
-
-		double dblNorm = 0.;
-		double dblNormalizer = 0.;
-
-		for (double dblElement : elementSpace()) {
-			double dblElementProbability = _distR1.density (dblElement);
-
-			dblNormalizer += dblElementProbability;
-
-			dblNorm += sampleMetricNorm (dblElement) * dblElementProbability;
+		if (null == _r1Distribution) {
+			throw new Exception ("R1Combinatorial::populationMetricNorm => Invalid Inputs");
 		}
 
-		return dblNorm / dblNormalizer;
+		double norm = 0.;
+		double normalizer = 0.;
+
+		for (double element : elementSpace()) {
+			double elementProbability = _r1Distribution.density (element);
+
+			normalizer += elementProbability;
+
+			norm += sampleMetricNorm (element) * elementProbability;
+		}
+
+		return norm / normalizer;
 	}
 
 	@Override public double borelMeasureSpaceExpectation (
-		final org.drip.function.definition.R1ToR1 funcR1ToR1)
-		throws java.lang.Exception
+		final R1ToR1 r1ToR1Function)
+		throws Exception
 	{
-		if (null == funcR1ToR1 || null == _distR1)
-			throw new java.lang.Exception
-				("R1Combinatorial::borelMeasureSpaceExpectation => Invalid Inputs");
-
-		double dblNormalizer = 0.;
-		double dblBorelMeasureSpaceExpectation = 0.;
-
-		for (double dblElement : elementSpace()) {
-			double dblElementProbability = _distR1.density (dblElement);
-
-			dblNormalizer += dblElementProbability;
-
-			dblBorelMeasureSpaceExpectation += funcR1ToR1.evaluate (dblElement) * dblElementProbability;
+		if (null == r1ToR1Function || null == _r1Distribution) {
+			throw new Exception ("R1Combinatorial::borelMeasureSpaceExpectation => Invalid Inputs");
 		}
 
-		return dblBorelMeasureSpaceExpectation / dblNormalizer;
+		double normalizer = 0.;
+		double borelMeasureSpaceExpectation = 0.;
+
+		for (double element : elementSpace()) {
+			double elementProbability = _r1Distribution.density (element);
+
+			normalizer += elementProbability;
+
+			borelMeasureSpaceExpectation += r1ToR1Function.evaluate (element) * elementProbability;
+		}
+
+		return borelMeasureSpaceExpectation / normalizer;
 	}
 }

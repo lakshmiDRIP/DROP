@@ -1,11 +1,18 @@
 
 package org.drip.spaces.metric;
 
+import org.drip.function.definition.R1ToR1;
+import org.drip.measure.continuous.R1Univariate;
+import org.drip.spaces.tensor.R1GeneralizedVector;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -82,7 +89,7 @@ package org.drip.spaces.metric;
 
 /**
  * <i>R1Normed</i> Abstract Class implements the Normed, Bounded/Unbounded Continuous/Combinatorial
- * l<sub>p</sub> R<sup>d</sup> Spaces. The Reference we've used is:
+ * 	l<sub>p</sub> R<sup>d</sup> Spaces. The Reference we've used is:
  *
  * <br><br>
  *  <ul>
@@ -92,65 +99,81 @@ package org.drip.spaces.metric;
  *  	</li>
  *  </ul>
  *
- * <br><br>
+ * It provides the following Functionality:
+ *
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/StatisticalLearningLibrary.md">Statistical Learning Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/README.md">R<sup>1</sup> and R<sup>d</sup> Vector/Tensor Spaces (Validated and/or Normed), and Function Classes</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/metric/README.md">Hilbert/Banach Normed Metric Spaces</a></li>
+ * 		<li>Retrieve the Borel Sigma R<sup>1</sup> Probability Measure</li>
+ * 		<li>Compute the Metric Norm of the Sample</li>
+ * 		<li>Retrieve the Population Mode</li>
+ * 		<li>Compute the Borel Measure Expectation for the specified R<sup>1</sup> To R<sup>1</sup> Function over the full Input Space</li>
  *  </ul>
- * <br><br>
+ *
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/StatisticalLearningLibrary.md">Statistical Learning Library</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/README.md">R<sup>1</sup> and R<sup>d</sup> Vector/Tensor Spaces (Validated and/or Normed), and Function Classes</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/metric/README.md">Hilbert/Banach Normed Metric Spaces</a></td></tr>
+ *  </table>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public interface R1Normed extends org.drip.spaces.metric.GeneralizedMetricVectorSpace,
-	org.drip.spaces.tensor.R1GeneralizedVector {
+public interface R1Normed extends GeneralizedMetricVectorSpace, R1GeneralizedVector
+{
 
 	/**
-	 * Retrieve the Borel Sigma R^1 Probability Measure
+	 * Retrieve the Borel Sigma R<sup>1</sup> Probability Measure
 	 * 
-	 * @return The Borel Sigma R^1 Probability Measure
+	 * @return The Borel Sigma R<sup>1</sup> Probability Measure
 	 */
 
-	public abstract org.drip.measure.continuous.R1Univariate borelSigmaMeasure();
+	public abstract R1Univariate borelSigmaMeasure();
 
 	/**
 	 * Compute the Metric Norm of the Sample
 	 * 
-	 * @param dblX The Sample
+	 * @param x The Sample
 	 * 
 	 * @return The Metric Norm of the Sample
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public abstract double sampleMetricNorm (
-		final double dblX)
-		throws java.lang.Exception;
+		final double x
+	) throws Exception;
 
 	/**
 	 * Retrieve the Population Mode
 	 * 
 	 * @return The Population Mode
 	 * 
-	 * @throws java.lang.Exception Thrown if the Population Mode cannot be calculated
+	 * @throws Exception Thrown if the Population Mode cannot be calculated
 	 */
 
 	public double populationMode()
-		throws java.lang.Exception;
+		throws Exception;
 
 	/**
-	 * Compute the Borel Measure Expectation for the specified R^1 To R^1 Function over the full Input Space
+	 * Compute the Borel Measure Expectation for the specified R<sup>1</sup> To R<sup>1</sup> Function over
+	 * 	the full Input Space
 	 * 
-	 * @param funcR1ToR1 R^1 To R^1 Function Instance
+	 * @param r1ToR1Function R<sup>1</sup> To R<sup>1</sup> Function Instance
 	 * 
-	 * @return The Borel Measure Expectation for the specified R^1 To R^1 Function over the full Input Space
+	 * @return The Borel Measure Expectation for the specified R<sup>1</sup> To R<sup>1</sup> Function over
+	 * 	`the full Input Space
 	 * 
-	 * @throws java.lang.Exception Thrown if the Population Mode cannot be calculated
+	 * @throws Exception Thrown if the Population Mode cannot be calculated
 	 */
 
 	public double borelMeasureSpaceExpectation (
-		final org.drip.function.definition.R1ToR1 funcR1ToR1)
-		throws java.lang.Exception;
+		final R1ToR1 r1ToR1Function
+	) throws Exception;
 }

@@ -1,11 +1,20 @@
 
 package org.drip.spaces.metric;
 
+import org.drip.function.definition.RdToR1;
+import org.drip.function.definition.VariateOutputPair;
+import org.drip.measure.continuous.Rd;
+import org.drip.spaces.tensor.R1ContinuousVector;
+import org.drip.spaces.tensor.RdContinuousVector;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -82,7 +91,7 @@ package org.drip.spaces.metric;
 
 /**
  * <i>RdContinuousBanach</i> implements the Normed, Bounded/Unbounded Continuous l<sub>p</sub> R<sup>d</sup>
- * Spaces. The Reference we've used is:
+ * 	Spaces. The Reference we've used is:
  *
  * <br><br>
  *  <ul>
@@ -92,31 +101,44 @@ package org.drip.spaces.metric;
  *  	</li>
  *  </ul>
  *
- * <br><br>
+ * It provides the following Functionality:
+ *
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/StatisticalLearningLibrary.md">Statistical Learning Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/README.md">R<sup>1</sup> and R<sup>d</sup> Vector/Tensor Spaces (Validated and/or Normed), and Function Classes</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/metric/README.md">Hilbert/Banach Normed Metric Spaces</a></li>
+ * 		<li>Construct the Standard l<sup>p</sup> R<sup>d</sup> Continuous Banach Space Instance</li>
+ * 		<li>Construct the Supremum (i.e., l<sup>Infinity</sup>) R<sup>d</sup> Continuous Banach Space Instance</li>
+ * 		<li><i>RdContinuousBanach</i> Space Constructor</li>
  *  </ul>
- * <br><br>
+ *
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/StatisticalLearningLibrary.md">Statistical Learning Library</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/README.md">R<sup>1</sup> and R<sup>d</sup> Vector/Tensor Spaces (Validated and/or Normed), and Function Classes</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/metric/README.md">Hilbert/Banach Normed Metric Spaces</a></td></tr>
+ *  </table>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class RdContinuousBanach extends org.drip.spaces.tensor.RdContinuousVector implements
-	org.drip.spaces.metric.RdNormed {
-	private int _iPNorm = -1;
-	private org.drip.measure.continuous.Rd _distRd = null;
+public class RdContinuousBanach extends RdContinuousVector implements RdNormed
+{
+	private int _pNorm = -1;
+	private Rd _rdDistribution = null;
 
 	/**
-	 * Construct the Standard l^p R^d Continuous Banach Space Instance
+	 * Construct the Standard l<sup>p</sup> R<sup>d</sup> Continuous Banach Space Instance
 	 * 
 	 * @param iDimension The Space Dimension
-	 * @param distRd The R^d Borel Sigma Measure
+	 * @param distRd The R<sup>d</sup> Borel Sigma Measure
 	 * @param iPNorm The p-norm of the Space
 	 * 
-	 * @return The Standard l^p R^d Continuous Banach Space Instance
+	 * @return The Standard l<sup>p</sup> R<sup>d</sup> Continuous Banach Space Instance
 	 */
 
 	public static final RdContinuousBanach StandardBanach (
@@ -135,12 +157,12 @@ public class RdContinuousBanach extends org.drip.spaces.tensor.RdContinuousVecto
 	}
 
 	/**
-	 * Construct the Supremum (i.e., l^Infinity) R^d Continuous Banach Space Instance
+	 * Construct the Supremum (i.e., l<sup>Infinity</sup>) R<sup>d</sup> Continuous Banach Space Instance
 	 * 
 	 * @param iDimension The Space Dimension
-	 * @param distRd The R^d Borel Sigma Measure
+	 * @param distRd The R<sup>d</sup> Borel Sigma Measure
 	 * 
-	 * @return The Supremum (i.e., l^Infinity) R^d Continuous Banach Space Instance
+	 * @return The Supremum (i.e., l<sup>Infinity</sup>) R<sup>d</sup> Continuous Banach Space Instance
 	 */
 
 	public static final RdContinuousBanach SupremumBanach (
@@ -160,163 +182,169 @@ public class RdContinuousBanach extends org.drip.spaces.tensor.RdContinuousVecto
 	/**
 	 * RdContinuousBanach Space Constructor
 	 * 
-	 * @param aR1CV Array of R^1 Continuous Vector
-	 * @param distRd The R^d Borel Sigma Measure
-	 * @param iPNorm The p-norm of the Space
+	 * @param r1ContinuousVectorArray Array of R<sup>1</sup> Continuous Vector
+	 * @param rdDistribution The R<sup>d</sup> Borel Sigma Measure
+	 * @param pNorm The p-norm of the Space
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public RdContinuousBanach (
-		final org.drip.spaces.tensor.R1ContinuousVector[] aR1CV,
-		final org.drip.measure.continuous.Rd distRd,
-		final int iPNorm)
-		throws java.lang.Exception
+		final R1ContinuousVector[] r1ContinuousVectorArray,
+		final Rd rdDistribution,
+		final int pNorm)
+		throws Exception
 	{
-		super (aR1CV);
+		super (r1ContinuousVectorArray);
 
-		if (0 > (_iPNorm = iPNorm))
-			throw new java.lang.Exception ("RdContinuousBanach Constructor: Invalid p-norm");
+		if (0 > (_pNorm = pNorm)) {
+			throw new Exception ("RdContinuousBanach Constructor: Invalid p-norm");
+		}
 
-		_distRd = distRd;
+		_rdDistribution = rdDistribution;
 	}
 
 	@Override public int pNorm()
 	{
-		return _iPNorm;
+		return _pNorm;
 	}
 
-	@Override public org.drip.measure.continuous.Rd borelSigmaMeasure()
+	@Override public Rd borelSigmaMeasure()
 	{
-		return _distRd;
+		return _rdDistribution;
 	}
 
 	@Override public double sampleSupremumNorm (
-		final double[] adblX)
-		throws java.lang.Exception
+		final double[] xArray)
+		throws Exception
 	{
-		if (!validateInstance (adblX))
-			throw new java.lang.Exception ("RdContinuousBanach::sampleSupremumNorm => Invalid Inputs");
-
-		int iDimension = adblX.length;
-
-		double dblNorm = java.lang.Math.abs (adblX[0]);
-
-		for (int i = 1; i < iDimension; ++i) {
-			double dblAbsoluteX = java.lang.Math.abs (adblX[i]);
-
-			dblNorm = dblNorm > dblAbsoluteX ? dblNorm : dblAbsoluteX;
+		if (!validateInstance (xArray)) {
+			throw new Exception ("RdContinuousBanach::sampleSupremumNorm => Invalid Inputs");
 		}
 
-		return dblNorm;
+		int dimension = xArray.length;
+
+		double norm = Math.abs (xArray[0]);
+
+		for (int i = 1; i < dimension; ++i) {
+			double absoluteX = Math.abs (xArray[i]);
+
+			norm = norm > absoluteX ? norm : absoluteX;
+		}
+
+		return norm;
 	}
 
 	@Override public double sampleMetricNorm (
-		final double[] adblX)
-		throws java.lang.Exception
+		final double[] xArray)
+		throws Exception
 	{
-		if (!validateInstance (adblX))
-			throw new java.lang.Exception ("RdContinuousBanach::sampleMetricNorm => Invalid Inputs");
+		if (!validateInstance (xArray)) {
+			throw new Exception ("RdContinuousBanach::sampleMetricNorm => Invalid Inputs");
+		}
 
-		if (java.lang.Integer.MAX_VALUE == _iPNorm) return sampleSupremumNorm (adblX);
+		if (Integer.MAX_VALUE == _pNorm) {
+			return sampleSupremumNorm (xArray);
+		}
 
-		double dblNorm = 0.;
-		int iDimension = adblX.length;
+		double norm = 0.;
+		int dimension = xArray.length;
 
-		for (int i = 0; i < iDimension; ++i)
-			dblNorm += java.lang.Math.pow (java.lang.Math.abs (adblX[i]), _iPNorm);
+		for (int i = 0; i < dimension; ++i) {
+			norm += Math.pow (Math.abs (xArray[i]), _pNorm);
+		}
 
-		return java.lang.Math.pow (dblNorm, 1. / _iPNorm);
+		return Math.pow (norm, 1. / _pNorm);
 	}
 
 	@Override public double[] populationMode()
 	{
-		if (null == _distRd) return null;
+		if (null == _rdDistribution) {
+			return null;
+		}
 
-		org.drip.function.definition.RdToR1 funcRdToR1 = new org.drip.function.definition.RdToR1 (null) {
+		VariateOutputPair modeVariateOutputPair = new RdToR1 (null) {
 			@Override public int dimension()
 			{
-				return org.drip.function.definition.RdToR1.DIMENSION_NOT_FIXED;
+				return RdToR1.DIMENSION_NOT_FIXED;
 			}
 
 			@Override public double evaluate (
-				final double[] adblX)
-				throws java.lang.Exception
+				final double[] xArray)
+				throws Exception
 			{
-				return _distRd.density (adblX);
+				return _rdDistribution.density (xArray);
 			}
-		};
+		}.maxima (leftDimensionEdge(), rightDimensionEdge());
 
-		org.drip.function.definition.VariateOutputPair vopMode = funcRdToR1.maxima (leftDimensionEdge(),
-			rightDimensionEdge());
-
-		return null == vopMode ? null : vopMode.variates();
+		return null == modeVariateOutputPair ? null : modeVariateOutputPair.variates();
 	}
 
 	@Override public double populationSupremumNorm()
-		throws java.lang.Exception
+		throws Exception
 	{
-		if (null == _distRd)
-			throw new java.lang.Exception ("RdContinuousBanach::populationSupremumNorm => Invalid Inputs");
+		if (null == _rdDistribution) {
+			throw new Exception ("RdContinuousBanach::populationSupremumNorm => Invalid Inputs");
+		}
 
 		return sampleSupremumNorm (populationMode());
 	}
 
 	@Override public double populationMetricNorm()
-		throws java.lang.Exception
+		throws Exception
 	{
-		if (null == _distRd)
-			throw new java.lang.Exception ("RdContinuousBanach::populationMetricNorm => Invalid Inputs");
+		if (null == _rdDistribution) {
+			throw new Exception ("RdContinuousBanach::populationMetricNorm => Invalid Inputs");
+		}
 
-		if (java.lang.Integer.MAX_VALUE == _iPNorm) return sampleSupremumNorm (populationMode());
+		if (Integer.MAX_VALUE == _pNorm) {
+			return sampleSupremumNorm (populationMode());
+		}
 
-		org.drip.function.definition.RdToR1 funcRdToR1 = new org.drip.function.definition.RdToR1 (null) {
-			@Override public int dimension()
-			{
-				return org.drip.function.definition.RdToR1.DIMENSION_NOT_FIXED;
-			}
+		return Math.pow (
+			new RdToR1 (null) {
+				@Override public int dimension()
+				{
+					return RdToR1.DIMENSION_NOT_FIXED;
+				}
 
-			@Override public double evaluate (
-				final double[] adblX)
-				throws java.lang.Exception
-			{
-				double dblNorm = 0.;
-				int iDimension = adblX.length;
+				@Override public double evaluate (
+					final double[] xArray)
+					throws Exception
+				{
+					double norm = 0.;
+					int dimension = xArray.length;
 
-				for (int i = 0; i < iDimension; ++i)
-					dblNorm += java.lang.Math.pow (java.lang.Math.abs (adblX[i]), _iPNorm);
+					for (int i = 0; i < dimension; ++i) {
+						norm += Math.pow (Math.abs (xArray[i]), _pNorm);
+					}
 
-				return dblNorm * _distRd.density (adblX);
-			}
-		};
-
-		return java.lang.Math.pow (funcRdToR1.integrate (leftDimensionEdge(), rightDimensionEdge()), 1. /
-			_iPNorm);
+					return norm * _rdDistribution.density (xArray);
+				}
+			}.integrate (leftDimensionEdge(), rightDimensionEdge()), 1. / _pNorm
+		);
 	}
 
 	@Override public double borelMeasureSpaceExpectation (
-		final org.drip.function.definition.RdToR1 funcRdToR1)
-		throws java.lang.Exception
+		final RdToR1 rdToR1Function)
+		throws Exception
 	{
-		if (null == _distRd || null == funcRdToR1)
-			throw new java.lang.Exception
-				("RdContinuousBanach::borelMeasureSpaceExpectation => Invalid Inputs");
+		if (null == _rdDistribution || null == rdToR1Function) {
+			throw new Exception ("RdContinuousBanach::borelMeasureSpaceExpectation => Invalid Inputs");
+		}
 
-		org.drip.function.definition.RdToR1 funcDensityRdToR1 = new org.drip.function.definition.RdToR1
-			(null) {
+		return new RdToR1 (null) {
 			@Override public int dimension()
 			{
-				return org.drip.function.definition.RdToR1.DIMENSION_NOT_FIXED;
+				return RdToR1.DIMENSION_NOT_FIXED;
 			}
 
 			@Override public double evaluate (
-				final double[] adblX)
-				throws java.lang.Exception
+				final double[] xArray)
+				throws Exception
 			{
-				return funcRdToR1.evaluate (adblX) * _distRd.density (adblX);
+				return rdToR1Function.evaluate (xArray) * _rdDistribution.density (xArray);
 			}
-		};
-
-		return funcDensityRdToR1.integrate (leftDimensionEdge(), rightDimensionEdge());
+		}.integrate (leftDimensionEdge(), rightDimensionEdge());
 	}
 }
