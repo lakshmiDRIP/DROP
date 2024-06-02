@@ -105,27 +105,23 @@ import org.drip.spaces.metric.RdNormed;
  * It provides the following Functionality:
  *
  *  <ul>
+ * 		<li><i>NormedR1ToNormedRd</i> Constructor</li>
  * 		<li>Retrieve the Input Metric Vector Space</li>
  * 		<li>Retrieve the Output Metric Vector Space</li>
+ * 		<li>Retrieve the Underlying R<sup>1</sup> to R<sup>d</sup> Function</li>
  * 		<li>Retrieve the Sample Supremum Norm Array</li>
  * 		<li>Retrieve the Sample Metric Norm Array</li>
- * 		<li>Retrieve the Sample Covering Number Array</li>
- * 		<li>Retrieve the Sample Supremum Covering Number Array</li>
  * 		<li>Retrieve the Population ESS (Essential Spectrum) Array</li>
- * 		<li>Retrieve the Population Metric Norm Array</li>
- * 		<li>Retrieve the Population Supremum Norm Array</li>
- * 		<li>Retrieve the Population Covering Number Array</li>
- * 		<li>Retrieve the Population Supremum Covering Number Array</li>
  *  </ul>
  *
- * <br><br>
- *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/StatisticalLearningLibrary.md">Statistical Learning Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/README.md">R<sup>1</sup> and R<sup>d</sup> Vector/Tensor Spaces (Validated and/or Normed), and Function Classes</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/rxtord/README.md">R<sup>x</sup> To R<sup>d</sup> Normed Function Spaces</a></li>
- *  </ul>
- * <br><br>
+ *	<br>
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/StatisticalLearningLibrary.md">Statistical Learning Library</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/README.md">R<sup>1</sup> and R<sup>d</sup> Vector/Tensor Spaces (Validated and/or Normed), and Function Classes</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/rxtord/README.md">R<sup>x</sup> To R<sup>d</sup> Normed Function Spaces</a></td></tr>
+ *  </table>
+ *	<br>
  *
  * @author Lakshmi Krishnamurthy
  */
@@ -305,11 +301,18 @@ public abstract class NormedR1ToNormedRd
 		return metricNormArray;
 	}
 
+	/**
+	 * Retrieve the Population ESS (Essential Spectrum) Array
+	 * 
+	 * @return The Population ESS (Essential Spectrum) Array
+	 */
+
 	@Override public double[] populationESS()
 	{
 		try {
-			return null == _r1ToRdFunction ? null : _r1ToRdFunction.evaluate (_r1NormedInput.populationMode());
-		} catch (java.lang.Exception e) {
+			return null == _r1ToRdFunction ?
+				null : _r1ToRdFunction.evaluate (_r1NormedInput.populationMode());
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 

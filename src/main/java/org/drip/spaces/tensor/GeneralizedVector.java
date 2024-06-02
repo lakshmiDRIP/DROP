@@ -6,6 +6,9 @@ package org.drip.spaces.tensor;
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -81,21 +84,33 @@ package org.drip.spaces.tensor;
  */
 
 /**
- * <i>GeneralizedVector</i> exposes the basic Properties of the General Vector Space.
+ * <i>GeneralizedVector</i> exposes the basic Properties of the General Vector Space. It provides the
+ * 	following Functionality:
  *
- * <br><br>
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/StatisticalLearningLibrary.md">Statistical Learning Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/README.md">R<sup>1</sup> and R<sup>d</sup> Vector/Tensor Spaces (Validated and/or Normed), and Function Classes</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/tensor/README.md">R<sup>x</sup> Continuous/Combinatorial Tensor Spaces</a></li>
+ * 		<li>Retrieve the Left Edge</li>
+ * 		<li>Retrieve the Right Edge</li>
+ * 		<li>Retrieve the Cardinality of the Vector Space</li>
+ * 		<li>Compare against the "Other" Generalized Vector Space</li>
+ * 		<li>Indicate if the "Other" Generalized Vector Space is a Subset of "this"</li>
+ * 		<li>Indicate if the Predictor Variate Space is bounded from the Left and the Right</li>
+ * 		<li>Retrieve the "Hyper" Volume of the Vector Space</li>
  *  </ul>
- * <br><br>
+ *
+ *	<br>
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/StatisticalLearningLibrary.md">Statistical Learning Library</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/README.md">R<sup>1</sup> and R<sup>d</sup> Vector/Tensor Spaces (Validated and/or Normed), and Function Classes</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/tensor/README.md">R<sup>x</sup> Continuous/Combinatorial Tensor Spaces</a></td></tr>
+ *  </table>
+ *	<br>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public interface GeneralizedVector {
+public interface GeneralizedVector
+{
 
 	/**
 	 * Retrieve the Left Edge
@@ -119,29 +134,31 @@ public interface GeneralizedVector {
 	 * @return Cardinality of the Vector Space
 	 */
 
-	public abstract org.drip.spaces.tensor.Cardinality cardinality();
+	public abstract Cardinality cardinality();
 
 	/**
 	 * Compare against the "Other" Generalized Vector Space
 	 * 
-	 * @param gvsOther The "Other" Generalized Vector Space
+	 * @param generalizedVectorOther The "Other" Generalized Vector Space
 	 * 
 	 * @return TRUE - The "Other" Generalized Vector Space matches this
 	 */
 
 	public abstract boolean match (
-		final org.drip.spaces.tensor.GeneralizedVector gvsOther);
+		final GeneralizedVector generalizedVectorOther
+	);
 
 	/**
 	 * Indicate if the "Other" Generalized Vector Space is a Subset of "this"
 	 * 
-	 * @param gvsOther The "Other" Generalized Vector Space
+	 * @param generalizedVectorOther The "Other" Generalized Vector Space
 	 * 
 	 * @return TRUE - The "Other" Generalized Vector Space is a Subset of this
 	 */
 
 	public abstract boolean subset (
-		final org.drip.spaces.tensor.GeneralizedVector gvsOther);
+		final GeneralizedVector generalizedVectorOther
+	);
 
 	/**
 	 * Indicate if the Predictor Variate Space is bounded from the Left and the Right
@@ -156,9 +173,9 @@ public interface GeneralizedVector {
 	 * 
 	 * @return The "Hyper" Volume of the Vector Space
 	 * 
-	 * @throws java.lang.Exception Thrown if the Hyper Volume cannot be computed
+	 * @throws Exception Thrown if the Hyper Volume cannot be computed
 	 */
 
 	public abstract double hyperVolume()
-		throws java.lang.Exception;
+		throws Exception;
 }

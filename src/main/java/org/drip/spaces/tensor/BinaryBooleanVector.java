@@ -6,6 +6,9 @@ package org.drip.spaces.tensor;
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -81,7 +84,12 @@ package org.drip.spaces.tensor;
  */
 
 /**
- * <i>BinaryBooleanVector</i> implements the normed/non-normed Binary/Boolean Combinatorial Vector Spaces.
+ * <i>BinaryBooleanVector</i> implements the normed/non-normed Binary/Boolean Combinatorial Vector Spaces. It
+ *  provides the following Functionality:
+ *
+ *  <ul>
+ * 		<li>Retrieve the Input Metric Vector Space</li>
+ *  </ul>
  *
  * <br><br>
  *  <ul>

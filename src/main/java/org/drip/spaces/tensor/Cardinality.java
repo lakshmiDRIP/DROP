@@ -6,6 +6,9 @@ package org.drip.spaces.tensor;
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -81,21 +84,36 @@ package org.drip.spaces.tensor;
  */
 
 /**
- * <i>Cardinality</i> contains the Type and the Measure of the Cardinality of the given Vector Space.
+ * <i>Cardinality</i> contains the Type and the Measure of the Cardinality of the given Vector Space. It
+ *  provides the following Functionality:
  *
- * <br><br>
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/StatisticalLearningLibrary.md">Statistical Learning Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/README.md">R<sup>1</sup> and R<sup>d</sup> Vector/Tensor Spaces (Validated and/or Normed), and Function Classes</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/tensor/README.md">R<sup>x</sup> Continuous/Combinatorial Tensor Spaces</a></li>
+ * 		<li>Cardinality Type - Countably Finite</li>
+ * 		<li>Cardinality Type - Countably Infinite</li>
+ * 		<li>Cardinality Type - Uncountably Infinite</li>
+ * 		<li>Countably Finite Cardinality</li>
+ * 		<li>Countably Infinite Cardinality</li>
+ * 		<li>Uncountably Infinite Cardinality</li>
+ * 		<li>Cardinality Constructor</li>
+ * 		<li>Retrieve the Cardinality Type</li>
+ * 		<li>Retrieve the Cardinality Number</li>
+ * 		<li>Indicate if the Current Instance matches the "Other" Cardinality Instance</li>
  *  </ul>
- * <br><br>
+ *
+ *	<br>
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/StatisticalLearningLibrary.md">Statistical Learning Library</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/README.md">R<sup>1</sup> and R<sup>d</sup> Vector/Tensor Spaces (Validated and/or Normed), and Function Classes</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/tensor/README.md">R<sup>x</sup> Continuous/Combinatorial Tensor Spaces</a></td></tr>
+ *  </table>
+ *	<br>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class Cardinality {
+public class Cardinality
+{
 
 	/**
 	 * Cardinality Type - Countably Finite
@@ -115,8 +133,8 @@ public class Cardinality {
 
 	public static final int CARD_UNCOUNTABLY_INFINITE = 3;
 
-	private int _iType = -1;
-	private double _dblNumber = java.lang.Double.NaN;
+	private int _type = -1;
+	private double _number = Double.NaN;
 
 	/**
 	 * Countably Finite Cardinality
@@ -131,7 +149,7 @@ public class Cardinality {
 	{
 		try {
 			return new Cardinality (CARD_COUNTABLY_FINITE, dblNumber);
-		} catch (java.lang.Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -147,8 +165,8 @@ public class Cardinality {
 	public static final Cardinality CountablyInfinite()
 	{
 		try {
-			return new Cardinality (CARD_COUNTABLY_INFINITE, java.lang.Double.POSITIVE_INFINITY);
-		} catch (java.lang.Exception e) {
+			return new Cardinality (CARD_COUNTABLY_INFINITE, Double.POSITIVE_INFINITY);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -164,8 +182,8 @@ public class Cardinality {
 	public static final Cardinality UncountablyInfinite()
 	{
 		try {
-			return new Cardinality (CARD_UNCOUNTABLY_INFINITE, java.lang.Double.POSITIVE_INFINITY);
-		} catch (java.lang.Exception e) {
+			return new Cardinality (CARD_UNCOUNTABLY_INFINITE, Double.POSITIVE_INFINITY);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -175,20 +193,27 @@ public class Cardinality {
 	/**
 	 * Cardinality Constructor
 	 * 
-	 * @param iType Cardinality Type
-	 * @param dblNumber Cardinality Number
+	 * @param type Cardinality Type
+	 * @param number Cardinality Number
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public Cardinality (
-		final int iType,
-		final double dblNumber)
-		throws java.lang.Exception
+		final int type,
+		final double number)
+		throws Exception
 	{
-		if ((CARD_COUNTABLY_FINITE != (_iType = iType) && CARD_COUNTABLY_INFINITE != _iType &&
-			CARD_UNCOUNTABLY_INFINITE != _iType) || java.lang.Double.isNaN (_dblNumber = dblNumber))
-			throw new java.lang.Exception ("Cardinality ctr => Invalid Inputs");
+		if (
+			(
+				CARD_COUNTABLY_FINITE != (_type = type) &&
+				CARD_COUNTABLY_INFINITE != _type &&
+				CARD_UNCOUNTABLY_INFINITE != _type
+			) || Double.isNaN (_number = number)
+		)
+		{
+			throw new Exception ("Cardinality Constructor => Invalid Inputs");
+		}
 	}
 
 	/**
@@ -199,7 +224,7 @@ public class Cardinality {
 
 	public int type()
 	{
-		return _iType;
+		return _type;
 	}
 
 	/**
@@ -210,7 +235,7 @@ public class Cardinality {
 
 	public double number()
 	{
-		return _dblNumber;
+		return _number;
 	}
 
 	/**
@@ -224,6 +249,6 @@ public class Cardinality {
 	public boolean match (
 		final Cardinality cardOther)
 	{
-		return null != cardOther && cardOther.type() == _iType && cardOther.number() == _dblNumber;
+		return null != cardOther && cardOther.type() == _type && cardOther.number() == _number;
 	}
 }

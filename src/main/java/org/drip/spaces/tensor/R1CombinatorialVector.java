@@ -1,11 +1,19 @@
 
 package org.drip.spaces.tensor;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.drip.numerical.common.NumberUtil;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -82,37 +90,44 @@ package org.drip.spaces.tensor;
 
 /**
  * <i>R1CombinatorialVector</i> exposes the normed/non-normed Discrete Spaces with R<sup>1</sup>
- * Combinatorial Vector Elements.
+ * 	Combinatorial Vector Elements.
  *
- * <br><br>
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/StatisticalLearningLibrary.md">Statistical Learning Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/README.md">R<sup>1</sup> and R<sup>d</sup> Vector/Tensor Spaces (Validated and/or Normed), and Function Classes</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/tensor/README.md">R<sup>x</sup> Continuous/Combinatorial Tensor Spaces</a></li>
+ * 		<li>Validate the Input Instance Ordinate</li>
  *  </ul>
- * <br><br>
+ *
+ *	<br>
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/StatisticalLearningLibrary.md">Statistical Learning Library</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/README.md">R<sup>1</sup> and R<sup>d</sup> Vector/Tensor Spaces (Validated and/or Normed), and Function Classes</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/tensor/README.md">R<sup>x</sup> Continuous/Combinatorial Tensor Spaces</a></td></tr>
+ *  </table>
+ *	<br>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class R1CombinatorialVector implements org.drip.spaces.tensor.R1GeneralizedVector {
-	private java.util.List<java.lang.Double> _lsElementSpace = new java.util.ArrayList<java.lang.Double>();
+public class R1CombinatorialVector
+	implements R1GeneralizedVector
+{
+	private List<Double> _spaceElementList = new ArrayList<Double>();
 
 	/**
-	 * R1CombinatorialVector Constructor
+	 * <i>R1CombinatorialVector</i> Constructor
 	 * 
-	 * @param lsElementSpace The List Space of Elements
+	 * @param spaceElementList The List Space of Elements
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public R1CombinatorialVector (
-		final java.util.List<java.lang.Double> lsElementSpace)
-		throws java.lang.Exception
+		final List<Double> spaceElementList)
+		throws Exception
 	{
-		if (null == (_lsElementSpace = lsElementSpace) || 0 == _lsElementSpace.size())
-			throw new java.lang.Exception ("R1CombinatorialVector ctr: Invalid Inputs");
+		if (null == (_spaceElementList = spaceElementList) || 0 == _spaceElementList.size()) {
+			throw new Exception ("R1CombinatorialVector ctr: Invalid Inputs");
+		}
 	}
 
 	/**
@@ -121,33 +136,49 @@ public class R1CombinatorialVector implements org.drip.spaces.tensor.R1Generaliz
 	 * @return The Full Candidate List of Elements
 	 */
 
-	public java.util.List<java.lang.Double> elementSpace()
+	public List<Double> elementSpace()
 	{
-		return _lsElementSpace;
+		return _spaceElementList;
 	}
+
+	/**
+	 * Retrieve the Left Edge
+	 * 
+	 * @return The Left Edge
+	 */
 
 	@Override public double leftEdge()
 	{
-		double dblLeftEdge = java.lang.Double.NaN;
+		double leftEdge = Double.NaN;
 
-		for (double dblElement : _lsElementSpace) {
-			if (java.lang.Double.NEGATIVE_INFINITY == dblElement) return dblElement;
+		for (double element : _spaceElementList) {
+			if (Double.NEGATIVE_INFINITY == element) {
+				return element;
+			}
 
-			if (!org.drip.numerical.common.NumberUtil.IsValid (dblLeftEdge))
-				dblLeftEdge = dblElement;
+			if (!NumberUtil.IsValid (leftEdge))
+				leftEdge = element;
 			else {
-				if (dblLeftEdge > dblElement) dblLeftEdge = dblElement;
+				if (leftEdge > element) {
+					leftEdge = element;
+				}
 			}
 		}
 
-		return dblLeftEdge;
+		return leftEdge;
 	}
+
+	/**
+	 * Retrieve the Right Edge
+	 * 
+	 * @return The Right Edge
+	 */
 
 	@Override public double rightEdge()
 	{
 		double dblRightEdge = java.lang.Double.NaN;
 
-		for (double dblElement : _lsElementSpace) {
+		for (double dblElement : _spaceElementList) {
 			if (java.lang.Double.POSITIVE_INFINITY == dblElement) return dblElement;
 
 			if (!org.drip.numerical.common.NumberUtil.IsValid (dblRightEdge))
@@ -160,16 +191,38 @@ public class R1CombinatorialVector implements org.drip.spaces.tensor.R1Generaliz
 		return dblRightEdge;
 	}
 
+	/**
+	 * Validate the Input Instance Ordinate
+	 * 
+	 * @param instance The Input Instance Ordinate
+	 * 
+	 * @return TRUE - Instance Ordinate is a Valid Entry in the Space
+	 */
+
 	@Override public boolean validateInstance (
-		final double dblX)
+		final double instance)
 	{
-		return _lsElementSpace.contains (dblX);
+		return _spaceElementList.contains (instance);
 	}
+
+	/**
+	 * Retrieve the Cardinality of the Vector Space
+	 * 
+	 * @return Cardinality of the Vector Space
+	 */
 
 	@Override public org.drip.spaces.tensor.Cardinality cardinality()
 	{
-		return org.drip.spaces.tensor.Cardinality.CountablyFinite (_lsElementSpace.size());
+		return org.drip.spaces.tensor.Cardinality.CountablyFinite (_spaceElementList.size());
 	}
+
+	/**
+	 * Compare against the "Other" Generalized Vector Space
+	 * 
+	 * @param generalizedVectorOther The "Other" Generalized Vector Space
+	 * 
+	 * @return TRUE - The "Other" Generalized Vector Space matches this
+	 */
 
 	@Override public boolean match (
 		final org.drip.spaces.tensor.GeneralizedVector gvOther)
@@ -182,12 +235,20 @@ public class R1CombinatorialVector implements org.drip.spaces.tensor.R1Generaliz
 
 		java.util.List<java.lang.Double> lsElementSpaceOther = r1cvOther.elementSpace();
 
-		for (double dblElement : _lsElementSpace) {
+		for (double dblElement : _spaceElementList) {
 			if (!lsElementSpaceOther.contains (dblElement)) return false;
 		}
 
 		return true;
 	}
+
+	/**
+	 * Indicate if the "Other" Generalized Vector Space is a Subset of "this"
+	 * 
+	 * @param generalizedVectorOther The "Other" Generalized Vector Space
+	 * 
+	 * @return TRUE - The "Other" Generalized Vector Space is a Subset of this
+	 */
 
 	@Override public boolean subset (
 		final org.drip.spaces.tensor.GeneralizedVector gvOther)
@@ -200,18 +261,32 @@ public class R1CombinatorialVector implements org.drip.spaces.tensor.R1Generaliz
 
 		java.util.List<java.lang.Double> lsElementSpaceOther = r1cvOther.elementSpace();
 
-		for (double dblElement : _lsElementSpace) {
+		for (double dblElement : _spaceElementList) {
 			if (!lsElementSpaceOther.contains (dblElement)) return false;
 		}
 
 		return true;
 	}
 
+	/**
+	 * Indicate if the Predictor Variate Space is bounded from the Left and the Right
+	 * 
+	 * @return The Predictor Variate Space is bounded from the Left and the Right
+	 */
+
 	@Override public boolean isPredictorBounded()
 	{
 		return leftEdge() != java.lang.Double.NEGATIVE_INFINITY && rightEdge() !=
 			java.lang.Double.POSITIVE_INFINITY;
 	}
+
+	/**
+	 * Retrieve the "Hyper" Volume of the Vector Space
+	 * 
+	 * @return The "Hyper" Volume of the Vector Space
+	 * 
+	 * @throws Exception Thrown if the Hyper Volume cannot be computed
+	 */
 
 	@Override public double hyperVolume()
 		throws java.lang.Exception

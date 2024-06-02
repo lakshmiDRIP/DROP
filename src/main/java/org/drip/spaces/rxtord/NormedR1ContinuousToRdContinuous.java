@@ -1,11 +1,20 @@
 
 package org.drip.spaces.rxtord;
 
+import org.drip.function.definition.R1ToRd;
+import org.drip.measure.continuous.R1Univariate;
+import org.drip.spaces.metric.R1Combinatorial;
+import org.drip.spaces.metric.R1Continuous;
+import org.drip.spaces.metric.RdContinuousBanach;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -81,8 +90,8 @@ package org.drip.spaces.rxtord;
  */
 
 /**
- * <i>NormedR1ContinuousToRdContinuous</i> implements the f : Validated Normed R<sup>1</sup> Continuous To
- * Validated Normed R<sup>d</sup> Continuous Function Spaces. The Reference we've used is:
+ * <i>NormedR1ContinuousToRdContinuous</i> implements the f : Validated Normed R<sup>1</sup> Continuous to
+ * 	Validated Normed R<sup>d</sup> Continuous Function Spaces. The Reference we've used is:
  *
  * <br><br>
  *  <ul>
@@ -92,96 +101,124 @@ package org.drip.spaces.rxtord;
  *  	</li>
  *  </ul>
  *
- * <br><br>
+ * It provides the following Functionality:
+ *
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/StatisticalLearningLibrary.md">Statistical Learning Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/README.md">R<sup>1</sup> and R<sup>d</sup> Vector/Tensor Spaces (Validated and/or Normed), and Function Classes</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/rxtord/README.md">R<sup>x</sup> To R<sup>d</sup> Normed Function Spaces</a></li>
+ * 		<li><i>NormedR1ContinuousToRdContinuous</i> Constructor</li>
+ * 		<li>Retrieve the Population Metric Norm Array</li>
  *  </ul>
- * <br><br>
+ *
+ *	<br>
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/StatisticalLearningLibrary.md">Statistical Learning Library</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/README.md">R<sup>1</sup> and R<sup>d</sup> Vector/Tensor Spaces (Validated and/or Normed), and Function Classes</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/rxtord/README.md">R<sup>x</sup> To R<sup>d</sup> Normed Function Spaces</a></td></tr>
+ *  </table>
+ *	<br>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class NormedR1ContinuousToRdContinuous extends org.drip.spaces.rxtord.NormedR1ToNormedRd {
+public class NormedR1ContinuousToRdContinuous
+	extends NormedR1ToNormedRd
+{
 
 	/**
-	 * NormedR1ContinuousToRdContinuous Function Space Constructor
+	 * <i>NormedR1ContinuousToRdContinuous</i> Function Space Constructor
 	 * 
-	 * @param r1ContinuousInput The R^1 Input Metric Vector Space
-	 * @param rdContinuousOutput The R^d Output Metric Vector Space
-	 * @param funcR1ToRd The R1ToRd Function
+	 * @param r1ContinuousInput The R<sup>1</sup> Input Metric Vector Space
+	 * @param rdContinuousBanachOutput The R<sup>d</sup> Output Banach Metric Vector Space
+	 * @param r1ToRdFunction R<sup>1</sup> to R<sup>d</sup> Function
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public NormedR1ContinuousToRdContinuous (
-		final org.drip.spaces.metric.R1Continuous r1ContinuousInput,
-		final org.drip.spaces.metric.RdContinuousBanach rdContinuousOutput,
-		final org.drip.function.definition.R1ToRd funcR1ToRd)
+		final R1Continuous r1ContinuousInput,
+		final RdContinuousBanach rdContinuousBanachOutput,
+		final R1ToRd r1ToRdFunction)
 		throws java.lang.Exception
 	{
-		super (r1ContinuousInput, rdContinuousOutput, funcR1ToRd);
+		super (r1ContinuousInput, rdContinuousBanachOutput, r1ToRdFunction);
 	}
+
+	/**
+	 * Retrieve the Population Metric Norm Array
+	 * 
+	 * @return The Population Metric Norm Array
+	 */
 
 	@Override public double[] populationMetricNorm()
 	{
-		final int iPNorm = outputMetricVectorSpace().pNorm();
+		final int pNorm = outputMetricVectorSpace().pNorm();
 
-		if (java.lang.Integer.MAX_VALUE == iPNorm) return populationSupremumNorm();
+		if (Integer.MAX_VALUE == pNorm) {
+			return populationSupremumNorm();
+		}
 
-		org.drip.spaces.metric.R1Combinatorial r1ContinuousInput = (org.drip.spaces.metric.R1Combinatorial)
-			inputMetricVectorSpace();
+		final R1ToRd r1ToRdFunction = function();
 
-		final org.drip.measure.continuous.R1Univariate distR1 = r1ContinuousInput.borelSigmaMeasure();
+		R1Combinatorial r1CombinatorialInput = (R1Combinatorial) inputMetricVectorSpace();
 
-		final org.drip.function.definition.R1ToRd funcR1ToRd = function();
+		final R1Univariate r1UnivariateDistribution = r1CombinatorialInput.borelSigmaMeasure();
 
-		if (null == distR1 || null == funcR1ToRd) return null;
+		if (null == r1UnivariateDistribution || null == r1ToRdFunction) {
+			return null;
+		}
 
-		org.drip.function.definition.R1ToRd funcR1ToRdPointNorm = new org.drip.function.definition.R1ToRd
-			(null) {
+		R1ToRd pointNormFunction = new R1ToRd (null) {
 			@Override public double[] evaluate (
-				final double dblX)
+				final double x)
 			{
-				double[] adblNorm = funcR1ToRd.evaluate (dblX);
+				double[] normArray = r1ToRdFunction.evaluate (x);
 
-				if (null == adblNorm) return null;
+				if (null == normArray) {
+					return null;
+				}
 
-				int iOutputDimension = adblNorm.length;
-				double dblProbabilityDensity = java.lang.Double.NaN;
+				double probabilityDensity = Double.NaN;
+				int outputDimension = normArray.length;
 
-				if (0 == iOutputDimension) return null;
+				if (0 == outputDimension) {
+					return null;
+				}
 
 				try {
-					dblProbabilityDensity = distR1.density (dblX);
-				} catch (java.lang.Exception e) {
+					probabilityDensity = r1UnivariateDistribution.density (x);
+				} catch (Exception e) {
 					e.printStackTrace();
 
 					return null;
 				}
 
-				for (int j = 0; j < iOutputDimension; ++j)
-					adblNorm[j] = dblProbabilityDensity * java.lang.Math.pow (java.lang.Math.abs
-						(adblNorm[j]), iPNorm);
+				for (int j = 0; j < outputDimension; ++j) {
+					normArray[j] = probabilityDensity * Math.pow (Math.abs (normArray[j]), pNorm);
+				}
 
-				return adblNorm;
+				return normArray;
 			}
 		};
 
-		double[] adblPopulationRdMetricNorm = funcR1ToRdPointNorm.integrate (r1ContinuousInput.leftEdge(),
-			r1ContinuousInput.rightEdge());
+		double[] populationRdMetricNormArray = pointNormFunction.integrate (
+			r1CombinatorialInput.leftEdge(),
+			r1CombinatorialInput.rightEdge()
+		);
 
-		if (null == adblPopulationRdMetricNorm) return null;
+		if (null == populationRdMetricNormArray) {
+			return null;
+		}
 
-		int iOutputDimension = adblPopulationRdMetricNorm.length;
+		int outputDimension = populationRdMetricNormArray.length;
 
-		if (0 == iOutputDimension) return null;
+		if (0 == outputDimension) {
+			return null;
+		}
 
-		for (int i = 0; i < iOutputDimension; ++i)
-			adblPopulationRdMetricNorm[i] = java.lang.Math.pow (adblPopulationRdMetricNorm[i], 1. / iPNorm);
+		for (int i = 0; i < outputDimension; ++i) {
+			populationRdMetricNormArray[i] = Math.pow (populationRdMetricNormArray[i], 1. / pNorm);
+		}
 
-		return adblPopulationRdMetricNorm;
+		return populationRdMetricNormArray;
 	}
 }
