@@ -2,6 +2,9 @@
 package org.drip.spaces.rxtord;
 
 import org.drip.function.definition.RdToRd;
+import org.drip.numerical.common.NumberUtil;
+import org.drip.spaces.instance.GeneralizedValidatedVector;
+import org.drip.spaces.instance.ValidatedRd;
 import org.drip.spaces.metric.RdNormed;
 
 /*
@@ -101,17 +104,15 @@ import org.drip.spaces.metric.RdNormed;
  * It provides the following Functionality:
  *
  *  <ul>
+ * 		<li>Retrieve the Underlying <i>RdToRd</i> Function</li>
+ * 		<li>Retrieve the Population R<sup>d</sup> ESS (Essential Spectrum) Array</li>
+ * 		<li>Retrieve the Population R<sup>d</sup> Supremum Norm</li>
  * 		<li>Retrieve the Input Metric Vector Space</li>
  * 		<li>Retrieve the Output Metric Vector Space</li>
  * 		<li>Retrieve the Sample Supremum Norm Array</li>
  * 		<li>Retrieve the Sample Metric Norm Array</li>
- * 		<li>Retrieve the Sample Covering Number Array</li>
- * 		<li>Retrieve the Sample Supremum Covering Number Array</li>
  * 		<li>Retrieve the Population ESS (Essential Spectrum) Array</li>
- * 		<li>Retrieve the Population Metric Norm Array</li>
  * 		<li>Retrieve the Population Supremum Norm Array</li>
- * 		<li>Retrieve the Population Covering Number Array</li>
- * 		<li>Retrieve the Population Supremum Covering Number Array</li>
  *  </ul>
  *
  * <br><br>
@@ -133,22 +134,33 @@ public abstract class NormedRdToNormedRd
 	private RdNormed _rdNormedInput = null;
 	private RdNormed _rdNormedOutput = null;
 
-	protected NormedRdToNormedRd (
-		final org.drip.spaces.metric.RdNormed rdInput,
-		final org.drip.spaces.metric.RdNormed rdOutput,
-		final org.drip.function.definition.RdToRd funcRdToRd)
-		throws java.lang.Exception
-	{
-		if (null == (_rdNormedInput = rdInput) || null == (_rdNormedOutput = rdOutput))
-			throw new java.lang.Exception ("NormedRdToNormedRd ctr: Invalid Inputs");
+	/**
+	 * <i>NormedRdToNormedRd</i> Constructor
+	 * 
+	 * @param rdNormedInput Normed R<sup>1</sup> Input Space
+	 * @param rdNormedOutput Normed R<sup>1</sup> Output Space
+	 * @param r1ToRdFunction R<sup>1</sup> to R<sup>1</sup> Function
+	 * 
+	 * @throws Exception Thrown if the Inputs are Invalid
+	 */
 
-		_rdToRdFunction = funcRdToRd;
+	protected NormedRdToNormedRd (
+		final RdNormed rdNormedInput,
+		final RdNormed rdNormedOutput,
+		final RdToRd rdToRdFunction)
+		throws Exception
+	{
+		if (null == (_rdNormedInput = rdNormedInput) || null == (_rdNormedOutput = rdNormedOutput)) {
+			throw new Exception ("NormedRdToNormedRd ctr: Invalid Inputs");
+		}
+
+		_rdToRdFunction = rdToRdFunction;
 	}
 
 	/**
-	 * Retrieve the Underlying RdToRd Function
+	 * Retrieve the Underlying <i>RdToRd</i> Function
 	 * 
-	 * @return The Underlying RdToRd Function
+	 * @return The Underlying <i>RdToRd</i> Function
 	 */
 
 	public RdToRd function()
@@ -157,9 +169,9 @@ public abstract class NormedRdToNormedRd
 	}
 
 	/**
-	 * Retrieve the Population R^d ESS (Essential Spectrum) Array
+	 * Retrieve the Population R<sup>d</sup> ESS (Essential Spectrum) Array
 	 * 
-	 * @return The Population R^d ESS (Essential Spectrum) Array
+	 * @return The Population R<sup>d</sup> ESS (Essential Spectrum) Array
 	 */
 
 	public double[] populationRdESS()
@@ -168,9 +180,9 @@ public abstract class NormedRdToNormedRd
 	}
 
 	/**
-	 * Retrieve the Population R^d Supremum Norm
+	 * Retrieve the Population R<sup>d</sup> Supremum Norm
 	 * 
-	 * @return The Population R^d Supremum Norm
+	 * @return The Population R<sup>d</sup> Supremum Norm
 	 */
 
 	public double[] populationRdSupremumNorm()
@@ -178,98 +190,156 @@ public abstract class NormedRdToNormedRd
 		return populationRdESS();
 	}
 
+	/**
+	 * Retrieve the Input Metric Vector Space
+	 * 
+	 * @return The Input Metric Vector Space
+	 */
+
 	@Override public org.drip.spaces.metric.RdNormed inputMetricVectorSpace()
 	{
 		return _rdNormedInput;
 	}
+
+	/**
+	 * Retrieve the Output Metric Vector Space
+	 * 
+	 * @return The Output Metric Vector Space
+	 */
 
 	@Override public org.drip.spaces.metric.RdNormed outputMetricVectorSpace()
 	{
 		return _rdNormedOutput;
 	}
 
+	/**
+	 * Retrieve the Sample Supremum Norm Array
+	 * 
+	 * @param generalizedValidatedVector The Validated Vector Space Instance
+	 * 
+	 * @return The Sample Supremum Norm Array
+	 */
+
 	@Override public double[] sampleSupremumNorm (
-		final org.drip.spaces.instance.GeneralizedValidatedVector gvvi)
+		final GeneralizedValidatedVector generalizedValidatedVector)
 	{
-		if (null == _rdToRdFunction || null == gvvi || !gvvi.tensorSpaceType().match (_rdNormedInput) || ! (gvvi
-			instanceof org.drip.spaces.instance.ValidatedRd))
+		if (null == _rdToRdFunction || null == generalizedValidatedVector ||
+			!generalizedValidatedVector.tensorSpaceType().match (_rdNormedInput) ||
+			!(generalizedValidatedVector instanceof ValidatedRd))
+		{
 			return null;
+		}
 
-		org.drip.spaces.instance.ValidatedRd vrdInstance = (org.drip.spaces.instance.ValidatedRd) gvvi;
+		double[][] rdValidatedVectorArray = ((ValidatedRd) generalizedValidatedVector).instance();
 
-		double[][] aadblInstance = vrdInstance.instance();
+		double[] supremumNormArray = _rdToRdFunction.evaluate (rdValidatedVectorArray[0]);
 
-		int iNumSample = aadblInstance.length;
+		int outputDimension = _rdNormedOutput.dimension();
 
-		int iOutputDimension = _rdNormedOutput.dimension();
-
-		double[] adblSupremumNorm = _rdToRdFunction.evaluate (aadblInstance[0]);
-
-		if (null == adblSupremumNorm || iOutputDimension != adblSupremumNorm.length ||
-			!org.drip.numerical.common.NumberUtil.IsValid (adblSupremumNorm))
+		if (null == supremumNormArray || outputDimension != supremumNormArray.length ||
+			!NumberUtil.IsValid (supremumNormArray))
+		{
 			return null;
+		}
 
-		for (int i = 0; i < iOutputDimension; ++i)
-			adblSupremumNorm[i] = java.lang.Math.abs (adblSupremumNorm[i]);
+		for (int i = 0; i < outputDimension; ++i) {
+			supremumNormArray[i] = Math.abs (supremumNormArray[i]);
+		}
 
-		for (int i = 1; i < iNumSample; ++i) {
-			double[] adblSampleNorm = _rdToRdFunction.evaluate (aadblInstance[i]);
+		for (int i = 1; i < rdValidatedVectorArray.length; ++i) {
+			double[] sampleNormArray = _rdToRdFunction.evaluate (rdValidatedVectorArray[i]);
 
-			if (null == adblSampleNorm || iOutputDimension != adblSampleNorm.length) return null;
+			if (null == sampleNormArray || outputDimension != sampleNormArray.length) {
+				return null;
+			}
 
-			for (int j = 0; j < iOutputDimension; ++j) {
-				if (!org.drip.numerical.common.NumberUtil.IsValid (adblSampleNorm[j])) return null;
+			for (int j = 0; j < outputDimension; ++j) {
+				if (!NumberUtil.IsValid (sampleNormArray[j])) {
+					return null;
+				}
 
-				if (adblSampleNorm[j] > adblSupremumNorm[j]) adblSupremumNorm[j] = adblSampleNorm[j];
+				if (sampleNormArray[j] > supremumNormArray[j]) {
+					supremumNormArray[j] = sampleNormArray[j];
+				}
 			}
 		}
 
-		return adblSupremumNorm;
+		return supremumNormArray;
 	}
+
+	/**
+	 * Retrieve the Sample Metric Norm Array
+	 * 
+	 * @param generalizedValidatedVector The Validated Vector Space Instance
+	 * 
+	 * @return The Sample Metric Norm Array
+	 */
 
 	@Override public double[] sampleMetricNorm (
-		final org.drip.spaces.instance.GeneralizedValidatedVector gvvi)
+		final GeneralizedValidatedVector generalizedValidatedVector)
 	{
-		int iPNorm = outputMetricVectorSpace().pNorm();
+		int pNorm = outputMetricVectorSpace().pNorm();
 
-		if (java.lang.Integer.MAX_VALUE == iPNorm) return sampleSupremumNorm (gvvi);
+		if (Integer.MAX_VALUE == pNorm) {
+			return sampleSupremumNorm (generalizedValidatedVector);
+		}
 
-		if (null == _rdToRdFunction || null == gvvi || !gvvi.tensorSpaceType().match (_rdNormedInput) || ! (gvvi
-			instanceof org.drip.spaces.instance.ValidatedRd))
+		if (null == _rdToRdFunction || null == generalizedValidatedVector ||
+			!generalizedValidatedVector.tensorSpaceType().match (_rdNormedInput) ||
+			!(generalizedValidatedVector instanceof ValidatedRd))
+		{
 			return null;
+		}
 
-		int iOutputDimension = _rdNormedOutput.dimension();
+		int outputDimension = _rdNormedOutput.dimension();
 
-		double[][] aadblInstance = ((org.drip.spaces.instance.ValidatedRd) gvvi).instance();
+		double[][] rdValidatedVectorArray = ((ValidatedRd) generalizedValidatedVector).instance();
 
-		double[] adblMetricNorm = new double[iOutputDimension];
-		int iNumSample = aadblInstance.length;
+		double[] metricNormArray = new double[outputDimension];
 
-		for (int i = 0; i < iNumSample; ++i)
-			adblMetricNorm[i] = 0.;
+		for (int i = 0; i < rdValidatedVectorArray.length; ++i) {
+			metricNormArray[i] = 0.;
+		}
 
-		for (int i = 0; i < iNumSample; ++i) {
-			double[] adblPointValue = _rdToRdFunction.evaluate (aadblInstance[i]);
+		for (int i = 0; i < rdValidatedVectorArray.length; ++i) {
+			double[] pointValueArray = _rdToRdFunction.evaluate (rdValidatedVectorArray[i]);
 
-			if (null == adblPointValue || iOutputDimension != adblPointValue.length) return null;
+			if (null == pointValueArray || outputDimension != pointValueArray.length) {
+				return null;
+			}
 
-			for (int j = 0; j < iOutputDimension; ++j) {
-				if (!org.drip.numerical.common.NumberUtil.IsValid (adblPointValue[j])) return null;
+			for (int j = 0; j < outputDimension; ++j) {
+				if (!NumberUtil.IsValid (pointValueArray[j])) {
+					return null;
+				}
 
-				adblMetricNorm[j] += java.lang.Math.pow (java.lang.Math.abs (adblPointValue[j]), iPNorm);
+				metricNormArray[j] += Math.pow (Math.abs (pointValueArray[j]), pNorm);
 			}
 		}
 
-		for (int i = 0; i < iNumSample; ++i)
-			adblMetricNorm[i] = java.lang.Math.pow (adblMetricNorm[i], 1. / iPNorm);
+		for (int i = 0; i < rdValidatedVectorArray.length; ++i) {
+			metricNormArray[i] = Math.pow (metricNormArray[i], 1. / pNorm);
+		}
 
-		return adblMetricNorm;
+		return metricNormArray;
 	}
+
+	/**
+	 * Retrieve the Population ESS (Essential Spectrum) Array
+	 * 
+	 * @return The Population ESS (Essential Spectrum) Array
+	 */
 
 	@Override public double[] populationESS()
 	{
 		return _rdToRdFunction.evaluate (_rdNormedInput.populationMode());
 	}
+
+	/**
+	 * Retrieve the Population Supremum Norm Array
+	 * 
+	 * @return The Population Supremum Norm Array
+	 */
 
 	@Override public double[] populationSupremumNorm()
 	{

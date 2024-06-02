@@ -1,11 +1,20 @@
 
 package org.drip.spaces.rxtord;
 
+import org.drip.function.definition.RdToRd;
+import org.drip.measure.continuous.Rd;
+import org.drip.spaces.iterator.RdSpanningCombinatorialIterator;
+import org.drip.spaces.metric.RdCombinatorialBanach;
+import org.drip.spaces.metric.RdContinuousBanach;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -82,7 +91,7 @@ package org.drip.spaces.rxtord;
 
 /**
  * <i>NormedRdCombinatorialToR1Continuous</i> implements the f : Validated Normed R<sup>d</sup> Combinatorial
- * To Validated Normed R<sup>1</sup> Continuous Function Spaces. The Reference we've used is:
+ * 	to Validated Normed R<sup>1</sup> Continuous Function Spaces. The Reference we've used is:
  *
  * <br><br>
  *  <ul>
@@ -90,6 +99,13 @@ package org.drip.spaces.rxtord;
  *  		Carl, B., and I. Stephani (1990): <i>Entropy, Compactness, and the Approximation of Operators</i>
  *  			<b>Cambridge University Press</b> Cambridge UK 
  *  	</li>
+ *  </ul>
+ *
+ * It provides the following Functionality:
+ *
+ *  <ul>
+ * 		<li><i>NormedRdCombinatorialToR1Continuous</i> Function Space Constructor</li>
+ * 		<li>Retrieve the Population Metric Norm Array</li>
  *  </ul>
  *
  * <br><br>
@@ -104,84 +120,101 @@ package org.drip.spaces.rxtord;
  * @author Lakshmi Krishnamurthy
  */
 
-public class NormedRdCombinatorialToRdContinuous extends org.drip.spaces.rxtord.NormedRdToNormedRd {
+public class NormedRdCombinatorialToRdContinuous
+	extends NormedRdToNormedRd
+{
 
 	/**
-	 * NormedRdCombinatorialToRdContinuous Function Space Constructor
+	 * <i>NormedRdCombinatorialToRdContinuous</i> Function Space Constructor
 	 * 
-	 * @param rdCombinatorialInput The Combinatorial R^d Input Metric Vector Space
-	 * @param rdContinuousOutput The Continuous R^d Output Metric Vector Space
-	 * @param funcRdToRd The RdToRd Function
+	 * @param rdCombinatorialBanachInput The Combinatorial R<sup>d</sup> Banach Input Metric Vector Space
+	 * @param rdContinuousBanachOutput The Continuous R<sup>d</sup> Banach Output Metric Vector Space
+	 * @param rdToRdFunction The R<sup>d</sup> to R<sup>d</sup> Function
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public NormedRdCombinatorialToRdContinuous (
-		final org.drip.spaces.metric.RdCombinatorialBanach rdCombinatorialInput,
-		final org.drip.spaces.metric.RdContinuousBanach rdContinuousOutput,
-		final org.drip.function.definition.RdToRd funcRdToRd)
-		throws java.lang.Exception
+		final RdCombinatorialBanach rdCombinatorialBanachInput,
+		final RdContinuousBanach rdContinuousBanachOutput,
+		final RdToRd rdToRdFunction)
+		throws Exception
 	{
-		super (rdCombinatorialInput, rdContinuousOutput, funcRdToRd);
+		super (rdCombinatorialBanachInput, rdContinuousBanachOutput, rdToRdFunction);
 	}
+
+	/**
+	 * Retrieve the Population Metric Norm Array
+	 * 
+	 * @return The Population Metric Norm Array
+	 */
 
 	@Override public double[] populationMetricNorm()
 	{
-		int iPNorm = outputMetricVectorSpace().pNorm();
+		int pNorm = outputMetricVectorSpace().pNorm();
 
-		if (java.lang.Integer.MAX_VALUE == iPNorm) return populationSupremumNorm();
+		if (Integer.MAX_VALUE == pNorm) {
+			return populationSupremumNorm();
+		}
 
-		org.drip.spaces.metric.RdCombinatorialBanach rdCombinatorialInput =
-			(org.drip.spaces.metric.RdCombinatorialBanach) inputMetricVectorSpace();
+		RdCombinatorialBanach rdCombinatorialBanachInput = (RdCombinatorialBanach) inputMetricVectorSpace();
 
-		org.drip.measure.continuous.Rd distRd = rdCombinatorialInput.borelSigmaMeasure();
+		Rd rdCombinatorialDistribution = rdCombinatorialBanachInput.borelSigmaMeasure();
 
-		org.drip.spaces.iterator.RdSpanningCombinatorialIterator ciRd = rdCombinatorialInput.iterator();
+		RdSpanningCombinatorialIterator rdSpanningCombinatorialIterator =
+			rdCombinatorialBanachInput.iterator();
 
-		org.drip.function.definition.RdToRd funcRdToRd = function();
+		RdToRd rdToRdFunction = function();
 
-		if (null == distRd || null == funcRdToRd) return null;
+		if (null == rdCombinatorialDistribution || null == rdToRdFunction) {
+			return null;
+		}
 
-		double[] adblVariate = ciRd.cursorVariates();
+		double[] cursorVariateArray = rdSpanningCombinatorialIterator.cursorVariates();
 
-		double dblProbabilityDensity = java.lang.Double.NaN;
-		double[] adblPopulationMetricNorm = null;
-		int iOutputDimension = -1;
-		double dblNormalizer = 0.;
+		double[] populationMetricNormArray = null;
+		double probabilityDensity = Double.NaN;
+		int outputDimension = -1;
+		double normalizer = 0.;
 
-		while (null != adblVariate) {
+		while (null != cursorVariateArray) {
 			try {
-				dblProbabilityDensity = distRd.density (adblVariate);
-			} catch (java.lang.Exception e) {
+				probabilityDensity = rdCombinatorialDistribution.density (cursorVariateArray);
+			} catch (Exception e) {
 				e.printStackTrace();
 
 				return null;
 			}
 
-			double[] adblValue = funcRdToRd.evaluate (adblVariate);
+			double[] rdToRdFunctionValueArray = rdToRdFunction.evaluate (cursorVariateArray);
 
-			if (null == adblValue || 0 == (iOutputDimension = adblValue.length)) return null;
-
-			dblNormalizer += dblProbabilityDensity;
-
-			if (null == adblPopulationMetricNorm) {
-				adblPopulationMetricNorm = new double[iOutputDimension];
-
-				for (int i = 0; i < iOutputDimension; ++i)
-					adblPopulationMetricNorm[i] = 0;
+			if (null == rdToRdFunctionValueArray || 0 == (outputDimension = rdToRdFunctionValueArray.length))
+			{
+				return null;
 			}
 
-			for (int i = 0; i < iOutputDimension; ++i)
-				adblPopulationMetricNorm[i] += dblProbabilityDensity * java.lang.Math.pow (java.lang.Math.abs
-					(adblValue[i]), iPNorm);
+			normalizer += probabilityDensity;
 
-			adblVariate = ciRd.nextVariates();
+			if (null == populationMetricNormArray) {
+				populationMetricNormArray = new double[outputDimension];
+
+				for (int i = 0; i < outputDimension; ++i) {
+					populationMetricNormArray[i] = 0.;
+				}
+			}
+
+			for (int i = 0; i < outputDimension; ++i) {
+				populationMetricNormArray[i] += probabilityDensity *
+					Math.pow (Math.abs (rdToRdFunctionValueArray[i]), pNorm);
+			}
+
+			cursorVariateArray = rdSpanningCombinatorialIterator.nextVariates();
 		}
 
-		for (int i = 0; i < iOutputDimension; ++i)
-			adblPopulationMetricNorm[i] += java.lang.Math.pow (adblPopulationMetricNorm[i] / dblNormalizer,
-				1. / iPNorm);
+		for (int i = 0; i < outputDimension; ++i) {
+			populationMetricNormArray[i] += Math.pow (populationMetricNormArray[i] / normalizer, 1. / pNorm);
+		}
 
-		return adblPopulationMetricNorm;
+		return populationMetricNormArray;
 	}
 }

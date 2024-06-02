@@ -1,11 +1,18 @@
 
 package org.drip.spaces.rxtord;
 
+import org.drip.function.definition.RdToRd;
+import org.drip.measure.continuous.Rd;
+import org.drip.spaces.metric.RdContinuousBanach;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -81,8 +88,8 @@ package org.drip.spaces.rxtord;
  */
 
 /**
- * <i>NormedRdContinuousToRdContinuous</i> implements the f : Validated Normed R<sup>d</sup> Continuous To
- * Validated Normed R<sup>d</sup> Continuous Function Spaces. The Reference we've used is:
+ * <i>NormedRdContinuousToRdContinuous</i> implements the f : Validated Normed R<sup>d</sup> Continuous to
+ * 	Validated Normed R<sup>d</sup> Continuous Function Spaces. The Reference we've used is:
  *
  * <br><br>
  *  <ul>
@@ -90,6 +97,13 @@ package org.drip.spaces.rxtord;
  *  		Carl, B., and I. Stephani (1990): <i>Entropy, Compactness, and the Approximation of Operators</i>
  *  			<b>Cambridge University Press</b> Cambridge UK 
  *  	</li>
+ *  </ul>
+ *
+ * It provides the following Functionality:
+ *
+ *  <ul>
+ * 		<li><i>NormedRdContinuousToRdContinuous</i> Function Space Constructor</li>
+ * 		<li>Retrieve the Population Metric Norm Array</li>
  *  </ul>
  *
  * <br><br>
@@ -104,82 +118,101 @@ package org.drip.spaces.rxtord;
  * @author Lakshmi Krishnamurthy
  */
 
-public class NormedRdContinuousToRdContinuous extends org.drip.spaces.rxtord.NormedRdToNormedRd {
+public class NormedRdContinuousToRdContinuous
+	extends NormedRdToNormedRd
+{
 
 	/**
-	 * NormedRdContinuousToRdContinuous Function Space Constructor
+	 * <i>NormedRdContinuousToRdContinuous</i> Function Space Constructor
 	 * 
-	 * @param rdContinuousInput The Continuous R^d Input Metric Vector Space
-	 * @param rdContinuousOutput The Continuous R^d Output Metric Vector Space
-	 * @param funcRdToRd The RdToRd Function
+	 * @param rdContinuousBanachInput The Continuous R<sup>d</sup> Banach Input Metric Vector Space
+	 * @param rdContinuousBanachOutput The Continuous R<sup>d</sup> Banach Output Metric Vector Space
+	 * @param rdToRdFunction The R<sup>d</sup> to R<sup>d</sup> Function
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public NormedRdContinuousToRdContinuous (
-		final org.drip.spaces.metric.RdContinuousBanach rdContinuousInput,
-		final org.drip.spaces.metric.RdContinuousBanach rdContinuousOutput,
-		final org.drip.function.definition.RdToRd funcRdToRd)
-		throws java.lang.Exception
+		final RdContinuousBanach rdContinuousBanachInput,
+		final RdContinuousBanach rdContinuousBanachOutput,
+		final RdToRd rdToRdFunction)
+		throws Exception
 	{
-		super (rdContinuousInput, rdContinuousOutput, funcRdToRd);
+		super (rdContinuousBanachInput, rdContinuousBanachOutput, rdToRdFunction);
 	}
+
+	/**
+	 * Retrieve the Population Metric Norm Array
+	 * 
+	 * @return The Population Metric Norm Array
+	 */
 
 	@Override public double[] populationMetricNorm()
 	{
-		org.drip.spaces.metric.RdContinuousBanach rdContinuousInput =
-			(org.drip.spaces.metric.RdContinuousBanach) inputMetricVectorSpace();
+		RdContinuousBanach rdContinuousBanachInput = (RdContinuousBanach) inputMetricVectorSpace();
 
-		final org.drip.measure.continuous.Rd multiDist = rdContinuousInput.borelSigmaMeasure();
+		final Rd rdDistribution = rdContinuousBanachInput.borelSigmaMeasure();
 
-		final org.drip.function.definition.RdToRd funcRdToRd = function();
+		final RdToRd rdToRdFunction = function();
 
-		if (null == multiDist || null == funcRdToRd) return null;
+		if (null == rdDistribution || null == rdToRdFunction) {
+			return null;
+		}
 
-		final int iPNorm = outputMetricVectorSpace().pNorm();
+		final int pNorm = outputMetricVectorSpace().pNorm();
 
-		org.drip.function.definition.RdToRd funcRdToRdPointNorm = new org.drip.function.definition.RdToRd
-			(null) {
+		RdToRd funcRdToRdPointNorm = new RdToRd (null) {
 			@Override public double[] evaluate (
-				final double[] adblX)
+				final double[] xArray)
 			{
-				double[] adblNorm = funcRdToRd.evaluate (adblX);
+				double[] normArray = rdToRdFunction.evaluate (xArray);
 
-				if (null == adblNorm) return null;
+				if (null == normArray) {
+					return null;
+				}
 
-				int iOutputDimension = adblNorm.length;
-				double dblProbabilityDensity = java.lang.Double.NaN;
+				double probabilityDensity = Double.NaN;
+				int outputDimension = normArray.length;
 
-				if (0 == iOutputDimension) return null;
+				if (0 == outputDimension) {
+					return null;
+				}
 
 				try {
-					dblProbabilityDensity = multiDist.density (adblX);
-				} catch (java.lang.Exception e) {
+					probabilityDensity = rdDistribution.density (xArray);
+				} catch (Exception e) {
 					e.printStackTrace();
 
 					return null;
 				}
 
-				for (int j = 0; j < iOutputDimension; ++j)
-					adblNorm[j] = dblProbabilityDensity * java.lang.Math.pow (java.lang.Math.abs
-						(adblNorm[j]), iPNorm);
+				for (int j = 0; j < outputDimension; ++j) {
+					normArray[j] = probabilityDensity * Math.pow (Math.abs (normArray[j]), pNorm);
+				}
 
-				return adblNorm;
+				return normArray;
 			}
 		};
 
-		double[] adblPopulationRdMetricNorm = funcRdToRdPointNorm.integrate
-			(rdContinuousInput.leftDimensionEdge(), rdContinuousInput.rightDimensionEdge());
+		double[] populationRdMetricNormArray = funcRdToRdPointNorm.integrate (
+			rdContinuousBanachInput.leftDimensionEdge(),
+			rdContinuousBanachInput.rightDimensionEdge()
+		);
 
-		if (null == adblPopulationRdMetricNorm) return null;
+		if (null == populationRdMetricNormArray) {
+			return null;
+		}
 
-		int iOutputDimension = adblPopulationRdMetricNorm.length;
+		int outputDimension = populationRdMetricNormArray.length;
 
-		if (0 == iOutputDimension) return null;
+		if (0 == outputDimension) {
+			return null;
+		}
 
-		for (int i = 0; i < iOutputDimension; ++i)
-			adblPopulationRdMetricNorm[i] = java.lang.Math.pow (adblPopulationRdMetricNorm[i], 1. / iPNorm);
+		for (int i = 0; i < outputDimension; ++i) {
+			populationRdMetricNormArray[i] = Math.pow (populationRdMetricNormArray[i], 1. / pNorm);
+		}
 
-		return adblPopulationRdMetricNorm;
+		return populationRdMetricNormArray;
 	}
 }

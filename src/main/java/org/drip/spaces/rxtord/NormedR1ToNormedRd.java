@@ -1,11 +1,21 @@
 
 package org.drip.spaces.rxtord;
 
+import org.drip.function.definition.R1ToRd;
+import org.drip.numerical.common.NumberUtil;
+import org.drip.spaces.instance.GeneralizedValidatedVector;
+import org.drip.spaces.instance.ValidatedR1;
+import org.drip.spaces.metric.R1Normed;
+import org.drip.spaces.metric.RdNormed;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -81,8 +91,8 @@ package org.drip.spaces.rxtord;
  */
 
 /**
- * <i>NormedR1ToNormedRd</i> is the Abstract Class underlying the f : Validated Normed R<sup>1</sup> To
- * Validated Normed R<sup>d</sup> Function Spaces. The Reference we've used is:
+ * <i>NormedR1ToNormedRd</i> is the Abstract Class underlying the f : Validated Normed R<sup>1</sup> to
+ * 	Validated Normed R<sup>d</sup> Function Spaces. The Reference we've used is:
  *
  * <br><br>
  *  <ul>
@@ -90,6 +100,22 @@ package org.drip.spaces.rxtord;
  *  		Carl, B., and I. Stephani (1990): <i>Entropy, Compactness, and the Approximation of Operators</i>
  *  			<b>Cambridge University Press</b> Cambridge UK 
  *  	</li>
+ *  </ul>
+ *
+ * It provides the following Functionality:
+ *
+ *  <ul>
+ * 		<li>Retrieve the Input Metric Vector Space</li>
+ * 		<li>Retrieve the Output Metric Vector Space</li>
+ * 		<li>Retrieve the Sample Supremum Norm Array</li>
+ * 		<li>Retrieve the Sample Metric Norm Array</li>
+ * 		<li>Retrieve the Sample Covering Number Array</li>
+ * 		<li>Retrieve the Sample Supremum Covering Number Array</li>
+ * 		<li>Retrieve the Population ESS (Essential Spectrum) Array</li>
+ * 		<li>Retrieve the Population Metric Norm Array</li>
+ * 		<li>Retrieve the Population Supremum Norm Array</li>
+ * 		<li>Retrieve the Population Covering Number Array</li>
+ * 		<li>Retrieve the Population Supremum Covering Number Array</li>
  *  </ul>
  *
  * <br><br>
@@ -104,126 +130,185 @@ package org.drip.spaces.rxtord;
  * @author Lakshmi Krishnamurthy
  */
 
-public abstract class NormedR1ToNormedRd extends org.drip.spaces.rxtord.NormedRxToNormedRd {
-	private org.drip.spaces.metric.R1Normed _r1Input = null;
-	private org.drip.spaces.metric.RdNormed _rdOutput = null;
-	private org.drip.function.definition.R1ToRd _funcR1ToRd = null;
+public abstract class NormedR1ToNormedRd
+	extends NormedRxToNormedRd
+{
+	private R1ToRd _r1ToRdFunction = null;
+	private R1Normed _r1NormedInput = null;
+	private RdNormed _rdNormedOutput = null;
+
+	/**
+	 * <i>NormedR1ToNormedRd</i> Constructor
+	 * 
+	 * @param r1NormedInput Normed R<sup>1</sup> Input Space
+	 * @param rdNormedOutput Normed R<sup>d</sup> Output Space
+	 * @param r1ToRdFunction R<sup>1</sup> to R<sup>d</sup> Function
+	 * 
+	 * @throws Exception Thrown if the Inputs are Invalid
+	 */
 
 	protected NormedR1ToNormedRd (
-		final org.drip.spaces.metric.R1Normed r1Input,
-		final org.drip.spaces.metric.RdNormed rdOutput,
-		final org.drip.function.definition.R1ToRd funcR1ToRd)
-		throws java.lang.Exception
+		final R1Normed r1NormedInput,
+		final RdNormed rdNormedOutput,
+		final R1ToRd r1ToRdFunction)
+		throws Exception
 	{
-		if (null == (_r1Input = r1Input) || null == (_rdOutput = rdOutput))
-			throw new java.lang.Exception ("NormedR1ToNormedRd ctr: Invalid Inputs");
+		if (null == (_r1NormedInput = r1NormedInput) || null == (_rdNormedOutput = rdNormedOutput)) {
+			throw new Exception ("NormedR1ToNormedRd ctr: Invalid Inputs");
+		}
 
-		_funcR1ToRd = funcR1ToRd;
-	}
-
-	@Override public org.drip.spaces.metric.R1Normed inputMetricVectorSpace()
-	{
-		return _r1Input;
-	}
-
-	@Override public org.drip.spaces.metric.RdNormed outputMetricVectorSpace()
-	{
-		return _rdOutput;
+		_r1ToRdFunction = r1ToRdFunction;
 	}
 
 	/**
-	 * Retrieve the Underlying R1ToRd Function
+	 * Retrieve the Input Metric Vector Space
 	 * 
-	 * @return The Underlying R1ToR1 Function
+	 * @return The Input Metric Vector Space
 	 */
 
-	public org.drip.function.definition.R1ToRd function()
+	@Override public R1Normed inputMetricVectorSpace()
 	{
-		return _funcR1ToRd;
+		return _r1NormedInput;
 	}
+
+	/**
+	 * Retrieve the Output Metric Vector Space
+	 * 
+	 * @return The Output Metric Vector Space
+	 */
+
+	@Override public RdNormed outputMetricVectorSpace()
+	{
+		return _rdNormedOutput;
+	}
+
+	/**
+	 * Retrieve the Underlying R<sup>1</sup> to R<sup>d</sup> Function
+	 * 
+	 * @return The Underlying R<sup>1</sup> to R<sup>d</sup> Function
+	 */
+
+	public R1ToRd function()
+	{
+		return _r1ToRdFunction;
+	}
+
+	/**
+	 * Retrieve the Sample Supremum Norm Array
+	 * 
+	 * @param generalizedValidatedVector The Validated Vector Space Instance
+	 * 
+	 * @return The Sample Supremum Norm Array
+	 */
 
 	@Override public double[] sampleSupremumNorm (
-		final org.drip.spaces.instance.GeneralizedValidatedVector gvvi)
+		final GeneralizedValidatedVector generalizedValidatedVector)
 	{
-		if (null == _funcR1ToRd || null == gvvi || !gvvi.tensorSpaceType().match (_r1Input) || !(gvvi
-			instanceof org.drip.spaces.instance.ValidatedR1))
+		if (null == _r1ToRdFunction || null == generalizedValidatedVector ||
+			!generalizedValidatedVector.tensorSpaceType().match (_r1NormedInput) ||
+			!(generalizedValidatedVector instanceof ValidatedR1))
+		{
 			return null;
+		}
 
-		org.drip.spaces.instance.ValidatedR1 vr1 = (org.drip.spaces.instance.ValidatedR1) gvvi;
+		double[] r1ValidatedInstanceArray = ((ValidatedR1) generalizedValidatedVector).instance();
 
-		double[] adblInstance = vr1.instance();
+		int outputDimension = _rdNormedOutput.dimension();
 
-		int iNumSample = adblInstance.length;
+		double[] supremumNormArray = _r1ToRdFunction.evaluate (r1ValidatedInstanceArray[0]);
 
-		int iOutputDimension = _rdOutput.dimension();
-
-		double[] adblSupremumNorm = _funcR1ToRd.evaluate (adblInstance[0]);
-
-		if (null == adblSupremumNorm || iOutputDimension != adblSupremumNorm.length ||
-			!org.drip.numerical.common.NumberUtil.IsValid (adblSupremumNorm))
+		if (null == supremumNormArray || outputDimension != supremumNormArray.length ||
+			!NumberUtil.IsValid (supremumNormArray))
+		{
 			return null;
+		}
 
-		for (int i = 0; i < iOutputDimension; ++i)
-			adblSupremumNorm[i] = java.lang.Math.abs (adblSupremumNorm[i]);
+		for (int i = 0; i < outputDimension; ++i) {
+			supremumNormArray[i] = Math.abs (supremumNormArray[i]);
+		}
 
-		for (int i = 1; i < iNumSample; ++i) {
-			double[] adblSampleNorm = _funcR1ToRd.evaluate (adblInstance[i]);
+		for (int i = 1; i < r1ValidatedInstanceArray.length; ++i) {
+			double[] sampleNormArray = _r1ToRdFunction.evaluate (r1ValidatedInstanceArray[i]);
 
-			if (null == adblSampleNorm || iOutputDimension != adblSampleNorm.length) return null;
+			if (null == sampleNormArray || outputDimension != sampleNormArray.length) {
+				return null;
+			}
 
-			for (int j = 0; j < iOutputDimension; ++j) {
-				if (!org.drip.numerical.common.NumberUtil.IsValid (adblSampleNorm[j])) return null;
+			for (int j = 0; j < outputDimension; ++j) {
+				if (!NumberUtil.IsValid (sampleNormArray[j])) {
+					return null;
+				}
 
-				if (adblSampleNorm[j] > adblSupremumNorm[j]) adblSupremumNorm[j] = adblSampleNorm[j];
+				if (sampleNormArray[j] > supremumNormArray[j]) {
+					supremumNormArray[j] = sampleNormArray[j];
+				}
 			}
 		}
 
-		return adblSupremumNorm;
+		return supremumNormArray;
 	}
 
+	/**
+	 * Retrieve the Sample Metric Norm Array
+	 * 
+	 * @param generalizedValidatedVector The Validated Vector Space Instance
+	 * 
+	 * @return The Sample Metric Norm Array
+	 */
+
 	@Override public double[] sampleMetricNorm (
-		final org.drip.spaces.instance.GeneralizedValidatedVector gvvi)
+		final GeneralizedValidatedVector generalizedValidatedVector)
 	{
-		int iPNorm = outputMetricVectorSpace().pNorm();
+		int pNorm = outputMetricVectorSpace().pNorm();
 
-		if (java.lang.Integer.MAX_VALUE == iPNorm) sampleSupremumNorm (gvvi);
+		if (Integer.MAX_VALUE == pNorm) {
+			sampleSupremumNorm (generalizedValidatedVector);
+		}
 
-		if (null == _funcR1ToRd || null == gvvi || !gvvi.tensorSpaceType().match (_r1Input) || !(gvvi
-			instanceof org.drip.spaces.instance.ValidatedR1))
+		if (null == _r1ToRdFunction || null == generalizedValidatedVector ||
+			!generalizedValidatedVector.tensorSpaceType().match (_r1NormedInput) ||
+			!(generalizedValidatedVector instanceof ValidatedR1))
+		{
 			return null;
+		}
 
-		int iOutputDimension = _rdOutput.dimension();
+		int outputDimension = _rdNormedOutput.dimension();
 
-		double[] adblInstance = ((org.drip.spaces.instance.ValidatedR1) gvvi).instance();
+		double[] metricNormArray = new double[outputDimension];
 
-		double[] adblMetricNorm = new double[iOutputDimension];
-		int iNumSample = adblInstance.length;
+		double[] validatedR1InstanceArray = ((ValidatedR1) generalizedValidatedVector).instance();
 
-		for (int i = 0; i < iNumSample; ++i)
-			adblMetricNorm[i] = 0.;
+		for (int i = 0; i < validatedR1InstanceArray.length; ++i) {
+			metricNormArray[i] = 0.;
+		}
 
-		for (int i = 0; i < iNumSample; ++i) {
-			double[] adblPointValue = _funcR1ToRd.evaluate (adblInstance[i]);
+		for (int i = 0; i < validatedR1InstanceArray.length; ++i) {
+			double[] pointValueArray = _r1ToRdFunction.evaluate (validatedR1InstanceArray[i]);
 
-			if (null == adblPointValue || iOutputDimension != adblPointValue.length) return null;
+			if (null == pointValueArray || outputDimension != pointValueArray.length) {
+				return null;
+			}
 
-			for (int j = 0; j < iOutputDimension; ++j) {
-				if (!org.drip.numerical.common.NumberUtil.IsValid (adblPointValue[j])) return null;
+			for (int j = 0; j < outputDimension; ++j) {
+				if (!NumberUtil.IsValid (pointValueArray[j])) {
+					return null;
+				}
 
-				adblMetricNorm[j] += java.lang.Math.pow (java.lang.Math.abs (adblPointValue[j]), iPNorm);
+				metricNormArray[j] += Math.pow (Math.abs (pointValueArray[j]), pNorm);
 			}
 		}
 
-		for (int i = 0; i < iNumSample; ++i)
-			adblMetricNorm[i] = java.lang.Math.pow (adblMetricNorm[i], 1. / iPNorm);
+		for (int i = 0; i < validatedR1InstanceArray.length; ++i) {
+			metricNormArray[i] = Math.pow (metricNormArray[i], 1. / pNorm);
+		}
 
-		return adblMetricNorm;
+		return metricNormArray;
 	}
 
 	@Override public double[] populationESS()
 	{
 		try {
-			return null == _funcR1ToRd ? null : _funcR1ToRd.evaluate (_r1Input.populationMode());
+			return null == _r1ToRdFunction ? null : _r1ToRdFunction.evaluate (_r1NormedInput.populationMode());
 		} catch (java.lang.Exception e) {
 			e.printStackTrace();
 		}
