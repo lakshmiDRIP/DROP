@@ -1,11 +1,19 @@
 
 package org.drip.spaces.rxtor1;
 
+import org.drip.numerical.common.NumberUtil;
+import org.drip.spaces.instance.GeneralizedValidatedVector;
+import org.drip.spaces.metric.GeneralizedMetricVectorSpace;
+import org.drip.spaces.metric.R1Normed;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -82,7 +90,7 @@ package org.drip.spaces.rxtor1;
 
 /**
  * <i>NormedRxToNormedR1</i> is the Abstract Class that exposes f : Normed R<sup>x</sup> (x .gte. 1) To
- * Normed R<sup>1</sup> Function Space. The Reference we've used is:
+ * 	Normed R<sup>1</sup> Function Space. The Reference we've used is:
  *
  * <br><br>
  *  <ul>
@@ -90,6 +98,22 @@ package org.drip.spaces.rxtor1;
  *  		Carl, B., and I. Stephani (1990): <i>Entropy, Compactness, and the Approximation of Operators</i>
  *  			<b>Cambridge University Press</b> Cambridge UK 
  *  	</li>
+ *  </ul>
+ *
+ * It provides the following Functionality:
+ *
+ *  <ul>
+ * 		<li>Retrieve the Input Metric Vector Space</li>
+ * 		<li>Retrieve the Output Metric Vector Space</li>
+ * 		<li>Retrieve the Sample Supremum Norm</li>
+ * 		<li>Retrieve the Sample Metric Norm</li>
+ * 		<li>Retrieve the Sample Covering Number</li>
+ * 		<li>Retrieve the Sample Supremum Covering Number</li>
+ * 		<li>Retrieve the Population ESS (Essential Spectrum)</li>
+ * 		<li>Retrieve the Population Metric Norm</li>
+ * 		<li>Retrieve the Population Supremum Metric Norm</li>
+ * 		<li>Retrieve the Population Covering Number</li>
+ * 		<li>Retrieve the Population Supremum Covering Number</li>
  *  </ul>
  *
  * <br><br>
@@ -104,7 +128,8 @@ package org.drip.spaces.rxtor1;
  * @author Lakshmi Krishnamurthy
  */
 
-public abstract class NormedRxToNormedR1 {
+public abstract class NormedRxToNormedR1
+{
 
 	/**
 	 * Retrieve the Input Metric Vector Space
@@ -112,7 +137,7 @@ public abstract class NormedRxToNormedR1 {
 	 * @return The Input Metric Vector Space
 	 */
 
-	public abstract org.drip.spaces.metric.GeneralizedMetricVectorSpace inputMetricVectorSpace();
+	public abstract GeneralizedMetricVectorSpace inputMetricVectorSpace();
 
 	/**
 	 * Retrieve the Output Metric Vector Space
@@ -120,79 +145,80 @@ public abstract class NormedRxToNormedR1 {
 	 * @return The Output Metric Vector Space
 	 */
 
-	public abstract org.drip.spaces.metric.R1Normed outputMetricVectorSpace();
+	public abstract R1Normed outputMetricVectorSpace();
 
 	/**
 	 * Retrieve the Sample Supremum Norm
 	 * 
-	 * @param gvvi The Validated Vector Space Instance
+	 * @param generalizedValidatedVector The Validated Vector Space Instance
 	 * 
 	 * @return The Sample Supremum Norm
 	 * 
-	 * @throws java.lang.Exception Thrown if the Supremum Norm cannot be computed
+	 * @throws Exception Thrown if the Supremum Norm cannot be computed
 	 */
 
 	public abstract double sampleSupremumNorm (
-		final org.drip.spaces.instance.GeneralizedValidatedVector gvvi)
-		throws java.lang.Exception;
+		final GeneralizedValidatedVector generalizedValidatedVector)
+		throws Exception;
 
 	/**
 	 * Retrieve the Sample Metric Norm
 	 * 
-	 * @param gvvi The Validated Vector Space Instance
+	 * @param generalizedValidatedVector The Validated Vector Space Instance
 	 * 
 	 * @return The Sample Metric Norm
 	 * 
-	 * @throws java.lang.Exception Thrown if the Sample Metric Norm cannot be computed
+	 * @throws Exception Thrown if the Sample Metric Norm cannot be computed
 	 */
 
 	public abstract double sampleMetricNorm (
-		final org.drip.spaces.instance.GeneralizedValidatedVector gvvi)
-		throws java.lang.Exception;
+		final GeneralizedValidatedVector generalizedValidatedVector)
+		throws Exception;
 
 	/**
 	 * Retrieve the Sample Covering Number
 	 * 
-	 * @param gvvi The Validated Vector Space Instance
-	 * @param dblCover The Cover
+	 * @param generalizedValidatedVector The Validated Vector Space Instance
+	 * @param cover The Cover
 	 * 
 	 * @return The Sample Covering Number
 	 * 
-	 * @throws java.lang.Exception Thrown if the Sample Covering Number cannot be computed
+	 * @throws Exception Thrown if the Sample Covering Number cannot be computed
 	 */
 
 	public double sampleCoveringNumber (
-		final org.drip.spaces.instance.GeneralizedValidatedVector gvvi,
-		final double dblCover)
-		throws java.lang.Exception
+		final GeneralizedValidatedVector generalizedValidatedVector,
+		final double cover)
+		throws Exception
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (dblCover) || 0. >= dblCover)
-			throw new java.lang.Exception ("NormedRxToNormedR1::sampleCoveringNumber => Invalid Inputs");
+		if (!NumberUtil.IsValid (cover) || 0. >= cover) {
+			throw new Exception ("NormedRxToNormedR1::sampleCoveringNumber => Invalid Inputs");
+		}
 
-		return sampleMetricNorm (gvvi) / dblCover;
+		return sampleMetricNorm (generalizedValidatedVector) / cover;
 	}
 
 	/**
 	 * Retrieve the Sample Supremum Covering Number
 	 * 
-	 * @param gvvi The Validated Vector Space Instance
-	 * @param dblCover The Cover
+	 * @param generalizedValidatedVector The Validated Vector Space Instance
+	 * @param cover The Cover
 	 * 
 	 * @return The Sample Supremum Covering Number
 	 * 
-	 * @throws java.lang.Exception Thrown if the Sample Covering Number cannot be computed
+	 * @throws Exception Thrown if the Sample Covering Number cannot be computed
 	 */
 
 	public double sampleSupremumCoveringNumber (
-		final org.drip.spaces.instance.GeneralizedValidatedVector gvvi,
-		final double dblCover)
-		throws java.lang.Exception
+		final GeneralizedValidatedVector generalizedValidatedVector,
+		final double cover)
+		throws Exception
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (dblCover) || 0. >= dblCover)
-			throw new java.lang.Exception
-				("NormedRxToNormedR1::sampleSupremumCoveringNumber => Invalid Inputs");
+		if (!NumberUtil.IsValid (cover) || 0. >= cover) {
+			throw new Exception ("NormedRxToNormedR1::sampleSupremumCoveringNumber => Invalid Inputs");
+		}
 
-		return sampleSupremumNorm (gvvi) / dblCover;
+		return sampleSupremumNorm (generalizedValidatedVector) / cover;
 	}
 
 	/**
@@ -200,33 +226,33 @@ public abstract class NormedRxToNormedR1 {
 	 * 
 	 * @return The Population ESS (Essential Spectrum)
 	 * 
-	 * @throws java.lang.Exception Thrown if the Population ESS (Essential Spectrum) cannot be computed
+	 * @throws Exception Thrown if the Population ESS (Essential Spectrum) cannot be computed
 	 */
 
 	public abstract double populationESS()
-		throws java.lang.Exception;
+		throws Exception;
 
 	/**
 	 * Retrieve the Population Metric Norm
 	 * 
 	 * @return The Population Metric Norm
 	 * 
-	 * @throws java.lang.Exception Thrown if the Population Metric Norm cannot be computed
+	 * @throws Exception Thrown if the Population Metric Norm cannot be computed
 	 */
 
 	public abstract double populationMetricNorm()
-		throws java.lang.Exception;
+		throws Exception;
 
 	/**
 	 * Retrieve the Population Supremum Metric Norm
 	 * 
 	 * @return The Population Supremum Metric Norm
 	 * 
-	 * @throws java.lang.Exception Thrown if the Population Supremum Metric Norm cannot be computed
+	 * @throws Exception Thrown if the Population Supremum Metric Norm cannot be computed
 	 */
 
 	public double populationSupremumMetricNorm()
-		throws java.lang.Exception
+		throws Exception
 	{
 		return populationESS();
 	}
@@ -234,41 +260,42 @@ public abstract class NormedRxToNormedR1 {
 	/**
 	 * Retrieve the Population Covering Number
 	 * 
-	 * @param dblCover The Cover
+	 * @param cover The Cover
 	 * 
 	 * @return The Population Covering Number
 	 * 
-	 * @throws java.lang.Exception Thrown if the Population Covering Number cannot be computed
+	 * @throws Exception Thrown if the Population Covering Number cannot be computed
 	 */
 
 	public double populationCoveringNumber (
-		final double dblCover)
-		throws java.lang.Exception
+		final double cover)
+		throws Exception
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (dblCover) || 0. >= dblCover)
-			throw new java.lang.Exception ("NormedRxToNormedR1::populationCoveringNumber => Invalid Inputs");
+		if (!NumberUtil.IsValid (cover) || 0. >= cover) {
+			throw new Exception ("NormedRxToNormedR1::populationCoveringNumber => Invalid Inputs");
+		}
 
-		return populationMetricNorm() / dblCover;
+		return populationMetricNorm() / cover;
 	}
 
 	/**
 	 * Retrieve the Population Supremum Covering Number
 	 * 
-	 * @param dblCover The Cover
+	 * @param cover The Cover
 	 * 
 	 * @return The Population Supremum Covering Number
 	 * 
-	 * @throws java.lang.Exception Thrown if the Population Supremum Covering Number cannot be computed
+	 * @throws Exception Thrown if the Population Supremum Covering Number cannot be computed
 	 */
 
 	public double populationSupremumCoveringNumber (
-		final double dblCover)
-		throws java.lang.Exception
+		final double cover)
+		throws Exception
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (dblCover) || 0. >= dblCover)
-			throw new java.lang.Exception
-				("NormedRxToNormedR1::populationSupremumCoveringNumber => Invalid Inputs");
+		if (!NumberUtil.IsValid (cover) || 0. >= cover) {
+			throw new Exception ("NormedRxToNormedR1::populationSupremumCoveringNumber => Invalid Inputs");
+		}
 
-		return populationSupremumMetricNorm() / dblCover;
+		return populationSupremumMetricNorm() / cover;
 	}
 }

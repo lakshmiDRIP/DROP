@@ -6,6 +6,9 @@ package org.drip.spaces.rxtor1;
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -82,7 +85,7 @@ package org.drip.spaces.rxtor1;
 
 /**
  * <i>NormedRdToNormedR1</i> is the Abstract Class underlying the f : Validated Normed R<sup>d</sup> To
- * Validated Normed R<sup>1</sup> Function Spaces. The Reference we've used is:
+ * 	Validated Normed R<sup>1</sup> Function Spaces. The Reference we've used is:
  *
  * <br><br>
  *  <ul>
@@ -104,7 +107,8 @@ package org.drip.spaces.rxtor1;
  * @author Lakshmi Krishnamurthy
  */
 
-public abstract class NormedRdToNormedR1 extends org.drip.spaces.rxtor1.NormedRxToNormedR1 {
+public abstract class NormedRdToNormedR1 extends org.drip.spaces.rxtor1.NormedRxToNormedR1
+{
 	private org.drip.spaces.metric.RdNormed _rdInput = null;
 	private org.drip.spaces.metric.R1Normed _r1Output = null;
 	private org.drip.function.definition.RdToR1 _funcRdToR1 = null;
