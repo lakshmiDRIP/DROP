@@ -1,11 +1,19 @@
 
 package org.drip.spaces.rxtor1;
 
+import org.drip.function.definition.RdToR1;
+import org.drip.measure.continuous.Rd;
+import org.drip.spaces.metric.R1Continuous;
+import org.drip.spaces.metric.RdContinuousBanach;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -82,7 +90,7 @@ package org.drip.spaces.rxtor1;
 
 /**
  * <i>NormedRdContinuousToR1Continuous</i> implements the f : Validated Normed R<sup>d</sup> Continuous To
- * Validated Normed R<sup>1</sup> Continuous Function Spaces. The Reference we've used is:
+ * 	Validated Normed R<sup>1</sup> Continuous Function Spaces. The Reference we've used is:
  *
  * <br><br>
  *  <ul>
@@ -90,6 +98,13 @@ package org.drip.spaces.rxtor1;
  *  		Carl, B., and I. Stephani (1990): <i>Entropy, Compactness, and the Approximation of Operators</i>
  *  			<b>Cambridge University Press</b> Cambridge UK 
  *  	</li>
+ *  </ul>
+ *
+ * It provides the following Functionality:
+ *
+ *  <ul>
+ * 		<li><i>NormedRdContinuousToR1Continuous</i> Function Space Constructor</li>
+ * 		<li>Retrieve the Population Metric Norm</li>
  *  </ul>
  *
  * <br><br>
@@ -104,66 +119,80 @@ package org.drip.spaces.rxtor1;
  * @author Lakshmi Krishnamurthy
  */
 
-public class NormedRdContinuousToR1Continuous extends org.drip.spaces.rxtor1.NormedRdToNormedR1 {
+public class NormedRdContinuousToR1Continuous extends NormedRdToNormedR1
+{
 
 	/**
-	 * NormedRdContinuousToR1Continuous Function Space Constructor
+	 * <i>NormedRdContinuousToR1Continuous</i> Function Space Constructor
 	 * 
-	 * @param rdContinuousInput The Continuous R^d Input Banach Metric Vector Space
-	 * @param r1ContinuousOutput The Continuous R^1 Output Metric Vector Space
-	 * @param funcRdToR1 The R^d To R^1 Function
+	 * @param rdContinuousBanachInput The Continuous R<sup>d</sup> Input Banach Metric Vector Space
+	 * @param r1ContinuousOutput The Continuous R<sup>1</sup> Output Metric Vector Space
+	 * @param rdToR1Function The R<sup>d</sup> To R<sup>1</sup> Function
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public NormedRdContinuousToR1Continuous (
-		final org.drip.spaces.metric.RdContinuousBanach rdContinuousInput,
-		final org.drip.spaces.metric.R1Continuous r1ContinuousOutput,
-		final org.drip.function.definition.RdToR1 funcRdToR1)
-		throws java.lang.Exception
+		final RdContinuousBanach rdContinuousBanachInput,
+		final R1Continuous r1ContinuousOutput,
+		final RdToR1 rdToR1Function)
+		throws Exception
 	{
-		super (rdContinuousInput, r1ContinuousOutput, funcRdToR1);
+		super (rdContinuousBanachInput, r1ContinuousOutput, rdToR1Function);
 	}
 
+	/**
+	 * Retrieve the Population Metric Norm
+	 * 
+	 * @return The Population Metric Norm
+	 * 
+	 * @throws Exception Thrown if the Population Metric Norm cannot be computed
+	 */
+
 	@Override public double populationMetricNorm()
-		throws java.lang.Exception
+		throws Exception
 	{
-		final int iPNorm = outputMetricVectorSpace().pNorm();
+		final int pNorm = outputMetricVectorSpace().pNorm();
 
-		if (java.lang.Integer.MAX_VALUE == iPNorm) return populationSupremumMetricNorm();
+		if (Integer.MAX_VALUE == pNorm) {
+			return populationSupremumMetricNorm();
+		}
 
-		org.drip.spaces.metric.RdContinuousBanach rdContinuousInput =
-			(org.drip.spaces.metric.RdContinuousBanach) inputMetricVectorSpace();
+		RdContinuousBanach rdContinuousBanachInput = (RdContinuousBanach) inputMetricVectorSpace();
 
-		final org.drip.measure.continuous.Rd distRd = rdContinuousInput.borelSigmaMeasure();
+		final Rd rdContinuousDistribution = rdContinuousBanachInput.borelSigmaMeasure();
 
-		final org.drip.function.definition.RdToR1 funcRdToR1 = function();
+		final RdToR1 rdToR1Function = function();
 
-		if (null == distRd || null == funcRdToR1)
-			throw new java.lang.Exception
-				("NormedRdContinuousToR1Continuous::populationMetricNorm => Measure/Function not specified");
+		if (null == rdContinuousDistribution || null == rdToR1Function) {
+			throw new Exception (
+				"NormedRdContinuousToR1Continuous::populationMetricNorm => Measure/Function not specified"
+			);
+		}
 
-		org.drip.function.definition.RdToR1 am = new
-			org.drip.function.definition.RdToR1 (null) {
+		RdToR1 rdToR1MetricFunction = new RdToR1 (null) {
 			@Override public int dimension()
 			{
-				return org.drip.function.definition.RdToR1.DIMENSION_NOT_FIXED;
+				return RdToR1.DIMENSION_NOT_FIXED;
 			}
 
 			@Override public double evaluate (
-				final double[] adblX)
-				throws java.lang.Exception
+				final double[] xArray)
+				throws Exception
 			{
-				return java.lang.Math.pow (java.lang.Math.abs (funcRdToR1.evaluate (adblX)), iPNorm) *
-					distRd.density (adblX);
+				return Math.pow (Math.abs (rdToR1Function.evaluate (xArray)), pNorm) *
+					rdContinuousDistribution.density (xArray);
 			}
 		};
 
-		double[] adblLeft = rdContinuousInput.leftDimensionEdge();
+		double[] leftDimensionEdgeArray = rdContinuousBanachInput.leftDimensionEdge();
 
-		double[] adblRight = rdContinuousInput.rightDimensionEdge();
+		double[] rightDimensionEdgeArray = rdContinuousBanachInput.rightDimensionEdge();
 
-		return java.lang.Math.pow (am.integrate (adblLeft, adblRight) / distRd.incremental(adblLeft,
-			adblRight), 1. / iPNorm);
+		return Math.pow (
+			rdToR1MetricFunction.integrate (leftDimensionEdgeArray, rightDimensionEdgeArray) /
+				rdContinuousDistribution.incremental (leftDimensionEdgeArray, rightDimensionEdgeArray),
+			1. / pNorm
+		);
 	}
 }
