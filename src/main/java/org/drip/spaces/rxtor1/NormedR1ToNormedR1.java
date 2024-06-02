@@ -1,11 +1,19 @@
 
 package org.drip.spaces.rxtor1;
 
+import org.drip.function.definition.R1ToR1;
+import org.drip.spaces.instance.GeneralizedValidatedVector;
+import org.drip.spaces.instance.ValidatedR1;
+import org.drip.spaces.metric.R1Normed;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -82,7 +90,7 @@ package org.drip.spaces.rxtor1;
 
 /**
  * <i>NormedR1ToNormedR1</i> is the Abstract Class underlying the f : Validated Normed R<sup>1</sup> To
- * Validated Normed R<sup>1</sup> Function Spaces. The Reference we've used is:
+ * 	Validated Normed R<sup>1</sup> Function Spaces. The Reference we've used is:
  *
  * <br><br>
  *  <ul>
@@ -90,6 +98,17 @@ package org.drip.spaces.rxtor1;
  *  		Carl, B., and I. Stephani (1990): <i>Entropy, Compactness, and the Approximation of Operators</i>
  *  			<b>Cambridge University Press</b> Cambridge UK 
  *  	</li>
+ *  </ul>
+ *
+ * It provides the following Functionality:
+ *
+ *  <ul>
+ * 		<li>Retrieve the Underlying R1ToR1 Function</li>
+ * 		<li>Retrieve the Sample Supremum Norm</li>
+ * 		<li>Retrieve the Sample Metric Norm</li>
+ * 		<li>Retrieve the Population ESS (Essential Spectrum)</li>
+ * 		<li>Retrieve the Output Metric Vector Space</li>
+ * 		<li>Retrieve the Input Metric Vector Space</li>
  *  </ul>
  *
  * <br><br>
@@ -104,21 +123,24 @@ package org.drip.spaces.rxtor1;
  * @author Lakshmi Krishnamurthy
  */
 
-public abstract class NormedR1ToNormedR1 extends org.drip.spaces.rxtor1.NormedRxToNormedR1 {
-	private org.drip.spaces.metric.R1Normed _r1Input = null;
-	private org.drip.spaces.metric.R1Normed _r1Output = null;
-	private org.drip.function.definition.R1ToR1 _funcR1ToR1 = null;
+public abstract class NormedR1ToNormedR1
+	extends NormedRxToNormedR1
+{
+	private R1ToR1 _r1ToR1Function = null;
+	private R1Normed _r1NormedInput = null;
+	private R1Normed _r1NormedOutput = null;
 
 	protected NormedR1ToNormedR1 (
-		final org.drip.spaces.metric.R1Normed r1Input,
-		final org.drip.spaces.metric.R1Normed r1Output,
-		final org.drip.function.definition.R1ToR1 funcR1ToR1)
-		throws java.lang.Exception
+		final R1Normed r1NormedInput,
+		final R1Normed r1NormedOutput,
+		final R1ToR1 r1ToR1Function)
+		throws Exception
 	{
-		if (null == (_r1Input = r1Input) || null == (_r1Output = r1Output))
-			throw new java.lang.Exception ("NormedR1ToNormedR1 ctr: Invalid Inputs");
+		if (null == (_r1NormedInput = r1NormedInput) || null == (_r1NormedOutput = r1NormedOutput)) {
+			throw new Exception ("NormedR1ToNormedR1 Constructor => Invalid Inputs");
+		}
 
-		_funcR1ToR1 = funcR1ToR1;
+		_r1ToR1Function = r1ToR1Function;
 	}
 
 	/**
@@ -127,72 +149,120 @@ public abstract class NormedR1ToNormedR1 extends org.drip.spaces.rxtor1.NormedRx
 	 * @return The Underlying R1ToR1 Function
 	 */
 
-	public org.drip.function.definition.R1ToR1 function()
+	public R1ToR1 function()
 	{
-		return _funcR1ToR1;
+		return _r1ToR1Function;
 	}
+
+	/**
+	 * Retrieve the Sample Supremum Norm
+	 * 
+	 * @param generalizedValidatedVector The Validated Vector Space Instance
+	 * 
+	 * @return The Sample Supremum Norm
+	 * 
+	 * @throws Exception Thrown if the Supremum Norm cannot be computed
+	 */
 
 	@Override public double sampleSupremumNorm (
-		final org.drip.spaces.instance.GeneralizedValidatedVector gvvi)
-		throws java.lang.Exception
+		final GeneralizedValidatedVector generalizedValidatedVector)
+		throws Exception
 	{
-		if (null == _funcR1ToR1 || null == gvvi || !gvvi.tensorSpaceType().match (_r1Input))
-			throw new java.lang.Exception ("NormedR1ToNormedR1::sampleSupremumNorm => Invalid Input");
-
-		double[] adblInstance = ((org.drip.spaces.instance.ValidatedR1) gvvi).instance();
-
-		int iNumSample = adblInstance.length;
-
-		double dblSupremumNorm = java.lang.Math.abs (_funcR1ToR1.evaluate (adblInstance[0]));
-
-		for (int i = 1; i < iNumSample; ++i) {
-			double dblResponse = java.lang.Math.abs (_funcR1ToR1.evaluate (adblInstance[i]));
-
-			if (dblResponse > dblSupremumNorm) dblSupremumNorm = dblResponse;
+		if (null == _r1ToR1Function || null == generalizedValidatedVector ||
+			!generalizedValidatedVector.tensorSpaceType().match (_r1NormedInput))
+		{
+			throw new Exception ("NormedR1ToNormedR1::sampleSupremumNorm => Invalid Input");
 		}
 
-		return dblSupremumNorm;
+		double[] r1ValidatedInstanceArray = ((ValidatedR1) generalizedValidatedVector).instance();
+
+		double supremumNorm = Math.abs (_r1ToR1Function.evaluate (r1ValidatedInstanceArray[0]));
+
+		for (int i = 1; i < r1ValidatedInstanceArray.length; ++i) {
+			double response = Math.abs (_r1ToR1Function.evaluate (r1ValidatedInstanceArray[i]));
+
+			if (response > supremumNorm) {
+				supremumNorm = response;
+			}
+		}
+
+		return supremumNorm;
 	}
+
+	/**
+	 * Retrieve the Sample Metric Norm
+	 * 
+	 * @param generalizedValidatedVector The Validated Vector Space Instance
+	 * 
+	 * @return The Sample Metric Norm
+	 * 
+	 * @throws Exception Thrown if the Sample Metric Norm cannot be computed
+	 */
 
 	@Override public double sampleMetricNorm (
-		final org.drip.spaces.instance.GeneralizedValidatedVector gvvi)
-		throws java.lang.Exception
+		final GeneralizedValidatedVector generalizedValidatedVector)
+		throws Exception
 	{
-		int iPNorm = _r1Output.pNorm();
+		int pNorm = _r1NormedOutput.pNorm();
 
-		if (java.lang.Integer.MAX_VALUE == iPNorm) return sampleSupremumNorm (gvvi);
+		if (Integer.MAX_VALUE == pNorm) {
+			return sampleSupremumNorm (generalizedValidatedVector);
+		}
 
-		if (null == _funcR1ToR1 || null == gvvi || !gvvi.tensorSpaceType().match (_r1Input))
-			throw new java.lang.Exception ("NormedR1ToNormedR1::sampleMetricNorm => Invalid Input");
+		if (null == _r1ToR1Function || null == generalizedValidatedVector ||
+			!generalizedValidatedVector.tensorSpaceType().match (_r1NormedInput))
+		{
+			throw new Exception ("NormedR1ToNormedR1::sampleMetricNorm => Invalid Input");
+		}
 
-		double[] adblInstance = ((org.drip.spaces.instance.ValidatedR1) gvvi).instance();
+		double[] r1ValidatedInstanceArray = ((ValidatedR1) generalizedValidatedVector).instance();
 
-		double dblNorm = 0.;
-		int iNumSample = adblInstance.length;
+		double norm = 0.;
 
-		for (int i = 0; i < iNumSample; ++i)
-			dblNorm += java.lang.Math.pow (java.lang.Math.abs (_funcR1ToR1.evaluate (adblInstance[i])),
-				iPNorm);
+		for (int i = 0; i < r1ValidatedInstanceArray.length; ++i) {
+			norm += Math.pow (Math.abs (_r1ToR1Function.evaluate (r1ValidatedInstanceArray[i])), pNorm);
+		}
 
-		return java.lang.Math.pow (dblNorm, 1. / iPNorm);
+		return Math.pow (norm, 1. / pNorm);
 	}
+
+	/**
+	 * Retrieve the Population ESS (Essential Spectrum)
+	 * 
+	 * @return The Population ESS (Essential Spectrum)
+	 * 
+	 * @throws Exception Thrown if the Population ESS (Essential Spectrum) cannot be computed
+	 */
 
 	@Override public double populationESS()
-		throws java.lang.Exception
+		throws Exception
 	{
-		if (null == _funcR1ToR1)
-			throw new java.lang.Exception ("NormedR1ToNormedR1::populationESS => Invalid Input");
+		if (null == _r1ToR1Function) {
+			throw new Exception ("NormedR1ToNormedR1::populationESS => Invalid Input");
+		}
 
-		return _funcR1ToR1.evaluate (_r1Input.populationMode());
+		return _r1ToR1Function.evaluate (_r1NormedInput.populationMode());
 	}
 
-	@Override public org.drip.spaces.metric.R1Normed outputMetricVectorSpace()
+	/**
+	 * Retrieve the Output Metric Vector Space
+	 * 
+	 * @return The Output Metric Vector Space
+	 */
+
+	@Override public R1Normed outputMetricVectorSpace()
 	{
-		return _r1Output;
+		return _r1NormedOutput;
 	}
 
-	@Override public org.drip.spaces.metric.R1Normed inputMetricVectorSpace()
+	/**
+	 * Retrieve the Input Metric Vector Space
+	 * 
+	 * @return The Input Metric Vector Space
+	 */
+
+	@Override public R1Normed inputMetricVectorSpace()
 	{
-		return _r1Input;
+		return _r1NormedInput;
 	}
 }

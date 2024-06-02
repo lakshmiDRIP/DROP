@@ -1,11 +1,19 @@
 
 package org.drip.spaces.rxtord;
 
+import org.drip.numerical.common.NumberUtil;
+import org.drip.spaces.instance.GeneralizedValidatedVector;
+import org.drip.spaces.metric.GeneralizedMetricVectorSpace;
+import org.drip.spaces.metric.RdNormed;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -81,8 +89,8 @@ package org.drip.spaces.rxtord;
  */
 
 /**
- * <i>NormedRxToNormedRd</i> is the Abstract Class that exposes f : Normed R<sup>x</sup> (x .gte. 1) To
- * Normed R<sup>d</sup> Function Space. The Reference we've used is:
+ * <i>NormedRxToNormedRd</i> is the Abstract Class that exposes f : Normed R<sup>x</sup> (x .gte. 1) to
+ * 	Normed R<sup>d</sup> Function Space. The Reference we've used is:
  *
  * <br><br>
  *  <ul>
@@ -90,6 +98,22 @@ package org.drip.spaces.rxtord;
  *  		Carl, B., and I. Stephani (1990): <i>Entropy, Compactness, and the Approximation of Operators</i>
  *  			<b>Cambridge University Press</b> Cambridge UK 
  *  	</li>
+ *  </ul>
+ *
+ * It provides the following Functionality:
+ *
+ *  <ul>
+ * 		<li>Retrieve the Input Metric Vector Space</li>
+ * 		<li>Retrieve the Output Metric Vector Space</li>
+ * 		<li>Retrieve the Sample Supremum Norm Array</li>
+ * 		<li>Retrieve the Sample Metric Norm Array</li>
+ * 		<li>Retrieve the Sample Covering Number Array</li>
+ * 		<li>Retrieve the Sample Supremum Covering Number Array</li>
+ * 		<li>Retrieve the Population ESS (Essential Spectrum) Array</li>
+ * 		<li>Retrieve the Population Metric Norm Array</li>
+ * 		<li>Retrieve the Population Supremum Norm Array</li>
+ * 		<li>Retrieve the Population Covering Number Array</li>
+ * 		<li>Retrieve the Population Supremum Covering Number Array</li>
  *  </ul>
  *
  * <br><br>
@@ -104,7 +128,8 @@ package org.drip.spaces.rxtord;
  * @author Lakshmi Krishnamurthy
  */
 
-public abstract class NormedRxToNormedRd {
+public abstract class NormedRxToNormedRd
+{
 
 	/**
 	 * Retrieve the Input Metric Vector Space
@@ -112,7 +137,7 @@ public abstract class NormedRxToNormedRd {
 	 * @return The Input Metric Vector Space
 	 */
 
-	public abstract org.drip.spaces.metric.GeneralizedMetricVectorSpace inputMetricVectorSpace();
+	public abstract GeneralizedMetricVectorSpace inputMetricVectorSpace();
 
 	/**
 	 * Retrieve the Output Metric Vector Space
@@ -120,92 +145,108 @@ public abstract class NormedRxToNormedRd {
 	 * @return The Output Metric Vector Space
 	 */
 
-	public abstract org.drip.spaces.metric.RdNormed outputMetricVectorSpace();
+	public abstract RdNormed outputMetricVectorSpace();
 
 	/**
 	 * Retrieve the Sample Supremum Norm Array
 	 * 
-	 * @param gvvi The Validated Vector Space Instance
+	 * @param generalizedValidatedVector The Validated Vector Space Instance
 	 * 
 	 * @return The Sample Supremum Norm Array
 	 */
 
 	public abstract double[] sampleSupremumNorm (
-		final org.drip.spaces.instance.GeneralizedValidatedVector gvvi);
+		final GeneralizedValidatedVector generalizedValidatedVector
+	);
 
 	/**
 	 * Retrieve the Sample Metric Norm Array
 	 * 
-	 * @param gvvi The Validated Vector Space Instance
+	 * @param generalizedValidatedVector The Validated Vector Space Instance
 	 * 
 	 * @return The Sample Metric Norm Array
 	 */
 
 	public abstract double[] sampleMetricNorm (
-		final org.drip.spaces.instance.GeneralizedValidatedVector gvvi);
+		final GeneralizedValidatedVector generalizedValidatedVector
+	);
 
 	/**
 	 * Retrieve the Sample Covering Number Array
 	 * 
-	 * @param gvvi The Validated Vector Space Instance
-	 * @param dblCover The Cover
+	 * @param generalizedValidatedVector The Validated Vector Space Instance
+	 * @param cover The Cover
 	 * 
 	 * @return The Sample Covering Number Array
 	 */
 
 	public double[] sampleCoveringNumber (
-		final org.drip.spaces.instance.GeneralizedValidatedVector gvvi,
-		final double dblCover)
+		final GeneralizedValidatedVector generalizedValidatedVector,
+		final double cover)
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (dblCover) || 0. >= dblCover) return null;
+		if (!NumberUtil.IsValid (cover) || 0. >= cover) {
+			return null;
+		}
 
-		double[] adblSampleMetricNorm = sampleMetricNorm (gvvi);
+		double[] sampleMetricNormArray = sampleMetricNorm (generalizedValidatedVector);
 
-		if (null == adblSampleMetricNorm) return null;
+		if (null == sampleMetricNormArray) {
+			return null;
+		}
 
-		int iOutputDimensionality = adblSampleMetricNorm.length;
-		double[] adblSampleCoveringNumber = new double[iOutputDimensionality];
+		int outputDimensionality = sampleMetricNormArray.length;
+		double[] sampleCoveringNumberArray = new double[outputDimensionality];
 
-		if (0 == iOutputDimensionality) return null;
+		if (0 == outputDimensionality) {
+			return null;
+		}
 
-		double dblCoverBallVolume = java.lang.Math.pow (dblCover, outputMetricVectorSpace().pNorm());
+		double coverBallVolume = Math.pow (cover, outputMetricVectorSpace().pNorm());
 
-		for (int i = 0; i < iOutputDimensionality; ++i)
-			adblSampleCoveringNumber[i] = adblSampleMetricNorm[i] / dblCoverBallVolume;
+		for (int i = 0; i < outputDimensionality; ++i) {
+			sampleCoveringNumberArray[i] = sampleMetricNormArray[i] / coverBallVolume;
+		}
 
-		return adblSampleCoveringNumber;
+		return sampleCoveringNumberArray;
 	}
 
 	/**
 	 * Retrieve the Sample Supremum Covering Number Array
 	 * 
-	 * @param gvvi The Validated Vector Space Instance
-	 * @param dblCover The Cover
+	 * @param generalizedValidatedVector The Validated Vector Space Instance
+	 * @param cover The Cover
 	 * 
 	 * @return The Sample Supremum Covering Number Array
 	 */
 
 	public double[] sampleSupremumCoveringNumber (
-		final org.drip.spaces.instance.GeneralizedValidatedVector gvvi,
-		final double dblCover)
+		final GeneralizedValidatedVector generalizedValidatedVector,
+		final double cover)
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (dblCover) || 0. >= dblCover) return null;
+		if (!NumberUtil.IsValid (cover) || 0. >= cover) {
+			return null;
+		}
 
-		double[] adblSampleSupremumNorm = sampleSupremumNorm (gvvi);
+		double[] sampleSupremumNormArray = sampleSupremumNorm (generalizedValidatedVector);
 
-		if (null == adblSampleSupremumNorm) return null;
+		if (null == sampleSupremumNormArray) {
+			return null;
+		}
 
-		int iOutputDimensionality = adblSampleSupremumNorm.length;
-		double[] adblSampleSupremumCoveringNumber = new double[iOutputDimensionality];
+		int outputDimensionality = sampleSupremumNormArray.length;
+		double[] sampleSupremumCoveringNumberArray = new double[outputDimensionality];
 
-		if (0 == iOutputDimensionality) return null;
+		if (0 == outputDimensionality) {
+			return null;
+		}
 
-		double dblCoverBallVolume = java.lang.Math.pow (dblCover, outputMetricVectorSpace().pNorm());
+		double coverBallVolume = Math.pow (cover, outputMetricVectorSpace().pNorm());
 
-		for (int i = 0; i < iOutputDimensionality; ++i)
-			adblSampleSupremumCoveringNumber[i] = adblSampleSupremumNorm[i] / dblCoverBallVolume;
+		for (int i = 0; i < outputDimensionality; ++i) {
+			sampleSupremumCoveringNumberArray[i] = sampleSupremumNormArray[i] / coverBallVolume;
+		}
 
-		return adblSampleSupremumCoveringNumber;
+		return sampleSupremumCoveringNumberArray;
 	}
 
 	/**
@@ -238,60 +279,74 @@ public abstract class NormedRxToNormedRd {
 	/**
 	 * Retrieve the Population Covering Number Array
 	 * 
-	 * @param dblCover The Cover
+	 * @param cover The Cover
 	 * 
 	 * @return The Population Covering Number Array
 	 */
 
 	public double[] populationCoveringNumber (
-		final double dblCover)
+		final double cover)
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (dblCover) || 0. >= dblCover) return null;
+		if (!NumberUtil.IsValid (cover) || 0. >= cover) {
+			return null;
+		}
 
-		double[] adblPopulationMetricNorm = populationMetricNorm();
+		double[] populationMetricNormArray = populationMetricNorm();
 
-		if (null == adblPopulationMetricNorm) return null;
+		if (null == populationMetricNormArray) {
+			return null;
+		}
 
-		int iOutputDimensionality = adblPopulationMetricNorm.length;
-		double[] adblPopulationCoveringNumber = new double[iOutputDimensionality];
+		int outputDimensionality = populationMetricNormArray.length;
+		double[] populationCoveringNumberArray = new double[outputDimensionality];
 
-		if (0 == iOutputDimensionality) return null;
+		if (0 == outputDimensionality) {
+			return null;
+		}
 
-		double dblCoverBallVolume = java.lang.Math.pow (dblCover, outputMetricVectorSpace().pNorm());
+		double coverBallVolume = Math.pow (cover, outputMetricVectorSpace().pNorm());
 
-		for (int i = 0; i < iOutputDimensionality; ++i)
-			adblPopulationCoveringNumber[i] = adblPopulationMetricNorm[i] / dblCoverBallVolume;
+		for (int i = 0; i < outputDimensionality; ++i) {
+			populationCoveringNumberArray[i] = populationMetricNormArray[i] / coverBallVolume;
+		}
 
-		return adblPopulationCoveringNumber;
+		return populationCoveringNumberArray;
 	}
 
 	/**
 	 * Retrieve the Population Supremum Covering Number Array
 	 * 
-	 * @param dblCover The Cover
+	 * @param cover The Cover
 	 * 
 	 * @return The Population Supremum Covering Number Array
 	 */
 
 	public double[] populationSupremumCoveringNumber (
-		final double dblCover)
+		final double cover)
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (dblCover) || 0. >= dblCover) return null;
+		if (!NumberUtil.IsValid (cover) || 0. >= cover) {
+			return null;
+		}
 
-		double[] adblPopulationSupremumNorm = populationSupremumNorm();
+		double[] populationSupremumNormArray = populationSupremumNorm();
 
-		if (null == adblPopulationSupremumNorm) return null;
+		if (null == populationSupremumNormArray) {
+			return null;
+		}
 
-		int iOutputDimensionality = adblPopulationSupremumNorm.length;
-		double[] adblPopulationSupremumCoveringNumber = new double[iOutputDimensionality];
+		int outputDimensionality = populationSupremumNormArray.length;
+		double[] populationSupremumCoveringNumberArray = new double[outputDimensionality];
 
-		if (0 == iOutputDimensionality) return null;
+		if (0 == outputDimensionality) {
+			return null;
+		}
 
-		double dblCoverBallVolume = java.lang.Math.pow (dblCover, outputMetricVectorSpace().pNorm());
+		double coverBallVolume = Math.pow (cover, outputMetricVectorSpace().pNorm());
 
-		for (int i = 0; i < iOutputDimensionality; ++i)
-			adblPopulationSupremumCoveringNumber[i] = adblPopulationSupremumNorm[i] / dblCoverBallVolume;
+		for (int i = 0; i < outputDimensionality; ++i) {
+			populationSupremumCoveringNumberArray[i] = populationSupremumNormArray[i] / coverBallVolume;
+		}
 
-		return adblPopulationSupremumCoveringNumber;
+		return populationSupremumCoveringNumberArray;
 	}
 }

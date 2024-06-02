@@ -1,11 +1,17 @@
 
 package org.drip.spaces.rxtord;
 
+import org.drip.function.definition.RdToRd;
+import org.drip.spaces.metric.RdNormed;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -81,8 +87,8 @@ package org.drip.spaces.rxtord;
  */
 
 /**
- * <i>NormedRdToNormedRd</i> is the Abstract Class underlying the f : Validated Normed R<sup>d</sup> To
- * Validated Normed R<sup>d</sup> Function Spaces. The Reference we've used is:
+ * <i>NormedRdToNormedRd</i> is the Abstract Class underlying the f : Validated Normed R<sup>d</sup> to
+ * 	Validated Normed R<sup>d</sup> Function Spaces. The Reference we've used is:
  *
  * <br><br>
  *  <ul>
@@ -90,6 +96,22 @@ package org.drip.spaces.rxtord;
  *  		Carl, B., and I. Stephani (1990): <i>Entropy, Compactness, and the Approximation of Operators</i>
  *  			<b>Cambridge University Press</b> Cambridge UK 
  *  	</li>
+ *  </ul>
+ *
+ * It provides the following Functionality:
+ *
+ *  <ul>
+ * 		<li>Retrieve the Input Metric Vector Space</li>
+ * 		<li>Retrieve the Output Metric Vector Space</li>
+ * 		<li>Retrieve the Sample Supremum Norm Array</li>
+ * 		<li>Retrieve the Sample Metric Norm Array</li>
+ * 		<li>Retrieve the Sample Covering Number Array</li>
+ * 		<li>Retrieve the Sample Supremum Covering Number Array</li>
+ * 		<li>Retrieve the Population ESS (Essential Spectrum) Array</li>
+ * 		<li>Retrieve the Population Metric Norm Array</li>
+ * 		<li>Retrieve the Population Supremum Norm Array</li>
+ * 		<li>Retrieve the Population Covering Number Array</li>
+ * 		<li>Retrieve the Population Supremum Covering Number Array</li>
  *  </ul>
  *
  * <br><br>
@@ -104,10 +126,12 @@ package org.drip.spaces.rxtord;
  * @author Lakshmi Krishnamurthy
  */
 
-public abstract class NormedRdToNormedRd extends org.drip.spaces.rxtord.NormedRxToNormedRd {
-	private org.drip.spaces.metric.RdNormed _rdInput = null;
-	private org.drip.spaces.metric.RdNormed _rdOutput = null;
-	private org.drip.function.definition.RdToRd _funcRdToRd = null;
+public abstract class NormedRdToNormedRd
+	extends NormedRxToNormedRd
+{
+	private RdToRd _rdToRdFunction = null;
+	private RdNormed _rdNormedInput = null;
+	private RdNormed _rdNormedOutput = null;
 
 	protected NormedRdToNormedRd (
 		final org.drip.spaces.metric.RdNormed rdInput,
@@ -115,10 +139,10 @@ public abstract class NormedRdToNormedRd extends org.drip.spaces.rxtord.NormedRx
 		final org.drip.function.definition.RdToRd funcRdToRd)
 		throws java.lang.Exception
 	{
-		if (null == (_rdInput = rdInput) || null == (_rdOutput = rdOutput))
+		if (null == (_rdNormedInput = rdInput) || null == (_rdNormedOutput = rdOutput))
 			throw new java.lang.Exception ("NormedRdToNormedRd ctr: Invalid Inputs");
 
-		_funcRdToRd = funcRdToRd;
+		_rdToRdFunction = funcRdToRd;
 	}
 
 	/**
@@ -127,9 +151,9 @@ public abstract class NormedRdToNormedRd extends org.drip.spaces.rxtord.NormedRx
 	 * @return The Underlying RdToRd Function
 	 */
 
-	public org.drip.function.definition.RdToRd function()
+	public RdToRd function()
 	{
-		return _funcRdToRd;
+		return _rdToRdFunction;
 	}
 
 	/**
@@ -140,7 +164,7 @@ public abstract class NormedRdToNormedRd extends org.drip.spaces.rxtord.NormedRx
 
 	public double[] populationRdESS()
 	{
-		return _funcRdToRd.evaluate (_rdInput.populationMode());
+		return _rdToRdFunction.evaluate (_rdNormedInput.populationMode());
 	}
 
 	/**
@@ -156,18 +180,18 @@ public abstract class NormedRdToNormedRd extends org.drip.spaces.rxtord.NormedRx
 
 	@Override public org.drip.spaces.metric.RdNormed inputMetricVectorSpace()
 	{
-		return _rdInput;
+		return _rdNormedInput;
 	}
 
 	@Override public org.drip.spaces.metric.RdNormed outputMetricVectorSpace()
 	{
-		return _rdOutput;
+		return _rdNormedOutput;
 	}
 
 	@Override public double[] sampleSupremumNorm (
 		final org.drip.spaces.instance.GeneralizedValidatedVector gvvi)
 	{
-		if (null == _funcRdToRd || null == gvvi || !gvvi.tensorSpaceType().match (_rdInput) || ! (gvvi
+		if (null == _rdToRdFunction || null == gvvi || !gvvi.tensorSpaceType().match (_rdNormedInput) || ! (gvvi
 			instanceof org.drip.spaces.instance.ValidatedRd))
 			return null;
 
@@ -177,9 +201,9 @@ public abstract class NormedRdToNormedRd extends org.drip.spaces.rxtord.NormedRx
 
 		int iNumSample = aadblInstance.length;
 
-		int iOutputDimension = _rdOutput.dimension();
+		int iOutputDimension = _rdNormedOutput.dimension();
 
-		double[] adblSupremumNorm = _funcRdToRd.evaluate (aadblInstance[0]);
+		double[] adblSupremumNorm = _rdToRdFunction.evaluate (aadblInstance[0]);
 
 		if (null == adblSupremumNorm || iOutputDimension != adblSupremumNorm.length ||
 			!org.drip.numerical.common.NumberUtil.IsValid (adblSupremumNorm))
@@ -189,7 +213,7 @@ public abstract class NormedRdToNormedRd extends org.drip.spaces.rxtord.NormedRx
 			adblSupremumNorm[i] = java.lang.Math.abs (adblSupremumNorm[i]);
 
 		for (int i = 1; i < iNumSample; ++i) {
-			double[] adblSampleNorm = _funcRdToRd.evaluate (aadblInstance[i]);
+			double[] adblSampleNorm = _rdToRdFunction.evaluate (aadblInstance[i]);
 
 			if (null == adblSampleNorm || iOutputDimension != adblSampleNorm.length) return null;
 
@@ -210,11 +234,11 @@ public abstract class NormedRdToNormedRd extends org.drip.spaces.rxtord.NormedRx
 
 		if (java.lang.Integer.MAX_VALUE == iPNorm) return sampleSupremumNorm (gvvi);
 
-		if (null == _funcRdToRd || null == gvvi || !gvvi.tensorSpaceType().match (_rdInput) || ! (gvvi
+		if (null == _rdToRdFunction || null == gvvi || !gvvi.tensorSpaceType().match (_rdNormedInput) || ! (gvvi
 			instanceof org.drip.spaces.instance.ValidatedRd))
 			return null;
 
-		int iOutputDimension = _rdOutput.dimension();
+		int iOutputDimension = _rdNormedOutput.dimension();
 
 		double[][] aadblInstance = ((org.drip.spaces.instance.ValidatedRd) gvvi).instance();
 
@@ -225,7 +249,7 @@ public abstract class NormedRdToNormedRd extends org.drip.spaces.rxtord.NormedRx
 			adblMetricNorm[i] = 0.;
 
 		for (int i = 0; i < iNumSample; ++i) {
-			double[] adblPointValue = _funcRdToRd.evaluate (aadblInstance[i]);
+			double[] adblPointValue = _rdToRdFunction.evaluate (aadblInstance[i]);
 
 			if (null == adblPointValue || iOutputDimension != adblPointValue.length) return null;
 
@@ -244,7 +268,7 @@ public abstract class NormedRdToNormedRd extends org.drip.spaces.rxtord.NormedRx
 
 	@Override public double[] populationESS()
 	{
-		return _funcRdToRd.evaluate (_rdInput.populationMode());
+		return _rdToRdFunction.evaluate (_rdNormedInput.populationMode());
 	}
 
 	@Override public double[] populationSupremumNorm()

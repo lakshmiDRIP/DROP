@@ -1,11 +1,19 @@
 
 package org.drip.spaces.rxtor1;
 
+import org.drip.function.definition.R1ToR1;
+import org.drip.measure.continuous.R1Univariate;
+import org.drip.spaces.metric.R1Combinatorial;
+import org.drip.spaces.metric.R1Continuous;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -82,7 +90,7 @@ package org.drip.spaces.rxtor1;
 
 /**
  * <i>NormedR1CombinatorialToR1Continuous</i> implements the f : Validated Normed R<sup>1</sup> Combinatorial
- * To Validated Normed R<sup>1</sup> Continuous Function Spaces. The Reference we've used is:
+ * 	to Validated Normed R<sup>1</sup> Continuous Function Spaces. The Reference we've used is:
  *
  * <br><br>
  *  <ul>
@@ -90,6 +98,13 @@ package org.drip.spaces.rxtor1;
  *  		Carl, B., and I. Stephani (1990): <i>Entropy, Compactness, and the Approximation of Operators</i>
  *  			<b>Cambridge University Press</b> Cambridge UK 
  *  	</li>
+ *  </ul>
+ *
+ * It provides the following Functionality:
+ *
+ *  <ul>
+ * 		<li><i>NormedR1CombinatorialToR1Continuous</i> Function Space Constructor</li>
+ * 		<li>Retrieve the Population Metric Norm</li>
  *  </ul>
  *
  * <br><br>
@@ -104,59 +119,70 @@ package org.drip.spaces.rxtor1;
  * @author Lakshmi Krishnamurthy
  */
 
-public class NormedR1CombinatorialToR1Continuous extends org.drip.spaces.rxtor1.NormedR1ToNormedR1 {
+public class NormedR1CombinatorialToR1Continuous
+	extends NormedR1ToNormedR1
+{
 
 	/**
-	 * NormedR1CombinatorialToR1Continuous Function Space Constructor
+	 * <i>NormedR1CombinatorialToR1Continuous</i> Function Space Constructor
 	 * 
-	 * @param r1CombinatorialInput The Combinatorial R^1 Input Metric Vector Space
-	 * @param r1ContinuousOutput The Continuous R^1 Output Metric Vector Space
-	 * @param funcR1ToR1 The R1ToR1 Function
+	 * @param r1CombinatorialInput The R<sup>1</sup> Combinatorial Input Metric Vector Space
+	 * @param r1ContinuousOutput The R<sup>1</sup> Continuous Output Metric Vector Space
+	 * @param r1ToR1Function The R<sup>1</sup> To R<sup>1</sup> Function
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public NormedR1CombinatorialToR1Continuous (
-		final org.drip.spaces.metric.R1Combinatorial r1CombinatorialInput,
-		final org.drip.spaces.metric.R1Continuous r1ContinuousOutput,
-		final org.drip.function.definition.R1ToR1 funcR1ToR1)
-		throws java.lang.Exception
+		final R1Combinatorial r1CombinatorialInput,
+		final R1Continuous r1ContinuousOutput,
+		final R1ToR1 r1ToR1Function)
+		throws Exception
 	{
-		super (r1CombinatorialInput, r1ContinuousOutput, funcR1ToR1);
+		super (r1CombinatorialInput, r1ContinuousOutput, r1ToR1Function);
 	}
 
+	/**
+	 * Retrieve the Population Metric Norm
+	 * 
+	 * @return The Population Metric Norm
+	 * 
+	 * @throws Exception Thrown if the Population Metric Norm cannot be computed
+	 */
+
 	@Override public double populationMetricNorm()
-		throws java.lang.Exception
+		throws Exception
 	{
-		int iPNorm = outputMetricVectorSpace().pNorm();
+		int pNorm = outputMetricVectorSpace().pNorm();
 
-		if (java.lang.Integer.MAX_VALUE == iPNorm) return populationSupremumMetricNorm();
-
-		org.drip.spaces.metric.R1Combinatorial r1Combinatorial = (org.drip.spaces.metric.R1Combinatorial)
-			inputMetricVectorSpace();
-
-		org.drip.function.definition.R1ToR1 funcR1ToR1 = function();
-
-		org.drip.measure.continuous.R1Univariate distR1 = r1Combinatorial.borelSigmaMeasure();
-
-		if (null == distR1 || null == funcR1ToR1)
-			throw new java.lang.Exception
-				("NormedR1CombinatorialToR1Continuous::populationMetricNorm => Cannot compute Population Norm");
-
-		java.util.List<java.lang.Double> lsElem = r1Combinatorial.elementSpace();
-
-		double dblPopulationMetricNorm  = 0.;
-		double dblNormalizer = 0.;
-
-		for (double dblElement : lsElem) {
-			double dblProbabilityDensity = distR1.density (dblElement);
-
-			dblNormalizer += dblProbabilityDensity;
-
-			dblPopulationMetricNorm += dblProbabilityDensity * java.lang.Math.pow (java.lang.Math.abs
-				(funcR1ToR1.evaluate (dblElement)), iPNorm);
+		if (Integer.MAX_VALUE == pNorm) {
+			return populationSupremumMetricNorm();
 		}
 
-		return java.lang.Math.pow (dblPopulationMetricNorm / dblNormalizer, 1. / iPNorm);
+		R1Combinatorial r1Combinatorial = (R1Combinatorial) inputMetricVectorSpace();
+
+		R1Univariate r1UnivariateDistrbution = r1Combinatorial.borelSigmaMeasure();
+
+		R1ToR1 r1ToR1Function = function();
+
+		if (null == r1UnivariateDistrbution || null == r1ToR1Function) {
+			throw new Exception (
+				"NormedR1CombinatorialToR1Continuous::populationMetricNorm => Cannot compute Population Norm"
+			);
+		}
+
+		double normalizer = 0.;
+		double populationMetricNorm  = 0.;
+
+		for (double element : r1Combinatorial.elementSpace()) {
+			double probabilityDensity = r1UnivariateDistrbution.density (element);
+
+			normalizer += probabilityDensity;
+
+			populationMetricNorm += probabilityDensity *
+				Math.pow (Math.abs (r1ToR1Function.evaluate (element)), pNorm);
+		}
+
+		return Math.pow (populationMetricNorm / normalizer, 1. / pNorm);
 	}
 }
