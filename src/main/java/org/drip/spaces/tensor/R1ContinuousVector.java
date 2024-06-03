@@ -82,41 +82,58 @@ package org.drip.spaces.tensor;
 
 /**
  * <i>R1ContinuousVector</i> exposes the Normed/non-normed, Bounded/Unbounded Continuous R<sup>1</sup> Vector
- * Spaces with Real-valued Elements.
+ * 	Spaces with Real-valued Elements. The Reference we've used is:
  *
  * <br><br>
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/StatisticalLearningLibrary.md">Statistical Learning Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/README.md">R<sup>1</sup> and R<sup>d</sup> Vector/Tensor Spaces (Validated and/or Normed), and Function Classes</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/tensor/README.md">R<sup>x</sup> Continuous/Combinatorial Tensor Spaces</a></li>
+ *  	<li>
+ *  		Carl, B., and I. Stephani (1990): <i>Entropy, Compactness, and the Approximation of Operators</i>
+ *  			<b>Cambridge University Press</b> Cambridge UK 
+ *  	</li>
  *  </ul>
- * <br><br>
+ *
+ *  <ul>
+ * 		<li>Create the Standard R<sup>1</sup> Continuous Vector Space</li>
+ * 		<li><i>R1ContinuousVector</i> Constructor</li>
+ * 		<li>Retrieve the Left Edge</li>
+ * 		<li>Retrieve the Right Edge</li>
+ * 		<li>Validate the Input Instance Array</li>
+ * 		<li>Retrieve the Cardinality of the Vector Space</li>
+ * 		<li>Compare against the "Other" Generalized Vector Space</li>
+ * 		<li>Indicate if the "Other" Generalized Vector Space is a Subset of "this"</li>
+ * 		<li>Indicate if the Predictor Variate Space is bounded from the Left and the Right</li>
+ * 		<li>Retrieve the "Hyper" Volume of the Vector Space</li>
+ *  </ul>
  * 
- * The Reference we've used is:
- * 
- * 	- Carl, B., and I. Stephani (1990): Entropy, Compactness, and Approximation of Operators, Cambridge
- * 		University Press, Cambridge UK.
+ *	<br>
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/StatisticalLearningLibrary.md">Statistical Learning Library</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/README.md">R<sup>1</sup> and R<sup>d</sup> Vector/Tensor Spaces (Validated and/or Normed), and Function Classes</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/tensor/README.md">R<sup>x</sup> Continuous/Combinatorial Tensor Spaces</a></td></tr>
+ *  </table>
+ *	<br>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class R1ContinuousVector implements org.drip.spaces.tensor.R1GeneralizedVector {
-	private double _dblLeftEdge = java.lang.Double.NaN;
-	private double _dblRightEdge = java.lang.Double.NaN;
+public class R1ContinuousVector
+	implements R1GeneralizedVector
+{
+	private double _leftEdge = Double.NaN;
+	private double _rightEdge = Double.NaN;
 
 	/**
-	 * Create the Standard R^1 Continuous Vector Space
+	 * Create the Standard R<sup>1</sup> Continuous Vector Space
 	 * 
-	 * @return The Standard R^1 Continuous Vector Space
+	 * @return The Standard R<sup>1</sup> Continuous Vector Space
 	 */
 
 	public static final R1ContinuousVector Standard()
 	{
 		try {
-			return new R1ContinuousVector (java.lang.Double.NEGATIVE_INFINITY,
-				java.lang.Double.POSITIVE_INFINITY);
-		} catch (java.lang.Exception e) {
+			return new R1ContinuousVector (Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -124,78 +141,142 @@ public class R1ContinuousVector implements org.drip.spaces.tensor.R1GeneralizedV
 	}
 
 	/**
-	 * R1ContinuousVector Constructor
+	 * <i>R1ContinuousVector</i> Constructor
 	 * 
-	 * @param dblLeftEdge The Left Edge
-	 * @param dblRightEdge The Right Edge
+	 * @param leftEdge The Left Edge
+	 * @param rightEdge The Right Edge
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are invalid
+	 * @throws Exception Thrown if the Inputs are invalid
 	 */
 
 	public R1ContinuousVector (
-		final double dblLeftEdge,
-		final double dblRightEdge)
+		final double leftEdge,
+		final double rightEdge)
 		throws java.lang.Exception
 	{
-		if (!java.lang.Double.isNaN (_dblLeftEdge = dblLeftEdge) || !java.lang.Double.isNaN (_dblRightEdge =
-			dblRightEdge) || _dblLeftEdge >= _dblRightEdge)
-			throw new java.lang.Exception ("R1ContinuousVector ctr: Invalid Inputs");
+		if (Double.isNaN (_leftEdge = leftEdge) ||
+			Double.isNaN (_rightEdge = rightEdge) ||
+			_leftEdge >= _rightEdge)
+		{
+			throw new Exception ("R1ContinuousVector ctr: Invalid Inputs");
+		}
 	}
+
+	/**
+	 * Retrieve the Left Edge
+	 * 
+	 * @return The Left Edge
+	 */
 
 	@Override public double leftEdge()
 	{
-		return _dblLeftEdge;
+		return _leftEdge;
 	}
+
+	/**
+	 * Retrieve the Right Edge
+	 * 
+	 * @return The Right Edge
+	 */
 
 	@Override public double rightEdge()
 	{
-		return _dblRightEdge;
+		return _rightEdge;
 	}
+
+	/**
+	 * Validate the Input Instance Array
+	 * 
+	 * @param instanceArray The Input Instance Array
+	 * 
+	 * @return TRUE - Instance is a Valid Entry in the Space
+	 */
 
 	@Override public boolean validateInstance (
-		final double dblInstance)
+		final double instanceArray)
 	{
-		return java.lang.Double.isNaN (dblInstance) && dblInstance >= _dblLeftEdge && dblInstance <=
-			_dblRightEdge;
+		return Double.isNaN (instanceArray) && instanceArray >= _leftEdge && instanceArray <= _rightEdge;
 	}
 
-	@Override public org.drip.spaces.tensor.Cardinality cardinality()
+	/**
+	 * Retrieve the Cardinality of the Vector Space
+	 * 
+	 * @return Cardinality of the Vector Space
+	 */
+
+	@Override public Cardinality cardinality()
 	{
-		return org.drip.spaces.tensor.Cardinality.UncountablyInfinite();
+		return Cardinality.UncountablyInfinite();
 	}
+
+	/**
+	 * Compare against the "Other" Generalized Vector Space
+	 * 
+	 * @param generalizedVectorOther The "Other" Generalized Vector Space
+	 * 
+	 * @return TRUE - The "Other" Generalized Vector Space matches this
+	 */
 
 	@Override public boolean match (
-		final org.drip.spaces.tensor.GeneralizedVector gvOther)
+		final GeneralizedVector generalizedVectorOther)
 	{
-		if (null == gvOther || !(gvOther instanceof R1ContinuousVector)) return false;
+		if (null == generalizedVectorOther || !(generalizedVectorOther instanceof R1ContinuousVector)) {
+			return false;
+		}
 
-		R1ContinuousVector r1cvOther = (R1ContinuousVector) gvOther;
+		R1ContinuousVector r1ContinuousVectorOther = (R1ContinuousVector) generalizedVectorOther;
 
-		return r1cvOther.leftEdge() == _dblLeftEdge && r1cvOther.rightEdge() == _dblRightEdge;
+		return r1ContinuousVectorOther.leftEdge() == _leftEdge &&
+			r1ContinuousVectorOther.rightEdge() == _rightEdge;
 	}
+
+	/**
+	 * Indicate if the "Other" Generalized Vector Space is a Subset of "this"
+	 * 
+	 * @param generalizedVectorOther The "Other" Generalized Vector Space
+	 * 
+	 * @return TRUE - The "Other" Generalized Vector Space is a Subset of this
+	 */
 
 	@Override public boolean subset (
-		final org.drip.spaces.tensor.GeneralizedVector gvOther)
+		final GeneralizedVector generalizedVectorOther)
 	{
-		if (null == gvOther || !(gvOther instanceof R1ContinuousVector)) return false;
+		if (null == generalizedVectorOther || !(generalizedVectorOther instanceof R1ContinuousVector)) {
+			return false;
+		}
 
-		R1ContinuousVector r1cvOther = (R1ContinuousVector) gvOther;
+		R1ContinuousVector r1ContinuousVectorOther = (R1ContinuousVector) generalizedVectorOther;
 
-		return r1cvOther.leftEdge() >= _dblLeftEdge && r1cvOther.rightEdge() <= _dblRightEdge;
+		return r1ContinuousVectorOther.leftEdge() >= _leftEdge &&
+			r1ContinuousVectorOther.rightEdge() <= _rightEdge;
 	}
+
+	/**
+	 * Indicate if the Predictor Variate Space is bounded from the Left and the Right
+	 * 
+	 * @return The Predictor Variate Space is bounded from the Left and the Right
+	 */
 
 	@Override public boolean isPredictorBounded()
 	{
-		return leftEdge() != java.lang.Double.NEGATIVE_INFINITY && rightEdge() !=
-			java.lang.Double.POSITIVE_INFINITY;
+		return Double.NEGATIVE_INFINITY != leftEdge() && Double.POSITIVE_INFINITY != rightEdge();
 	}
 
-	@Override public double hyperVolume()
-		throws java.lang.Exception
-	{
-		if (!isPredictorBounded())
-			throw new java.lang.Exception ("R1ContinuousVector::hyperVolume => Space not Bounded");
+	/**
+	 * Retrieve the "Hyper" Volume of the Vector Space
+	 * 
+	 * @return The "Hyper" Volume of the Vector Space
+	 * 
+	 * @throws Exception Thrown if the Hyper Volume cannot be computed
+	 */
 
-		return _dblRightEdge - _dblLeftEdge;
+	@Override public double hyperVolume()
+		throws Exception
+	{
+		if (!isPredictorBounded()) {
+			throw new Exception ("R1ContinuousVector::hyperVolume => Space not Bounded");
+		}
+
+		return _rightEdge - _leftEdge;
 	}
 }

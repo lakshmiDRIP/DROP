@@ -87,18 +87,27 @@ import org.drip.spaces.iterator.RdSpanningCombinatorialIterator;
 
 /**
  * <i>RdCombinatorialVector</i> exposes the Normed/Non-normed Discrete Spaces with R<sup>d</sup>
- * 	Combinatorial Vector Elements.
+ * 	Combinatorial Vector Elements. The Reference we've used is:
+ *
+ * <br><br>
+ *  <ul>
+ *  	<li>
+ *  		Carl, B., and I. Stephani (1990): <i>Entropy, Compactness, and the Approximation of Operators</i>
+ *  			<b>Cambridge University Press</b> Cambridge UK 
+ *  	</li>
+ *  </ul>
  *
  *  <ul>
- * 		<li>Construct the <i>RdContinuousVector</i> Instance</li>
- * 		<li><i>RdContinuousVector</i> Constructor</li>
+ * 		<li><i>RdCombinatorialVector</i> Constructor</li>
+ * 		<li>Retrieve the Cardinality of the Vector Space</li>
+ * 		<li>Retrieve the Multidimensional Iterator associated with the Underlying Vector Space</li>
  * 		<li>Retrieve the Array of the Variate Left Edges</li>
  * 		<li>Retrieve the Array of the Variate Right Edges</li>
- * 		<li>Retrieve the Cardinality of the Vector Space</li>
  * 		<li>Retrieve the Left Edge</li>
  * 		<li>Retrieve the Right Edge</li>
  * 		<li>Retrieve the "Hyper" Volume of the Vector Space</li>
  *  </ul>
+ * 
  *	<br>
  *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
  *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
@@ -116,7 +125,7 @@ public class RdCombinatorialVector
 {
 
 	/**
-	 * RdCombinatorialVector Constructor
+	 * <i>RdCombinatorialVector</i> Constructor
 	 * 
 	 * @param r1CombinatorialVectorArray Array of the Underlying R<sup>1</sup> Combinatorial Vector Spaces
 	 * 
@@ -177,15 +186,15 @@ public class RdCombinatorialVector
 
 	@Override public double[] leftDimensionEdge()
 	{
-		org.drip.spaces.tensor.R1GeneralizedVector[] aR1GV = vectorSpaces();
+		R1GeneralizedVector[] r1GeneralizedVectorArray = vectorSpaces();
 
-		int iDimension = aR1GV.length;
-		double[] adblLeftEdge = new double[iDimension];
+		double[] leftEdgeArray = new double[r1GeneralizedVectorArray.length];
 
-		for (int i = 0; i < iDimension; ++i)
-			adblLeftEdge[i] = ((org.drip.spaces.tensor.R1ContinuousVector) aR1GV[i]).leftEdge();
+		for (int i = 0; i < r1GeneralizedVectorArray.length; ++i) {
+			leftEdgeArray[i] = ((R1ContinuousVector) r1GeneralizedVectorArray[i]).leftEdge();
+		}
 
-		return adblLeftEdge;
+		return leftEdgeArray;
 	}
 
 	/**
@@ -196,15 +205,15 @@ public class RdCombinatorialVector
 
 	@Override public double[] rightDimensionEdge()
 	{
-		org.drip.spaces.tensor.R1GeneralizedVector[] aR1GV = vectorSpaces();
+		R1GeneralizedVector[] r1GeneralizedVectorArray = vectorSpaces();
 
-		int iDimension = aR1GV.length;
-		double[] adblRightEdge = new double[iDimension];
+		double[] rightEdgeArray = new double[r1GeneralizedVectorArray.length];
 
-		for (int i = 0; i < iDimension; ++i)
-			adblRightEdge[i] = ((org.drip.spaces.tensor.R1ContinuousVector) aR1GV[i]).rightEdge();
+		for (int i = 0; i < r1GeneralizedVectorArray.length; ++i) {
+			rightEdgeArray[i] = ((R1ContinuousVector) r1GeneralizedVectorArray[i]).rightEdge();
+		}
 
-		return adblRightEdge;
+		return rightEdgeArray;
 	}
 
 	/**
@@ -215,16 +224,17 @@ public class RdCombinatorialVector
 
 	@Override public double leftEdge()
 	{
-		double[] adblLeftEdge = leftDimensionEdge();
+		double[] leftEdgeArray = leftDimensionEdge();
 
-		int iDimension = adblLeftEdge.length;
-		double dblLeftEdge = adblLeftEdge[0];
+		double leftEdge = leftEdgeArray[0];
 
-		for (int i = 1; i < iDimension; ++i) {
-			if (dblLeftEdge > adblLeftEdge[i]) dblLeftEdge = adblLeftEdge[i];
+		for (int i = 1; i < leftEdgeArray.length; ++i) {
+			if (leftEdge > leftEdgeArray[i]) {
+				leftEdge = leftEdgeArray[i];
+			}
 		}
 
-		return dblLeftEdge;
+		return leftEdge;
 	}
 
 	/**
@@ -235,16 +245,17 @@ public class RdCombinatorialVector
 
 	@Override public double rightEdge()
 	{
-		double[] adblRightEdge = rightDimensionEdge();
+		double[] rightEdgeArray = rightDimensionEdge();
 
-		int iDimension = adblRightEdge.length;
-		double dblRightEdge = adblRightEdge[0];
+		double rightEdge = rightEdgeArray[0];
 
-		for (int i = 1; i < iDimension; ++i) {
-			if (dblRightEdge < adblRightEdge[i]) dblRightEdge = adblRightEdge[i];
+		for (int i = 1; i < rightEdgeArray.length; ++i) {
+			if (rightEdge < rightEdgeArray[i]) {
+				rightEdge = rightEdgeArray[i];
+			}
 		}
 
-		return dblRightEdge;
+		return rightEdge;
 	}
 
 	/**
@@ -256,21 +267,22 @@ public class RdCombinatorialVector
 	 */
 
 	@Override public double hyperVolume()
-		throws java.lang.Exception
+		throws Exception
 	{
-		if (!isPredictorBounded())
-			throw new java.lang.Exception ("RdCombinatorialVector::hyperVolume => Space not Bounded");
+		if (!isPredictorBounded()) {
+			throw new Exception ("RdCombinatorialVector::hyperVolume => Space not Bounded");
+		}
 
-		double[] adblLeftEdge = leftDimensionEdge();
+		double hyperVolume = 1.;
 
-		double dblHyperVolume = 1.;
-		int iDimension = adblLeftEdge.length;
+		double[] leftEdgeArray = leftDimensionEdge();
 
-		double[] adblRightEdge = rightDimensionEdge();
+		double[] rightEdgeArray = rightDimensionEdge();
 
-		for (int i = 0; i < iDimension; ++i)
-			dblHyperVolume *= (adblRightEdge[i] - adblLeftEdge[i]);
+		for (int i = 0; i < leftEdgeArray.length; ++i) {
+			hyperVolume *= (rightEdgeArray[i] - leftEdgeArray[i]);
+		}
 
-		return dblHyperVolume;
+		return hyperVolume;
 	}
 }
