@@ -6,6 +6,9 @@ package org.drip.spaces.tensor;
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -83,19 +86,28 @@ package org.drip.spaces.tensor;
 /**
  * <i>RdGeneralizedVector</i> exposes the basic Properties of the Generalized R<sup>d</sup> Vector Space.
  *
- * <br><br>
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/StatisticalLearningLibrary.md">Statistical Learning Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/README.md">R<sup>1</sup> and R<sup>d</sup> Vector/Tensor Spaces (Validated and/or Normed), and Function Classes</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/tensor/README.md">R<sup>x</sup> Continuous/Combinatorial Tensor Spaces</a></li>
+ * 		<li>Retrieve the Dimension of the Space</li>
+ * 		<li>Retrieve the Array of the Underlying R<sup>1</sup> Vector Spaces</li>
+ * 		<li>Validate the Input Instance Array</li>
+ * 		<li>Retrieve the Array of the Variate Left Edges</li>
+ * 		<li>Retrieve the Array of the Variate Right Edges</li>
  *  </ul>
- * <br><br>
+ *
+ *	<br>
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/StatisticalLearningLibrary.md">Statistical Learning Library</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/README.md">R<sup>1</sup> and R<sup>d</sup> Vector/Tensor Spaces (Validated and/or Normed), and Function Classes</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/tensor/README.md">R<sup>x</sup> Continuous/Combinatorial Tensor Spaces</a></td></tr>
+ *  </table>
+ *	<br>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public interface RdGeneralizedVector extends org.drip.spaces.tensor.GeneralizedVector
+public interface RdGeneralizedVector
+	extends GeneralizedVector
 {
 
 	/**
@@ -107,23 +119,24 @@ public interface RdGeneralizedVector extends org.drip.spaces.tensor.GeneralizedV
 	public abstract int dimension();
 
 	/**
-	 * Retrieve the Array of the Underlying R^1 Vector Spaces
+	 * Retrieve the Array of the Underlying R<sup>1</sup> Vector Spaces
 	 * 
-	 * @return The Array of the Underlying R^1 Vector Spaces
+	 * @return The Array of the Underlying R<sup>1</sup> Vector Spaces
 	 */
 
-	public abstract org.drip.spaces.tensor.R1GeneralizedVector[] vectorSpaces();
+	public abstract R1GeneralizedVector[] vectorSpaces();
 
 	/**
-	 * Validate the Input Instance
+	 * Validate the Input Instance Array
 	 * 
-	 * @param adblInstance The Input Instance
+	 * @param instanceArray The Input Instance Array
 	 * 
 	 * @return TRUE - Instance is a Valid Entry in the Space
 	 */
 
 	public abstract boolean validateInstance (
-		final double[] adblInstance);
+		final double[] instanceArray
+	);
 
 	/**
 	 * Retrieve the Array of the Variate Left Edges

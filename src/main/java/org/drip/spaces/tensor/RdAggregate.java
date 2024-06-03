@@ -6,6 +6,9 @@ package org.drip.spaces.tensor;
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -82,107 +85,189 @@ package org.drip.spaces.tensor;
 
 /**
  * <i>RdAggregate</i> exposes the basic Properties of the R<sup>d</sup> as a Sectional Super-position of
- * R<sup>1</sup> Vector Spaces.
+ * 	R<sup>1</sup> Vector Spaces.
  *
- * <br><br>
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/StatisticalLearningLibrary.md">Statistical Learning Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/README.md">R<sup>1</sup> and R<sup>d</sup> Vector/Tensor Spaces (Validated and/or Normed), and Function Classes</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/tensor/README.md">R<sup>x</sup> Continuous/Combinatorial Tensor Spaces</a></li>
+ * 		<li><i>RdAggregate</i> Constructor</li>
+ * 		<li>Retrieve the Dimension of the Space</li>
+ * 		<li>Retrieve the Array of the Underlying R<sup>1</sup> Vector Spaces</li>
+ * 		<li>Validate the Input Instance Array</li>
+ * 		<li>Compare against the "Other" Generalized Vector Space</li>
+ * 		<li>Indicate if the "Other" Generalized Vector Space is a Subset of "this"</li>
+ * 		<li>Indicate if the Predictor Variate Space is bounded from the Left and the Right</li>
  *  </ul>
- * <br><br>
+ *
+ *	<br>
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/StatisticalLearningLibrary.md">Statistical Learning Library</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/README.md">R<sup>1</sup> and R<sup>d</sup> Vector/Tensor Spaces (Validated and/or Normed), and Function Classes</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/tensor/README.md">R<sup>x</sup> Continuous/Combinatorial Tensor Spaces</a></td></tr>
+ *  </table>
+ *	<br>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public abstract class RdAggregate implements org.drip.spaces.tensor.RdGeneralizedVector {
-	private org.drip.spaces.tensor.R1GeneralizedVector[] _aR1GV = null;
+public abstract class RdAggregate
+	implements RdGeneralizedVector
+{
+	private R1GeneralizedVector[] _r1GeneralizedVectorArray = null;
+
+	/**
+	 * <i>RdAggregate</i> Constructor
+	 * 
+	 * @param r1GeneralizedVectorArray Array of Generalized R<sup>1</sup> Vectors
+	 * 
+	 * @throws Exception Thrown if the Inputs are Invalid
+	 */
 
 	protected RdAggregate (
-		final org.drip.spaces.tensor.R1GeneralizedVector[] aR1GV)
-		throws java.lang.Exception
+		final R1GeneralizedVector[] r1GeneralizedVectorArray)
+		throws Exception
 	{
-		if (null == (_aR1GV = aR1GV)) throw new java.lang.Exception ("RdAggregate ctr: Invalid Inputs");
+		if (null == (_r1GeneralizedVectorArray = r1GeneralizedVectorArray)) {
+			throw new Exception ("RdAggregate Constructor => Invalid Inputs");
+		}
 
-		int iDimension = _aR1GV.length;
+		int dimension = _r1GeneralizedVectorArray.length;
 
-		if (0 == iDimension) throw new java.lang.Exception ("RdAggregate ctr: Invalid Inputs");
+		if (0 == dimension) {
+			throw new Exception ("RdAggregate Constructor => Invalid Inputs");
+		}
 
-		for (int i = 0; i < iDimension; ++i) {
-			if (null == _aR1GV[i]) throw new java.lang.Exception ("RdAggregate ctr: Invalid Inputs");
+		for (int i = 0; i < dimension; ++i) {
+			if (null == _r1GeneralizedVectorArray[i]) {
+				throw new Exception ("RdAggregate Constructor => Invalid Inputs");
+			}
 		}
 	}
+
+	/**
+	 * Retrieve the Dimension of the Space
+	 *  
+	 * @return The Dimension of the Space
+	 */
 
 	@Override public int dimension()
 	{
-		return _aR1GV.length;
+		return _r1GeneralizedVectorArray.length;
 	}
 
-	@Override public org.drip.spaces.tensor.R1GeneralizedVector[] vectorSpaces()
+	/**
+	 * Retrieve the Array of the Underlying R<sup>1</sup> Vector Spaces
+	 * 
+	 * @return The Array of the Underlying R<sup>1</sup> Vector Spaces
+	 */
+
+	@Override public R1GeneralizedVector[] vectorSpaces()
 	{
-		return _aR1GV;
+		return _r1GeneralizedVectorArray;
 	}
+
+	/**
+	 * Validate the Input Instance Array
+	 * 
+	 * @param instanceArray The Input Instance Array
+	 * 
+	 * @return TRUE - Instance is a Valid Entry in the Space
+	 */
 
 	@Override public boolean validateInstance (
-		final double[] adblInstance)
+		final double[] instanceArray)
 	{
-		if (null == adblInstance) return false;
+		if (null == instanceArray) {
+			return false;
+		}
 
-		int iDimension = _aR1GV.length;
+		int dimension = _r1GeneralizedVectorArray.length;
 
-		if (adblInstance.length != iDimension) return false;
+		if (instanceArray.length != dimension) {
+			return false;
+		}
 
-		for (int i = 0; i < iDimension; ++i) {
-			if (!_aR1GV[i].validateInstance (adblInstance[i])) return false;
+		for (int i = 0; i < dimension; ++i) {
+			if (!_r1GeneralizedVectorArray[i].validateInstance (instanceArray[i])) {
+				return false;
+			}
 		}
 
 		return true;
 	}
+
+	/**
+	 * Compare against the "Other" Generalized Vector Space
+	 * 
+	 * @param generalizedVectorOther The "Other" Generalized Vector Space
+	 * 
+	 * @return TRUE - The "Other" Generalized Vector Space matches this
+	 */
 
 	@Override public boolean match (
-		final org.drip.spaces.tensor.GeneralizedVector gvOther)
+		final GeneralizedVector generalizedVectorOther)
 	{
-		if (null == gvOther || !(gvOther instanceof RdAggregate)) return false;
+		if (null == generalizedVectorOther || !(generalizedVectorOther instanceof RdAggregate)) {
+			return false;
+		}
 
-		RdAggregate rdaOther = (RdAggregate) gvOther;
+		RdAggregate rdAggregateOther = (RdAggregate) generalizedVectorOther;
 
-		int iDimensionOther = rdaOther.dimension();
+		int dimensionOther = rdAggregateOther.dimension();
 
-		if (iDimensionOther != dimension()) return false;
+		if (dimensionOther != dimension()) {
+			return false;
+		}
 
-		org.drip.spaces.tensor.R1GeneralizedVector[] aR1GVOther = rdaOther.vectorSpaces();
+		R1GeneralizedVector[] r1GeneralizedVectorArrayOther = rdAggregateOther.vectorSpaces();
 
-		for (int i = 0; i < iDimensionOther; ++i) {
-			if (!aR1GVOther[i].match (_aR1GV[i])) return false;
+		for (int i = 0; i < dimensionOther; ++i) {
+			if (!r1GeneralizedVectorArrayOther[i].match (_r1GeneralizedVectorArray[i])) {
+				return false;
+			}
 		}
 
 		return true;
 	}
+
+	/**
+	 * Indicate if the "Other" Generalized Vector Space is a Subset of "this"
+	 * 
+	 * @param generalizedVectorOther The "Other" Generalized Vector Space
+	 * 
+	 * @return TRUE - The "Other" Generalized Vector Space is a Subset of this
+	 */
 
 	@Override public boolean subset (
-		final org.drip.spaces.tensor.GeneralizedVector gvOther)
+		final GeneralizedVector generalizedVectorOther)
 	{
-		if (null == gvOther || !(gvOther instanceof RdAggregate)) return false;
+		if (null == generalizedVectorOther || !(generalizedVectorOther instanceof RdAggregate)) {
+			return false;
+		}
 
-		int iDimensionOther = _aR1GV.length;
-		RdAggregate rdaOther = (RdAggregate) gvOther;
+		R1GeneralizedVector[] r1GeneralizedVectorArrayOther =
+			((RdAggregate) generalizedVectorOther).vectorSpaces();
 
-		org.drip.spaces.tensor.R1GeneralizedVector[] aR1GVOther = rdaOther.vectorSpaces();
-
-		for (int i = 0; i < iDimensionOther; ++i) {
-			if (!aR1GVOther[i].match (_aR1GV[i])) return false;
+		for (int i = 0; i < _r1GeneralizedVectorArray.length; ++i) {
+			if (!r1GeneralizedVectorArrayOther[i].match (_r1GeneralizedVectorArray[i])) {
+				return false;
+			}
 		}
 
 		return true;
 	}
+
+	/**
+	 * Indicate if the Predictor Variate Space is bounded from the Left and the Right
+	 * 
+	 * @return The Predictor Variate Space is bounded from the Left and the Right
+	 */
 
 	@Override public boolean isPredictorBounded()
 	{
-		int iDimension = _aR1GV.length;
-
-		for (int i = 0; i < iDimension; ++i) {
-			if (!_aR1GV[i].isPredictorBounded()) return false;
+		for (int i = 0; i < _r1GeneralizedVectorArray.length; ++i) {
+			if (!_r1GeneralizedVectorArray[i].isPredictorBounded()) {
+				return false;
+			}
 		}
 
 		return true;

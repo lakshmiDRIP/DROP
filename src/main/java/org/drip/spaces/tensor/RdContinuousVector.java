@@ -6,6 +6,9 @@ package org.drip.spaces.tensor;
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -82,7 +85,7 @@ package org.drip.spaces.tensor;
 
 /**
  * <i>RdContinuousVector</i> implements the Normed/non-normed, Bounded/Unbounded Continuous R<sup>d</sup>
- * Vector Spaces. The Reference we've used is:
+ * 	Vector Spaces. The Reference we've used is:
  *
  * <br><br>
  *  <ul>
@@ -92,35 +95,47 @@ package org.drip.spaces.tensor;
  *  	</li>
  *  </ul>
  *
- * <br><br>
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/StatisticalLearningLibrary.md">Statistical Learning Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/README.md">R<sup>1</sup> and R<sup>d</sup> Vector/Tensor Spaces (Validated and/or Normed), and Function Classes</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/tensor/README.md">R<sup>x</sup> Continuous/Combinatorial Tensor Spaces</a></li>
+ * 		<li>Construct the <i>RdContinuousVector</i> Instance</li>
+ * 		<li><i>RdContinuousVector</i> Constructor</li>
+ * 		<li>Retrieve the Array of the Variate Left Edges</li>
+ * 		<li>Retrieve the Array of the Variate Right Edges</li>
+ * 		<li>Retrieve the Cardinality of the Vector Space</li>
+ * 		<li>Retrieve the Left Edge</li>
+ * 		<li>Retrieve the Right Edge</li>
+ * 		<li>Retrieve the "Hyper" Volume of the Vector Space</li>
  *  </ul>
- * <br><br>
+ *
+ *	<br>
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/StatisticalLearningLibrary.md">Statistical Learning Library</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/README.md">R<sup>1</sup> and R<sup>d</sup> Vector/Tensor Spaces (Validated and/or Normed), and Function Classes</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/tensor/README.md">R<sup>x</sup> Continuous/Combinatorial Tensor Spaces</a></td></tr>
+ *  </table>
+ *	<br>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class RdContinuousVector extends org.drip.spaces.tensor.RdAggregate {
+public class RdContinuousVector
+	extends RdAggregate
+{
 
 	/**
-	 * Construct the RdContinuousVector Instance
+	 * Construct the <i>RdContinuousVector</i> Instance
 	 * 
-	 * @param iDimension The Space Dimension
+	 * @param dimension The Space Dimension
 	 * 
-	 * @return The RdContinuousVector Instance
+	 * @return The <i>RdContinuousVector</i> Instance
 	 */
 
 	public static final RdContinuousVector Standard (
-		final int iDimension)
+		final int dimension)
 	{
 		try {
-			return 0 >= iDimension ? null : new RdContinuousVector (new
-				org.drip.spaces.tensor.R1ContinuousVector[iDimension]);
-		} catch (java.lang.Exception e) {
+			return 0 >= dimension ? null : new RdContinuousVector (new R1ContinuousVector[dimension]);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -128,95 +143,138 @@ public class RdContinuousVector extends org.drip.spaces.tensor.RdAggregate {
 	}
 
 	/**
-	 * RdContinuousVector Constructor
+	 * <i>RdContinuousVector</i> Constructor
 	 * 
-	 * @param aR1CV Array of the Continuous R^1 Vector Spaces
+	 * @param r1ContinuousVectorArray Array of the Continuous R<sup>1</sup> Vector Spaces
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public RdContinuousVector (
-		final org.drip.spaces.tensor.R1ContinuousVector[] aR1CV)
-		throws java.lang.Exception
+		final R1ContinuousVector[] r1ContinuousVectorArray)
+		throws Exception
 	{
-		super (aR1CV);
+		super (r1ContinuousVectorArray);
 	}
+
+	/**
+	 * Retrieve the Array of the Variate Left Edges
+	 * 
+	 * @return The Array of the Variate Left Edges
+	 */
 
 	@Override public double[] leftDimensionEdge()
 	{
-		org.drip.spaces.tensor.R1GeneralizedVector[] aR1GV = vectorSpaces();
+		R1GeneralizedVector[] r1GeneralizedVectorArray = vectorSpaces();
 
-		int iDimension = aR1GV.length;
-		double[] adblLeftEdge = new double[iDimension];
+		int dimension = r1GeneralizedVectorArray.length;
+		double[] leftEdgeArray = new double[dimension];
 
-		for (int i = 0; i < iDimension; ++i)
-			adblLeftEdge[i] = ((org.drip.spaces.tensor.R1ContinuousVector) aR1GV[i]).leftEdge();
+		for (int i = 0; i < dimension; ++i) {
+			leftEdgeArray[i] = ((R1ContinuousVector) r1GeneralizedVectorArray[i]).leftEdge();
+		}
 
-		return adblLeftEdge;
+		return leftEdgeArray;
 	}
+
+	/**
+	 * Retrieve the Array of the Variate Right Edges
+	 * 
+	 * @return The Array of the Variate Right Edges
+	 */
 
 	@Override public double[] rightDimensionEdge()
 	{
-		org.drip.spaces.tensor.R1GeneralizedVector[] aR1GV = vectorSpaces();
+		R1GeneralizedVector[] r1GeneralizedVectorArray = vectorSpaces();
 
-		int iDimension = aR1GV.length;
-		double[] adblRightEdge = new double[iDimension];
+		int dimension = r1GeneralizedVectorArray.length;
+		double[] rightEdgeArray = new double[dimension];
 
-		for (int i = 0; i < iDimension; ++i)
-			adblRightEdge[i] = ((org.drip.spaces.tensor.R1ContinuousVector) aR1GV[i]).rightEdge();
+		for (int i = 0; i < dimension; ++i) {
+			rightEdgeArray[i] = ((R1ContinuousVector) r1GeneralizedVectorArray[i]).rightEdge();
+		}
 
-		return adblRightEdge;
+		return rightEdgeArray;
 	}
 
-	@Override public org.drip.spaces.tensor.Cardinality cardinality()
+	/**
+	 * Retrieve the Cardinality of the Vector Space
+	 * 
+	 * @return Cardinality of the Vector Space
+	 */
+
+	@Override public Cardinality cardinality()
 	{
-		return org.drip.spaces.tensor.Cardinality.UncountablyInfinite();
+		return Cardinality.UncountablyInfinite();
 	}
+
+	/**
+	 * Retrieve the Left Edge
+	 * 
+	 * @return The Left Edge
+	 */
 
 	@Override public double leftEdge()
 	{
-		double[] adblLeftEdge = leftDimensionEdge();
+		double[] leftEdgeArray = leftDimensionEdge();
 
-		int iDimension = adblLeftEdge.length;
-		double dblLeftEdge = adblLeftEdge[0];
+		double leftEdge = leftEdgeArray[0];
 
-		for (int i = 1; i < iDimension; ++i) {
-			if (dblLeftEdge > adblLeftEdge[i]) dblLeftEdge = adblLeftEdge[i];
+		for (int i = 1; i < leftEdgeArray.length; ++i) {
+			if (leftEdge > leftEdgeArray[i]) {
+				leftEdge = leftEdgeArray[i];
+			}
 		}
 
-		return dblLeftEdge;
+		return leftEdge;
 	}
+
+	/**
+	 * Retrieve the Right Edge
+	 * 
+	 * @return The Right Edge
+	 */
 
 	@Override public double rightEdge()
 	{
-		double[] adblRightEdge = rightDimensionEdge();
+		double[] rightEdgeArray = rightDimensionEdge();
 
-		int iDimension = adblRightEdge.length;
-		double dblRightEdge = adblRightEdge[0];
+		double rightEdge = rightEdgeArray[0];
 
-		for (int i = 1; i < iDimension; ++i) {
-			if (dblRightEdge < adblRightEdge[i]) dblRightEdge = adblRightEdge[i];
+		for (int i = 1; i < rightEdgeArray.length; ++i) {
+			if (rightEdge < rightEdgeArray[i]) {
+				rightEdge = rightEdgeArray[i];
+			}
 		}
 
-		return dblRightEdge;
+		return rightEdge;
 	}
 
+	/**
+	 * Retrieve the "Hyper" Volume of the Vector Space
+	 * 
+	 * @return The "Hyper" Volume of the Vector Space
+	 * 
+	 * @throws Exception Thrown if the Hyper Volume cannot be computed
+	 */
+
 	@Override public double hyperVolume()
-		throws java.lang.Exception
+		throws Exception
 	{
-		if (!isPredictorBounded())
-			throw new java.lang.Exception ("ContinuousVectorRd::hyperVolume => Space not Bounded");
+		if (!isPredictorBounded()) {
+			throw new Exception ("ContinuousVectorRd::hyperVolume => Space not Bounded");
+		}
 
-		double[] adblLeftEdge = leftDimensionEdge();
+		double hyperVolume = 1.;
 
-		double dblHyperVolume = 1.;
-		int iDimension = adblLeftEdge.length;
+		double[] leftEdgeArray = leftDimensionEdge();
 
-		double[] adblRightEdge = rightDimensionEdge();
+		double[] rightEdgeArray = rightDimensionEdge();
 
-		for (int i = 0; i < iDimension; ++i)
-			dblHyperVolume *= (adblRightEdge[i] - adblLeftEdge[i]);
+		for (int i = 0; i < leftEdgeArray.length; ++i) {
+			hyperVolume *= (rightEdgeArray[i] - leftEdgeArray[i]);
+		}
 
-		return dblHyperVolume;
+		return hyperVolume;
 	}
 }

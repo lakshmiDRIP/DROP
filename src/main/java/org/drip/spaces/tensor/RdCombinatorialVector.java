@@ -1,11 +1,16 @@
 
 package org.drip.spaces.tensor;
 
+import org.drip.spaces.iterator.RdSpanningCombinatorialIterator;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -82,49 +87,66 @@ package org.drip.spaces.tensor;
 
 /**
  * <i>RdCombinatorialVector</i> exposes the Normed/Non-normed Discrete Spaces with R<sup>d</sup>
- * Combinatorial Vector Elements.
+ * 	Combinatorial Vector Elements.
  *
- * <br><br>
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/StatisticalLearningLibrary.md">Statistical Learning Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/README.md">R<sup>1</sup> and R<sup>d</sup> Vector/Tensor Spaces (Validated and/or Normed), and Function Classes</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/tensor/README.md">R<sup>x</sup> Continuous/Combinatorial Tensor Spaces</a></li>
+ * 		<li>Construct the <i>RdContinuousVector</i> Instance</li>
+ * 		<li><i>RdContinuousVector</i> Constructor</li>
+ * 		<li>Retrieve the Array of the Variate Left Edges</li>
+ * 		<li>Retrieve the Array of the Variate Right Edges</li>
+ * 		<li>Retrieve the Cardinality of the Vector Space</li>
+ * 		<li>Retrieve the Left Edge</li>
+ * 		<li>Retrieve the Right Edge</li>
+ * 		<li>Retrieve the "Hyper" Volume of the Vector Space</li>
  *  </ul>
- * <br><br>
+ *	<br>
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/StatisticalLearningLibrary.md">Statistical Learning Library</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/README.md">R<sup>1</sup> and R<sup>d</sup> Vector/Tensor Spaces (Validated and/or Normed), and Function Classes</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/tensor/README.md">R<sup>x</sup> Continuous/Combinatorial Tensor Spaces</a></td></tr>
+ *  </table>
+ *	<br>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class RdCombinatorialVector extends org.drip.spaces.tensor.RdAggregate {
+public class RdCombinatorialVector
+	extends RdAggregate
+{
 
 	/**
 	 * RdCombinatorialVector Constructor
 	 * 
-	 * @param aR1CV Array of the Underlying R^1 Combinatorial Vector Spaces
+	 * @param r1CombinatorialVectorArray Array of the Underlying R<sup>1</sup> Combinatorial Vector Spaces
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public RdCombinatorialVector (
-		final org.drip.spaces.tensor.R1CombinatorialVector[] aR1CV)
-		throws java.lang.Exception
+		final R1CombinatorialVector[] r1CombinatorialVectorArray)
+		throws Exception
 	{
-		super (aR1CV);
+		super (r1CombinatorialVectorArray);
 	}
 
-	@Override public org.drip.spaces.tensor.Cardinality cardinality()
+	/**
+	 * Retrieve the Cardinality of the Vector Space
+	 * 
+	 * @return Cardinality of the Vector Space
+	 */
+
+	@Override public Cardinality cardinality()
 	{
-		org.drip.spaces.tensor.R1GeneralizedVector[] aR1GV = vectorSpaces();
+		R1GeneralizedVector[] r1GeneralizedVectorArray = vectorSpaces();
 
-		int iDimension = aR1GV.length;
-		double dblCardinalNumber = 1.;
+		double cardinalNumber = 1.;
 
-		for (int i = 0; i < iDimension; ++i)
-			dblCardinalNumber *= ((org.drip.spaces.tensor.R1CombinatorialVector)
-				aR1GV[i]).cardinality().number();
+		for (int i = 0; i < r1GeneralizedVectorArray.length; ++i) {
+			cardinalNumber *= ((R1CombinatorialVector) r1GeneralizedVectorArray[i]).cardinality().number();
+		}
 
-		return org.drip.spaces.tensor.Cardinality.CountablyFinite (dblCardinalNumber);
+		return Cardinality.CountablyFinite (cardinalNumber);
 	}
 
 	/**
@@ -133,19 +155,25 @@ public class RdCombinatorialVector extends org.drip.spaces.tensor.RdAggregate {
 	 * @return The Multidimensional Iterator associated with the Underlying Vector Space
 	 */
 
-	public org.drip.spaces.iterator.RdSpanningCombinatorialIterator iterator()
+	public RdSpanningCombinatorialIterator iterator()
 	{
-		org.drip.spaces.tensor.R1GeneralizedVector[] aR1GV = vectorSpaces();
+		R1GeneralizedVector[] r1GeneralizedVectorArray = vectorSpaces();
 
-		int iDimension = aR1GV.length;
-		org.drip.spaces.tensor.R1CombinatorialVector[] aR1CV = new
-			org.drip.spaces.tensor.R1CombinatorialVector[iDimension];
+		R1CombinatorialVector[] r1CombinatorialVectorArray =
+			new R1CombinatorialVector[r1GeneralizedVectorArray.length];
 
-		for (int i = 0; i < iDimension; ++i)
-			aR1CV[i] = (org.drip.spaces.tensor.R1CombinatorialVector) aR1GV[i];
+		for (int i = 0; i < r1GeneralizedVectorArray.length; ++i) {
+			r1CombinatorialVectorArray[i] = (R1CombinatorialVector) r1GeneralizedVectorArray[i];
+		}
 
-		return org.drip.spaces.iterator.RdSpanningCombinatorialIterator.Standard (aR1CV);
+		return RdSpanningCombinatorialIterator.Standard (r1CombinatorialVectorArray);
 	}
+
+	/**
+	 * Retrieve the Array of the Variate Left Edges
+	 * 
+	 * @return The Array of the Variate Left Edges
+	 */
 
 	@Override public double[] leftDimensionEdge()
 	{
@@ -160,6 +188,12 @@ public class RdCombinatorialVector extends org.drip.spaces.tensor.RdAggregate {
 		return adblLeftEdge;
 	}
 
+	/**
+	 * Retrieve the Array of the Variate Right Edges
+	 * 
+	 * @return The Array of the Variate Right Edges
+	 */
+
 	@Override public double[] rightDimensionEdge()
 	{
 		org.drip.spaces.tensor.R1GeneralizedVector[] aR1GV = vectorSpaces();
@@ -172,6 +206,12 @@ public class RdCombinatorialVector extends org.drip.spaces.tensor.RdAggregate {
 
 		return adblRightEdge;
 	}
+
+	/**
+	 * Retrieve the Left Edge
+	 * 
+	 * @return The Left Edge
+	 */
 
 	@Override public double leftEdge()
 	{
@@ -187,6 +227,12 @@ public class RdCombinatorialVector extends org.drip.spaces.tensor.RdAggregate {
 		return dblLeftEdge;
 	}
 
+	/**
+	 * Retrieve the Right Edge
+	 * 
+	 * @return The Right Edge
+	 */
+
 	@Override public double rightEdge()
 	{
 		double[] adblRightEdge = rightDimensionEdge();
@@ -200,6 +246,14 @@ public class RdCombinatorialVector extends org.drip.spaces.tensor.RdAggregate {
 
 		return dblRightEdge;
 	}
+
+	/**
+	 * Retrieve the "Hyper" Volume of the Vector Space
+	 * 
+	 * @return The "Hyper" Volume of the Vector Space
+	 * 
+	 * @throws Exception Thrown if the Hyper Volume cannot be computed
+	 */
 
 	@Override public double hyperVolume()
 		throws java.lang.Exception

@@ -1,6 +1,9 @@
 
 package org.drip.spaces.tensor;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
@@ -88,22 +91,26 @@ package org.drip.spaces.tensor;
  *  provides the following Functionality:
  *
  *  <ul>
- * 		<li>Retrieve the Input Metric Vector Space</li>
+ * 		<li>Binary/Boolean Space "UP"</li>
+ * 		<li>Binary/Boolean Space "DOWN"</li>
+ * 		<li>Construct the Standard Binary Boolean Vector Space</li>
  *  </ul>
  *
- * <br><br>
- *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/StatisticalLearningLibrary.md">Statistical Learning Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/README.md">R<sup>1</sup> and R<sup>d</sup> Vector/Tensor Spaces (Validated and/or Normed), and Function Classes</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/tensor/README.md">R<sup>x</sup> Continuous/Combinatorial Tensor Spaces</a></li>
- *  </ul>
- * <br><br>
+ *	<br>
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/StatisticalLearningLibrary.md">Statistical Learning Library</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/README.md">R<sup>1</sup> and R<sup>d</sup> Vector/Tensor Spaces (Validated and/or Normed), and Function Classes</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/spaces/tensor/README.md">R<sup>x</sup> Continuous/Combinatorial Tensor Spaces</a></td></tr>
+ *  </table>
+ *	<br>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class BinaryBooleanVector extends org.drip.spaces.tensor.R1CombinatorialVector {
+public class BinaryBooleanVector
+	extends R1CombinatorialVector
+{
 
 	/**
 	 * Binary/Boolean Space "UP"
@@ -125,15 +132,15 @@ public class BinaryBooleanVector extends org.drip.spaces.tensor.R1CombinatorialV
 
 	public static final BinaryBooleanVector Standard()
 	{
-		java.util.List<java.lang.Double> lsElementSpace = new java.util.ArrayList<java.lang.Double>();
+		List<Double> spaceElementList = new ArrayList<Double>();
 
-		lsElementSpace.add ((double) BBV_UP);
+		spaceElementList.add ((double) BBV_DOWN);
 
-		lsElementSpace.add ((double) BBV_DOWN);
+		spaceElementList.add ((double) BBV_UP);
 
 		try {
-			return new BinaryBooleanVector (lsElementSpace);
-		} catch (java.lang.Exception e) {
+			return new BinaryBooleanVector (spaceElementList);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -141,9 +148,9 @@ public class BinaryBooleanVector extends org.drip.spaces.tensor.R1CombinatorialV
 	}
 
 	private BinaryBooleanVector (
-		final java.util.List<java.lang.Double> lsElementSpace)
-		throws java.lang.Exception
+		final List<Double> spaceElementList)
+		throws Exception
 	{
-		super (lsElementSpace);
+		super (spaceElementList);
 	}
 }

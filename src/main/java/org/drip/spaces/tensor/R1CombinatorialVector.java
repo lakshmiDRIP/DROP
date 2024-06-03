@@ -93,7 +93,16 @@ import org.drip.numerical.common.NumberUtil;
  * 	Combinatorial Vector Elements.
  *
  *  <ul>
+ * 		<li><i>R1CombinatorialVector</i> Constructor</li>
+ * 		<li>Retrieve the Full Candidate List of Elements</li>
+ * 		<li>Retrieve the Left Edge</li>
+ * 		<li>Retrieve the Right Edge</li>
  * 		<li>Validate the Input Instance Ordinate</li>
+ * 		<li>Retrieve the Cardinality of the Vector Space</li>
+ * 		<li>Compare against the "Other" Generalized Vector Space</li>
+ * 		<li>Indicate if the "Other" Generalized Vector Space is a Subset of "this"</li>
+ * 		<li>Indicate if the Predictor Variate Space is bounded from the Left and the Right</li>
+ * 		<li>Retrieve the "Hyper" Volume of the Vector Space</li>
  *  </ul>
  *
  *	<br>
@@ -176,19 +185,23 @@ public class R1CombinatorialVector
 
 	@Override public double rightEdge()
 	{
-		double dblRightEdge = java.lang.Double.NaN;
+		double rightEdge = Double.NaN;
 
-		for (double dblElement : _spaceElementList) {
-			if (java.lang.Double.POSITIVE_INFINITY == dblElement) return dblElement;
+		for (double element : _spaceElementList) {
+			if (Double.POSITIVE_INFINITY == element) {
+				return element;
+			}
 
-			if (!org.drip.numerical.common.NumberUtil.IsValid (dblRightEdge))
-				dblRightEdge = dblElement;
+			if (!NumberUtil.IsValid (rightEdge))
+				rightEdge = element;
 			else {
-				if (dblRightEdge < dblElement) dblRightEdge = dblElement;
+				if (rightEdge < element) {
+					rightEdge = element;
+				}
 			}
 		}
 
-		return dblRightEdge;
+		return rightEdge;
 	}
 
 	/**
@@ -211,9 +224,9 @@ public class R1CombinatorialVector
 	 * @return Cardinality of the Vector Space
 	 */
 
-	@Override public org.drip.spaces.tensor.Cardinality cardinality()
+	@Override public Cardinality cardinality()
 	{
-		return org.drip.spaces.tensor.Cardinality.CountablyFinite (_spaceElementList.size());
+		return Cardinality.CountablyFinite (_spaceElementList.size());
 	}
 
 	/**
@@ -225,18 +238,24 @@ public class R1CombinatorialVector
 	 */
 
 	@Override public boolean match (
-		final org.drip.spaces.tensor.GeneralizedVector gvOther)
+		final GeneralizedVector generalizedVectorOther)
 	{
-		if (null == gvOther || !(gvOther instanceof R1CombinatorialVector)) return false;
+		if (null == generalizedVectorOther || !(generalizedVectorOther instanceof R1CombinatorialVector)) {
+			return false;
+		}
 
-		R1CombinatorialVector r1cvOther = (R1CombinatorialVector) gvOther;
+		R1CombinatorialVector r1CombinatorialVectorOther = (R1CombinatorialVector) generalizedVectorOther;
 
-		if (!cardinality().match (r1cvOther.cardinality())) return false;
+		if (!cardinality().match (r1CombinatorialVectorOther.cardinality())) {
+			return false;
+		}
 
-		java.util.List<java.lang.Double> lsElementSpaceOther = r1cvOther.elementSpace();
+		List<Double> elementSpaceOther = r1CombinatorialVectorOther.elementSpace();
 
-		for (double dblElement : _spaceElementList) {
-			if (!lsElementSpaceOther.contains (dblElement)) return false;
+		for (double element : _spaceElementList) {
+			if (!elementSpaceOther.contains (element)) {
+				return false;
+			}
 		}
 
 		return true;
@@ -251,18 +270,24 @@ public class R1CombinatorialVector
 	 */
 
 	@Override public boolean subset (
-		final org.drip.spaces.tensor.GeneralizedVector gvOther)
+		final GeneralizedVector generalizedVectorOther)
 	{
-		if (null == gvOther || !(gvOther instanceof R1CombinatorialVector)) return false;
+		if (null == generalizedVectorOther || !(generalizedVectorOther instanceof R1CombinatorialVector)) {
+			return false;
+		}
 
-		R1CombinatorialVector r1cvOther = (R1CombinatorialVector) gvOther;
+		R1CombinatorialVector r1CombinatorialVectorOther = (R1CombinatorialVector) generalizedVectorOther;
 
-		if (cardinality().number() < r1cvOther.cardinality().number()) return false;
+		if (cardinality().number() < r1CombinatorialVectorOther.cardinality().number()) {
+			return false;
+		}
 
-		java.util.List<java.lang.Double> lsElementSpaceOther = r1cvOther.elementSpace();
+		List<Double> elementSpaceOther = r1CombinatorialVectorOther.elementSpace();
 
-		for (double dblElement : _spaceElementList) {
-			if (!lsElementSpaceOther.contains (dblElement)) return false;
+		for (double element : _spaceElementList) {
+			if (!elementSpaceOther.contains (element)) {
+				return false;
+			}
 		}
 
 		return true;
@@ -276,8 +301,7 @@ public class R1CombinatorialVector
 
 	@Override public boolean isPredictorBounded()
 	{
-		return leftEdge() != java.lang.Double.NEGATIVE_INFINITY && rightEdge() !=
-			java.lang.Double.POSITIVE_INFINITY;
+		return Double.NEGATIVE_INFINITY != leftEdge() && Double.POSITIVE_INFINITY != rightEdge();
 	}
 
 	/**
@@ -289,10 +313,11 @@ public class R1CombinatorialVector
 	 */
 
 	@Override public double hyperVolume()
-		throws java.lang.Exception
+		throws Exception
 	{
-		if (!isPredictorBounded())
-			throw new java.lang.Exception ("R1CombinatorialVector::hyperVolume => Space not Bounded");
+		if (!isPredictorBounded()) {
+			throw new Exception ("R1CombinatorialVector::hyperVolume => Space not Bounded");
+		}
 
 		return rightEdge() - leftEdge();
 	}
