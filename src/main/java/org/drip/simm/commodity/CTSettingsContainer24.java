@@ -15,6 +15,9 @@ import org.drip.simm.foundation.RiskGroupPrincipalCovariance;
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * 
  *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
@@ -84,7 +87,7 @@ import org.drip.simm.foundation.RiskGroupPrincipalCovariance;
 
 /**
  * <i>CTSettingsContainer24</i> holds the ISDA SIMM 2.4 Commodity Buckets and their Correlations. The
- * References are:
+ * 	References are:
  * 
  * <br><br>
  *  <ul>
@@ -111,15 +114,28 @@ import org.drip.simm.foundation.RiskGroupPrincipalCovariance;
  *  			https://www.isda.org/a/CeggE/ISDA-SIMM-v2.4-PUBLIC.pdf
  *  	</li>
  *  </ul>
- * 
- * <br><br>
+ *
+ * 	It provides the following Functionality:
+ *
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md">Portfolio Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/MarginAnalyticsLibrary.md">Initial and Variation Margin Analytics</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/README.md">Initial Margin Analytics based on ISDA SIMM and its Variants</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/commodity/README.md">Commodity Risk Factor Calibration Settings</a></li>
+ * 		<li>Initialize the Commodity Settings Container</li>
+ * 		<li>Retrieve the Set of Bucket Indexes available</li>
+ * 		<li>Indicate if the Bucket denoted by the Number is available</li>
+ * 		<li>Retrieve the Bucket denoted by the Number</li>
+ * 		<li>Retrieve the Cross Bucket Correlation</li>
+ * 		<li>Retrieve the Bucket Map</li>
+ * 		<li>Retrieve the Cross Bucket Co-variance Matrix</li>
  *  </ul>
- * <br><br>
+ *
+ *	<br>
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md">Portfolio Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/MarginAnalyticsLibrary.md">Initial and Variation Margin Analytics</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/README.md">Initial Margin Analytics based on ISDA SIMM and its Variants</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/commodity/README.md">Commodity Risk Factor Calibration Settings</a></td></tr>
+ *  </table>
+ *	<br>
+ *
  * @author Lakshmi Krishnamurthy
  */
 
@@ -127,87 +143,50 @@ public class CTSettingsContainer24
 {
 	private static LabelCorrelation s_CrossBucketCorrelation = null;
 
-	private static final Map<Integer, CTBucket> s_BucketMap =
-		new TreeMap<Integer, CTBucket>();
+	private static final Map<Integer, CTBucket> s_BucketMap = new TreeMap<Integer, CTBucket>();
 
 	private static final boolean SetUpCrossBucketCorrelation()
 	{
 		List<String> bucketList = new ArrayList<String>();
 
-		bucketList.add (
-			"1"
-		);
+		bucketList.add ("1");
 
-		bucketList.add (
-			"2"
-		);
+		bucketList.add ("2");
 
-		bucketList.add (
-			"3"
-		);
+		bucketList.add ("3");
 
-		bucketList.add (
-			"4"
-		);
+		bucketList.add ("4");
 
-		bucketList.add (
-			"5"
-		);
+		bucketList.add ("5");
 
-		bucketList.add (
-			"6"
-		);
+		bucketList.add ("6");
 
-		bucketList.add (
-			"7"
-		);
+		bucketList.add ("7");
 
-		bucketList.add (
-			"8"
-		);
+		bucketList.add ("8");
 
-		bucketList.add (
-			"9"
-		);
+		bucketList.add ("9");
 
-		bucketList.add (
-			"10"
-		);
+		bucketList.add ("10");
 
-		bucketList.add (
-			"11"
-		);
+		bucketList.add ("11");
 
-		bucketList.add (
-			"12"
-		);
+		bucketList.add ("12");
 
-		bucketList.add (
-			"13"
-		);
+		bucketList.add ("13");
 
-		bucketList.add (
-			"14"
-		);
+		bucketList.add ("14");
 
-		bucketList.add (
-			"15"
-		);
+		bucketList.add ("15");
 
-		bucketList.add (
-			"16"
-		);
+		bucketList.add ("16");
 
-		bucketList.add (
-			"17"
-		);
+		bucketList.add ("17");
 
-		try
-		{
+		try {
 			s_CrossBucketCorrelation = new LabelCorrelation (
 				bucketList,
-				new double[][]
-				{
+				new double[][] {
 					{ 1.00, 0.36, 0.23, 0.30, 0.30, 0.07,  0.32,  0.02,  0.26, 0.20, 0.17,  0.15, 0.21, 0.15, 0.19, 0.00, 0.24}, // #01
 					{ 0.36, 1.00, 0.93, 0.94, 0.88, 0.16,  0.21,  0.09,  0.21, 0.20, 0.40,  0.30, 0.24, 0.29, 0.23, 0.00, 0.56}, // #02
 					{ 0.23, 0.93, 1.00, 0.91, 0.85, 0.06,  0.21,  0.04,  0.21, 0.19, 0.33,  0.23, 0.14, 0.23, 0.25, 0.00, 0.50}, // #03
@@ -229,9 +208,7 @@ public class CTSettingsContainer24
 			);
 
 			return true;
-		}
-		catch (Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -246,180 +223,41 @@ public class CTSettingsContainer24
 
 	public static final boolean Init()
 	{
-		try
-		{
-			s_BucketMap.put (
-				1,
-				new CTBucket (
-					1,
-					"Coal",
-					2.,
-					0.79
-				)
-			);
+		try {
+			s_BucketMap.put (1, new CTBucket (1, "Coal", 2., 0.79));
 
-			s_BucketMap.put (
-				2,
-				new CTBucket (
-					2,
-					"Crude",
-					29.,
-					0.98
-				)
-			);
+			s_BucketMap.put (2, new CTBucket (2, "Crude", 29., 0.98));
 
-			s_BucketMap.put (
-				3,
-				new CTBucket (
-					3,
-					"Light Ends",
-					33.,
-					0.96
-				)
-			);
+			s_BucketMap.put (3, new CTBucket (3, "Light Ends", 33., 0.96));
 
-			s_BucketMap.put (
-				4,
-				new CTBucket (
-					4,
-					"Middle Distillates",
-					25.,
-					0.97
-				)
-			);
+			s_BucketMap.put (4, new CTBucket (4, "Middle Distillates", 25., 0.97));
 
-			s_BucketMap.put (
-				5,
-				new CTBucket (
-					5,
-					"Heavy Distillates",
-					35.,
-					0.98
-				)
-			);
+			s_BucketMap.put (5, new CTBucket (5, "Heavy Distillates", 35., 0.98));
 
-			s_BucketMap.put (
-				6,
-				new CTBucket (
-					6,
-					"North American Natural Gas",
-					24.,
-					0.88
-				)
-			);
+			s_BucketMap.put (6, new CTBucket (6, "North American Natural Gas", 24., 0.88));
 
-			s_BucketMap.put (
-				7,
-				new CTBucket (
-					7,
-					"European Natural Gas",
-					22.,
-					0.97
-				)
-			);
+			s_BucketMap.put (7, new CTBucket (7, "European Natural Gas", 22., 0.97));
 
-			s_BucketMap.put (
-				8,
-				new CTBucket (
-					8,
-					"North American Power",
-					49.,
-					0.42
-				)
-			);
+			s_BucketMap.put (8, new CTBucket (8, "North American Power", 49., 0.42));
 
-			s_BucketMap.put (
-				9,
-				new CTBucket (
-					9,
-					"European Power",
-					24.,
-					0.70
-				)
-			);
+			s_BucketMap.put (9, new CTBucket (9, "European Power", 24., 0.70));
 
-			s_BucketMap.put (
-				10,
-				new CTBucket (
-					10,
-					"Freight",
-					53.,
-					0.38
-				)
-			);
+			s_BucketMap.put (10, new CTBucket (10, "Freight", 53., 0.38));
 
-			s_BucketMap.put (
-				11,
-				new CTBucket (
-					11,
-					"Base Metals",
-					24.,
-					0.54
-				)
-			);
+			s_BucketMap.put (11, new CTBucket (11, "Base Metals", 24., 0.54));
 
-			s_BucketMap.put (
-				12,
-				new CTBucket (
-					12,
-					"Precious Metals",
-					21.,
-					0.54
-				)
-			);
+			s_BucketMap.put (12, new CTBucket (12, "Precious Metals", 21., 0.54));
 
-			s_BucketMap.put (
-				13,
-				new CTBucket (
-					13,
-					"Grains",
-					21.,
-					0.48
-				)
-			);
+			s_BucketMap.put (13, new CTBucket (13, "Grains", 21., 0.48));
 
-			s_BucketMap.put (
-				14,
-				new CTBucket (
-					14,
-					"Softs",
-					15.,
-					0.15
-				)
-			);
+			s_BucketMap.put (14, new CTBucket (14, "Softs", 15., 0.15));
 
-			s_BucketMap.put (
-				15,
-				new CTBucket (
-					15,
-					"Livestock",
-					13.,
-					0.23
-				)
-			);
+			s_BucketMap.put (15, new CTBucket (15, "Livestock", 13., 0.23));
 
-			s_BucketMap.put (
-				16,
-				new CTBucket (
-					16,
-					"Other",
-					53.,
-					0.00
-				)
-			);
+			s_BucketMap.put (16, new CTBucket (16, "Other",53, 0.));
 
-			s_BucketMap.put (
-				17,
-				new CTBucket (
-					17,
-					"Indexes",
-					17.,
-					0.33
-				)
-			);
-		}
-		catch (Exception e)
-		{
+			s_BucketMap.put (17, new CTBucket (17, "Indexes", 17., 0.33));
+		} catch (Exception e) {
 			e.printStackTrace();
 
 			return false;
@@ -450,9 +288,7 @@ public class CTSettingsContainer24
 	public static final boolean ContainsBucket (
 		final int bucketNumber)
 	{
-		return s_BucketMap.containsKey (
-			bucketNumber
-		);
+		return s_BucketMap.containsKey (bucketNumber);
 	}
 
 	/**
@@ -466,11 +302,7 @@ public class CTSettingsContainer24
 	public static final CTBucket Bucket (
 		final int bucketNumber)
 	{
-		return ContainsBucket (
-			bucketNumber
-		) ? s_BucketMap.get (
-			bucketNumber
-		) : null;
+		return ContainsBucket (bucketNumber) ? s_BucketMap.get (bucketNumber) : null;
 	}
 
 	/**
