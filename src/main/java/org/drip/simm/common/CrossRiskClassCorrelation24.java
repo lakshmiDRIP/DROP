@@ -11,6 +11,9 @@ import org.drip.measure.stochastic.LabelCorrelation;
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * 
  *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
@@ -80,7 +83,7 @@ import org.drip.measure.stochastic.LabelCorrelation;
 
 /**
  * <i>CrossRiskClassCorrelation24</i> contains the SIMM 2.4 Correlation between the Different Risk Classes.
- * The References are:
+ * 	The References are:
  * 
  * <br><br>
  *  <ul>
@@ -107,15 +110,36 @@ import org.drip.measure.stochastic.LabelCorrelation;
  *  			https://www.isda.org/a/CeggE/ISDA-SIMM-v2.4-PUBLIC.pdf
  *  	</li>
  *  </ul>
- * 
- * <br><br>
+ *
+ * 	It provides the following Functionality:
+ *
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md">Portfolio Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/MarginAnalyticsLibrary.md">Initial and Variation Margin Analytics</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/README.md">Initial Margin Analytics based on ISDA SIMM and its Variants</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/common/README.md">Common Cross Risk Factor Utilities</a></li>
+ * 		<li>Correlation between Interest Rate and Credit Qualifying Risk Classes</li>
+ * 		<li>Correlation between Interest Rate and Credit Non-Qualifying Risk Classes</li>
+ * 		<li>Correlation between Interest Rate and Equity Risk Classes</li>
+ * 		<li>Correlation between Interest Rate and Commodity Risk Classes</li>
+ * 		<li>Correlation between Interest Rate and FX Risk Classes</li>
+ * 		<li>Correlation between Credit Qualifying and Credit Non-Qualifying Risk Classes</li>
+ * 		<li>Correlation between Credit Qualifying and Equity Risk Classes</li>
+ * 		<li>Correlation between Credit Qualifying and Commodity Risk Classes</li>
+ * 		<li>Correlation between Credit Qualifying and FX Risk Classes</li>
+ * 		<li>Correlation between Credit Non Qualifying and Equity Risk Classes</li>
+ * 		<li>Correlation between Credit Non Qualifying and Commodity Risk Classes</li>
+ * 		<li>Correlation between Credit Non Qualifying and FX Risk Classes</li>
+ * 		<li>Correlation between Equity and Commodity Risk Classes</li>
+ * 		<li>Correlation between Equity and FX Risk Classes</li>
+ * 		<li>Correlation between Commodity and FX Risk Classes</li>
+ * 		<li>Generate the Corresponding Risk Class Correlation Matrix as a <code>LabelCorrelation</code> Instance</li>
  *  </ul>
- * <br><br>
+ *
+ *	<br>
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md">Portfolio Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/MarginAnalyticsLibrary.md">Initial and Variation Margin Analytics</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/README.md">Initial Margin Analytics based on ISDA SIMM and its Variants</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/common/README.md">Common Cross Risk Factor Utilities</a></td></tr>
+ *  </table>
+ *	<br>
  * 
  * @author Lakshmi Krishnamurthy
  */
