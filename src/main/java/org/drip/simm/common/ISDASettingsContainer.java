@@ -23,6 +23,9 @@ import org.drip.simm.rates.IRSettingsContainer24;
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -96,8 +99,8 @@ import org.drip.simm.rates.IRSettingsContainer24;
 
 /**
  * <i>ISDASettingsContainer</i> holds the ISDA SIMM Risk Weights/Correlations for Interest Rates, Qualifying
- * and Non-qualifying Credit, Equity, Commodity, and Foreign Exchange. The corresponding Concentration
- * Thresholds are also contained. The References are:
+ * 	and Non-qualifying Credit, Equity, Commodity, and Foreign Exchange. The corresponding Concentration
+ * 	Thresholds are also contained. The References are:
  * 
  * <br><br>
  *  <ul>
@@ -124,15 +127,21 @@ import org.drip.simm.rates.IRSettingsContainer24;
  *  			https://www.isda.org/a/CeggE/ISDA-SIMM-v2.4-PUBLIC.pdf
  *  	</li>
  *  </ul>
- * 
- * <br><br>
+ *
+ * 	It provides the following Functionality:
+ *
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md">Portfolio Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/MarginAnalyticsLibrary.md">Initial and Variation Margin Analytics</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/README.md">Initial Margin Analytics based on ISDA SIMM and its Variants</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/common/README.md">Common Cross Risk Factor Utilities</a></li>
+ * 		<li>Initial the ISDA Settings Container</li>
  *  </ul>
- * <br><br>
+ *
+ *	<br>
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md">Portfolio Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/MarginAnalyticsLibrary.md">Initial and Variation Margin Analytics</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/README.md">Initial Margin Analytics based on ISDA SIMM and its Variants</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/common/README.md">Common Cross Risk Factor Utilities</a></td></tr>
+ *  </table>
+ *	<br>
  * 
  * @author Lakshmi Krishnamurthy
  */
@@ -148,88 +157,71 @@ public class ISDASettingsContainer
 
 	public static final boolean Init()
 	{
-		if (!IRSettingsContainer20.Init())
-		{
+		if (!IRSettingsContainer20.Init()) {
 			return false;
 		}
 
-		if (!IRSettingsContainer21.Init())
-		{
+		if (!IRSettingsContainer21.Init()) {
 			return false;
 		}
 
-		if (!IRSettingsContainer24.Init())
-		{
+		if (!IRSettingsContainer24.Init()) {
 			return false;
 		}
 
-		if (!CRQSettingsContainer20.Init())
-		{
+		if (!CRQSettingsContainer20.Init()) {
 			return false;
 		}
 
-		if (!CRQSettingsContainer21.Init())
-		{
+		if (!CRQSettingsContainer21.Init()) {
 			return false;
 		}
 
-		if (!CRQSettingsContainer24.Init())
-		{
+		if (!CRQSettingsContainer24.Init()) {
 			return false;
 		}
 
-		if (!CRNQSettingsContainer20.Init())
-		{
+		if (!CRNQSettingsContainer20.Init()) {
 			return false;
 		}
 
-		if (!CRNQSettingsContainer21.Init())
-		{
+		if (!CRNQSettingsContainer21.Init()) {
 			return false;
 		}
 
-		if (!CRNQSettingsContainer24.Init())
-		{
+		if (!CRNQSettingsContainer24.Init()) {
 			return false;
 		}
 
-		if (!EQSettingsContainer20.Init())
-		{
+		if (!EQSettingsContainer20.Init()) {
 			return false;
 		}
 
-		if (!EQSettingsContainer21.Init())
-		{
+		if (!EQSettingsContainer21.Init()) {
 			return false;
 		}
 
-		if (!EQSettingsContainer24.Init())
-		{
+		if (!EQSettingsContainer24.Init()) {
 			return false;
 		}
 
-		if (!CTSettingsContainer20.Init())
-		{
+		if (!CTSettingsContainer20.Init()) {
 			return false;
 		}
 
-		if (!CTSettingsContainer21.Init())
-		{
+		if (!CTSettingsContainer21.Init()) {
 			return false;
 		}
 
-		if (!CTSettingsContainer24.Init())
-		{
+		if (!CTSettingsContainer24.Init()) {
 			return false;
 		}
 
-		if (!FXVolatilityGroupContainer24.Init())
-		{
+		if (!FXVolatilityGroupContainer24.Init()) {
 			return false;
 		}
 
-		if (!RiskFactorThresholdContainer.Init())
-		{
+		if (!RiskFactorThresholdContainer.Init()) {
 			return false;
 		}
 
