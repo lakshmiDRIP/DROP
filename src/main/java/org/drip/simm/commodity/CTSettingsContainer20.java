@@ -15,6 +15,9 @@ import org.drip.simm.foundation.RiskGroupPrincipalCovariance;
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -88,7 +91,7 @@ import org.drip.simm.foundation.RiskGroupPrincipalCovariance;
 
 /**
  * <i>CTSettingsContainer20</i> holds the ISDA SIMM 2.0 Commodity Buckets and their Correlations. The
- * References are:
+ * 	References are:
  * 
  * <br><br>
  *  <ul>
@@ -115,15 +118,27 @@ import org.drip.simm.foundation.RiskGroupPrincipalCovariance;
  *  			https://www.isda.org/a/oFiDE/isda-simm-v2.pdf
  *  	</li>
  *  </ul>
- * 
- * <br><br>
+ *
+ * 	It provides the following Functionality:
+ *
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md">Portfolio Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/MarginAnalyticsLibrary.md">Initial and Variation Margin Analytics</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/README.md">Initial Margin Analytics based on ISDA SIMM and its Variants</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/commodity/README.md">Commodity Risk Factor Calibration Settings</a></li>
+ * 		<li>Initialize the Commodity Settings Container</li>
+ * 		<li>Retrieve the Set of Bucket Indexes available</li>
+ * 		<li>Indicate if the Bucket denoted by the Number is available</li>
+ * 		<li>Retrieve the Bucket denoted by the Number</li>
+ * 		<li>Retrieve the Cross Bucket Correlation</li>
+ * 		<li>Retrieve the Bucket Map</li>
+ * 		<li>Retrieve the Cross Bucket Co-variance Matrix</li>
  *  </ul>
- * <br><br>
+ *
+ *	<br>
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md">Portfolio Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/MarginAnalyticsLibrary.md">Initial and Variation Margin Analytics</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/README.md">Initial Margin Analytics based on ISDA SIMM and its Variants</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/commodity/README.md">Commodity Risk Factor Calibration Settings</a></td></tr>
+ *  </table>
+ *	<br>
  * 
  * @author Lakshmi Krishnamurthy
  */
@@ -138,80 +153,44 @@ public class CTSettingsContainer20
 	{
 		List<String> bucketList = new ArrayList<String>();
 
-		bucketList.add (
-			"1"
-		);
+		bucketList.add ("1");
 
-		bucketList.add (
-			"2"
-		);
+		bucketList.add ("2");
 
-		bucketList.add (
-			"3"
-		);
+		bucketList.add ("3");
 
-		bucketList.add (
-			"4"
-		);
+		bucketList.add ("4");
 
-		bucketList.add (
-			"5"
-		);
+		bucketList.add ("5");
 
-		bucketList.add (
-			"6"
-		);
+		bucketList.add ("6");
 
-		bucketList.add (
-			"7"
-		);
+		bucketList.add ("7");
 
-		bucketList.add (
-			"8"
-		);
+		bucketList.add ("8");
 
-		bucketList.add (
-			"9"
-		);
+		bucketList.add ("9");
 
-		bucketList.add (
-			"10"
-		);
+		bucketList.add ("10");
 
-		bucketList.add (
-			"11"
-		);
+		bucketList.add ("11");
 
-		bucketList.add (
-			"12"
-		);
+		bucketList.add ("12");
 
-		bucketList.add (
-			"13"
-		);
+		bucketList.add ("13");
 
-		bucketList.add (
-			"14"
-		);
+		bucketList.add ("14");
 
-		bucketList.add (
-			"15"
-		);
+		bucketList.add ("15");
 
-		bucketList.add (
-			"16"
-		);
+		bucketList.add ("16");
 
-		bucketList.add (
-			"17"
-		);
+		bucketList.add ("17");
 
-		try
-		{
+		try {
 			s_CrossBucketCorrelation = new LabelCorrelation (
 				bucketList,
-				new double[][]
-				{
+				new double[][] {
 					{ 1.00, 0.18, 0.15, 0.20, 0.25, 0.08, 0.19, 0.01, 0.27, 0.00, 0.15, 0.02, 0.06, 0.07,-0.04, 0.00, 0.06}, // #01
 					{ 0.18, 1.00, 0.89, 0.94, 0.93, 0.32, 0.22, 0.27, 0.24, 0.09, 0.45, 0.21, 0.32, 0.28, 0.17, 0.00, 0.37}, // #02
 					{ 0.15, 0.89, 1.00, 0.87, 0.88, 0.25, 0.16, 0.19, 0.12, 0.10, 0.26,-0.01, 0.19, 0.17, 0.10, 0.00, 0.27}, // #03
@@ -233,9 +212,7 @@ public class CTSettingsContainer20
 			);
 
 			return true;
-		}
-		catch (Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -250,180 +227,41 @@ public class CTSettingsContainer20
 
 	public static final boolean Init()
 	{
-		try
-		{
-			s_BucketMap.put (
-				1,
-				new CTBucket (
-					1,
-					"Coal",
-					19.,
-					0.30
-				)
-			);
+		try {
+			s_BucketMap.put (1, new CTBucket (1, "Coal", 19., 0.30));
 
-			s_BucketMap.put (
-				2,
-				new CTBucket (
-					2,
-					"Crude",
-					20.,
-					0.97
-				)
-			);
+			s_BucketMap.put (2, new CTBucket (2, "Crude", 20., 0.97));
 
-			s_BucketMap.put (
-				3,
-				new CTBucket (
-					3,
-					"Light Ends",
-					17.,
-					0.93
-				)
-			);
+			s_BucketMap.put (3, new CTBucket (3, "Light Ends", 17., 0.93));
 
-			s_BucketMap.put (
-				4,
-				new CTBucket (
-					4,
-					"Middle Distillates",
-					18.,
-					0.98
-				)
-			);
+			s_BucketMap.put (4, new CTBucket (4, "Middle Distillates", 18., 0.98));
 
-			s_BucketMap.put (
-				5,
-				new CTBucket (
-					5,
-					"Heavy Distillates",
-					24.,
-					0.99
-				)
-			);
+			s_BucketMap.put (5, new CTBucket (5, "Heavy Distillates", 24., 0.99));
 
-			s_BucketMap.put (
-				6,
-				new CTBucket (
-					6,
-					"North American Natural Gas",
-					20.,
-					0.92
-				)
-			);
+			s_BucketMap.put (6, new CTBucket (6, "North American Natural Gas",20., 0.92));
 
-			s_BucketMap.put (
-				7,
-				new CTBucket (
-					7,
-					"European Natural Gas",
-					24.,
-					0.999
-				)
-			);
+			s_BucketMap.put (7, new CTBucket (7, "European Natural Gas", 24., 0.999));
 
-			s_BucketMap.put (
-				8,
-				new CTBucket (
-					8,
-					"North American Power",
-					41.,
-					0.58
-				)
-			);
+			s_BucketMap.put (8, new CTBucket (8, "North American Power", 41., 0.58));
 
-			s_BucketMap.put (
-				9,
-				new CTBucket (
-					9,
-					"European Power",
-					25.,
-					0.999
-				)
-			);
+			s_BucketMap.put (9, new CTBucket (9, "European Power", 25., 0.999));
 
-			s_BucketMap.put (
-				10,
-				new CTBucket (
-					10,
-					"Freight",
-					91.,
-					0.10
-				)
-			);
+			s_BucketMap.put (10, new CTBucket (10, "Freight", 91., 0.10));
 
-			s_BucketMap.put (
-				11,
-				new CTBucket (
-					11,
-					"Base Metals",
-					20.,
-					0.55
-				)
-			);
+			s_BucketMap.put (11, new CTBucket (11, "Base Metals", 20., 0.55));
 
-			s_BucketMap.put (
-				12,
-				new CTBucket (
-					12,
-					"Precious Metals",
-					19.,
-					0.64
-				)
-			);
+			s_BucketMap.put (12, new CTBucket (12, "Precious Metals", 19., 0.64));
 
-			s_BucketMap.put (
-				13,
-				new CTBucket (
-					13,
-					"Grains",
-					16.,
-					0.71
-				)
-			);
+			s_BucketMap.put (13, new CTBucket (13, "Grains", 16., 0.71));
 
-			s_BucketMap.put (
-				14,
-				new CTBucket (
-					14,
-					"Softs",
-					15.,
-					0.22
-				)
-			);
+			s_BucketMap.put (14, new CTBucket (14, "Softs", 15., 0.22));
 
-			s_BucketMap.put (
-				15,
-				new CTBucket (
-					15,
-					"Livestock",
-					10.,
-					0.29
-				)
-			);
+			s_BucketMap.put (15, new CTBucket (15, "Livestock", 10., 0.29));
 
-			s_BucketMap.put (
-				16,
-				new CTBucket (
-					16,
-					"Other",
-					91.,
-					0.00
-				)
-			);
+			s_BucketMap.put (16, new CTBucket (16, "Other",91., 0.));
 
-			s_BucketMap.put (
-				17,
-				new CTBucket (
-					17,
-					"Indexes",
-					17.,
-					0.21
-				)
-			);
-		}
-		catch (Exception e)
-		{
+			s_BucketMap.put (17, new CTBucket (17, "Indexes", 17., 0.21));
+		} catch (Exception e) {
 			e.printStackTrace();
 
 			return false;
@@ -454,9 +292,7 @@ public class CTSettingsContainer20
 	public static final boolean ContainsBucket (
 		final int bucketNumber)
 	{
-		return s_BucketMap.containsKey (
-			bucketNumber
-		);
+		return s_BucketMap.containsKey (bucketNumber);
 	}
 
 	/**
@@ -470,11 +306,7 @@ public class CTSettingsContainer20
 	public static final CTBucket Bucket (
 		final int bucketNumber)
 	{
-		return ContainsBucket (
-			bucketNumber
-		) ? s_BucketMap.get (
-			bucketNumber
-		) : null;
+		return ContainsBucket (bucketNumber) ? s_BucketMap.get (bucketNumber) : null;
 	}
 
 	/**
@@ -507,9 +339,6 @@ public class CTSettingsContainer20
 
 	public static final RiskGroupPrincipalCovariance CrossBucketPrincipalCovariance()
 	{
-		return RiskGroupPrincipalCovariance.Standard (
-			s_CrossBucketCorrelation.matrix(),
-			1.
-		);
+		return RiskGroupPrincipalCovariance.Standard (s_CrossBucketCorrelation.matrix(), 1.);
 	}
 }
