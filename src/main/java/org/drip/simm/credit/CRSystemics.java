@@ -6,6 +6,9 @@ package org.drip.simm.credit;
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -79,7 +82,7 @@ package org.drip.simm.credit;
 
 /**
  * <i>CRSystemics</i> contains the Systemic Settings Common to both Qualifying and Non-Qualifying Credit Risk
- * Factors. The References are:
+ * 	Factors. The References are:
  * 
  * <br><br>
  *  <ul>
@@ -106,15 +109,27 @@ package org.drip.simm.credit;
  *  			https://www.isda.org/a/oFiDE/isda-simm-v2.pdf
  *  	</li>
  *  </ul>
- * 
- * <br><br>
+ *
+ * 	It provides the following Functionality:
+ *
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md">Portfolio Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/MarginAnalyticsLibrary.md">Initial and Variation Margin Analytics</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/README.md">Initial Margin Analytics based on ISDA SIMM and its Variants</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/credit/README.md">Credit Qualifying/Non-Qualifying Risk Factor Settings</a></li>
+ * 		<li>The "Investment Grade" Credit Quality</li>
+ * 		<li>The "IG" Credit Quality</li>
+ * 		<li>The "High Yield" HY Credit Quality</li>
+ * 		<li>The "High Yield" Credit Quality</li>
+ * 		<li>The "Not Rated" NR Credit Quality</li>
+ * 		<li>The "Not Rated" Credit Quality</li>
+ * 		<li>The "Unspecified" Credit Quality</li>
  *  </ul>
- * <br><br>
+ *
+ *	<br>
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md">Portfolio Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/MarginAnalyticsLibrary.md">Initial and Variation Margin Analytics</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/README.md">Initial Margin Analytics based on ISDA SIMM and its Variants</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/credit/README.md">Credit Qualifying/Non-Qualifying Risk Factor Settings</a></td></tr>
+ *  </table>
+ *	<br>
  * 
  * @author Lakshmi Krishnamurthy
  */
@@ -135,7 +150,7 @@ public class CRSystemics
 	public static final java.lang.String CREDIT_QUALITY_INVESTMENT_GRADE = "IG";
 
 	/**
-	 * The "High Yield" Credit Quality
+	 * The "High Yield" HY Credit Quality
 	 */
 
 	public static final java.lang.String CREDIT_QUALITY_HY = "HY";
@@ -147,7 +162,7 @@ public class CRSystemics
 	public static final java.lang.String CREDIT_QUALITY_HIGH_YIELD = "HY";
 
 	/**
-	 * The "Not Rated" Credit Quality
+	 * The "Not Rated" NR Credit Quality
 	 */
 
 	public static final java.lang.String CREDIT_QUALITY_NR = "NR";
