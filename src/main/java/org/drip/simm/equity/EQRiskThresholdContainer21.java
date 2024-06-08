@@ -151,114 +151,33 @@ public class EQRiskThresholdContainer21
 
 	public static final boolean Init()
 	{
-		try
-		{
-			s_DeltaVegaThresholdMap.put (
-				-1,
-				new DeltaVegaThreshold (
-					1.8,
-					43.
-				)
-			);
+		try {
+			s_DeltaVegaThresholdMap.put (-1, new DeltaVegaThreshold (1.8, 43.));
 
-			s_DeltaVegaThresholdMap.put (
-				1,
-				new DeltaVegaThreshold (
-					8.4,
-					220.
-				)
-			);
+			s_DeltaVegaThresholdMap.put (1, new DeltaVegaThreshold (8.4, 220.));
 
-			s_DeltaVegaThresholdMap.put (
-				2,
-				new DeltaVegaThreshold (
-					8.4,
-					220.
-				)
-			);
+			s_DeltaVegaThresholdMap.put (2, new DeltaVegaThreshold (8.4, 220.));
 
-			s_DeltaVegaThresholdMap.put (
-				3,
-				new DeltaVegaThreshold (
-					8.4,
-					220.
-				)
-			);
+			s_DeltaVegaThresholdMap.put (3, new DeltaVegaThreshold (8.4, 220.));
 
-			s_DeltaVegaThresholdMap.put (
-				4,
-				new DeltaVegaThreshold (
-					8.4,
-					220.
-				)
-			);
+			s_DeltaVegaThresholdMap.put (4, new DeltaVegaThreshold (8.4, 220.));
 
-			s_DeltaVegaThresholdMap.put (
-				5,
-				new DeltaVegaThreshold (
-					26.,
-					2300.
-				)
-			);
+			s_DeltaVegaThresholdMap.put (5, new DeltaVegaThreshold (26., 2300.));
 
-			s_DeltaVegaThresholdMap.put (
-				6,
-				new DeltaVegaThreshold (
-					26.,
-					2300.
-				)
-			);
+			s_DeltaVegaThresholdMap.put (6, new DeltaVegaThreshold (26., 2300.));
 
-			s_DeltaVegaThresholdMap.put (
-				7,
-				new DeltaVegaThreshold (
-					26.,
-					2300.
-				)
-			);
+			s_DeltaVegaThresholdMap.put (7, new DeltaVegaThreshold (26., 2300.));
 
-			s_DeltaVegaThresholdMap.put (
-				8,
-				new DeltaVegaThreshold (
-					26.,
-					2300.
-				)
-			);
+			s_DeltaVegaThresholdMap.put (8, new DeltaVegaThreshold (26., 2300.));
 
-			s_DeltaVegaThresholdMap.put (
-				9,
-				new DeltaVegaThreshold (
-					1.8,
-					43.
-				)
-			);
+			s_DeltaVegaThresholdMap.put (9, new DeltaVegaThreshold (1.8, 43.));
 
-			s_DeltaVegaThresholdMap.put (
-				10,
-				new DeltaVegaThreshold (
-					1.9,
-					250.
-				)
-			);
+			s_DeltaVegaThresholdMap.put (10, new DeltaVegaThreshold (1.9, 250.));
 
-			s_DeltaVegaThresholdMap.put (
-				11,
-				new DeltaVegaThreshold (
-					540.,
-					8100.
-				)
-			);
+			s_DeltaVegaThresholdMap.put (11, new DeltaVegaThreshold (540., 8100.));
 
-			s_DeltaVegaThresholdMap.put (
-				12,
-				new DeltaVegaThreshold (
-					540.,
-					8100.
-				)
-			);
-		}
-		catch (Exception e)
-		{
+			s_DeltaVegaThresholdMap.put (12, new DeltaVegaThreshold (540., 8100.));
+		} catch (Exception e) {
 			e.printStackTrace();
 
 			return false;
@@ -289,9 +208,7 @@ public class EQRiskThresholdContainer21
 	public static final boolean ContainsBucket (
 		final int bucketNumber)
 	{
-		return s_DeltaVegaThresholdMap.containsKey (
-			bucketNumber
-		);
+		return s_DeltaVegaThresholdMap.containsKey (bucketNumber);
 	}
 
 	/**
@@ -305,11 +222,7 @@ public class EQRiskThresholdContainer21
 	public static final DeltaVegaThreshold Threshold (
 		final int bucketNumber)
 	{
-		return ContainsBucket (
-			bucketNumber
-		) ? s_DeltaVegaThresholdMap.get (
-			bucketNumber
-		) : null;
+		return ContainsBucket (bucketNumber) ? s_DeltaVegaThresholdMap.get (bucketNumber) : null;
 	}
 
 	/**

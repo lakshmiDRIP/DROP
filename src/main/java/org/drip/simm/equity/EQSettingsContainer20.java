@@ -16,6 +16,9 @@ import org.drip.simm.foundation.RiskGroupPrincipalCovariance;
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -89,7 +92,7 @@ import org.drip.simm.foundation.RiskGroupPrincipalCovariance;
 
 /**
  * <i>EQSettingsContainer20</i> holds the ISDA SIMM 2.0 Equity Buckets and their Correlations. The References
- * are:
+ * 	are:
  * 
  * <br><br>
  *  <ul>
@@ -116,15 +119,27 @@ import org.drip.simm.foundation.RiskGroupPrincipalCovariance;
  *  			https://www.isda.org/a/oFiDE/isda-simm-v2.pdf
  *  	</li>
  *  </ul>
- * 
- * <br><br>
+ *
+ * 	It provides the following Functionality:
+ *
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md">Portfolio Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/MarginAnalyticsLibrary.md">Initial and Variation Margin Analytics</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/README.md">Initial Margin Analytics based on ISDA SIMM and its Variants</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/equity/README.md">Equity Risk Factor Calibration Settings</a></li>
+ * 		<li>Initialize the Equity Settings Container</li>
+ * 		<li>Retrieve the Set of Bucket Indexes available</li>
+ * 		<li>Indicate if the Bucket denoted by the Number is available</li>
+ * 		<li>Retrieve the Bucket denoted by the Number</li>
+ * 		<li>Retrieve the Cross Bucket Correlation</li>
+ * 		<li>Retrieve the Bucket Map</li>
+ * 		<li>Retrieve the Cross Bucket Co-variance Matrix</li>
  *  </ul>
- * <br><br>
+ *
+ *	<br>
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md">Portfolio Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/MarginAnalyticsLibrary.md">Initial and Variation Margin Analytics</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/README.md">Initial Margin Analytics based on ISDA SIMM and its Variants</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/equity/README.md">Equity Risk Factor Calibration Settings</a></td></tr>
+ *  </table>
+ *	<br>
  * 
  * @author Lakshmi Krishnamurthy
  */
@@ -139,60 +154,34 @@ public class EQSettingsContainer20
 	{
 		List<String> bucketList = new ArrayList<String>();
 
-		bucketList.add (
-			"1"
-		);
+		bucketList.add ("1");
 
-		bucketList.add (
-			"2"
-		);
+		bucketList.add ("2");
 
-		bucketList.add (
-			"3"
-		);
+		bucketList.add ("3");
 
-		bucketList.add (
-			"4"
-		);
+		bucketList.add ("4");
 
-		bucketList.add (
-			"5"
-		);
+		bucketList.add ("5");
 
-		bucketList.add (
-			"6"
-		);
+		bucketList.add ("6");
 
-		bucketList.add (
-			"7"
-		);
+		bucketList.add ("7");
 
-		bucketList.add (
-			"8"
-		);
+		bucketList.add ("8");
 
-		bucketList.add (
-			"9"
-		);
+		bucketList.add ("9");
 
-		bucketList.add (
-			"10"
-		);
+		bucketList.add ("10");
 
-		bucketList.add (
-			"11"
-		);
+		bucketList.add ("11");
 
-		bucketList.add (
-			"12"
-		);
+		bucketList.add ("12");
 
-		try
-		{
+		try {
 			s_CrossBucketCorrelation = new LabelCorrelation (
 				bucketList,
-				new double[][]
-				{
+				new double[][] {
 					{1.00, 0.15, 0.14, 0.16, 0.10, 0.12, 0.10, 0.11, 0.13, 0.09, 0.17, 0.17}, // #01
 					{0.15, 1.00, 0.16, 0.17, 0.10, 0.11, 0.10, 0.11, 0.14, 0.09, 0.17, 0.17}, // #02
 					{0.14, 0.16, 1.00, 0.19, 0.14, 0.17, 0.18, 0.17, 0.16, 0.14, 0.25, 0.25}, // #03
@@ -209,9 +198,7 @@ public class EQSettingsContainer20
 			);
 
 			return true;
-		}
-		catch (Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -226,8 +213,7 @@ public class EQSettingsContainer20
 
 	public static final boolean Init()
 	{
-		try
-		{
+		try {
 			s_BucketMap.put (
 				-1,
 				new EQBucket (
@@ -396,9 +382,7 @@ public class EQSettingsContainer20
 					0.28
 				)
 			);
-		}
-		catch (Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 
 			return false;
@@ -429,9 +413,7 @@ public class EQSettingsContainer20
 	public static final boolean ContainsBucket (
 		final int bucketNumber)
 	{
-		return s_BucketMap.containsKey (
-			bucketNumber
-		);
+		return s_BucketMap.containsKey (bucketNumber);
 	}
 
 	/**
@@ -445,11 +427,7 @@ public class EQSettingsContainer20
 	public static final EQBucket Bucket (
 		final int bucketNumber)
 	{
-		return ContainsBucket (
-			bucketNumber
-		) ? s_BucketMap.get (
-			bucketNumber
-		) : null;
+		return ContainsBucket (bucketNumber) ? s_BucketMap.get (bucketNumber) : null;
 	}
 
 	/**
@@ -482,9 +460,6 @@ public class EQSettingsContainer20
 
 	public static final RiskGroupPrincipalCovariance CrossBucketPrincipalCovariance()
 	{
-		return RiskGroupPrincipalCovariance.Standard (
-			s_CrossBucketCorrelation.matrix(),
-			1.
-		);
+		return RiskGroupPrincipalCovariance.Standard (s_CrossBucketCorrelation.matrix(), 1.);
 	}
 }

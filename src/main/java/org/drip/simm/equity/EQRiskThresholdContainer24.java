@@ -12,6 +12,9 @@ import org.drip.simm.common.DeltaVegaThreshold;
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * 
  *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
@@ -81,7 +84,7 @@ import org.drip.simm.common.DeltaVegaThreshold;
 
 /**
  * <i>EQRiskThresholdContainer24</i> holds the ISDA SIMM 2.4 Equity Risk Thresholds - the Equity Buckets and
- * the Delta/Vega Limits defined for the Concentration Thresholds. The References are:
+ * 	the Delta/Vega Limits defined for the Concentration Thresholds. The References are:
  * 
  * <br><br>
  *  <ul>
@@ -108,15 +111,25 @@ import org.drip.simm.common.DeltaVegaThreshold;
  *  			https://www.isda.org/a/CeggE/ISDA-SIMM-v2.4-PUBLIC.pdf
  *  	</li>
  *  </ul>
- * 
- * <br><br>
+ *
+ * 	It provides the following Functionality:
+ *
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md">Portfolio Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/MarginAnalyticsLibrary.md">Initial and Variation Margin Analytics</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/README.md">Initial Margin Analytics based on ISDA SIMM and its Variants</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/equity/README.md">Equity Risk Factor Calibration Settings</a></li>
+ * 		<li>Initialize the Equity Risk Threshold Container</li>
+ * 		<li>Retrieve the Bucket Number Set</li>
+ * 		<li>Indicate if the Bucket is contained the Threshold Container</li>
+ * 		<li>Retrieve the Equity Threshold specified by the Bucket Number</li>
+ * 		<li>Retrieve the Delta Vega Threshold Map</li>
  *  </ul>
- * <br><br>
+ *
+ *	<br>
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md">Portfolio Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/MarginAnalyticsLibrary.md">Initial and Variation Margin Analytics</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/README.md">Initial Margin Analytics based on ISDA SIMM and its Variants</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/equity/README.md">Equity Risk Factor Calibration Settings</a></td></tr>
+ *  </table>
+ *	<br>
  * 
  * @author Lakshmi Krishnamurthy
  */
@@ -134,114 +147,33 @@ public class EQRiskThresholdContainer24
 
 	public static final boolean Init()
 	{
-		try
-		{
-			s_DeltaVegaThresholdMap.put (
-				-1,
-				new DeltaVegaThreshold (
-					0.9,
-					33.
-				)
-			);
+		try {
+			s_DeltaVegaThresholdMap.put (-1, new DeltaVegaThreshold (0.9, 33.));
 
-			s_DeltaVegaThresholdMap.put (
-				1,
-				new DeltaVegaThreshold (
-					9.0,
-					160.
-				)
-			);
+			s_DeltaVegaThresholdMap.put (1, new DeltaVegaThreshold (9., 160.));
 
-			s_DeltaVegaThresholdMap.put (
-				2,
-				new DeltaVegaThreshold (
-					9.0,
-					160.
-				)
-			);
+			s_DeltaVegaThresholdMap.put (2, new DeltaVegaThreshold (9., 160.));
 
-			s_DeltaVegaThresholdMap.put (
-				3,
-				new DeltaVegaThreshold (
-					9.0,
-					160.
-				)
-			);
+			s_DeltaVegaThresholdMap.put (3, new DeltaVegaThreshold (9., 160.));
 
-			s_DeltaVegaThresholdMap.put (
-				4,
-				new DeltaVegaThreshold (
-					9.0,
-					160.
-				)
-			);
+			s_DeltaVegaThresholdMap.put (4, new DeltaVegaThreshold (9., 160.));
 
-			s_DeltaVegaThresholdMap.put (
-				5,
-				new DeltaVegaThreshold (
-					18.,
-					1600.
-				)
-			);
+			s_DeltaVegaThresholdMap.put (5, new DeltaVegaThreshold (18., 1600.));
 
-			s_DeltaVegaThresholdMap.put (
-				6,
-				new DeltaVegaThreshold (
-					18.,
-					1600.
-				)
-			);
+			s_DeltaVegaThresholdMap.put (6, new DeltaVegaThreshold (18., 1600.));
 
-			s_DeltaVegaThresholdMap.put (
-				7,
-				new DeltaVegaThreshold (
-					18.,
-					1600.
-				)
-			);
+			s_DeltaVegaThresholdMap.put (7, new DeltaVegaThreshold (18., 1600.));
 
-			s_DeltaVegaThresholdMap.put (
-				8,
-				new DeltaVegaThreshold (
-					18.,
-					1600.
-				)
-			);
+			s_DeltaVegaThresholdMap.put (8, new DeltaVegaThreshold (18., 1600.));
 
-			s_DeltaVegaThresholdMap.put (
-				9,
-				new DeltaVegaThreshold (
-					1.2,
-					38.
-				)
-			);
+			s_DeltaVegaThresholdMap.put (9, new DeltaVegaThreshold (1.2, 38.));
 
-			s_DeltaVegaThresholdMap.put (
-				10,
-				new DeltaVegaThreshold (
-					0.9,
-					260.
-				)
-			);
+			s_DeltaVegaThresholdMap.put (10, new DeltaVegaThreshold (0.9, 260.));
 
-			s_DeltaVegaThresholdMap.put (
-				11,
-				new DeltaVegaThreshold (
-					1300.,
-					7000.
-				)
-			);
+			s_DeltaVegaThresholdMap.put (11, new DeltaVegaThreshold (1300., 7000.));
 
-			s_DeltaVegaThresholdMap.put (
-				12,
-				new DeltaVegaThreshold (
-					1300.,
-					7000.
-				)
-			);
-		}
-		catch (Exception e)
-		{
+			s_DeltaVegaThresholdMap.put (12, new DeltaVegaThreshold (1300., 7000.));
+		} catch (Exception e) {
 			e.printStackTrace();
 
 			return false;
@@ -272,9 +204,7 @@ public class EQRiskThresholdContainer24
 	public static final boolean ContainsBucket (
 		final int bucketNumber)
 	{
-		return s_DeltaVegaThresholdMap.containsKey (
-			bucketNumber
-		);
+		return s_DeltaVegaThresholdMap.containsKey (bucketNumber);
 	}
 
 	/**
@@ -288,11 +218,7 @@ public class EQRiskThresholdContainer24
 	public static final DeltaVegaThreshold Threshold (
 		final int bucketNumber)
 	{
-		return ContainsBucket (
-			bucketNumber
-		) ? s_DeltaVegaThresholdMap.get (
-			bucketNumber
-		) : null;
+		return ContainsBucket (bucketNumber) ? s_DeltaVegaThresholdMap.get (bucketNumber) : null;
 	}
 
 	/**
