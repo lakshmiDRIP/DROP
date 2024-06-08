@@ -11,6 +11,9 @@ import java.util.TreeMap;
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -110,15 +113,26 @@ import java.util.TreeMap;
  *  			https://www.isda.org/a/oFiDE/isda-simm-v2.pdf
  *  	</li>
  *  </ul>
- * 
- * <br><br>
+ *
+ * 	It provides the following Functionality:
+ *
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md">Portfolio Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/MarginAnalyticsLibrary.md">Initial and Variation Margin Analytics</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/README.md">Initial Margin Analytics based on ISDA SIMM and its Variants</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/credit/README.md">Credit Qualifying/Non-Qualifying Risk Factor Settings</a></li>
+ * 		<li>Initial the Credit Non-Qualifying Settings</li>
+ * 		<li>Retrieve the Standard ISDA Credit Tenor Set</li>
+ * 		<li>Retrieve the Set of Bucket Indexes available</li>
+ * 		<li>Indicate if the Bucket denoted by the Number is available</li>
+ * 		<li>Retrieve the Bucket denoted by the Number</li>
+ * 		<li>Retrieve the Bucket Map</li>
  *  </ul>
- * <br><br>
+ *
+ *	<br>
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md">Portfolio Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/MarginAnalyticsLibrary.md">Initial and Variation Margin Analytics</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/README.md">Initial Margin Analytics based on ISDA SIMM and its Variants</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/credit/README.md">Credit Qualifying/Non-Qualifying Risk Factor Settings</a></td></tr>
+ *  </table>
+ *	<br>
  * 
  * @author Lakshmi Krishnamurthy
  */
@@ -135,16 +149,10 @@ public class CRNQSettingsContainer21
 
 	public static final boolean Init()
 	{
-		try
-		{
+		try {
 			s_BucketMap.put (
 				-1,
-				new CRBucket (
-					-1,
-					CRSystemics.CREDIT_QUALITY_UNSPECIFIED,
-					SectorSystemics.RESIDUAL,
-					1200.
-				)
+				new CRBucket (-1, CRSystemics.CREDIT_QUALITY_UNSPECIFIED, SectorSystemics.RESIDUAL, 1200.)
 			);
 
 			s_BucketMap.put (
@@ -159,16 +167,9 @@ public class CRNQSettingsContainer21
 
 			s_BucketMap.put (
 				2,
-				new CRBucket (
-					2,
-					CRSystemics.CREDIT_QUALITY_HIGH_YIELD,
-					SectorSystemics.RMBS_CMBS,
-					1200.
-				)
+				new CRBucket (2, CRSystemics.CREDIT_QUALITY_HIGH_YIELD, SectorSystemics.RMBS_CMBS, 1200.)
 			);
-		}
-		catch (Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 
 			return false;
@@ -187,25 +188,15 @@ public class CRNQSettingsContainer21
 	{
 		Set<java.lang.String> tenorSet = new HashSet<String>();
 
-		tenorSet.add (
-			"1Y"
-		);
+		tenorSet.add ("1Y");
 
-		tenorSet.add (
-			"2Y"
-		);
+		tenorSet.add ("2Y");
 
-		tenorSet.add (
-			"3Y"
-		);
+		tenorSet.add ("3Y");
 
-		tenorSet.add (
-			"5Y"
-		);
+		tenorSet.add ("5Y");
 
-		tenorSet.add (
-			"10Y"
-		);
+		tenorSet.add ("10Y");
 
 		return tenorSet;
 	}
@@ -246,11 +237,7 @@ public class CRNQSettingsContainer21
 	public static final CRBucket Bucket (
 		final int bucketNumber)
 	{
-		return ContainsBucket (
-			bucketNumber
-		) ? s_BucketMap.get (
-			bucketNumber
-		) : null;
+		return ContainsBucket (bucketNumber) ? s_BucketMap.get (bucketNumber) : null;
 	}
 
 	/**

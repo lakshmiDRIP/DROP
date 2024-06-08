@@ -12,6 +12,9 @@ import org.drip.numerical.common.NumberUtil;
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -85,7 +88,7 @@ import org.drip.numerical.common.NumberUtil;
 
 /**
  * <i>CRBucket</i> holds the ISDA SIMM Credit Quality, Sector List, and Risk Weights for a given Credit
- * Qualifying/Non-Qualifying Issuer Exposure Bucket. The References are:
+ * 	Qualifying/Non-Qualifying Issuer Exposure Bucket. The References are:
  * 
  * <br><br>
  *  <ul>
@@ -112,15 +115,26 @@ import org.drip.numerical.common.NumberUtil;
  *  			https://www.isda.org/a/oFiDE/isda-simm-v2.pdf
  *  	</li>
  *  </ul>
- * 
- * <br><br>
+ *
+ * 	It provides the following Functionality:
+ *
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md">Portfolio Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/MarginAnalyticsLibrary.md">Initial and Variation Margin Analytics</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/README.md">Initial Margin Analytics based on ISDA SIMM and its Variants</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/credit/README.md">Credit Qualifying/Non-Qualifying Risk Factor Settings</a></li>
+ * 		<li><i>CRBucket</i> Constructor</li>
+ * 		<li>Retrieve the SIMM Bucket Number</li>
+ * 		<li>Retrieve the SIMM Credit Quality</li>
+ * 		<li>Retrieve the SIMM Sector Array</li>
+ * 		<li>Retrieve the Risk Weight</li>
+ * 		<li>Retrieve the Credit Tenor Risk Weight Map</li>
  *  </ul>
- * <br><br>
+ *
+ *	<br>
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md">Portfolio Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/MarginAnalyticsLibrary.md">Initial and Variation Margin Analytics</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/README.md">Initial Margin Analytics based on ISDA SIMM and its Variants</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/credit/README.md">Credit Qualifying/Non-Qualifying Risk Factor Settings</a></td></tr>
+ *  </table>
+ *	<br>
  * 
  * @author Lakshmi Krishnamurthy
  */
@@ -152,14 +166,9 @@ public class CRBucket
 	{
 		if (null == (_quality = quality) || _quality.isEmpty() ||
 			null == (_sectorArray = sectorArray) || 0 == _sectorArray.length ||
-			!NumberUtil.IsValid (
-				_riskWeight = riskWeight
-			)
-		)
+			!NumberUtil.IsValid (_riskWeight = riskWeight))
 		{
-			throw new Exception (
-				"CRBucket Constructor => Invalid Inputs"
-			);
+			throw new Exception ("CRBucket Constructor => Invalid Inputs");
 		}
 
 		_number = number;
@@ -220,19 +229,14 @@ public class CRBucket
 	public Map<String, Double> tenorWeightMap (
 		final Set<String> tenorSet)
 	{
-		if (null == tenorSet || 0 == tenorSet.size())
-		{
+		if (null == tenorSet || 0 == tenorSet.size()) {
 			return null;
 		}
 
 		Map<String, Double> tenorWeightMap = new HashMap<String, Double>();
 
-		for (Map.Entry<String, Double> tenorWeightEntry : tenorWeightMap.entrySet())
-		{
-			tenorWeightMap.put (
-				tenorWeightEntry.getKey(),
-				_riskWeight
-			);
+		for (Map.Entry<String, Double> tenorWeightEntry : tenorWeightMap.entrySet()) {
+			tenorWeightMap.put (tenorWeightEntry.getKey(), _riskWeight);
 		}
 
 		return tenorWeightMap;
