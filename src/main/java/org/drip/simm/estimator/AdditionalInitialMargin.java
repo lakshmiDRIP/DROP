@@ -11,6 +11,9 @@ import org.drip.simm.common.ProductClassMultiplicativeScale;
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -84,7 +87,7 @@ import org.drip.simm.common.ProductClassMultiplicativeScale;
 
 /**
  * <i>AdditionalInitialMargin</i> holds the Additional Initial Margin along with the Product Specific Add-On
- * Components. The References are:
+ * 	Components. The References are:
  * 
  * <br><br>
  *  <ul>
@@ -111,15 +114,24 @@ import org.drip.simm.common.ProductClassMultiplicativeScale;
  *  			https://www.isda.org/a/oFiDE/isda-simm-v2.pdf
  *  	</li>
  *  </ul>
- * 
- * <br><br>
+ *
+ * 	It provides the following Functionality:
+ *
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md">Portfolio Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/MarginAnalyticsLibrary.md">Initial and Variation Margin Analytics</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/README.md">Initial Margin Analytics based on ISDA SIMM and its Variants</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/estimator/README.md">ISDA SIMM Core + Add-On Estimator</a></li>
+ * 		<li>The "Emerging Markets" Region</li>
+ * 		<li>The "Developed Markets" Region</li>
+ * 		<li>The "All" Region</li>
+ * 		<li>Array of Developed Countries</li>
  *  </ul>
- * <br><br>
+ *
+ *	<br>
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md">Portfolio Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/MarginAnalyticsLibrary.md">Initial and Variation Margin Analytics</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/README.md">Initial Margin Analytics based on ISDA SIMM and its Variants</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/estimator/README.md">ISDA SIMM Core + Add-On Estimator</a></td></tr>
+ *  </table>
+ *	<br>
  * 
  * @author Lakshmi Krishnamurthy
  */
@@ -146,8 +158,7 @@ public class AdditionalInitialMargin
 		final double addOnFixed,
 		final Map<String, Double> productAddOnFactorMap)
 	{
-		try
-		{
+		try {
 			return new AdditionalInitialMargin (
 				ProductClassMultiplicativeScale.MS_RATESFX_DEFAULT,
 				ProductClassMultiplicativeScale.MS_CREDIT_QUALIFYING_DEFAULT,
@@ -156,9 +167,7 @@ public class AdditionalInitialMargin
 				addOnFixed,
 				productAddOnFactorMap
 			);
-		}
-		catch (Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -187,26 +196,17 @@ public class AdditionalInitialMargin
 		final Map<String, Double> productAddOnFactorMap)
 		throws Exception
 	{
-		if (!NumberUtil.IsValid (
-				_ratesFXMultiplicativeScale = ratesFXMultiplicativeScale
-			) || 1. > _ratesFXMultiplicativeScale ||
-			!NumberUtil.IsValid (
-				_creditMultiplicativeScale = creditMultiplicativeScale
-			) || 1. > _creditMultiplicativeScale ||
-			!NumberUtil.IsValid (
-				_equityMultiplicativeScale = equityMultiplicativeScale
-			) || 1. > _equityMultiplicativeScale ||
-			!NumberUtil.IsValid (
-				_commodityMultiplicativeScale = commodityMultiplicativeScale
-			) || 1. > _commodityMultiplicativeScale ||
-			!NumberUtil.IsValid (
-				_addOnFixed = addOnFixed
-			) || 0. > _addOnFixed
-		)
+		if (!NumberUtil.IsValid (_ratesFXMultiplicativeScale = ratesFXMultiplicativeScale) ||
+				1. > _ratesFXMultiplicativeScale ||
+			!NumberUtil.IsValid (_creditMultiplicativeScale = creditMultiplicativeScale) ||
+				1. > _creditMultiplicativeScale ||
+			!NumberUtil.IsValid (_equityMultiplicativeScale = equityMultiplicativeScale) ||
+				1. > _equityMultiplicativeScale ||
+			!NumberUtil.IsValid (_commodityMultiplicativeScale = commodityMultiplicativeScale) ||
+				1. > _commodityMultiplicativeScale ||
+			!NumberUtil.IsValid (_addOnFixed = addOnFixed) || 0. > _addOnFixed)
 		{
-			throw new Exception (
-				"AdditionalInitialMargin Constructor => Invalid Inputs"
-			);
+			throw new Exception ("AdditionalInitialMargin Constructor => Invalid Inputs");
 		}
 
 		_productAddOnFactorMap = productAddOnFactorMap;
@@ -297,17 +297,12 @@ public class AdditionalInitialMargin
 
 		double productAddOn = 0.;
 
-		for (Map.Entry<String, Double> productAddOnFactorEntry : _productAddOnFactorMap.entrySet())
-		{
+		for (Map.Entry<String, Double> productAddOnFactorEntry : _productAddOnFactorMap.entrySet()) {
 			String productID = productAddOnFactorEntry.getKey();
 
-			if (productNotionalMap.containsKey (
-				productID
-			))
-			{
-				productAddOn = productAddOn + productAddOnFactorEntry.getValue() * productNotionalMap.get (
-					productID
-				);
+			if (productNotionalMap.containsKey (productID)) {
+				productAddOn = productAddOn + productAddOnFactorEntry.getValue() *
+					productNotionalMap.get (productID);
 			}
 		}
 
@@ -325,8 +320,6 @@ public class AdditionalInitialMargin
 	public double total (
 		final Map<String, Double> productNotionalMap)
 	{
-		return _addOnFixed + productAddOn (
-			productNotionalMap
-		);
+		return _addOnFixed + productAddOn (productNotionalMap);
 	}
 }
