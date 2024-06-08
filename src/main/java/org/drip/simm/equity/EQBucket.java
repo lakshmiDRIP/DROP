@@ -8,6 +8,9 @@ import org.drip.numerical.common.NumberUtil;
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -81,7 +84,7 @@ import org.drip.numerical.common.NumberUtil;
 
 /**
  * <i>EQBucket</i> holds the ISDA SIMM Region, Sector, Member Correlation, and Risk Weights for a given
- * Equity Issuer Exposure Bucket. The References are:
+ * 	Equity Issuer Exposure Bucket. The References are:
  * 
  * <br><br>
  *  <ul>
@@ -108,15 +111,28 @@ import org.drip.numerical.common.NumberUtil;
  *  			https://www.isda.org/a/oFiDE/isda-simm-v2.pdf
  *  	</li>
  *  </ul>
- * 
- * <br><br>
+ *
+ * 	It provides the following Functionality:
+ *
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md">Portfolio Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/MarginAnalyticsLibrary.md">Initial and Variation Margin Analytics</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/README.md">Initial Margin Analytics based on ISDA SIMM and its Variants</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/equity/README.md">Equity Risk Factor Calibration Settings</a></li>
+ * 		<li><i>EQBucket</i> Constructor</li>
+ * 		<li>Retrieve the Bucket Number</li>
+ * 		<li>Retrieve the Bucket Size</li>
+ * 		<li>Retrieve the Bucket Region</li>
+ * 		<li>Retrieve the Bucket Sector Array</li>
+ * 		<li>Retrieve the Bucket Delta Risk Weight</li>
+ * 		<li>Retrieve the Correlation between the Bucket Members</li>
+ * 		<li>Retrieve the Bucket Vega Risk Weight</li>
  *  </ul>
- * <br><br>
+ *
+ *	<br>
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md">Portfolio Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/MarginAnalyticsLibrary.md">Initial and Variation Margin Analytics</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/README.md">Initial Margin Analytics based on ISDA SIMM and its Variants</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/equity/README.md">Equity Risk Factor Calibration Settings</a></td></tr>
+ *  </table>
+ *	<br>
  * 
  * @author Lakshmi Krishnamurthy
  */
@@ -132,7 +148,7 @@ public class EQBucket
 	private double _memberCorrelation = Double.NaN;
 
 	/**
-	 * EQBucket Constructor
+	 * <i>EQBucket</i> Constructor
 	 * 
 	 * @param number Bucket Number
 	 * @param size Bucket Equity Market Capitalization Size
@@ -158,20 +174,11 @@ public class EQBucket
 		if (null == (_size = size) || _size.isEmpty() ||
 			null == (_region = region) || _region.isEmpty() ||
 			null == (_sectorArray = sectorArray) || 0 == _sectorArray.length ||
-			!NumberUtil.IsValid (
-				_deltaRiskWeight = deltaRiskWeight
-			) ||
-			!NumberUtil.IsValid (
-				_memberCorrelation = memberCorrelation
-			) ||
-			!NumberUtil.IsValid (
-				_vegaRiskWeight = vegaRiskWeight
-			)
-		)
+			!NumberUtil.IsValid (_deltaRiskWeight = deltaRiskWeight) ||
+			!NumberUtil.IsValid (_memberCorrelation = memberCorrelation) ||
+			!NumberUtil.IsValid (_vegaRiskWeight = vegaRiskWeight))
 		{
-			throw new Exception (
-				"EQBucket Constructor => Invalid Inputs"
-			);
+			throw new Exception ("EQBucket Constructor => Invalid Inputs");
 		}
 
 		_number = number;

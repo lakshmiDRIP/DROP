@@ -113,15 +113,21 @@ package org.drip.simm.credit;
  * 	It provides the following Functionality:
  *
  *  <ul>
- * 		<li>Initialize the Credit Risk Threshold Container</li>
- * 		<li>Retrieve the Credit Risk Qualifying Threshold Bucket Set</li>
- * 		<li>Retrieve the Credit Risk Non-Qualifying Threshold Bucket Set</li>
- * 		<li>Indicate if the Qualifying Bucket specified by the Number is available</li>
- * 		<li>Indicate if the Non-Qualifying Bucket specified by the Number is available</li>
- * 		<li>Retrieve the Credit Risk Qualifying Threshold Instance identified by the Bucket Number</li>
- * 		<li>Retrieve the Credit Risk Non-Qualifying Threshold Instance identified by the Bucket Number</li>
- * 		<li>Retrieve the Credit Risk Qualifying Threshold Map</li>
- * 		<li>Retrieve the Credit Risk Non-Qualifying Threshold Map</li>
+ * 		<li>The Sovereigns Sector</li>
+ * 		<li>The Financials Sector</li>
+ * 		<li>The Basic Materials Sector</li>
+ * 		<li>The Consumer Sector</li>
+ * 		<li>The Technology/Media/Telecommunications Sector</li>
+ * 		<li>The Local Services Sector</li>
+ * 		<li>The RMBS/CMBS Sector</li>
+ * 		<li>The "Residual" Sector</li>
+ * 		<li>The Consumer Services Sector</li>
+ * 		<li>The Telecommunications/Industrials Sector</li>
+ * 		<li>The Heavy Industrials Sector</li>
+ * 		<li>The Investment Sector</li>
+ * 		<li>The "All" Sector</li>
+ * 		<li>The Indexes/Funds/ETF's Sector</li>
+ * 		<li>The Volatility Index Sector</li>
  *  </ul>
  *
  *	<br>
