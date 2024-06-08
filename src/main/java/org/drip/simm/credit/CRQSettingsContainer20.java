@@ -15,6 +15,9 @@ import org.drip.measure.stochastic.LabelCorrelation;
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -114,15 +117,24 @@ import org.drip.measure.stochastic.LabelCorrelation;
  *  			https://www.isda.org/a/oFiDE/isda-simm-v2.pdf
  *  	</li>
  *  </ul>
- * 
- * <br><br>
+ *
+ * 	It provides the following Functionality:
+ *
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md">Portfolio Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/MarginAnalyticsLibrary.md">Initial and Variation Margin Analytics</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/README.md">Initial Margin Analytics based on ISDA SIMM and its Variants</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/credit/README.md">Credit Qualifying/Non-Qualifying Risk Factor Settings</a></li>
+ * 		<li>Correlation between Sensitivities having Same Issuer/Seniority falling under the Same Regular Bucket</li>
+ * 		<li>Correlation between Sensitivities having Different Issuer/Seniority falling under Same Regular Bucket</li>
+ * 		<li>Correlation between Sensitivities having Same Issuer/Seniority falling under the Same Residual Bucket</li>
+ * 		<li>Correlation between Sensitivities having Different Issuer/Seniority falling under Same Residual Bucket</li>
  *  </ul>
- * <br><br>
+ *
+ *	<br>
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md">Portfolio Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/MarginAnalyticsLibrary.md">Initial and Variation Margin Analytics</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/README.md">Initial Margin Analytics based on ISDA SIMM and its Variants</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/credit/README.md">Credit Qualifying/Non-Qualifying Risk Factor Settings</a></td></tr>
+ *  </table>
+ *	<br>
  * 
  * @author Lakshmi Krishnamurthy
  */
@@ -137,60 +149,34 @@ public class CRQSettingsContainer20
 	{
 		List<String> bucketList = new ArrayList<String>();
 
-		bucketList.add (
-			"1"
-		);
+		bucketList.add ("1");
 
-		bucketList.add (
-			"2"
-		);
+		bucketList.add ("2");
 
-		bucketList.add (
-			"3"
-		);
+		bucketList.add ("3");
 
-		bucketList.add (
-			"4"
-		);
+		bucketList.add ("4");
 
-		bucketList.add (
-			"5"
-		);
+		bucketList.add ("5");
 
-		bucketList.add (
-			"6"
-		);
+		bucketList.add ("6");
 
-		bucketList.add (
-			"7"
-		);
+		bucketList.add ("7");
 
-		bucketList.add (
-			"8"
-		);
+		bucketList.add ("8");
 
-		bucketList.add (
-			"9"
-		);
+		bucketList.add ("9");
 
-		bucketList.add (
-			"10"
-		);
+		bucketList.add ("10");
 
-		bucketList.add (
-			"11"
-		);
+		bucketList.add ("11");
 
-		bucketList.add (
-			"12"
-		);
+		bucketList.add ("12");
 
-		try
-		{
+		try {
 			s_CrossBucketCorrelation = new LabelCorrelation (
 				bucketList,
-				new double[][]
-				{
+				new double[][] {
 					{1.00, 0.42, 0.39, 0.39, 0.40, 0.38, 0.39, 0.34, 0.37, 0.39, 0.37, 0.31},
 					{0.42, 1.00, 0.44, 0.45, 0.47, 0.45, 0.33, 0.40, 0.41, 0.44, 0.43, 0.47},
 					{0.39, 0.44, 1.00, 0.43, 0.45, 0.43, 0.32, 0.35, 0.41, 0.42, 0.40, 0.36},
@@ -207,9 +193,7 @@ public class CRQSettingsContainer20
 			);
 
 			return true;
-		}
-		catch (Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -224,16 +208,10 @@ public class CRQSettingsContainer20
 
 	public static final boolean Init()
 	{
-		try
-		{
+		try {
 			s_BucketMap.put (
 				-1,
-				new CRBucket (
-					-1,
-					CRSystemics.CREDIT_QUALITY_UNSPECIFIED,
-					SectorSystemics.RESIDUAL,
-					238.
-				)
+				new CRBucket (-1, CRSystemics.CREDIT_QUALITY_UNSPECIFIED, SectorSystemics.RESIDUAL, 238.)
 			);
 
 			s_BucketMap.put (
@@ -268,22 +246,12 @@ public class CRQSettingsContainer20
 
 			s_BucketMap.put (
 				4,
-				new CRBucket (
-					4,
-					CRSystemics.CREDIT_QUALITY_INVESTMENT_GRADE,
-					SectorSystemics.CONSUMER,
-					49.
-				)
+				new CRBucket (4, CRSystemics.CREDIT_QUALITY_INVESTMENT_GRADE, SectorSystemics.CONSUMER, 49.)
 			);
 
 			s_BucketMap.put (
 				5,
-				new CRBucket (
-					5,
-					CRSystemics.CREDIT_QUALITY_INVESTMENT_GRADE,
-					SectorSystemics.TMT,
-					48.
-				)
+				new CRBucket (5, CRSystemics.CREDIT_QUALITY_INVESTMENT_GRADE, SectorSystemics.TMT, 48.)
 			);
 
 			s_BucketMap.put (
@@ -308,12 +276,7 @@ public class CRQSettingsContainer20
 
 			s_BucketMap.put (
 				8,
-				new CRBucket (
-					8,
-					CRSystemics.CREDIT_QUALITY_HIGH_YIELD,
-					SectorSystemics.FINANCIALS,
-					238.
-				)
+				new CRBucket (8, CRSystemics.CREDIT_QUALITY_HIGH_YIELD, SectorSystemics.FINANCIALS, 238.)
 			);
 
 			s_BucketMap.put (
@@ -328,22 +291,12 @@ public class CRQSettingsContainer20
 
 			s_BucketMap.put (
 				10,
-				new CRBucket (
-					10,
-					CRSystemics.CREDIT_QUALITY_HIGH_YIELD,
-					SectorSystemics.CONSUMER,
-					210.
-				)
+				new CRBucket (10, CRSystemics.CREDIT_QUALITY_HIGH_YIELD, SectorSystemics.CONSUMER, 210.)
 			);
 
 			s_BucketMap.put (
 				11,
-				new CRBucket (
-					11,
-					CRSystemics.CREDIT_QUALITY_HIGH_YIELD,
-					SectorSystemics.TMT,
-					141.
-				)
+				new CRBucket (11, CRSystemics.CREDIT_QUALITY_HIGH_YIELD, SectorSystemics.TMT, 141.)
 			);
 
 			s_BucketMap.put (
@@ -355,9 +308,7 @@ public class CRQSettingsContainer20
 					102.
 				)
 			);
-		}
-		catch (Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 
 			return false;
