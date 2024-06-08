@@ -15,6 +15,9 @@ import org.drip.measure.stochastic.LabelCorrelation;
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * 
  *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
@@ -110,15 +113,27 @@ import org.drip.measure.stochastic.LabelCorrelation;
  *  			https://www.isda.org/a/CeggE/ISDA-SIMM-v2.4-PUBLIC.pdf
  *  	</li>
  *  </ul>
- * 
- * <br><br>
+ *
+ * 	It provides the following Functionality:
+ *
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md">Portfolio Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/MarginAnalyticsLibrary.md">Initial and Variation Margin Analytics</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/README.md">Initial Margin Analytics based on ISDA SIMM and its Variants</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/credit/README.md">Credit Qualifying/Non-Qualifying Risk Factor Settings</a></li>
+ * 		<li>Initialize the Credit Qualifying Settings</li>
+ * 		<li>Retrieve the Standard ISDA Credit Tenor Set</li>
+ * 		<li>Retrieve the Set of Bucket Indexes available</li>
+ * 		<li>Indicate if the Bucket denoted by the Number is available</li>
+ * 		<li>Retrieve the Bucket denoted by the Number</li>
+ * 		<li>Retrieve the Cross Bucket Correlation</li>
+ * 		<li>Retrieve the Bucket Map</li>
  *  </ul>
- * <br><br>
+ *
+ *	<br>
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md">Portfolio Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/MarginAnalyticsLibrary.md">Initial and Variation Margin Analytics</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/README.md">Initial Margin Analytics based on ISDA SIMM and its Variants</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/credit/README.md">Credit Qualifying/Non-Qualifying Risk Factor Settings</a></td></tr>
+ *  </table>
+ *	<br>
  * 
  * @author Lakshmi Krishnamurthy
  */
@@ -133,60 +148,34 @@ public class CRQSettingsContainer24
 	{
 		List<String> bucketList = new ArrayList<String>();
 
-		bucketList.add (
-			"1"
-		);
+		bucketList.add ("1");
 
-		bucketList.add (
-			"2"
-		);
+		bucketList.add ("2");
 
-		bucketList.add (
-			"3"
-		);
+		bucketList.add ("3");
 
-		bucketList.add (
-			"4"
-		);
+		bucketList.add ("4");
 
-		bucketList.add (
-			"5"
-		);
+		bucketList.add ("5");
 
-		bucketList.add (
-			"6"
-		);
+		bucketList.add ("6");
 
-		bucketList.add (
-			"7"
-		);
+		bucketList.add ("7");
 
-		bucketList.add (
-			"8"
-		);
+		bucketList.add ("8");
 
-		bucketList.add (
-			"9"
-		);
+		bucketList.add ("9");
 
-		bucketList.add (
-			"10"
-		);
+		bucketList.add ("10");
 
-		bucketList.add (
-			"11"
-		);
+		bucketList.add ("11");
 
-		bucketList.add (
-			"12"
-		);
+		bucketList.add ("12");
 
-		try
-		{
+		try {
 			s_CrossBucketCorrelation = new LabelCorrelation (
 				bucketList,
-				new double[][]
-				{
+				new double[][] {
 					{1.00, 0.35, 0.37, 0.35, 0.37, 0.34, 0.38, 0.31, 0.34, 0.33, 0.30, 0.31}, // #01
 					{0.35, 1.00, 0.44, 0.43, 0.45, 0.42, 0.32, 0.34, 0.38, 0.38, 0.35, 0.35}, // #02
 					{0.37, 0.44, 1.00, 0.48, 0.49, 0.47, 0.34, 0.35, 0.42, 0.42, 0.40, 0.39}, // #03
@@ -203,9 +192,7 @@ public class CRQSettingsContainer24
 			);
 
 			return true;
-		}
-		catch (Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -220,16 +207,10 @@ public class CRQSettingsContainer24
 
 	public static final boolean Init()
 	{
-		try
-		{
+		try {
 			s_BucketMap.put (
 				-1,
-				new CRBucket (
-					-1,
-					CRSystemics.CREDIT_QUALITY_UNSPECIFIED,
-					SectorSystemics.RESIDUAL,
-					452.
-				)
+				new CRBucket (-1, CRSystemics.CREDIT_QUALITY_UNSPECIFIED, SectorSystemics.RESIDUAL, 452.)
 			);
 
 			s_BucketMap.put (
@@ -304,12 +285,7 @@ public class CRQSettingsContainer24
 
 			s_BucketMap.put (
 				8,
-				new CRBucket (
-					8,
-					CRSystemics.CREDIT_QUALITY_HIGH_YIELD,
-					SectorSystemics.FINANCIALS,
-					452.
-				)
+				new CRBucket (8, CRSystemics.CREDIT_QUALITY_HIGH_YIELD, SectorSystemics.FINANCIALS, 452.)
 			);
 
 			s_BucketMap.put (
@@ -324,22 +300,12 @@ public class CRQSettingsContainer24
 
 			s_BucketMap.put (
 				10,
-				new CRBucket (
-					10,
-					CRSystemics.CREDIT_QUALITY_HIGH_YIELD,
-					SectorSystemics.CONSUMER,
-					261.
-				)
+				new CRBucket (10, CRSystemics.CREDIT_QUALITY_HIGH_YIELD, SectorSystemics.CONSUMER, 261.)
 			);
 
 			s_BucketMap.put (
 				11,
-				new CRBucket (
-					11,
-					CRSystemics.CREDIT_QUALITY_HIGH_YIELD,
-					SectorSystemics.TMT,
-					418.
-				)
+				new CRBucket (11, CRSystemics.CREDIT_QUALITY_HIGH_YIELD, SectorSystemics.TMT, 418.)
 			);
 
 			s_BucketMap.put (
@@ -351,9 +317,7 @@ public class CRQSettingsContainer24
 					195.
 				)
 			);
-		}
-		catch (Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 
 			return false;
@@ -372,25 +336,15 @@ public class CRQSettingsContainer24
 	{
 		Set<String> tenorSet = new HashSet<String>();
 
-		tenorSet.add (
-			"1Y"
-		);
+		tenorSet.add ("1Y");
 
-		tenorSet.add (
-			"2Y"
-		);
+		tenorSet.add ("2Y");
 
-		tenorSet.add (
-			"3Y"
-		);
+		tenorSet.add ("3Y");
 
-		tenorSet.add (
-			"5Y"
-		);
+		tenorSet.add ("5Y");
 
-		tenorSet.add (
-			"10Y"
-		);
+		tenorSet.add ("10Y");
 
 		return tenorSet;
 	}
@@ -417,9 +371,7 @@ public class CRQSettingsContainer24
 	public static final boolean ContainsBucket (
 		final int bucketNumber)
 	{
-		return s_BucketMap.containsKey (
-			bucketNumber
-		);
+		return s_BucketMap.containsKey (bucketNumber);
 	}
 
 	/**
@@ -433,11 +385,7 @@ public class CRQSettingsContainer24
 	public static final CRBucket Bucket (
 		final int bucketNumber)
 	{
-		return ContainsBucket (
-			bucketNumber
-		) ? s_BucketMap.get (
-			bucketNumber
-		) : null;
+		return ContainsBucket (bucketNumber) ? s_BucketMap.get (bucketNumber) : null;
 	}
 
 	/**

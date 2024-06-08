@@ -121,10 +121,13 @@ import org.drip.measure.stochastic.LabelCorrelation;
  * 	It provides the following Functionality:
  *
  *  <ul>
- * 		<li>Correlation between Sensitivities having Same Issuer/Seniority falling under the Same Regular Bucket</li>
- * 		<li>Correlation between Sensitivities having Different Issuer/Seniority falling under Same Regular Bucket</li>
- * 		<li>Correlation between Sensitivities having Same Issuer/Seniority falling under the Same Residual Bucket</li>
- * 		<li>Correlation between Sensitivities having Different Issuer/Seniority falling under Same Residual Bucket</li>
+ * 		<li>Initialize the Credit Qualifying Settings</li>
+ * 		<li>Retrieve the Standard ISDA Credit Tenor Set</li>
+ * 		<li>Retrieve the Set of Bucket Indexes available</li>
+ * 		<li>Indicate if the Bucket denoted by the Number is available</li>
+ * 		<li>Retrieve the Bucket denoted by the Number</li>
+ * 		<li>Retrieve the Cross Bucket Correlation</li>
+ * 		<li>Retrieve the Bucket Map</li>
  *  </ul>
  *
  *	<br>
@@ -201,7 +204,7 @@ public class CRQSettingsContainer20
 	}
 
 	/**
-	 * Initial the Credit Qualifying Settings
+	 * Initialize the Credit Qualifying Settings
 	 * 
 	 * @return TRUE - The Credit Qualifying Settings successfully initialized
 	 */
@@ -327,25 +330,15 @@ public class CRQSettingsContainer20
 	{
 		Set<String> tenorSet = new HashSet<String>();
 
-		tenorSet.add (
-			"1Y"
-		);
+		tenorSet.add ("1Y");
 
-		tenorSet.add (
-			"2Y"
-		);
+		tenorSet.add ("2Y");
 
-		tenorSet.add (
-			"3Y"
-		);
+		tenorSet.add ("3Y");
 
-		tenorSet.add (
-			"5Y"
-		);
+		tenorSet.add ("5Y");
 
-		tenorSet.add (
-			"10Y"
-		);
+		tenorSet.add ("10Y");
 
 		return tenorSet;
 	}
@@ -372,9 +365,7 @@ public class CRQSettingsContainer20
 	public static final boolean ContainsBucket (
 		final int bucketNumber)
 	{
-		return s_BucketMap.containsKey (
-			bucketNumber
-		);
+		return s_BucketMap.containsKey (bucketNumber);
 	}
 
 	/**
@@ -388,11 +379,7 @@ public class CRQSettingsContainer20
 	public static final CRBucket Bucket (
 		final int bucketNumber)
 	{
-		return ContainsBucket (
-			bucketNumber
-		) ? s_BucketMap.get (
-			bucketNumber
-		) : null;
+		return ContainsBucket (bucketNumber) ? s_BucketMap.get (bucketNumber) : null;
 	}
 
 	/**
