@@ -12,6 +12,9 @@ import org.drip.simm.margin.RiskClassAggregateIR;
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -85,8 +88,8 @@ import org.drip.simm.margin.RiskClassAggregateIR;
 
 /**
  * <i>ProductClassMargin</i> holds the Initial Margin Estimates for a Single Product Class across the Six
- * Risk Factors - Interest Rate, Credit Qualifying, Credit Non-Qualifying, Equity, Commodity, and FX. The
- * References are:
+ * 	Risk Factors - Interest Rate, Credit Qualifying, Credit Non-Qualifying, Equity, Commodity, and FX. The
+ * 	References are:
  * 
  * <br><br>
  *  <ul>
@@ -113,15 +116,28 @@ import org.drip.simm.margin.RiskClassAggregateIR;
  *  			https://www.isda.org/a/oFiDE/isda-simm-v2.pdf
  *  	</li>
  *  </ul>
- * 
- * <br><br>
+ *
+ * 	It provides the following Functionality:
+ *
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md">Portfolio Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/MarginAnalyticsLibrary.md">Initial and Variation Margin Analytics</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/README.md">Initial Margin Analytics based on ISDA SIMM and its Variants</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/estimator/README.md">ISDA SIMM Core + Add-On Estimator</a></li>
+ * 		<li>ProductClassMargin Constructor</li>
+ * 		<li>Retrieve the Interest Rate Risk Class Aggregate</li>
+ * 		<li>Retrieve the Credit Qualifying Risk Class Aggregate</li>
+ * 		<li>Retrieve the Credit Non-Qualifying Risk Class Aggregate</li>
+ * 		<li>Retrieve the Equity Risk Class Aggregate</li>
+ * 		<li>Retrieve the FX Risk Class Aggregate</li>
+ * 		<li>Retrieve the Commodity Risk Class Aggregate</li>
+ * 		<li>Compute the Total IM</li>
  *  </ul>
- * <br><br>
+ *
+ *	<br>
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md">Portfolio Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/MarginAnalyticsLibrary.md">Initial and Variation Margin Analytics</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/README.md">Initial Margin Analytics based on ISDA SIMM and its Variants</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/estimator/README.md">ISDA SIMM Core + Add-On Estimator</a></td></tr>
+ *  </table>
+ *	<br>
  * 
  * @author Lakshmi Krishnamurthy
  */
@@ -157,24 +173,14 @@ public class ProductClassMargin
 		final RiskClassAggregate commodityRiskClassAggregate)
 		throws Exception
 	{
-		_irRiskClassAggregate = irRiskClassAggregate;
-		_fxRiskClassAggregate = fxRiskClassAggregate;
-		_equityRiskClassAggregate = equityRiskClassAggregate;
-		_commodityRiskClassAggregate = commodityRiskClassAggregate;
-		_creditQualifyingRiskClassAggregate = creditQualifyingRiskClassAggregate;
-		_creditNonQualifyingRiskClassAggregate = creditNonQualifyingRiskClassAggregate;
-
-		if (null == _equityRiskClassAggregate &&
-			null == _commodityRiskClassAggregate &&
-			null == _fxRiskClassAggregate &&
-			null == _irRiskClassAggregate &&
-			null == _creditQualifyingRiskClassAggregate &&
-			null == _creditNonQualifyingRiskClassAggregate
-		)
+		if (null == (_equityRiskClassAggregate = equityRiskClassAggregate) &&
+			null == (_commodityRiskClassAggregate = commodityRiskClassAggregate) &&
+			null == (_fxRiskClassAggregate = fxRiskClassAggregate) &&
+			null == (_irRiskClassAggregate = irRiskClassAggregate) &&
+			null == (_creditQualifyingRiskClassAggregate = creditQualifyingRiskClassAggregate) &&
+			null == (_creditNonQualifyingRiskClassAggregate = creditNonQualifyingRiskClassAggregate))
 		{
-			throw new Exception (
-				"ProductClassMargin => Invalid Inputs"
-			);
+			throw new Exception ("ProductClassMargin => Invalid Inputs");
 		}
 	}
 
@@ -258,11 +264,8 @@ public class ProductClassMargin
 		final LabelCorrelation labelCorrelation)
 		throws Exception
 	{
-		if (null == labelCorrelation)
-		{
-			throw new Exception (
-				"ProductClassMargin::total => Invalid Inputs"
-			);
+		if (null == labelCorrelation) {
+			throw new Exception ("ProductClassMargin::total => Invalid Inputs");
 		}
 
 		double fxIM = null == _fxRiskClassAggregate ? 0. : _fxRiskClassAggregate.margin();
@@ -288,83 +291,43 @@ public class ProductClassMargin
 		totalIM = totalIM + fxIM * fxIM;
 		totalIM = totalIM + commodityIM * commodityIM;
 
-		totalIM = totalIM + labelCorrelation.entry (
-			Chargram.IR,
-			Chargram.CRQ
-		) * irIM * creditQualifyingIM;
+		totalIM = totalIM + labelCorrelation.entry (Chargram.IR, Chargram.CRQ) * irIM * creditQualifyingIM;
 
-		totalIM = totalIM + labelCorrelation.entry (
-			Chargram.IR,
-			Chargram.CRNQ
-		) * irIM * creditNonQualifyingIM;
+		totalIM = totalIM + labelCorrelation.entry (Chargram.IR, Chargram.CRNQ) * irIM *
+			creditNonQualifyingIM;
 
-		totalIM = totalIM + labelCorrelation.entry (
-			Chargram.IR,
-			Chargram.EQ
-		) * irIM * equityIM;
+		totalIM = totalIM + labelCorrelation.entry (Chargram.IR, Chargram.EQ) * irIM * equityIM;
 
-		totalIM = totalIM + labelCorrelation.entry (
-			Chargram.IR,
-			Chargram.FX
-		) * irIM * fxIM;
+		totalIM = totalIM + labelCorrelation.entry (Chargram.IR, Chargram.FX) * irIM * fxIM;
 
-		totalIM = totalIM + labelCorrelation.entry (
-			Chargram.IR,
-			Chargram.CT
-		) * irIM * commodityIM;
+		totalIM = totalIM + labelCorrelation.entry (Chargram.IR, Chargram.CT) * irIM * commodityIM;
 
-		totalIM = totalIM + labelCorrelation.entry (
-			Chargram.CRQ,
-			Chargram.CRNQ
-		) * creditQualifyingIM * creditNonQualifyingIM;
+		totalIM = totalIM + labelCorrelation.entry (Chargram.CRQ, Chargram.CRNQ) * creditQualifyingIM *
+			creditNonQualifyingIM;
 
-		totalIM = totalIM + labelCorrelation.entry (
-			Chargram.CRQ,
-			Chargram.EQ
-		) * creditQualifyingIM * equityIM;
+		totalIM = totalIM + labelCorrelation.entry (Chargram.CRQ, Chargram.EQ) * creditQualifyingIM *
+			equityIM;
 
-		totalIM = totalIM + labelCorrelation.entry (
-			Chargram.CRQ,
-			Chargram.FX
-		) * creditQualifyingIM * fxIM;
+		totalIM = totalIM + labelCorrelation.entry (Chargram.CRQ, Chargram.FX) * creditQualifyingIM * fxIM;
 
-		totalIM = totalIM + labelCorrelation.entry (
-			Chargram.CRQ,
-			Chargram.CT
-		) * creditQualifyingIM * commodityIM;
+		totalIM = totalIM + labelCorrelation.entry (Chargram.CRQ, Chargram.CT) * creditQualifyingIM *
+			commodityIM;
 
-		totalIM = totalIM + labelCorrelation.entry (
-			Chargram.CRNQ,
-			Chargram.EQ
-		) * creditNonQualifyingIM * equityIM;
+		totalIM = totalIM + labelCorrelation.entry (Chargram.CRNQ, Chargram.EQ) * creditNonQualifyingIM *
+			equityIM;
 
-		totalIM = totalIM + labelCorrelation.entry (
-			Chargram.CRNQ,
-			Chargram.FX
-		) * creditNonQualifyingIM * fxIM;
+		totalIM = totalIM + labelCorrelation.entry (Chargram.CRNQ, Chargram.FX) * creditNonQualifyingIM *
+			fxIM;
 
-		totalIM = totalIM + labelCorrelation.entry (
-			Chargram.CRNQ,
-			Chargram.CT
-		) * creditNonQualifyingIM * commodityIM;
+		totalIM = totalIM + labelCorrelation.entry (Chargram.CRNQ, Chargram.CT) * creditNonQualifyingIM *
+			commodityIM;
 
-		totalIM = totalIM + labelCorrelation.entry (
-			Chargram.EQ,
-			Chargram.FX
-		) * equityIM * fxIM;
+		totalIM = totalIM + labelCorrelation.entry (Chargram.EQ, Chargram.FX) * equityIM * fxIM;
 
-		totalIM = totalIM + labelCorrelation.entry (
-			Chargram.EQ,
-			Chargram.CT
-		) * equityIM * commodityIM;
+		totalIM = totalIM + labelCorrelation.entry (Chargram.EQ, Chargram.CT) * equityIM * commodityIM;
 
-		totalIM = totalIM + labelCorrelation.entry (
-			Chargram.FX,
-			Chargram.CT
-		) * fxIM * commodityIM;
+		totalIM = totalIM + labelCorrelation.entry (Chargram.FX, Chargram.CT) * fxIM * commodityIM;
 
-		return Math.sqrt (
-			totalIM
-		);
+		return Math.sqrt (totalIM);
 	}
 }

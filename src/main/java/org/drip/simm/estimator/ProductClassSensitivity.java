@@ -11,6 +11,9 @@ import org.drip.simm.product.RiskClassSensitivityIR;
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -84,7 +87,7 @@ import org.drip.simm.product.RiskClassSensitivityIR;
 
 /**
  * <i>ProductClassSensitivity</i> holds the multiple Risk Class Sensitivities for a single Product Class. The
- * References are:
+ * 	References are:
  * 
  * <br><br>
  *  <ul>
@@ -111,15 +114,28 @@ import org.drip.simm.product.RiskClassSensitivityIR;
  *  			https://www.isda.org/a/oFiDE/isda-simm-v2.pdf
  *  	</li>
  *  </ul>
- * 
- * <br><br>
+ *
+ * 	It provides the following Functionality:
+ *
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md">Portfolio Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/MarginAnalyticsLibrary.md">Initial and Variation Margin Analytics</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/README.md">Initial Margin Analytics based on ISDA SIMM and its Variants</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/estimator/README.md">ISDA SIMM Core + Add-On Estimator</a></li>
+ * 		<li><i>ProductClassSensitivity</i> Constructor</li>
+ * 		<li>Retrieve the Equity Risk Class Sensitivity</li>
+ * 		<li>Retrieve the Commodity Risk Class Sensitivity</li>
+ * 		<li>Retrieve the FX Risk Class Sensitivity</li>
+ * 		<li>Retrieve the IR Risk Class Sensitivity</li>
+ * 		<li>Retrieve the Credit Qualifying Risk Class Sensitivity</li>
+ * 		<li>Retrieve the Credit Non-Qualifying Risk Class Sensitivity</li>
+ * 		<li>Generate the Margin for the Product Class</li>
  *  </ul>
- * <br><br>
+ *
+ *	<br>
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md">Portfolio Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/MarginAnalyticsLibrary.md">Initial and Variation Margin Analytics</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/README.md">Initial Margin Analytics based on ISDA SIMM and its Variants</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/estimator/README.md">ISDA SIMM Core + Add-On Estimator</a></td></tr>
+ *  </table>
+ *	<br>
  * 
  * @author Lakshmi Krishnamurthy
  */
@@ -134,7 +150,7 @@ public class ProductClassSensitivity
 	private RiskClassSensitivityCR _creditNonQualifyingRiskClassSensitivity = null;
 
 	/**
-	 * ProductClassSensitivity Constructor
+	 * <i>ProductClassSensitivity</i> Constructor
 	 * 
 	 * @param equityRiskClassSensitivity Equity Risk Class Sensitivity
 	 * @param commodityRiskClassSensitivity Commodity Risk Class Sensitivity
@@ -155,23 +171,14 @@ public class ProductClassSensitivity
 		final RiskClassSensitivityCR creditNonQualifyingRiskClassSensitivity)
 		throws Exception
 	{
-		_fxRiskClassSensitivity = fxRiskClassSensitivity;
-		_irRiskClassSensitivity = irRiskClassSensitivity;
-		_equityRiskClassSensitivity = equityRiskClassSensitivity;
-		_commodityRiskClassSensitivity = commodityRiskClassSensitivity;
-		_creditQualifyingRiskClassSensitivity = creditQualifyingRiskClassSensitivity;
-		_creditNonQualifyingRiskClassSensitivity = creditNonQualifyingRiskClassSensitivity;
-
-		if (null == _equityRiskClassSensitivity &&
-			null == _commodityRiskClassSensitivity &&
-			null == _fxRiskClassSensitivity &&
-			null == _irRiskClassSensitivity &&
-			null == _creditQualifyingRiskClassSensitivity &&
-			null == _creditNonQualifyingRiskClassSensitivity)
+		if (null == (_equityRiskClassSensitivity = equityRiskClassSensitivity) &&
+			null == (_commodityRiskClassSensitivity = commodityRiskClassSensitivity) &&
+			null == (_fxRiskClassSensitivity = fxRiskClassSensitivity) &&
+			null == (_irRiskClassSensitivity = irRiskClassSensitivity) &&
+			null == (_creditQualifyingRiskClassSensitivity = creditQualifyingRiskClassSensitivity) &&
+			null == (_creditNonQualifyingRiskClassSensitivity = creditNonQualifyingRiskClassSensitivity))
 		{
-			throw new Exception (
-				"ProductClassSensitivity Constructor => Invalid Inputs"
-			);
+			throw new Exception ("ProductClassSensitivity Constructor => Invalid Inputs");
 		}
 	}
 
@@ -254,8 +261,7 @@ public class ProductClassSensitivity
 		final ProductClassSettings productClassSettings,
 		final MarginEstimationSettings marginEstimationSettings)
 	{
-		try
-		{
+		try {
 			return null == productClassSettings ? null : new ProductClassMargin (
 				null == _irRiskClassSensitivity ? null : _irRiskClassSensitivity.aggregate (
 					productClassSettings.irRiskClassSensitivitySettings(),
@@ -284,9 +290,7 @@ public class ProductClassSensitivity
 					marginEstimationSettings
 				)
 			);
-		}
-		catch (Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
