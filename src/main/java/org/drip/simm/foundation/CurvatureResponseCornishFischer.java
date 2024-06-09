@@ -9,6 +9,9 @@ import org.drip.numerical.common.NumberUtil;
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -82,7 +85,7 @@ import org.drip.numerical.common.NumberUtil;
 
 /**
  * <i>CurvatureResponseCornishFischer</i> computes the Curvature Co-variance Scaling Factor using the
- * Cumulative Curvature Sensitivities. The References are:
+ * 	Cumulative Curvature Sensitivities. The References are:
  * 
  * <br><br>
  *  <ul>
@@ -109,15 +112,26 @@ import org.drip.numerical.common.NumberUtil;
  *  			https://www.isda.org/a/oFiDE/isda-simm-v2.pdf
  *  	</li>
  *  </ul>
- * 
- * <br><br>
+ *
+ * 	It provides the following Functionality:
+ *
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md">Portfolio Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/MarginAnalyticsLibrary.md">Initial and Variation Margin Analytics</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/README.md">Initial Margin Analytics based on ISDA SIMM and its Variants</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/foundation/README.md">Foundation Utilities for ISDA SIMM</a></li>
+ * 		<li>ISDA SIMM VaR Curvature Cut-off</li>
+ * 		<li>Construct the Standard Instance of <i>CurvatureResponseCornishFischer</i></li>
+ * 		<li><i>CurvatureResponseCornishFischer</i> Constructor</li>
+ * 		<li>Retrieve the VaR Cut-off</li>
+ * 		<li>Retrieve the Lambda Plateau Peak</li>
+ * 		<li>Compute the Lambda from the Curvature Sensitivities</li>
  *  </ul>
- * <br><br>
+ *
+ *	<br>
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md">Portfolio Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/MarginAnalyticsLibrary.md">Initial and Variation Margin Analytics</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/README.md">Initial Margin Analytics based on ISDA SIMM and its Variants</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/foundation/README.md">Foundation Utilities for ISDA SIMM</a></td></tr>
+ *  </table>
+ *	<br>
  * 
  * @author Lakshmi Krishnamurthy
  */
@@ -136,21 +150,17 @@ public class CurvatureResponseCornishFischer
 	private double _lambdaPlateauPeak = Double.NaN;
 
 	/**
-	 * Construct the Standard Instance of CurvatureResponseCornishFischer
+	 * Construct the Standard Instance of <i>CurvatureResponseCornishFischer</i>
 	 * 
-	 * @return The Standard Instance of CurvatureResponseCornishFischer
+	 * @return The Standard Instance of <i>CurvatureResponseCornishFischer</i>
 	 */
 
 	public static final CurvatureResponseCornishFischer Standard()
 	{
 		try
 		{
-			return new CurvatureResponseCornishFischer (
-				CURVATURE_VAR_CUT_OFF
-			);
-		}
-		catch (Exception e)
-		{
+			return new CurvatureResponseCornishFischer (CURVATURE_VAR_CUT_OFF);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -158,7 +168,7 @@ public class CurvatureResponseCornishFischer
 	}
 
 	/**
-	 * CurvatureResponseCornishFischer Constructor
+	 * <i>CurvatureResponseCornishFischer</i> Constructor
 	 * 
 	 * @param varCutoff VaR Cut-off
 	 * 
@@ -169,19 +179,11 @@ public class CurvatureResponseCornishFischer
 		final double varCutoff)
 		throws Exception
 	{
-		if (!NumberUtil.IsValid (
-				_varCutoff = varCutoff
-			) || 0. > _varCutoff || 1. < _varCutoff
-		)
-		{
-			throw new Exception (
-				"CurvatureResponseCornishFischer Constructor => Invalid Inputs"
-			);
+		if (!NumberUtil.IsValid (_varCutoff = varCutoff) || 0. > _varCutoff || 1. < _varCutoff) {
+			throw new Exception ("CurvatureResponseCornishFischer Constructor => Invalid Inputs");
 		}
 
-		double tailVariate = NormalQuadrature.InverseCDF (
-			_varCutoff
-		);
+		double tailVariate = NormalQuadrature.InverseCDF (_varCutoff);
 
 		_lambdaPlateauPeak = tailVariate * tailVariate - 1.;
 	}
@@ -224,17 +226,11 @@ public class CurvatureResponseCornishFischer
 		final double cumulativeRiskFactorSensitivityPositive)
 		throws Exception
 	{
-		if (!NumberUtil.IsValid (
-				cumulativeRiskFactorSensitivity
-			) ||
-			!NumberUtil.IsValid (
-				cumulativeRiskFactorSensitivityPositive
-			) || 0. > cumulativeRiskFactorSensitivityPositive
-		)
+		if (!NumberUtil.IsValid (cumulativeRiskFactorSensitivity) ||
+			!NumberUtil.IsValid (cumulativeRiskFactorSensitivityPositive) ||
+			0. > cumulativeRiskFactorSensitivityPositive)
 		{
-			throw new Exception (
-				"CurvatureResponseCornishFischer::lambda => Invalid Inputs"
-			);
+			throw new Exception ("CurvatureResponseCornishFischer::lambda => Invalid Inputs");
 		}
 
 		double theta = Math.min (

@@ -8,6 +8,9 @@ import org.drip.numerical.common.NumberUtil;
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -81,7 +84,7 @@ import org.drip.numerical.common.NumberUtil;
 
 /**
  * <i>CurvatureEstimatorFRTB</i> estimates the Curvature Margin from the Curvature Sensitivities using the
- * FRTB Curvature Margin Estimate. The References are:
+ * 	FRTB Curvature Margin Estimate. The References are:
  * 
  * <br><br>
  *  <ul>
@@ -108,15 +111,25 @@ import org.drip.numerical.common.NumberUtil;
  *  			https://www.isda.org/a/oFiDE/isda-simm-v2.pdf
  *  	</li>
  *  </ul>
- * 
- * <br><br>
+ *
+ * 	It provides the following Functionality:
+ *
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md">Portfolio Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/MarginAnalyticsLibrary.md">Initial and Variation Margin Analytics</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/README.md">Initial Margin Analytics based on ISDA SIMM and its Variants</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/foundation/README.md">Foundation Utilities for ISDA SIMM</a></li>
+ * 		<li>Construct the Standard <i>CurvatureEstimatorFRTB</i> Instance</li>
+ * 		<li>Empty <i>CurvatureEstimatorFRTB</i> Constructor</li>
+ * 		<li>Compute the SBA Margin from the Curvature Sensitivities</li>
+ * 		<li>Indicate if the Correlator is Quadratic</li>
+ * 		<li>Generate the Bucket Pair Curvature Variance Modulator</li>
  *  </ul>
- * <br><br>
+ *
+ *	<br>
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md">Portfolio Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/MarginAnalyticsLibrary.md">Initial and Variation Margin Analytics</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/README.md">Initial Margin Analytics based on ISDA SIMM and its Variants</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/foundation/README.md">Foundation Utilities for ISDA SIMM</a></td></tr>
+ *  </table>
+ *	<br>
  * 
  * @author Lakshmi Krishnamurthy
  */
@@ -126,9 +139,9 @@ public class CurvatureEstimatorFRTB
 {
 
 	/**
-	 * Construct the Standard CurvatureEstimatorFRTB Instance
+	 * Construct the Standard <i>CurvatureEstimatorFRTB</i> Instance
 	 * 
-	 * @return The Standard CurvatureEstimatorISDADelta Instance
+	 * @return The Standard <i>CurvatureEstimatorFRTB</i> Instance
 	 */
 
 	public static final CurvatureEstimatorFRTB Standard()
@@ -137,12 +150,24 @@ public class CurvatureEstimatorFRTB
 	}
 
 	/**
-	 * Empty CurvatureEstimatorFRTB Constructor
+	 * Empty <i>CurvatureEstimatorFRTB</i> Constructor
 	 */
 
 	public CurvatureEstimatorFRTB()
 	{
 	}
+
+	/**
+	 * Compute the SBA Margin from the Curvature Sensitivities
+	 * 
+	 * @param cumulativeRiskFactorSensitivity Cumulative Risk Factor Sensitivity
+	 * @param cumulativeRiskFactorSensitivityPositive Cumulative Risk Factor Sensitivity Positive
+	 * @param riskFactorSensitivityVariance Risk Factor Sensitivity Variance
+	 * 
+	 * @return The SBA Margin
+	 * 
+	 * @throws Exception Thrown if the Inputs are Invalid
+	 */
 
 	@Override public double margin (
 		final double cumulativeRiskFactorSensitivity,
@@ -150,28 +175,36 @@ public class CurvatureEstimatorFRTB
 		final double riskFactorSensitivityVariance)
 		throws Exception
 	{
-		if (!NumberUtil.IsValid (
-				riskFactorSensitivityVariance
-			) || 0. > riskFactorSensitivityVariance
-		)
-		{
-			throw new Exception (
-				"CurvatureEstimatorFRTB::margin => Invalid Inputs"
-			);
+		if (!NumberUtil.IsValid (riskFactorSensitivityVariance) || 0. > riskFactorSensitivityVariance) {
+			throw new Exception ("CurvatureEstimatorFRTB::margin => Invalid Inputs");
 		}
 
-		return Math.sqrt (
-			Math.max (
-				cumulativeRiskFactorSensitivity + riskFactorSensitivityVariance,
-				0.
-			)
-		);
+		return Math.sqrt (Math.max (cumulativeRiskFactorSensitivity + riskFactorSensitivityVariance, 0.));
 	}
+
+	/**
+	 * Indicate if the Correlator is Quadratic
+	 * 
+	 * @return TRUE - The Correlator is Quadratic
+	 */
 
 	@Override public boolean isCorrelatorQuadratric()
 	{
 		return false;
 	}
+
+	/**
+	 * Generate the Bucket Pair Curvature Variance Modulator
+	 * 
+	 * @param bucketKey1 Bucket #1 Key
+	 * @param bucketVariance1 Bucket #1 Variance
+	 * @param bucketKey2 Bucket #2 Key
+	 * @param bucketVariance2 Bucket #2 Variance
+	 * 
+	 * @return The Bucket Pair Curvature Variance Modulator
+	 * 
+	 * @throws Exception Thrown if the Inputs are Invalid
+	 */
 
 	@Override public double varianceModulator (
 		final String bucketKey1,

@@ -122,7 +122,17 @@ import org.drip.simm.parameters.RiskClassSensitivitySettingsIR;
  * 	It provides the following Functionality:
  *
  *  <ul>
- * 		<li><i>ProductClassSensitivity</i> Constructor</li>
+ * 		<li>Construct an ISDA SIMM 2.0 Version of <i>ProductClassSettings</i></li>
+ * 		<li>Construct an ISDA SIMM 2.1 Version of <i>ProductClassSettings</i></li>
+ * 		<li>Construct an ISDA SIMM 2.4 Version of <i>ProductClassSettings</i></li>
+ * 		<li><i>ProductClassSettings</i> Constructor</li>
+ * 		<li>Retrieve the Equity Risk Class Sensitivity Settings</li>
+ * 		<li>Retrieve the Commodity Risk Class Sensitivity Settings</li>
+ * 		<li>Retrieve the FX Risk Class Sensitivity Settings</li>
+ * 		<li>Retrieve the IR Risk Class Sensitivity Settings</li>
+ * 		<li>Retrieve the Credit Qualifying Risk Class Sensitivity Settings</li>
+ * 		<li>Retrieve the Credit Non-Qualifying Risk Class Sensitivity Settings</li>
+ * 		<li>Retrieve the Cross Risk Class Label Correlation</li>
  *  </ul>
  *
  *	<br>
@@ -148,40 +158,29 @@ public class ProductClassSettings
 	private RiskClassSensitivitySettingsCR _creditNonQualifyingRiskClassSensitivitySettings = null;
 
 	/**
-	 * Construct an ISDA SIMM 2.0 Version of ProductClassSettings
+	 * Construct an ISDA SIMM 2.0 Version of <i>ProductClassSettings</i>
 	 * 
 	 * @param currencyList Currency List
 	 * @param vegaDurationDays The Volatility Duration in Days
 	 * 
-	 * @return ISDA SIMM 2.0 Version of ProductClassSettings
+	 * @return ISDA SIMM 2.0 Version of <i>ProductClassSettings</i>
 	 */
 
 	public static final ProductClassSettings ISDA_20 (
 		final List<String> currencyList,
 		final int vegaDurationDays)
 	{
-		try
-		{
+		try {
 			return new ProductClassSettings (
-				RiskClassSensitivitySettings.ISDA_EQ_20 (
-					vegaDurationDays
-				),
-				RiskClassSensitivitySettings.ISDA_CT_20 (
-					vegaDurationDays
-				),
-				RiskClassSensitivitySettings.ISDA_FX_20 (
-					vegaDurationDays
-				),
-				RiskClassSensitivitySettingsIR.ISDA_20 (
-					currencyList
-				),
+				RiskClassSensitivitySettings.ISDA_EQ_20 (vegaDurationDays),
+				RiskClassSensitivitySettings.ISDA_CT_20 (vegaDurationDays),
+				RiskClassSensitivitySettings.ISDA_FX_20 (vegaDurationDays),
+				RiskClassSensitivitySettingsIR.ISDA_20 (currencyList),
 				RiskClassSensitivitySettingsCR.ISDA_CRQ_20(),
 				RiskClassSensitivitySettingsCR.ISDA_CRNQ_20(),
 				CrossRiskClassCorrelation20.Matrix()
 			);
-		}
-		catch (Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -189,40 +188,29 @@ public class ProductClassSettings
 	}
 
 	/**
-	 * Construct an ISDA SIMM 2.1 Version of ProductClassSettings
+	 * Construct an ISDA SIMM 2.1 Version of <i>ProductClassSettings</i>
 	 * 
 	 * @param currencyList Currency List
 	 * @param vegaDurationDays The Volatility Duration in Days
 	 * 
-	 * @return ISDA SIMM 2.1 Version of ProductClassSettings
+	 * @return ISDA SIMM 2.1 Version of <i>ProductClassSettings</i>
 	 */
 
 	public static final ProductClassSettings ISDA_21 (
 		final List<String> currencyList,
 		final int vegaDurationDays)
 	{
-		try
-		{
+		try {
 			return new ProductClassSettings (
-				RiskClassSensitivitySettings.ISDA_EQ_21 (
-					vegaDurationDays
-				),
-				RiskClassSensitivitySettings.ISDA_CT_21 (
-					vegaDurationDays
-				),
-				RiskClassSensitivitySettings.ISDA_FX_21 (
-					vegaDurationDays
-				),
-				RiskClassSensitivitySettingsIR.ISDA_21 (
-					currencyList
-				),
+				RiskClassSensitivitySettings.ISDA_EQ_21 (vegaDurationDays),
+				RiskClassSensitivitySettings.ISDA_CT_21 (vegaDurationDays),
+				RiskClassSensitivitySettings.ISDA_FX_21 (vegaDurationDays),
+				RiskClassSensitivitySettingsIR.ISDA_21 (currencyList),
 				RiskClassSensitivitySettingsCR.ISDA_CRQ_21(),
 				RiskClassSensitivitySettingsCR.ISDA_CRNQ_21(),
 				CrossRiskClassCorrelation21.Matrix()
 			);
-		}
-		catch (Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -230,14 +218,14 @@ public class ProductClassSettings
 	}
 
 	/**
-	 * Construct an ISDA SIMM 2.4 Version of ProductClassSettings
+	 * Construct an ISDA SIMM 2.4 Version of <i>ProductClassSettings</i>
 	 * 
 	 * @param currencyList Currency List
 	 * @param vegaDurationDays The Volatility Duration in Days
 	 * @param givenCurrency Given Currency
 	 * @param calculationCurrency Calculation Currency
 	 * 
-	 * @return ISDA SIMM 2.4 Version of ProductClassSettings
+	 * @return ISDA SIMM 2.4 Version of <i>ProductClassSettings</i>
 	 */
 
 	public static final ProductClassSettings ISDA_24 (
@@ -246,30 +234,21 @@ public class ProductClassSettings
 		final String givenCurrency,
 		final String calculationCurrency)
 	{
-		try
-		{
+		try {
 			return new ProductClassSettings (
-				RiskClassSensitivitySettings.ISDA_EQ_24 (
-					vegaDurationDays
-				),
-				RiskClassSensitivitySettings.ISDA_CT_24 (
-					vegaDurationDays
-				),
+				RiskClassSensitivitySettings.ISDA_EQ_24 (vegaDurationDays),
+				RiskClassSensitivitySettings.ISDA_CT_24 (vegaDurationDays),
 				RiskClassSensitivitySettings.ISDA_FX_24 (
 					vegaDurationDays,
 					givenCurrency,
 					calculationCurrency
 				),
-				RiskClassSensitivitySettingsIR.ISDA_24 (
-					currencyList
-				),
+				RiskClassSensitivitySettingsIR.ISDA_24 (currencyList),
 				RiskClassSensitivitySettingsCR.ISDA_CRQ_24(),
 				RiskClassSensitivitySettingsCR.ISDA_CRNQ_24(),
 				CrossRiskClassCorrelation21.Matrix()
 			);
-		}
-		catch (Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -277,7 +256,7 @@ public class ProductClassSettings
 	}
 
 	/**
-	 * ProductClassSettings Constructor
+	 * <i>ProductClassSettings</i> Constructor
 	 * 
 	 * @param equityRiskClassSensitivitySettings Equity Risk Class Sensitivity Settings
 	 * @param commodityRiskClassSensitivitySettings Commodity Risk Class Sensitivity Settings
@@ -301,24 +280,20 @@ public class ProductClassSettings
 		final LabelCorrelation labelCorrelation)
 		throws Exception
 	{
-		_fxRiskClassSensitivitySettings = fxRiskClassSensitivitySettings;
-		_irRiskClassSensitivitySettings = irRiskClassSensitivitySettings;
-		_equityRiskClassSensitivitySettings = equityRiskClassSensitivitySettings;
-		_commodityRiskClassSensitivitySettings = commodityRiskClassSensitivitySettings;
-		_creditQualifyingRiskClassSensitivitySettings = creditQualifyingRiskClassSensitivitySettings;
-		_creditNonQualifyingRiskClassSensitivitySettings = creditNonQualifyingRiskClassSensitivitySettings;
-
-		if ((null == _equityRiskClassSensitivitySettings &&
-			null == _commodityRiskClassSensitivitySettings &&
-			null == _fxRiskClassSensitivitySettings &&
-			null == _irRiskClassSensitivitySettings &&
-			null == _creditQualifyingRiskClassSensitivitySettings &&
-			null == _creditNonQualifyingRiskClassSensitivitySettings) ||
-			null == (_labelCorrelation = labelCorrelation))
+		if (
+			(
+				null == (_equityRiskClassSensitivitySettings = equityRiskClassSensitivitySettings) &&
+				null == (_commodityRiskClassSensitivitySettings = commodityRiskClassSensitivitySettings) &&
+				null == (_fxRiskClassSensitivitySettings = fxRiskClassSensitivitySettings) &&
+				null == (_irRiskClassSensitivitySettings = irRiskClassSensitivitySettings) &&
+				null == (_creditQualifyingRiskClassSensitivitySettings =
+					creditQualifyingRiskClassSensitivitySettings) &&
+				null == (_creditNonQualifyingRiskClassSensitivitySettings =
+					creditNonQualifyingRiskClassSensitivitySettings
+				)
+			) || null == (_labelCorrelation = labelCorrelation))
 		{
-			throw new Exception (
-				"ProductClassSettings Constructor => Invalid Inputs"
-			);
+			throw new Exception ("ProductClassSettings Constructor => Invalid Inputs");
 		}
 	}
 
