@@ -13,6 +13,9 @@ import org.drip.simm.foundation.RiskGroupPrincipalCovariance;
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -86,7 +89,7 @@ import org.drip.simm.foundation.RiskGroupPrincipalCovariance;
 
 /**
  * <i>FXRiskThresholdContainer20</i> holds the ISDA SIMM 2.0 FX Risk Thresholds - the FX Categories and the
- * Delta/Vega Limits defined for the Concentration Thresholds. The References are:
+ * 	Delta/Vega Limits defined for the Concentration Thresholds. The References are:
  * 
  * <br><br>
  *  <ul>
@@ -113,24 +116,40 @@ import org.drip.simm.foundation.RiskGroupPrincipalCovariance;
  *  			https://www.isda.org/a/oFiDE/isda-simm-v2.pdf
  *  	</li>
  *  </ul>
- * 
- * <br><br>
+ *
+ * 	It provides the following Functionality:
+ *
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md">Portfolio Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/MarginAnalyticsLibrary.md">Initial and Variation Margin Analytics</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/README.md">Initial Margin Analytics based on ISDA SIMM and its Variants</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/fx/README.md">FX Risk Factor Calibration Settings</a></li>
+ * 		<li>Initialize the FX Risk Threshold Container</li>
+ * 		<li>Retrieve the Category for the specified Currency</li>
+ * 		<li>Retrieve the Category Set</li>
+ * 		<li>Indicate if the Category identified by the Number is available in the Map</li>
+ * 		<li>Retrieve the Risk Group identified by the Category Number</li>
+ * 		<li>Retrieve the Delta Threshold for the Category specified</li>
+ * 		<li>Retrieve the Vega Threshold for the Category Pair specified</li>
+ * 		<li>Retrieve the FX Risk Group Map</li>
+ * 		<li>Retrieve the Category Delta Concentration Threshold Map</li>
+ * 		<li>Retrieve the Category Vega Concentration Threshold Map</li>
+ * 		<li>Retrieve the Cross Risk Group Co-variance Matrix</li>
  *  </ul>
- * <br><br>
+ *
+ *	<br>
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md">Portfolio Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/MarginAnalyticsLibrary.md">Initial and Variation Margin Analytics</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/README.md">Initial Margin Analytics based on ISDA SIMM and its Variants</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/fx/README.md">FX Risk Factor Calibration Settings</a></td></tr>
+ *  </table>
+ *	<br>
  * 
  * @author Lakshmi Krishnamurthy
  */
 
 public class FXRiskThresholdContainer20
 {
-	private static final Map<String, Double> s_CategoryVega = new HashMap<String, Double>();
+	private static final Map<String, Double> s_CategoryVegaMap = new HashMap<String, Double>();
 
-	private static final Map<Integer, Double> s_CategoryDelta = new TreeMap<Integer, Double>();
+	private static final Map<Integer, Double> s_CategoryDeltaMap = new TreeMap<Integer, Double>();
 
 	private static final Map<Integer, FXRiskGroup> s_FXRiskGroupMap = new TreeMap<Integer, FXRiskGroup>();
 
@@ -142,15 +161,13 @@ public class FXRiskThresholdContainer20
 
 	public static final boolean Init()
 	{
-		try
-		{
+		try {
 			s_FXRiskGroupMap.put (
 				1,
 				new FXRiskGroup (
 					1,
 					"Significantly Material",
-					new String[]
-					{
+					new String[] {
 						"USD",
 						"EUR",
 						"JPY",
@@ -167,8 +184,7 @@ public class FXRiskThresholdContainer20
 				new FXRiskGroup (
 					2,
 					"Frequently Traded",
-					new String[]
-					{
+					new String[] {
 						"BRL",
 						"CNY",
 						"HKD",
@@ -186,80 +202,32 @@ public class FXRiskThresholdContainer20
 				)
 			);
 
-			s_FXRiskGroupMap.put (
-				3,
-				new FXRiskGroup (
-					3,
-					"Others",
-					new String[]
-					{
-						"Other"
-					}
-				)
-			);
+			s_FXRiskGroupMap.put (3, new FXRiskGroup (3, "Others", new String[] {"Other"}));
 
-			s_CategoryDelta.put (
-				1,
-				8400.
-			);
+			s_CategoryDeltaMap.put (1, 8400.);
 
-			s_CategoryDelta.put (
-				2,
-				1900.
-			);
+			s_CategoryDeltaMap.put (2, 1900.);
 
-			s_CategoryDelta.put (
-				3,
-				560.
-			);
+			s_CategoryDeltaMap.put (3, 560.);
 
-			s_CategoryVega.put (
-				"1__1",
-				4000.
-			);
+			s_CategoryVegaMap.put ("1__1", 4000.);
 
-			s_CategoryVega.put (
-				"1__2",
-				1900.
-			);
+			s_CategoryVegaMap.put ("1__2", 1900.);
 
-			s_CategoryVega.put (
-				"1__3",
-				320.
-			);
+			s_CategoryVegaMap.put ("1__3", 320.);
 
-			s_CategoryVega.put (
-				"2__1",
-				1900.
-			);
+			s_CategoryVegaMap.put ("2__1", 1900.);
 
-			s_CategoryVega.put (
-				"2__2",
-				120.
-			);
+			s_CategoryVegaMap.put ("2__2", 120.);
 
-			s_CategoryVega.put (
-				"2__3",
-				110.
-			);
+			s_CategoryVegaMap.put ("2__3", 110.);
 
-			s_CategoryVega.put (
-				"3__1",
-				320.
-			);
+			s_CategoryVegaMap.put ("3__1", 320.);
 
-			s_CategoryVega.put (
-				"3__2",
-				110.
-			);
+			s_CategoryVegaMap.put ("3__2", 110.);
 
-			s_CategoryVega.put (
-				"3__3",
-				110.
-			);
-		}
-		catch (Exception e)
-		{
+			s_CategoryVegaMap.put ("3__3", 110.);
+		} catch (Exception e) {
 			e.printStackTrace();
 
 			return false;
@@ -282,31 +250,19 @@ public class FXRiskThresholdContainer20
 		final String currency)
 		throws Exception
 	{
-		if (null == currency || currency.isEmpty())
-		{
-			throw new Exception (
-				"FXRiskThresholdContainer::CurrencyCategory => Invalid Input"
-			);
+		if (null == currency || currency.isEmpty()) {
+			throw new Exception ("FXRiskThresholdContainer::CurrencyCategory => Invalid Input");
 		}
 
-		for (Map.Entry<Integer, FXRiskGroup> fxRiskGroupEntry : s_FXRiskGroupMap.entrySet())
-		{
-			String[] currencyArray = fxRiskGroupEntry.getValue().currencyArray();
-
-			for (String currencyEntry : currencyArray)
-			{
-				if (currencyEntry.equalsIgnoreCase (
-					currency
-				))
-				{
+		for (Map.Entry<Integer, FXRiskGroup> fxRiskGroupEntry : s_FXRiskGroupMap.entrySet()) {
+			for (String currencyEntry : fxRiskGroupEntry.getValue().currencyArray()) {
+				if (currencyEntry.equalsIgnoreCase (currency)) {
 					return fxRiskGroupEntry.getKey();
 				}
 			}
 		}
 
-		return s_FXRiskGroupMap.get (
-			3
-		).category();
+		return s_FXRiskGroupMap.get (3).category();
 	}
 
 	/**
@@ -331,9 +287,7 @@ public class FXRiskThresholdContainer20
 	public static final boolean ContainsCategory (
 		final int categoryNumber)
 	{
-		return s_FXRiskGroupMap.containsKey (
-			categoryNumber
-		);
+		return s_FXRiskGroupMap.containsKey (categoryNumber);
 	}
 
 	/**
@@ -347,11 +301,7 @@ public class FXRiskThresholdContainer20
 	public static final FXRiskGroup FXRiskGroup (
 		final int categoryNumber)
 	{
-		return ContainsCategory (
-			categoryNumber
-		) ? s_FXRiskGroupMap.get (
-			categoryNumber
-		) : null;
+		return ContainsCategory (categoryNumber) ? s_FXRiskGroupMap.get (categoryNumber) : null;
 	}
 
 	/**
@@ -368,18 +318,11 @@ public class FXRiskThresholdContainer20
 		final int categoryNumber)
 		throws Exception
 	{
-		if (!s_CategoryDelta.containsKey (
-			categoryNumber
-		))
-		{
-			throw new Exception (
-				"FXRiskThresholdContainer::CategoryDeltaThreshold => Invalid Category"
-			);
+		if (!s_CategoryDeltaMap.containsKey (categoryNumber)) {
+			throw new Exception ("FXRiskThresholdContainer::CategoryDeltaThreshold => Invalid Category");
 		}
 
-		return s_CategoryDelta.get (
-			categoryNumber
-		);
+		return s_CategoryDeltaMap.get (categoryNumber);
 	}
 
 	/**
@@ -400,18 +343,11 @@ public class FXRiskThresholdContainer20
 	{
 		String categoryVegaThresholdKey = categoryNumber1 + "__" + categoryNumber2;
 
-		if (!s_CategoryVega.containsKey (
-			categoryVegaThresholdKey
-		))
-		{
-			throw new Exception (
-				"FXRiskThresholdContainer::CategoryVegaThreshold => Invalid Category"
-			);
+		if (!s_CategoryVegaMap.containsKey (categoryVegaThresholdKey)) {
+			throw new Exception ("FXRiskThresholdContainer::CategoryVegaThreshold => Invalid Category");
 		}
 
-		return s_CategoryVega.get (
-			categoryVegaThresholdKey
-		);
+		return s_CategoryVegaMap.get (categoryVegaThresholdKey);
 	}
 
 	/**
@@ -433,7 +369,7 @@ public class FXRiskThresholdContainer20
 
 	public static final Map<Integer, Double> CategoryDeltaMap()
 	{
-		return s_CategoryDelta;
+		return s_CategoryDeltaMap;
 	}
 
 	/**
@@ -444,7 +380,7 @@ public class FXRiskThresholdContainer20
 
 	public static final Map<String, Double> CategoryVegaMap()
 	{
-		return s_CategoryVega;
+		return s_CategoryVegaMap;
 	}
 
 	/**
@@ -461,22 +397,13 @@ public class FXRiskThresholdContainer20
 
 		double[][] crossGroupCorrelation = new double[fxRiskGroupCount][fxRiskGroupCount];
 
-		for (int fxRiskGroupIndexI = 0;
-			fxRiskGroupIndexI < fxRiskGroupCount;
-			++fxRiskGroupIndexI)
-		{
-			for (int fxRiskGroupIndexJ = 0;
-				fxRiskGroupIndexJ < fxRiskGroupCount;
-				++fxRiskGroupIndexJ)
-			{
+		for (int fxRiskGroupIndexI = 0; fxRiskGroupIndexI < fxRiskGroupCount; ++fxRiskGroupIndexI) {
+			for (int fxRiskGroupIndexJ = 0; fxRiskGroupIndexJ < fxRiskGroupCount; ++fxRiskGroupIndexJ) {
 				crossGroupCorrelation[fxRiskGroupIndexI][fxRiskGroupIndexJ] =
 					fxRiskGroupIndexI == fxRiskGroupIndexJ ? 1. : FXSystemics20.CORRELATION;
 			}
 		}
 
-		return RiskGroupPrincipalCovariance.Standard (
-			crossGroupCorrelation,
-			1.
-		);
+		return RiskGroupPrincipalCovariance.Standard (crossGroupCorrelation, 1.);
 	}
 }

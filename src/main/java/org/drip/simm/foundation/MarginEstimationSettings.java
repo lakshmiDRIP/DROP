@@ -6,6 +6,9 @@ package org.drip.simm.foundation;
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -79,7 +82,7 @@ package org.drip.simm.foundation;
 
 /**
  * <i>MarginEstimationSettings</i> exposes the Customization Settings used in the Margin Estimation. The
- * References are:
+ * 	References are:
  * 
  * <br><br>
  *  <ul>
@@ -106,15 +109,28 @@ package org.drip.simm.foundation;
  *  			https://www.isda.org/a/oFiDE/isda-simm-v2.pdf
  *  	</li>
  *  </ul>
- * 
- * <br><br>
+ *
+ * 	It provides the following Functionality:
+ *
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md">Portfolio Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/MarginAnalyticsLibrary.md">Initial and Variation Margin Analytics</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/README.md">Initial Margin Analytics based on ISDA SIMM and its Variants</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/foundation/README.md">Foundation Utilities for ISDA SIMM</a></li>
+ * 		<li>FRTB Based Position - Principal Component Estimator</li>
+ * 		<li>ISDA Based Position - Principal Component Estimator</li>
+ * 		<li>Generate a Cornish-Fischer Instance of <i>MarginEstimationSettings</i></li>
+ * 		<li>Generate a ISDA Delta Instance of <i>MarginEstimationSettings</i></li>
+ * 		<li>Generate an FRTB Instance of MarginEstimationSettings</li>
+ * 		<li><i>MarginEstimationSettings</i> Constructor</li>
+ * 		<li>Retrieve the Position Principal Component Scheme</li>
+ * 		<li>Retrieve the Curvature Estimator Function</li>
  *  </ul>
- * <br><br>
+ *
+ *	<br>
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md">Portfolio Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/MarginAnalyticsLibrary.md">Initial and Variation Margin Analytics</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/README.md">Initial Margin Analytics based on ISDA SIMM and its Variants</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/foundation/README.md">Foundation Utilities for ISDA SIMM</a></td></tr>
+ *  </table>
+ *	<br>
  * 
  * @author Lakshmi Krishnamurthy
  */
@@ -138,25 +154,22 @@ public class MarginEstimationSettings
 	private String _positionPrincipalComponentScheme = "";
 
 	/**
-	 * Generate a Cornish-Fischer Instance of MarginEstimationSettings
+	 * Generate a Cornish-Fischer Instance of <i>MarginEstimationSettings</i>
 	 * 
 	 * @param positionPrincipalComponentScheme The Position Principal Component Scheme
 	 * 
-	 * @return Cornish-Fischer Instance of MarginEstimationSettings
+	 * @return Cornish-Fischer Instance of <i>MarginEstimationSettings</i>
 	 */
 
 	public static final MarginEstimationSettings CornishFischer (
 		final String positionPrincipalComponentScheme)
 	{
-		try
-		{
+		try {
 			return new MarginEstimationSettings (
 				positionPrincipalComponentScheme,
 				CurvatureEstimatorResponseFunction.CornishFischer()
 			);
-		}
-		catch (Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -164,25 +177,22 @@ public class MarginEstimationSettings
 	}
 
 	/**
-	 * Generate a ISDA Delta Instance of MarginEstimationSettings
+	 * Generate a ISDA Delta Instance of <i>MarginEstimationSettings</i>
 	 * 
 	 * @param positionPrincipalComponentScheme The Position Principal Component Scheme
 	 * 
-	 * @return ISDA Delta Instance of MarginEstimationSettings
+	 * @return ISDA Delta Instance of <i>MarginEstimationSettings</i>
 	 */
 
 	public static final MarginEstimationSettings ISDADelta (
 		final String positionPrincipalComponentScheme)
 	{
-		try
-		{
+		try {
 			return new MarginEstimationSettings (
 				positionPrincipalComponentScheme,
 				CurvatureEstimatorISDADelta.Standard()
 			);
-		}
-		catch (Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -190,25 +200,22 @@ public class MarginEstimationSettings
 	}
 
 	/**
-	 * Generate an FRTB Instance of MarginEstimationSettings
+	 * Generate an FRTB Instance of <i>MarginEstimationSettings</i>
 	 * 
 	 * @param positionPrincipalComponentScheme The Position Principal Component Scheme
 	 * 
-	 * @return FRTB Instance of MarginEstimationSettings
+	 * @return FRTB Instance of <i>MarginEstimationSettings</i>
 	 */
 
 	public static final MarginEstimationSettings FRTB (
 		final String positionPrincipalComponentScheme)
 	{
-		try
-		{
+		try {
 			return new MarginEstimationSettings (
 				positionPrincipalComponentScheme,
 				CurvatureEstimatorFRTB.Standard()
 			);
-		}
-		catch (Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -216,7 +223,7 @@ public class MarginEstimationSettings
 	}
 
 	/**
-	 * MarginEstimationSettings Constructor
+	 * <i>MarginEstimationSettings</i> Constructor
 	 * 
 	 * @param positionPrincipalComponentScheme The Position Principal Component Scheme
 	 * @param curvatureEstimator The Curvature Estimator Function
@@ -231,12 +238,9 @@ public class MarginEstimationSettings
 	{
 		if (null == (_positionPrincipalComponentScheme = positionPrincipalComponentScheme) ||
 				_positionPrincipalComponentScheme.isEmpty() ||
-			null == (_curvatureEstimator = curvatureEstimator)
-		)
+			null == (_curvatureEstimator = curvatureEstimator))
 		{
-			throw new Exception (
-				"MarginEstimationSettings Constructor => Invalid Inputs"
-			);
+			throw new Exception ("MarginEstimationSettings Constructor => Invalid Inputs");
 		}
 	}
 

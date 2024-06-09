@@ -11,6 +11,9 @@ import org.drip.numerical.linearalgebra.Matrix;
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -84,7 +87,7 @@ import org.drip.numerical.linearalgebra.Matrix;
 
 /**
  * <i>RiskGroupPrincipalCovariance</i> contains the Cross Risk-Group Principal Component Based Co-variance.
- * The References are:
+ * 	The References are:
  * 
  * <br><br>
  *  <ul>
@@ -111,15 +114,27 @@ import org.drip.numerical.linearalgebra.Matrix;
  *  			https://www.isda.org/a/oFiDE/isda-simm-v2.pdf
  *  	</li>
  *  </ul>
- * 
- * <br><br>
+ *
+ * 	It provides the following Functionality:
+ *
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md">Portfolio Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/MarginAnalyticsLibrary.md">Initial and Variation Margin Analytics</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/README.md">Initial Margin Analytics based on ISDA SIMM and its Variants</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/foundation/README.md">Foundation Utilities for ISDA SIMM</a></li>
+ * 		<li>Construct the Standard <i>RiskGroupPrincipalCovariance</i> Instance from the Bucket Correlation Matrix and the Cross Correlation Entry</li>
+ * 		<li><i>RiskGroupPrincipalCovariance</i> Constructor</li>
+ * 		<li>Retrieve the Intra-Group Principal Eigen-Component</li>
+ * 		<li>Retrieve the Cross Group Correlation</li>
+ * 		<li>Retrieve the Scaled Principal Eigen-vector</li>
+ * 		<li>Retrieve the Unadjusted Cross-Group Co-variance</li>
+ * 		<li>Retrieve the Adjusted Cross-Group Co-variance</li>
  *  </ul>
- * <br><br>
+ *
+ *	<br>
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md">Portfolio Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/MarginAnalyticsLibrary.md">Initial and Variation Margin Analytics</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/README.md">Initial Margin Analytics based on ISDA SIMM and its Variants</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/foundation/README.md">Foundation Utilities for ISDA SIMM</a></td></tr>
+ *  </table>
+ *	<br>
  * 
  * @author Lakshmi Krishnamurthy
  */
@@ -130,34 +145,27 @@ public class RiskGroupPrincipalCovariance
 	private EigenComponent _principalEigenComponent = null;
 
 	/**
-	 * Construct the Standard RiskGroupPrincipalCovariance Instance from the Bucket Correlation Matrix and
-	 *  the Cross Correlation Entry
+	 * Construct the Standard <i>RiskGroupPrincipalCovariance</i> Instance from the Bucket Correlation Matrix
+	 * 	and the Cross Correlation Entry
 	 * 
 	 * @param intraGroupCorrelationMatrix The Intra-Group Correlation Matrix
 	 * @param extraGroupCorrelation Cross Group Correlation
 	 * 
-	 * @return The Standard RiskGroupPrincipalCovariance Instance
+	 * @return The Standard <i>RiskGroupPrincipalCovariance</i> Instance
 	 */
 
 	public static final RiskGroupPrincipalCovariance Standard (
 		final double[][] intraGroupCorrelationMatrix,
 		final double extraGroupCorrelation)
 	{
-		try
-		{
+		try {
 			return new RiskGroupPrincipalCovariance (
-				new PowerIterationComponentExtractor (
-					30,
-					0.000001,
-					false
-				).principalComponent (
+				new PowerIterationComponentExtractor (30, 0.000001, false).principalComponent (
 					intraGroupCorrelationMatrix
 				),
 				extraGroupCorrelation
 			);
-		}
-		catch (Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -165,7 +173,7 @@ public class RiskGroupPrincipalCovariance
 	}
 
 	/**
-	 * RiskGroupPrincipalCovariance Constructor
+	 * <i>RiskGroupPrincipalCovariance</i> Constructor
 	 * 
 	 * @param principalEigenComponent Intra-Group Principal Eigen-Component
 	 * @param extraGroupCorrelation Cross Group Correlation
@@ -179,13 +187,10 @@ public class RiskGroupPrincipalCovariance
 		throws Exception
 	{
 		if (null == (_principalEigenComponent = principalEigenComponent) ||
-			!NumberUtil.IsValid (
-				_extraGroupCorrelation = extraGroupCorrelation
-			) || -1. > _extraGroupCorrelation || 1. < _extraGroupCorrelation)
+			!NumberUtil.IsValid (_extraGroupCorrelation = extraGroupCorrelation) ||
+			-1. > _extraGroupCorrelation || 1. < _extraGroupCorrelation)
 		{
-			throw new Exception (
-				"RiskGroupPrincipalCovariance Constructor => Invalid Inputs"
-			);
+			throw new Exception ("RiskGroupPrincipalCovariance Constructor => Invalid Inputs");
 		}
 	}
 
@@ -219,19 +224,14 @@ public class RiskGroupPrincipalCovariance
 
 	public double[] scaledPrincipalEigenvector()
 	{
-		double scaleFactor = Math.sqrt (
-			_principalEigenComponent.eigenValue()
-		);
+		double scaleFactor = Math.sqrt (_principalEigenComponent.eigenValue());
 
 		double[] principalEigenvector = _principalEigenComponent.eigenVector();
 
 		int componentCount = principalEigenvector.length;
 		double[] scaledPrincipalEigenvector = new double[componentCount];
 
-		for (int componentIndex = 0;
-			componentIndex < componentCount;
-			++componentIndex)
-		{
+		for (int componentIndex = 0; componentIndex < componentCount; ++componentIndex) {
 			scaledPrincipalEigenvector[componentIndex] = principalEigenvector[componentIndex] * scaleFactor;
 		}
 
@@ -248,10 +248,7 @@ public class RiskGroupPrincipalCovariance
 	{
 		double[] scaledPrincipalEigenvector = scaledPrincipalEigenvector();
 
-		return Matrix.CrossProduct (
-			scaledPrincipalEigenvector,
-			scaledPrincipalEigenvector
-		);
+		return Matrix.CrossProduct (scaledPrincipalEigenvector, scaledPrincipalEigenvector);
 	}
 
 	/**
@@ -262,9 +259,6 @@ public class RiskGroupPrincipalCovariance
 
 	public double[][] adjustedCovariance()
 	{
-		return Matrix.Scale2D (
-			unadjustedCovariance(),
-			_extraGroupCorrelation
-		);
+		return Matrix.Scale2D (unadjustedCovariance(),_extraGroupCorrelation);
 	}
 }
