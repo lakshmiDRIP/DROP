@@ -11,7 +11,7 @@ Numerical Analysis Library contains the supporting Functionality for Numerical M
 
  |        Document         | Link |
  |-------------------------|------|
- | Technical Specification | [*Latest*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/NumericalAnalysis/NumericalAnalysis_v6.02.pdf) [*Previous*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/NumericalAnalysis) |
+ | Technical Specification | [*Latest*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/NumericalAnalysis/NumericalAnalysis_v6.18.pdf) [*Previous*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/NumericalAnalysis) |
  | User Guide              |  |
  | API                     | [*Javadoc*](https://lakshmidrip.github.io/DROP/Javadoc/index.html)|
 
@@ -323,6 +323,17 @@ Numerical Analysis Library contains the supporting Functionality for Numerical M
 	* Motivation and Informal Explanation
 	* Mathematics: The Kernel Trick
 	* Applications
+	* References
+ * Successive Over-relaxation
+	* Introduction
+	* Formulation
+	* Convergence
+		* Convergence Rate
+	* Algorithm
+	* Symmetric Successive Over-relaxation
+	* Other Applications of the Method
+	* References
+ * Symmetric Successive Over-relaxation
 	* References
 
 
