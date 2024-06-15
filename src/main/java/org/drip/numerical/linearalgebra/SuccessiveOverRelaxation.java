@@ -2,7 +2,6 @@
 package org.drip.numerical.linearalgebra;
 
 import org.drip.numerical.common.NumberUtil;
-import org.drip.service.common.FormatUtil;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -123,14 +122,13 @@ import org.drip.service.common.FormatUtil;
 
 public class SuccessiveOverRelaxation
 {
-	public static final double TOLERANCE = 1.0e-04;
+	private static final double ABSOLUTE_TOLERANCE = 1.0e-08;
+	private static final double RELATIVE_TOLERANCE = 1.0e-05;
+	private static final double ABSOLUTE_LEVEL_THRESOLD = 1.0e-06;
 
 	private double[] _rhsArray = null;
 	private double _omega = Double.NaN;
 	private double[][] _squareMatrix = null;
-	private double[][] _diagonalMatrix = null;
-	private double[][] _strictlyLowerTriangularMatrix = null;
-	private double[][] _strictlyUpperTriangularMatrix = null;
 
 	private static final boolean VectorsMatch (
 		final double[] array1,
@@ -138,81 +136,28 @@ public class SuccessiveOverRelaxation
 		throws Exception
 	{
 		for (int i = 0; i < array1.length; ++i) {
-			System.out.println ("Arrays => " + array1[i] + " | " + array2[i]);
+			double mid = 0.5 * (array1[i] + array2[i]);
 
-			if (Math.abs (array1[i] - array2[i]) > TOLERANCE) {
-				System.out.println ("FALSE => " + Math.abs (array1[i] - array2[i]));
+			double absoluteDifference = Math.abs (array1[i] - array2[i]);
 
-				return false;
-			}
-		}
-
-		System.out.println ("TRUE");
-
-		return true;
-	}
-
-	/**
-	 * Construct a Standard <i>SuccessiveOverRelaxation</i> Instance from the Square Matrix
-	 * 
-	 * @param squareMatrix Square Matrix
-	 * @param rhsArray RHS Array
-	 * @param omega SOR Omega Parameter
-	 * 
-	 * @return <i>SuccessiveOverRelaxation</i> Instance
-	 */
-
-	public static final SuccessiveOverRelaxation Standard (
-		final double[][] squareMatrix,
-		final double[] rhsArray,
-		final double omega)
-	{
-		try {
-			int size = squareMatrix.length;
-			double[][] diagonalMatrix = new double[size][size];
-			double[][] strictlyLowerTriangularMatrix = new double[size][size];
-			double[][] strictlyUpperTriangularMatrix = new double[size][size];
-
-			for (int i = 0; i < size; ++i) {
-				for (int j = 0; j < size; ++j) {
-					if (i == j) {
-						strictlyLowerTriangularMatrix[i][j] = 0.;
-						strictlyUpperTriangularMatrix[i][j] = 0.;
-						diagonalMatrix[i][j] = squareMatrix[i][j];
-					} else if (i < j) {
-						diagonalMatrix[i][j] = 0.;
-						strictlyLowerTriangularMatrix[i][j] = 0.;
-						strictlyUpperTriangularMatrix[i][j] = squareMatrix[i][j];
-					} else if (i > j) {
-						diagonalMatrix[i][j] = 0.;
-						strictlyUpperTriangularMatrix[i][j] = 0.;
-						strictlyLowerTriangularMatrix[i][j] = squareMatrix[i][j];
-					}
+			if (ABSOLUTE_LEVEL_THRESOLD >= mid) {
+				if (ABSOLUTE_TOLERANCE < absoluteDifference) {
+					return false;
+				}
+			} else {
+				if (RELATIVE_TOLERANCE * mid < absoluteDifference) {
+					return false;
 				}
 			}
-
-			return new SuccessiveOverRelaxation (
-				squareMatrix,
-				diagonalMatrix,
-				strictlyLowerTriangularMatrix,
-				strictlyUpperTriangularMatrix,
-				rhsArray,
-				omega
-			);
-		} catch (Exception e) {
-			e.printStackTrace();
 		}
 
-		return null;
+		return true;
 	}
 
 	/**
 	 * <i>SuccessiveOverRelaxation</i> Constructor
 	 * 
 	 * @param squareMatrix Square Matrix
-	 * @param diagonalMatrix Diagonal Matrix
-	 * @param strictlyLowerTriangularMatrix Strictly Lower Triangular Matrix
-	 * @param strictlyUpperTriangularMatrix Strictly Upper Triangular Matrix
 	 * @param rhsArray RHS Array
 	 * @param omega SOR Omega Parameter
 	 * 
@@ -221,17 +166,11 @@ public class SuccessiveOverRelaxation
 
 	public SuccessiveOverRelaxation (
 		final double[][] squareMatrix,
-		final double[][] diagonalMatrix,
-		final double[][] strictlyLowerTriangularMatrix,
-		final double[][] strictlyUpperTriangularMatrix,
 		final double[] rhsArray,
 		final double omega)
 		throws Exception
 	{
 		if (null == (_squareMatrix = squareMatrix) ||
-			null == (_diagonalMatrix = diagonalMatrix) ||
-			null == (_strictlyLowerTriangularMatrix = strictlyLowerTriangularMatrix) ||
-			null == (_strictlyUpperTriangularMatrix = strictlyUpperTriangularMatrix) ||
 			null == (_rhsArray = rhsArray) ||
 			!NumberUtil.IsValid (_omega = omega))
 		{
@@ -258,7 +197,16 @@ public class SuccessiveOverRelaxation
 
 	public double[][] diagonalMatrix()
 	{
-		return _diagonalMatrix;
+		int size = _squareMatrix.length;
+		double[][] diagonalMatrix = new double[size][size];
+
+		for (int i = 0; i < size; ++i) {
+			for (int j = 0; j < size; ++j) {
+				diagonalMatrix[i][j] = i == j ? _squareMatrix[i][j] : 0.;
+			}
+		}
+
+		return diagonalMatrix;
 	}
 
 	/**
@@ -269,7 +217,16 @@ public class SuccessiveOverRelaxation
 
 	public double[][] strictlyLowerTriangularMatrix()
 	{
-		return _strictlyLowerTriangularMatrix;
+		int size = _squareMatrix.length;
+		double[][] strictlyLowerTriangularMatrix = new double[size][size];
+
+		for (int i = 0; i < size; ++i) {
+			for (int j = 0; j < size; ++j) {
+				strictlyLowerTriangularMatrix[i][j] = i > j ? _squareMatrix[i][j] : 0.;
+			}
+		}
+
+		return strictlyLowerTriangularMatrix;
 	}
 
 	/**
@@ -280,7 +237,16 @@ public class SuccessiveOverRelaxation
 
 	public double[][] strictlyUpperTriangularMatrix()
 	{
-		return _strictlyUpperTriangularMatrix;
+		int size = _squareMatrix.length;
+		double[][] strictlyUpperTriangularMatrix = new double[size][size];
+
+		for (int i = 0; i < size; ++i) {
+			for (int j = 0; j < size; ++j) {
+				strictlyUpperTriangularMatrix[i][j] = i < j ? _squareMatrix[i][j] : 0.;
+			}
+		}
+
+		return strictlyUpperTriangularMatrix;
 	}
 
 	/**
@@ -305,24 +271,20 @@ public class SuccessiveOverRelaxation
 		return _omega;
 	}
 
-	public void forwardSubstitution (
-		final double[] startingUnknownArray)
+	public double[] forwardSubstitution()
 	{
-		if (null == startingUnknownArray || _rhsArray.length != startingUnknownArray.length) {
-			return;
-		}
-
-		// int iteration = 0;
-		double[] previousUnknownArray = startingUnknownArray;
-		double[] updatedUnknownArray = new double[previousUnknownArray.length];
+		double[] updatedUnknownArray = new double[_rhsArray.length];
+		double[] previousUnknownArray = new double[_rhsArray.length];
 
 		for (int i = 0; i < updatedUnknownArray.length; ++i) {
 			updatedUnknownArray[i] = Math.random();
 		}
 
 		try {
-			do {
-				previousUnknownArray = updatedUnknownArray;
+			 while (!VectorsMatch (previousUnknownArray, updatedUnknownArray)) {
+				for (int i = 0; i < previousUnknownArray.length; ++i) {
+					previousUnknownArray[i] = updatedUnknownArray[i];
+				}
 
 				for (int i = 0; i < previousUnknownArray.length; ++i) {
 					updatedUnknownArray[i] = _rhsArray[i];
@@ -338,26 +300,20 @@ public class SuccessiveOverRelaxation
 					updatedUnknownArray[i] = (1. - _omega) * previousUnknownArray[i] + (
 						_omega * updatedUnknownArray[i] / _squareMatrix[i][i]
 					);
-
-					System.out.println (i + " => " + previousUnknownArray[i] + " | " + updatedUnknownArray[i]);
 				}
+			}
 
-				/* String dump = "[Iteration = " + iteration++ + "] {";
-
-				for (int i = 0; i < previousUnknownArray.length; ++i) {
-					dump += FormatUtil.FormatDouble (updatedUnknownArray[i], 2, 4, 1.) + " | " +
-						FormatUtil.FormatDouble (previousUnknownArray[i], 2, 4, 1.) + ", ";
-				}
-
-				System.out.println (dump + "}"); */
-			} while (!VectorsMatch (previousUnknownArray, updatedUnknownArray));
+			 return updatedUnknownArray;
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+
+		return null;
 	}
 
 	public static final void main (
 		final String[] argumentArray)
+		throws Exception
 	{
 		double[][] squareMatrix = new double[][] {
 			{ 4., -1., -6.,  0.},
@@ -375,19 +331,15 @@ public class SuccessiveOverRelaxation
 
 		double omega = 0.5;
 
-		double[] startingUnknownArray = new double[] {
-			0.,
-			0.,
-			0.,
-			0.
-		};
-
-		SuccessiveOverRelaxation successiveOverRelaxation = SuccessiveOverRelaxation.Standard (
-			squareMatrix,
-			rhsArray,
-			omega
+		NumberUtil.Print1DArray (
+			"\tResult",
+			new SuccessiveOverRelaxation (
+				squareMatrix,
+				rhsArray,
+				omega
+			).forwardSubstitution(),
+			4,
+			false
 		);
-
-		successiveOverRelaxation.forwardSubstitution (startingUnknownArray);
 	}
 }
