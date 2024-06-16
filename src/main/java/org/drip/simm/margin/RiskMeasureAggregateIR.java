@@ -117,7 +117,11 @@ import org.drip.numerical.common.NumberUtil;
  * 	It provides the following Functionality:
  *
  *  <ul>
- * 		<li><i>RiskMeasureAggregate</i> Constructor</li>
+ * 		<li><i>RiskMeasureAggregateIR</i> Constructor</li>
+ * 		<li>Retrieve the Core SBA Variance</li>
+ * 		<li>Retrieve the Residual SBA Variance</li>
+ * 		<li>Retrieve the Aggregate Bucket Map</li>
+ * 		<li>Retrieve the Total SBA Margin</li>
  *  </ul>
  *
  *	<br>
@@ -135,11 +139,10 @@ public class RiskMeasureAggregateIR
 {
 	private double _coreSBAVariance = Double.NaN;
 	private double _residualSBAVariance = Double.NaN;
-	private Map<String, BucketAggregateIR> _bucketAggregateMap =
-		null;
+	private Map<String, BucketAggregateIR> _bucketAggregateMap = null;
 
 	/**
-	 * RiskMeasureAggregateIR Constructor
+	 * <i>RiskMeasureAggregateIR</i> Constructor
 	 * 
 	 * @param bucketAggregateMap IR Bucket Aggregate Map
 	 * @param coreSBAVariance The Core SBA Variance
@@ -155,17 +158,10 @@ public class RiskMeasureAggregateIR
 		throws Exception
 	{
 		if (null == (_bucketAggregateMap = bucketAggregateMap) ||
-			!NumberUtil.IsValid (
-				_coreSBAVariance = coreSBAVariance
-			) ||
-			!NumberUtil.IsValid (
-				_residualSBAVariance = residualSBAVariance
-			)
-		)
+			!NumberUtil.IsValid (_coreSBAVariance = coreSBAVariance) ||
+			!NumberUtil.IsValid (_residualSBAVariance = residualSBAVariance))
 		{
-			throw new Exception (
-				"RiskMeasureAggregateIR Constructor => Invalid Inputs"
-			);
+			throw new Exception ("RiskMeasureAggregateIR Constructor => Invalid Inputs");
 		}
 	}
 
@@ -210,8 +206,6 @@ public class RiskMeasureAggregateIR
 
 	public double sba()
 	{
-		return Math.sqrt (
-			_coreSBAVariance + _residualSBAVariance
-		);
+		return Math.sqrt (_coreSBAVariance + _residualSBAVariance);
 	}
 }

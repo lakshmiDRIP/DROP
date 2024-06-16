@@ -8,6 +8,9 @@ import org.drip.numerical.common.NumberUtil;
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -81,8 +84,8 @@ import org.drip.numerical.common.NumberUtil;
 
 /**
  * <i>SensitivityAggregateIR</i> holds the IM Margin Sensitivity Co-variances within a single Currency for
- * each of the IR Risk Factors - OIS, LIBOR 1M, LIBOR 3M, LIBOR 6M LIBOR 12M, PRIME, and MUNICIPAL. The
- * References are:
+ * 	each of the IR Risk Factors - OIS, LIBOR 1M, LIBOR 3M, LIBOR 6M LIBOR 12M, PRIME, and MUNICIPAL. The
+ * 	References are:
  * 
  * <br><br>
  *  <ul>
@@ -109,15 +112,51 @@ import org.drip.numerical.common.NumberUtil;
  *  			https://www.isda.org/a/oFiDE/isda-simm-v2.pdf
  *  	</li>
  *  </ul>
- * 
- * <br><br>
+ *
+ * 	It provides the following Functionality:
+ *
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md">Portfolio Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/MarginAnalyticsLibrary.md">Initial and Variation Margin Analytics</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/README.md">Initial Margin Analytics based on ISDA SIMM and its Variants</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/margin/README.md">ISDA SIMM Risk Factor Margin Metrics</a></li>
+ * 		<li><i>SensitivityAggregateIR</i> Constructor</li>
+ * 		<li>Retrieve the OIS - OIS Margin Co-variance</li>
+ * 		<li>Retrieve the OIS - LIBOR1M Margin Co-variance</li>
+ * 		<li>Retrieve the OIS - LIBOR3M Margin Co-variance</li>
+ * 		<li>Retrieve the OIS - LIBOR6M Margin Co-variance</li>
+ * 		<li>Retrieve the OIS - LIBOR12M Margin Co-variance</li>
+ * 		<li>Retrieve the OIS - PRIME Margin Co-variance</li>
+ * 		<li>Retrieve the OIS - MUNICIPAL Margin Co-variance</li>
+ * 		<li>Retrieve the LIBOR1M - LIBOR1M Margin Co-variance</li>
+ * 		<li>Retrieve the LIBOR1M - LIBOR3M Margin Co-variance</li>
+ * 		<li>Retrieve the LIBOR1M - LIBOR6M Margin Co-variance</li>
+ * 		<li>Retrieve the LIBOR1M - LIBOR12M Margin Co-variance</li>
+ * 		<li>Retrieve the LIBOR1M - PRIME Margin Co-variance</li>
+ * 		<li>Retrieve the LIBOR1M - MUNICIPAL Margin Co-variance</li>
+ * 		<li>Retrieve the LIBOR3M - LIBOR3M Margin Co-variance</li>
+ * 		<li>Retrieve the LIBOR3M - LIBOR6M Margin Co-variance</li>
+ * 		<li>Retrieve the LIBOR3M - LIBOR12M Margin Co-variance</li>
+ * 		<li>Retrieve the LIBOR3M - PRIME Margin Co-variance</li>
+ * 		<li>Retrieve the LIBOR3M - MUNICIPAL Margin Co-variance</li>
+ * 		<li>Retrieve the LIBOR6M - LIBOR6M Margin Co-variance</li>
+ * 		<li>Retrieve the LIBOR6M - LIBOR12M Margin Co-variance</li>
+ * 		<li>Retrieve the LIBOR6M - PRIME Margin Co-variance</li>
+ * 		<li>Retrieve the LIBOR6M - MUNICIPAL Margin Co-variance</li>
+ * 		<li>Retrieve the LIBOR12M - LIBOR12M Margin Co-variance</li>
+ * 		<li>Retrieve the LIBOR12M - PRIME Margin Co-variance</li>
+ * 		<li>Retrieve the LIBOR12M - MUNICIPAL Margin Co-variance</li>
+ * 		<li>Retrieve the PRIME - PRIME Margin Co-variance</li>
+ * 		<li>Retrieve the PRIME - MUNICIPAL Margin Co-variance</li>
+ * 		<li>Retrieve the MUNICIPAL - MUNICIPAL Margin Co-variance</li>
+ * 		<li>Compute the Cumulative Margin Covariance</li>
+ * 		<li>Compute the Cumulative Sensitivity Margin</li>
+ * 		<li>Retrieve the Cumulative Margin Sensitivity</li>
  *  </ul>
- * <br><br>
+ *
+ *	<br>
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md">Portfolio Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/MarginAnalyticsLibrary.md">Initial and Variation Margin Analytics</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/README.md">Initial Margin Analytics based on ISDA SIMM and its Variants</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/margin/README.md">ISDA SIMM Risk Factor Margin Metrics</a></td></tr>
+ *  </table>
  * 
  * @author Lakshmi Krishnamurthy
  */
@@ -162,7 +201,7 @@ public class SensitivityAggregateIR
 	private double _cumulativeMarginSensitivity = Double.NaN;
 
 	/**
-	 * SensitivityAggregateIR Constructor
+	 * <i>SensitivityAggregateIR</i> Constructor
 	 * 
 	 * @param marginCovariance_OIS_OIS The OIS - OIS Margin Co-variance
 	 * @param marginCovariance_OIS_LIBOR1M The OIS - LIBOR1M Margin Co-variance
@@ -229,98 +268,39 @@ public class SensitivityAggregateIR
 		final double cumulativeMarginSensitivity)
 		throws Exception
 	{
-		if (!NumberUtil.IsValid (
-				_marginCovariance_OIS_OIS = marginCovariance_OIS_OIS
-			) ||
-			!NumberUtil.IsValid (
-				_marginCovariance_OIS_LIBOR1M = marginCovariance_OIS_LIBOR1M
-			) ||
-			!NumberUtil.IsValid (
-				_marginCovariance_OIS_LIBOR3M = marginCovariance_OIS_LIBOR3M
-			) ||
-			!NumberUtil.IsValid (
-				_marginCovariance_OIS_LIBOR6M = marginCovariance_OIS_LIBOR6M
-			) ||
-			!NumberUtil.IsValid (
-				_marginCovariance_OIS_LIBOR12M = marginCovariance_OIS_LIBOR12M
-			) ||
-			!NumberUtil.IsValid (
-				_marginCovariance_OIS_PRIME = marginCovariance_OIS_PRIME
-			) ||
-			!NumberUtil.IsValid (
-				_marginCovariance_OIS_MUNICIPAL = marginCovariance_OIS_MUNICIPAL
-			) ||
-			!NumberUtil.IsValid (
-				_marginCovariance_LIBOR1M_LIBOR1M = marginCovariance_LIBOR1M_LIBOR1M
-			) ||
-			!NumberUtil.IsValid (
-				_marginCovariance_LIBOR1M_LIBOR3M = marginCovariance_LIBOR1M_LIBOR3M
-			) ||
-			!NumberUtil.IsValid (
-				_marginCovariance_LIBOR1M_LIBOR6M = marginCovariance_LIBOR1M_LIBOR6M
-			) ||
-			!NumberUtil.IsValid (
-				_marginCovariance_LIBOR1M_LIBOR12M = marginCovariance_LIBOR1M_LIBOR12M
-			) ||
-			!NumberUtil.IsValid (
-				_marginCovariance_LIBOR1M_PRIME = marginCovariance_LIBOR1M_PRIME
-			) ||
-			!NumberUtil.IsValid (
-				_marginCovariance_LIBOR1M_MUNICIPAL = marginCovariance_LIBOR1M_MUNICIPAL
-			) ||
-			!NumberUtil.IsValid (
-				_marginCovariance_LIBOR3M_LIBOR3M = marginCovariance_LIBOR3M_LIBOR3M
-			) ||
-			!NumberUtil.IsValid (
-				_marginCovariance_LIBOR3M_LIBOR6M = marginCovariance_LIBOR3M_LIBOR6M
-			) ||
-			!NumberUtil.IsValid (
-				_marginCovariance_LIBOR3M_LIBOR12M = marginCovariance_LIBOR3M_LIBOR12M
-			) ||
-			!NumberUtil.IsValid (
-				_marginCovariance_LIBOR3M_PRIME = marginCovariance_LIBOR3M_PRIME
-			) ||
-			!NumberUtil.IsValid (
-				_marginCovariance_LIBOR3M_MUNICIPAL = marginCovariance_LIBOR3M_MUNICIPAL
-			) ||
-			!NumberUtil.IsValid (
-				_marginCovariance_LIBOR6M_LIBOR6M = marginCovariance_LIBOR6M_LIBOR6M
-			) ||
-			!NumberUtil.IsValid (
-				_marginCovariance_LIBOR6M_LIBOR12M = marginCovariance_LIBOR6M_LIBOR12M
-			) ||
-			!NumberUtil.IsValid (
-				_marginCovariance_LIBOR6M_PRIME = marginCovariance_LIBOR6M_PRIME
-			) ||
-			!NumberUtil.IsValid (
-				_marginCovariance_LIBOR6M_MUNICIPAL = marginCovariance_LIBOR6M_MUNICIPAL
-			) ||
-			!NumberUtil.IsValid (
-				_marginCovariance_LIBOR12M_LIBOR12M = marginCovariance_LIBOR12M_LIBOR12M
-			) ||
-			!NumberUtil.IsValid (
-				_marginCovariance_LIBOR12M_PRIME = marginCovariance_LIBOR12M_PRIME
-			) ||
+		if (!NumberUtil.IsValid (_marginCovariance_OIS_OIS = marginCovariance_OIS_OIS) ||
+			!NumberUtil.IsValid (_marginCovariance_OIS_LIBOR1M = marginCovariance_OIS_LIBOR1M) ||
+			!NumberUtil.IsValid (_marginCovariance_OIS_LIBOR3M = marginCovariance_OIS_LIBOR3M) ||
+			!NumberUtil.IsValid (_marginCovariance_OIS_LIBOR6M = marginCovariance_OIS_LIBOR6M) ||
+			!NumberUtil.IsValid (_marginCovariance_OIS_LIBOR12M = marginCovariance_OIS_LIBOR12M) ||
+			!NumberUtil.IsValid (_marginCovariance_OIS_PRIME = marginCovariance_OIS_PRIME) ||
+			!NumberUtil.IsValid (_marginCovariance_OIS_MUNICIPAL = marginCovariance_OIS_MUNICIPAL) ||
+			!NumberUtil.IsValid (_marginCovariance_LIBOR1M_LIBOR1M = marginCovariance_LIBOR1M_LIBOR1M) ||
+			!NumberUtil.IsValid (_marginCovariance_LIBOR1M_LIBOR3M = marginCovariance_LIBOR1M_LIBOR3M) ||
+			!NumberUtil.IsValid (_marginCovariance_LIBOR1M_LIBOR6M = marginCovariance_LIBOR1M_LIBOR6M) ||
+			!NumberUtil.IsValid (_marginCovariance_LIBOR1M_LIBOR12M = marginCovariance_LIBOR1M_LIBOR12M) ||
+			!NumberUtil.IsValid (_marginCovariance_LIBOR1M_PRIME = marginCovariance_LIBOR1M_PRIME) ||
+			!NumberUtil.IsValid (_marginCovariance_LIBOR1M_MUNICIPAL = marginCovariance_LIBOR1M_MUNICIPAL) ||
+			!NumberUtil.IsValid (_marginCovariance_LIBOR3M_LIBOR3M = marginCovariance_LIBOR3M_LIBOR3M) ||
+			!NumberUtil.IsValid (_marginCovariance_LIBOR3M_LIBOR6M = marginCovariance_LIBOR3M_LIBOR6M) ||
+			!NumberUtil.IsValid (_marginCovariance_LIBOR3M_LIBOR12M = marginCovariance_LIBOR3M_LIBOR12M) ||
+			!NumberUtil.IsValid (_marginCovariance_LIBOR3M_PRIME = marginCovariance_LIBOR3M_PRIME) ||
+			!NumberUtil.IsValid (_marginCovariance_LIBOR3M_MUNICIPAL = marginCovariance_LIBOR3M_MUNICIPAL) ||
+			!NumberUtil.IsValid (_marginCovariance_LIBOR6M_LIBOR6M = marginCovariance_LIBOR6M_LIBOR6M) ||
+			!NumberUtil.IsValid (_marginCovariance_LIBOR6M_LIBOR12M = marginCovariance_LIBOR6M_LIBOR12M) ||
+			!NumberUtil.IsValid (_marginCovariance_LIBOR6M_PRIME = marginCovariance_LIBOR6M_PRIME) ||
+			!NumberUtil.IsValid (_marginCovariance_LIBOR6M_MUNICIPAL = marginCovariance_LIBOR6M_MUNICIPAL) ||
+			!NumberUtil.IsValid (_marginCovariance_LIBOR12M_LIBOR12M = marginCovariance_LIBOR12M_LIBOR12M) ||
+			!NumberUtil.IsValid (_marginCovariance_LIBOR12M_PRIME = marginCovariance_LIBOR12M_PRIME ) ||
 			!NumberUtil.IsValid (
 				_marginCovariance_LIBOR12M_MUNICIPAL = marginCovariance_LIBOR12M_MUNICIPAL
-			) ||
-			!NumberUtil.IsValid (
-				_marginCovariance_PRIME_PRIME = marginCovariance_PRIME_PRIME
-			) ||
-			!NumberUtil.IsValid (
-				_marginCovariance_PRIME_MUNICIPAL = marginCovariance_PRIME_MUNICIPAL
-			) ||
+			) ||!NumberUtil.IsValid (_marginCovariance_PRIME_PRIME = marginCovariance_PRIME_PRIME) ||
+			!NumberUtil.IsValid (_marginCovariance_PRIME_MUNICIPAL = marginCovariance_PRIME_MUNICIPAL) ||
 			!NumberUtil.IsValid (
 				_marginCovariance_MUNICIPAL_MUNICIPAL = marginCovariance_MUNICIPAL_MUNICIPAL
-			) ||
-			!NumberUtil.IsValid (
-				_cumulativeMarginSensitivity = cumulativeMarginSensitivity
-			)
-		)
+			) ||!NumberUtil.IsValid (_cumulativeMarginSensitivity = cumulativeMarginSensitivity))
 		{
-			throw new Exception (
-				"SensitivityAggregateIR Constructor => Invalid Inputs"
-			);
+			throw new Exception ("SensitivityAggregateIR Constructor => Invalid Inputs");
 		}
 	}
 
@@ -678,9 +658,7 @@ public class SensitivityAggregateIR
 
 	public double cumulativeMargin()
 	{
-		return Math.sqrt (
-			cumulativeMarginCovariance()
-		);
+		return Math.sqrt (cumulativeMarginCovariance());
 	}
 
 	/**

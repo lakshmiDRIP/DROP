@@ -31,6 +31,9 @@ import org.drip.simm.fx.FXVolatilityGroupContainer24;
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -104,7 +107,7 @@ import org.drip.simm.fx.FXVolatilityGroupContainer24;
 
 /**
  * <i>BucketSensitivitySettings</i> holds the Settings that govern the Generation of the ISDA SIMM Single
- * Bucket Sensitivities. The References are:
+ * 	Bucket Sensitivities. The References are:
  * 
  * <br><br>
  *  <ul>
@@ -131,15 +134,32 @@ import org.drip.simm.fx.FXVolatilityGroupContainer24;
  *  			https://www.isda.org/a/CeggE/ISDA-SIMM-v2.4-PUBLIC.pdf
  *  	</li>
  *  </ul>
- * 
- * <br><br>
+ *
+ * 	It provides the following Functionality:
+ *
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md">Portfolio Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/MarginAnalyticsLibrary.md">Initial and Variation Margin Analytics</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/README.md">Initial Margin Analytics based on ISDA SIMM and its Variants</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/parameters/README.md">ISDA SIMM Risk Factor Parameters</a></li>
+ * 		<li>Construct the BucketSensitivitySettings 2.0 Instance for the specified Bucket Index</li>
+ * 		<li>Construct the BucketSensitivitySettings 2.1 Instance for the specified Bucket Index</li>
+ * 		<li>Construct the BucketSensitivitySettings 2.4 Instance for the specified Bucket Index</li>
+ * 		<li>Construct the ISDA 2.0 Standard Commodity Bucket Sensitivity Settings for the specified Index</li>
+ * 		<li>Construct the ISDA 2.1 Standard Commodity Bucket Sensitivity Settings for the specified Index</li>
+ * 		<li>Construct the ISDA 2.4 Standard Commodity Bucket Sensitivity Settings for the specified Index</li>
+ * 		<li>Construct the Standard ISDA 2.0 Instance of FX Delta Settings</li>
+ * 		<li>Construct the Standard ISDA 2.1 Instance of FX Delta Settings</li>
+ * 		<li>Construct the Standard ISDA 2.4 Instance of FX Delta Settings</li>
+ * 		<li><i>BucketSensitivitySettings</i> Constructor</li>
+ * 		<li>Retrieve the Bucket Risk Factor Weight</li>
+ * 		<li>Retrieve the Correlation between the Basket Members</li>
  *  </ul>
- * <br><br>
+ *
+ *	<br>
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md">Portfolio Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/MarginAnalyticsLibrary.md">Initial and Variation Margin Analytics</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/README.md">Initial Margin Analytics based on ISDA SIMM and its Variants</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/parameters/README.md">ISDA SIMM Risk Factor Parameters</a></td></tr>
+ *  </table>
+ *	<br>
  * 
  * @author Lakshmi Krishnamurthy
  */
@@ -161,22 +181,15 @@ public class BucketSensitivitySettings
 	public static BucketSensitivitySettings ISDA_EQ_20 (
 		final int bucketIndex)
 	{
-		EQBucket equityBucket = EQSettingsContainer20.BucketMap().get (
-			bucketIndex
-		);
+		EQBucket equityBucket = EQSettingsContainer20.BucketMap().get (bucketIndex);
 
-		try
-		{
+		try {
 			return null == equityBucket ? null : new BucketSensitivitySettings (
 				equityBucket.deltaRiskWeight(),
-				EQRiskThresholdContainer20.DeltaVegaThresholdMap().get (
-					bucketIndex
-				).delta(),
+				EQRiskThresholdContainer20.DeltaVegaThresholdMap().get (bucketIndex).delta(),
 				equityBucket.memberCorrelation()
 			);
-		}
-		catch (Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -194,22 +207,15 @@ public class BucketSensitivitySettings
 	public static BucketSensitivitySettings ISDA_EQ_21 (
 		final int bucketIndex)
 	{
-		EQBucket equityBucket = EQSettingsContainer21.BucketMap().get (
-			bucketIndex
-		);
+		EQBucket equityBucket = EQSettingsContainer21.BucketMap().get (bucketIndex);
 
-		try
-		{
+		try {
 			return null == equityBucket ? null : new BucketSensitivitySettings (
 				equityBucket.deltaRiskWeight(),
-				EQRiskThresholdContainer21.DeltaVegaThresholdMap().get (
-					bucketIndex
-				).delta(),
+				EQRiskThresholdContainer21.DeltaVegaThresholdMap().get (bucketIndex).delta(),
 				equityBucket.memberCorrelation()
 			);
-		}
-		catch (Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -227,22 +233,15 @@ public class BucketSensitivitySettings
 	public static BucketSensitivitySettings ISDA_EQ_24 (
 		final int bucketIndex)
 	{
-		EQBucket equityBucket = EQSettingsContainer24.BucketMap().get (
-			bucketIndex
-		);
+		EQBucket equityBucket = EQSettingsContainer24.BucketMap().get (bucketIndex);
 
-		try
-		{
+		try {
 			return null == equityBucket ? null : new BucketSensitivitySettings (
 				equityBucket.deltaRiskWeight(),
-				EQRiskThresholdContainer24.DeltaVegaThresholdMap().get (
-					bucketIndex
-				).delta(),
+				EQRiskThresholdContainer24.DeltaVegaThresholdMap().get (bucketIndex).delta(),
 				equityBucket.memberCorrelation()
 			);
-		}
-		catch (Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -260,22 +259,15 @@ public class BucketSensitivitySettings
 	public static BucketSensitivitySettings ISDA_CT_20 (
 		final int bucketIndex)
 	{
-		CTBucket commodityBucket = CTSettingsContainer20.BucketMap().get (
-			bucketIndex
-		);
+		CTBucket commodityBucket = CTSettingsContainer20.BucketMap().get (bucketIndex);
 
-		try
-		{
+		try {
 			return null == commodityBucket ? null : new BucketSensitivitySettings (
 				commodityBucket.deltaRiskWeight(),
-				CTRiskThresholdContainer20.DeltaVegaThresholdMap().get (
-					bucketIndex
-				).delta(),
+				CTRiskThresholdContainer20.DeltaVegaThresholdMap().get (bucketIndex).delta(),
 				commodityBucket.memberCorrelation()
 			);
-		}
-		catch (Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -293,22 +285,16 @@ public class BucketSensitivitySettings
 	public static BucketSensitivitySettings ISDA_CT_21 (
 		final int bucketIndex)
 	{
-		CTBucket commodityBucket = CTSettingsContainer21.BucketMap().get (
-			bucketIndex
-		);
+		CTBucket commodityBucket = CTSettingsContainer21.BucketMap().get (bucketIndex);
 
 		try
 		{
 			return null == commodityBucket ? null : new BucketSensitivitySettings (
 				commodityBucket.deltaRiskWeight(),
-				CTRiskThresholdContainer21.DeltaVegaThresholdMap().get (
-					bucketIndex
-				).delta(),
+				CTRiskThresholdContainer21.DeltaVegaThresholdMap().get (bucketIndex).delta(),
 				commodityBucket.memberCorrelation()
 			);
-		}
-		catch (Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -316,32 +302,25 @@ public class BucketSensitivitySettings
 	}
 
 	/**
-	 * Construct the ISDA 2.1 Standard Commodity Bucket Sensitivity Settings for the specified Index
+	 * Construct the ISDA 2.4 Standard Commodity Bucket Sensitivity Settings for the specified Index
 	 * 
 	 * @param bucketIndex The Bucket Index
 	 * 
-	 * @return The ISDA 2.1 Standard Commodity Bucket Sensitivity Settings for the specified Index
+	 * @return The ISDA 2.4 Standard Commodity Bucket Sensitivity Settings for the specified Index
 	 */
 
 	public static BucketSensitivitySettings ISDA_CT_24 (
 		final int bucketIndex)
 	{
-		CTBucket commodityBucket = CTSettingsContainer24.BucketMap().get (
-			bucketIndex
-		);
+		CTBucket commodityBucket = CTSettingsContainer24.BucketMap().get (bucketIndex);
 
-		try
-		{
+		try {
 			return null == commodityBucket ? null : new BucketSensitivitySettings (
 				commodityBucket.deltaRiskWeight(),
-				CTRiskThresholdContainer24.DeltaVegaThresholdMap().get (
-					bucketIndex
-				).delta(),
+				CTRiskThresholdContainer24.DeltaVegaThresholdMap().get (bucketIndex).delta(),
 				commodityBucket.memberCorrelation()
 			);
-		}
-		catch (Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -361,20 +340,14 @@ public class BucketSensitivitySettings
 	{
 		Map<Integer, Double> fxConcentrationCategoryDeltaMap = FXRiskThresholdContainer20.CategoryDeltaMap();
 
-		try
-		{
-			return fxConcentrationCategoryDeltaMap.containsKey (
-				categoryIndex
-			) ? new BucketSensitivitySettings (
-				FXSystemics20.DELTA_RISK_WEIGHT,
-				fxConcentrationCategoryDeltaMap.get (
-					categoryIndex
-				),
-				FXSystemics20.CORRELATION
-			) : null;
-		}
-		catch (Exception e)
-		{
+		try {
+			return fxConcentrationCategoryDeltaMap.containsKey (categoryIndex) ?
+				new BucketSensitivitySettings (
+					FXSystemics20.DELTA_RISK_WEIGHT,
+					fxConcentrationCategoryDeltaMap.get (categoryIndex),
+					FXSystemics20.CORRELATION
+				) : null;
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -394,25 +367,18 @@ public class BucketSensitivitySettings
 	{
 		Map<Integer, Double> fxConcentrationCategoryDeltaMap = FXRiskThresholdContainer21.CategoryDeltaMap();
 
-		if (!fxConcentrationCategoryDeltaMap.containsKey(categoryIndex))
-		{
+		if (!fxConcentrationCategoryDeltaMap.containsKey (categoryIndex)) {
 			return null;
 		}
 
-		try
-		{
-			return fxConcentrationCategoryDeltaMap.containsKey (
-				categoryIndex
-			) ? new BucketSensitivitySettings (
-				FXSystemics21.DELTA_RISK_WEIGHT,
-				fxConcentrationCategoryDeltaMap.get (
-					categoryIndex
-				),
-				FXSystemics21.CORRELATION
-			) : null;
-		}
-		catch (Exception e)
-		{
+		try {
+			return fxConcentrationCategoryDeltaMap.containsKey (categoryIndex) ?
+				new BucketSensitivitySettings (
+					FXSystemics21.DELTA_RISK_WEIGHT,
+					fxConcentrationCategoryDeltaMap.get (categoryIndex),
+					FXSystemics21.CORRELATION
+				) : null;
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -436,28 +402,18 @@ public class BucketSensitivitySettings
 	{
 		Map<Integer, Double> fxConcentrationCategoryDeltaMap = FXRiskThresholdContainer24.CategoryDeltaMap();
 
-		if (!fxConcentrationCategoryDeltaMap.containsKey(categoryIndex))
-		{
+		if (!fxConcentrationCategoryDeltaMap.containsKey (categoryIndex)) {
 			return null;
 		}
 
-		try
-		{
-			return fxConcentrationCategoryDeltaMap.containsKey (
-				categoryIndex
-			) ? new BucketSensitivitySettings (
-				FXVolatilityGroupContainer24.RiskWeight (
-					givenCurrency,
-					calculationCurrency
-				),
-				fxConcentrationCategoryDeltaMap.get (
-					categoryIndex
-				),
-				FXSystemics24.VOLATILITY_CURVATURE_CORRELATION
-			) : null;
-		}
-		catch (Exception e)
-		{
+		try {
+			return fxConcentrationCategoryDeltaMap.containsKey (categoryIndex) ?
+				new BucketSensitivitySettings (
+					FXVolatilityGroupContainer24.RiskWeight (givenCurrency, calculationCurrency),
+					fxConcentrationCategoryDeltaMap.get (categoryIndex),
+					FXSystemics24.VOLATILITY_CURVATURE_CORRELATION
+				) : null;
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -465,7 +421,7 @@ public class BucketSensitivitySettings
 	}
 
 	/**
-	 * BucketSensitivitySettings Constructor
+	 * <i>BucketSensitivitySettings</i> Constructor
 	 * 
 	 * @param riskWeight The Risk Factor Weight
 	 * @param concentrationFactor The Concentration Factor
@@ -480,20 +436,13 @@ public class BucketSensitivitySettings
 		final double memberCorrelation)
 		throws Exception
 	{
-		super (
-			concentrationFactor
-		);
+		super (concentrationFactor);
 
-		if (!NumberUtil.IsValid (
-				_riskWeight = riskWeight
-			) ||
-			!NumberUtil.IsValid (
-				_memberCorrelation = memberCorrelation
-			) || 1. < _memberCorrelation || -1. > _memberCorrelation)
+		if (!NumberUtil.IsValid (_riskWeight = riskWeight) ||
+			!NumberUtil.IsValid (_memberCorrelation = memberCorrelation) ||
+			1. < _memberCorrelation || -1. > _memberCorrelation)
 		{
-			throw new Exception (
-				"BucketSensitivitySettings Constructor => Invalid Inputs"
-			);
+			throw new Exception ("BucketSensitivitySettings Constructor => Invalid Inputs");
 		}
 	}
 
