@@ -8,6 +8,9 @@ import org.drip.numerical.common.NumberUtil;
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -81,7 +84,7 @@ import org.drip.numerical.common.NumberUtil;
 
 /**
  * <i>BucketAggregateCR</i> holds the Single Bucket CR Sensitivity Margin, the Cumulative CR Bucket Risk
- * Factor Sensitivity Margin, as well as the Aggregate CR Risk Factor Maps. The References are:
+ * 	Factor Sensitivity Margin, as well as the Aggregate CR Risk Factor Maps. The References are:
  * 
  * <br><br>
  *  <ul>
@@ -108,15 +111,27 @@ import org.drip.numerical.common.NumberUtil;
  *  			https://www.isda.org/a/oFiDE/isda-simm-v2.pdf
  *  	</li>
  *  </ul>
- * 
- * <br><br>
+ *
+ * 	It provides the following Functionality:
+ *
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md">Portfolio Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/MarginAnalyticsLibrary.md">Initial and Variation Margin Analytics</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/README.md">Initial Margin Analytics based on ISDA SIMM and its Variants</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/margin/README.md">ISDA SIMM Risk Factor Margin Metrics</a></li>
+ * 		<li><i>BucketAggregateCR</i> Constructor</li>
+ * 		<li>Retrieve the CR Bucket Sensitivity Margin Variance</li>
+ * 		<li>Retrieve the CR Bucket Cumulative Sensitivity Margin</li>
+ * 		<li>Retrieve the CR Risk Factor Aggregate</li>
+ * 		<li>Retrieve the CR Sensitivity Aggregate</li>
+ * 		<li>Compute the ISDA SIMM Position Principal Component Co-variance</li>
+ * 		<li>Compute the FRTB SBA-C Position Principal Component Co-variance</li>
  *  </ul>
- * <br><br>
+ *
+ *	<br>
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md">Portfolio Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/MarginAnalyticsLibrary.md">Initial and Variation Margin Analytics</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/README.md">Initial Margin Analytics based on ISDA SIMM and its Variants</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/margin/README.md">ISDA SIMM Risk Factor Margin Metrics</a></td></tr>
+ *  </table>
+ *	<br>
  * 
  * @author Lakshmi Krishnamurthy
  */
@@ -129,7 +144,7 @@ public class BucketAggregateCR
 	private SensitivityAggregateCR _sensitivityAggregate = null;
 
 	/**
-	 * BucketAggregateCR Constructor
+	 * <i>BucketAggregateCR</i> Constructor
 	 * 
 	 * @param riskFactorAggregate The CR Risk Factor Aggregate
 	 * @param sensitivityAggregate THe CR Sensitivity Aggregate
@@ -148,17 +163,10 @@ public class BucketAggregateCR
 	{
 		if (null == (_riskFactorAggregate = riskFactorAggregate) ||
 			null == (_sensitivityAggregate = sensitivityAggregate) ||
-			!NumberUtil.IsValid (
-				_sensitivityMarginVariance = sensitivityMarginVariance
-			) ||
-			!NumberUtil.IsValid (
-				_cumulativeSensitivityMargin = cumulativeSensitivityMargin
-			)
-		)
+			!NumberUtil.IsValid (_sensitivityMarginVariance = sensitivityMarginVariance) ||
+			!NumberUtil.IsValid (_cumulativeSensitivityMargin = cumulativeSensitivityMargin))
 		{
-			throw new Exception (
-				"BucketAggregateCR Constructor => Invalid Inputs"
-			);
+			throw new Exception ( "BucketAggregateCR Constructor => Invalid Inputs");
 		}
 	}
 
@@ -214,15 +222,10 @@ public class BucketAggregateCR
 
 	public double positionPrincipalComponentCovarianceISDA()
 	{
-		double sensitivityMargin = Math.sqrt (
-			_sensitivityMarginVariance
-		);
+		double sensitivityMargin = Math.sqrt (_sensitivityMarginVariance);
 
 		return Math.max (
-			Math.min (
-				_cumulativeSensitivityMargin,
-				sensitivityMargin
-			),
+			Math.min (_cumulativeSensitivityMargin, sensitivityMargin),
 			-1. * sensitivityMargin
 		);
 	}

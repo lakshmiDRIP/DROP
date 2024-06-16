@@ -122,15 +122,11 @@ import org.drip.numerical.common.NumberUtil;
 
 public class SuccessiveOverRelaxation
 {
-	private static final double ABSOLUTE_TOLERANCE = 1.0e-08;
-	private static final double RELATIVE_TOLERANCE = 1.0e-05;
-	private static final double ABSOLUTE_LEVEL_THRESOLD = 1.0e-06;
-
 	private double[] _rhsArray = null;
-	private double _omega = Double.NaN;
 	private double[][] _squareMatrix = null;
+	private SuccessiveOverRelaxationSolverSetting _solverSetting = null;
 
-	private static final boolean VectorsMatch (
+	private final boolean VectorsMatch (
 		final double[] array1,
 		final double[] array2)
 		throws Exception
@@ -140,12 +136,12 @@ public class SuccessiveOverRelaxation
 
 			double absoluteDifference = Math.abs (array1[i] - array2[i]);
 
-			if (ABSOLUTE_LEVEL_THRESOLD >= mid) {
-				if (ABSOLUTE_TOLERANCE < absoluteDifference) {
+			if (mid <= _solverSetting.absoluteLevelThreshold()) {
+				if (_solverSetting.absoluteTolerance() < absoluteDifference) {
 					return false;
 				}
 			} else {
-				if (RELATIVE_TOLERANCE * mid < absoluteDifference) {
+				if (_solverSetting.relativeTolerance() * mid < absoluteDifference) {
 					return false;
 				}
 			}
@@ -157,22 +153,22 @@ public class SuccessiveOverRelaxation
 	/**
 	 * <i>SuccessiveOverRelaxation</i> Constructor
 	 * 
+	 * @param solverSetting Successive Over-Relaxation Solver Setting
 	 * @param squareMatrix Square Matrix
 	 * @param rhsArray RHS Array
-	 * @param omega SOR Omega Parameter
 	 * 
 	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public SuccessiveOverRelaxation (
+		final SuccessiveOverRelaxationSolverSetting solverSetting,
 		final double[][] squareMatrix,
-		final double[] rhsArray,
-		final double omega)
+		final double[] rhsArray)
 		throws Exception
 	{
-		if (null == (_squareMatrix = squareMatrix) ||
-			null == (_rhsArray = rhsArray) ||
-			!NumberUtil.IsValid (_omega = omega))
+		if (null == (_solverSetting = solverSetting) ||
+			null == (_squareMatrix = squareMatrix) ||
+			null == (_rhsArray = rhsArray))
 		{
 			throw new Exception ("SuccessiveOverRelaxation Construction => Invalid Inputs");
 		}
@@ -261,15 +257,21 @@ public class SuccessiveOverRelaxation
 	}
 
 	/**
-	 * Retrieve the SOR Omega
+	 * Retrieve the Successive Over Relaxation Solver Setting
 	 * 
-	 * @return SOR Omega
+	 * @return Successive Over Relaxation Solver Setting
 	 */
 
-	public double omega()
+	public SuccessiveOverRelaxationSolverSetting solverSetting()
 	{
-		return _omega;
+		return _solverSetting;
 	}
+
+	/**
+	 * Solve using Forward Substitution
+	 * 
+	 * @return The Solution Array
+	 */
 
 	public double[] forwardSubstitution()
 	{
@@ -279,6 +281,8 @@ public class SuccessiveOverRelaxation
 		for (int i = 0; i < updatedUnknownArray.length; ++i) {
 			updatedUnknownArray[i] = Math.random();
 		}
+
+		double relaxationParameter = _solverSetting.relaxationParameter();
 
 		try {
 			 while (!VectorsMatch (previousUnknownArray, updatedUnknownArray)) {
@@ -297,8 +301,8 @@ public class SuccessiveOverRelaxation
 						}
 					}
 
-					updatedUnknownArray[i] = (1. - _omega) * previousUnknownArray[i] + (
-						_omega * updatedUnknownArray[i] / _squareMatrix[i][i]
+					updatedUnknownArray[i] = (1. - relaxationParameter) * previousUnknownArray[i] + (
+						relaxationParameter * updatedUnknownArray[i] / _squareMatrix[i][i]
 					);
 				}
 			}
@@ -329,14 +333,12 @@ public class SuccessiveOverRelaxation
 			 -6.
 		};
 
-		double omega = 0.5;
-
 		NumberUtil.Print1DArray (
 			"\tResult",
 			new SuccessiveOverRelaxation (
+				SuccessiveOverRelaxationSolverSetting.Standard(),
 				squareMatrix,
-				rhsArray,
-				omega
+				rhsArray
 			).forwardSubstitution(),
 			4,
 			false

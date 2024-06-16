@@ -122,11 +122,12 @@ import org.drip.numerical.common.NumberUtil;
 
 public class SuccessiveOverRelaxationSolverSetting
 {
-	private static final int SOR_ITERATION_LIMIT = 100;
-	private static final double RELAXATION_PARAMETER = 0.5;
-	private static final double ABSOLUTE_TOLERANCE = 1.0e-08;
-	private static final double RELATIVE_TOLERANCE = 1.0e-05;
-	private static final double ABSOLUTE_LEVEL_THRESOLD = 1.0e-06;
+
+	public static final int SOR_ITERATION_LIMIT_DEFAULT = 100;
+	public static final double RELAXATION_PARAMETER_DEFAULT = 0.5;
+	public static final double ABSOLUTE_TOLERANCE_DEFAULT = 1.0e-08;
+	public static final double RELATIVE_TOLERANCE_DEFAULT = 1.0e-05;
+	public static final double ABSOLUTE_LEVEL_THRESOLD_DEFAULT = 1.0e-06;
 
 	private double _absoluteTolerance = Double.NaN;
 	private double _relativeTolerance = Double.NaN;
@@ -144,11 +145,11 @@ public class SuccessiveOverRelaxationSolverSetting
 	{
 		try {
 			return new SuccessiveOverRelaxationSolverSetting (
-				ABSOLUTE_TOLERANCE,
-				RELATIVE_TOLERANCE,
-				ABSOLUTE_LEVEL_THRESOLD,
-				RELAXATION_PARAMETER,
-				SOR_ITERATION_LIMIT
+				ABSOLUTE_TOLERANCE_DEFAULT,
+				RELATIVE_TOLERANCE_DEFAULT,
+				ABSOLUTE_LEVEL_THRESOLD_DEFAULT,
+				RELAXATION_PARAMETER_DEFAULT,
+				SOR_ITERATION_LIMIT_DEFAULT
 			);
 		} catch (Exception e) {
 			e.printStackTrace();

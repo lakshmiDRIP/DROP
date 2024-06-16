@@ -10,6 +10,9 @@ import org.drip.numerical.common.NumberUtil;
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -83,7 +86,7 @@ import org.drip.numerical.common.NumberUtil;
 
 /**
  * <i>BucketAggregate</i> holds the Single Bucket Sensitivity Margin, the Cumulative Bucket Risk Factor
- * Sensitivity Margin, as well as the Aggregate Risk Factor Maps. The References are:
+ * 	Sensitivity Margin, as well as the Aggregate Risk Factor Maps. The References are:
  * 
  * <br><br>
  *  <ul>
@@ -110,15 +113,26 @@ import org.drip.numerical.common.NumberUtil;
  *  			https://www.isda.org/a/oFiDE/isda-simm-v2.pdf
  *  	</li>
  *  </ul>
- * 
- * <br><br>
+ *
+ * 	It provides the following Functionality:
+ *
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md">Portfolio Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/MarginAnalyticsLibrary.md">Initial and Variation Margin Analytics</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/README.md">Initial Margin Analytics based on ISDA SIMM and its Variants</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/margin/README.md">ISDA SIMM Risk Factor Margin Metrics</a></li>
+ * 		<li><i>BucketAggregate</i> Constructor</li>
+ * 		<li>Retrieve the Risk Factor Aggregate Map</li>
+ * 		<li>Retrieve the Bucket's Sensitivity Margin Variance</li>
+ * 		<li>Retrieve the Bucket's Cumulative Risk Factor Sensitivity Margin</li>
+ * 		<li>Compute the ISDA SIMM Position Principal Component Co-variance</li>
+ * 		<li>Compute the FRTB SBA-C Position Principal Component Co-variance</li>
  *  </ul>
- * <br><br>
+ *
+ *	<br>
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md">Portfolio Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/MarginAnalyticsLibrary.md">Initial and Variation Margin Analytics</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/README.md">Initial Margin Analytics based on ISDA SIMM and its Variants</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/margin/README.md">ISDA SIMM Risk Factor Margin Metrics</a></td></tr>
+ *  </table>
+ *	<br>
  * 
  * @author Lakshmi Krishnamurthy
  */
@@ -130,7 +144,7 @@ public class BucketAggregate
 	private Map<String, RiskFactorAggregate> _riskFactorAggregateMap = null;
 
 	/**
-	 * BucketAggregate Constructor
+	 * <i>BucketAggregate</i> Constructor
 	 * 
 	 * @param riskFactorAggregateMap The Risk Factor Aggregate Map
 	 * @param sensitivityMarginVariance The Bucket's Sensitivity Margin Variance
@@ -146,18 +160,11 @@ public class BucketAggregate
 		throws Exception
 	{
 		if (null == (_riskFactorAggregateMap = riskFactorAggregateMap) ||
-			0 == _riskFactorAggregateMap.size() ||
-			!NumberUtil.IsValid (
-				_sensitivityMarginVariance = sensitivityMarginVariance
-			) ||
-			!NumberUtil.IsValid (
-				_cumulativeSensitivityMargin = cumulativeSensitivityMargin
-			)
-		)
+				0 == _riskFactorAggregateMap.size() ||
+			!NumberUtil.IsValid (_sensitivityMarginVariance = sensitivityMarginVariance) ||
+			!NumberUtil.IsValid (_cumulativeSensitivityMargin = cumulativeSensitivityMargin))
 		{
-			throw new Exception (
-				"BucketAggregate Constructor => Invalid Inputs"
-			);
+			throw new Exception ("BucketAggregate Constructor => Invalid Inputs");
 		}
 	}
 
@@ -202,15 +209,10 @@ public class BucketAggregate
 
 	public double positionPrincipalComponentCovarianceISDA()
 	{
-		double sensitivityMargin = Math.sqrt (
-			_sensitivityMarginVariance
-		);
+		double sensitivityMargin = Math.sqrt (_sensitivityMarginVariance);
 
 		return Math.min (
-			Math.max (
-				_cumulativeSensitivityMargin,
-				-1. * sensitivityMargin
-			),
+			Math.max (_cumulativeSensitivityMargin, -1. * sensitivityMargin),
 			sensitivityMargin
 		);
 	}
