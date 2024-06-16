@@ -10,6 +10,9 @@ import org.drip.numerical.common.NumberUtil;
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -83,7 +86,7 @@ import org.drip.numerical.common.NumberUtil;
 
 /**
  * <i>RiskMeasureAggregateCR</i> holds the CR Bucket Aggregate and the Computed SIMM Margin for a single Risk
- * Measure. The References are:
+ * 	Measure. The References are:
  * 
  * <br><br>
  *  <ul>
@@ -110,15 +113,24 @@ import org.drip.numerical.common.NumberUtil;
  *  			https://www.isda.org/a/oFiDE/isda-simm-v2.pdf
  *  	</li>
  *  </ul>
- * 
- * <br><br>
+ *
+ * 	It provides the following Functionality:
+ *
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md">Portfolio Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/MarginAnalyticsLibrary.md">Initial and Variation Margin Analytics</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/README.md">Initial Margin Analytics based on ISDA SIMM and its Variants</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/margin/README.md">ISDA SIMM Risk Factor Margin Metrics</a></li>
+ * 		<li><i>RiskMeasureAggregate</i> Constructor</li>
+ * 		<li>Retrieve the Bucket Sensitivity Aggregate Map</li>
+ * 		<li>Retrieve the Core SBA Variance</li>
+ * 		<li>Retrieve the Residual SBA Variance</li>
+ * 		<li>Retrieve the SBA Based Margin</li>
  *  </ul>
- * <br><br>
+ *
+ *	<br>
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md">Portfolio Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/MarginAnalyticsLibrary.md">Initial and Variation Margin Analytics</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/README.md">Initial Margin Analytics based on ISDA SIMM and its Variants</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/margin/README.md">ISDA SIMM Risk Factor Margin Metrics</a></td></tr>
+ *  </table>
  * 
  * @author Lakshmi Krishnamurthy
  */
@@ -146,17 +158,10 @@ public class RiskMeasureAggregateCR
 		throws Exception
 	{
 		if (null == (_bucketAggregateMap = bucketAggregateMap) ||
-			!NumberUtil.IsValid (
-				_coreSBAVariance = coreSBAVariance
-			) ||
-			!NumberUtil.IsValid (
-				_residualSBAVariance = residualSBAVariance
-			)
-		)
+			!NumberUtil.IsValid (_coreSBAVariance = coreSBAVariance) ||
+			!NumberUtil.IsValid (_residualSBAVariance = residualSBAVariance))
 		{
-			throw new Exception (
-				"RiskMeasureAggregateCR Consructor => Invalid Inputs"
-			);
+			throw new Exception ("RiskMeasureAggregateCR Consructor => Invalid Inputs");
 		}
 	}
 
@@ -201,10 +206,6 @@ public class RiskMeasureAggregateCR
 
 	public double sba()
 	{
-		return Math.sqrt (
-			_coreSBAVariance
-		) + Math.sqrt (
-			_residualSBAVariance
-		);
+		return Math.sqrt (_coreSBAVariance) + Math.sqrt (_residualSBAVariance);
 	}
 }
