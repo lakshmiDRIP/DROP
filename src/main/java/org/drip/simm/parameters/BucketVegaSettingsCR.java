@@ -21,6 +21,9 @@ import org.drip.simm.credit.CRThresholdContainer24;
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -94,7 +97,7 @@ import org.drip.simm.credit.CRThresholdContainer24;
 
 /**
  * <i>BucketVegaSettingsCR</i> holds the Vega Risk Weights, Concentration Thresholds, and Cross-Tenor
- * Correlations for each Credit Curve and its Tenor. The References are:
+ * 	Correlations for each Credit Curve and its Tenor. The References are:
  * 
  * <br><br>
  *  <ul>
@@ -121,15 +124,31 @@ import org.drip.simm.credit.CRThresholdContainer24;
  *  			https://www.isda.org/a/CeggE/ISDA-SIMM-v2.4-PUBLIC.pdf
  *  	</li>
  *  </ul>
- * 
- * <br><br>
+ *
+ * 	It provides the following Functionality:
+ *
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md">Portfolio Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/MarginAnalyticsLibrary.md">Initial and Variation Margin Analytics</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/README.md">Initial Margin Analytics based on ISDA SIMM and its Variants</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/parameters/README.md">ISDA SIMM Risk Factor Parameters</a></li>
+ * 		<li>Retrieve the ISDA 2.0 Credit Qualifying Bucket Vega Settings</li>
+ * 		<li>Retrieve the ISDA 2.1 Credit Qualifying Bucket Vega Settings</li>
+ * 		<li>Retrieve the ISDA 2.4 Credit Qualifying Bucket Vega Settings</li>
+ * 		<li>Retrieve the ISDA 2.0 Credit Non-Qualifying Bucket Vega Settings</li>
+ * 		<li>Retrieve the ISDA 2.1 Credit Non-Qualifying Bucket Vega Settings</li>
+ * 		<li>Retrieve the ISDA 2.4 Credit Non-Qualifying Bucket Vega Settings</li>
+ * 		<li><i>BucketVegaSettingsCR</i> Constructor</li>
+ * 		<li>Retrieve the Vega Scaler</li>
+ * 		<li>Retrieve the Historical Volatility Ratio</li></li>
+ * 		<li>Retrieve the Tenor Delta Risk Weight</li>
+ * 		<li>Retrieve the Tenor Vega Risk Weight</li>
  *  </ul>
- * <br><br>
+ *
+ *	<br>
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md">Portfolio Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/MarginAnalyticsLibrary.md">Initial and Variation Margin Analytics</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/README.md">Initial Margin Analytics based on ISDA SIMM and its Variants</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/parameters/README.md">ISDA SIMM Risk Factor Parameters</a></td></tr>
+ *  </table>
+ *	<br>
  * 
  * @author Lakshmi Krishnamurthy
  */
@@ -153,32 +172,19 @@ public class BucketVegaSettingsCR
 		final int bucketNumber)
 	{
 		BucketSensitivitySettingsCR bucketSensitivitySettingsCR =
-			BucketSensitivitySettingsCR.ISDA_CRQ_DELTA_20 (
-				bucketNumber
-			);
+			BucketSensitivitySettingsCR.ISDA_CRQ_DELTA_20 (bucketNumber);
 
-		try
-		{
+		try {
 			return null == bucketSensitivitySettingsCR ? null : new BucketVegaSettingsCR (
-				TenorRiskWeightMap (
-					CRQSystemics20.VEGA_RISK_WEIGHT
-				),
+				TenorRiskWeightMap (CRQSystemics20.VEGA_RISK_WEIGHT),
 				bucketSensitivitySettingsCR.intraFamilyCrossTenorCorrelation(),
 				bucketSensitivitySettingsCR.extraFamilyCrossTenorCorrelation(),
-				CRThresholdContainer20.QualifyingThreshold (
-					bucketNumber
-				).vega(),
-				Math.sqrt (
-					365. / 14.
-				) / NormalQuadrature.InverseCDF (
-					0.99
-				),
+				CRThresholdContainer20.QualifyingThreshold (bucketNumber).vega(),
+				Math.sqrt (365. / 14.) / NormalQuadrature.InverseCDF (0.99),
 				1.,
 				bucketSensitivitySettingsCR.tenorRiskWeight()
 			);
-		}
-		catch (Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -197,32 +203,19 @@ public class BucketVegaSettingsCR
 		final int bucketNumber)
 	{
 		BucketSensitivitySettingsCR bucketSensitivitySettingsCR =
-			BucketSensitivitySettingsCR.ISDA_CRNQ_DELTA_20 (
-				bucketNumber
-			);
+			BucketSensitivitySettingsCR.ISDA_CRNQ_DELTA_20 (bucketNumber);
 
-		try
-		{
+		try {
 			return null == bucketSensitivitySettingsCR ? null : new BucketVegaSettingsCR (
-				TenorRiskWeightMap (
-					CRNQSystemics20.VEGA_RISK_WEIGHT
-				),
+				TenorRiskWeightMap (CRNQSystemics20.VEGA_RISK_WEIGHT),
 				bucketSensitivitySettingsCR.intraFamilyCrossTenorCorrelation(),
 				bucketSensitivitySettingsCR.extraFamilyCrossTenorCorrelation(),
-				CRThresholdContainer20.NonQualifyingThreshold (
-					bucketNumber
-				).vega(),
-				Math.sqrt (
-					365. / 14.
-				) / NormalQuadrature.InverseCDF (
-					0.99
-				),
+				CRThresholdContainer20.NonQualifyingThreshold (bucketNumber).vega(),
+				Math.sqrt (365. / 14.) / NormalQuadrature.InverseCDF (0.99),
 				1.,
 				bucketSensitivitySettingsCR.tenorRiskWeight()
 			);
-		}
-		catch (Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -241,32 +234,19 @@ public class BucketVegaSettingsCR
 		final int bucketNumber)
 	{
 		BucketSensitivitySettingsCR bucketSensitivitySettingsCR =
-			BucketSensitivitySettingsCR.ISDA_CRQ_DELTA_21 (
-				bucketNumber
-			);
+			BucketSensitivitySettingsCR.ISDA_CRQ_DELTA_21 (bucketNumber);
 
-		try
-		{
+		try {
 			return null == bucketSensitivitySettingsCR ? null : new BucketVegaSettingsCR (
-				TenorRiskWeightMap (
-					CRQSystemics21.VEGA_RISK_WEIGHT
-				),
+				TenorRiskWeightMap (CRQSystemics21.VEGA_RISK_WEIGHT),
 				bucketSensitivitySettingsCR.intraFamilyCrossTenorCorrelation(),
 				bucketSensitivitySettingsCR.extraFamilyCrossTenorCorrelation(),
-				CRThresholdContainer21.QualifyingThreshold (
-					bucketNumber
-				).vega(),
-				Math.sqrt (
-					365. / 14.
-				) / NormalQuadrature.InverseCDF (
-					0.99
-				),
+				CRThresholdContainer21.QualifyingThreshold (bucketNumber).vega(),
+				Math.sqrt (365. / 14.) / NormalQuadrature.InverseCDF (0.99),
 				1.,
 				bucketSensitivitySettingsCR.tenorRiskWeight()
 			);
-		}
-		catch (Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -285,32 +265,19 @@ public class BucketVegaSettingsCR
 		final int bucketNumber)
 	{
 		BucketSensitivitySettingsCR bucketSensitivitySettingsCR =
-			BucketSensitivitySettingsCR.ISDA_CRNQ_DELTA_21 (
-				bucketNumber
-			);
+			BucketSensitivitySettingsCR.ISDA_CRNQ_DELTA_21 (bucketNumber);
 
-		try
-		{
+		try {
 			return null == bucketSensitivitySettingsCR ? null : new BucketVegaSettingsCR (
-				TenorRiskWeightMap (
-					CRNQSystemics21.VEGA_RISK_WEIGHT
-				),
+				TenorRiskWeightMap (CRNQSystemics21.VEGA_RISK_WEIGHT),
 				bucketSensitivitySettingsCR.intraFamilyCrossTenorCorrelation(),
 				bucketSensitivitySettingsCR.extraFamilyCrossTenorCorrelation(),
-				CRThresholdContainer21.NonQualifyingThreshold (
-					bucketNumber
-				).vega(),
-				Math.sqrt (
-					365. / 14.
-				) / NormalQuadrature.InverseCDF (
-					0.99
-				),
+				CRThresholdContainer21.NonQualifyingThreshold (bucketNumber).vega(),
+				Math.sqrt (365. / 14.) / NormalQuadrature.InverseCDF (0.99),
 				1.,
 				bucketSensitivitySettingsCR.tenorRiskWeight()
 			);
-		}
-		catch (Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -329,32 +296,20 @@ public class BucketVegaSettingsCR
 		final int bucketNumber)
 	{
 		BucketSensitivitySettingsCR bucketSensitivitySettingsCR =
-			BucketSensitivitySettingsCR.ISDA_CRQ_DELTA_24 (
-				bucketNumber
-			);
+			BucketSensitivitySettingsCR.ISDA_CRQ_DELTA_24 (bucketNumber);
 
 		try
 		{
 			return null == bucketSensitivitySettingsCR ? null : new BucketVegaSettingsCR (
-				TenorRiskWeightMap (
-					CRQSystemics24.VEGA_RISK_WEIGHT
-				),
+				TenorRiskWeightMap (CRQSystemics24.VEGA_RISK_WEIGHT),
 				bucketSensitivitySettingsCR.intraFamilyCrossTenorCorrelation(),
 				bucketSensitivitySettingsCR.extraFamilyCrossTenorCorrelation(),
-				CRThresholdContainer24.QualifyingThreshold (
-					bucketNumber
-				).vega(),
-				Math.sqrt (
-					365. / 14.
-				) / NormalQuadrature.InverseCDF (
-					0.99
-				),
+				CRThresholdContainer24.QualifyingThreshold (bucketNumber).vega(),
+				Math.sqrt (365. / 14.) / NormalQuadrature.InverseCDF (0.99),
 				1.,
 				bucketSensitivitySettingsCR.tenorRiskWeight()
 			);
-		}
-		catch (Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -373,32 +328,19 @@ public class BucketVegaSettingsCR
 		final int bucketNumber)
 	{
 		BucketSensitivitySettingsCR bucketSensitivitySettingsCR =
-			BucketSensitivitySettingsCR.ISDA_CRNQ_DELTA_24 (
-				bucketNumber
-			);
+			BucketSensitivitySettingsCR.ISDA_CRNQ_DELTA_24 (bucketNumber);
 
-		try
-		{
+		try {
 			return null == bucketSensitivitySettingsCR ? null : new BucketVegaSettingsCR (
-				TenorRiskWeightMap (
-					CRNQSystemics24.VEGA_RISK_WEIGHT
-				),
+				TenorRiskWeightMap (CRNQSystemics24.VEGA_RISK_WEIGHT),
 				bucketSensitivitySettingsCR.intraFamilyCrossTenorCorrelation(),
 				bucketSensitivitySettingsCR.extraFamilyCrossTenorCorrelation(),
-				CRThresholdContainer24.NonQualifyingThreshold (
-					bucketNumber
-				).vega(),
-				Math.sqrt (
-					365. / 14.
-				) / NormalQuadrature.InverseCDF (
-					0.99
-				),
+				CRThresholdContainer24.NonQualifyingThreshold (bucketNumber).vega(),
+				Math.sqrt (365. / 14.) / NormalQuadrature.InverseCDF (0.99),
 				1.,
 				bucketSensitivitySettingsCR.tenorRiskWeight()
 			);
-		}
-		catch (Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -406,7 +348,7 @@ public class BucketVegaSettingsCR
 	}
 
 	/**
-	 * BucketVegaSettingsCR Constructor
+	 * <i>BucketVegaSettingsCR</i> Constructor
 	 * 
 	 * @param tenorVegaRiskWeight The Tenor Vega Risk Weight Map
 	 * @param sameIssuerSeniorityCorrelation Same Issuer/Seniority Correlation
@@ -436,18 +378,11 @@ public class BucketVegaSettingsCR
 			concentrationThreshold
 		);
 
-		if (!NumberUtil.IsValid (
-				_vegaScaler = vegaScaler
-			) ||
-			!NumberUtil.IsValid (
-				_historicalVolatilityRatio = historicalVolatilityRatio
-			) ||
-			null == (_tenorDeltaRiskWeight = tenorDeltaRiskWeight)
-		)
+		if (!NumberUtil.IsValid (_vegaScaler = vegaScaler) ||
+			!NumberUtil.IsValid (_historicalVolatilityRatio = historicalVolatilityRatio) ||
+			null == (_tenorDeltaRiskWeight = tenorDeltaRiskWeight))
 		{
-			throw new Exception (
-				"BucketVegaSettingsIR Constructor => Invalid Inputs"
-			);
+			throw new Exception ("BucketVegaSettingsIR Constructor => Invalid Inputs");
 		}
 	}
 
@@ -501,22 +436,17 @@ public class BucketVegaSettingsCR
 
 		Map<String, Double> tenorRiskWeight = new HashMap<String, Double>();
 
-		for (Map.Entry<String, Double> tenorVegaRiskWeightEntry : tenorVegaRiskWeight.entrySet())
-		{
+		for (Map.Entry<String, Double> tenorVegaRiskWeightEntry : tenorVegaRiskWeight.entrySet()) {
 			String tenor = tenorVegaRiskWeightEntry.getKey();
 
-			if (!tenorVegaRiskWeight.containsKey (
-				tenor
-			))
-			{
+			if (!tenorVegaRiskWeight.containsKey (tenor)) {
 				return null;
 			}
 
 			tenorRiskWeight.put (
 				tenor,
-				tenorVegaRiskWeightEntry.getValue() * _tenorDeltaRiskWeight.get (
-					tenor
-				) * _vegaScaler * _historicalVolatilityRatio
+				tenorVegaRiskWeightEntry.getValue() * _tenorDeltaRiskWeight.get (tenor) * _vegaScaler *
+					_historicalVolatilityRatio
 			);
 		}
 

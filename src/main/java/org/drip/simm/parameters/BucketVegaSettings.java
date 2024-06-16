@@ -38,6 +38,9 @@ import org.drip.simm.fx.FXVolatilityGroupContainer24;
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -138,15 +141,33 @@ import org.drip.simm.fx.FXVolatilityGroupContainer24;
  *  			https://www.isda.org/a/CeggE/ISDA-SIMM-v2.4-PUBLIC.pdf
  *  	</li>
  *  </ul>
- * 
- * <br><br>
+ *
+ * 	It provides the following Functionality:
+ *
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md">Portfolio Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/MarginAnalyticsLibrary.md">Initial and Variation Margin Analytics</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/README.md">Initial Margin Analytics based on ISDA SIMM and its Variants</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/parameters/README.md">ISDA SIMM Risk Factor Parameters</a></li>
+ * 		<li>Retrieve the ISDA 2.0 Equity Vega Settings</li>
+ * 		<li>Retrieve the ISDA 2.1 Equity Vega Settings</li>
+ * 		<li>Retrieve the ISDA 2.4 Equity Vega Settings</li>
+ * 		<li>Construct the Standard ISDA 2.0 Commodity Vega Settings for the specified Bucket</li>
+ * 		<li>Construct the Standard ISDA 2.1 Commodity Vega Settings for the specified Bucket</li>
+ * 		<li>Construct the Standard ISDA 2.4 Commodity Vega Settings for the specified Bucket</li>
+ * 		<li>Construct the Standard ISDA 2.0 Bucket FX Settings</li>
+ * 		<li>Construct the Standard ISDA 2.1 Bucket FX Settings</li>
+ * 		<li>Construct the Standard ISDA 2.4 Bucket FX Settings</li>
+ * 		<li><i>BucketVegaSettings</i> Constructor</li>
+ * 		<li>Retrieve the Implied Volatility</li>
+ * 		<li>Retrieve the Historical Volatility Ratio</li>
+ * 		<li>Retrieve the Raw Vega Risk Weight</li>
  *  </ul>
- * <br><br>
+ *
+ *	<br>
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md">Portfolio Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/MarginAnalyticsLibrary.md">Initial and Variation Margin Analytics</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/README.md">Initial Margin Analytics based on ISDA SIMM and its Variants</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/parameters/README.md">ISDA SIMM Risk Factor Parameters</a></td></tr>
+ *  </table>
+ *	<br>
  * 
  * @author Lakshmi Krishnamurthy
  */
@@ -168,28 +189,17 @@ public class BucketVegaSettings
 	public static BucketVegaSettings ISDA_EQ_20 (
 		final int bucketIndex)
 	{
-		EQBucket equityBucket = EQSettingsContainer20.BucketMap().get (
-			bucketIndex
-		);
+		EQBucket equityBucket = EQSettingsContainer20.BucketMap().get (bucketIndex);
 
-		try
-		{
+		try {
 			return null == equityBucket ? null : new BucketVegaSettings (
 				equityBucket.vegaRiskWeight() * equityBucket.deltaRiskWeight(),
-				EQRiskThresholdContainer20.DeltaVegaThresholdMap().get (
-					bucketIndex
-				).vega(),
+				EQRiskThresholdContainer20.DeltaVegaThresholdMap().get (bucketIndex).vega(),
 				equityBucket.memberCorrelation(),
-				Math.sqrt (
-					365. / 14.
-				) / NormalQuadrature.InverseCDF (
-					0.99
-				),
+				Math.sqrt (365. / 14.) / NormalQuadrature.InverseCDF (0.99),
 				EQSystemics20.HISTORICAL_VOLATILITY_RATIO
 			);
-		}
-		catch (Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -207,28 +217,17 @@ public class BucketVegaSettings
 	public static BucketVegaSettings ISDA_EQ_21 (
 		final int bucketIndex)
 	{
-		EQBucket equityBucket = EQSettingsContainer21.BucketMap().get (
-			bucketIndex
-		);
+		EQBucket equityBucket = EQSettingsContainer21.BucketMap().get (bucketIndex);
 
-		try
-		{
+		try {
 			return null == equityBucket ? null : new BucketVegaSettings (
 				equityBucket.vegaRiskWeight() * equityBucket.deltaRiskWeight(),
-				EQRiskThresholdContainer21.DeltaVegaThresholdMap().get (
-					bucketIndex
-				).vega(),
+				EQRiskThresholdContainer21.DeltaVegaThresholdMap().get (bucketIndex).vega(),
 				equityBucket.memberCorrelation(),
-				Math.sqrt (
-					365. / 14.
-				) / NormalQuadrature.InverseCDF (
-					0.99
-				),
+				Math.sqrt (365. / 14.) / NormalQuadrature.InverseCDF (0.99),
 				EQSystemics21.HISTORICAL_VOLATILITY_RATIO
 			);
-		}
-		catch (Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -246,28 +245,17 @@ public class BucketVegaSettings
 	public static BucketVegaSettings ISDA_EQ_24 (
 		final int bucketIndex)
 	{
-		EQBucket equityBucket = EQSettingsContainer24.BucketMap().get (
-			bucketIndex
-		);
+		EQBucket equityBucket = EQSettingsContainer24.BucketMap().get (bucketIndex);
 
-		try
-		{
+		try {
 			return null == equityBucket ? null : new BucketVegaSettings (
 				equityBucket.vegaRiskWeight() * equityBucket.deltaRiskWeight(),
-				EQRiskThresholdContainer24.DeltaVegaThresholdMap().get (
-					bucketIndex
-				).vega(),
+				EQRiskThresholdContainer24.DeltaVegaThresholdMap().get (bucketIndex).vega(),
 				equityBucket.memberCorrelation(),
-				Math.sqrt (
-					365. / 14.
-				) / NormalQuadrature.InverseCDF (
-					0.99
-				),
+				Math.sqrt (365. / 14.) / NormalQuadrature.InverseCDF (0.99),
 				EQSystemics24.HISTORICAL_VOLATILITY_RATIO
 			);
-		}
-		catch (Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -285,28 +273,17 @@ public class BucketVegaSettings
 	public static BucketVegaSettings ISDA_CT_20 (
 		final int bucketIndex)
 	{
-		CTBucket commodityBucket = CTSettingsContainer20.BucketMap().get (
-			bucketIndex
-		);
+		CTBucket commodityBucket = CTSettingsContainer20.BucketMap().get (bucketIndex);
 
-		try
-		{
+		try {
 			return null == commodityBucket ? null : new BucketVegaSettings (
 				CTSystemics20.VEGA_RISK_WEIGHT * commodityBucket.deltaRiskWeight(),
-				CTRiskThresholdContainer20.DeltaVegaThresholdMap().get (
-					bucketIndex
-				).vega(),
+				CTRiskThresholdContainer20.DeltaVegaThresholdMap().get (bucketIndex).vega(),
 				commodityBucket.memberCorrelation(),
-				Math.sqrt (
-					365. / 14.
-				) / NormalQuadrature.InverseCDF (
-					0.99
-				),
+				Math.sqrt (365. / 14.) / NormalQuadrature.InverseCDF (0.99),
 				CTSystemics20.HISTORICAL_VOLATILITY_RATIO
 			);
-		}
-		catch (Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -324,28 +301,17 @@ public class BucketVegaSettings
 	public static BucketVegaSettings ISDA_CT_21 (
 		final int bucketIndex)
 	{
-		CTBucket commodityBucket = CTSettingsContainer21.BucketMap().get (
-			bucketIndex
-		);
+		CTBucket commodityBucket = CTSettingsContainer21.BucketMap().get (bucketIndex);
 
-		try
-		{
+		try {
 			return null == commodityBucket ? null : new BucketVegaSettings (
 				CTSystemics21.VEGA_RISK_WEIGHT * commodityBucket.deltaRiskWeight(),
-				CTRiskThresholdContainer21.DeltaVegaThresholdMap().get (
-					bucketIndex
-				).vega(),
+				CTRiskThresholdContainer21.DeltaVegaThresholdMap().get (bucketIndex).vega(),
 				commodityBucket.memberCorrelation(),
-				Math.sqrt (
-					365. / 14.
-				) / NormalQuadrature.InverseCDF (
-					0.99
-				),
+				Math.sqrt (365. / 14.) / NormalQuadrature.InverseCDF (0.99),
 				CTSystemics21.HISTORICAL_VOLATILITY_RATIO
 			);
-		}
-		catch (Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -363,28 +329,17 @@ public class BucketVegaSettings
 	public static BucketVegaSettings ISDA_CT_24 (
 		final int bucketIndex)
 	{
-		CTBucket commodityBucket = CTSettingsContainer24.BucketMap().get (
-			bucketIndex
-		);
+		CTBucket commodityBucket = CTSettingsContainer24.BucketMap().get (bucketIndex);
 
-		try
-		{
+		try {
 			return null == commodityBucket ? null : new BucketVegaSettings (
 				CTSystemics24.VEGA_RISK_WEIGHT * commodityBucket.deltaRiskWeight(),
-				CTRiskThresholdContainer24.DeltaVegaThresholdMap().get (
-					bucketIndex
-				).vega(),
+				CTRiskThresholdContainer24.DeltaVegaThresholdMap().get (bucketIndex).vega(),
 				commodityBucket.memberCorrelation(),
-				Math.sqrt (
-					365. / 14.
-				) / NormalQuadrature.InverseCDF (
-					0.99
-				),
+				Math.sqrt (365. / 14.) / NormalQuadrature.InverseCDF (0.99),
 				CTSystemics24.HISTORICAL_VOLATILITY_RATIO
 			);
-		}
-		catch (Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -404,26 +359,16 @@ public class BucketVegaSettings
 	{
 		Map<String, Double> fxConcentrationCategoryVegaMap = FXRiskThresholdContainer20.CategoryVegaMap();
 
-		try
-		{
-			return fxConcentrationCategoryVegaMap.containsKey (
-				vegaCategory
-			) ? new BucketVegaSettings (
-				FXSystemics20.VEGA_RISK_WEIGHT * FXSystemics20.DELTA_RISK_WEIGHT,
-				fxConcentrationCategoryVegaMap.get (
-					vegaCategory
-				),
-				FXSystemics20.CORRELATION,
-				Math.sqrt (
-					365. / 14.
-				) / NormalQuadrature.InverseCDF (
-					0.99
-				),
-				FXSystemics20.HISTORICAL_VOLATILITY_RATIO
-			) : null;
-		}
-		catch (Exception e)
-		{
+		try {
+			return fxConcentrationCategoryVegaMap.containsKey (vegaCategory) ?
+				new BucketVegaSettings (
+					FXSystemics20.VEGA_RISK_WEIGHT * FXSystemics20.DELTA_RISK_WEIGHT,
+					fxConcentrationCategoryVegaMap.get (vegaCategory),
+					FXSystemics20.CORRELATION,
+					Math.sqrt (365. / 14.) / NormalQuadrature.InverseCDF (0.99),
+					FXSystemics20.HISTORICAL_VOLATILITY_RATIO
+				) : null;
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -443,26 +388,16 @@ public class BucketVegaSettings
 	{
 		Map<String, Double> fxConcentrationCategoryVegaMap = FXRiskThresholdContainer21.CategoryVegaMap();
 
-		try
-		{
-			return fxConcentrationCategoryVegaMap.containsKey (
-				vegaCategory
-			) ? new BucketVegaSettings (
-				FXSystemics21.VEGA_RISK_WEIGHT * FXSystemics21.DELTA_RISK_WEIGHT,
-				fxConcentrationCategoryVegaMap.get (
-					vegaCategory
-				),
-				FXSystemics21.CORRELATION,
-				Math.sqrt (
-					365. / 14.
-				) / NormalQuadrature.InverseCDF (
-					0.99
-				),
-				FXSystemics21.HISTORICAL_VOLATILITY_RATIO
-			) : null;
-		}
-		catch (Exception e)
-		{
+		try {
+			return fxConcentrationCategoryVegaMap.containsKey (vegaCategory) ?
+				new BucketVegaSettings (
+					FXSystemics21.VEGA_RISK_WEIGHT * FXSystemics21.DELTA_RISK_WEIGHT,
+					fxConcentrationCategoryVegaMap.get (vegaCategory),
+					FXSystemics21.CORRELATION,
+					Math.sqrt (365. / 14.) / NormalQuadrature.InverseCDF (0.99),
+					FXSystemics21.HISTORICAL_VOLATILITY_RATIO
+				) : null;
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -486,29 +421,19 @@ public class BucketVegaSettings
 	{
 		Map<String, Double> fxConcentrationCategoryVegaMap = FXRiskThresholdContainer24.CategoryVegaMap();
 
-		try
-		{
-			return fxConcentrationCategoryVegaMap.containsKey (
-				vegaCategory
-			) ? new BucketVegaSettings (
-				FXSystemics24.VEGA_RISK_WEIGHT * FXVolatilityGroupContainer24.RiskWeight (
-					givenCurrency,
-					calculationCurrency
-				),
-				fxConcentrationCategoryVegaMap.get (
-					vegaCategory
-				),
-				FXSystemics24.VOLATILITY_CURVATURE_CORRELATION,
-				Math.sqrt (
-					365. / 14.
-				) / NormalQuadrature.InverseCDF (
-					0.99
-				),
-				FXSystemics24.HISTORICAL_VOLATILITY_RATIO
-			) : null;
-		}
-		catch (Exception e)
-		{
+		try {
+			return fxConcentrationCategoryVegaMap.containsKey (vegaCategory) ?
+				new BucketVegaSettings (
+					FXSystemics24.VEGA_RISK_WEIGHT * FXVolatilityGroupContainer24.RiskWeight (
+						givenCurrency,
+						calculationCurrency
+					),
+					fxConcentrationCategoryVegaMap.get (vegaCategory),
+					FXSystemics24.VOLATILITY_CURVATURE_CORRELATION,
+					Math.sqrt (365. / 14.) / NormalQuadrature.InverseCDF (0.99),
+					FXSystemics24.HISTORICAL_VOLATILITY_RATIO
+				) : null;
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -516,7 +441,7 @@ public class BucketVegaSettings
 	}
 
 	/**
-	 * BucketVegaSettings Constructor
+	 * <i>BucketVegaSettings</i> Constructor
 	 * 
 	 * @param riskWeight The Vega Risk Weight
 	 * @param concentrationFactor The Concentration Factor
@@ -535,23 +460,13 @@ public class BucketVegaSettings
 		final double historicalVolatilityRatio)
 		throws Exception
 	{
-		super (
-			riskWeight,
-			concentrationFactor,
-			memberCorrelation
-		);
+		super (riskWeight, concentrationFactor, memberCorrelation);
 
-		if (!NumberUtil.IsValid (
-				_impliedVolatility = impliedVolatility
-			) || 0. > _impliedVolatility ||
-			!NumberUtil.IsValid (
-				_historicalVolatilityRatio = historicalVolatilityRatio
-			) || 0. > _historicalVolatilityRatio
-		)
+		if (!NumberUtil.IsValid (_impliedVolatility = impliedVolatility) || 0. > _impliedVolatility ||
+			!NumberUtil.IsValid (_historicalVolatilityRatio = historicalVolatilityRatio) ||
+				0. > _historicalVolatilityRatio)
 		{
-			throw new Exception (
-				"BucketVegaSettings Constructor => Invalid Inputs"
-			);
+			throw new Exception ("BucketVegaSettings Constructor => Invalid Inputs");
 		}
 	}
 

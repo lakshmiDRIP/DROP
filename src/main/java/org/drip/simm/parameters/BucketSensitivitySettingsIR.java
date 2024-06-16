@@ -23,6 +23,9 @@ import org.drip.simm.rates.IRWeight;
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -96,7 +99,7 @@ import org.drip.simm.rates.IRWeight;
 
 /**
  * <i>BucketSensitivitySettingsIR</i> holds the Delta Risk Weights, Concentration Thresholds, and
- * Cross-Tenor/Cross-Curve Correlations for each Currency Curve and its Tenor. The References are:
+ * 	Cross-Tenor/Cross-Curve Correlations for each Currency Curve and its Tenor. The References are:
  * 
  * <br><br>
  *  <ul>
@@ -123,15 +126,33 @@ import org.drip.simm.rates.IRWeight;
  *  			https://www.isda.org/a/CeggE/ISDA-SIMM-v2.4-PUBLIC.pdf
  *  	</li>
  *  </ul>
- * 
- * <br><br>
+ *
+ * 	It provides the following Functionality:
+ *
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md">Portfolio Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/MarginAnalyticsLibrary.md">Initial and Variation Margin Analytics</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/README.md">Initial Margin Analytics based on ISDA SIMM and its Variants</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/parameters/README.md">ISDA SIMM Risk Factor Parameters</a></li>
+ * 		<li>Construct the ISDA 2.0 Standard IR Delta Sensitivity Settings for the Currency</li>
+ * 		<li>Construct the ISDA 2.1 Standard IR Delta Sensitivity Settings for the Currency</li>
+ * 		<li>Construct the ISDA 2.4 Standard IR Delta Sensitivity Settings for the Currency</li>
+ * 		<li><i>BucketSensitivitySettingsIR</i> Constructor</li>
+ * 		<li>Retrieve the OIS Tenor Risk Weight</li>
+ * 		<li>Retrieve the LIBOR 1M Tenor Risk Weight</li>
+ * 		<li>Retrieve the LIBOR 3M Tenor Risk Weight</li>
+ * 		<li>Retrieve the LIBOR 6M Tenor Risk Weight</li>
+ * 		<li>Retrieve the LIBOR 12M Tenor Risk Weight</li>
+ * 		<li>Retrieve the PRIME Tenor Risk Weight</li>
+ * 		<li>Retrieve the MUNICIPAL Curve Tenor Risk Weight</li>
+ * 		<li>Retrieve the Cross Curve Correlation</li>
+ * 		<li>Retrieve the Single Curve Cross Tenor Correlation</li>
  *  </ul>
- * <br><br>
+ *
+ *	<br>
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md">Portfolio Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/MarginAnalyticsLibrary.md">Initial and Variation Margin Analytics</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/README.md">Initial Margin Analytics based on ISDA SIMM and its Variants</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/parameters/README.md">ISDA SIMM Risk Factor Parameters</a></td></tr>
+ *  </table>
+ *	<br>
  * 
  * @author Lakshmi Krishnamurthy
  */
@@ -160,14 +181,9 @@ public class BucketSensitivitySettingsIR
 	public static final BucketSensitivitySettingsIR ISDA_DELTA_20 (
 		final String currency)
 	{
-		IRThreshold irThreshold = IRThresholdContainer20.Threshold (
-			currency
-		);
+		IRThreshold irThreshold = IRThresholdContainer20.Threshold (currency);
 
-		IRWeight oisRiskWeight = IRSettingsContainer20.RiskWeight (
-			currency,
-			IRSystemics.SUB_CURVE_OIS
-		);
+		IRWeight oisRiskWeight = IRSettingsContainer20.RiskWeight (currency, IRSystemics.SUB_CURVE_OIS);
 
 		IRWeight libor1MRiskWeight = IRSettingsContainer20.RiskWeight (
 			currency,
@@ -199,8 +215,7 @@ public class BucketSensitivitySettingsIR
 			IRSystemics.SUB_CURVE_MUNICIPAL
 		);
 
-		try
-		{
+		try {
 			return null == irThreshold ||
 				null == libor1MRiskWeight ||
 				null == libor1MRiskWeight ||
@@ -220,9 +235,7 @@ public class BucketSensitivitySettingsIR
 					IRSystemics20.SINGLE_CURRENCY_CROSS_CURVE_CORRELATION,
 					irThreshold.deltaVega().delta()
 				);
-		}
-		catch (Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -240,14 +253,9 @@ public class BucketSensitivitySettingsIR
 	public static final BucketSensitivitySettingsIR ISDA_DELTA_21 (
 		final String currency)
 	{
-		IRThreshold irThreshold = IRThresholdContainer21.Threshold (
-			currency
-		);
+		IRThreshold irThreshold = IRThresholdContainer21.Threshold (currency);
 
-		IRWeight oisRiskWeight = IRSettingsContainer21.RiskWeight (
-			currency,
-			IRSystemics.SUB_CURVE_OIS
-		);
+		IRWeight oisRiskWeight = IRSettingsContainer21.RiskWeight (currency, IRSystemics.SUB_CURVE_OIS);
 
 		IRWeight libor1MRiskWeight = IRSettingsContainer21.RiskWeight (
 			currency,
@@ -279,8 +287,7 @@ public class BucketSensitivitySettingsIR
 			IRSystemics.SUB_CURVE_MUNICIPAL
 		);
 
-		try
-		{
+		try {
 			return null == irThreshold ||
 				null == libor1MRiskWeight ||
 				null == libor1MRiskWeight ||
@@ -300,9 +307,7 @@ public class BucketSensitivitySettingsIR
 					IRSystemics21.SINGLE_CURRENCY_CROSS_CURVE_CORRELATION,
 					irThreshold.deltaVega().delta()
 				);
-		}
-		catch (Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -320,14 +325,9 @@ public class BucketSensitivitySettingsIR
 	public static final BucketSensitivitySettingsIR ISDA_DELTA_24 (
 		final String currency)
 	{
-		IRThreshold irThreshold = IRThresholdContainer24.Threshold (
-			currency
-		);
+		IRThreshold irThreshold = IRThresholdContainer24.Threshold (currency);
 
-		IRWeight oisRiskWeight = IRSettingsContainer24.RiskWeight (
-			currency,
-			IRSystemics.SUB_CURVE_OIS
-		);
+		IRWeight oisRiskWeight = IRSettingsContainer24.RiskWeight (currency, IRSystemics.SUB_CURVE_OIS);
 
 		IRWeight libor1MRiskWeight = IRSettingsContainer24.RiskWeight (
 			currency,
@@ -359,8 +359,7 @@ public class BucketSensitivitySettingsIR
 			IRSystemics.SUB_CURVE_MUNICIPAL
 		);
 
-		try
-		{
+		try {
 			return null == irThreshold ||
 				null == libor1MRiskWeight ||
 				null == libor1MRiskWeight ||
@@ -380,9 +379,7 @@ public class BucketSensitivitySettingsIR
 					IRSystemics24.SINGLE_CURRENCY_CROSS_CURVE_CORRELATION,
 					irThreshold.deltaVega().delta()
 				);
-		}
-		catch (Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -390,7 +387,7 @@ public class BucketSensitivitySettingsIR
 	}
 
 	/**
-	 * BucketSensitivitySettingsIR Constructor
+	 * <i>BucketSensitivitySettingsIR</i> Constructor
 	 * 
 	 * @param oisTenorRiskWeight The OIS Tenor Risk Weight
 	 * @param libor1MTenorRiskWeight The LIBOR 1M Tenor Risk Weight
@@ -419,9 +416,7 @@ public class BucketSensitivitySettingsIR
 		final double concentrationThreshold)
 		throws Exception
 	{
-		super (
-			concentrationThreshold
-		);
+		super (concentrationThreshold);
 
 		if (null == (_oisTenorRiskWeight = oisTenorRiskWeight) ||
 			null == (_libor1MTenorRiskWeight = libor1MTenorRiskWeight) ||
@@ -431,14 +426,10 @@ public class BucketSensitivitySettingsIR
 			null == (_primeTenorRiskWeight = primeTenorRiskWeight) ||
 			null == (_municipalTenorRiskWeight = municipalTenorRiskWeight) ||
 			null == (_crossTenorCorrelation = crossTenorCorrelation) ||
-			!NumberUtil.IsValid (
-				_crossCurveCorrelation = crossCurveCorrelation
-			) || -1. > _crossCurveCorrelation || 1. < _crossCurveCorrelation
-		)
+			!NumberUtil.IsValid (_crossCurveCorrelation = crossCurveCorrelation) ||
+			-1. > _crossCurveCorrelation || 1. < _crossCurveCorrelation)
 		{
-			throw new Exception (
-				"BucketSensitivitySettingsIR Constructor => Invalid Inputs"
-			);
+			throw new Exception ("BucketSensitivitySettingsIR Constructor => Invalid Inputs");
 		}
 	}
 

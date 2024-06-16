@@ -134,7 +134,16 @@ import org.drip.simm.credit.CRThresholdContainer24;
  * 	It provides the following Functionality:
  *
  *  <ul>
- * 		<li>Construct the BucketSensitivitySettings 2.0 Instance for the specified Bucket Index</li>
+ * 		<li>Retrieve the ISDA 2.0 Credit Qualifying Bucket Delta Settings</li>
+ * 		<li>Retrieve the ISDA 2.0 Credit Non-Qualifying Bucket Delta Settings</li>
+ * 		<li>Retrieve the ISDA 2.1 Credit Qualifying Bucket Delta Settings</li>
+ * 		<li>Retrieve the ISDA 2.1 Credit Non-Qualifying Bucket Delta Settings</li>
+ * 		<li>Retrieve the ISDA 2.4 Credit Qualifying Bucket Delta Settings</li>
+ * 		<li>Retrieve the ISDA 2.4 Credit Non-Qualifying Bucket Delta Settings</li>
+ * 		<li><i>BucketSensitivitySettingsCR</i> Constructor</li>
+ * 		<li>Retrieve the Tenor Risk Weight Map</li>
+ * 		<li>Retrieve the Intra-Family Cross Tenor Correlation</li>
+ * 		<li>Retrieve the Extra-Family Cross Tenor Correlation</li>
  *  </ul>
  *
  *	<br>
@@ -161,30 +170,15 @@ public class BucketSensitivitySettingsCR
 	{
 		Map<String, Double> tenorRiskWeight = new CaseInsensitiveHashMap<Double>();
 
-		tenorRiskWeight.put (
-			"1Y",
-			riskWeight
-		);
+		tenorRiskWeight.put ("1Y", riskWeight);
 
-		tenorRiskWeight.put (
-			"2Y",
-			riskWeight
-		);
+		tenorRiskWeight.put ("2Y", riskWeight);
 
-		tenorRiskWeight.put (
-			"3Y",
-			riskWeight
-		);
+		tenorRiskWeight.put ("3Y", riskWeight);
 
-		tenorRiskWeight.put (
-			"5Y",
-			riskWeight
-		);
+		tenorRiskWeight.put ("5Y", riskWeight);
 
-		tenorRiskWeight.put (
-			"10Y",
-			riskWeight
-		);
+		tenorRiskWeight.put ("10Y", riskWeight);
 
 		return tenorRiskWeight;
 	}
@@ -200,39 +194,25 @@ public class BucketSensitivitySettingsCR
 	public static BucketSensitivitySettingsCR ISDA_CRQ_DELTA_20 (
 		final int bucketNumber)
 	{
-		CRBucket creditBucket = CRQSettingsContainer20.Bucket (
-			bucketNumber
-		);
+		CRBucket creditBucket = CRQSettingsContainer20.Bucket (bucketNumber);
 
-		if (null == creditBucket)
-		{
+		if (null == creditBucket) {
 			return null;
 		}
 
-		try
-		{
+		try {
 			return -1 == bucketNumber ? new BucketSensitivitySettingsCR (
-				TenorRiskWeightMap (
-					creditBucket.riskWeight()
-				),
+				TenorRiskWeightMap (creditBucket.riskWeight()),
 				CRQBucketCorrelation20.SAME_ISSUER_SENIORITY_RESIDUAL,
 				CRQBucketCorrelation20.DIFFERENT_ISSUER_SENIORITY_RESIDUAL,
-				CRThresholdContainer20.QualifyingThreshold (
-					bucketNumber
-				).delta()
+				CRThresholdContainer20.QualifyingThreshold (bucketNumber).delta()
 			) : new BucketSensitivitySettingsCR (
-				TenorRiskWeightMap (
-					creditBucket.riskWeight()
-				),
+				TenorRiskWeightMap (creditBucket.riskWeight()),
 				CRQBucketCorrelation20.SAME_ISSUER_SENIORITY_NON_RESIDUAL,
 				CRQBucketCorrelation20.DIFFERENT_ISSUER_SENIORITY_NON_RESIDUAL,
-				CRThresholdContainer20.QualifyingThreshold (
-					bucketNumber
-				).delta()
+				CRThresholdContainer20.QualifyingThreshold (bucketNumber).delta()
 			);
-		}
-		catch (Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -250,39 +230,25 @@ public class BucketSensitivitySettingsCR
 	public static BucketSensitivitySettingsCR ISDA_CRNQ_DELTA_20 (
 		final int bucketNumber)
 	{
-		CRBucket creditBucket = CRNQSettingsContainer20.Bucket (
-			bucketNumber
-		);
+		CRBucket creditBucket = CRNQSettingsContainer20.Bucket (bucketNumber);
 
-		if (null == creditBucket)
-		{
+		if (null == creditBucket) {
 			return null;
 		}
 
-		try
-		{
+		try {
 			return -1 == bucketNumber ? new BucketSensitivitySettingsCR (
-				TenorRiskWeightMap (
-					creditBucket.riskWeight()
-				),
+				TenorRiskWeightMap (creditBucket.riskWeight()),
 				CRNQBucketCorrelation20.GT_80PC_OVERLAP_RESIDUAL,
 				CRNQBucketCorrelation20.LT_80PC_OVERLAP_RESIDUAL,
-				CRThresholdContainer20.NonQualifyingThreshold (
-					bucketNumber
-				).delta()
+				CRThresholdContainer20.NonQualifyingThreshold (bucketNumber).delta()
 			) : new BucketSensitivitySettingsCR (
-				TenorRiskWeightMap (
-					creditBucket.riskWeight()
-				),
+				TenorRiskWeightMap (creditBucket.riskWeight()),
 				CRNQBucketCorrelation20.GT_80PC_OVERLAP_NON_RESIDUAL,
 				CRNQBucketCorrelation20.LT_80PC_OVERLAP_NON_RESIDUAL,
-				CRThresholdContainer20.NonQualifyingThreshold (
-					bucketNumber
-				).delta()
+				CRThresholdContainer20.NonQualifyingThreshold (bucketNumber).delta()
 			);
-		}
-		catch (Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -300,39 +266,25 @@ public class BucketSensitivitySettingsCR
 	public static BucketSensitivitySettingsCR ISDA_CRQ_DELTA_21 (
 		final int bucketNumber)
 	{
-		CRBucket creditBucket = CRQSettingsContainer21.Bucket (
-			bucketNumber
-		);
+		CRBucket creditBucket = CRQSettingsContainer21.Bucket (bucketNumber);
 
-		if (null == creditBucket)
-		{
+		if (null == creditBucket) {
 			return null;
 		}
 
-		try
-		{
+		try {
 			return -1 == bucketNumber ? new BucketSensitivitySettingsCR (
-				TenorRiskWeightMap (
-					creditBucket.riskWeight()
-				),
+				TenorRiskWeightMap (creditBucket.riskWeight()),
 				CRQBucketCorrelation21.SAME_ISSUER_SENIORITY_RESIDUAL,
 				CRQBucketCorrelation21.DIFFERENT_ISSUER_SENIORITY_RESIDUAL,
-				CRThresholdContainer21.QualifyingThreshold (
-					bucketNumber
-				).delta()
+				CRThresholdContainer21.QualifyingThreshold (bucketNumber).delta()
 			) : new BucketSensitivitySettingsCR (
-				TenorRiskWeightMap (
-					creditBucket.riskWeight()
-				),
+				TenorRiskWeightMap (creditBucket.riskWeight()),
 				CRQBucketCorrelation21.SAME_ISSUER_SENIORITY_NON_RESIDUAL,
 				CRQBucketCorrelation21.DIFFERENT_ISSUER_SENIORITY_NON_RESIDUAL,
-				CRThresholdContainer21.QualifyingThreshold (
-					bucketNumber
-				).delta()
+				CRThresholdContainer21.QualifyingThreshold (bucketNumber).delta()
 			);
-		}
-		catch (Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -350,39 +302,25 @@ public class BucketSensitivitySettingsCR
 	public static BucketSensitivitySettingsCR ISDA_CRNQ_DELTA_21 (
 		final int bucketNumber)
 	{
-		CRBucket creditBucket = CRNQSettingsContainer21.Bucket (
-			bucketNumber
-		);
+		CRBucket creditBucket = CRNQSettingsContainer21.Bucket (bucketNumber);
 
-		if (null == creditBucket)
-		{
+		if (null == creditBucket) {
 			return null;
 		}
 
-		try
-		{
+		try {
 			return -1 == bucketNumber ? new BucketSensitivitySettingsCR (
-				TenorRiskWeightMap (
-					creditBucket.riskWeight()
-				),
+				TenorRiskWeightMap (creditBucket.riskWeight()),
 				CRNQBucketCorrelation21.GT_80PC_OVERLAP_RESIDUAL,
 				CRNQBucketCorrelation21.LT_80PC_OVERLAP_RESIDUAL,
-				CRThresholdContainer21.NonQualifyingThreshold (
-					bucketNumber
-				).delta()
+				CRThresholdContainer21.NonQualifyingThreshold (bucketNumber).delta()
 			) : new BucketSensitivitySettingsCR (
-				TenorRiskWeightMap (
-					creditBucket.riskWeight()
-				),
+				TenorRiskWeightMap (creditBucket.riskWeight()),
 				CRNQBucketCorrelation21.GT_80PC_OVERLAP_NON_RESIDUAL,
 				CRNQBucketCorrelation21.LT_80PC_OVERLAP_NON_RESIDUAL,
-				CRThresholdContainer21.NonQualifyingThreshold (
-					bucketNumber
-				).delta()
+				CRThresholdContainer21.NonQualifyingThreshold (bucketNumber).delta()
 			);
-		}
-		catch (Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -400,39 +338,25 @@ public class BucketSensitivitySettingsCR
 	public static BucketSensitivitySettingsCR ISDA_CRQ_DELTA_24 (
 		final int bucketNumber)
 	{
-		CRBucket creditBucket = CRQSettingsContainer24.Bucket (
-			bucketNumber
-		);
+		CRBucket creditBucket = CRQSettingsContainer24.Bucket (bucketNumber);
 
-		if (null == creditBucket)
-		{
+		if (null == creditBucket) {
 			return null;
 		}
 
-		try
-		{
+		try {
 			return -1 == bucketNumber ? new BucketSensitivitySettingsCR (
-				TenorRiskWeightMap (
-					creditBucket.riskWeight()
-				),
+				TenorRiskWeightMap (creditBucket.riskWeight()),
 				CRQBucketCorrelation24.SAME_ISSUER_SENIORITY_RESIDUAL,
 				CRQBucketCorrelation24.DIFFERENT_ISSUER_SENIORITY_RESIDUAL,
-				CRThresholdContainer24.QualifyingThreshold (
-					bucketNumber
-				).delta()
+				CRThresholdContainer24.QualifyingThreshold (bucketNumber).delta()
 			) : new BucketSensitivitySettingsCR (
-				TenorRiskWeightMap (
-					creditBucket.riskWeight()
-				),
+				TenorRiskWeightMap (creditBucket.riskWeight()),
 				CRQBucketCorrelation24.SAME_ISSUER_SENIORITY_NON_RESIDUAL,
 				CRQBucketCorrelation24.DIFFERENT_ISSUER_SENIORITY_NON_RESIDUAL,
-				CRThresholdContainer24.QualifyingThreshold (
-					bucketNumber
-				).delta()
+				CRThresholdContainer24.QualifyingThreshold (bucketNumber).delta()
 			);
-		}
-		catch (Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -450,39 +374,25 @@ public class BucketSensitivitySettingsCR
 	public static BucketSensitivitySettingsCR ISDA_CRNQ_DELTA_24 (
 		final int bucketNumber)
 	{
-		CRBucket creditBucket = CRNQSettingsContainer24.Bucket (
-			bucketNumber
-		);
+		CRBucket creditBucket = CRNQSettingsContainer24.Bucket (bucketNumber);
 
-		if (null == creditBucket)
-		{
+		if (null == creditBucket) {
 			return null;
 		}
 
-		try
-		{
+		try {
 			return -1 == bucketNumber ? new BucketSensitivitySettingsCR (
-				TenorRiskWeightMap (
-					creditBucket.riskWeight()
-				),
+				TenorRiskWeightMap (creditBucket.riskWeight()),
 				CRNQBucketCorrelation24.GT_80PC_OVERLAP_RESIDUAL,
 				CRNQBucketCorrelation24.LT_80PC_OVERLAP_RESIDUAL,
-				CRThresholdContainer24.NonQualifyingThreshold (
-					bucketNumber
-				).delta()
+				CRThresholdContainer24.NonQualifyingThreshold (bucketNumber).delta()
 			) : new BucketSensitivitySettingsCR (
-				TenorRiskWeightMap (
-					creditBucket.riskWeight()
-				),
+				TenorRiskWeightMap (creditBucket.riskWeight()),
 				CRNQBucketCorrelation24.GT_80PC_OVERLAP_NON_RESIDUAL,
 				CRNQBucketCorrelation24.LT_80PC_OVERLAP_NON_RESIDUAL,
-				CRThresholdContainer24.NonQualifyingThreshold (
-					bucketNumber
-				).delta()
+				CRThresholdContainer24.NonQualifyingThreshold (bucketNumber).delta()
 			);
-		}
-		catch (Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -510,17 +420,12 @@ public class BucketSensitivitySettingsCR
 		super (concentrationThreshold);
 
 		if (null == (_tenorRiskWeight = tenorRiskWeight) || 0 == _tenorRiskWeight.size() ||
-			!NumberUtil.IsValid (
-				_intraFamilyCrossTenorCorrelation = intraFamilyCrossTenorCorrelation
-			) || 1. <= _intraFamilyCrossTenorCorrelation || -1. >= _intraFamilyCrossTenorCorrelation ||
-			!NumberUtil.IsValid (
-				_extraFamilyCrossTenorCorrelation = extraFamilyCrossTenorCorrelation
-			) || 1. <= _extraFamilyCrossTenorCorrelation || -1. >= _extraFamilyCrossTenorCorrelation
-		)
+			!NumberUtil.IsValid (_intraFamilyCrossTenorCorrelation = intraFamilyCrossTenorCorrelation) ||
+				1. <= _intraFamilyCrossTenorCorrelation || -1. >= _intraFamilyCrossTenorCorrelation ||
+			!NumberUtil.IsValid (_extraFamilyCrossTenorCorrelation = extraFamilyCrossTenorCorrelation) ||
+				1. <= _extraFamilyCrossTenorCorrelation || -1. >= _extraFamilyCrossTenorCorrelation)
 		{
-			throw new Exception (
-				"BucketSensitivitySettingsCR Constructor => Invalid Inputs"
-			);
+			throw new Exception ("BucketSensitivitySettingsCR Constructor => Invalid Inputs");
 		}
 	}
 
