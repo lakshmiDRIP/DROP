@@ -1,7 +1,8 @@
 
-package org.drip.numerical.linearalgebra;
+package org.drip.numerical.iterativesolver;
 
 import org.drip.numerical.common.NumberUtil;
+import org.drip.numerical.linearalgebra.Matrix;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -76,7 +77,8 @@ import org.drip.numerical.common.NumberUtil;
  */
 
 /**
- * <i>SuccessiveOverRelaxation</i> implements the SOR and the SSOR schemes. The References are:
+ * <i>SuccessiveOverRelaxationConvergenceAnalyzer</i> implements the Convergence Analytics for SOR and the
+ *  SSOR schemes. The References are:
  * 
  * <br><br>
  * 	<ul>
@@ -113,64 +115,42 @@ import org.drip.numerical.common.NumberUtil;
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md">Numerical Analysis Library</a></li>
  *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/numerical/README.md">Numerical Quadrature, Differentiation, Eigenization, Linear Algebra, and Utilities</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/numerical/linearalgebra/README.md">Linear Algebra Matrix Transform Library</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/numerical/iterativesolver/README.md">Linear System Iterative Solver Schemes</a></li>
  *  </ul>
  * <br><br>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class SuccessiveOverRelaxation
+public class SuccessiveOverRelaxationConvergenceAnalyzer
 {
-	private double[] _rhsArray = null;
 	private double[][] _squareMatrix = null;
-	private SuccessiveOverRelaxationSolverSetting _solverSetting = null;
-
-	private final boolean VectorsMatch (
-		final double[] array1,
-		final double[] array2)
-		throws Exception
-	{
-		for (int i = 0; i < array1.length; ++i) {
-			double mid = 0.5 * (array1[i] + array2[i]);
-
-			double absoluteDifference = Math.abs (array1[i] - array2[i]);
-
-			if (mid <= _solverSetting.absoluteLevelThreshold()) {
-				if (_solverSetting.absoluteTolerance() < absoluteDifference) {
-					return false;
-				}
-			} else {
-				if (_solverSetting.relativeTolerance() * mid < absoluteDifference) {
-					return false;
-				}
-			}
-		}
-
-		return true;
-	}
+	private double _relaxationParameter = Double.NaN;
+	private double _jacobiIterationMatrixSpectralRadius = Double.NaN;
 
 	/**
-	 * <i>SuccessiveOverRelaxation</i> Constructor
+	 * Construct an Instance of <i>SuccessiveOverRelaxationConvergenceAnalyzer</i> from the Inputs
 	 * 
-	 * @param solverSetting Successive Over-Relaxation Solver Setting
-	 * @param squareMatrix Square Matrix
-	 * @param rhsArray RHS Array
+	 * @param squareMatrix Input Square Matrix
+	 * @param relaxationParameter Relaxation Parameter
+	 * @param jacobiIterationMatrixSpectralRadius Jacobi Iteration Matrix Spectral Radius
 	 * 
 	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
-	public SuccessiveOverRelaxation (
-		final SuccessiveOverRelaxationSolverSetting solverSetting,
+	public SuccessiveOverRelaxationConvergenceAnalyzer (
 		final double[][] squareMatrix,
-		final double[] rhsArray)
+		final double relaxationParameter,
+		final double jacobiIterationMatrixSpectralRadius)
 		throws Exception
 	{
-		if (null == (_solverSetting = solverSetting) ||
-			null == (_squareMatrix = squareMatrix) ||
-			null == (_rhsArray = rhsArray))
+		if (!Matrix.IsSquare (_squareMatrix) ||
+			!NumberUtil.IsValid (_relaxationParameter = relaxationParameter) ||
+			!NumberUtil.IsValid (_jacobiIterationMatrixSpectralRadius = jacobiIterationMatrixSpectralRadius))
 		{
-			throw new Exception ("SuccessiveOverRelaxation Construction => Invalid Inputs");
+			throw new Exception (
+				"SuccessiveOverRelaxationConvergenceAnalyzer Construction => Invalid Inputs"
+			);
 		}
 	}
 
@@ -186,162 +166,141 @@ public class SuccessiveOverRelaxation
 	}
 
 	/**
-	 * Retrieve the Diagonal Matrix
+	 * Retrieve the Relaxation Parameter
 	 * 
-	 * @return Diagonal Matrix
+	 * @return Relaxation Parameter
 	 */
 
-	public double[][] diagonalMatrix()
+	public double relaxationParameter()
 	{
-		int size = _squareMatrix.length;
-		double[][] diagonalMatrix = new double[size][size];
-
-		for (int i = 0; i < size; ++i) {
-			for (int j = 0; j < size; ++j) {
-				diagonalMatrix[i][j] = i == j ? _squareMatrix[i][j] : 0.;
-			}
-		}
-
-		return diagonalMatrix;
+		return _relaxationParameter;
 	}
 
 	/**
-	 * Retrieve the Strictly Lower Triangular Matrix
+	 * Retrieve the Jacobi Iteration Matrix Spectral Radius
 	 * 
-	 * @return Strictly Lower Triangular Matrix
+	 * @return Jacobi Iteration Matrix Spectral Radius
 	 */
 
-	public double[][] strictlyLowerTriangularMatrix()
+	public double jacobiIterationMatrixSpectralRadius()
 	{
-		int size = _squareMatrix.length;
-		double[][] strictlyLowerTriangularMatrix = new double[size][size];
-
-		for (int i = 0; i < size; ++i) {
-			for (int j = 0; j < size; ++j) {
-				strictlyLowerTriangularMatrix[i][j] = i > j ? _squareMatrix[i][j] : 0.;
-			}
-		}
-
-		return strictlyLowerTriangularMatrix;
+		return _jacobiIterationMatrixSpectralRadius;
 	}
 
 	/**
-	 * Retrieve the Strictly Upper Triangular Matrix
+	 * Retrieve the Jacobi Iteration Matrix
 	 * 
-	 * @return Strictly Upper Triangular Matrix
+	 * @return Jacobi Iteration Matrix
 	 */
 
-	public double[][] strictlyUpperTriangularMatrix()
+	public double[][] jacobiIterationMatrix()
 	{
-		int size = _squareMatrix.length;
-		double[][] strictlyUpperTriangularMatrix = new double[size][size];
-
-		for (int i = 0; i < size; ++i) {
-			for (int j = 0; j < size; ++j) {
-				strictlyUpperTriangularMatrix[i][j] = i < j ? _squareMatrix[i][j] : 0.;
-			}
-		}
-
-		return strictlyUpperTriangularMatrix;
+		return Matrix.JacobiIteration (_squareMatrix);
 	}
 
 	/**
-	 * Retrieve the RHS Array
+	 * Indicate if the Jacobi Iteration Matrix has Real Eigenvalues
 	 * 
-	 * @return RHS Array
+	 * @return TRUE - Jacobi Iteration Matrix has Real Eigenvalues
 	 */
 
-	public double[] rhsArray()
+	public boolean jacobiIterationMatrixRealEigenvalues()
 	{
-		return _rhsArray;
+		return true;
 	}
 
 	/**
-	 * Retrieve the Successive Over Relaxation Solver Setting
+	 * Indicate if the Jacobi Spectral Radius satisfies Convergence Check
 	 * 
-	 * @return Successive Over Relaxation Solver Setting
+	 * @return TRUE - Jacobi Spectral Radius satisfies Convergence Check
 	 */
 
-	public SuccessiveOverRelaxationSolverSetting solverSetting()
+	public boolean jacobiSpectralRadiusVerification()
 	{
-		return _solverSetting;
+		return 0. < _jacobiIterationMatrixSpectralRadius && 1. > _jacobiIterationMatrixSpectralRadius;
 	}
 
 	/**
-	 * Solve using Forward Substitution
+	 * Indicate if the Relaxation Parameter Range satisfies Convergence Check
 	 * 
-	 * @return The Solution Array
+	 * @return TRUE - Relaxation Parameter Range satisfies Convergence Check
 	 */
 
-	public double[] forwardSubstitution()
+	public boolean relaxationParameterRangeVerification()
 	{
-		double[] updatedUnknownArray = new double[_rhsArray.length];
-		double[] previousUnknownArray = new double[_rhsArray.length];
-
-		for (int i = 0; i < updatedUnknownArray.length; ++i) {
-			updatedUnknownArray[i] = Math.random();
-		}
-
-		double relaxationParameter = _solverSetting.relaxationParameter();
-
-		try {
-			 while (!VectorsMatch (previousUnknownArray, updatedUnknownArray)) {
-				for (int i = 0; i < previousUnknownArray.length; ++i) {
-					previousUnknownArray[i] = updatedUnknownArray[i];
-				}
-
-				for (int i = 0; i < previousUnknownArray.length; ++i) {
-					updatedUnknownArray[i] = _rhsArray[i];
-
-					for (int j = 0; j < previousUnknownArray.length; ++j) {
-						if (j < i) {
-							updatedUnknownArray[i] -= _squareMatrix[i][j] * updatedUnknownArray[j];
-						} else if (j > i) {
-							updatedUnknownArray[i] -= _squareMatrix[i][j] * previousUnknownArray[j];
-						}
-					}
-
-					updatedUnknownArray[i] = (1. - relaxationParameter) * previousUnknownArray[i] + (
-						relaxationParameter * updatedUnknownArray[i] / _squareMatrix[i][i]
-					);
-				}
-			}
-
-			 return updatedUnknownArray;
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-		return null;
+		return 0. < _relaxationParameter && 2. > _relaxationParameter;
 	}
 
-	public static final void main (
-		final String[] argumentArray)
-		throws Exception
+	/**
+	 * Compute the Convergence Check Criteria Status
+	 * 
+	 * @return Convergence Check Criteria Status
+	 */
+
+	public SuccessiveOverRelaxationConvergenceCheck check()
 	{
-		double[][] squareMatrix = new double[][] {
-			{ 4., -1., -6.,  0.},
-			{-5., -4., 10.,  8.},
-			{ 0.,  9.,  4., -2.},
-			{ 1.,  0., -7.,  5.},
-		};
-
-		double[] rhsArray = new double[] {
-			  2.,
-			 21.,
-			-12.,
-			 -6.
-		};
-
-		NumberUtil.Print1DArray (
-			"\tResult",
-			new SuccessiveOverRelaxation (
-				SuccessiveOverRelaxationSolverSetting.Standard(),
-				squareMatrix,
-				rhsArray
-			).forwardSubstitution(),
-			4,
-			false
+		return new SuccessiveOverRelaxationConvergenceCheck (
+			jacobiIterationMatrixRealEigenvalues(),
+			jacobiSpectralRadiusVerification(),
+			relaxationParameterRangeVerification()
 		);
+	}
+
+	/**
+	 * Calculate the Optimal Relaxation Parameter from the Jacobi Iteration Matrix Spectral Radius
+	 * 
+	 * @return Optimal Relaxation Parameter
+	 */
+
+	public double optimalRelaxationParameter()
+	{
+		double spectralRadiusManipulator = _jacobiIterationMatrixSpectralRadius / (
+			1. + Math.sqrt (1. - _jacobiIterationMatrixSpectralRadius * _jacobiIterationMatrixSpectralRadius)
+		);
+
+		return 1. + spectralRadiusManipulator * spectralRadiusManipulator;
+	}
+
+	/**
+	 * Estimate the Convergence Rate from the Relaxation Parameter and the Jacobi Iteration Matrix Spectral
+	 *  Radius
+	 * 
+	 * @return Convergence Rate
+	 */
+
+	public double rate()
+	{
+		if (SuccessiveOverRelaxationIteratorSetting.RELAXATION_PARAMETER_GAUSS_SEIDEL == _relaxationParameter)
+		{
+			return _jacobiIterationMatrixSpectralRadius * _jacobiIterationMatrixSpectralRadius;
+		}
+
+		double optimalRelaxationParameter = optimalRelaxationParameter();
+
+		if (_relaxationParameter <= optimalRelaxationParameter) {
+			double omegaMu = _relaxationParameter * _jacobiIterationMatrixSpectralRadius;
+
+			double omegaMuManipulator = omegaMu + Math.sqrt (
+				omegaMu * omegaMu - 4. * (_relaxationParameter - 1.)
+			);
+
+			return 0.25 * omegaMuManipulator * omegaMuManipulator;
+		}
+
+		return _relaxationParameter - 1.;
+	}
+
+	/**
+	 * Compute the Convergence Rate corresponding to Optimal Relaxation Parameter
+	 * 
+	 * @return Convergence Rate corresponding to Optimal Relaxation Parameter
+	 */
+
+	public double optimalRelaxationParameterRate()
+	{
+		double sqrtOneMinusMuSquared =
+			Math.sqrt (1. - _jacobiIterationMatrixSpectralRadius * _jacobiIterationMatrixSpectralRadius);
+
+		return (1. - sqrtOneMinusMuSquared) / (1. + sqrtOneMinusMuSquared);
 	}
 }

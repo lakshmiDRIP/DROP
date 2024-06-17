@@ -1221,4 +1221,159 @@ public class Matrix {
 
        return true;
     }
+
+    /**
+     * Indicate if the Input Matrix is Square
+     * 
+     * @param matrix Input Matrix
+     * 
+     * @return TRUE - Input Matrix is Square
+     */
+
+    public static final boolean IsSquare (
+		final double[][] matrix)
+    {
+    	if (null == matrix) {
+    		return false;
+    	}
+
+    	int size = matrix.length;
+    	return 0 != size && size == matrix[0].length;
+    }
+
+    /**
+     * Retrieve the Diagonal Elements in a Square Matrix
+     * 
+     * @param matrix Input Matrix
+     * 
+     * @return Diagonal Elements in a Square Matrix
+     */
+
+    public static final double[][] Diagonal (
+    	final double[][] squareMatrix)
+    {
+    	if (!IsSquare (squareMatrix)) {
+    		return null;
+    	}
+
+    	int size = squareMatrix.length;
+		double[][] diagonalMatrix = new double[size][size];
+
+		for (int i = 0; i < size; ++i) {
+			for (int j = 0; j < size; ++j) {
+				diagonalMatrix[i][j] = i == j ? squareMatrix[i][j] : 0.;
+			}
+		}
+
+		return diagonalMatrix;
+    }
+
+    /**
+     * Retrieve the Strictly Lower Triangular Elements in a Square Matrix
+     * 
+     * @param matrix Input Matrix
+     * 
+     * @return Strictly Lower Triangular Elements in a Square Matrix
+     */
+
+    public static final double[][] StrictlyLowerTriangular (
+		final double[][] squareMatrix)
+    {
+    	if (!IsSquare (squareMatrix)) {
+    		return null;
+    	}
+
+		int size = squareMatrix.length;
+		double[][] strictlyLowerTriangularMatrix = new double[size][size];
+
+		for (int i = 0; i < size; ++i) {
+			for (int j = 0; j < size; ++j) {
+				strictlyLowerTriangularMatrix[i][j] = i > j ? squareMatrix[i][j] : 0.;
+			}
+		}
+
+		return strictlyLowerTriangularMatrix;
+    }
+
+    /**
+     * Retrieve the Strictly Upper Triangular Elements in a Square Matrix
+     * 
+     * @param matrix Input Matrix
+     * 
+     * @return Strictly Upper Triangular Elements in a Square Matrix
+     */
+
+    public static final double[][] StrictlyUpperTriangular (
+		final double[][] squareMatrix)
+    {
+    	if (!IsSquare (squareMatrix)) {
+    		return null;
+    	}
+
+		int size = squareMatrix.length;
+		double[][] strictlyUpperTriangularMatrix = new double[size][size];
+
+		for (int i = 0; i < size; ++i) {
+			for (int j = 0; j < size; ++j) {
+				strictlyUpperTriangularMatrix[i][j] = i < j ? squareMatrix[i][j] : 0.;
+			}
+		}
+
+		return strictlyUpperTriangularMatrix;
+    }
+
+    /**
+     * Construct a Jacobi Iteration Matrix from the Square Matrix
+     * 
+     * @param squareMatrix Square Matrix
+     * 
+     * @return Jacobi Iteration Matrix
+     */
+
+    public static final double[][] JacobiIteration (
+		final double[][] squareMatrix)
+    {
+    	if (!IsSquare (squareMatrix)) {
+    		return null;
+    	}
+
+		int size = squareMatrix.length;
+		double[][] jacobiIterationMatrix = new double[size][size];
+
+		for (int i = 0; i < size; ++i) {
+			for (int j = 0; j < size; ++j) {
+				jacobiIterationMatrix[i][j] = i == j ? 0. : squareMatrix[i][j];
+			}
+		}
+
+		return jacobiIterationMatrix;
+    }
+
+    /**
+     * Indicate if the Input Matrix is Square and Symmetric
+     * 
+     * @param matrix Input Matrix
+     * 
+     * @return TRUE - Input Matrix is Square and Symmetric
+     */
+
+    public static final boolean IsSquareSymmetric (
+		final double[][] squareMatrix)
+    {
+    	if (!IsSquare (squareMatrix)) {
+    		return false;
+    	}
+
+		int size = squareMatrix.length;
+
+		for (int i = 0; i < size; ++i) {
+			for (int j = 0; j < i; ++j) {
+				if (squareMatrix[i][j] != squareMatrix[j][i]) {
+					return false;
+				}
+			}
+		}
+
+		return true;
+    }
 }

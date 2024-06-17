@@ -1,7 +1,7 @@
 
-package org.drip.numerical.linearalgebra;
+package org.drip.numerical.iterativesolver;
 
-import org.drip.numerical.common.NumberUtil;
+import org.drip.numerical.linearalgebra.Matrix;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -76,7 +76,7 @@ import org.drip.numerical.common.NumberUtil;
  */
 
 /**
- * <i>SuccessiveOverRelaxation</i> implements the SOR and the SSOR schemes. The References are:
+ * <i>SymmetricSuccessiveOverRelaxation</i> implements the SSOR Linear Solution scheme. The References are:
  * 
  * <br><br>
  * 	<ul>
@@ -113,136 +113,82 @@ import org.drip.numerical.common.NumberUtil;
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md">Numerical Analysis Library</a></li>
  *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/numerical/README.md">Numerical Quadrature, Differentiation, Eigenization, Linear Algebra, and Utilities</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/numerical/linearalgebra/README.md">Linear Algebra Matrix Transform Library</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/numerical/iterativesolver/README.md">Linear System Iterative Solver Schemes</a></li>
  *  </ul>
  * <br><br>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class SuccessiveOverRelaxationSolverSetting
+public class SymmetricSuccessiveOverRelaxation extends SuccessiveOverRelaxation
 {
 
-	public static final int SOR_ITERATION_LIMIT_DEFAULT = 100;
-	public static final double RELAXATION_PARAMETER_DEFAULT = 0.5;
-	public static final double ABSOLUTE_TOLERANCE_DEFAULT = 1.0e-08;
-	public static final double RELATIVE_TOLERANCE_DEFAULT = 1.0e-05;
-	public static final double ABSOLUTE_LEVEL_THRESOLD_DEFAULT = 1.0e-06;
-
-	private double _absoluteTolerance = Double.NaN;
-	private double _relativeTolerance = Double.NaN;
-	private double _relaxationParameter = Double.NaN;
-	private double _iterationLimit = Integer.MIN_VALUE;
-	private double _absoluteLevelThreshold = Double.NaN;
-
 	/**
-	 * Construct a Factory Standard Instance of <i>SuccessiveOverRelaxationSolverSetting</i>
+	 * <i>SymmetricSuccessiveOverRelaxation</i> Constructor
 	 * 
-	 * @return Factory Standard Instance of <i>SuccessiveOverRelaxationSolverSetting</i>
+	 * @param iteratorSetting Successive Over-Relaxation Iterator Setting
+	 * @param squareMatrix Square Matrix
+	 * @param rhsArray RHS Array
+	 * 
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
-	public static final SuccessiveOverRelaxationSolverSetting Standard()
-	{
-		try {
-			return new SuccessiveOverRelaxationSolverSetting (
-				ABSOLUTE_TOLERANCE_DEFAULT,
-				RELATIVE_TOLERANCE_DEFAULT,
-				ABSOLUTE_LEVEL_THRESOLD_DEFAULT,
-				RELAXATION_PARAMETER_DEFAULT,
-				SOR_ITERATION_LIMIT_DEFAULT
-			);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-		return null;
-	}
-
-	/**
-	 * Construct an Instance of <i>SuccessiveOverRelaxationSolverSetting</i> from the Inputs
-	 * 
-	 * @param absoluteTolerance Absolute Tolerance for Convergence
-	 * @param relativeTolerance Relative Tolerance for Convergence
-	 * @param absoluteLevelThreshold Threshold for Absolute Convergence Check
-	 * @param relaxationParameter SOR Relaxation Parameter
-	 * @param iterationLimit Iteration Limit for SOR Convergence
-	 * 
-	 * @throws Exception Thrown if the Parameters are Invalid
-	 */
-
-	public SuccessiveOverRelaxationSolverSetting (
-		final double absoluteTolerance,
-		final double relativeTolerance,
-		final double absoluteLevelThreshold,
-		final double relaxationParameter,
-		final int iterationLimit)
+	public SymmetricSuccessiveOverRelaxation (
+		final SuccessiveOverRelaxationIteratorSetting iteratorSetting,
+		final double[][] squareMatrix,
+		final double[] rhsArray)
 		throws Exception
 	{
-		if (!NumberUtil.IsValid (_absoluteTolerance = absoluteTolerance) || 0. >= _absoluteTolerance ||
-			!NumberUtil.IsValid (_relativeTolerance = relativeTolerance) || 0. >= _relativeTolerance ||
-			!NumberUtil.IsValid (_absoluteLevelThreshold = absoluteLevelThreshold) ||
-				0. >= _absoluteLevelThreshold ||
-			!NumberUtil.IsValid (_relaxationParameter = relaxationParameter) ||
-				0. >= _relaxationParameter || 2. <= _relaxationParameter ||
-			0 >= (_iterationLimit = iterationLimit)
-			)
-		{
-			throw new Exception ("SuccessiveOverRelaxationSolverSetting Constructor => Invalid Parameters");
+		super (iteratorSetting, squareMatrix, rhsArray);
+
+		if (!Matrix.IsSquareSymmetric (squareMatrix)) {
+			throw new Exception ("SymmetricSuccessiveOverRelaxation Construction => Invalid Inputs");
 		}
 	}
 
-	/**
-	 * Retrieve the Absolute Tolerance for Convergence
-	 * 
-	 * @return Absolute Tolerance for Convergence
-	 */
-
-	public double absoluteTolerance()
+	public double[][] preConditioner()
 	{
-		return _absoluteTolerance;
+		double[][] squareMatrix = squareMatrix();
+
+		double relaxationParameter = iteratorSetting().relaxationParameter();
+
+		double[][] dOverOmegaPlusL = new double[squareMatrix.length][squareMatrix.length];
+
+		for (int i = 0; i < squareMatrix.length; ++i) {
+			for (int j = 0; j < squareMatrix.length; ++j) {
+				if (i > j) {
+					dOverOmegaPlusL[i][j] = squareMatrix[i][j];
+				} else if (i == j) {
+					dOverOmegaPlusL[i][j] = squareMatrix[i][j] / relaxationParameter;
+				} else {
+					dOverOmegaPlusL[i][j] = 0.;
+				}
+			}
+		}
+
+		double[][] preConditionerMatrix = Matrix.Product (
+			dOverOmegaPlusL,
+			Matrix.Transpose (dOverOmegaPlusL)
+		);
+
+		for (int i = 0; i < squareMatrix.length; ++i) {
+			preConditionerMatrix[i][i] = 0. == squareMatrix[i][i] ?
+				squareMatrix[i][i] : preConditionerMatrix[i][i] / squareMatrix[i][i];
+		}
+
+		return Matrix.Scale2D (preConditionerMatrix, relaxationParameter/ (2. - relaxationParameter));
 	}
 
 	/**
-	 * Retrieve the Relative Tolerance for Convergence
+	 * Solve using Pre-conditioning Iteration of the Input Square Matrix
 	 * 
-	 * @return Relative Tolerance for Convergence
+	 * @return The Solution Array
 	 */
 
-	public double relativeTolerance()
+	public double[] preConditioningIteration()
 	{
-		return _relativeTolerance;
-	}
+		double[][] preConditionerMatrix = preConditioner();
 
-	/**
-	 * Retrieve the Threshold for Absolute Convergence Check
-	 * 
-	 * @return Threshold for Absolute Convergence Check
-	 */
-
-	public double absoluteLevelThreshold()
-	{
-		return _absoluteLevelThreshold;
-	}
-
-	/**
-	 * Retrieve the SOR Relaxation Parameter
-	 * 
-	 * @return SOR Relaxation Parameter
-	 */
-
-	public double relaxationParameter()
-	{
-		return _relaxationParameter;
-	}
-
-	/**
-	 * Retrieve the Iteration Limit for SOR Convergence
-	 * 
-	 * @return Iteration Limit for SOR Convergence
-	 */
-
-	public double iterationLimit()
-	{
-		return _iterationLimit;
+		return null;
 	}
 }
