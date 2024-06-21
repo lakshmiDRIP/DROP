@@ -335,6 +335,11 @@ Numerical Analysis Library contains the supporting Functionality for Numerical M
 	* References
  * Symmetric Successive Over-relaxation
 	* References
+ * Tridiagonal matrix algorithm
+	* Introduction
+	* Derivation
+	* Variants
+	* References
 
 
 ## DROP Specifications
