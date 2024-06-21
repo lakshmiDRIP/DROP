@@ -835,6 +835,39 @@ public class NumberUtil {
 	}
 
 	/**
+	 * Print the contents of the 1D array to the Specified Decimal Location as a Row
+	 * 
+	 * @param adblA The 1D array
+	 * @param iNumDecimal Number of Decimal Places to Display
+	 * @param bBailOnNaN Bail on encountering an NaN
+	 * 
+	 * @return Contents of the 1D array to the Specified Decimal Location as a Row
+	 */
+
+	public static final String Print1DArrayRow (
+		final double[] adblA,
+		final int iNumDecimal,
+		final boolean bBailOnNaN)
+	{
+		if (null == adblA || 0 == adblA.length) return "";
+
+		int iSize = adblA.length;
+		String row = "";
+
+		for (int i = 0; i < iSize; ++i) {
+			if (!org.drip.numerical.common.NumberUtil.IsValid (adblA[i]) && bBailOnNaN) return "";
+
+			if (0 != i) {
+				row = row + " | ";
+			}
+
+			row = row + org.drip.service.common.FormatUtil.FormatDouble (adblA[i], 1, iNumDecimal, 1.);
+		}
+
+		return row;
+	}
+
+	/**
 	 * Print the contents of the 2D array
 	 * 
 	 * @param strName Label Name

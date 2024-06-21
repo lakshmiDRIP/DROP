@@ -133,8 +133,8 @@ public class SuccessiveOverRelaxationIteratorSetting
 
 	private double _absoluteTolerance = Double.NaN;
 	private double _relativeTolerance = Double.NaN;
+	private int _iterationLimit = Integer.MIN_VALUE;
 	private double _relaxationParameter = Double.NaN;
-	private double _iterationLimit = Integer.MIN_VALUE;
 	private double _absoluteLevelThreshold = Double.NaN;
 
 	/**
@@ -174,6 +174,32 @@ public class SuccessiveOverRelaxationIteratorSetting
 				RELATIVE_TOLERANCE_DEFAULT,
 				ABSOLUTE_LEVEL_THRESOLD_DEFAULT,
 				RELAXATION_PARAMETER_GAUSS_SEIDEL,
+				SOR_ITERATION_LIMIT_DEFAULT
+			);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
+	 * Construct an Instance of <i>SuccessiveOverRelaxationIteratorSetting</i> using the Relaxation Parameter
+	 * 
+	 * @param relaxationParameter Relaxation Parameter
+	 * 
+	 * @return Instance of <i>SuccessiveOverRelaxationIteratorSetting</i>
+	 */
+
+	public static final SuccessiveOverRelaxationIteratorSetting StandardRelaxation (
+		final double relaxationParameter)
+	{
+		try {
+			return new SuccessiveOverRelaxationIteratorSetting (
+				ABSOLUTE_TOLERANCE_DEFAULT,
+				RELATIVE_TOLERANCE_DEFAULT,
+				ABSOLUTE_LEVEL_THRESOLD_DEFAULT,
+				relaxationParameter,
 				SOR_ITERATION_LIMIT_DEFAULT
 			);
 		} catch (Exception e) {
@@ -267,7 +293,7 @@ public class SuccessiveOverRelaxationIteratorSetting
 	 * @return Iteration Limit for SOR Convergence
 	 */
 
-	public double iterationLimit()
+	public int iterationLimit()
 	{
 		return _iterationLimit;
 	}

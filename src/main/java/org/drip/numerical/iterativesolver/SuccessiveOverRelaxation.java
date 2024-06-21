@@ -153,12 +153,16 @@ public class SuccessiveOverRelaxation
 		return null;
 	}
 
-	private final boolean VectorsMatch (
+	protected final boolean VectorsMatch (
 		final double[] array1,
 		final double[] array2)
 		throws Exception
 	{
 		for (int i = 0; i < array1.length; ++i) {
+			if (!NumberUtil.IsValid (array1[i]) || !NumberUtil.IsValid (array2[i])) {
+				throw new Exception ("SuccessiveOverRelaxation::VectorsMatch => Invalid Array Element(s)");
+			}
+
 			double mid = 0.5 * (array1[i] + array2[i]);
 
 			double absoluteDifference = Math.abs (array1[i] - array2[i]);
@@ -194,7 +198,7 @@ public class SuccessiveOverRelaxation
 		throws Exception
 	{
 		if (null == (_iteratorSetting = iteratorSetting) ||
-			!Matrix.IsSquare (_squareMatrix) ||
+			!Matrix.IsSquare (_squareMatrix = squareMatrix) ||
 			null == (_rhsArray = rhsArray))
 		{
 			throw new Exception ("SuccessiveOverRelaxation Construction => Invalid Inputs");
@@ -279,6 +283,7 @@ public class SuccessiveOverRelaxation
 
 	public double[] forwardSubstitution()
 	{
+		int iteration = 0;
 		double[] updatedUnknownArray = new double[_rhsArray.length];
 		double[] previousUnknownArray = new double[_rhsArray.length];
 
@@ -286,10 +291,13 @@ public class SuccessiveOverRelaxation
 			updatedUnknownArray[i] = Math.random();
 		}
 
+		int iterationLimit = _iteratorSetting.iterationLimit();
+
 		double relaxationParameter = _iteratorSetting.relaxationParameter();
 
 		try {
-			 while (!VectorsMatch (previousUnknownArray, updatedUnknownArray)) {
+			 while (!VectorsMatch (previousUnknownArray, updatedUnknownArray) && iteration < iterationLimit)
+			 {
 				for (int i = 0; i < previousUnknownArray.length; ++i) {
 					previousUnknownArray[i] = updatedUnknownArray[i];
 				}
@@ -309,39 +317,15 @@ public class SuccessiveOverRelaxation
 						relaxationParameter * updatedUnknownArray[i] / _squareMatrix[i][i]
 					);
 				}
-			}
 
-			 return updatedUnknownArray;
+				++iteration;
+			 }
+
+			return iteration < iterationLimit ? updatedUnknownArray : null;
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
 		return null;
-	}
-
-	public static final void main (
-		final String[] argumentArray)
-		throws Exception
-	{
-		double[][] squareMatrix = new double[][] {
-			{ 4., -1., -6.,  0.},
-			{-5., -4., 10.,  8.},
-			{ 0.,  9.,  4., -2.},
-			{ 1.,  0., -7.,  5.},
-		};
-
-		double[] rhsArray = new double[] {
-			  2.,
-			 21.,
-			-12.,
-			 -6.
-		};
-
-		NumberUtil.Print1DArray (
-			"\tResult",
-			 SuccessiveOverRelaxation.Standard (squareMatrix, rhsArray).forwardSubstitution(),
-			4,
-			false
-		);
 	}
 }

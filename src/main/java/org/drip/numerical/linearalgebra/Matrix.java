@@ -1342,7 +1342,7 @@ public class Matrix {
 
 		for (int i = 0; i < size; ++i) {
 			for (int j = 0; j < size; ++j) {
-				jacobiIterationMatrix[i][j] = i == j ? 0. : squareMatrix[i][j];
+				jacobiIterationMatrix[i][j] = i == j ? 0. : 1. - squareMatrix[i][j];
 			}
 		}
 

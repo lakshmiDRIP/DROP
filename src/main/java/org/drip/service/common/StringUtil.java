@@ -5279,6 +5279,20 @@ public class StringUtil {
     }
 
     /**
+     * Convert the Boolean Flag to String
+     * 
+     * @param flag Boolean Flag
+     * 
+     * @return String Value
+     */
+
+    public static final String ToString (
+		final boolean flag)
+    {
+    	return flag ? "true " : "false";
+    }
+
+    /**
      * Entry Point
      * 
      * @param argumentArray Argument Array

@@ -129,6 +129,32 @@ public class SuccessiveOverRelaxationConvergenceAnalyzer
 	private double _jacobiIterationMatrixSpectralRadius = Double.NaN;
 
 	/**
+	 * Construct a Standard Instance of <i>SuccessiveOverRelaxationConvergenceAnalyzer</i>
+	 * 
+	 * @param squareMatrix Input Square Matrix
+	 * @param jacobiIterationMatrixSpectralRadius Jacobi Iteration Matrix Spectral Radius
+	 * 
+	 * @return Standard Instance of <i>SuccessiveOverRelaxationConvergenceAnalyzer</i>
+	 */
+
+	public static final SuccessiveOverRelaxationConvergenceAnalyzer Standard (
+		final double[][] squareMatrix,
+		final double jacobiIterationMatrixSpectralRadius)
+	{
+		try {
+			return new SuccessiveOverRelaxationConvergenceAnalyzer (
+				squareMatrix,
+				SuccessiveOverRelaxationIteratorSetting.RELAXATION_PARAMETER_DEFAULT,
+				jacobiIterationMatrixSpectralRadius
+			);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
 	 * Construct an Instance of <i>SuccessiveOverRelaxationConvergenceAnalyzer</i> from the Inputs
 	 * 
 	 * @param squareMatrix Input Square Matrix
@@ -144,7 +170,7 @@ public class SuccessiveOverRelaxationConvergenceAnalyzer
 		final double jacobiIterationMatrixSpectralRadius)
 		throws Exception
 	{
-		if (!Matrix.IsSquare (_squareMatrix) ||
+		if (!Matrix.IsSquare (_squareMatrix = squareMatrix) ||
 			!NumberUtil.IsValid (_relaxationParameter = relaxationParameter) ||
 			!NumberUtil.IsValid (_jacobiIterationMatrixSpectralRadius = jacobiIterationMatrixSpectralRadius))
 		{
@@ -254,11 +280,11 @@ public class SuccessiveOverRelaxationConvergenceAnalyzer
 
 	public double optimalRelaxationParameter()
 	{
-		double spectralRadiusManipulator = _jacobiIterationMatrixSpectralRadius / (
+		double spectralRadiusTransformer = _jacobiIterationMatrixSpectralRadius / (
 			1. + Math.sqrt (1. - _jacobiIterationMatrixSpectralRadius * _jacobiIterationMatrixSpectralRadius)
 		);
 
-		return 1. + spectralRadiusManipulator * spectralRadiusManipulator;
+		return 1. + spectralRadiusTransformer * spectralRadiusTransformer;
 	}
 
 	/**
