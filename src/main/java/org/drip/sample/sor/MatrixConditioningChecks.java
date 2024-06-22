@@ -1,8 +1,8 @@
 
 package org.drip.sample.sor;
 
-import org.drip.numerical.iterativesolver.SuccessiveOverRelaxationConvergenceAnalyzer;
-import org.drip.service.common.FormatUtil;
+import org.drip.numerical.linearalgebra.Matrix;
+import org.drip.service.common.StringUtil;
 import org.drip.service.env.EnvManager;
 
 /*
@@ -78,8 +78,8 @@ import org.drip.service.env.EnvManager;
  */
 
 /**
- * <i>RelaxationParameterConvergence</i> illustrates the Convergence Rate Estimation of the Relaxation
- * 	Parameter. The References are:
+ * <i>MatrixConditioningChecks</i> shows the Conditioning Checks required by SOR on the Input Matrix. The
+ * 	References are:
  * 
  * <br><br>
  * 	<ul>
@@ -117,7 +117,7 @@ import org.drip.service.env.EnvManager;
  * @author Lakshmi Krishnamurthy
  */
 
-public class RelaxationParameterConvergence
+public class MatrixConditioningChecks
 {
 
 	/**
@@ -143,88 +143,46 @@ public class RelaxationParameterConvergence
 			{ 1.,  0., -7.,  5.},
 		};
 
-		double[] relaxationParameterArray = new double[] {
-			0.20,
-			0.40,
-			0.60,
-			0.80,
-			1.00,
-			1.20,
-			1.40,
-			1.60,
-			1.80
+		double[][] nonSquareMatrix = new double[][] {
+			{ 4., -1., -6.,  0.},
+			{-5., -4., 10.,  8.},
+			{ 0.,  9.,  4., -2.},
 		};
 
-		double[] jacobiIterationMatrixSpectralRadiusArray = new double[] {
-			0.60,
-			0.80,
-			0.95,
+		double[][] squareSymmetricMatrix = new double[][] {
+			{ 4., -1.,  0.,  0.},
+			{-1., -4., 10.,  8.},
+			{ 0., 10.,  4., -7.},
+			{ 0.,  8., -7.,  5.},
 		};
 
-		System.out.println ("\t|---------------------------------------------------------||");
+		System.out.println ("\t|------------------------------------------------------||");
 
-		System.out.println ("\t|        RELAXATION PARAMETER CONVERGENCE ANALYSIS        ||");
+		System.out.println ("\t|              MATRIX CONDITIONING CHECKS              ||");
 
-		System.out.println ("\t|---------------------------------------------------------||");
+		System.out.println ("\t|------------------------------------------------------||");
 
-		System.out.println ("\t|  Input L -> R:                                          ||");
+		System.out.println ("\t|  Outputs L -> R:                                     ||");
 
-		System.out.println ("\t|    - Relaxation Parameter                               ||");
+		System.out.println ("\t|    - Type: Square | Non-Square | Square Symmetric    ||");
 
-		System.out.println ("\t|    - Jacobi Iteration Matrix Spectral Radius            ||");
+		System.out.println ("\t|------------------------------------------------------||");
 
-		System.out.println ("\t|---------------------------------------------------------||");
+		System.out.println (
+			"\t| Is Matrix Square?           => " +
+				StringUtil.ToString (Matrix.IsSquare (squareMatrix)) + " | " +
+				StringUtil.ToString (Matrix.IsSquare (nonSquareMatrix)) + " | " +
+				StringUtil.ToString (Matrix.IsSquare (squareSymmetricMatrix)) + " ||"
+		);
 
-		System.out.println ("\t|  Output L -> R:                                         ||");
+		System.out.println (
+			"\t| Is Matrix Square Symmetric? => " +
+				StringUtil.ToString (Matrix.IsSquareSymmetric (squareMatrix)) + " | " +
+				StringUtil.ToString (Matrix.IsSquareSymmetric (nonSquareMatrix)) + " | " +
+				StringUtil.ToString (Matrix.IsSquareSymmetric (squareSymmetricMatrix)) + " ||"
+		);
 
-		System.out.println ("\t|    - Relaxation Parameter Convergence Rate              ||");
-
-		System.out.println ("\t|    - Relaxation Parameter GS Convergence Rate           ||");
-
-		System.out.println ("\t|    - Optimal Relaxation Parameter                       ||");
-
-		System.out.println ("\t|    - Optimal Convergence Rate                           ||");
-
-		System.out.println ("\t|---------------------------------------------------------||");
-
-		for (double relaxationParameter : relaxationParameterArray) {
-			for (double jacobiIterationMatrixSpectralRadius : jacobiIterationMatrixSpectralRadiusArray) {
-				SuccessiveOverRelaxationConvergenceAnalyzer successiveOverRelaxationConvergenceAnalyzer =
-					new SuccessiveOverRelaxationConvergenceAnalyzer (
-						squareMatrix,
-						relaxationParameter,
-						jacobiIterationMatrixSpectralRadius
-					);
-
-				System.out.println (
-					"\t| [" + FormatUtil.FormatDouble (relaxationParameter, 1, 2, 1.) + " |" +
-						FormatUtil.FormatDouble (jacobiIterationMatrixSpectralRadius, 1, 2, 1.) + "] => " +
-						FormatUtil.FormatDouble (
-							successiveOverRelaxationConvergenceAnalyzer.rate(),
-							1,
-							4,
-							1.
-						) + " | " + FormatUtil.FormatDouble (
-							successiveOverRelaxationConvergenceAnalyzer.gaussSeidelRate(),
-							1,
-							4,
-							1.
-						) + " | " + FormatUtil.FormatDouble (
-							successiveOverRelaxationConvergenceAnalyzer.optimalRelaxationParameter(),
-							1,
-							4,
-							1.
-						) + " | " + FormatUtil.FormatDouble (
-							successiveOverRelaxationConvergenceAnalyzer.optimalRate(),
-							1,
-							4,
-							1.
-						) + " ||"
-				);
-			}
-		}
-
-		System.out.println ("\t|---------------------------------------------------------||");
+		System.out.println ("\t|------------------------------------------------------||");
 
 		EnvManager.TerminateEnv();
 	}

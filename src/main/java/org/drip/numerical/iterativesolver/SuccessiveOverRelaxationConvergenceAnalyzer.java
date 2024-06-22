@@ -288,6 +288,18 @@ public class SuccessiveOverRelaxationConvergenceAnalyzer
 	}
 
 	/**
+	 * Estimate the Gauss-Seidel Convergence Rate from the Relaxation Parameter and the Jacobi Iteration
+	 * 	Matrix Spectral Radius
+	 * 
+	 * @return Gauss-Seidel Convergence Rate
+	 */
+
+	public double gaussSeidelRate()
+	{
+		return _jacobiIterationMatrixSpectralRadius * _jacobiIterationMatrixSpectralRadius;
+	}
+
+	/**
 	 * Estimate the Convergence Rate from the Relaxation Parameter and the Jacobi Iteration Matrix Spectral
 	 *  Radius
 	 * 
@@ -296,11 +308,6 @@ public class SuccessiveOverRelaxationConvergenceAnalyzer
 
 	public double rate()
 	{
-		if (SuccessiveOverRelaxationIteratorSetting.RELAXATION_PARAMETER_GAUSS_SEIDEL == _relaxationParameter)
-		{
-			return _jacobiIterationMatrixSpectralRadius * _jacobiIterationMatrixSpectralRadius;
-		}
-
 		double optimalRelaxationParameter = optimalRelaxationParameter();
 
 		if (_relaxationParameter <= optimalRelaxationParameter) {
@@ -322,7 +329,7 @@ public class SuccessiveOverRelaxationConvergenceAnalyzer
 	 * @return Convergence Rate corresponding to Optimal Relaxation Parameter
 	 */
 
-	public double optimalRelaxationParameterRate()
+	public double optimalRate()
 	{
 		double sqrtOneMinusMuSquared =
 			Math.sqrt (1. - _jacobiIterationMatrixSpectralRadius * _jacobiIterationMatrixSpectralRadius);
