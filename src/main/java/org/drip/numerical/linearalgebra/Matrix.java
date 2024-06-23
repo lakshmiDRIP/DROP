@@ -1244,7 +1244,7 @@ public class Matrix {
     /**
      * Retrieve the Diagonal Elements in a Square Matrix
      * 
-     * @param matrix Input Matrix
+     * @param squareMatrix Input Matrix
      * 
      * @return Diagonal Elements in a Square Matrix
      */
@@ -1271,7 +1271,7 @@ public class Matrix {
     /**
      * Retrieve the Strictly Lower Triangular Elements in a Square Matrix
      * 
-     * @param matrix Input Matrix
+     * @param squareMatrix Input Matrix
      * 
      * @return Strictly Lower Triangular Elements in a Square Matrix
      */
@@ -1298,7 +1298,7 @@ public class Matrix {
     /**
      * Retrieve the Strictly Upper Triangular Elements in a Square Matrix
      * 
-     * @param matrix Input Matrix
+     * @param squareMatrix Input Matrix
      * 
      * @return Strictly Upper Triangular Elements in a Square Matrix
      */
@@ -1352,7 +1352,7 @@ public class Matrix {
     /**
      * Indicate if the Input Matrix is Square and Symmetric
      * 
-     * @param matrix Input Matrix
+     * @param squareMatrix Input Matrix
      * 
      * @return TRUE - Input Matrix is Square and Symmetric
      */
