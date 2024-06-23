@@ -1,8 +1,10 @@
 
-package org.drip.numerical.iterativesolver;
+package org.drip.sample.sor;
 
 import org.drip.numerical.common.NumberUtil;
-import org.drip.numerical.linearalgebra.Matrix;
+import org.drip.numerical.iterativesolver.SuccessiveOverRelaxationIteratorSetting;
+import org.drip.numerical.iterativesolver.SymmetricSuccessiveOverRelaxation;
+import org.drip.service.env.EnvManager;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -77,7 +79,8 @@ import org.drip.numerical.linearalgebra.Matrix;
  */
 
 /**
- * <i>SymmetricSuccessiveOverRelaxation</i> implements the SSOR Linear Solution scheme. The References are:
+ * <i>SymmetricSquareMatrixSolver</i> illustrates the application of the Symmetric Successive Over-relaxation
+ * 	Scheme. The References are:
  * 
  * <br><br>
  * 	<ul>
@@ -103,157 +106,80 @@ import org.drip.numerical.linearalgebra.Matrix;
  * 		</li>
  * 	</ul>
  * 
- * It provides the following functionality:
- *
- *  <ul>
- * 		<li>Construct the R<sup>1</sup> To R<sup>1</sup> Bessel First Kind Frobenius Summation Series</li>
- *  </ul>
- * 
  * <br><br>
  *  <ul>
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md">Numerical Analysis Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/numerical/README.md">Numerical Quadrature, Differentiation, Eigenization, Linear Algebra, and Utilities</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/numerical/iterativesolver/README.md">Linear System Iterative Solver Schemes</a></li>
+ *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/README.md">DROP API Construction and Usage</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/sor/README.md">Successive Over-relaxation Customization/Usage</a></li>
  *  </ul>
  * <br><br>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class SymmetricSuccessiveOverRelaxation extends SuccessiveOverRelaxation
+public class SymmetricSquareMatrixSolver
 {
 
 	/**
-	 * <i>SymmetricSuccessiveOverRelaxation</i> Constructor
+	 * Entry Point
 	 * 
-	 * @param iteratorSetting Successive Over-Relaxation Iterator Setting
-	 * @param squareMatrix Square Matrix
-	 * @param rhsArray RHS Array
+	 * @param argumentArray Command Line Argument Array
 	 * 
-	 * @throws Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown on Error/Exception Situation
 	 */
 
-	public SymmetricSuccessiveOverRelaxation (
-		final SuccessiveOverRelaxationIteratorSetting iteratorSetting,
-		final double[][] squareMatrix,
-		final double[] rhsArray)
+	public static final void main (
+		final String[] argumentArray)
 		throws Exception
 	{
-		super (iteratorSetting, squareMatrix, rhsArray);
-
-		if (!Matrix.IsSquareSymmetric (squareMatrix)) {
-			throw new Exception ("SymmetricSuccessiveOverRelaxation Construction => Invalid Inputs");
-		}
-	}
-
-	/**
-	 * Compute the Pre-conditioner Matrix
-	 * 
-	 * @return Pre-conditioner Matrix
-	 */
-
-	public double[][] preConditioner()
-	{
-		double[][] squareMatrix = squareMatrix();
-
-		double relaxationParameter = iteratorSetting().relaxationParameter();
-
-		double[][] dOverOmegaPlusL = new double[squareMatrix.length][squareMatrix.length];
-
-		for (int i = 0; i < squareMatrix.length; ++i) {
-			for (int j = 0; j < squareMatrix.length; ++j) {
-				if (i > j) {
-					dOverOmegaPlusL[i][j] = squareMatrix[i][j];
-				} else if (i == j) {
-					dOverOmegaPlusL[i][j] = squareMatrix[i][j] / relaxationParameter;
-				} else {
-					dOverOmegaPlusL[i][j] = 0.;
-				}
-			}
-		}
-
-		double[][] preConditionerMatrix = Matrix.Product (
-			dOverOmegaPlusL,
-			Matrix.Transpose (dOverOmegaPlusL)
+		EnvManager.InitEnv (
+			""
 		);
 
-		double relaxationParameterScaler = relaxationParameter/ (2. - relaxationParameter);
+		double[][] symmetricSquareMatrix = new double[][] {
+			{1., 4., 2.},
+			{4., 1., 3.},
+			{2., 3., 1.},
+		};
 
-		for (int i = 0; i < squareMatrix.length; ++i) {
-			preConditionerMatrix[i][i] = 0. == squareMatrix[i][i] ? 0. :
-				preConditionerMatrix[i][i] * relaxationParameterScaler / squareMatrix[i][i];
-		}
+		double[] rhsArray = new double[] {
+			 15.,
+			 15.,
+			 11.
+		};
 
-		return preConditionerMatrix;
-	}
+		SymmetricSuccessiveOverRelaxation symmetricSuccessiveOverRelaxation =
+			new SymmetricSuccessiveOverRelaxation (
+				SuccessiveOverRelaxationIteratorSetting.Standard(),
+				symmetricSquareMatrix,
+				rhsArray
+			);
 
-	/**
-	 * Solve using Pre-conditioning Iteration of the Input Square Matrix
-	 * 
-	 * @param gamma Gamma
-	 * 
-	 * @return The Solution Array
-	 */
+		System.out.println ("\t|----------------------------------------------------------------------");
 
-	public double[] preConditioningIteration (
-		final double gamma)
-	{
-		if (!NumberUtil.IsValid (gamma)) {
-			return null;
-		}
+		System.out.println ("\t|              SYMMETRIC SOR PRECONDITIONER MATRIX ");
 
-		double[][] preConditionerMatrixInverse = Matrix.Invert (preConditioner(), "GaussianElimination");
+		System.out.println ("\t|----------------------------------------------------------------------");
 
-		if (null == preConditionerMatrixInverse) {
-			return null;
-		}
+		NumberUtil.Print2DArrayPair (
+			"\t| SQUARE",
+			" SSOR PRECONDITIONER",
+			symmetricSquareMatrix,
+			symmetricSuccessiveOverRelaxation.preConditioner(),
+			false
+		);
 
-		double[] rhsArray = rhsArray();
+		System.out.println ("\t|----------------------------------------------------------------------");
 
-		double[][] squareMatrix = squareMatrix();
+		System.out.println (
+			"\n\t| " + NumberUtil.Print1DArrayRow (
+				symmetricSuccessiveOverRelaxation.preConditioningIteration (0.5),
+				4,
+				false
+			) + " ||"
+		);
 
-		double gammaPower = 1.;
-		double[] updatedUnknownArray = new double[rhsArray.length];
-		double[] previousUnknownArray = new double[rhsArray.length];
-
-		for (int i = 0; i < updatedUnknownArray.length; ++i) {
-			updatedUnknownArray[i] = Math.random();
-		}
-
-		try {
-			while (!VectorsMatch (previousUnknownArray, updatedUnknownArray)) {
-				for (int i = 0; i < previousUnknownArray.length; ++i) {
-					previousUnknownArray[i] = updatedUnknownArray[i];
-				}
-
-				if (null == (updatedUnknownArray = Matrix.Product (squareMatrix, updatedUnknownArray))) {
-					return null;
-				}
-
-				for (int i = 0; i < previousUnknownArray.length; ++i) {
-					updatedUnknownArray[i] -= rhsArray[i];
-				}
-
-				if (null == (
-					updatedUnknownArray = Matrix.Product (preConditionerMatrixInverse, updatedUnknownArray)
-				))
-				{
-					return null;
-				}
-
-				gammaPower *= gamma;
-
-				for (int i = 0; i < previousUnknownArray.length; ++i) {
-					updatedUnknownArray[i] -= gammaPower * updatedUnknownArray[i];
-				}
-			}
-
-			return updatedUnknownArray;
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-		return null;
+		EnvManager.TerminateEnv();
 	}
 }

@@ -1,0 +1,51 @@
+
+ --------------------------
+ Successive Over-Relaxation
+ --------------------------
+ --------------------------
+ 1) Successive Over-Relaxation Method for A.x = b; A - n x n square matrix, x - unknown vector, b - RHS vector
+ 2) Decompose A into Diagonal, Lower, and upper Triangular Matrices; A = D + L + U
+ 3) SOR Scheme uses omega input
+ 4) Forward subsitution scheme to iteratively determine the x_i's
+ 5) SOR Scheme Linear System Convergence: Inputs A and D, Jacobi Iteration Matrix Spectral Radius, omega
+	- Construct Jacobi Iteration Matrix: C_Jacobian = I - (Inverse D) A
+	- Convergence Verification #1: Ensure that Jacobi Iteration Matrix Spectral Radius is < 1
+	- Convergence Verification #2: Ensure omega between 0 and 2
+	- Optimal Relaxation Parameter Expression in terms of Jacobi Iteration Matrix Spectral Radius
+	- Omega Based Convergence Rate Expression
+	- Gauss-Seidel omega = 1; corresponding Convergence Rate
+	- Optimal Omega Convergence Rate
+ 6) SSOR Algorithm - Inputs; A, omega, and gamma
+	- Decompose into D and L
+	- Pre-conditioner Matrix: Expression from SSOR 
+	- Finally SSOR Iteration Formula
+ 7) Generic Iterative Solver Method:
+	- Inputs: Iterator Function(x) and omega
+	- Unrelaxed Iterated variable: x_n+1 = f(x_n)
+	- SOR Based Iterated variable: x_n+1 = (1-omega).x_n + omega.f(x_n)
+	- SOR Based Iterated variable for Unknown Vector x: x_n+1 = (1-omega).x_n + omega.(L_star inverse)(b - U.x_n)
+ --------------------------
+
+ ----------------------------
+ Tridiagonal matrix algorithm
+ ----------------------------
+ ----------------------------
+ 1) Is Tridiagonal Check
+ 2) Core Algorithm:
+	- C Prime's and D Prime's Calculation
+	- Back Substitution for the Result
+	- Modified better Book-keeping algorithm
+ 3) Sherman-Morrison Algorithm:
+	- Choice of gamma
+	- Construct Tridiagonal B from A and gamma
+	- u Column from gamma and c_n
+	- v Column from a_1 and gamma
+	- Solve for y from By=d
+	- Solve for q from Bq=u
+	- Use Sherman Morrison Formula to extract x
+ 4) Alternate Boundary Condition Algorithm:
+	- Solve Au=d for u
+	- Solve Av={-a_2, 0, ..., -c_n} for v
+	- Full solution is x_i = u_i + x_1 * v_i
+	- x_1 if computed using formula
+ ----------------------------
