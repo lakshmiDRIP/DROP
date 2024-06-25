@@ -1376,4 +1376,79 @@ public class Matrix {
 
 		return true;
     }
+
+    /**
+     * Indicate if the Input Matrix is Square and Tridiagonal
+     * 
+     * @param squareMatrix Input Matrix
+     * 
+     * @return TRUE - Input Matrix is Square and Tridiagonal
+     */
+
+    public static final boolean IsTridiagonal (
+		final double[][] squareMatrix)
+    {
+    	if (!IsSquare (squareMatrix) || 2 >= squareMatrix.length) {
+    		return false;
+    	}
+
+    	for (int i = 0; i < squareMatrix.length; ++i) {
+        	for (int j = 0; j < squareMatrix.length; ++j) {
+        		if (j <= i - 2 || j >= i + 2) {
+        			if (0. != squareMatrix[i][j]) {
+        				return false;
+        			}
+        		}
+        	}
+    	}
+
+    	return true;
+    }
+
+    private static final boolean BottomLeft (
+		final int row,
+		final int column,
+		final int size)
+    {
+    	return 0 == column && size - 1 == row;
+    }
+
+    private static final boolean TopRight (
+		final int row,
+		final int column,
+		final int size)
+    {
+    	return 0 == row && size - 1 == column;
+    }
+
+    /**
+     * Indicate if the Input Matrix is Square and satisfies Periodic Tridiagonal Conditions
+     * 
+     * @param squareMatrix Input Matrix
+     * 
+     * @return TRUE - Input Matrix is Square and satisfies Periodic Tridiagonal Conditions
+     */
+
+    public static final boolean IsPeriodicTridiagonal (
+		final double[][] squareMatrix)
+    {
+    	if (!IsSquare (squareMatrix) || 2 >= squareMatrix.length) {
+    		return false;
+    	}
+
+    	for (int i = 0; i < squareMatrix.length; ++i) {
+        	for (int j = 0; j < squareMatrix.length; ++j) {
+        		if (j <= i - 2 || j >= i + 2) {
+        			if (0. != squareMatrix[i][j] &&
+    					!BottomLeft (i, j, squareMatrix.length) &&
+    					!TopRight (i, j, squareMatrix.length))
+        			{
+        				return false;
+        			}
+        		}
+        	}
+    	}
+
+    	return true;
+    }
 }

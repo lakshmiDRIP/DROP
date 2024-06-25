@@ -11,7 +11,7 @@ Numerical Analysis Library contains the supporting Functionality for Numerical M
 
  |        Document         | Link |
  |-------------------------|------|
- | Technical Specification | [*Latest*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/NumericalAnalysis/NumericalAnalysis_v6.18.pdf) [*Previous*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/NumericalAnalysis) |
+ | Technical Specification | [*Latest*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/NumericalAnalysis/NumericalAnalysis_v6.39.pdf) [*Previous*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/NumericalAnalysis) |
  | User Guide              |  |
  | API                     | [*Javadoc*](https://lakshmidrip.github.io/DROP/Javadoc/index.html)|
 
@@ -339,6 +339,15 @@ Numerical Analysis Library contains the supporting Functionality for Numerical M
 	* Introduction
 	* Derivation
 	* Variants
+	* References
+ * Crank–Nicolson Method
+	* Introduction
+	* Principle
+	* Example: 1D Diffusion
+	* Example: 1D Diffusion with advection for steady flow, with multiple channel connections
+	* Example: 2D Diffusion
+	* Crank–Nicolson for nonlinear problems
+	* Application in financial mathematics
 	* References
 
 
