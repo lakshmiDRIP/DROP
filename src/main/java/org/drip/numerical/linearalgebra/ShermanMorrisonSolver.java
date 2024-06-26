@@ -76,7 +76,7 @@ import org.drip.numerical.common.NumberUtil;
  */
 
 /**
- * <i>RyabenkiiTsynkovSolver</i> implements the O(n) solver for a Tridiagonal Matrix with Periodic Boundary
+ * <i>ShermanMorrisonSolver</i> implements the O(n) solver for a Tridiagonal Matrix with Periodic Boundary
  * 	Conditions. The References are:
  * 
  * <br><br>
@@ -116,30 +116,105 @@ import org.drip.numerical.common.NumberUtil;
  * @author Lakshmi Krishnamurthy
  */
 
-public class RyabenkiiTsynkovSolver
+public class ShermanMorrisonSolver
 {
+
+	/**
+	 * Batistia-Karawia Default Gamma
+	 */
+
+	public static final double BATISTA_KARAWIA_DEFAULT_GAMMA = 1.;
+
 	private double[] _rhsArray = null;
+	private double _gamma = Double.NaN;
 	private double[][] _squareMatrix = null;
 
 	/**
-	 * <i>RyabenkiiTsynkovSolver</i> Constructor
+	 * Construct a Standard Gamma Instance of Sherman Morrison Solver
 	 * 
 	 * @param squareMatrix Square Matrix
 	 * @param rhsArray RHS Array
 	 * 
+	 * @return Standard Gamma Instance of Sherman Morrison Solver
+	 */
+
+	public static final ShermanMorrisonSolver Standard (
+		final double[][] squareMatrix,
+		final double[] rhsArray)
+	{
+		try {
+			return new ShermanMorrisonSolver (
+				squareMatrix,
+				rhsArray,
+				BATISTA_KARAWIA_DEFAULT_GAMMA
+			);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
+	 * Construct a Standard Batista-Karawia Instance of Sherman Morrison Solver
+	 * 
+	 * @param squareMatrix Square Matrix
+	 * @param rhsArray RHS Array
+	 * 
+	 * @return Standard Batista-Karawia Instance of Sherman Morrison Solver
+	 */
+
+	public static final ShermanMorrisonSolver StandardBatistaKarawia (
+		final double[][] squareMatrix,
+		final double[] rhsArray)
+	{
+		if (null == squareMatrix || 0 == squareMatrix.length) {
+			return null;
+		}
+
+		int index = 1;
+		double gamma = -1. * squareMatrix[0][0];
+
+		while (0. == gamma && index < squareMatrix.length) {
+			gamma = -1. * squareMatrix[index][index];
+			++index;
+		}
+
+		if (0. == gamma) {
+			return null;
+		}
+
+		try {
+			return new ShermanMorrisonSolver (squareMatrix, rhsArray, gamma);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
+	 * <i>ShermanMorrisonSolver</i> Constructor
+	 * 
+	 * @param squareMatrix Square Matrix
+	 * @param rhsArray RHS Array
+	 * @param gamma Gamma
+	 * 
 	 * @throws Exception Thrown if the Square Matrix is not Periodic Tridiagonal
 	 */
 
-	public RyabenkiiTsynkovSolver (
+	public ShermanMorrisonSolver (
 		final double[][] squareMatrix,
-		final double[] rhsArray)
+		final double[] rhsArray,
+		final double gamma)
 		throws Exception
 	{
 		if (!Matrix.IsPeriodicTridiagonal (_squareMatrix = squareMatrix) ||
 			null == (_rhsArray = rhsArray) ||
-			_squareMatrix.length != _rhsArray.length)
+			_squareMatrix.length != _rhsArray.length ||
+			!NumberUtil.IsValid (_gamma = gamma) || 0. == _gamma)
 		{
-			throw new Exception ("RyabenkiiTsynkovSolver Constructor => Matrix not Periodic Tridiagonal");
+			throw new Exception ("ShermanMorrisonSolver Constructor => Matrix not Periodic Tridiagonal");
 		}
 	}
 
@@ -166,73 +241,76 @@ public class RyabenkiiTsynkovSolver
 	}
 
 	/**
-	 * Construct the Common U/V Tridiagonal Matrix
+	 * Retrieve the Gamma
 	 * 
-	 * @return Common U/V Tridiagonal Matrix
+	 * @return Gamma
 	 */
 
-	public double[][] tridiagonalMatrix()
+	public double gamma()
 	{
-		int size = _rhsArray.length - 1;
-		double[][] uTridiagonalMatrix = new double[size][size];
-
-		for (int i = 1; i <= size; ++i) {
-			for (int j = 1; j <= size; ++j) {
-				uTridiagonalMatrix[i - 1][j - 1] = _squareMatrix[i][j];
-			}
-		}
-
-		return uTridiagonalMatrix;
+		return _gamma;
 	}
 
 	/**
-	 * Construct the <code>U</code> RHS Array
+	 * Construct a Batista-Karawia Modification to the Periodic Tridiagonal Matrix
 	 * 
-	 * @return <code>U</code> RHS Array
+	 * @return Batista-Karawia Modification to the Periodic Tridiagonal Matrix
+	 */
+
+	public double[][] batistaKarawiaMatrix()
+	{
+		double[][] batistaKarawiaMatrix = new double[_rhsArray.length][_rhsArray.length];
+
+    	for (int i = 0; i < _squareMatrix.length; ++i) {
+        	for (int j = 0; j < _squareMatrix.length; ++j) {
+    			batistaKarawiaMatrix[i][j] = j >= i - 1 && j <= i + 1 ? _squareMatrix[i][j] : 0.;
+        	}
+    	}
+
+    	int lastIndex = _rhsArray.length - 1;
+    	batistaKarawiaMatrix[0][0] = _squareMatrix[0][0] - _gamma;
+    	batistaKarawiaMatrix[lastIndex][lastIndex] = _squareMatrix[lastIndex][lastIndex] - (
+			_squareMatrix[lastIndex][0] * _squareMatrix[0][lastIndex] / _gamma
+		);
+    	return batistaKarawiaMatrix;
+	}
+
+	/**
+	 * Construct a Batista-Karawia U RHS Array
+	 * 
+	 * @return Batista-Karawia U RHS Array
 	 */
 
 	public double[] uRHSArray()
 	{
-		int size = _rhsArray.length - 1;
-		double[] uRHSArray = new double[size];
+		double[] uRHSArray = new double[_rhsArray.length];
 
-		for (int i = 1; i <= size; ++i) {
-			uRHSArray[i - 1] = _rhsArray[i];
-		}
+    	for (int i = 0; i < _rhsArray.length; ++i) {
+    		uRHSArray[i] = 0.;
+    	}
 
-		return uRHSArray;
+    	uRHSArray[0] = _gamma;
+    	int lastIndex = _rhsArray.length - 1;
+    	uRHSArray[lastIndex] = _squareMatrix[lastIndex][0];
+    	return uRHSArray;
 	}
 
 	/**
-	 * Construct the <code>V</code> RHS Array
+	 * Compute the Q Solution Array
 	 * 
-	 * @return <code>V</code> RHS Array
+	 * @return Q Solution Array
 	 */
 
-	public double[] vRHSArray()
+	public double[] qSolutionArray()
 	{
-		int size = _rhsArray.length - 1;
-		double[] vRHSArray = new double[size];
-		vRHSArray[0] = -1. * _squareMatrix[1][0];
-		vRHSArray[size - 1] = -1. * _squareMatrix[size][0];
+		double[][] batistaKarawiaMatrix = batistaKarawiaMatrix();
 
-		for (int i = 2; i <= size - 1; ++i) {
-			vRHSArray[i - 1] = 0.;
+		if (null == batistaKarawiaMatrix) {
+			return null;
 		}
 
-		return vRHSArray;
-	}
-
-	/**
-	 * Compute the U Solution Array
-	 * 
-	 * @return U Solution Array
-	 */
-
-	public double[] uSolutionArray()
-	{
 		try {
-			return new TridiagonalSolver (tridiagonalMatrix(), uRHSArray()).forwardSweepBackSubstitution();
+			return new TridiagonalSolver (batistaKarawiaMatrix, uRHSArray()).forwardSweepBackSubstitution();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -241,15 +319,21 @@ public class RyabenkiiTsynkovSolver
 	}
 
 	/**
-	 * Compute the V Solution Array
+	 * Compute the Y Solution Array
 	 * 
-	 * @return V Solution Array
+	 * @return Y Solution Array
 	 */
 
-	public double[] vSolutionArray()
+	public double[] ySolutionArray()
 	{
+		double[][] batistaKarawiaMatrix = batistaKarawiaMatrix();
+
+		if (null == batistaKarawiaMatrix) {
+			return null;
+		}
+
 		try {
-			return new TridiagonalSolver (tridiagonalMatrix(), vRHSArray()).forwardSweepBackSubstitution();
+			return new TridiagonalSolver (batistaKarawiaMatrix, _rhsArray).forwardSweepBackSubstitution();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -258,33 +342,50 @@ public class RyabenkiiTsynkovSolver
 	}
 
 	/**
-	 * Compute the Solution Array based on U/V Scheme
+	 * Construct a Batista-Karawia V Array
+	 * 
+	 * @return Batista-Karawia V Array
+	 */
+
+	public double[] vArray()
+	{
+		double[] vArray = new double[_rhsArray.length];
+
+    	for (int i = 0; i < _rhsArray.length; ++i) {
+    		vArray[i] = 0.;
+    	}
+
+    	vArray[0] = 1.;
+    	int lastIndex = _rhsArray.length - 1;
+    	vArray[lastIndex] = _squareMatrix[0][lastIndex] / _gamma;
+    	return vArray;
+	}
+
+	/**
+	 * Compute the Solution Array based on Q/Y Scheme
 	 * 
 	 * @return Solution Array
 	 */
 
-	public double[] uvSolver()
+	public double[] qySolver()
 	{
-		double[] uSolutionArray = null;
-		double[] vSolutionArray = null;
-		int size = _rhsArray.length - 1;
-		double[] solutionArray = new double[size + 1];
+		double[] vArray = vArray();
 
-		double[][] tridiagonalMatrix = tridiagonalMatrix();
+		double[] qSolutionArray = null;
+		double[] ySolutionArray = null;
+		double vqDotProductScaler = Double.NaN;
 
-		if (null == tridiagonalMatrix) {
-			return null;
-		}
+		double[][] batistaKarawiaMatrix = batistaKarawiaMatrix();
 
 		try {
-			uSolutionArray = new TridiagonalSolver (
-				tridiagonalMatrix,
+			qSolutionArray = new TridiagonalSolver (
+				batistaKarawiaMatrix,
 				uRHSArray()
 			).forwardSweepBackSubstitution();
 
-			vSolutionArray = new TridiagonalSolver (
-				tridiagonalMatrix,
-				vRHSArray()
+			ySolutionArray = new TridiagonalSolver (
+				batistaKarawiaMatrix,
+				_rhsArray
 			).forwardSweepBackSubstitution();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -292,21 +393,25 @@ public class RyabenkiiTsynkovSolver
 			return null;
 		}
 
-		if (!NumberUtil.IsValid (
-			solutionArray[0] = (
-				_rhsArray[0] - _squareMatrix[0][size] * uSolutionArray[size - 1] -
-					_squareMatrix[0][1] * uSolutionArray[0]
-			) / (
-				_squareMatrix[0][0] + _squareMatrix[0][size] * vSolutionArray[size - 1] +
-					_squareMatrix[0][1] * vSolutionArray[0]
-			)
-		))
-		{
+		double[] solutionArray = Matrix.Product (
+			Matrix.CrossProduct (qSolutionArray, vArray),
+			ySolutionArray
+		);
+
+		if (null == solutionArray) {
 			return null;
 		}
 
-		for (int i = size; i >= 1; --i) {
-			solutionArray[i] = uSolutionArray[i - 1] + solutionArray[0] * vSolutionArray[i - 1];
+		try {
+			vqDotProductScaler = 1. / (1. + Matrix.DotProduct (vArray, qSolutionArray));
+		} catch (Exception e) {
+			e.printStackTrace();
+
+			return null;
+		}
+
+		for (int i = 0; i < _rhsArray.length; ++i) {
+			solutionArray[i] = ySolutionArray[i] - solutionArray[i] * vqDotProductScaler;
 		}
 
 		return solutionArray;
@@ -332,35 +437,21 @@ public class RyabenkiiTsynkovSolver
 			46.
 		};
 
-		RyabenkiiTsynkovSolver ryabenkiiTsynkovSolver = new RyabenkiiTsynkovSolver (
+		ShermanMorrisonSolver shermanMorrisonSolver = ShermanMorrisonSolver.StandardBatistaKarawia (
 			periodicTridiagonalMatrix,
 			rhsArray
 		);
 
-		NumberUtil.Print2DArray ("Common Tridiagonal", ryabenkiiTsynkovSolver.tridiagonalMatrix(), false);
+		NumberUtil.Print2DArray ("Batista-Karawia", shermanMorrisonSolver.batistaKarawiaMatrix(), false);
 
-		System.out.println (
-			NumberUtil.Print1DArrayRow (ryabenkiiTsynkovSolver.uRHSArray(), 4, false)
-		);
+		System.out.println ("U RHS: " + NumberUtil.Print1DArrayRow (shermanMorrisonSolver.uRHSArray(), 4, false));
 
-		System.out.println (
-			NumberUtil.Print1DArrayRow (ryabenkiiTsynkovSolver.vRHSArray(), 4, false)
-		);
+		System.out.println ("V Array: " + NumberUtil.Print1DArrayRow (shermanMorrisonSolver.vArray(), 4, false));
 
-		System.out.println();
+		System.out.println ("Q Solution Array: " + NumberUtil.Print1DArrayRow (shermanMorrisonSolver.qSolutionArray(), 4, false));
 
-		System.out.println (
-			NumberUtil.Print1DArrayRow (ryabenkiiTsynkovSolver.uSolutionArray(), 4, false)
-		);
+		System.out.println ("Y Solution Array: " + NumberUtil.Print1DArrayRow (shermanMorrisonSolver.ySolutionArray(), 4, false));
 
-		System.out.println (
-			NumberUtil.Print1DArrayRow (ryabenkiiTsynkovSolver.vSolutionArray(), 4, false)
-		);
-
-		System.out.println();
-
-		System.out.println (
-			NumberUtil.Print1DArrayRow (ryabenkiiTsynkovSolver.uvSolver(), 4, false)
-		);
+		System.out.println ("Solution Array: " + NumberUtil.Print1DArrayRow (shermanMorrisonSolver.qySolver(), 4, false));
 	}
 }

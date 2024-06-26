@@ -1,7 +1,5 @@
 
-package org.drip.numerical.linearalgebra;
-
-import org.drip.numerical.common.NumberUtil;
+package org.drip.sample.tridiagonal;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -76,7 +74,8 @@ import org.drip.numerical.common.NumberUtil;
  */
 
 /**
- * <i>TridiagonalSolver</i> implements the O(n) solver for a Tridiagonal Matrix. The References are:
+ * <i>NonPeriodicSolver</i> illustrates the application of the Non-periodic Solver of a Tridiagonal Matrix.
+ *  The References are:
  * 
  * <br><br>
  * 	<ul>
@@ -106,119 +105,15 @@ import org.drip.numerical.common.NumberUtil;
  *  <ul>
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md">Numerical Analysis Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/numerical/README.md">Numerical Quadrature, Differentiation, Eigenization, Linear Algebra, and Utilities</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/numerical/linearalgebra/README.md">Linear Algebra Matrix Transform Library</a></li>
+ *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/README.md">DROP API Construction and Usage</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/tridiagonal/README.md">Regular/Periodic Tridiagonal Solver Schemes</a></li>
  *  </ul>
  * <br><br>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class TridiagonalSolver
+public class NonPeriodicSolver
 {
-	private double[] _rhsArray = null;
-	private double[][] _squareMatrix = null;
 
-	/**
-	 * <i>TridiagonalSolver</i> Constructor
-	 * 
-	 * @param squareMatrix Square Matrix
-	 * @param rhsArray RHS Array
-	 * 
-	 * @throws Exception Thrown if the Square Matrix is not Tridiagonal
-	 */
-
-	public TridiagonalSolver (
-		final double[][] squareMatrix,
-		final double[] rhsArray)
-		throws Exception
-	{
-		if (!Matrix.IsTridiagonal (_squareMatrix = squareMatrix) ||
-			null == (_rhsArray = rhsArray) ||
-			_squareMatrix.length != _rhsArray.length)
-		{
-			throw new Exception ("TridiagonalSolver Constructor => Matrix not Tridiagonal");
-		}
-	}
-
-	/**
-	 * Retrieve the Square Matrix
-	 * 
-	 * @return Square Matrix
-	 */
-
-	public double[][] squareMatrix()
-	{
-		return _squareMatrix;
-	}
-
-	/**
-	 * Retrieve the RHS Array
-	 * 
-	 * @return Square Matrix
-	 */
-
-	public double[] rhsArray()
-	{
-		return _rhsArray;
-	}
-
-	public double[] forwardSweepBackSubstitution()
-	{
-		int matrixSize = _squareMatrix.length;
-		double[] solutionArray = new double[matrixSize];
-		double[] modifiedRHSArray = new double[matrixSize];
-		modifiedRHSArray[0] = _rhsArray[0] / _squareMatrix[0][0];
-		double[] modifiedSupraDiagonalArray = new double[matrixSize - 1];
-		modifiedSupraDiagonalArray[0] = _squareMatrix[0][1] / _squareMatrix[0][0];
-
-		for (int i = 1; i < matrixSize - 1; ++i) {
-			modifiedSupraDiagonalArray[i] = _squareMatrix[i][i + 1] / (
-				_squareMatrix[i][i] - _squareMatrix[i][i - 1] * modifiedSupraDiagonalArray[i - 1]
-			);
-		}
-
-		for (int i = 1; i < matrixSize; ++i) {
-			if (!NumberUtil.IsValid (
-				modifiedRHSArray[i] = (_rhsArray[i] - _squareMatrix[i][i - 1] * modifiedRHSArray[i - 1]) / (
-					_squareMatrix[i][i] - _squareMatrix[i][i - 1] * modifiedSupraDiagonalArray[i - 1]
-				)
-			))
-			{
-				return null;
-			}
-		}
-
-		solutionArray[matrixSize - 1] = modifiedRHSArray[matrixSize - 1];
-
-		for (int i = matrixSize - 2; i >= 0; --i) {
-			solutionArray[i] = modifiedRHSArray[i] - modifiedSupraDiagonalArray[i] * solutionArray[i + 1];
-		}
-
-		return solutionArray;
-	}
-
-	public static final void main (
-		final String[] argumentArray)
-		throws Exception
-	{
-		double[][] tridiagonalMatrix = new double[][] {
-			{3., 7., 0.},
-			{7., 1., 5.},
-			{0., 5., 2.},
-		};
-
-		double[] rhsArray = new double[] {
-			17.,
-			24.,
-			16.
-		};
-
-		TridiagonalSolver tridiagonalSolver = new TridiagonalSolver (
-			tridiagonalMatrix,
-			rhsArray
-		);
-
-		NumberUtil.Print1DArray ("\tOutput", tridiagonalSolver.forwardSweepBackSubstitution(), false);
-	}
 }
