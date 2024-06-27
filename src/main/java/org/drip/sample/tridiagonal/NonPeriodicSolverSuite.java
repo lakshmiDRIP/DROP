@@ -1,9 +1,12 @@
 
-package org.drip.sample.sor;
+package org.drip.sample.tridiagonal;
 
+import java.util.Date;
+
+import org.drip.measure.crng.RdRandomSequence;
 import org.drip.numerical.common.NumberUtil;
-import org.drip.numerical.iterativesolver.SuccessiveOverRelaxationIteratorSetting;
-import org.drip.numerical.iterativesolver.SymmetricSuccessiveOverRelaxation;
+import org.drip.numerical.linearalgebra.Matrix;
+import org.drip.numerical.linearalgebra.TridiagonalSolver;
 import org.drip.service.env.EnvManager;
 
 /*
@@ -79,30 +82,30 @@ import org.drip.service.env.EnvManager;
  */
 
 /**
- * <i>SymmetricSquareMatrixSolver</i> illustrates the application of the Symmetric Successive Over-relaxation
- * 	Scheme. The References are:
+ * <i>NonPeriodicSolver</i> illustrates the application of the Non-periodic Solver of a Tridiagonal Matrix.
+ *  The References are:
  * 
  * <br><br>
  * 	<ul>
  * 		<li>
- * 			Greenbaum, A. (1997): <i>Iterative Methods for Solving Linear Systems</i> <b>Society for
- * 				Industrial and Applied Mathematics</b> Philadelphia, PA
+ * 			Batista, M., and A. R. A. Ibrahim-Karawia (2009): The use of Sherman-Morrison-Woodbury formula
+ * 				to solve cyclic block tridiagonal and cyclic block penta-diagonal linear systems of equations
+ * 				<i>Applied Mathematics of Computation</i> <b>210 (2)</b> 558-563
  * 		</li>
  * 		<li>
- * 			Hackbusch, W. (2016): <i>Iterative Solution of Large Sparse Systems of Equations</i>
- * 				<b>Spring-Verlag</b> Berlin, Germany
+ * 			Datta, B. N. (2010): <i>Numerical Linear Algebra and Applications 2<sup>nd</sup> Edition</i>
+ * 				<b>SIAM</b> Philadelphia, PA
  * 		</li>
  * 		<li>
- * 			Wikipedia (2023): Symmetric Successive Over-Relaxation
- * 				https://en.wikipedia.org/wiki/Symmetric_successive_over-relaxation
+ * 			Gallopoulos, E., B. Phillippe, and A. H. Sameh (2016): <i>Parallelism in Matrix Computations</i>
+ * 				<b>Spring</b> Berlin, Germany
  * 		</li>
  * 		<li>
- * 			Wikipedia (2024): Successive Over-Relaxation
- * 				https://en.wikipedia.org/wiki/Successive_over-relaxation
+ * 			Niyogi, P. (2006): <i>Introduction to Computational Fluid Dynamics</i> <b>Pearson</b> London, UK
  * 		</li>
  * 		<li>
- * 			Young, D. M. (1950): <i>Iterative methods for solving partial difference equations of elliptical
- * 				type</i> <b>Harvard University</b> Cambridge, MA
+ * 			Wikipedia (2024): Tridiagonal Matrix Algorithm
+ * 				https://en.wikipedia.org/wiki/Tridiagonal_matrix_algorithm
  * 		</li>
  * 	</ul>
  * 
@@ -111,15 +114,70 @@ import org.drip.service.env.EnvManager;
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md">Numerical Analysis Library</a></li>
  *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/README.md">DROP API Construction and Usage</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/sor/README.md">Successive Over-relaxation Customization/Usage</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/tridiagonal/README.md">Regular/Periodic Tridiagonal Solver Schemes</a></li>
  *  </ul>
  * <br><br>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class SymmetricSquareMatrixSolver
+public class NonPeriodicSolverSuite
 {
+
+	private static final void Trial (
+		final int elementCount,
+		final double maximumElement)
+		throws Exception
+	{
+		double[] xArray = RdRandomSequence.OneD (elementCount, maximumElement, true);
+
+		double[][] tridiagonalMatrix = RdRandomSequence.Tridiagonal (elementCount, maximumElement, true);
+
+		System.out.println ("\t|-----------------------------------------------------------------||");
+
+		System.out.println ("\t| Trial at " + new Date());
+
+		System.out.println ("\t|-----------------------------------------------------------------||");
+
+		for (int i = 0; i < tridiagonalMatrix.length; ++i) {
+			System.out.println (
+				"\t| Tridiagonal " + elementCount + " x " + elementCount + " => [" + NumberUtil.ArrayRow (
+					tridiagonalMatrix[i],
+					2,
+					1,
+					false
+				) + " ]||"
+			);
+		}
+
+		double[] rhsArray = Matrix.Product (tridiagonalMatrix, xArray);
+
+		System.out.println ("\t|-----------------------------------------------------------------||");
+
+		System.out.println (
+			"\t| RHS Input      {" + NumberUtil.ArrayRow (rhsArray, 5, 0, false) + "} ||"
+		);
+
+		System.out.println ("\t|-----------------------------------------------------------------||");
+
+		System.out.println (
+			"\t| X Input           =>  " + NumberUtil.ArrayRow (xArray, 2, 1, false) + "  ||"
+		);
+
+		System.out.println (
+			"\t| Expected          =>  " +
+			NumberUtil.ArrayRow (
+				new TridiagonalSolver (tridiagonalMatrix, rhsArray).forwardSweepBackSubstitution(),
+				2,
+				1,
+				false
+			) + "  ||"
+		);
+
+		System.out.println ("\t|-----------------------------------------------------------------||");
+
+		System.out.println();
+	}
 
 	/**
 	 * Entry Point
@@ -137,49 +195,18 @@ public class SymmetricSquareMatrixSolver
 			""
 		);
 
-		double[][] symmetricSquareMatrix = new double[][] {
-			{1., 4., 2.},
-			{4., 1., 3.},
-			{2., 3., 1.},
-		};
+		int elementCount = 6;
+		double maximumElement = 99.;
 
-		double[] rhsArray = new double[] {
-			 15.,
-			 15.,
-			 11.
-		};
+		Trial (elementCount, maximumElement);
 
-		SymmetricSuccessiveOverRelaxation symmetricSuccessiveOverRelaxation =
-			new SymmetricSuccessiveOverRelaxation (
-				SuccessiveOverRelaxationIteratorSetting.Standard(),
-				symmetricSquareMatrix,
-				rhsArray
-			);
+		Trial (elementCount, maximumElement);
 
-		System.out.println ("\t|----------------------------------------------------------------------");
+		Trial (elementCount, maximumElement);
 
-		System.out.println ("\t|              SYMMETRIC SOR PRECONDITIONER MATRIX ");
+		Trial (elementCount, maximumElement);
 
-		System.out.println ("\t|----------------------------------------------------------------------");
-
-		NumberUtil.Print2DArrayPair (
-			"\t| SQUARE",
-			" SSOR PRECONDITIONER",
-			symmetricSquareMatrix,
-			symmetricSuccessiveOverRelaxation.preConditioner(),
-			false
-		);
-
-		System.out.println ("\t|----------------------------------------------------------------------");
-
-		System.out.println (
-			"\n\t| " + NumberUtil.ArrayRow (
-				symmetricSuccessiveOverRelaxation.preConditioningIteration (0.5),
-				2,
-				4,
-				false
-			) + " ||"
-		);
+		Trial (elementCount, maximumElement);
 
 		EnvManager.TerminateEnv();
 	}

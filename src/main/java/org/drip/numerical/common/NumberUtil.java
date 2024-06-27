@@ -1,6 +1,8 @@
 
 package org.drip.numerical.common;
 
+import org.drip.service.common.FormatUtil;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
@@ -837,31 +839,37 @@ public class NumberUtil {
 	/**
 	 * Print the contents of the 1D array to the Specified Decimal Location as a Row
 	 * 
-	 * @param adblA The 1D array
-	 * @param iNumDecimal Number of Decimal Places to Display
-	 * @param bBailOnNaN Bail on encountering an NaN
+	 * @param doubleArray The 1D array
+	 * @param preDecimalPlaces Number of Decimal Places to Display
+	 * @param postDecimalPlaces Number of Post Decimal Places to Display
+	 * @param bailOnNaN TRUE - Bail on encountering an NaN
 	 * 
 	 * @return Contents of the 1D array to the Specified Decimal Location as a Row
 	 */
 
-	public static final String Print1DArrayRow (
-		final double[] adblA,
-		final int iNumDecimal,
-		final boolean bBailOnNaN)
+	public static final String ArrayRow (
+		final double[] doubleArray,
+		final int preDecimalPlaces,
+		final int postDecimalPlaces,
+		final boolean bailOnNaN)
 	{
-		if (null == adblA || 0 == adblA.length) return "";
+		if (null == doubleArray || 0 == doubleArray.length) {
+			return "";
+		}
 
-		int iSize = adblA.length;
+		int size = doubleArray.length;
 		String row = "";
 
-		for (int i = 0; i < iSize; ++i) {
-			if (!org.drip.numerical.common.NumberUtil.IsValid (adblA[i]) && bBailOnNaN) return "";
-
-			if (0 != i) {
-				row = row + " | ";
+		for (int i = 0; i < size; ++i) {
+			if (!IsValid (doubleArray[i]) && bailOnNaN) {
+				return "";
 			}
 
-			row = row + org.drip.service.common.FormatUtil.FormatDouble (adblA[i], 1, iNumDecimal, 1.);
+			if (0 != i) {
+				row = row + " |";
+			}
+
+			row = row + FormatUtil.FormatDouble (doubleArray[i], preDecimalPlaces, postDecimalPlaces, 1.);
 		}
 
 		return row;

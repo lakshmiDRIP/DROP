@@ -1,6 +1,10 @@
 
 package org.drip.sample.tridiagonal;
 
+import org.drip.numerical.common.NumberUtil;
+import org.drip.numerical.linearalgebra.TridiagonalSolver;
+import org.drip.service.env.EnvManager;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
@@ -116,4 +120,71 @@ package org.drip.sample.tridiagonal;
 public class NonPeriodicSolver
 {
 
+	/**
+	 * Entry Point
+	 * 
+	 * @param argumentArray Command Line Argument Array
+	 * 
+	 * @throws Exception Thrown on Error/Exception Situation
+	 */
+
+	public static final void main (
+		final String[] argumentArray)
+		throws Exception
+	{
+		EnvManager.InitEnv (
+			""
+		);
+
+		double[][] tridiagonalMatrix = new double[][] {
+			{3., 7., 0.},
+			{7., 1., 5.},
+			{0., 5., 2.},
+		};
+
+		double[] rhsArray = new double[] {
+			17.,
+			24.,
+			16.
+		};
+
+		System.out.println ("\t|--------------------------------------------------||");
+
+		System.out.println ("\t|         NON-PERIODIC TRIDIAGONAL SOLVER          ||");
+
+		System.out.println ("\t|--------------------------------------------------||");
+
+		for (int i = 0; i < tridiagonalMatrix.length; ++i) {
+			System.out.println (
+				"\t| Tridiagonal 3 x 3 => [" + NumberUtil.ArrayRow (
+					tridiagonalMatrix[i],
+					1,
+					4,
+					false
+				) + " ]||"
+			);
+		}
+
+		System.out.println ("\t|--------------------------------------------------||");
+
+		System.out.println (
+			"\t| RHS Input         =>" + NumberUtil.ArrayRow (rhsArray, 2, 4, false) + " ||"
+		);
+
+		System.out.println ("\t|--------------------------------------------------||");
+
+		System.out.println (
+			"\t| Output            =>" +
+			NumberUtil.ArrayRow (
+				new TridiagonalSolver (tridiagonalMatrix, rhsArray).forwardSweepBackSubstitution(),
+				2,
+				4,
+				false
+			) + " ||"
+		);
+
+		System.out.println ("\t|--------------------------------------------------||");
+
+		EnvManager.TerminateEnv();
+	}
 }

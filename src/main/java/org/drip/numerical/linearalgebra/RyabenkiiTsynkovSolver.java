@@ -339,28 +339,26 @@ public class RyabenkiiTsynkovSolver
 
 		NumberUtil.Print2DArray ("Common Tridiagonal", ryabenkiiTsynkovSolver.tridiagonalMatrix(), false);
 
-		System.out.println (
-			NumberUtil.Print1DArrayRow (ryabenkiiTsynkovSolver.uRHSArray(), 4, false)
-		);
+		System.out.println (NumberUtil.ArrayRow (ryabenkiiTsynkovSolver.uRHSArray(), 1, 4, false));
 
 		System.out.println (
-			NumberUtil.Print1DArrayRow (ryabenkiiTsynkovSolver.vRHSArray(), 4, false)
-		);
-
-		System.out.println();
-
-		System.out.println (
-			NumberUtil.Print1DArrayRow (ryabenkiiTsynkovSolver.uSolutionArray(), 4, false)
-		);
-
-		System.out.println (
-			NumberUtil.Print1DArrayRow (ryabenkiiTsynkovSolver.vSolutionArray(), 4, false)
+			NumberUtil.ArrayRow (ryabenkiiTsynkovSolver.vRHSArray(), 1, 4, false)
 		);
 
 		System.out.println();
 
 		System.out.println (
-			NumberUtil.Print1DArrayRow (ryabenkiiTsynkovSolver.uvSolver(), 4, false)
+			NumberUtil.ArrayRow (ryabenkiiTsynkovSolver.uSolutionArray(), 1, 4, false)
+		);
+
+		System.out.println (
+			NumberUtil.ArrayRow (ryabenkiiTsynkovSolver.vSolutionArray(), 1, 4, false)
+		);
+
+		System.out.println();
+
+		System.out.println (
+			NumberUtil.ArrayRow (ryabenkiiTsynkovSolver.uvSolver(), 1, 4, false)
 		);
 	}
 }

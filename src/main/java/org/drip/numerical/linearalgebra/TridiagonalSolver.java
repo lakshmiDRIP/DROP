@@ -197,28 +197,4 @@ public class TridiagonalSolver
 
 		return solutionArray;
 	}
-
-	public static final void main (
-		final String[] argumentArray)
-		throws Exception
-	{
-		double[][] tridiagonalMatrix = new double[][] {
-			{3., 7., 0.},
-			{7., 1., 5.},
-			{0., 5., 2.},
-		};
-
-		double[] rhsArray = new double[] {
-			17.,
-			24.,
-			16.
-		};
-
-		TridiagonalSolver tridiagonalSolver = new TridiagonalSolver (
-			tridiagonalMatrix,
-			rhsArray
-		);
-
-		NumberUtil.Print1DArray ("\tOutput", tridiagonalSolver.forwardSweepBackSubstitution(), false);
-	}
 }

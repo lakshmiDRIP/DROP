@@ -180,7 +180,7 @@ public class ForwardSubstitutionSolver
 		for (int i = 0; i < relaxationParameterArray.length; ++i) {
 			System.out.println (
 				"\t| [" + FormatUtil.FormatDouble (relaxationParameterArray[i], 1, 2, 1.) + "] => " +
-					NumberUtil.Print1DArrayRow (
+					NumberUtil.ArrayRow (
 						new SuccessiveOverRelaxation (
 							 SuccessiveOverRelaxationIteratorSetting.StandardRelaxation (
 								 relaxationParameterArray[i]
@@ -188,6 +188,7 @@ public class ForwardSubstitutionSolver
 							 squareMatrix,
 							 rhsArray
 						).forwardSubstitution(),
+						1,
 						4,
 						false
 					) + " ||"

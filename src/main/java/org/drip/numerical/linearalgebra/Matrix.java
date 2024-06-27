@@ -139,6 +139,42 @@ public class Matrix {
 	public static int NON_TRIANGULAR = 0;
 
 	/**
+	 * Indicate if the Cell corresponds to Bottom Left Location in the Matrix
+	 * 
+	 * @param row Row Index
+	 * @param column Column Index
+	 * @param size Matrix Size
+	 * 
+	 * @return TRUE - The Cell corresponds to Bottom Left
+	 */
+
+	public static final boolean BottomLeft (
+		final int rowIndex,
+		final int columnIndex,
+		final int size)
+    {
+    	return 0 == columnIndex && size - 1 == rowIndex;
+    }
+
+	/**
+	 * Indicate if the Cell corresponds to Top ight Location in the Matrix
+	 * 
+	 * @param row Row Index
+	 * @param column Column Index
+	 * @param size Matrix Size
+	 * 
+	 * @return TRUE - The Cell corresponds to Top Right
+	 */
+
+    public static final boolean TopRight (
+		final int rowIndex,
+		final int columnIndex,
+		final int size)
+    {
+    	return 0 == rowIndex && size - 1 == columnIndex;
+    }
+
+	/**
 	 * Diagonalize the specified row in the source matrix, and apply comparable operations to the target
 	 * 
 	 * @param iQ Row in the Source Matrix
@@ -1403,22 +1439,6 @@ public class Matrix {
     	}
 
     	return true;
-    }
-
-    private static final boolean BottomLeft (
-		final int row,
-		final int column,
-		final int size)
-    {
-    	return 0 == column && size - 1 == row;
-    }
-
-    private static final boolean TopRight (
-		final int row,
-		final int column,
-		final int size)
-    {
-    	return 0 == row && size - 1 == column;
     }
 
     /**

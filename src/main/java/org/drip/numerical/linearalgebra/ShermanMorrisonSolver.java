@@ -444,14 +444,14 @@ public class ShermanMorrisonSolver
 
 		NumberUtil.Print2DArray ("Batista-Karawia", shermanMorrisonSolver.batistaKarawiaMatrix(), false);
 
-		System.out.println ("U RHS: " + NumberUtil.Print1DArrayRow (shermanMorrisonSolver.uRHSArray(), 4, false));
+		System.out.println ("U RHS: " + NumberUtil.ArrayRow (shermanMorrisonSolver.uRHSArray(), 1, 4, false));
 
-		System.out.println ("V Array: " + NumberUtil.Print1DArrayRow (shermanMorrisonSolver.vArray(), 4, false));
+		System.out.println ("V Array: " + NumberUtil.ArrayRow (shermanMorrisonSolver.vArray(), 1, 4, false));
 
-		System.out.println ("Q Solution Array: " + NumberUtil.Print1DArrayRow (shermanMorrisonSolver.qSolutionArray(), 4, false));
+		System.out.println ("Q Solution Array: " + NumberUtil.ArrayRow (shermanMorrisonSolver.qSolutionArray(), 1, 4, false));
 
-		System.out.println ("Y Solution Array: " + NumberUtil.Print1DArrayRow (shermanMorrisonSolver.ySolutionArray(), 4, false));
+		System.out.println ("Y Solution Array: " + NumberUtil.ArrayRow (shermanMorrisonSolver.ySolutionArray(), 1, 4, false));
 
-		System.out.println ("Solution Array: " + NumberUtil.Print1DArrayRow (shermanMorrisonSolver.qySolver(), 4, false));
+		System.out.println ("Solution Array: " + NumberUtil.ArrayRow (shermanMorrisonSolver.qySolver(), 1, 4, false));
 	}
 }
