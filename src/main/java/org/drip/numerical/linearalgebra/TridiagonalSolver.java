@@ -1,8 +1,6 @@
 
 package org.drip.numerical.linearalgebra;
 
-import org.drip.numerical.common.NumberUtil;
-
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
@@ -76,7 +74,8 @@ import org.drip.numerical.common.NumberUtil;
  */
 
 /**
- * <i>TridiagonalSolver</i> implements the O(n) solver for a Tridiagonal Matrix. The References are:
+ * <i>TridiagonalSolver</i> exposes the O(n) solver functionality for solving Tridiagonal Matrices. The
+ *  References are:
  * 
  * <br><br>
  * 	<ul>
@@ -114,27 +113,17 @@ import org.drip.numerical.common.NumberUtil;
  * @author Lakshmi Krishnamurthy
  */
 
-public class TridiagonalSolver
+public abstract class TridiagonalSolver
 {
 	private double[] _rhsArray = null;
 	private double[][] _squareMatrix = null;
 
-	/**
-	 * <i>TridiagonalSolver</i> Constructor
-	 * 
-	 * @param squareMatrix Square Matrix
-	 * @param rhsArray RHS Array
-	 * 
-	 * @throws Exception Thrown if the Square Matrix is not Tridiagonal
-	 */
-
-	public TridiagonalSolver (
+	protected TridiagonalSolver (
 		final double[][] squareMatrix,
 		final double[] rhsArray)
 		throws Exception
 	{
-		if (!Matrix.IsTridiagonal (_squareMatrix = squareMatrix) ||
-			null == (_rhsArray = rhsArray) ||
+		if (null == (_squareMatrix = squareMatrix) || null == (_rhsArray = rhsArray) ||
 			_squareMatrix.length != _rhsArray.length)
 		{
 			throw new Exception ("TridiagonalSolver Constructor => Matrix not Tridiagonal");
@@ -163,38 +152,11 @@ public class TridiagonalSolver
 		return _rhsArray;
 	}
 
-	public double[] forwardSweepBackSubstitution()
-	{
-		int matrixSize = _squareMatrix.length;
-		double[] solutionArray = new double[matrixSize];
-		double[] modifiedRHSArray = new double[matrixSize];
-		modifiedRHSArray[0] = _rhsArray[0] / _squareMatrix[0][0];
-		double[] modifiedSupraDiagonalArray = new double[matrixSize - 1];
-		modifiedSupraDiagonalArray[0] = _squareMatrix[0][1] / _squareMatrix[0][0];
+	/**
+	 * Solve the Tridiagonal System given the RHS
+	 * 
+	 * @return The Solution
+	 */
 
-		for (int i = 1; i < matrixSize - 1; ++i) {
-			modifiedSupraDiagonalArray[i] = _squareMatrix[i][i + 1] / (
-				_squareMatrix[i][i] - _squareMatrix[i][i - 1] * modifiedSupraDiagonalArray[i - 1]
-			);
-		}
-
-		for (int i = 1; i < matrixSize; ++i) {
-			if (!NumberUtil.IsValid (
-				modifiedRHSArray[i] = (_rhsArray[i] - _squareMatrix[i][i - 1] * modifiedRHSArray[i - 1]) / (
-					_squareMatrix[i][i] - _squareMatrix[i][i - 1] * modifiedSupraDiagonalArray[i - 1]
-				)
-			))
-			{
-				return null;
-			}
-		}
-
-		solutionArray[matrixSize - 1] = modifiedRHSArray[matrixSize - 1];
-
-		for (int i = matrixSize - 2; i >= 0; --i) {
-			solutionArray[i] = modifiedRHSArray[i] - modifiedSupraDiagonalArray[i] * solutionArray[i + 1];
-		}
-
-		return solutionArray;
-	}
+	public abstract double[] solve();
 }

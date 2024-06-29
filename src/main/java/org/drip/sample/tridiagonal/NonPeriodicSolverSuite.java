@@ -6,7 +6,7 @@ import java.util.Date;
 import org.drip.measure.crng.RdRandomSequence;
 import org.drip.numerical.common.NumberUtil;
 import org.drip.numerical.linearalgebra.Matrix;
-import org.drip.numerical.linearalgebra.TridiagonalSolver;
+import org.drip.numerical.linearalgebra.StrictlyTridiagonalSolver;
 import org.drip.service.env.EnvManager;
 
 /*
@@ -82,8 +82,8 @@ import org.drip.service.env.EnvManager;
  */
 
 /**
- * <i>NonPeriodicSolver</i> illustrates the application of the Non-periodic Solver of a Tridiagonal Matrix.
- *  The References are:
+ * <i>NonPeriodicSolverSuite</i> tests the Application of the Tridiagonal Solver for a variety of Input
+ *  Matrices. The References are:
  * 
  * <br><br>
  * 	<ul>
@@ -167,7 +167,7 @@ public class NonPeriodicSolverSuite
 		System.out.println (
 			"\t| Expected          =>  " +
 			NumberUtil.ArrayRow (
-				new TridiagonalSolver (tridiagonalMatrix, rhsArray).forwardSweepBackSubstitution(),
+				new StrictlyTridiagonalSolver (tridiagonalMatrix, rhsArray).forwardSweepBackSubstitution(),
 				2,
 				1,
 				false

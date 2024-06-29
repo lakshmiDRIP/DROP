@@ -141,8 +141,8 @@ public class Matrix {
 	/**
 	 * Indicate if the Cell corresponds to Bottom Left Location in the Matrix
 	 * 
-	 * @param row Row Index
-	 * @param column Column Index
+	 * @param rowIndex Row Index
+	 * @param columnIndex Column Index
 	 * @param size Matrix Size
 	 * 
 	 * @return TRUE - The Cell corresponds to Bottom Left
@@ -159,8 +159,8 @@ public class Matrix {
 	/**
 	 * Indicate if the Cell corresponds to Top ight Location in the Matrix
 	 * 
-	 * @param row Row Index
-	 * @param column Column Index
+	 * @param rowIndex Row Index
+	 * @param columnIndex Column Index
 	 * @param size Matrix Size
 	 * 
 	 * @return TRUE - The Cell corresponds to Top Right

@@ -116,10 +116,8 @@ import org.drip.numerical.common.NumberUtil;
  * @author Lakshmi Krishnamurthy
  */
 
-public class RyabenkiiTsynkovSolver
+public class RyabenkiiTsynkovSolver extends TridiagonalSolver
 {
-	private double[] _rhsArray = null;
-	private double[][] _squareMatrix = null;
 
 	/**
 	 * <i>RyabenkiiTsynkovSolver</i> Constructor
@@ -135,34 +133,11 @@ public class RyabenkiiTsynkovSolver
 		final double[] rhsArray)
 		throws Exception
 	{
-		if (!Matrix.IsPeriodicTridiagonal (_squareMatrix = squareMatrix) ||
-			null == (_rhsArray = rhsArray) ||
-			_squareMatrix.length != _rhsArray.length)
-		{
+		super (squareMatrix, rhsArray);
+
+		if (!Matrix.IsPeriodicTridiagonal (squareMatrix)) {
 			throw new Exception ("RyabenkiiTsynkovSolver Constructor => Matrix not Periodic Tridiagonal");
 		}
-	}
-
-	/**
-	 * Retrieve the Square Matrix
-	 * 
-	 * @return Square Matrix
-	 */
-
-	public double[][] squareMatrix()
-	{
-		return _squareMatrix;
-	}
-
-	/**
-	 * Retrieve the RHS Array
-	 * 
-	 * @return Square Matrix
-	 */
-
-	public double[] rhsArray()
-	{
-		return _rhsArray;
 	}
 
 	/**
@@ -173,12 +148,14 @@ public class RyabenkiiTsynkovSolver
 
 	public double[][] tridiagonalMatrix()
 	{
-		int size = _rhsArray.length - 1;
+		double[][] squareMatrix = squareMatrix();
+
+		int size = squareMatrix.length - 1;
 		double[][] uTridiagonalMatrix = new double[size][size];
 
 		for (int i = 1; i <= size; ++i) {
 			for (int j = 1; j <= size; ++j) {
-				uTridiagonalMatrix[i - 1][j - 1] = _squareMatrix[i][j];
+				uTridiagonalMatrix[i - 1][j - 1] = squareMatrix[i][j];
 			}
 		}
 
@@ -193,11 +170,13 @@ public class RyabenkiiTsynkovSolver
 
 	public double[] uRHSArray()
 	{
-		int size = _rhsArray.length - 1;
+		double[] rhsArray = rhsArray();
+
+		int size = rhsArray.length - 1;
 		double[] uRHSArray = new double[size];
 
 		for (int i = 1; i <= size; ++i) {
-			uRHSArray[i - 1] = _rhsArray[i];
+			uRHSArray[i - 1] = rhsArray[i];
 		}
 
 		return uRHSArray;
@@ -211,10 +190,12 @@ public class RyabenkiiTsynkovSolver
 
 	public double[] vRHSArray()
 	{
-		int size = _rhsArray.length - 1;
+		double[][] squareMatrix = squareMatrix();
+
+		int size = squareMatrix.length - 1;
 		double[] vRHSArray = new double[size];
-		vRHSArray[0] = -1. * _squareMatrix[1][0];
-		vRHSArray[size - 1] = -1. * _squareMatrix[size][0];
+		vRHSArray[0] = -1. * squareMatrix[1][0];
+		vRHSArray[size - 1] = -1. * squareMatrix[size][0];
 
 		for (int i = 2; i <= size - 1; ++i) {
 			vRHSArray[i - 1] = 0.;
@@ -232,7 +213,10 @@ public class RyabenkiiTsynkovSolver
 	public double[] uSolutionArray()
 	{
 		try {
-			return new TridiagonalSolver (tridiagonalMatrix(), uRHSArray()).forwardSweepBackSubstitution();
+			return new StrictlyTridiagonalSolver (
+				tridiagonalMatrix(),
+				uRHSArray()
+			).forwardSweepBackSubstitution();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -249,7 +233,10 @@ public class RyabenkiiTsynkovSolver
 	public double[] vSolutionArray()
 	{
 		try {
-			return new TridiagonalSolver (tridiagonalMatrix(), vRHSArray()).forwardSweepBackSubstitution();
+			return new StrictlyTridiagonalSolver (
+				tridiagonalMatrix(),
+				vRHSArray()
+			).forwardSweepBackSubstitution();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -265,9 +252,13 @@ public class RyabenkiiTsynkovSolver
 
 	public double[] uvSolver()
 	{
+		double[] rhsArray = rhsArray();
+
+		double[][] squareMatrix = squareMatrix();
+
 		double[] uSolutionArray = null;
 		double[] vSolutionArray = null;
-		int size = _rhsArray.length - 1;
+		int size = rhsArray.length - 1;
 		double[] solutionArray = new double[size + 1];
 
 		double[][] tridiagonalMatrix = tridiagonalMatrix();
@@ -277,12 +268,12 @@ public class RyabenkiiTsynkovSolver
 		}
 
 		try {
-			uSolutionArray = new TridiagonalSolver (
+			uSolutionArray = new StrictlyTridiagonalSolver (
 				tridiagonalMatrix,
 				uRHSArray()
 			).forwardSweepBackSubstitution();
 
-			vSolutionArray = new TridiagonalSolver (
+			vSolutionArray = new StrictlyTridiagonalSolver (
 				tridiagonalMatrix,
 				vRHSArray()
 			).forwardSweepBackSubstitution();
@@ -294,11 +285,11 @@ public class RyabenkiiTsynkovSolver
 
 		if (!NumberUtil.IsValid (
 			solutionArray[0] = (
-				_rhsArray[0] - _squareMatrix[0][size] * uSolutionArray[size - 1] -
-					_squareMatrix[0][1] * uSolutionArray[0]
+				rhsArray[0] - squareMatrix[0][size] * uSolutionArray[size - 1] -
+					squareMatrix[0][1] * uSolutionArray[0]
 			) / (
-				_squareMatrix[0][0] + _squareMatrix[0][size] * vSolutionArray[size - 1] +
-					_squareMatrix[0][1] * vSolutionArray[0]
+				squareMatrix[0][0] + squareMatrix[0][size] * vSolutionArray[size - 1] +
+					squareMatrix[0][1] * vSolutionArray[0]
 			)
 		))
 		{
@@ -312,53 +303,14 @@ public class RyabenkiiTsynkovSolver
 		return solutionArray;
 	}
 
-	public static final void main (
-		final String[] argumentArray)
-		throws Exception
+	/**
+	 * Solve the Tridiagonal System given the RHS
+	 * 
+	 * @return The Solution
+	 */
+
+	public double[] solve()
 	{
-		double[][] periodicTridiagonalMatrix = new double[][] {
-			{2., 7., 0., 0., 3.},
-			{7., 6., 4., 0., 0.},
-			{0., 4., 1., 5., 0.},
-			{0., 0., 5., 9., 2.},
-			{8., 0., 0., 2., 6.},
-		};
-
-		double[] rhsArray = new double[] {
-			31.,
-			31.,
-			31.,
-			61.,
-			46.
-		};
-
-		RyabenkiiTsynkovSolver ryabenkiiTsynkovSolver = new RyabenkiiTsynkovSolver (
-			periodicTridiagonalMatrix,
-			rhsArray
-		);
-
-		NumberUtil.Print2DArray ("Common Tridiagonal", ryabenkiiTsynkovSolver.tridiagonalMatrix(), false);
-
-		System.out.println (NumberUtil.ArrayRow (ryabenkiiTsynkovSolver.uRHSArray(), 1, 4, false));
-
-		System.out.println (
-			NumberUtil.ArrayRow (ryabenkiiTsynkovSolver.vRHSArray(), 1, 4, false)
-		);
-
-		System.out.println();
-
-		System.out.println (
-			NumberUtil.ArrayRow (ryabenkiiTsynkovSolver.uSolutionArray(), 1, 4, false)
-		);
-
-		System.out.println (
-			NumberUtil.ArrayRow (ryabenkiiTsynkovSolver.vSolutionArray(), 1, 4, false)
-		);
-
-		System.out.println();
-
-		System.out.println (
-			NumberUtil.ArrayRow (ryabenkiiTsynkovSolver.uvSolver(), 1, 4, false)
-		);
+		return uvSolver();
 	}
 }

@@ -2,7 +2,7 @@
 package org.drip.sample.tridiagonal;
 
 import org.drip.numerical.common.NumberUtil;
-import org.drip.numerical.linearalgebra.TridiagonalSolver;
+import org.drip.numerical.linearalgebra.StrictlyTridiagonalSolver;
 import org.drip.service.env.EnvManager;
 
 /*
@@ -176,7 +176,7 @@ public class NonPeriodicSolver
 		System.out.println (
 			"\t| Output            =>" +
 			NumberUtil.ArrayRow (
-				new TridiagonalSolver (tridiagonalMatrix, rhsArray).forwardSweepBackSubstitution(),
+				new StrictlyTridiagonalSolver (tridiagonalMatrix, rhsArray).forwardSweepBackSubstitution(),
 				2,
 				4,
 				false

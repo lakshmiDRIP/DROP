@@ -1,6 +1,8 @@
 
 package org.drip.sample.tridiagonal;
 
+import org.drip.numerical.common.NumberUtil;
+import org.drip.numerical.linearalgebra.RyabenkiiTsynkovSolver;
 import org.drip.service.env.EnvManager;
 
 /*
@@ -134,6 +136,90 @@ public class PeriodicRyabenkiiTsynkovSolver
 		EnvManager.InitEnv (
 			""
 		);
+
+		double[][] periodicTridiagonalMatrix = new double[][] {
+			{2., 7., 0., 0., 3.},
+			{7., 6., 4., 0., 0.},
+			{0., 4., 1., 5., 0.},
+			{0., 0., 5., 9., 2.},
+			{8., 0., 0., 2., 6.},
+		};
+
+		double[] rhsArray = new double[] {
+			31.,
+			31.,
+			31.,
+			61.,
+			46.
+		};
+
+		RyabenkiiTsynkovSolver ryabenkiiTsynkovSolver = new RyabenkiiTsynkovSolver (
+			periodicTridiagonalMatrix,
+			rhsArray
+		);
+
+		System.out.println ("\t|--------------------------------------------------------------------||");
+
+		System.out.println ("\t|                    PERIODIC TRIDIAGONAL SOLVER                     ||");
+
+		System.out.println ("\t|--------------------------------------------------------------------||");
+
+		for (int i = 0; i < periodicTridiagonalMatrix.length; ++i) {
+			System.out.println (
+				"\t| Tridiagonal 5 x 5 => [" + NumberUtil.ArrayRow (
+					periodicTridiagonalMatrix[i],
+					1,
+					4,
+					false
+				) + " ]||"
+			);
+		}
+
+		System.out.println ("\t|--------------------------------------------------------------------||");
+
+		System.out.println();
+
+		System.out.println ("\t|-----------------------------------------------||");
+
+		System.out.println ("\t| RHS Input =>" + NumberUtil.ArrayRow (rhsArray, 2, 1, false) + " ||");
+
+		System.out.println ("\t|-----------------------------------------------||");
+
+		System.out.println();
+
+		System.out.println ("\t|---------------------------------------------------||");
+
+		System.out.println (
+			"\t| U Array => " + NumberUtil.ArrayRow (ryabenkiiTsynkovSolver.uRHSArray(), 2, 4, false) + " ||"
+		);
+
+		System.out.println (
+			"\t| V Array => " + NumberUtil.ArrayRow (ryabenkiiTsynkovSolver.vRHSArray(), 2, 4, false) + " ||"
+		);
+
+		System.out.println (
+			"\t| U Solve => " + NumberUtil.ArrayRow (ryabenkiiTsynkovSolver.uSolutionArray(), 2, 4, false) +
+				" ||"
+		);
+
+		System.out.println (
+			"\t| V Solve => " + NumberUtil.ArrayRow (ryabenkiiTsynkovSolver.vSolutionArray(), 2, 4, false) +
+				" ||"
+		);
+
+		System.out.println ("\t|---------------------------------------------------||");
+
+		System.out.println();
+
+		System.out.println ("\t|----------------------------------------------||");
+
+		System.out.println (
+			"\t| Solution =>" + NumberUtil.ArrayRow (ryabenkiiTsynkovSolver.uvSolver(), 1, 2, false) + " ||"
+		);
+
+		System.out.println ("\t|----------------------------------------------||");
+
+		System.out.println();
 
 		EnvManager.TerminateEnv();
 	}
