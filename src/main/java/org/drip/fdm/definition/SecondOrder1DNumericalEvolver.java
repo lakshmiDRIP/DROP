@@ -1,7 +1,7 @@
 
 package org.drip.fdm.definition;
 
-import org.drip.numerical.common.NumberUtil;
+import org.drip.function.definition.RdToR1;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -76,8 +76,8 @@ import org.drip.numerical.common.NumberUtil;
  */
 
 /**
- * <i>VonNeumannStabilityValidator</i> holds the evolution Step Sizes and their Stability Validators for a
- * 	State Vector Space. The References are:
+ * <i>SecondOrder1DNumericalEvolver</i> implements key Second Order Finite Difference Schemes for
+ *  R<sup>1</sup> State Space Evolution. The References are:
  * 
  * <br><br>
  * 	<ul>
@@ -119,59 +119,161 @@ import org.drip.numerical.common.NumberUtil;
  * @author Lakshmi Krishnamurthy
  */
 
-public abstract class VonNeumannStabilityValidator
+public class SecondOrder1DNumericalEvolver
 {
-	private double _timeStep = Double.NaN;
-	private double _diffusionCoefficient = Double.NaN;
+	private RdToR1 _diffusionFunction = null;
+	private SecondOrder1DPDE _secondOrder1DPDE = null;
+	private R1EvolutionIncrement _evolutionIncrement = null;
 
-	protected VonNeumannStabilityValidator (
-		final double timeStep,
-		final double diffusionCoefficient)
+	/**
+	 * <i>SecondOrder1DNumericalEvolver</i> Constructor
+	 * 
+	 * @param evolutionIncrement R<sup>1</sup> Evolution Increment
+	 * @param diffusionFunction Diffusion Function
+	 * @param secondOrder1DPDE Second Order R<sup>1</sup> State Space Evolution PDE
+	 * 
+	 * @throws Exception Thrown if the Inputs are Invalid
+	 */
+
+	public SecondOrder1DNumericalEvolver (
+		final R1EvolutionIncrement evolutionIncrement,
+		final RdToR1 diffusionFunction,
+		final SecondOrder1DPDE secondOrder1DPDE)
 		throws Exception
 	{
-		if (!NumberUtil.IsValid (_timeStep = timeStep) || 0. >= _timeStep ||
-			!NumberUtil.IsValid (_diffusionCoefficient = diffusionCoefficient) ||
-				0. >= _diffusionCoefficient)
+		if (null == (_evolutionIncrement = evolutionIncrement) ||
+			null == (_diffusionFunction = diffusionFunction) ||
+			null == (_secondOrder1DPDE = secondOrder1DPDE))
 		{
-			throw new Exception ("VonNeumannStabilityValidator Constructor => Invalid Inputs");
+			throw new Exception ("SecondOrder1DNumericalEvolver Constructor => Invalid Inputs");
 		}
 	}
 
-	protected abstract double stepSizeHypotenuseSquare();
-
 	/**
-	 * Retrieve the Time Step of the Numerical Evolution
+	 * Retrieve the R<sup>d</sup> to R<sup>1</sup> Diffusion Function
 	 * 
-	 * @return Time Step of the Numerical Evolution
+	 * @return R<sup>d</sup> to R<sup>1</sup> Diffusion Function
 	 */
 
-	public double timeStamp()
+	public RdToR1 diffusionFunction()
 	{
-		return _timeStep;
+		return _diffusionFunction;
 	}
 
 	/**
-	 * Retrieve the Diffusion Coefficient
+	 * Retrieve the Second Order R<sup>1</sup> State Space Evolution PDE
 	 * 
-	 * @return Diffusion Coefficient
+	 * @return Second Order R<sup>1</sup> State Space Evolution PDE
 	 */
 
-	public double diffusionCoefficient()
+	public SecondOrder1DPDE secondOrder1DPDE()
 	{
-		return _diffusionCoefficient;
+		return _secondOrder1DPDE;
+	}
+
+	/**
+	 * Compute the von Neumann CFL Stability Number
+	 * 
+	 * @param time Time
+	 * @param factor Factor
+	 * 
+	 * @return von Neumann CFL Stability Number
+	 * 
+	 * @throws Exception Thrown if the Inputs are Invalid
+	 */
+
+	public double cflNumber (
+		final double time,
+		final double factor)
+		throws Exception
+	{
+		double r1SpaceStep = _evolutionIncrement.r1SpaceStep();
+
+		double stepSizeHypotenuseSquare = r1SpaceStep * r1SpaceStep;
+
+		return 0. == stepSizeHypotenuseSquare ? 0. :
+			_evolutionIncrement.timeStamp() * diffusionFunction().evaluate (
+				new double[] {time, factor}
+			) / stepSizeHypotenuseSquare;
 	}
 
 	/**
 	 * Indicate if the Step Sizes enable Stable Usage of the Crank-Nicolson Scheme
 	 * 
-	 * @return Crank-Nicolson Scheme
+	 * @param time Time
+	 * @param factor Factor
+	 * 
+	 * @return TRUE - Step Sizes enable Stable Usage of the Crank-Nicolson Scheme
+	 * 
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
-	public boolean crankNicolsonSchemeUsageStable()
+	public boolean crankNicolsonStabilityCheck (
+		final double time,
+		final double factor)
+		throws Exception
 	{
-		double stepSizeHypotenuseSquare = stepSizeHypotenuseSquare();
+		double cflNumber = cflNumber (time, factor);
 
-		return 0. != stepSizeHypotenuseSquare &&
-			0.5 >= _timeStep * _diffusionCoefficient / stepSizeHypotenuseSquare;
+		return 0. != cflNumber && 0.5 >= cflNumber;
+	}
+
+	/**
+	 * Compute the State Increment using the Euler Forward Difference State Evolver Scheme
+	 * 
+	 * @param time Time
+	 * @param space Space
+	 * 
+	 * @return State Increment using the Euler Forward Difference State Evolver Scheme
+	 * 
+	 * @throws Exception Thrown if the Inputs are Invalid
+	 */
+
+	public double eulerForwardDifferenceScheme (
+		final double time,
+		final double space)
+		throws Exception
+	{
+		return _secondOrder1DPDE.timeDifferential (time, space);
+	}
+
+	/**
+	 * Compute the State Increment using the Euler Backward Difference State Evolver Scheme
+	 * 
+	 * @param time Time
+	 * @param space Space
+	 * 
+	 * @return State Increment using the Euler Backward Difference State Evolver Scheme
+	 * 
+	 * @throws Exception Thrown if the Inputs are Invalid
+	 */
+
+	public double eulerBackwardDifferenceScheme (
+		final double time,
+		final double space)
+		throws Exception
+	{
+		return _secondOrder1DPDE.timeDifferential (time, space + _evolutionIncrement.r1SpaceStep());
+	}
+
+	/**
+	 * Compute the State Increment using the Crank-Nicolson State Evolver Scheme
+	 * 
+	 * @param time Time
+	 * @param space Space
+	 * 
+	 * @return State Increment using the Crank-Nicolson State Evolver Scheme
+	 * 
+	 * @throws Exception Thrown if the Inputs are Invalid
+	 */
+
+	public double crankNicolsonDifferenceScheme (
+		final double time,
+		final double space)
+		throws Exception
+	{
+		return 0.5 * (
+			eulerForwardDifferenceScheme (time, space) + eulerBackwardDifferenceScheme (time, space)
+		);
 	}
 }

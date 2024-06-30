@@ -76,8 +76,8 @@ import org.drip.numerical.common.NumberUtil;
  */
 
 /**
- * <i>VonNeumannnDStabilityValidator</i> holds the evolution Step Sizes and their Stability Validators for an
- * 	R<sup>d</sup> State Space. The References are:
+ * <i>R1EvolutionIncrement</i> contains the R<sup>1</sup> Space and Time Evolution Increments. The References
+ * 	are:
  * 
  * <br><br>
  * 	<ul>
@@ -119,52 +119,51 @@ import org.drip.numerical.common.NumberUtil;
  * @author Lakshmi Krishnamurthy
  */
 
-public class VonNeumannnDStabilityValidator extends VonNeumannStabilityValidator
+public class R1EvolutionIncrement
 {
-	private double[] _rdSpaceStepArray = null;
-
-	protected double stepSizeHypotenuseSquare()
-	{
-		double stepSizeHypotenuseSquare = 0.;
-
-		for (int i = 0; i < _rdSpaceStepArray.length; ++i) {
-			stepSizeHypotenuseSquare += _rdSpaceStepArray[i] * _rdSpaceStepArray[i];
-		}
-
-		return stepSizeHypotenuseSquare;
-	}
+	private double _timeStep = Double.NaN;
+	private double _r1SpaceStep = Double.NaN;
 
 	/**
-	 * <i>VonNeumann1DStabilityValidator</i> Constructor
+	 * <i>R1EvolutionIncrement</i> Constructor
 	 * 
-	 * @param timeStep Time-step
-	 * @param rdSpaceStepArray R<sup>d</sup> Space-step Array
-	 * @param diffusionCoefficient Diffusion Coefficient
+	 * @param timeStep Evolution Time-stamp
+	 * @param r1SpaceStep R<sup>1</sup> Space-step
 	 * 
 	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
-	public VonNeumannnDStabilityValidator (
+	public R1EvolutionIncrement (
 		final double timeStep,
-		final double[] rdSpaceStepArray,
-		final double diffusionCoefficient)
+		final double r1SpaceStep)
 		throws Exception
 	{
-		super (timeStep, diffusionCoefficient);
-
-		if (null == (_rdSpaceStepArray = rdSpaceStepArray) || !NumberUtil.IsValid (_rdSpaceStepArray)) {
-			throw new Exception ("VonNeumannnDStabilityValidator Constructor => Invalid Inputs");
+		if (!NumberUtil.IsValid (_timeStep = timeStep) || 0. >= _timeStep ||
+			!NumberUtil.IsValid (_r1SpaceStep = r1SpaceStep) || 0. >= _r1SpaceStep)
+		{
+			throw new Exception ("R1EvolutionIncrement Constructor => Invalid Inputs");
 		}
 	}
 
 	/**
-	 * Retrieve the Array of R<sup>d</sup> Space Steps in the Numerical Evolution
+	 * Retrieve the Time Step of the Numerical Evolution
 	 * 
-	 * @return Array of R<sup>d</sup> Space Steps in the Numerical Evolution
+	 * @return Time Step of the Numerical Evolution
 	 */
 
-	public double[] rdSpaceStepArray()
+	public double timeStamp()
 	{
-		return _rdSpaceStepArray;
+		return _timeStep;
+	}
+
+	/**
+	 * Retrieve the R<sup>1</sup> Space Step of the Numerical Evolution
+	 * 
+	 * @return R<sup>1</sup> Space Step of the Numerical Evolution
+	 */
+
+	public double r1SpaceStep()
+	{
+		return _r1SpaceStep;
 	}
 }

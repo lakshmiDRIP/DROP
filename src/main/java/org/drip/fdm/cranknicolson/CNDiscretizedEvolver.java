@@ -1,5 +1,15 @@
 
-package org.drip.fdm.definition;
+package org.drip.fdm.cranknicolson;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import org.drip.fdm.definition.EvolutionGrid1D;
+import org.drip.fdm.definition.SecondOrder1DNumericalEvolver;
+import org.drip.fdm.definition.SecondOrder1DPDE;
+import org.drip.function.definition.RdToR1;
+import org.drip.numerical.common.NumberUtil;
+import org.drip.numerical.linearalgebra.StrictlyTridiagonalSolver;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -74,8 +84,7 @@ package org.drip.fdm.definition;
  */
 
 /**
- * <i>SecondOrder1DNumericalEvolution</i> implements key Second Order Finite Difference Schemes for
- *  R<sup>1</sup> State Space Evolution. The References are:
+ * <i>R1Coordinate</i> holds the R<sup>1</sup> Space and Time Coordinates. The References are:
  * 
  * <br><br>
  * 	<ul>
@@ -110,123 +119,149 @@ package org.drip.fdm.definition;
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md">Numerical Analysis Library</a></li>
  *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/pde/README.md">Numerical Solution Schemes for PDEs</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/fdm/definition/README.md">Finite Difference PDE Evolver Schemes</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/fdm/cranknicolson/README.md">Finite Difference Crank-Nicolson Discretizer</a></li>
  *  </ul>
  * <br><br>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class SecondOrder1DNumericalEvolution
+public class CNDiscretizedEvolver extends SecondOrder1DNumericalEvolver
 {
-	private SecondOrder1DPDE _secondOrder1DPDE = null;
-	private VonNeumann1DStabilityValidator _vonNeumann1DStabilityValidator = null;
+	private EvolutionGrid1D _evolutionGrid1D = null;
 
-	/**
-	 * <i>SecondOrder1DNumericalEvolution</i> Constructor
-	 * 
-	 * @param secondOrder1DPDE Second Order R<sup>1</sup> State Space Evolution PDE
-	 * @param vonNeuman1DStabilityValidator Space/Time von Neumann R<sup>1</sup> Stability Validator
-	 * 
-	 * @throws Exception Thrown if the Inputs are Invalid
-	 */
-
-	public SecondOrder1DNumericalEvolution (
-		final SecondOrder1DPDE secondOrder1DPDE,
-		final VonNeumann1DStabilityValidator vonNeumann1DStabilityValidator)
-		throws Exception
+	private final double[] rhsArray()
 	{
-		if (null == (_secondOrder1DPDE= secondOrder1DPDE) ||
-			(null == (_vonNeumann1DStabilityValidator = vonNeumann1DStabilityValidator)))
-		{
-			throw new Exception ("SecondOrder1DNumericalEvolution Constructor => Invalid Inputs");
+		int factorPredictorCount = _evolutionGrid1D.factorPredictorArray().length;
+
+		double[] rhsArray = new double[factorPredictorCount];
+
+		for (int i = 0; i < factorPredictorCount; ++i) {
+			rhsArray[i] = 0.;
 		}
+
+		return rhsArray;
 	}
 
-	/**
-	 * Retrieve the Second Order R<sup>1</sup> State Space Evolution PDE
-	 * 
-	 * @return Second Order R<sup>1</sup> State Space Evolution PDE
-	 */
-
-	public SecondOrder1DPDE secondOrder1DPDE()
+	private final double[][] zeroStateResponseTransitionMatrix()
 	{
-		return _secondOrder1DPDE;
+		int factorPredictorCount = _evolutionGrid1D.factorPredictorArray().length;
+
+		double[][] zeroStateResponseTransitionMatrix =
+			new double[factorPredictorCount][factorPredictorCount];
+
+		for (int i = 0; i < factorPredictorCount; ++i) {
+			for (int j = 0; j < factorPredictorCount; ++j) {
+				zeroStateResponseTransitionMatrix[i][j] = 0.;
+			}
+		}
+
+		return zeroStateResponseTransitionMatrix;
 	}
 
 	/**
-	 * Retrieve the Space/Time von Neumann R<sup>1</sup> Stability Validator
+	 * <i>CNDiscretizedEvolver</i> Constructor
 	 * 
-	 * @return Space/Time von Neumann R<sup>1</sup> Stability Validator
-	 */
-
-	public VonNeumannStabilityValidator vonNeumann1DStabilityValidator()
-	{
-		return _vonNeumann1DStabilityValidator;
-	}
-
-	/**
-	 * Compute the State Increment using the Euler Forward Difference State Evolver Scheme
-	 * 
-	 * @param time Time
-	 * @param space Space
-	 * 
-	 * @return State Increment using the Euler Forward Difference State Evolver Scheme
+	 * @param evolutionGrid1D R<sup>1</sup> Evolution Increment
+	 * @param diffusionFunction Diffusion Function
+	 * @param secondOrder1DPDE Second Order R<sup>1</sup> State Space Evolution PDE
 	 * 
 	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
-	public double eulerForwardDifferenceScheme (
-		final double time,
-		final double space)
+	public CNDiscretizedEvolver (
+		final EvolutionGrid1D evolutionGrid1D,
+		final RdToR1 diffusionFunction,
+		final SecondOrder1DPDE secondOrder1DPDE)
 		throws Exception
 	{
-		return _secondOrder1DPDE.timeDifferential (time, space);
+		super (evolutionGrid1D.increment(), diffusionFunction, secondOrder1DPDE);
+
+		_evolutionGrid1D = evolutionGrid1D;
 	}
 
 	/**
-	 * Compute the State Increment using the Euler Backward Difference State Evolver Scheme
+	 * Retrieve the 1D Evolution Grid
 	 * 
-	 * @param time Time
-	 * @param space Space
-	 * 
-	 * @return State Increment using the Euler Backward Difference State Evolver Scheme
-	 * 
-	 * @throws Exception Thrown if the Inputs are Invalid
+	 * @return 1D Evolution Grid
 	 */
 
-	public double eulerBackwardDifferenceScheme (
-		final double time,
-		final double space)
-		throws Exception
+	public EvolutionGrid1D evolutionGrid1D()
 	{
-		return _secondOrder1DPDE.timeDifferential (
-			time,
-			space + _vonNeumann1DStabilityValidator.r1SpaceStep()
-		);
+		return _evolutionGrid1D;
 	}
 
 	/**
-	 * Compute the State Increment using the Crank-Nicolson State Evolver Scheme
+	 * Evolve the State Response from the Starting Value
 	 * 
-	 * @param time Time
-	 * @param space Space
+	 * @param startingStateResponseArray Starting State Response Array
 	 * 
-	 * @return State Increment using the Crank-Nicolson State Evolver Scheme
-	 * 
-	 * @throws Exception Thrown if the Inputs are Invalid
+	 * @return Time Map of Factor Predictor/State Response Array
 	 */
 
-	public double crankNicolsonDifferenceScheme (
-		final double time,
-		final double space)
-		throws Exception
+	public Map<Double, double[]> evolve (
+		final double[] startingStateResponseArray)
 	{
-		return 0.5 * (
-			_secondOrder1DPDE.timeDifferential (time, space) + _secondOrder1DPDE.timeDifferential (
-				time,
-				space + _vonNeumann1DStabilityValidator.r1SpaceStep()
-			)
-		);
+		double[] timeArray = _evolutionGrid1D.timeArray();
+
+		double[] previousStateResponseArray = startingStateResponseArray;
+
+		double[] factorPredictorArray = _evolutionGrid1D.factorPredictorArray();
+
+		Map<Double, double[]> timePredictorResponseArrayMap = new HashMap<Double, double[]>();
+
+		timePredictorResponseArrayMap.put (timeArray[0], previousStateResponseArray);
+
+		for (int i = 1; i < timeArray.length; ++i) {
+			double[] rhsArray = rhsArray();
+
+			double[] updatedStateResponseArray = null;
+
+			double[][] stateResponseTransitionMatrix = zeroStateResponseTransitionMatrix();
+
+			for (int n = 0; n < factorPredictorArray.length; ++n) {
+				double cflNumber = Double.NaN;
+
+				try {
+					cflNumber = cflNumber (timeArray[i], factorPredictorArray[n]);
+				} catch (Exception e) {
+					e.printStackTrace();
+
+					return null;
+				}
+
+				if (!NumberUtil.IsValid (cflNumber)) {
+					return null;
+				}
+
+				if (0 != n && factorPredictorArray.length != n) {
+					stateResponseTransitionMatrix[n][n - 1] = -1. * cflNumber;
+					stateResponseTransitionMatrix[n][n] = 1. + 2. * cflNumber;
+					stateResponseTransitionMatrix[n][n + 1] = -1. * cflNumber;
+					rhsArray[n] = cflNumber * previousStateResponseArray[n - 1] +
+						(1. + 2. * cflNumber) * previousStateResponseArray[n] +
+						cflNumber * previousStateResponseArray[n + 1];
+				}
+			}
+
+			try {
+				updatedStateResponseArray = new StrictlyTridiagonalSolver (
+					stateResponseTransitionMatrix,
+					rhsArray
+				).forwardSweepBackSubstitution();
+			} catch (Exception e) {
+				e.printStackTrace();
+
+				return null;
+			}
+
+			for (int n = 0; n < factorPredictorArray.length; ++n) {
+				previousStateResponseArray[n] = updatedStateResponseArray[n];
+			}
+
+			timePredictorResponseArrayMap.put (timeArray[0], previousStateResponseArray);
+		}
+
+		return timePredictorResponseArrayMap;
 	}
 }

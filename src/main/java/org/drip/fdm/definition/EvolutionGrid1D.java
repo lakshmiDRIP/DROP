@@ -76,8 +76,8 @@ import org.drip.numerical.common.NumberUtil;
  */
 
 /**
- * <i>VonNeumannn1StabilityValidator</i> holds the evolution Step Sizes and their Stability Validators for an
- * 	R<sup>1</sup> State Space. The References are:
+ * <i>EvolutionGrid1D</i> maintains the Time and Factor Predictor Grids R<sup>1</sup> State Response
+ * 	Evolution. The References are:
  * 
  * <br><br>
  * 	<ul>
@@ -119,46 +119,142 @@ import org.drip.numerical.common.NumberUtil;
  * @author Lakshmi Krishnamurthy
  */
 
-public class VonNeumann1DStabilityValidator extends VonNeumannStabilityValidator
+public class EvolutionGrid1D
 {
-	private double _r1SpaceStep = Double.NaN;
+	private double[] _timeArray = null;
+	private double[] _factorPredictorArray = null;
 
-	protected double stepSizeHypotenuseSquare()
+	/**
+	 * Construct a Standard 1D Evolution Grid from the Inputs
+	 * 
+	 * @param startTime Starting Time
+	 * @param timeStep Time Step Width
+	 * @param timeNodeCount Time Node Count
+	 * @param factorPredictorStart Begin Factor Predictor
+	 * @param factorPredictorEnd End Factor Predictor
+	 * @param factorPredictorNodeCount Factor Predictor Node Count
+	 * 
+	 * @return Standard 1D Evolution Grid
+	 */
+
+	public static final EvolutionGrid1D Standard (
+		final double startTime,
+		final double timeStep,
+		final int timeNodeCount,
+		final double factorPredictorStart,
+		final double factorPredictorEnd,
+		final int factorPredictorNodeCount)
 	{
-		return _r1SpaceStep * _r1SpaceStep;
+		if (!NumberUtil.IsValid (startTime) || 0. >= startTime ||
+			!NumberUtil.IsValid (timeStep) || 0. >= timeStep ||
+				0 >= timeNodeCount ||
+			!NumberUtil.IsValid (factorPredictorStart) || !NumberUtil.IsValid (factorPredictorEnd) ||
+				1 >= factorPredictorNodeCount)
+		{
+			return null;
+		}
+
+		double factorPredictorWidth = (factorPredictorEnd - factorPredictorStart) / (
+			factorPredictorNodeCount - 1
+		);
+		double[] factorPredictorArray = new double[factorPredictorNodeCount];
+		factorPredictorArray[0] = factorPredictorStart;
+		double[] timeArray = new double[timeNodeCount];
+		timeArray[0] = startTime;
+
+		for (int i = 1; i < timeNodeCount; ++i) {
+			timeArray[i] = timeArray[i - 1] + timeStep;
+		}
+
+		for (int i = 1; i < factorPredictorNodeCount; ++i) {
+			factorPredictorArray[i] = factorPredictorArray[i - 1] + factorPredictorWidth;
+		}
+
+		try {
+			return new EvolutionGrid1D (timeArray, factorPredictorArray);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return null;
 	}
 
 	/**
-	 * <i>VonNeumann1DStabilityValidator</i> Constructor
+	 * <i>EvolutionGrid1D</i> Constructor
 	 * 
-	 * @param timeStep Time-step
-	 * @param r1SpaceStep R<sup>1</sup> Space-step
-	 * @param diffusionCoefficient Diffusion Coefficient
+	 * @param timeArray Increasing Array of Time Nodes
+	 * @param factorPredictorArray Increasing Array of Factor Predictors
 	 * 
 	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
-	public VonNeumann1DStabilityValidator (
-		final double timeStep,
-		final double r1SpaceStep,
-		final double diffusionCoefficient)
+	public EvolutionGrid1D (
+		final double[] timeArray,
+		final double[] factorPredictorArray)
 		throws Exception
 	{
-		super (timeStep, diffusionCoefficient);
+		if (null == (_timeArray = timeArray) || 0 == _timeArray.length ||
+				!NumberUtil.IsValid (_timeArray[0]) ||
+			null == (_factorPredictorArray = factorPredictorArray) || 0 == _factorPredictorArray.length ||
+				!NumberUtil.IsValid (_factorPredictorArray[0]))
+		{
+			throw new Exception ("EvolutionGrid1D Constructor => Invalid Inputs");
+		}
 
-		if (!NumberUtil.IsValid (_r1SpaceStep = r1SpaceStep) || 0. >= _r1SpaceStep) {
-			throw new Exception ("VonNeumann1DStabilityValidator Constructor => Invalid Inputs");
+		for (int i = 1; i < _timeArray.length; ++i) {
+			if (!NumberUtil.IsValid (_timeArray[i]) || _timeArray[i] <= _timeArray[i - 1]) {
+				throw new Exception ("EvolutionGrid1D Constructor => Invalid Inputs");
+			}
+		}
+
+		for (int i = 1; i < _factorPredictorArray.length; ++i) {
+			if (!NumberUtil.IsValid (_factorPredictorArray[i]) ||
+				_factorPredictorArray[i] <= _factorPredictorArray[i - 1])
+			{
+				throw new Exception ("EvolutionGrid1D Constructor => Invalid Inputs");
+			}
 		}
 	}
 
 	/**
-	 * Retrieve the R<sup>1</sup> Space Step of the Numerical Evolution
+	 * Retrieve the Array of Time Nodes
 	 * 
-	 * @return R<sup>1</sup> Space Step of the Numerical Evolution
+	 * @return Array of Time Nodes
 	 */
 
-	public double r1SpaceStep()
+	public double[] timeArray()
 	{
-		return _r1SpaceStep;
+		return _timeArray;
+	}
+
+	/**
+	 * Retrieve the Array of Factor Predictors
+	 * 
+	 * @return Array of Factor Predictors
+	 */
+
+	public double[] factorPredictorArray()
+	{
+		return _factorPredictorArray;
+	}
+
+	/**
+	 * Retrieve the R<sup1</sup> Evolution Increment corresponding to the Grid
+	 * 
+	 * @return R<sup1</sup> Evolution Increment corresponding to the Grid
+	 */
+
+	public R1EvolutionIncrement increment()
+	{
+		try {
+			return new R1EvolutionIncrement (
+				_timeArray[1] - _timeArray[0],
+				_factorPredictorArray[1] - _factorPredictorArray[0]
+			);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return null;
 	}
 }
