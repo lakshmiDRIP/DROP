@@ -237,24 +237,4 @@ public class EvolutionGrid1D
 	{
 		return _factorPredictorArray;
 	}
-
-	/**
-	 * Retrieve the R<sup1</sup> Evolution Increment corresponding to the Grid
-	 * 
-	 * @return R<sup1</sup> Evolution Increment corresponding to the Grid
-	 */
-
-	public R1EvolutionIncrement increment()
-	{
-		try {
-			return new R1EvolutionIncrement (
-				_timeArray[1] - _timeArray[0],
-				_factorPredictorArray[1] - _factorPredictorArray[0]
-			);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-		return null;
-	}
 }

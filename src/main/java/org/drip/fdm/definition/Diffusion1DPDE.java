@@ -1,7 +1,8 @@
 
 package org.drip.fdm.definition;
 
-import org.drip.numerical.common.NumberUtil;
+import org.drip.function.definition.R1ToR1;
+import org.drip.function.definition.RdToR1;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -76,8 +77,8 @@ import org.drip.numerical.common.NumberUtil;
  */
 
 /**
- * <i>SecondOrder1DNumericalEvolver</i> implements key Second Order Finite Difference Schemes for
- *  R<sup>1</sup> State Factor Space Evolution. The References are:
+ * <i>Diffusion1DPDE</i> implements the Evolution of R<sup>1</sup> State Factor Space Response using the
+ *  Diffusion PDE. The References are:
  * 
  * <br><br>
  * 	<ul>
@@ -119,99 +120,79 @@ import org.drip.numerical.common.NumberUtil;
  * @author Lakshmi Krishnamurthy
  */
 
-public class SecondOrder1DNumericalEvolver
+public class Diffusion1DPDE extends SecondOrder1DPDE
 {
-	private double _factorIncrement = Double.NaN;
-	private SecondOrder1DPDE _secondOrder1DPDE = null;
 
 	/**
-	 * <i>SecondOrder1DNumericalEvolver</i> Constructor
+	 * Construct a Standard Instance of <i>Diffusion1DPDE</i>
 	 * 
-	 * @param secondOrder1DPDE Second Order R<sup>1</sup> State Space Evolution PDE
-	 * @param factorIncrement Factor Increment
+	 * @param stateResponseFunction R<sup>1</sup> to R<sup>1</sup> State Response Function
+	 * @param diffusionFunction R<sup>d</sup> to R<sup>1</sup> Diffusion Function
 	 * 
-	 * @throws Exception Thrown if the Inputs are Invalid
+	 * @return Standard Instance of <i>Diffusion1DPDE</i>
 	 */
 
-	public SecondOrder1DNumericalEvolver (
-		final SecondOrder1DPDE secondOrder1DPDE,
-		final double factorIncrement)
-		throws Exception
+	public static final Diffusion1DPDE Standard (
+		final R1ToR1 stateResponseFunction,
+		final RdToR1 diffusionFunction)
 	{
-		if (null == (_secondOrder1DPDE = secondOrder1DPDE) ||
-			!NumberUtil.IsValid (_factorIncrement = factorIncrement) || 0. >= _factorIncrement)
-		{
-			throw new Exception ("SecondOrder1DNumericalEvolver Constructor => Invalid Inputs");
+		try {
+			return null == diffusionFunction ? null : new Diffusion1DPDE (
+				stateResponseFunction,
+				new RdToR1 (null) {
+					@Override public int dimension()
+					{
+						return 2;
+					}
+
+					@Override public double evaluate (
+						double[] variateArray)
+						throws Exception
+					{
+						return diffusionFunction.evaluate (new double[] {variateArray[1], variateArray[2]});
+					}
+				}
+			);
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
+
+		return null;
 	}
 
-	/**
-	 * Retrieve the Second Order R<sup>1</sup> State Space Evolution PDE
-	 * 
-	 * @return Second Order R<sup>1</sup> State Space Evolution PDE
-	 */
-
-	public SecondOrder1DPDE secondOrder1DPDE()
+	private Diffusion1DPDE (
+		final R1ToR1 stateResponseFunction,
+		final RdToR1 stateResponseEvolutionFunction)
+		throws Exception
 	{
-		return _secondOrder1DPDE;
+		super (stateResponseFunction, stateResponseEvolutionFunction);
 	}
 
 	/**
-	 * Compute the State Increment using the Euler Forward Difference State Evolver Scheme
+	 * Compute the State Response Increment at the factor value and the time
 	 * 
 	 * @param time Time
 	 * @param factor Factor Space Value
 	 * 
-	 * @return State Increment using the Euler Forward Difference State Evolver Scheme
+	 * @return State Response Increment
 	 * 
 	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
-	public double eulerForwardDifferenceScheme (
+	@Override public double timeDifferential (
 		final double time,
 		final double factor)
 		throws Exception
 	{
-		return _secondOrder1DPDE.timeDifferential (time, factor);
-	}
+		R1ToR1 stateResponseFunction = stateResponseFunction();
 
-	/**
-	 * Compute the State Increment using the Euler Backward Difference State Evolver Scheme
-	 * 
-	 * @param time Time
-	 * @param factor Factor Space Value
-	 * 
-	 * @return State Increment using the Euler Backward Difference State Evolver Scheme
-	 * 
-	 * @throws Exception Thrown if the Inputs are Invalid
-	 */
-
-	public double eulerBackwardDifferenceScheme (
-		final double time,
-		final double factor)
-		throws Exception
-	{
-		return _secondOrder1DPDE.timeDifferential (time, factor + _factorIncrement);
-	}
-
-	/**
-	 * Compute the State Increment using the Crank-Nicolson State Evolver Scheme
-	 * 
-	 * @param time Time
-	 * @param factor Factor Space Value
-	 * 
-	 * @return State Increment using the Crank-Nicolson State Evolver Scheme
-	 * 
-	 * @throws Exception Thrown if the Inputs are Invalid
-	 */
-
-	public double crankNicolsonDifferenceScheme (
-		final double time,
-		final double factor)
-		throws Exception
-	{
-		return 0.5 * (
-			eulerForwardDifferenceScheme (time, factor) + eulerBackwardDifferenceScheme (time, factor)
+		return stateResponseEvolutionFunction().evaluate (
+			new double[] {
+				stateResponseFunction.evaluate (factor),
+				time,
+				factor,
+				stateResponseFunction.derivative (factor, 2),
+			}
 		);
 	}
 }

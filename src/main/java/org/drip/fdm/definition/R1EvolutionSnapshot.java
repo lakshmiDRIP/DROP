@@ -1,6 +1,9 @@
 
 package org.drip.fdm.definition;
 
+import java.util.Map;
+import java.util.TreeMap;
+
 import org.drip.numerical.common.NumberUtil;
 
 /*
@@ -76,8 +79,8 @@ import org.drip.numerical.common.NumberUtil;
  */
 
 /**
- * <i>R1EvolutionIncrement</i> contains the R<sup>1</sup> Space and Time Evolution Increments. The References
- * 	are:
+ * <i>R1EvolutionSnapshot</i> maintains the time Snapshots for R<sup>1</sup> State Factor Space Evolution.
+ * 	The References are:
  * 
  * <br><br>
  * 	<ul>
@@ -119,51 +122,52 @@ import org.drip.numerical.common.NumberUtil;
  * @author Lakshmi Krishnamurthy
  */
 
-public class R1EvolutionIncrement
+public class R1EvolutionSnapshot
 {
-	private double _timeStep = Double.NaN;
-	private double _r1SpaceStep = Double.NaN;
+	private double[] _factorPredictorArray = null;
+	private Map<Double, double[]> _timeStateResponseArrayMap = null;
 
 	/**
-	 * <i>R1EvolutionIncrement</i> Constructor
+	 * <i>R1EvolutionSnapshot</i> Constructor
 	 * 
-	 * @param timeStep Evolution Time-stamp
-	 * @param r1SpaceStep R<sup>1</sup> Space-step
+	 * @param factorPredictorArray Array of Factor Predictors
 	 * 
 	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
-	public R1EvolutionIncrement (
-		final double timeStep,
-		final double r1SpaceStep)
+	public R1EvolutionSnapshot (
+		final double[] factorPredictorArray)
 		throws Exception
 	{
-		if (!NumberUtil.IsValid (_timeStep = timeStep) || 0. >= _timeStep ||
-			!NumberUtil.IsValid (_r1SpaceStep = r1SpaceStep) || 0. >= _r1SpaceStep)
+		if (null == (_factorPredictorArray = factorPredictorArray) ||
+			0 == _factorPredictorArray.length ||
+			!NumberUtil.IsValid (_factorPredictorArray))
 		{
-			throw new Exception ("R1EvolutionIncrement Constructor => Invalid Inputs");
+			throw new Exception ("R1EvolutionSnapshot Constructor => Invalid Inputs");
 		}
+
+		_timeStateResponseArrayMap = new TreeMap<Double, double[]>();
 	}
 
 	/**
-	 * Retrieve the Time Step of the Numerical Evolution
+	 * Retrieve the Array of Factor Predictors
 	 * 
-	 * @return Time Step of the Numerical Evolution
+	 * @return Array of Factor Predictors
 	 */
 
-	public double timeStamp()
+	public double[] factorPredictorArray()
 	{
-		return _timeStep;
+		return _factorPredictorArray;
 	}
 
 	/**
-	 * Retrieve the R<sup>1</sup> Space Step of the Numerical Evolution
+	 * Retrieve the Time Map of Realized State Response Array
 	 * 
-	 * @return R<sup>1</sup> Space Step of the Numerical Evolution
+	 * @return Time Map of Realized State Response Array
 	 */
 
-	public double r1SpaceStep()
+	public Map<Double, double[]> timeStateResponseArrayMap()
 	{
-		return _r1SpaceStep;
+		return _timeStateResponseArrayMap;
 	}
 }

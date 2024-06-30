@@ -1,15 +1,5 @@
 
-package org.drip.fdm.cranknicolson;
-
-import java.util.HashMap;
-import java.util.Map;
-
-import org.drip.fdm.definition.EvolutionGrid1D;
-import org.drip.fdm.definition.SecondOrder1DNumericalEvolver;
-import org.drip.fdm.definition.SecondOrder1DPDE;
-import org.drip.function.definition.RdToR1;
-import org.drip.numerical.common.NumberUtil;
-import org.drip.numerical.linearalgebra.StrictlyTridiagonalSolver;
+package org.drip.fdm.definition;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -84,7 +74,8 @@ import org.drip.numerical.linearalgebra.StrictlyTridiagonalSolver;
  */
 
 /**
- * <i>R1Coordinate</i> holds the R<sup>1</sup> Space and Time Coordinates. The References are:
+ * <i>Diffusion1DNumericalEvolver</i> implements key Finite Difference Diffusion Schemes for R<sup>1</sup>
+ *  State Factor Space Evolution. The References are:
  * 
  * <br><br>
  * 	<ul>
@@ -119,149 +110,41 @@ import org.drip.numerical.linearalgebra.StrictlyTridiagonalSolver;
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md">Numerical Analysis Library</a></li>
  *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/pde/README.md">Numerical Solution Schemes for PDEs</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/fdm/cranknicolson/README.md">Finite Difference Crank-Nicolson Discretizer</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/fdm/definition/README.md">Finite Difference PDE Evolver Schemes</a></li>
  *  </ul>
  * <br><br>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class CNDiscretizedEvolver extends SecondOrder1DNumericalEvolver
+public class Diffusion1DNumericalEvolver extends SecondOrder1DNumericalEvolver
 {
-	private EvolutionGrid1D _evolutionGrid1D = null;
-
-	private final double[] rhsArray()
-	{
-		int factorPredictorCount = _evolutionGrid1D.factorPredictorArray().length;
-
-		double[] rhsArray = new double[factorPredictorCount];
-
-		for (int i = 0; i < factorPredictorCount; ++i) {
-			rhsArray[i] = 0.;
-		}
-
-		return rhsArray;
-	}
-
-	private final double[][] zeroStateResponseTransitionMatrix()
-	{
-		int factorPredictorCount = _evolutionGrid1D.factorPredictorArray().length;
-
-		double[][] zeroStateResponseTransitionMatrix =
-			new double[factorPredictorCount][factorPredictorCount];
-
-		for (int i = 0; i < factorPredictorCount; ++i) {
-			for (int j = 0; j < factorPredictorCount; ++j) {
-				zeroStateResponseTransitionMatrix[i][j] = 0.;
-			}
-		}
-
-		return zeroStateResponseTransitionMatrix;
-	}
 
 	/**
-	 * <i>CNDiscretizedEvolver</i> Constructor
+	 * <i>Diffusion1DNumericalEvolver</i> Constructor
 	 * 
-	 * @param evolutionGrid1D R<sup>1</sup> Evolution Increment
-	 * @param diffusionFunction Diffusion Function
-	 * @param secondOrder1DPDE Second Order R<sup>1</sup> State Space Evolution PDE
+	 * @param diffusion1DPDE 1D Diffusion R<sup>1</sup> State Space Evolution PDE
+	 * @param factorIncrement Factor Increment
 	 * 
 	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
-	public CNDiscretizedEvolver (
-		final EvolutionGrid1D evolutionGrid1D,
-		final RdToR1 diffusionFunction,
-		final SecondOrder1DPDE secondOrder1DPDE)
+	public Diffusion1DNumericalEvolver (
+		final Diffusion1DPDE diffusion1DPDE,
+		final double factorIncrement)
 		throws Exception
 	{
-		super (evolutionGrid1D.increment(), diffusionFunction, secondOrder1DPDE);
-
-		_evolutionGrid1D = evolutionGrid1D;
+		super (diffusion1DPDE, factorIncrement);
 	}
 
 	/**
-	 * Retrieve the 1D Evolution Grid
+	 * Retrieve the 1D Diffusion R<sup>1</sup> State Space Evolution PDE
 	 * 
-	 * @return 1D Evolution Grid
+	 * @return 1D Diffusion R<sup>1</sup> State Space Evolution PDE
 	 */
 
-	public EvolutionGrid1D evolutionGrid1D()
+	public Diffusion1DPDE diffusion1DPDE()
 	{
-		return _evolutionGrid1D;
-	}
-
-	/**
-	 * Evolve the State Response from the Starting Value
-	 * 
-	 * @param startingStateResponseArray Starting State Response Array
-	 * 
-	 * @return Time Map of Factor Predictor/State Response Array
-	 */
-
-	public Map<Double, double[]> evolve (
-		final double[] startingStateResponseArray)
-	{
-		double[] timeArray = _evolutionGrid1D.timeArray();
-
-		double[] previousStateResponseArray = startingStateResponseArray;
-
-		double[] factorPredictorArray = _evolutionGrid1D.factorPredictorArray();
-
-		Map<Double, double[]> timePredictorResponseArrayMap = new HashMap<Double, double[]>();
-
-		timePredictorResponseArrayMap.put (timeArray[0], previousStateResponseArray);
-
-		for (int i = 1; i < timeArray.length; ++i) {
-			double[] rhsArray = rhsArray();
-
-			double[] updatedStateResponseArray = null;
-
-			double[][] stateResponseTransitionMatrix = zeroStateResponseTransitionMatrix();
-
-			for (int n = 0; n < factorPredictorArray.length; ++n) {
-				double cflNumber = Double.NaN;
-
-				try {
-					cflNumber = cflNumber (timeArray[i], factorPredictorArray[n]);
-				} catch (Exception e) {
-					e.printStackTrace();
-
-					return null;
-				}
-
-				if (!NumberUtil.IsValid (cflNumber)) {
-					return null;
-				}
-
-				if (0 != n && factorPredictorArray.length != n) {
-					stateResponseTransitionMatrix[n][n - 1] = -1. * cflNumber;
-					stateResponseTransitionMatrix[n][n] = 1. + 2. * cflNumber;
-					stateResponseTransitionMatrix[n][n + 1] = -1. * cflNumber;
-					rhsArray[n] = cflNumber * previousStateResponseArray[n - 1] +
-						(1. + 2. * cflNumber) * previousStateResponseArray[n] +
-						cflNumber * previousStateResponseArray[n + 1];
-				}
-			}
-
-			try {
-				updatedStateResponseArray = new StrictlyTridiagonalSolver (
-					stateResponseTransitionMatrix,
-					rhsArray
-				).forwardSweepBackSubstitution();
-			} catch (Exception e) {
-				e.printStackTrace();
-
-				return null;
-			}
-
-			for (int n = 0; n < factorPredictorArray.length; ++n) {
-				previousStateResponseArray[n] = updatedStateResponseArray[n];
-			}
-
-			timePredictorResponseArrayMap.put (timeArray[0], previousStateResponseArray);
-		}
-
-		return timePredictorResponseArrayMap;
+		return (Diffusion1DPDE) secondOrder1DPDE();
 	}
 }

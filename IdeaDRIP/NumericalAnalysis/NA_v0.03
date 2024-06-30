@@ -33,15 +33,15 @@
  --------------------------
 
  ----------------------------
- #3 - Tridiagonal matrix algorithm
+ #7 - Tridiagonal matrix algorithm
  ----------------------------
  ----------------------------
- 3.1) Is Tridiagonal Check
- 3.2) Core Algorithm:
+ 7.1) Is Tridiagonal Check
+ 7.2) Core Algorithm:
 	- C Prime's and D Prime's Calculation
 	- Back Substitution for the Result
 	- Modified better Book-keeping algorithm
- 3.3) Sherman-Morrison Algorithm:
+ 7.3) Sherman-Morrison Algorithm:
 	- Choice of gamma
 	- Construct Tridiagonal B from A and gamma
 	- u Column from gamma and c_n
@@ -49,7 +49,7 @@
 	- Solve for y from By=d
 	- Solve for q from Bq=u
 	- Use Sherman Morrison Formula to extract x
- 3.4) Alternate Boundary Condition Algorithm:
+ 7.4) Alternate Boundary Condition Algorithm:
 	- Solve Au=d for u
 	- Solve Av={-a_2, 0, ..., -c_n} for v
 	- Full solution is x_i = u_i + x_1 * v_i
@@ -57,35 +57,35 @@
  ----------------------------
 
  --------------------------
- #4 - Crank–Nicolson method
+ #8 - Crank–Nicolson method
  --------------------------
  --------------------------
- 4.1) von Neumann Stability Validator - Inputs; time-step, diffusivity, space step
+ 8.1) von Neumann Stability Validator - Inputs; time-step, diffusivity, space step
 	- 1D => time step * diffusivity / space step ^2 < 0.5
 	- nD => time step * diffusivity / (space step hypotenuse) ^ 2 < 0.5
- 4.2) Set up:
+ 8.2) Set up:
 	- Input: Spatial variable x
 	- Input: Time variable t
 	- Inputs: State variable u, du/dx, d2u/dx2 - all at time t
 	- Second Order, 1D => du/dt = F (u, x, t, du/dx, d2u/dx2)
- 4.3) Finite Difference Evolution Scheme:
+ 8.3) Finite Difference Evolution Scheme:
 	- Time Step delta_t, space step delta_x
 	- Forward Difference: F calculated at x
 	- Backward Difference: F calculated at x + delta_x
 	- Crank Nicolson: Average of Forward/Backward
- 4.4) 1D Diffusion:
+ 8.4) 1D Diffusion:
 	- Inputs: 1D von Neumann Stability Validator, Number of time/space steps
 	- Time Index n, Space Index i
 	- Explicit Tridiagonal form for the discretization - State concentration at n+1 given state concentration at n
 	- Non-linear diffusion coefficient:
 		- Linearization across x_i and x_i+1
 		- Quasi-explicit forms accommodation
- 4.5) 2D Diffusion:
+ 8.5) 2D Diffusion:
 	- Inputs: 2D von Neumann Stability Validator, Number of time/space steps
 	- Time Index n, Space Index i, j
 	- Explicit Tridiagonal form for the discretization - State concentration at n+1 given state concentration at n
 	- Explicit Solution using the Alternative Difference Implicit Scheme
- 4.6) Extension to Iterative Solver Schemes above:
+ 8.6) Extension to Iterative Solver Schemes above:
 	- Input: State Space "velocity" dF/du
 	- Input: State "Step Size" delta_u
 	- Fixed Point Iterative Location Scheme

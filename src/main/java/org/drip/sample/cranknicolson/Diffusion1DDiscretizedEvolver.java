@@ -1,7 +1,14 @@
 
-package org.drip.fdm.definition;
+package org.drip.sample.cranknicolson;
 
+import java.util.Map;
+
+import org.drip.fdm.cranknicolson.CNDiscretizedEvolver1D;
+import org.drip.fdm.definition.EvolutionGrid1D;
+import org.drip.function.definition.RdToR1;
 import org.drip.numerical.common.NumberUtil;
+import org.drip.service.common.FormatUtil;
+import org.drip.service.env.EnvManager;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -76,8 +83,8 @@ import org.drip.numerical.common.NumberUtil;
  */
 
 /**
- * <i>SecondOrder1DNumericalEvolver</i> implements key Second Order Finite Difference Schemes for
- *  R<sup>1</sup> State Factor Space Evolution. The References are:
+ * <i>Diffusion1DDiscretizedEvolver</i> illustrates the construction and usage the Crank-Nicolson Discretized
+ *  State-Space Evolution Scheme for 1D Diffusion. The References are:
  * 
  * <br><br>
  * 	<ul>
@@ -112,106 +119,73 @@ import org.drip.numerical.common.NumberUtil;
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md">Numerical Analysis Library</a></li>
  *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/pde/README.md">Numerical Solution Schemes for PDEs</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/fdm/definition/README.md">Finite Difference PDE Evolver Schemes</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/cranknicolson/README.md">Crank Nicolson Finite Difference Evolution</a></li>
  *  </ul>
  * <br><br>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class SecondOrder1DNumericalEvolver
+public class Diffusion1DDiscretizedEvolver
 {
-	private double _factorIncrement = Double.NaN;
-	private SecondOrder1DPDE _secondOrder1DPDE = null;
 
 	/**
-	 * <i>SecondOrder1DNumericalEvolver</i> Constructor
+	 * Entry Point
 	 * 
-	 * @param secondOrder1DPDE Second Order R<sup>1</sup> State Space Evolution PDE
-	 * @param factorIncrement Factor Increment
+	 * @param argumentArray Command Line Argument Array
 	 * 
-	 * @throws Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown on Error/Exception Situation
 	 */
 
-	public SecondOrder1DNumericalEvolver (
-		final SecondOrder1DPDE secondOrder1DPDE,
-		final double factorIncrement)
+	public static final void main (
+		final String[] argumentArray)
 		throws Exception
 	{
-		if (null == (_secondOrder1DPDE = secondOrder1DPDE) ||
-			!NumberUtil.IsValid (_factorIncrement = factorIncrement) || 0. >= _factorIncrement)
-		{
-			throw new Exception ("SecondOrder1DNumericalEvolver Constructor => Invalid Inputs");
-		}
-	}
+		EnvManager.InitEnv ("");
 
-	/**
-	 * Retrieve the Second Order R<sup>1</sup> State Space Evolution PDE
-	 * 
-	 * @return Second Order R<sup>1</sup> State Space Evolution PDE
-	 */
+		double diffusionCoefficient = 0.5;
 
-	public SecondOrder1DPDE secondOrder1DPDE()
-	{
-		return _secondOrder1DPDE;
-	}
+		double[] timeArray = new double[] {0., 1., 2., 3., 4., 5.};
 
-	/**
-	 * Compute the State Increment using the Euler Forward Difference State Evolver Scheme
-	 * 
-	 * @param time Time
-	 * @param factor Factor Space Value
-	 * 
-	 * @return State Increment using the Euler Forward Difference State Evolver Scheme
-	 * 
-	 * @throws Exception Thrown if the Inputs are Invalid
-	 */
+		double[] factorPredictorArray = new double[] {0., 1., 2., 3., 4., 5.};
 
-	public double eulerForwardDifferenceScheme (
-		final double time,
-		final double factor)
-		throws Exception
-	{
-		return _secondOrder1DPDE.timeDifferential (time, factor);
-	}
+		double[] startingStateResponseArray = new double[] {1., 0., 0., 0., 0., 0.};
 
-	/**
-	 * Compute the State Increment using the Euler Backward Difference State Evolver Scheme
-	 * 
-	 * @param time Time
-	 * @param factor Factor Space Value
-	 * 
-	 * @return State Increment using the Euler Backward Difference State Evolver Scheme
-	 * 
-	 * @throws Exception Thrown if the Inputs are Invalid
-	 */
+		EvolutionGrid1D evolutionGrid1D = new EvolutionGrid1D (timeArray, factorPredictorArray);
 
-	public double eulerBackwardDifferenceScheme (
-		final double time,
-		final double factor)
-		throws Exception
-	{
-		return _secondOrder1DPDE.timeDifferential (time, factor + _factorIncrement);
-	}
+		RdToR1 diffusionFunction = new RdToR1 (null) {
+			@Override public int dimension()
+			{
+				return 2;
+			}
 
-	/**
-	 * Compute the State Increment using the Crank-Nicolson State Evolver Scheme
-	 * 
-	 * @param time Time
-	 * @param factor Factor Space Value
-	 * 
-	 * @return State Increment using the Crank-Nicolson State Evolver Scheme
-	 * 
-	 * @throws Exception Thrown if the Inputs are Invalid
-	 */
+			@Override public double evaluate (
+				double[] variateArray)
+				throws Exception
+			{
+				return diffusionCoefficient;
+			}
+		};
 
-	public double crankNicolsonDifferenceScheme (
-		final double time,
-		final double factor)
-		throws Exception
-	{
-		return 0.5 * (
-			eulerForwardDifferenceScheme (time, factor) + eulerBackwardDifferenceScheme (time, factor)
+		CNDiscretizedEvolver1D crankNicolsonEvolver1D = new CNDiscretizedEvolver1D (
+			evolutionGrid1D,
+			diffusionFunction
 		);
+
+		Map<Double, double[]> timePredictorResponseArrayMap =
+			crankNicolsonEvolver1D.evolve (startingStateResponseArray);
+
+		for (double time : timePredictorResponseArrayMap.keySet()) {
+			System.out.println (
+				"\t| " + FormatUtil.FormatDouble (time, 1, 0, 1.) + " => " + NumberUtil.ArrayRow (
+					timePredictorResponseArrayMap.get (time),
+					1,
+					4,
+					false
+				) + " ||"
+			);
+		}
+
+		EnvManager.TerminateEnv();
 	}
 }

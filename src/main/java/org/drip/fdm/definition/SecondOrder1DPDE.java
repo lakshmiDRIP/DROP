@@ -77,8 +77,8 @@ import org.drip.function.definition.RdToR1;
  */
 
 /**
- * <i>SecondOrder1DPDE</i> implements the Evolution of R<sup>1</sup> State Space Concentration using a Second
- * 	Order PDE. The References are:
+ * <i>SecondOrder1DPDE</i> implements the Evolution of R<sup>1</sup> State Factor Space Response using a
+ *  Second Order PDE. The References are:
  * 
  * <br><br>
  * 	<ul>
@@ -122,75 +122,75 @@ import org.drip.function.definition.RdToR1;
 
 public class SecondOrder1DPDE
 {
-	private RdToR1 _stateEvolutionFunction = null;
-	private R1ToR1 _stateConcentrationFunction = null;
+	private R1ToR1 _stateResponseFunction = null;
+	private RdToR1 _stateResponseEvolutionFunction = null;
 
 	/**
 	 * <i>SecondOrder1DPDE</i> Constructor
 	 * 
-	 * @param stateConcentrationFunction R<sup>1</sup> to R<sup>1</sup> State Concentration Function
-	 * @param stateEvolutionFunction R<sup>d</sup> to R<sup>1</sup> State Evolution Function
+	 * @param stateResponseFunction R<sup>1</sup> to R<sup>1</sup> State Response Function
+	 * @param stateResponseEvolutionFunction R<sup>d</sup> to R<sup>1</sup> State Response Evolution Function
 	 * 
 	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public SecondOrder1DPDE (
-		final R1ToR1 stateConcentrationFunction,
-		final RdToR1 stateEvolutionFunction)
+		final R1ToR1 stateResponseFunction,
+		final RdToR1 stateResponseEvolutionFunction)
 		throws Exception
 	{
-		if (null == (_stateConcentrationFunction = stateConcentrationFunction) ||
-			null == (_stateEvolutionFunction = stateEvolutionFunction))
+		if (null == (_stateResponseFunction = stateResponseFunction) ||
+			null == (_stateResponseEvolutionFunction = stateResponseEvolutionFunction))
 		{
 			throw new Exception ("SecondOrder1DPDE Constructor => Invalid Inputs");
 		}
 	}
 
 	/**
-	 * Retrieve the R<sup>1</sup> to R<sup>1</sup> State Concentration Function
+	 * Retrieve the R<sup>1</sup> to R<sup>1</sup> State Response Function
 	 * 
-	 * @return R<sup>1</sup> to R<sup>1</sup> State Concentration Function
+	 * @return R<sup>1</sup> to R<sup>1</sup> State Response Function
 	 */
 
-	public R1ToR1 stateConcentrationFunction()
+	public R1ToR1 stateResponseFunction()
 	{
-		return _stateConcentrationFunction;
+		return _stateResponseFunction;
 	}
 
 	/**
-	 * Retrieve the R<sup>d</sup> to R<sup>1</sup> State Evolution Function
+	 * Retrieve the R<sup>d</sup> to R<sup>1</sup> State Response Evolution Function
 	 * 
-	 * @return R<sup>d</sup> to R<sup>1</sup> State Evolution Function
+	 * @return R<sup>d</sup> to R<sup>1</sup> State Response Evolution Function
 	 */
 
-	public RdToR1 stateEvolutionFunction()
+	public RdToR1 stateResponseEvolutionFunction()
 	{
-		return _stateEvolutionFunction;
+		return _stateResponseEvolutionFunction;
 	}
 
 	/**
-	 * Compute the State Increment from the space, the time, the state function, and its derivatives
+	 * Compute the State Response Increment at the factor value and the time
 	 * 
 	 * @param time Time
-	 * @param space Space
+	 * @param factor Factor Space Value
 	 * 
-	 * @return State Increment from the space, the time, the state function, and its derivatives
+	 * @return State Response Increment
 	 * 
 	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public double timeDifferential (
 		final double time,
-		final double space)
+		final double factor)
 		throws Exception
 	{
-		return _stateEvolutionFunction.evaluate (
+		return _stateResponseEvolutionFunction.evaluate (
 			new double[] {
-				_stateConcentrationFunction.evaluate (space),
+				_stateResponseFunction.evaluate (factor),
 				time,
-				space,
-				_stateConcentrationFunction.derivative (space, 1),
-				_stateConcentrationFunction.derivative (space, 2),
+				factor,
+				_stateResponseFunction.derivative (factor, 1),
+				_stateResponseFunction.derivative (factor, 2),
 			}
 		);
 	}
