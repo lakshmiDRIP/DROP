@@ -1,9 +1,6 @@
 
 package org.drip.fdm.definition;
 
-import java.util.Map;
-import java.util.TreeMap;
-
 import org.drip.numerical.common.NumberUtil;
 
 /*
@@ -79,8 +76,7 @@ import org.drip.numerical.common.NumberUtil;
  */
 
 /**
- * <i>R1EvolutionSnapshot</i> maintains the time Snapshots for R<sup>1</sup> State Factor Space Evolution.
- * 	The References are:
+ * <i>R1StateResponseSnapshot</i> maintains the R<sup>1</sup> State Factor Space Snapshot. The References are:
  * 
  * <br><br>
  * 	<ul>
@@ -122,128 +118,43 @@ import org.drip.numerical.common.NumberUtil;
  * @author Lakshmi Krishnamurthy
  */
 
-public class R1EvolutionSnapshot
+public class R1StateResponseSnapshot
 {
-	private double[] _factorPredictorArray = null;
-	private Map<Double, R1StateResponseSnapshot> _timeStateResponseMap = null;
+	private double[] _realizationArray = null;
 
 	/**
-	 * <i>R1EvolutionSnapshot</i> Constructor
+	 * <i>R1StateResponseSnapshot</i> Constructor
 	 * 
-	 * @param factorPredictorArray Array of Factor Predictors
+	 * @param realizationArray Array of State Response Realizations
 	 * 
 	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
-	public R1EvolutionSnapshot (
-		final double[] factorPredictorArray)
+	public R1StateResponseSnapshot (
+		final double[] realizationArray)
 		throws Exception
 	{
-		if (null == (_factorPredictorArray = factorPredictorArray) ||
-			0 == _factorPredictorArray.length ||
-			!NumberUtil.IsValid (_factorPredictorArray))
-		{
-			throw new Exception ("R1EvolutionSnapshot Constructor => Invalid Inputs");
+		if (null == realizationArray || 0 == realizationArray.length) {
+			throw new Exception ("R1StateResponseSnapshot Constructor => Invalid Inputs");
 		}
 
-		_timeStateResponseMap = new TreeMap<Double, R1StateResponseSnapshot>();
+		_realizationArray = new double[realizationArray.length];
+
+		for (int i = 0; i < realizationArray.length; ++i) {
+			if (!NumberUtil.IsValid (_realizationArray[i] = realizationArray[i])) {
+				throw new Exception ("R1StateResponseSnapshot Constructor => Invalid Inputs");
+			}
+		}
 	}
 
 	/**
-	 * Retrieve the Array of Factor Predictors
+	 * Retrieve the Array of State Response Realization
 	 * 
-	 * @return Array of Factor Predictors
+	 * @return Array of State Response Realization
 	 */
 
-	public double[] factorPredictorArray()
+	public double[] realizationArray()
 	{
-		return _factorPredictorArray;
-	}
-
-	/**
-	 * Retrieve the Time Map of Realized State Response Array
-	 * 
-	 * @return Time Map of Realized State Response Array
-	 */
-
-	public Map<Double, R1StateResponseSnapshot> timeStateResponseMap()
-	{
-		return _timeStateResponseMap;
-	}
-
-	/**
-	 * Add the State Response Snapshot Array corresponding to the Time Node
-	 * 
-	 * @param time Time Node
-	 * @param stateResponseArray Array of State Responses
-	 * 
-	 * @return TRUE - The State Response Snapshot Array corresponding to the Time Node successfully added
-	 */
-
-	public boolean addStateResponse (
-		final double time,
-		final double[] stateResponseArray)
-	{
-		if (!NumberUtil.IsValid (time) ||
-			null == stateResponseArray ||
-			stateResponseArray.length != _factorPredictorArray.length)
-		{
-			return false;
-		}
-
-		try {
-			_timeStateResponseMap.put (time, new R1StateResponseSnapshot (stateResponseArray));
-		} catch (Exception e) {
-			e.printStackTrace();
-
-			return false;
-		}
-
-		return true;
-	}
-
-	/**
-	 * Add the State Response Snapshot Array corresponding to the Time Node
-	 * 
-	 * @param time Time Node
-	 * @param stateResponseArray Array of State Responses
-	 * @param timeShiftJacobian State Response Factor Node Time Shift Jacobian Matrix
-	 * @param weightedNodeValueConstraintArray Weighted Node Value Constraint Array
-	 * @param vonNeumannStabilityMetricArray von-Neumann Stability Metric Array
-	 * 
-	 * @return TRUE - The State Response Snapshot Array corresponding to the Time Node successfully added
-	 */
-
-	public boolean addStateResponse (
-		final double time,
-		final double[] stateResponseArray,
-		final double[][] timeShiftJacobian,
-		final double[] weightedNodeValueConstraintArray,
-		final double[] vonNeumannStabilityMetricArray)
-	{
-		if (!NumberUtil.IsValid (time) ||
-			null == stateResponseArray ||
-			stateResponseArray.length != _factorPredictorArray.length)
-		{
-			return false;
-		}
-
-		try {
-			_timeStateResponseMap.put (
-				time,
-				new R1StateResponseSnapshotDiagnostics (
-					stateResponseArray,
-					timeShiftJacobian,
-					weightedNodeValueConstraintArray,
-					vonNeumannStabilityMetricArray
-				)
-			);
-		} catch (Exception e) {
-			e.printStackTrace();
-
-			return false;
-		}
-
-		return true;
+		return _realizationArray;
 	}
 }

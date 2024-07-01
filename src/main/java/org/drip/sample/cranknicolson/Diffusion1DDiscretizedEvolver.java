@@ -1,10 +1,10 @@
 
 package org.drip.sample.cranknicolson;
 
-import java.util.Map;
-
 import org.drip.fdm.cranknicolson.CNDiscretizedEvolver1D;
 import org.drip.fdm.definition.EvolutionGrid1D;
+import org.drip.fdm.definition.R1EvolutionSnapshot;
+import org.drip.fdm.definition.R1StateResponseSnapshotDiagnostics;
 import org.drip.function.definition.RdToR1;
 import org.drip.numerical.common.NumberUtil;
 import org.drip.service.common.FormatUtil;
@@ -145,46 +145,268 @@ public class Diffusion1DDiscretizedEvolver
 
 		double diffusionCoefficient = 0.5;
 
-		double[] timeArray = new double[] {0., 1., 2., 3., 4., 5.};
+		double[] timeArray = new double[] {0.0, 0.5, 1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0, 4.5, 5.0};
 
-		double[] factorPredictorArray = new double[] {0., 1., 2., 3., 4., 5.};
+		double[] factorPredictorArray = new double[] {0., 1., 2., 3., 4., 5., 6., 7., 8., 9.};
 
-		double[] startingStateResponseArray = new double[] {1., 0., 0., 0., 0., 0.};
+		double[] startingStateResponseArray = new double[] {1., 0., 0., 0., 0., 0., 0., 0., 0., 0.};
 
-		EvolutionGrid1D evolutionGrid1D = new EvolutionGrid1D (timeArray, factorPredictorArray);
-
-		RdToR1 diffusionFunction = new RdToR1 (null) {
-			@Override public int dimension()
-			{
-				return 2;
-			}
-
-			@Override public double evaluate (
-				double[] variateArray)
-				throws Exception
-			{
-				return diffusionCoefficient;
-			}
-		};
-
-		CNDiscretizedEvolver1D crankNicolsonEvolver1D = new CNDiscretizedEvolver1D (
-			evolutionGrid1D,
-			diffusionFunction
+		System.out.println (
+			"\t|--------------------------------------------------------------------------------------------------||"
 		);
 
-		Map<Double, double[]> timePredictorResponseArrayMap =
-			crankNicolsonEvolver1D.evolve (startingStateResponseArray);
+		System.out.println (
+			"\t|                                         INPUT PARAMETERS                                         ||"
+		);
 
-		for (double time : timePredictorResponseArrayMap.keySet()) {
+		System.out.println (
+			"\t|--------------------------------------------------------------------------------------------------||"
+		);
+
+		System.out.println (
+			"\t| Diffusion Coefficient         =>" +
+				FormatUtil.FormatDouble (diffusionCoefficient, 1, 2, 1.)
+		);
+
+		System.out.println (
+			"\t| Time Node Array               =>" + NumberUtil.ArrayRow (timeArray, 1, 1, false)
+		);
+
+		System.out.println (
+			"\t| Factor Predictor Array        =>" + NumberUtil.ArrayRow (
+				factorPredictorArray,
+				1,
+				1,
+				false
+			)
+		);
+
+		System.out.println (
+			"\t| Starting State Response Array =>" + NumberUtil.ArrayRow (
+				startingStateResponseArray,
+				1,
+				1,
+				false
+			)
+		);
+
+		System.out.println (
+			"\t|--------------------------------------------------------------------------------------------------||"
+		);
+
+		System.out.println();
+
+		R1EvolutionSnapshot r1EvolutionSnapshot = new CNDiscretizedEvolver1D (
+			new EvolutionGrid1D (timeArray, factorPredictorArray),
+			new RdToR1 (null) {
+				@Override public int dimension()
+				{
+					return 2;
+				}
+
+				@Override public double evaluate (
+					double[] variateArray)
+					throws Exception
+				{
+					return diffusionCoefficient;
+				}
+			},
+			true
+		).evolve (startingStateResponseArray);
+
+		System.out.println (
+			"\t|--------------------------------------------------------------------------------------------------||"
+		);
+
+		System.out.println (
+			"\t|                    CRANK-NICOLSON 1D DIFFUSION REALIZED STATE RESPONSE ARRAY                     ||"
+		);
+
+		System.out.println (
+			"\t|--------------------------------------------------------------------------------------------------||"
+		);
+
+		System.out.println (
+			"\t|  Columns: L -> R:                                                                                ||"
+		);
+
+		System.out.println (
+			"\t|    - Time Node Value                                                                             ||"
+		);
+
+		System.out.println (
+			"\t|    - <<State Response Realizations for the Factors Span>>                                        ||"
+		);
+
+		System.out.println (
+			"\t|--------------------------------------------------------------------------------------------------||"
+		);
+
+		for (double time : r1EvolutionSnapshot.timeStateResponseMap().keySet()) {
+			R1StateResponseSnapshotDiagnostics r1StateResponseSnapshotDiagnostics =
+				(R1StateResponseSnapshotDiagnostics) (r1EvolutionSnapshot.timeStateResponseMap().get (time));
+
 			System.out.println (
-				"\t| " + FormatUtil.FormatDouble (time, 1, 0, 1.) + " => " + NumberUtil.ArrayRow (
-					timePredictorResponseArrayMap.get (time),
+				"\t| " + FormatUtil.FormatDouble (time, 1, 1, 1.) + " => " + NumberUtil.ArrayRow (
+					r1StateResponseSnapshotDiagnostics.realizationArray(),
 					1,
 					4,
 					false
 				) + " ||"
 			);
 		}
+
+		System.out.println (
+			"\t|--------------------------------------------------------------------------------------------------||"
+		);
+
+		System.out.println();
+
+		System.out.println (
+			"\t|--------------------------------------------------------------------------------------------------||"
+		);
+
+		System.out.println (
+			"\t|                               VON-NEUMANN STABILITY METRIC ARRAY                                 ||"
+		);
+
+		System.out.println (
+			"\t|--------------------------------------------------------------------------------------------------||"
+		);
+
+		System.out.println (
+			"\t|  Columns: L -> R:                                                                                ||"
+		);
+
+		System.out.println (
+			"\t|    - Time Node Value                                                                             ||"
+		);
+
+		System.out.println (
+			"\t|    - <<von-Neumann Stability Metric Realizations for the Factors Span>>                          ||"
+		);
+
+		System.out.println (
+			"\t|--------------------------------------------------------------------------------------------------||"
+		);
+
+		for (double time : r1EvolutionSnapshot.timeStateResponseMap().keySet()) {
+			R1StateResponseSnapshotDiagnostics r1StateResponseSnapshotDiagnostics =
+				(R1StateResponseSnapshotDiagnostics) (r1EvolutionSnapshot.timeStateResponseMap().get (time));
+
+			System.out.println (
+				"\t| " + FormatUtil.FormatDouble (time, 1, 1, 1.) + " => " + NumberUtil.ArrayRow (
+					r1StateResponseSnapshotDiagnostics.vonNeumannStabilityMetricArray(),
+					1,
+					4,
+					false
+				) + " ||"
+			);
+		}
+
+		System.out.println (
+			"\t|--------------------------------------------------------------------------------------------------||"
+		);
+
+		System.out.println();
+
+		System.out.println (
+			"\t|--------------------------------------------------------------------------------------------------||"
+		);
+
+		System.out.println (
+			"\t|                               WEIGHTED NODE VALUE CONSTRAINT ARRAY                               ||"
+		);
+
+		System.out.println (
+			"\t|--------------------------------------------------------------------------------------------------||"
+		);
+
+		System.out.println (
+			"\t|  Columns: L -> R:                                                                                ||"
+		);
+
+		System.out.println (
+			"\t|    - Time Node Value                                                                             ||"
+		);
+
+		System.out.println (
+			"\t|    - <<Weighted Node Value Constraint for the Factors Span>>                                     ||"
+		);
+
+		System.out.println (
+			"\t|--------------------------------------------------------------------------------------------------||"
+		);
+
+		for (double time : r1EvolutionSnapshot.timeStateResponseMap().keySet()) {
+			R1StateResponseSnapshotDiagnostics r1StateResponseSnapshotDiagnostics =
+				(R1StateResponseSnapshotDiagnostics) (r1EvolutionSnapshot.timeStateResponseMap().get (time));
+
+			System.out.println (
+				"\t| " + FormatUtil.FormatDouble (time, 1, 1, 1.) + " => " + NumberUtil.ArrayRow (
+					r1StateResponseSnapshotDiagnostics.weightedNodeValueConstraintArray(),
+					1,
+					4,
+					false
+				) + " ||"
+			);
+		}
+
+		System.out.println (
+			"\t|--------------------------------------------------------------------------------------------------||"
+		);
+
+		System.out.println();
+
+		System.out.println (
+			"\t|----------------------------------------------------------------------------------------------------||"
+		);
+
+		System.out.println (
+			"\t|                                STATE RESPONSE TIME SHIFT JACOBIAN                                  ||"
+		);
+
+		System.out.println (
+			"\t|----------------------------------------------------------------------------------------------------||"
+		);
+
+		System.out.println (
+			"\t|  Columns: L -> R:                                                                                  ||"
+		);
+
+		System.out.println (
+			"\t|    - Time Node Value                                                                               ||"
+		);
+
+		System.out.println (
+			"\t|    - <<State Response Time Shift Jacobian Matrix for the Factors Span>>                            ||"
+		);
+
+		for (double time : r1EvolutionSnapshot.timeStateResponseMap().keySet()) {
+			System.out.println (
+				"\t|----------------------------------------------------------------------------------------------------||"
+			);
+
+			R1StateResponseSnapshotDiagnostics r1StateResponseSnapshotDiagnostics =
+				(R1StateResponseSnapshotDiagnostics) (r1EvolutionSnapshot.timeStateResponseMap().get (time));
+
+			double[][] timeShiftJacobian = r1StateResponseSnapshotDiagnostics.timeShiftJacobian();
+
+			for (int i = 0; i < timeShiftJacobian.length; ++i) {
+				System.out.println (
+					"\t| " + FormatUtil.FormatDouble (time, 1, 1, 1.) + " => [" + NumberUtil.ArrayRow (
+						timeShiftJacobian[i],
+						1,
+						4,
+						false
+					) + "] ||"
+				);
+			}
+		}
+
+		System.out.println (
+			"\t|----------------------------------------------------------------------------------------------------||"
+		);
 
 		EnvManager.TerminateEnv();
 	}

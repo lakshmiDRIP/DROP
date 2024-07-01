@@ -1,10 +1,8 @@
 
 package org.drip.fdm.cranknicolson;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.drip.fdm.definition.EvolutionGrid1D;
+import org.drip.fdm.definition.R1EvolutionSnapshot;
 import org.drip.function.definition.RdToR1;
 import org.drip.numerical.common.NumberUtil;
 import org.drip.numerical.linearalgebra.StrictlyTridiagonalSolver;
@@ -127,6 +125,7 @@ import org.drip.numerical.linearalgebra.StrictlyTridiagonalSolver;
 
 public class CNDiscretizedEvolver1D
 {
+	private boolean _diagnosticsOn = false;
 	private RdToR1 _diffusionFunction = null;
 	private EvolutionGrid1D _evolutionGrid1D = null;
 
@@ -164,19 +163,23 @@ public class CNDiscretizedEvolver1D
 	 * 
 	 * @param evolutionGrid1D R<sup>1</sup> Evolution Increment
 	 * @param diffusionFunction Diffusion Function
+	 * @param diagnosticsOn TRUE - "Diagnostics On" Mode
 	 * 
 	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public CNDiscretizedEvolver1D (
 		final EvolutionGrid1D evolutionGrid1D,
-		final RdToR1 diffusionFunction)
+		final RdToR1 diffusionFunction,
+		final boolean diagnosticsOn)
 		throws Exception
 	{
 		if (null == (_evolutionGrid1D = evolutionGrid1D) || null == (_diffusionFunction = diffusionFunction))
 		{
 			throw new Exception ("CNDiscretizedEvolver1D Constructor => Invalid Inputs");
 		}
+
+		_diagnosticsOn = diagnosticsOn;
 	}
 
 	/**
@@ -199,6 +202,17 @@ public class CNDiscretizedEvolver1D
 	public RdToR1 diffusionFunction()
 	{
 		return _diffusionFunction;
+	}
+
+	/**
+	 * Retrieve the "Diagnostics On" Mode
+	 * 
+	 * @return "Diagnostics On" Mode
+	 */
+
+	public boolean diagnosticsOn()
+	{
+		return _diagnosticsOn;
 	}
 
 	/**
@@ -266,7 +280,7 @@ public class CNDiscretizedEvolver1D
 	 * @return Time Map of Factor Predictor/State Response Array
 	 */
 
-	public Map<Double, double[]> evolve (
+	public R1EvolutionSnapshot evolve (
 		final double[] startingStateResponseArray)
 	{
 		double[] factorPredictorArray = _evolutionGrid1D.factorPredictorArray();
@@ -277,22 +291,38 @@ public class CNDiscretizedEvolver1D
 			return null;
 		}
 
-		double[] previousStateResponseArray = rhsArray();
+		double[] vonNeumannStabilityMetricArray = null;
+		R1EvolutionSnapshot r1EvolutionSnapshot = null;
+		double[] stateResponseArray = startingStateResponseArray;
+
+		if (_diagnosticsOn) {
+			vonNeumannStabilityMetricArray = new double[factorPredictorArray.length];
+		}
 
 		double[] timeArray = _evolutionGrid1D.timeArray();
 
-		for (int n = 0; n < factorPredictorArray.length; ++n) {
-			previousStateResponseArray[n] = startingStateResponseArray[n];
+		try {
+			r1EvolutionSnapshot = new R1EvolutionSnapshot (factorPredictorArray);
+		} catch (Exception e) {
+			e.printStackTrace();
+
+			return null;
 		}
 
-		Map<Double, double[]> timePredictorResponseArrayMap = new HashMap<Double, double[]>();
-
-		timePredictorResponseArrayMap.put (timeArray[0], startingStateResponseArray);
+		if (_diagnosticsOn) {
+			r1EvolutionSnapshot.addStateResponse (
+				timeArray[0],
+				startingStateResponseArray,
+				zeroStateResponseTransitionMatrix(),
+				rhsArray(),
+				vonNeumannStabilityMetricArray
+			);
+		} else {
+			r1EvolutionSnapshot.addStateResponse (timeArray[0], startingStateResponseArray);
+		}
 
 		for (int i = 1; i < timeArray.length; ++i) {
 			double[] rhsArray = rhsArray();
-
-			double[] updatedStateResponseArray = null;
 
 			double[][] stateResponseTransitionMatrix = zeroStateResponseTransitionMatrix();
 
@@ -317,28 +347,32 @@ public class CNDiscretizedEvolver1D
 					return null;
 				}
 
+				if (_diagnosticsOn) {
+					vonNeumannStabilityMetricArray[n] = vonNeumannStabilityNumber;
+				}
+
 				if (0 != n && factorPredictorArray.length - 1 != n) {
 					stateResponseTransitionMatrix[n][n - 1] = -1. * vonNeumannStabilityNumber;
 					stateResponseTransitionMatrix[n][n] = 1. + 2. * vonNeumannStabilityNumber;
 					stateResponseTransitionMatrix[n][n + 1] = -1. * vonNeumannStabilityNumber;
-					rhsArray[n] = vonNeumannStabilityNumber * previousStateResponseArray[n - 1] +
-						(1. - 2. * vonNeumannStabilityNumber) * previousStateResponseArray[n] +
-						vonNeumannStabilityNumber * previousStateResponseArray[n + 1];
+					rhsArray[n] = vonNeumannStabilityNumber * stateResponseArray[n - 1] +
+						(1. - 2. * vonNeumannStabilityNumber) * stateResponseArray[n] +
+						vonNeumannStabilityNumber * stateResponseArray[n + 1];
 				} else if (factorPredictorArray.length - 1 == n) {
 					stateResponseTransitionMatrix[n][n - 1] = -1. * vonNeumannStabilityNumber;
 					stateResponseTransitionMatrix[n][n] = 1. + 2. * vonNeumannStabilityNumber;
-					rhsArray[n] = vonNeumannStabilityNumber * previousStateResponseArray[n - 1] +
-						(1. - 2. * vonNeumannStabilityNumber) * previousStateResponseArray[n];
+					rhsArray[n] = vonNeumannStabilityNumber * stateResponseArray[n - 1] +
+						(1. - 2. * vonNeumannStabilityNumber) * stateResponseArray[n];
 				} else {
 					stateResponseTransitionMatrix[n][n] = 1. + 2. * vonNeumannStabilityNumber;
 					stateResponseTransitionMatrix[n][n + 1] = -1. * vonNeumannStabilityNumber;
-					rhsArray[n] = (1. - 2. * vonNeumannStabilityNumber) * previousStateResponseArray[n] +
-						vonNeumannStabilityNumber * previousStateResponseArray[n + 1];
+					rhsArray[n] = (1. - 2. * vonNeumannStabilityNumber) * stateResponseArray[n] +
+						vonNeumannStabilityNumber * stateResponseArray[n + 1];
 				}
 			}
 
 			try {
-				updatedStateResponseArray = new StrictlyTridiagonalSolver (
+				stateResponseArray = new StrictlyTridiagonalSolver (
 					stateResponseTransitionMatrix,
 					rhsArray
 				).forwardSweepBackSubstitution();
@@ -348,13 +382,19 @@ public class CNDiscretizedEvolver1D
 				return null;
 			}
 
-			for (int n = 0; n < factorPredictorArray.length; ++n) {
-				previousStateResponseArray[n] = updatedStateResponseArray[n];
+			if (_diagnosticsOn) {
+				r1EvolutionSnapshot.addStateResponse (
+					timeArray[i],
+					stateResponseArray,
+					stateResponseTransitionMatrix,
+					rhsArray,
+					vonNeumannStabilityMetricArray
+				);
+			} else {
+				r1EvolutionSnapshot.addStateResponse (timeArray[i], stateResponseArray);
 			}
-
-			timePredictorResponseArrayMap.put (timeArray[i], updatedStateResponseArray);
 		}
 
-		return timePredictorResponseArrayMap;
+		return r1EvolutionSnapshot;
 	}
 }
