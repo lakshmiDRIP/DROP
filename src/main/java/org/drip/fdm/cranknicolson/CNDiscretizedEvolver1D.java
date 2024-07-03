@@ -230,14 +230,14 @@ public class CNDiscretizedEvolver1D
 
 	public double vonNeumannStabilityNumber (
 		final double time,
-		final double timeStep,
+		final double timeIncrement,
 		final double factor,
 		final double factorIncrement)
 		throws Exception
 	{
 		double stepSizeHypotenuseSquare = factorIncrement * factorIncrement;
 
-		return 0. == stepSizeHypotenuseSquare ? 0. : 0.5 * timeStep * _diffusionFunction.evaluate (
+		return 0. == stepSizeHypotenuseSquare ? 0. : 0.5 * timeIncrement * _diffusionFunction.evaluate (
 			new double[] {time, factor}
 		) / stepSizeHypotenuseSquare;
 	}
@@ -257,14 +257,14 @@ public class CNDiscretizedEvolver1D
 
 	public boolean stabilityCheck (
 		final double time,
-		final double timeStep,
+		final double timeIncrement,
 		final double factor,
 		final double factorIncrement)
 		throws Exception
 	{
 		double vonNeumannStabilityNumber = vonNeumannStabilityNumber (
 			time,
-			timeStep,
+			timeIncrement,
 			factor,
 			factorIncrement
 		);
@@ -299,8 +299,6 @@ public class CNDiscretizedEvolver1D
 			vonNeumannStabilityMetricArray = new double[factorPredictorArray.length];
 		}
 
-		double[] timeArray = _evolutionGrid1D.timeArray();
-
 		try {
 			r1EvolutionSnapshot = new R1EvolutionSnapshot (factorPredictorArray);
 		} catch (Exception e) {
@@ -309,16 +307,23 @@ public class CNDiscretizedEvolver1D
 			return null;
 		}
 
+		double[] timeArray = _evolutionGrid1D.timeArray();
+
 		if (_diagnosticsOn) {
-			r1EvolutionSnapshot.addStateResponse (
+			if (!r1EvolutionSnapshot.addStateResponse (
 				timeArray[0],
 				startingStateResponseArray,
 				zeroStateResponseTransitionMatrix(),
 				rhsArray(),
 				vonNeumannStabilityMetricArray
-			);
+			))
+			{
+				return null;
+			}
 		} else {
-			r1EvolutionSnapshot.addStateResponse (timeArray[0], startingStateResponseArray);
+			if (!r1EvolutionSnapshot.addStateResponse (timeArray[0], startingStateResponseArray)) {
+				return null;
+			}
 		}
 
 		for (int i = 1; i < timeArray.length; ++i) {
@@ -330,20 +335,21 @@ public class CNDiscretizedEvolver1D
 				double vonNeumannStabilityNumber = Double.NaN;
 
 				try {
-					vonNeumannStabilityNumber = vonNeumannStabilityNumber (
-						timeArray[i],
-						timeArray[i] - timeArray[i - 1],
-						factorPredictorArray[n],
-						0 == n ? factorPredictorArray[1] - factorPredictorArray[0] :
-							factorPredictorArray[n] - factorPredictorArray[n - 1]
-					);
+					if (!NumberUtil.IsValid (
+						vonNeumannStabilityNumber = vonNeumannStabilityNumber (
+							timeArray[i],
+							timeArray[i] - timeArray[i - 1],
+							factorPredictorArray[n],
+							0 == n ? factorPredictorArray[1] - factorPredictorArray[0] :
+								factorPredictorArray[n] - factorPredictorArray[n - 1]
+						)
+					))
+					{
+						return null;
+					}
 				} catch (Exception e) {
 					e.printStackTrace();
 
-					return null;
-				}
-
-				if (!NumberUtil.IsValid (vonNeumannStabilityNumber)) {
 					return null;
 				}
 
@@ -372,10 +378,15 @@ public class CNDiscretizedEvolver1D
 			}
 
 			try {
-				stateResponseArray = new StrictlyTridiagonalSolver (
-					stateResponseTransitionMatrix,
-					rhsArray
-				).forwardSweepBackSubstitution();
+				if (null == (
+					stateResponseArray = new StrictlyTridiagonalSolver (
+						stateResponseTransitionMatrix,
+						rhsArray
+					).forwardSweepBackSubstitution()
+				))
+				{
+					return null;
+				};
 			} catch (Exception e) {
 				e.printStackTrace();
 
@@ -383,15 +394,20 @@ public class CNDiscretizedEvolver1D
 			}
 
 			if (_diagnosticsOn) {
-				r1EvolutionSnapshot.addStateResponse (
+				if (!r1EvolutionSnapshot.addStateResponse (
 					timeArray[i],
 					stateResponseArray,
 					stateResponseTransitionMatrix,
 					rhsArray,
 					vonNeumannStabilityMetricArray
-				);
+				))
+				{
+					return null;
+				}
 			} else {
-				r1EvolutionSnapshot.addStateResponse (timeArray[i], stateResponseArray);
+				if (!r1EvolutionSnapshot.addStateResponse (timeArray[i], stateResponseArray)) {
+					return null;
+				}
 			}
 		}
 
