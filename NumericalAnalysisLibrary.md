@@ -11,7 +11,7 @@ Numerical Analysis Library contains the supporting Functionality for Numerical M
 
  |        Document         | Link |
  |-------------------------|------|
- | Technical Specification | [*Latest*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/NumericalAnalysis/NumericalAnalysis_v6.39.pdf) [*Previous*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/NumericalAnalysis) |
+ | Technical Specification | [*Latest*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/NumericalAnalysis/NumericalAnalysis_v6.40.pdf) [*Previous*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/NumericalAnalysis) |
  | User Guide              |  |
  | API                     | [*Javadoc*](https://lakshmidrip.github.io/DROP/Javadoc/index.html)|
 
@@ -348,6 +348,11 @@ Numerical Analysis Library contains the supporting Functionality for Numerical M
 	* Example: 2D Diffusion
 	* Crank–Nicolson for nonlinear problems
 	* Application in financial mathematics
+	* References
+ * Sylvester equation
+	* Existence and uniqueness of the solutions
+	* Roth's removal rule
+	* Numerical solutions
 	* References
 
 
