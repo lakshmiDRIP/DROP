@@ -11,7 +11,7 @@ Numerical Analysis Library contains the supporting Functionality for Numerical M
 
  |        Document         | Link |
  |-------------------------|------|
- | Technical Specification | [*Latest*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/NumericalAnalysis/NumericalAnalysis_v6.40.pdf) [*Previous*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/NumericalAnalysis) |
+ | Technical Specification | [*Latest*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/NumericalAnalysis/NumericalAnalysis_v6.41.pdf) [*Previous*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/NumericalAnalysis) |
  | User Guide              |  |
  | API                     | [*Javadoc*](https://lakshmidrip.github.io/DROP/Javadoc/index.html)|
 
@@ -353,6 +353,23 @@ Numerical Analysis Library contains the supporting Functionality for Numerical M
 	* Existence and uniqueness of the solutions
 	* Roth's removal rule
 	* Numerical solutions
+	* References
+ * Crank–Nicolson Method
+	* Description
+	* Forward and Back Substitution
+		* Forward Substitution
+	* Properties
+	* Special Forms
+		* Unitriangular Matrix
+		* Strictly Triangular Matrix
+		* Atomic Triangular Matrix
+			* Lower Block Triangular Matrix
+			* Upper Block Triangular Matrix
+	* Triangularizability
+		* Simultaneous Triangularizability
+	* Algebras of Triangular Matrices
+		* Borel Subgroups and Borel Subalgebras
+		* Examples
 	* References
 
 
