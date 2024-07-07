@@ -1,6 +1,10 @@
 
 package org.drip.numerical.linearalgebra;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import org.drip.function.definition.R1ToR1;
 import org.drip.numerical.common.NumberUtil;
 
 /*
@@ -113,68 +117,8 @@ import org.drip.numerical.common.NumberUtil;
  * @author Lakshmi Krishnamurthy
  */
 
-public class TriangularMatrix
+public class TriangularMatrix extends SquareMatrix
 {
-
-	/**
-	 * Retrieve the Triangular Type of the Matrix
-	 * 
-	 * @param squareMatrix Input Square Matrix
-	 * 
-	 * @return The Triangular Type
-	 */
-
-	public static final int Type (
-		final double[][] squareMatrix)
-	{
-		if (null == squareMatrix) {
-			return NON_TRIANGULAR;
-		}
-
-		boolean lowerTriangular = true;
-		boolean upperTriangular = true;
-		int size = squareMatrix.length;
-
-		if (1 >= size || null == squareMatrix[0] || size != squareMatrix[0].length) {
-			return NON_TRIANGULAR;
-		}
-
-		for (int i = 0; i < size; ++i) {
-			for (int j = 0; j < size; ++j) {
-				if (i > j) {
-					if (NumberUtil.WithinTolerance (squareMatrix[i][j], 0.)) {
-						lowerTriangular = false;
-
-						if (!upperTriangular) {
-							break;
-						}
-					}
-				} else if (i < j) {
-					if (NumberUtil.WithinTolerance (squareMatrix[i][j], 0.)) {
-						upperTriangular = false;
-
-						if (!lowerTriangular) {
-							break;
-						}
-					}
-				}
-			}
-		}
-
-		if (lowerTriangular && upperTriangular) {
-			return LOWER_AND_UPPER_TRIANGULAR;
-		}
-
-		if (lowerTriangular && !upperTriangular) {
-			return LOWER_TRIANGULAR;
-		}
-
-		if (!lowerTriangular && upperTriangular) {
-			return UPPER_TRIANGULAR;
-		}
-
-		return NON_TRIANGULAR;
-	}
 
 	/**
 	 * Lower Triangular Matrix
@@ -201,12 +145,72 @@ public class TriangularMatrix
 	public static int NON_TRIANGULAR = 0;
 
 	private int _type = Integer.MIN_VALUE;
-	private double[][] _squareMatrix = null;
+
+	/**
+	 * Retrieve the Triangular Type of the Matrix
+	 * 
+	 * @param r2Array R<sup>2</sup> Array
+	 * 
+	 * @return The Triangular Type
+	 */
+
+	public static final int Type (
+		final double[][] r2Array)
+	{
+		if (null == r2Array) {
+			return NON_TRIANGULAR;
+		}
+
+		boolean lowerTriangular = true;
+		boolean upperTriangular = true;
+
+		if (1 >= r2Array.length || null == r2Array[0] || r2Array.length != r2Array[0].length) {
+			return NON_TRIANGULAR;
+		}
+
+		for (int i = 0; i < r2Array.length; ++i) {
+			for (int j = 0; j < r2Array.length; ++j) {
+				if (i < j) {
+					if (NumberUtil.WithinTolerance (r2Array[i][j], 0.)) {
+						upperTriangular = false;
+
+						if (!lowerTriangular) {
+							break;
+						}
+					}
+				} else if (i > j) {
+					if (NumberUtil.WithinTolerance (r2Array[i][j], 0.)) {
+						lowerTriangular = false;
+
+						if (!upperTriangular) {
+							break;
+						}
+					}
+				}
+			}
+		}
+
+		if (upperTriangular && lowerTriangular) {
+			return LOWER_AND_UPPER_TRIANGULAR;
+		}
+
+		if (upperTriangular && !lowerTriangular) {
+			return UPPER_TRIANGULAR;
+		}
+
+		if (!upperTriangular && lowerTriangular) {
+			return LOWER_TRIANGULAR;
+		}
+
+		return NON_TRIANGULAR;
+	}
 
 	private boolean zeroDiagonalEntries()
 	{
-		for (int i = 0; i < _squareMatrix.length; ++i) {
-			if (0. != _squareMatrix[i][i]) {
+		double[][] r2Array = r2Array();
+
+		for (int i = 0; i < r2Array.length; ++i) {
+			if (0. != r2Array[i][i]) {
 				return false;
 			}
 		}
@@ -217,29 +221,26 @@ public class TriangularMatrix
 	/**
 	 * <i>TriangularMatrix</i> Constructor
 	 * 
-	 * @param squareMatrix Input Square Matrix
+	 * @param r2Array R<sup>2</sup> Array
 	 * 
 	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
-	public TriangularMatrix (
-		final double[][] squareMatrix)
-		throws Exception
+	public static TriangularMatrix Standard (
+		final double[][] r2Array)
 	{
-		if (NON_TRIANGULAR == (_type = Type (_squareMatrix = squareMatrix))) {
-			throw new Exception ("TriangularMatrix Constructor => Invalid Inputs");
-		}
+		int type = Type (r2Array);
+
+		return NON_TRIANGULAR == type ? null : new TriangularMatrix (r2Array, type);
 	}
 
-	/**
-	 * Retrieve the Square Matrix
-	 * 
-	 * @return Square Matrix
-	 */
-
-	public double[][] squareMatrix()
+	protected TriangularMatrix (
+		final double[][] r2Array,
+		final int type)
 	{
-		return _squareMatrix;
+		super (r2Array);
+
+		_type = type;
 	}
 
 	/**
@@ -287,14 +288,14 @@ public class TriangularMatrix
 	}
 
 	/**
-	 * Indicate if the Matrix is not a Valid Triangular Matrix
+	 * Calculate whether the Matrix is "Triangularizable"
 	 * 
-	 * @return TRUE - Matrix is not a Valid Triangular Matrix
+	 * @return TRUE - Matrix is "Triangularizable"
 	 */
 
-	public boolean isInvalid()
+	@Override public boolean isTriangularizable()
 	{
-		return LOWER_TRIANGULAR != _type && UPPER_TRIANGULAR != _type;
+		return true;
 	}
 
 	/**
@@ -305,13 +306,59 @@ public class TriangularMatrix
 
 	public boolean isUnitriangular()
 	{
-		for (int i = 0; i < _squareMatrix.length; ++i) {
-			if (1. != _squareMatrix[i][i]) {
+		double[][] r2Array = r2Array();
+
+		for (int i = 0; i < r2Array.length; ++i) {
+			if (1. != r2Array[i][i]) {
 				return false;
 			}
 		}
 
 		return true;
+	}
+
+	/**
+	 * Indicate if the Matrix is "Unit" Triangular
+	 * 
+	 * @return TRUE - Matrix is "Unit" Triangular
+	 */
+
+	public boolean isUnit()
+	{
+		return isUnitriangular();
+	}
+
+	/**
+	 * Indicate if the Matrix is "Normed" Triangular
+	 * 
+	 * @return TRUE - Matrix is "Normed" Triangular
+	 */
+
+	public boolean isNormed()
+	{
+		return isUnitriangular();
+	}
+
+	/**
+	 * Indicate if the Matrix is Upper Unitriangular
+	 * 
+	 * @return TRUE - Matrix is Upper Unitriangular
+	 */
+
+	public boolean isUpperUnitriangular()
+	{
+		return UPPER_TRIANGULAR == _type && isUnitriangular();
+	}
+
+	/**
+	 * Indicate if the Matrix is Lower Unitriangular
+	 * 
+	 * @return TRUE - Matrix is Lower Unitriangular
+	 */
+
+	public boolean isLowerUnitriangular()
+	{
+		return LOWER_TRIANGULAR == _type && isUnitriangular();
 	}
 
 	/**
@@ -337,17 +384,164 @@ public class TriangularMatrix
 	}
 
 	/**
+	 * Indicate if the Matrix is Lower "Atomic" Unitriangular
+	 * 
+	 * @return TRUE - Matrix is Lower "Atomic" Unitriangular
+	 */
+
+	public boolean isAtomicLower()
+	{
+		if (!isLowerUnitriangular()) {
+			return false;
+		}
+
+		int unitValueColumnIndex = -1;
+
+		double[][] r2Array = r2Array();
+
+		for (int columnIndex = 0; columnIndex < r2Array.length - 1; ++columnIndex) {
+			if (0 != r2Array[r2Array.length][columnIndex] && 1. != r2Array[r2Array.length][columnIndex]) {
+				return false;
+			}
+
+			if (1. == r2Array[r2Array.length][columnIndex]) {
+				if (-1 != unitValueColumnIndex) {
+					return false;
+				}
+
+				unitValueColumnIndex = columnIndex;
+			}
+		}
+
+		if (-1 == unitValueColumnIndex) {
+			return false;
+		}
+
+		for (int rowIndex = 0; rowIndex < r2Array.length - 1; ++rowIndex) {
+			for (int columnIndex = 0; columnIndex < rowIndex; ++columnIndex) {
+				if (unitValueColumnIndex == columnIndex) {
+					if (1. != r2Array[rowIndex][unitValueColumnIndex]) {
+						return false;
+					}
+				} else if (0. != r2Array[rowIndex][columnIndex]) {
+					return false;
+				}
+			}
+		}
+
+		return true;
+	}
+
+	/**
+	 * Indicate if the Matrix is Upper "Atomic" Unitriangular
+	 * 
+	 * @return TRUE - Matrix is Upper "Atomic" Unitriangular
+	 */
+
+	public boolean isAtomicUpper()
+	{
+		if (!isUpperUnitriangular()) {
+			return false;
+		}
+
+		int unitValueColumnIndex = -1;
+
+		double[][] r2Array = r2Array();
+
+		for (int columnIndex = 0; columnIndex < r2Array.length - 1; ++columnIndex) {
+			if (0 != r2Array[0][columnIndex] && 1. != r2Array[0][columnIndex]) {
+				return false;
+			}
+
+			if (1. == r2Array[0][columnIndex]) {
+				if (-1 != unitValueColumnIndex) {
+					return false;
+				}
+
+				unitValueColumnIndex = columnIndex;
+			}
+		}
+
+		if (-1 == unitValueColumnIndex) {
+			return false;
+		}
+
+		for (int rowIndex = 1; rowIndex < r2Array.length - 1; ++rowIndex) {
+			for (int columnIndex = rowIndex + 1; columnIndex < r2Array.length; ++columnIndex) {
+				if (unitValueColumnIndex == columnIndex) {
+					if (1. != r2Array[rowIndex][unitValueColumnIndex]) {
+						return false;
+					}
+				} else if (0. != r2Array[rowIndex][columnIndex]) {
+					return false;
+				}
+			}
+		}
+
+		return true;
+	}
+
+	/**
+	 * Indicate if the Matrix is "Atomic" Unitriangular
+	 * 
+	 * @return TRUE - Matrix is "Atomic" Unitriangular
+	 */
+
+	public boolean isAtomic()
+	{
+		return isAtomicUpper() || isAtomicLower();
+	}
+
+	/**
+	 * Indicate if the Matrix is Frobenius Unitriangular
+	 * 
+	 * @return TRUE - Matrix is Frobenius Unitriangular
+	 */
+
+	public boolean isFrobenius()
+	{
+		return isAtomic();
+	}
+
+	/**
+	 * Indicate if the Matrix is Gauss Unitriangular
+	 * 
+	 * @return TRUE - Matrix is Gauss Unitriangular
+	 */
+
+	public boolean isGauss()
+	{
+		return isAtomic();
+	}
+
+	/**
+	 * Indicate if the Matrix is Gauss Transformation Unitriangular
+	 * 
+	 * @return TRUE - Matrix is Gauss Transformation Unitriangular
+	 */
+
+	public boolean isGaussTransformation()
+	{
+		return isAtomic();
+	}
+
+	/**
 	 * Compute the Determinant of the Triangular Matrix
 	 * 
 	 * @return Determinant of the Triangular Matrix
+	 * 
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
-	public double determinant()
+	@Override public double determinant()
+		throws Exception
 	{
 		double determinant = 1.;
 
-		for (int i = 0; i < _squareMatrix.length; ++i) {
-			determinant *= _squareMatrix[i][i];
+		double[][] r2Array = r2Array();
+
+		for (int i = 0; i < r2Array.length; ++i) {
+			determinant *= r2Array[i][i];
 		}
 
 		return determinant;
@@ -357,10 +551,61 @@ public class TriangularMatrix
 	 * Compute the Permanent of the Triangular Matrix
 	 * 
 	 * @return Permanent of the Triangular Matrix
+	 * 
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public double permanent()
+		throws Exception
 	{
 		return determinant();
+	}
+
+	/**
+	 * Retrieve the Eigenvalue Multiplicity Map
+	 * 
+	 * @return Eigenvalue Multiplicity Map
+	 */
+
+	public Map<Double, Integer> eigenValueMultiplicityMap()
+	{
+		Map<Double, Integer> eigenValueMultiplicityMap = new HashMap<Double, Integer>();
+
+		for (double eigenValue : diagonalEntryArray()) {
+			eigenValueMultiplicityMap.put (
+				eigenValue,
+				eigenValueMultiplicityMap.containsKey (eigenValue) ?
+					eigenValueMultiplicityMap.get (eigenValue) + 1 : 1
+			);
+		}
+
+		return eigenValueMultiplicityMap;
+	}
+
+	/**
+	 * Retrieve the Characteristic Polynomial of the Eigenvalues
+	 * 
+	 * @return Characteristic Polynomial of the Eigenvalues
+	 */
+
+	public R1ToR1 characteristicPolynomial()
+	{
+		final double[] diagonalEntryArray = diagonalEntryArray();
+
+		return new R1ToR1 (null)
+		{
+			@Override public double evaluate (
+				final double x)
+				throws Exception
+			{
+				double value = 1.;
+
+				for (double eigenValue : diagonalEntryArray) {
+					value *= (x - eigenValue);
+				}
+
+				return value;
+			}
+		};
 	}
 }

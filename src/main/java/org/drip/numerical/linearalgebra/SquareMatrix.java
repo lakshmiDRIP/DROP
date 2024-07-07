@@ -3,6 +3,7 @@ package org.drip.numerical.linearalgebra;
 
 import java.util.Map;
 
+import org.drip.function.definition.R1ToR1;
 import org.drip.numerical.common.NumberUtil;
 import org.drip.numerical.eigen.EigenOutput;
 import org.drip.numerical.eigen.QREigenComponentExtractor;
@@ -129,7 +130,7 @@ public class SquareMatrix
 	 * @return Standard Instance of <i>SquareMatrix</i>
 	 */
 
-	public static final SquareMatrix Standard (
+	public static SquareMatrix Standard (
 		final double[][] r2Array)
 	{
 		if (!MatrixUtil.IsSquare (r2Array)) {
@@ -254,6 +255,17 @@ public class SquareMatrix
 	}
 
 	/**
+	 * Calculate whether the Matrix is "Triangularizable"
+	 * 
+	 * @return TRUE - Matrix is "Triangularizable"
+	 */
+
+	public boolean isTriangularizable()
+	{
+		return true;
+	}
+
+	/**
 	 * Eigenize and Extract the Components of the Specified Matrix
 	 * 
 	 * @return The EigenComponents
@@ -262,6 +274,23 @@ public class SquareMatrix
 	public EigenOutput eigenize()
 	{
 		return QREigenComponentExtractor.Standard().eigenize (_r2Array);
+	}
+
+	/**
+	 * Retrieve the Array of Diagonal Entries
+	 * 
+	 * @return Array of Diagonal Entries
+	 */
+
+	public double[] diagonalEntryArray()
+	{
+		double[] diagonalEntryArray = new double[_r2Array.length];
+
+		for (int i = 0; i < _r2Array.length; ++i) {
+			diagonalEntryArray[i] = _r2Array[i][i];
+		}
+
+		return diagonalEntryArray;
 	}
 
 	/**
@@ -295,5 +324,18 @@ public class SquareMatrix
 		}
 
 		return eigenOutput.determinant();
+	}
+
+	/**
+	 * Retrieve the Characteristic Polynomial of the Eigenvalues
+	 * 
+	 * @return Characteristic Polynomial of the Eigenvalues
+	 */
+
+	public R1ToR1 characteristicPolynomial()
+	{
+		EigenOutput eigenOutput = QREigenComponentExtractor.Standard().eigenize (_r2Array);
+
+		return null == eigenOutput ? null : eigenOutput.characteristicPolynomial();
 	}
 }

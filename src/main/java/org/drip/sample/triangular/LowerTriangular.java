@@ -1,12 +1,12 @@
 
-package org.drip.sample.tridiagonal;
+package org.drip.sample.triangular;
 
 import java.util.Date;
 
-import org.drip.measure.crng.RdRandomSequence;
+import org.drip.measure.crng.RandomMatrixGenerator;
 import org.drip.numerical.common.NumberUtil;
-import org.drip.numerical.linearalgebra.MatrixUtil;
-import org.drip.numerical.linearalgebra.StrictlyTridiagonalSolver;
+import org.drip.numerical.linearalgebra.TriangularMatrix;
+import org.drip.service.common.StringUtil;
 import org.drip.service.env.EnvManager;
 
 /*
@@ -82,30 +82,28 @@ import org.drip.service.env.EnvManager;
  */
 
 /**
- * <i>NonPeriodicSolverSuite</i> tests the Application of the Tridiagonal Solver for a variety of Input
- *  Matrices. The References are:
+ * <i>LowerTriangularMatrix</i> shows the Construction, the Usage, and the Analysis of a Lower Triangular
+ *  Matrix. The References are:
  * 
  * <br><br>
  * 	<ul>
  * 		<li>
- * 			Batista, M., and A. R. A. Ibrahim-Karawia (2009): The use of Sherman-Morrison-Woodbury formula
- * 				to solve cyclic block tridiagonal and cyclic block penta-diagonal linear systems of equations
- * 				<i>Applied Mathematics of Computation</i> <b>210 (2)</b> 558-563
+ * 			Axler, S. J. (1997): <i>Linear Algebra Done Right 2<sup>nd</sup> Edition</i> <b>Springer</b>
+ * 				New York NY
  * 		</li>
  * 		<li>
- * 			Datta, B. N. (2010): <i>Numerical Linear Algebra and Applications 2<sup>nd</sup> Edition</i>
- * 				<b>SIAM</b> Philadelphia, PA
+ * 			Bernstein, D. S. (2009): <i>Matrix Mathematics: Theory, Facts, and Formulas 2<sup>nd</sup>
+ * 				Edition</i> <b>Princeton University Press</b> Princeton NJ
  * 		</li>
  * 		<li>
- * 			Gallopoulos, E., B. Phillippe, and A. H. Sameh (2016): <i>Parallelism in Matrix Computations</i>
- * 				<b>Spring</b> Berlin, Germany
+ * 			Herstein, I. N. (1975): <i>Topics in Algebra 2<sup>nd</sup> Edition</i> <b>Wiley</b> New York NY
  * 		</li>
  * 		<li>
- * 			Niyogi, P. (2006): <i>Introduction to Computational Fluid Dynamics</i> <b>Pearson</b> London, UK
+ * 			Prasolov, V. V. (1994): <i>Topics in Algebra</i> <b>American Mathematical Society</b> Providence
+ * 				RI
  * 		</li>
  * 		<li>
- * 			Wikipedia (2024): Tridiagonal Matrix Algorithm
- * 				https://en.wikipedia.org/wiki/Tridiagonal_matrix_algorithm
+ * 			Wikipedia (2024): Triangular Matrix https://en.wikipedia.org/wiki/Triangular_matrix
  * 		</li>
  * 	</ul>
  * 
@@ -114,14 +112,14 @@ import org.drip.service.env.EnvManager;
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md">Numerical Analysis Library</a></li>
  *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/README.md">DROP API Construction and Usage</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/tridiagonal/README.md">Regular/Periodic Tridiagonal Solver Schemes</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/triangular/README.md">Triangular Matrix Variants and Solutions</a></li>
  *  </ul>
  * <br><br>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class NonPeriodicSolverSuite
+public class LowerTriangular
 {
 
 	private static final void Trial (
@@ -129,9 +127,11 @@ public class NonPeriodicSolverSuite
 		final double maximumElement)
 		throws Exception
 	{
-		double[] xArray = RdRandomSequence.OneD (elementCount, maximumElement, true);
-
-		double[][] tridiagonalMatrix = RdRandomSequence.Tridiagonal (elementCount, maximumElement, true);
+		TriangularMatrix lowerTriangular = RandomMatrixGenerator.LowerTriangular (
+			elementCount,
+			maximumElement,
+			true
+		);
 
 		System.out.println ("\t|-----------------------------------------------------------------||");
 
@@ -139,10 +139,12 @@ public class NonPeriodicSolverSuite
 
 		System.out.println ("\t|-----------------------------------------------------------------||");
 
-		for (int i = 0; i < tridiagonalMatrix.length; ++i) {
+		double[][] lowerTriangularR2Array = lowerTriangular.r2Array();
+
+		for (int i = 0; i < lowerTriangularR2Array.length; ++i) {
 			System.out.println (
 				"\t| Tridiagonal " + elementCount + " x " + elementCount + " => [" + NumberUtil.ArrayRow (
-					tridiagonalMatrix[i],
+					lowerTriangularR2Array[i],
 					2,
 					1,
 					false
@@ -152,31 +154,43 @@ public class NonPeriodicSolverSuite
 
 		System.out.println ("\t|-----------------------------------------------------------------||");
 
-		double[] rhsArray = MatrixUtil.Product (tridiagonalMatrix, xArray);
+		System.out.println (
+			"\t| Is Upper Triangular        => " + StringUtil.ToString (lowerTriangular.isUpper())
+		);
 
 		System.out.println (
-			"\t| RHS Input      {" + NumberUtil.ArrayRow (rhsArray, 5, 0, false) + "} ||"
+			"\t| Is Lower Triangular        => " + StringUtil.ToString (lowerTriangular.isLower())
+		);
+
+		System.out.println (
+			"\t| Is Diagonal                => " + StringUtil.ToString (lowerTriangular.isDiagonal())
+		);
+
+		System.out.println (
+			"\t| Is Triangularizable        => " + StringUtil.ToString (lowerTriangular.isTriangularizable())
+		);
+
+		System.out.println (
+			"\t| Is Unitriangular           => " + StringUtil.ToString (lowerTriangular.isUnitriangular())
+		);
+
+		System.out.println (
+			"\t| Is Unit Triangular         => " + StringUtil.ToString (lowerTriangular.isUnit())
+		);
+
+		System.out.println (
+			"\t| Is Normed Triangular       => " + StringUtil.ToString (lowerTriangular.isNormed())
+		);
+
+		System.out.println (
+			"\t| Is Upper Unitriangular     => " + StringUtil.ToString (lowerTriangular.isUpperUnitriangular())
+		);
+
+		System.out.println (
+			"\t| Is Lower Unitriangular     => " + StringUtil.ToString (lowerTriangular.isLowerUnitriangular())
 		);
 
 		System.out.println ("\t|-----------------------------------------------------------------||");
-
-		System.out.println (
-			"\t| X Input           =>  " + NumberUtil.ArrayRow (xArray, 2, 1, false) + "  ||"
-		);
-
-		System.out.println (
-			"\t| Expected          =>  " +
-			NumberUtil.ArrayRow (
-				new StrictlyTridiagonalSolver (tridiagonalMatrix, rhsArray).forwardSweepBackSubstitution(),
-				2,
-				1,
-				false
-			) + "  ||"
-		);
-
-		System.out.println ("\t|-----------------------------------------------------------------||");
-
-		System.out.println();
 	}
 
 	/**
@@ -197,14 +211,6 @@ public class NonPeriodicSolverSuite
 
 		int elementCount = 6;
 		double maximumElement = 99.;
-
-		Trial (elementCount, maximumElement);
-
-		Trial (elementCount, maximumElement);
-
-		Trial (elementCount, maximumElement);
-
-		Trial (elementCount, maximumElement);
 
 		Trial (elementCount, maximumElement);
 

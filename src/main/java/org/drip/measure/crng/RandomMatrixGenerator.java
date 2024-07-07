@@ -1,24 +1,14 @@
 
-package org.drip.numerical.eigen;
+package org.drip.measure.crng;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import org.drip.function.definition.R1ToR1;
+import org.drip.numerical.linearalgebra.TriangularMatrix;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
- * Copyright (C) 2022 Lakshmi Krishnamurthy
- * Copyright (C) 2021 Lakshmi Krishnamurthy
- * Copyright (C) 2020 Lakshmi Krishnamurthy
- * Copyright (C) 2019 Lakshmi Krishnamurthy
- * Copyright (C) 2018 Lakshmi Krishnamurthy
- * Copyright (C) 2017 Lakshmi Krishnamurthy
- * Copyright (C) 2016 Lakshmi Krishnamurthy
- * Copyright (C) 2015 Lakshmi Krishnamurthy
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
  * 
  *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
  *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
@@ -86,142 +76,95 @@ import org.drip.function.definition.R1ToR1;
  */
 
 /**
- * <i>EigenOutput</i> holds the results of the Eigenization Operation - the Eigenvectors and the Eigenvalues.
+ * <i>RandomMatrixGenerator</i> provides Functionality for generating different Kinds of Random Matrices. The
+ *  References are:
+ * 
+ * <br><br>
+ * 	<ul>
+ * 		<li>
+ * 			Axler, S. J. (1997): <i>Linear Algebra Done Right 2<sup>nd</sup> Edition</i> <b>Springer</b>
+ * 				New York NY
+ * 		</li>
+ * 		<li>
+ * 			Bernstein, D. S. (2009): <i>Matrix Mathematics: Theory, Facts, and Formulas 2<sup>nd</sup>
+ * 				Edition</i> <b>Princeton University Press</b> Princeton NJ
+ * 		</li>
+ * 		<li>
+ * 			Herstein, I. N. (1975): <i>Topics in Algebra 2<sup>nd</sup> Edition</i> <b>Wiley</b> New York NY
+ * 		</li>
+ * 		<li>
+ * 			Prasolov, V. V. (1994): <i>Topics in Algebra</i> <b>American Mathematical Society</b> Providence
+ * 				RI
+ * 		</li>
+ * 		<li>
+ * 			Wikipedia (2024): Triangular Matrix https://en.wikipedia.org/wiki/Triangular_matrix
+ * 		</li>
+ * 	</ul>
  * 
  * <br><br>
  *  <ul>
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md">Numerical Analysis Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/numerical">Numerical Quadrature, Differentiation, Eigenization, Linear Algebra, and Utilities</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/numerical/eigen">QR PICE Eigen-Component Extraction Methodologies</a></li>
+ *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/numerical/README.md">Numerical Quadrature, Differentiation, Eigenization, Linear Algebra, and Utilities</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/numerical/linearalgebra/README.md">Linear Algebra Matrix Transform Library</a></li>
  *  </ul>
  * <br><br>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class EigenOutput
+public class RandomMatrixGenerator
 {
-	private double[] _eigenValueArray = null;
-	private double[][] _eigenVectorArray = null;
 
 	/**
-	 * EigenOutput Constructor
+	 * Construct a Lower Triangular Matrix of Random Elements up to the Maximum Value
 	 * 
-	 * @param eigenVectorArray Array of Eigenvectors
-	 * @param eigenValueArray Array of Eigenvalues
+	 * @param elementCount Number of Elements in the Array
+	 * @param maximumElement Maximum Element
+	 * @param isEntryInteger TRUE - Entry is an Integer
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @return Lower Triangular Matrix of Random Elements up to the Maximum Value
 	 */
 
-	public EigenOutput (
-		final double[][] eigenVectorArray,
-		final double[] eigenValueArray)
-		throws java.lang.Exception
+	public static final TriangularMatrix LowerTriangular (
+		final int elementCount,
+		final double maximumElement,
+		final boolean isEntryInteger)
 	{
-		if (null == (_eigenVectorArray = eigenVectorArray) ||
-			null == (_eigenValueArray = eigenValueArray)
-		)
-		{
-			throw new java.lang.Exception (
-				"EigenOutput ctr: Invalid Inputs"
-			);
-		}
+		double[][] r2Array = RdRandomSequence.TwoD (elementCount, maximumElement, isEntryInteger);
 
-		int eigenComponentCount = _eigenValueArray.length;
+    	for (int i = 0; i < r2Array.length; ++i) {
+        	for (int j = i + 1; j < r2Array.length; ++j) {
+    			r2Array[i][j] = 0.;
+        	}
+    	}
 
-		if (0 == eigenComponentCount || eigenComponentCount != _eigenVectorArray.length ||
-			null == _eigenVectorArray[0] || eigenComponentCount != _eigenVectorArray[0].length
-		)
-		{
-			throw new java.lang.Exception (
-				"EigenOutput ctr: Invalid Inputs"
-			);
-		}
+		return TriangularMatrix.Standard (r2Array);
 	}
 
 	/**
-	 * Retrieve the Array of Eigenvectors
+	 * Construct an Upper Triangular Matrix of Random Elements up to the Maximum Value
 	 * 
-	 * @return The Array of Eigenvectors
+	 * @param elementCount Number of Elements in the Array
+	 * @param maximumElement Maximum Element
+	 * @param isEntryInteger TRUE - Entry is an Integer
+	 * 
+	 * @return Upper Triangular Matrix of Random Elements up to the Maximum Value
 	 */
 
-	public double[][] eigenVectorArray()
+	public static final TriangularMatrix UpperTriangular (
+		final int elementCount,
+		final double maximumElement,
+		final boolean isEntryInteger)
 	{
-		return _eigenVectorArray;
-	}
+		double[][] r2Array = RdRandomSequence.TwoD (elementCount, maximumElement, isEntryInteger);
 
-	/**
-	 * Retrieve the Array of Eigenvalues
-	 * 
-	 * @return The Array of Eigenvalues
-	 */
+    	for (int i = 0; i < r2Array.length; ++i) {
+        	for (int j = 0; j < i; ++j) {
+    			r2Array[i][j] = 0.;
+        	}
+    	}
 
-	public double[] eigenValueArray()
-	{
-		return _eigenValueArray;
-	}
-
-	/**
-	 * Retrieve the Eigenvalue Multiplicity Map
-	 * 
-	 * @return Eigenvalue Multiplicity Map
-	 */
-
-	public Map<Double, Integer> eigenValueMultiplicityMap()
-	{
-		Map<Double, Integer> eigenValueMultiplicityMap = new HashMap<Double, Integer>();
-
-		for (double eigenValue : _eigenValueArray) {
-			eigenValueMultiplicityMap.put (
-				eigenValue,
-				eigenValueMultiplicityMap.containsKey (eigenValue) ?
-					eigenValueMultiplicityMap.get (eigenValue) + 1 : 1
-			);
-		}
-
-		return eigenValueMultiplicityMap;
-	}
-
-	/**
-	 * Compute the Determinant of the Matrix
-	 * 
-	 * @return Determinant of the Matrix
-	 */
-
-	public double determinant()
-	{
-		double determinant = 1.;
-
-		for (double eigenValue : _eigenValueArray) {
-			determinant *= eigenValue;
-		}
-
-		return determinant;
-	}
-
-	/**
-	 * Retrieve the Characteristic Polynomial of the Eigenvalues
-	 * 
-	 * @return Characteristic Polynomial of the Eigenvalues
-	 */
-
-	public R1ToR1 characteristicPolynomial()
-	{
-		return new R1ToR1 (null)
-		{
-			@Override public double evaluate (
-				final double x)
-				throws Exception
-			{
-				double value = 1.;
-
-				for (double eigenValue : _eigenValueArray) {
-					value *= (x - eigenValue);
-				}
-
-				return value;
-			}
-		};
+		return TriangularMatrix.Standard (r2Array);
 	}
 }
