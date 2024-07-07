@@ -167,4 +167,152 @@ public class RandomMatrixGenerator
 
 		return TriangularMatrix.Standard (r2Array);
 	}
+
+	/**
+	 * Construct a Diagonal Matrix of Random Elements up to the Maximum Value
+	 * 
+	 * @param elementCount Number of Elements in the Array
+	 * @param maximumElement Maximum Element
+	 * @param isEntryInteger TRUE - Entry is an Integer
+	 * 
+	 * @return Diagonal Matrix of Random Elements up to the Maximum Value
+	 */
+
+	public static final TriangularMatrix Diagonal (
+		final int elementCount,
+		final double maximumElement,
+		final boolean isEntryInteger)
+	{
+		double[][] r2Array = RdRandomSequence.TwoD (elementCount, maximumElement, isEntryInteger);
+
+    	for (int i = 0; i < r2Array.length; ++i) {
+        	for (int j = 0; j < r2Array.length; ++j) {
+        		if (i != j) {
+	    			r2Array[i][j] = 0.;
+        		}
+        	}
+    	}
+
+		return TriangularMatrix.Standard (r2Array);
+	}
+
+	/**
+	 * Construct a Lower Unitriangular Matrix of Random Elements up to the Maximum Value
+	 * 
+	 * @param elementCount Number of Elements in the Array
+	 * @param maximumElement Maximum Element
+	 * @param isEntryInteger TRUE - Entry is an Integer
+	 * 
+	 * @return Lower Unitriangular Matrix of Random Elements up to the Maximum Value
+	 */
+
+	public static final TriangularMatrix LowerUnitriangular (
+		final int elementCount,
+		final double maximumElement,
+		final boolean isEntryInteger)
+	{
+		double[][] r2Array = RdRandomSequence.TwoD (elementCount, maximumElement, isEntryInteger);
+
+    	for (int i = 0; i < r2Array.length; ++i) {
+        	for (int j = i + 1; j < r2Array.length; ++j) {
+    			r2Array[i][j] = 0.;
+        	}
+    	}
+
+    	for (int i = 0; i < r2Array.length; ++i) {
+			r2Array[i][i] = 1.;
+    	}
+
+		return TriangularMatrix.Standard (r2Array);
+	}
+
+	/**
+	 * Construct an Upper Unitriangular Matrix of Random Elements up to the Maximum Value
+	 * 
+	 * @param elementCount Number of Elements in the Array
+	 * @param maximumElement Maximum Element
+	 * @param isEntryInteger TRUE - Entry is an Integer
+	 * 
+	 * @return Upper Unitriangular Matrix of Random Elements up to the Maximum Value
+	 */
+
+	public static final TriangularMatrix UpperUnitriangular (
+		final int elementCount,
+		final double maximumElement,
+		final boolean isEntryInteger)
+	{
+		double[][] r2Array = RdRandomSequence.TwoD (elementCount, maximumElement, isEntryInteger);
+
+    	for (int i = 0; i < r2Array.length; ++i) {
+        	for (int j = 0; j < i; ++j) {
+    			r2Array[i][j] = 0.;
+        	}
+    	}
+
+    	for (int i = 0; i < r2Array.length; ++i) {
+			r2Array[i][i] = 1.;
+    	}
+
+		return TriangularMatrix.Standard (r2Array);
+	}
+
+	/**
+	 * Construct a Strictly Lower Triangular Matrix of Random Elements up to the Maximum Value
+	 * 
+	 * @param elementCount Number of Elements in the Array
+	 * @param maximumElement Maximum Element
+	 * @param isEntryInteger TRUE - Entry is an Integer
+	 * 
+	 * @return Strictly Lower Triangular Matrix of Random Elements up to the Maximum Value
+	 */
+
+	public static final TriangularMatrix StrictlyLowerTriangular (
+		final int elementCount,
+		final double maximumElement,
+		final boolean isEntryInteger)
+	{
+		double[][] r2Array = RdRandomSequence.TwoD (elementCount, maximumElement, isEntryInteger);
+
+    	for (int i = 0; i < r2Array.length; ++i) {
+        	for (int j = i + 1; j < r2Array.length; ++j) {
+    			r2Array[i][j] = 0.;
+        	}
+    	}
+
+    	for (int i = 0; i < r2Array.length; ++i) {
+			r2Array[i][i] = 0.;
+    	}
+
+		return TriangularMatrix.Standard (r2Array);
+	}
+
+	/**
+	 * Construct a Strictly Upper Triangular Matrix of Random Elements up to the Maximum Value
+	 * 
+	 * @param elementCount Number of Elements in the Array
+	 * @param maximumElement Maximum Element
+	 * @param isEntryInteger TRUE - Entry is an Integer
+	 * 
+	 * @return Strictly Upper Triangular Matrix of Random Elements up to the Maximum Value
+	 */
+
+	public static final TriangularMatrix StrictlyUpperTriangular (
+		final int elementCount,
+		final double maximumElement,
+		final boolean isEntryInteger)
+	{
+		double[][] r2Array = RdRandomSequence.TwoD (elementCount, maximumElement, isEntryInteger);
+
+    	for (int i = 0; i < r2Array.length; ++i) {
+        	for (int j = 0; j < i; ++j) {
+    			r2Array[i][j] = 0.;
+        	}
+    	}
+
+    	for (int i = 0; i < r2Array.length; ++i) {
+			r2Array[i][i] = 0.;
+    	}
+
+		return TriangularMatrix.Standard (r2Array);
+	}
 }

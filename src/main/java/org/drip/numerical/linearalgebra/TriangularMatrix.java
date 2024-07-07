@@ -170,16 +170,16 @@ public class TriangularMatrix extends SquareMatrix
 
 		for (int i = 0; i < r2Array.length; ++i) {
 			for (int j = 0; j < r2Array.length; ++j) {
-				if (i < j) {
-					if (NumberUtil.WithinTolerance (r2Array[i][j], 0.)) {
+				if (i > j) {
+					if (!NumberUtil.WithinTolerance (r2Array[i][j], 0.)) {
 						upperTriangular = false;
 
 						if (!lowerTriangular) {
 							break;
 						}
 					}
-				} else if (i > j) {
-					if (NumberUtil.WithinTolerance (r2Array[i][j], 0.)) {
+				} else if (i < j) {
+					if (!NumberUtil.WithinTolerance (r2Array[i][j], 0.)) {
 						lowerTriangular = false;
 
 						if (!upperTriangular) {
@@ -231,6 +231,8 @@ public class TriangularMatrix extends SquareMatrix
 	{
 		int type = Type (r2Array);
 
+		if (NON_TRIANGULAR == type) System.out.println ("Type is " + type);
+
 		return NON_TRIANGULAR == type ? null : new TriangularMatrix (r2Array, type);
 	}
 
@@ -262,7 +264,7 @@ public class TriangularMatrix extends SquareMatrix
 
 	public boolean isUpper()
 	{
-		return UPPER_TRIANGULAR == _type;
+		return UPPER_TRIANGULAR == _type || LOWER_AND_UPPER_TRIANGULAR == _type;
 	}
 
 	/**
@@ -273,7 +275,7 @@ public class TriangularMatrix extends SquareMatrix
 
 	public boolean isLower()
 	{
-		return LOWER_TRIANGULAR == _type;
+		return LOWER_TRIANGULAR == _type || LOWER_AND_UPPER_TRIANGULAR == _type;
 	}
 
 	/**
@@ -284,7 +286,7 @@ public class TriangularMatrix extends SquareMatrix
 
 	public boolean isDiagonal()
 	{
-		return LOWER_TRIANGULAR == _type && UPPER_TRIANGULAR == _type;
+		return LOWER_AND_UPPER_TRIANGULAR == _type;
 	}
 
 	/**
@@ -367,7 +369,7 @@ public class TriangularMatrix extends SquareMatrix
 	 * @return TRUE - Matrix is Strictly Upper Triangular
 	 */
 
-	public boolean strictlyUpper()
+	public boolean isStrictlyUpper()
 	{
 		return zeroDiagonalEntries() && UPPER_TRIANGULAR == _type;
 	}
@@ -378,7 +380,7 @@ public class TriangularMatrix extends SquareMatrix
 	 * @return TRUE - Matrix is Strictly Lower Triangular
 	 */
 
-	public boolean strictlyLower()
+	public boolean isStrictlyLower()
 	{
 		return zeroDiagonalEntries() && LOWER_TRIANGULAR == _type;
 	}
@@ -400,11 +402,13 @@ public class TriangularMatrix extends SquareMatrix
 		double[][] r2Array = r2Array();
 
 		for (int columnIndex = 0; columnIndex < r2Array.length - 1; ++columnIndex) {
-			if (0 != r2Array[r2Array.length][columnIndex] && 1. != r2Array[r2Array.length][columnIndex]) {
+			if (0. != r2Array[r2Array.length - 1][columnIndex] &&
+				1. != r2Array[r2Array.length - 1][columnIndex])
+			{
 				return false;
 			}
 
-			if (1. == r2Array[r2Array.length][columnIndex]) {
+			if (1. == r2Array[r2Array.length - 1][columnIndex]) {
 				if (-1 != unitValueColumnIndex) {
 					return false;
 				}

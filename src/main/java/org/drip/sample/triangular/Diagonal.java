@@ -6,6 +6,7 @@ import java.util.Date;
 import org.drip.measure.crng.RandomMatrixGenerator;
 import org.drip.numerical.common.NumberUtil;
 import org.drip.numerical.linearalgebra.TriangularMatrix;
+import org.drip.service.common.FormatUtil;
 import org.drip.service.common.StringUtil;
 import org.drip.service.env.EnvManager;
 
@@ -82,8 +83,8 @@ import org.drip.service.env.EnvManager;
  */
 
 /**
- * <i>LowerTriangularMatrix</i> shows the Construction, the Usage, and the Analysis of a Lower Triangular
- *  Matrix. The References are:
+ * <i>Diagonal</i> shows the Construction, the Usage, and the Analysis of a Diagonal Matrix. The References
+ * 	are:
  * 
  * <br><br>
  * 	<ul>
@@ -119,7 +120,7 @@ import org.drip.service.env.EnvManager;
  * @author Lakshmi Krishnamurthy
  */
 
-public class LowerTriangular
+public class Diagonal
 {
 
 	private static final void Trial (
@@ -127,70 +128,182 @@ public class LowerTriangular
 		final double maximumElement)
 		throws Exception
 	{
-		TriangularMatrix lowerTriangular = RandomMatrixGenerator.LowerTriangular (
-			elementCount,
-			maximumElement,
-			true
-		);
+		TriangularMatrix diagonal = RandomMatrixGenerator.Diagonal (elementCount, maximumElement, true);
 
-		System.out.println ("\t|-----------------------------------------------------------------||");
+		System.out.println (
+			"\t|----------------------------------------------------------------------------------||"
+		);
 
 		System.out.println ("\t| Trial at " + new Date());
 
-		System.out.println ("\t|-----------------------------------------------------------------||");
+		System.out.println (
+			"\t|----------------------------------------------------------------------------------||"
+		);
 
-		double[][] lowerTriangularR2Array = lowerTriangular.r2Array();
+		double[][] diagonalR2Array = diagonal.r2Array();
 
-		for (int i = 0; i < lowerTriangularR2Array.length; ++i) {
+		for (int i = 0; i < diagonalR2Array.length; ++i) {
 			System.out.println (
-				"\t| Tridiagonal " + elementCount + " x " + elementCount + " => [" + NumberUtil.ArrayRow (
-					lowerTriangularR2Array[i],
-					2,
-					1,
-					false
-				) + " ]||"
+				"\t| Diagonal " + elementCount + " x " + elementCount + "                      => [" +
+					NumberUtil.ArrayRow (
+						diagonalR2Array[i],
+						2,
+						1,
+						false
+					) + " ]||"
 			);
 		}
 
-		System.out.println ("\t|-----------------------------------------------------------------||");
+		System.out.println (
+			"\t|----------------------------------------------------------------------------------||"
+		);
+
+		double[][] diagonalR2ArrayTranspose = diagonal.transpose().r2Array();
+
+		for (int i = 0; i < diagonalR2Array.length; ++i) {
+			System.out.println (
+				"\t| Transpose " + elementCount + " x " + elementCount + "                    => [" +
+					NumberUtil.ArrayRow (
+						diagonalR2ArrayTranspose[i],
+						2,
+						1,
+						false
+					) + " ]||"
+			);
+		}
 
 		System.out.println (
-			"\t| Is Upper Triangular        => " + StringUtil.ToString (lowerTriangular.isUpper())
+			"\t|----------------------------------------------------------------------------------||"
+		);
+
+		double[][] baseTransposeProduct = diagonal.product (diagonal.transpose()).r2Array();
+
+		for (int i = 0; i < diagonalR2Array.length; ++i) {
+			System.out.println (
+				"\t| Base Transpose Product " + elementCount + " x " + elementCount + " => [" +
+					NumberUtil.ArrayRow (
+						baseTransposeProduct[i],
+						5,
+						0,
+						false
+					) + " ]||"
+			);
+		}
+
+		System.out.println (
+			"\t|----------------------------------------------------------------------------------||"
+		);
+
+		double[][] transposeBaseProduct = diagonal.transpose().product (diagonal).r2Array();
+
+		for (int i = 0; i < diagonalR2Array.length; ++i) {
+			System.out.println (
+				"\t| Transpose Base Product " + elementCount + " x " + elementCount + " => [" +
+					NumberUtil.ArrayRow (
+						transposeBaseProduct[i],
+						5,
+						0,
+						false
+					) + " ]||"
+			);
+		}
+
+		System.out.println (
+			"\t|----------------------------------------------------------------------------------||"
 		);
 
 		System.out.println (
-			"\t| Is Lower Triangular        => " + StringUtil.ToString (lowerTriangular.isLower())
+			"\t| Is Upper Triangular             => " + StringUtil.ToString (diagonal.isUpper())
 		);
 
 		System.out.println (
-			"\t| Is Diagonal                => " + StringUtil.ToString (lowerTriangular.isDiagonal())
+			"\t| Is Lower Triangular             => " + StringUtil.ToString (diagonal.isLower())
 		);
 
 		System.out.println (
-			"\t| Is Triangularizable        => " + StringUtil.ToString (lowerTriangular.isTriangularizable())
+			"\t| Is Diagonal                     => " + StringUtil.ToString (diagonal.isDiagonal())
 		);
 
 		System.out.println (
-			"\t| Is Unitriangular           => " + StringUtil.ToString (lowerTriangular.isUnitriangular())
+			"\t| Is Triangularizable             => " + StringUtil.ToString (diagonal.isTriangularizable())
 		);
 
 		System.out.println (
-			"\t| Is Unit Triangular         => " + StringUtil.ToString (lowerTriangular.isUnit())
+			"\t| Is Unitriangular                => " + StringUtil.ToString (diagonal.isUnitriangular())
 		);
 
 		System.out.println (
-			"\t| Is Normed Triangular       => " + StringUtil.ToString (lowerTriangular.isNormed())
+			"\t| Is Unit Triangular              => " + StringUtil.ToString (diagonal.isUnit())
 		);
 
 		System.out.println (
-			"\t| Is Upper Unitriangular     => " + StringUtil.ToString (lowerTriangular.isUpperUnitriangular())
+			"\t| Is Normed Triangular            => " + StringUtil.ToString (diagonal.isNormed())
 		);
 
 		System.out.println (
-			"\t| Is Lower Unitriangular     => " + StringUtil.ToString (lowerTriangular.isLowerUnitriangular())
+			"\t| Is Upper Unitriangular          => " + StringUtil.ToString (diagonal.isUpperUnitriangular())
 		);
 
-		System.out.println ("\t|-----------------------------------------------------------------||");
+		System.out.println (
+			"\t| Is Lower Unitriangular          => " + StringUtil.ToString (diagonal.isLowerUnitriangular())
+		);
+
+		System.out.println (
+			"\t| Is Strictly Upper Triangular    => " + StringUtil.ToString (diagonal.isStrictlyUpper())
+		);
+
+		System.out.println (
+			"\t| Is Strictly Lower Triangular    => " + StringUtil.ToString (diagonal.isStrictlyLower())
+		);
+
+		System.out.println (
+			"\t| Is Atomic Upper Unitriangular   => " + StringUtil.ToString (diagonal.isAtomicUpper())
+		);
+
+		System.out.println (
+			"\t| Is Atomic Lower Unitriangular   => " + StringUtil.ToString (diagonal.isAtomicLower())
+		);
+
+		System.out.println (
+			"\t| Is Atomic                       => " + StringUtil.ToString (diagonal.isAtomic())
+		);
+
+		System.out.println (
+			"\t| Is Frobenius                    => " + StringUtil.ToString (diagonal.isFrobenius())
+		);
+
+		System.out.println (
+			"\t| Is Gauss                        => " + StringUtil.ToString (diagonal.isGauss())
+		);
+
+		System.out.println (
+			"\t| Is Gauss Transformation         => " +
+				StringUtil.ToString (diagonal.isGaussTransformation())
+		);
+
+		System.out.println (
+			"\t| Determinant                     => " +
+				FormatUtil.FormatDouble (diagonal.determinant(), 8, 0, 1., false)
+		);
+
+		System.out.println (
+			"\t| Permanent                       => " +
+				FormatUtil.FormatDouble (diagonal.permanent(), 8, 0, 1., false)
+		);
+
+		System.out.println (
+			"\t| Eigenvalue Multiplicity Map     => " + diagonal.eigenValueMultiplicityMap()
+		);
+
+		System.out.println (
+			"\t| Is Normal                       => " + StringUtil.ToString (diagonal.isNormal())
+		);
+
+		System.out.println (
+			"\t|----------------------------------------------------------------------------------||"
+		);
+
+		System.out.println();
 	}
 
 	/**
@@ -211,6 +324,14 @@ public class LowerTriangular
 
 		int elementCount = 6;
 		double maximumElement = 99.;
+
+		Trial (elementCount, maximumElement);
+
+		Trial (elementCount, maximumElement);
+
+		Trial (elementCount, maximumElement);
+
+		Trial (elementCount, maximumElement);
 
 		Trial (elementCount, maximumElement);
 
