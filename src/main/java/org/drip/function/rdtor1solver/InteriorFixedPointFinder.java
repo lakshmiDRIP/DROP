@@ -213,7 +213,7 @@ public class InteriorFixedPointFinder
 		}
 
 		org.drip.numerical.linearalgebra.LinearizationOutput linearizationOutput =
-			org.drip.numerical.linearalgebra.LinearSystemSolver.SolveUsingMatrixInversion (
+			org.drip.numerical.linearsolver.LinearSystem.SolveUsingMatrixInversion (
 				constrainedObjectiveFunctionJacobianArray,
 				constrainedObjectiveFunctionRHSArray
 			);

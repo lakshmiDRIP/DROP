@@ -5,7 +5,7 @@ import org.drip.fdm.definition.EvolutionGrid1D;
 import org.drip.fdm.definition.R1EvolutionSnapshot;
 import org.drip.function.definition.RdToR1;
 import org.drip.numerical.common.NumberUtil;
-import org.drip.numerical.linearalgebra.StrictlyTridiagonalSolver;
+import org.drip.numerical.linearsolver.NonPeriodicTridiagonalScheme;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -379,7 +379,7 @@ public class CNDiscretizedEvolver1D
 
 			try {
 				if (null == (
-					stateResponseArray = new StrictlyTridiagonalSolver (
+					stateResponseArray = NonPeriodicTridiagonalScheme.Standard (
 						stateResponseTransitionMatrix,
 						rhsArray
 					).forwardSweepBackSubstitution()

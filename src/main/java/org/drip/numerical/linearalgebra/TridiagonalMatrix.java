@@ -74,8 +74,8 @@ package org.drip.numerical.linearalgebra;
  */
 
 /**
- * <i>TridiagonalSolver</i> exposes the O(n) solver functionality for solving Tridiagonal Matrices. The
- *  References are:
+ * <iTridiagonalMatrix</i> abstracts the Tridiagonal Matrix based on Periodic/non-Periodic setup. The
+ * 	References are:
  * 
  * <br><br>
  * 	<ul>
@@ -113,50 +113,12 @@ package org.drip.numerical.linearalgebra;
  * @author Lakshmi Krishnamurthy
  */
 
-public abstract class TridiagonalSolver
+public class TridiagonalMatrix extends SquareMatrix
 {
-	private double[] _rhsArray = null;
-	private double[][] _squareMatrix = null;
 
-	protected TridiagonalSolver (
-		final double[][] squareMatrix,
-		final double[] rhsArray)
-		throws Exception
+	protected TridiagonalMatrix (
+		final double[][] r2Array)
 	{
-		if (null == (_squareMatrix = squareMatrix) || null == (_rhsArray = rhsArray) ||
-			_squareMatrix.length != _rhsArray.length)
-		{
-			throw new Exception ("TridiagonalSolver Constructor => Matrix not Tridiagonal");
-		}
+		super (r2Array);
 	}
-
-	/**
-	 * Retrieve the Square Matrix
-	 * 
-	 * @return Square Matrix
-	 */
-
-	public double[][] squareMatrix()
-	{
-		return _squareMatrix;
-	}
-
-	/**
-	 * Retrieve the RHS Array
-	 * 
-	 * @return Square Matrix
-	 */
-
-	public double[] rhsArray()
-	{
-		return _rhsArray;
-	}
-
-	/**
-	 * Solve the Tridiagonal System given the RHS
-	 * 
-	 * @return The Solution
-	 */
-
-	public abstract double[] solve();
 }

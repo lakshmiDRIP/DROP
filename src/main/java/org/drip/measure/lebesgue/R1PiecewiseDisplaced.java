@@ -162,7 +162,7 @@ public class R1PiecewiseDisplaced extends org.drip.measure.lebesgue.R1Uniform {
 		}
 
 		org.drip.numerical.linearalgebra.LinearizationOutput lo =
-			org.drip.numerical.linearalgebra.LinearSystemSolver.SolveUsingMatrixInversion (aadblM, adblY);
+			org.drip.numerical.linearsolver.LinearSystem.SolveUsingMatrixInversion (aadblM, adblY);
 
 		if (null == lo) return null;
 

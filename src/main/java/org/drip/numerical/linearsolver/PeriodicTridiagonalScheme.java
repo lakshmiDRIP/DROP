@@ -1,9 +1,7 @@
 
-package org.drip.sample.tridiagonal;
+package org.drip.numerical.linearsolver;
 
-import org.drip.numerical.common.NumberUtil;
-import org.drip.numerical.linearsolver.RyabenkiiTsynkovScheme;
-import org.drip.service.env.EnvManager;
+import org.drip.numerical.linearalgebra.PeriodicTridiagonalMatrix;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -78,8 +76,8 @@ import org.drip.service.env.EnvManager;
  */
 
 /**
- * <i>PeriodicRyabenkiiTsynkovSolver</i> shows the Usage of Ryabenkii-Tsynkov Solver for Tridiagonal Matrices
- * 	with Periodic Boundary Conditions. The References are:
+ * <i>PeriodicTridiagonalScheme</i> implements the O(n) solver for a Periodic Tridiagonal Matrix. The
+ * 	References are:
  * 
  * <br><br>
  * 	<ul>
@@ -97,8 +95,7 @@ import org.drip.service.env.EnvManager;
  * 				<b>Spring</b> Berlin, Germany
  * 		</li>
  * 		<li>
- * 			Ryaben’kii, V. S., and S. V. Tsynkov (2006): <i>Theoretical Introduction to Numerical
- * 				Analysis</i> <b>Wolters Kluwer</b> Aalphen aan den Rijn, Netherlands
+ * 			Niyogi, P. (2006): <i>Introduction to Computational Fluid Dynamics</i> <b>Pearson</b> London, UK
  * 		</li>
  * 		<li>
  * 			Wikipedia (2024): Tridiagonal Matrix Algorithm
@@ -111,116 +108,21 @@ import org.drip.service.env.EnvManager;
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md">Numerical Analysis Library</a></li>
  *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/numerical/README.md">Numerical Quadrature, Differentiation, Eigenization, Linear Algebra, and Utilities</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/tridiagonal/README.md">Regular/Periodic Tridiagonal Solver Schemes</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/numerical/linearalgebra/README.md">Linear Algebra Matrix Transform Library</a></li>
  *  </ul>
  * <br><br>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class PeriodicRyabenkiiTsynkovSolver
+public abstract class PeriodicTridiagonalScheme extends TridiagonalScheme
 {
 
-	/**
-	 * Entry Point
-	 * 
-	 * @param argumentArray Command Line Argument Array
-	 * 
-	 * @throws Exception Thrown on Error/Exception Situation
-	 */
-
-	public static final void main (
-		final String[] argumentArray)
+	protected PeriodicTridiagonalScheme (
+		final PeriodicTridiagonalMatrix periodicTridiagonalMatrix,
+		final double[] rhsArray)
 		throws Exception
 	{
-		EnvManager.InitEnv (
-			""
-		);
-
-		double[][] periodicTridiagonalMatrix = new double[][] {
-			{2., 7., 0., 0., 3.},
-			{7., 6., 4., 0., 0.},
-			{0., 4., 1., 5., 0.},
-			{0., 0., 5., 9., 2.},
-			{8., 0., 0., 2., 6.},
-		};
-
-		double[] rhsArray = new double[] {
-			31.,
-			31.,
-			31.,
-			61.,
-			46.
-		};
-
-		RyabenkiiTsynkovScheme ryabenkiiTsynkovSolver = RyabenkiiTsynkovScheme.Standard (
-			periodicTridiagonalMatrix,
-			rhsArray
-		);
-
-		System.out.println ("\t|--------------------------------------------------------------------||");
-
-		System.out.println ("\t|                    PERIODIC TRIDIAGONAL SOLVER                     ||");
-
-		System.out.println ("\t|--------------------------------------------------------------------||");
-
-		for (int i = 0; i < periodicTridiagonalMatrix.length; ++i) {
-			System.out.println (
-				"\t| Tridiagonal 5 x 5 => [" + NumberUtil.ArrayRow (
-					periodicTridiagonalMatrix[i],
-					1,
-					4,
-					false
-				) + " ]||"
-			);
-		}
-
-		System.out.println ("\t|--------------------------------------------------------------------||");
-
-		System.out.println();
-
-		System.out.println ("\t|-----------------------------------------------||");
-
-		System.out.println ("\t| RHS Input =>" + NumberUtil.ArrayRow (rhsArray, 2, 1, false) + " ||");
-
-		System.out.println ("\t|-----------------------------------------------||");
-
-		System.out.println();
-
-		System.out.println ("\t|---------------------------------------------------||");
-
-		System.out.println (
-			"\t| U Array => " + NumberUtil.ArrayRow (ryabenkiiTsynkovSolver.uRHSArray(), 2, 4, false) + " ||"
-		);
-
-		System.out.println (
-			"\t| V Array => " + NumberUtil.ArrayRow (ryabenkiiTsynkovSolver.vRHSArray(), 2, 4, false) + " ||"
-		);
-
-		System.out.println (
-			"\t| U Solve => " + NumberUtil.ArrayRow (ryabenkiiTsynkovSolver.uSolutionArray(), 2, 4, false) +
-				" ||"
-		);
-
-		System.out.println (
-			"\t| V Solve => " + NumberUtil.ArrayRow (ryabenkiiTsynkovSolver.vSolutionArray(), 2, 4, false) +
-				" ||"
-		);
-
-		System.out.println ("\t|---------------------------------------------------||");
-
-		System.out.println();
-
-		System.out.println ("\t|----------------------------------------------||");
-
-		System.out.println (
-			"\t| Solution =>" + NumberUtil.ArrayRow (ryabenkiiTsynkovSolver.uvSolver(), 1, 2, false) + " ||"
-		);
-
-		System.out.println ("\t|----------------------------------------------||");
-
-		System.out.println();
-
-		EnvManager.TerminateEnv();
+		super (periodicTridiagonalMatrix, rhsArray);
 	}
 }

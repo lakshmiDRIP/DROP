@@ -1,5 +1,7 @@
 
-package org.drip.numerical.linearalgebra;
+package org.drip.numerical.linearsolver;
+
+import org.drip.numerical.linearalgebra.LinearizationOutput;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -83,7 +85,7 @@ package org.drip.numerical.linearalgebra;
  */
 
 /**
- * <i>LinearSystemSolver</i> implements the solver for a system of linear equations given by
+ * <i>LinearSystem</i> implements the solver for a system of linear equations given by
  * 
  * 											A * x = B
  * 
@@ -109,14 +111,14 @@ package org.drip.numerical.linearalgebra;
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md">Numerical Analysis Library</a></li>
  *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/numerical/README.md">Numerical Quadrature, Differentiation, Eigenization, Linear Algebra, and Utilities</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/numerical/linearalgebra/README.md">Linear Algebra Matrix Transform Library</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/numerical/linearsolver/README.md">Solvers of Linear Systems of Equations</a></li>
  *  </ul>
  * <br><br>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class LinearSystemSolver {
+public class LinearSystem {
 
 	/**
 	 * Regularize (i.e., convert the diagonal entries of the given cell to non-zero using suitable linear
@@ -359,7 +361,7 @@ public class LinearSystemSolver {
 		double[] adblRHS = Pivot (aadblA, adblB);
 
 		if (null == adblRHS || iSize != adblRHS.length ||
-			!org.drip.numerical.linearalgebra.LinearSystemSolver.IsDiagonallyDominant (aadblA, true))
+			!org.drip.numerical.linearsolver.LinearSystem.IsDiagonallyDominant (aadblA, true))
 			return null;
 
 		for (int i = 0; i < iSize; ++i)

@@ -315,4 +315,92 @@ public class RandomMatrixGenerator
 
 		return TriangularMatrix.Standard (r2Array);
 	}
+
+	/**
+	 * Construct an Atomic Lower Triangular Matrix of Random Elements up to the Maximum Value
+	 * 
+	 * @param elementCount Number of Elements in the Array
+	 * @param maximumElement Maximum Element
+	 * @param isEntryInteger TRUE - Entry is an Integer
+	 * 
+	 * @return Atomic Lower Triangular Matrix of Random Elements up to the Maximum Value
+	 */
+
+	public static final TriangularMatrix AtomicLowerTriangular (
+		final int elementCount,
+		final double maximumElement,
+		final boolean isEntryInteger)
+	{
+		double[][] r2Array = RdRandomSequence.TwoD (elementCount, maximumElement, isEntryInteger);
+
+    	for (int i = 0; i < r2Array.length; ++i) {
+        	for (int j = 0; j < r2Array.length; ++j) {
+    			r2Array[i][j] = 0.;
+        	}
+    	}
+
+    	for (int i = 0; i < r2Array.length; ++i) {
+			r2Array[i][i] = 1.;
+    	}
+
+    	int columnIndex = (int) (Math.random() * elementCount);
+
+		if (((int) maximumElement) - 1 == columnIndex) {
+			columnIndex = ((int) maximumElement) - 2;
+		} else if (0 == columnIndex) {
+			columnIndex = 1;
+		}
+
+		for (int i = 0; i < r2Array.length; ++i) {
+    		if (columnIndex < i) {
+				r2Array[i][columnIndex] = 1.;
+    		}
+    	}
+
+		return TriangularMatrix.Standard (r2Array);
+	}
+
+	/**
+	 * Construct an Atomic Upper Triangular Matrix of Random Elements up to the Maximum Value
+	 * 
+	 * @param elementCount Number of Elements in the Array
+	 * @param maximumElement Maximum Element
+	 * @param isEntryInteger TRUE - Entry is an Integer
+	 * 
+	 * @return Atomic Upper Triangular Matrix of Random Elements up to the Maximum Value
+	 */
+
+	public static final TriangularMatrix AtomicUpperTriangular (
+		final int elementCount,
+		final double maximumElement,
+		final boolean isEntryInteger)
+	{
+		double[][] r2Array = RdRandomSequence.TwoD (elementCount, maximumElement, isEntryInteger);
+
+    	for (int i = 0; i < r2Array.length; ++i) {
+        	for (int j = 0; j < r2Array.length; ++j) {
+    			r2Array[i][j] = 0.;
+        	}
+    	}
+
+    	for (int i = 0; i < r2Array.length; ++i) {
+			r2Array[i][i] = 1.;
+    	}
+
+    	int columnIndex = (int) (Math.random() * elementCount);
+
+		if (((int) maximumElement) - 1 == columnIndex) {
+			columnIndex = ((int) maximumElement) - 2;
+		} else if (0 == columnIndex) {
+			columnIndex = 1;
+		}
+
+		for (int i = 0; i < r2Array.length; ++i) {
+    		if (columnIndex > i) {
+				r2Array[i][columnIndex] = 1.;
+    		}
+    	}
+
+		return TriangularMatrix.Standard (r2Array);
+	}
 }

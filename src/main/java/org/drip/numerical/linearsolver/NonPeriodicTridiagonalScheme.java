@@ -1,7 +1,9 @@
 
-package org.drip.numerical.linearalgebra;
+package org.drip.numerical.linearsolver;
 
 import org.drip.numerical.common.NumberUtil;
+import org.drip.numerical.linearalgebra.MatrixUtil;
+import org.drip.numerical.linearalgebra.NonPeriodicTridiagonalMatrix;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -76,8 +78,8 @@ import org.drip.numerical.common.NumberUtil;
  */
 
 /**
- * <i>StrictlyTridiagonalSolver</i> implements the O(n) solver for a Strictly Tridiagonal Matrix. The
- *  References are:
+ * <i>NonPeriodicTridiagonalScheme</i> implements the O(n) solver for a Non-Periodic Tridiagonal Matrix. The
+ * 	References are:
  * 
  * <br><br>
  * 	<ul>
@@ -115,28 +117,40 @@ import org.drip.numerical.common.NumberUtil;
  * @author Lakshmi Krishnamurthy
  */
 
-public class StrictlyTridiagonalSolver extends TridiagonalSolver
+public class NonPeriodicTridiagonalScheme extends TridiagonalScheme
 {
 
 	/**
-	 * <i>StrictlyTridiagonalSolver</i> Constructor
+	 * Make a Standard Instance of <i>NonPeriodicTridiagonalScheme</i>
 	 * 
 	 * @param squareMatrix Square Matrix
 	 * @param rhsArray RHS Array
 	 * 
-	 * @throws Exception Thrown if the Square Matrix is not Tridiagonal
+	 * @return Standard Instance of <i>NonPeriodicTridiagonalScheme</i>
 	 */
 
-	public StrictlyTridiagonalSolver (
-		final double[][] squareMatrix,
+	public static NonPeriodicTridiagonalScheme Standard (
+		final double[][] r2Array,
+		final double[] rhsArray)
+	{
+		try {
+			return MatrixUtil.IsTridiagonal (r2Array) ? new NonPeriodicTridiagonalScheme (
+				NonPeriodicTridiagonalMatrix.Standard (r2Array),
+				rhsArray
+			): null;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	protected NonPeriodicTridiagonalScheme (
+		final NonPeriodicTridiagonalMatrix nonPeriodicTridiagonalMatrix,
 		final double[] rhsArray)
 		throws Exception
 	{
-		super (squareMatrix, rhsArray);
-
-		if (!MatrixUtil.IsTridiagonal (squareMatrix)) {
-			throw new Exception ("StrictlyTridiagonalSolver Constructor => Matrix not Tridiagonal");
-		}
+		super (nonPeriodicTridiagonalMatrix, rhsArray);
 	}
 
 	/**
@@ -149,7 +163,7 @@ public class StrictlyTridiagonalSolver extends TridiagonalSolver
 	{
 		double[] rhsArray = rhsArray();
 
-		double[][] squareMatrix = squareMatrix();
+		double[][] squareMatrix = matrix().r2Array();
 
 		int matrixSize = squareMatrix.length;
 		double[] solutionArray = new double[matrixSize];

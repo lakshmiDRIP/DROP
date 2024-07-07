@@ -1,7 +1,9 @@
 
-package org.drip.numerical.linearalgebra;
+package org.drip.numerical.linearsolver;
 
 import org.drip.numerical.common.NumberUtil;
+import org.drip.numerical.linearalgebra.MatrixUtil;
+import org.drip.numerical.linearalgebra.PeriodicTridiagonalMatrix;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -76,7 +78,7 @@ import org.drip.numerical.common.NumberUtil;
  */
 
 /**
- * <i>ShermanMorrisonSolver</i> implements the O(n) solver for a Tridiagonal Matrix with Periodic Boundary
+ * <i>ShermanMorrison</i> implements the O(n) solver for a Tridiagonal Matrix with Periodic Boundary
  * 	Conditions. The References are:
  * 
  * <br><br>
@@ -116,7 +118,7 @@ import org.drip.numerical.common.NumberUtil;
  * @author Lakshmi Krishnamurthy
  */
 
-public class ShermanMorrisonSolver extends TridiagonalSolver
+public class ShermanMorrison extends PeriodicTridiagonalScheme
 {
 
 	/**
@@ -130,22 +132,22 @@ public class ShermanMorrisonSolver extends TridiagonalSolver
 	/**
 	 * Construct a Standard Gamma Instance of Sherman Morrison Solver
 	 * 
-	 * @param squareMatrix Square Matrix
+	 * @param r2Array R<sup>2</sup> Array
 	 * @param rhsArray RHS Array
 	 * 
 	 * @return Standard Gamma Instance of Sherman Morrison Solver
 	 */
 
-	public static final ShermanMorrisonSolver Standard (
-		final double[][] squareMatrix,
+	public static final ShermanMorrison Standard (
+		final double[][] r2Array,
 		final double[] rhsArray)
 	{
 		try {
-			return new ShermanMorrisonSolver (
-				squareMatrix,
+			return MatrixUtil.IsPeriodicTridiagonal (r2Array) ? new ShermanMorrison (
+				PeriodicTridiagonalMatrix.Standard (r2Array),
 				rhsArray,
 				BATISTA_KARAWIA_DEFAULT_GAMMA
-			);
+			) : null;
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -156,25 +158,25 @@ public class ShermanMorrisonSolver extends TridiagonalSolver
 	/**
 	 * Construct a Standard Batista-Karawia Instance of Sherman Morrison Solver
 	 * 
-	 * @param squareMatrix Square Matrix
+	 * @param r2Array R<sup>2</sup> Array
 	 * @param rhsArray RHS Array
 	 * 
 	 * @return Standard Batista-Karawia Instance of Sherman Morrison Solver
 	 */
 
-	public static final ShermanMorrisonSolver StandardBatistaKarawia (
-		final double[][] squareMatrix,
+	public static final ShermanMorrison StandardBatistaKarawia (
+		final double[][] r2Array,
 		final double[] rhsArray)
 	{
-		if (null == squareMatrix || 0 == squareMatrix.length) {
+		if (null == r2Array || 0 == r2Array.length) {
 			return null;
 		}
 
 		int index = 1;
-		double gamma = -1. * squareMatrix[0][0];
+		double gamma = -1. * r2Array[0][0];
 
-		while (0. == gamma && index < squareMatrix.length) {
-			gamma = -1. * squareMatrix[index][index];
+		while (0. == gamma && index < r2Array.length) {
+			gamma = -1. * r2Array[index][index];
 			++index;
 		}
 
@@ -183,7 +185,11 @@ public class ShermanMorrisonSolver extends TridiagonalSolver
 		}
 
 		try {
-			return new ShermanMorrisonSolver (squareMatrix, rhsArray, gamma);
+			return MatrixUtil.IsPeriodicTridiagonal (r2Array) ? new ShermanMorrison (
+				PeriodicTridiagonalMatrix.Standard (r2Array),
+				rhsArray,
+				gamma
+			) : null;
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -191,28 +197,16 @@ public class ShermanMorrisonSolver extends TridiagonalSolver
 		return null;
 	}
 
-	/**
-	 * <i>ShermanMorrisonSolver</i> Constructor
-	 * 
-	 * @param squareMatrix Square Matrix
-	 * @param rhsArray RHS Array
-	 * @param gamma Gamma
-	 * 
-	 * @throws Exception Thrown if the Square Matrix is not Periodic Tridiagonal
-	 */
-
-	public ShermanMorrisonSolver (
-		final double[][] squareMatrix,
+	protected ShermanMorrison (
+		final PeriodicTridiagonalMatrix periodicTridiagonalMatrix,
 		final double[] rhsArray,
 		final double gamma)
 		throws Exception
 	{
-		super (squareMatrix, rhsArray);
+		super (periodicTridiagonalMatrix, rhsArray);
 
-		if (!MatrixUtil.IsPeriodicTridiagonal (squareMatrix) ||
-			!NumberUtil.IsValid (_gamma = gamma) || 0. == _gamma)
-		{
-			throw new Exception ("ShermanMorrisonSolver Constructor => Matrix not Periodic Tridiagonal");
+		if (!NumberUtil.IsValid (_gamma = gamma) || 0. == _gamma) {
+			throw new Exception ("ShermanMorrison Constructor => Matrix not Periodic Tridiagonal");
 		}
 	}
 
@@ -237,20 +231,20 @@ public class ShermanMorrisonSolver extends TridiagonalSolver
 	{
 		double[] rhsArray = rhsArray();
 
-		double[][] squareMatrix = squareMatrix();
+		double[][] r2Array = matrix().r2Array();
 
 		double[][] batistaKarawiaMatrix = new double[rhsArray.length][rhsArray.length];
 
-    	for (int i = 0; i < squareMatrix.length; ++i) {
-        	for (int j = 0; j < squareMatrix.length; ++j) {
-    			batistaKarawiaMatrix[i][j] = j >= i - 1 && j <= i + 1 ? squareMatrix[i][j] : 0.;
+    	for (int i = 0; i < r2Array.length; ++i) {
+        	for (int j = 0; j < r2Array.length; ++j) {
+    			batistaKarawiaMatrix[i][j] = j >= i - 1 && j <= i + 1 ? r2Array[i][j] : 0.;
         	}
     	}
 
     	int lastIndex = rhsArray.length - 1;
-    	batistaKarawiaMatrix[0][0] = squareMatrix[0][0] - _gamma;
-    	batistaKarawiaMatrix[lastIndex][lastIndex] = squareMatrix[lastIndex][lastIndex] - (
-			squareMatrix[lastIndex][0] * squareMatrix[0][lastIndex] / _gamma
+    	batistaKarawiaMatrix[0][0] = r2Array[0][0] - _gamma;
+    	batistaKarawiaMatrix[lastIndex][lastIndex] = r2Array[lastIndex][lastIndex] - (
+			r2Array[lastIndex][0] * r2Array[0][lastIndex] / _gamma
 		);
     	return batistaKarawiaMatrix;
 	}
@@ -265,7 +259,7 @@ public class ShermanMorrisonSolver extends TridiagonalSolver
 	{
 		double[] rhsArray = rhsArray();
 
-		double[][] squareMatrix = squareMatrix();
+		double[][] r2Array = matrix().r2Array();
 
 		double[] uRHSArray = new double[rhsArray.length];
 
@@ -275,7 +269,7 @@ public class ShermanMorrisonSolver extends TridiagonalSolver
 
     	uRHSArray[0] = _gamma;
     	int lastIndex = rhsArray.length - 1;
-    	uRHSArray[lastIndex] = squareMatrix[lastIndex][0];
+    	uRHSArray[lastIndex] = r2Array[lastIndex][0];
     	return uRHSArray;
 	}
 
@@ -293,13 +287,11 @@ public class ShermanMorrisonSolver extends TridiagonalSolver
 			return null;
 		}
 
-		try {
-			return new StrictlyTridiagonalSolver (batistaKarawiaMatrix, uRHSArray()).forwardSweepBackSubstitution();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		NonPeriodicTridiagonalScheme nonPeriodicTridiagonalScheme =
+			NonPeriodicTridiagonalScheme.Standard (batistaKarawiaMatrix, uRHSArray());
 
-		return null;
+		return null == nonPeriodicTridiagonalScheme ? null :
+			nonPeriodicTridiagonalScheme.forwardSweepBackSubstitution();
 	}
 
 	/**
@@ -316,13 +308,11 @@ public class ShermanMorrisonSolver extends TridiagonalSolver
 			return null;
 		}
 
-		try {
-			return new StrictlyTridiagonalSolver (batistaKarawiaMatrix, rhsArray()).forwardSweepBackSubstitution();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		NonPeriodicTridiagonalScheme nonPeriodicTridiagonalScheme =
+			NonPeriodicTridiagonalScheme.Standard (batistaKarawiaMatrix, rhsArray());
 
-		return null;
+		return null == nonPeriodicTridiagonalScheme ? null :
+			nonPeriodicTridiagonalScheme.forwardSweepBackSubstitution();
 	}
 
 	/**
@@ -335,7 +325,7 @@ public class ShermanMorrisonSolver extends TridiagonalSolver
 	{
 		double[] rhsArray = rhsArray();
 
-		double[][] squareMatrix = squareMatrix();
+		double[][] r2Array = matrix().r2Array();
 
 		double[] vArray = new double[rhsArray.length];
 
@@ -345,7 +335,7 @@ public class ShermanMorrisonSolver extends TridiagonalSolver
 
     	vArray[0] = 1.;
     	int lastIndex = rhsArray.length - 1;
-    	vArray[lastIndex] = squareMatrix[0][lastIndex] / _gamma;
+    	vArray[lastIndex] = r2Array[0][lastIndex] / _gamma;
     	return vArray;
 	}
 
@@ -361,25 +351,33 @@ public class ShermanMorrisonSolver extends TridiagonalSolver
 
 		double[] rhsArray = rhsArray();
 
-		double[] qSolutionArray = null;
-		double[] ySolutionArray = null;
-		double vqDotProductScaler = Double.NaN;
-
 		double[][] batistaKarawiaMatrix = batistaKarawiaMatrix();
 
-		try {
-			qSolutionArray = new StrictlyTridiagonalSolver (
-				batistaKarawiaMatrix,
-				uRHSArray()
-			).forwardSweepBackSubstitution();
+		NonPeriodicTridiagonalScheme uRHSNonPeriodicTridiagonalScheme =
+			NonPeriodicTridiagonalScheme.Standard (batistaKarawiaMatrix, uRHSArray());
 
-			ySolutionArray = new StrictlyTridiagonalSolver (
-				batistaKarawiaMatrix,
-				rhsArray
-			).forwardSweepBackSubstitution();
-		} catch (Exception e) {
-			e.printStackTrace();
+		if (null == uRHSNonPeriodicTridiagonalScheme) {
+			return null;
+		}
 
+		double[] qSolutionArray = null == uRHSNonPeriodicTridiagonalScheme ? null :
+			uRHSNonPeriodicTridiagonalScheme.forwardSweepBackSubstitution();
+
+		if (null == qSolutionArray) {
+			return null;
+		}
+
+		NonPeriodicTridiagonalScheme rhsNonPeriodicTridiagonalScheme =
+			NonPeriodicTridiagonalScheme.Standard (batistaKarawiaMatrix, rhsArray);
+
+		if (null == rhsNonPeriodicTridiagonalScheme) {
+			return null;
+		}
+
+		double[] ySolutionArray = null == rhsNonPeriodicTridiagonalScheme ? null :
+			rhsNonPeriodicTridiagonalScheme.forwardSweepBackSubstitution();
+
+		if (null == ySolutionArray) {
 			return null;
 		}
 
@@ -391,6 +389,8 @@ public class ShermanMorrisonSolver extends TridiagonalSolver
 		if (null == solutionArray) {
 			return null;
 		}
+
+		double vqDotProductScaler = Double.NaN;
 
 		try {
 			vqDotProductScaler = 1. / (1. + MatrixUtil.DotProduct (vArray, qSolutionArray));

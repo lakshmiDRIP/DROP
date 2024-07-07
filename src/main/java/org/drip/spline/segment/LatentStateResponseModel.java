@@ -10,8 +10,8 @@ import org.drip.numerical.common.NumberUtil;
 import org.drip.numerical.differentiation.Differential;
 import org.drip.numerical.differentiation.WengertJacobian;
 import org.drip.numerical.integration.R1ToR1Integrator;
-import org.drip.numerical.linearalgebra.LinearSystemSolver;
 import org.drip.numerical.linearalgebra.LinearizationOutput;
+import org.drip.numerical.linearsolver.LinearSystem;
 import org.drip.service.common.CollectionUtil;
 import org.drip.spline.basis.FunctionSet;
 import org.drip.spline.params.PreceedingManifestSensitivityControl;
@@ -583,7 +583,7 @@ public class LatentStateResponseModel
 			return false;
 		}
 
-		LinearizationOutput linearizationOutput = LinearSystemSolver.SolveUsingMatrixInversion (
+		LinearizationOutput linearizationOutput = LinearSystem.SolveUsingMatrixInversion (
 			responseBasisCoefficientConstraintMatrix,
 			predictorResponseConstraintValueArray
 		);
@@ -785,7 +785,7 @@ public class LatentStateResponseModel
 			return null;
 		}
 
-		LinearizationOutput linearizationOutput = LinearSystemSolver.SolveUsingMatrixInversion (
+		LinearizationOutput linearizationOutput = LinearSystem.SolveUsingMatrixInversion (
 			responseCoefficientConstraintManifestSensitivityMatrix,
 			predictorResponseManifestSensitivityConstraintArray
 		);

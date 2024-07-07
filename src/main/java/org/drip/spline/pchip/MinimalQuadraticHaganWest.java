@@ -2,8 +2,8 @@
 package org.drip.spline.pchip;
 
 import org.drip.numerical.common.NumberUtil;
-import org.drip.numerical.linearalgebra.LinearSystemSolver;
 import org.drip.numerical.linearalgebra.LinearizationOutput;
+import org.drip.numerical.linearsolver.LinearSystem;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -268,7 +268,7 @@ public class MinimalQuadraticHaganWest
 		coefficientMatrix[3 * observationCount - 1][3 * observationCount - 2] = 1.;
 
 		LinearizationOutput gaussianEliminationLinearizationOutput =
-			LinearSystemSolver.SolveUsingGaussianElimination (coefficientMatrix, rhsArray);
+			LinearSystem.SolveUsingGaussianElimination (coefficientMatrix, rhsArray);
 
 		if (null == gaussianEliminationLinearizationOutput) {
 			return false;

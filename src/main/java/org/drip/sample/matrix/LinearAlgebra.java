@@ -3,6 +3,7 @@ package org.drip.sample.matrix;
 
 import org.drip.numerical.common.*;
 import org.drip.numerical.linearalgebra.*;
+import org.drip.numerical.linearsolver.LinearSystem;
 import org.drip.service.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 
@@ -229,7 +230,7 @@ public class LinearAlgebra {
 		 * Solve the Linear System using Gaussian Elimination
 		 */
 
-		LinearizationOutput lssGaussianElimination = LinearSystemSolver.SolveUsingGaussianElimination (
+		LinearizationOutput lssGaussianElimination = LinearSystem.SolveUsingGaussianElimination (
 			aadblA,
 			adblB
 		);

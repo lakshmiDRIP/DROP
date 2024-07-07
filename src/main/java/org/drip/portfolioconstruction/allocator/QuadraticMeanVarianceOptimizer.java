@@ -273,7 +273,7 @@ public class QuadraticMeanVarianceOptimizer extends
 		}
 
 		org.drip.numerical.linearalgebra.LinearizationOutput linearizationOutput =
-			org.drip.numerical.linearalgebra.LinearSystemSolver.SolveUsingMatrixInversion (
+			org.drip.numerical.linearsolver.LinearSystem.SolveUsingMatrixInversion (
 				lagrangianMultivariate.hessian (variateArray),
 				rhsArray
 			);
@@ -353,7 +353,7 @@ public class QuadraticMeanVarianceOptimizer extends
 		double[] variateArray = new double[lagrangianDimension];
 
 		org.drip.numerical.linearalgebra.LinearizationOutput linearizationOutput =
-			org.drip.numerical.linearalgebra.LinearSystemSolver.SolveUsingMatrixInversion (
+			org.drip.numerical.linearsolver.LinearSystem.SolveUsingMatrixInversion (
 				lagrangianMultivariate.hessian (variateArray),
 				lagrangianMultivariate.jacobian (variateArray)
 			);
