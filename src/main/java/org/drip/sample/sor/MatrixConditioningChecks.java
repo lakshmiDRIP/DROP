@@ -1,7 +1,7 @@
 
 package org.drip.sample.sor;
 
-import org.drip.numerical.linearalgebra.Matrix;
+import org.drip.numerical.linearalgebra.MatrixUtil;
 import org.drip.service.common.StringUtil;
 import org.drip.service.env.EnvManager;
 
@@ -170,16 +170,16 @@ public class MatrixConditioningChecks
 
 		System.out.println (
 			"\t| Is Matrix Square?           => " +
-				StringUtil.ToString (Matrix.IsSquare (squareMatrix)) + " | " +
-				StringUtil.ToString (Matrix.IsSquare (nonSquareMatrix)) + " | " +
-				StringUtil.ToString (Matrix.IsSquare (squareSymmetricMatrix)) + " ||"
+				StringUtil.ToString (MatrixUtil.IsSquare (squareMatrix)) + " | " +
+				StringUtil.ToString (MatrixUtil.IsSquare (nonSquareMatrix)) + " | " +
+				StringUtil.ToString (MatrixUtil.IsSquare (squareSymmetricMatrix)) + " ||"
 		);
 
 		System.out.println (
 			"\t| Is Matrix Square Symmetric? => " +
-				StringUtil.ToString (Matrix.IsSquareSymmetric (squareMatrix)) + " | " +
-				StringUtil.ToString (Matrix.IsSquareSymmetric (nonSquareMatrix)) + " | " +
-				StringUtil.ToString (Matrix.IsSquareSymmetric (squareSymmetricMatrix)) + " ||"
+				StringUtil.ToString (MatrixUtil.IsSquareSymmetric (squareMatrix)) + " | " +
+				StringUtil.ToString (MatrixUtil.IsSquareSymmetric (nonSquareMatrix)) + " | " +
+				StringUtil.ToString (MatrixUtil.IsSquareSymmetric (squareSymmetricMatrix)) + " ||"
 		);
 
 		System.out.println ("\t|------------------------------------------------------||");

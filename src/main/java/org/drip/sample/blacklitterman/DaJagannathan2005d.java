@@ -2,7 +2,7 @@
 package org.drip.sample.blacklitterman;
 
 import org.drip.measure.statistics.MultivariateMoments;
-import org.drip.numerical.linearalgebra.Matrix;
+import org.drip.numerical.linearalgebra.MatrixUtil;
 import org.drip.portfolioconstruction.allocator.*;
 import org.drip.portfolioconstruction.asset.AssetComponent;
 import org.drip.portfolioconstruction.params.AssetUniverseStatisticalProperties;
@@ -221,7 +221,7 @@ public class DaJagannathan2005d {
 
 		AssetComponent[] aAC = op.optimalPortfolio().assetComponentArray();
 
-		double[] adblMarketImpliedReturn = Matrix.Product (
+		double[] adblMarketImpliedReturn = MatrixUtil.Product (
 			aadblHistoricalCovariance,
 			adblMarketWeight
 		);

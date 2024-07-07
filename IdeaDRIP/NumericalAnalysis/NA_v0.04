@@ -56,36 +56,74 @@
 	- x_1 if computed using formula
  ----------------------------
 
+ ----------------------------
+ #8 - Triangular Matrix
+ ----------------------------
+ ----------------------------
+ 8.1) Description:
+	- Lower/Left Triangular Verification
+	- Upper/Right Triangular Verification
+	- Diagonal Matrix Verification
+	- Upper/Lower Trapezoidal Verification
+ 8.2) Forward/Back Substitution:
+	- Inputs => L and b
+		- Forward Substitution
+	- Inputs => U and b
+		- Back Substitution
+ 8.3) Properties:
+	- Is Matrix Normal, i.e.,  A times A transpose = A transpose times A
+	- Characteristic Polynomial
+	- Determinant/Permanent
+ 8.4) Special Forms:
+	- Upper/Lower Unitriangular Matrix Verification
+	- Upper/Lower Strictly Matrix Verification
+	- Upper/Lower Atomic Matrix Verification
+ ----------------------------
+
+ ----------------------------
+ #9 - Sylvester Equation
+ ----------------------------
+ ----------------------------
+ 9.1) Matrix Form:
+	- Inputs: A, B, and C
+	- Size Constraints Verification
+ 9.2) Solution Criteria:
+	- Co-joint EigenSpectrum between A and B
+ 9.3) Numerical Solution:
+	- Decomposition of A/B using Schur Decomposition into Triangular Form
+	- Forward/Back Substitution
+ ----------------------------
+
  --------------------------
- #9 - Crank–Nicolson method
+ #11 - Crank–Nicolson method
  --------------------------
  --------------------------
- 9.1) von Neumann Stability Validator - Inputs; time-step, diffusivity, space step
+ 11.1) von Neumann Stability Validator - Inputs; time-step, diffusivity, space step
 	- 1D => time step * diffusivity / space step ^2 < 0.5
 	- nD => time step * diffusivity / (space step hypotenuse) ^ 2 < 0.5
- 9.2) Set up:
+ 11.2) Set up:
 	- Input: Spatial variable x
 	- Input: Time variable t
 	- Inputs: State variable u, du/dx, d2u/dx2 - all at time t
 	- Second Order, 1D => du/dt = F (u, x, t, du/dx, d2u/dx2)
- 9.3) Finite Difference Evolution Scheme:
+ 11.3) Finite Difference Evolution Scheme:
 	- Time Step delta_t, space step delta_x
 	- Forward Difference: F calculated at x
 	- Backward Difference: F calculated at x + delta_x
 	- Crank Nicolson: Average of Forward/Backward
- 9.4) 1D Diffusion:
+ 11.4) 1D Diffusion:
 	- Inputs: 1D von Neumann Stability Validator, Number of time/space steps
 	- Time Index n, Space Index i
 	- Explicit Tridiagonal form for the discretization - State concentration at n+1 given state concentration at n
 	- Non-linear diffusion coefficient:
 		- Linearization across x_i and x_i+1
 		- Quasi-explicit forms accommodation
- 9.5) 2D Diffusion:
+ 11.5) 2D Diffusion:
 	- Inputs: 2D von Neumann Stability Validator, Number of time/space steps
 	- Time Index n, Space Index i, j
 	- Explicit Tridiagonal form for the discretization - State concentration at n+1 given state concentration at n
 	- Explicit Solution using the Alternative Difference Implicit Scheme
- 9.6) Extension to Iterative Solver Schemes above:
+ 11.6) Extension to Iterative Solver Schemes above:
 	- Input: State Space "velocity" dF/du
 	- Input: State "Step Size" delta_u
 	- Fixed Point Iterative Location Scheme

@@ -243,11 +243,11 @@ public class LinearSystemSolver {
 
 		if (adblB.length != iSize) return null;
 
-		double[][] aadblInv = org.drip.numerical.linearalgebra.Matrix.InvertUsingGaussianElimination (aadblAIn);
+		double[][] aadblInv = org.drip.numerical.linearalgebra.MatrixUtil.InvertUsingGaussianElimination (aadblAIn);
 
 		if (null == aadblInv) return null;
 
-		double[] adblProduct = org.drip.numerical.linearalgebra.Matrix.Product (aadblInv, adblB);
+		double[] adblProduct = org.drip.numerical.linearalgebra.MatrixUtil.Product (aadblInv, adblB);
 
 		if (null == adblProduct || iSize != adblProduct.length) return null;
 

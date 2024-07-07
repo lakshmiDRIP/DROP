@@ -83,7 +83,7 @@ package org.drip.numerical.linearalgebra;
  */
 
 /**
- * <i>Matrix</i> implements Matrix manipulation routines. It exports the following functionality:
+ * <i>MatrixUtil</i> implements Matrix manipulation routines. It exports the following functionality:
  *  <ul>
  *  	<li>
  * 			Matrix Inversion using Closed form solutions (for low-dimension matrices), or using Gaussian
@@ -112,31 +112,7 @@ package org.drip.numerical.linearalgebra;
  * @author Lakshmi Krishnamurthy
  */
 
-public class Matrix {
-
-	/**
-	 * Lower Triangular Matrix
-	 */
-
-	public static int LOWER_TRIANGULAR = 1;
-
-	/**
-	 * Upper Triangular Matrix
-	 */
-
-	public static int UPPER_TRIANGULAR = 2;
-
-	/**
-	 * Lower+Upper Triangular Matrix
-	 */
-
-	public static int LOWER_AND_UPPER_TRIANGULAR = 3;
-
-	/**
-	 * Non Triangular Matrix
-	 */
-
-	public static int NON_TRIANGULAR = 0;
+public class MatrixUtil {
 
 	/**
 	 * Indicate if the Cell corresponds to Bottom Left Location in the Matrix
@@ -520,7 +496,7 @@ public class Matrix {
 		final double[][] aadblSource)
 	{
 		org.drip.numerical.linearalgebra.MatrixComplementTransform mctRegularized =
-			org.drip.numerical.linearalgebra.Matrix.PivotDiagonal (aadblSource);
+			org.drip.numerical.linearalgebra.MatrixUtil.PivotDiagonal (aadblSource);
 
 		if (null == mctRegularized) return null;
 
@@ -629,11 +605,11 @@ public class Matrix {
 
 		for (int iScanRow = 0; iScanRow < iNumRow; ++iScanRow) {
 			if (!org.drip.numerical.common.NumberUtil.IsValid (aadblSource[iScanRow]))
-				throw new java.lang.Exception ("Matrix::Rank => Invalid Inputs");
+				throw new java.lang.Exception ("MatrixUtil::Rank => Invalid Inputs");
 		}
 
 		double[][] aadblRegularizedSource = iNumRow < iNumCol ?
-			org.drip.numerical.linearalgebra.Matrix.Transpose (aadblSource) : aadblSource;
+			org.drip.numerical.linearalgebra.MatrixUtil.Transpose (aadblSource) : aadblSource;
 
 		int iNumDependentRow = 0;
 		int iProcessedRow = aadblRegularizedSource.length;
@@ -655,7 +631,7 @@ public class Matrix {
 		}
 
 		for (int iScanRow = 0; iScanRow < iProcessedCol; ++iScanRow) {
-			if (0. == org.drip.numerical.linearalgebra.Matrix.Modulus (aadblRegularizedSource[iScanRow]))
+			if (0. == org.drip.numerical.linearalgebra.MatrixUtil.Modulus (aadblRegularizedSource[iScanRow]))
 				++iNumDependentRow;
 		}
 
@@ -748,13 +724,13 @@ public class Matrix {
 		throws java.lang.Exception
 	{
 		if (null == adblA || null == adblE)
-			throw new java.lang.Exception ("Matrix::DotProduct => Invalid Inputs!");
+			throw new java.lang.Exception ("MatrixUtil::DotProduct => Invalid Inputs!");
 
 		int iSize = adblA.length;
 		double dblDotProduct = 0.;
 
 		if (0 == iSize || iSize != adblE.length)
-			throw new java.lang.Exception ("Matrix::DotProduct => Invalid Inputs!");
+			throw new java.lang.Exception ("MatrixUtil::DotProduct => Invalid Inputs!");
 
 		for (int i = 0; i < iSize; ++i)
 			dblDotProduct += adblE[i] * adblA[i];
@@ -850,12 +826,12 @@ public class Matrix {
 		throws java.lang.Exception
 	{
 		if (null == adbl || !org.drip.numerical.common.NumberUtil.IsValid (adbl))
-			throw new java.lang.Exception ("Matrix::Sum => Invalid Inputs");
+			throw new java.lang.Exception ("MatrixUtil::Sum => Invalid Inputs");
 
 		double dblSum = 0.;
 		int iSize = adbl.length;
 
-		if (0 == iSize) throw new java.lang.Exception ("Matrix::Sum => Invalid Inputs");
+		if (0 == iSize) throw new java.lang.Exception ("MatrixUtil::Sum => Invalid Inputs");
 
 		for (int i = 0; i < iSize; ++i)
 			dblSum += adbl[i];
@@ -878,12 +854,12 @@ public class Matrix {
 		throws java.lang.Exception
 	{
 		if (null == adbl || !org.drip.numerical.common.NumberUtil.IsValid (adbl))
-			throw new java.lang.Exception ("Matrix::Modulus => Invalid Inputs");
+			throw new java.lang.Exception ("MatrixUtil::Modulus => Invalid Inputs");
 
 		double dblModulus = 0.;
 		int iSize = adbl.length;
 
-		if (0 == iSize) throw new java.lang.Exception ("Matrix::Modulus => Invalid Inputs");
+		if (0 == iSize) throw new java.lang.Exception ("MatrixUtil::Modulus => Invalid Inputs");
 
 		for (int i = 0; i < iSize; ++i)
 			dblModulus += adbl[i] * adbl[i];
@@ -906,11 +882,11 @@ public class Matrix {
 		throws java.lang.Exception
 	{
 		if (null == adbl || !org.drip.numerical.common.NumberUtil.IsValid (adbl))
-			throw new java.lang.Exception ("Matrix::PositiveOrZero => Invalid Inputs");
+			throw new java.lang.Exception ("MatrixUtil::PositiveOrZero => Invalid Inputs");
 
 		int iSize = adbl.length;
 
-		if (0 == iSize) throw new java.lang.Exception ("Matrix::PositiveOrZero => Invalid Inputs");
+		if (0 == iSize) throw new java.lang.Exception ("MatrixUtil::PositiveOrZero => Invalid Inputs");
 
 		for (int i = 0; i < iSize; ++i) {
 			if (0. > adbl[i]) return false;
@@ -934,11 +910,11 @@ public class Matrix {
 		throws java.lang.Exception
 	{
 		if (null == adbl || !org.drip.numerical.common.NumberUtil.IsValid (adbl))
-			throw new java.lang.Exception ("Matrix::NegativeOrZero => Invalid Inputs");
+			throw new java.lang.Exception ("MatrixUtil::NegativeOrZero => Invalid Inputs");
 
 		int iSize = adbl.length;
 
-		if (0 == iSize)  throw new java.lang.Exception ("Matrix::NegativeOrZero => Invalid Inputs");
+		if (0 == iSize)  throw new java.lang.Exception ("MatrixUtil::NegativeOrZero => Invalid Inputs");
 
 		for (int i = 0; i < iSize; ++i) {
 			if (0. < adbl[i]) return false;
@@ -1094,47 +1070,6 @@ public class Matrix {
 	}
 
 	/**
-	 * Retrieve the Triangular Type of the Matrix
-	 * 
-	 * @param aadblA The Input Matrix
-	 * @param dblFloor The Floor Level that means "Zero"
-	 * 
-	 * @return The Triangular Type
-	 */
-
-	public static final int TriangularType (
-		final double[][] aadblA,
-		final double dblFloor)
-	{
-		if (null == aadblA || !org.drip.numerical.common.NumberUtil.IsValid (dblFloor) || dblFloor < 0.)
-			return NON_TRIANGULAR;
-
-		int iSize = aadblA.length;
-		boolean bLowerTriangular = true;
-		boolean bUpperTriangular = true;
-
-		if (1 >= iSize || null == aadblA[0] || iSize != aadblA[0].length) return NON_TRIANGULAR;
-
-		for (int i = 0; i < iSize; ++i) {
-			for (int j = 0; j < iSize; ++j) {
-				if (i > j) {
-					if (java.lang.Math.abs (aadblA[i][j]) > dblFloor) bLowerTriangular = false;
-				} else if (i < j) {
-					if (java.lang.Math.abs (aadblA[i][j]) > dblFloor) bUpperTriangular = false;
-				}
-			}
-		}
-
-		if (bLowerTriangular && bUpperTriangular) return LOWER_AND_UPPER_TRIANGULAR;
-
-		if (bLowerTriangular && !bUpperTriangular) return LOWER_TRIANGULAR;
-
-		if (!bLowerTriangular && bUpperTriangular) return UPPER_TRIANGULAR;
-
-		return NON_TRIANGULAR;
-	}
-
-	/**
 	 * Compute the Rayleigh Quotient given the Matrix and one of its Eigenvector
 	 * 
 	 * @param matrix The Given Matrix
@@ -1150,9 +1085,9 @@ public class Matrix {
 		final double[] eigenvector)
 		throws java.lang.Exception
 	{
-		return org.drip.numerical.linearalgebra.Matrix.DotProduct (
+		return org.drip.numerical.linearalgebra.MatrixUtil.DotProduct (
 			eigenvector,
-			org.drip.numerical.linearalgebra.Matrix.Product (
+			org.drip.numerical.linearalgebra.MatrixUtil.Product (
 				matrix,
 				eigenvector
 			)

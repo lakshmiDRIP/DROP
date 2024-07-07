@@ -2,7 +2,7 @@
 package org.drip.sample.matrix;
 
 import org.drip.numerical.common.NumberUtil;
-import org.drip.numerical.linearalgebra.Matrix;
+import org.drip.numerical.linearalgebra.MatrixUtil;
 import org.drip.service.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 
@@ -184,16 +184,16 @@ public class RayleighQuotient
 				}
 			}
 
-			eigenvector = Matrix.Normalize (
-				Matrix.Product (
-					Matrix.InvertUsingGaussianElimination (deDiagonalized),
+			eigenvector = MatrixUtil.Normalize (
+				MatrixUtil.Product (
+					MatrixUtil.InvertUsingGaussianElimination (deDiagonalized),
 					eigenvector
 				)
 			);
 
-			eigenvalue = Matrix.DotProduct (
+			eigenvalue = MatrixUtil.DotProduct (
 				eigenvector,
-				Matrix.Product (
+				MatrixUtil.Product (
 					a,
 					eigenvector
 				)

@@ -112,7 +112,7 @@ public class PrincipalFactorSequenceGenerator extends org.drip.sequence.random.M
 			throw new java.lang.Exception ("PrincipalFactorSequenceGenerator ctr: Invalid Inputs");
 
 		org.drip.numerical.eigen.QREigenComponentExtractor qrece = new
-			org.drip.numerical.eigen.QREigenComponentExtractor (80, 0.00001);
+			org.drip.numerical.eigen.QREigenComponentExtractor (80);
 
 		org.drip.numerical.eigen.EigenComponent[] aEC = qrece.orderedEigenComponentArray (aadblCorrelation);
 

@@ -98,28 +98,45 @@ package org.drip.numerical.eigen;
 public class QREigenComponentExtractor
 	implements org.drip.numerical.eigen.ComponentExtractor
 {
+
+	/**
+	 * Default Eigenization Iteration Count
+	 */
+
+	public static final int DEFAULT_EIGENIZATION_ITERATION_COUNT = 100;
+
 	private int _maxIterations = -1;
-	private double _tolerance = java.lang.Double.NaN;
+
+	/**
+	 * Construct a Standard Instance of <i>QREigenComponentExtractor</i>
+	 * 
+	 * @return Standard Instance of <i>QREigenComponentExtractor</i>
+	 */
+
+	public static final QREigenComponentExtractor Standard()
+	{
+		try {
+			return new QREigenComponentExtractor (DEFAULT_EIGENIZATION_ITERATION_COUNT);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return null;
+	}
 
 	/**
 	 * QREigenComponentExtractor Constructor
 	 * 
 	 * @param maxIterations Maximum Number of Iterations
-	 * @param tolerance Tolerance
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public QREigenComponentExtractor (
-		final int maxIterations,
-		final double tolerance)
+		final int maxIterations)
 		throws java.lang.Exception
 	{
-		if (0 >= (_maxIterations = maxIterations) ||
-			!org.drip.numerical.common.NumberUtil.IsValid (
-				_tolerance = tolerance
-			) || 0. == _tolerance
-		)
+		if (0 >= (_maxIterations = maxIterations))
 		{
 			throw new java.lang.Exception ("QREigenComponentExtractor ctr: Invalid Inputs!");
 		}
@@ -136,21 +153,10 @@ public class QREigenComponentExtractor
 		return _maxIterations;
 	}
 
-	/**
-	 * Retrieve the Tolerance Level
-	 * 
-	 * @return The Tolerance Level
-	 */
-
-	public double tolerance()
-	{
-		return _tolerance;
-	}
-
 	@Override public org.drip.numerical.eigen.EigenOutput eigenize (
 		final double[][] a)
 	{
-		org.drip.numerical.linearalgebra.QR qr = org.drip.numerical.linearalgebra.Matrix.QRDecomposition (
+		org.drip.numerical.linearalgebra.QR qr = org.drip.numerical.linearalgebra.MatrixUtil.QRDecomposition (
 			a
 		);
 
@@ -161,7 +167,7 @@ public class QREigenComponentExtractor
 
 		double[][] q = qr.q();
 
-		double[][] qTranspose = org.drip.numerical.linearalgebra.Matrix.Transpose (
+		double[][] qTranspose = org.drip.numerical.linearalgebra.MatrixUtil.Transpose (
 			q
 		);
 
@@ -195,17 +201,16 @@ public class QREigenComponentExtractor
 		}
 
 		while (iterationIndex++ < _maxIterations &&
-			org.drip.numerical.linearalgebra.Matrix.NON_TRIANGULAR ==
-			org.drip.numerical.linearalgebra.Matrix.TriangularType (
-				v,
-				_tolerance
+			org.drip.numerical.linearalgebra.TriangularMatrix.NON_TRIANGULAR ==
+			org.drip.numerical.linearalgebra.TriangularMatrix.Type (
+				v
 			)
 		)
 		{
-			if (null == (qr = org.drip.numerical.linearalgebra.Matrix.QRDecomposition (
-				v = org.drip.numerical.linearalgebra.Matrix.Product (
+			if (null == (qr = org.drip.numerical.linearalgebra.MatrixUtil.QRDecomposition (
+				v = org.drip.numerical.linearalgebra.MatrixUtil.Product (
 					qTranspose,
-					org.drip.numerical.linearalgebra.Matrix.Product (
+					org.drip.numerical.linearalgebra.MatrixUtil.Product (
 						v,
 						q
 					)
@@ -215,11 +220,11 @@ public class QREigenComponentExtractor
 				return null;
 			}
 
-			qTranspose = org.drip.numerical.linearalgebra.Matrix.Transpose (
+			qTranspose = org.drip.numerical.linearalgebra.MatrixUtil.Transpose (
 				q = qr.q()
 			);
 
-			b = org.drip.numerical.linearalgebra.Matrix.Product (
+			b = org.drip.numerical.linearalgebra.MatrixUtil.Product (
 				b,
 				q
 			);
@@ -240,7 +245,7 @@ public class QREigenComponentExtractor
 		try
 		{
 			return new org.drip.numerical.eigen.EigenOutput (
-				org.drip.numerical.linearalgebra.Matrix.Transpose (
+				org.drip.numerical.linearalgebra.MatrixUtil.Transpose (
 					b
 				),
 				eigenvalueArray

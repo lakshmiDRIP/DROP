@@ -168,8 +168,7 @@ public class Eigenization {
 		EnvManager.InitEnv ("");
 
 		QREigenComponentExtractor qrece = new QREigenComponentExtractor (
-			50,
-			0.00001
+			50
 		);
 
 		int iNumRun = 10;

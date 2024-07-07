@@ -11,7 +11,7 @@ import org.drip.measure.dynamics.*;
 import org.drip.measure.process.DiffusionEvolver;
 import org.drip.measure.realization.*;
 import org.drip.measure.statistics.UnivariateDiscreteThin;
-import org.drip.numerical.linearalgebra.Matrix;
+import org.drip.numerical.linearalgebra.MatrixUtil;
 import org.drip.service.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 import org.drip.state.identifier.OTCFixFloatLabel;
@@ -486,7 +486,7 @@ public class CPGAZeroThresholdCorrelated {
 		);
 
 		for (int i = 0; i < iNumPath; ++i) {
-			double[][] aadblNumeraire = Matrix.Transpose (
+			double[][] aadblNumeraire = MatrixUtil.Transpose (
 				SequenceGenerator.GaussianJoint (
 					iNumStep,
 					aadblCorrelation

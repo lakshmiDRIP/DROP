@@ -4,7 +4,7 @@ package org.drip.sample.blacklitterman;
 import org.drip.measure.bayesian.R1MultivariateConvolutionMetrics;
 import org.drip.measure.continuous.MultivariateMeta;
 import org.drip.measure.gaussian.*;
-import org.drip.numerical.linearalgebra.Matrix;
+import org.drip.numerical.linearalgebra.MatrixUtil;
 import org.drip.portfolioconstruction.allocator.*;
 import org.drip.portfolioconstruction.asset.Portfolio;
 import org.drip.portfolioconstruction.bayesian.*;
@@ -284,7 +284,7 @@ public class Soontornkit2010 {
 			adblMarketCapitalizationWeight2[i + 1] = 0.5 * adblMarketCapitalizationWeight1[i];
 		}
 
-		double[] adblExpectedExcessReturn = Matrix.Product (
+		double[] adblExpectedExcessReturn = MatrixUtil.Product (
 			aadblAssetExcessReturnsCovariance,
 			adblMarketCapitalizationWeight2
 		);

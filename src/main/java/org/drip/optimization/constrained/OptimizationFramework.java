@@ -457,8 +457,8 @@ public class OptimizationFramework {
 			}
 		}
 
-		double dblSOSC = org.drip.numerical.linearalgebra.Matrix.DotProduct (adblVariate,
-			org.drip.numerical.linearalgebra.Matrix.Product (aadblSOSCHessian, adblVariate));
+		double dblSOSC = org.drip.numerical.linearalgebra.MatrixUtil.DotProduct (adblVariate,
+			org.drip.numerical.linearalgebra.MatrixUtil.Product (aadblSOSCHessian, adblVariate));
 
 		return (bCheckForMinima && dblSOSC > 0.) || (!bCheckForMinima && dblSOSC < 0.);
 	}
@@ -585,7 +585,7 @@ public class OptimizationFramework {
 		for (int i = 0; i < iNumJacobian; ++i)
 			aadblJacobian[i] = lsJacobian.get (i);
 
-		return org.drip.numerical.linearalgebra.Matrix.Rank (aadblJacobian);
+		return org.drip.numerical.linearalgebra.MatrixUtil.Rank (aadblJacobian);
 	}
 
 	/**
@@ -649,7 +649,7 @@ public class OptimizationFramework {
 		for (int i = 0; i < iNumConstraint; ++i) {
 			if (null != aadblJacobian[i]) {
 				for (int j = i + 1; j < iNumConstraint; ++j) {
-					if (null != aadblJacobian[j] && 0. != org.drip.numerical.linearalgebra.Matrix.DotProduct
+					if (null != aadblJacobian[j] && 0. != org.drip.numerical.linearalgebra.MatrixUtil.DotProduct
 						(aadblJacobian[i], aadblJacobian[j]))
 						return false;
 				}
@@ -659,7 +659,7 @@ public class OptimizationFramework {
 		if (bPositiveLinearDependenceCheck) {
 			for (int i = 0; i < iNumConstraint; ++i) {
 				if (null != aadblJacobian[i] &&
-					!org.drip.numerical.linearalgebra.Matrix.PositiveLinearlyIndependent (aadblJacobian[i]))
+					!org.drip.numerical.linearalgebra.MatrixUtil.PositiveLinearlyIndependent (aadblJacobian[i]))
 					return false;
 			}
 		}
@@ -678,8 +678,8 @@ public class OptimizationFramework {
 	public double[][] alongAwayVariate (
 		final double[] adblVariate)
 	{
-		double[] adblVariateIncrement = org.drip.numerical.linearalgebra.Matrix.Product
-			(org.drip.numerical.linearalgebra.Matrix.InvertUsingGaussianElimination (_rdToR1Objective.hessian
+		double[] adblVariateIncrement = org.drip.numerical.linearalgebra.MatrixUtil.Product
+			(org.drip.numerical.linearalgebra.MatrixUtil.InvertUsingGaussianElimination (_rdToR1Objective.hessian
 				(adblVariate)), _rdToR1Objective.jacobian (adblVariate));
 
 		if (null == adblVariateIncrement) return null;

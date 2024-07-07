@@ -134,7 +134,7 @@ public class StrictlyTridiagonalSolver extends TridiagonalSolver
 	{
 		super (squareMatrix, rhsArray);
 
-		if (!Matrix.IsTridiagonal (squareMatrix)) {
+		if (!MatrixUtil.IsTridiagonal (squareMatrix)) {
 			throw new Exception ("StrictlyTridiagonalSolver Constructor => Matrix not Tridiagonal");
 		}
 	}

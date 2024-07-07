@@ -200,13 +200,13 @@ public class CurvatureEvolutionVerifierMetrics
 
 		try
 		{
-			double nextFunctionIncrement = org.drip.numerical.linearalgebra.Matrix.DotProduct (
+			double nextFunctionIncrement = org.drip.numerical.linearalgebra.MatrixUtil.DotProduct (
 				targetDirectionVector,
 				_nextVariateFunctionJacobian
 			);
 
 			double parametrizedCurrentFunctionIncrement =
-				_curvatureParameter * org.drip.numerical.linearalgebra.Matrix.DotProduct (
+				_curvatureParameter * org.drip.numerical.linearalgebra.MatrixUtil.DotProduct (
 					targetDirectionVector,
 					currentVariateFunctionJacobian()
 				);

@@ -4,7 +4,7 @@ package org.drip.sample.simmvariance;
 import org.drip.numerical.common.NumberUtil;
 import org.drip.numerical.eigen.EigenComponent;
 import org.drip.numerical.eigen.PowerIterationComponentExtractor;
-import org.drip.numerical.linearalgebra.Matrix;
+import org.drip.numerical.linearalgebra.MatrixUtil;
 import org.drip.service.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 
@@ -225,7 +225,7 @@ public class CrossGroupPrincipalCovariance
 
 		System.out.println();
 
-		double[][] unadjustedOffDiagonalBlockMatrix = Matrix.CrossProduct (
+		double[][] unadjustedOffDiagonalBlockMatrix = MatrixUtil.CrossProduct (
 			scaledEigenvector,
 			scaledEigenvector
 		);
@@ -249,7 +249,7 @@ public class CrossGroupPrincipalCovariance
 
 		System.out.println();
 
-		double[][] adjustedOffDiagonalBlockMatrix = Matrix.Scale2D (
+		double[][] adjustedOffDiagonalBlockMatrix = MatrixUtil.Scale2D (
 			unadjustedOffDiagonalBlockMatrix,
 			crossBucketCorrelation
 		);

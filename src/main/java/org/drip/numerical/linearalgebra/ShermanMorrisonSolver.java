@@ -209,7 +209,7 @@ public class ShermanMorrisonSolver extends TridiagonalSolver
 	{
 		super (squareMatrix, rhsArray);
 
-		if (!Matrix.IsPeriodicTridiagonal (squareMatrix) ||
+		if (!MatrixUtil.IsPeriodicTridiagonal (squareMatrix) ||
 			!NumberUtil.IsValid (_gamma = gamma) || 0. == _gamma)
 		{
 			throw new Exception ("ShermanMorrisonSolver Constructor => Matrix not Periodic Tridiagonal");
@@ -383,8 +383,8 @@ public class ShermanMorrisonSolver extends TridiagonalSolver
 			return null;
 		}
 
-		double[] solutionArray = Matrix.Product (
-			Matrix.CrossProduct (qSolutionArray, vArray),
+		double[] solutionArray = MatrixUtil.Product (
+			MatrixUtil.CrossProduct (qSolutionArray, vArray),
 			ySolutionArray
 		);
 
@@ -393,7 +393,7 @@ public class ShermanMorrisonSolver extends TridiagonalSolver
 		}
 
 		try {
-			vqDotProductScaler = 1. / (1. + Matrix.DotProduct (vArray, qSolutionArray));
+			vqDotProductScaler = 1. / (1. + MatrixUtil.DotProduct (vArray, qSolutionArray));
 		} catch (Exception e) {
 			e.printStackTrace();
 

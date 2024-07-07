@@ -1,6 +1,9 @@
 
 package org.drip.numerical.eigen;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
@@ -155,5 +158,43 @@ public class EigenOutput
 	public double[] eigenValueArray()
 	{
 		return _eigenValueArray;
+	}
+
+	/**
+	 * Retrieve the Eigenvalue Multiplicity Map
+	 * 
+	 * @return Eigenvalue Multiplicity Map
+	 */
+
+	public Map<Double, Integer> eigenValueMultiplicityMap()
+	{
+		Map<Double, Integer> eigenValueMultiplicityMap = new HashMap<Double, Integer>();
+
+		for (double eigenValue : _eigenValueArray) {
+			eigenValueMultiplicityMap.put (
+				eigenValue,
+				eigenValueMultiplicityMap.containsKey (eigenValue) ?
+					eigenValueMultiplicityMap.get (eigenValue) + 1 : 1
+			);
+		}
+
+		return eigenValueMultiplicityMap;
+	}
+
+	/**
+	 * Compute the Determinant of the Matrix
+	 * 
+	 * @return Determinant of the Matrix
+	 */
+
+	public double determinant()
+	{
+		double determinant = 1.;
+
+		for (double eigenValue : _eigenValueArray) {
+			determinant *= eigenValue;
+		}
+
+		return determinant;
 	}
 }

@@ -1,7 +1,7 @@
 
 package org.drip.sample.blacklitterman;
 
-import org.drip.numerical.linearalgebra.Matrix;
+import org.drip.numerical.linearalgebra.MatrixUtil;
 import org.drip.service.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 
@@ -196,7 +196,7 @@ public class IdzorekAndrogue2003 {
 		for (int i = 0; i < adblMarketCapitalizationEstimate.length; ++i)
 			adblMarketCapitalizationWeight[i] = adblMarketCapitalizationEstimate[i] / dblTotalMarketCapitalization;
 
-		double[] adblImpliedReturns = Matrix.Product (
+		double[] adblImpliedReturns = MatrixUtil.Product (
 			aadblAssetExcessReturnsCorrelation,
 			adblMarketCapitalizationWeight
 		);

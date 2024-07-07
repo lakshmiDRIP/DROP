@@ -2,7 +2,7 @@
 package org.drip.sample.sor;
 
 import org.drip.numerical.common.NumberUtil;
-import org.drip.numerical.linearalgebra.Matrix;
+import org.drip.numerical.linearalgebra.MatrixUtil;
 import org.drip.service.env.EnvManager;
 
 /*
@@ -153,7 +153,7 @@ public class DULDecomposition
 			"\t| SQUARE",
 			" JACOBI ITERATION",
 			squareMatrix,
-			Matrix.JacobiIteration (squareMatrix),
+			MatrixUtil.JacobiIteration (squareMatrix),
 			false
 		);
 
@@ -173,7 +173,7 @@ public class DULDecomposition
 			"\t| SQUARE",
 			" DIAGONAL",
 			squareMatrix,
-			Matrix.Diagonal (squareMatrix),
+			MatrixUtil.Diagonal (squareMatrix),
 			false
 		);
 
@@ -193,7 +193,7 @@ public class DULDecomposition
 			"\t| SQUARE",
 			" LOWER TRIANGULAR",
 			squareMatrix,
-			Matrix.StrictlyLowerTriangular (squareMatrix),
+			MatrixUtil.StrictlyLowerTriangular (squareMatrix),
 			false
 		);
 
@@ -213,7 +213,7 @@ public class DULDecomposition
 			"\t| SQUARE",
 			" UPPER TRIANGULAR",
 			squareMatrix,
-			Matrix.StrictlyUpperTriangular (squareMatrix),
+			MatrixUtil.StrictlyUpperTriangular (squareMatrix),
 			false
 		);
 

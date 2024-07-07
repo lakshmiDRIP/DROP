@@ -123,7 +123,7 @@ public class Covariance {
 				throw new java.lang.Exception ("R1MultivariateNormal Constructor => Invalid Inputs!");
 		}
 
-		if (null == (_aadblPrecision = org.drip.numerical.linearalgebra.Matrix.InvertUsingGaussianElimination
+		if (null == (_aadblPrecision = org.drip.numerical.linearalgebra.MatrixUtil.InvertUsingGaussianElimination
 			(_aadblCovariance)))
 			throw new java.lang.Exception ("R1MultivariateNormal Constructor => Invalid Inputs!");
 	}

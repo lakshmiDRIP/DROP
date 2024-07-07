@@ -31,7 +31,7 @@ import org.drip.measure.dynamics.DiffusionEvaluatorLogarithmic;
 import org.drip.measure.dynamics.HazardJumpEvaluator;
 import org.drip.measure.process.DiffusionEvolver;
 import org.drip.measure.process.JumpDiffusionEvolver;
-import org.drip.numerical.linearalgebra.Matrix;
+import org.drip.numerical.linearalgebra.MatrixUtil;
 import org.drip.product.rates.FixFloatComponent;
 import org.drip.service.common.FormatUtil;
 import org.drip.service.env.EnvManager;
@@ -725,7 +725,7 @@ public class LongFixedAggressiveTimeline
 					initialMarketVertex,
 					LatentStateWeiner.FromUnitRandom (
 						latentStateLabelList,
-						Matrix.Transpose (correlatedPathVertexDimension.straightPathVertexRd().flatform())
+						MatrixUtil.Transpose (correlatedPathVertexDimension.straightPathVertexRd().flatform())
 					)
 				)
 			);

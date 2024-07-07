@@ -123,7 +123,7 @@ public class UD
 
 		if (0 == size || null == _U[0] || size != _U[0].length ||
 			size != _D.length || null == _D[0] || size != _D[0].length ||
-			!org.drip.numerical.linearalgebra.Matrix.IsDiagonal (
+			!org.drip.numerical.linearalgebra.MatrixUtil.IsDiagonal (
 				_D
 			)
 		)
@@ -164,14 +164,14 @@ public class UD
 
 	public double[][] uduTranspose()
 	{
-		double[][] ud = org.drip.numerical.linearalgebra.Matrix.Product (
+		double[][] ud = org.drip.numerical.linearalgebra.MatrixUtil.Product (
 			_U,
 			_D
 		);
 
-		return null == ud ? null : org.drip.numerical.linearalgebra.Matrix.Product (
+		return null == ud ? null : org.drip.numerical.linearalgebra.MatrixUtil.Product (
 			ud,
-			org.drip.numerical.linearalgebra.Matrix.Transpose (
+			org.drip.numerical.linearalgebra.MatrixUtil.Transpose (
 				_U
 			)
 		);

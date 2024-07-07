@@ -2,7 +2,7 @@
 package org.drip.sample.matrix;
 
 import org.drip.numerical.common.*;
-import org.drip.numerical.linearalgebra.Matrix;
+import org.drip.numerical.linearalgebra.MatrixUtil;
 import org.drip.service.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 
@@ -123,7 +123,7 @@ public class GrahamSchmidtProcess {
 			{7, 0, 4, 5}
 		};
 
-		double[][] aadblUOrthogonal = Matrix.GrahamSchmidtOrthogonalization (aadblV);
+		double[][] aadblUOrthogonal = MatrixUtil.GrahamSchmidtOrthogonalization (aadblV);
 
 		NumberUtil.PrintMatrix (
 			"ORTHOGONAL",
@@ -133,7 +133,7 @@ public class GrahamSchmidtProcess {
 		System.out.println (
 			"ORTHOGONAL TEST: " +
 			FormatUtil.FormatDouble (
-				Matrix.DotProduct (
+				MatrixUtil.DotProduct (
 					aadblUOrthogonal[0],
 					aadblUOrthogonal[1]
 				),
@@ -141,7 +141,7 @@ public class GrahamSchmidtProcess {
 			)
 		);
 
-		double[][] aadblUOrthonormal = Matrix.GrahamSchmidtOrthonormalization (aadblV);
+		double[][] aadblUOrthonormal = MatrixUtil.GrahamSchmidtOrthonormalization (aadblV);
 
 		NumberUtil.PrintMatrix (
 			"ORTHONORMAL",
@@ -151,7 +151,7 @@ public class GrahamSchmidtProcess {
 		System.out.println (
 			"ORTHONORMAL TEST: " +
 			FormatUtil.FormatDouble (
-				Matrix.DotProduct (
+				MatrixUtil.DotProduct (
 					aadblUOrthonormal[0],
 					aadblUOrthonormal[1]
 				),

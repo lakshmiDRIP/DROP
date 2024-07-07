@@ -2,7 +2,7 @@
 package org.drip.numerical.iterativesolver;
 
 import org.drip.numerical.common.NumberUtil;
-import org.drip.numerical.linearalgebra.Matrix;
+import org.drip.numerical.linearalgebra.MatrixUtil;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -142,7 +142,7 @@ public class SymmetricSuccessiveOverRelaxation extends SuccessiveOverRelaxation
 	{
 		super (iteratorSetting, squareMatrix, rhsArray);
 
-		if (!Matrix.IsSquareSymmetric (squareMatrix)) {
+		if (!MatrixUtil.IsSquareSymmetric (squareMatrix)) {
 			throw new Exception ("SymmetricSuccessiveOverRelaxation Construction => Invalid Inputs");
 		}
 	}
@@ -173,9 +173,9 @@ public class SymmetricSuccessiveOverRelaxation extends SuccessiveOverRelaxation
 			}
 		}
 
-		double[][] preConditionerMatrix = Matrix.Product (
+		double[][] preConditionerMatrix = MatrixUtil.Product (
 			dOverOmegaPlusL,
-			Matrix.Transpose (dOverOmegaPlusL)
+			MatrixUtil.Transpose (dOverOmegaPlusL)
 		);
 
 		double relaxationParameterScaler = relaxationParameter/ (2. - relaxationParameter);
@@ -203,7 +203,7 @@ public class SymmetricSuccessiveOverRelaxation extends SuccessiveOverRelaxation
 			return null;
 		}
 
-		double[][] preConditionerMatrixInverse = Matrix.Invert (preConditioner(), "GaussianElimination");
+		double[][] preConditionerMatrixInverse = MatrixUtil.Invert (preConditioner(), "GaussianElimination");
 
 		if (null == preConditionerMatrixInverse) {
 			return null;
@@ -227,7 +227,7 @@ public class SymmetricSuccessiveOverRelaxation extends SuccessiveOverRelaxation
 					previousUnknownArray[i] = updatedUnknownArray[i];
 				}
 
-				if (null == (updatedUnknownArray = Matrix.Product (squareMatrix, updatedUnknownArray))) {
+				if (null == (updatedUnknownArray = MatrixUtil.Product (squareMatrix, updatedUnknownArray))) {
 					return null;
 				}
 
@@ -236,7 +236,7 @@ public class SymmetricSuccessiveOverRelaxation extends SuccessiveOverRelaxation
 				}
 
 				if (null == (
-					updatedUnknownArray = Matrix.Product (preConditionerMatrixInverse, updatedUnknownArray)
+					updatedUnknownArray = MatrixUtil.Product (preConditionerMatrixInverse, updatedUnknownArray)
 				))
 				{
 					return null;

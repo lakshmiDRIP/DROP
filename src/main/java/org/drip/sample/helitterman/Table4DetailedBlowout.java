@@ -1,7 +1,7 @@
 
 package org.drip.sample.helitterman;
 
-import org.drip.numerical.linearalgebra.Matrix;
+import org.drip.numerical.linearalgebra.MatrixUtil;
 import org.drip.service.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 
@@ -192,7 +192,7 @@ public class Table4DetailedBlowout
 			}
 		}
 
-		double[] piArray = Matrix.Product (
+		double[] piArray = MatrixUtil.Product (
 			sigmaMatrix,
 			inputWArray
 		);
@@ -214,7 +214,7 @@ public class Table4DetailedBlowout
 
 		System.out.println();
 
-		double[] pDotPIArray = Matrix.Product (
+		double[] pDotPIArray = MatrixUtil.Product (
 			inputPMatrix,
 			piArray
 		);
@@ -248,11 +248,11 @@ public class Table4DetailedBlowout
 
 		System.out.println();
 
-		double[][] pTransposeMatrix = Matrix.Transpose (
+		double[][] pTransposeMatrix = MatrixUtil.Transpose (
 			inputPMatrix
 		);
 
-		double[][] sigmaDot_PTranspose_Matrix = Matrix.Product (
+		double[][] sigmaDot_PTranspose_Matrix = MatrixUtil.Product (
 			sigmaMatrix,
 			pTransposeMatrix
 		);
@@ -274,7 +274,7 @@ public class Table4DetailedBlowout
 
 		System.out.println();
 
-		double[][] pDotSIGMAdot_PTranspose_Matrix = Matrix.Product (
+		double[][] pDotSIGMAdot_PTranspose_Matrix = MatrixUtil.Product (
 			inputPMatrix,
 			sigmaDot_PTranspose_Matrix
 		);
@@ -324,7 +324,7 @@ public class Table4DetailedBlowout
 
 		System.out.println();
 
-		double[][] $PDotSIGMAdot_PTranspose_PlusOMEGA$InverseMatrix = Matrix.InvertUsingGaussianElimination (
+		double[][] $PDotSIGMAdot_PTranspose_PlusOMEGA$InverseMatrix = MatrixUtil.InvertUsingGaussianElimination (
 			pDotSIGMAdot_PTranspose_PlusOMEGAMatrix
 		);
 
@@ -347,7 +347,7 @@ public class Table4DetailedBlowout
 
 		System.out.println();
 
-		double[] __$PDotSIGMADot_PTranspose_plusOMEGA$Inverse__Dot_QMinus__PDotPI__Array = Matrix.Product (
+		double[] __$PDotSIGMADot_PTranspose_plusOMEGA$Inverse__Dot_QMinus__PDotPI__Array = MatrixUtil.Product (
 			$PDotSIGMAdot_PTranspose_PlusOMEGA$InverseMatrix,
 			qMinus_PdotPI_Array
 		);
@@ -366,7 +366,7 @@ public class Table4DetailedBlowout
 		System.out.println();
 
 		double[] sigmaDot$PTranspose$__$PDotSIGMADot_PTranspose_PlusOmega$Inverse__Dot_QMinus__PDotPI__Array
-			= Matrix.Product (
+			= MatrixUtil.Product (
 				sigmaDot_PTranspose_Matrix,
 				__$PDotSIGMADot_PTranspose_plusOMEGA$Inverse__Dot_QMinus__PDotPI__Array
 			);
@@ -399,7 +399,7 @@ public class Table4DetailedBlowout
 
 		System.out.println();
 
-		double[][] pDotSigmaMatrix = Matrix.Product (
+		double[][] pDotSigmaMatrix = MatrixUtil.Product (
 			inputPMatrix,
 			sigmaMatrix
 		);
@@ -421,7 +421,7 @@ public class Table4DetailedBlowout
 
 		System.out.println();
 
-		double[][] __$PDotSigmaDot_PTranspose_PlusOmega$Inverse__DotPDotSigmaMatrix = Matrix.Product (
+		double[][] __$PDotSigmaDot_PTranspose_PlusOmega$Inverse__DotPDotSigmaMatrix = MatrixUtil.Product (
 			$PDotSIGMAdot_PTranspose_PlusOMEGA$InverseMatrix,
 			pDotSigmaMatrix
 		);
@@ -446,7 +446,7 @@ public class Table4DetailedBlowout
 		System.out.println();
 
 		double[][] sigmaDot_PTranspose_Dot__$PDotSigmaDot_PTranspose_PlusOmegaPDotSigmaMatrix =
-			Matrix.Product (
+			MatrixUtil.Product (
 				sigmaDot_PTranspose_Matrix,
 				__$PDotSigmaDot_PTranspose_PlusOmega$Inverse__DotPDotSigmaMatrix
 			);
@@ -551,7 +551,7 @@ public class Table4DetailedBlowout
 
 		System.out.println();
 
-		double[][] sigmaPInverseMatrix = Matrix.InvertUsingGaussianElimination (
+		double[][] sigmaPInverseMatrix = MatrixUtil.InvertUsingGaussianElimination (
 			sigmaPlusTauDot$$SigmaMinusSigmaDot_PTranspose_Dot__$PDotSigmaDot_PTranspose_PlusOmega$Inverse__DotPDotSigma$$Matrix
 		);
 
@@ -572,7 +572,7 @@ public class Table4DetailedBlowout
 
 		System.out.println();
 
-		double[] sigmaPInverseDotPiHatArray = Matrix.Product (
+		double[] sigmaPInverseDotPiHatArray = MatrixUtil.Product (
 			sigmaPInverseMatrix,
 			piHatArray
 		);

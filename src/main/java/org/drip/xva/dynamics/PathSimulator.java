@@ -11,7 +11,7 @@ import org.drip.exposure.universe.MarketPath;
 import org.drip.exposure.universe.MarketVertex;
 import org.drip.exposure.universe.MarketVertexGenerator;
 import org.drip.measure.discrete.CorrelatedPathVertexDimension;
-import org.drip.numerical.linearalgebra.Matrix;
+import org.drip.numerical.linearalgebra.MatrixUtil;
 import org.drip.state.identifier.LatentStateLabel;
 import org.drip.xva.gross.ExposureAdjustmentAggregator;
 import org.drip.xva.gross.MonoPathExposureAdjustment;
@@ -416,8 +416,8 @@ public class PathSimulator
 				initialMarketVertex,
 				LatentStateWeiner.FromUnitRandom (
 					latentStateLabelList,
-					Matrix.Transpose (
-						Matrix.Transpose (correlatedPathVertexDimension.straightPathVertexRd().flatform())))
+					MatrixUtil.Transpose (
+						MatrixUtil.Transpose (correlatedPathVertexDimension.straightPathVertexRd().flatform())))
 			))) {
 				return null;
 			}

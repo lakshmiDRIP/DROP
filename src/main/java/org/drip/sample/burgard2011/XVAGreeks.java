@@ -14,7 +14,7 @@ import org.drip.measure.discrete.CorrelatedPathVertexDimension;
 import org.drip.measure.dynamics.*;
 import org.drip.measure.process.*;
 import org.drip.measure.realization.*;
-import org.drip.numerical.linearalgebra.Matrix;
+import org.drip.numerical.linearalgebra.MatrixUtil;
 import org.drip.service.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 import org.drip.state.identifier.*;
@@ -801,7 +801,7 @@ public class XVAGreeks {
 				initialMarketVertex,
 				LatentStateWeiner.FromUnitRandom (
 					latentStateLabelList,
-					Matrix.Transpose (correlatedPathVertexDimension.straightPathVertexRd().flatform())
+					MatrixUtil.Transpose (correlatedPathVertexDimension.straightPathVertexRd().flatform())
 				)
 			)
 		);

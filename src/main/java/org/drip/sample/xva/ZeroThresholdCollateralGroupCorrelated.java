@@ -10,7 +10,7 @@ import org.drip.measure.discrete.SequenceGenerator;
 import org.drip.measure.dynamics.*;
 import org.drip.measure.process.DiffusionEvolver;
 import org.drip.measure.realization.*;
-import org.drip.numerical.linearalgebra.Matrix;
+import org.drip.numerical.linearalgebra.MatrixUtil;
 import org.drip.service.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 import org.drip.state.identifier.OTCFixFloatLabel;
@@ -419,7 +419,7 @@ public class ZeroThresholdCollateralGroupCorrelated {
 		);
 
 		for (int i = 0; i < iNumPath; ++i) {
-			double[][] aadblNumeraire = Matrix.Transpose (
+			double[][] aadblNumeraire = MatrixUtil.Transpose (
 				SequenceGenerator.GaussianJoint (
 					iNumStep,
 					aadblCorrelation

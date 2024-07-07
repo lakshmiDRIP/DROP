@@ -5,7 +5,7 @@ import java.util.Date;
 
 import org.drip.measure.crng.RdRandomSequence;
 import org.drip.numerical.common.NumberUtil;
-import org.drip.numerical.linearalgebra.Matrix;
+import org.drip.numerical.linearalgebra.MatrixUtil;
 import org.drip.numerical.linearalgebra.StrictlyTridiagonalSolver;
 import org.drip.service.env.EnvManager;
 
@@ -150,7 +150,7 @@ public class NonPeriodicSolverSuite
 			);
 		}
 
-		double[] rhsArray = Matrix.Product (tridiagonalMatrix, xArray);
+		double[] rhsArray = MatrixUtil.Product (tridiagonalMatrix, xArray);
 
 		System.out.println ("\t|-----------------------------------------------------------------||");
 

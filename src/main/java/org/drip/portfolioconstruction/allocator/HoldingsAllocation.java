@@ -137,7 +137,7 @@ public class HoldingsAllocation
 
 			double portfolioExcessReturnsSigma = java.lang.Math.sqrt (portfolioExcessReturnsVariance);
 
-			double[] impliedBetaArray = org.drip.numerical.linearalgebra.Matrix.Product (
+			double[] impliedBetaArray = org.drip.numerical.linearalgebra.MatrixUtil.Product (
 				assetUniverseStatisticalProperties.covariance (optimalPortfolio.assetIDArray()),
 				optimalPortfolio.weightArray()
 			);

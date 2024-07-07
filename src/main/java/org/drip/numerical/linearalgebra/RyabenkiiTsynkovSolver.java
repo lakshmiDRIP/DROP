@@ -135,7 +135,7 @@ public class RyabenkiiTsynkovSolver extends TridiagonalSolver
 	{
 		super (squareMatrix, rhsArray);
 
-		if (!Matrix.IsPeriodicTridiagonal (squareMatrix)) {
+		if (!MatrixUtil.IsPeriodicTridiagonal (squareMatrix)) {
 			throw new Exception ("RyabenkiiTsynkovSolver Constructor => Matrix not Periodic Tridiagonal");
 		}
 	}

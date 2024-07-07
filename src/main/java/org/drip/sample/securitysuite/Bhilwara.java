@@ -3,7 +3,7 @@ package org.drip.sample.securitysuite;
 
 import org.drip.analytics.cashflow.CompositePeriod;
 import org.drip.analytics.date.*;
-import org.drip.numerical.linearalgebra.Matrix;
+import org.drip.numerical.linearalgebra.MatrixUtil;
 import org.drip.product.creator.BondBuilder;
 import org.drip.product.credit.BondComponent;
 import org.drip.service.common.FormatUtil;
@@ -928,7 +928,7 @@ public class Bhilwara {
 			17.11,
 		};
 
-		double dblIssueAmount = Matrix.Sum (adblPrincipalPayDown);
+		double dblIssueAmount = MatrixUtil.Sum (adblPrincipalPayDown);
 
 		JulianDate dtEffective = DateUtil.CreateFromYMD (
 			2017,

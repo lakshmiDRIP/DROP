@@ -198,8 +198,7 @@ public class Square
 		try
 		{
 			return new org.drip.numerical.eigen.QREigenComponentExtractor (
-				100,
-				1.e-06
+				100
 			).eigenize (
 				_grid
 			);
@@ -273,15 +272,15 @@ public class Square
 
 				if (null == frobeniusComponentMatrix)
 				{
-					frobeniusComponentMatrix = org.drip.numerical.linearalgebra.Matrix.Scale2D (
+					frobeniusComponentMatrix = org.drip.numerical.linearalgebra.MatrixUtil.Scale2D (
 						eigenShadowArray[eigenIndex],
 						1. / (componentEigenValue - eigenValueArray[eigenIndex])
 					);
 				}
 				else
 				{
-					frobeniusComponentMatrix = org.drip.numerical.linearalgebra.Matrix.Scale2D (
-						org.drip.numerical.linearalgebra.Matrix.Product (
+					frobeniusComponentMatrix = org.drip.numerical.linearalgebra.MatrixUtil.Scale2D (
+						org.drip.numerical.linearalgebra.MatrixUtil.Product (
 							frobeniusComponentMatrix,
 							eigenShadowArray[eigenIndex]
 						),
@@ -344,7 +343,7 @@ public class Square
 
 			try
 			{
-				frobeniusComponentFunctionProjection = org.drip.numerical.linearalgebra.Matrix.Scale2D (
+				frobeniusComponentFunctionProjection = org.drip.numerical.linearalgebra.MatrixUtil.Scale2D (
 					componentMapEntry.getValue().grid(),
 					r1ToR1Function.evaluate (
 						componentMapEntry.getKey()

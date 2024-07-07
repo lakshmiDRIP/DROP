@@ -1,7 +1,7 @@
 
 package org.drip.measure.crng;
 
-import org.drip.numerical.linearalgebra.Matrix;
+import org.drip.numerical.linearalgebra.MatrixUtil;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -211,7 +211,7 @@ public class RdRandomSequence
     	for (int i = 0; i < tridiagonalMatrix.length; ++i) {
         	for (int j = 0; j < tridiagonalMatrix.length; ++j) {
         		if (j <= i - 2 || j >= i + 2) {
-        			if (!Matrix.TopRight (i, j, elementCount) && !Matrix.BottomLeft (i, j, elementCount)) {
+        			if (!MatrixUtil.TopRight (i, j, elementCount) && !MatrixUtil.BottomLeft (i, j, elementCount)) {
 	        			tridiagonalMatrix[i][j] = 0.;
         			}
         		}
