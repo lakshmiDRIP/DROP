@@ -128,6 +128,33 @@ public class MatrixUtil {
 		return dotProductInternal;
 	}
 
+	private static final double[] ProjectVOnUInternal (
+		final double[] u,
+		final double[] v)
+	{
+		double vDotUOverUDotU = DotProductInternal (u, v) / DotProductInternal (u, u);
+
+		double[] projectVOnU = new double[u.length];
+
+		for (int i = 0; i < u.length; ++i) {
+			projectVOnU[i] = vDotUOverUDotU * u[i];
+		}
+
+		return projectVOnU;
+	}
+
+	private static final double ModulusInternal (
+		final double[] v)
+	{
+		double modulus = 0.;
+
+		for (int i = 0; i < v.length; ++i) {
+			modulus += v[i] * v[i];
+		}
+
+		return Math.sqrt (modulus);
+	}
+
 	/**
 	 * Indicate if the Cell corresponds to Bottom Left Location in the Matrix
 	 * 
@@ -888,29 +915,22 @@ public class MatrixUtil {
 	/**
 	 * Compute the Modulus of the Input Vector
 	 * 
-	 * @param adbl The Input Vector
+	 * @param v The Input Vector
 	 * 
-	 * @return TRUE - The Modulus of the Input Vector
+	 * @return The Modulus of the Input Vector
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public static final double Modulus (
-		final double[] adbl)
-		throws java.lang.Exception
+		final double[] v)
+		throws Exception
 	{
-		if (null == adbl || !org.drip.numerical.common.NumberUtil.IsValid (adbl))
-			throw new java.lang.Exception ("MatrixUtil::Modulus => Invalid Inputs");
+		if (null == v || 0 == v.length || !NumberUtil.IsValid (v)) {
+			throw new Exception ("MatrixUtil::Modulus => Invalid Inputs");
+		}
 
-		double dblModulus = 0.;
-		int iSize = adbl.length;
-
-		if (0 == iSize) throw new java.lang.Exception ("MatrixUtil::Modulus => Invalid Inputs");
-
-		for (int i = 0; i < iSize; ++i)
-			dblModulus += adbl[i] * adbl[i];
-
-		return java.lang.Math.sqrt (dblModulus);
+		return ModulusInternal (v);
 	}
 
 	/**
@@ -1019,58 +1039,39 @@ public class MatrixUtil {
 	/**
 	 * Orthogonalize the Specified Matrix Using the Graham-Schmidt Method
 	 * 
-	 * @param aadblV The Input Matrix
+	 * @param v The Input Matrix
 	 * 
 	 * @return The Orthogonalized Matrix
 	 */
 
 	public static final double[][] GrahamSchmidtOrthogonalization (
-		final double[][] aadblV)
+		final double[][] v)
 	{
-		if (null == aadblV) return null;
+		if (null == v || 0 == v.length || v.length != v[0].length) {
+			return null;
+		}
 
-		int iSize = aadblV.length;
-		double[][] aadblU = new double[iSize][iSize];
+		double[][] vTranspose = Transpose (v);
 
-		if (0 == iSize || null == aadblV[0] || iSize != aadblV[0].length) return null;
+		double[][] u = new double[vTranspose.length][vTranspose.length];
 
-		for (int i = 0; i < iSize; ++i) {
-			for (int j = 0; j < iSize; ++j)
-				aadblU[i][j] = aadblV[i][j];
-
-			for (int j = 0; j < i; ++j) {
-				double dblProjectionAmplitude = java.lang.Double.NaN;
-
-				try {
-					dblProjectionAmplitude = DotProduct (aadblV[i], aadblU[j]) / DotProduct (aadblU[j],
-						aadblU[j]);
-				} catch (java.lang.Exception e) {
-					e.printStackTrace();
-
-					return null;
-				}
-
-				for (int k = 0; k < iSize; ++k)
-					aadblU[i][k] -= dblProjectionAmplitude * aadblU[j][k];
+		for (int i = 0; i < vTranspose.length; ++i) {
+			for (int j = 0; j < vTranspose.length; ++j) {
+				u[i][j] = vTranspose[i][j];
 			}
 		}
 
-		return aadblU;
-	}
+		for (int i = 1; i < vTranspose.length; ++i) {
+			for (int j = 0; j < i; ++j) {
+				double[] projectionTrimOff = ProjectVOnUInternal (u[j], vTranspose[i]);
 
-	private static final double[] ProjectVOnUInternal (
-		final double[] u,
-		final double[] v)
-	{
-		double vDotUOverUDotU = DotProductInternal (u, v) / DotProductInternal (u, u);
-
-		double[] projectVOnU = new double[u.length];
-
-		for (int i = 0; i < u.length; ++i) {
-			projectVOnU[i] = vDotUOverUDotU * u[i];
+				for (int k = 0; k < projectionTrimOff.length; ++k) {
+					u[i][k] -= projectionTrimOff[k];
+				}
+			}
 		}
 
-		return projectVOnU;
+		return u;
 	}
 
 	/**
@@ -1084,30 +1085,17 @@ public class MatrixUtil {
 	public static final double[][] GrahamSchmidtOrthonormalization (
 		final double[][] v)
 	{
-		if (null == v || 0 == v.length || v.length != v[0].length) {
+		double[][] u = GrahamSchmidtOrthogonalization (v);
+
+		if (null == u) {
 			return null;
 		}
 
-		double[] uDotProduct = new double[v.length];
-		double[][] u = new double[v.length][v.length];
+		for (int i = 0; i < u.length; ++i) {
+			double modulusReciprocal = 1. / ModulusInternal (u[i]);
 
-		for (int i = 0; i < v.length; ++i) {
-			uDotProduct[0] += u[0][i] * u[0][i];
-		}
-
-		for (int i = 0; i < v.length; ++i) {
-			for (int j = 0; j < v.length; ++j) {
-				u[i][j] = v[i][j];
-			}
-		}
-
-		for (int i = 1; i < v.length; ++i) {
-			for (int j = 0; j < i; ++j) {
-				double[] projectionTrimOff = ProjectVOnUInternal (u[j], v[i]);
-
-				for (int k = 0; k < projectionTrimOff.length; ++k) {
-					u[i][j] -= projectionTrimOff[k];
-				}
+			for (int j = 0; j < u.length; ++j) {
+				u[i][j] *= modulusReciprocal;
 			}
 		}
 
@@ -1117,37 +1105,19 @@ public class MatrixUtil {
 	/**
 	 * Perform a QR Decomposition on the Input Matrix
 	 * 
-	 * @param aadblA The Input Matrix
+	 * @param a The Input Matrix
 	 * 
 	 * @return The Output of QR Decomposition
 	 */
 
-	public static final org.drip.numerical.linearalgebra.QR QRDecomposition (
-		final double[][] aadblA)
+	public static final QR QRDecomposition (
+		final double[][] a)
 	{
-		double[][] aadblQ = GrahamSchmidtOrthonormalization (aadblA);
-
-		if (null == aadblQ) return null;
-
-		for (int i = 0; i < aadblQ.length; ++i) {
-			System.out.println (
-				"\t| Matrix GSOQ => [" + NumberUtil.ArrayRow (aadblQ[i], 2, 4, false) + " ]||"
-			);
-		}
-
-		int iSize = aadblQ.length;
-		double[][] aadblR = new double[iSize][iSize];
+		double[][] q = GrahamSchmidtOrthonormalization (a);
 
 		try {
-			/* for (int i = 0; i < iSize; ++i) {
-				for (int j = 0; j < iSize; ++j)
-					aadblR[i][j] = i > j ? DotProduct (aadblQ[i], aadblA[j]) : 0.;
-			} */
-
-			aadblR = Product (Transpose (aadblQ), aadblA);
-
-			return new org.drip.numerical.linearalgebra.QR (aadblQ, aadblR);
-		} catch (java.lang.Exception e) {
+			return null == q ? null : new QR (q, Product (q, a));
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
