@@ -2,7 +2,7 @@
 package org.drip.sample.tridiagonal;
 
 import org.drip.numerical.common.NumberUtil;
-import org.drip.numerical.linearsolver.ShermanMorrison;
+import org.drip.numerical.linearsolver.ShermanMorrisonScheme;
 import org.drip.service.env.EnvManager;
 
 /*
@@ -181,7 +181,7 @@ public class PeriodicShermanMorrisonSolver
 
 		System.out.println();
 
-		ShermanMorrison shermanMorrisonSolver = ShermanMorrison.StandardBatistaKarawia (
+		ShermanMorrisonScheme shermanMorrisonSolver = ShermanMorrisonScheme.StandardBatistaKarawia (
 			periodicTridiagonalMatrix,
 			rhsArray
 		);

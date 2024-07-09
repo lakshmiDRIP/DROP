@@ -123,7 +123,7 @@ public class NonPeriodicTridiagonalScheme extends TridiagonalScheme
 	/**
 	 * Make a Standard Instance of <i>NonPeriodicTridiagonalScheme</i>
 	 * 
-	 * @param squareMatrix Square Matrix
+	 * @param r2Array R<cup>2</sup> Array
 	 * @param rhsArray RHS Array
 	 * 
 	 * @return Standard Instance of <i>NonPeriodicTridiagonalScheme</i>

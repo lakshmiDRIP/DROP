@@ -74,7 +74,7 @@ package org.drip.numerical.linearalgebra;
  */
 
 /**
- * <iTridiagonalMatrix</i> abstracts the Tridiagonal Matrix based on Periodic/non-Periodic setup. The
+ * <i>TridiagonalMatrix</i> abstracts the Tridiagonal Matrix based on Periodic/non-Periodic setup. The
  * 	References are:
  * 
  * <br><br>
@@ -113,7 +113,7 @@ package org.drip.numerical.linearalgebra;
  * @author Lakshmi Krishnamurthy
  */
 
-public class TridiagonalMatrix extends SquareMatrix
+public abstract class TridiagonalMatrix extends SquareMatrix
 {
 
 	protected TridiagonalMatrix (

@@ -78,7 +78,7 @@ import org.drip.numerical.linearalgebra.PeriodicTridiagonalMatrix;
  */
 
 /**
- * <i>ShermanMorrison</i> implements the O(n) solver for a Tridiagonal Matrix with Periodic Boundary
+ * <i>ShermanMorrisonScheme</i> implements the O(n) solver for a Tridiagonal Matrix with Periodic Boundary
  * 	Conditions. The References are:
  * 
  * <br><br>
@@ -118,7 +118,7 @@ import org.drip.numerical.linearalgebra.PeriodicTridiagonalMatrix;
  * @author Lakshmi Krishnamurthy
  */
 
-public class ShermanMorrison extends PeriodicTridiagonalScheme
+public class ShermanMorrisonScheme extends PeriodicTridiagonalScheme
 {
 
 	/**
@@ -138,12 +138,12 @@ public class ShermanMorrison extends PeriodicTridiagonalScheme
 	 * @return Standard Gamma Instance of Sherman Morrison Solver
 	 */
 
-	public static final ShermanMorrison Standard (
+	public static final ShermanMorrisonScheme Standard (
 		final double[][] r2Array,
 		final double[] rhsArray)
 	{
 		try {
-			return MatrixUtil.IsPeriodicTridiagonal (r2Array) ? new ShermanMorrison (
+			return MatrixUtil.IsPeriodicTridiagonal (r2Array) ? new ShermanMorrisonScheme (
 				PeriodicTridiagonalMatrix.Standard (r2Array),
 				rhsArray,
 				BATISTA_KARAWIA_DEFAULT_GAMMA
@@ -164,7 +164,7 @@ public class ShermanMorrison extends PeriodicTridiagonalScheme
 	 * @return Standard Batista-Karawia Instance of Sherman Morrison Solver
 	 */
 
-	public static final ShermanMorrison StandardBatistaKarawia (
+	public static final ShermanMorrisonScheme StandardBatistaKarawia (
 		final double[][] r2Array,
 		final double[] rhsArray)
 	{
@@ -185,7 +185,7 @@ public class ShermanMorrison extends PeriodicTridiagonalScheme
 		}
 
 		try {
-			return MatrixUtil.IsPeriodicTridiagonal (r2Array) ? new ShermanMorrison (
+			return MatrixUtil.IsPeriodicTridiagonal (r2Array) ? new ShermanMorrisonScheme (
 				PeriodicTridiagonalMatrix.Standard (r2Array),
 				rhsArray,
 				gamma
@@ -197,7 +197,7 @@ public class ShermanMorrison extends PeriodicTridiagonalScheme
 		return null;
 	}
 
-	protected ShermanMorrison (
+	protected ShermanMorrisonScheme (
 		final PeriodicTridiagonalMatrix periodicTridiagonalMatrix,
 		final double[] rhsArray,
 		final double gamma)
@@ -206,7 +206,7 @@ public class ShermanMorrison extends PeriodicTridiagonalScheme
 		super (periodicTridiagonalMatrix, rhsArray);
 
 		if (!NumberUtil.IsValid (_gamma = gamma) || 0. == _gamma) {
-			throw new Exception ("ShermanMorrison Constructor => Matrix not Periodic Tridiagonal");
+			throw new Exception ("ShermanMorrisonScheme Constructor => Matrix not Periodic Tridiagonal");
 		}
 	}
 
@@ -360,12 +360,7 @@ public class ShermanMorrison extends PeriodicTridiagonalScheme
 			return null;
 		}
 
-		double[] qSolutionArray = null == uRHSNonPeriodicTridiagonalScheme ? null :
-			uRHSNonPeriodicTridiagonalScheme.forwardSweepBackSubstitution();
-
-		if (null == qSolutionArray) {
-			return null;
-		}
+		double[] qSolutionArray = uRHSNonPeriodicTridiagonalScheme.forwardSweepBackSubstitution();
 
 		NonPeriodicTridiagonalScheme rhsNonPeriodicTridiagonalScheme =
 			NonPeriodicTridiagonalScheme.Standard (batistaKarawiaMatrix, rhsArray);
@@ -374,12 +369,7 @@ public class ShermanMorrison extends PeriodicTridiagonalScheme
 			return null;
 		}
 
-		double[] ySolutionArray = null == rhsNonPeriodicTridiagonalScheme ? null :
-			rhsNonPeriodicTridiagonalScheme.forwardSweepBackSubstitution();
-
-		if (null == ySolutionArray) {
-			return null;
-		}
+		double[] ySolutionArray = rhsNonPeriodicTridiagonalScheme.forwardSweepBackSubstitution();
 
 		double[] solutionArray = MatrixUtil.Product (
 			MatrixUtil.CrossProduct (qSolutionArray, vArray),
