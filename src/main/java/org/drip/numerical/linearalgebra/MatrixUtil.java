@@ -1,6 +1,8 @@
 
 package org.drip.numerical.linearalgebra;
 
+import org.drip.numerical.common.NumberUtil;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
@@ -113,6 +115,18 @@ package org.drip.numerical.linearalgebra;
  */
 
 public class MatrixUtil {
+
+	private static final double DotProductInternal (
+		final double[] a,
+		final double[] e)
+	{
+		double dotProductInternal = 0.;
+
+		for (int i = 0; i < a.length; ++i)
+			dotProductInternal += a[i] * e[i];
+
+		return dotProductInternal;
+	}
 
 	/**
 	 * Indicate if the Cell corresponds to Bottom Left Location in the Matrix
@@ -295,6 +309,42 @@ public class MatrixUtil {
 		}
 
 		return aadblProduct;
+	}
+
+	/**
+	 * Compute the Sum of the input matrices
+	 * 
+	 * @param aadblA Matrix A
+	 * @param aadblB Matrix B
+	 * 
+	 * @return The Sum
+	 */
+
+	public static final double[][] Sum (
+		final double[][] aadblA,
+		final double[][] aadblB)
+	{
+		if (null == aadblA || null == aadblB) return null;
+
+		int iNumACol = aadblA[0].length;
+		int iNumProductRow = aadblA.length;
+		int iNumProductCol = aadblB[0].length;
+		double[][] aadblSum = new double[iNumProductRow][iNumProductCol];
+
+		if (0 == iNumACol || iNumACol != aadblB.length || 0 == iNumProductRow || 0 == iNumProductCol)
+			return null;
+
+		for (int iRow = 0; iRow < iNumProductRow; ++iRow) {
+			for (int iCol = 0; iCol < iNumProductCol; ++iCol) {
+				if (!org.drip.numerical.common.NumberUtil.IsValid (aadblA[iRow][iCol]) ||
+					!org.drip.numerical.common.NumberUtil.IsValid (aadblB[iRow][iCol]))
+					return null;
+
+				aadblSum[iRow][iCol] = aadblA[iRow][iCol] + aadblB[iRow][iCol];
+			}
+		}
+
+		return aadblSum;
 	}
 
 	/**
@@ -723,19 +773,15 @@ public class MatrixUtil {
 		final double[] adblE)
 		throws java.lang.Exception
 	{
-		if (null == adblA || null == adblE)
-			throw new java.lang.Exception ("MatrixUtil::DotProduct => Invalid Inputs!");
+		if (null == adblA ||
+			null == adblE ||
+			0 == adblA.length ||
+			adblA.length != adblE.length)
+		{
+			throw new Exception ("MatrixUtil::DotProduct => Invalid Inputs!");
+		}
 
-		int iSize = adblA.length;
-		double dblDotProduct = 0.;
-
-		if (0 == iSize || iSize != adblE.length)
-			throw new java.lang.Exception ("MatrixUtil::DotProduct => Invalid Inputs!");
-
-		for (int i = 0; i < iSize; ++i)
-			dblDotProduct += adblE[i] * adblA[i];
-
-		return dblDotProduct;
+		return DotProductInternal (adblA, adblE);
 	}
 
 	/**
@@ -1012,29 +1058,60 @@ public class MatrixUtil {
 		return aadblU;
 	}
 
+	private static final double[] ProjectVOnUInternal (
+		final double[] u,
+		final double[] v)
+	{
+		double vDotUOverUDotU = DotProductInternal (u, v) / DotProductInternal (u, u);
+
+		double[] projectVOnU = new double[u.length];
+
+		for (int i = 0; i < u.length; ++i) {
+			projectVOnU[i] = vDotUOverUDotU * u[i];
+		}
+
+		return projectVOnU;
+	}
+
 	/**
 	 * Orthonormalize the Specified Matrix Using the Graham-Schmidt Method
 	 * 
-	 * @param aadblV The Input Matrix
+	 * @param v The Input Matrix
 	 * 
 	 * @return The Orthonormalized Matrix
 	 */
 
 	public static final double[][] GrahamSchmidtOrthonormalization (
-		final double[][] aadblV)
+		final double[][] v)
 	{
-		double[][] aadblVOrthogonal = GrahamSchmidtOrthogonalization (aadblV);
+		if (null == v || 0 == v.length || v.length != v[0].length) {
+			return null;
+		}
 
-		if (null == aadblVOrthogonal) return null;
+		double[] uDotProduct = new double[v.length];
+		double[][] u = new double[v.length][v.length];
 
-		int iSize = aadblVOrthogonal.length;
+		for (int i = 0; i < v.length; ++i) {
+			uDotProduct[0] += u[0][i] * u[0][i];
+		}
 
-		double[][] aadblVOrthonormal = new double[iSize][];
+		for (int i = 0; i < v.length; ++i) {
+			for (int j = 0; j < v.length; ++j) {
+				u[i][j] = v[i][j];
+			}
+		}
 
-		for (int i = 0; i < iSize; ++i)
-			aadblVOrthonormal[i] = Normalize (aadblVOrthogonal[i]);
+		for (int i = 1; i < v.length; ++i) {
+			for (int j = 0; j < i; ++j) {
+				double[] projectionTrimOff = ProjectVOnUInternal (u[j], v[i]);
 
-		return aadblVOrthonormal;
+				for (int k = 0; k < projectionTrimOff.length; ++k) {
+					u[i][j] -= projectionTrimOff[k];
+				}
+			}
+		}
+
+		return u;
 	}
 
 	/**
@@ -1052,14 +1129,22 @@ public class MatrixUtil {
 
 		if (null == aadblQ) return null;
 
+		for (int i = 0; i < aadblQ.length; ++i) {
+			System.out.println (
+				"\t| Matrix GSOQ => [" + NumberUtil.ArrayRow (aadblQ[i], 2, 4, false) + " ]||"
+			);
+		}
+
 		int iSize = aadblQ.length;
 		double[][] aadblR = new double[iSize][iSize];
 
 		try {
-			for (int i = 0; i < iSize; ++i) {
+			/* for (int i = 0; i < iSize; ++i) {
 				for (int j = 0; j < iSize; ++j)
 					aadblR[i][j] = i > j ? DotProduct (aadblQ[i], aadblA[j]) : 0.;
-			}
+			} */
+
+			aadblR = Product (Transpose (aadblQ), aadblA);
 
 			return new org.drip.numerical.linearalgebra.QR (aadblQ, aadblR);
 		} catch (java.lang.Exception e) {

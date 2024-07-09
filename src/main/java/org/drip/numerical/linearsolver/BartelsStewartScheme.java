@@ -1,15 +1,12 @@
 
-package org.drip.sample.triangular;
+package org.drip.numerical.linearsolver;
 
-import java.util.Date;
-
-import org.drip.measure.crng.RandomMatrixGenerator;
 import org.drip.measure.crng.RdRandomSequence;
 import org.drip.numerical.common.NumberUtil;
 import org.drip.numerical.linearalgebra.MatrixUtil;
-import org.drip.numerical.linearalgebra.TriangularMatrix;
-import org.drip.numerical.linearsolver.TriangularScheme;
-import org.drip.service.env.EnvManager;
+import org.drip.numerical.linearalgebra.QR;
+import org.drip.numerical.linearalgebra.SquareMatrix;
+import org.drip.numerical.linearalgebra.SylvesterEquation;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -84,28 +81,33 @@ import org.drip.service.env.EnvManager;
  */
 
 /**
- * <i>LowerSolverSuite</i> shows the Construction and the Solution of a Lower Triangular Matrix. The
- * 	References are:
+ * <i>BartelsStewartScheme</i> implements the solution to Sylvester Equation, which is defined by:
+ * 
+ * 									A.X + X.B = RHS
+ * 
+ * 	X is the unknown whose solution is to sought. Naturally, the sizes of A, B, and RHS need to be consistent.
+ *  The References are:
  * 
  * <br><br>
  * 	<ul>
  * 		<li>
- * 			Axler, S. J. (1997): <i>Linear Algebra Done Right 2<sup>nd</sup> Edition</i> <b>Springer</b>
- * 				New York NY
+ * 			Bhatia, R., and P. Rosenthal (1997): How and why to solve the operator equation
+ * 				<code>AX-XB=Y</code>? <i>Bulletin of London Mathematical Society</i> <b>29 (1)</b> 1-21
  * 		</li>
  * 		<li>
- * 			Bernstein, D. S. (2009): <i>Matrix Mathematics: Theory, Facts, and Formulas 2<sup>nd</sup>
- * 				Edition</i> <b>Princeton University Press</b> Princeton NJ
+ * 			Dmytryshyn, A. and B. Kagstrom (2015): Coupled Sylvester-type Matrix Equation and Block
+ * 				Diagonalization <i>SIAM Journal of Matrix Analysis and Applications</i> <b>36 (2)</b> 580-593
  * 		</li>
  * 		<li>
- * 			Herstein, I. N. (1975): <i>Topics in Algebra 2<sup>nd</sup> Edition</i> <b>Wiley</b> New York NY
+ * 			Gerrish, F., and A. G. B. Ward (1998): Sylvester Matrix Equation and Roth’s Removal Rule
+ * 				<i>Mathematical Gazette</i> <b>82 (495)</b> 423-430
  * 		</li>
  * 		<li>
- * 			Prasolov, V. V. (1994): <i>Topics in Algebra</i> <b>American Mathematical Society</b> Providence
- * 				RI
+ * 			Wei, Q., N. Dobigeon, and J. Y. Tourneret (2015): Fast Fusion of Multi-band Images based on
+ * 				solving a Sylvester Equation <i>IEEE</i> <b>24 (11)</b> 4109-4121
  * 		</li>
  * 		<li>
- * 			Wikipedia (2024): Triangular Matrix https://en.wikipedia.org/wiki/Triangular_matrix
+ * 			Wikipedia (2024): Sylvester Equation https://en.wikipedia.org/wiki/Sylvester_equation
  * 		</li>
  * 	</ul>
  * 
@@ -113,119 +115,113 @@ import org.drip.service.env.EnvManager;
  *  <ul>
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md">Numerical Analysis Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/README.md">DROP API Construction and Usage</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/triangular/README.md">Triangular Matrix Variants and Solutions</a></li>
+ *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/numerical/README.md">Numerical Quadrature, Differentiation, Eigenization, Linear Algebra, and Utilities</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/numerical/linearsolver/README.md">Solvers of Linear Systems of Equations</a></li>
  *  </ul>
  * <br><br>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class LowerSolverSuite
+public class BartelsStewartScheme
 {
+	private double[][] _rhsMatrix = null;
+	private SylvesterEquation _sylvesterEquation = null;
 
-	private static final void Trial (
-		final int elementCount,
-		final double maximumElement)
+	/**
+	 * <i>BartelsStewartScheme</i> Constructor
+	 * 
+	 * @param sylvesterEquation Sylvester Equation Instance
+	 * @param rhsMatrix "RHS" Matrix
+	 * 
+	 * @throws Exception Thrown if the Inputs are Invalid
+	 */
+
+	public BartelsStewartScheme (
+		final SylvesterEquation sylvesterEquation,
+		final double[][] rhsMatrix)
 		throws Exception
 	{
-		double[] xArray = RdRandomSequence.OneD (elementCount, maximumElement, true);
-
-		TriangularMatrix lowerTriangularMatrix = RandomMatrixGenerator.LowerTriangular (
-			elementCount,
-			maximumElement,
-			true
-		);
-
-		System.out.println (
-			"\t|----------------------------------------------------------------------------------||"
-		);
-
-		System.out.println ("\t| Trial at " + new Date());
-
-		System.out.println (
-			"\t|----------------------------------------------------------------------------------||"
-		);
-
-		double[][] lowerTriangularR2Array = lowerTriangularMatrix.r2Array();
-
-		for (int i = 0; i < lowerTriangularR2Array.length; ++i) {
-			System.out.println (
-				"\t| Lower Trangular " + elementCount + " x " + elementCount + "              => [" +
-					NumberUtil.ArrayRow (
-						lowerTriangularR2Array[i],
-						2,
-						1,
-						false
-					) + " ]||"
-			);
+		if (null == (_sylvesterEquation = sylvesterEquation) ||
+			null == (_rhsMatrix = rhsMatrix) ||
+			_sylvesterEquation.aSize() != _rhsMatrix.length ||
+			_sylvesterEquation.bSize() != _rhsMatrix[0].length)
+		{
+			throw new Exception ("BartelsStewartScheme Constructor => Invalid Inputs");
 		}
-
-		System.out.println (
-			"\t|----------------------------------------------------------------------------------||"
-		);
-
-		double[] rhsArray = MatrixUtil.Product (lowerTriangularR2Array, xArray);
-
-		System.out.println (
-			"\t| RHS Input      {" + NumberUtil.ArrayRow (rhsArray, 5, 0, false) + "} ||"
-		);
-
-		System.out.println ("\t|-----------------------------------------------------------------||");
-
-		System.out.println ("\t|-----------------------------------------------------------------||");
-
-		System.out.println (
-			"\t| X Input           =>  " + NumberUtil.ArrayRow (xArray, 2, 1, false) + "  ||"
-		);
-
-		System.out.println (
-			"\t| Expected          =>  " +
-			NumberUtil.ArrayRow (
-				new TriangularScheme (
-					TriangularMatrix.Standard (lowerTriangularR2Array),
-					rhsArray
-				).solve(),
-				2,
-				1,
-				false
-			) + "  ||"
-		);
-
-		System.out.println ("\t|-----------------------------------------------------------------||");
-
-		System.out.println();
 	}
 
 	/**
-	 * Entry Point
+	 * Retrieve the Sylvester Equation Instance
 	 * 
-	 * @param argumentArray Command Line Argument Array
-	 * 
-	 * @throws Exception Thrown on Error/Exception Situation
+	 * @return Sylvester Equation Instance
 	 */
+
+	public SylvesterEquation sylvesterEquation()
+	{
+		return _sylvesterEquation;
+	}
+
+	/**
+	 * Retrieve the "RHS" Matrix
+	 * 
+	 * @return "RHS" Matrix
+	 */
+
+	public double[][] rhsMatrix()
+	{
+		return _rhsMatrix;
+	}
+
+	public void solve()
+	{
+		QR qrA = MatrixUtil.QRDecomposition (_sylvesterEquation.squareMatrixA().r2Array());
+
+		System.out.println();
+
+		for (int i = 0; i < qrA.q().length; ++i) {
+			System.out.println (
+				"\t| Matrix Q => [" + NumberUtil.ArrayRow (qrA.q()[i], 2, 4, false) + " ]||"
+			);
+		}
+
+		System.out.println();
+
+		for (int i = 0; i < qrA.r().length; ++i) {
+			System.out.println (
+				"\t| Matrix R => [" + NumberUtil.ArrayRow (qrA.r()[i], 2, 4, false) + " ]||"
+			);
+		}
+
+		System.out.println();
+	}
 
 	public static final void main (
 		final String[] argumentArray)
 		throws Exception
 	{
-		EnvManager.InitEnv (
-			""
+		double[][] matrixA = RdRandomSequence.TwoD (
+			3,
+			99.,
+			true
 		);
 
-		int elementCount = 6;
-		double maximumElement = 99.;
+		double[][] matrixB = RdRandomSequence.TwoD (
+			3,
+			99.,
+			true
+		);
 
-		Trial (elementCount, maximumElement);
+		double[][] matrixC = MatrixUtil.Sum (matrixA, matrixB);
 
-		Trial (elementCount, maximumElement);
+		BartelsStewartScheme bartelsStewartScheme = new BartelsStewartScheme (
+			new SylvesterEquation (
+				SquareMatrix.Standard (matrixA),
+				SquareMatrix.Standard (matrixB)
+			),
+			matrixC
+		);
 
-		Trial (elementCount, maximumElement);
-
-		Trial (elementCount, maximumElement);
-
-		Trial (elementCount, maximumElement);
-
-		EnvManager.TerminateEnv();
+		bartelsStewartScheme.solve();
 	}
 }

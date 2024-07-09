@@ -1,9 +1,14 @@
 
-package org.drip.sample.matrix;
+package org.drip.sample.triangular;
 
-import org.drip.numerical.common.*;
+import java.util.Date;
+
+import org.drip.measure.crng.RandomMatrixGenerator;
+import org.drip.measure.crng.RdRandomSequence;
+import org.drip.numerical.common.NumberUtil;
 import org.drip.numerical.linearalgebra.MatrixUtil;
-import org.drip.service.common.FormatUtil;
+import org.drip.numerical.linearalgebra.TriangularMatrix;
+import org.drip.numerical.linearsolver.TriangularScheme;
 import org.drip.service.env.EnvManager;
 
 /*
@@ -11,14 +16,7 @@ import org.drip.service.env.EnvManager;
  */
 
 /*!
- * Copyright (C) 2022 Lakshmi Krishnamurthy
- * Copyright (C) 2021 Lakshmi Krishnamurthy
- * Copyright (C) 2020 Lakshmi Krishnamurthy
- * Copyright (C) 2019 Lakshmi Krishnamurthy
- * Copyright (C) 2018 Lakshmi Krishnamurthy
- * Copyright (C) 2017 Lakshmi Krishnamurthy
- * Copyright (C) 2016 Lakshmi Krishnamurthy
- * Copyright (C) 2015 Lakshmi Krishnamurthy
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
  * 
  *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
  *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
@@ -86,84 +84,147 @@ import org.drip.service.env.EnvManager;
  */
 
 /**
- * <i>GrahamSchmidtProcess</i> illustrates the Graham Schmidt Orthogonalization and Orthonormalization.
- *  
+ * <i>UpperSolverSuite</i> shows the Construction and the Solution of a Upper Triangular Matrix. The
+ * 	References are:
+ * 
+ * <br><br>
+ * 	<ul>
+ * 		<li>
+ * 			Axler, S. J. (1997): <i>Linear Algebra Done Right 2<sup>nd</sup> Edition</i> <b>Springer</b>
+ * 				New York NY
+ * 		</li>
+ * 		<li>
+ * 			Bernstein, D. S. (2009): <i>Matrix Mathematics: Theory, Facts, and Formulas 2<sup>nd</sup>
+ * 				Edition</i> <b>Princeton University Press</b> Princeton NJ
+ * 		</li>
+ * 		<li>
+ * 			Herstein, I. N. (1975): <i>Topics in Algebra 2<sup>nd</sup> Edition</i> <b>Wiley</b> New York NY
+ * 		</li>
+ * 		<li>
+ * 			Prasolov, V. V. (1994): <i>Topics in Algebra</i> <b>American Mathematical Society</b> Providence
+ * 				RI
+ * 		</li>
+ * 		<li>
+ * 			Wikipedia (2024): Triangular Matrix https://en.wikipedia.org/wiki/Triangular_matrix
+ * 		</li>
+ * 	</ul>
+ * 
  * <br><br>
  *  <ul>
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md">Numerical Analysis Library</a></li>
  *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/README.md">DROP API Construction and Usage</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/matrix/README.md">Cholesky Factorization, PCA, and Eigenization</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/triangular/README.md">Triangular Matrix Variants and Solutions</a></li>
  *  </ul>
  * <br><br>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class GrahamSchmidtProcess {
+public class UpperSolverSuite
+{
+
+	private static final void Trial (
+		final int elementCount,
+		final double maximumElement)
+		throws Exception
+	{
+		double[] xArray = RdRandomSequence.OneD (elementCount, maximumElement, true);
+
+		TriangularMatrix upperTriangularMatrix = RandomMatrixGenerator.UpperTriangular (
+			elementCount,
+			maximumElement,
+			true
+		);
+
+		System.out.println (
+			"\t|----------------------------------------------------------------------------------||"
+		);
+
+		System.out.println ("\t| Trial at " + new Date());
+
+		System.out.println (
+			"\t|----------------------------------------------------------------------------------||"
+		);
+
+		double[][] upperTriangularR2Array = upperTriangularMatrix.r2Array();
+
+		for (int i = 0; i < upperTriangularR2Array.length; ++i) {
+			System.out.println (
+				"\t| Upper Trangular " + elementCount + " x " + elementCount + "              => [" +
+					NumberUtil.ArrayRow (
+						upperTriangularR2Array[i],
+						2,
+						1,
+						false
+					) + " ]||"
+			);
+		}
+
+		System.out.println (
+			"\t|----------------------------------------------------------------------------------||"
+		);
+
+		double[] rhsArray = MatrixUtil.Product (upperTriangularR2Array, xArray);
+
+		System.out.println (
+			"\t| RHS Input      {" + NumberUtil.ArrayRow (rhsArray, 5, 0, false) + "} ||"
+		);
+
+		System.out.println ("\t|-----------------------------------------------------------------||");
+
+		System.out.println ("\t|-----------------------------------------------------------------||");
+
+		System.out.println (
+			"\t| X Input           =>  " + NumberUtil.ArrayRow (xArray, 2, 1, false) + "  ||"
+		);
+
+		System.out.println (
+			"\t| Expected          =>  " +
+			NumberUtil.ArrayRow (
+				new TriangularScheme (
+					TriangularMatrix.Standard (upperTriangularR2Array),
+					rhsArray
+				).solve(),
+				2,
+				1,
+				false
+			) + "  ||"
+		);
+
+		System.out.println ("\t|-----------------------------------------------------------------||");
+
+		System.out.println();
+	}
 
 	/**
 	 * Entry Point
 	 * 
-	 * @param astrArgs Command Line Argument Array
+	 * @param argumentArray Command Line Argument Array
 	 * 
 	 * @throws Exception Thrown on Error/Exception Situation
 	 */
 
 	public static final void main (
-		final String[] astrArgs)
+		final String[] argumentArray)
 		throws Exception
 	{
-		EnvManager.InitEnv ("");
-
-		/* double[][] aadblV = new double[][] {
-			{3, 1, 4, 9},
-			{2, 2, 6, 0},
-			{1, 8, 3, 5},
-			{7, 0, 4, 5}
-		}; */
-
-		double[][] aadblV = new double[][] {
-			{12, -51,   4},
-			{ 6, 167, -68},
-			{-4,  24, -41}
-		};
-
-		double[][] aadblUOrthogonal = MatrixUtil.GrahamSchmidtOrthogonalization (aadblV);
-
-		NumberUtil.PrintMatrix (
-			"ORTHOGONAL",
-			aadblUOrthogonal
+		EnvManager.InitEnv (
+			""
 		);
 
-		System.out.println (
-			"ORTHOGONAL TEST: " +
-			FormatUtil.FormatDouble (
-				MatrixUtil.DotProduct (
-					aadblUOrthogonal[0],
-					aadblUOrthogonal[1]
-				),
-				1, 1, 1.
-			)
-		);
+		int elementCount = 6;
+		double maximumElement = 99.;
 
-		double[][] aadblUOrthonormal = MatrixUtil.GrahamSchmidtOrthonormalization (aadblV);
+		Trial (elementCount, maximumElement);
 
-		NumberUtil.PrintMatrix (
-			"ORTHONORMAL",
-			aadblUOrthonormal
-		);
+		Trial (elementCount, maximumElement);
 
-		System.out.println (
-			"ORTHONORMAL TEST: " +
-			FormatUtil.FormatDouble (
-				MatrixUtil.DotProduct (
-					aadblUOrthonormal[0],
-					aadblUOrthonormal[1]
-				),
-				1, 1, 1.
-			)
-		);
+		Trial (elementCount, maximumElement);
+
+		Trial (elementCount, maximumElement);
+
+		Trial (elementCount, maximumElement);
 
 		EnvManager.TerminateEnv();
 	}

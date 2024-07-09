@@ -1,24 +1,12 @@
 
-package org.drip.sample.matrix;
-
-import org.drip.numerical.common.*;
-import org.drip.numerical.linearalgebra.MatrixUtil;
-import org.drip.service.common.FormatUtil;
-import org.drip.service.env.EnvManager;
+package org.drip.numerical.linearalgebra;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
- * Copyright (C) 2022 Lakshmi Krishnamurthy
- * Copyright (C) 2021 Lakshmi Krishnamurthy
- * Copyright (C) 2020 Lakshmi Krishnamurthy
- * Copyright (C) 2019 Lakshmi Krishnamurthy
- * Copyright (C) 2018 Lakshmi Krishnamurthy
- * Copyright (C) 2017 Lakshmi Krishnamurthy
- * Copyright (C) 2016 Lakshmi Krishnamurthy
- * Copyright (C) 2015 Lakshmi Krishnamurthy
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
  * 
  *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
  *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
@@ -86,85 +74,115 @@ import org.drip.service.env.EnvManager;
  */
 
 /**
- * <i>GrahamSchmidtProcess</i> illustrates the Graham Schmidt Orthogonalization and Orthonormalization.
- *  
+ * <i>SylvesterEquation</i> holds the A, B, and C components of a Sylvester Equation, which is defined by:
+ * 
+ * 									A.X + X.B = C
+ * 
+ * 	X is the unknown whose solution is to sought. Naturally, the sizes of A, B, and C need to be consistent.
+ *  The References are:
+ * 
+ * <br><br>
+ * 	<ul>
+ * 		<li>
+ * 			Bhatia, R., and P. Rosenthal (1997): How and why to solve the operator equation
+ * 				<code>AX-XB=Y</code>? <i>Bulletin of London Mathematical Society</i> <b>29 (1)</b> 1-21
+ * 		</li>
+ * 		<li>
+ * 			Dmytryshyn, A. and B. Kagstrom (2015): Coupled Sylvester-type Matrix Equation and Block
+ * 				Diagonalization <i>SIAM Journal of Matrix Analysis and Applications</i> <b>36 (2)</b> 580-593
+ * 		</li>
+ * 		<li>
+ * 			Gerrish, F., and A. G. B. Ward (1998): Sylvester Matrix Equation and Roth’s Removal Rule
+ * 				<i>Mathematical Gazette</i> <b>82 (495)</b> 423-430
+ * 		</li>
+ * 		<li>
+ * 			Wei, Q., N. Dobigeon, and J. Y. Tourneret (2015): Fast Fusion of Multi-band Images based on
+ * 				solving a Sylvester Equation <i>IEEE</i> <b>24 (11)</b> 4109-4121
+ * 		</li>
+ * 		<li>
+ * 			Wikipedia (2024): Sylvester Equation https://en.wikipedia.org/wiki/Sylvester_equation
+ * 		</li>
+ * 	</ul>
+ * 
  * <br><br>
  *  <ul>
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md">Numerical Analysis Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/README.md">DROP API Construction and Usage</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/matrix/README.md">Cholesky Factorization, PCA, and Eigenization</a></li>
+ *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/numerical/README.md">Numerical Quadrature, Differentiation, Eigenization, Linear Algebra, and Utilities</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/numerical/linearalgebra/README.md">Linear Algebra Matrix Transform Library</a></li>
  *  </ul>
  * <br><br>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class GrahamSchmidtProcess {
+public class SylvesterEquation
+{
+	private SquareMatrix _squareMatrixA = null;
+	private SquareMatrix _squareMatrixB = null;
 
 	/**
-	 * Entry Point
+	 * <i>SylvesterEquation</i> Constructor
 	 * 
-	 * @param astrArgs Command Line Argument Array
+	 * @param squareMatrixA "A" Square Matrix
+	 * @param squareMatrixB "B" Square Matrix
 	 * 
-	 * @throws Exception Thrown on Error/Exception Situation
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
-	public static final void main (
-		final String[] astrArgs)
+	public SylvesterEquation (
+		final SquareMatrix squareMatrixA,
+		final SquareMatrix squareMatrixB)
 		throws Exception
 	{
-		EnvManager.InitEnv ("");
+		if (null == (_squareMatrixA = squareMatrixA) ||
+			null == (_squareMatrixB = squareMatrixB))
+		{
+			throw new Exception ("SylvesterEquation Constructor => Invalid Inputs");
+		}
+	}
 
-		/* double[][] aadblV = new double[][] {
-			{3, 1, 4, 9},
-			{2, 2, 6, 0},
-			{1, 8, 3, 5},
-			{7, 0, 4, 5}
-		}; */
+	/**
+	 * Retrieve the "A" Square Matrix
+	 * 
+	 * @return "A" Square Matrix
+	 */
 
-		double[][] aadblV = new double[][] {
-			{12, -51,   4},
-			{ 6, 167, -68},
-			{-4,  24, -41}
-		};
+	public SquareMatrix squareMatrixA()
+	{
+		return _squareMatrixA;
+	}
 
-		double[][] aadblUOrthogonal = MatrixUtil.GrahamSchmidtOrthogonalization (aadblV);
+	/**
+	 * Retrieve the "B" Square Matrix
+	 * 
+	 * @return "B" Square Matrix
+	 */
 
-		NumberUtil.PrintMatrix (
-			"ORTHOGONAL",
-			aadblUOrthogonal
-		);
+	public SquareMatrix squareMatrixB()
+	{
+		return _squareMatrixB;
+	}
 
-		System.out.println (
-			"ORTHOGONAL TEST: " +
-			FormatUtil.FormatDouble (
-				MatrixUtil.DotProduct (
-					aadblUOrthogonal[0],
-					aadblUOrthogonal[1]
-				),
-				1, 1, 1.
-			)
-		);
+	/**
+	 * Retrieve the Size of Square Matrix A
+	 * 
+	 * @return Size of Square Matrix A
+	 */
 
-		double[][] aadblUOrthonormal = MatrixUtil.GrahamSchmidtOrthonormalization (aadblV);
+	public int aSize()
+	{
+		return _squareMatrixA.size();
+	}
 
-		NumberUtil.PrintMatrix (
-			"ORTHONORMAL",
-			aadblUOrthonormal
-		);
+	/**
+	 * Retrieve the Size of Square Matrix B
+	 * 
+	 * @return Size of Square Matrix B
+	 */
 
-		System.out.println (
-			"ORTHONORMAL TEST: " +
-			FormatUtil.FormatDouble (
-				MatrixUtil.DotProduct (
-					aadblUOrthonormal[0],
-					aadblUOrthonormal[1]
-				),
-				1, 1, 1.
-			)
-		);
-
-		EnvManager.TerminateEnv();
+	public int bSize()
+	{
+		return _squareMatrixB.size();
 	}
 }
