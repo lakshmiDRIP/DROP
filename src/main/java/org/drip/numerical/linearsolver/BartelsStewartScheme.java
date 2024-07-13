@@ -126,6 +126,7 @@ import org.drip.numerical.linearalgebra.SylvesterEquation;
 public class BartelsStewartScheme
 {
 	private double[][] _rhsMatrix = null;
+	private boolean _diagnosticsOn = false;
 	private SylvesterEquation _sylvesterEquation = null;
 
 	/**
@@ -133,13 +134,15 @@ public class BartelsStewartScheme
 	 * 
 	 * @param sylvesterEquation Sylvester Equation Instance
 	 * @param rhsMatrix "RHS" Matrix
+	 * @param diagnosticsOn Diagnostics-on Flag
 	 * 
 	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public BartelsStewartScheme (
 		final SylvesterEquation sylvesterEquation,
-		final double[][] rhsMatrix)
+		final double[][] rhsMatrix,
+		final boolean diagnosticsOn)
 		throws Exception
 	{
 		if (null == (_sylvesterEquation = sylvesterEquation) ||
@@ -168,6 +171,17 @@ public class BartelsStewartScheme
 	 * @return "RHS" Matrix
 	 */
 
+	public boolean diagnosticsOn()
+	{
+		return _diagnosticsOn;
+	}
+
+	/**
+	 * Retrieve the Diagnostics On Flag
+	 * 
+	 * @return Diagnostics On Flag
+	 */
+
 	public double[][] rhsMatrix()
 	{
 		return _rhsMatrix;
@@ -179,18 +193,92 @@ public class BartelsStewartScheme
 
 		System.out.println();
 
-		for (int i = 0; i < qrA.q().length; ++i) {
+		double[][] u = qrA.q();
+
+		for (int i = 0; i < u.length; ++i) {
 			System.out.println (
-				"\t| Matrix Q => [" + NumberUtil.ArrayRow (qrA.q()[i], 2, 4, false) + " ]||"
+				"\t| Matrix U => [" + NumberUtil.ArrayRow (u[i], 2, 4, false) + " ]||"
 			);
 		}
 
 		System.out.println();
 
-		for (int i = 0; i < qrA.r().length; ++i) {
+		double[][] r = qrA.r();
+
+		for (int i = 0; i < r.length; ++i) {
 			System.out.println (
-				"\t| Matrix R => [" + NumberUtil.ArrayRow (qrA.r()[i], 2, 4, false) + " ]||"
+				"\t| Matrix R => [" + NumberUtil.ArrayRow (r[i], 2, 4, false) + " ]||"
 			);
+		}
+
+		System.out.println();
+
+		QR qrBTranspose = MatrixUtil.QRDecomposition (
+			_sylvesterEquation.squareMatrixB().transpose().r2Array()
+		);
+
+		double[][] v = qrBTranspose.q();
+
+		for (int i = 0; i < v.length; ++i) {
+			System.out.println (
+				"\t| Matrix V => [" + NumberUtil.ArrayRow (v[i], 2, 4, false) + " ]||"
+			);
+		}
+
+		System.out.println();
+
+		double[][] s = qrBTranspose.r();
+
+		for (int i = 0; i < s.length; ++i) {
+			System.out.println (
+				"\t| Matrix S => [" + NumberUtil.ArrayRow (s[i], 2, 4, false) + " ]||"
+			);
+		}
+
+		double[][] f = MatrixUtil.Product (MatrixUtil.Transpose (u), _rhsMatrix);
+
+		f = MatrixUtil.Product (f, v);
+
+		System.out.println();
+
+		for (int i = 0; i < f.length; ++i) {
+			System.out.println (
+				"\t| Matrix F => [" + NumberUtil.ArrayRow (f[i], 2, 4, false) + " ]||"
+			);
+		}
+
+		double[][] y = new double[f.length][f.length];
+
+		for (int i = 0; i < f.length; ++i) {
+			for (int j = 0; j < f.length; ++j) {
+				y[i][j] = 0.;
+			}
+		}
+
+		for (int i = f.length - 1; i >= 0 ; --i) {
+			for (int j = f.length - 1; j >= 0; --j) {
+				double coefficientIJ = 0.;
+				double ryCumulativeSum = 0.;
+				double syCumulativeSum = 0.;
+
+				for (int k = i; k < f.length; ++k) {
+					if (k == i) {
+						coefficientIJ += r[i][k];
+					} else {
+						ryCumulativeSum += r[i][k] * y[k][j];
+					}
+				}
+
+				for (int k = j; k < f.length; ++k) {
+					if (k == j) {
+						coefficientIJ += r[i][k];
+					} else {
+						syCumulativeSum += r[i][k] * y[k][j];
+					}
+				}
+
+				y[i][j] = (f[i][j] - ryCumulativeSum - syCumulativeSum) / coefficientIJ;
+			}
 		}
 
 		System.out.println();
@@ -219,7 +307,8 @@ public class BartelsStewartScheme
 				SquareMatrix.Standard (matrixA),
 				SquareMatrix.Standard (matrixB)
 			),
-			matrixC
+			matrixC,
+			true
 		);
 
 		bartelsStewartScheme.solve();

@@ -349,12 +349,19 @@ Numerical Analysis Library contains the supporting Functionality for Numerical M
 	* Crank–Nicolson for nonlinear problems
 	* Application in financial mathematics
 	* References
- * Sylvester equation
+ * Sylvester Equation
 	* Existence and uniqueness of the solutions
 	* Roth's removal rule
 	* Numerical solutions
 	* References
- * Crank–Nicolson Method
+ * Bartels–Stewart Algorithm
+	* Introduction
+	* The Algorithm
+		* Computational Cost
+		* Simplifications and Special Cases
+	* The Hessenberg–Schur algorithm
+	* References
+ * Triangular Matrix
 	* Description
 	* Forward and Back Substitution
 		* Forward Substitution
