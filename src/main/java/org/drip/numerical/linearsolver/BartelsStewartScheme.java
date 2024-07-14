@@ -282,6 +282,14 @@ public class BartelsStewartScheme
 		}
 
 		System.out.println();
+
+		for (int i = 0; i < y.length; ++i) {
+			System.out.println (
+				"\t| Matrix Y => [" + NumberUtil.ArrayRow (y[i], 2, 4, false) + " ]||"
+			);
+		}
+
+		System.out.println();
 	}
 
 	public static final void main (

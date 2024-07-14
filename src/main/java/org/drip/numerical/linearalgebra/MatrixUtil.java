@@ -155,6 +155,25 @@ public class MatrixUtil {
 		return Math.sqrt (modulus);
 	}
 
+	private static final double[][] ProductInternal (
+		final double[][] a,
+		final double[][] b)
+	{
+		double[][] product = new double[a.length][b[0].length];
+
+		for (int rowIndex = 0; rowIndex < a.length; ++rowIndex) {
+			for (int columnIndex = 0; columnIndex < b[0].length; ++columnIndex) {
+				product[rowIndex][columnIndex] = 0.;
+
+				for (int k = 0; k < a[0].length; ++k) {
+					product[rowIndex][columnIndex] += a[rowIndex][k] * b[k][columnIndex];
+				}
+			}
+		}
+
+		return product;
+	}
+
 	/**
 	 * Indicate if the Cell corresponds to Bottom Left Location in the Matrix
 	 * 
@@ -301,41 +320,19 @@ public class MatrixUtil {
 	/**
 	 * Compute the Product of the input matrices
 	 * 
-	 * @param aadblA Matrix A
-	 * @param aadblB Matrix B
+	 * @param a Matrix A
+	 * @param b Matrix B
 	 * 
 	 * @return The Product
 	 */
 
 	public static final double[][] Product (
-		final double[][] aadblA,
-		final double[][] aadblB)
+		final double[][] a,
+		final double[][] b)
 	{
-		if (null == aadblA || null == aadblB) return null;
-
-		int iNumACol = aadblA[0].length;
-		int iNumProductRow = aadblA.length;
-		int iNumProductCol = aadblB[0].length;
-		double[][] aadblProduct = new double[iNumProductRow][iNumProductCol];
-
-		if (0 == iNumACol || iNumACol != aadblB.length || 0 == iNumProductRow || 0 == iNumProductCol)
-			return null;
-
-		for (int iRow = 0; iRow < iNumProductRow; ++iRow) {
-			for (int iCol = 0; iCol < iNumProductCol; ++iCol) {
-				aadblProduct[iRow][iCol] = 0.;
-
-				for (int i = 0; i < iNumACol; ++i) {
-					if (!org.drip.numerical.common.NumberUtil.IsValid (aadblA[iRow][i]) ||
-						!org.drip.numerical.common.NumberUtil.IsValid (aadblB[i][iCol]))
-						return null;
-
-					aadblProduct[iRow][iCol] += aadblA[iRow][i] * aadblB[i][iCol];
-				}
-			}
-		}
-
-		return aadblProduct;
+		return null == a || 0 == a.length || 0 == a[0].length ||
+			null == b || a[0].length != b.length || 0 == b[0].length ?
+			null : ProductInternal (a, b);
 	}
 
 	/**
@@ -1051,19 +1048,17 @@ public class MatrixUtil {
 			return null;
 		}
 
-		double[][] vTranspose = Transpose (v);
+		double[][] u = new double[v.length][v.length];
 
-		double[][] u = new double[vTranspose.length][vTranspose.length];
-
-		for (int i = 0; i < vTranspose.length; ++i) {
-			for (int j = 0; j < vTranspose.length; ++j) {
-				u[i][j] = vTranspose[i][j];
+		for (int i = 0; i < v.length; ++i) {
+			for (int j = 0; j < v.length; ++j) {
+				u[i][j] = v[i][j];
 			}
 		}
 
-		for (int i = 1; i < vTranspose.length; ++i) {
+		for (int i = 1; i < v.length; ++i) {
 			for (int j = 0; j < i; ++j) {
-				double[] projectionTrimOff = ProjectVOnUInternal (u[j], vTranspose[i]);
+				double[] projectionTrimOff = ProjectVOnUInternal (u[j], v[i]);
 
 				for (int k = 0; k < projectionTrimOff.length; ++k) {
 					u[i][k] -= projectionTrimOff[k];

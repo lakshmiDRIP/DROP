@@ -123,17 +123,17 @@ public class GrahamSchmidtProcess {
 			{7, 0, 4, 5}
 		}; */
 
-		/* double[][] aadblV = new double[][] {
+		double[][] aadblV = new double[][] {
 			{ 12,   6,  -4},
 			{-51, 167,  24},
 			{  4, -68, -41}
-		}; */
+		};
 
-		double[][] aadblV = new double[][] {
+		/* double[][] aadblV = new double[][] {
 			{12, -51,   4},
 			{ 6, 167, -68},
 			{-4,  24, -41}
-		};
+		}; */
 
 		double[][] aadblUOrthogonal = MatrixUtil.GrahamSchmidtOrthogonalization (aadblV);
 
@@ -173,7 +173,7 @@ public class GrahamSchmidtProcess {
 
 		System.out.println();
 
-		double[][] uvTranspose = MatrixUtil.Product (aadblUOrthonormal, aadblV);
+		double[][] uvTranspose = MatrixUtil.Product (MatrixUtil.Transpose (aadblUOrthonormal), aadblV);
 
 		NumberUtil.PrintMatrix (
 			"R CHECK #1.1",
@@ -184,8 +184,17 @@ public class GrahamSchmidtProcess {
 
 		NumberUtil.PrintMatrix (
 			"R CHECK #1.2",
-			MatrixUtil.Product (MatrixUtil.Transpose (aadblUOrthonormal), uvTranspose)
+			MatrixUtil.Product (aadblUOrthonormal, uvTranspose)
 		);
+
+		System.out.println();
+
+		NumberUtil.PrintMatrix (
+			"R CHECK #1.3",
+			MatrixUtil.Product (MatrixUtil.Transpose (aadblV), aadblUOrthonormal)
+		);
+
+		System.out.println();
 
 		EnvManager.TerminateEnv();
 	}
