@@ -116,83 +116,43 @@ public class GrahamSchmidtProcess {
 	{
 		EnvManager.InitEnv ("");
 
-		/* double[][] aadblV = new double[][] {
-			{3, 1, 4, 9},
-			{2, 2, 6, 0},
-			{1, 8, 3, 5},
-			{7, 0, 4, 5}
-		}; */
-
-		double[][] aadblV = new double[][] {
-			{ 12,   6,  -4},
-			{-51, 167,  24},
-			{  4, -68, -41}
-		};
-
-		/* double[][] aadblV = new double[][] {
+		double[][] a = new double[][] {
 			{12, -51,   4},
 			{ 6, 167, -68},
 			{-4,  24, -41}
-		}; */
+		};
 
-		double[][] aadblUOrthogonal = MatrixUtil.GrahamSchmidtOrthogonalization (aadblV);
+		double[][] u = MatrixUtil.GrahamSchmidtOrthogonalization (a, true);
 
-		NumberUtil.PrintMatrix (
-			"ORTHOGONAL",
-			aadblUOrthogonal
-		);
+		NumberUtil.PrintMatrix ("ORTHOGONAL", u);
+
+		double[][] uTranspose = MatrixUtil.Transpose (u);
 
 		System.out.println (
 			"ORTHOGONAL TEST: " +
-			FormatUtil.FormatDouble (
-				MatrixUtil.DotProduct (
-					aadblUOrthogonal[0],
-					aadblUOrthogonal[1]
-				),
-				1, 1, 1.
-			)
+			FormatUtil.FormatDouble ( MatrixUtil.DotProduct (uTranspose[0], uTranspose[1]), 1, 1, 1.)
 		);
 
-		double[][] aadblUOrthonormal = MatrixUtil.GrahamSchmidtOrthonormalization (aadblV);
+		double[][] q = MatrixUtil.GrahamSchmidtOrthonormalization (a, true);
 
-		NumberUtil.PrintMatrix (
-			"ORTHONORMAL",
-			aadblUOrthonormal
-		);
+		NumberUtil.PrintMatrix ("ORTHONORMAL", q);
+
+		double[][] qTranspose = MatrixUtil.Transpose (q);
 
 		System.out.println (
 			"ORTHONORMAL TEST: " +
-			FormatUtil.FormatDouble (
-				MatrixUtil.DotProduct (
-					aadblUOrthonormal[0],
-					aadblUOrthonormal[1]
-				),
-				1, 1, 1.
-			)
+			FormatUtil.FormatDouble (MatrixUtil.DotProduct (qTranspose[0], qTranspose[1]), 1, 1, 1.)
 		);
 
 		System.out.println();
 
-		double[][] uvTranspose = MatrixUtil.Product (MatrixUtil.Transpose (aadblUOrthonormal), aadblV);
+		double[][] uvTranspose = MatrixUtil.Product (MatrixUtil.Transpose (q), a);
 
-		NumberUtil.PrintMatrix (
-			"R CHECK #1.1",
-			uvTranspose
-		);
+		NumberUtil.PrintMatrix ("R CHECK #1.1", uvTranspose);
 
 		System.out.println();
 
-		NumberUtil.PrintMatrix (
-			"R CHECK #1.2",
-			MatrixUtil.Product (aadblUOrthonormal, uvTranspose)
-		);
-
-		System.out.println();
-
-		NumberUtil.PrintMatrix (
-			"R CHECK #1.3",
-			MatrixUtil.Product (MatrixUtil.Transpose (aadblV), aadblUOrthonormal)
-		);
+		NumberUtil.PrintMatrix ("R CHECK #1.2", MatrixUtil.Product (q, uvTranspose));
 
 		System.out.println();
 

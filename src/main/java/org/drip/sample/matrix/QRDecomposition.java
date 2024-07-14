@@ -128,7 +128,7 @@ public class QRDecomposition {
 			{ 0.0, 0.4, 1.0}
 		};
 
-		QR qr = MatrixUtil.QRDecomposition (aadblA);
+		QR qr = MatrixUtil.QRDecomposition (aadblA, false);
 
 		double[][] aadblR = qr.r();
 

@@ -1036,29 +1036,33 @@ public class MatrixUtil {
 	/**
 	 * Orthogonalize the Specified Matrix Using the Graham-Schmidt Method
 	 * 
-	 * @param v The Input Matrix
+	 * @param a The Input Matrix
+	 * @param vectorsInColumns TRUE - Vectors in Columns
 	 * 
 	 * @return The Orthogonalized Matrix
 	 */
 
 	public static final double[][] GrahamSchmidtOrthogonalization (
-		final double[][] v)
+		final double[][] a,
+		final boolean vectorsInColumns)
 	{
-		if (null == v || 0 == v.length || v.length != v[0].length) {
+		if (null == a || 0 == a.length || a.length != a[0].length) {
 			return null;
 		}
 
-		double[][] u = new double[v.length][v.length];
+		double[][] aUsingVectorsInRows = vectorsInColumns ? Transpose (a) : a;
 
-		for (int i = 0; i < v.length; ++i) {
-			for (int j = 0; j < v.length; ++j) {
-				u[i][j] = v[i][j];
+		double[][] u = new double[aUsingVectorsInRows.length][aUsingVectorsInRows.length];
+
+		for (int i = 0; i < aUsingVectorsInRows.length; ++i) {
+			for (int j = 0; j < aUsingVectorsInRows.length; ++j) {
+				u[i][j] = aUsingVectorsInRows[i][j];
 			}
 		}
 
-		for (int i = 1; i < v.length; ++i) {
+		for (int i = 1; i < aUsingVectorsInRows.length; ++i) {
 			for (int j = 0; j < i; ++j) {
-				double[] projectionTrimOff = ProjectVOnUInternal (u[j], v[i]);
+				double[] projectionTrimOff = ProjectVOnUInternal (u[j], aUsingVectorsInRows[i]);
 
 				for (int k = 0; k < projectionTrimOff.length; ++k) {
 					u[i][k] -= projectionTrimOff[k];
@@ -1066,25 +1070,29 @@ public class MatrixUtil {
 			}
 		}
 
-		return u;
+		return vectorsInColumns ? Transpose (u) : u;
 	}
 
 	/**
 	 * Orthonormalize the Specified Matrix Using the Graham-Schmidt Method
 	 * 
-	 * @param v The Input Matrix
+	 * @param a The Input Matrix
+	 * @param vectorsInColumns TRUE - Vectors in Columns
 	 * 
 	 * @return The Orthonormalized Matrix
 	 */
 
 	public static final double[][] GrahamSchmidtOrthonormalization (
-		final double[][] v)
+		final double[][] a,
+		final boolean vectorsInColumns)
 	{
-		double[][] u = GrahamSchmidtOrthogonalization (v);
+		double[][] uOrthogonal = GrahamSchmidtOrthogonalization (a, vectorsInColumns);
 
-		if (null == u) {
+		if (null == uOrthogonal) {
 			return null;
 		}
+
+		double[][] u = vectorsInColumns ? Transpose (uOrthogonal) : uOrthogonal;
 
 		for (int i = 0; i < u.length; ++i) {
 			double modulusReciprocal = 1. / ModulusInternal (u[i]);
@@ -1094,21 +1102,23 @@ public class MatrixUtil {
 			}
 		}
 
-		return u;
+		return vectorsInColumns ? Transpose (u) : u;
 	}
 
 	/**
 	 * Perform a QR Decomposition on the Input Matrix
 	 * 
 	 * @param a The Input Matrix
+	 * @param vectorsInColumns TRUE - Vectors in Columns
 	 * 
 	 * @return The Output of QR Decomposition
 	 */
 
 	public static final QR QRDecomposition (
-		final double[][] a)
+		final double[][] a,
+		final boolean vectorsInColumns)
 	{
-		double[][] q = GrahamSchmidtOrthonormalization (a);
+		double[][] q = GrahamSchmidtOrthonormalization (a, vectorsInColumns);
 
 		try {
 			return null == q ? null : new QR (q, Product (q, a));
