@@ -114,9 +114,20 @@ import org.drip.numerical.common.NumberUtil;
  * @author Lakshmi Krishnamurthy
  */
 
-public class MatrixUtil {
+public class MatrixUtil
+{
 
-	private static final double DotProductInternal (
+	/**
+	 * Dot Product of Vectors A and E. Unsafe Methods do not validate the Input Arguments, so
+	 *  <b>use caution</b> in applying these Methods
+	 * 
+	 * @param a Vector A
+	 * @param e Vector E
+	 * 
+	 * @return The Dot Product
+	 */
+
+	public static final double UnsafeDotProduct (
 		final double[] a,
 		final double[] e)
 	{
@@ -128,11 +139,21 @@ public class MatrixUtil {
 		return dotProductInternal;
 	}
 
-	private static final double[] ProjectVOnUInternal (
+	/**
+	 * Compute the Projection Vector on V induced by U. Unsafe Methods do not validate the Input Arguments,
+	 * 	so <b>use caution</b> in applying these Methods
+	 * 
+	 * @param u Vector U
+	 * @param v Vector V
+	 * 
+	 * @return The Projection Vector
+	 */
+
+	public static final double[] UnsafeProjectVOnU (
 		final double[] u,
 		final double[] v)
 	{
-		double vDotUOverUDotU = DotProductInternal (u, v) / DotProductInternal (u, u);
+		double vDotUOverUDotU = UnsafeDotProduct (u, v) / UnsafeDotProduct (u, u);
 
 		double[] projectVOnU = new double[u.length];
 
@@ -143,7 +164,16 @@ public class MatrixUtil {
 		return projectVOnU;
 	}
 
-	private static final double ModulusInternal (
+	/**
+	 * Compute the Modulus of the Vector. Unsafe Methods do not validate the Input Arguments, so
+	 * 	<b>use caution</b> in applying these Methods
+	 * 
+	 * @param v Vector V
+	 * 
+	 * @return Modulus of the Vector
+	 */
+
+	public static final double UnsafeModulus (
 		final double[] v)
 	{
 		double modulus = 0.;
@@ -155,7 +185,17 @@ public class MatrixUtil {
 		return Math.sqrt (modulus);
 	}
 
-	private static final double[][] ProductInternal (
+	/**
+	 * Compute the Product of the Input Matrices. Unsafe Methods do not validate the Input Arguments, so
+	 * 	<b>use caution</b> in applying these Methods
+	 * 
+	 * @param a Vector A
+	 * @param b Vector B
+	 * 
+	 * @return The Product Matrix
+	 */
+
+	private static final double[][] UnsafeProduct (
 		final double[][] a,
 		final double[][] b)
 	{
@@ -332,7 +372,7 @@ public class MatrixUtil {
 	{
 		return null == a || 0 == a.length || 0 == a[0].length ||
 			null == b || a[0].length != b.length || 0 == b[0].length ?
-			null : ProductInternal (a, b);
+			null : UnsafeProduct (a, b);
 	}
 
 	/**
@@ -805,7 +845,7 @@ public class MatrixUtil {
 			throw new Exception ("MatrixUtil::DotProduct => Invalid Inputs!");
 		}
 
-		return DotProductInternal (adblA, adblE);
+		return UnsafeDotProduct (adblA, adblE);
 	}
 
 	/**
@@ -927,7 +967,7 @@ public class MatrixUtil {
 			throw new Exception ("MatrixUtil::Modulus => Invalid Inputs");
 		}
 
-		return ModulusInternal (v);
+		return UnsafeModulus (v);
 	}
 
 	/**
@@ -1062,7 +1102,7 @@ public class MatrixUtil {
 
 		for (int i = 1; i < aUsingVectorsInRows.length; ++i) {
 			for (int j = 0; j < i; ++j) {
-				double[] projectionTrimOff = ProjectVOnUInternal (u[j], aUsingVectorsInRows[i]);
+				double[] projectionTrimOff = UnsafeProjectVOnU (u[j], aUsingVectorsInRows[i]);
 
 				for (int k = 0; k < projectionTrimOff.length; ++k) {
 					u[i][k] -= projectionTrimOff[k];
@@ -1095,7 +1135,7 @@ public class MatrixUtil {
 		double[][] u = vectorsInColumns ? Transpose (uOrthogonal) : uOrthogonal;
 
 		for (int i = 0; i < u.length; ++i) {
-			double modulusReciprocal = 1. / ModulusInternal (u[i]);
+			double modulusReciprocal = 1. / UnsafeModulus (u[i]);
 
 			for (int j = 0; j < u.length; ++j) {
 				u[i][j] *= modulusReciprocal;
