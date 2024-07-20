@@ -11,7 +11,7 @@ Numerical Analysis Library contains the supporting Functionality for Numerical M
 
  |        Document         | Link |
  |-------------------------|------|
- | Technical Specification | [*Latest*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/NumericalAnalysis/NumericalAnalysis_v6.41.pdf) [*Previous*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/NumericalAnalysis) |
+ | Technical Specification | [*Latest*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/NumericalAnalysis/NumericalAnalysis_v6.43.pdf) [*Previous*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/NumericalAnalysis) |
  | User Guide              |  |
  | API                     | [*Javadoc*](https://lakshmidrip.github.io/DROP/Javadoc/index.html)|
 
@@ -378,6 +378,28 @@ Numerical Analysis Library contains the supporting Functionality for Numerical M
 		* Borel Subgroups and Borel Subalgebras
 		* Examples
 	* References
+ * QR Decomposition
+	* Introduction
+	* Cases and Definitions
+		* Square Matrix
+		* Rectangular Matrix
+		* QL, RQ and LQ Decompositions
+	* Computing the QR Decomposition
+		* Using the Gram–Schmidt Process
+			* Example
+			* Relation to RQ decomposition
+			* Advantages and Disadvantages
+		* Using Householder Reflections
+			* Example
+			* Advantages and Disadvantages
+		* Using Givens Rotations
+			* Example
+			* Advantages and Disadvantages
+		* Connection to a Determinant or Product of Eigenvalues
+		* Column Pivoting
+		* Using for Solution to Linear Inverse Problems
+		* Generalizations
+		* References
 
 
 ## DROP Specifications

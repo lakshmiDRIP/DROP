@@ -122,7 +122,7 @@ public class GrahamSchmidtProcess {
 			{-4,  24, -41}
 		};
 
-		double[][] u = MatrixUtil.GrahamSchmidtOrthogonalization (a, true);
+		double[][] u = MatrixUtil.QRGrahamSchmidtOrthogonalization (a);
 
 		NumberUtil.PrintMatrix ("ORTHOGONAL", u);
 

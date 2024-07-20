@@ -215,6 +215,39 @@ public class MatrixUtil
 	}
 
 	/**
+	 * Orthogonalize the Specified Matrix Using the RQ Graham-Schmidt Method. Unsafe Methods do not validate
+	 * 	the Input Arguments, so <b>use caution</b> in applying these Methods
+	 * 
+	 * @param a The Input Matrix
+	 * 
+	 * @return The RQ Orthogonalized Matrix
+	 */
+
+	public static final double[][] UnsafeRQGrahamSchmidtOrthogonalization (
+		final double[][] a)
+	{
+		double[][] u = new double[a.length][a.length];
+
+		for (int i = 0; i < a.length; ++i) {
+			for (int j = 0; j < a.length; ++j) {
+				u[i][j] = a[i][j];
+			}
+		}
+
+		for (int i = 1; i < a.length; ++i) {
+			for (int j = 0; j < i; ++j) {
+				double[] projectionTrimOff = UnsafeProjectVOnU (u[j], a[i]);
+
+				for (int k = 0; k < projectionTrimOff.length; ++k) {
+					u[i][k] -= projectionTrimOff[k];
+				}
+			}
+		}
+
+		return u;
+	}
+
+	/**
 	 * Indicate if the Cell corresponds to Bottom Left Location in the Matrix
 	 * 
 	 * @param rowIndex Row Index
@@ -1074,59 +1107,49 @@ public class MatrixUtil
 	}
 
 	/**
-	 * Orthogonalize the Specified Matrix Using the Graham-Schmidt Method
+	 * Orthogonalize the Specified Matrix Using the RQ Graham-Schmidt Method
 	 * 
 	 * @param a The Input Matrix
-	 * @param vectorsInColumns TRUE - Vectors in Columns
 	 * 
-	 * @return The Orthogonalized Matrix
+	 * @return The RQ Orthogonalized Matrix
 	 */
 
-	public static final double[][] GrahamSchmidtOrthogonalization (
-		final double[][] a,
-		final boolean vectorsInColumns)
+	public static final double[][] RQGrahamSchmidtOrthogonalization (
+		final double[][] a)
 	{
-		if (null == a || 0 == a.length || a.length != a[0].length) {
-			return null;
-		}
-
-		double[][] aUsingVectorsInRows = vectorsInColumns ? Transpose (a) : a;
-
-		double[][] u = new double[aUsingVectorsInRows.length][aUsingVectorsInRows.length];
-
-		for (int i = 0; i < aUsingVectorsInRows.length; ++i) {
-			for (int j = 0; j < aUsingVectorsInRows.length; ++j) {
-				u[i][j] = aUsingVectorsInRows[i][j];
-			}
-		}
-
-		for (int i = 1; i < aUsingVectorsInRows.length; ++i) {
-			for (int j = 0; j < i; ++j) {
-				double[] projectionTrimOff = UnsafeProjectVOnU (u[j], aUsingVectorsInRows[i]);
-
-				for (int k = 0; k < projectionTrimOff.length; ++k) {
-					u[i][k] -= projectionTrimOff[k];
-				}
-			}
-		}
-
-		return vectorsInColumns ? Transpose (u) : u;
+		return null == a || 0 == a.length || a.length != a[0].length ?
+			null : UnsafeRQGrahamSchmidtOrthogonalization (a);
 	}
 
 	/**
-	 * Orthonormalize the Specified Matrix Using the Graham-Schmidt Method
+	 * Orthogonalize the Specified Matrix Using the QR Graham-Schmidt Method
+	 * 
+	 * @param a The Input Matrix
+	 * 
+	 * @return The QR Orthogonalized Matrix
+	 */
+
+	public static final double[][] QRGrahamSchmidtOrthogonalization (
+		final double[][] a)
+	{
+		return Transpose (RQGrahamSchmidtOrthogonalization (Transpose (a)));
+	}
+
+	/**
+	 * Orthonormalize the Specified Matrix Using the QR Graham-Schmidt Method
 	 * 
 	 * @param a The Input Matrix
 	 * @param vectorsInColumns TRUE - Vectors in Columns
 	 * 
-	 * @return The Orthonormalized Matrix
+	 * @return The QR Orthonormalized Matrix
 	 */
 
 	public static final double[][] GrahamSchmidtOrthonormalization (
 		final double[][] a,
 		final boolean vectorsInColumns)
 	{
-		double[][] uOrthogonal = GrahamSchmidtOrthogonalization (a, vectorsInColumns);
+		double[][] uOrthogonal = vectorsInColumns ? QRGrahamSchmidtOrthogonalization (a) :
+			 RQGrahamSchmidtOrthogonalization (a);
 
 		if (null == uOrthogonal) {
 			return null;
