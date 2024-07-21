@@ -133,7 +133,7 @@ public class GrahamSchmidtProcess {
 			FormatUtil.FormatDouble ( MatrixUtil.DotProduct (uTranspose[0], uTranspose[1]), 1, 1, 1.)
 		);
 
-		double[][] q = MatrixUtil.GrahamSchmidtOrthonormalization (a, true);
+		double[][] q = MatrixUtil.QRGrahamSchmidtOrthonormalization (a);
 
 		NumberUtil.PrintMatrix ("ORTHONORMAL", q);
 

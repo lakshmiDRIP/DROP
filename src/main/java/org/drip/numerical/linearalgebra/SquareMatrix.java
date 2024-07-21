@@ -266,6 +266,28 @@ public class SquareMatrix
 	}
 
 	/**
+	 * Generate the QR Decomposition of the Square Matrix
+	 * 
+	 * @return QR Decomposition
+	 */
+
+	public QR qrDecomposition()
+	{
+		return MatrixUtil.QRDecomposition (_r2Array);
+	}
+
+	/**
+	 * Generate the RQ Decomposition of the Square Matrix
+	 * 
+	 * @return RQ Decomposition
+	 */
+
+	public QR rqDecomposition()
+	{
+		return MatrixUtil.RQDecomposition (_r2Array);
+	}
+
+	/**
 	 * Eigenize and Extract the Components of the Specified Matrix
 	 * 
 	 * @return The EigenComponents

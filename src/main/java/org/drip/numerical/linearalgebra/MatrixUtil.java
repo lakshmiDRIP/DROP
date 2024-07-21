@@ -248,6 +248,21 @@ public class MatrixUtil
 	}
 
 	/**
+	 * Orthogonalize the Specified Matrix Using the QR Graham-Schmidt Method. Unsafe Methods do not validate
+	 * 	the Input Arguments, so <b>use caution</b> in applying these Methods
+	 * 
+	 * @param a The Input Matrix
+	 * 
+	 * @return The QR Orthogonalized Matrix
+	 */
+
+	public static final double[][] UnsafeQRGrahamSchmidtOrthogonalization (
+		final double[][] a)
+	{
+		return Transpose (UnsafeRQGrahamSchmidtOrthogonalization (Transpose (a)));
+	}
+
+	/**
 	 * Indicate if the Cell corresponds to Bottom Left Location in the Matrix
 	 * 
 	 * @param rowIndex Row Index
@@ -1136,26 +1151,21 @@ public class MatrixUtil
 	}
 
 	/**
-	 * Orthonormalize the Specified Matrix Using the QR Graham-Schmidt Method
+	 * Orthonormalize the Specified Matrix Using the RQ Graham-Schmidt Method
 	 * 
 	 * @param a The Input Matrix
-	 * @param vectorsInColumns TRUE - Vectors in Columns
 	 * 
-	 * @return The QR Orthonormalized Matrix
+	 * @return The RQ Orthonormalized Matrix
 	 */
 
-	public static final double[][] GrahamSchmidtOrthonormalization (
-		final double[][] a,
-		final boolean vectorsInColumns)
+	public static final double[][] RQGrahamSchmidtOrthonormalization (
+		final double[][] a)
 	{
-		double[][] uOrthogonal = vectorsInColumns ? QRGrahamSchmidtOrthogonalization (a) :
-			 RQGrahamSchmidtOrthogonalization (a);
+		double[][] u = RQGrahamSchmidtOrthogonalization (a);
 
-		if (null == uOrthogonal) {
+		if (null == u) {
 			return null;
 		}
-
-		double[][] u = vectorsInColumns ? Transpose (uOrthogonal) : uOrthogonal;
 
 		for (int i = 0; i < u.length; ++i) {
 			double modulusReciprocal = 1. / UnsafeModulus (u[i]);
@@ -1165,23 +1175,73 @@ public class MatrixUtil
 			}
 		}
 
-		return vectorsInColumns ? Transpose (u) : u;
+		return u;
+	}
+
+	/**
+	 * Orthonormalize the Specified Matrix Using the QR Graham-Schmidt Method
+	 * 
+	 * @param a The Input Matrix
+	 * 
+	 * @return The QR Orthonormalized Matrix
+	 */
+
+	public static final double[][] QRGrahamSchmidtOrthonormalization (
+		final double[][] a)
+	{
+		double[][] uOrthogonal = QRGrahamSchmidtOrthogonalization (a);
+
+		if (null == uOrthogonal) {
+			return null;
+		}
+
+		double[][] u = Transpose (uOrthogonal);
+
+		for (int i = 0; i < u.length; ++i) {
+			double modulusReciprocal = 1. / UnsafeModulus (u[i]);
+
+			for (int j = 0; j < u.length; ++j) {
+				u[i][j] *= modulusReciprocal;
+			}
+		}
+
+		return Transpose (u);
 	}
 
 	/**
 	 * Perform a QR Decomposition on the Input Matrix
 	 * 
 	 * @param a The Input Matrix
-	 * @param vectorsInColumns TRUE - Vectors in Columns
 	 * 
 	 * @return The Output of QR Decomposition
 	 */
 
 	public static final QR QRDecomposition (
-		final double[][] a,
-		final boolean vectorsInColumns)
+		final double[][] a)
 	{
-		double[][] q = GrahamSchmidtOrthonormalization (a, vectorsInColumns);
+		double[][] q = QRGrahamSchmidtOrthonormalization (a);
+
+		try {
+			return null == q ? null : new QR (q, Product (q, a));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
+	 * Perform a RQ Decomposition on the Input Matrix
+	 * 
+	 * @param a The Input Matrix
+	 * 
+	 * @return The Output of RQ Decomposition
+	 */
+
+	public static final QR RQDecomposition (
+		final double[][] a)
+	{
+		double[][] q = RQGrahamSchmidtOrthonormalization (a);
 
 		try {
 			return null == q ? null : new QR (q, Product (q, a));

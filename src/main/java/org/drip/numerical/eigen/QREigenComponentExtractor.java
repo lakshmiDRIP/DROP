@@ -157,8 +157,7 @@ public class QREigenComponentExtractor
 		final double[][] a)
 	{
 		org.drip.numerical.linearalgebra.QR qr = org.drip.numerical.linearalgebra.MatrixUtil.QRDecomposition (
-			a,
-			false
+			a
 		);
 
 		if (null == qr)
@@ -215,8 +214,7 @@ public class QREigenComponentExtractor
 						v,
 						q
 					)
-				),
-				false
+				)
 			)))
 			{
 				return null;
