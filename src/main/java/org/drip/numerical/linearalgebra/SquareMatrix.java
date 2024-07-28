@@ -122,6 +122,20 @@ public class SquareMatrix
 {
 	private double[][] _r2Array = null;
 
+	private static final GershgorinDisc[] GershgorinAnalysis (
+		final double[][] r2Array)
+	{
+		GershgorinDisc[] gershgorinDiscArray = new GershgorinDisc[r2Array.length];
+
+		for (int i = 0; i < r2Array.length; ++i) {
+			/* if (null == (gershgorinDiscArray[i] = GershgorinDisc.FromRow (r2Array[i], i))) {
+				return null;
+			} */
+		}
+
+		return gershgorinDiscArray;
+	}
+
 	/**
 	 * Construct a Standard Instance of <i>SquareMatrix</i>
 	 * 
@@ -182,14 +196,7 @@ public class SquareMatrix
 
 	public SquareMatrix transpose()
 	{
-		double[][] r2ArrayTranspose = new double[_r2Array.length][_r2Array.length];
-
-		for (int i = 0; i < _r2Array.length; ++i) {
-			for (int j = 0; j < _r2Array.length; ++j)
-				r2ArrayTranspose[i][j] = _r2Array[j][i];
-		}
-
-		return new SquareMatrix (r2ArrayTranspose);
+		return new SquareMatrix (MatrixUtil.UnsafeTranspose (_r2Array));
 	}
 
 	/**
@@ -359,5 +366,43 @@ public class SquareMatrix
 		EigenOutput eigenOutput = QREigenComponentExtractor.Standard().eigenize (_r2Array);
 
 		return null == eigenOutput ? null : eigenOutput.characteristicPolynomial();
+	}
+
+	/**
+	 * Generate the Array of Gershgorin Discs, one per row of the Input R<sup>2</sup> Array Row
+	 * 
+	 * @param useRow TRUE - Use the Row
+	 * 
+	 * @return Array of Gershgorin Discs
+	 */
+
+	public GershgorinDisc[] gershgorinAnalysis (
+		final boolean useRow)
+	{
+		return GershgorinAnalysis (useRow ? _r2Array : MatrixUtil.UnsafeTranspose (_r2Array));
+	}
+
+	public static final void main (
+		final String[] argumentArray)
+		throws Exception
+	{
+		double[][] r2Array = {
+			{10.0,  1.0,  0.0,   1.0},
+			{ 0.2,  8.0,  0.2,   0.2},
+			{ 1.0,  1.0,  2.0,   1.0},
+			{-1.0, -1.0, -1.0, -11.0},
+		};
+
+		SquareMatrix squareMatrix = SquareMatrix.Standard (r2Array);
+
+		for (GershgorinDisc gershgorinDisc : squareMatrix.gershgorinAnalysis (true)) {
+			System.out.println ("\t" + gershgorinDisc.diagonalEntry() + " | " + gershgorinDisc.radius());
+		}
+
+		System.out.println();
+
+		for (GershgorinDisc gershgorinDisc : squareMatrix.gershgorinAnalysis (false)) {
+			System.out.println ("\t" + gershgorinDisc.diagonalEntry() + " | " + gershgorinDisc.radius());
+		}
 	}
 }

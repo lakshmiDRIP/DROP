@@ -263,6 +263,28 @@ public class MatrixUtil
 	}
 
 	/**
+	 * Transpose the specified Square Matrix. Unsafe Methods do not validate the Input Arguments, so <b>use
+	 * 	caution</b> in applying these Methods
+	 * 
+	 * @param r2Array The Input R<sup>2</sup> Array
+	 * 
+	 * @return The Transpose of the Input R<sup>2</sup> Array
+	 */
+
+	public static final double[][] UnsafeTranspose (
+		final double[][] r2Array)
+	{
+		double[][] r2ArrayTranspose = new double[r2Array[0].length][r2Array.length];
+
+		for (int i = 0; i < r2Array[0].length; ++i) {
+			for (int j = 0; j < r2Array.length; ++j)
+				r2ArrayTranspose[i][j] = r2Array[j][i];
+		}
+
+		return r2ArrayTranspose;
+	}
+
+	/**
 	 * Indicate if the Cell corresponds to Bottom Left Location in the Matrix
 	 * 
 	 * @param rowIndex Row Index
@@ -803,31 +825,16 @@ public class MatrixUtil
 	/**
 	 * Transpose the specified Square Matrix
 	 * 
-	 * @param aadblA The Input Square Matrix
+	 * @param r2Array The Input R<sup>2</sup> Array
 	 * 
 	 * @return The Transpose of the Square Matrix
 	 */
 
 	public static final double[][] Transpose (
-		final double[][] aadblA)
+		final double[][] r2Array)
 	{
-		if (null == aadblA) return null;
-
-		int iRowSize = aadblA.length;
-
-		if (0 == iRowSize || null == aadblA[0]) return null;
-
-		int iColSize = aadblA[0].length;
-		double[][] aadblATranspose = new double[iColSize][iRowSize];
-
-		if (0 == iColSize) return null;
-
-		for (int i = 0; i < iColSize; ++i) {
-			for (int j = 0; j < iRowSize; ++j)
-				aadblATranspose[i][j] = aadblA[j][i];
-		}
-
-		return aadblATranspose;
+		return null == r2Array || 0 == r2Array.length || null == r2Array[0] || 0 == r2Array[0].length ?
+			null : UnsafeTranspose (r2Array);
 	}
 
 	/**

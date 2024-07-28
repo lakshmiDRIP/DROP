@@ -11,7 +11,7 @@ Numerical Analysis Library contains the supporting Functionality for Numerical M
 
  |        Document         | Link |
  |-------------------------|------|
- | Technical Specification | [*Latest*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/NumericalAnalysis/NumericalAnalysis_v6.43.pdf) [*Previous*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/NumericalAnalysis) |
+ | Technical Specification | [*Latest*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/NumericalAnalysis/NumericalAnalysis_v6.44.pdf) [*Previous*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/NumericalAnalysis) |
  | User Guide              |  |
  | API                     | [*Javadoc*](https://lakshmidrip.github.io/DROP/Javadoc/index.html)|
 
@@ -395,11 +395,19 @@ Numerical Analysis Library contains the supporting Functionality for Numerical M
 		* Using Givens Rotations
 			* Example
 			* Advantages and Disadvantages
-		* Connection to a Determinant or Product of Eigenvalues
-		* Column Pivoting
-		* Using for Solution to Linear Inverse Problems
-		* Generalizations
-		* References
+	* Connection to a Determinant or Product of Eigenvalues
+	* Column Pivoting
+	* Using for Solution to Linear Inverse Problems
+	* Generalizations
+	* References
+ * Gershgorin Circle Theorem
+	* Introduction
+	* Statement and Proof
+	* Discussion
+	* Strengthening of the Theorem
+	* Application
+	* Example
+	* References
 
 
 ## DROP Specifications
