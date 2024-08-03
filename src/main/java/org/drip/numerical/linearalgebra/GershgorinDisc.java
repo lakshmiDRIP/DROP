@@ -233,13 +233,24 @@ public class GershgorinDisc
 	}
 
 	/**
-	 * Check if the Row is Diagonally Dominant
+	 * Retrieve the Disc Left Edge
 	 * 
-	 * @return TRUE - The Row is Diagonally Dominant
+	 * @return Disc Left Edge
 	 */
 
-	/* public boolean isDiagonallyDominant()
+	public double leftEdge()
 	{
-		return isDiagonallyDominant (RELATIVE_TOLERANCE_DEFAULT, ABSOLUTE_TOLERANCE_DEFAULT);
-	} */
+		return _diagonalEntry - _radius;
+	}
+
+	/**
+	 * Retrieve the Disc Right Edge
+	 * 
+	 * @return Disc Right Edge
+	 */
+
+	public double rightEdge()
+	{
+		return _diagonalEntry + _radius;
+	}
 }

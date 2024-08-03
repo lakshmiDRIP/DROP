@@ -1,8 +1,12 @@
 
-package org.drip.numerical.linearalgebra;
+package org.drip.sample.matrix;
 
-import org.drip.numerical.common.NumberUtil;
-import org.drip.numerical.common.R1ClosenessVerifier;
+import org.drip.numerical.linearalgebra.GershgorinAnalyzer;
+import org.drip.numerical.linearalgebra.GershgorinDisc;
+import org.drip.numerical.linearalgebra.SquareMatrix;
+import org.drip.service.common.FormatUtil;
+import org.drip.service.common.StringUtil;
+import org.drip.service.env.EnvManager;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -77,7 +81,7 @@ import org.drip.numerical.common.R1ClosenessVerifier;
  */
 
 /**
- * <i>GershgorinDisc</i> contains the diagonal entry and the "Radius" of a Row of a Square Matrix. The
+ * <i>GershgorinAnalysis</i> illustrates the Analysis of a Square Matrix using Gershgorin Discs. The
  *  References are:
  * 
  * <br><br>
@@ -116,143 +120,23 @@ import org.drip.numerical.common.R1ClosenessVerifier;
  * @author Lakshmi Krishnamurthy
  */
 
-public class GershgorinAnalyzer
+public class GershgorinAnalysis
 {
-	private SquareMatrix _squareMatrix = null;
-	private GershgorinDisc[] _gershgorinDiscArray = null;
 
 	/**
-	 * Construct a <i>GershgorinAnalyzer</i> Instance from the <i>SquareMatrix</i>
+	 * Entry Point
 	 * 
-	 * @param squareMatrix The <i>SquareMatrix</i>
-	 * @param useRow TRUE - Use Rows for the Analysis
+	 * @param astrArgs Command Line Argument Array
 	 * 
-	 * @return The <i>GershgorinAnalyzer</i> Instance
+	 * @throws Exception Thrown on Error/Exception Situation
 	 */
 
-	public static final GershgorinAnalyzer FromSquareMatrix (
-		final SquareMatrix squareMatrix,
-		final boolean useRow)
-	{
-		try {
-			return new GershgorinAnalyzer (
-				useRow ? squareMatrix : squareMatrix.transpose(),
-				R1ClosenessVerifier.Standard()
-			);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-		return null;
-	}
-
-	/**
-	 * <i>GershgorinAnalyzer</i> Constructor
-	 * 
-	 * @param squareMatrix Input Square Matrix
-	 * @param r1ClosenessVerifier R<sup>1</sup> Closeness Verifier
-	 * 
-	 * @throws Exception Thrown if the Inputs are Invalid
-	 */
-
-	public GershgorinAnalyzer (
-		final SquareMatrix squareMatrix,
-		final R1ClosenessVerifier r1ClosenessVerifier)
+	public static final void main (
+		final String[] astrArgs)
 		throws Exception
 	{
-		if (null == (_squareMatrix = squareMatrix)) {
-			throw new Exception ("GershgorinAnalyzer Constructor => Invalid Inouts");
-		}
+		EnvManager.InitEnv ("");
 
-		int matrixSize = squareMatrix.size();
-
-		double[][] r2Array = squareMatrix.r2Array();
-
-		_gershgorinDiscArray = new GershgorinDisc[matrixSize];
-
-		for (int i = 0; i < matrixSize; ++i) {
-			if (null == (
-				_gershgorinDiscArray[i] = GershgorinDisc.FromRow (r2Array[i], i, r1ClosenessVerifier)
-			))
-			{
-				throw new Exception ("GershgorinAnalyzer Constructor => Invalid Inouts");
-			}
-		}
-	}
-
-	/**
-	 * Retrieve the Square Matrix</i>
-	 * 
-	 * @return Square Matrix
-	 */
-
-	public SquareMatrix squareMatrix()
-	{
-		return _squareMatrix;
-	}
-
-	/**
-	 * Retrieve the Array of <i>GershgorinDisc</i>
-	 * 
-	 * @return Array of <i>GershgorinDisc</i>
-	 */
-
-	public GershgorinDisc[] gershgorinDiscArray()
-	{
-		return _gershgorinDiscArray;
-	}
-
-	/**
-	 * Indicate if the Discs are Diagonally Dominant
-	 * 
-	 * @return TRUE - The Discs are Diagonally Dominant
-	 */
-
-	public boolean isDiagonallyDominant()
-	{
-		for (GershgorinDisc gershgorinDisc : _gershgorinDiscArray) {
-			if (!gershgorinDisc.isDiagonallyDominant()) {
-				return false;
-			}
-		}
-
-		return true;
-	}
-
-	/**
-	 * Construct a "Gershgorin Strengthened" Square Matrix
-	 * 
-	 * @param t Strengthener "t"
-	 * 
-	 * @return "Gershgorin Strengthened" Square Matrix
-	 */
-
-	public SquareMatrix Strengthen (
-		final double t)
-	{
-		if (!NumberUtil.IsValid (t) || 0. > t || 1. < t) {
-			return null;
-		}
-
-		int matrixSize = _squareMatrix.size();
-
-		double[][] r2Array = _squareMatrix.r2Array();
-
-		double[][] r2ArrayStrengthened = new double[matrixSize][matrixSize];
-
-		for (int i = 0; i < matrixSize; ++i) {
-			for (int j = 0; j < matrixSize; ++j) {
-				r2ArrayStrengthened[i][j] = (i == j ? 1. : 1. - t) * r2Array[i][j];
-			}
-		}
-
-		return SquareMatrix.Standard (r2ArrayStrengthened);
-	}
-
-	public static void main (
-		final String[] argumentArray)
-		throws Exception
-	{
 		double[][] r2Array = new double[][] {
 			{10.0,  1.0,  0.0,   1.0},
 			{ 0.2,  8.0,  0.2,   0.2},
@@ -260,33 +144,96 @@ public class GershgorinAnalyzer
 			{-1.0, -1.0, -1.0, -11.0},
 		};
 
-		GershgorinAnalyzer gershgorinRowAnalyzer = GershgorinAnalyzer.FromSquareMatrix (
+		GershgorinDisc[] gershgorinDiscRowArray = GershgorinAnalyzer.FromSquareMatrix (
 			SquareMatrix.Standard (r2Array),
 			true
-		);
+		).gershgorinDiscArray();
 
-		GershgorinDisc[] gershgorinDiscRowArray = gershgorinRowAnalyzer.gershgorinDiscArray();
+		System.out.println ("\t|----------------------------------------------------||");
+
+		System.out.println ("\t|              ROW GERSHGORIN ANALYSIS               ||");
+
+		System.out.println ("\t|----------------------------------------------------||");
+
+		System.out.println ("\t|  Input L -> R:                                     ||");
+
+		System.out.println ("\t|    - Diagonal Index                                ||");
+
+		System.out.println ("\t|----------------------------------------------------||");
+
+		System.out.println ("\t|  Outputs L -> R:                                   ||");
+
+		System.out.println ("\t|    - Diagonal Entry                                ||");
+
+		System.out.println ("\t|    - Disc Radius                                   ||");
+
+		System.out.println ("\t|    - Disc Left Edge                                ||");
+
+		System.out.println ("\t|    - Disc Right Edge                               ||");
+
+		System.out.println ("\t|    - Is Diagonally Dominant                        ||");
+
+		System.out.println ("\t|----------------------------------------------------||");
 
 		for (int i = 0; i < gershgorinDiscRowArray.length; ++i) {
 			System.out.println (
-				"\t[" + i + "] => " + gershgorinDiscRowArray[i].diagonalEntry() + " | " +
-					gershgorinDiscRowArray[i].radius() + " ||"
+				"\t| [" + i + "] => " +
+				FormatUtil.FormatDouble (gershgorinDiscRowArray[i].diagonalEntry(), 2, 2, 1.) + " |" +
+				FormatUtil.FormatDouble (gershgorinDiscRowArray[i].radius(), 2, 2, 1.) + " | {" +
+				FormatUtil.FormatDouble (gershgorinDiscRowArray[i].leftEdge(), 2, 2, 1.) + " -> " +
+				FormatUtil.FormatDouble (gershgorinDiscRowArray[i].rightEdge(), 2, 2, 1.) + "} | " +
+				StringUtil.ToString (gershgorinDiscRowArray[i].isDiagonallyDominant()) + " ||"
 			);
 		}
 
+		System.out.println ("\t|----------------------------------------------------||");
 
-		GershgorinAnalyzer gershgorinColumnAnalyzer = GershgorinAnalyzer.FromSquareMatrix (
+		System.out.println();
+
+		GershgorinDisc[] gershgorinDiscColumnArray = GershgorinAnalyzer.FromSquareMatrix (
 			SquareMatrix.Standard (r2Array),
-			true
-		);
+			false
+		).gershgorinDiscArray();
 
-		GershgorinDisc[] gershgorinDiscColumnArray = gershgorinColumnAnalyzer.gershgorinDiscArray();
+		System.out.println ("\t|----------------------------------------------------||");
+
+		System.out.println ("\t|            COLUMN GERSHGORIN ANALYSIS              ||");
+
+		System.out.println ("\t|----------------------------------------------------||");
+
+		System.out.println ("\t|  Input L -> R:                                     ||");
+
+		System.out.println ("\t|    - Diagonal Index                                ||");
+
+		System.out.println ("\t|----------------------------------------------------||");
+
+		System.out.println ("\t|  Outputs L -> R:                                   ||");
+
+		System.out.println ("\t|    - Diagonal Entry                                ||");
+
+		System.out.println ("\t|    - Disc Radius                                   ||");
+
+		System.out.println ("\t|    - Disc Left Edge                                ||");
+
+		System.out.println ("\t|    - Disc Right Edge                               ||");
+
+		System.out.println ("\t|    - Is Diagonally Dominant                        ||");
+
+		System.out.println ("\t|----------------------------------------------------||");
 
 		for (int i = 0; i < gershgorinDiscColumnArray.length; ++i) {
 			System.out.println (
-				"\t[" + i + "] => " + gershgorinDiscColumnArray[i].diagonalEntry() + " | " +
-					gershgorinDiscColumnArray[i].radius() + " ||"
+				"\t| [" + i + "] => " +
+				FormatUtil.FormatDouble (gershgorinDiscColumnArray[i].diagonalEntry(), 2, 2, 1.) + " |" +
+				FormatUtil.FormatDouble (gershgorinDiscColumnArray[i].radius(), 2, 2, 1.) + " | {" +
+				FormatUtil.FormatDouble (gershgorinDiscColumnArray[i].leftEdge(), 2, 2, 1.) + " -> " +
+				FormatUtil.FormatDouble (gershgorinDiscColumnArray[i].rightEdge(), 2, 2, 1.) + "} | " +
+				StringUtil.ToString (gershgorinDiscColumnArray[i].isDiagonallyDominant()) + " ||"
 			);
 		}
+
+		System.out.println ("\t|----------------------------------------------------||");
+
+		EnvManager.TerminateEnv();
 	}
 }
