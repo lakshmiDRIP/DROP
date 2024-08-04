@@ -5,7 +5,7 @@ import java.util.Map;
 
 import org.drip.analytics.date.*;
 import org.drip.analytics.support.CaseInsensitiveTreeMap;
-import org.drip.function.r1tor1.*;
+import org.drip.function.r1tor1operator.Flat;
 import org.drip.param.creator.*;
 import org.drip.param.market.CurveSurfaceQuoteContainer;
 import org.drip.param.valuation.*;
@@ -210,7 +210,7 @@ public class ForeignCollateralDomesticForex {
 			fxCurve,
 			vcForeignFunding,
 			vcFX,
-			new FlatUnivariate (dblFXForeignRatesCorrelation)
+			new Flat (dblFXForeignRatesCorrelation)
 		);
 
 		CurveSurfaceQuoteContainer mktParams = MarketParamsBuilder.Create (

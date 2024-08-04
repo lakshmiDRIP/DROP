@@ -3,7 +3,7 @@ package org.drip.sample.piterbarg2012;
 
 import org.drip.analytics.date.*;
 import org.drip.analytics.support.CaseInsensitiveTreeMap;
-import org.drip.function.r1tor1.*;
+import org.drip.function.r1tor1operator.Flat;
 import org.drip.param.creator.*;
 import org.drip.param.market.CurveSurfaceQuoteContainer;
 import org.drip.param.valuation.*;
@@ -211,7 +211,7 @@ public class ForeignCollateralDomesticForexAnalysis {
 			fxCurve,
 			vcForeignFunding,
 			vcFX,
-			new FlatUnivariate (0.)
+			new Flat (0.)
 		);
 
 		CurveSurfaceQuoteContainer mktParams = MarketParamsBuilder.Create (
@@ -313,7 +313,7 @@ public class ForeignCollateralDomesticForexAnalysis {
 							new int[] {dtToday.julian()},
 							new double[] {dblFXVolatility}
 						),
-						new FlatUnivariate (dblFXForeignRatesCorrelation)
+						new Flat (dblFXForeignRatesCorrelation)
 					);
 
 					mktParams.setPayCurrencyCollateralCurrencyCurve (

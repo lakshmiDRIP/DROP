@@ -1,5 +1,5 @@
 
-package org.drip.function.r1tor1;
+package org.drip.function.r1tor1operator;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -14,6 +14,8 @@ package org.drip.function.r1tor1;
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * Copyright (C) 2015 Lakshmi Krishnamurthy
+ * Copyright (C) 2014 Lakshmi Krishnamurthy
+ * Copyright (C) 2013 Lakshmi Krishnamurthy
  * 
  *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
  *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
@@ -81,49 +83,42 @@ package org.drip.function.r1tor1;
  */
 
 /**
- * <i>OffsetIdempotent</i> provides the Implementation of the Offset Idempotent Operator - f(x) = x - C.
+ * <i>Convolution</i> provides the evaluation of the Convolution <code>au1 * au2</code> and its derivatives
+ * 	for a specified variate.
  *
  *	<br><br>
  *  <ul>
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md">Numerical Analysis Library</a></li>
  *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function/README.md">R<sup>d</sup> To R<sup>d</sup> Function Analysis</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function/r1tor1/README.md">Built-in R<sup>1</sup> To R<sup>1</sup> Functions</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function/r1tor1operator/README.md">Built-in R<sup>1</sup> To R<sup>1</sup> Operator Functions</a></li>
  *  </ul>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class OffsetIdempotent extends org.drip.function.definition.R1ToR1 {
-	private double _dblOffset = java.lang.Double.NaN;
+public class Convolution extends org.drip.function.definition.R1ToR1 {
+	private org.drip.function.definition.R1ToR1 _au1 = null;
+	private org.drip.function.definition.R1ToR1 _au2 = null;
 
 	/**
-	 * OffsetIdempotent Constructor
+	 * Construct a Convolution instance
 	 * 
-	 * @param dblOffset The Offset
+	 * @param au1 Univariate Function #1
+	 * @param au2 Univariate Function #2
 	 * 
-	 * @throws java.lang.Exception Thrown if Inputs are Invalid
+	 * @throws java.lang.Exception Thrown if the inputs are invalid
 	 */
 
-	public OffsetIdempotent (
-		final double dblOffset)
+	public Convolution (
+		final org.drip.function.definition.R1ToR1 au1,
+		final org.drip.function.definition.R1ToR1 au2)
 		throws java.lang.Exception
 	{
 		super (null);
 
-		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblOffset = dblOffset))
-			throw new java.lang.Exception ("OffsetIdempotent ctr: Invalid Inputs");
-	}
-
-	/**
-	 * Retrieve the Offset
-	 * 
-	 * @return The Offset
-	 */
-
-	public double offset()
-	{
-		return _dblOffset;
+		if (null == (_au1 = au1) || null == (_au2 = au2))
+			throw new java.lang.Exception ("Convolution ctr: Invalid Inputs");
 	}
 
 	@Override public double evaluate (
@@ -131,9 +126,9 @@ public class OffsetIdempotent extends org.drip.function.definition.R1ToR1 {
 		throws java.lang.Exception
 	{
 		if (!org.drip.numerical.common.NumberUtil.IsValid (dblVariate))
-			throw new java.lang.Exception ("OffsetIdempotent::evaluate => Invalid Inputs");
+			throw new java.lang.Exception ("Convolution::evaluate => Invalid Input");
 
-		return dblVariate - _dblOffset;
+		return _au1.evaluate (dblVariate) * _au2.evaluate (dblVariate);
 	}
 
 	@Override public double derivative (
@@ -141,10 +136,13 @@ public class OffsetIdempotent extends org.drip.function.definition.R1ToR1 {
 		final int iOrder)
 		throws java.lang.Exception
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (dblVariate) || 0 > iOrder)
-			throw new java.lang.Exception ("OffsetIdempotent::derivative => Invalid Inputs");
+		double dblDerivative = _au1.evaluate (dblVariate) * _au2.derivative (dblVariate, iOrder);
 
-		return iOrder > 1 ? 0. : 1;
+		for (int i = 1; i < iOrder; ++i)
+			dblDerivative += org.drip.numerical.common.NumberUtil.NCK (iOrder, i) * _au1.derivative (dblVariate,
+				i) * _au2.derivative (dblVariate, iOrder - i);
+
+		return dblDerivative + _au1.derivative (dblVariate, iOrder) * _au2.evaluate (dblVariate);
 	}
 
 	@Override public double integrate (
@@ -154,8 +152,8 @@ public class OffsetIdempotent extends org.drip.function.definition.R1ToR1 {
 	{
 		if (!org.drip.numerical.common.NumberUtil.IsValid (dblBegin) || !org.drip.numerical.common.NumberUtil.IsValid
 			(dblEnd))
-			throw new java.lang.Exception ("OffsetIdempotent::integrate => Invalid Inputs");
+			throw new java.lang.Exception ("Convolution::integrate => Invalid Inputs");
 
-		return 0.5 * (dblEnd * dblEnd - dblBegin - dblBegin) + _dblOffset * (dblEnd - dblBegin);
+		return org.drip.numerical.integration.R1ToR1Integrator.Boole (this, dblBegin, dblEnd);
 	}
 }

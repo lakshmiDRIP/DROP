@@ -316,15 +316,15 @@ public class FunctionSetBuilder
 				(1);
 
 			org.drip.function.definition.R1ToR1 auReflectedLinearPoly = new
-				org.drip.function.r1tor1.UnivariateReflection (auLinearPoly);
+				org.drip.function.r1tor1operator.Reflection (auLinearPoly);
 
 			org.drip.function.definition.R1ToR1 auKaklisPandelisPolynomial = new
 				org.drip.function.r1tor1.Polynomial (kaklisPandelisSetParams.polynomialTensionDegree());
 
 			return new org.drip.spline.basis.FunctionSet (new org.drip.function.definition.R1ToR1[]
-				{auReflectedLinearPoly, auLinearPoly, new org.drip.function.r1tor1.UnivariateConvolution
-					(auLinearPoly, new org.drip.function.r1tor1.UnivariateReflection
-						(auKaklisPandelisPolynomial)), new org.drip.function.r1tor1.UnivariateConvolution
+				{auReflectedLinearPoly, auLinearPoly, new org.drip.function.r1tor1operator.Convolution
+					(auLinearPoly, new org.drip.function.r1tor1operator.Reflection
+						(auKaklisPandelisPolynomial)), new org.drip.function.r1tor1operator.Convolution
 							(auKaklisPandelisPolynomial, auReflectedLinearPoly)});
 		} catch (java.lang.Exception e) {
 			e.printStackTrace();

@@ -5,7 +5,7 @@ import java.util.*;
 
 import org.drip.analytics.date.JulianDate;
 import org.drip.analytics.support.*;
-import org.drip.function.r1tor1.FlatUnivariate;
+import org.drip.function.r1tor1operator.Flat;
 import org.drip.numerical.common.*;
 import org.drip.param.market.CurveSurfaceQuoteContainer;
 import org.drip.param.period.*;
@@ -350,7 +350,7 @@ public class CrossFixedPlainFloat {
 		mktParams.setForwardFundingCorrelation (
 			fri3MUSD,
 			fundingLabelUSD,
-			new FlatUnivariate (dblUSD3MUSDFundingCorr)
+			new Flat (dblUSD3MUSDFundingCorr)
 		);
 
 		mktParams.setFundingState (dcEURCollatDomestic);
@@ -393,7 +393,7 @@ public class CrossFixedPlainFloat {
 		mktParams.setFundingFXCorrelation (
 			fundingLabelUSD,
 			fxLabel,
-			new FlatUnivariate (dblUSDFundingUSDEURFXCorr)
+			new Flat (dblUSDFundingUSDEURFXCorr)
 		);
 
 		CaseInsensitiveTreeMap<Double> mapMTMOutput = fixMTMFloat.value (

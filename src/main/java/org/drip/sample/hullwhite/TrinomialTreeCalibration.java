@@ -5,7 +5,7 @@ import java.util.Map;
 
 import org.drip.analytics.date.*;
 import org.drip.dynamics.hullwhite.*;
-import org.drip.function.r1tor1.FlatUnivariate;
+import org.drip.function.r1tor1operator.Flat;
 import org.drip.sequence.random.BoxMullerGaussian;
 import org.drip.service.common.FormatUtil;
 import org.drip.service.env.EnvManager;
@@ -135,7 +135,7 @@ public class TrinomialTreeCalibration {
 			FundingLabel.Standard (strCurrency),
 			dblSigma,
 			dblA,
-			new FlatUnivariate (dblStartingForwardRate),
+			new Flat (dblStartingForwardRate),
 			new BoxMullerGaussian (
 				0.,
 				1.

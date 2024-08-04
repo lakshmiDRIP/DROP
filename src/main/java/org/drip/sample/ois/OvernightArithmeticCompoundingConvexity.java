@@ -7,6 +7,7 @@ import org.drip.analytics.cashflow.CompositePeriod;
 import org.drip.analytics.date.*;
 import org.drip.analytics.support.*;
 import org.drip.function.r1tor1.*;
+import org.drip.function.r1tor1operator.Flat;
 import org.drip.market.otc.*;
 import org.drip.param.creator.*;
 import org.drip.param.market.*;
@@ -473,7 +474,7 @@ public class OvernightArithmeticCompoundingConvexity {
 		mktParams.setForwardFundingCorrelation (
 			fri,
 			fundingLabel,
-			new FlatUnivariate (dblUSDFundingUSDOISCorrelation)
+			new Flat (dblUSDFundingUSDOISCorrelation)
 		);
 	}
 

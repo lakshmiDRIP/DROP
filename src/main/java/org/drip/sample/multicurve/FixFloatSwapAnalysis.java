@@ -5,7 +5,7 @@ import java.util.*;
 
 import org.drip.analytics.date.*;
 import org.drip.analytics.support.*;
-import org.drip.function.r1tor1.FlatUnivariate;
+import org.drip.function.r1tor1operator.Flat;
 import org.drip.market.otc.*;
 import org.drip.param.creator.*;
 import org.drip.param.market.CurveSurfaceQuoteContainer;
@@ -711,7 +711,7 @@ public class FixFloatSwapAnalysis {
 		mktParams.setForwardFundingCorrelation (
 			fri,
 			fundingLabel,
-			new FlatUnivariate (dblForwardFundingCorr)
+			new Flat (dblForwardFundingCorr)
 		);
 
 		Map<String, Double> mapIRSOutput = irs.value (

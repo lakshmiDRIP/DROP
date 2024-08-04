@@ -97,7 +97,7 @@ package org.drip.function.r1tor1;
  * @author Lakshmi Krishnamurthy
  */
 
-public class LinearRationalTensionExponential extends org.drip.function.r1tor1.UnivariateConvolution {
+public class LinearRationalTensionExponential extends org.drip.function.r1tor1operator.Convolution {
 
 	/**
 	 * Construct a LinearRationalTensionExponential instance

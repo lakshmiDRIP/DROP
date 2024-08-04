@@ -2,7 +2,7 @@
 package org.drip.sample.piterbarg2012;
 
 import org.drip.analytics.date.*;
-import org.drip.function.r1tor1.*;
+import org.drip.function.r1tor1operator.Flat;
 import org.drip.product.params.CurrencyPair;
 import org.drip.service.common.FormatUtil;
 import org.drip.service.env.EnvManager;
@@ -206,7 +206,7 @@ public class DeterministicCollateralChoiceZeroCoupon {
 				new int[] {dtToday.julian()},
 				new double[] {dblFXVolatility}
 			),
-			new FlatUnivariate (dblFXForeignRatesCorrelation)
+			new Flat (dblFXForeignRatesCorrelation)
 		);
 
 		DeterministicCollateralChoiceDiscountCurve dccdc = new DeterministicCollateralChoiceDiscountCurve (

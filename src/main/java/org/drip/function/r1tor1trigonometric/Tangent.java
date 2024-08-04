@@ -1,21 +1,15 @@
 
-package org.drip.function.r1tor1;
+package org.drip.function.r1tor1trigonometric;
+
+import org.drip.function.definition.R1ToR1;
+import org.drip.numerical.common.NumberUtil;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
- * Copyright (C) 2022 Lakshmi Krishnamurthy
- * Copyright (C) 2021 Lakshmi Krishnamurthy
- * Copyright (C) 2020 Lakshmi Krishnamurthy
- * Copyright (C) 2019 Lakshmi Krishnamurthy
- * Copyright (C) 2018 Lakshmi Krishnamurthy
- * Copyright (C) 2017 Lakshmi Krishnamurthy
- * Copyright (C) 2016 Lakshmi Krishnamurthy
- * Copyright (C) 2015 Lakshmi Krishnamurthy
- * Copyright (C) 2014 Lakshmi Krishnamurthy
- * Copyright (C) 2013 Lakshmi Krishnamurthy
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
  * 
  *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
  *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
@@ -83,88 +77,78 @@ package org.drip.function.r1tor1;
  */
 
 /**
- * <i>UnivariateReflection</i> provides the evaluation f(1-x) instead of f(x) for a given f.
- *
- *	<br><br>
+ * <i>Tangent</i> implements the Trigonometric Tangent Function. The References are:
+ * 
+ * <br><br>
+ * 	<ul>
+ * 		<li>
+ * 			Belsley, D. A., E. Kuh, and R. E. Welsch (1980): <i>Regression Dynamics: Identifying Influential
+ * 				Data and Sources of Collinearity</i> <b>John Wiley and Sons</b> New York NY
+ * 		</li>
+ * 		<li>
+ * 			Cheney, K. (2008): <i>Numerical Mathematics and Computing</i> <b>Cengage Learning</b> New York NY
+ * 		</li>
+ * 		<li>
+ * 			Pesaran, M. H. (2015): <i>Time Series and Panel Data Econometrics</i> <b>Oxford University
+ * 				Press</b> New York NY
+ * 		</li>
+ * 		<li>
+ * 			Trefethen, L. N., and D. Bau III (1997): <i>Numerical Linear Algebra</i> <b>Society for
+ * 				Industrial and Applied Mathematics</b> Philadelphia PA
+ * 		</li>
+ * 		<li>
+ * 			Wikipedia (2024): Condition Number https://en.wikipedia.org/wiki/Condition_number
+ * 		</li>
+ * 	</ul>
+ * 
+ * <br><br>
  *  <ul>
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md">Numerical Analysis Library</a></li>
  *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function/README.md">R<sup>d</sup> To R<sup>d</sup> Function Analysis</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function/r1tor1/README.md">Built-in R<sup>1</sup> To R<sup>1</sup> Functions</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function/r1tor1trigonometric/README.md">Built-in R<sup>1</sup> To R<sup>1</sup> Trigonometric Functions</a></li>
  *  </ul>
+ * <br><br>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class UnivariateReflection extends org.drip.function.definition.R1ToR1 {
-	private org.drip.function.definition.R1ToR1 _au = null;
+public class Tangent extends R1ToR1
+{
 
 	/**
-	 * UnivariateReflection constructor
+	 * <i>Tangent</i> Constructor
 	 * 
-	 * @param au Univariate Function
-	 * 
-	 * @throws java.lang.Exception Thrown if the input is invalid
+	 * @throws Exception Thrown if the Input is Invalid
 	 */
 
-	public UnivariateReflection (
-		final org.drip.function.definition.R1ToR1 au)
-		throws java.lang.Exception
+	public Tangent()
+		throws Exception
 	{
 		super (null);
-
-		if (null == (_au = au)) throw new java.lang.Exception ("UnivariateReflection ctr: Invalid Inputs");
 	}
 
 	@Override public double evaluate (
-		final double dblVariate)
-		throws java.lang.Exception
+		final double x)
+		throws Exception
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (dblVariate))
-			throw new java.lang.Exception ("UnivariateReflection::evaluate => Invalid Inputs");
+		if (!NumberUtil.IsValid (x)) {
+			throw new Exception ("Tangent::evaluate => Invalid Inputs");
+		}
 
-		return _au.evaluate (1. - dblVariate);
+		return Math.tan (x);
 	}
 
-	@Override public double derivative (
-		final double dblVariate,
-		final int iOrder)
-		throws java.lang.Exception
+	@Override public double conditionNumber (
+		final double x)
+		throws Exception
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (dblVariate) || 0 >= iOrder)
-			throw new java.lang.Exception ("UnivariateReflection::derivative => Invalid Inputs");
+		if (!NumberUtil.IsValid (x)) {
+			throw new Exception ("Tangent::conditionNumber => Invalid Inputs");
+		}
 
-		return java.lang.Math.pow (-1., iOrder) * _au.derivative (1. - dblVariate, iOrder);
+		double tan = Math.tan (x);
+
+		return Math.abs (x / (tan + (1. / tan)));
 	}
-
-	@Override public double integrate (
-		final double dblBegin,
-		final double dblEnd)
-		throws java.lang.Exception
-	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (dblBegin) || !org.drip.numerical.common.NumberUtil.IsValid
-			(dblEnd))
-			throw new java.lang.Exception ("UnivariateReflection::integrate => Invalid Inputs");
-
-		return -1. * _au.integrate (1. - dblBegin, 1. - dblEnd);
-	}
-
-	/* public static final void main (
-		final java.lang.String[] astrArgs)
-		throws java.lang.Exception
-	{
-		UnivariateReflection ur = new UnivariateReflection (new Polynomial (4));
-
-		System.out.println ("UnivariateReflection[0.0] = " + ur.evaluate (0.0));
-
-		System.out.println ("UnivariateReflection[0.5] = " + ur.evaluate (0.5));
-
-		System.out.println ("UnivariateReflection[1.0] = " + ur.evaluate (1.0));
-
-		System.out.println ("UnivariateReflectionDeriv[0.0] = " + ur.derivative (0.0, 3));
-
-		System.out.println ("UnivariateReflectionDeriv[0.5] = " + ur.derivative (0.5, 3));
-
-		System.out.println ("UnivariateReflectionDeriv[1.0] = " + ur.derivative (1.0, 3));
-	} */
 }

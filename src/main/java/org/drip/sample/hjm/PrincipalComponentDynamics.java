@@ -5,7 +5,7 @@ import org.drip.analytics.date.*;
 import org.drip.analytics.definition.MarketSurface;
 import org.drip.dynamics.hjm.*;
 import org.drip.function.definition.R1ToR1;
-import org.drip.function.r1tor1.FlatUnivariate;
+import org.drip.function.r1tor1operator.Flat;
 import org.drip.sequence.random.*;
 import org.drip.service.common.FormatUtil;
 import org.drip.service.env.EnvManager;
@@ -421,7 +421,7 @@ public class PrincipalComponentDynamics {
 				mktSurfFlatVol1,
 				mktSurfFlatVol2,
 				mktSurfFlatVol3,
-				new FlatUnivariate (dblFlatForwardRate),
+				new Flat (dblFlatForwardRate),
 				iNumFactor
 			);
 

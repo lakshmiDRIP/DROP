@@ -5,6 +5,7 @@ import java.util.*;
 
 import org.drip.analytics.date.*;
 import org.drip.function.r1tor1.*;
+import org.drip.function.r1tor1operator.Flat;
 import org.drip.market.otc.*;
 import org.drip.param.creator.*;
 import org.drip.param.market.CurveSurfaceQuoteContainer;
@@ -665,7 +666,7 @@ public class FRAStandardOption {
 				new ExponentialDecay (
 					dtToday.julian(),
 					dblCorrMeanReverterHazard),
-				new FlatUnivariate (dblForwardFundingCorr)
+				new Flat (dblForwardFundingCorr)
 			)
 		);
 

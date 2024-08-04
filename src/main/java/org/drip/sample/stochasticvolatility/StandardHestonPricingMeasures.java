@@ -2,7 +2,7 @@
 package org.drip.sample.stochasticvolatility;
 
 import org.drip.analytics.date.*;
-import org.drip.function.r1tor1.FlatUnivariate;
+import org.drip.function.r1tor1operator.Flat;
 import org.drip.market.otc.*;
 import org.drip.numerical.fourier.PhaseAdjuster;
 import org.drip.param.pricer.HestonOptionPricerParams;
@@ -386,7 +386,7 @@ public class StandardHestonPricingMeasures {
 				dblSpot,
 				false,
 				dc,
-				new FlatUnivariate (dblSpotVolatility),
+				new Flat (dblSpotVolatility),
 				fpg
 			)
 		);

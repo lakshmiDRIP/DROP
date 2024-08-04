@@ -4,7 +4,7 @@ package org.drip.sample.fra;
 import java.util.Map;
 
 import org.drip.analytics.date.*;
-import org.drip.function.r1tor1.*;
+import org.drip.function.r1tor1operator.Flat;
 import org.drip.param.creator.MarketParamsBuilder;
 import org.drip.param.market.CurveSurfaceQuoteContainer;
 import org.drip.param.valuation.ValuationParams;
@@ -206,7 +206,7 @@ public class MultiCurveFRAMarketAnalysis {
 		mktParams.setForwardFundingCorrelation (
 			fri,
 			fundingLabel,
-			new FlatUnivariate (dblEONIAEURIBOR6MCorrelation)
+			new Flat (dblEONIAEURIBOR6MCorrelation)
 		);
 
 		Map<String, Double> mapFRAOutput = fra.value (

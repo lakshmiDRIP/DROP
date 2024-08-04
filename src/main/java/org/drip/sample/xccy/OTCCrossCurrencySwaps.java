@@ -3,7 +3,7 @@ package org.drip.sample.xccy;
 
 import org.drip.analytics.date.*;
 import org.drip.analytics.support.CaseInsensitiveTreeMap;
-import org.drip.function.r1tor1.FlatUnivariate;
+import org.drip.function.r1tor1operator.Flat;
 import org.drip.market.otc.*;
 import org.drip.param.market.CurveSurfaceQuoteContainer;
 import org.drip.param.valuation.*;
@@ -233,7 +233,7 @@ public class OTCCrossCurrencySwaps {
 		mktParams.setForwardFundingCorrelation (
 			friDerived3M,
 			fundingLabelReference,
-			new FlatUnivariate (
+			new Flat (
 				dblReferenceFundingDerived3MCorr
 			)
 		);
@@ -241,7 +241,7 @@ public class OTCCrossCurrencySwaps {
 		mktParams.setForwardFXCorrelation (
 			friDerived3M,
 			fxLabel,
-			new FlatUnivariate (
+			new Flat (
 				dblDerived3MReferenceDerivedFXCorr
 			)
 		);
@@ -249,7 +249,7 @@ public class OTCCrossCurrencySwaps {
 		mktParams.setFundingFXCorrelation (
 			fundingLabelReference,
 			fxLabel,
-			new FlatUnivariate (
+			new Flat (
 				dblReferenceFundingReferenceDerivedFXCorr
 			)
 		);

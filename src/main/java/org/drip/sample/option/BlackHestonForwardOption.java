@@ -2,7 +2,7 @@
 package org.drip.sample.option;
 
 import org.drip.analytics.date.*;
-import org.drip.function.r1tor1.FlatUnivariate;
+import org.drip.function.r1tor1operator.Flat;
 import org.drip.market.otc.*;
 import org.drip.numerical.fourier.PhaseAdjuster;
 import org.drip.param.pricer.HestonOptionPricerParams;
@@ -392,7 +392,7 @@ public class BlackHestonForwardOption {
 				dblSpot,
 				false,
 				dc,
-				new FlatUnivariate (dblSpotVolatility),
+				new Flat (dblSpotVolatility),
 				fpg
 			)
 		);
@@ -409,7 +409,7 @@ public class BlackHestonForwardOption {
 				dblSpot,
 				true,
 				dc,
-				new FlatUnivariate (dblSpotVolatility),
+				new Flat (dblSpotVolatility),
 				fpg
 			)
 		);
@@ -426,7 +426,7 @@ public class BlackHestonForwardOption {
 				dblSpot,
 				false,
 				dc,
-				new FlatUnivariate (dblSpotVolatility),
+				new Flat (dblSpotVolatility),
 				new BlackScholesAlgorithm()
 			)
 		);
@@ -443,7 +443,7 @@ public class BlackHestonForwardOption {
 				dblSpot,
 				true,
 				dc,
-				new FlatUnivariate (dblSpotVolatility),
+				new Flat (dblSpotVolatility),
 				new BlackScholesAlgorithm()
 			)
 		);

@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.drip.analytics.date.JulianDate;
 import org.drip.analytics.support.*;
-import org.drip.function.r1tor1.FlatUnivariate;
+import org.drip.function.r1tor1operator.Flat;
 import org.drip.param.market.CurveSurfaceQuoteContainer;
 import org.drip.param.period.*;
 import org.drip.param.valuation.*;
@@ -308,55 +308,55 @@ public class FloatFloatFloatFloatAnalysis {
 		mktParams.setForwardFundingCorrelation (
 			forwardReferenceLabel1,
 			fundingLabel,
-			new FlatUnivariate (dblForwardReference1FundingCorr)
+			new Flat (dblForwardReference1FundingCorr)
 		);
 
 		mktParams.setForwardFundingCorrelation (
 			forwardReferenceLabel2,
 			fundingLabel,
-			new FlatUnivariate (dblForwardReference2FundingCorr)
+			new Flat (dblForwardReference2FundingCorr)
 		);
 
 		mktParams.setForwardFundingCorrelation (
 			forwardDerivedLabel1,
 			fundingLabel,
-			new FlatUnivariate (dblForwardDerived1FundingCorr)
+			new Flat (dblForwardDerived1FundingCorr)
 		);
 
 		mktParams.setForwardFundingCorrelation (
 			forwardDerivedLabel2,
 			fundingLabel,
-			new FlatUnivariate (dblForwardDerived2FundingCorr)
+			new Flat (dblForwardDerived2FundingCorr)
 		);
 
 		mktParams.setForwardFXCorrelation (
 			forwardReferenceLabel1,
 			fxLabel,
-			new FlatUnivariate (dblForwardReference1FXCorr)
+			new Flat (dblForwardReference1FXCorr)
 		);
 
 		mktParams.setForwardFXCorrelation (
 			forwardReferenceLabel2,
 			fxLabel,
-			new FlatUnivariate (dblForwardReference2FXCorr)
+			new Flat (dblForwardReference2FXCorr)
 		);
 
 		mktParams.setForwardFXCorrelation (
 			forwardDerivedLabel1,
 			fxLabel,
-			new FlatUnivariate (dblForwardDerived1FXCorr)
+			new Flat (dblForwardDerived1FXCorr)
 		);
 
 		mktParams.setForwardFXCorrelation (
 			forwardDerivedLabel2,
 			fxLabel,
-			new FlatUnivariate (dblForwardDerived2FXCorr)
+			new Flat (dblForwardDerived2FXCorr)
 		);
 
 		mktParams.setFundingFXCorrelation (
 			fundingLabel,
 			fxLabel,
-			new FlatUnivariate (dblFundingFXCorr)
+			new Flat (dblFundingFXCorr)
 		);
 	}
 

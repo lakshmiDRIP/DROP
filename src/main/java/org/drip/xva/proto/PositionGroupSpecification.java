@@ -2,7 +2,7 @@
 package org.drip.xva.proto;
 
 import org.drip.function.definition.R1ToR1;
-import org.drip.function.r1tor1.FlatUnivariate;
+import org.drip.function.r1tor1operator.Flat;
 import org.drip.numerical.common.NumberUtil;
 import org.drip.service.common.StringUtil;
 
@@ -213,8 +213,8 @@ public class PositionGroupSpecification extends ObjectSpecification
 				name,
 				14,
 				14,
-				new FlatUnivariate[] {new FlatUnivariate (clientThreshold)},
-				new FlatUnivariate (dealerThreshold),
+				new Flat[] {new Flat (clientThreshold)},
+				new Flat (dealerThreshold),
 				0.,
 				0.,
 				positionReplicationScheme,

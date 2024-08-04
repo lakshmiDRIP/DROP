@@ -5,7 +5,7 @@ import java.util.*;
 
 import org.drip.analytics.date.*;
 import org.drip.analytics.definition.NodeStructure;
-import org.drip.function.r1tor1.FlatUnivariate;
+import org.drip.function.r1tor1operator.Flat;
 import org.drip.market.otc.*;
 import org.drip.param.valuation.*;
 import org.drip.pricer.option.BlackScholesAlgorithm;
@@ -329,7 +329,7 @@ public class ATMTermStructureSpline {
 			1.,
 			false,
 			dc,
-			new FlatUnivariate (dblVolatility),
+			new Flat (dblVolatility),
 			new BlackScholesAlgorithm()
 		);
 

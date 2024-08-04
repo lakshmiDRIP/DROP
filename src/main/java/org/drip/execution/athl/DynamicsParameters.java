@@ -158,7 +158,7 @@ public class DynamicsParameters {
 		try {
 			return org.drip.execution.dynamics.ArithmeticPriceEvolutionParametersBuilder.Almgren2003 (new
 				org.drip.execution.parameters.ArithmeticPriceDynamicsSettings (0., new
-					org.drip.function.r1tor1.FlatUnivariate (_afp.dailyVolatility()), 0.), new
+					org.drip.function.r1tor1operator.Flat (_afp.dailyVolatility()), 0.), new
 						org.drip.execution.profiletime.UniformParticipationRateLinear (new
 							org.drip.execution.athl.PermanentImpactNoArbitrage (_afp)), new
 								org.drip.execution.profiletime.UniformParticipationRate (new

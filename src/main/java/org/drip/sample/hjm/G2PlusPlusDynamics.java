@@ -3,7 +3,7 @@ package org.drip.sample.hjm;
 
 import org.drip.analytics.date.*;
 import org.drip.dynamics.hjm.G2PlusPlus;
-import org.drip.function.r1tor1.FlatUnivariate;
+import org.drip.function.r1tor1operator.Flat;
 import org.drip.sequence.random.*;
 import org.drip.service.common.FormatUtil;
 import org.drip.service.env.EnvManager;
@@ -130,7 +130,7 @@ public class G2PlusPlusDynamics {
 				)
 			},
 			dblRho,
-			new FlatUnivariate (dblStartingForwardRate)
+			new Flat (dblStartingForwardRate)
 		);
 	}
 

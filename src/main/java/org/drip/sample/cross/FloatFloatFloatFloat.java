@@ -5,7 +5,7 @@ import java.util.*;
 
 import org.drip.analytics.date.JulianDate;
 import org.drip.analytics.support.*;
-import org.drip.function.r1tor1.FlatUnivariate;
+import org.drip.function.r1tor1operator.Flat;
 import org.drip.numerical.common.*;
 import org.drip.param.market.CurveSurfaceQuoteContainer;
 import org.drip.param.period.*;
@@ -478,55 +478,55 @@ public class FloatFloatFloatFloat {
 		mktParams.setForwardFundingCorrelation (
 			fri3MReference,
 			fundingLabelReference,
-			new FlatUnivariate (dblReference3MForwardFundingCorr)
+			new Flat (dblReference3MForwardFundingCorr)
 		);
 
 		mktParams.setForwardFundingCorrelation (
 			fri6MReference,
 			fundingLabelReference,
-			new FlatUnivariate (dblReference6MForwardFundingCorr)
+			new Flat (dblReference6MForwardFundingCorr)
 		);
 
 		mktParams.setForwardFundingCorrelation (
 			fri3MDerived,
 			fundingLabelReference,
-			new FlatUnivariate (dblDerived3MForwardFundingCorr)
+			new Flat (dblDerived3MForwardFundingCorr)
 		);
 
 		mktParams.setForwardFundingCorrelation (
 			fri6MDerived,
 			fundingLabelReference,
-			new FlatUnivariate (dblDerived6MForwardFundingCorr)
+			new Flat (dblDerived6MForwardFundingCorr)
 		);
 
 		mktParams.setForwardFXCorrelation (
 			fri3MReference,
 			fxLabel,
-			new FlatUnivariate (dblReference3MForwardFXCorr)
+			new Flat (dblReference3MForwardFXCorr)
 		);
 
 		mktParams.setForwardFXCorrelation (
 			fri6MReference,
 			fxLabel,
-			new FlatUnivariate (dblReference6MForwardFXCorr)
+			new Flat (dblReference6MForwardFXCorr)
 		);
 
 		mktParams.setForwardFXCorrelation (
 			fri3MDerived,
 			fxLabel,
-			new FlatUnivariate (dblDerived3MForwardFXCorr)
+			new Flat (dblDerived3MForwardFXCorr)
 		);
 
 		mktParams.setForwardFXCorrelation (
 			fri6MDerived,
 			fxLabel,
-			new FlatUnivariate (dblDerived6MForwardFXCorr)
+			new Flat (dblDerived6MForwardFXCorr)
 		);
 
 		mktParams.setFundingFXCorrelation (
 			fundingLabelReference,
 			fxLabel,
-			new FlatUnivariate (dblFundingFXCorr)
+			new Flat (dblFundingFXCorr)
 		);
 
 		CaseInsensitiveTreeMap<Double> mapMTMOutput = cpMTM.value (

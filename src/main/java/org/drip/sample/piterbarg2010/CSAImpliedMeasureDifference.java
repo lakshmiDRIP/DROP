@@ -5,7 +5,7 @@ import java.util.Map;
 
 import org.drip.analytics.date.*;
 import org.drip.exposure.csadynamics.*;
-import org.drip.function.r1tor1.FlatUnivariate;
+import org.drip.function.r1tor1operator.Flat;
 import org.drip.measure.dynamics.*;
 import org.drip.param.valuation.ValuationParams;
 import org.drip.pricer.option.BlackScholesAlgorithm;
@@ -403,7 +403,7 @@ public class CSAImpliedMeasureDifference {
 				dblCSAForward,
 				true,
 				dcOvernight,
-				new FlatUnivariate (adblCSAImpliedVolatility[i]),
+				new Flat (adblCSAImpliedVolatility[i]),
 				new BlackScholesAlgorithm()
 			);
 

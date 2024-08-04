@@ -4,7 +4,7 @@ package org.drip.sample.option;
 import java.util.*;
 
 import org.drip.analytics.date.*;
-import org.drip.function.r1tor1.FlatUnivariate;
+import org.drip.function.r1tor1operator.Flat;
 import org.drip.market.otc.*;
 import org.drip.param.valuation.*;
 import org.drip.pricer.option.*;
@@ -366,7 +366,7 @@ public class VanillaBlackScholesPricing {
 			dblSpot,
 			false,
 			dc,
-			new FlatUnivariate (dblVolatility),
+			new Flat (dblVolatility),
 			new BlackScholesAlgorithm()
 		);
 

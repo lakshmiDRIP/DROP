@@ -5,7 +5,7 @@ import java.util.*;
 
 import org.drip.analytics.date.JulianDate;
 import org.drip.analytics.support.*;
-import org.drip.function.r1tor1.FlatUnivariate;
+import org.drip.function.r1tor1operator.Flat;
 import org.drip.numerical.common.*;
 import org.drip.param.market.CurveSurfaceQuoteContainer;
 import org.drip.param.period.*;
@@ -409,25 +409,25 @@ public class FixFloatFixFloat {
 		mktParams.setForwardFundingCorrelation (
 			fri3MUSD,
 			fundingLabelUSD,
-			new FlatUnivariate (dblUSD3MForwardUSDFundingCorr)
+			new Flat (dblUSD3MForwardUSDFundingCorr)
 		);
 
 		mktParams.setForwardFundingCorrelation (
 			fri3MEUR,
 			fundingLabelUSD,
-			new FlatUnivariate (dblEUR3MForwardUSDFundingCorr)
+			new Flat (dblEUR3MForwardUSDFundingCorr)
 		);
 
 		mktParams.setForwardFXCorrelation (
 			fri3MEUR,
 			fxLabel,
-			new FlatUnivariate (dblEUR3MForwardUSDEURFXCorr)
+			new Flat (dblEUR3MForwardUSDEURFXCorr)
 		);
 
 		mktParams.setFundingFXCorrelation (
 			fundingLabelUSD,
 			fxLabel,
-			new FlatUnivariate (dblUSDFundingUSDEURFXCorr)
+			new Flat (dblUSDFundingUSDEURFXCorr)
 		);
 
 		CaseInsensitiveTreeMap<Double> mapMTMOutput = cpMTM.value (

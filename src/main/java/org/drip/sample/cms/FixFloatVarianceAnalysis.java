@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.drip.analytics.date.*;
 import org.drip.analytics.support.*;
-import org.drip.function.r1tor1.FlatUnivariate;
+import org.drip.function.r1tor1operator.Flat;
 import org.drip.market.otc.*;
 import org.drip.param.market.CurveSurfaceQuoteContainer;
 import org.drip.param.period.*;
@@ -418,7 +418,7 @@ public class FixFloatVarianceAnalysis {
 		mktParams.setForwardFundingCorrelation (
 			forwardLabel,
 			fundingLabel,
-			new FlatUnivariate (dblForwardFundingCorr)
+			new Flat (dblForwardFundingCorr)
 		);
 	}
 

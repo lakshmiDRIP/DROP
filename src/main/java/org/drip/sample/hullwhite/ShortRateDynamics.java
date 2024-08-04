@@ -3,7 +3,7 @@ package org.drip.sample.hullwhite;
 
 import org.drip.analytics.date.*;
 import org.drip.dynamics.hullwhite.SingleFactorStateEvolver;
-import org.drip.function.r1tor1.FlatUnivariate;
+import org.drip.function.r1tor1operator.Flat;
 import org.drip.sequence.random.BoxMullerGaussian;
 import org.drip.service.common.FormatUtil;
 import org.drip.service.env.EnvManager;
@@ -117,7 +117,7 @@ public class ShortRateDynamics {
 			FundingLabel.Standard (strCurrency),
 			dblSigma,
 			dblA,
-			new FlatUnivariate (dblStartingForwardRate),
+			new Flat (dblStartingForwardRate),
 			new BoxMullerGaussian (
 				0.,
 				1.

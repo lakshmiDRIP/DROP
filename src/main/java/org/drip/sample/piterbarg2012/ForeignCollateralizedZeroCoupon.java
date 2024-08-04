@@ -2,7 +2,7 @@
 package org.drip.sample.piterbarg2012;
 
 import org.drip.analytics.date.*;
-import org.drip.function.r1tor1.*;
+import org.drip.function.r1tor1operator.Flat;
 import org.drip.product.params.CurrencyPair;
 import org.drip.service.env.EnvManager;
 import org.drip.state.creator.ScenarioDiscountCurveBuilder;
@@ -163,7 +163,7 @@ public class ForeignCollateralizedZeroCoupon {
 				new int[] {dtSpot.julian()},
 				new double[] {dblFXVolatility}
 			),
-			new FlatUnivariate (dblFXForeignRatesCorrelation)
+			new Flat (dblFXForeignRatesCorrelation)
 		);
 
 		double dblPrice = dcCcyDomesticCollatForeign.df (dtMaturity);

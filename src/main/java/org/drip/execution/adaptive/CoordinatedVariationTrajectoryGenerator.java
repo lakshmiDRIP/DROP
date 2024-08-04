@@ -146,7 +146,7 @@ public class CoordinatedVariationTrajectoryGenerator {
 		try {
 			return new org.drip.execution.dynamics.LinearPermanentExpectationParameters (new
 				org.drip.execution.parameters.ArithmeticPriceDynamicsSettings (0., new
-					org.drip.function.r1tor1.FlatUnivariate (_cv.referenceVolatility() * java.lang.Math.exp
+					org.drip.function.r1tor1operator.Flat (_cv.referenceVolatility() * java.lang.Math.exp
 						(-0.5 * dblMarketState)), 0.), new
 							org.drip.execution.profiletime.UniformParticipationRateLinear
 								(org.drip.execution.impact.ParticipationRateLinear.NoImpact()), new

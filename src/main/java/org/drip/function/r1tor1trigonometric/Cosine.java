@@ -1,21 +1,15 @@
 
-package org.drip.function.r1tor1;
+package org.drip.function.r1tor1trigonometric;
+
+import org.drip.function.definition.R1ToR1;
+import org.drip.numerical.common.NumberUtil;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
- * Copyright (C) 2022 Lakshmi Krishnamurthy
- * Copyright (C) 2021 Lakshmi Krishnamurthy
- * Copyright (C) 2020 Lakshmi Krishnamurthy
- * Copyright (C) 2019 Lakshmi Krishnamurthy
- * Copyright (C) 2018 Lakshmi Krishnamurthy
- * Copyright (C) 2017 Lakshmi Krishnamurthy
- * Copyright (C) 2016 Lakshmi Krishnamurthy
- * Copyright (C) 2015 Lakshmi Krishnamurthy
- * Copyright (C) 2014 Lakshmi Krishnamurthy
- * Copyright (C) 2013 Lakshmi Krishnamurthy
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
  * 
  *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
  *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
@@ -83,77 +77,76 @@ package org.drip.function.r1tor1;
  */
 
 /**
- * <i>UnivariateConvolution</i> provides the evaluation of the Convolution au1 * au2 and its derivatives for
- * a specified variate.
- *
- *	<br><br>
+ * <i>Cosine</i> implements the Trigonometric Cosine Function. The References are:
+ * 
+ * <br><br>
+ * 	<ul>
+ * 		<li>
+ * 			Belsley, D. A., E. Kuh, and R. E. Welsch (1980): <i>Regression Dynamics: Identifying Influential
+ * 				Data and Sources of Collinearity</i> <b>John Wiley and Sons</b> New York NY
+ * 		</li>
+ * 		<li>
+ * 			Cheney, K. (2008): <i>Numerical Mathematics and Computing</i> <b>Cengage Learning</b> New York NY
+ * 		</li>
+ * 		<li>
+ * 			Pesaran, M. H. (2015): <i>Time Series and Panel Data Econometrics</i> <b>Oxford University
+ * 				Press</b> New York NY
+ * 		</li>
+ * 		<li>
+ * 			Trefethen, L. N., and D. Bau III (1997): <i>Numerical Linear Algebra</i> <b>Society for
+ * 				Industrial and Applied Mathematics</b> Philadelphia PA
+ * 		</li>
+ * 		<li>
+ * 			Wikipedia (2024): Condition Number https://en.wikipedia.org/wiki/Condition_number
+ * 		</li>
+ * 	</ul>
+ * 
+ * <br><br>
  *  <ul>
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md">Numerical Analysis Library</a></li>
  *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function/README.md">R<sup>d</sup> To R<sup>d</sup> Function Analysis</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function/r1tor1/README.md">Built-in R<sup>1</sup> To R<sup>1</sup> Functions</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function/r1tor1trigonometric/README.md">Built-in R<sup>1</sup> To R<sup>1</sup> Trigonometric Functions</a></li>
  *  </ul>
+ * <br><br>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class UnivariateConvolution extends org.drip.function.definition.R1ToR1 {
-	private org.drip.function.definition.R1ToR1 _au1 = null;
-	private org.drip.function.definition.R1ToR1 _au2 = null;
+public class Cosine extends R1ToR1
+{
 
 	/**
-	 * Construct a PolynomialMirrorCross instance
+	 * <i>Cosine</i> Constructor
 	 * 
-	 * @param au1 Univariate Function #1
-	 * @param au2 Univariate Function #2
-	 * 
-	 * @throws java.lang.Exception Thrown if the inputs are invalid
+	 * @throws Exception Thrown if the Input is Invalid
 	 */
 
-	public UnivariateConvolution (
-		final org.drip.function.definition.R1ToR1 au1,
-		final org.drip.function.definition.R1ToR1 au2)
-		throws java.lang.Exception
+	public Cosine()
+		throws Exception
 	{
 		super (null);
-
-		if (null == (_au1 = au1) || null == (_au2 = au2))
-			throw new java.lang.Exception ("Convolution ctr: Invalid Inputs");
 	}
 
 	@Override public double evaluate (
-		final double dblVariate)
-		throws java.lang.Exception
+		final double x)
+		throws Exception
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (dblVariate))
-			throw new java.lang.Exception ("Convolution::evaluate => Invalid Input");
+		if (!NumberUtil.IsValid (x)) {
+			throw new Exception ("Cosine::evaluate => Invalid Inputs");
+		}
 
-		return _au1.evaluate (dblVariate) * _au2.evaluate (dblVariate);
+		return Math.cos (x);
 	}
 
-	@Override public double derivative (
-		final double dblVariate,
-		final int iOrder)
-		throws java.lang.Exception
+	@Override public double conditionNumber (
+		final double x)
+		throws Exception
 	{
-		double dblDerivative = _au1.evaluate (dblVariate) * _au2.derivative (dblVariate, iOrder);
+		if (!NumberUtil.IsValid (x)) {
+			throw new Exception ("Cosine::conditionNumber => Invalid Inputs");
+		}
 
-		for (int i = 1; i < iOrder; ++i)
-			dblDerivative += org.drip.numerical.common.NumberUtil.NCK (iOrder, i) * _au1.derivative (dblVariate,
-				i) * _au2.derivative (dblVariate, iOrder - i);
-
-		return dblDerivative + _au1.derivative (dblVariate, iOrder) * _au2.evaluate (dblVariate);
-	}
-
-	@Override public double integrate (
-		final double dblBegin,
-		final double dblEnd)
-		throws java.lang.Exception
-	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (dblBegin) || !org.drip.numerical.common.NumberUtil.IsValid
-			(dblEnd))
-			throw new java.lang.Exception ("HyperbolicTension::integrate => Invalid Inputs");
-
-		return org.drip.numerical.integration.R1ToR1Integrator.Boole (this, dblBegin, dblEnd);
+		return Math.abs (x * Math.tan (x));
 	}
 }

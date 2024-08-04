@@ -1,20 +1,15 @@
 
-package org.drip.function.r1tor1;
+package org.drip.function.r1tor1operator;
+
+import org.drip.function.definition.R1ToR1;
+import org.drip.numerical.common.NumberUtil;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
- * Copyright (C) 2022 Lakshmi Krishnamurthy
- * Copyright (C) 2021 Lakshmi Krishnamurthy
- * Copyright (C) 2020 Lakshmi Krishnamurthy
- * Copyright (C) 2019 Lakshmi Krishnamurthy
- * Copyright (C) 2018 Lakshmi Krishnamurthy
- * Copyright (C) 2017 Lakshmi Krishnamurthy
- * Copyright (C) 2016 Lakshmi Krishnamurthy
- * Copyright (C) 2015 Lakshmi Krishnamurthy
- * Copyright (C) 2014 Lakshmi Krishnamurthy
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
  * 
  *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
  *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
@@ -82,75 +77,84 @@ package org.drip.function.r1tor1;
  */
 
 /**
- * <i>FlatUnivariate</i> implements the level constant Univariate Function.
- *
- *	<br><br>
+ * <i>Addition</i> implements the Univariate <code>x + a</code> Operator Function. The References are:
+ * 
+ * <br><br>
+ * 	<ul>
+ * 		<li>
+ * 			Belsley, D. A., E. Kuh, and R. E. Welsch (1980): <i>Regression Dynamics: Identifying Influential
+ * 				Data and Sources of Collinearity</i> <b>John Wiley and Sons</b> New York NY
+ * 		</li>
+ * 		<li>
+ * 			Cheney, K. (2008): <i>Numerical Mathematics and Computing</i> <b>Cengage Learning</b> New York NY
+ * 		</li>
+ * 		<li>
+ * 			Pesaran, M. H. (2015): <i>Time Series and Panel Data Econometrics</i> <b>Oxford University
+ * 				Press</b> New York NY
+ * 		</li>
+ * 		<li>
+ * 			Trefethen, L. N., and D. Bau III (1997): <i>Numerical Linear Algebra</i> <b>Society for
+ * 				Industrial and Applied Mathematics</b> Philadelphia PA
+ * 		</li>
+ * 		<li>
+ * 			Wikipedia (2024): Condition Number https://en.wikipedia.org/wiki/Condition_number
+ * 		</li>
+ * 	</ul>
+ * 
+ * <br><br>
  *  <ul>
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md">Numerical Analysis Library</a></li>
  *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function/README.md">R<sup>d</sup> To R<sup>d</sup> Function Analysis</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function/r1tor1/README.md">Built-in R<sup>1</sup> To R<sup>1</sup> Functions</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function/r1tor1operator/README.md">Built-in R<sup>1</sup> To R<sup>1</sup> Operator Functions</a></li>
  *  </ul>
- * 
+ * <br><br>
+ *
  * @author Lakshmi Krishnamurthy
  */
 
-public class FlatUnivariate extends org.drip.function.definition.R1ToR1 {
-	private double _dblLevel = java.lang.Double.NaN;
+public class Exponential extends R1ToR1
+{
 
 	/**
-	 * FlatUnivariate constructor
+	 * <i>Exponential</i> Constructor
 	 * 
-	 * @param dblLevel The FlatUnivariate Level
-	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are invalid
+	 * @throws Exception Thrown if the Input is Invalid
 	 */
 
-	public FlatUnivariate (
-		final double dblLevel)
-		throws java.lang.Exception
+	public Exponential()
+		throws Exception
 	{
 		super (null);
-
-		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblLevel = dblLevel))
-			throw new java.lang.Exception ("FlatUnivariate ctr => Invalid Inputs");
 	}
 
 	@Override public double evaluate (
-		final double dblVariate)
-		throws java.lang.Exception
+		final double x)
+		throws Exception
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (dblVariate))
-			throw new java.lang.Exception ("FlatUnivariate::evaluate => Invalid Inputs");
-
-		return _dblLevel;
-	}
-
-	@Override public org.drip.numerical.differentiation.Differential differential (
-		final double dblVariate,
-		final double dblOFBase,
-		final int iOrder)
-	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (dblVariate) || 0 >= iOrder) return null;
-
-		try {
-			return new org.drip.numerical.differentiation.Differential (_dc.getVariateInfinitesimal (dblVariate), 0.);
-		} catch (java.lang.Exception e) {
-			e.printStackTrace();
+		if (!NumberUtil.IsValid (x)) {
+			throw new Exception ("Exponential::evaluate => Invalid Inputs");
 		}
 
-		return null;
+		return Math.exp (x);
 	}
 
-	@Override public double integrate (
-		final double dblBegin,
-		final double dblEnd)
-		throws java.lang.Exception
+	@Override public double derivative (
+		final double x,
+		final int order)
+		throws Exception
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (dblBegin) || !org.drip.numerical.common.NumberUtil.IsValid
-			(dblEnd))
-			throw new java.lang.Exception ("FlatUnivariate::integrate => Invalid Inputs");
+		return evaluate (x);
+	}
 
-		return (dblEnd - dblBegin) * _dblLevel;
+	@Override public double conditionNumber (
+		final double x)
+		throws Exception
+	{
+		if (!NumberUtil.IsValid (x)) {
+			throw new Exception ("Exponential::conditionNumber => Invalid Inputs");
+		}
+
+		return Math.abs (x);
 	}
 }

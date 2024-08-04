@@ -97,7 +97,7 @@ package org.drip.function.r1tor1;
  * @author Lakshmi Krishnamurthy
  */
 
-public class BernsteinPolynomial extends org.drip.function.r1tor1.UnivariateConvolution {
+public class BernsteinPolynomial extends org.drip.function.r1tor1operator.Convolution {
 
 	/**
 	 * Construct a BernsteinPolynomial instance
@@ -114,7 +114,7 @@ public class BernsteinPolynomial extends org.drip.function.r1tor1.UnivariateConv
 		throws java.lang.Exception
 	{
 		super (new org.drip.function.r1tor1.NaturalLogSeriesElement (iBaseExponent), new
-			org.drip.function.r1tor1.UnivariateReflection (new org.drip.function.r1tor1.NaturalLogSeriesElement
+			org.drip.function.r1tor1operator.Reflection (new org.drip.function.r1tor1.NaturalLogSeriesElement
 				(iComplementExponent)));
 	}
 

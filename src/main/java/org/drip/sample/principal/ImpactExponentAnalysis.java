@@ -8,7 +8,7 @@ import org.drip.execution.optimum.PowerImpactContinuous;
 import org.drip.execution.parameters.*;
 import org.drip.execution.principal.Almgren2003Estimator;
 import org.drip.execution.profiletime.*;
-import org.drip.function.r1tor1.FlatUnivariate;
+import org.drip.function.r1tor1operator.Flat;
 import org.drip.service.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 
@@ -225,7 +225,7 @@ public class ImpactExponentAnalysis {
 			LinearPermanentExpectationParameters lpep = ArithmeticPriceEvolutionParametersBuilder.Almgren2003 (
 				new ArithmeticPriceDynamicsSettings (
 					0.,
-					new FlatUnivariate (dblVolatility),
+					new Flat (dblVolatility),
 					0.
 				),
 				new UniformParticipationRateLinear ((ParticipationRateLinear) pmip.permanentTransactionFunction()),

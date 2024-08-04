@@ -10,7 +10,7 @@ import org.drip.execution.parameters.ArithmeticPriceDynamicsSettings;
 import org.drip.execution.profiletime.UniformParticipationRateLinear;
 import org.drip.execution.risk.PowerVarianceObjectiveUtility;
 import org.drip.execution.strategy.*;
-import org.drip.function.r1tor1.FlatUnivariate;
+import org.drip.function.r1tor1operator.Flat;
 import org.drip.measure.gaussian.R1UnivariateNormal;
 import org.drip.service.common.FormatUtil;
 import org.drip.service.env.EnvManager;
@@ -174,7 +174,7 @@ public class OptimalTrajectoryNoDrift {
 		LinearPermanentExpectationParameters lpep = ArithmeticPriceEvolutionParametersBuilder.LinearExpectation (
 			new ArithmeticPriceDynamicsSettings (
 				0.,
-				new FlatUnivariate (dblSigma),
+				new Flat (dblSigma),
 				0.
 			),
 			new UniformParticipationRateLinear (

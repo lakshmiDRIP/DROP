@@ -195,7 +195,7 @@ public class ArithmeticPriceEvolutionParametersBuilder {
 		try {
 			return new org.drip.execution.dynamics.ArithmeticPriceEvolutionParameters (new
 				org.drip.execution.parameters.ArithmeticPriceDynamicsSettings (0., new
-					org.drip.function.r1tor1.FlatUnivariate (dblPriceVolatility), 0.), new
+					org.drip.function.r1tor1operator.Flat (dblPriceVolatility), 0.), new
 						org.drip.execution.profiletime.UniformParticipationRate
 							(org.drip.execution.impact.ParticipationRateLinear.NoImpact()),
 								bprlTemporaryExpectation, new
@@ -255,7 +255,7 @@ public class ArithmeticPriceEvolutionParametersBuilder {
 			final org.drip.execution.tradingtime.CoordinatedVariation cv)
 	{
 		try {
-			return CoordinatedVariation (new org.drip.function.r1tor1.FlatUnivariate (dblPriceVolatility),
+			return CoordinatedVariation (new org.drip.function.r1tor1operator.Flat (dblPriceVolatility),
 				cv);
 		} catch (java.lang.Exception e) {
 			e.printStackTrace();
@@ -281,7 +281,7 @@ public class ArithmeticPriceEvolutionParametersBuilder {
 		try {
 			return new org.drip.execution.dynamics.LinearPermanentExpectationParameters (new
 				org.drip.execution.parameters.ArithmeticPriceDynamicsSettings (0., new
-					org.drip.function.r1tor1.FlatUnivariate (cv.referenceVolatility()), 0.), new
+					org.drip.function.r1tor1operator.Flat (cv.referenceVolatility()), 0.), new
 						org.drip.execution.profiletime.UniformParticipationRateLinear
 							(org.drip.execution.impact.ParticipationRateLinear.NoImpact()), new
 								org.drip.execution.profiletime.UniformParticipationRateLinear

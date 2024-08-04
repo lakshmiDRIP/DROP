@@ -3,7 +3,7 @@ package org.drip.spline.bspline;
 
 import org.drip.function.definition.R1ToR1;
 import org.drip.function.r1tor1.Polynomial;
-import org.drip.function.r1tor1.UnivariateReflection;
+import org.drip.function.r1tor1operator.Reflection;
 import org.drip.numerical.common.NumberUtil;
 import org.drip.spline.basis.FunctionSet;
 
@@ -136,7 +136,7 @@ public class SegmentBasisFunctionSet
 
 			basisHatFunctionArrayToUse[0] = new Polynomial (0);
 
-			basisHatFunctionArrayToUse[1] = new UnivariateReflection (new Polynomial (1));
+			basisHatFunctionArrayToUse[1] = new Reflection (new Polynomial (1));
 
 			for (int basisIndex = 0; basisIndex < basisCountToUse; ++basisIndex) {
 				basisHatFunctionArrayToUse[2 + basisIndex] = basisHatFunctionArray[basisIndex];

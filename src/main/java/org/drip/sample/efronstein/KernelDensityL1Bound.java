@@ -1,7 +1,7 @@
 
 package org.drip.sample.efronstein;
 
-import org.drip.function.r1tor1.FlatUnivariate;
+import org.drip.function.r1tor1operator.Flat;
 import org.drip.sequence.custom.KernelDensityEstimationL1;
 import org.drip.sequence.functional.*;
 import org.drip.sequence.metrics.SingleSequenceAgnosticMetrics;
@@ -127,10 +127,10 @@ public class KernelDensityL1Bound {
 		throws Exception
 	{
 		return new KernelDensityEstimationL1 (
-			new FlatUnivariate (0.),
+			new Flat (0.),
 			1.,
 			iNumVariate,
-			new FlatUnivariate (-2.)
+			new Flat (-2.)
 		);
 	}
 

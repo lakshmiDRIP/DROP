@@ -7,7 +7,7 @@ import org.drip.execution.nonadaptive.DiscreteAlmgrenChrissDrift;
 import org.drip.execution.optimum.AlmgrenChrissDriftDiscrete;
 import org.drip.execution.parameters.*;
 import org.drip.execution.profiletime.UniformParticipationRateLinear;
-import org.drip.function.r1tor1.FlatUnivariate;
+import org.drip.function.r1tor1operator.Flat;
 import org.drip.service.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 
@@ -223,7 +223,7 @@ public class TrajectoryComparisonWithDrift {
 		LinearPermanentExpectationParameters lpep = ArithmeticPriceEvolutionParametersBuilder.LinearExpectation (
 			new ArithmeticPriceDynamicsSettings (
 				dblAlpha,
-				new FlatUnivariate (dblSigma),
+				new Flat (dblSigma),
 				0.
 			),
 			new UniformParticipationRateLinear (prlPermanent),

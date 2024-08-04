@@ -83,7 +83,7 @@ package org.drip.sequence.functional;
  * @author Lakshmi Krishnamurthy
  */
 
-public class IdempotentUnivariateRandom extends org.drip.function.r1tor1.OffsetIdempotent {
+public class IdempotentUnivariateRandom extends org.drip.function.r1tor1operator.OffsetIdempotent {
 	private org.drip.measure.continuous.R1Univariate _dist = null;
 
 	/**

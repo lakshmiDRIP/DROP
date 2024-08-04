@@ -9,6 +9,7 @@ import org.drip.analytics.daycount.Convention;
 import org.drip.analytics.output.CompositePeriodCouponMetrics;
 import org.drip.analytics.support.*;
 import org.drip.function.r1tor1.*;
+import org.drip.function.r1tor1operator.Flat;
 import org.drip.market.definition.OvernightIndex;
 import org.drip.market.otc.*;
 import org.drip.param.creator.*;
@@ -743,7 +744,7 @@ public class FedFundOvernightCompounding {
 		mktParams.setForwardFundingCorrelation (
 			fri,
 			fundingLabel,
-			new FlatUnivariate (dblUSDFundingUSDOISCorrelation)
+			new Flat (dblUSDFundingUSDOISCorrelation)
 		);
 
 		System.out.println (

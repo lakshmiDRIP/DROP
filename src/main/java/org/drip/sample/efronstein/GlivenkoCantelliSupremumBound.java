@@ -2,7 +2,7 @@
 package org.drip.sample.efronstein;
 
 import org.drip.function.definition.R1ToR1;
-import org.drip.function.r1tor1.OffsetIdempotent;
+import org.drip.function.r1tor1operator.OffsetIdempotent;
 import org.drip.sequence.custom.GlivenkoCantelliFunctionSupremum;
 import org.drip.sequence.functional.*;
 import org.drip.sequence.metrics.SingleSequenceAgnosticMetrics;

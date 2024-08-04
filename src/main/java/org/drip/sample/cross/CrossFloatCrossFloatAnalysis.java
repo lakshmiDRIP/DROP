@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.drip.analytics.date.JulianDate;
 import org.drip.analytics.support.*;
-import org.drip.function.r1tor1.FlatUnivariate;
+import org.drip.function.r1tor1operator.Flat;
 import org.drip.param.market.CurveSurfaceQuoteContainer;
 import org.drip.param.period.*;
 import org.drip.param.valuation.*;
@@ -284,31 +284,31 @@ public class CrossFloatCrossFloatAnalysis {
 		mktParams.setForwardFundingCorrelation (
 			forwardLabel1,
 			fundingLabel,
-			new FlatUnivariate (dblForward1FundingCorr)
+			new Flat (dblForward1FundingCorr)
 		);
 
 		mktParams.setForwardFundingCorrelation (
 			forwardLabel2,
 			fundingLabel,
-			new FlatUnivariate (dblForward2FundingCorr)
+			new Flat (dblForward2FundingCorr)
 		);
 
 		mktParams.setForwardFXCorrelation (
 			forwardLabel1,
 			fxLabel,
-			new FlatUnivariate (dblForward1FXCorr)
+			new Flat (dblForward1FXCorr)
 		);
 
 		mktParams.setForwardFXCorrelation (
 			forwardLabel2,
 			fxLabel,
-			new FlatUnivariate (dblForward2FXCorr)
+			new Flat (dblForward2FXCorr)
 		);
 
 		mktParams.setFundingFXCorrelation (
 			fundingLabel,
 			fxLabel,
-			new FlatUnivariate (dblFundingFXCorr)
+			new Flat (dblFundingFXCorr)
 		);
 	}
 

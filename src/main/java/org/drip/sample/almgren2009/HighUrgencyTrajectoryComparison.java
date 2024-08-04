@@ -8,7 +8,7 @@ import org.drip.execution.optimum.EfficientTradingTrajectoryContinuous;
 import org.drip.execution.parameters.*;
 import org.drip.execution.profiletime.UniformParticipationRateLinear;
 import org.drip.function.definition.R1ToR1;
-import org.drip.function.r1tor1.FlatUnivariate;
+import org.drip.function.r1tor1operator.Flat;
 import org.drip.service.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 
@@ -191,7 +191,7 @@ public class HighUrgencyTrajectoryComparison {
 		LinearPermanentExpectationParameters lpep = ArithmeticPriceEvolutionParametersBuilder.LinearExpectation (
 			new ArithmeticPriceDynamicsSettings (
 				0.,
-				new FlatUnivariate (dblSigma),
+				new Flat (dblSigma),
 				0.
 			),
 			new UniformParticipationRateLinear (prlPermanent),

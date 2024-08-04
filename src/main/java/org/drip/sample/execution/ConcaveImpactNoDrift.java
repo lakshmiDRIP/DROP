@@ -9,7 +9,7 @@ import org.drip.execution.parameters.*;
 import org.drip.execution.profiletime.*;
 import org.drip.execution.risk.MeanVarianceObjectiveUtility;
 import org.drip.execution.strategy.*;
-import org.drip.function.r1tor1.FlatUnivariate;
+import org.drip.function.r1tor1operator.Flat;
 import org.drip.service.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 
@@ -175,7 +175,7 @@ public class ConcaveImpactNoDrift {
 		LinearPermanentExpectationParameters lpep = ArithmeticPriceEvolutionParametersBuilder.Almgren2003 (
 			new ArithmeticPriceDynamicsSettings (
 				dblDrift,
-				new FlatUnivariate (dblVolatility),
+				new Flat (dblVolatility),
 				0.
 			),
 			new UniformParticipationRateLinear ((ParticipationRateLinear) pmip.permanentTransactionFunction()),

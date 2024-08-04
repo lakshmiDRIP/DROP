@@ -1,20 +1,15 @@
 
-package org.drip.function.r1tor1;
+package org.drip.function.r1tor1operator;
+
+import org.drip.function.definition.R1ToR1;
+import org.drip.numerical.common.NumberUtil;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
- * Copyright (C) 2022 Lakshmi Krishnamurthy
- * Copyright (C) 2021 Lakshmi Krishnamurthy
- * Copyright (C) 2020 Lakshmi Krishnamurthy
- * Copyright (C) 2019 Lakshmi Krishnamurthy
- * Copyright (C) 2018 Lakshmi Krishnamurthy
- * Copyright (C) 2017 Lakshmi Krishnamurthy
- * Copyright (C) 2016 Lakshmi Krishnamurthy
- * Copyright (C) 2015 Lakshmi Krishnamurthy
- * Copyright (C) 2014 Lakshmi Krishnamurthy
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
  * 
  *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
  *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
@@ -82,63 +77,103 @@ package org.drip.function.r1tor1;
  */
 
 /**
- * <i>UnivariateReciprocal</i> provides the evaluation 1/f(x) instead of f(x) for a given f.
- *
- *	<br><br>
+ * <i>Addition</i> implements the Univariate <code>x + a</code> Operator Function. The References are:
+ * 
+ * <br><br>
+ * 	<ul>
+ * 		<li>
+ * 			Belsley, D. A., E. Kuh, and R. E. Welsch (1980): <i>Regression Dynamics: Identifying Influential
+ * 				Data and Sources of Collinearity</i> <b>John Wiley and Sons</b> New York NY
+ * 		</li>
+ * 		<li>
+ * 			Cheney, K. (2008): <i>Numerical Mathematics and Computing</i> <b>Cengage Learning</b> New York NY
+ * 		</li>
+ * 		<li>
+ * 			Pesaran, M. H. (2015): <i>Time Series and Panel Data Econometrics</i> <b>Oxford University
+ * 				Press</b> New York NY
+ * 		</li>
+ * 		<li>
+ * 			Trefethen, L. N., and D. Bau III (1997): <i>Numerical Linear Algebra</i> <b>Society for
+ * 				Industrial and Applied Mathematics</b> Philadelphia PA
+ * 		</li>
+ * 		<li>
+ * 			Wikipedia (2024): Condition Number https://en.wikipedia.org/wiki/Condition_number
+ * 		</li>
+ * 	</ul>
+ * 
+ * <br><br>
  *  <ul>
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md">Numerical Analysis Library</a></li>
  *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function/README.md">R<sup>d</sup> To R<sup>d</sup> Function Analysis</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function/r1tor1/README.md">Built-in R<sup>1</sup> To R<sup>1</sup> Functions</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function/r1tor1operator/README.md">Built-in R<sup>1</sup> To R<sup>1</sup> Operator Functions</a></li>
  *  </ul>
+ * <br><br>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class UnivariateReciprocal extends org.drip.function.definition.R1ToR1 {
-	private org.drip.function.definition.R1ToR1 _au = null;
+public class Addition extends R1ToR1
+{
+	private double _a = Double.NaN;
 
 	/**
-	 * UnivariateReciprocal constructor
+	 * <i>Addition</i> Constructor
 	 * 
-	 * @param au Univariate Function
+	 * @param a <i>a</i>
 	 * 
-	 * @throws java.lang.Exception Thrown if the input is invalid
+	 * @throws Exception Thrown if the Input is Invalid
 	 */
 
-	public UnivariateReciprocal (
-		final org.drip.function.definition.R1ToR1 au)
-		throws java.lang.Exception
+	public Addition (
+		final double a)
+		throws Exception
 	{
 		super (null);
 
-		if (null == (_au = au)) throw new java.lang.Exception ("UnivariateReciprocal ctr: Invalid Inputs");
+		if (!NumberUtil.IsValid (_a = a)) {
+			throw new Exception ("Addition Constructor => Invalid Inputs");
+		}
+	}
+
+	/**
+	 * Retrieve <i>a</i>
+	 * 
+	 * @return <i>a</i>
+	 */
+
+	public double a()
+	{
+		return _a;
 	}
 
 	@Override public double evaluate (
-		final double dblVariate)
-		throws java.lang.Exception
+		final double x)
+		throws Exception
 	{
-		return 1. / _au.evaluate (dblVariate);
+		if (!NumberUtil.IsValid (x)) {
+			throw new Exception ("Addition::evaluate => Invalid Inputs");
+		}
+
+		return x + _a;
 	}
 
-	/* public static final void main (
-		final java.lang.String[] astrArgs)
-		throws java.lang.Exception
+	@Override public double derivative (
+		final double x,
+		final int order)
+		throws Exception
 	{
-		UnivariateReciprocal ur = new UnivariateReciprocal (new
-			org.drip.function.r1tor1.NaturalLogSeriesElement (1));
+		return 1 == order ? 1. : 0.;
+	}
 
-		System.out.println ("UnivariateReciprocal[0.0] = " + ur.evaluate (0.0));
+	@Override public double conditionNumber (
+		final double x)
+		throws Exception
+	{
+		if (!NumberUtil.IsValid (x)) {
+			throw new Exception ("Addition::conditionNumber => Invalid Inputs");
+		}
 
-		System.out.println ("UnivariateReciprocal[0.5] = " + ur.evaluate (0.5));
-
-		System.out.println ("UnivariateReciprocal[1.0] = " + ur.evaluate (1.0));
-
-		System.out.println ("UnivariateReciprocalDeriv[0.0] = " + ur.derivative (0.0, 3));
-
-		System.out.println ("UnivariateReciprocalDeriv[0.5] = " + ur.derivative (0.5, 3));
-
-		System.out.println ("UnivariateReciprocalDeriv[1.0] = " + ur.derivative (1.0, 3));
-	} */
+		return Math.abs (x / (x + _a));
+	}
 }

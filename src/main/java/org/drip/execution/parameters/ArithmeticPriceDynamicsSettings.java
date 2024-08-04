@@ -147,7 +147,7 @@ public class ArithmeticPriceDynamicsSettings {
 
 		try {
 			return new ArithmeticPriceDynamicsSettings (dblPrice * dblAnnualReturnsExpectation / 250., new
-				org.drip.function.r1tor1.FlatUnivariate (dblPrice * dblAnnualReturnsVolatility /
+				org.drip.function.r1tor1operator.Flat (dblPrice * dblAnnualReturnsVolatility /
 					java.lang.Math.sqrt (250.)), dblSerialCorrelation);
 		} catch (java.lang.Exception e) {
 			e.printStackTrace();

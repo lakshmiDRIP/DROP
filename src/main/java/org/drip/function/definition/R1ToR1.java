@@ -414,4 +414,21 @@ public abstract class R1ToR1 {
 	{
 		return null;
 	}
+
+	/**
+	 * Compute the Condition Number at the specified Variate
+	 * 
+	 * @param x Variate
+	 * 
+	 * @return The Condition Number
+	 * 
+	 * @throws Exception Thrown if the Condition Number cannor be computed
+	 */
+
+	public double conditionNumber (
+		final double x)
+		throws Exception
+	{
+		return x * derivative (x, 1) / evaluate (x);
+	}
 }
