@@ -3,7 +3,7 @@ package org.drip.simm.parameters;
 
 import java.util.Map;
 
-import org.drip.function.r1tor1.ISDABucketCurvatureTenorScaler;
+import org.drip.function.r1tor1custom.ISDABucketCurvatureTenorScaler;
 import org.drip.measure.gaussian.NormalQuadrature;
 import org.drip.numerical.common.NumberUtil;
 import org.drip.simm.commodity.CTBucket;

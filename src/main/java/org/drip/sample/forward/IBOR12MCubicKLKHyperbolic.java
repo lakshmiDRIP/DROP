@@ -2,7 +2,7 @@
 package org.drip.sample.forward;
 
 import org.drip.analytics.date.*;
-import org.drip.function.r1tor1.QuadraticRationalShapeControl;
+import org.drip.function.r1tor1custom.QuadraticRationalShapeControl;
 import org.drip.service.env.EnvManager;
 import org.drip.spline.basis.ExponentialTensionSetParams;
 import org.drip.spline.params.*;

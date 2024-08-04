@@ -6,7 +6,7 @@ import java.util.*;
 import org.drip.analytics.date.JulianDate;
 import org.drip.analytics.daycount.Convention;
 import org.drip.analytics.support.*;
-import org.drip.function.r1tor1.*;
+import org.drip.function.r1tor1custom.QuadraticRationalShapeControl;
 import org.drip.function.r1tor1operator.Flat;
 import org.drip.market.definition.OvernightIndex;
 import org.drip.market.otc.*;

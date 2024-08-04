@@ -6,7 +6,7 @@ import java.util.*;
 import org.drip.analytics.date.*;
 import org.drip.analytics.daycount.*;
 import org.drip.analytics.support.*;
-import org.drip.function.r1tor1.QuadraticRationalShapeControl;
+import org.drip.function.r1tor1custom.QuadraticRationalShapeControl;
 import org.drip.param.creator.*;
 import org.drip.param.market.CurveSurfaceQuoteContainer;
 import org.drip.param.period.*;

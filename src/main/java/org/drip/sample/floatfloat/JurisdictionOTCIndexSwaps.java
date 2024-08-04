@@ -652,7 +652,7 @@ public class JurisdictionOTCIndexSwaps {
 				),
 				new org.drip.spline.params.ResponseScalingShapeControl (
 					true,
-					new org.drip.function.r1tor1.QuadraticRationalShapeControl (0.)
+					new org.drip.function.r1tor1custom.QuadraticRationalShapeControl (0.)
 				),
 				null
 			),

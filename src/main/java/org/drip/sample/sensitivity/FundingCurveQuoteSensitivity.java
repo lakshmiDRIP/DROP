@@ -2,7 +2,7 @@
 package org.drip.sample.sensitivity;
 
 import org.drip.analytics.date.*;
-import org.drip.function.r1tor1.QuadraticRationalShapeControl;
+import org.drip.function.r1tor1custom.QuadraticRationalShapeControl;
 import org.drip.market.otc.*;
 import org.drip.numerical.differentiation.WengertJacobian;
 import org.drip.param.creator.*;

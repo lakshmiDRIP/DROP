@@ -1,8 +1,13 @@
 
-package org.drip.function.r1tor1operator;
+package org.drip.sample.conditionnumber;
 
-import org.drip.function.definition.R1ToR1;
-import org.drip.numerical.common.NumberUtil;
+import org.drip.function.r1tor1operator.Addition;
+import org.drip.function.r1tor1operator.Exponential;
+import org.drip.function.r1tor1operator.NaturalLogarithm;
+import org.drip.function.r1tor1operator.Reciprocal;
+import org.drip.function.r1tor1operator.Scaler;
+import org.drip.service.common.FormatUtil;
+import org.drip.service.env.EnvManager;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -77,7 +82,8 @@ import org.drip.numerical.common.NumberUtil;
  */
 
 /**
- * <i>Reciprocal</i> implements the <code>1/x</code> Operator Function. The References are:
+ * <i>OperatorFunctions</i> illustrates the Estimation of Condition Numbers for Operator Functions. The
+ *  References are:
  * 
  * <br><br>
  * 	<ul>
@@ -105,47 +111,82 @@ import org.drip.numerical.common.NumberUtil;
  *  <ul>
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md">Numerical Analysis Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function/README.md">R<sup>d</sup> To R<sup>d</sup> Function Analysis</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function/r1tor1operator/README.md">Built-in R<sup>1</sup> To R<sup>1</sup> Operator Functions</a></li>
+ *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/README.md">DROP API Construction and Usage</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/conditionnumber/README.md">Condition Number Analysis of R<sup>1</sup> To R<sup>1</sup> Functions</a></li>
  *  </ul>
  * <br><br>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class Reciprocal extends R1ToR1
+public class OperatorFunctions
 {
+
 	/**
-	 * <i>Addition</i> Constructor
+	 * Entry Point
 	 * 
-	 * @throws Exception Thrown if the Input is Invalid
+	 * @param argumentArray Command Line Argument Array
+	 * 
+	 * @throws Exception Thrown on Error/Exception Situation
 	 */
 
-	public Reciprocal()
+	public static final void main (
+		final String[] argumentArray)
 		throws Exception
 	{
-		super (null);
-	}
+		EnvManager.InitEnv ("");
 
-	@Override public double evaluate (
-		final double x)
-		throws Exception
-	{
-		if (!NumberUtil.IsValid (x)) {
-			throw new Exception ("Reciprocal::evaluate => Invalid Inputs");
+		double[] xArray = {0., 20., 40., 60., 80., 100.};
+
+		Scaler scaler = new Scaler (1.);
+
+		Addition addition = new Addition (1.);
+
+		Reciprocal reciprocal = new Reciprocal();
+
+		Exponential exponential = new Exponential();
+
+		NaturalLogarithm naturalLogarithm = new NaturalLogarithm();
+
+		System.out.println ("\t|---------------------------------------------------------------------||");
+
+		System.out.println ("\t|                 OPERATOR FUNCTION CONDITION NUMBERS                 ||");
+
+		System.out.println ("\t|---------------------------------------------------------------------||");
+
+		System.out.println ("\t|  Input L -> R:                                                      ||");
+
+		System.out.println ("\t|    - Variate                                                        ||");
+
+		System.out.println ("\t|---------------------------------------------------------------------||");
+
+		System.out.println ("\t|  Output L -> R:                                                     ||");
+
+		System.out.println ("\t|    - Addition                                                       ||");
+
+		System.out.println ("\t|    - Scaler                                                         ||");
+
+		System.out.println ("\t|    - Reciprocal                                                     ||");
+
+		System.out.println ("\t|    - Exponential                                                    ||");
+
+		System.out.println ("\t|    - Natural Logarithm                                              ||");
+
+		System.out.println ("\t|---------------------------------------------------------------------||");
+
+		for (double x : xArray) {
+			System.out.println (
+				"\t| [" + FormatUtil.FormatDouble (x, 3, 2, 1.) + "] =>" +
+				FormatUtil.FormatDouble (addition.conditionNumber (x), 1, 6, 1.) + " |" +
+				FormatUtil.FormatDouble (scaler.conditionNumber (x), 1, 6, 1.) + " |" +
+				FormatUtil.FormatDouble (reciprocal.conditionNumber (x), 1, 6, 1.) + " |" +
+				FormatUtil.FormatDouble (exponential.conditionNumber (x), 3, 6, 1.) + " |" +
+				FormatUtil.FormatDouble (naturalLogarithm.conditionNumber (x), 1, 6, 1.) + " ||"
+			);
 		}
 
-		return 1. / x;
-	}
+		System.out.println ("\t|---------------------------------------------------------------------||");
 
-	@Override public double conditionNumber (
-		final double x)
-		throws Exception
-	{
-		if (!NumberUtil.IsValid (x)) {
-			throw new Exception ("Reciprocal::conditionNumber => Invalid Inputs");
-		}
-
-		return 1.;
+		EnvManager.TerminateEnv();
 	}
 }

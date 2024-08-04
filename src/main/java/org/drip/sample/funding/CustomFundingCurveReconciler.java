@@ -6,7 +6,7 @@ import java.util.List;
 import org.drip.analytics.date.*;
 import org.drip.analytics.definition.Turn;
 import org.drip.analytics.support.*;
-import org.drip.function.r1tor1.QuadraticRationalShapeControl;
+import org.drip.function.r1tor1custom.QuadraticRationalShapeControl;
 import org.drip.param.creator.MarketParamsBuilder;
 import org.drip.param.period.*;
 import org.drip.param.valuation.*;

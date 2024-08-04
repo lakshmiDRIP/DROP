@@ -2,7 +2,7 @@
 package org.drip.spline.bspline;
 
 import org.drip.function.definition.R1ToR1;
-import org.drip.function.r1tor1.Polynomial;
+import org.drip.function.r1tor1operator.Polynomial;
 import org.drip.function.r1tor1operator.Reflection;
 import org.drip.numerical.common.NumberUtil;
 import org.drip.spline.basis.FunctionSet;

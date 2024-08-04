@@ -3,7 +3,7 @@ package org.drip.sample.funding;
 
 import org.drip.analytics.date.*;
 import org.drip.analytics.definition.LatentStateStatic;
-import org.drip.function.r1tor1.QuadraticRationalShapeControl;
+import org.drip.function.r1tor1custom.QuadraticRationalShapeControl;
 import org.drip.market.otc.*;
 import org.drip.param.creator.*;
 import org.drip.param.valuation.*;

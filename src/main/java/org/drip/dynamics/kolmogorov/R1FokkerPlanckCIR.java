@@ -138,7 +138,7 @@ public class R1FokkerPlanckCIR
 
 	@Override public org.drip.function.definition.R1ToR1 steadyStatePDF()
 	{
-		return org.drip.function.r1tor1.R1UnivariateCIRPDF.Standard (
+		return org.drip.function.r1tor1custom.CIRPDF.Standard (
 			cklsParameters()
 		);
 	}

@@ -3,7 +3,7 @@ package org.drip.specialfunction.property;
 
 import org.drip.function.definition.R1ToR1;
 import org.drip.function.definition.R1ToR1Property;
-import org.drip.function.r1tor1.Sinc;
+import org.drip.function.r1tor1trigonometric.Sinc;
 import org.drip.numerical.common.NumberUtil;
 import org.drip.specialfunction.derived.LogBigPi;
 

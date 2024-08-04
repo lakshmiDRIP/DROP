@@ -4,7 +4,7 @@ package org.drip.sample.ois;
 import java.util.Map;
 
 import org.drip.analytics.date.JulianDate;
-import org.drip.function.r1tor1.QuadraticRationalShapeControl;
+import org.drip.function.r1tor1custom.QuadraticRationalShapeControl;
 import org.drip.market.otc.*;
 import org.drip.param.creator.*;
 import org.drip.param.market.CurveSurfaceQuoteContainer;

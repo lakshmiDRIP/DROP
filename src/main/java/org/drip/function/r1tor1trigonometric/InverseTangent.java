@@ -1,21 +1,15 @@
 
-package org.drip.function.r1tor1;
+package org.drip.function.r1tor1trigonometric;
+
+import org.drip.function.definition.R1ToR1;
+import org.drip.numerical.common.NumberUtil;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
- * Copyright (C) 2022 Lakshmi Krishnamurthy
- * Copyright (C) 2021 Lakshmi Krishnamurthy
- * Copyright (C) 2020 Lakshmi Krishnamurthy
- * Copyright (C) 2019 Lakshmi Krishnamurthy
- * Copyright (C) 2018 Lakshmi Krishnamurthy
- * Copyright (C) 2017 Lakshmi Krishnamurthy
- * Copyright (C) 2016 Lakshmi Krishnamurthy
- * Copyright (C) 2015 Lakshmi Krishnamurthy
- * Copyright (C) 2014 Lakshmi Krishnamurthy
- * Copyright (C) 2013 Lakshmi Krishnamurthy
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
  * 
  *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
  *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
@@ -83,90 +77,76 @@ package org.drip.function.r1tor1;
  */
 
 /**
- * <i>LinearRationalShapeControl</i> implements the deterministic rational shape control functionality on top
- * of the estimator basis splines inside - [0,...,1) - Globally [x_0,...,x_1):
- *	<br><br>
- * 			y = 1 / [1 + lambda * x]
- *	<br><br>
- *		where is the normalized ordinate mapped as
+ * <i>InverseTangent</i> implements the Trigonometric Inverse Tangent Function. The References are:
  * 
- * 			x === (x - x_i-1) / (x_i - x_i-1)
- *
- *	<br><br>
+ * <br><br>
+ * 	<ul>
+ * 		<li>
+ * 			Belsley, D. A., E. Kuh, and R. E. Welsch (1980): <i>Regression Dynamics: Identifying Influential
+ * 				Data and Sources of Collinearity</i> <b>John Wiley and Sons</b> New York NY
+ * 		</li>
+ * 		<li>
+ * 			Cheney, K. (2008): <i>Numerical Mathematics and Computing</i> <b>Cengage Learning</b> New York NY
+ * 		</li>
+ * 		<li>
+ * 			Pesaran, M. H. (2015): <i>Time Series and Panel Data Econometrics</i> <b>Oxford University
+ * 				Press</b> New York NY
+ * 		</li>
+ * 		<li>
+ * 			Trefethen, L. N., and D. Bau III (1997): <i>Numerical Linear Algebra</i> <b>Society for
+ * 				Industrial and Applied Mathematics</b> Philadelphia PA
+ * 		</li>
+ * 		<li>
+ * 			Wikipedia (2024): Condition Number https://en.wikipedia.org/wiki/Condition_number
+ * 		</li>
+ * 	</ul>
+ * 
+ * <br><br>
  *  <ul>
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md">Numerical Analysis Library</a></li>
  *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function/README.md">R<sup>d</sup> To R<sup>d</sup> Function Analysis</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function/r1tor1/README.md">Built-in R<sup>1</sup> To R<sup>1</sup> Functions</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function/r1tor1trigonometric/README.md">Built-in R<sup>1</sup> To R<sup>1</sup> Trigonometric Functions</a></li>
  *  </ul>
- *  
+ * <br><br>
+ *
  * @author Lakshmi Krishnamurthy
  */
 
-public class LinearRationalShapeControl extends org.drip.function.definition.R1ToR1 {
-	private double _dblLambda = java.lang.Double.NaN;
+public class InverseTangent extends R1ToR1
+{
 
 	/**
-	 * LinearRationalShapeControl constructor
+	 * <i>InverseTangent</i> Constructor
 	 * 
-	 * @param dblLambda Tension Parameter
-	 * 
-	 * @throws java.lang.Exception Thrown if the inputs are invalid
+	 * @throws Exception Thrown if the Input is Invalid
 	 */
 
-	public LinearRationalShapeControl (
-		final double dblLambda)
-		throws java.lang.Exception
+	public InverseTangent()
+		throws Exception
 	{
 		super (null);
-
-		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblLambda = dblLambda))
-			throw new java.lang.Exception ("LinearRationalShapeControl ctr: Invalid tension");
 	}
 
 	@Override public double evaluate (
-		final double dblX)
-		throws java.lang.Exception
+		final double x)
+		throws Exception
 	{
-		return 1. / (1. + _dblLambda * dblX);
+		if (!NumberUtil.IsValid (x)) {
+			throw new Exception ("InverseTangent::evaluate => Invalid Inputs");
+		}
+
+		return Math.atan (x);
 	}
 
-	@Override public double derivative (
-		final double dblX,
-		final int iOrder)
-		throws java.lang.Exception
+	@Override public double conditionNumber (
+		final double x)
+		throws Exception
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (dblX))
-			throw new java.lang.Exception ("LinearRationalShapeControl::derivative => Invalid Inputs");
+		if (!NumberUtil.IsValid (x)) {
+			throw new Exception ("InverseTangent::conditionNumber => Invalid Inputs");
+		}
 
-		double dblDerivative = 1. / (1. + _dblLambda * dblX);
-
-		for (int i = 0; i < iOrder; ++i)
-			dblDerivative *= (-1. * _dblLambda / (1. + _dblLambda * dblX));
-
-		return dblDerivative;
-	}
-
-	@Override public double integrate (
-		final double dblBegin,
-		final double dblEnd)
-		throws java.lang.Exception
-	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (dblBegin) || !org.drip.numerical.common.NumberUtil.IsValid
-			(dblEnd))
-			throw new java.lang.Exception ("LinearRationalShapeControl::integrate => Invalid Inputs");
-
-		return (java.lang.Math.log ((1. + _dblLambda * dblEnd) / (1. + _dblLambda * dblBegin))) / _dblLambda;
-	}
-
-	/**
-	 * Retrieve the shape control coefficient
-	 * 
-	 * @return Shape control coefficient
-	 */
-
-	public double getShapeControlCoefficient()
-	{
-		return _dblLambda;
+		return x / (Math.atan (x) * (1. + x * x));
 	}
 }

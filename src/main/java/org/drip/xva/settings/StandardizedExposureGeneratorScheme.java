@@ -1,7 +1,7 @@
 
 package org.drip.xva.settings;
 
-import org.drip.function.r1tor1.QuadraticRationalShapeControl;
+import org.drip.function.r1tor1custom.QuadraticRationalShapeControl;
 import org.drip.numerical.common.NumberUtil;
 import org.drip.spline.basis.PolynomialFunctionSetParams;
 import org.drip.spline.params.ResponseScalingShapeControl;

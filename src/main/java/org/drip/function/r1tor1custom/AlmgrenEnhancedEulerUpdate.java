@@ -1,5 +1,5 @@
 
-package org.drip.function.r1tor1;
+package org.drip.function.r1tor1custom;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -13,9 +13,6 @@ package org.drip.function.r1tor1;
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
- * Copyright (C) 2015 Lakshmi Krishnamurthy
- * Copyright (C) 2014 Lakshmi Krishnamurthy
- * Copyright (C) 2013 Lakshmi Krishnamurthy
  * 
  *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
  *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
@@ -83,102 +80,94 @@ package org.drip.function.r1tor1;
  */
 
 /**
- * <i>Polynomial</i> provides the evaluation of the n<sup>th</sup> order Polynomial and its derivatives for a
- * specified variate.
+ * <i>AlmgrenEnhancedEulerUpdate</i> is a R<sup>1</sup> To R<sup>1</sup> Function that is used in Almgren
+ * (2009, 2012) to illustrate the Construction of the Enhanced Euler Update Scheme. The References are:
+ * 
+ * <br>
+ * 	<ul>
+ * 		<li>
+ * 			Almgren, R. F., and N. Chriss (2000): Optimal Execution of Portfolio Transactions <i>Journal of
+ * 				Risk</i> <b>3 (2)</b> 5-39
+ * 		</li>
+ * 		<li>
+ * 			Almgren, R. F. (2009): Optimal Trading in a Dynamic Market
+ * 				https://www.math.nyu.edu/financial_mathematics/content/02_financial/2009-2.pdf
+ * 		</li>
+ * 		<li>
+ * 			Almgren, R. F. (2012): Optimal Trading with Stochastic Liquidity and Volatility <i>SIAM Journal
+ * 				of Financial Mathematics</i> <b>3 (1)</b> 163-181
+ * 		</li>
+ * 	</ul>
  *
  *	<br><br>
  *  <ul>
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md">Numerical Analysis Library</a></li>
  *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function/README.md">R<sup>d</sup> To R<sup>d</sup> Function Analysis</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function/r1tor1/README.md">Built-in R<sup>1</sup> To R<sup>1</sup> Functions</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function/r1tor1custom/README.md">Built-in R<sup>1</sup> To R<sup>1</sup> Custom Functions</a></li>
  *  </ul>
- *
+ * 
  * @author Lakshmi Krishnamurthy
  */
 
-public class Polynomial extends org.drip.function.definition.R1ToR1 {
-	private int _iDegree = -1;
+public class AlmgrenEnhancedEulerUpdate extends org.drip.function.definition.R1ToR1 {
+	private double _dblA = java.lang.Double.NaN;
+	private double _dblB = java.lang.Double.NaN;
 
 	/**
-	 * Polynomial constructor
+	 * AlmgrenEnhancedEulerUpdate Constructor
 	 * 
-	 * @param iDegree Degree of the Polynomial
+	 * @param dblA The "A" Parameter
+	 * @param dblB The "B" Parameter
 	 * 
-	 * @throws java.lang.Exception Thrown if the input is invalid
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public Polynomial (
-		final int iDegree)
+	public AlmgrenEnhancedEulerUpdate (
+		final double dblA,
+		final double dblB)
 		throws java.lang.Exception
 	{
 		super (null);
 
-		if (0 > (_iDegree = iDegree)) throw new java.lang.Exception ("Polynomial ctr: Invalid Inputs");
-	}
-
-	@Override public double evaluate (
-		final double dblVariate)
-		throws java.lang.Exception
-	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (dblVariate))
-			throw new java.lang.Exception ("Polynomial::evaluate => Invalid Inputs");
-
-		return java.lang.Math.pow (dblVariate, _iDegree);
-	}
-
-	@Override public double derivative (
-		final double dblVariate,
-		final int iOrder)
-		throws java.lang.Exception
-	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (dblVariate) || 0 > iOrder)
-			throw new java.lang.Exception ("Polynomial::derivative => Invalid Inputs");
-
-		return iOrder > _iDegree ? 0. : java.lang.Math.pow (dblVariate, _iDegree - iOrder) *
-			org.drip.numerical.common.NumberUtil.NPK (_iDegree, _iDegree - iOrder);
-	}
-
-	@Override public double integrate (
-		final double dblBegin,
-		final double dblEnd)
-		throws java.lang.Exception
-	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (dblBegin) || !org.drip.numerical.common.NumberUtil.IsValid
-			(dblEnd))
-			throw new java.lang.Exception ("Polynomial::integrate => Invalid Inputs");
-
-		return (java.lang.Math.pow (dblEnd, _iDegree + 1) - java.lang.Math.pow (dblBegin, _iDegree + 1)) /
-			(_iDegree + 1);
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblA = dblA) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_dblB = dblB) || _dblA == _dblB)
+			throw new java.lang.Exception ("AlmgrenEnhancedEulerUpdate Constructor => Inbalid Inputs");
 	}
 
 	/**
-	 * Retrieve the degree of the polynomial
+	 * Retrieve the "A" Parameter
 	 * 
-	 * @return Degree of the polynomial
+	 * @return The "A" Parameter
 	 */
 
-	public double getDegree()
+	public double a()
 	{
-		 return _iDegree;
+		return _dblA;
 	}
 
-	/* public static final void main (
-		final java.lang.String[] astrArgs)
+	/**
+	 * Retrieve the "B" Parameter
+	 * 
+	 * @return The "B" Parameter
+	 */
+
+	public double b()
+	{
+		return _dblB;
+	}
+
+	@Override public double evaluate (
+		final double dblT)
 		throws java.lang.Exception
 	{
-		Polynomial poly = new Polynomial (4);
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblT))
+			throw new java.lang.Exception ("AlmgrenEnhancedEulerUpdate::evaluate => Invalid Inputs");
 
-		System.out.println ("Poly[0.0] = " + poly.evaluate (0.0));
+		double dblInvExpAT = java.lang.Math.exp (-1. * _dblA * dblT);
 
-		System.out.println ("Poly[0.5] = " + poly.evaluate (0.5));
+		double dblInvExpBT = java.lang.Math.exp (-1. * _dblB * dblT);
 
-		System.out.println ("Poly[1.0] = " + poly.evaluate (1.0));
-
-		System.out.println ("Deriv[0.0] = " + poly.derivative (0.0, 3));
-
-		System.out.println ("Deriv[0.5] = " + poly.derivative (0.5, 3));
-
-		System.out.println ("Deriv[1.0] = " + poly.derivative (1.0, 3));
-	} */
+		return (_dblA * dblInvExpBT - _dblB * dblInvExpAT) / (dblInvExpBT - dblInvExpAT);
+	}
 }

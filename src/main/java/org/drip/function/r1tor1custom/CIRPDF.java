@@ -1,5 +1,5 @@
 
-package org.drip.function.r1tor1;
+package org.drip.function.r1tor1custom;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -77,8 +77,8 @@ package org.drip.function.r1tor1;
  */
 
 /**
- * <i>R1UnivariateCIRPDF</i> exposes the R<sup>1</sup> Univariate Cox-Ingersoll-Ross Probability Density
- * 	Function. The References are:
+ * <i>CIRPDF</i> exposes the R<sup>1</sup> Univariate Cox-Ingersoll-Ross Probability Density Function. The
+ *  References are:
  *  
  * 	<br><br>
  *  <ul>
@@ -109,28 +109,27 @@ package org.drip.function.r1tor1;
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/FixedIncomeAnalyticsLibrary.md">Fixed Income Analytics</a></li>
  *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/dynamics/README.md">HJM, Hull White, LMM, and SABR Dynamic Evolution Models</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/dynamics/kolmogorov/README.md">Fokker Planck Kolmogorov Forward/Backward</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function/r1tor1custom/README.md">Built-in R<sup>1</sup> To R<sup>1</sup> Custom Functions</a></li>
  *  </ul>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class R1UnivariateCIRPDF
-	extends org.drip.function.definition.R1ToR1
+public class CIRPDF extends org.drip.function.definition.R1ToR1
 {
 	private double _beta = java.lang.Double.NaN;
 	private double _alpha = java.lang.Double.NaN;
 	private org.drip.function.definition.R1ToR1 _gammaFunction = null;
 
 	/**
-	 * Construct a Standard Instance of R1UnivariateCIRPDF
+	 * Construct a Standard Instance of CIR PDF
 	 * 
 	 * @param cklsParameters The CKLS Parameters
 	 * 
 	 * @return Standard Instance of R1UnivariateCIRPDF
 	 */
 
-	public static final R1UnivariateCIRPDF Standard (
+	public static final CIRPDF Standard (
 		final org.drip.dynamics.meanreverting.CKLSParameters cklsParameters)
 	{
 		if (null == cklsParameters)
@@ -144,7 +143,7 @@ public class R1UnivariateCIRPDF
 
 		try
 		{
-			return new R1UnivariateCIRPDF (
+			return new CIRPDF (
 				beta * cklsParameters.meanReversionLevel(),
 				beta,
 				new org.drip.specialfunction.gamma.NemesAnalytic (
@@ -161,7 +160,7 @@ public class R1UnivariateCIRPDF
 	}
 
 	/**
-	 * R1UnivariateCIRPDF Constructor
+	 * CIRPDF Constructor
 	 * 
 	 * @param alpha The Alpha
 	 * @param beta The Beta
@@ -170,7 +169,7 @@ public class R1UnivariateCIRPDF
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public R1UnivariateCIRPDF (
+	public CIRPDF (
 		final double alpha,
 		final double beta,
 		final org.drip.function.definition.R1ToR1 gammaFunction)
@@ -188,7 +187,7 @@ public class R1UnivariateCIRPDF
 		)
 		{
 			throw new java.lang.Exception (
-				"R1UnivariateCIRPDF CVonstructor => IOnvalid Inputs"
+				"CIRPDF CVonstructor => Invalid Inputs"
 			);
 		}
 	}
@@ -235,7 +234,7 @@ public class R1UnivariateCIRPDF
 		))
 		{
 			throw new java.lang.Exception (
-				"R1UnivariateCIRPDF::evaluate => Invalid Inputs"
+				"CIRPDF::evaluate => Invalid Inputs"
 			);
 		}
 

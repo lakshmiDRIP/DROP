@@ -1,5 +1,5 @@
 
-package org.drip.function.r1tor1;
+package org.drip.function.r1tor1custom;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -13,6 +13,9 @@ package org.drip.function.r1tor1;
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
+ * Copyright (C) 2015 Lakshmi Krishnamurthy
+ * Copyright (C) 2014 Lakshmi Krishnamurthy
+ * Copyright (C) 2013 Lakshmi Krishnamurthy
  * 
  *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
  *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
@@ -80,94 +83,107 @@ package org.drip.function.r1tor1;
  */
 
 /**
- * <i>AlmgrenEnhancedEulerUpdate</i> is a R<sup>1</sup> To R<sup>1</sup> Function that is used in Almgren
- * (2009, 2012) to illustrate the Construction of the Enhanced Euler Update Scheme. The References are:
- * 
- * <br>
- * 	<ul>
- * 		<li>
- * 			Almgren, R. F., and N. Chriss (2000): Optimal Execution of Portfolio Transactions <i>Journal of
- * 				Risk</i> <b>3 (2)</b> 5-39
- * 		</li>
- * 		<li>
- * 			Almgren, R. F. (2009): Optimal Trading in a Dynamic Market
- * 				https://www.math.nyu.edu/financial_mathematics/content/02_financial/2009-2.pdf
- * 		</li>
- * 		<li>
- * 			Almgren, R. F. (2012): Optimal Trading with Stochastic Liquidity and Volatility <i>SIAM Journal
- * 				of Financial Mathematics</i> <b>3 (1)</b> 163-181
- * 		</li>
- * 	</ul>
+ * <i>QuadraticRationalShapeControl</i> implements the deterministic rational shape control functionality on
+ * top of the estimator basis splines inside - [0,...,1) - Globally [x_0,...,x_1):
+ * <br><br>
+ * 			y = 1 / [1 + lambda * x * (1-x)]
+ * <br><br>
+ *		where is the normalized ordinate mapped as
+ * <br><br>
+ * 			x ==== (x - x_i-1) / (x_i - x_i-1)
  *
  *	<br><br>
  *  <ul>
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md">Numerical Analysis Library</a></li>
  *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function/README.md">R<sup>d</sup> To R<sup>d</sup> Function Analysis</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function/r1tor1/README.md">Built-in R<sup>1</sup> To R<sup>1</sup> Functions</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function/r1tor1custom/README.md">Built-in R<sup>1</sup> To R<sup>1</sup> Custom Functions</a></li>
  *  </ul>
  * 
  * @author Lakshmi Krishnamurthy
  */
 
-public class AlmgrenEnhancedEulerUpdate extends org.drip.function.definition.R1ToR1 {
-	private double _dblA = java.lang.Double.NaN;
-	private double _dblB = java.lang.Double.NaN;
+public class QuadraticRationalShapeControl extends org.drip.function.definition.R1ToR1 {
+	private double _dblLambda = java.lang.Double.NaN;
 
 	/**
-	 * AlmgrenEnhancedEulerUpdate Constructor
+	 * QuadraticRationalShapeControl constructor
 	 * 
-	 * @param dblA The "A" Parameter
-	 * @param dblB The "B" Parameter
+	 * @param dblLambda Tension Parameter
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws java.lang.Exception Thrown if the inputs are invalid
 	 */
 
-	public AlmgrenEnhancedEulerUpdate (
-		final double dblA,
-		final double dblB)
+	public QuadraticRationalShapeControl (
+		final double dblLambda)
 		throws java.lang.Exception
 	{
 		super (null);
 
-		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblA = dblA) ||
-			!org.drip.numerical.common.NumberUtil.IsValid (_dblB = dblB) || _dblA == _dblB)
-			throw new java.lang.Exception ("AlmgrenEnhancedEulerUpdate Constructor => Inbalid Inputs");
-	}
-
-	/**
-	 * Retrieve the "A" Parameter
-	 * 
-	 * @return The "A" Parameter
-	 */
-
-	public double a()
-	{
-		return _dblA;
-	}
-
-	/**
-	 * Retrieve the "B" Parameter
-	 * 
-	 * @return The "B" Parameter
-	 */
-
-	public double b()
-	{
-		return _dblB;
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblLambda = dblLambda))
+			throw new java.lang.Exception ("QuadraticRationalShapeControl ctr: Invalid tension");
 	}
 
 	@Override public double evaluate (
-		final double dblT)
+		final double dblX)
 		throws java.lang.Exception
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (dblT))
-			throw new java.lang.Exception ("AlmgrenEnhancedEulerUpdate::evaluate => Invalid Inputs");
-
-		double dblInvExpAT = java.lang.Math.exp (-1. * _dblA * dblT);
-
-		double dblInvExpBT = java.lang.Math.exp (-1. * _dblB * dblT);
-
-		return (_dblA * dblInvExpBT - _dblB * dblInvExpAT) / (dblInvExpBT - dblInvExpAT);
+		return 1. / (1. + _dblLambda * dblX * (1. - dblX));
 	}
+
+	@Override public double derivative (
+		final double dblX,
+		final int iOrder)
+		throws java.lang.Exception
+	{
+		if (0. == _dblLambda) return 0.;
+
+		double dblD2BetaDX2 = -2. * _dblLambda;
+		double dblDBetaDX = _dblLambda * (1. - 2. * dblX);
+		double dblBeta = 1. + _dblLambda * dblX * (1. - dblX);
+
+		if (1 == iOrder) return -1. * dblDBetaDX / (dblBeta * dblBeta);
+
+		if (2 == iOrder)
+			return (2. * dblDBetaDX * dblDBetaDX - dblBeta * dblD2BetaDX2) / (dblBeta * dblBeta * dblBeta);
+
+		return super.derivative (dblX, iOrder);
+	}
+
+	@Override public double integrate (
+		final double dblBegin,
+		final double dblEnd)
+		throws java.lang.Exception
+	{
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblBegin) || !org.drip.numerical.common.NumberUtil.IsValid
+			(dblEnd))
+			throw new java.lang.Exception ("QuadraticRationalShapeControl::integrate => Invalid Inputs");
+
+		double dblAlpha = java.lang.Math.sqrt (0.25 * (_dblLambda + 4.) / _dblLambda);
+
+		return -0.5 * (java.lang.Math.log ((dblEnd - dblAlpha - 0.5) * (dblBegin + dblAlpha - 0.5) /
+			(dblEnd + dblAlpha - 0.5) / (dblBegin - dblAlpha - 0.5))) / dblAlpha / _dblLambda;
+	}
+
+	/**
+	 * Retrieve the shape control coefficient
+	 * 
+	 * @return Shape control coefficient
+	 */
+
+	public double getShapeControlCoefficient()
+	{
+		return _dblLambda;
+	}
+
+	/* public static final void main (
+		final java.lang.String[] astrArgs)
+		throws java.lang.Exception
+	{
+		QuadraticRationalShapeControl qrsc = new QuadraticRationalShapeControl (1.);
+
+		System.out.println (qrsc.derivative (0., 2));
+
+		System.out.println (qrsc.derivative (1., 2));
+	} */
 }

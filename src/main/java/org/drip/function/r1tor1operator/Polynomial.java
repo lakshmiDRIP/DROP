@@ -1,7 +1,6 @@
 
 package org.drip.function.r1tor1operator;
 
-import org.drip.function.definition.R1ToR1;
 import org.drip.numerical.common.NumberUtil;
 
 /*
@@ -9,7 +8,16 @@ import org.drip.numerical.common.NumberUtil;
  */
 
 /*!
- * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2022 Lakshmi Krishnamurthy
+ * Copyright (C) 2021 Lakshmi Krishnamurthy
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
+ * Copyright (C) 2018 Lakshmi Krishnamurthy
+ * Copyright (C) 2017 Lakshmi Krishnamurthy
+ * Copyright (C) 2016 Lakshmi Krishnamurthy
+ * Copyright (C) 2015 Lakshmi Krishnamurthy
+ * Copyright (C) 2014 Lakshmi Krishnamurthy
+ * Copyright (C) 2013 Lakshmi Krishnamurthy
  * 
  *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
  *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
@@ -77,65 +85,84 @@ import org.drip.numerical.common.NumberUtil;
  */
 
 /**
- * <i>Reciprocal</i> implements the <code>1/x</code> Operator Function. The References are:
- * 
- * <br><br>
- * 	<ul>
- * 		<li>
- * 			Belsley, D. A., E. Kuh, and R. E. Welsch (1980): <i>Regression Dynamics: Identifying Influential
- * 				Data and Sources of Collinearity</i> <b>John Wiley and Sons</b> New York NY
- * 		</li>
- * 		<li>
- * 			Cheney, K. (2008): <i>Numerical Mathematics and Computing</i> <b>Cengage Learning</b> New York NY
- * 		</li>
- * 		<li>
- * 			Pesaran, M. H. (2015): <i>Time Series and Panel Data Econometrics</i> <b>Oxford University
- * 				Press</b> New York NY
- * 		</li>
- * 		<li>
- * 			Trefethen, L. N., and D. Bau III (1997): <i>Numerical Linear Algebra</i> <b>Society for
- * 				Industrial and Applied Mathematics</b> Philadelphia PA
- * 		</li>
- * 		<li>
- * 			Wikipedia (2024): Condition Number https://en.wikipedia.org/wiki/Condition_number
- * 		</li>
- * 	</ul>
- * 
- * <br><br>
+ * <i>Polynomial</i> provides the evaluation of the n<sup>th</sup> order Polynomial and its derivatives for a
+ * specified variate.
+ *
+ *	<br><br>
  *  <ul>
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md">Numerical Analysis Library</a></li>
  *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function/README.md">R<sup>d</sup> To R<sup>d</sup> Function Analysis</a></li>
  *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function/r1tor1operator/README.md">Built-in R<sup>1</sup> To R<sup>1</sup> Operator Functions</a></li>
  *  </ul>
- * <br><br>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class Reciprocal extends R1ToR1
-{
+public class Polynomial extends org.drip.function.definition.R1ToR1 {
+	private int _iDegree = -1;
+
 	/**
-	 * <i>Addition</i> Constructor
+	 * Polynomial constructor
 	 * 
-	 * @throws Exception Thrown if the Input is Invalid
+	 * @param iDegree Degree of the Polynomial
+	 * 
+	 * @throws java.lang.Exception Thrown if the input is invalid
 	 */
 
-	public Reciprocal()
-		throws Exception
+	public Polynomial (
+		final int iDegree)
+		throws java.lang.Exception
 	{
 		super (null);
+
+		_iDegree = iDegree;
 	}
 
 	@Override public double evaluate (
-		final double x)
-		throws Exception
+		final double dblVariate)
+		throws java.lang.Exception
 	{
-		if (!NumberUtil.IsValid (x)) {
-			throw new Exception ("Reciprocal::evaluate => Invalid Inputs");
-		}
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblVariate))
+			throw new java.lang.Exception ("Polynomial::evaluate => Invalid Inputs");
 
-		return 1. / x;
+		return java.lang.Math.pow (dblVariate, _iDegree);
+	}
+
+	@Override public double derivative (
+		final double dblVariate,
+		final int iOrder)
+		throws java.lang.Exception
+	{
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblVariate) || 0 > iOrder)
+			throw new java.lang.Exception ("Polynomial::derivative => Invalid Inputs");
+
+		return iOrder > _iDegree ? 0. : java.lang.Math.pow (dblVariate, _iDegree - iOrder) *
+			org.drip.numerical.common.NumberUtil.NPK (_iDegree, _iDegree - iOrder);
+	}
+
+	@Override public double integrate (
+		final double dblBegin,
+		final double dblEnd)
+		throws java.lang.Exception
+	{
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblBegin) || !org.drip.numerical.common.NumberUtil.IsValid
+			(dblEnd))
+			throw new java.lang.Exception ("Polynomial::integrate => Invalid Inputs");
+
+		return (java.lang.Math.pow (dblEnd, _iDegree + 1) - java.lang.Math.pow (dblBegin, _iDegree + 1)) /
+			(_iDegree + 1);
+	}
+
+	/**
+	 * Retrieve the degree of the polynomial
+	 * 
+	 * @return Degree of the polynomial
+	 */
+
+	public double getDegree()
+	{
+		 return _iDegree;
 	}
 
 	@Override public double conditionNumber (
@@ -143,9 +170,9 @@ public class Reciprocal extends R1ToR1
 		throws Exception
 	{
 		if (!NumberUtil.IsValid (x)) {
-			throw new Exception ("Reciprocal::conditionNumber => Invalid Inputs");
+			throw new Exception ("Polynomial::conditionNumber => Invalid Inputs");
 		}
 
-		return 1.;
+		return Math.abs (_iDegree);
 	}
 }

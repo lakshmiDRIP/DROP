@@ -1,7 +1,7 @@
 
 package org.drip.sample.stretch;
 
-import org.drip.function.r1tor1.*;
+import org.drip.function.r1tor1custom.QuadraticRationalShapeControl;
 import org.drip.service.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 import org.drip.spline.basis.*;

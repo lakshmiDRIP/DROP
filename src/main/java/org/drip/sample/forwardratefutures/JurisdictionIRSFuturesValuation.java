@@ -3,7 +3,7 @@ package org.drip.sample.forwardratefutures;
 
 import org.drip.analytics.date.*;
 import org.drip.analytics.support.CompositePeriodBuilder;
-import org.drip.function.r1tor1.QuadraticRationalShapeControl;
+import org.drip.function.r1tor1custom.QuadraticRationalShapeControl;
 import org.drip.market.exchange.*;
 import org.drip.market.otc.*;
 import org.drip.param.creator.*;

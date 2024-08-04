@@ -1,20 +1,15 @@
 
-package org.drip.function.r1tor1;
+package org.drip.function.r1tor1trigonometric;
+
+import org.drip.function.definition.R1ToR1;
+import org.drip.numerical.common.NumberUtil;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
- * Copyright (C) 2022 Lakshmi Krishnamurthy
- * Copyright (C) 2021 Lakshmi Krishnamurthy
- * Copyright (C) 2020 Lakshmi Krishnamurthy
- * Copyright (C) 2019 Lakshmi Krishnamurthy
- * Copyright (C) 2018 Lakshmi Krishnamurthy
- * Copyright (C) 2017 Lakshmi Krishnamurthy
- * Copyright (C) 2016 Lakshmi Krishnamurthy
- * Copyright (C) 2015 Lakshmi Krishnamurthy
- * Copyright (C) 2014 Lakshmi Krishnamurthy
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
  * 
  *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
  *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
@@ -82,57 +77,76 @@ package org.drip.function.r1tor1;
  */
 
 /**
- * <i>AndersenPiterbargMeanReverter</i> implements the mean-reverting Univariate Function detailed in:
+ * <i>InverseCosine</i> implements the Trigonometric Inverse Cosine Function. The References are:
  * 
- * <br>
+ * <br><br>
  * 	<ul>
  * 		<li>
- * 			Andersen and Piterbarg (2010): Interest Rate Modeling (3 Volumes), Atlantic Financial Press.
+ * 			Belsley, D. A., E. Kuh, and R. E. Welsch (1980): <i>Regression Dynamics: Identifying Influential
+ * 				Data and Sources of Collinearity</i> <b>John Wiley and Sons</b> New York NY
+ * 		</li>
+ * 		<li>
+ * 			Cheney, K. (2008): <i>Numerical Mathematics and Computing</i> <b>Cengage Learning</b> New York NY
+ * 		</li>
+ * 		<li>
+ * 			Pesaran, M. H. (2015): <i>Time Series and Panel Data Econometrics</i> <b>Oxford University
+ * 				Press</b> New York NY
+ * 		</li>
+ * 		<li>
+ * 			Trefethen, L. N., and D. Bau III (1997): <i>Numerical Linear Algebra</i> <b>Society for
+ * 				Industrial and Applied Mathematics</b> Philadelphia PA
+ * 		</li>
+ * 		<li>
+ * 			Wikipedia (2024): Condition Number https://en.wikipedia.org/wiki/Condition_number
  * 		</li>
  * 	</ul>
- *
- *	<br><br>
+ * 
+ * <br><br>
  *  <ul>
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md">Numerical Analysis Library</a></li>
  *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function/README.md">R<sup>d</sup> To R<sup>d</sup> Function Analysis</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function/r1tor1/README.md">Built-in R<sup>1</sup> To R<sup>1</sup> Functions</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function/r1tor1trigonometric/README.md">Built-in R<sup>1</sup> To R<sup>1</sup> Trigonometric Functions</a></li>
  *  </ul>
- * 
+ * <br><br>
+ *
  * @author Lakshmi Krishnamurthy
  */
 
-public class AndersenPiterbargMeanReverter extends org.drip.function.definition.R1ToR1 {
-	private org.drip.function.r1tor1.ExponentialDecay _auExpDecay = null;
-	private org.drip.function.definition.R1ToR1 _auSteadyState = null;
+public class InverseCosine extends R1ToR1
+{
 
 	/**
-	 * AndersenPiterbargMeanReverter constructor
+	 * <i>InverseCosine</i> Constructor
 	 * 
-	 * @param auExpDecay The Exponential Decay Univariate Function
-	 * @param auSteadyState The Steady State (i.e., Infinite Time) Undamped Behavior Univariate Function
-	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are invalid
+	 * @throws Exception Thrown if the Input is Invalid
 	 */
 
-	public AndersenPiterbargMeanReverter (
-		final org.drip.function.r1tor1.ExponentialDecay auExpDecay,
-		final org.drip.function.definition.R1ToR1 auSteadyState)
-		throws java.lang.Exception
+	public InverseCosine()
+		throws Exception
 	{
 		super (null);
-
-		if (null == (_auExpDecay = auExpDecay) || null == (_auSteadyState = auSteadyState))
-			throw new java.lang.Exception ("AndersenPiterbargMeanReverter ctr => Invalid Inputs");
 	}
 
 	@Override public double evaluate (
-		final double dblVariate)
-		throws java.lang.Exception
+		final double x)
+		throws Exception
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (dblVariate))
-			throw new java.lang.Exception ("AndersenPiterbargMeanReverter::evaluate => Invalid Inputs");
+		if (!NumberUtil.IsValid (x)) {
+			throw new Exception ("InverseCosine::evaluate => Invalid Inputs");
+		}
 
-		return (1. - _auExpDecay.evaluate (dblVariate)) * _auSteadyState.evaluate (dblVariate);
+		return Math.acos (x);
+	}
+
+	@Override public double conditionNumber (
+		final double x)
+		throws Exception
+	{
+		if (!NumberUtil.IsValid (x)) {
+			throw new Exception ("InverseCosine::conditionNumber => Invalid Inputs");
+		}
+
+		return Math.abs (x) / (Math.acos (x) * Math.sqrt (1. - x * x));
 	}
 }

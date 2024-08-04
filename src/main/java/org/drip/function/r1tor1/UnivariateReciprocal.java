@@ -15,7 +15,6 @@ package org.drip.function.r1tor1;
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * Copyright (C) 2015 Lakshmi Krishnamurthy
  * Copyright (C) 2014 Lakshmi Krishnamurthy
- * Copyright (C) 2013 Lakshmi Krishnamurthy
  * 
  *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
  *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
@@ -83,48 +82,43 @@ package org.drip.function.r1tor1;
  */
 
 /**
- * <i>LinearRationalTensionExponential</i> provides the evaluation of the Convolution of the Linear Rational
- * and the Tension Exponential Functions and its derivatives for a specified variate.
+ * <i>UnivariateReciprocal</i> provides the evaluation 1/f(x) instead of f(x) for a given f.
  *
  *	<br><br>
  *  <ul>
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md">Numerical Analysis Library</a></li>
  *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function/README.md">R<sup>d</sup> To R<sup>d</sup> Function Analysis</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function/r1tor1/README.md">Built-in R<sup>1</sup> To R<sup>1</sup> Functions</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function/r1tor1operator/README.md">Built-in R<sup>1</sup> To R<sup>1</sup> Operator Functions</a></li>
  *  </ul>
- *  
+ *
  * @author Lakshmi Krishnamurthy
  */
 
-public class LinearRationalTensionExponential extends org.drip.function.r1tor1operator.Convolution {
+public class UnivariateReciprocal extends org.drip.function.definition.R1ToR1 {
+	private org.drip.function.definition.R1ToR1 _au = null;
 
 	/**
-	 * Construct a LinearRationalTensionExponential instance
+	 * UnivariateReciprocal constructor
 	 * 
-	 * @param dblExponentialTension Exponential Tension Parameter
-	 * @param dblRationalTension Rational Tension Parameter
+	 * @param au Univariate Function
 	 * 
-	 * @throws java.lang.Exception Thrown if the inputs are invalid
+	 * @throws java.lang.Exception Thrown if the input is invalid
 	 */
 
-	public LinearRationalTensionExponential (
-		final double dblExponentialTension,
-		final double dblRationalTension)
+	public UnivariateReciprocal (
+		final org.drip.function.definition.R1ToR1 au)
 		throws java.lang.Exception
 	{
-		super (new org.drip.function.r1tor1.ExponentialTension (java.lang.Math.E, dblExponentialTension), new
-			org.drip.function.r1tor1.LinearRationalShapeControl (dblRationalTension));
+		super (null);
+
+		if (null == (_au = au)) throw new java.lang.Exception ("UnivariateReciprocal ctr: Invalid Inputs");
 	}
 
-	/* public static final void main (
-		final java.lang.String[] astrArgs)
+	@Override public double evaluate (
+		final double dblVariate)
 		throws java.lang.Exception
 	{
-		LinearRationalTensionExponential lret = new LinearRationalTensionExponential (-1., 1.);
-
-		System.out.println ("LRET[0.00] = " + lret.evaluate (0.00));
-
-		System.out.println ("LRETDeriv[0.00] = " + lret.derivative (0.00, 1));
-	} */
+		return 1. / _au.evaluate (dblVariate);
+	}
 }

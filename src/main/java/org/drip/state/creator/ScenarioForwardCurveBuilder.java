@@ -4,7 +4,7 @@ package org.drip.state.creator;
 import org.drip.analytics.date.JulianDate;
 import org.drip.analytics.definition.LatentStateStatic;
 import org.drip.analytics.support.CaseInsensitiveTreeMap;
-import org.drip.function.r1tor1.QuadraticRationalShapeControl;
+import org.drip.function.r1tor1custom.QuadraticRationalShapeControl;
 import org.drip.param.market.CurveSurfaceQuoteContainer;
 import org.drip.param.pricer.CreditPricerParams;
 import org.drip.param.valuation.ValuationCustomizationParams;

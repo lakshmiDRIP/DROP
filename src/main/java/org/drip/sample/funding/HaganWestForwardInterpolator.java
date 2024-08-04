@@ -1,7 +1,7 @@
 
 package org.drip.sample.funding;
 
-import org.drip.function.r1tor1.LinearRationalShapeControl;
+import org.drip.function.r1tor1custom.LinearRationalShapeControl;
 import org.drip.service.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 import org.drip.spline.basis.ExponentialTensionSetParams;

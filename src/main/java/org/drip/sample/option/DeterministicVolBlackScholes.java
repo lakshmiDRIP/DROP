@@ -4,7 +4,7 @@ package org.drip.sample.option;
 import java.util.*;
 
 import org.drip.analytics.date.*;
-import org.drip.function.r1tor1.SABRLIBORCapVolatility;
+import org.drip.function.r1tor1custom.SABRLIBORCapVolatility;
 import org.drip.market.otc.*;
 import org.drip.param.valuation.*;
 import org.drip.pricer.option.BlackScholesAlgorithm;

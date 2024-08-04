@@ -1,5 +1,5 @@
 
-package org.drip.function.r1tor1;
+package org.drip.function.r1tor1custom;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -83,14 +83,14 @@ package org.drip.function.r1tor1;
  */
 
 /**
- * <i>QuadraticRationalShapeControl</i> implements the deterministic rational shape control functionality on
- * top of the estimator basis splines inside - [0,...,1) - Globally [x_0,...,x_1):
- * <br><br>
- * 			y = 1 / [1 + lambda * x * (1-x)]
- * <br><br>
+ * <i>LinearRationalShapeControl</i> implements the deterministic rational shape control functionality on top
+ * of the estimator basis splines inside - [0,...,1) - Globally [x_0,...,x_1):
+ *	<br><br>
+ * 			y = 1 / [1 + lambda * x]
+ *	<br><br>
  *		where is the normalized ordinate mapped as
- * <br><br>
- * 			x ==== (x - x_i-1) / (x_i - x_i-1)
+ * 
+ * 			x === (x - x_i-1) / (x_i - x_i-1)
  *
  *	<br><br>
  *  <ul>
@@ -99,36 +99,36 @@ package org.drip.function.r1tor1;
  *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function/README.md">R<sup>d</sup> To R<sup>d</sup> Function Analysis</a></li>
  *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function/r1tor1/README.md">Built-in R<sup>1</sup> To R<sup>1</sup> Functions</a></li>
  *  </ul>
- * 
+ *  
  * @author Lakshmi Krishnamurthy
  */
 
-public class QuadraticRationalShapeControl extends org.drip.function.definition.R1ToR1 {
+public class LinearRationalShapeControl extends org.drip.function.definition.R1ToR1 {
 	private double _dblLambda = java.lang.Double.NaN;
 
 	/**
-	 * QuadraticRationalShapeControl constructor
+	 * LinearRationalShapeControl constructor
 	 * 
 	 * @param dblLambda Tension Parameter
 	 * 
 	 * @throws java.lang.Exception Thrown if the inputs are invalid
 	 */
 
-	public QuadraticRationalShapeControl (
+	public LinearRationalShapeControl (
 		final double dblLambda)
 		throws java.lang.Exception
 	{
 		super (null);
 
 		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblLambda = dblLambda))
-			throw new java.lang.Exception ("QuadraticRationalShapeControl ctr: Invalid tension");
+			throw new java.lang.Exception ("LinearRationalShapeControl ctr: Invalid tension");
 	}
 
 	@Override public double evaluate (
 		final double dblX)
 		throws java.lang.Exception
 	{
-		return 1. / (1. + _dblLambda * dblX * (1. - dblX));
+		return 1. / (1. + _dblLambda * dblX);
 	}
 
 	@Override public double derivative (
@@ -136,18 +136,15 @@ public class QuadraticRationalShapeControl extends org.drip.function.definition.
 		final int iOrder)
 		throws java.lang.Exception
 	{
-		if (0. == _dblLambda) return 0.;
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblX))
+			throw new java.lang.Exception ("LinearRationalShapeControl::derivative => Invalid Inputs");
 
-		double dblD2BetaDX2 = -2. * _dblLambda;
-		double dblDBetaDX = _dblLambda * (1. - 2. * dblX);
-		double dblBeta = 1. + _dblLambda * dblX * (1. - dblX);
+		double dblDerivative = 1. / (1. + _dblLambda * dblX);
 
-		if (1 == iOrder) return -1. * dblDBetaDX / (dblBeta * dblBeta);
+		for (int i = 0; i < iOrder; ++i)
+			dblDerivative *= (-1. * _dblLambda / (1. + _dblLambda * dblX));
 
-		if (2 == iOrder)
-			return (2. * dblDBetaDX * dblDBetaDX - dblBeta * dblD2BetaDX2) / (dblBeta * dblBeta * dblBeta);
-
-		return super.derivative (dblX, iOrder);
+		return dblDerivative;
 	}
 
 	@Override public double integrate (
@@ -157,12 +154,9 @@ public class QuadraticRationalShapeControl extends org.drip.function.definition.
 	{
 		if (!org.drip.numerical.common.NumberUtil.IsValid (dblBegin) || !org.drip.numerical.common.NumberUtil.IsValid
 			(dblEnd))
-			throw new java.lang.Exception ("QuadraticRationalShapeControl::integrate => Invalid Inputs");
+			throw new java.lang.Exception ("LinearRationalShapeControl::integrate => Invalid Inputs");
 
-		double dblAlpha = java.lang.Math.sqrt (0.25 * (_dblLambda + 4.) / _dblLambda);
-
-		return -0.5 * (java.lang.Math.log ((dblEnd - dblAlpha - 0.5) * (dblBegin + dblAlpha - 0.5) /
-			(dblEnd + dblAlpha - 0.5) / (dblBegin - dblAlpha - 0.5))) / dblAlpha / _dblLambda;
+		return (java.lang.Math.log ((1. + _dblLambda * dblEnd) / (1. + _dblLambda * dblBegin))) / _dblLambda;
 	}
 
 	/**
@@ -175,15 +169,4 @@ public class QuadraticRationalShapeControl extends org.drip.function.definition.
 	{
 		return _dblLambda;
 	}
-
-	/* public static final void main (
-		final java.lang.String[] astrArgs)
-		throws java.lang.Exception
-	{
-		QuadraticRationalShapeControl qrsc = new QuadraticRationalShapeControl (1.);
-
-		System.out.println (qrsc.derivative (0., 2));
-
-		System.out.println (qrsc.derivative (1., 2));
-	} */
 }

@@ -10,7 +10,7 @@ import org.drip.analytics.date.JulianDate;
 import org.drip.analytics.definition.LatentStateStatic;
 import org.drip.analytics.support.CaseInsensitiveTreeMap;
 import org.drip.analytics.support.CompositePeriodBuilder;
-import org.drip.function.r1tor1.QuadraticRationalShapeControl;
+import org.drip.function.r1tor1custom.QuadraticRationalShapeControl;
 import org.drip.market.otc.FixedFloatSwapConvention;
 import org.drip.market.otc.IBORFixedFloatContainer;
 import org.drip.numerical.common.NumberUtil;

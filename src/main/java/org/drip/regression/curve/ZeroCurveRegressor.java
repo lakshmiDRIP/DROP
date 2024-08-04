@@ -214,7 +214,7 @@ public class ZeroCurveRegressor implements org.drip.regression.core.RegressorSet
 							new org.drip.spline.basis.PolynomialFunctionSetParams (4),
 								org.drip.spline.params.SegmentInelasticDesignControl.Create (2, 2), new
 									org.drip.spline.params.ResponseScalingShapeControl (true, new
-										org.drip.function.r1tor1.QuadraticRationalShapeControl (0.)),
+										org.drip.function.r1tor1custom.QuadraticRationalShapeControl (0.)),
 											null))))
 							return false;
 					} catch (java.lang.Exception e) {

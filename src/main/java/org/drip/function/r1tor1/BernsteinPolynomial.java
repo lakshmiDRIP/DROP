@@ -113,8 +113,8 @@ public class BernsteinPolynomial extends org.drip.function.r1tor1operator.Convol
 		final int iComplementExponent)
 		throws java.lang.Exception
 	{
-		super (new org.drip.function.r1tor1.NaturalLogSeriesElement (iBaseExponent), new
-			org.drip.function.r1tor1operator.Reflection (new org.drip.function.r1tor1.NaturalLogSeriesElement
+		super (new org.drip.function.r1tor1operator.NaturalLogSeriesElement (iBaseExponent), new
+			org.drip.function.r1tor1operator.Reflection (new org.drip.function.r1tor1operator.NaturalLogSeriesElement
 				(iComplementExponent)));
 	}
 

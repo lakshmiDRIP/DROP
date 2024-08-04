@@ -1,7 +1,7 @@
 
 package org.drip.sample.spline;
 
-import org.drip.function.r1tor1.*;
+import org.drip.function.r1tor1custom.QuadraticRationalShapeControl;
 import org.drip.numerical.differentiation.WengertJacobian;
 import org.drip.service.env.EnvManager;
 import org.drip.spline.basis.*;

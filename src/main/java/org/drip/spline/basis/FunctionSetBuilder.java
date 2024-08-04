@@ -5,7 +5,7 @@ import org.drip.function.definition.R1ToR1;
 import org.drip.function.r1tor1.BernsteinPolynomial;
 import org.drip.function.r1tor1.ExponentialTension;
 import org.drip.function.r1tor1.HyperbolicTension;
-import org.drip.function.r1tor1.Polynomial;
+import org.drip.function.r1tor1operator.Polynomial;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -312,14 +312,14 @@ public class FunctionSetBuilder
 		if (null == kaklisPandelisSetParams) return null;
 
 		try {
-			org.drip.function.definition.R1ToR1 auLinearPoly = new org.drip.function.r1tor1.Polynomial
+			org.drip.function.definition.R1ToR1 auLinearPoly = new org.drip.function.r1tor1operator.Polynomial
 				(1);
 
 			org.drip.function.definition.R1ToR1 auReflectedLinearPoly = new
 				org.drip.function.r1tor1operator.Reflection (auLinearPoly);
 
 			org.drip.function.definition.R1ToR1 auKaklisPandelisPolynomial = new
-				org.drip.function.r1tor1.Polynomial (kaklisPandelisSetParams.polynomialTensionDegree());
+				org.drip.function.r1tor1operator.Polynomial (kaklisPandelisSetParams.polynomialTensionDegree());
 
 			return new org.drip.spline.basis.FunctionSet (new org.drip.function.definition.R1ToR1[]
 				{auReflectedLinearPoly, auLinearPoly, new org.drip.function.r1tor1operator.Convolution
@@ -349,17 +349,17 @@ public class FunctionSetBuilder
 		if (null == ersp) return null;
 
 		try {
-			org.drip.function.definition.R1ToR1 auLinearPoly = new org.drip.function.r1tor1.Polynomial
+			org.drip.function.definition.R1ToR1 auLinearPoly = new org.drip.function.r1tor1operator.Polynomial
 				(0);
 
 			org.drip.function.definition.R1ToR1 auLRSC = new
-				org.drip.function.r1tor1.LinearRationalShapeControl (ersp.rationalTension());
+				org.drip.function.r1tor1custom.LinearRationalShapeControl (ersp.rationalTension());
 
 			org.drip.function.definition.R1ToR1 auET = new
 				org.drip.function.r1tor1.ExponentialTension (java.lang.Math.E, -ersp.exponentialTension());
 
 			org.drip.function.definition.R1ToR1 auLRET = new
-				org.drip.function.r1tor1.LinearRationalTensionExponential (-ersp.exponentialTension(),
+				org.drip.function.r1tor1custom.LinearRationalTensionExponential (-ersp.exponentialTension(),
 					ersp.rationalTension());
 
 			return new org.drip.spline.basis.FunctionSet (new org.drip.function.definition.R1ToR1[]
@@ -388,7 +388,7 @@ public class FunctionSetBuilder
 
 		try {
 			org.drip.function.definition.R1ToR1 auLinearPoly = new
-				org.drip.function.r1tor1.Polynomial (0);
+				org.drip.function.r1tor1operator.Polynomial (0);
 
 			org.drip.function.definition.R1ToR1 auExp1 = new
 				org.drip.function.r1tor1.ExponentialTension (java.lang.Math.E, -emsp.tension (0));

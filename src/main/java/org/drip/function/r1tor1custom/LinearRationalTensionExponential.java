@@ -1,15 +1,21 @@
 
-package org.drip.function.r1tor1operator;
-
-import org.drip.function.definition.R1ToR1;
-import org.drip.numerical.common.NumberUtil;
+package org.drip.function.r1tor1custom;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
- * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2022 Lakshmi Krishnamurthy
+ * Copyright (C) 2021 Lakshmi Krishnamurthy
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
+ * Copyright (C) 2018 Lakshmi Krishnamurthy
+ * Copyright (C) 2017 Lakshmi Krishnamurthy
+ * Copyright (C) 2016 Lakshmi Krishnamurthy
+ * Copyright (C) 2015 Lakshmi Krishnamurthy
+ * Copyright (C) 2014 Lakshmi Krishnamurthy
+ * Copyright (C) 2013 Lakshmi Krishnamurthy
  * 
  *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
  *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
@@ -77,75 +83,48 @@ import org.drip.numerical.common.NumberUtil;
  */
 
 /**
- * <i>Reciprocal</i> implements the <code>1/x</code> Operator Function. The References are:
- * 
- * <br><br>
- * 	<ul>
- * 		<li>
- * 			Belsley, D. A., E. Kuh, and R. E. Welsch (1980): <i>Regression Dynamics: Identifying Influential
- * 				Data and Sources of Collinearity</i> <b>John Wiley and Sons</b> New York NY
- * 		</li>
- * 		<li>
- * 			Cheney, K. (2008): <i>Numerical Mathematics and Computing</i> <b>Cengage Learning</b> New York NY
- * 		</li>
- * 		<li>
- * 			Pesaran, M. H. (2015): <i>Time Series and Panel Data Econometrics</i> <b>Oxford University
- * 				Press</b> New York NY
- * 		</li>
- * 		<li>
- * 			Trefethen, L. N., and D. Bau III (1997): <i>Numerical Linear Algebra</i> <b>Society for
- * 				Industrial and Applied Mathematics</b> Philadelphia PA
- * 		</li>
- * 		<li>
- * 			Wikipedia (2024): Condition Number https://en.wikipedia.org/wiki/Condition_number
- * 		</li>
- * 	</ul>
- * 
- * <br><br>
+ * <i>LinearRationalTensionExponential</i> provides the evaluation of the Convolution of the Linear Rational
+ * and the Tension Exponential Functions and its derivatives for a specified variate.
+ *
+ *	<br><br>
  *  <ul>
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md">Numerical Analysis Library</a></li>
  *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function/README.md">R<sup>d</sup> To R<sup>d</sup> Function Analysis</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function/r1tor1operator/README.md">Built-in R<sup>1</sup> To R<sup>1</sup> Operator Functions</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function/r1tor1custom/README.md">Built-in R<sup>1</sup> To R<sup>1</sup> Custom Functions</a></li>
  *  </ul>
- * <br><br>
- *
+ *  
  * @author Lakshmi Krishnamurthy
  */
 
-public class Reciprocal extends R1ToR1
-{
+public class LinearRationalTensionExponential extends org.drip.function.r1tor1operator.Convolution {
+
 	/**
-	 * <i>Addition</i> Constructor
+	 * Construct a LinearRationalTensionExponential instance
 	 * 
-	 * @throws Exception Thrown if the Input is Invalid
+	 * @param dblExponentialTension Exponential Tension Parameter
+	 * @param dblRationalTension Rational Tension Parameter
+	 * 
+	 * @throws java.lang.Exception Thrown if the inputs are invalid
 	 */
 
-	public Reciprocal()
-		throws Exception
+	public LinearRationalTensionExponential (
+		final double dblExponentialTension,
+		final double dblRationalTension)
+		throws java.lang.Exception
 	{
-		super (null);
+		super (new org.drip.function.r1tor1.ExponentialTension (java.lang.Math.E, dblExponentialTension), new
+			org.drip.function.r1tor1custom.LinearRationalShapeControl (dblRationalTension));
 	}
 
-	@Override public double evaluate (
-		final double x)
-		throws Exception
+	/* public static final void main (
+		final java.lang.String[] astrArgs)
+		throws java.lang.Exception
 	{
-		if (!NumberUtil.IsValid (x)) {
-			throw new Exception ("Reciprocal::evaluate => Invalid Inputs");
-		}
+		LinearRationalTensionExponential lret = new LinearRationalTensionExponential (-1., 1.);
 
-		return 1. / x;
-	}
+		System.out.println ("LRET[0.00] = " + lret.evaluate (0.00));
 
-	@Override public double conditionNumber (
-		final double x)
-		throws Exception
-	{
-		if (!NumberUtil.IsValid (x)) {
-			throw new Exception ("Reciprocal::conditionNumber => Invalid Inputs");
-		}
-
-		return 1.;
-	}
+		System.out.println ("LRETDeriv[0.00] = " + lret.derivative (0.00, 1));
+	} */
 }

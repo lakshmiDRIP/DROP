@@ -4,7 +4,7 @@ package org.drip.sample.fx;
 import java.util.Map;
 
 import org.drip.analytics.date.*;
-import org.drip.function.r1tor1.QuadraticRationalShapeControl;
+import org.drip.function.r1tor1custom.QuadraticRationalShapeControl;
 import org.drip.param.market.CurveSurfaceQuoteContainer;
 import org.drip.param.valuation.ValuationParams;
 import org.drip.product.fx.FXForwardComponent;

@@ -6,7 +6,7 @@ import java.util.Map;
 
 import org.drip.analytics.support.CaseInsensitiveHashMap;
 import org.drip.function.definition.R1ToR1;
-import org.drip.function.r1tor1.ISDABucketCurvatureTenorScaler;
+import org.drip.function.r1tor1custom.ISDABucketCurvatureTenorScaler;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-

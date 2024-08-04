@@ -1,5 +1,5 @@
 
-package org.drip.function.r1tor1;
+package org.drip.function.r1tor1trigonometric;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -10,12 +10,6 @@ package org.drip.function.r1tor1;
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
- * Copyright (C) 2018 Lakshmi Krishnamurthy
- * Copyright (C) 2017 Lakshmi Krishnamurthy
- * Copyright (C) 2016 Lakshmi Krishnamurthy
- * Copyright (C) 2015 Lakshmi Krishnamurthy
- * Copyright (C) 2014 Lakshmi Krishnamurthy
- * Copyright (C) 2013 Lakshmi Krishnamurthy
  * 
  *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
  *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
@@ -83,78 +77,45 @@ package org.drip.function.r1tor1;
  */
 
 /**
- * <i>NaturalLogSeriesElement</i> implements an element in the natural log series expansion.
+ * <i>Sinc</i> computes the Pi Z-Scaled Reciprocal of the Sine Function of Pi times the Argument.
  *
  *	<br><br>
  *  <ul>
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md">Numerical Analysis Library</a></li>
  *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function/README.md">R<sup>d</sup> To R<sup>d</sup> Function Analysis</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function/r1tor1/README.md">Built-in R<sup>1</sup> To R<sup>1</sup> Functions</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function/r1tor1trigonometric/README.md">Built-in R<sup>1</sup> To R<sup>1</sup> Trigonometric Functions</a></li>
  *  </ul>
- *  
+ *
  * @author Lakshmi Krishnamurthy
  */
 
-public class NaturalLogSeriesElement extends org.drip.function.definition.R1ToR1 {
-	private int _iExponent = -1;
+public class Sinc extends org.drip.function.definition.R1ToR1
+{
 
 	/**
-	 * NaturalLogSeriesElement constructor
+	 * Sinc Constructor
 	 * 
-	 * @param iExponent The series exponent
-	 * 
-	 * @throws java.lang.Exception Thrown if the inputs are invalid
+	 * @param dc The Derivative Control
 	 */
 
-	public NaturalLogSeriesElement (
-		final int iExponent)
-		throws java.lang.Exception
+	public Sinc (
+		final org.drip.numerical.differentiation.DerivativeControl dc)
 	{
-		super (null);
-
-		if (0 > (_iExponent = iExponent))
-			throw new java.lang.Exception ("NaturalLogSeriesElement ctr: Invalid Inputs");
+		super (dc);
 	}
 
 	@Override public double evaluate (
-		final double dblVariate)
+		final double z)
 		throws java.lang.Exception
 	{
-		return java.lang.Math.pow (dblVariate, _iExponent) / org.drip.numerical.common.NumberUtil.Factorial
-			(_iExponent);
-	}
+		if (!org.drip.numerical.common.NumberUtil.IsValid (z))
+		{
+			throw new java.lang.Exception ("Sinc::evaluate => Invalid Inputs");
+		}
 
-	@Override public double derivative (
-		final double dblVariate,
-		final int iOrder)
-		throws java.lang.Exception
-	{
-		return iOrder > _iExponent ? 0. : java.lang.Math.pow (dblVariate, _iExponent - iOrder) /
-			org.drip.numerical.common.NumberUtil.Factorial (_iExponent - iOrder);
-	}
+		double argument = java.lang.Math.PI * z;
 
-	@Override public double integrate (
-		final double dblBegin,
-		final double dblEnd)
-		throws java.lang.Exception
-	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (dblBegin) || !org.drip.numerical.common.NumberUtil.IsValid
-			(dblEnd))
-			throw new java.lang.Exception ("NaturalLogSeriesElement::integrate => Invalid Inputs");
-
-		return (java.lang.Math.pow (dblEnd, _iExponent) - java.lang.Math.pow (dblBegin, _iExponent)) /
-			org.drip.numerical.common.NumberUtil.Factorial (_iExponent + 1);
-	}
-
-	/**
-	 * Retrieve the exponent in the natural log series
-	 * 
-	 * @return Exponent in the natural log series
-	 */
-
-	public int getExponent()
-	{
-		return _iExponent;
+		return 0. == z ? 1. : java.lang.Math.sin (argument) / argument;
 	}
 }

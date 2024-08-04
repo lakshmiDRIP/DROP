@@ -1,5 +1,5 @@
 
-package org.drip.function.r1tor1;
+package org.drip.function.r1tor1custom;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -10,6 +10,11 @@ package org.drip.function.r1tor1;
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
+ * Copyright (C) 2018 Lakshmi Krishnamurthy
+ * Copyright (C) 2017 Lakshmi Krishnamurthy
+ * Copyright (C) 2016 Lakshmi Krishnamurthy
+ * Copyright (C) 2015 Lakshmi Krishnamurthy
+ * Copyright (C) 2014 Lakshmi Krishnamurthy
  * 
  *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
  *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
@@ -77,45 +82,128 @@ package org.drip.function.r1tor1;
  */
 
 /**
- * <i>Sinc</i> computes the Pi Z-Scaled Reciprocal of the Sine Function of Pi times the Argument.
+ * <i>SABRLIBORCapVolatility</i> implements the Deterministic, Non-local Cap Volatility Scheme detailed in:
+ * 
+ * <br><br>
+ * 	<ul>
+ * 		<li>
+ * 			Rebonato, R., K. McKay, and R. White (2009): <i>The SABR/LIBOR Market Model: Pricing,
+ * 				Calibration, and Hedging for Complex Interest-Rate Derivatives</i> <b>John Wiley and Sons</b>
+ * 		</li>
+ * 	</ul>
  *
  *	<br><br>
  *  <ul>
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md">Numerical Analysis Library</a></li>
  *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function/README.md">R<sup>d</sup> To R<sup>d</sup> Function Analysis</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function/r1tor1/README.md">Built-in R<sup>1</sup> To R<sup>1</sup> Functions</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/function/r1tor1custom/README.md">Built-in R<sup>1</sup> To R<sup>1</sup> Custom Functions</a></li>
  *  </ul>
- *
+ * 
  * @author Lakshmi Krishnamurthy
  */
 
-public class Sinc extends org.drip.function.definition.R1ToR1
-{
+public class SABRLIBORCapVolatility extends org.drip.function.definition.R1ToR1 {
+	private double _dblA = java.lang.Double.NaN;
+	private double _dblB = java.lang.Double.NaN;
+	private double _dblC = java.lang.Double.NaN;
+	private double _dblD = java.lang.Double.NaN;
+	private double _dblEpoch = java.lang.Double.NaN;
 
 	/**
-	 * Sinc Constructor
+	 * SABRLIBORCapVolatility Constructor
 	 * 
-	 * @param dc The Derivative Control
+	 * @param dblEpoch Epoch
+	 * @param dblA A
+	 * @param dblB B
+	 * @param dblC C
+	 * @param dblD D
+	 * 
+	 * @throws java.lang.Exception Thrown if Inputs are Invalid
 	 */
 
-	public Sinc (
-		final org.drip.numerical.differentiation.DerivativeControl dc)
+	public SABRLIBORCapVolatility (
+		final double dblEpoch,
+		final double dblA,
+		final double dblB,
+		final double dblC,
+		final double dblD)
+		throws java.lang.Exception
 	{
-		super (dc);
+		super (null);
+
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblEpoch = dblEpoch) ||
+				!org.drip.numerical.common.NumberUtil.IsValid (_dblA = dblA) ||
+					!org.drip.numerical.common.NumberUtil.IsValid (_dblB = dblB) ||
+						!org.drip.numerical.common.NumberUtil.IsValid (_dblC = dblC) ||
+							!org.drip.numerical.common.NumberUtil.IsValid (_dblD = dblD))
+			throw new java.lang.Exception ("SABRLIBORCapVolatility ctr: Invalid Inputs");
 	}
 
 	@Override public double evaluate (
-		final double z)
+		final double dblVariate)
 		throws java.lang.Exception
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (z))
-		{
-			throw new java.lang.Exception ("Sinc::evaluate => Invalid Inputs");
-		}
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblVariate))
+			throw new java.lang.Exception ("SABRLIBORCapVolatility::evaluate => Invalid Inputs");
 
-		double argument = java.lang.Math.PI * z;
+		double dblDateGap = dblVariate - _dblEpoch;
 
-		return 0. == z ? 1. : java.lang.Math.sin (argument) / argument;
+		return (_dblB * dblDateGap + _dblA) * java.lang.Math.exp (-1. * _dblC * dblDateGap) + _dblD;
+	}
+
+	/**
+	 * Return "A"
+	 * 
+	 * @return "A"
+	 */
+
+	public double A()
+	{
+		return _dblA;
+	}
+
+	/**
+	 * Return "B"
+	 * 
+	 * @return "B"
+	 */
+
+	public double B()
+	{
+		return _dblB;
+	}
+
+	/**
+	 * Return "C"
+	 * 
+	 * @return "C"
+	 */
+
+	public double C()
+	{
+		return _dblC;
+	}
+
+	/**
+	 * Return "D"
+	 * 
+	 * @return "D"
+	 */
+
+	public double D()
+	{
+		return _dblD;
+	}
+
+	/**
+	 * Return the Epoch
+	 * 
+	 * @return The Epoch
+	 */
+
+	public double epoch()
+	{
+		return _dblEpoch;
 	}
 }
