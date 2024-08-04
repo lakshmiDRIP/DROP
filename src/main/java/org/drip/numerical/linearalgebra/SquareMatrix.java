@@ -292,6 +292,17 @@ public class SquareMatrix
 	}
 
 	/**
+	 * Perform Singular Value Decomposition and Extract the Components of the Specified Matrix
+	 * 
+	 * @return The Singular Value Decomposition Components
+	 */
+
+	public EigenOutput svd()
+	{
+		return QREigenComponentExtractor.Standard().eigenize (_r2Array);
+	}
+
+	/**
 	 * Retrieve the Array of Diagonal Entries
 	 * 
 	 * @return Array of Diagonal Entries
@@ -326,7 +337,7 @@ public class SquareMatrix
 	 * 
 	 * @return Determinant of the Matrix
 	 * 
-	 * @throws Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Determinant cannot be calculated
 	 */
 
 	public double determinant()
@@ -339,6 +350,40 @@ public class SquareMatrix
 		}
 
 		return eigenOutput.determinant();
+	}
+
+	/**
+	 * Compute the L<sub>2</sub> Condition Number of the Matrix
+	 * 
+	 * @return L<sub>2</sub> Condition Number of the Matrix
+	 * 
+	 * @throws Exception Thrown if the Condition Number cannot be calculated
+	 */
+
+	public double conditionNumberL2()
+		throws Exception
+	{
+		EigenOutput eigenOutput = svd();
+
+		if (null == eigenOutput) {
+			throw new Exception ("SquareMatrix::conditionNumberL2 => Cannot compute SVD");
+		}
+
+		return eigenOutput.conditionNumber();
+	}
+
+	/**
+	 * Compute the Default Condition Number of the Matrix
+	 * 
+	 * @return Default Condition Number of the Matrix
+	 * 
+	 * @throws Exception Thrown if the Default Condition Number cannot be calculated
+	 */
+
+	public double defaultConditionNumber()
+		throws Exception
+	{
+		return conditionNumberL2();
 	}
 
 	/**

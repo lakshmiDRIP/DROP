@@ -224,4 +224,32 @@ public class EigenOutput
 			}
 		};
 	}
+
+	/**
+	 * Compute the Condition Number using the Eigenvalue Array
+	 * 
+	 * @return Condition Number
+	 */
+
+	public double conditionNumber()
+	{
+		double firstAbsoluteEigenvalue = Math.abs (_eigenValueArray[0]);
+
+		double minimumEigenvalue = firstAbsoluteEigenvalue;
+		double maximumEigenvalue = firstAbsoluteEigenvalue;
+
+		for (int i = 1; i < _eigenValueArray.length; ++i) {
+			double absoluteEigenvalue = Math.abs (_eigenValueArray[i]);
+
+			if (minimumEigenvalue > absoluteEigenvalue) {
+				minimumEigenvalue = absoluteEigenvalue;
+			}
+
+			if (maximumEigenvalue < absoluteEigenvalue) {
+				maximumEigenvalue = absoluteEigenvalue;
+			}
+		}
+
+		return maximumEigenvalue / minimumEigenvalue;
+	}
 }

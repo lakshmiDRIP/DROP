@@ -117,6 +117,24 @@ public interface GeneralizedMetricVectorSpace extends GeneralizedVector
 {
 
 	/**
+	 * Euclidean (i.e., L<sub>2</sub>) Norm
+	 */
+
+	public static final int EUCLIDEAN_NORM = 2;
+
+	/**
+	 * L<sub>2</sub> Norm
+	 */
+
+	public static final int L2_NORM = 2;
+
+	/**
+	 * L<sub>Infinity</sub> Norm
+	 */
+
+	public static final int LINFINITITY_NORM = 100;
+
+	/**
 	 * Retrieve the P-Norm Index of the Metric Space
 	 * 
 	 * @return The P-Norm Index of the Metric Space

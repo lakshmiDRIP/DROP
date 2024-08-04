@@ -1,6 +1,8 @@
 
 package org.drip.function.definition;
 
+import org.drip.numerical.common.NumberUtil;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
@@ -126,6 +128,119 @@ public abstract class RdToR1 {
 		}
 
 		return true;
+	}
+
+	private double normedVariateL2 (
+		final double[] variateArray)
+		throws Exception
+	{
+		if (null == variateArray || 0 == variateArray.length || !NumberUtil.IsValid (variateArray)) {
+			throw new Exception ("RdToR1::normedVariateL2 => Cannot calculate Jacobian");
+		}
+
+		double normedVariate = 0.;
+
+		for (double variate : variateArray) {
+			normedVariate += Math.abs (variate * variate);
+		}
+
+		return Math.sqrt (normedVariate);
+	}
+
+	private double normedVariateLp (
+		final double[] variateArray,
+		final int p)
+		throws Exception
+	{
+		if (null == variateArray || 0 == variateArray.length || !NumberUtil.IsValid (variateArray) || 2 >= p)
+		{
+			throw new Exception ("RdToR1::normedVariateLp => Cannot calculate Jacobian");
+		}
+
+		double normedVariate = 0.;
+
+		for (double variate : variateArray) {
+			normedVariate += Math.pow (Math.abs (variate), p);
+		}
+
+		return Math.pow (normedVariate, 1. / p);
+	}
+
+	private double normedVariateLInfinity (
+		final double[] variateArray)
+		throws Exception
+	{
+		if (null == variateArray || 0 == variateArray.length || !NumberUtil.IsValid (variateArray)) {
+			throw new Exception ("RdToR1::normedVariateLInfinity => Cannot calculate Jacobian");
+		}
+
+		double normedVariate = 0.;
+
+		for (double variate : variateArray) {
+			normedVariate += Math.abs (variate);
+		}
+
+		return normedVariate;
+	}
+
+	private double normedJacobianL2 (
+		final double[] variateArray)
+		throws Exception
+	{
+		double[] jacobianArray = jacobian (variateArray);
+
+		if (null == jacobianArray || jacobianArray.length != variateArray.length) {
+			throw new Exception ("RdToR1::normedJacobianL2 => Cannot calculate Jacobian");
+		}
+
+		double normedJacobian = 0.;
+
+		for (double jacobianEntry : jacobianArray) {
+			normedJacobian += Math.abs (jacobianEntry * jacobianEntry);
+		}
+
+		return Math.abs (normedJacobian);
+	}
+
+	private double normedJacobianLp (
+		final double[] variateArray,
+		final int p)
+		throws Exception
+	{
+		double[] jacobianArray = jacobian (variateArray);
+
+		if (null == jacobianArray || jacobianArray.length != variateArray.length ||
+			!NumberUtil.IsValid (jacobianArray) || 2 >= p)
+		{
+			throw new Exception ("RdToR1::normedJacobianLp => Cannot calculate Jacobian");
+		}
+
+		double normedJacobianLp = 0.;
+
+		for (double jacobianElement : jacobianArray) {
+			normedJacobianLp += Math.pow (Math.abs (jacobianElement), p);
+		}
+
+		return Math.pow (normedJacobianLp, 1. / p);
+	}
+
+	private double normedJacobianLInfinity (
+		final double[] variateArray)
+		throws Exception
+	{
+		double[] jacobianArray = jacobian (variateArray);
+
+		if (null == jacobianArray || jacobianArray.length != variateArray.length) {
+			throw new Exception ("RdToR1::normedJacobianLInfinity => Cannot calculate Jacobian");
+		}
+
+		double normedJacobian = 0.;
+
+		for (double jacobianEntry : jacobianArray) {
+			normedJacobian += Math.abs (jacobianEntry);
+		}
+
+		return normedJacobian;
 	}
 
 	protected RdToR1 (
@@ -584,5 +699,87 @@ public abstract class RdToR1 {
 		};
 
 		return gradientModulusRdToR1;
+	}
+
+	/**
+	 * Retrieve the L<sub>2</sub> Condition Number for the Function at the Domain Value
+	 * 
+	 * @param variateArray Domain Variate Array
+	 * 
+	 * @return Condition Number for the Function at the Domain Value
+	 * 
+	 * @throws Exception Thrown if the Condition Number for the Function at the Domain Value cannot be
+	 * 	calculated
+	 */
+
+	public double conditionNumberL2 (
+		final double[] variateArray)
+		throws Exception
+	{
+		return Math.abs (
+			normedJacobianL2 (variateArray) * normedVariateL2 (variateArray) / evaluate (variateArray)
+		);
+	}
+
+	/**
+	 * Retrieve the L<sub>p</sub> Condition Number for the Function at the Domain Value
+	 * 
+	 * @param variateArray Domain Variate Array
+	 * @param p p-Norm
+	 * 
+	 * @return Condition Number for the Function at the Domain Value
+	 * 
+	 * @throws Exception Thrown if the Condition Number for the Function at the Domain Value cannot be
+	 * 	calculated
+	 */
+
+	public double conditionNumberLp (
+		final double[] variateArray,
+		final int p)
+		throws Exception
+	{
+		return Math.abs (
+			normedJacobianLp (variateArray, p) * normedVariateLp (variateArray, p) / evaluate (variateArray)
+		);
+	}
+
+	/**
+	 * Retrieve the L<sub>Infinity</sub> Condition Number for the Function at the Domain Value
+	 * 
+	 * @param variateArray Domain Variate Array
+	 * 
+	 * @return Condition Number for the Function at the Domain Value
+	 * 
+	 * @throws Exception Thrown if the Condition Number for the Function at the Domain Value cannot be
+	 * 	calculated
+	 */
+
+	public double conditionNumberLInfinity (
+		final double[] variateArray)
+		throws Exception
+	{
+		return Math.abs (
+			normedJacobianLInfinity (variateArray) * normedVariateLInfinity (variateArray) /
+				evaluate (variateArray)
+		);
+	}
+
+	/**
+	 * Retrieve the Default Condition Number for the Function at the Domain Value - this uses L<sub>2</sub> 
+	 * 	Metric
+	 * 
+	 * @param variateArray Domain Variate Array
+	 * 
+	 * @return Condition Number for the Function at the Domain Value
+	 * 
+	 * @throws Exception Thrown if the Condition Number for the Function at the Domain Value cannot be
+	 * 	calculated
+	 */
+
+	public double conditionNumber (
+		final double[] variateArray)
+		throws Exception
+	{
+		return conditionNumberL2 (variateArray);
 	}
 }

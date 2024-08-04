@@ -4,6 +4,7 @@ package org.drip.sample.conditionnumber;
 import org.drip.function.r1tor1operator.Addition;
 import org.drip.function.r1tor1operator.Exponential;
 import org.drip.function.r1tor1operator.NaturalLogarithm;
+import org.drip.function.r1tor1operator.Polynomial;
 import org.drip.function.r1tor1operator.Reciprocal;
 import org.drip.function.r1tor1operator.Scaler;
 import org.drip.service.common.FormatUtil;
@@ -146,46 +147,51 @@ public class OperatorFunctions
 
 		Exponential exponential = new Exponential();
 
+		Polynomial polynomial = new Polynomial (5);
+
 		NaturalLogarithm naturalLogarithm = new NaturalLogarithm();
 
-		System.out.println ("\t|---------------------------------------------------------------------||");
+		System.out.println ("\t|----------------------------------------------------------------||");
 
-		System.out.println ("\t|                 OPERATOR FUNCTION CONDITION NUMBERS                 ||");
+		System.out.println ("\t|              OPERATOR FUNCTION CONDITION NUMBERS               ||");
 
-		System.out.println ("\t|---------------------------------------------------------------------||");
+		System.out.println ("\t|----------------------------------------------------------------||");
 
-		System.out.println ("\t|  Input L -> R:                                                      ||");
+		System.out.println ("\t|  Input L -> R:                                                 ||");
 
-		System.out.println ("\t|    - Variate                                                        ||");
+		System.out.println ("\t|    - Variate                                                   ||");
 
-		System.out.println ("\t|---------------------------------------------------------------------||");
+		System.out.println ("\t|----------------------------------------------------------------||");
 
-		System.out.println ("\t|  Output L -> R:                                                     ||");
+		System.out.println ("\t|  Output L -> R:                                                ||");
 
-		System.out.println ("\t|    - Addition                                                       ||");
+		System.out.println ("\t|    - Addition                                                  ||");
 
-		System.out.println ("\t|    - Scaler                                                         ||");
+		System.out.println ("\t|    - Scaler                                                    ||");
 
-		System.out.println ("\t|    - Reciprocal                                                     ||");
+		System.out.println ("\t|    - Reciprocal                                                ||");
 
-		System.out.println ("\t|    - Exponential                                                    ||");
+		System.out.println ("\t|    - Exponential                                               ||");
 
-		System.out.println ("\t|    - Natural Logarithm                                              ||");
+		System.out.println ("\t|    - Polynomial                                                ||");
 
-		System.out.println ("\t|---------------------------------------------------------------------||");
+		System.out.println ("\t|    - Natural Logarithm                                         ||");
+
+		System.out.println ("\t|----------------------------------------------------------------||");
 
 		for (double x : xArray) {
 			System.out.println (
 				"\t| [" + FormatUtil.FormatDouble (x, 3, 2, 1.) + "] =>" +
 				FormatUtil.FormatDouble (addition.conditionNumber (x), 1, 6, 1.) + " |" +
-				FormatUtil.FormatDouble (scaler.conditionNumber (x), 1, 6, 1.) + " |" +
-				FormatUtil.FormatDouble (reciprocal.conditionNumber (x), 1, 6, 1.) + " |" +
-				FormatUtil.FormatDouble (exponential.conditionNumber (x), 3, 6, 1.) + " |" +
+				FormatUtil.FormatDouble (scaler.conditionNumber (x), 1, 2, 1.) + " |" +
+				FormatUtil.FormatDouble (reciprocal.conditionNumber (x), 1, 2, 1.) + " |" +
+				FormatUtil.FormatDouble (exponential.conditionNumber (x), 3, 2, 1.) + " |" +
+				FormatUtil.FormatDouble (polynomial.conditionNumber (x), 1, 2, 1.) + " |" +
 				FormatUtil.FormatDouble (naturalLogarithm.conditionNumber (x), 1, 6, 1.) + " ||"
 			);
 		}
 
-		System.out.println ("\t|---------------------------------------------------------------------||");
+		System.out.println ("\t|----------------------------------------------------------------||");
 
 		EnvManager.TerminateEnv();
 	}

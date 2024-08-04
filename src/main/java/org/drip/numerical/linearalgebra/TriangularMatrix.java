@@ -587,12 +587,45 @@ public class TriangularMatrix extends SquareMatrix
 	}
 
 	/**
+	 * Compute the L<sub>Infinity</sub> Condition Number of the Matrix
+	 * 
+	 * @return L<sub>Infinity</sub> Condition Number of the Matrix
+	 * 
+	 * @throws Exception Thrown if the Condition Number cannot be calculated
+	 */
+
+	public double conditionNumberLInfinity()
+		throws Exception
+	{
+		double[][] r2Array = r2Array();
+
+		double firstAbsoluteEigenvalue = Math.abs (r2Array[0][0]);
+
+		double minimumEigenvalue = firstAbsoluteEigenvalue;
+		double maximumEigenvalue = firstAbsoluteEigenvalue;
+
+		for (int i = 1; i < r2Array.length; ++i) {
+			double absoluteEigenvalue = Math.abs (r2Array[i][i]);
+
+			if (minimumEigenvalue > absoluteEigenvalue) {
+				minimumEigenvalue = absoluteEigenvalue;
+			}
+
+			if (maximumEigenvalue < absoluteEigenvalue) {
+				maximumEigenvalue = absoluteEigenvalue;
+			}
+		}
+
+		return maximumEigenvalue / minimumEigenvalue;
+	}
+
+	/**
 	 * Retrieve the Characteristic Polynomial of the Eigenvalues
 	 * 
 	 * @return Characteristic Polynomial of the Eigenvalues
 	 */
 
-	public R1ToR1 characteristicPolynomial()
+	@Override public R1ToR1 characteristicPolynomial()
 	{
 		final double[] diagonalEntryArray = diagonalEntryArray();
 
