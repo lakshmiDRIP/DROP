@@ -11,7 +11,7 @@ Numerical Analysis Library contains the supporting Functionality for Numerical M
 
  |        Document         | Link |
  |-------------------------|------|
- | Technical Specification | [*Latest*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/NumericalAnalysis/NumericalAnalysis_v6.45.pdf) [*Previous*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/NumericalAnalysis) |
+ | Technical Specification | [*Latest*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/NumericalAnalysis/NumericalAnalysis_v6.46.pdf) [*Previous*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/NumericalAnalysis) |
  | User Guide              |  |
  | API                     | [*Javadoc*](https://lakshmidrip.github.io/DROP/Javadoc/index.html)|
 
@@ -413,8 +413,15 @@ Numerical Analysis Library contains the supporting Functionality for Numerical M
 	* General Definition in the Context of Error Analysis
 	* Matrices
 	* Non-linear
-		* One variable
-		* Several variables
+		* One Variable
+		* Several Variables
+	* References
+ * Unitary Matrix
+	* Introduction
+	* Properties
+	* Equivalent Conditions
+	* Elementary Constructions
+		* 2 × 2 Unitary Matrix
 	* References
 
 
