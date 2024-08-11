@@ -141,8 +141,8 @@ public class C1MatrixUtil
 	 * Compute the Product of the Input Matrices. Unsafe Methods do not validate the Input Arguments, so
 	 * 	<b>use caution</b> in applying these Methods
 	 *
-	 * @param c1GridA Grid of <i>C1Cartesian</i>
-	 * @param c1GridB Grid of <i>C1Cartesian</i>
+	 * @param c1GridA Grid of C<sup>1</sup> A
+	 * @param c1GridB Grid of C<sup>1</sup> B
 	 * 
 	 * @return The Product Matrix
 	 */
@@ -156,11 +156,16 @@ public class C1MatrixUtil
 		for (int rowIndex = 0; rowIndex < c1GridA.length; ++rowIndex) {
 			for (int columnIndex = 0; columnIndex < c1GridB[0].length; ++columnIndex) {
 				product[rowIndex][columnIndex] = C1Cartesian.Zero();
+			}
+		}
 
+		for (int rowIndex = 0; rowIndex < c1GridA.length; ++rowIndex) {
+			for (int columnIndex = 0; columnIndex < c1GridB[0].length; ++columnIndex) {
 				for (int k = 0; k < c1GridA[0].length; ++k) {
 					if (null == product[rowIndex][columnIndex].add (
 						C1Util.Multiply (c1GridA[rowIndex][k], c1GridB[k][columnIndex])
-					)) {
+					))
+					{
 						return null;
 					}
 				}
@@ -168,6 +173,98 @@ public class C1MatrixUtil
 		}
 
 		return product;
+	}
+
+	/**
+	 * Compute the Product of the Input Matrices. Unsafe Methods do not validate the Input Arguments, so
+	 * 	<b>use caution</b> in applying these Methods
+	 *
+	 * @param c1GridA Grid of C<sup>1</sup>
+	 * @param r1GridB Grid of R<sup>1</sup>
+	 * 
+	 * @return The Product Matrix
+	 */
+
+	public static final C1Cartesian[][] UnsafeProduct (
+		final C1Cartesian[][] c1GridA,
+		final double[][] r1GridB)
+	{
+		C1Cartesian[][] product = new C1Cartesian[c1GridA.length][r1GridB[0].length];
+
+		for (int rowIndex = 0; rowIndex < c1GridA.length; ++rowIndex) {
+			for (int columnIndex = 0; columnIndex < r1GridB[0].length; ++columnIndex) {
+				product[rowIndex][columnIndex] = C1Cartesian.Zero();
+			}
+		}
+
+		for (int rowIndex = 0; rowIndex < c1GridA.length; ++rowIndex) {
+			for (int columnIndex = 0; columnIndex < r1GridB[0].length; ++columnIndex) {
+				for (int k = 0; k < c1GridA[0].length; ++k) {
+					if (null == product[rowIndex][columnIndex].add (
+						c1GridA[rowIndex][k].scale (r1GridB[k][columnIndex])
+					))
+					{
+						return null;
+					}
+				}
+			}
+		}
+
+		return product;
+	}
+
+	/**
+	 * Indicate the C<sup>1</sup> Vector is Valid
+	 * 
+	 * @param c1Vector C<sup>1</sup> Vector
+	 * 
+	 * @return TRUE - The C<sup>1</sup> Vector is Valid
+	 */
+
+	public static final boolean IsVectorValid (
+		final C1Cartesian[] c1Vector)
+	{
+		if (null == c1Vector || 0 == c1Vector.length) {
+			return false;
+		}
+
+		for (int i = 0; i < c1Vector.length; ++i) {
+			if (null == c1Vector[i]) {
+				return false;
+			}
+		}
+
+		return true;
+	}
+
+	/**
+	 * Indicate the C<sup>1</sup> Grid is Valid
+	 * 
+	 * @param c1Grid C<sup>1</sup> Grid
+	 * 
+	 * @return TRUE - The C<sup>1</sup> Grid is Valid
+	 */
+
+	public static final boolean IsGridValid (
+		final C1Cartesian[][] c1Grid)
+	{
+		if (null == c1Grid || null == c1Grid[0]) {
+			return false;
+		}
+
+		for (int i = 0; i < c1Grid.length; ++i) {
+			if (null == c1Grid[i] || 0 == c1Grid[i].length) {
+				return false;
+			}
+
+			for (int j = 0; j < c1Grid[i].length; ++j) {
+				if (null == c1Grid[i][j]) {
+					return false;
+				}
+			}
+		}
+
+		return true;
 	}
 
 	/**
@@ -181,14 +278,14 @@ public class C1MatrixUtil
 	public static final C1Cartesian[][] Transpose (
 		final C1Cartesian[][] c1Grid)
 	{
-		return null == c1Grid || 0 == c1Grid.length ? null : UnsafeTranspose (c1Grid);
+		return !IsGridValid (c1Grid) ? null : UnsafeTranspose (c1Grid);
 	}
 
 	/**
 	 * Compute the Product of the Input Matrices
 	 * 
-	 * @param c1GridA Vector of <i>C1Cartesian</i>
-	 * @param c1GridB Vector of <i>C1Cartesian</i>
+	 * @param c1GridA Grid of C<sup>1</sup> A
+	 * @param c1GridB Grid of C<sup>1</sup> B
 	 * 
 	 * @return The Product Matrix
 	 */
@@ -197,7 +294,50 @@ public class C1MatrixUtil
 		final C1Cartesian[][] c1GridA,
 		final C1Cartesian[][] c1GridB)
 	{
-		return null == c1GridA || 0 == c1GridA[0].length || null == c1GridB || 0 == c1GridB[0].length ? null
-			: UnsafeProduct (c1GridA, c1GridB);
+		return !IsGridValid (c1GridA) || !IsGridValid (c1GridB) ? null : UnsafeProduct (c1GridA, c1GridB);
+	}
+
+	/**
+	 * Compute the Product of the Input Matrices
+	 *
+	 * @param c1GridA Grid of C<sup>1</sup>
+	 * @param r1GridB Grid of R<sup>1</sup>
+	 * 
+	 * @return The Product Matrix
+	 */
+
+	public static final C1Cartesian[][] Product (
+		final C1Cartesian[][] c1GridA,
+		final double[][] r1GridB)
+	{
+		if (!IsGridValid (c1GridA) ||
+			null == r1GridB || 0 == r1GridB.length ||
+			null == r1GridB[0] || 0 == r1GridB[0].length)
+		{
+			return null;
+		};
+
+		C1Cartesian[][] product = new C1Cartesian[c1GridA.length][r1GridB[0].length];
+
+		for (int rowIndex = 0; rowIndex < c1GridA.length; ++rowIndex) {
+			for (int columnIndex = 0; columnIndex < r1GridB[0].length; ++columnIndex) {
+				product[rowIndex][columnIndex] = C1Cartesian.Zero();
+			}
+		}
+
+		for (int rowIndex = 0; rowIndex < c1GridA.length; ++rowIndex) {
+			for (int columnIndex = 0; columnIndex < r1GridB[0].length; ++columnIndex) {
+				for (int k = 0; k < c1GridA[0].length; ++k) {
+					if (null == product[rowIndex][columnIndex].add (
+						c1GridA[rowIndex][k].scale (r1GridB[k][columnIndex])
+					))
+					{
+						return null;
+					}
+				}
+			}
+		}
+
+		return product;
 	}
 }

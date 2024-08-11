@@ -1,5 +1,5 @@
 
-package org.drip.numerical.complex;
+package org.drip.numerical.matrix;
 
 import org.drip.numerical.common.NumberUtil;
 
@@ -76,8 +76,8 @@ import org.drip.numerical.common.NumberUtil;
  */
 
 /**
- * <i>C1CartesianPhiAB</i> implements the type and Functionality associated with a C<sup>1</sup> Square
- * 	Matrix parameterized by <code>a</code>, <code>b</code>, and <code>phi</code> Fields. The References are:
+ * <i>R1SquareRotation2x2</i> implements the 2x2 R<sup>1</sup> Square Rotation Matrix parameterized by
+ *  <code>theta</code>. The References are:
  * 
  * <br><br>
  * 	<ul>
@@ -114,100 +114,52 @@ import org.drip.numerical.common.NumberUtil;
  * @author Lakshmi Krishnamurthy
  */
 
-public class C1CartesianPhiAB extends C1Square
+public class R1SquareRotation2x2 extends R1Square
 {
-	private C1Cartesian _a = null;
-	private C1Cartesian _b = null;
-	private double _phi = Double.NaN;
+	private double _theta = Double.NaN;
 
 	/**
-	 * Construct a Standard Instance of <i>C1CartesianPhiAB</i>
+	 * Construct an Instance of <i>R1SquareRotation2x2</i> from <code>Theta</code>
 	 * 
-	 * @param a "A"
-	 * @param b "B"
-	 * @param phi "Phi"
+	 * @param theta <code>Theta</code>
 	 * 
-	 * @return <i>C1CartesianPhiAB</i> Instance
+	 * @return Instance of <i>R1SquareRotation2x2</i>
 	 */
 
-	public static C1CartesianPhiAB Standard (
-		final C1Cartesian a,
-		final C1Cartesian b,
-		final double phi)
+	public static R1SquareRotation2x2 Standard (
+		final double theta)
 	{
-		if (null == a || null == b || !NumberUtil.IsValid (phi) ||
-			NumberUtil.WithinTolerance (a.square().modulus() + b.square().modulus(), 1.))
-		{
+		if (!NumberUtil.IsValid (theta)) {
 			return null;
 		}
 
-		C1Cartesian ePowerIPhi = C1Cartesian.UnitImaginary().scale (phi).exponentiate();
+		double cosTheta = Math.cos (theta);
 
-		C1Cartesian[][] c1Grid = new C1Cartesian[2][2];
-		c1Grid[0][1] = b;
-		c1Grid[0][0] = a;
+		double sinTheta = Math.sin (theta);
 
-		c1Grid[1][1] = ePowerIPhi.product (a.conjugate());
+		double[][] r1Grid = new double[2][2];
+		r1Grid[1][0] = -1. * sinTheta;
+		r1Grid[1][1] = cosTheta;
+		r1Grid[0][1] = sinTheta;
+		r1Grid[0][0] = cosTheta;
 
-		c1Grid[1][0] = ePowerIPhi.product (b.conjugate()).scale (-1.);
-
-		return new C1CartesianPhiAB (c1Grid, a, b, phi);
+		return new R1SquareRotation2x2 (r1Grid);
 	}
 
-	private C1CartesianPhiAB (
-		final C1Cartesian[][] c1Grid,
-		final C1Cartesian a,
-		final C1Cartesian b,
-		final double phi)
+	protected R1SquareRotation2x2 (
+		final double[][] r1Grid)
 	{
-		super (c1Grid);
-
-		_a = a;
-		_b = b;
-		_phi = phi;
+		super (r1Grid);
 	}
 
 	/**
-	 * Retrieve the <code>a</code> Parameter
+	 * Retrieve <code>Theta</code>
 	 * 
-	 * @return <code>a</code> Parameter
+	 * @return <code>Theta</code>
 	 */
 
-	public C1Cartesian a()
+	public double theta()
 	{
-		return _a;
-	}
-
-	/**
-	 * Retrieve the <code>b</code> Parameter
-	 * 
-	 * @return <code>b</code> Parameter
-	 */
-
-	public C1Cartesian b()
-	{
-		return _b;
-	}
-
-	/**
-	 * Retrieve the <code>phi</code> Parameter
-	 * 
-	 * @return <code>phi</code> Parameter
-	 */
-
-	public double phi()
-	{
-		return _phi;
-	}
-
-	/**
-	 * Retrieve the Determinant
-	 * 
-	 * @return The Determinant
-	 */
-
-	@Override public double determinant()
-	{
-		return C1Cartesian.UnitImaginary().scale (_phi).l2Norm();
+		return _theta;
 	}
 }

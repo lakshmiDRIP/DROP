@@ -119,14 +119,14 @@ public class C1Square
 	private C1Cartesian[][] _c1Grid = null;
 
 	/**
-	 * <i>C1Square</i> Constructor
+	 * Construct a Standard Instance of <i>C1Square</i>
 	 * 
 	 * @param c1Grid Grid of <i>C1Cartesian</i> Elements
 	 * 
 	 * @return <i>C1Square</i> Instance
 	 */
 
-	public static final C1Square Standard (
+	public static C1Square Standard (
 		final C1Cartesian[][] c1Grid)
 	{
 		if (null == c1Grid || 0 == c1Grid.length || 0 == c1Grid[0].length) {
@@ -140,6 +140,36 @@ public class C1Square
 				}
 			}
 		}
+
+		return new C1Square (c1Grid);
+	}
+
+	/**
+	 * Construct a 2x2 Rotation C<sup>1</sup> Matrix
+	 * 
+	 * @param theta The Rotation Angle
+	 * 
+	 * @return 2x2 Rotation C<sup>1</sup> Matrix
+	 */
+
+	public static final C1Square Rotation2x2 (
+		final double theta)
+	{
+		if (!NumberUtil.IsValid (theta)) {
+			return null;
+		}
+
+		C1Cartesian c1Zero = C1Cartesian.Zero();
+
+		C1Cartesian c1UnitImaginary = C1Cartesian.UnitImaginary();
+
+		C1Cartesian[][] c1Grid = new C1Cartesian[2][2];
+		c1Grid[1][0] = c1Zero;
+		c1Grid[0][1] = c1Zero;
+
+		c1Grid[0][0] = c1UnitImaginary.scale (theta).exponentiate();
+
+		c1Grid[1][1] = c1UnitImaginary.scale (-1. * theta).exponentiate();
 
 		return new C1Square (c1Grid);
 	}
@@ -244,5 +274,16 @@ public class C1Square
 	public boolean isUnitDeterminant()
 	{
 		return NumberUtil.WithinTolerance (determinant(), 0.);
+	}
+
+	/**
+	 * Indicate if the Determinant is 1
+	 * 
+	 * @return TRUE - Determinant is 1
+	 */
+
+	public boolean isUnitary()
+	{
+		return isUnitDeterminant();
 	}
 }

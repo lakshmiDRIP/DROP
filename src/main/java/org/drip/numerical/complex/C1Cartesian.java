@@ -146,6 +146,40 @@ public class C1Cartesian
 	}
 
 	/**
+	 * Construct a Unit Real Complex Number
+	 * 
+	 * @return Unit Real Complex Number
+	 */
+
+	public static final C1Cartesian UnitReal()
+	{
+		try {
+			new C1Cartesian (1., 0.);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
+	 * Construct a Unit Imaginary Complex Number
+	 * 
+	 * @return Unit Imaginary Complex Number
+	 */
+
+	public static final C1Cartesian UnitImaginary()
+	{
+		try {
+			new C1Cartesian (0., 1.);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
 	 * CartesianComplexNumber constructor
 	 * 
 	 * @param real Real Part
@@ -377,6 +411,23 @@ public class C1Cartesian
 		}
 
 		return C1Util.UnsafeDotProduct (this, other);
+	}
+
+	/**
+	 * Compute Conjugate of the Complex Number
+	 * 
+	 * @return The Complex Number Conjugate Instance
+	 */
+
+	public C1Cartesian conjugate()
+	{
+		try {
+			return new C1Cartesian (_real, -1. * _imaginary);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return null;
 	}
 
 	/**

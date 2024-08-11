@@ -550,6 +550,28 @@ public class NumberUtil {
 	}
 
 	/**
+	 * Checks if the Input Matrix contains an Infinite or an NaN
+	 * 
+	 * @param r1Grid Input Matrix
+	 * 
+	 * @return TRUE - Input Matrix contains an Infinite or an NaN
+	 */
+
+	public static final boolean IsValid (
+		final double[][] r1Grid)
+	{
+		if (null == r1Grid) {
+			return true;
+		}
+
+		for (int i = 0; i < r1Grid.length; ++i) {
+			if (!IsValid (r1Grid[i])) return false;
+		}
+
+		return true;
+	}
+
+	/**
 	 * Compare and checks if the two input numbers fall within a specified tolerance
 	 * 
 	 * @param dbl1 Number #1

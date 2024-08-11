@@ -2,6 +2,7 @@
 package org.drip.numerical.complex;
 
 import org.drip.numerical.common.NumberUtil;
+import org.drip.numerical.matrix.R1SquareRotation2x2;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -76,8 +77,9 @@ import org.drip.numerical.common.NumberUtil;
  */
 
 /**
- * <i>C1CartesianPhiAB</i> implements the type and Functionality associated with a C<sup>1</sup> Square
- * 	Matrix parameterized by <code>a</code>, <code>b</code>, and <code>phi</code> Fields. The References are:
+ * <i>C1CartesianPhiPsiThetaDelta</i> implements the type and Functionality associated with a C<sup>1</sup>
+ *  Square Matrix parameterized by <code>phi</code>, <code>psi</code>, <code>theta</code>, and
+ *  <code>delta</code> Fields. The References are:
  * 
  * <br><br>
  * 	<ul>
@@ -114,85 +116,73 @@ import org.drip.numerical.common.NumberUtil;
  * @author Lakshmi Krishnamurthy
  */
 
-public class C1CartesianPhiAB extends C1Square
+public class C1CartesianPhiPsiThetaDelta extends C1Square
 {
-	private C1Cartesian _a = null;
-	private C1Cartesian _b = null;
 	private double _phi = Double.NaN;
+	private double _psi = Double.NaN;
+	private double _delta = Double.NaN;
+	private double _theta = Double.NaN;
+	private C1Square _jordanNormalLeft = null;
+	private C1Square _jordanNormalRight = null;
+	private R1SquareRotation2x2 _jordanNormalCenter = null;
 
-	/**
-	 * Construct a Standard Instance of <i>C1CartesianPhiAB</i>
-	 * 
-	 * @param a "A"
-	 * @param b "B"
-	 * @param phi "Phi"
-	 * 
-	 * @return <i>C1CartesianPhiAB</i> Instance
-	 */
-
-	public static C1CartesianPhiAB Standard (
-		final C1Cartesian a,
-		final C1Cartesian b,
-		final double phi)
+	public static C1CartesianPhiPsiThetaDelta Standard (
+		final double phi,
+		final double psi,
+		final double theta,
+		final double delta)
 	{
-		if (null == a || null == b || !NumberUtil.IsValid (phi) ||
-			NumberUtil.WithinTolerance (a.square().modulus() + b.square().modulus(), 1.))
+		if (!NumberUtil.IsValid (phi) || !NumberUtil.IsValid (psi) || !NumberUtil.IsValid (theta) ||
+			!NumberUtil.IsValid (delta))
 		{
 			return null;
 		}
 
-		C1Cartesian ePowerIPhi = C1Cartesian.UnitImaginary().scale (phi).exponentiate();
+		R1SquareRotation2x2 jordanNormalCenter = R1SquareRotation2x2.Standard (theta);
+
+		C1Square jordanNormalRight = C1Square.Rotation2x2 (delta);
+
+		C1Square jordanNormalLeft = C1Square.Rotation2x2 (psi);
 
 		C1Cartesian[][] c1Grid = new C1Cartesian[2][2];
-		c1Grid[0][1] = b;
-		c1Grid[0][0] = a;
 
-		c1Grid[1][1] = ePowerIPhi.product (a.conjugate());
-
-		c1Grid[1][0] = ePowerIPhi.product (b.conjugate()).scale (-1.);
-
-		return new C1CartesianPhiAB (c1Grid, a, b, phi);
+		return new C1CartesianPhiPsiThetaDelta (
+			c1Grid,
+			phi,
+			psi,
+			theta,
+			delta,
+			jordanNormalLeft,
+			jordanNormalCenter,
+			jordanNormalRight
+		);
 	}
 
-	private C1CartesianPhiAB (
+	private C1CartesianPhiPsiThetaDelta (
 		final C1Cartesian[][] c1Grid,
-		final C1Cartesian a,
-		final C1Cartesian b,
-		final double phi)
+		final double phi,
+		final double psi,
+		final double theta,
+		final double delta,
+		final C1Square jordanNormalLeft,
+		final R1SquareRotation2x2 jordanNormalCenter,
+		final C1Square jordanNormalRight)
 	{
 		super (c1Grid);
 
-		_a = a;
-		_b = b;
 		_phi = phi;
+		_psi = psi;
+		_delta = delta;
+		_theta = theta;
+		_jordanNormalLeft = jordanNormalLeft;
+		_jordanNormalRight = jordanNormalRight;
+		_jordanNormalCenter = jordanNormalCenter;
 	}
 
 	/**
-	 * Retrieve the <code>a</code> Parameter
+	 * Retrieve <code>Phi</code>
 	 * 
-	 * @return <code>a</code> Parameter
-	 */
-
-	public C1Cartesian a()
-	{
-		return _a;
-	}
-
-	/**
-	 * Retrieve the <code>b</code> Parameter
-	 * 
-	 * @return <code>b</code> Parameter
-	 */
-
-	public C1Cartesian b()
-	{
-		return _b;
-	}
-
-	/**
-	 * Retrieve the <code>phi</code> Parameter
-	 * 
-	 * @return <code>phi</code> Parameter
+	 * @return <code>Phi</code>
 	 */
 
 	public double phi()
@@ -201,13 +191,68 @@ public class C1CartesianPhiAB extends C1Square
 	}
 
 	/**
-	 * Retrieve the Determinant
+	 * Retrieve <code>Psi</code>
 	 * 
-	 * @return The Determinant
+	 * @return <code>Psi</code>
 	 */
 
-	@Override public double determinant()
+	public double psi()
 	{
-		return C1Cartesian.UnitImaginary().scale (_phi).l2Norm();
+		return _psi;
+	}
+
+	/**
+	 * Retrieve <code>Theta</code>
+	 * 
+	 * @return <code>Theta</code>
+	 */
+
+	public double theta()
+	{
+		return _theta;
+	}
+
+	/**
+	 * Retrieve <code>Delta</code>
+	 * 
+	 * @return <code>Delta</code>
+	 */
+
+	public double delta()
+	{
+		return _delta;
+	}
+
+	/**
+	 * Retrieve the Jordan Normal Left Part of <i>C1CartesianPhiPsiThetaDelta</i>
+	 * 
+	 * @return Jordan Normal Left Part of <i>C1CartesianPhiPsiThetaDelta</i>
+	 */
+
+	public C1Square jordanNormalLeft()
+	{
+		return _jordanNormalLeft;
+	}
+
+	/**
+	 * Retrieve the Jordan Normal Center Part of <i>C1CartesianPhiPsiThetaDelta</i>
+	 * 
+	 * @return Jordan Normal Center Part of <i>C1CartesianPhiPsiThetaDelta</i>
+	 */
+
+	public R1SquareRotation2x2 jordanNormalCenter()
+	{
+		return _jordanNormalCenter;
+	}
+
+	/**
+	 * Retrieve the Jordan Normal Right Part of <i>C1CartesianPhiPsiThetaDelta</i>
+	 * 
+	 * @return Jordan Normal Right Part of <i>C1CartesianPhiPsiThetaDelta</i>
+	 */
+
+	public C1Square jordanNormalRight()
+	{
+		return _jordanNormalRight;
 	}
 }

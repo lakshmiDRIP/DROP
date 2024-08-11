@@ -432,7 +432,7 @@ public class C1Util
 	 * Determinant of the Input Matrix. Unsafe Methods do not validate the Input Arguments, so <b>use
 	 * 	caution</b> in applying these Methods
 	 *
-	 * @param c1Grid Grid of <i>C1Cartesian</i> Instances
+	 * @param c1Grid Grid of <i>C<sup>1</sup></i> Instances
 	 * 
 	 * @return The Determinant
 	 */

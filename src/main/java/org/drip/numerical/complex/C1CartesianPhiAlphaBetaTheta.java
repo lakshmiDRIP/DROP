@@ -76,8 +76,9 @@ import org.drip.numerical.common.NumberUtil;
  */
 
 /**
- * <i>C1CartesianPhiAB</i> implements the type and Functionality associated with a C<sup>1</sup> Square
- * 	Matrix parameterized by <code>a</code>, <code>b</code>, and <code>phi</code> Fields. The References are:
+ * <i>C1CartesianPhiAlphaBetaTheta</i> implements the type and Functionality associated with a C<sup>1</sup>
+ *  Square Matrix parameterized by <code>alpha</code>, <code>beta</code>, <code>theta</code>, and
+ *  <code>phi</code> Fields. The References are:
  * 
  * <br><br>
  * 	<ul>
@@ -114,57 +115,116 @@ import org.drip.numerical.common.NumberUtil;
  * @author Lakshmi Krishnamurthy
  */
 
-public class C1CartesianPhiAB extends C1Square
+public class C1CartesianPhiAlphaBetaTheta extends C1Square
 {
-	private C1Cartesian _a = null;
-	private C1Cartesian _b = null;
 	private double _phi = Double.NaN;
+	private double _beta = Double.NaN;
+	private double _alpha = Double.NaN;
+	private double _theta = Double.NaN;
 
 	/**
-	 * Construct a Standard Instance of <i>C1CartesianPhiAB</i>
+	 * Construct a Standard Instance of <i>C1CartesianPhiAlphaBetaTheta</i>
 	 * 
-	 * @param a "A"
-	 * @param b "B"
+	 * @param alpha "alpha"
+	 * @param beta "beta"
+	 * @param theta "theta"
 	 * @param phi "Phi"
 	 * 
-	 * @return <i>C1CartesianPhiAB</i> Instance
+	 * @return <i>C1CartesianPhiAlphaBetaTheta</i> Instance
 	 */
 
-	public static C1CartesianPhiAB Standard (
-		final C1Cartesian a,
-		final C1Cartesian b,
+	public static C1CartesianPhiAlphaBetaTheta Standard (
+		final double alpha,
+		final double beta,
+		final double theta,
 		final double phi)
 	{
-		if (null == a || null == b || !NumberUtil.IsValid (phi) ||
-			NumberUtil.WithinTolerance (a.square().modulus() + b.square().modulus(), 1.))
+		if (!NumberUtil.IsValid (alpha) || !NumberUtil.IsValid (beta) || !NumberUtil.IsValid (theta) ||
+			!NumberUtil.IsValid (phi))
 		{
 			return null;
 		}
 
-		C1Cartesian ePowerIPhi = C1Cartesian.UnitImaginary().scale (phi).exponentiate();
+		C1Cartesian ePowerIPhi = C1Cartesian.UnitImaginary().scale (0.5 * phi).exponentiate();
+
+		C1Cartesian ePowerIAlpha = C1Cartesian.UnitImaginary().scale (alpha).exponentiate();
+
+		C1Cartesian ePowerIBeta = C1Cartesian.UnitImaginary().scale (beta).exponentiate();
 
 		C1Cartesian[][] c1Grid = new C1Cartesian[2][2];
-		c1Grid[0][1] = b;
-		c1Grid[0][0] = a;
 
-		c1Grid[1][1] = ePowerIPhi.product (a.conjugate());
+		double sinTheta = Math.sin (theta);
 
-		c1Grid[1][0] = ePowerIPhi.product (b.conjugate()).scale (-1.);
+		double cosTheta = Math.cos (theta);
 
-		return new C1CartesianPhiAB (c1Grid, a, b, phi);
+		c1Grid[1][1] = ePowerIPhi.divide (ePowerIAlpha).scale (cosTheta);
+
+		c1Grid[0][1] = ePowerIPhi.product (ePowerIBeta).scale (sinTheta);
+
+		c1Grid[0][0] = ePowerIPhi.product (ePowerIAlpha).scale (cosTheta);
+
+		c1Grid[1][0] = ePowerIPhi.divide (ePowerIBeta).scale (-1. * sinTheta);
+
+		return new C1CartesianPhiAlphaBetaTheta (c1Grid, alpha, beta, theta, phi);
 	}
 
-	private C1CartesianPhiAB (
+	private C1CartesianPhiAlphaBetaTheta (
 		final C1Cartesian[][] c1Grid,
-		final C1Cartesian a,
-		final C1Cartesian b,
+		final double alpha,
+		final double beta,
+		final double theta,
 		final double phi)
 	{
 		super (c1Grid);
 
-		_a = a;
-		_b = b;
 		_phi = phi;
+		_beta = beta;
+		_alpha = alpha;
+		_theta = theta;
+	}
+
+	/**
+	 * Retrieve <code>Alpha</code>
+	 * 
+	 * @return <code>Alpha</code>
+	 */
+
+	public double alpha()
+	{
+		return _alpha;
+	}
+
+	/**
+	 * Retrieve <code>Beta</code>
+	 * 
+	 * @return <code>Beta</code>
+	 */
+
+	public double beta()
+	{
+		return _beta;
+	}
+
+	/**
+	 * Retrieve <code>Theta</code>
+	 * 
+	 * @return <code>Theta</code>
+	 */
+
+	public double theta()
+	{
+		return _theta;
+	}
+
+	/**
+	 * Retrieve <code>Phi</code>
+	 * 
+	 * @return <code>Phi</code>
+	 */
+
+	public double phi()
+	{
+		return _phi;
 	}
 
 	/**
@@ -175,7 +235,7 @@ public class C1CartesianPhiAB extends C1Square
 
 	public C1Cartesian a()
 	{
-		return _a;
+		return C1Cartesian.UnitImaginary().scale (_alpha).exponentiate().scale (Math.cos (_theta));
 	}
 
 	/**
@@ -186,28 +246,17 @@ public class C1CartesianPhiAB extends C1Square
 
 	public C1Cartesian b()
 	{
-		return _b;
+		return C1Cartesian.UnitImaginary().scale (_beta).exponentiate().scale (Math.sin (_theta));
 	}
 
 	/**
-	 * Retrieve the <code>phi</code> Parameter
+	 * Construct the Instance of <i>C1CartesianPhiAB</i>
 	 * 
-	 * @return <code>phi</code> Parameter
+	 * @return Instance of <i>C1CartesianPhiAB</i>
 	 */
 
-	public double phi()
+	public C1CartesianPhiAB phiAB()
 	{
-		return _phi;
-	}
-
-	/**
-	 * Retrieve the Determinant
-	 * 
-	 * @return The Determinant
-	 */
-
-	@Override public double determinant()
-	{
-		return C1Cartesian.UnitImaginary().scale (_phi).l2Norm();
+		return C1CartesianPhiAB.Standard (a(), b(), _phi);
 	}
 }
