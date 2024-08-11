@@ -3,7 +3,7 @@ package org.drip.sample.matrix;
 
 import org.drip.numerical.linearalgebra.GershgorinAnalyzer;
 import org.drip.numerical.linearalgebra.GershgorinDisc;
-import org.drip.numerical.linearalgebra.SquareMatrix;
+import org.drip.numerical.matrix.R1Square;
 import org.drip.service.common.FormatUtil;
 import org.drip.service.common.StringUtil;
 import org.drip.service.env.EnvManager;
@@ -145,7 +145,7 @@ public class GershgorinAnalysis
 		};
 
 		GershgorinDisc[] gershgorinDiscRowArray = GershgorinAnalyzer.FromSquareMatrix (
-			SquareMatrix.Standard (r2Array),
+			R1Square.Standard (r2Array),
 			true
 		).gershgorinDiscArray();
 
@@ -191,7 +191,7 @@ public class GershgorinAnalysis
 		System.out.println();
 
 		GershgorinDisc[] gershgorinDiscColumnArray = GershgorinAnalyzer.FromSquareMatrix (
-			SquareMatrix.Standard (r2Array),
+			R1Square.Standard (r2Array),
 			false
 		).gershgorinDiscArray();
 

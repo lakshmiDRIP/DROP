@@ -1,7 +1,7 @@
 
 package org.drip.numerical.linearsolver;
 
-import org.drip.numerical.linearalgebra.TridiagonalMatrix;
+import org.drip.numerical.matrix.R1Tridiagonal;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -118,10 +118,10 @@ import org.drip.numerical.linearalgebra.TridiagonalMatrix;
 public abstract class TridiagonalScheme
 {
 	private double[] _rhsArray = null;
-	private TridiagonalMatrix _tridiagonalMatrix = null;
+	private R1Tridiagonal _tridiagonalMatrix = null;
 
 	protected TridiagonalScheme (
-		final TridiagonalMatrix tridiagonalMatrix,
+		final R1Tridiagonal tridiagonalMatrix,
 		final double[] rhsArray)
 		throws Exception
 	{
@@ -139,7 +139,7 @@ public abstract class TridiagonalScheme
 	 * @return Tridiagonal Matrix
 	 */
 
-	public TridiagonalMatrix matrix()
+	public R1Tridiagonal matrix()
 	{
 		return _tridiagonalMatrix;
 	}

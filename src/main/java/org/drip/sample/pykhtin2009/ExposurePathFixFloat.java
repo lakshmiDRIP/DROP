@@ -36,7 +36,7 @@ import org.drip.measure.gaussian.NormalQuadrature;
 import org.drip.measure.process.DiffusionEvolver;
 import org.drip.measure.process.JumpDiffusionEvolver;
 import org.drip.measure.statistics.UnivariateDiscreteThin;
-import org.drip.numerical.linearalgebra.MatrixUtil;
+import org.drip.numerical.linearalgebra.R1MatrixUtil;
 import org.drip.product.rates.FixFloatComponent;
 import org.drip.service.common.FormatUtil;
 import org.drip.service.env.EnvManager;
@@ -736,7 +736,7 @@ public class ExposurePathFixFloat
 					initialMarketVertex,
 					LatentStateWeiner.FromUnitRandom (
 						latentStateLabelList,
-						MatrixUtil.Transpose (correlatedPathVertexDimension.straightPathVertexRd().flatform())
+						R1MatrixUtil.Transpose (correlatedPathVertexDimension.straightPathVertexRd().flatform())
 					)
 				)
 			);

@@ -127,8 +127,8 @@ public class ProjectionDistributionLoading {
 			for (int j = 0; j < iNumProjection; ++j) {
 				try {
 					aadblProjectionCovariance[i][j] = i != j ? 0. : dblTau *
-						org.drip.numerical.linearalgebra.MatrixUtil.DotProduct (aadblScopingLoading[i],
-							org.drip.numerical.linearalgebra.MatrixUtil.Product (aadblScopingCovariance,
+						org.drip.numerical.linearalgebra.R1MatrixUtil.DotProduct (aadblScopingLoading[i],
+							org.drip.numerical.linearalgebra.R1MatrixUtil.Product (aadblScopingCovariance,
 								aadblScopingLoading[j]));
 				} catch (java.lang.Exception e) {
 					e.printStackTrace();

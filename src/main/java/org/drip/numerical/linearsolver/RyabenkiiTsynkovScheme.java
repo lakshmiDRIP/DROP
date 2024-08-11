@@ -2,8 +2,8 @@
 package org.drip.numerical.linearsolver;
 
 import org.drip.numerical.common.NumberUtil;
-import org.drip.numerical.linearalgebra.MatrixUtil;
-import org.drip.numerical.linearalgebra.PeriodicTridiagonalMatrix;
+import org.drip.numerical.linearalgebra.R1MatrixUtil;
+import org.drip.numerical.matrix.R1PeriodicTridiagonal;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -135,8 +135,8 @@ public class RyabenkiiTsynkovScheme extends PeriodicTridiagonalScheme
 		final double[] rhsArray)
 	{
 		try {
-			return MatrixUtil.IsPeriodicTridiagonal (r2Array) ? new RyabenkiiTsynkovScheme (
-				PeriodicTridiagonalMatrix.Standard (r2Array),
+			return R1MatrixUtil.IsPeriodicTridiagonal (r2Array) ? new RyabenkiiTsynkovScheme (
+				R1PeriodicTridiagonal.Standard (r2Array),
 				rhsArray
 			) : null;
 		} catch (Exception e) {
@@ -147,7 +147,7 @@ public class RyabenkiiTsynkovScheme extends PeriodicTridiagonalScheme
 	}
 
 	protected RyabenkiiTsynkovScheme (
-		final PeriodicTridiagonalMatrix periodicTridiagonalMatrix,
+		final R1PeriodicTridiagonal periodicTridiagonalMatrix,
 		final double[] rhsArray)
 		throws Exception
 	{

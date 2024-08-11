@@ -6,9 +6,9 @@ import java.util.Date;
 import org.drip.measure.crng.RandomMatrixGenerator;
 import org.drip.measure.crng.RdRandomSequence;
 import org.drip.numerical.common.NumberUtil;
-import org.drip.numerical.linearalgebra.MatrixUtil;
-import org.drip.numerical.linearalgebra.TriangularMatrix;
+import org.drip.numerical.linearalgebra.R1MatrixUtil;
 import org.drip.numerical.linearsolver.TriangularScheme;
+import org.drip.numerical.matrix.R1Triangular;
 import org.drip.service.env.EnvManager;
 
 /*
@@ -131,7 +131,7 @@ public class UpperSolverSuite
 	{
 		double[] xArray = RdRandomSequence.OneD (elementCount, maximumElement, true);
 
-		TriangularMatrix upperTriangularMatrix = RandomMatrixGenerator.UpperTriangular (
+		R1Triangular upperTriangularMatrix = RandomMatrixGenerator.UpperTriangular (
 			elementCount,
 			maximumElement,
 			true
@@ -165,7 +165,7 @@ public class UpperSolverSuite
 			"\t|----------------------------------------------------------------------------------||"
 		);
 
-		double[] rhsArray = MatrixUtil.Product (upperTriangularR2Array, xArray);
+		double[] rhsArray = R1MatrixUtil.Product (upperTriangularR2Array, xArray);
 
 		System.out.println (
 			"\t| RHS Input      {" + NumberUtil.ArrayRow (rhsArray, 5, 0, false) + "} ||"
@@ -183,7 +183,7 @@ public class UpperSolverSuite
 			"\t| Expected          =>  " +
 			NumberUtil.ArrayRow (
 				new TriangularScheme (
-					TriangularMatrix.Standard (upperTriangularR2Array),
+					R1Triangular.Standard (upperTriangularR2Array),
 					rhsArray
 				).solve(),
 				2,

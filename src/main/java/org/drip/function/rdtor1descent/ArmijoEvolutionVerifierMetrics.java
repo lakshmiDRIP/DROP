@@ -209,7 +209,7 @@ public class ArmijoEvolutionVerifierMetrics
 		try
 		{
 			double gradientUpdatedFunctionValue = _currentVariateFunctionValue +
-				_armijoParameter * stepLength() * org.drip.numerical.linearalgebra.MatrixUtil.DotProduct (
+				_armijoParameter * stepLength() * org.drip.numerical.linearalgebra.R1MatrixUtil.DotProduct (
 					targetDirection().component(),
 					currentVariateFunctionJacobian()
 				);

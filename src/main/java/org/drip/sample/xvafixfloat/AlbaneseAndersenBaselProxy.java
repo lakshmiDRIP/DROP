@@ -13,7 +13,7 @@ import org.drip.measure.discrete.CorrelatedPathVertexDimension;
 import org.drip.measure.dynamics.*;
 import org.drip.measure.process.*;
 import org.drip.measure.statistics.UnivariateDiscreteThin;
-import org.drip.numerical.linearalgebra.MatrixUtil;
+import org.drip.numerical.linearalgebra.R1MatrixUtil;
 import org.drip.service.common.FormatUtil;
 import org.drip.service.common.StringUtil;
 import org.drip.service.env.EnvManager;
@@ -795,7 +795,7 @@ public class AlbaneseAndersenBaselProxy
 				initialMarketVertex,
 				LatentStateWeiner.FromUnitRandom (
 					latentStateLabelList,
-					MatrixUtil.Transpose (correlatedPathVertexDimension.straightPathVertexRd().flatform())
+					R1MatrixUtil.Transpose (correlatedPathVertexDimension.straightPathVertexRd().flatform())
 				)
 			);
 		}

@@ -1,5 +1,7 @@
 
-package org.drip.numerical.linearalgebra;
+package org.drip.numerical.matrix;
+
+import org.drip.numerical.linearalgebra.R1MatrixUtil;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -74,7 +76,7 @@ package org.drip.numerical.linearalgebra;
  */
 
 /**
- * <i>TridiagonalMatrix</i> abstracts the Tridiagonal Matrix based on Periodic/non-Periodic setup. The
+ * <i>R1NonPeriodicTridiagonal</i> implements a banded R<sup>1</sup> Non-periodic Tridiagonal Matrix. The
  * 	References are:
  * 
  * <br><br>
@@ -106,17 +108,31 @@ package org.drip.numerical.linearalgebra;
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md">Numerical Analysis Library</a></li>
  *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/numerical/README.md">Numerical Quadrature, Differentiation, Eigenization, Linear Algebra, and Utilities</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/numerical/linearalgebra/README.md">Linear Algebra Matrix Transform Library</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/numerical/matrix/README.md">Implementation of R<sup>1</sup> C<sup>1</sup> Matrices</a></li>
  *  </ul>
  * <br><br>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public abstract class TridiagonalMatrix extends SquareMatrix
+public class R1NonPeriodicTridiagonal extends R1Tridiagonal
 {
 
-	protected TridiagonalMatrix (
+	/**
+	 * Construct an Instance of Non-periodic Tridiagonal Matrix
+	 * 
+	 * @param r2Array R<sup>2</sup> Array
+	 * 
+	 * @return Instance of Non-periodic Tridiagonal Matrix
+	 */
+
+	public static R1NonPeriodicTridiagonal Standard (
+		final double[][] r2Array)
+	{
+		return R1MatrixUtil.IsTridiagonal (r2Array) ? new R1NonPeriodicTridiagonal (r2Array) : null;
+	}
+
+	protected R1NonPeriodicTridiagonal (
 		final double[][] r2Array)
 	{
 		super (r2Array);

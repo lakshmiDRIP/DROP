@@ -1,6 +1,8 @@
 
 package org.drip.numerical.linearalgebra;
 
+import org.drip.numerical.matrix.R1Square;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
@@ -118,8 +120,8 @@ package org.drip.numerical.linearalgebra;
 
 public class SylvesterEquation
 {
-	private SquareMatrix _squareMatrixA = null;
-	private SquareMatrix _squareMatrixB = null;
+	private R1Square _squareMatrixA = null;
+	private R1Square _squareMatrixB = null;
 
 	/**
 	 * <i>SylvesterEquation</i> Constructor
@@ -131,8 +133,8 @@ public class SylvesterEquation
 	 */
 
 	public SylvesterEquation (
-		final SquareMatrix squareMatrixA,
-		final SquareMatrix squareMatrixB)
+		final R1Square squareMatrixA,
+		final R1Square squareMatrixB)
 		throws Exception
 	{
 		if (null == (_squareMatrixA = squareMatrixA) ||
@@ -148,7 +150,7 @@ public class SylvesterEquation
 	 * @return "A" Square Matrix
 	 */
 
-	public SquareMatrix squareMatrixA()
+	public R1Square squareMatrixA()
 	{
 		return _squareMatrixA;
 	}
@@ -159,7 +161,7 @@ public class SylvesterEquation
 	 * @return "B" Square Matrix
 	 */
 
-	public SquareMatrix squareMatrixB()
+	public R1Square squareMatrixB()
 	{
 		return _squareMatrixB;
 	}

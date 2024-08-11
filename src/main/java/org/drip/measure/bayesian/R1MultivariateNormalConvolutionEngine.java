@@ -133,12 +133,12 @@ public class R1MultivariateNormalConvolutionEngine implements org.drip.measure.b
 
 		if (aadblPriorPrecision.length != iNumVariate) return null;
 
-		double[] adblPrecisionWeightedPriorMean = org.drip.numerical.linearalgebra.MatrixUtil.Product
+		double[] adblPrecisionWeightedPriorMean = org.drip.numerical.linearalgebra.R1MatrixUtil.Product
 			(aadblPriorPrecision, r1mnPrior.mean());
 
 		if (null == adblPrecisionWeightedPriorMean) return null;
 
-		double[] adblPrecisionWeightedConditionalMean = org.drip.numerical.linearalgebra.MatrixUtil.Product
+		double[] adblPrecisionWeightedConditionalMean = org.drip.numerical.linearalgebra.R1MatrixUtil.Product
 			(aadblConditionalPrecision, r1mnConditional.mean());
 
 		if (null == adblPrecisionWeightedConditionalMean) return null;
@@ -150,10 +150,10 @@ public class R1MultivariateNormalConvolutionEngine implements org.drip.measure.b
 				aadblJointPrecision[i][j] = aadblPriorPrecision[i][j] + aadblConditionalPrecision[i][j];
 		}
 
-		double[][] aadblJointCovariance = org.drip.numerical.linearalgebra.MatrixUtil.InvertUsingGaussianElimination
+		double[][] aadblJointCovariance = org.drip.numerical.linearalgebra.R1MatrixUtil.InvertUsingGaussianElimination
 			(aadblJointPrecision);
 
-		double[] adblJointPosteriorMean = org.drip.numerical.linearalgebra.MatrixUtil.Product (aadblJointCovariance,
+		double[] adblJointPosteriorMean = org.drip.numerical.linearalgebra.R1MatrixUtil.Product (aadblJointCovariance,
 			adblJointMean);
 
 		double[][] aadblUnconditionalCovariance = r1mnUnconditional.covariance().covarianceMatrix();

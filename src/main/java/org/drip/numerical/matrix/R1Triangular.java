@@ -1,5 +1,5 @@
 
-package org.drip.numerical.linearalgebra;
+package org.drip.numerical.matrix;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -80,8 +80,8 @@ import org.drip.numerical.common.NumberUtil;
  */
 
 /**
- * <i>TriangularMatrix</i> implements the type and Functionality associated with a Triangular Matrix. The
- *  References are:
+ * <i>R1Triangular</i> implements the type and Functionality associated with an R<sup>1</sup> Triangular
+ * 	Matrix. The References are:
  * 
  * <br><br>
  * 	<ul>
@@ -110,14 +110,14 @@ import org.drip.numerical.common.NumberUtil;
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md">Numerical Analysis Library</a></li>
  *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/numerical/README.md">Numerical Quadrature, Differentiation, Eigenization, Linear Algebra, and Utilities</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/numerical/linearalgebra/README.md">Linear Algebra Matrix Transform Library</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/numerical/matrix/README.md">Implementation of R<sup>1</sup> C<sup>1</sup> Matrices</a></li>
  *  </ul>
  * <br><br>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class TriangularMatrix extends SquareMatrix
+public class R1Triangular extends R1Square
 {
 
 	/**
@@ -219,24 +219,22 @@ public class TriangularMatrix extends SquareMatrix
 	}
 
 	/**
-	 * <i>TriangularMatrix</i> Constructor
+	 * <i>R1Triangular</i> Constructor
 	 * 
 	 * @param r2Array R<sup>2</sup> Array
 	 * 
 	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
-	public static TriangularMatrix Standard (
+	public static R1Triangular Standard (
 		final double[][] r2Array)
 	{
 		int type = Type (r2Array);
 
-		if (NON_TRIANGULAR == type) System.out.println ("Type is " + type);
-
-		return NON_TRIANGULAR == type ? null : new TriangularMatrix (r2Array, type);
+		return NON_TRIANGULAR == type ? null : new R1Triangular (r2Array, type);
 	}
 
-	protected TriangularMatrix (
+	protected R1Triangular (
 		final double[][] r2Array,
 		final int type)
 	{

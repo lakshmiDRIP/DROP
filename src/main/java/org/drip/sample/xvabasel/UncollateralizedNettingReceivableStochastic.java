@@ -10,7 +10,7 @@ import org.drip.measure.dynamics.*;
 import org.drip.measure.process.DiffusionEvolver;
 import org.drip.measure.realization.*;
 import org.drip.measure.statistics.UnivariateDiscreteThin;
-import org.drip.numerical.linearalgebra.MatrixUtil;
+import org.drip.numerical.linearalgebra.R1MatrixUtil;
 import org.drip.service.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 import org.drip.state.identifier.OTCFixFloatLabel;
@@ -428,7 +428,7 @@ public class UncollateralizedNettingReceivableStochastic {
 		);
 
 		for (int i = 0; i < iNumPath; ++i) {
-			double[][] aadblNumeraire = MatrixUtil.Transpose (
+			double[][] aadblNumeraire = R1MatrixUtil.Transpose (
 				Path (
 					aadblCorrelation,
 					iNumVertex

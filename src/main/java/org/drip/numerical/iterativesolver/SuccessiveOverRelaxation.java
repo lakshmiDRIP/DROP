@@ -2,7 +2,7 @@
 package org.drip.numerical.iterativesolver;
 
 import org.drip.numerical.common.NumberUtil;
-import org.drip.numerical.linearalgebra.MatrixUtil;
+import org.drip.numerical.linearalgebra.R1MatrixUtil;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -198,7 +198,7 @@ public class SuccessiveOverRelaxation
 		throws Exception
 	{
 		if (null == (_iteratorSetting = iteratorSetting) ||
-			!MatrixUtil.IsSquare (_squareMatrix = squareMatrix) ||
+			!R1MatrixUtil.IsSquare (_squareMatrix = squareMatrix) ||
 			null == (_rhsArray = rhsArray))
 		{
 			throw new Exception ("SuccessiveOverRelaxation Construction => Invalid Inputs");
@@ -228,7 +228,7 @@ public class SuccessiveOverRelaxation
 
 	public double[][] diagonalMatrix()
 	{
-		return MatrixUtil.Diagonal (_squareMatrix);
+		return R1MatrixUtil.Diagonal (_squareMatrix);
 	}
 
 	/**
@@ -239,7 +239,7 @@ public class SuccessiveOverRelaxation
 
 	public double[][] strictlyLowerTriangularMatrix()
 	{
-		return MatrixUtil.StrictlyLowerTriangular (_squareMatrix);
+		return R1MatrixUtil.StrictlyLowerTriangular (_squareMatrix);
 	}
 
 	/**
@@ -250,7 +250,7 @@ public class SuccessiveOverRelaxation
 
 	public double[][] strictlyUpperTriangularMatrix()
 	{
-		return MatrixUtil.StrictlyUpperTriangular (_squareMatrix);
+		return R1MatrixUtil.StrictlyUpperTriangular (_squareMatrix);
 	}
 
 	/**

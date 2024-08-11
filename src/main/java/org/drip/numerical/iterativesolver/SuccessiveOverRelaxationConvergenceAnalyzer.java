@@ -2,7 +2,7 @@
 package org.drip.numerical.iterativesolver;
 
 import org.drip.numerical.common.NumberUtil;
-import org.drip.numerical.linearalgebra.MatrixUtil;
+import org.drip.numerical.linearalgebra.R1MatrixUtil;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -170,7 +170,7 @@ public class SuccessiveOverRelaxationConvergenceAnalyzer
 		final double jacobiIterationMatrixSpectralRadius)
 		throws Exception
 	{
-		if (!MatrixUtil.IsSquare (_squareMatrix = squareMatrix) ||
+		if (!R1MatrixUtil.IsSquare (_squareMatrix = squareMatrix) ||
 			!NumberUtil.IsValid (_relaxationParameter = relaxationParameter) ||
 			!NumberUtil.IsValid (_jacobiIterationMatrixSpectralRadius = jacobiIterationMatrixSpectralRadius))
 		{
@@ -221,7 +221,7 @@ public class SuccessiveOverRelaxationConvergenceAnalyzer
 
 	public double[][] jacobiIterationMatrix()
 	{
-		return MatrixUtil.JacobiIteration (_squareMatrix);
+		return R1MatrixUtil.JacobiIteration (_squareMatrix);
 	}
 
 	/**

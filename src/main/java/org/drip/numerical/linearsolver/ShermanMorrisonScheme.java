@@ -2,8 +2,8 @@
 package org.drip.numerical.linearsolver;
 
 import org.drip.numerical.common.NumberUtil;
-import org.drip.numerical.linearalgebra.MatrixUtil;
-import org.drip.numerical.linearalgebra.PeriodicTridiagonalMatrix;
+import org.drip.numerical.linearalgebra.R1MatrixUtil;
+import org.drip.numerical.matrix.R1PeriodicTridiagonal;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -143,8 +143,8 @@ public class ShermanMorrisonScheme extends PeriodicTridiagonalScheme
 		final double[] rhsArray)
 	{
 		try {
-			return MatrixUtil.IsPeriodicTridiagonal (r2Array) ? new ShermanMorrisonScheme (
-				PeriodicTridiagonalMatrix.Standard (r2Array),
+			return R1MatrixUtil.IsPeriodicTridiagonal (r2Array) ? new ShermanMorrisonScheme (
+				R1PeriodicTridiagonal.Standard (r2Array),
 				rhsArray,
 				BATISTA_KARAWIA_DEFAULT_GAMMA
 			) : null;
@@ -185,8 +185,8 @@ public class ShermanMorrisonScheme extends PeriodicTridiagonalScheme
 		}
 
 		try {
-			return MatrixUtil.IsPeriodicTridiagonal (r2Array) ? new ShermanMorrisonScheme (
-				PeriodicTridiagonalMatrix.Standard (r2Array),
+			return R1MatrixUtil.IsPeriodicTridiagonal (r2Array) ? new ShermanMorrisonScheme (
+				R1PeriodicTridiagonal.Standard (r2Array),
 				rhsArray,
 				gamma
 			) : null;
@@ -198,7 +198,7 @@ public class ShermanMorrisonScheme extends PeriodicTridiagonalScheme
 	}
 
 	protected ShermanMorrisonScheme (
-		final PeriodicTridiagonalMatrix periodicTridiagonalMatrix,
+		final R1PeriodicTridiagonal periodicTridiagonalMatrix,
 		final double[] rhsArray,
 		final double gamma)
 		throws Exception
@@ -371,8 +371,8 @@ public class ShermanMorrisonScheme extends PeriodicTridiagonalScheme
 
 		double[] ySolutionArray = rhsNonPeriodicTridiagonalScheme.forwardSweepBackSubstitution();
 
-		double[] solutionArray = MatrixUtil.Product (
-			MatrixUtil.CrossProduct (qSolutionArray, vArray),
+		double[] solutionArray = R1MatrixUtil.Product (
+			R1MatrixUtil.CrossProduct (qSolutionArray, vArray),
 			ySolutionArray
 		);
 
@@ -383,7 +383,7 @@ public class ShermanMorrisonScheme extends PeriodicTridiagonalScheme
 		double vqDotProductScaler = Double.NaN;
 
 		try {
-			vqDotProductScaler = 1. / (1. + MatrixUtil.DotProduct (vArray, qSolutionArray));
+			vqDotProductScaler = 1. / (1. + R1MatrixUtil.DotProduct (vArray, qSolutionArray));
 		} catch (Exception e) {
 			e.printStackTrace();
 

@@ -127,7 +127,7 @@ public class LinearAlgebra {
 		final String strLabel,
 		final double[][] aadblA)
 	{
-		double[][] aadblAInv = MatrixUtil.InvertUsingGaussianElimination (aadblA);
+		double[][] aadblAInv = R1MatrixUtil.InvertUsingGaussianElimination (aadblA);
 
 		System.out.println ("--- TESTS FOR " + strLabel + "---");
 
@@ -139,7 +139,7 @@ public class LinearAlgebra {
 			"PRODUCT" + strLabel,
 			aadblA,
 			aadblAInv,
-			MatrixUtil.Product (
+			R1MatrixUtil.Product (
 				aadblA,
 				aadblAInv
 			),

@@ -270,7 +270,7 @@ public class WolfeEvolutionVerifierMetrics
 		try
 		{
 			double gradientUpdatedFunctionValue = _currentVariateFunctionValue +
-				_armijoParameter * stepLength() * org.drip.numerical.linearalgebra.MatrixUtil.DotProduct (
+				_armijoParameter * stepLength() * org.drip.numerical.linearalgebra.R1MatrixUtil.DotProduct (
 					targetDirectionVector,
 					currentVariateFunctionJacobian
 				);
@@ -281,13 +281,13 @@ public class WolfeEvolutionVerifierMetrics
 				return false;
 			}
 
-			double nextFunctionIncrement = org.drip.numerical.linearalgebra.MatrixUtil.DotProduct (
+			double nextFunctionIncrement = org.drip.numerical.linearalgebra.R1MatrixUtil.DotProduct (
 				targetDirectionVector,
 				_nextVariateFunctionJacobian
 			);
 
 			double parametrizedCurrentFunctionIncrement = _curvatureParameter *
-				org.drip.numerical.linearalgebra.MatrixUtil.DotProduct (
+				org.drip.numerical.linearalgebra.R1MatrixUtil.DotProduct (
 					targetDirectionVector,
 					currentVariateFunctionJacobian
 				);

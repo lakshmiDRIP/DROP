@@ -1,6 +1,10 @@
 
 package org.drip.pricer.option;
 
+import org.drip.numerical.complex.C1MatrixUtil;
+import org.drip.numerical.complex.CartesianC1;
+import org.drip.numerical.fourier.PhaseAdjuster;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
@@ -119,11 +123,11 @@ public class HestonStochasticVolatilityAlgorithm extends org.drip.pricer.option.
 
 	class PhaseCorrectedF {
 		double _dblCorrectedPhase = java.lang.Double.NaN;
-		org.drip.function.definition.CartesianComplexNumber _cnF = null;
+		org.drip.numerical.complex.CartesianC1 _cnF = null;
 
 		PhaseCorrectedF (
 			final double dblCorrectedPhase,
-			final org.drip.function.definition.CartesianComplexNumber cnF)
+			final org.drip.numerical.complex.CartesianC1 cnF)
 		{
 			_cnF = cnF;
 			_dblCorrectedPhase = dblCorrectedPhase;
@@ -143,131 +147,126 @@ public class HestonStochasticVolatilityAlgorithm extends org.drip.pricer.option.
 		final org.drip.numerical.fourier.RotationCountPhaseTracker rcpt)
 	{
 		try {
-			org.drip.function.definition.CartesianComplexNumber cnSmallDLHS = new org.drip.function.definition.CartesianComplexNumber (dblB,
+			org.drip.numerical.complex.CartesianC1 cnSmallDLHS = new org.drip.numerical.complex.CartesianC1 (dblB,
 				-1. * _fphp.rho() * _fphp.sigma() * dblFreq);
 
-			org.drip.function.definition.CartesianComplexNumber cnSmallD = org.drip.function.definition.CartesianComplexNumber.Square
-				(cnSmallDLHS);
+			CartesianC1 d = org.drip.numerical.complex.C1MatrixUtil.Square (cnSmallDLHS);
 
-			if (null == cnSmallD) return null;
+			if (null == d) return null;
 
 			double dblSigmaScaler = _fphp.sigma() * _fphp.sigma();
 
-			if (null == (cnSmallD = org.drip.function.definition.CartesianComplexNumber.Add (cnSmallD, new
-				org.drip.function.definition.CartesianComplexNumber (dblSigmaScaler * dblFreq * dblFreq, -2. * dblSigmaScaler
+			if (null == (d = org.drip.numerical.complex.C1MatrixUtil.Add (d, new
+				org.drip.numerical.complex.CartesianC1 (dblSigmaScaler * dblFreq * dblFreq, -2. * dblSigmaScaler
 					* dblFreq * dblU))))
 				return null;
 
-			if (null == (cnSmallD = org.drip.function.definition.CartesianComplexNumber.SquareRoot (cnSmallD))) return null;
+			if (null == (d = org.drip.numerical.complex.C1MatrixUtil.SquareRoot (d))) return null;
 
-			org.drip.function.definition.CartesianComplexNumber cnGNumerator = org.drip.function.definition.CartesianComplexNumber.Subtract
-				(cnSmallDLHS, cnSmallD);
+			org.drip.numerical.complex.CartesianC1 cnGNumerator = org.drip.numerical.complex.C1MatrixUtil.Subtract
+				(cnSmallDLHS, d);
 
 			if (null == cnGNumerator) return null;
 
-			org.drip.function.definition.CartesianComplexNumber cnG = org.drip.function.definition.CartesianComplexNumber.Add (cnSmallDLHS,
-				cnSmallD);
+			CartesianC1 g = C1MatrixUtil.Add (cnSmallDLHS, d);
 
-			if (null == cnG) return null;
+			if (null == g) return null;
 
-			if (null == (cnG = org.drip.function.definition.CartesianComplexNumber.Divide (cnGNumerator, cnG))) return null;
+			if (null == (g = org.drip.numerical.complex.C1MatrixUtil.Divide (cnGNumerator, g))) return null;
 
 			int iM = 0;
 			int iN = 0;
 
 			if (org.drip.numerical.fourier.PhaseAdjuster.MULTI_VALUE_BRANCH_POWER_PHASE_TRACKER_KAHL_JACKEL ==
 				_fphp.phaseTrackerType()) {
-				iM = (int) ((cnG.argument() + java.lang.Math.PI) / (2. * java.lang.Math.PI));
+				iM = (int) ((g.argument() + java.lang.Math.PI) / (2. * java.lang.Math.PI));
 
-				iN = (int) ((cnG.argument() + (dbTimeToExpiry * cnSmallD.argument()) + java.lang.Math.PI) /
+				iN = (int) ((g.argument() + (dbTimeToExpiry * d.argument()) + java.lang.Math.PI) /
 					(2. * java.lang.Math.PI));
 			}
 
-			org.drip.function.definition.CartesianComplexNumber cnExpTTEScaledSmallD =
-				org.drip.function.definition.CartesianComplexNumber.Scale (cnSmallD, -1. * dbTimeToExpiry);
+			org.drip.numerical.complex.CartesianC1 cnExpTTEScaledSmallD =
+				org.drip.numerical.complex.C1MatrixUtil.Scale (d, -1. * dbTimeToExpiry);
 
 			if (null == cnExpTTEScaledSmallD) return null;
 
-			if (null == (cnExpTTEScaledSmallD = org.drip.function.definition.CartesianComplexNumber.Exponentiate
+			if (null == (cnExpTTEScaledSmallD = org.drip.numerical.complex.CartesianC1.Exponentiate
 				(cnExpTTEScaledSmallD)))
 				return null;
 
-			org.drip.function.definition.CartesianComplexNumber cnD = new org.drip.function.definition.CartesianComplexNumber (1. -
+			org.drip.numerical.complex.CartesianC1 cnD = new org.drip.numerical.complex.CartesianC1 (1. -
 				cnExpTTEScaledSmallD.real(), -1. * cnExpTTEScaledSmallD.imaginary());
 
-			org.drip.function.definition.CartesianComplexNumber cnInvGExpTTEScaledSmallD =
-				org.drip.function.definition.CartesianComplexNumber.Multiply (cnExpTTEScaledSmallD, cnG);
+			CartesianC1 cnInvGExpTTEScaledSmallD = C1MatrixUtil.Multiply (cnExpTTEScaledSmallD, g);
 
 			if (null == cnInvGExpTTEScaledSmallD) return null;
 
-			cnInvGExpTTEScaledSmallD = new org.drip.function.definition.CartesianComplexNumber (1. -
+			cnInvGExpTTEScaledSmallD = new org.drip.numerical.complex.CartesianC1 (1. -
 				cnInvGExpTTEScaledSmallD.real(), -1. * cnInvGExpTTEScaledSmallD.imaginary());
 
-			if (null == (cnD = org.drip.function.definition.CartesianComplexNumber.Divide (cnD, cnInvGExpTTEScaledSmallD)))
+			if (null == (cnD = org.drip.numerical.complex.C1MatrixUtil.Divide (cnD, cnInvGExpTTEScaledSmallD)))
 				return null;
 
-			if (null == (cnD = org.drip.function.definition.CartesianComplexNumber.Multiply (cnGNumerator, cnD)))
+			if (null == (cnD = org.drip.numerical.complex.C1MatrixUtil.Multiply (cnGNumerator, cnD)))
 				return null;
 
 			dblSigmaScaler = 1. / dblSigmaScaler;
 
-			if (null == (cnD = org.drip.function.definition.CartesianComplexNumber.Scale (cnD, dblSigmaScaler))) return null;
+			if (null == (cnD = org.drip.numerical.complex.C1MatrixUtil.Scale (cnD, dblSigmaScaler))) return null;
 
-			org.drip.function.definition.CartesianComplexNumber cnC = new org.drip.function.definition.CartesianComplexNumber (1. -
-				cnG.real(), -1. * cnG.imaginary());
+			CartesianC1 c = new CartesianC1 (1. - g.real(), -1. * g.imaginary());
 
 			if (org.drip.numerical.fourier.PhaseAdjuster.MULTI_VALUE_BRANCH_POWER_PHASE_TRACKER_KAHL_JACKEL ==
 				_fphp.phaseTrackerType()) {
-				if (null == (cnC = org.drip.numerical.fourier.PhaseAdjuster.PowerLogPhaseTracker
-					(cnInvGExpTTEScaledSmallD, cnC, iN, iM)))
+				if (null == (c = org.drip.numerical.fourier.PhaseAdjuster.PowerLogPhaseTracker
+					(cnInvGExpTTEScaledSmallD, c, iN, iM)))
 					return null;
 			} else if (org.drip.numerical.fourier.PhaseAdjuster.MULTI_VALUE_BRANCH_PHASE_TRACKER_ROTATION_COUNT
 				== _fphp.phaseTrackerType()) {
-				if (null == (cnC = org.drip.function.definition.CartesianComplexNumber.Logarithm (cnC))) return null;
+				if (null == (c = org.drip.numerical.complex.CartesianC1.Logarithm (c))) return null;
 
-				cnC = new org.drip.function.definition.CartesianComplexNumber (cnC.real(), rcpt.updateAndApply
-					(cnC.argument(), true));
+				c = new org.drip.numerical.complex.CartesianC1 (c.real(), rcpt.updateAndApply
+					(c.argument(), true));
 			}
 
-			double dblCorrectedPhase = cnC.argument();
+			double dblCorrectedPhase = c.argument();
 
-			if (null == (cnC = org.drip.function.definition.CartesianComplexNumber.Scale (cnC, -2.))) return null;
+			if (null == (c = org.drip.numerical.complex.C1MatrixUtil.Scale (c, -2.))) return null;
 
-			org.drip.function.definition.CartesianComplexNumber cnTTEScaledGNumerator =
-				org.drip.function.definition.CartesianComplexNumber.Scale (cnGNumerator, dbTimeToExpiry);
+			org.drip.numerical.complex.CartesianC1 cnTTEScaledGNumerator =
+				org.drip.numerical.complex.C1MatrixUtil.Scale (cnGNumerator, dbTimeToExpiry);
 
 			if (null == cnTTEScaledGNumerator) return null;
 
-			if (null == (cnC = org.drip.function.definition.CartesianComplexNumber.Add (cnTTEScaledGNumerator, cnC)))
+			if (null == (c = org.drip.numerical.complex.C1MatrixUtil.Add (cnTTEScaledGNumerator, c)))
 				return null;
 
-			if (null == (cnC = org.drip.function.definition.CartesianComplexNumber.Scale (cnC, dblA * dblSigmaScaler)))
+			if (null == (c = org.drip.numerical.complex.C1MatrixUtil.Scale (c, dblA * dblSigmaScaler)))
 				return null;
 
-			if (null == (cnC = org.drip.function.definition.CartesianComplexNumber.Add (new
-				org.drip.function.definition.CartesianComplexNumber (0., dblRiskFreeRate * dbTimeToExpiry * dblFreq),
-					cnC)))
+			if (null == (c = org.drip.numerical.complex.C1MatrixUtil.Add (new
+				org.drip.numerical.complex.CartesianC1 (0., dblRiskFreeRate * dbTimeToExpiry * dblFreq), c)))
 				return null;
 
-			org.drip.function.definition.CartesianComplexNumber cnF = org.drip.function.definition.CartesianComplexNumber.Scale (cnD,
+			org.drip.numerical.complex.CartesianC1 cnF = org.drip.numerical.complex.C1MatrixUtil.Scale (cnD,
 				dblInitialVolatility);
 
 			if (null == cnF) return null;
 
-			if (null == (cnF = org.drip.function.definition.CartesianComplexNumber.Add (cnF, new
-				org.drip.function.definition.CartesianComplexNumber (0., java.lang.Math.log (dblSpot) * dblFreq))))
+			if (null == (cnF = org.drip.numerical.complex.C1MatrixUtil.Add (cnF, new
+				org.drip.numerical.complex.CartesianC1 (0., java.lang.Math.log (dblSpot) * dblFreq))))
 				return null;
 
-			if (null == (cnF = org.drip.function.definition.CartesianComplexNumber.Add (cnF, cnC))) return null;
+			if (null == (cnF = org.drip.numerical.complex.C1MatrixUtil.Add (cnF, c))) return null;
 
-			if (null == (cnF = org.drip.function.definition.CartesianComplexNumber.Add (cnF, new
-				org.drip.function.definition.CartesianComplexNumber (0., -1. * java.lang.Math.log (dblStrike) * dblFreq))))
+			if (null == (cnF = org.drip.numerical.complex.C1MatrixUtil.Add (cnF, new
+				org.drip.numerical.complex.CartesianC1 (0., -1. * java.lang.Math.log (dblStrike) * dblFreq))))
 				return null;
 
-			if (null == (cnF = org.drip.function.definition.CartesianComplexNumber.Exponentiate (cnF))) return null;
+			if (null == (cnF = org.drip.numerical.complex.CartesianC1.Exponentiate (cnF))) return null;
 
-			if (null == (cnF = org.drip.function.definition.CartesianComplexNumber.Divide (cnF, new
-				org.drip.function.definition.CartesianComplexNumber (0., dblFreq))))
+			if (null == (cnF = org.drip.numerical.complex.C1MatrixUtil.Divide (cnF, new
+				org.drip.numerical.complex.CartesianC1 (0., dblFreq))))
 				return null;
 
 			return new PhaseCorrectedF (dblCorrectedPhase, cnF);
@@ -291,134 +290,124 @@ public class HestonStochasticVolatilityAlgorithm extends org.drip.pricer.option.
 		final org.drip.numerical.fourier.RotationCountPhaseTracker rcpt)
 	{
 		try {
-			org.drip.function.definition.CartesianComplexNumber cnSmallDLHS = new org.drip.function.definition.CartesianComplexNumber (dblB,
-				-1. * _fphp.rho() * _fphp.sigma() * dblFreq);
+			CartesianC1 cnSmallDLHS = new CartesianC1 (dblB, -1. * _fphp.rho() * _fphp.sigma() * dblFreq);
 
-			org.drip.function.definition.CartesianComplexNumber cnSmallD = org.drip.function.definition.CartesianComplexNumber.Square
-				(cnSmallDLHS);
+			CartesianC1 d1 = org.drip.numerical.complex.C1MatrixUtil.Square (cnSmallDLHS);
 
-			if (null == cnSmallD) return null;
+			if (null == d1) return null;
 
 			double dblSigmaScaler = _fphp.sigma() * _fphp.sigma();
 
-			if (null == (cnSmallD = org.drip.function.definition.CartesianComplexNumber.Add (cnSmallD, new
-				org.drip.function.definition.CartesianComplexNumber (dblSigmaScaler * dblFreq * dblFreq, -2. * dblSigmaScaler
+			if (null == (d1 = C1MatrixUtil.Add (d1, new
+				CartesianC1 (dblSigmaScaler * dblFreq * dblFreq, -2. * dblSigmaScaler
 					* dblFreq * dblU))))
 				return null;
 
-			if (null == (cnSmallD = org.drip.function.definition.CartesianComplexNumber.SquareRoot (cnSmallD))) return null;
+			if (null == (d1 = C1MatrixUtil.SquareRoot (d1))) return null;
 
-			org.drip.function.definition.CartesianComplexNumber cnGNumerator = org.drip.function.definition.CartesianComplexNumber.Add
-				(cnSmallDLHS, cnSmallD);
+			CartesianC1 gNumerator = C1MatrixUtil.Add (cnSmallDLHS, d1);
 
-			if (null == cnGNumerator) return null;
+			if (null == gNumerator) return null;
 
-			org.drip.function.definition.CartesianComplexNumber cnG = org.drip.function.definition.CartesianComplexNumber.Subtract
-				(cnSmallDLHS, cnSmallD);
+			CartesianC1 g = C1MatrixUtil.Subtract (cnSmallDLHS, d1);
 
-			if (null == cnG) return null;
+			if (null == g) return null;
 
-			if (null == (cnG = org.drip.function.definition.CartesianComplexNumber.Divide (cnGNumerator, cnG))) return null;
+			if (null == (g = C1MatrixUtil.Divide (gNumerator, g))) return null;
 
 			int iM = 0;
 			int iN = 0;
 
 			if (org.drip.numerical.fourier.PhaseAdjuster.MULTI_VALUE_BRANCH_POWER_PHASE_TRACKER_KAHL_JACKEL ==
 				_fphp.phaseTrackerType()) {
-				iM = (int) ((cnG.argument() + java.lang.Math.PI) / (2. * java.lang.Math.PI));
+				iM = (int) ((g.argument() + java.lang.Math.PI) / (2. * java.lang.Math.PI));
 
-				iN = (int) ((cnG.argument() + (dbTimeToExpiry * cnSmallD.argument()) + java.lang.Math.PI) /
+				iN = (int) ((g.argument() + (dbTimeToExpiry * d1.argument()) + java.lang.Math.PI) /
 					(2. * java.lang.Math.PI));
 			}
 
-			org.drip.function.definition.CartesianComplexNumber cnExpTTEScaledSmallD =
-				org.drip.function.definition.CartesianComplexNumber.Scale (cnSmallD, dbTimeToExpiry);
+			CartesianC1 cnExpTTEScaledSmallD = C1MatrixUtil.Scale (d1, dbTimeToExpiry);
 
 			if (null == cnExpTTEScaledSmallD) return null;
 
-			if (null == (cnExpTTEScaledSmallD = org.drip.function.definition.CartesianComplexNumber.Exponentiate
-				(cnExpTTEScaledSmallD)))
+			if (null == (cnExpTTEScaledSmallD = CartesianC1.Exponentiate (cnExpTTEScaledSmallD)))
 				return null;
 
-			org.drip.function.definition.CartesianComplexNumber cnD = new org.drip.function.definition.CartesianComplexNumber (1. -
-				cnExpTTEScaledSmallD.real(), -1. * cnExpTTEScaledSmallD.imaginary());
+			CartesianC1 d = new CartesianC1 (
+				1. - cnExpTTEScaledSmallD.real(),
+				-1. * cnExpTTEScaledSmallD.imaginary()
+			);
 
-			org.drip.function.definition.CartesianComplexNumber cnInvGExpTTEScaledSmallD =
-				org.drip.function.definition.CartesianComplexNumber.Multiply (cnG, cnExpTTEScaledSmallD);
+			org.drip.numerical.complex.CartesianC1 cnInvGExpTTEScaledSmallD =
+				org.drip.numerical.complex.C1MatrixUtil.Multiply (g, cnExpTTEScaledSmallD);
 
 			if (null == cnInvGExpTTEScaledSmallD) return null;
 
-			cnInvGExpTTEScaledSmallD = new org.drip.function.definition.CartesianComplexNumber (1. -
+			cnInvGExpTTEScaledSmallD = new org.drip.numerical.complex.CartesianC1 (1. -
 				cnInvGExpTTEScaledSmallD.real(), -1. * cnInvGExpTTEScaledSmallD.imaginary());
 
-			if (null == (cnD = org.drip.function.definition.CartesianComplexNumber.Divide (cnD, cnInvGExpTTEScaledSmallD)))
+			if (null == (d = C1MatrixUtil.Divide (d, cnInvGExpTTEScaledSmallD)))
 				return null;
 
-			if (null == (cnD = org.drip.function.definition.CartesianComplexNumber.Multiply (cnGNumerator, cnD)))
+			if (null == (d = C1MatrixUtil.Multiply (gNumerator, d)))
 				return null;
 
 			dblSigmaScaler = 1. / dblSigmaScaler;
 
-			if (null == (cnD = org.drip.function.definition.CartesianComplexNumber.Scale (cnD, dblSigmaScaler))) return null;
+			if (null == (d = C1MatrixUtil.Scale (d, dblSigmaScaler))) return null;
 
-			org.drip.function.definition.CartesianComplexNumber cnC = new org.drip.function.definition.CartesianComplexNumber (1. -
-				cnG.real(), -1. * cnG.imaginary());
+			CartesianC1 c = new CartesianC1 (1. - g.real(), -1. * g.imaginary());
 
-			if (org.drip.numerical.fourier.PhaseAdjuster.MULTI_VALUE_BRANCH_POWER_PHASE_TRACKER_KAHL_JACKEL ==
-				_fphp.phaseTrackerType()) {
-				if (null == (cnC = org.drip.numerical.fourier.PhaseAdjuster.PowerLogPhaseTracker
-					(cnInvGExpTTEScaledSmallD, cnC, iN, iM)))
+			if (PhaseAdjuster.MULTI_VALUE_BRANCH_POWER_PHASE_TRACKER_KAHL_JACKEL == _fphp.phaseTrackerType())
+			{
+				if (null == (c = PhaseAdjuster.PowerLogPhaseTracker (cnInvGExpTTEScaledSmallD, c, iN, iM)))
 					return null;
-			} else if (org.drip.numerical.fourier.PhaseAdjuster.MULTI_VALUE_BRANCH_PHASE_TRACKER_ROTATION_COUNT
+			} else if (PhaseAdjuster.MULTI_VALUE_BRANCH_PHASE_TRACKER_ROTATION_COUNT
 				== _fphp.phaseTrackerType()) {
-				if (null == (cnC = org.drip.function.definition.CartesianComplexNumber.Logarithm (cnC))) return null;
+				if (null == (c = CartesianC1.Logarithm (c))) return null;
 
-				cnC = new org.drip.function.definition.CartesianComplexNumber (cnC.real(), rcpt.updateAndApply
-					(cnC.argument(), true));
+				c = new CartesianC1 (c.real(), rcpt.updateAndApply (c.argument(), true));
 			}
 
-			double dblCorrectedPhase = cnC.argument();
+			double dblCorrectedPhase = c.argument();
 
-			if (null == (cnC = org.drip.function.definition.CartesianComplexNumber.Scale (cnC, -2.))) return null;
+			if (null == (c = C1MatrixUtil.Scale (c, -2.))) return null;
 
-			org.drip.function.definition.CartesianComplexNumber cnTTEScaledGNumerator =
-				org.drip.function.definition.CartesianComplexNumber.Scale (cnGNumerator, dbTimeToExpiry);
+			CartesianC1 tteScaledGNumerator = C1MatrixUtil.Scale (gNumerator, dbTimeToExpiry);
 
-			if (null == cnTTEScaledGNumerator) return null;
+			if (null == tteScaledGNumerator) return null;
 
-			if (null == (cnC = org.drip.function.definition.CartesianComplexNumber.Add (cnTTEScaledGNumerator, cnC)))
+			if (null == (c = C1MatrixUtil.Add (tteScaledGNumerator, c)))
 				return null;
 
-			if (null == (cnC = org.drip.function.definition.CartesianComplexNumber.Scale (cnC, dblA * dblSigmaScaler)))
+			if (null == (c = C1MatrixUtil.Scale (c, dblA * dblSigmaScaler)))
 				return null;
 
-			if (null == (cnC = org.drip.function.definition.CartesianComplexNumber.Add (new
-				org.drip.function.definition.CartesianComplexNumber (0., dblRiskFreeRate * dbTimeToExpiry * dblFreq),
-					cnC)))
+			if (null == (c = C1MatrixUtil.Add (new
+				CartesianC1 (0., dblRiskFreeRate * dbTimeToExpiry * dblFreq), c)))
 				return null;
 
-			org.drip.function.definition.CartesianComplexNumber cnF = org.drip.function.definition.CartesianComplexNumber.Scale (cnD,
-				dblInitialVolatility);
+			CartesianC1 f = C1MatrixUtil.Scale (d, dblInitialVolatility);
 
-			if (null == cnF) return null;
+			if (null == f) return null;
 
-			if (null == (cnF = org.drip.function.definition.CartesianComplexNumber.Add (cnF, new
-				org.drip.function.definition.CartesianComplexNumber (0., java.lang.Math.log (dblSpot) * dblFreq))))
+			if (null == (f = org.drip.numerical.complex.C1MatrixUtil.Add (f, new
+				org.drip.numerical.complex.CartesianC1 (0., java.lang.Math.log (dblSpot) * dblFreq))))
 				return null;
 
-			if (null == (cnF = org.drip.function.definition.CartesianComplexNumber.Add (cnF, cnC))) return null;
+			if (null == (f = org.drip.numerical.complex.C1MatrixUtil.Add (f, c))) return null;
 
-			if (null == (cnF = org.drip.function.definition.CartesianComplexNumber.Add (cnF, new
-				org.drip.function.definition.CartesianComplexNumber (0., -1. * java.lang.Math.log (dblStrike) * dblFreq))))
+			if (null == (f = org.drip.numerical.complex.C1MatrixUtil.Add (f, new
+				org.drip.numerical.complex.CartesianC1 (0., -1. * java.lang.Math.log (dblStrike) * dblFreq))))
 				return null;
 
-			if (null == (cnF = org.drip.function.definition.CartesianComplexNumber.Exponentiate (cnF))) return null;
+			if (null == (f = org.drip.numerical.complex.CartesianC1.Exponentiate (f))) return null;
 
-			if (null == (cnF = org.drip.function.definition.CartesianComplexNumber.Divide (cnF, new
-				org.drip.function.definition.CartesianComplexNumber (0., dblFreq))))
+			if (null == (f = org.drip.numerical.complex.C1MatrixUtil.Divide (f, new
+				org.drip.numerical.complex.CartesianC1 (0., dblFreq))))
 				return null;
 
-			return new PhaseCorrectedF (dblCorrectedPhase, cnF);
+			return new PhaseCorrectedF (dblCorrectedPhase, f);
 		} catch (java.lang.Exception e) {
 			e.printStackTrace();
 		}

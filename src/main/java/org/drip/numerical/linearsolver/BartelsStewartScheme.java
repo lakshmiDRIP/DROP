@@ -3,10 +3,10 @@ package org.drip.numerical.linearsolver;
 
 import org.drip.measure.crng.RdRandomSequence;
 import org.drip.numerical.common.NumberUtil;
-import org.drip.numerical.linearalgebra.MatrixUtil;
+import org.drip.numerical.linearalgebra.R1MatrixUtil;
 import org.drip.numerical.linearalgebra.QR;
-import org.drip.numerical.linearalgebra.SquareMatrix;
 import org.drip.numerical.linearalgebra.SylvesterEquation;
+import org.drip.numerical.matrix.R1Square;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -189,7 +189,7 @@ public class BartelsStewartScheme
 
 	public void solve()
 	{
-		QR qrA = MatrixUtil.QRDecomposition (_sylvesterEquation.squareMatrixA().r2Array());
+		QR qrA = R1MatrixUtil.QRDecomposition (_sylvesterEquation.squareMatrixA().r2Array());
 
 		System.out.println();
 
@@ -213,7 +213,7 @@ public class BartelsStewartScheme
 
 		System.out.println();
 
-		QR qrBTranspose = MatrixUtil.QRDecomposition (
+		QR qrBTranspose = R1MatrixUtil.QRDecomposition (
 			_sylvesterEquation.squareMatrixB().transpose().r2Array()
 		);
 
@@ -235,9 +235,9 @@ public class BartelsStewartScheme
 			);
 		}
 
-		double[][] f = MatrixUtil.Product (MatrixUtil.Transpose (u), _rhsMatrix);
+		double[][] f = R1MatrixUtil.Product (R1MatrixUtil.Transpose (u), _rhsMatrix);
 
-		f = MatrixUtil.Product (f, v);
+		f = R1MatrixUtil.Product (f, v);
 
 		System.out.println();
 
@@ -308,12 +308,12 @@ public class BartelsStewartScheme
 			true
 		);
 
-		double[][] matrixC = MatrixUtil.Sum (matrixA, matrixB);
+		double[][] matrixC = R1MatrixUtil.Sum (matrixA, matrixB);
 
 		BartelsStewartScheme bartelsStewartScheme = new BartelsStewartScheme (
 			new SylvesterEquation (
-				SquareMatrix.Standard (matrixA),
-				SquareMatrix.Standard (matrixB)
+				R1Square.Standard (matrixA),
+				R1Square.Standard (matrixB)
 			),
 			matrixC,
 			true

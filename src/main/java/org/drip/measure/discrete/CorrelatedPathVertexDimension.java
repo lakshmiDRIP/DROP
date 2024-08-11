@@ -130,7 +130,7 @@ public class CorrelatedPathVertexDimension {
 		_qr = qr;
 		_bApplyAntithetic = bApplyAntithetic;
 
-		if (null == (_aadblCholesky = org.drip.numerical.linearalgebra.MatrixUtil.CholeskyBanachiewiczFactorization
+		if (null == (_aadblCholesky = org.drip.numerical.linearalgebra.R1MatrixUtil.CholeskyBanachiewiczFactorization
 			(_aadblCorrelation = aadblCorrelation)))
 			throw new java.lang.Exception ("CorrelatedPathVertexDimension Constructor => Invalid Inputs");
 	}

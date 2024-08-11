@@ -126,7 +126,7 @@ public interface R2ToZ1
 	 * @return Returns the Calculated Complex Value
 	 */
 
-	public abstract org.drip.function.definition.CartesianComplexNumber evaluate (
+	public abstract org.drip.numerical.complex.CartesianC1 evaluate (
 		final double x,
 		final double y);
 }

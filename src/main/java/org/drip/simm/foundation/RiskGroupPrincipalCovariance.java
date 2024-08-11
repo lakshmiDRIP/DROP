@@ -4,7 +4,7 @@ package org.drip.simm.foundation;
 import org.drip.numerical.common.NumberUtil;
 import org.drip.numerical.eigen.EigenComponent;
 import org.drip.numerical.eigen.PowerIterationComponentExtractor;
-import org.drip.numerical.linearalgebra.MatrixUtil;
+import org.drip.numerical.linearalgebra.R1MatrixUtil;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -248,7 +248,7 @@ public class RiskGroupPrincipalCovariance
 	{
 		double[] scaledPrincipalEigenvector = scaledPrincipalEigenvector();
 
-		return MatrixUtil.CrossProduct (scaledPrincipalEigenvector, scaledPrincipalEigenvector);
+		return R1MatrixUtil.CrossProduct (scaledPrincipalEigenvector, scaledPrincipalEigenvector);
 	}
 
 	/**
@@ -259,6 +259,6 @@ public class RiskGroupPrincipalCovariance
 
 	public double[][] adjustedCovariance()
 	{
-		return MatrixUtil.Scale2D (unadjustedCovariance(),_extraGroupCorrelation);
+		return R1MatrixUtil.Scale2D (unadjustedCovariance(),_extraGroupCorrelation);
 	}
 }

@@ -1,5 +1,5 @@
 
-package org.drip.numerical.linearalgebra;
+package org.drip.numerical.matrix;
 
 import java.util.Map;
 
@@ -7,6 +7,8 @@ import org.drip.function.definition.R1ToR1;
 import org.drip.numerical.common.NumberUtil;
 import org.drip.numerical.eigen.EigenOutput;
 import org.drip.numerical.eigen.QREigenComponentExtractor;
+import org.drip.numerical.linearalgebra.R1MatrixUtil;
+import org.drip.numerical.linearalgebra.QR;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -81,8 +83,8 @@ import org.drip.numerical.eigen.QREigenComponentExtractor;
  */
 
 /**
- * <i>SquareMatrix</i> implements the type and Functionality associated with a Square Matrix. The References
- * 	are:
+ * <i>R1Square</i> implements the type and Functionality associated with a R<sup>1</sup>Square Matrix. The
+ *  References are:
  * 
  * <br><br>
  * 	<ul>
@@ -111,29 +113,29 @@ import org.drip.numerical.eigen.QREigenComponentExtractor;
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md">Numerical Analysis Library</a></li>
  *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/numerical/README.md">Numerical Quadrature, Differentiation, Eigenization, Linear Algebra, and Utilities</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/numerical/linearalgebra/README.md">Linear Algebra Matrix Transform Library</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/numerical/matrix/README.md">Implementation of R<sup>1</sup> C<sup>1</sup> Matrices</a></li>
  *  </ul>
  * <br><br>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class SquareMatrix
+public class R1Square
 {
 	private double[][] _r2Array = null;
 
 	/**
-	 * Construct a Standard Instance of <i>SquareMatrix</i>
+	 * Construct a Standard Instance of <i>R1Square</i>
 	 * 
 	 * @param r2Array R<sup>2</sup> Array
 	 * 
-	 * @return Standard Instance of <i>SquareMatrix</i>
+	 * @return Standard Instance of <i>R1Square</i>
 	 */
 
-	public static SquareMatrix Standard (
+	public static R1Square Standard (
 		final double[][] r2Array)
 	{
-		if (!MatrixUtil.IsSquare (r2Array)) {
+		if (!R1MatrixUtil.IsSquare (r2Array)) {
 			return null;
 		}
 
@@ -143,10 +145,10 @@ public class SquareMatrix
 			}
 		}
 
-		return new SquareMatrix (r2Array);
+		return new R1Square (r2Array);
 	}
 
-	protected SquareMatrix (
+	protected R1Square (
 		final double[][] r2Array)
 	{
 		_r2Array = r2Array;
@@ -180,9 +182,9 @@ public class SquareMatrix
 	 * @return The Transposed Square Matrix
 	 */
 
-	public SquareMatrix transpose()
+	public R1Square transpose()
 	{
-		return new SquareMatrix (MatrixUtil.UnsafeTranspose (_r2Array));
+		return new R1Square (R1MatrixUtil.UnsafeTranspose (_r2Array));
 	}
 
 	/**
@@ -193,8 +195,8 @@ public class SquareMatrix
 	 * @return Resulting Product
 	 */
 
-	public SquareMatrix product (
-		final SquareMatrix squareMatrixOther)
+	public R1Square product (
+		final R1Square squareMatrixOther)
 	{
 		if (null == squareMatrixOther || _r2Array.length != squareMatrixOther.size()) {
 			return null;
@@ -215,7 +217,7 @@ public class SquareMatrix
 			}
 		}
 
-		return new SquareMatrix (r2ArrayProduct);
+		return new R1Square (r2ArrayProduct);
 	}
 
 	/**
@@ -226,7 +228,7 @@ public class SquareMatrix
 
 	public boolean isNormal()
 	{
-		SquareMatrix squareMatrixTranspose = transpose();
+		R1Square squareMatrixTranspose = transpose();
 
 		double[][] r2ArrayTransposeTimesR2Array = product (squareMatrixTranspose).r2Array();
 
@@ -266,7 +268,7 @@ public class SquareMatrix
 
 	public QR qrDecomposition()
 	{
-		return MatrixUtil.QRDecomposition (_r2Array);
+		return R1MatrixUtil.QRDecomposition (_r2Array);
 	}
 
 	/**
@@ -277,7 +279,7 @@ public class SquareMatrix
 
 	public QR rqDecomposition()
 	{
-		return MatrixUtil.RQDecomposition (_r2Array);
+		return R1MatrixUtil.RQDecomposition (_r2Array);
 	}
 
 	/**
@@ -346,7 +348,7 @@ public class SquareMatrix
 		EigenOutput eigenOutput = QREigenComponentExtractor.Standard().eigenize (_r2Array);
 
 		if (null == eigenOutput) {
-			throw new Exception ("SquareMatrix::determinant => Cannot eigenize");
+			throw new Exception ("R1Square::determinant => Cannot eigenize");
 		}
 
 		return eigenOutput.determinant();
@@ -366,7 +368,7 @@ public class SquareMatrix
 		EigenOutput eigenOutput = svd();
 
 		if (null == eigenOutput) {
-			throw new Exception ("SquareMatrix::conditionNumberL2 => Cannot compute SVD");
+			throw new Exception ("R1Square::conditionNumberL2 => Cannot compute SVD");
 		}
 
 		return eigenOutput.conditionNumber();

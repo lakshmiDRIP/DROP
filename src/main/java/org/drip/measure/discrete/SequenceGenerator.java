@@ -216,7 +216,7 @@ public class SequenceGenerator
 	{
 		if (0 >= iCount) return null;
 
-		double[][] aadblCholesky = org.drip.numerical.linearalgebra.MatrixUtil.CholeskyBanachiewiczFactorization
+		double[][] aadblCholesky = org.drip.numerical.linearalgebra.R1MatrixUtil.CholeskyBanachiewiczFactorization
 			(aadblCorrelation);
 
 		if (null == aadblCholesky) return null;
@@ -584,9 +584,9 @@ public class SequenceGenerator
 		{
 			try
 			{
-				rankReducedChiSquare[index] = org.drip.numerical.linearalgebra.MatrixUtil.DotProduct (
+				rankReducedChiSquare[index] = org.drip.numerical.linearalgebra.R1MatrixUtil.DotProduct (
 					gaussianJointArray[index],
-					org.drip.numerical.linearalgebra.MatrixUtil.Product (
+					org.drip.numerical.linearalgebra.R1MatrixUtil.Product (
 						precisionMatrix,
 						gaussianJointArray[index]
 					)
@@ -666,9 +666,9 @@ public class SequenceGenerator
 
 			try
 			{
-				pillaiSpecialChiSquare[index] = 1. / org.drip.numerical.linearalgebra.MatrixUtil.DotProduct (
+				pillaiSpecialChiSquare[index] = 1. / org.drip.numerical.linearalgebra.R1MatrixUtil.DotProduct (
 					pillaiVector,
-					org.drip.numerical.linearalgebra.MatrixUtil.Product (
+					org.drip.numerical.linearalgebra.R1MatrixUtil.Product (
 						covarianceMatrix,
 						pillaiVector
 					)

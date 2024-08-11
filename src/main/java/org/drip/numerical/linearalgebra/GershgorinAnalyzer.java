@@ -3,6 +3,7 @@ package org.drip.numerical.linearalgebra;
 
 import org.drip.numerical.common.NumberUtil;
 import org.drip.numerical.common.R1ClosenessVerifier;
+import org.drip.numerical.matrix.R1Square;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -118,7 +119,7 @@ import org.drip.numerical.common.R1ClosenessVerifier;
 
 public class GershgorinAnalyzer
 {
-	private SquareMatrix _squareMatrix = null;
+	private R1Square _squareMatrix = null;
 	private GershgorinDisc[] _gershgorinDiscArray = null;
 
 	/**
@@ -131,7 +132,7 @@ public class GershgorinAnalyzer
 	 */
 
 	public static final GershgorinAnalyzer FromSquareMatrix (
-		final SquareMatrix squareMatrix,
+		final R1Square squareMatrix,
 		final boolean useRow)
 	{
 		try {
@@ -156,7 +157,7 @@ public class GershgorinAnalyzer
 	 */
 
 	public GershgorinAnalyzer (
-		final SquareMatrix squareMatrix,
+		final R1Square squareMatrix,
 		final R1ClosenessVerifier r1ClosenessVerifier)
 		throws Exception
 	{
@@ -186,7 +187,7 @@ public class GershgorinAnalyzer
 	 * @return Square Matrix
 	 */
 
-	public SquareMatrix squareMatrix()
+	public R1Square squareMatrix()
 	{
 		return _squareMatrix;
 	}
@@ -227,7 +228,7 @@ public class GershgorinAnalyzer
 	 * @return "Gershgorin Strengthened" Square Matrix
 	 */
 
-	public SquareMatrix Strengthen (
+	public R1Square Strengthen (
 		final double t)
 	{
 		if (!NumberUtil.IsValid (t) || 0. > t || 1. < t) {
@@ -246,7 +247,7 @@ public class GershgorinAnalyzer
 			}
 		}
 
-		return SquareMatrix.Standard (r2ArrayStrengthened);
+		return R1Square.Standard (r2ArrayStrengthened);
 	}
 
 	public static void main (
@@ -261,7 +262,7 @@ public class GershgorinAnalyzer
 		};
 
 		GershgorinAnalyzer gershgorinRowAnalyzer = GershgorinAnalyzer.FromSquareMatrix (
-			SquareMatrix.Standard (r2Array),
+			R1Square.Standard (r2Array),
 			true
 		);
 
@@ -276,7 +277,7 @@ public class GershgorinAnalyzer
 
 
 		GershgorinAnalyzer gershgorinColumnAnalyzer = GershgorinAnalyzer.FromSquareMatrix (
-			SquareMatrix.Standard (r2Array),
+			R1Square.Standard (r2Array),
 			true
 		);
 

@@ -125,7 +125,7 @@ public class ForwardReverseHoldingsAllocation extends
 
 		int assetCount = assetWeightArray.length;
 
-		double[] expectedAssetExcessReturnsArray = org.drip.numerical.linearalgebra.MatrixUtil.Product (
+		double[] expectedAssetExcessReturnsArray = org.drip.numerical.linearalgebra.R1MatrixUtil.Product (
 			assetExcessReturnsCovarianceMatrix,
 			assetWeightArray
 		);
@@ -173,8 +173,8 @@ public class ForwardReverseHoldingsAllocation extends
 
 		int assetCount = assetIDArray.length;
 
-		double[] assetWeightArray = org.drip.numerical.linearalgebra.MatrixUtil.Product (
-			org.drip.numerical.linearalgebra.MatrixUtil.InvertUsingGaussianElimination (
+		double[] assetWeightArray = org.drip.numerical.linearalgebra.R1MatrixUtil.Product (
+			org.drip.numerical.linearalgebra.R1MatrixUtil.InvertUsingGaussianElimination (
 				assetExcessReturnsCovarianceMatrix
 			),
 			expectedAssetExcessReturnsArray
@@ -234,7 +234,7 @@ public class ForwardReverseHoldingsAllocation extends
 			return null;
 		}
 
-		double[] impliedBetaArray = org.drip.numerical.linearalgebra.MatrixUtil.Product (
+		double[] impliedBetaArray = org.drip.numerical.linearalgebra.R1MatrixUtil.Product (
 			assetExcessReturnsCovarianceMatrix,
 			assetWeightArray
 		);
@@ -374,7 +374,7 @@ public class ForwardReverseHoldingsAllocation extends
 
 		try
 		{
-			double beta = org.drip.numerical.linearalgebra.MatrixUtil.DotProduct (
+			double beta = org.drip.numerical.linearalgebra.R1MatrixUtil.DotProduct (
 				optimalPortfolio().weightArray(),
 				benchmarkPortfolioMetrics.impliedBeta()
 			);

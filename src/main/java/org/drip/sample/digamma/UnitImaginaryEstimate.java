@@ -1,7 +1,7 @@
 
 package org.drip.sample.digamma;
 
-import org.drip.function.definition.CartesianComplexNumber;
+import org.drip.numerical.complex.CartesianC1;
 import org.drip.service.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 import org.drip.specialfunction.digamma.SpecialValues;
@@ -182,7 +182,7 @@ public class UnitImaginaryEstimate
 
 		for (int termCount : termCountArray)
 		{
-			CartesianComplexNumber complexNumber = SpecialValues.UnitImaginary (termCount);
+			CartesianC1 complexNumber = SpecialValues.UnitImaginary (termCount);
 
 			System.out.println (
 				"\t|" + FormatUtil.FormatDouble (termCount, 4, 0, 1.) + " => " +

@@ -1,5 +1,5 @@
 
-package org.drip.numerical.linearalgebra;
+package org.drip.numerical.matrix;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -74,7 +74,8 @@ package org.drip.numerical.linearalgebra;
  */
 
 /**
- * <i>PeriodicTridiagonalMatrix</i> implements a banded Periodic Tridiagonal Matrix. The References are:
+ * <i>R1Tridiagonal</i> abstracts the R<sup>1</sup> Tridiagonal Matrix based on Periodic/non-Periodic setup.
+ * 	The References are:
  * 
  * <br><br>
  * 	<ul>
@@ -105,31 +106,17 @@ package org.drip.numerical.linearalgebra;
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md">Numerical Analysis Library</a></li>
  *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/numerical/README.md">Numerical Quadrature, Differentiation, Eigenization, Linear Algebra, and Utilities</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/numerical/linearalgebra/README.md">Linear Algebra Matrix Transform Library</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/numerical/matrix/README.md">Implementation of R<sup>1</sup> C<sup>1</sup> Matrices</a></li>
  *  </ul>
  * <br><br>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class PeriodicTridiagonalMatrix extends TridiagonalMatrix
+public abstract class R1Tridiagonal extends R1Square
 {
 
-	/**
-	 * Construct an Instance of Periodic Tridiagonal Matrix
-	 * 
-	 * @param r2Array R<sup>2</sup> Array
-	 * 
-	 * @return Instance of Non-periodic Tridiagonal Matrix
-	 */
-
-	public static final PeriodicTridiagonalMatrix Standard (
-		final double[][] r2Array)
-	{
-		return MatrixUtil.IsPeriodicTridiagonal (r2Array) ? new PeriodicTridiagonalMatrix (r2Array) : null;
-	}
-
-	protected PeriodicTridiagonalMatrix (
+	protected R1Tridiagonal (
 		final double[][] r2Array)
 	{
 		super (r2Array);

@@ -5,7 +5,7 @@ import org.drip.measure.discrete.SequenceGenerator;
 import org.drip.measure.dynamics.DiffusionEvaluatorLogarithmic;
 import org.drip.measure.process.DiffusionEvolver;
 import org.drip.measure.realization.*;
-import org.drip.numerical.linearalgebra.MatrixUtil;
+import org.drip.numerical.linearalgebra.R1MatrixUtil;
 import org.drip.service.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 
@@ -162,7 +162,7 @@ public class R1JointDiffusion {
 
 		System.out.println();
 
-		return MatrixUtil.Transpose (aadblGaussianJoint);
+		return R1MatrixUtil.Transpose (aadblGaussianJoint);
 	}
 
 	/**

@@ -2,7 +2,7 @@
 package org.drip.sample.matrix;
 
 import org.drip.numerical.common.*;
-import org.drip.numerical.linearalgebra.MatrixUtil;
+import org.drip.numerical.linearalgebra.R1MatrixUtil;
 import org.drip.service.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 
@@ -122,37 +122,37 @@ public class GrahamSchmidtProcess {
 			{-4,  24, -41}
 		};
 
-		double[][] u = MatrixUtil.QRGrahamSchmidtOrthogonalization (a);
+		double[][] u = R1MatrixUtil.QRGrahamSchmidtOrthogonalization (a);
 
 		NumberUtil.PrintMatrix ("ORTHOGONAL", u);
 
-		double[][] uTranspose = MatrixUtil.Transpose (u);
+		double[][] uTranspose = R1MatrixUtil.Transpose (u);
 
 		System.out.println (
 			"ORTHOGONAL TEST: " +
-			FormatUtil.FormatDouble ( MatrixUtil.DotProduct (uTranspose[0], uTranspose[1]), 1, 1, 1.)
+			FormatUtil.FormatDouble ( R1MatrixUtil.DotProduct (uTranspose[0], uTranspose[1]), 1, 1, 1.)
 		);
 
-		double[][] q = MatrixUtil.QRGrahamSchmidtOrthonormalization (a);
+		double[][] q = R1MatrixUtil.QRGrahamSchmidtOrthonormalization (a);
 
 		NumberUtil.PrintMatrix ("ORTHONORMAL", q);
 
-		double[][] qTranspose = MatrixUtil.Transpose (q);
+		double[][] qTranspose = R1MatrixUtil.Transpose (q);
 
 		System.out.println (
 			"ORTHONORMAL TEST: " +
-			FormatUtil.FormatDouble (MatrixUtil.DotProduct (qTranspose[0], qTranspose[1]), 1, 1, 1.)
+			FormatUtil.FormatDouble (R1MatrixUtil.DotProduct (qTranspose[0], qTranspose[1]), 1, 1, 1.)
 		);
 
 		System.out.println();
 
-		double[][] uvTranspose = MatrixUtil.Product (MatrixUtil.Transpose (q), a);
+		double[][] uvTranspose = R1MatrixUtil.Product (R1MatrixUtil.Transpose (q), a);
 
 		NumberUtil.PrintMatrix ("R CHECK #1.1", uvTranspose);
 
 		System.out.println();
 
-		NumberUtil.PrintMatrix ("R CHECK #1.2", MatrixUtil.Product (q, uvTranspose));
+		NumberUtil.PrintMatrix ("R CHECK #1.2", R1MatrixUtil.Product (q, uvTranspose));
 
 		System.out.println();
 

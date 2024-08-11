@@ -346,7 +346,7 @@ public class RdFokkerPlanck
 		);
 
 		final double[][] omegaInverse =
-			org.drip.numerical.linearalgebra.MatrixUtil.InvertUsingGaussianElimination (
+			org.drip.numerical.linearalgebra.R1MatrixUtil.InvertUsingGaussianElimination (
 				omega
 			);
 
@@ -406,9 +406,9 @@ public class RdFokkerPlanck
 				throws java.lang.Exception
 			{
 				return rdNormalizerFinal * r1ToR1Exponential.evaluate (
-					org.drip.numerical.linearalgebra.MatrixUtil.DotProduct (
+					org.drip.numerical.linearalgebra.R1MatrixUtil.DotProduct (
 						xArray,
-						org.drip.numerical.linearalgebra.MatrixUtil.Product (
+						org.drip.numerical.linearalgebra.R1MatrixUtil.Product (
 							omegaInverse,
 							xArray
 						)

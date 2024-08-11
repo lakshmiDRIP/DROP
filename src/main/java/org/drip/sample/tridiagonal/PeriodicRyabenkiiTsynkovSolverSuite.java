@@ -5,7 +5,7 @@ import java.util.Date;
 
 import org.drip.measure.crng.RdRandomSequence;
 import org.drip.numerical.common.NumberUtil;
-import org.drip.numerical.linearalgebra.MatrixUtil;
+import org.drip.numerical.linearalgebra.R1MatrixUtil;
 import org.drip.numerical.linearsolver.RyabenkiiTsynkovScheme;
 import org.drip.service.env.EnvManager;
 
@@ -155,7 +155,7 @@ public class PeriodicRyabenkiiTsynkovSolverSuite
 			);
 		}
 
-		double[] rhsArray = MatrixUtil.Product (periodicTridiagonalMatrix, xArray);
+		double[] rhsArray = R1MatrixUtil.Product (periodicTridiagonalMatrix, xArray);
 
 		System.out.println ("\t|-----------------------------------------------------------------||");
 

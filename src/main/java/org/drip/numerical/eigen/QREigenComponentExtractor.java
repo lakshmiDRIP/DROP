@@ -156,7 +156,7 @@ public class QREigenComponentExtractor
 	@Override public org.drip.numerical.eigen.EigenOutput eigenize (
 		final double[][] a)
 	{
-		org.drip.numerical.linearalgebra.QR qr = org.drip.numerical.linearalgebra.MatrixUtil.QRDecomposition (
+		org.drip.numerical.linearalgebra.QR qr = org.drip.numerical.linearalgebra.R1MatrixUtil.QRDecomposition (
 			a
 		);
 
@@ -167,7 +167,7 @@ public class QREigenComponentExtractor
 
 		double[][] q = qr.q();
 
-		double[][] qTranspose = org.drip.numerical.linearalgebra.MatrixUtil.Transpose (
+		double[][] qTranspose = org.drip.numerical.linearalgebra.R1MatrixUtil.Transpose (
 			q
 		);
 
@@ -201,16 +201,16 @@ public class QREigenComponentExtractor
 		}
 
 		while (iterationIndex++ < _maxIterations &&
-			org.drip.numerical.linearalgebra.TriangularMatrix.NON_TRIANGULAR ==
-			org.drip.numerical.linearalgebra.TriangularMatrix.Type (
+			org.drip.numerical.matrix.R1Triangular.NON_TRIANGULAR ==
+			org.drip.numerical.matrix.R1Triangular.Type (
 				v
 			)
 		)
 		{
-			if (null == (qr = org.drip.numerical.linearalgebra.MatrixUtil.QRDecomposition (
-				v = org.drip.numerical.linearalgebra.MatrixUtil.Product (
+			if (null == (qr = org.drip.numerical.linearalgebra.R1MatrixUtil.QRDecomposition (
+				v = org.drip.numerical.linearalgebra.R1MatrixUtil.Product (
 					qTranspose,
-					org.drip.numerical.linearalgebra.MatrixUtil.Product (
+					org.drip.numerical.linearalgebra.R1MatrixUtil.Product (
 						v,
 						q
 					)
@@ -220,11 +220,11 @@ public class QREigenComponentExtractor
 				return null;
 			}
 
-			qTranspose = org.drip.numerical.linearalgebra.MatrixUtil.Transpose (
+			qTranspose = org.drip.numerical.linearalgebra.R1MatrixUtil.Transpose (
 				q = qr.q()
 			);
 
-			b = org.drip.numerical.linearalgebra.MatrixUtil.Product (
+			b = org.drip.numerical.linearalgebra.R1MatrixUtil.Product (
 				b,
 				q
 			);
@@ -245,7 +245,7 @@ public class QREigenComponentExtractor
 		try
 		{
 			return new org.drip.numerical.eigen.EigenOutput (
-				org.drip.numerical.linearalgebra.MatrixUtil.Transpose (
+				org.drip.numerical.linearalgebra.R1MatrixUtil.Transpose (
 					b
 				),
 				eigenvalueArray

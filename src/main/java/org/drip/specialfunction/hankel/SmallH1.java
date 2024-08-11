@@ -1,7 +1,7 @@
 
 package org.drip.specialfunction.hankel;
 
-import org.drip.function.definition.CartesianComplexNumber;
+import org.drip.numerical.complex.CartesianC1;
 import org.drip.specialfunction.definition.SphericalBesselFirstKindEstimator;
 import org.drip.specialfunction.definition.SphericalBesselSecondKindEstimator;
 import org.drip.specialfunction.definition.SphericalHankelFirstKindEstimator;
@@ -184,12 +184,12 @@ public class SmallH1 extends SphericalHankelFirstKindEstimator
 		return _sphericalBesselSecondKindEstimator;
 	}
 
-	@Override public CartesianComplexNumber smallH1 (
+	@Override public CartesianC1 smallH1 (
 		final double alpha,
 		final double z)
 	{
 		try {
-			return new CartesianComplexNumber (
+			return new CartesianC1 (
 				_sphericalBesselFirstKindEstimator.smallJ (alpha, z),
 				_sphericalBesselSecondKindEstimator.smallY (alpha, z)
 			);

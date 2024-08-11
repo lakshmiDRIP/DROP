@@ -1,7 +1,7 @@
 
 package org.drip.specialfunction.hankel;
 
-import org.drip.function.definition.CartesianComplexNumber;
+import org.drip.numerical.complex.CartesianC1;
 import org.drip.specialfunction.definition.BesselFirstKindEstimator;
 import org.drip.specialfunction.definition.HankelSecondKindEstimator;
 
@@ -166,12 +166,12 @@ public class BigH2FromBigJ extends HankelSecondKindEstimator
 		return _besselFirstKindEstimator;
 	}
 
-	@Override public CartesianComplexNumber bigH2 (
+	@Override public CartesianC1 bigH2 (
 		final double alpha,
 		final double z)
 	{
 		try {
-			return new CartesianComplexNumber (
+			return new CartesianC1 (
 				-1. * _besselFirstKindEstimator.bigJ (-1. * alpha, z),
 				(
 					_besselFirstKindEstimator.bigJ (alpha, z) * Math.cos (Math.PI * alpha) +

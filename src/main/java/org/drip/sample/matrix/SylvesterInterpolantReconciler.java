@@ -9,7 +9,7 @@ import org.drip.function.matrix.Square;
 import org.drip.numerical.common.NumberUtil;
 import org.drip.numerical.eigen.EigenOutput;
 import org.drip.numerical.eigen.QREigenComponentExtractor;
-import org.drip.numerical.linearalgebra.MatrixUtil;
+import org.drip.numerical.linearalgebra.R1MatrixUtil;
 import org.drip.service.env.EnvManager;
 
 /*
@@ -216,12 +216,12 @@ public class SylvesterInterpolantReconciler
 
 		System.out.println ("\t|-----------------------------------------|");
 
-		double[][] recoveredA = MatrixUtil.Scale2D (
+		double[][] recoveredA = R1MatrixUtil.Scale2D (
 			frobeniusCovariant0,
 			eigenValueArray[0]
 		);
 
-		double[][] recoveredA1 = MatrixUtil.Scale2D (
+		double[][] recoveredA1 = R1MatrixUtil.Scale2D (
 			frobeniusCovariant1,
 			eigenValueArray[1]
 		);
@@ -240,12 +240,12 @@ public class SylvesterInterpolantReconciler
 
 		System.out.println ("\t|------------------------------------------|");
 
-		double[][] inverseA = MatrixUtil.Scale2D (
+		double[][] inverseA = R1MatrixUtil.Scale2D (
 			frobeniusCovariant0,
 			1. / eigenValueArray[0]
 		);
 
-		double[][] inverseA1 = MatrixUtil.Scale2D (
+		double[][] inverseA1 = R1MatrixUtil.Scale2D (
 			frobeniusCovariant1,
 			1. / eigenValueArray[1]
 		);
@@ -266,7 +266,7 @@ public class SylvesterInterpolantReconciler
 
 		NumberUtil.PrintMatrix (
 			"\t| INVERSE MATRIX",
-			MatrixUtil.Invert (
+			R1MatrixUtil.Invert (
 				a,
 				""
 			)

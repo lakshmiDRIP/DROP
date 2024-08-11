@@ -128,9 +128,9 @@ public class PhaseAdjuster {
 	 * @return The Branch Switching Log Adjustment
 	 */
 
-	public static final org.drip.function.definition.CartesianComplexNumber PowerLogPhaseTracker (
-		final org.drip.function.definition.CartesianComplexNumber cnGNumerator,
-		final org.drip.function.definition.CartesianComplexNumber cnGDenominator,
+	public static final org.drip.numerical.complex.CartesianC1 PowerLogPhaseTracker (
+		final org.drip.numerical.complex.CartesianC1 cnGNumerator,
+		final org.drip.numerical.complex.CartesianC1 cnGDenominator,
 		final int iN,
 		final int iM)
 	{
@@ -141,7 +141,7 @@ public class PhaseAdjuster {
 		if (0. == dblAbsDenominator) return null;
 
 		try {
-			return new org.drip.function.definition.CartesianComplexNumber (java.lang.Math.log (cnGNumerator.abs() /
+			return new org.drip.numerical.complex.CartesianC1 (java.lang.Math.log (cnGNumerator.abs() /
 				dblAbsDenominator), cnGNumerator.argument() - cnGDenominator.argument() + 2. *
 					java.lang.Math.PI * (iN - iM));
 		} catch (java.lang.Exception e) {

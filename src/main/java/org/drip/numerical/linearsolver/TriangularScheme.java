@@ -2,7 +2,7 @@
 package org.drip.numerical.linearsolver;
 
 import org.drip.numerical.common.NumberUtil;
-import org.drip.numerical.linearalgebra.TriangularMatrix;
+import org.drip.numerical.matrix.R1Triangular;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -117,7 +117,7 @@ import org.drip.numerical.linearalgebra.TriangularMatrix;
 public class TriangularScheme
 {
 	private double[] _rhsArray = null;
-	private TriangularMatrix _triangularMatrix = null;
+	private R1Triangular _triangularMatrix = null;
 
 	private double[] forwardSubstitution()
 	{
@@ -169,7 +169,7 @@ public class TriangularScheme
 	 */
 
 	public TriangularScheme (
-		final TriangularMatrix triangularMatrix,
+		final R1Triangular triangularMatrix,
 		final double[] rhsArray)
 		throws Exception
 	{
@@ -187,7 +187,7 @@ public class TriangularScheme
 	 * @return Triangular Matrix
 	 */
 
-	public TriangularMatrix matrix()
+	public R1Triangular matrix()
 	{
 		return _triangularMatrix;
 	}
@@ -236,7 +236,7 @@ public class TriangularScheme
 		double[] lowerRHSArray = {1., 8., 32., 90.};
 
 		TriangularScheme lowerTriangularScheme = new TriangularScheme (
-			TriangularMatrix.Standard (lowerTriangularMatrix),
+			R1Triangular.Standard (lowerTriangularMatrix),
 			lowerRHSArray
 		);
 
@@ -252,7 +252,7 @@ public class TriangularScheme
 		double[] upperRHSArray = {90., 32., 8., 1.};
 
 		TriangularScheme upperTriangularScheme = new TriangularScheme (
-			TriangularMatrix.Standard (upperTriangularMatrix),
+			R1Triangular.Standard (upperTriangularMatrix),
 			upperRHSArray
 		);
 

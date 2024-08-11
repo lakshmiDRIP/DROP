@@ -1,7 +1,7 @@
 
 package org.drip.numerical.linearsolver;
 
-import org.drip.numerical.linearalgebra.PeriodicTridiagonalMatrix;
+import org.drip.numerical.matrix.R1PeriodicTridiagonal;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -119,7 +119,7 @@ public abstract class PeriodicTridiagonalScheme extends TridiagonalScheme
 {
 
 	protected PeriodicTridiagonalScheme (
-		final PeriodicTridiagonalMatrix periodicTridiagonalMatrix,
+		final R1PeriodicTridiagonal periodicTridiagonalMatrix,
 		final double[] rhsArray)
 		throws Exception
 	{

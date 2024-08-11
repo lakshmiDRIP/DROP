@@ -606,12 +606,12 @@ public class BlackLittermanCombinationEngine
 			intraViewComponentArray[viewIndex] = intraViewComponentArray[viewIndex] * tau / riskAversion;
 		}
 
-		double[][] projectionSpaceAssetLoadingsMatrix = org.drip.numerical.linearalgebra.MatrixUtil.Product (
-			org.drip.numerical.linearalgebra.MatrixUtil.Product (
+		double[][] projectionSpaceAssetLoadingsMatrix = org.drip.numerical.linearalgebra.R1MatrixUtil.Product (
+			org.drip.numerical.linearalgebra.R1MatrixUtil.Product (
 				assetSpaceLoadingMatrix,
 				assetExcessReturnsCovarianceMatrix
 			),
-			org.drip.numerical.linearalgebra.MatrixUtil.Transpose (
+			org.drip.numerical.linearalgebra.R1MatrixUtil.Transpose (
 				assetSpaceLoadingMatrix
 			)
 		);
@@ -634,9 +634,9 @@ public class BlackLittermanCombinationEngine
 			}
 		}
 
-		double[][] compositePrecisionProjectionScoping = org.drip.numerical.linearalgebra.MatrixUtil.Product (
-			org.drip.numerical.linearalgebra.MatrixUtil.Product (
-				org.drip.numerical.linearalgebra.MatrixUtil.InvertUsingGaussianElimination (
+		double[][] compositePrecisionProjectionScoping = org.drip.numerical.linearalgebra.R1MatrixUtil.Product (
+			org.drip.numerical.linearalgebra.R1MatrixUtil.Product (
+				org.drip.numerical.linearalgebra.R1MatrixUtil.InvertUsingGaussianElimination (
 					compositeConfidenceCovarianceMatrix
 				),
 				assetSpaceLoadingMatrix
@@ -662,14 +662,14 @@ public class BlackLittermanCombinationEngine
 		{
 			return new org.drip.portfolioconstruction.bayesian.ProjectionExposure (
 				intraViewComponentArray,
-				org.drip.numerical.linearalgebra.MatrixUtil.Product (
+				org.drip.numerical.linearalgebra.R1MatrixUtil.Product (
 					compositePrecisionProjectionScoping,
 					_forwardReverseOptimizationOutputUnadjusted.optimalPortfolio().weightArray()
 				),
-				org.drip.numerical.linearalgebra.MatrixUtil.Product (
-					org.drip.numerical.linearalgebra.MatrixUtil.Product (
+				org.drip.numerical.linearalgebra.R1MatrixUtil.Product (
+					org.drip.numerical.linearalgebra.R1MatrixUtil.Product (
 						compositePrecisionProjectionScoping,
-						org.drip.numerical.linearalgebra.MatrixUtil.Transpose (
+						org.drip.numerical.linearalgebra.R1MatrixUtil.Transpose (
 							assetSpaceLoadingMatrix
 						)
 					),

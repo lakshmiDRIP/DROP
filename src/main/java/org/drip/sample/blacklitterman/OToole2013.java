@@ -1,7 +1,7 @@
 
 package org.drip.sample.blacklitterman;
 
-import org.drip.numerical.linearalgebra.MatrixUtil;
+import org.drip.numerical.linearalgebra.R1MatrixUtil;
 import org.drip.service.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 
@@ -187,7 +187,7 @@ public class OToole2013 {
 				aadblG7Covariance[i][j] = aadblG7ExcessReturnsCorrelation[i][j] * adblG7ExcessReturnsVolatility[i] * adblG7ExcessReturnsVolatility[j];
 		}
 
-		double[] adblG7ImpliedReturns = MatrixUtil.Product (
+		double[] adblG7ImpliedReturns = R1MatrixUtil.Product (
 			aadblG7Covariance,
 			adblG7BenchmarkWeight
 		);

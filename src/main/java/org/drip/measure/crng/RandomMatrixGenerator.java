@@ -1,7 +1,7 @@
 
 package org.drip.measure.crng;
 
-import org.drip.numerical.linearalgebra.TriangularMatrix;
+import org.drip.numerical.matrix.R1Triangular;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -126,7 +126,7 @@ public class RandomMatrixGenerator
 	 * @return Lower Triangular Matrix of Random Elements up to the Maximum Value
 	 */
 
-	public static final TriangularMatrix LowerTriangular (
+	public static final R1Triangular LowerTriangular (
 		final int elementCount,
 		final double maximumElement,
 		final boolean isEntryInteger)
@@ -139,7 +139,7 @@ public class RandomMatrixGenerator
         	}
     	}
 
-		return TriangularMatrix.Standard (r2Array);
+		return R1Triangular.Standard (r2Array);
 	}
 
 	/**
@@ -152,7 +152,7 @@ public class RandomMatrixGenerator
 	 * @return Upper Triangular Matrix of Random Elements up to the Maximum Value
 	 */
 
-	public static final TriangularMatrix UpperTriangular (
+	public static final R1Triangular UpperTriangular (
 		final int elementCount,
 		final double maximumElement,
 		final boolean isEntryInteger)
@@ -165,7 +165,7 @@ public class RandomMatrixGenerator
         	}
     	}
 
-		return TriangularMatrix.Standard (r2Array);
+		return R1Triangular.Standard (r2Array);
 	}
 
 	/**
@@ -178,7 +178,7 @@ public class RandomMatrixGenerator
 	 * @return Diagonal Matrix of Random Elements up to the Maximum Value
 	 */
 
-	public static final TriangularMatrix Diagonal (
+	public static final R1Triangular Diagonal (
 		final int elementCount,
 		final double maximumElement,
 		final boolean isEntryInteger)
@@ -193,7 +193,7 @@ public class RandomMatrixGenerator
         	}
     	}
 
-		return TriangularMatrix.Standard (r2Array);
+		return R1Triangular.Standard (r2Array);
 	}
 
 	/**
@@ -206,7 +206,7 @@ public class RandomMatrixGenerator
 	 * @return Lower Unitriangular Matrix of Random Elements up to the Maximum Value
 	 */
 
-	public static final TriangularMatrix LowerUnitriangular (
+	public static final R1Triangular LowerUnitriangular (
 		final int elementCount,
 		final double maximumElement,
 		final boolean isEntryInteger)
@@ -223,7 +223,7 @@ public class RandomMatrixGenerator
 			r2Array[i][i] = 1.;
     	}
 
-		return TriangularMatrix.Standard (r2Array);
+		return R1Triangular.Standard (r2Array);
 	}
 
 	/**
@@ -236,7 +236,7 @@ public class RandomMatrixGenerator
 	 * @return Upper Unitriangular Matrix of Random Elements up to the Maximum Value
 	 */
 
-	public static final TriangularMatrix UpperUnitriangular (
+	public static final R1Triangular UpperUnitriangular (
 		final int elementCount,
 		final double maximumElement,
 		final boolean isEntryInteger)
@@ -253,7 +253,7 @@ public class RandomMatrixGenerator
 			r2Array[i][i] = 1.;
     	}
 
-		return TriangularMatrix.Standard (r2Array);
+		return R1Triangular.Standard (r2Array);
 	}
 
 	/**
@@ -266,7 +266,7 @@ public class RandomMatrixGenerator
 	 * @return Strictly Lower Triangular Matrix of Random Elements up to the Maximum Value
 	 */
 
-	public static final TriangularMatrix StrictlyLowerTriangular (
+	public static final R1Triangular StrictlyLowerTriangular (
 		final int elementCount,
 		final double maximumElement,
 		final boolean isEntryInteger)
@@ -283,7 +283,7 @@ public class RandomMatrixGenerator
 			r2Array[i][i] = 0.;
     	}
 
-		return TriangularMatrix.Standard (r2Array);
+		return R1Triangular.Standard (r2Array);
 	}
 
 	/**
@@ -296,7 +296,7 @@ public class RandomMatrixGenerator
 	 * @return Strictly Upper Triangular Matrix of Random Elements up to the Maximum Value
 	 */
 
-	public static final TriangularMatrix StrictlyUpperTriangular (
+	public static final R1Triangular StrictlyUpperTriangular (
 		final int elementCount,
 		final double maximumElement,
 		final boolean isEntryInteger)
@@ -313,7 +313,7 @@ public class RandomMatrixGenerator
 			r2Array[i][i] = 0.;
     	}
 
-		return TriangularMatrix.Standard (r2Array);
+		return R1Triangular.Standard (r2Array);
 	}
 
 	/**
@@ -326,7 +326,7 @@ public class RandomMatrixGenerator
 	 * @return Atomic Lower Triangular Matrix of Random Elements up to the Maximum Value
 	 */
 
-	public static final TriangularMatrix AtomicLowerTriangular (
+	public static final R1Triangular AtomicLowerTriangular (
 		final int elementCount,
 		final double maximumElement,
 		final boolean isEntryInteger)
@@ -357,7 +357,7 @@ public class RandomMatrixGenerator
     		}
     	}
 
-		return TriangularMatrix.Standard (r2Array);
+		return R1Triangular.Standard (r2Array);
 	}
 
 	/**
@@ -370,7 +370,7 @@ public class RandomMatrixGenerator
 	 * @return Atomic Upper Triangular Matrix of Random Elements up to the Maximum Value
 	 */
 
-	public static final TriangularMatrix AtomicUpperTriangular (
+	public static final R1Triangular AtomicUpperTriangular (
 		final int elementCount,
 		final double maximumElement,
 		final boolean isEntryInteger)
@@ -401,6 +401,6 @@ public class RandomMatrixGenerator
     		}
     	}
 
-		return TriangularMatrix.Standard (r2Array);
+		return R1Triangular.Standard (r2Array);
 	}
 }

@@ -85,7 +85,8 @@ import org.drip.numerical.common.NumberUtil;
  */
 
 /**
- * <i>MatrixUtil</i> implements Matrix manipulation routines. It exports the following functionality:
+ * <i>R1MatrixUtil</i> implements R<sup>1</sup> Matrix manipulation routines. It exports the following
+ *  functionality:
  *  <ul>
  *  	<li>
  * 			Matrix Inversion using Closed form solutions (for low-dimension matrices), or using Gaussian
@@ -114,7 +115,7 @@ import org.drip.numerical.common.NumberUtil;
  * @author Lakshmi Krishnamurthy
  */
 
-public class MatrixUtil
+public class R1MatrixUtil
 {
 
 	/**
@@ -581,14 +582,6 @@ public class MatrixUtil
 			}
 		}
 
-		/* for (int iDiagonal = 0; iDiagonal < iSize; ++iDiagonal) {
-			if (0. == aadblSource[iDiagonal][iDiagonal]) {
-				org.drip.quant.common.NumberUtil.Print2DArray ("ZERO DIAG!", aadblSource, false);
-
-				return false;
-			}
-		} */
-
 		return true;
 	}
 
@@ -680,7 +673,7 @@ public class MatrixUtil
 		final double[][] aadblSource)
 	{
 		org.drip.numerical.linearalgebra.MatrixComplementTransform mctRegularized =
-			org.drip.numerical.linearalgebra.MatrixUtil.PivotDiagonal (aadblSource);
+			org.drip.numerical.linearalgebra.R1MatrixUtil.PivotDiagonal (aadblSource);
 
 		if (null == mctRegularized) return null;
 
@@ -789,11 +782,11 @@ public class MatrixUtil
 
 		for (int iScanRow = 0; iScanRow < iNumRow; ++iScanRow) {
 			if (!org.drip.numerical.common.NumberUtil.IsValid (aadblSource[iScanRow]))
-				throw new java.lang.Exception ("MatrixUtil::Rank => Invalid Inputs");
+				throw new java.lang.Exception ("R1MatrixUtil::Rank => Invalid Inputs");
 		}
 
 		double[][] aadblRegularizedSource = iNumRow < iNumCol ?
-			org.drip.numerical.linearalgebra.MatrixUtil.Transpose (aadblSource) : aadblSource;
+			org.drip.numerical.linearalgebra.R1MatrixUtil.Transpose (aadblSource) : aadblSource;
 
 		int iNumDependentRow = 0;
 		int iProcessedRow = aadblRegularizedSource.length;
@@ -815,7 +808,7 @@ public class MatrixUtil
 		}
 
 		for (int iScanRow = 0; iScanRow < iProcessedCol; ++iScanRow) {
-			if (0. == org.drip.numerical.linearalgebra.MatrixUtil.Modulus (aadblRegularizedSource[iScanRow]))
+			if (0. == org.drip.numerical.linearalgebra.R1MatrixUtil.Modulus (aadblRegularizedSource[iScanRow]))
 				++iNumDependentRow;
 		}
 
@@ -897,7 +890,7 @@ public class MatrixUtil
 			0 == adblA.length ||
 			adblA.length != adblE.length)
 		{
-			throw new Exception ("MatrixUtil::DotProduct => Invalid Inputs!");
+			throw new Exception ("R1MatrixUtil::DotProduct => Invalid Inputs!");
 		}
 
 		return UnsafeDotProduct (adblA, adblE);
@@ -991,12 +984,12 @@ public class MatrixUtil
 		throws java.lang.Exception
 	{
 		if (null == adbl || !org.drip.numerical.common.NumberUtil.IsValid (adbl))
-			throw new java.lang.Exception ("MatrixUtil::Sum => Invalid Inputs");
+			throw new java.lang.Exception ("R1MatrixUtil::Sum => Invalid Inputs");
 
 		double dblSum = 0.;
 		int iSize = adbl.length;
 
-		if (0 == iSize) throw new java.lang.Exception ("MatrixUtil::Sum => Invalid Inputs");
+		if (0 == iSize) throw new java.lang.Exception ("R1MatrixUtil::Sum => Invalid Inputs");
 
 		for (int i = 0; i < iSize; ++i)
 			dblSum += adbl[i];
@@ -1019,7 +1012,7 @@ public class MatrixUtil
 		throws Exception
 	{
 		if (null == v || 0 == v.length || !NumberUtil.IsValid (v)) {
-			throw new Exception ("MatrixUtil::Modulus => Invalid Inputs");
+			throw new Exception ("R1MatrixUtil::Modulus => Invalid Inputs");
 		}
 
 		return UnsafeModulus (v);
@@ -1040,11 +1033,11 @@ public class MatrixUtil
 		throws java.lang.Exception
 	{
 		if (null == adbl || !org.drip.numerical.common.NumberUtil.IsValid (adbl))
-			throw new java.lang.Exception ("MatrixUtil::PositiveOrZero => Invalid Inputs");
+			throw new java.lang.Exception ("R1MatrixUtil::PositiveOrZero => Invalid Inputs");
 
 		int iSize = adbl.length;
 
-		if (0 == iSize) throw new java.lang.Exception ("MatrixUtil::PositiveOrZero => Invalid Inputs");
+		if (0 == iSize) throw new java.lang.Exception ("R1MatrixUtil::PositiveOrZero => Invalid Inputs");
 
 		for (int i = 0; i < iSize; ++i) {
 			if (0. > adbl[i]) return false;
@@ -1068,11 +1061,11 @@ public class MatrixUtil
 		throws java.lang.Exception
 	{
 		if (null == adbl || !org.drip.numerical.common.NumberUtil.IsValid (adbl))
-			throw new java.lang.Exception ("MatrixUtil::NegativeOrZero => Invalid Inputs");
+			throw new java.lang.Exception ("R1MatrixUtil::NegativeOrZero => Invalid Inputs");
 
 		int iSize = adbl.length;
 
-		if (0 == iSize)  throw new java.lang.Exception ("MatrixUtil::NegativeOrZero => Invalid Inputs");
+		if (0 == iSize)  throw new java.lang.Exception ("R1MatrixUtil::NegativeOrZero => Invalid Inputs");
 
 		for (int i = 0; i < iSize; ++i) {
 			if (0. < adbl[i]) return false;
@@ -1275,9 +1268,9 @@ public class MatrixUtil
 		final double[] eigenvector)
 		throws java.lang.Exception
 	{
-		return org.drip.numerical.linearalgebra.MatrixUtil.DotProduct (
+		return org.drip.numerical.linearalgebra.R1MatrixUtil.DotProduct (
 			eigenvector,
-			org.drip.numerical.linearalgebra.MatrixUtil.Product (
+			org.drip.numerical.linearalgebra.R1MatrixUtil.Product (
 				matrix,
 				eigenvector
 			)

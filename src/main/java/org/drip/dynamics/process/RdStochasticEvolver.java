@@ -306,7 +306,7 @@ public class RdStochasticEvolver
 			return null;
 		}
 
-		double[] volatilityShiftArray = org.drip.numerical.linearalgebra.MatrixUtil.Product (
+		double[] volatilityShiftArray = org.drip.numerical.linearalgebra.R1MatrixUtil.Product (
 			pointVolatilityGrid (
 				currentVertex
 			),

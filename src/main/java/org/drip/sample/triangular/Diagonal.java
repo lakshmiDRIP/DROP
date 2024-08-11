@@ -5,7 +5,7 @@ import java.util.Date;
 
 import org.drip.measure.crng.RandomMatrixGenerator;
 import org.drip.numerical.common.NumberUtil;
-import org.drip.numerical.linearalgebra.TriangularMatrix;
+import org.drip.numerical.matrix.R1Triangular;
 import org.drip.service.common.FormatUtil;
 import org.drip.service.common.StringUtil;
 import org.drip.service.env.EnvManager;
@@ -128,7 +128,7 @@ public class Diagonal
 		final double maximumElement)
 		throws Exception
 	{
-		TriangularMatrix diagonal = RandomMatrixGenerator.Diagonal (elementCount, maximumElement, true);
+		R1Triangular diagonal = RandomMatrixGenerator.Diagonal (elementCount, maximumElement, true);
 
 		System.out.println (
 			"\t|----------------------------------------------------------------------------------||"

@@ -2,7 +2,7 @@
 package org.drip.sample.matrix;
 
 import org.drip.numerical.common.NumberUtil;
-import org.drip.numerical.linearalgebra.MatrixUtil;
+import org.drip.numerical.linearalgebra.R1MatrixUtil;
 import org.drip.service.env.EnvManager;
 
 /*
@@ -123,9 +123,9 @@ public class CholeskyFactorization {
 			{0.0, 0.1, 1.0}
 		};
 
-		double[][] aadblACholesky = MatrixUtil.CholeskyBanachiewiczFactorization (aadblA);
+		double[][] aadblACholesky = R1MatrixUtil.CholeskyBanachiewiczFactorization (aadblA);
 
-		double[][] aadblACholeskyTranspose = MatrixUtil.Transpose (aadblACholesky);
+		double[][] aadblACholeskyTranspose = R1MatrixUtil.Transpose (aadblACholesky);
 
 		System.out.println ("\n\t------------------------------------------------------------------------------------------------------");
 
@@ -135,7 +135,7 @@ public class CholeskyFactorization {
 			"ORIGINAL",
 			aadblA,
 			aadblACholesky,
-			MatrixUtil.Product (
+			R1MatrixUtil.Product (
 				aadblACholesky,
 				aadblACholeskyTranspose
 			),

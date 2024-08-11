@@ -192,7 +192,7 @@ public class PowerIterationComponentExtractor
 			eigenVector[componentIndex] = 1.;
 		}
 
-		eigenVector = org.drip.numerical.linearalgebra.MatrixUtil.Normalize (
+		eigenVector = org.drip.numerical.linearalgebra.R1MatrixUtil.Normalize (
 			eigenVector
 		);
 
@@ -217,12 +217,12 @@ public class PowerIterationComponentExtractor
 				}
 			}
 
-			eigenVectorArray = org.drip.numerical.linearalgebra.MatrixUtil.Normalize (
+			eigenVectorArray = org.drip.numerical.linearalgebra.R1MatrixUtil.Normalize (
 				eigenVectorArray
 			);
 
 			try {
-				eigenValue = org.drip.numerical.linearalgebra.MatrixUtil.RayleighQuotient (
+				eigenValue = org.drip.numerical.linearalgebra.R1MatrixUtil.RayleighQuotient (
 					a,
 					eigenVectorArray
 				);

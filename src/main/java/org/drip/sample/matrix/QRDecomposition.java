@@ -128,7 +128,7 @@ public class QRDecomposition {
 			{ 0.0, 0.4, 1.0}
 		};
 
-		QR qr = MatrixUtil.QRDecomposition (aadblA);
+		QR qr = R1MatrixUtil.QRDecomposition (aadblA);
 
 		double[][] aadblR = qr.r();
 
@@ -142,11 +142,11 @@ public class QRDecomposition {
 
 		System.out.println();
 
-		NumberUtil.PrintMatrix ("Inverse Q:   ", MatrixUtil.InvertUsingGaussianElimination (aadblQ));
+		NumberUtil.PrintMatrix ("Inverse Q:   ", R1MatrixUtil.InvertUsingGaussianElimination (aadblQ));
 
 		System.out.println();
 
-		double[][] aadblQT = MatrixUtil.Transpose (aadblQ);
+		double[][] aadblQT = R1MatrixUtil.Transpose (aadblQ);
 
 		NumberUtil.PrintMatrix ("Transpose Q: ", aadblQT);
 

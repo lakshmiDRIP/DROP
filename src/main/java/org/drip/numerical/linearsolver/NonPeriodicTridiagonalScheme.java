@@ -2,8 +2,8 @@
 package org.drip.numerical.linearsolver;
 
 import org.drip.numerical.common.NumberUtil;
-import org.drip.numerical.linearalgebra.MatrixUtil;
-import org.drip.numerical.linearalgebra.NonPeriodicTridiagonalMatrix;
+import org.drip.numerical.linearalgebra.R1MatrixUtil;
+import org.drip.numerical.matrix.R1NonPeriodicTridiagonal;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -134,8 +134,8 @@ public class NonPeriodicTridiagonalScheme extends TridiagonalScheme
 		final double[] rhsArray)
 	{
 		try {
-			return MatrixUtil.IsTridiagonal (r2Array) ? new NonPeriodicTridiagonalScheme (
-				NonPeriodicTridiagonalMatrix.Standard (r2Array),
+			return R1MatrixUtil.IsTridiagonal (r2Array) ? new NonPeriodicTridiagonalScheme (
+				R1NonPeriodicTridiagonal.Standard (r2Array),
 				rhsArray
 			): null;
 		} catch (Exception e) {
@@ -146,7 +146,7 @@ public class NonPeriodicTridiagonalScheme extends TridiagonalScheme
 	}
 
 	protected NonPeriodicTridiagonalScheme (
-		final NonPeriodicTridiagonalMatrix nonPeriodicTridiagonalMatrix,
+		final R1NonPeriodicTridiagonal nonPeriodicTridiagonalMatrix,
 		final double[] rhsArray)
 		throws Exception
 	{

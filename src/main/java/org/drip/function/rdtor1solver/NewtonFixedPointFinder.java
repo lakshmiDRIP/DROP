@@ -133,8 +133,8 @@ public class NewtonFixedPointFinder
 
 		org.drip.function.definition.RdToR1 objectiveFunction = objectiveFunction();
 
-		double[] variateIncrementArray = org.drip.numerical.linearalgebra.MatrixUtil.Product (
-			org.drip.numerical.linearalgebra.MatrixUtil.InvertUsingGaussianElimination (
+		double[] variateIncrementArray = org.drip.numerical.linearalgebra.R1MatrixUtil.Product (
+			org.drip.numerical.linearalgebra.R1MatrixUtil.InvertUsingGaussianElimination (
 				objectiveFunction.hessian (
 					variateArray
 				)
