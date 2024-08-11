@@ -4,7 +4,7 @@ package org.drip.specialfunction.digamma;
 import java.util.Map;
 import java.util.TreeMap;
 
-import org.drip.numerical.complex.CartesianC1;
+import org.drip.numerical.complex.C1Cartesian;
 import org.drip.specialfunction.gamma.Definitions;
 
 /*
@@ -187,7 +187,7 @@ public class SpecialValues
 	 * @return Unit Imaginary Digamma Complex Number
 	 */
 
-	public static final CartesianC1 UnitImaginary (
+	public static final C1Cartesian UnitImaginary (
 		final int termCount)
 	{
 		if (0 >= termCount) {
@@ -201,7 +201,7 @@ public class SpecialValues
 		}
 
 		try {
-			return new CartesianC1 (realPart, 0.5 + 0.5 * Math.PI / Math.tanh (Math.PI));
+			return new C1Cartesian (realPart, 0.5 + 0.5 * Math.PI / Math.tanh (Math.PI));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

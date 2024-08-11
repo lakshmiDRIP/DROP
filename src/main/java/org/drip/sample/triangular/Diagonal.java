@@ -140,7 +140,7 @@ public class Diagonal
 			"\t|----------------------------------------------------------------------------------||"
 		);
 
-		double[][] diagonalR2Array = diagonal.r2Array();
+		double[][] diagonalR2Array = diagonal.r1Grid();
 
 		for (int i = 0; i < diagonalR2Array.length; ++i) {
 			System.out.println (
@@ -158,7 +158,7 @@ public class Diagonal
 			"\t|----------------------------------------------------------------------------------||"
 		);
 
-		double[][] diagonalR2ArrayTranspose = diagonal.transpose().r2Array();
+		double[][] diagonalR2ArrayTranspose = diagonal.transpose().r1Grid();
 
 		for (int i = 0; i < diagonalR2Array.length; ++i) {
 			System.out.println (
@@ -176,7 +176,7 @@ public class Diagonal
 			"\t|----------------------------------------------------------------------------------||"
 		);
 
-		double[][] baseTransposeProduct = diagonal.product (diagonal.transpose()).r2Array();
+		double[][] baseTransposeProduct = diagonal.product (diagonal.transpose()).r1Grid();
 
 		for (int i = 0; i < diagonalR2Array.length; ++i) {
 			System.out.println (
@@ -194,7 +194,7 @@ public class Diagonal
 			"\t|----------------------------------------------------------------------------------||"
 		);
 
-		double[][] transposeBaseProduct = diagonal.transpose().product (diagonal).r2Array();
+		double[][] transposeBaseProduct = diagonal.transpose().product (diagonal).r1Grid();
 
 		for (int i = 0; i < diagonalR2Array.length; ++i) {
 			System.out.println (

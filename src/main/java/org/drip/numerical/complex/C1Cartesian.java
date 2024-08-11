@@ -84,7 +84,7 @@ import org.drip.numerical.common.NumberUtil;
  */
 
 /**
- * <i>CartesianC1</i> implements the functionality for dealing with the Cartesian Form of Complex Numbers.
+ * <i>C1Cartesian</i> implements the functionality for dealing with the Cartesian Form of Complex Numbers.
  * 
  * <br><br>
  *  <ul>
@@ -98,83 +98,10 @@ import org.drip.numerical.common.NumberUtil;
  * @author Lakshmi Krishnamurthy
  */
 
-public class CartesianC1
+public class C1Cartesian
 {
 	private double _real = Double.NaN;
 	private double _imaginary = Double.NaN;
-
-	/**
-	 * Exponentiate the Complex Number
-	 * 
-	 * @param complexNumber The Complex Number
-	 * 
-	 * @return The Exponentiated Complex Number Instance
-	 */
-
-	public static final CartesianC1 Exponentiate (
-		final CartesianC1 complexNumber)
-	{
-		if (null == complexNumber)
-		{
-			return null;
-		}
-
-		double argument = complexNumber.imaginary();
-
-		double modulus = java.lang.Math.exp (complexNumber.real());
-
-		try
-		{
-			return new CartesianC1 (
-				modulus * java.lang.Math.cos (argument),
-				modulus * java.lang.Math.sin (argument)
-			);
-		}
-		catch (java.lang.Exception e)
-		{
-			e.printStackTrace();
-		}
-
-		return null;
-	}
-
-	/**
-	 * Compute Logarithm of the Complex Number
-	 * 
-	 * @param complexNumber The Complex Number
-	 * 
-	 * @return The Complex Number Logarithm Instance
-	 */
-
-	public static final CartesianC1 Logarithm (
-		final CartesianC1 complexNumber)
-	{
-		if (null == complexNumber)
-		{
-			return null;
-		}
-
-		double modulus = complexNumber.modulus();
-
-		if (0. == modulus)
-		{
-			return null;
-		}
-
-		try
-		{
-			return new CartesianC1 (
-				0.5 * java.lang.Math.log (modulus),
-				complexNumber.argument()
-			);
-		}
-		catch (java.lang.Exception e)
-		{
-			e.printStackTrace();
-		}
-
-		return null;
-	}
 
 	/**
 	 * Construct the Complex Number from its Polar Representation
@@ -185,21 +112,33 @@ public class CartesianC1
 	 * @return Complex Number from its Polar Representation
 	 */
 
-	public static final CartesianC1 FromPolar (
+	public static final C1Cartesian FromPolar (
 		final double r,
 		final double theta)
 	{
-		try
-		{
-			return !org.drip.numerical.common.NumberUtil.IsValid (r) ||
-				!org.drip.numerical.common.NumberUtil.IsValid (theta) ? null :
-				new CartesianC1 (
-					r * java.lang.Math.cos (theta),
-					r * java.lang.Math.sin (theta)
-				);
+		try {
+			return !NumberUtil.IsValid (r) || !NumberUtil.IsValid (theta) ? null : new C1Cartesian (
+				r * Math.cos (theta),
+				r * Math.sin (theta)
+			);
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
-		catch (java.lang.Exception e)
-		{
+
+		return null;
+	}
+
+	/**
+	 * Construct a "Zero" Complex Number
+	 * 
+	 * @return "Zero" Complex Number
+	 */
+
+	public static final C1Cartesian Zero()
+	{
+		try {
+			new C1Cartesian (0., 0.);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -215,13 +154,13 @@ public class CartesianC1
 	 * @throws Exception Thrown if the Inputs are invalid
 	 */
 
-	public CartesianC1 (
+	public C1Cartesian (
 		final double real,
 		final double imaginary)
 		throws Exception
 	{
 		if (!NumberUtil.IsValid (_real = real) || !NumberUtil.IsValid (_imaginary = imaginary)) {
-			throw new Exception ("CartesianC1 Constructor => Invalid Inputs");
+			throw new Exception ("C1Cartesian Constructor => Invalid Inputs");
 		}
 	}
 
@@ -259,6 +198,17 @@ public class CartesianC1
 	}
 
 	/**
+	 * Retrieve the L<sup>2</sup> Norm
+	 * 
+	 * @return The L<sup>2</sup> Norm
+	 */
+
+	public double l2Norm()
+	{
+		return Math.sqrt (modulus());
+	}
+
+	/**
 	 * Retrieve the Absolute Value
 	 * 
 	 * @return The Absolute Value
@@ -288,10 +238,10 @@ public class CartesianC1
 	 * @return Output Cartesian C<sup>1</sup>
 	 */
 
-	public CartesianC1 add (
-		final CartesianC1 cartesianC1)
+	public C1Cartesian add (
+		final C1Cartesian cartesianC1)
 	{
-		return null == cartesianC1 ? this : C1MatrixUtil.UnsafeAdd (this, cartesianC1);
+		return null == cartesianC1 ? this : C1Util.UnsafeAdd (this, cartesianC1);
 	}
 
 	/**
@@ -302,10 +252,24 @@ public class CartesianC1
 	 * @return Output Cartesian C<sup>1</sup>
 	 */
 
-	public CartesianC1 scale (
+	public C1Cartesian scale (
 		final double scale)
 	{
-		return NumberUtil.IsValid (scale) ? null : C1MatrixUtil.UnsafeScale (this, scale);
+		return NumberUtil.IsValid (scale) ? null : C1Util.UnsafeScale (this, scale);
+	}
+
+	/**
+	 * Scale the Complex Number with the factor
+	 * 
+	 * @param scale The Scaling Factor
+	 * 
+	 * @return Output Cartesian C<sup>1</sup>
+	 */
+
+	public C1Cartesian scale (
+		final C1Cartesian scale)
+	{
+		return null == scale ? null : C1Util.UnsafeScale (this, scale);
 	}
 
 	/**
@@ -316,10 +280,10 @@ public class CartesianC1
 	 * @return Output Cartesian C<sup>1</sup>
 	 */
 
-	public CartesianC1 subtract (
-		final CartesianC1 cartesianC1)
+	public C1Cartesian subtract (
+		final C1Cartesian cartesianC1)
 	{
-		return null == cartesianC1 ? this : C1MatrixUtil.UnsafeSubtract (this, cartesianC1);
+		return null == cartesianC1 ? this : C1Util.UnsafeSubtract (this, cartesianC1);
 	}
 
 	/**
@@ -330,10 +294,10 @@ public class CartesianC1
 	 * @return Output Cartesian C<sup>1</sup>
 	 */
 
-	public CartesianC1 multiply (
-		final CartesianC1 cartesianC1)
+	public C1Cartesian product (
+		final C1Cartesian cartesianC1)
 	{
-		return null == cartesianC1 ? this : C1MatrixUtil.UnsafeMultiply (this, cartesianC1);
+		return null == cartesianC1 ? this : C1Util.UnsafeProduct (this, cartesianC1);
 	}
 
 	/**
@@ -344,10 +308,10 @@ public class CartesianC1
 	 * @return Output Cartesian C<sup>1</sup>
 	 */
 
-	public CartesianC1 divide (
-		final CartesianC1 cartesianC1)
+	public C1Cartesian divide (
+		final C1Cartesian cartesianC1)
 	{
-		return null == cartesianC1 ? this : C1MatrixUtil.UnsafeDivide (this, cartesianC1);
+		return null == cartesianC1 ? this : C1Util.UnsafeDivide (this, cartesianC1);
 	}
 
 	/**
@@ -356,9 +320,9 @@ public class CartesianC1
 	 * @return The Square Complex Number Instance
 	 */
 
-	public CartesianC1 square()
+	public C1Cartesian square()
 	{
-		return C1MatrixUtil.UnsafeSquare (this);
+		return C1Util.UnsafeSquare (this);
 	}
 
 	/**
@@ -367,9 +331,52 @@ public class CartesianC1
 	 * @return The Square Root Complex Number Instance
 	 */
 
-	public CartesianC1 squareRoot()
+	public C1Cartesian squareRoot()
 	{
-		return C1MatrixUtil.UnsafeSquareRoot (this);
+		return C1Util.UnsafeSquareRoot (this);
+	}
+
+	/**
+	 * Exponentiate the Complex Number
+	 * 
+	 * @return The Exponentiated Complex Number Instance
+	 */
+
+	public C1Cartesian exponentiate()
+	{
+		return C1Util.UnsafeExponentiate (this);
+	}
+
+	/**
+	 * Compute Logarithm of the Complex Number
+	 * 
+	 * @return The Complex Number Logarithm Instance
+	 */
+
+	public C1Cartesian logarithm()
+	{
+		return C1Util.UnsafeLogarithm (this);
+	}
+
+	/**
+	 * Dot Product of with the "Other"
+	 * 
+	 * @param other "Other" C<sup>1</sup>
+	 * 
+	 * @return The Dot Product
+	 * 
+	 * @throws Exception Thrown if the Dot Product Cannot be computed
+	 */
+
+	public double dotProduct (
+		final C1Cartesian other)
+		throws Exception
+	{
+		if (null == other) {
+			throw new Exception ("C1Cartesian::dotProduct => Invalid Inputs");
+		}
+
+		return C1Util.UnsafeDotProduct (this, other);
 	}
 
 	/**

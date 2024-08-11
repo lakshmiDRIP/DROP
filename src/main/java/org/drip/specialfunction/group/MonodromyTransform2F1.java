@@ -1,7 +1,7 @@
 
 package org.drip.specialfunction.group;
 
-import org.drip.numerical.complex.CartesianC1;
+import org.drip.numerical.complex.C1Cartesian;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -146,7 +146,7 @@ public class MonodromyTransform2F1
 	 * @return The Monodromy Group Matrix G0 around the '0' Singularity
 	 */
 
-	public static final CartesianC1[][] G0 (
+	public static final C1Cartesian[][] G0 (
 		final FundamentalGroupPathExponent2F1 pathExponent1,
 		final FundamentalGroupPathExponent2F1 pathExponent2)
 	{
@@ -154,20 +154,20 @@ public class MonodromyTransform2F1
 			return null;
 		}
 
-		CartesianC1[][] g0 = new CartesianC1[2][2];
+		C1Cartesian[][] g0 = new C1Cartesian[2][2];
 
 		double theta1 = 2. * Math.PI * pathExponent1.alpha();
 
 		double theta2 = 2. * Math.PI * pathExponent2.alpha();
 
 		try {
-			g0[0][0] = new CartesianC1 (Math.cos (theta1), Math.sin (theta1));
+			g0[0][0] = new C1Cartesian (Math.cos (theta1), Math.sin (theta1));
 
-			g0[0][1] = new CartesianC1 (0., 0.);
+			g0[0][1] = new C1Cartesian (0., 0.);
 
-			g0[1][0] = new CartesianC1 (0., 0.);
+			g0[1][0] = new C1Cartesian (0., 0.);
 
-			g0[1][1] = new CartesianC1 (Math.cos (theta2), Math.sin (theta2));
+			g0[1][1] = new C1Cartesian (Math.cos (theta2), Math.sin (theta2));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -220,7 +220,7 @@ public class MonodromyTransform2F1
 	 * @return The Monodromy Group Matrix G1 around the '1' Singularity
 	 */
 
-	public static final CartesianC1[][] G1 (
+	public static final C1Cartesian[][] G1 (
 		final FundamentalGroupPathExponent2F1 pathExponent1,
 		final FundamentalGroupPathExponent2F1 pathExponent2)
 	{
@@ -228,7 +228,7 @@ public class MonodromyTransform2F1
 			return null;
 		}
 
-		CartesianC1[][] g0 = new CartesianC1[2][2];
+		C1Cartesian[][] g0 = new C1Cartesian[2][2];
 
 		double theta1 = 2. * Math.PI * pathExponent1.beta();
 
@@ -240,22 +240,22 @@ public class MonodromyTransform2F1
 			double muMinus1 = g1Mu - 1.;
 			double muMinus1Squared = muMinus1 * muMinus1;
 
-			g0[0][0] = new CartesianC1 (
+			g0[0][0] = new C1Cartesian (
 				(g1Mu * Math.cos (theta1) - Math.cos (theta2)) / muMinus1,
 				(g1Mu * Math.sin (theta1) - Math.sin (theta2)) / muMinus1
 			);
 
-			g0[0][1] = new CartesianC1 (
+			g0[0][1] = new C1Cartesian (
 				Math.cos (theta2) - Math.cos (theta1),
 				Math.sin (theta2) - Math.sin (theta1)
 			);
 
-			g0[1][0] = new CartesianC1 (
+			g0[1][0] = new C1Cartesian (
 				g1Mu * (Math.cos (theta2) - Math.cos (theta1)) / (muMinus1Squared * muMinus1Squared),
 				g1Mu * (Math.sin (theta2) - Math.sin (theta1)) / (muMinus1Squared * muMinus1Squared)
 			);
 
-			g0[1][1] = new CartesianC1 (
+			g0[1][1] = new C1Cartesian (
 				(g1Mu * Math.cos (theta2) - Math.cos (theta1)) / muMinus1,
 				(g1Mu * Math.sin (theta2) - Math.sin (theta1)) / muMinus1
 			);

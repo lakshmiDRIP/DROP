@@ -196,7 +196,7 @@ public class R1MatrixUtil
 	 * @return The Product Matrix
 	 */
 
-	private static final double[][] UnsafeProduct (
+	public static final double[][] UnsafeProduct (
 		final double[][] a,
 		final double[][] b)
 	{

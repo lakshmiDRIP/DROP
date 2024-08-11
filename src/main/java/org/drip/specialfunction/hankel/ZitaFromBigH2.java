@@ -1,8 +1,8 @@
 
 package org.drip.specialfunction.hankel;
 
-import org.drip.numerical.complex.C1MatrixUtil;
-import org.drip.numerical.complex.CartesianC1;
+import org.drip.numerical.complex.C1Util;
+import org.drip.numerical.complex.C1Cartesian;
 import org.drip.specialfunction.definition.HankelSecondKindEstimator;
 import org.drip.specialfunction.definition.RiccatiBesselZitaEstimator;
 
@@ -167,12 +167,12 @@ public class ZitaFromBigH2 extends RiccatiBesselZitaEstimator
 		return _hankelSecondKindEstimator;
 	}
 
-	@Override public CartesianC1 zita (
+	@Override public C1Cartesian zita (
 		final double alpha,
 		final double z)
 	{
-		CartesianC1 bigH2 = _hankelSecondKindEstimator.bigH2 (alpha + 0.5, z);
+		C1Cartesian bigH2 = _hankelSecondKindEstimator.bigH2 (alpha + 0.5, z);
 
-		return null == bigH2 ? null : C1MatrixUtil.Scale (bigH2, Math.sqrt (0.5 * Math.PI * z));
+		return null == bigH2 ? null : C1Util.Scale (bigH2, Math.sqrt (0.5 * Math.PI * z));
 	}
 }

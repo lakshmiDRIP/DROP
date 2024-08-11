@@ -143,7 +143,7 @@ public class TriangleMatrix
 			"\t|----------------------------------------------------------------------------------||"
 		);
 
-		double[][] upperTriangularR2Array = upperTriangular.r2Array();
+		double[][] upperTriangularR2Array = upperTriangular.r1Grid();
 
 		for (int i = 0; i < upperTriangularR2Array.length; ++i) {
 			System.out.println (

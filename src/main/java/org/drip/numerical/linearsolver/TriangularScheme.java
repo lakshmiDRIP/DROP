@@ -121,7 +121,7 @@ public class TriangularScheme
 
 	private double[] forwardSubstitution()
 	{
-		double[][] r2Array = _triangularMatrix.r2Array();
+		double[][] r2Array = _triangularMatrix.r1Grid();
 
 		double[] solutionArray = new double[_rhsArray.length];
 
@@ -141,7 +141,7 @@ public class TriangularScheme
 
 	private double[] backSubstitution()
 	{
-		double[][] r2Array = _triangularMatrix.r2Array();
+		double[][] r2Array = _triangularMatrix.r1Grid();
 
 		double[] solutionArray = new double[_rhsArray.length];
 

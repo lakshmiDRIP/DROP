@@ -162,7 +162,7 @@ public class RyabenkiiTsynkovScheme extends PeriodicTridiagonalScheme
 
 	public double[][] tridiagonalMatrix()
 	{
-		double[][] r2Array = matrix().r2Array();
+		double[][] r2Array = matrix().r1Grid();
 
 		int size = r2Array.length - 1;
 		double[][] uTridiagonalMatrix = new double[size][size];
@@ -204,7 +204,7 @@ public class RyabenkiiTsynkovScheme extends PeriodicTridiagonalScheme
 
 	public double[] vRHSArray()
 	{
-		double[][] r2Array = matrix().r2Array();
+		double[][] r2Array = matrix().r1Grid();
 
 		int size = r2Array.length - 1;
 		double[] vRHSArray = new double[size];
@@ -301,7 +301,7 @@ public class RyabenkiiTsynkovScheme extends PeriodicTridiagonalScheme
 			return null;
 		}
 
-		double[][] r2Array = matrix().r2Array();
+		double[][] r2Array = matrix().r1Grid();
 
 		if (!NumberUtil.IsValid (
 			solutionArray[0] = (

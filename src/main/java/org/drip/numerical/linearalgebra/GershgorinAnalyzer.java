@@ -167,7 +167,7 @@ public class GershgorinAnalyzer
 
 		int matrixSize = squareMatrix.size();
 
-		double[][] r2Array = squareMatrix.r2Array();
+		double[][] r2Array = squareMatrix.r1Grid();
 
 		_gershgorinDiscArray = new GershgorinDisc[matrixSize];
 
@@ -237,7 +237,7 @@ public class GershgorinAnalyzer
 
 		int matrixSize = _squareMatrix.size();
 
-		double[][] r2Array = _squareMatrix.r2Array();
+		double[][] r2Array = _squareMatrix.r1Grid();
 
 		double[][] r2ArrayStrengthened = new double[matrixSize][matrixSize];
 

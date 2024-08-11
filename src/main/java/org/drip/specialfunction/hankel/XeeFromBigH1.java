@@ -1,8 +1,8 @@
 
 package org.drip.specialfunction.hankel;
 
-import org.drip.numerical.complex.C1MatrixUtil;
-import org.drip.numerical.complex.CartesianC1;
+import org.drip.numerical.complex.C1Util;
+import org.drip.numerical.complex.C1Cartesian;
 import org.drip.specialfunction.definition.HankelFirstKindEstimator;
 import org.drip.specialfunction.definition.RiccatiBesselXeeEstimator;
 
@@ -167,12 +167,12 @@ public class XeeFromBigH1 extends RiccatiBesselXeeEstimator
 		return _hankelFirstKindEstimator;
 	}
 
-	@Override public CartesianC1 xee (
+	@Override public C1Cartesian xee (
 		final double alpha,
 		final double z)
 	{
-		CartesianC1 bigH1 = _hankelFirstKindEstimator.bigH1 (alpha + 0.5, z);
+		C1Cartesian bigH1 = _hankelFirstKindEstimator.bigH1 (alpha + 0.5, z);
 
-		return null == bigH1 ? null : C1MatrixUtil.Scale (bigH1, Math.sqrt (0.5 * Math.PI * z));
+		return null == bigH1 ? null : C1Util.Scale (bigH1, Math.sqrt (0.5 * Math.PI * z));
 	}
 }

@@ -1,7 +1,7 @@
 
 package org.drip.specialfunction.hankel;
 
-import org.drip.numerical.complex.CartesianC1;
+import org.drip.numerical.complex.C1Cartesian;
 import org.drip.specialfunction.definition.RiccatiBesselCEstimator;
 import org.drip.specialfunction.definition.RiccatiBesselSEstimator;
 import org.drip.specialfunction.definition.RiccatiBesselXeeEstimator;
@@ -184,12 +184,12 @@ public class XeeFromSC extends RiccatiBesselXeeEstimator
 		return _riccatiBesselSEstimator;
 	}
 
-	@Override public CartesianC1 xee (
+	@Override public C1Cartesian xee (
 		final double alpha,
 		final double z)
 	{
 		try {
-			return new CartesianC1 (
+			return new C1Cartesian (
 				_riccatiBesselSEstimator.bigS (alpha, z),
 				-1. * _riccatiBesselCEstimator.bigC (alpha, z)
 			);

@@ -2,7 +2,7 @@
 package org.drip.specialfunction.definition;
 
 import org.drip.function.definition.R2ToZ1;
-import org.drip.numerical.complex.CartesianC1;
+import org.drip.numerical.complex.C1Cartesian;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -144,12 +144,12 @@ public abstract class SphericalHankelSecondKindEstimator implements R2ToZ1
 	 * @return Spherical Hankel Function Second Kind h2 Value
 	 */
 
-	public abstract CartesianC1 smallH2 (
+	public abstract C1Cartesian smallH2 (
 		final double alpha,
 		final double z
 	);
 
-	@Override public CartesianC1 evaluate (
+	@Override public C1Cartesian evaluate (
 		final double alpha,
 		final double z)
 	{

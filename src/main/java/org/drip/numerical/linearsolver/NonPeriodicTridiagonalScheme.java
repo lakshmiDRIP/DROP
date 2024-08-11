@@ -163,7 +163,7 @@ public class NonPeriodicTridiagonalScheme extends TridiagonalScheme
 	{
 		double[] rhsArray = rhsArray();
 
-		double[][] squareMatrix = matrix().r2Array();
+		double[][] squareMatrix = matrix().r1Grid();
 
 		int matrixSize = squareMatrix.length;
 		double[] solutionArray = new double[matrixSize];

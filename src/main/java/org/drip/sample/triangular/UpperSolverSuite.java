@@ -147,7 +147,7 @@ public class UpperSolverSuite
 			"\t|----------------------------------------------------------------------------------||"
 		);
 
-		double[][] upperTriangularR2Array = upperTriangularMatrix.r2Array();
+		double[][] upperTriangularR2Array = upperTriangularMatrix.r1Grid();
 
 		for (int i = 0; i < upperTriangularR2Array.length; ++i) {
 			System.out.println (

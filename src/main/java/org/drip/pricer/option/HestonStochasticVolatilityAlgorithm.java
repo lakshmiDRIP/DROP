@@ -1,9 +1,15 @@
 
 package org.drip.pricer.option;
 
-import org.drip.numerical.complex.C1MatrixUtil;
-import org.drip.numerical.complex.CartesianC1;
+import java.util.Map;
+import java.util.TreeMap;
+
+import org.drip.numerical.common.NumberUtil;
+import org.drip.numerical.complex.C1Util;
+import org.drip.numerical.complex.C1Cartesian;
 import org.drip.numerical.fourier.PhaseAdjuster;
+import org.drip.numerical.fourier.RotationCountPhaseTracker;
+import org.drip.param.pricer.HestonOptionPricerParams;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -119,15 +125,15 @@ public class HestonStochasticVolatilityAlgorithm extends org.drip.pricer.option.
 	private static final double FOURIER_FREQ_INCREMENT = 0.1;
 	private static final double FOURIER_FREQ_FINAL = 25.;
 
-	private org.drip.param.pricer.HestonOptionPricerParams _fphp = null;
+	private HestonOptionPricerParams _fphp = null;
 
 	class PhaseCorrectedF {
-		double _dblCorrectedPhase = java.lang.Double.NaN;
-		org.drip.numerical.complex.CartesianC1 _cnF = null;
+		double _dblCorrectedPhase = Double.NaN;
+		C1Cartesian _cnF = null;
 
 		PhaseCorrectedF (
 			final double dblCorrectedPhase,
-			final org.drip.numerical.complex.CartesianC1 cnF)
+			final C1Cartesian cnF)
 		{
 			_cnF = cnF;
 			_dblCorrectedPhase = dblCorrectedPhase;
@@ -144,133 +150,123 @@ public class HestonStochasticVolatilityAlgorithm extends org.drip.pricer.option.
 		final double dblFreq,
 		final double dblB,
 		final double dblU,
-		final org.drip.numerical.fourier.RotationCountPhaseTracker rcpt)
+		final RotationCountPhaseTracker rcpt)
 	{
 		try {
-			org.drip.numerical.complex.CartesianC1 cnSmallDLHS = new org.drip.numerical.complex.CartesianC1 (dblB,
-				-1. * _fphp.rho() * _fphp.sigma() * dblFreq);
+			C1Cartesian cnSmallDLHS = new C1Cartesian (dblB, -1. * _fphp.rho() * _fphp.sigma() * dblFreq);
 
-			CartesianC1 d = org.drip.numerical.complex.C1MatrixUtil.Square (cnSmallDLHS);
+			C1Cartesian d = C1Util.Square (cnSmallDLHS);
 
 			if (null == d) return null;
 
 			double dblSigmaScaler = _fphp.sigma() * _fphp.sigma();
 
-			if (null == (d = org.drip.numerical.complex.C1MatrixUtil.Add (d, new
-				org.drip.numerical.complex.CartesianC1 (dblSigmaScaler * dblFreq * dblFreq, -2. * dblSigmaScaler
-					* dblFreq * dblU))))
+			if (null == (d = C1Util.Add (d, new
+				C1Cartesian (dblSigmaScaler * dblFreq * dblFreq, -2. * dblSigmaScaler * dblFreq * dblU))))
 				return null;
 
-			if (null == (d = org.drip.numerical.complex.C1MatrixUtil.SquareRoot (d))) return null;
+			if (null == (d = C1Util.SquareRoot (d))) return null;
 
-			org.drip.numerical.complex.CartesianC1 cnGNumerator = org.drip.numerical.complex.C1MatrixUtil.Subtract
-				(cnSmallDLHS, d);
+			C1Cartesian gNumerator = C1Util.Subtract (cnSmallDLHS, d);
 
-			if (null == cnGNumerator) return null;
+			if (null == gNumerator) return null;
 
-			CartesianC1 g = C1MatrixUtil.Add (cnSmallDLHS, d);
+			C1Cartesian g = C1Util.Add (cnSmallDLHS, d);
 
 			if (null == g) return null;
 
-			if (null == (g = org.drip.numerical.complex.C1MatrixUtil.Divide (cnGNumerator, g))) return null;
+			if (null == (g = C1Util.Divide (gNumerator, g))) return null;
 
 			int iM = 0;
 			int iN = 0;
 
-			if (org.drip.numerical.fourier.PhaseAdjuster.MULTI_VALUE_BRANCH_POWER_PHASE_TRACKER_KAHL_JACKEL ==
-				_fphp.phaseTrackerType()) {
-				iM = (int) ((g.argument() + java.lang.Math.PI) / (2. * java.lang.Math.PI));
+			if (PhaseAdjuster.MULTI_VALUE_BRANCH_POWER_PHASE_TRACKER_KAHL_JACKEL == _fphp.phaseTrackerType())
+			{
+				iM = (int) ((g.argument() + Math.PI) / (2. * Math.PI));
 
-				iN = (int) ((g.argument() + (dbTimeToExpiry * d.argument()) + java.lang.Math.PI) /
-					(2. * java.lang.Math.PI));
+				iN = (int) ((g.argument() + (dbTimeToExpiry * d.argument()) + Math.PI) / (2. * Math.PI));
 			}
 
-			org.drip.numerical.complex.CartesianC1 cnExpTTEScaledSmallD =
-				org.drip.numerical.complex.C1MatrixUtil.Scale (d, -1. * dbTimeToExpiry);
+			C1Cartesian cnExpTTEScaledSmallD = C1Util.Scale (d, -1. * dbTimeToExpiry);
 
 			if (null == cnExpTTEScaledSmallD) return null;
 
-			if (null == (cnExpTTEScaledSmallD = org.drip.numerical.complex.CartesianC1.Exponentiate
-				(cnExpTTEScaledSmallD)))
+			if (null == (cnExpTTEScaledSmallD = C1Util.Exponentiate (cnExpTTEScaledSmallD)))
 				return null;
 
-			org.drip.numerical.complex.CartesianC1 cnD = new org.drip.numerical.complex.CartesianC1 (1. -
-				cnExpTTEScaledSmallD.real(), -1. * cnExpTTEScaledSmallD.imaginary());
+			C1Cartesian cnD = new C1Cartesian (
+				1. - cnExpTTEScaledSmallD.real(),
+				-1. * cnExpTTEScaledSmallD.imaginary()
+			);
 
-			CartesianC1 cnInvGExpTTEScaledSmallD = C1MatrixUtil.Multiply (cnExpTTEScaledSmallD, g);
+			C1Cartesian cnInvGExpTTEScaledSmallD = C1Util.Multiply (cnExpTTEScaledSmallD, g);
 
 			if (null == cnInvGExpTTEScaledSmallD) return null;
 
-			cnInvGExpTTEScaledSmallD = new org.drip.numerical.complex.CartesianC1 (1. -
-				cnInvGExpTTEScaledSmallD.real(), -1. * cnInvGExpTTEScaledSmallD.imaginary());
+			cnInvGExpTTEScaledSmallD = new C1Cartesian (1. -
+				cnInvGExpTTEScaledSmallD.real(),
+				-1. * cnInvGExpTTEScaledSmallD.imaginary()
+			);
 
-			if (null == (cnD = org.drip.numerical.complex.C1MatrixUtil.Divide (cnD, cnInvGExpTTEScaledSmallD)))
+			if (null == (cnD = C1Util.Divide (cnD, cnInvGExpTTEScaledSmallD)))
 				return null;
 
-			if (null == (cnD = org.drip.numerical.complex.C1MatrixUtil.Multiply (cnGNumerator, cnD)))
+			if (null == (cnD = C1Util.Multiply (gNumerator, cnD)))
 				return null;
 
 			dblSigmaScaler = 1. / dblSigmaScaler;
 
-			if (null == (cnD = org.drip.numerical.complex.C1MatrixUtil.Scale (cnD, dblSigmaScaler))) return null;
+			if (null == (cnD = C1Util.Scale (cnD, dblSigmaScaler))) return null;
 
-			CartesianC1 c = new CartesianC1 (1. - g.real(), -1. * g.imaginary());
+			C1Cartesian c = new C1Cartesian (1. - g.real(), -1. * g.imaginary());
 
-			if (org.drip.numerical.fourier.PhaseAdjuster.MULTI_VALUE_BRANCH_POWER_PHASE_TRACKER_KAHL_JACKEL ==
-				_fphp.phaseTrackerType()) {
-				if (null == (c = org.drip.numerical.fourier.PhaseAdjuster.PowerLogPhaseTracker
-					(cnInvGExpTTEScaledSmallD, c, iN, iM)))
+			if (PhaseAdjuster.MULTI_VALUE_BRANCH_POWER_PHASE_TRACKER_KAHL_JACKEL == _fphp.phaseTrackerType())
+			{
+				if (null == (c = PhaseAdjuster.PowerLogPhaseTracker (cnInvGExpTTEScaledSmallD, c, iN, iM)))
 					return null;
-			} else if (org.drip.numerical.fourier.PhaseAdjuster.MULTI_VALUE_BRANCH_PHASE_TRACKER_ROTATION_COUNT
-				== _fphp.phaseTrackerType()) {
-				if (null == (c = org.drip.numerical.complex.CartesianC1.Logarithm (c))) return null;
+			} else if (PhaseAdjuster.MULTI_VALUE_BRANCH_PHASE_TRACKER_ROTATION_COUNT
+				== _fphp.phaseTrackerType())
+			{
+				if (null == (c = C1Util.Logarithm (c))) return null;
 
-				c = new org.drip.numerical.complex.CartesianC1 (c.real(), rcpt.updateAndApply
-					(c.argument(), true));
+				c = new C1Cartesian (c.real(), rcpt.updateAndApply (c.argument(), true));
 			}
 
 			double dblCorrectedPhase = c.argument();
 
-			if (null == (c = org.drip.numerical.complex.C1MatrixUtil.Scale (c, -2.))) return null;
+			if (null == (c = C1Util.Scale (c, -2.))) return null;
 
-			org.drip.numerical.complex.CartesianC1 cnTTEScaledGNumerator =
-				org.drip.numerical.complex.C1MatrixUtil.Scale (cnGNumerator, dbTimeToExpiry);
+			C1Cartesian cnTTEScaledGNumerator = C1Util.Scale (gNumerator, dbTimeToExpiry);
 
 			if (null == cnTTEScaledGNumerator) return null;
 
-			if (null == (c = org.drip.numerical.complex.C1MatrixUtil.Add (cnTTEScaledGNumerator, c)))
+			if (null == (c = C1Util.Add (cnTTEScaledGNumerator, c))) return null;
+
+			if (null == (c = C1Util.Scale (c, dblA * dblSigmaScaler))) return null;
+
+			if (null == (c = C1Util.Add (new
+				C1Cartesian (0., dblRiskFreeRate * dbTimeToExpiry * dblFreq), c)))
 				return null;
 
-			if (null == (c = org.drip.numerical.complex.C1MatrixUtil.Scale (c, dblA * dblSigmaScaler)))
-				return null;
-
-			if (null == (c = org.drip.numerical.complex.C1MatrixUtil.Add (new
-				org.drip.numerical.complex.CartesianC1 (0., dblRiskFreeRate * dbTimeToExpiry * dblFreq), c)))
-				return null;
-
-			org.drip.numerical.complex.CartesianC1 cnF = org.drip.numerical.complex.C1MatrixUtil.Scale (cnD,
-				dblInitialVolatility);
+			C1Cartesian cnF = C1Util.Scale (cnD, dblInitialVolatility);
 
 			if (null == cnF) return null;
 
-			if (null == (cnF = org.drip.numerical.complex.C1MatrixUtil.Add (cnF, new
-				org.drip.numerical.complex.CartesianC1 (0., java.lang.Math.log (dblSpot) * dblFreq))))
+			if (null == (cnF = C1Util.Add (cnF, new C1Cartesian (0., Math.log (dblSpot) * dblFreq))))
 				return null;
 
-			if (null == (cnF = org.drip.numerical.complex.C1MatrixUtil.Add (cnF, c))) return null;
+			if (null == (cnF = C1Util.Add (cnF, c))) return null;
 
-			if (null == (cnF = org.drip.numerical.complex.C1MatrixUtil.Add (cnF, new
-				org.drip.numerical.complex.CartesianC1 (0., -1. * java.lang.Math.log (dblStrike) * dblFreq))))
+			if (null == (cnF = C1Util.Add (cnF, new C1Cartesian (0., -1. * Math.log (dblStrike) * dblFreq))))
 				return null;
 
-			if (null == (cnF = org.drip.numerical.complex.CartesianC1.Exponentiate (cnF))) return null;
+			if (null == (cnF = C1Util.Exponentiate (cnF))) return null;
 
-			if (null == (cnF = org.drip.numerical.complex.C1MatrixUtil.Divide (cnF, new
-				org.drip.numerical.complex.CartesianC1 (0., dblFreq))))
+			if (null == (cnF = C1Util.Divide (cnF, new C1Cartesian (0., dblFreq))))
 				return null;
 
 			return new PhaseCorrectedF (dblCorrectedPhase, cnF);
-		} catch (java.lang.Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -290,30 +286,30 @@ public class HestonStochasticVolatilityAlgorithm extends org.drip.pricer.option.
 		final org.drip.numerical.fourier.RotationCountPhaseTracker rcpt)
 	{
 		try {
-			CartesianC1 cnSmallDLHS = new CartesianC1 (dblB, -1. * _fphp.rho() * _fphp.sigma() * dblFreq);
+			C1Cartesian cnSmallDLHS = new C1Cartesian (dblB, -1. * _fphp.rho() * _fphp.sigma() * dblFreq);
 
-			CartesianC1 d1 = org.drip.numerical.complex.C1MatrixUtil.Square (cnSmallDLHS);
+			C1Cartesian d1 = org.drip.numerical.complex.C1Util.Square (cnSmallDLHS);
 
 			if (null == d1) return null;
 
 			double dblSigmaScaler = _fphp.sigma() * _fphp.sigma();
 
-			if (null == (d1 = C1MatrixUtil.Add (d1, new
-				CartesianC1 (dblSigmaScaler * dblFreq * dblFreq, -2. * dblSigmaScaler
+			if (null == (d1 = C1Util.Add (d1, new
+				C1Cartesian (dblSigmaScaler * dblFreq * dblFreq, -2. * dblSigmaScaler
 					* dblFreq * dblU))))
 				return null;
 
-			if (null == (d1 = C1MatrixUtil.SquareRoot (d1))) return null;
+			if (null == (d1 = C1Util.SquareRoot (d1))) return null;
 
-			CartesianC1 gNumerator = C1MatrixUtil.Add (cnSmallDLHS, d1);
+			C1Cartesian gNumerator = C1Util.Add (cnSmallDLHS, d1);
 
 			if (null == gNumerator) return null;
 
-			CartesianC1 g = C1MatrixUtil.Subtract (cnSmallDLHS, d1);
+			C1Cartesian g = C1Util.Subtract (cnSmallDLHS, d1);
 
 			if (null == g) return null;
 
-			if (null == (g = C1MatrixUtil.Divide (gNumerator, g))) return null;
+			if (null == (g = C1Util.Divide (gNumerator, g))) return null;
 
 			int iM = 0;
 			int iN = 0;
@@ -326,37 +322,37 @@ public class HestonStochasticVolatilityAlgorithm extends org.drip.pricer.option.
 					(2. * java.lang.Math.PI));
 			}
 
-			CartesianC1 cnExpTTEScaledSmallD = C1MatrixUtil.Scale (d1, dbTimeToExpiry);
+			C1Cartesian cnExpTTEScaledSmallD = C1Util.Scale (d1, dbTimeToExpiry);
 
 			if (null == cnExpTTEScaledSmallD) return null;
 
-			if (null == (cnExpTTEScaledSmallD = CartesianC1.Exponentiate (cnExpTTEScaledSmallD)))
+			if (null == (cnExpTTEScaledSmallD = C1Util.Exponentiate (cnExpTTEScaledSmallD)))
 				return null;
 
-			CartesianC1 d = new CartesianC1 (
+			C1Cartesian d = new C1Cartesian (
 				1. - cnExpTTEScaledSmallD.real(),
 				-1. * cnExpTTEScaledSmallD.imaginary()
 			);
 
-			org.drip.numerical.complex.CartesianC1 cnInvGExpTTEScaledSmallD =
-				org.drip.numerical.complex.C1MatrixUtil.Multiply (g, cnExpTTEScaledSmallD);
+			org.drip.numerical.complex.C1Cartesian cnInvGExpTTEScaledSmallD =
+				org.drip.numerical.complex.C1Util.Multiply (g, cnExpTTEScaledSmallD);
 
 			if (null == cnInvGExpTTEScaledSmallD) return null;
 
-			cnInvGExpTTEScaledSmallD = new org.drip.numerical.complex.CartesianC1 (1. -
+			cnInvGExpTTEScaledSmallD = new org.drip.numerical.complex.C1Cartesian (1. -
 				cnInvGExpTTEScaledSmallD.real(), -1. * cnInvGExpTTEScaledSmallD.imaginary());
 
-			if (null == (d = C1MatrixUtil.Divide (d, cnInvGExpTTEScaledSmallD)))
+			if (null == (d = C1Util.Divide (d, cnInvGExpTTEScaledSmallD)))
 				return null;
 
-			if (null == (d = C1MatrixUtil.Multiply (gNumerator, d)))
+			if (null == (d = C1Util.Multiply (gNumerator, d)))
 				return null;
 
 			dblSigmaScaler = 1. / dblSigmaScaler;
 
-			if (null == (d = C1MatrixUtil.Scale (d, dblSigmaScaler))) return null;
+			if (null == (d = C1Util.Scale (d, dblSigmaScaler))) return null;
 
-			CartesianC1 c = new CartesianC1 (1. - g.real(), -1. * g.imaginary());
+			C1Cartesian c = new C1Cartesian (1. - g.real(), -1. * g.imaginary());
 
 			if (PhaseAdjuster.MULTI_VALUE_BRANCH_POWER_PHASE_TRACKER_KAHL_JACKEL == _fphp.phaseTrackerType())
 			{
@@ -364,51 +360,48 @@ public class HestonStochasticVolatilityAlgorithm extends org.drip.pricer.option.
 					return null;
 			} else if (PhaseAdjuster.MULTI_VALUE_BRANCH_PHASE_TRACKER_ROTATION_COUNT
 				== _fphp.phaseTrackerType()) {
-				if (null == (c = CartesianC1.Logarithm (c))) return null;
+				if (null == (c = C1Util.Logarithm (c))) return null;
 
-				c = new CartesianC1 (c.real(), rcpt.updateAndApply (c.argument(), true));
+				c = new C1Cartesian (c.real(), rcpt.updateAndApply (c.argument(), true));
 			}
 
 			double dblCorrectedPhase = c.argument();
 
-			if (null == (c = C1MatrixUtil.Scale (c, -2.))) return null;
+			if (null == (c = C1Util.Scale (c, -2.))) return null;
 
-			CartesianC1 tteScaledGNumerator = C1MatrixUtil.Scale (gNumerator, dbTimeToExpiry);
+			C1Cartesian tteScaledGNumerator = C1Util.Scale (gNumerator, dbTimeToExpiry);
 
 			if (null == tteScaledGNumerator) return null;
 
-			if (null == (c = C1MatrixUtil.Add (tteScaledGNumerator, c)))
+			if (null == (c = C1Util.Add (tteScaledGNumerator, c)))
 				return null;
 
-			if (null == (c = C1MatrixUtil.Scale (c, dblA * dblSigmaScaler)))
+			if (null == (c = C1Util.Scale (c, dblA * dblSigmaScaler)))
 				return null;
 
-			if (null == (c = C1MatrixUtil.Add (new
-				CartesianC1 (0., dblRiskFreeRate * dbTimeToExpiry * dblFreq), c)))
+			if (null == (c = C1Util.Add (new
+				C1Cartesian (0., dblRiskFreeRate * dbTimeToExpiry * dblFreq), c)))
 				return null;
 
-			CartesianC1 f = C1MatrixUtil.Scale (d, dblInitialVolatility);
+			C1Cartesian f = C1Util.Scale (d, dblInitialVolatility);
 
 			if (null == f) return null;
 
-			if (null == (f = org.drip.numerical.complex.C1MatrixUtil.Add (f, new
-				org.drip.numerical.complex.CartesianC1 (0., java.lang.Math.log (dblSpot) * dblFreq))))
+			if (null == (f = C1Util.Add (f, new C1Cartesian (0., Math.log (dblSpot) * dblFreq))))
 				return null;
 
-			if (null == (f = org.drip.numerical.complex.C1MatrixUtil.Add (f, c))) return null;
+			if (null == (f = C1Util.Add (f, c))) return null;
 
-			if (null == (f = org.drip.numerical.complex.C1MatrixUtil.Add (f, new
-				org.drip.numerical.complex.CartesianC1 (0., -1. * java.lang.Math.log (dblStrike) * dblFreq))))
+			if (null == (f = C1Util.Add (f, new C1Cartesian (0., -1. * Math.log (dblStrike) * dblFreq))))
 				return null;
 
-			if (null == (f = org.drip.numerical.complex.CartesianC1.Exponentiate (f))) return null;
+			if (null == (f = C1Util.Exponentiate (f))) return null;
 
-			if (null == (f = org.drip.numerical.complex.C1MatrixUtil.Divide (f, new
-				org.drip.numerical.complex.CartesianC1 (0., dblFreq))))
+			if (null == (f = C1Util.Divide (f, new C1Cartesian (0., dblFreq))))
 				return null;
 
 			return new PhaseCorrectedF (dblCorrectedPhase, f);
-		} catch (java.lang.Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -425,10 +418,10 @@ public class HestonStochasticVolatilityAlgorithm extends org.drip.pricer.option.
 		final double dblFreq,
 		final double dblB,
 		final double dblU,
-		final org.drip.numerical.fourier.RotationCountPhaseTracker rcpt)
+		final RotationCountPhaseTracker rcpt)
 	{
-		if (org.drip.numerical.fourier.PhaseAdjuster.MULTI_VALUE_BRANCH_PHASE_TRACKER_ROTATION_COUNT ==
-			_fphp.phaseTrackerType() && null == rcpt)
+		if (PhaseAdjuster.MULTI_VALUE_BRANCH_PHASE_TRACKER_ROTATION_COUNT == _fphp.phaseTrackerType() &&
+			null == rcpt)
 		{
 			return null;
 		}
@@ -449,15 +442,15 @@ public class HestonStochasticVolatilityAlgorithm extends org.drip.pricer.option.
 	 * 
 	 * @param fphp The Heston Algorithm Parameters
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public HestonStochasticVolatilityAlgorithm (
-		final org.drip.param.pricer.HestonOptionPricerParams fphp)
-		throws java.lang.Exception
+		final HestonOptionPricerParams fphp)
+		throws Exception
 	{
 		if (null == (_fphp = fphp))
-			throw new java.lang.Exception ("HestonStochasticVolatilityAlgorithm ctr: Invalid Inputs");
+			throw new Exception ("HestonStochasticVolatilityAlgorithm ctr: Invalid Inputs");
 	}
 
 	/**
@@ -481,10 +474,9 @@ public class HestonStochasticVolatilityAlgorithm extends org.drip.pricer.option.
 		final double dblInitialVolatility,
 		final boolean bLeft)
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (dblStrike) ||!org.drip.numerical.common.NumberUtil.IsValid
-			(dblSpot) ||!org.drip.numerical.common.NumberUtil.IsValid (dblInitialVolatility) ||
-				!org.drip.numerical.common.NumberUtil.IsValid (dbTimeToExpiry) ||
-					!org.drip.numerical.common.NumberUtil.IsValid (dblRiskFreeRate))
+		if (!NumberUtil.IsValid (dblStrike) ||!NumberUtil.IsValid (dblSpot) ||
+			!NumberUtil.IsValid (dblInitialVolatility) || !NumberUtil.IsValid (dbTimeToExpiry) ||
+			!NumberUtil.IsValid (dblRiskFreeRate))
 			return null;
 
 		int i = 0;
@@ -492,9 +484,9 @@ public class HestonStochasticVolatilityAlgorithm extends org.drip.pricer.option.
 		double dblU2 = -0.5;
 		double dblPreviousPhase = 0.;
 
-		org.drip.numerical.fourier.RotationCountPhaseTracker rcpt =
-			org.drip.numerical.fourier.PhaseAdjuster.MULTI_VALUE_BRANCH_PHASE_TRACKER_ROTATION_COUNT ==
-				_fphp.phaseTrackerType() ? new org.drip.numerical.fourier.RotationCountPhaseTracker() : null;
+		RotationCountPhaseTracker rcpt =
+			PhaseAdjuster.MULTI_VALUE_BRANCH_PHASE_TRACKER_ROTATION_COUNT == _fphp.phaseTrackerType() ?
+				new RotationCountPhaseTracker() : null;
 
 		double dblA = _fphp.kappa() * _fphp.theta();
 
@@ -502,8 +494,7 @@ public class HestonStochasticVolatilityAlgorithm extends org.drip.pricer.option.
 
 		double dblB1 = dblB2 - _fphp.rho() * _fphp.sigma();
 
-		java.util.Map<java.lang.Double, java.lang.Double> mapPhaseRun = new
-			java.util.TreeMap<java.lang.Double, java.lang.Double>();
+		Map<Double, Double> mapPhaseRun = new TreeMap<Double, Double>();
 
 		for (double dblFreq = FOURIER_FREQ_INIT; dblFreq <= FOURIER_FREQ_FINAL; dblFreq +=
 			FOURIER_FREQ_INCREMENT, ++i) {
@@ -519,12 +510,10 @@ public class HestonStochasticVolatilityAlgorithm extends org.drip.pricer.option.
 					double dblCurrentPhase = rcpt.getPreviousPhase();
 
 					if (dblCurrentPhase < dblPreviousPhase) {
-						if (!rcpt.setDirection
-							(org.drip.numerical.fourier.RotationCountPhaseTracker.APPLY_BACKWARD))
+						if (!rcpt.setDirection (RotationCountPhaseTracker.APPLY_BACKWARD))
 							return null;
 					} else if (dblCurrentPhase > dblPreviousPhase) {
-						if (!rcpt.setDirection
-							(org.drip.numerical.fourier.RotationCountPhaseTracker.APPLY_FORWARD))
+						if (!rcpt.setDirection (RotationCountPhaseTracker.APPLY_FORWARD))
 							return null;
 					} else
 						return null;

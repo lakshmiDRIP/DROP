@@ -122,47 +122,47 @@ import org.drip.numerical.linearalgebra.QR;
 
 public class R1Square
 {
-	private double[][] _r2Array = null;
+	private double[][] _r1Grid = null;
 
 	/**
 	 * Construct a Standard Instance of <i>R1Square</i>
 	 * 
-	 * @param r2Array R<sup>2</sup> Array
+	 * @param r1Grid R<sup>1</sup> Grid
 	 * 
 	 * @return Standard Instance of <i>R1Square</i>
 	 */
 
 	public static R1Square Standard (
-		final double[][] r2Array)
+		final double[][] r1Grid)
 	{
-		if (!R1MatrixUtil.IsSquare (r2Array)) {
+		if (!R1MatrixUtil.IsSquare (r1Grid)) {
 			return null;
 		}
 
-		for (int i = 0; i < r2Array.length; ++i) {
-			if (!NumberUtil.IsValid (r2Array[i])) {
+		for (int i = 0; i < r1Grid.length; ++i) {
+			if (!NumberUtil.IsValid (r1Grid[i])) {
 				return null;
 			}
 		}
 
-		return new R1Square (r2Array);
+		return new R1Square (r1Grid);
 	}
 
 	protected R1Square (
-		final double[][] r2Array)
+		final double[][] r1Grid)
 	{
-		_r2Array = r2Array;
+		_r1Grid = r1Grid;
 	}
 
 	/**
-	 * Retrieve R<sup>2</sup> Array
+	 * Retrieve R<sup>1</sup> Grid
 	 * 
-	 * @return R<sup>2</sup> Array
+	 * @return R<sup>1</sup> Grid
 	 */
 
-	public double[][] r2Array()
+	public double[][] r1Grid()
 	{
-		return _r2Array;
+		return _r1Grid;
 	}
 
 	/**
@@ -173,7 +173,7 @@ public class R1Square
 
 	public int size()
 	{
-		return _r2Array.length;
+		return _r1Grid.length;
 	}
 
 	/**
@@ -184,7 +184,7 @@ public class R1Square
 
 	public R1Square transpose()
 	{
-		return new R1Square (R1MatrixUtil.UnsafeTranspose (_r2Array));
+		return new R1Square (R1MatrixUtil.UnsafeTranspose (_r1Grid));
 	}
 
 	/**
@@ -198,26 +198,26 @@ public class R1Square
 	public R1Square product (
 		final R1Square squareMatrixOther)
 	{
-		if (null == squareMatrixOther || _r2Array.length != squareMatrixOther.size()) {
+		if (null == squareMatrixOther || _r1Grid.length != squareMatrixOther.size()) {
 			return null;
 		}
 
-		double[][] r2ArrayOther = squareMatrixOther.r2Array();
+		double[][] r1GridOther = squareMatrixOther.r1Grid();
 
-		double[][] r2ArrayProduct = new double[_r2Array.length][_r2Array.length];
+		double[][] r1GridProduct = new double[_r1Grid.length][_r1Grid.length];
 
-		for (int rowIndex = 0; rowIndex < _r2Array.length; ++rowIndex) {
-			for (int columnIndex = 0; columnIndex < _r2Array.length; ++columnIndex) {
-				r2ArrayProduct[rowIndex][columnIndex] = 0.;
+		for (int rowIndex = 0; rowIndex < _r1Grid.length; ++rowIndex) {
+			for (int columnIndex = 0; columnIndex < _r1Grid.length; ++columnIndex) {
+				r1GridProduct[rowIndex][columnIndex] = 0.;
 
-				for (int i = 0; i < _r2Array.length; ++i) {
-					r2ArrayProduct[rowIndex][columnIndex] +=
-						_r2Array[rowIndex][i] * r2ArrayOther[i][columnIndex];
+				for (int i = 0; i < _r1Grid.length; ++i) {
+					r1GridProduct[rowIndex][columnIndex] +=
+						_r1Grid[rowIndex][i] * r1GridOther[i][columnIndex];
 				}
 			}
 		}
 
-		return new R1Square (r2ArrayProduct);
+		return new R1Square (r1GridProduct);
 	}
 
 	/**
@@ -230,15 +230,15 @@ public class R1Square
 	{
 		R1Square squareMatrixTranspose = transpose();
 
-		double[][] r2ArrayTransposeTimesR2Array = product (squareMatrixTranspose).r2Array();
+		double[][] r1GridTransposeTimesR1Grid = product (squareMatrixTranspose).r1Grid();
 
-		double[][] r2ArrayTimesR2ArrayTranspose = squareMatrixTranspose.product (this).r2Array();
+		double[][] r1GridTimesR1GridTranspose = squareMatrixTranspose.product (this).r1Grid();
 
-		for (int i = 0; i < _r2Array.length; ++i) {
-			for (int j = 0; j < _r2Array.length; ++j) {
+		for (int i = 0; i < _r1Grid.length; ++i) {
+			for (int j = 0; j < _r1Grid.length; ++j) {
 				if (!NumberUtil.WithinTolerance (
-					r2ArrayTransposeTimesR2Array[i][j],
-					r2ArrayTimesR2ArrayTranspose[i][j]
+					r1GridTransposeTimesR1Grid[i][j],
+					r1GridTimesR1GridTranspose[i][j]
 				))
 				{
 					return false;
@@ -268,7 +268,7 @@ public class R1Square
 
 	public QR qrDecomposition()
 	{
-		return R1MatrixUtil.QRDecomposition (_r2Array);
+		return R1MatrixUtil.QRDecomposition (_r1Grid);
 	}
 
 	/**
@@ -279,7 +279,7 @@ public class R1Square
 
 	public QR rqDecomposition()
 	{
-		return R1MatrixUtil.RQDecomposition (_r2Array);
+		return R1MatrixUtil.RQDecomposition (_r1Grid);
 	}
 
 	/**
@@ -290,7 +290,7 @@ public class R1Square
 
 	public EigenOutput eigenize()
 	{
-		return QREigenComponentExtractor.Standard().eigenize (_r2Array);
+		return QREigenComponentExtractor.Standard().eigenize (_r1Grid);
 	}
 
 	/**
@@ -301,7 +301,7 @@ public class R1Square
 
 	public EigenOutput svd()
 	{
-		return QREigenComponentExtractor.Standard().eigenize (_r2Array);
+		return QREigenComponentExtractor.Standard().eigenize (_r1Grid);
 	}
 
 	/**
@@ -312,10 +312,10 @@ public class R1Square
 
 	public double[] diagonalEntryArray()
 	{
-		double[] diagonalEntryArray = new double[_r2Array.length];
+		double[] diagonalEntryArray = new double[_r1Grid.length];
 
-		for (int i = 0; i < _r2Array.length; ++i) {
-			diagonalEntryArray[i] = _r2Array[i][i];
+		for (int i = 0; i < _r1Grid.length; ++i) {
+			diagonalEntryArray[i] = _r1Grid[i][i];
 		}
 
 		return diagonalEntryArray;
@@ -329,7 +329,7 @@ public class R1Square
 
 	public Map<Double, Integer> eigenValueMultiplicityMap()
 	{
-		EigenOutput eigenOutput = QREigenComponentExtractor.Standard().eigenize (_r2Array);
+		EigenOutput eigenOutput = QREigenComponentExtractor.Standard().eigenize (_r1Grid);
 
 		return null == eigenOutput ? null : eigenOutput.eigenValueMultiplicityMap();
 	}
@@ -345,7 +345,7 @@ public class R1Square
 	public double determinant()
 		throws Exception
 	{
-		EigenOutput eigenOutput = QREigenComponentExtractor.Standard().eigenize (_r2Array);
+		EigenOutput eigenOutput = QREigenComponentExtractor.Standard().eigenize (_r1Grid);
 
 		if (null == eigenOutput) {
 			throw new Exception ("R1Square::determinant => Cannot eigenize");
@@ -396,7 +396,7 @@ public class R1Square
 
 	public R1ToR1 characteristicPolynomial()
 	{
-		EigenOutput eigenOutput = QREigenComponentExtractor.Standard().eigenize (_r2Array);
+		EigenOutput eigenOutput = QREigenComponentExtractor.Standard().eigenize (_r1Grid);
 
 		return null == eigenOutput ? null : eigenOutput.characteristicPolynomial();
 	}

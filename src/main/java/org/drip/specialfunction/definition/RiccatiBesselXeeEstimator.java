@@ -2,7 +2,7 @@
 package org.drip.specialfunction.definition;
 
 import org.drip.function.definition.R2ToZ1;
-import org.drip.numerical.complex.CartesianC1;
+import org.drip.numerical.complex.C1Cartesian;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -144,12 +144,12 @@ public abstract class RiccatiBesselXeeEstimator implements R2ToZ1
 	 * @return Riccati-Bessel Xee Estimate
 	 */
 
-	public abstract CartesianC1 xee (
+	public abstract C1Cartesian xee (
 		final double alpha,
 		final double z
 	);
 
-	@Override public CartesianC1 evaluate (
+	@Override public C1Cartesian evaluate (
 		final double alpha,
 		final double z)
 	{

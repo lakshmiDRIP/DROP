@@ -1,7 +1,7 @@
 
 package org.drip.specialfunction.hankel;
 
-import org.drip.numerical.complex.CartesianC1;
+import org.drip.numerical.complex.C1Cartesian;
 import org.drip.specialfunction.definition.RiccatiBesselCEstimator;
 import org.drip.specialfunction.definition.RiccatiBesselSEstimator;
 import org.drip.specialfunction.definition.RiccatiBesselZitaEstimator;
@@ -184,12 +184,12 @@ public class ZitaFromSC extends RiccatiBesselZitaEstimator
 		return _riccatiBesselSEstimator;
 	}
 
-	@Override public CartesianC1 zita (
+	@Override public C1Cartesian zita (
 		final double alpha,
 		final double z)
 	{
 		try {
-			return new CartesianC1 (
+			return new C1Cartesian (
 				_riccatiBesselSEstimator.bigS (alpha, z),
 				_riccatiBesselCEstimator.bigC (alpha, z)
 			);

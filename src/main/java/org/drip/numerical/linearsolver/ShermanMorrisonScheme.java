@@ -231,7 +231,7 @@ public class ShermanMorrisonScheme extends PeriodicTridiagonalScheme
 	{
 		double[] rhsArray = rhsArray();
 
-		double[][] r2Array = matrix().r2Array();
+		double[][] r2Array = matrix().r1Grid();
 
 		double[][] batistaKarawiaMatrix = new double[rhsArray.length][rhsArray.length];
 
@@ -259,7 +259,7 @@ public class ShermanMorrisonScheme extends PeriodicTridiagonalScheme
 	{
 		double[] rhsArray = rhsArray();
 
-		double[][] r2Array = matrix().r2Array();
+		double[][] r2Array = matrix().r1Grid();
 
 		double[] uRHSArray = new double[rhsArray.length];
 
@@ -325,7 +325,7 @@ public class ShermanMorrisonScheme extends PeriodicTridiagonalScheme
 	{
 		double[] rhsArray = rhsArray();
 
-		double[][] r2Array = matrix().r2Array();
+		double[][] r2Array = matrix().r1Grid();
 
 		double[] vArray = new double[rhsArray.length];
 

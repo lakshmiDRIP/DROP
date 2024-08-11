@@ -3,7 +3,7 @@ package org.drip.specialfunction.definition;
 
 import org.drip.function.definition.R2ToZ1;
 import org.drip.numerical.common.NumberUtil;
-import org.drip.numerical.complex.CartesianC1;
+import org.drip.numerical.complex.C1Cartesian;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -146,12 +146,12 @@ public abstract class HankelSecondKindEstimator implements R2ToZ1
 	public static final HankelSecondKindEstimator LargeZAsymptote()
 	{
 		return new HankelSecondKindEstimator() {
-			@Override public CartesianC1 bigH2 (
+			@Override public C1Cartesian bigH2 (
 				final double alpha,
 				final double z)
 			{
 				return !NumberUtil.IsValid (alpha) || !NumberUtil.IsValid (z) ? null :
-					CartesianC1.FromPolar (
+					C1Cartesian.FromPolar (
 						Math.sqrt (2. / Math.PI / z),
 						0.5 * Math.PI * alpha + 0.25 * Math.PI - z
 					);
@@ -168,12 +168,12 @@ public abstract class HankelSecondKindEstimator implements R2ToZ1
 	 * @return Hankel Function Second Kind H2 Value
 	 */
 
-	public abstract CartesianC1 bigH2 (
+	public abstract C1Cartesian bigH2 (
 		final double alpha,
 		final double z
 	);
 
-	@Override public CartesianC1 evaluate (
+	@Override public C1Cartesian evaluate (
 		final double alpha,
 		final double z)
 	{

@@ -147,7 +147,7 @@ public class LowerSolverSuite
 			"\t|----------------------------------------------------------------------------------||"
 		);
 
-		double[][] lowerTriangularR2Array = lowerTriangularMatrix.r2Array();
+		double[][] lowerTriangularR2Array = lowerTriangularMatrix.r1Grid();
 
 		for (int i = 0; i < lowerTriangularR2Array.length; ++i) {
 			System.out.println (

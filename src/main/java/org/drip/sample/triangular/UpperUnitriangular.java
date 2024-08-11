@@ -144,7 +144,7 @@ public class UpperUnitriangular
 			"\t|----------------------------------------------------------------------------------||"
 		);
 
-		double[][] upperUnitriangularR2Array = upperUnitriangular.r2Array();
+		double[][] upperUnitriangularR2Array = upperUnitriangular.r1Grid();
 
 		for (int i = 0; i < upperUnitriangularR2Array.length; ++i) {
 			System.out.println (
@@ -162,7 +162,7 @@ public class UpperUnitriangular
 			"\t|----------------------------------------------------------------------------------||"
 		);
 
-		double[][] upperUnitriangularR2ArrayTranspose = upperUnitriangular.transpose().r2Array();
+		double[][] upperUnitriangularR2ArrayTranspose = upperUnitriangular.transpose().r1Grid();
 
 		for (int i = 0; i < upperUnitriangularR2Array.length; ++i) {
 			System.out.println (
@@ -181,7 +181,7 @@ public class UpperUnitriangular
 		);
 
 		double[][] baseTransposeProduct =
-			upperUnitriangular.product (upperUnitriangular.transpose()).r2Array();
+			upperUnitriangular.product (upperUnitriangular.transpose()).r1Grid();
 
 		for (int i = 0; i < upperUnitriangularR2Array.length; ++i) {
 			System.out.println (
@@ -200,7 +200,7 @@ public class UpperUnitriangular
 		);
 
 		double[][] transposeBaseProduct =
-			upperUnitriangular.transpose().product (upperUnitriangular).r2Array();
+			upperUnitriangular.transpose().product (upperUnitriangular).r1Grid();
 
 		for (int i = 0; i < upperUnitriangularR2Array.length; ++i) {
 			System.out.println (

@@ -144,7 +144,7 @@ public class LowerUnitriangular
 			"\t|----------------------------------------------------------------------------------||"
 		);
 
-		double[][] lowerUnitriangularR2Array = lowerUnitriangular.r2Array();
+		double[][] lowerUnitriangularR2Array = lowerUnitriangular.r1Grid();
 
 		for (int i = 0; i < lowerUnitriangularR2Array.length; ++i) {
 			System.out.println (
@@ -162,7 +162,7 @@ public class LowerUnitriangular
 			"\t|----------------------------------------------------------------------------------||"
 		);
 
-		double[][] lowerUnitriangularR2ArrayTranspose = lowerUnitriangular.transpose().r2Array();
+		double[][] lowerUnitriangularR2ArrayTranspose = lowerUnitriangular.transpose().r1Grid();
 
 		for (int i = 0; i < lowerUnitriangularR2Array.length; ++i) {
 			System.out.println (
@@ -181,7 +181,7 @@ public class LowerUnitriangular
 		);
 
 		double[][] baseTransposeProduct =
-			lowerUnitriangular.product (lowerUnitriangular.transpose()).r2Array();
+			lowerUnitriangular.product (lowerUnitriangular.transpose()).r1Grid();
 
 		for (int i = 0; i < lowerUnitriangularR2Array.length; ++i) {
 			System.out.println (
@@ -200,7 +200,7 @@ public class LowerUnitriangular
 		);
 
 		double[][] transposeBaseProduct =
-			lowerUnitriangular.transpose().product (lowerUnitriangular).r2Array();
+			lowerUnitriangular.transpose().product (lowerUnitriangular).r1Grid();
 
 		for (int i = 0; i < lowerUnitriangularR2Array.length; ++i) {
 			System.out.println (

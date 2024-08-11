@@ -207,7 +207,7 @@ public class R1Triangular extends R1Square
 
 	private boolean zeroDiagonalEntries()
 	{
-		double[][] r2Array = r2Array();
+		double[][] r2Array = r1Grid();
 
 		for (int i = 0; i < r2Array.length; ++i) {
 			if (0. != r2Array[i][i]) {
@@ -306,7 +306,7 @@ public class R1Triangular extends R1Square
 
 	public boolean isUnitriangular()
 	{
-		double[][] r2Array = r2Array();
+		double[][] r2Array = r1Grid();
 
 		for (int i = 0; i < r2Array.length; ++i) {
 			if (1. != r2Array[i][i]) {
@@ -397,7 +397,7 @@ public class R1Triangular extends R1Square
 
 		int unitValueColumnIndex = -1;
 
-		double[][] r2Array = r2Array();
+		double[][] r2Array = r1Grid();
 
 		for (int columnIndex = 0; columnIndex < r2Array.length - 1; ++columnIndex) {
 			if (0. != r2Array[r2Array.length - 1][columnIndex] &&
@@ -448,7 +448,7 @@ public class R1Triangular extends R1Square
 
 		int unitValueColumnIndex = -1;
 
-		double[][] r2Array = r2Array();
+		double[][] r2Array = r1Grid();
 
 		for (int columnIndex = 0; columnIndex < r2Array.length - 1; ++columnIndex) {
 			if (0 != r2Array[0][columnIndex] && 1. != r2Array[0][columnIndex]) {
@@ -540,7 +540,7 @@ public class R1Triangular extends R1Square
 	{
 		double determinant = 1.;
 
-		double[][] r2Array = r2Array();
+		double[][] r2Array = r1Grid();
 
 		for (int i = 0; i < r2Array.length; ++i) {
 			determinant *= r2Array[i][i];
@@ -595,7 +595,7 @@ public class R1Triangular extends R1Square
 	public double conditionNumberLInfinity()
 		throws Exception
 	{
-		double[][] r2Array = r2Array();
+		double[][] r2Array = r1Grid();
 
 		double firstAbsoluteEigenvalue = Math.abs (r2Array[0][0]);
 

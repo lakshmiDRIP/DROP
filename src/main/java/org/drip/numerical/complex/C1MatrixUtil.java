@@ -1,8 +1,6 @@
 
 package org.drip.numerical.complex;
 
-import org.drip.numerical.common.NumberUtil;
-
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
@@ -76,7 +74,8 @@ import org.drip.numerical.common.NumberUtil;
  */
 
 /**
- * <i>C1MatrixUtil</i> implements a C<sup>1</sup> Complex Number Manipulation Utilities. The References are:
+ * <i>C1MatrixUtil</i> implements a C<sup>1</sup> Complex Number Matrix Manipulation Utilities. The
+ * 	References are:
  * 
  * <br><br>
  * 	<ul>
@@ -117,336 +116,88 @@ public class C1MatrixUtil
 {
 
 	/**
-	 * Add the 2 Complex Numbers. Unsafe Methods do not validate the Input Arguments, so <b>use caution</b>
-	 *  in applying these Methods
+	 * Transpose the specified C<sup>1</sup> Square Matrix. Unsafe Methods do not validate the Input
+	 * 	Arguments, so <b>use caution</b> in applying these Methods
 	 * 
-	 * @param firstCartesianC1 The First Complex Number
-	 * @param secondCartesianC1 The Second Complex Number
+	 * @param c1Grid The Input C<sup>1</sup> Matrix Grid
 	 * 
-	 * @return The Complex Number instance that is a sum of the two
+	 * @return The Transpose of the Input C<sup>1</sup> Matrix Grid
 	 */
 
-	public static final CartesianC1 UnsafeAdd (
-		final CartesianC1 firstCartesianC1,
-		final CartesianC1 secondCartesianC1)
+	public static final C1Cartesian[][] UnsafeTranspose (
+		final C1Cartesian[][] c1Grid)
 	{
-		try {
-			return new CartesianC1 (
-				firstCartesianC1.real() + secondCartesianC1.real(),
-				firstCartesianC1.imaginary() + secondCartesianC1.imaginary()
-			);
-		} catch (Exception e) {
-			e.printStackTrace();
+		C1Cartesian[][] c1GridTranspose = new C1Cartesian[c1Grid[0].length][c1Grid.length];
+
+		for (int i = 0; i < c1Grid[0].length; ++i) {
+			for (int j = 0; j < c1Grid.length; ++j)
+				c1GridTranspose[i][j] = c1Grid[j][i];
 		}
 
-		return null;
+		return c1GridTranspose;
 	}
 
 	/**
-	 * Scale the Complex Number with the factor. Unsafe Methods do not validate the Input Arguments, so
-	 *  <b>use caution</b> in applying these Methods
-	 * 
-	 * @param cartesianC1 The Complex Number
-	 * @param scale The Scaling Factor
-	 * 
-	 * @return The Scaled Complex Number
-	 */
-
-	public static final CartesianC1 UnsafeScale (
-		final CartesianC1 cartesianC1,
-		final double scale)
-	{
-		try {
-			return new CartesianC1 (scale * cartesianC1.real(), scale * cartesianC1.imaginary());
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-		return null;
-	}
-
-	/**
-	 * Subtract the Second Complex Number from the First. Unsafe Methods do not validate the Input Arguments,
-	 * 	so <b>use caution</b> in applying these Methods
-	 * 
-	 * @param firstCartesianC1 The First Complex Number
-	 * @param secondCartesianC1 The Second Complex Number
-	 * 
-	 * @return The "Difference" Complex Number
-	 */
-
-	public static final CartesianC1 UnsafeSubtract (
-		final CartesianC1 firstCartesianC1,
-		final CartesianC1 secondCartesianC1)
-	{
-		try {
-			return new CartesianC1 (
-				firstCartesianC1.real() - secondCartesianC1.real(),
-				firstCartesianC1.imaginary() - secondCartesianC1.imaginary()
-			);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-		return null;
-	}
-
-	/**
-	 * Multiply the 2 Complex Numbers. Unsafe Methods do not validate the Input Arguments, so <b>use
-	 *  caution</b> in applying these Methods
-	 * 
-	 * @param firstCartesianC1 The First Complex Number
-	 * @param secondCartesianC1 The Second Complex Number
-	 * 
-	 * @return The Complex Number instance that is a product of the two
-	 */
-
-	public static final CartesianC1 UnsafeMultiply (
-		final CartesianC1 firstCartesianC1,
-		final CartesianC1 secondCartesianC1)
-	{
-		double real1 = firstCartesianC1.real();
-
-		double real2 = secondCartesianC1.real();
-
-		double imaginary1 = firstCartesianC1.imaginary();
-
-		double imaginary2 = secondCartesianC1.imaginary();
-
-		try {
-			return new CartesianC1 (
-				real1 * real2 - imaginary1 * imaginary2,
-				real1 * imaginary2 + real2 * imaginary1
-			);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-		return null;
-	}
-
-	/**
-	 * Divide the Numerator Complex Number by the Denominator Complex Number. Unsafe Methods do not validate
-	 *  the Input Arguments, so <b>use caution</b> in applying these Methods
-	 * 
-	 * @param numeratorC1 The Numerator Complex Number
-	 * @param denominatorC1 The Denominator Complex Number
-	 * 
-	 * @return The "Divided" Complex Number
-	 */
-
-	public static final CartesianC1 UnsafeDivide (
-		final CartesianC1 numeratorC1,
-		final CartesianC1 denominatorC1)
-	{
-		double numeratorReal = numeratorC1.real();
-
-		double denominatorReal = denominatorC1.real();
-
-		double numeratorImaginary = numeratorC1.imaginary();
-
-		double denominatorImaginary = denominatorC1.imaginary();
-
-		if (0. == denominatorReal && 0. == denominatorImaginary) {
-			return null;
-		}
-
-		double inverseDenominatorModulus = 1. / denominatorC1.modulus();
-
-		try {
-			return new CartesianC1 (
-				(numeratorReal * denominatorReal + numeratorImaginary * denominatorImaginary) *
-					inverseDenominatorModulus,
-				(denominatorReal * numeratorImaginary - numeratorReal * denominatorImaginary) *
-					inverseDenominatorModulus
-			);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-		return null;
-	}
-
-	/**
-	 * Square the Complex Number. Unsafe Methods do not validate the Input Arguments, so <b>use caution</b>
-	 *  in applying these Methods
-	 * 
-	 * @param c1 The Complex Number
-	 * 
-	 * @return The Squared Complex Number Instance
-	 */
-
-	public static final CartesianC1 UnsafeSquare (
-		final CartesianC1 c1)
-	{
-		double modulus = c1.modulus();
-
-		if (0. == modulus) {
-			try {
-				return new CartesianC1 (0., 0.);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-
-			return null;
-		}
-
-		double argument = 2. * c1.argument();
-
-		try {
-			return new CartesianC1 (modulus * Math.cos (argument), modulus * Math.sin (argument));
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-		return null;
-	}
-
-	/**
-	 * Compute the Square Root of the Complex Number. Unsafe Methods do not validate the Input Arguments, so
+	 * Compute the Product of the Input Matrices. Unsafe Methods do not validate the Input Arguments, so
 	 * 	<b>use caution</b> in applying these Methods
+	 *
+	 * @param c1GridA Grid of <i>C1Cartesian</i>
+	 * @param c1GridB Grid of <i>C1Cartesian</i>
 	 * 
-	 * @param complexNumber The Complex Number
-	 * 
-	 * @return The Square Root Complex Number Instance
+	 * @return The Product Matrix
 	 */
 
-	public static final CartesianC1 UnsafeSquareRoot (
-		final CartesianC1 complexNumber)
+	public static final C1Cartesian[][] UnsafeProduct (
+		final C1Cartesian[][] c1GridA,
+		final C1Cartesian[][] c1GridB)
 	{
-		double modulus = java.lang.Math.sqrt (complexNumber.modulus());
+		C1Cartesian[][] product = new C1Cartesian[c1GridA.length][c1GridB[0].length];
 
-		if (0. == modulus) {
-			try {
-				return new CartesianC1 (0., 0.);
-			} catch (Exception e) {
-				e.printStackTrace();
+		for (int rowIndex = 0; rowIndex < c1GridA.length; ++rowIndex) {
+			for (int columnIndex = 0; columnIndex < c1GridB[0].length; ++columnIndex) {
+				product[rowIndex][columnIndex] = C1Cartesian.Zero();
+
+				for (int k = 0; k < c1GridA[0].length; ++k) {
+					if (null == product[rowIndex][columnIndex].add (
+						C1Util.Multiply (c1GridA[rowIndex][k], c1GridB[k][columnIndex])
+					)) {
+						return null;
+					}
+				}
 			}
-
-			return null;
 		}
 
-		double argument = 0.5 * complexNumber.argument();
-
-		try {
-			return new CartesianC1 (modulus * Math.cos (argument), modulus * Math.sin (argument));
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-		return null;
+		return product;
 	}
 
 	/**
-	 * Add the 2 Complex Numbers
+	 * Transpose the specified C<sup>1</sup> Square Matrix
 	 * 
-	 * @param firstCartesianC1 The First Complex Number
-	 * @param secondCartesianC1 The Second Complex Number
+	 * @param c1Grid The Input C<sup>1</sup> Matrix Grid
 	 * 
-	 * @return The Complex Number instance that is a sum of the two
+	 * @return The Transpose of the Input C<sup>1</sup> Matrix Grid
 	 */
 
-	public static final CartesianC1 Add (
-		final CartesianC1 firstCartesianC1,
-		final CartesianC1 secondCartesianC1)
+	public static final C1Cartesian[][] Transpose (
+		final C1Cartesian[][] c1Grid)
 	{
-		return null == firstCartesianC1 || null == secondCartesianC1 ? null :
-			UnsafeAdd (firstCartesianC1, secondCartesianC1);
+		return null == c1Grid || 0 == c1Grid.length ? null : UnsafeTranspose (c1Grid);
 	}
 
 	/**
-	 * Scale the Complex Number with the factor
+	 * Compute the Product of the Input Matrices
 	 * 
-	 * @param cartesianC1 The Complex Number
-	 * @param scale The Scaling Factor
+	 * @param c1GridA Vector of <i>C1Cartesian</i>
+	 * @param c1GridB Vector of <i>C1Cartesian</i>
 	 * 
-	 * @return The Scaled Complex Number
+	 * @return The Product Matrix
 	 */
 
-	public static final CartesianC1 Scale (
-		final CartesianC1 cartesianC1,
-		final double scale)
+	public static final C1Cartesian[][] Product (
+		final C1Cartesian[][] c1GridA,
+		final C1Cartesian[][] c1GridB)
 	{
-		return null == cartesianC1 || !NumberUtil.IsValid (scale) ? null :
-			UnsafeScale (cartesianC1, scale);
-	}
-
-	/**
-	 * Subtract the Second Complex Number from the First
-	 * 
-	 * @param firstCartesianC1 The First Complex Number
-	 * @param secondCartesianC1 The Second Complex Number
-	 * 
-	 * @return The "Difference" Complex Number
-	 */
-
-	public static final CartesianC1 Subtract (
-		final CartesianC1 firstCartesianC1,
-		final CartesianC1 secondCartesianC1)
-	{
-		return null == firstCartesianC1 || null == secondCartesianC1 ? null :
-			UnsafeSubtract (firstCartesianC1, secondCartesianC1);
-	}
-
-	/**
-	 * Multiply the 2 Complex Numbers
-	 * 
-	 * @param firstCartesianC1 The First Complex Number
-	 * @param secondCartesianC1 The Second Complex Number
-	 * 
-	 * @return The Complex Number instance that is a product of the two
-	 */
-
-	public static final CartesianC1 Multiply (
-		final CartesianC1 firstCartesianC1,
-		final CartesianC1 secondCartesianC1)
-	{
-		return null == firstCartesianC1 || null == secondCartesianC1 ? null :
-			UnsafeMultiply (firstCartesianC1, secondCartesianC1);
-	}
-
-	/**
-	 * Divide the Numerator Complex Number by the Denominator Complex Number
-	 * 
-	 * @param numeratorC1 The Numerator Complex Number
-	 * @param denominatorC1 The Denominator Complex Number
-	 * 
-	 * @return The "Divided" Complex Number
-	 */
-
-	public static final CartesianC1 Divide (
-		final CartesianC1 numeratorC1,
-		final CartesianC1 denominatorC1)
-	{
-		return null == numeratorC1 || null == denominatorC1 ? null :
-			UnsafeMultiply (numeratorC1, denominatorC1);
-	}
-
-	/**
-	 * Square the Complex Number
-	 * 
-	 * @param c1 The Complex Number
-	 * 
-	 * @return The Squared Complex Number Instance
-	 */
-
-	public static final CartesianC1 Square (
-		final CartesianC1 c1)
-	{
-		return null == c1 ? null : UnsafeSquare (c1);
-	}
-
-	/**
-	 * Compute the Square Root of the Complex Number
-	 * 
-	 * @param complexNumber The Complex Number
-	 * 
-	 * @return The Square Root Complex Number Instance
-	 */
-
-	public static final CartesianC1 SquareRoot (
-		final CartesianC1 complexNumber)
-	{
-		return null == complexNumber ? null : UnsafeSquareRoot (complexNumber);
+		return null == c1GridA || 0 == c1GridA[0].length || null == c1GridB || 0 == c1GridB[0].length ? null
+			: UnsafeProduct (c1GridA, c1GridB);
 	}
 }

@@ -189,7 +189,7 @@ public class BartelsStewartScheme
 
 	public void solve()
 	{
-		QR qrA = R1MatrixUtil.QRDecomposition (_sylvesterEquation.squareMatrixA().r2Array());
+		QR qrA = R1MatrixUtil.QRDecomposition (_sylvesterEquation.squareMatrixA().r1Grid());
 
 		System.out.println();
 
@@ -214,7 +214,7 @@ public class BartelsStewartScheme
 		System.out.println();
 
 		QR qrBTranspose = R1MatrixUtil.QRDecomposition (
-			_sylvesterEquation.squareMatrixB().transpose().r2Array()
+			_sylvesterEquation.squareMatrixB().transpose().r1Grid()
 		);
 
 		double[][] v = qrBTranspose.q();
