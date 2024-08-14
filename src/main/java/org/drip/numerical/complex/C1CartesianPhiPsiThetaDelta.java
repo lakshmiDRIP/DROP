@@ -126,6 +126,17 @@ public class C1CartesianPhiPsiThetaDelta extends C1Square
 	private C1Square _jordanNormalRight = null;
 	private R1SquareRotation2x2 _jordanNormalCenter = null;
 
+	/**
+	 * Construct a Standard Instance of <i>C1CartesianPhiPsiThetaDelta</i>
+	 * 
+	 * @param phi "Phi"
+	 * @param psi "Psi"
+	 * @param theta "Theta"
+	 * @param delta "Delta"
+	 * 
+	 * @return <i>C1CartesianPhiPsiThetaDelta</i> Instance
+	 */
+
 	public static C1CartesianPhiPsiThetaDelta Standard (
 		final double phi,
 		final double psi,
@@ -138,24 +149,44 @@ public class C1CartesianPhiPsiThetaDelta extends C1Square
 			return null;
 		}
 
-		R1SquareRotation2x2 jordanNormalCenter = R1SquareRotation2x2.Standard (theta);
+		C1Cartesian ePowerIPhi = C1Cartesian.UnitImaginary().scale (0.5 * phi).exponentiate();
 
-		C1Square jordanNormalRight = C1Square.Rotation2x2 (delta);
+		if (null == ePowerIPhi) {
+			return null;
+		}
 
 		C1Square jordanNormalLeft = C1Square.Rotation2x2 (psi);
 
-		C1Cartesian[][] c1Grid = new C1Cartesian[2][2];
+		if (null == jordanNormalLeft || (null == (jordanNormalLeft = jordanNormalLeft.product (ePowerIPhi))))
+		{
+			return null;
+		}
 
-		return new C1CartesianPhiPsiThetaDelta (
-			c1Grid,
-			phi,
-			psi,
-			theta,
-			delta,
-			jordanNormalLeft,
-			jordanNormalCenter,
-			jordanNormalRight
-		);
+		R1SquareRotation2x2 jordanNormalCenter = R1SquareRotation2x2.Standard (theta);
+
+		if (null == jordanNormalCenter) {
+			return null;
+		}
+
+		C1Square jordanNormalRight = C1Square.Rotation2x2 (delta);
+
+		if (null == jordanNormalRight) {
+			return null;
+		}
+
+		C1Square c1Square = jordanNormalLeft.product (jordanNormalCenter);
+
+		return null == c1Square || null == (c1Square = c1Square.product (jordanNormalRight)) ?
+			null : new C1CartesianPhiPsiThetaDelta (
+				c1Square.c1Grid(),
+				phi,
+				psi,
+				theta,
+				delta,
+				jordanNormalLeft,
+				jordanNormalCenter,
+				jordanNormalRight
+			);
 	}
 
 	private C1CartesianPhiPsiThetaDelta (
@@ -254,5 +285,27 @@ public class C1CartesianPhiPsiThetaDelta extends C1Square
 	public C1Square jordanNormalRight()
 	{
 		return _jordanNormalRight;
+	}
+
+	/**
+	 * Calculate <code>Alpha</code>
+	 * 
+	 * @return <code>Alpha</code>
+	 */
+
+	public double alpha()
+	{
+		return _psi + _delta;
+	}
+
+	/**
+	 * Calculate <code>Beta</code>
+	 * 
+	 * @return <code>Beta</code>
+	 */
+
+	public double beta()
+	{
+		return _psi - _delta;
 	}
 }

@@ -2,6 +2,7 @@
 package org.drip.numerical.complex;
 
 import org.drip.numerical.common.NumberUtil;
+import org.drip.numerical.matrix.R1Square;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -174,6 +175,38 @@ public class C1Square
 		return new C1Square (c1Grid);
 	}
 
+	/**
+	 * Construct a 2x2 Rotation C<sup>1</sup> Matrix
+	 * 
+	 * @param theta1 The Left Rotation Angle
+	 * @param theta2 The Right Rotation Angle
+	 * 
+	 * @return 2x2 Rotation C<sup>1</sup> Matrix
+	 */
+
+	public static final C1Square Rotation2x2 (
+		final double theta1,
+		final double theta2)
+	{
+		if (!NumberUtil.IsValid (theta1) || !NumberUtil.IsValid (theta2)) {
+			return null;
+		}
+
+		C1Cartesian c1Zero = C1Cartesian.Zero();
+
+		C1Cartesian c1UnitImaginary = C1Cartesian.UnitImaginary();
+
+		C1Cartesian[][] c1Grid = new C1Cartesian[2][2];
+		c1Grid[1][0] = c1Zero;
+		c1Grid[0][1] = c1Zero;
+
+		c1Grid[0][0] = c1UnitImaginary.scale (theta1).exponentiate();
+
+		c1Grid[1][1] = c1UnitImaginary.scale (theta2).exponentiate();
+
+		return new C1Square (c1Grid);
+	}
+
 	protected C1Square (
 		final C1Cartesian[][] c1Grid)
 	{
@@ -262,7 +295,7 @@ public class C1Square
 
 	public double determinant()
 	{
-		return C1Util.UnsafeDeterminant (c1Grid());
+		return C1MatrixUtil.UnsafeDeterminant (c1Grid());
 	}
 
 	/**
@@ -285,5 +318,35 @@ public class C1Square
 	public boolean isUnitary()
 	{
 		return isUnitDeterminant();
+	}
+
+	/**
+	 * Compute the Product with the other Square Matrix
+	 * 
+	 * @param r1Square R<sup>1</sup> Square Matrix
+	 * 
+	 * @return Resulting Product
+	 */
+
+	public C1Square product (
+		final R1Square r1Square)
+	{
+		return null == r1Square ? null : new C1Square (
+			C1MatrixUtil.UnsafeProduct (c1Grid(), r1Square.r1Grid())
+		);
+	}
+
+	/**
+	 * Compute the Product of the Input Matrix and the Complex Number
+	 *
+	 * @param c1 C<sup>1</sup>
+	 * 
+	 * @return The Product <i>C1Square</i>
+	 */
+
+	public C1Square product (
+		final C1Cartesian c1)
+	{
+		return null == c1 ? null : new C1Square (C1MatrixUtil.UnsafeProduct (c1Grid(), c1));
 	}
 }

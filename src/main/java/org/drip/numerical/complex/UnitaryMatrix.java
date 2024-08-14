@@ -1,8 +1,6 @@
 
 package org.drip.numerical.complex;
 
-import org.drip.numerical.common.NumberUtil;
-
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
@@ -76,9 +74,7 @@ import org.drip.numerical.common.NumberUtil;
  */
 
 /**
- * <i>C1CartesianPhiAlphaBetaTheta</i> implements the type and Functionality associated with a C<sup>1</sup>
- *  Square Matrix parameterized by <code>alpha</code>, <code>beta</code>, <code>theta</code>, and
- *  <code>phi</code> Fields. The References are:
+ * <i>UnitaryMatrix</i> implements the Unitary Matrix. The References are:
  * 
  * <br><br>
  * 	<ul>
@@ -115,168 +111,43 @@ import org.drip.numerical.common.NumberUtil;
  * @author Lakshmi Krishnamurthy
  */
 
-public class C1CartesianPhiAlphaBetaTheta extends C1Square
+public class UnitaryMatrix extends C1Square
 {
-	private double _phi = Double.NaN;
-	private double _beta = Double.NaN;
-	private double _alpha = Double.NaN;
-	private double _theta = Double.NaN;
 
 	/**
-	 * Construct a Standard Instance of <i>C1CartesianPhiAlphaBetaTheta</i>
+	 * Construct a Standard Instance of the Unitary Matrix
 	 * 
-	 * @param alpha "alpha"
-	 * @param beta "beta"
-	 * @param theta "theta"
-	 * @param phi "Phi"
+	 * @param c1Grid Grid of C<sup>1</sup> Elements
 	 * 
-	 * @return <i>C1CartesianPhiAlphaBetaTheta</i> Instance
+	 * @return Standard Instance of the Unitary Matrix
 	 */
 
-	public static C1CartesianPhiAlphaBetaTheta Standard (
-		final double alpha,
-		final double beta,
-		final double theta,
-		final double phi)
+	public static UnitaryMatrix Standard (
+		final C1Cartesian[][] c1Grid)
 	{
-		if (!NumberUtil.IsValid (alpha) || !NumberUtil.IsValid (beta) || !NumberUtil.IsValid (theta) ||
-			!NumberUtil.IsValid (phi))
-		{
-			return null;
+		try {
+			return C1MatrixUtil.IsUnitary (c1Grid) ? new UnitaryMatrix (c1Grid) : null;
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 
-		C1Cartesian ePowerIPhi = C1Cartesian.UnitImaginary().scale (0.5 * phi).exponentiate();
-
-		if (null == ePowerIPhi) {
-			return null;
-		}
-
-		C1Cartesian ePowerIAlpha = C1Cartesian.UnitImaginary().scale (alpha).exponentiate();
-
-		if (null == ePowerIAlpha) {
-			return null;
-		}
-
-		C1Cartesian ePowerIBeta = C1Cartesian.UnitImaginary().scale (beta).exponentiate();
-
-		if (null == ePowerIBeta) {
-			return null;
-		}
-
-		double sinTheta = Math.sin (theta);
-
-		double cosTheta = Math.cos (theta);
-
-		C1Cartesian[][] c1Grid = new C1Cartesian[2][2];
-
-		if (null == (c1Grid[0][0] = ePowerIPhi.product (ePowerIAlpha).scale (cosTheta))) {
-			return null;
-		}
-
-		if (null == (c1Grid[0][1] = ePowerIPhi.product (ePowerIBeta).scale (sinTheta))) {
-			return null;
-		}
-
-		if (null == (c1Grid[1][0] = ePowerIPhi.divide (ePowerIBeta).scale (-1. * sinTheta))) {
-			return null;
-		}
-
-		if (null == (c1Grid[1][1] = ePowerIPhi.divide (ePowerIAlpha).scale (cosTheta))) {
-			return null;
-		}
-
-		return new C1CartesianPhiAlphaBetaTheta (c1Grid, alpha, beta, theta, phi);
+		return null;
 	}
 
-	private C1CartesianPhiAlphaBetaTheta (
-		final C1Cartesian[][] c1Grid,
-		final double alpha,
-		final double beta,
-		final double theta,
-		final double phi)
+	protected UnitaryMatrix (
+		final C1Cartesian[][] c1Grid)
 	{
 		super (c1Grid);
-
-		_phi = phi;
-		_beta = beta;
-		_alpha = alpha;
-		_theta = theta;
 	}
 
 	/**
-	 * Retrieve <code>Alpha</code>
+	 * Compute the Default Condition Number of the Matrix
 	 * 
-	 * @return <code>Alpha</code>
+	 * @return Default Condition Number of the Matrix
 	 */
 
-	public double alpha()
+	public double conditionNumber()
 	{
-		return _alpha;
-	}
-
-	/**
-	 * Retrieve <code>Beta</code>
-	 * 
-	 * @return <code>Beta</code>
-	 */
-
-	public double beta()
-	{
-		return _beta;
-	}
-
-	/**
-	 * Retrieve <code>Theta</code>
-	 * 
-	 * @return <code>Theta</code>
-	 */
-
-	public double theta()
-	{
-		return _theta;
-	}
-
-	/**
-	 * Retrieve <code>Phi</code>
-	 * 
-	 * @return <code>Phi</code>
-	 */
-
-	public double phi()
-	{
-		return _phi;
-	}
-
-	/**
-	 * Retrieve the <code>a</code> Parameter
-	 * 
-	 * @return <code>a</code> Parameter
-	 */
-
-	public C1Cartesian a()
-	{
-		return C1Cartesian.UnitImaginary().scale (_alpha).exponentiate().scale (Math.cos (_theta));
-	}
-
-	/**
-	 * Retrieve the <code>b</code> Parameter
-	 * 
-	 * @return <code>b</code> Parameter
-	 */
-
-	public C1Cartesian b()
-	{
-		return C1Cartesian.UnitImaginary().scale (_beta).exponentiate().scale (Math.sin (_theta));
-	}
-
-	/**
-	 * Construct the Instance of <i>C1CartesianPhiAB</i>
-	 * 
-	 * @return Instance of <i>C1CartesianPhiAB</i>
-	 */
-
-	public C1CartesianPhiAB phiAB()
-	{
-		return C1CartesianPhiAB.Standard (a(), b(), _phi);
+		return 1.;
 	}
 }

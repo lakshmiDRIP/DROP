@@ -1,7 +1,7 @@
 
 package org.drip.numerical.complex;
 
-import org.drip.numerical.common.NumberUtil;
+import org.drip.numerical.matrix.R1SquareRotation2x2;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -76,9 +76,9 @@ import org.drip.numerical.common.NumberUtil;
  */
 
 /**
- * <i>C1CartesianPhiAlphaBetaTheta</i> implements the type and Functionality associated with a C<sup>1</sup>
- *  Square Matrix parameterized by <code>alpha</code>, <code>beta</code>, <code>theta</code>, and
- *  <code>phi</code> Fields. The References are:
+ * <i>C1CartesianFuhrRzeszotnik</i> implements the type and Functionality associated with a C<sup>1</sup>
+ *  Square Matrix parameterized by the Fuhr-Rzeszotnik parameters <code>rho</code>, <code>epsilon</code>,
+ *  <code>eta</code>, and <code>sigma</code> Fields. The References are:
  * 
  * <br><br>
  * 	<ul>
@@ -115,168 +115,164 @@ import org.drip.numerical.common.NumberUtil;
  * @author Lakshmi Krishnamurthy
  */
 
-public class C1CartesianPhiAlphaBetaTheta extends C1Square
+public class C1CartesianFuhrRzeszotnik extends C1Square
 {
-	private double _phi = Double.NaN;
-	private double _beta = Double.NaN;
-	private double _alpha = Double.NaN;
-	private double _theta = Double.NaN;
+	private double _eta = Double.NaN;
+	private double _rho = Double.NaN;
+	private double _sigma = Double.NaN;
+	private double _epsilon = Double.NaN;
+	private C1Square _jordanNormalCenter = null;
+	private R1SquareRotation2x2 _jordanNormalLeft = null;
+	private R1SquareRotation2x2 _jordanNormalRight = null;
 
 	/**
-	 * Construct a Standard Instance of <i>C1CartesianPhiAlphaBetaTheta</i>
+	 * Construct a Standard Instance of <i>C1CartesianFuhrRzeszotnik</i>
 	 * 
-	 * @param alpha "alpha"
-	 * @param beta "beta"
-	 * @param theta "theta"
-	 * @param phi "Phi"
+	 * @param eta "Eta"
+	 * @param rho "Rho"
+	 * @param sigma "Sigma"
+	 * @param epsilon "Epsilon"
 	 * 
-	 * @return <i>C1CartesianPhiAlphaBetaTheta</i> Instance
+	 * @return <i>C1CartesianFuhrRzeszotnik</i> Instance
 	 */
 
-	public static C1CartesianPhiAlphaBetaTheta Standard (
-		final double alpha,
-		final double beta,
-		final double theta,
-		final double phi)
+	public static C1CartesianFuhrRzeszotnik Standard (
+		final double eta,
+		final double rho,
+		final double sigma,
+		final double epsilon)
 	{
-		if (!NumberUtil.IsValid (alpha) || !NumberUtil.IsValid (beta) || !NumberUtil.IsValid (theta) ||
-			!NumberUtil.IsValid (phi))
-		{
+		R1SquareRotation2x2 jordanNormalLeft = R1SquareRotation2x2.Standard (rho);
+
+		if (null == jordanNormalLeft) {
 			return null;
 		}
 
-		C1Cartesian ePowerIPhi = C1Cartesian.UnitImaginary().scale (0.5 * phi).exponentiate();
+		C1Square jordanNormalCenter = C1Square.Rotation2x2 (epsilon, eta);
 
-		if (null == ePowerIPhi) {
+		if (null == jordanNormalCenter) {
 			return null;
 		}
 
-		C1Cartesian ePowerIAlpha = C1Cartesian.UnitImaginary().scale (alpha).exponentiate();
+		R1SquareRotation2x2 jordanNormalRight = R1SquareRotation2x2.Standard (sigma);
 
-		if (null == ePowerIAlpha) {
+		if (null == jordanNormalRight) {
 			return null;
 		}
 
-		C1Cartesian ePowerIBeta = C1Cartesian.UnitImaginary().scale (beta).exponentiate();
+		C1Cartesian[][] c1Grid = C1MatrixUtil.Product (
+			jordanNormalLeft.r1Grid(),
+			jordanNormalCenter.c1Grid()
+		);
 
-		if (null == ePowerIBeta) {
-			return null;
-		}
-
-		double sinTheta = Math.sin (theta);
-
-		double cosTheta = Math.cos (theta);
-
-		C1Cartesian[][] c1Grid = new C1Cartesian[2][2];
-
-		if (null == (c1Grid[0][0] = ePowerIPhi.product (ePowerIAlpha).scale (cosTheta))) {
-			return null;
-		}
-
-		if (null == (c1Grid[0][1] = ePowerIPhi.product (ePowerIBeta).scale (sinTheta))) {
-			return null;
-		}
-
-		if (null == (c1Grid[1][0] = ePowerIPhi.divide (ePowerIBeta).scale (-1. * sinTheta))) {
-			return null;
-		}
-
-		if (null == (c1Grid[1][1] = ePowerIPhi.divide (ePowerIAlpha).scale (cosTheta))) {
-			return null;
-		}
-
-		return new C1CartesianPhiAlphaBetaTheta (c1Grid, alpha, beta, theta, phi);
+		return null == c1Grid || null == (c1Grid = C1MatrixUtil.Product (c1Grid, jordanNormalRight.r1Grid()))
+			? null : new C1CartesianFuhrRzeszotnik (
+				c1Grid,
+				eta,
+				rho,
+				sigma,
+				epsilon,
+				jordanNormalLeft,
+				jordanNormalCenter,
+				jordanNormalRight
+			);
 	}
 
-	private C1CartesianPhiAlphaBetaTheta (
+	private C1CartesianFuhrRzeszotnik (
 		final C1Cartesian[][] c1Grid,
-		final double alpha,
-		final double beta,
-		final double theta,
-		final double phi)
+		final double eta,
+		final double rho,
+		final double sigma,
+		final double epsilon,
+		final R1SquareRotation2x2 jordanNormalLeft,
+		final C1Square jordanNormalCenter,
+		final R1SquareRotation2x2 jordanNormalRight)
 	{
 		super (c1Grid);
 
-		_phi = phi;
-		_beta = beta;
-		_alpha = alpha;
-		_theta = theta;
+		_eta = eta;
+		_rho = rho;
+		_sigma = sigma;
+		_epsilon = epsilon;
+		_jordanNormalLeft = jordanNormalLeft;
+		_jordanNormalRight = jordanNormalRight;
+		_jordanNormalCenter = jordanNormalCenter;
 	}
 
 	/**
-	 * Retrieve <code>Alpha</code>
+	 * Retrieve <code>Rho</code>
 	 * 
-	 * @return <code>Alpha</code>
+	 * @return <code>Rho</code>
 	 */
 
-	public double alpha()
+	public double rho()
 	{
-		return _alpha;
+		return _rho;
 	}
 
 	/**
-	 * Retrieve <code>Beta</code>
+	 * Retrieve <code>Epsilon</code>
 	 * 
-	 * @return <code>Beta</code>
+	 * @return <code>Epsilon</code>
 	 */
 
-	public double beta()
+	public double epsilon()
 	{
-		return _beta;
+		return _epsilon;
 	}
 
 	/**
-	 * Retrieve <code>Theta</code>
+	 * Retrieve <code>Eta</code>
 	 * 
-	 * @return <code>Theta</code>
+	 * @return <code>Eta</code>
 	 */
 
-	public double theta()
+	public double eta()
 	{
-		return _theta;
+		return _eta;
 	}
 
 	/**
-	 * Retrieve <code>Phi</code>
+	 * Retrieve <code>Sigma</code>
 	 * 
-	 * @return <code>Phi</code>
+	 * @return <code>Sigma</code>
 	 */
 
-	public double phi()
+	public double sigma()
 	{
-		return _phi;
+		return _sigma;
 	}
 
 	/**
-	 * Retrieve the <code>a</code> Parameter
+	 * Retrieve the Jordan Normal Left Part of <i>C1CartesianPhiPsiThetaDelta</i>
 	 * 
-	 * @return <code>a</code> Parameter
+	 * @return Jordan Normal Left Part of <i>C1CartesianPhiPsiThetaDelta</i>
 	 */
 
-	public C1Cartesian a()
+	public R1SquareRotation2x2 jordanNormalLeft()
 	{
-		return C1Cartesian.UnitImaginary().scale (_alpha).exponentiate().scale (Math.cos (_theta));
+		return _jordanNormalLeft;
 	}
 
 	/**
-	 * Retrieve the <code>b</code> Parameter
+	 * Retrieve the Jordan Normal Center Part of <i>C1CartesianPhiPsiThetaDelta</i>
 	 * 
-	 * @return <code>b</code> Parameter
+	 * @return Jordan Normal Center Part of <i>C1CartesianPhiPsiThetaDelta</i>
 	 */
 
-	public C1Cartesian b()
+	public C1Square jordanNormalCenter()
 	{
-		return C1Cartesian.UnitImaginary().scale (_beta).exponentiate().scale (Math.sin (_theta));
+		return _jordanNormalCenter;
 	}
 
 	/**
-	 * Construct the Instance of <i>C1CartesianPhiAB</i>
+	 * Retrieve the Jordan Normal Right Part of <i>C1CartesianPhiPsiThetaDelta</i>
 	 * 
-	 * @return Instance of <i>C1CartesianPhiAB</i>
+	 * @return Jordan Normal Right Part of <i>C1CartesianPhiPsiThetaDelta</i>
 	 */
 
-	public C1CartesianPhiAB phiAB()
+	public R1SquareRotation2x2 jordanNormalRight()
 	{
-		return C1CartesianPhiAB.Standard (a(), b(), _phi);
+		return _jordanNormalRight;
 	}
 }

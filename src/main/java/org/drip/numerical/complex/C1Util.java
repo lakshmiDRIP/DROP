@@ -429,43 +429,6 @@ public class C1Util
 	}
 
 	/**
-	 * Determinant of the Input Matrix. Unsafe Methods do not validate the Input Arguments, so <b>use
-	 * 	caution</b> in applying these Methods
-	 *
-	 * @param c1Grid Grid of <i>C<sup>1</sup></i> Instances
-	 * 
-	 * @return The Determinant
-	 */
-
-	public static final double UnsafeDeterminant (
-		final C1Cartesian[][] c1Grid)
-	{
-		if (1 == c1Grid.length) {
-			return Math.sqrt (c1Grid[0][0].modulus());
-		}
-
-		if (2 == c1Grid.length) {
-			return Math.sqrt (
-				C1Util.UnsafeDotProduct (c1Grid[0][0], c1Grid[1][1]) -
-					C1Util.UnsafeDotProduct (c1Grid[0][1], c1Grid[1][0])
-			);
-		}
-
-		int slimSize = c1Grid.length - 1;
-
-		C1Cartesian[][] c1GridNew = new C1Cartesian[slimSize][slimSize];
-
-		for (int i = 0; i < slimSize; ++i) {
-			for (int j = 0; j < slimSize; ++j) {
-				c1GridNew[i][j] = c1Grid[i][j];
-			}
-		}
-
-		return UnsafeDeterminant (c1GridNew) * c1Grid[slimSize][slimSize].l2Norm() -
-			c1Grid[slimSize][slimSize].l2Norm() * c1Grid[slimSize][slimSize].l2Norm();
-	}
-
-	/**
 	 * Add the 2 Complex Numbers
 	 * 
 	 * @param firstCartesianC1 The First Complex Number
@@ -644,26 +607,5 @@ public class C1Util
 		}
 
 		return UnsafeDotProduct (a, e);
-	}
-
-	/**
-	 * Determinant of the Input Matrix
-	 *
-	 * @param c1Grid Grid of <i>C1Cartesian</i> Instances
-	 * 
-	 * @return The Determinant
-	 * 
-	 * @throws Exception Thrown if the Inputs are Invalid
-	 */
-
-	public static final double Determinant (
-		final C1Cartesian[][] c1Grid)
-		throws Exception
-	{
-		if (null == c1Grid || 0 == c1Grid.length || 0 == c1Grid[0].length) {
-			throw new Exception ("C1MatrixUtil::Determinant => Invalid Inputs");
-		}
-
-		return UnsafeDeterminant (c1Grid);
 	}
 }

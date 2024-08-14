@@ -1,6 +1,8 @@
 
 package org.drip.numerical.complex;
 
+import org.drip.numerical.common.NumberUtil;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
@@ -214,6 +216,111 @@ public class C1MatrixUtil
 	}
 
 	/**
+	 * Compute the Product of the Input Matrices. Unsafe Methods do not validate the Input Arguments, so
+	 * 	<b>use caution</b> in applying these Methods
+	 *
+	 * @param r1GridA Grid of R<sup>1</sup>
+	 * @param c1GridB Grid of C<sup>1</sup>
+	 * 
+	 * @return The Product Matrix
+	 */
+
+	public static final C1Cartesian[][] UnsafeProduct (
+		final double[][] r1GridA,
+		final C1Cartesian[][] c1GridB)
+	{
+		C1Cartesian[][] product = new C1Cartesian[r1GridA.length][c1GridB[0].length];
+
+		for (int rowIndex = 0; rowIndex < r1GridA.length; ++rowIndex) {
+			for (int columnIndex = 0; columnIndex < c1GridB[0].length; ++columnIndex) {
+				product[rowIndex][columnIndex] = C1Cartesian.Zero();
+			}
+		}
+
+		for (int rowIndex = 0; rowIndex < r1GridA.length; ++rowIndex) {
+			for (int columnIndex = 0; columnIndex < c1GridB[0].length; ++columnIndex) {
+				for (int k = 0; k < r1GridA[0].length; ++k) {
+					if (null == product[rowIndex][columnIndex].scale (
+							r1GridA[rowIndex][k]
+						).add (
+							c1GridB[k][columnIndex]
+						)
+					)
+					{
+						return null;
+					}
+				}
+			}
+		}
+
+		return product;
+	}
+
+	/**
+	 * Compute the Product of the Input Matrix and the Complex Number. Unsafe Methods do not validate the
+	 *  Input Arguments, so <b>use caution</b> in applying these Methods
+	 *
+	 * @param c1Grid Grid of C<sup>1</sup>
+	 * @param c1 C<sup>1</sup>
+	 * 
+	 * @return The Product Matrix
+	 */
+
+	public static final C1Cartesian[][] UnsafeProduct (
+		final C1Cartesian[][] c1Grid,
+		final C1Cartesian c1)
+	{
+		C1Cartesian[][] product = new C1Cartesian[c1Grid.length][c1Grid[0].length];
+
+		for (int rowIndex = 0; rowIndex < c1Grid.length; ++rowIndex) {
+			for (int columnIndex = 0; columnIndex < c1Grid[0].length; ++columnIndex) {
+				if (null == (product[rowIndex][columnIndex] = c1Grid[rowIndex][columnIndex].product (c1))) {
+					return null;
+				}
+			}
+		}
+
+		return product;
+	}
+
+	/**
+	 * Determinant of the Input Matrix. Unsafe Methods do not validate the Input Arguments, so <b>use
+	 * 	caution</b> in applying these Methods
+	 *
+	 * @param c1Grid Grid of <i>C<sup>1</sup></i> Instances
+	 * 
+	 * @return The Determinant
+	 */
+
+	public static final double UnsafeDeterminant (
+		final C1Cartesian[][] c1Grid)
+	{
+		if (1 == c1Grid.length) {
+			return Math.sqrt (c1Grid[0][0].modulus());
+		}
+
+		if (2 == c1Grid.length) {
+			return Math.sqrt (
+				C1Util.UnsafeDotProduct (c1Grid[0][0], c1Grid[1][1]) -
+					C1Util.UnsafeDotProduct (c1Grid[0][1], c1Grid[1][0])
+			);
+		}
+
+		int slimSize = c1Grid.length - 1;
+
+		C1Cartesian[][] c1GridNew = new C1Cartesian[slimSize][slimSize];
+
+		for (int i = 0; i < slimSize; ++i) {
+			for (int j = 0; j < slimSize; ++j) {
+				c1GridNew[i][j] = c1Grid[i][j];
+			}
+		}
+
+		return UnsafeDeterminant (c1GridNew) * c1Grid[slimSize][slimSize].l2Norm() -
+			c1Grid[slimSize][slimSize].l2Norm() * c1Grid[slimSize][slimSize].l2Norm();
+	}
+
+	/**
 	 * Indicate the C<sup>1</sup> Vector is Valid
 	 * 
 	 * @param c1Vector C<sup>1</sup> Vector
@@ -300,44 +407,96 @@ public class C1MatrixUtil
 	/**
 	 * Compute the Product of the Input Matrices
 	 *
-	 * @param c1GridA Grid of C<sup>1</sup>
-	 * @param r1GridB Grid of R<sup>1</sup>
+	 * @param c1Grid rid of C<sup>1</sup>
+	 * @param r1Grid Grid of R<sup>1</sup>
 	 * 
 	 * @return The Product Matrix
 	 */
 
 	public static final C1Cartesian[][] Product (
-		final C1Cartesian[][] c1GridA,
-		final double[][] r1GridB)
+		final C1Cartesian[][] c1Grid,
+		final double[][] r1Grid)
 	{
-		if (!IsGridValid (c1GridA) ||
-			null == r1GridB || 0 == r1GridB.length ||
-			null == r1GridB[0] || 0 == r1GridB[0].length)
-		{
-			return null;
-		};
+		return !IsGridValid (c1Grid) ||
+			null == r1Grid || 0 == r1Grid.length ||
+			c1Grid[0].length != r1Grid.length ||
+			!NumberUtil.IsValid (r1Grid) ?
+			null : UnsafeProduct (c1Grid, r1Grid);
+	}
 
-		C1Cartesian[][] product = new C1Cartesian[c1GridA.length][r1GridB[0].length];
+	/**
+	 * Compute the Product of the Input Matrices
+	 *
+	 * @param r1Grid Grid of R<sup>1</sup>
+	 * @param c1Grid Grid of C<sup>1</sup>
+	 * 
+	 * @return The Product Matrix
+	 */
 
-		for (int rowIndex = 0; rowIndex < c1GridA.length; ++rowIndex) {
-			for (int columnIndex = 0; columnIndex < r1GridB[0].length; ++columnIndex) {
-				product[rowIndex][columnIndex] = C1Cartesian.Zero();
-			}
+	public static final C1Cartesian[][] Product (
+		final double[][] r1Grid,
+		final C1Cartesian[][] c1Grid)
+	{
+		return null == r1Grid || 0 == r1Grid.length || null == r1Grid[0] ||
+			!NumberUtil.IsValid (r1Grid) || !IsGridValid (c1Grid) || r1Grid[0].length != c1Grid.length ?
+			null : UnsafeProduct (r1Grid, c1Grid);
+	}
+
+	/**
+	 * Compute the Product of the Input Matrix and the Complex Number
+	 *
+	 * @param c1Grid Grid of C<sup>1</sup>
+	 * @param c1 C<sup>1</sup>
+	 * 
+	 * @return The Product Matrix
+	 */
+
+	public static final C1Cartesian[][] Product (
+		final C1Cartesian[][] c1Grid,
+		final C1Cartesian c1)
+	{
+		return !IsGridValid (c1Grid) || null == c1 ? null : UnsafeProduct (c1Grid, c1);
+	}
+
+	/**
+	 * Determinant of the Input Matrix
+	 *
+	 * @param c1Grid Grid of <i>C1Cartesian</i> Instances
+	 * 
+	 * @return The Determinant
+	 * 
+	 * @throws Exception Thrown if the Inputs are Invalid
+	 */
+
+	public static final double Determinant (
+		final C1Cartesian[][] c1Grid)
+		throws Exception
+	{
+		if (null == c1Grid || 0 == c1Grid.length || 0 == c1Grid[0].length) {
+			throw new Exception ("C1MatrixUtil::Determinant => Invalid Inputs");
 		}
 
-		for (int rowIndex = 0; rowIndex < c1GridA.length; ++rowIndex) {
-			for (int columnIndex = 0; columnIndex < r1GridB[0].length; ++columnIndex) {
-				for (int k = 0; k < c1GridA[0].length; ++k) {
-					if (null == product[rowIndex][columnIndex].add (
-						c1GridA[rowIndex][k].scale (r1GridB[k][columnIndex])
-					))
-					{
-						return null;
-					}
-				}
-			}
+		return UnsafeDeterminant (c1Grid);
+	}
+
+	/**
+	 * Indicate if the Input Matrix is Unitary
+	 *
+	 * @param c1Grid Grid of <i>C1Cartesian</i> Instances
+	 * 
+	 * @return TRUE - Input Matrix is Unitary
+	 * 
+	 * @throws Exception Thrown if the Inputs are Invalid
+	 */
+
+	public static final boolean IsUnitary (
+		final C1Cartesian[][] c1Grid)
+		throws Exception
+	{
+		if (null == c1Grid || 0 == c1Grid.length || 0 == c1Grid[0].length) {
+			throw new Exception ("C1MatrixUtil::Determinant => Invalid Inputs");
 		}
 
-		return product;
+		return NumberUtil.WithinTolerance (UnsafeDeterminant (c1Grid), 0.);
 	}
 }
