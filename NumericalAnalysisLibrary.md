@@ -11,7 +11,7 @@ Numerical Analysis Library contains the supporting Functionality for Numerical M
 
  |        Document         | Link |
  |-------------------------|------|
- | Technical Specification | [*Latest*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/NumericalAnalysis/NumericalAnalysis_v6.46.pdf) [*Previous*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/NumericalAnalysis) |
+ | Technical Specification | [*Latest*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/NumericalAnalysis/NumericalAnalysis_v6.47.pdf) [*Previous*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/NumericalAnalysis) |
  | User Guide              |  |
  | API                     | [*Javadoc*](https://lakshmidrip.github.io/DROP/Javadoc/index.html)|
 
@@ -422,6 +422,27 @@ Numerical Analysis Library contains the supporting Functionality for Numerical M
 	* Equivalent Conditions
 	* Elementary Constructions
 		* 2 × 2 Unitary Matrix
+	* References
+ * Matrix Norm
+	* Introduction
+	* Preliminaries
+	* Matrix Norms induced by Vector Norms
+		* Matrix Norms induced by Vector p-Norms
+			* p = 1, ∞
+			* Spectral Norm (p = 2)
+		* Matrix Norms induced by Vector α- and β-norms
+		* Properties
+		* Square Matrices
+	* Consistent and Compatible Norms
+	* Entry-wise Matrix Norms
+		* L (2,1) and L (p,q) Norms
+		* Frobenius Norm
+		* Max Norm
+	* Schatten Norms
+	* Monotone Norms
+	* Cut Norms
+	* Equivalence of Norms
+		* Examples of Norm Equivalence
 	* References
 
 
