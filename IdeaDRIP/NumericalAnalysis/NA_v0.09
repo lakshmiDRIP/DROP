@@ -1,0 +1,240 @@
+
+ --------------------------
+ #1 - Successive Over-Relaxation
+ --------------------------
+ --------------------------
+ 1.1) Successive Over-Relaxation Method for A.x = b; A - n x n square matrix, x - unknown vector, b - RHS vector
+ 1.2) Decompose A into Diagonal, Lower, and upper Triangular Matrices; A = D + L + U
+ 1.3) SOR Scheme uses omega input
+ 1.4) Forward subsitution scheme to iteratively determine the x_i's
+ 1.5) SOR Scheme Linear System Convergence: Inputs A and D, Jacobi Iteration Matrix Spectral Radius, omega
+	- Construct Jacobi Iteration Matrix: C_Jacobian = I - (Inverse D) A
+	- Convergence Verification #1: Ensure that Jacobi Iteration Matrix Spectral Radius is < 1
+	- Convergence Verification #2: Ensure omega between 0 and 2
+	- Optimal Relaxation Parameter Expression in terms of Jacobi Iteration Matrix Spectral Radius
+	- Omega Based Convergence Rate Expression
+	- Gauss-Seidel omega = 1; corresponding Convergence Rate
+	- Optimal Omega Convergence Rate
+ 1.6) Generic Iterative Solver Method:
+	- Inputs: Iterator Function(x) and omega
+	- Unrelaxed Iterated variable: x_n+1 = f(x_n)
+	- SOR Based Iterated variable: x_n+1 = (1-omega).x_n + omega.f(x_n)
+	- SOR Based Iterated variable for Unknown Vector x: x_n+1 = (1-omega).x_n + omega.(L_star inverse)(b - U.x_n)
+ --------------------------
+
+ --------------------------
+ #2 - Successive Over-Relaxation
+ --------------------------
+ --------------------------
+ 2.1) SSOR Algorithm - Inputs; A, omega, and gamma
+	- Decompose into D and L
+	- Pre-conditioner Matrix: Expression from SSOR 
+	- Finally SSOR Iteration Formula
+ --------------------------
+
+ ----------------------------
+ #7 - Tridiagonal matrix algorithm
+ ----------------------------
+ ----------------------------
+ 7.1) Is Tridiagonal Check
+ 7.2) Core Algorithm:
+	- C Prime's and D Prime's Calculation
+	- Back Substitution for the Result
+	- Modified better Book-keeping algorithm
+ 7.3) Sherman-Morrison Algorithm:
+	- Choice of gamma
+	- Construct Tridiagonal B from A and gamma
+	- u Column from gamma and c_n
+	- v Column from a_1 and gamma
+	- Solve for y from By=d
+	- Solve for q from Bq=u
+	- Use Sherman Morrison Formula to extract x
+ 7.4) Alternate Boundary Condition Algorithm:
+	- Solve Au=d for u
+	- Solve Av={-a_2, 0, ..., -c_n} for v
+	- Full solution is x_i = u_i + x_1 * v_i
+	- x_1 if computed using formula
+ ----------------------------
+
+ ----------------------------
+ #8 - Triangular Matrix
+ ----------------------------
+ ----------------------------
+ 8.1) Description:
+	- Lower/Left Triangular Verification
+	- Upper/Right Triangular Verification
+	- Diagonal Matrix Verification
+	- Upper/Lower Trapezoidal Verification
+ 8.2) Forward/Back Substitution:
+	- Inputs => L and b
+		- Forward Substitution
+	- Inputs => U and b
+		- Back Substitution
+ 8.3) Properties:
+	- Is Matrix Normal, i.e.,  A times A transpose = A transpose times A
+	- Characteristic Polynomial
+	- Determinant/Permanent
+ 8.4) Special Forms:
+	- Upper/Lower Unitriangular Matrix Verification
+	- Upper/Lower Strictly Matrix Verification
+	- Upper/Lower Atomic Matrix Verification
+ ----------------------------
+
+ ----------------------------
+ #9 - Sylvester Equation
+ ----------------------------
+ ----------------------------
+ 9.1) Matrix Form:
+	- Inputs: A, B, and C
+	- Size Constraints Verification
+ 9.2) Solution Criteria:
+	- Co-joint EigenSpectrum between A and B
+ 9.3) Numerical Solution:
+	- Decomposition of A/B using Schur Decomposition into Triangular Form
+	- Forward/Back Substitution
+ ----------------------------
+
+ ----------------------------
+ #10 - Bartels-Stewart Algorithm
+ ----------------------------
+ ----------------------------
+ 10.1) Matrix Form:
+	- Inputs: A, B, and C
+	- Size Constraints Verification
+ 10.2) Schur Decompositions:
+	- R = U^T A U - emits U and R
+	- S = V^T B^T V - emits V and S
+	- F = U^T C V
+	- Y = U^T X V
+	- Solution to R.Y - Y.S^T = F
+	- Finally X = U.Y.V^T
+ 10.3) Computational Costs:
+	- Flops cost for Schur decomposition
+	- Flops cost overall
+ 10.4) Hessenberg-Schur Decompositions:
+	- R = U^T A U becomes H = Q^T A Q - thus emits Q and H (Upper Hessenberg)
+	- Computational Costs
+ ----------------------------
+
+ ----------------------------
+ #11 - Gershgorin Circle Theorem
+ ----------------------------
+ ----------------------------
+ 11.1) Gershgorin Disc:
+	- Diagonal Entry
+	- Radius
+	- One disc per Row/Column in Square Matrix
+	- Optimal Disc based on Row/Column
+ 11.2) Tolerance based Gershgorin Convergence Criterion
+ 11.3) Joint and Disjoint Discs
+ 11.4) Gershgorin Strengthener
+ 11.5) Row/Column Diagonal Dominance
+ ----------------------------
+
+ ----------------------------
+ #12 - Condition Number
+ ----------------------------
+ ----------------------------
+ 12.1) Condition Number Calculation:
+	- Absolute Error
+	- Relative Error
+	- Absolute Condition Number
+	- Relative Condition Number
+ 12.2) Matrix Condition Number Calculation:
+	- Condition Number as a Product of Regular and Inverse Norms
+	- L2 Norm
+	- L2 Norm for Normal Matrix
+	- L2 Norm for Unitary Matrix
+	- Default Condition Number
+	- L Infinity Norm
+	- L Infinity Norm Triangular Matrix
+ 12.3) Non-linear
+	- One Variable
+		- Basic Formula
+		- Condition Numbers for Common Functions
+	- Multi Variables
+ ----------------------------
+
+ ----------------------------
+ #13 - Unitary Matrix
+ ----------------------------
+ ----------------------------
+ 13.1) Properties:
+	- U.U conjugate = I defines unitary matrix
+	- U.U conjugate = U conjugate.U = I
+	- det U = 1
+	- Eigenvectors are orthogonal
+	- U conjugate = U inverse
+	- Norm (U.x) = Norm (x)
+	- Normal Matrix U
+ 13.2) 2x2 Elementary Matrices
+	- Wiki Representation #1
+	- Wiki Representation #2
+	- Wiki Representation #3
+	- Wiki Representation #4
+ ----------------------------
+
+ ----------------------------
+ #14 - Spectral Radius
+ ----------------------------
+ ----------------------------
+ 14.1) Definition - Matrix:
+	- Spectral Radius - Max of the Eigenvalues
+ 14.2) Definition - Bounded Complex Linear Operators:
+	- Spectral Radius - Max of the Spectrum
+	- Gelfand Formula applies to Bounded Complex Linear Operators
+ 14.3) Definition - Graph:
+	- Function on Graph Vertex
+	- Square Integrability of Function across Vertexes
+	- Graph Function Map - Square Integrability Function Space across Vertexes 1 -> 2
+	- Graph Adjacency Operator - Function Sum over edges of a vertex
+ 14.4)Upper bounds
+	- Upper bounds on the spectral radius of a matrix <= Power (Norm (A^k), 1/k)
+	- Upper bounds for spectral radius of a graph
+ 14.5) Jordan Normal Power Sequence
+	- J (m_i, lambda_i)
+	- J (m_i, lambda_i) power k
+	- Jordan Normal J Matrix
+	- Jordan Normal J Matrix power k
+	- A = V.J.V^-1
+	- A^k = V.J^k.V^-1
+ 14.6) Gelfand's formula
+	- The Formula
+	- Gelfand's formula for Commuting Matrices
+ ----------------------------
+
+ --------------------------
+ #15 - Crank–Nicolson method
+ --------------------------
+ --------------------------
+ 15.1) von Neumann Stability Validator - Inputs; time-step, diffusivity, space step
+	- 1D => time step * diffusivity / space step ^2 < 0.5
+	- nD => time step * diffusivity / (space step hypotenuse) ^ 2 < 0.5
+ 15.2) Set up:
+	- Input: Spatial variable x
+	- Input: Time variable t
+	- Inputs: State variable u, du/dx, d2u/dx2 - all at time t
+	- Second Order, 1D => du/dt = F (u, x, t, du/dx, d2u/dx2)
+ 15.3) Finite Difference Evolution Scheme:
+	- Time Step delta_t, space step delta_x
+	- Forward Difference: F calculated at x
+	- Backward Difference: F calculated at x + delta_x
+	- Crank Nicolson: Average of Forward/Backward
+ 15.4) 1D Diffusion:
+	- Inputs: 1D von Neumann Stability Validator, Number of time/space steps
+	- Time Index n, Space Index i
+	- Explicit Tridiagonal form for the discretization - State concentration at n+1 given state concentration at n
+	- Non-linear diffusion coefficient:
+		- Linearization across x_i and x_i+1
+		- Quasi-explicit forms accommodation
+ 15.5) 2D Diffusion:
+	- Inputs: 2D von Neumann Stability Validator, Number of time/space steps
+	- Time Index n, Space Index i, j
+	- Explicit Tridiagonal form for the discretization - State concentration at n+1 given state concentration at n
+	- Explicit Solution using the Alternative Difference Implicit Scheme
+ 15.6) Extension to Iterative Solver Schemes above:
+	- Input: State Space "velocity" dF/du
+	- Input: State "Step Size" delta_u
+	- Fixed Point Iterative Location Scheme
+	- Relaxation Scheme based Robustness => Input: Relaxation Parameter
+ --------------------------

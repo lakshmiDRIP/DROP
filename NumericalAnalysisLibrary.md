@@ -444,6 +444,21 @@ Numerical Analysis Library contains the supporting Functionality for Numerical M
 	* Equivalence of Norms
 		* Examples of Norm Equivalence
 	* References
+ * Spectral Radius
+	* Introduction
+	* Definition
+		* Matrices
+		* Bounded Linear Operators
+		* Graphs
+	* Upper Bounds
+		* Upper Bounds on the Spectral Radius of a Matrix
+		* Upper Bounds on the Spectral Radius of a Graph
+	* Power Sequence
+	* Gelfand's Formula
+		* Theorem
+		* Proof
+		* Corollary
+	* References
 
 
 ## DROP Specifications

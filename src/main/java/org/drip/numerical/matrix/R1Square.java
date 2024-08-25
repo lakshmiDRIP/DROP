@@ -400,4 +400,24 @@ public class R1Square
 
 		return null == eigenOutput ? null : eigenOutput.characteristicPolynomial();
 	}
+
+	/**
+	 * Compute the Spectral Radius of the Matrix
+	 * 
+	 * @return Spectral Radius of the Matrix
+	 * 
+	 * @throws Exception Thrown if the Spectral Radius cannot be calculated
+	 */
+
+	public double spectralRadius()
+		throws Exception
+	{
+		EigenOutput eigenOutput = QREigenComponentExtractor.Standard().eigenize (_r1Grid);
+
+		if (null == eigenOutput) {
+			throw new Exception ("R1Square::spectralRadius => Cannot eigenize");
+		}
+
+		return eigenOutput.spectralRadius();
+	}
 }

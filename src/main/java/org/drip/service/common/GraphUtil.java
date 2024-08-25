@@ -1,6 +1,14 @@
 
 package org.drip.service.common;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeMap;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
@@ -93,86 +101,9 @@ package org.drip.service.common;
 public class GraphUtil
 {
 
-	/**
-	 * Check if the Graph is Bipartite
-	 * 
-	 * @param graph Graph as an Adjacency List
-	 * 
-	 * @return TRUE - The Graph is Bipartite
-	 */
-
-	public static final boolean IsGraphBipartite (
-		final int[][] graph)
+	private static final HashMap<String, Character> CharacterCodeMap()
 	{
-		java.util.Map<java.lang.Integer, java.util.Set<java.lang.Integer>> vertexEdgesMap =
-			new java.util.HashMap<java.lang.Integer, java.util.Set<java.lang.Integer>>();
-
-		for (int[] edge : graph)
-		{
-			if (vertexEdgesMap.containsKey(edge[0]))
-			{
-				vertexEdgesMap.get(edge[0]).add(edge[1]);
-			}
-			else
-			{
-				java.util.Set<java.lang.Integer> neighborSet = new java.util.HashSet<java.lang.Integer>();
-
-				neighborSet.add(edge[1]);
-
-				vertexEdgesMap.put (edge[0], neighborSet);
-			}
-
-			if (vertexEdgesMap.containsKey(edge[1]))
-			{
-				vertexEdgesMap.get(edge[1]).add(edge[0]);
-			}
-			else
-			{
-				java.util.Set<java.lang.Integer> neighborSet = new java.util.HashSet<java.lang.Integer>();
-
-				neighborSet.add(edge[0]);
-
-				vertexEdgesMap.put (edge[1], neighborSet);
-			}
-		}
-
-		java.util.List<java.util.Set<java.lang.Integer>> vertexSetCluster =
-			new java.util.ArrayList<java.util.Set<java.lang.Integer>>();
-
-		for (java.util.Map.Entry<java.lang.Integer, java.util.Set<java.lang.Integer>> vertexEdgesEntry :
-			vertexEdgesMap.entrySet())
-		{
-			java.util.Set<java.lang.Integer> neighborSet = vertexEdgesEntry.getValue();
-
-			boolean vertexSetFound = false;
-
-			for (java.util.Set<java.lang.Integer> vertexSet : vertexSetCluster)
-			{
-				for (int neighborVertex : neighborSet)
-				{
-					if (vertexSet.contains(neighborVertex))
-					{
-						vertexSet.addAll(neighborSet);
-
-						vertexSetFound = true;
-						break;
-					}
-				}
-			}
-
-			if (!vertexSetFound)
-			{
-				vertexSetCluster.add(neighborSet);
-			}
-		}
-
-		return 2 == vertexSetCluster.size() || graph.length <= vertexSetCluster.size();
-	}
-
-	private static final java.util.HashMap<java.lang.String, java.lang.Character> CharacterCodeMap()
-	{
-		java.util.HashMap<java.lang.String, java.lang.Character> characterCodeMap = new
-			java.util.HashMap<java.lang.String, java.lang.Character>();
+		HashMap<String, Character> characterCodeMap = new HashMap<String, Character>();
 
 		characterCodeMap.put ("1", 'A');
 
@@ -230,6 +161,69 @@ public class GraphUtil
 	}
 
 	/**
+	 * Check if the Graph is Bipartite
+	 * 
+	 * @param graph Graph as an Adjacency List
+	 * 
+	 * @return TRUE - The Graph is Bipartite
+	 */
+
+	public static final boolean IsGraphBipartite (
+		final int[][] graph)
+	{
+		Map<Integer, Set<Integer>> vertexEdgesMap = new HashMap<Integer, Set<Integer>>();
+
+		for (int[] edge : graph) {
+			if (vertexEdgesMap.containsKey (edge[0])) {
+				vertexEdgesMap.get (edge[0]).add (edge[1]);
+			} else {
+				Set<Integer> neighborSet = new HashSet<Integer>();
+
+				neighborSet.add (edge[1]);
+
+				vertexEdgesMap.put (edge[0], neighborSet);
+			}
+
+			if (vertexEdgesMap.containsKey (edge[1])) {
+				vertexEdgesMap.get (edge[1]).add (edge[0]);
+			} else {
+				Set<Integer> neighborSet = new HashSet<Integer>();
+
+				neighborSet.add (edge[0]);
+
+				vertexEdgesMap.put (edge[1], neighborSet);
+			}
+		}
+
+		List<Set<Integer>> vertexSetCluster = new ArrayList<Set<Integer>>();
+
+		for (Map.Entry<Integer, Set<Integer>> vertexEdgesEntry : vertexEdgesMap.entrySet()) {
+			Set<Integer> vertexNeighborSet = vertexEdgesEntry.getValue();
+
+			boolean vertexSetFound = false;
+
+			for (Set<Integer> vertexSet : vertexSetCluster) {
+				for (int neighborVertex : vertexNeighborSet) {
+					if (vertexSet.contains (neighborVertex)) {
+						vertexSet.addAll (vertexNeighborSet);
+
+						vertexSetFound = true;
+						break;
+					}
+				}
+			}
+
+			if (!vertexSetFound) {
+				vertexSetCluster.add (vertexNeighborSet);
+			}
+		}
+
+		int vertexSetClusterSize = vertexSetCluster.size();
+
+		return 2 == vertexSetClusterSize || graph.length <= vertexSetClusterSize;
+	}
+
+	/**
 	 * Decode all possible Combinations of the Number
 	 * 
 	 * @param number The Input Number
@@ -237,27 +231,27 @@ public class GraphUtil
 	 * @return All possible Combinations of the Number
 	 */
 
-	public static final java.util.Set<java.lang.String> DecodeCombinations (
-		final java.lang.String number)
+	public static final Set<String> DecodeCombinations (
+		final String number)
 	{
-		java.util.HashMap<java.lang.String, java.lang.Character> characterCodeMap = CharacterCodeMap();
+		HashMap<String, Character> characterCodeMap = CharacterCodeMap();
 
-		java.util.List<java.lang.String> combinationList = new java.util.ArrayList<java.lang.String>();
+		List<String> combinationList = new ArrayList<String>();
 
-		java.util.Set<java.lang.String> combinationSet = new java.util.HashSet<java.lang.String>();
+		Set<String> combinationSet = new HashSet<String>();
 
-		java.util.List<java.lang.Integer> indexList = new java.util.ArrayList<java.lang.Integer>();
-
-		indexList.add (0);
+		List<Integer> indexList = new ArrayList<Integer>();
 
 		combinationList.add ("");
+
+		indexList.add (0);
 
 		while (!indexList.isEmpty()) {
 			int queueTailIndex = indexList.size() - 1;
 
 			int index = indexList.remove (queueTailIndex);
 
-			java.lang.String combination = combinationList.remove (queueTailIndex);
+			String combination = combinationList.remove (queueTailIndex);
 
 			if (index >= number.length()) {
 				combinationSet.add (combination);
@@ -265,7 +259,7 @@ public class GraphUtil
 				continue;
 			}
 
-			java.lang.String singleDigit = number.substring (index, index + 1);
+			String singleDigit = number.substring (index, index + 1);
 
 			if (characterCodeMap.containsKey (singleDigit)) {
 				combinationList.add (combination + characterCodeMap.get (singleDigit));
@@ -273,9 +267,11 @@ public class GraphUtil
 				indexList.add (index + 1);
 			}
 
-			if (index == number.length() - 1) continue;
+			if (index == number.length() - 1) {
+				continue;
+			}
 
-			java.lang.String doubleDigit = number.substring (index, index + 2);
+			String doubleDigit = number.substring (index, index + 2);
 
 			if (characterCodeMap.containsKey (doubleDigit)) {
 				combinationList.add (combination + characterCodeMap.get (doubleDigit));
@@ -295,15 +291,14 @@ public class GraphUtil
 	 * @return The Connected Components
 	 */
 
-	public static final java.util.ArrayList<java.util.HashSet<String>> LargestGroup (
-		java.util.List<java.util.List<String>> itemListSequence)
+	public static final ArrayList<HashSet<String>> LargestGroup (
+		List<List<String>> itemListSequence)
 	{
-		java.util.ArrayList<java.util.HashSet<String>> componentList = new
-			java.util.ArrayList<java.util.HashSet<String>>();
+		ArrayList<HashSet<String>> componentList = new ArrayList<HashSet<String>>();
 
-		for (java.util.List<String> itemList : itemListSequence) {
+		for (List<String> itemList : itemListSequence) {
 			if (componentList.isEmpty()) {
-				java.util.HashSet<String> itemSet = new java.util.HashSet<String>();
+				HashSet<String> itemSet = new HashSet<String>();
 
 				itemSet.addAll (itemList);
 
@@ -312,30 +307,34 @@ public class GraphUtil
 				continue;
 			}
 
-			java.util.ArrayList<Integer> mergeList = new java.util.ArrayList<Integer>();
+			ArrayList<Integer> mergeList = new ArrayList<Integer>();
 
 			for (String item : itemList) {
 				for (int componentIndex = 0; componentIndex < componentList.size(); ++componentIndex) {
-					if (componentList.get (componentIndex).contains (item)) mergeList.add (componentIndex);
+					if (componentList.get (componentIndex).contains (item)) {
+						mergeList.add (componentIndex);
+					}
 				}
 			}
 
 			if (mergeList.isEmpty()) {
-				java.util.HashSet<String> itemSet = new java.util.HashSet<String>();
+				HashSet<String> itemSet = new HashSet<String>();
 
 				itemSet.addAll (itemList);
 
 				componentList.add (itemSet);
 			} else {
-				java.util.HashSet<String> component = componentList.get (mergeList.get (0));
+				HashSet<String> component = componentList.get (mergeList.get (0));
 
-				for (int mergeListIndex = 1; mergeListIndex < mergeList.size(); ++mergeListIndex)
+				for (int mergeListIndex = 1; mergeListIndex < mergeList.size(); ++mergeListIndex) {
 					component.addAll (componentList.get (mergeListIndex));
+				}
 
 				component.addAll (itemList);
 
-				for (int mergeListIndex = mergeList.size() - 1; mergeListIndex > 1 ; --mergeListIndex)
+				for (int mergeListIndex = mergeList.size() - 1; mergeListIndex > 1 ; --mergeListIndex) {
 					componentList.remove (mergeListIndex);
+				}
 			}
 		}
 
@@ -351,77 +350,80 @@ public class GraphUtil
 	 * @return List of Critical Nodes
 	 */
 
-	public static final java.util.ArrayList<Integer> CriticalNodes (
+	public static final ArrayList<Integer> CriticalNodes (
 		final int[][] edgeArray)
 	{
-		java.util.HashMap<Integer, java.util.HashSet<Integer>> neighborSetMap = new
-			java.util.HashMap<Integer, java.util.HashSet<Integer>>();
+		HashMap<Integer, HashSet<Integer>> vertexNeighborSetMap = new HashMap<Integer, HashSet<Integer>>();
 
 		for (int[] edge : edgeArray) {
-			if (neighborSetMap.containsKey (edge[0]))
-				neighborSetMap.get (edge[0]).add (edge[1]);
-			else {
-				java.util.HashSet<Integer> neighborSet = new java.util.HashSet<Integer>();
+			if (vertexNeighborSetMap.containsKey (edge[0])) {
+				vertexNeighborSetMap.get (edge[0]).add (edge[1]);
+			} else {
+				HashSet<Integer> neighborSet = new HashSet<Integer>();
 
 				neighborSet.add (edge[1]);
 
-				neighborSetMap.put (edge[0], neighborSet);
+				vertexNeighborSetMap.put (edge[0], neighborSet);
 			}
 
-			if (neighborSetMap.containsKey (edge[1]))
-				neighborSetMap.get (edge[1]).add (edge[0]);
-			else {
-				java.util.HashSet<Integer> neighborSet = new java.util.HashSet<Integer>();
+			if (vertexNeighborSetMap.containsKey (edge[1])) {
+				vertexNeighborSetMap.get (edge[1]).add (edge[0]);
+			} else {
+				HashSet<Integer> neighborSet = new HashSet<Integer>();
 
 				neighborSet.add (edge[0]);
 
-				neighborSetMap.put (edge[1], neighborSet);
+				vertexNeighborSetMap.put (edge[1], neighborSet);
 			}
 		}
 
-		java.util.HashSet<Integer> intermediateNodeSet = new java.util.HashSet<Integer>();
+		HashSet<Integer> intermediateVertexSet = new HashSet<Integer>();
 
-		for (int nodeID : neighborSetMap.keySet()) {
-			if (1 != neighborSetMap.get (nodeID).size()) intermediateNodeSet.add (nodeID);
+		for (int vertex : vertexNeighborSetMap.keySet()) {
+			if (1 != vertexNeighborSetMap.get (vertex).size()) intermediateVertexSet.add (vertex);
 		}
 
-		java.util.ArrayList<Integer> criticalNodeList = new java.util.ArrayList<Integer>();
+		ArrayList<Integer> criticalVertexList = new ArrayList<Integer>();
 
-		for (int intermediateNodeID : intermediateNodeSet) {
-			java.util.HashMap<Integer, java.util.HashSet<Integer>> modifiedNeighborSetMap = new
-				java.util.HashMap<Integer, java.util.HashSet<Integer>>();
+		for (int intermediateVertex : intermediateVertexSet) {
+			HashMap<Integer, HashSet<Integer>> modifiedVertexNeighborSetMap =
+				new HashMap<Integer, HashSet<Integer>>();
 
 			int startingVertex = -1;
 
 			for (int[] edge : edgeArray) {
-				if (edge[0] == intermediateNodeID || edge[1] == intermediateNodeID) continue;
+				if (edge[0] == intermediateVertex || edge[1] == intermediateVertex) {
+					continue;
+				}
 
-				if (-1 == startingVertex) startingVertex = edge[0];
+				if (-1 == startingVertex) {
+					startingVertex = edge[0];
+				}
 
-				if (modifiedNeighborSetMap.containsKey (edge[0]))
-					modifiedNeighborSetMap.get (edge[0]).add (edge[1]);
-				else {
-					java.util.HashSet<Integer> modifiedNeighborSet = new java.util.HashSet<Integer>();
+				if (modifiedVertexNeighborSetMap.containsKey (edge[0])) {
+					modifiedVertexNeighborSetMap.get (edge[0]).add (edge[1]);
+				} else {
+					HashSet<Integer> modifiedNeighborSet = new HashSet<Integer>();
 
 					modifiedNeighborSet.add (edge[1]);
 
-					modifiedNeighborSetMap.put (edge[0], modifiedNeighborSet);
+					modifiedVertexNeighborSetMap.put (edge[0], modifiedNeighborSet);
 				}
 
-				if (modifiedNeighborSetMap.containsKey (edge[1]))
-					modifiedNeighborSetMap.get (edge[1]).add (edge[0]);
-				else {
-					java.util.HashSet<Integer> modifiedNeighborSet = new java.util.HashSet<Integer>();
+				if (modifiedVertexNeighborSetMap.containsKey (edge[1])) {
+					modifiedVertexNeighborSetMap.get (edge[1]).add (edge[0]);
+				} else {
+					HashSet<Integer> modifiedNeighborSet = new HashSet<Integer>();
 
 					modifiedNeighborSet.add (edge[0]);
 
-					modifiedNeighborSetMap.put (edge[1], modifiedNeighborSet);
+					modifiedVertexNeighborSetMap.put (edge[1], modifiedNeighborSet);
 				}
 			}
 
-			java.util.HashSet<Integer> visitedVertexSet = new java.util.HashSet<Integer>();
+			ArrayList<Integer> bfsVertexStack = new ArrayList<Integer>();
 
-			java.util.ArrayList<Integer> bfsVertexStack = new java.util.ArrayList<Integer>();
+			HashSet<Integer> visitedVertexSet = new HashSet<Integer>();
 
 			bfsVertexStack.add (startingVertex);
 
@@ -430,28 +432,30 @@ public class GraphUtil
 
 				visitedVertexSet.add (vertexID);
 
-				java.util.HashSet<Integer> modifiedNeighborSet = modifiedNeighborSetMap.get (vertexID);
+				HashSet<Integer> modifiedNeighborSet = modifiedVertexNeighborSetMap.get (vertexID);
 
-				if (modifiedNeighborSet.isEmpty()) continue;
+				if (modifiedNeighborSet.isEmpty()) {
+					continue;
+				}
 
-				for (int modifiedNeighborID : modifiedNeighborSet) {
-					if (!visitedVertexSet.contains (modifiedNeighborID))
-						bfsVertexStack.add (modifiedNeighborID);
+				for (int modifiedNeighbor : modifiedNeighborSet) {
+					if (!visitedVertexSet.contains (modifiedNeighbor))
+						bfsVertexStack.add (modifiedNeighbor);
 				}
 			}
 
-			if (visitedVertexSet.size() != neighborSetMap.size() - 1)
-				criticalNodeList.add (intermediateNodeID);
+			if (visitedVertexSet.size() != vertexNeighborSetMap.size() - 1)
+				criticalVertexList.add (intermediateVertex);
 		}
 
-		return criticalNodeList;
+		return criticalVertexList;
 	}
 
 	/**
 	 * There are N cities numbered from 1 to N.
 	 * 
 	 * You are given connections, where each connections[i] = [city1, city2, cost] represents the cost to
-	 *  connect city1 and city2together. (A connection is bidirectional: connecting city1 and city2 is the
+	 *  connect city1 and city2 together. (A connection is bidirectional: connecting city1 and city2 is the
 	 *   same as connecting city2 and city1.)
 	 * 
 	 * Return the minimum cost so that for every pair of cities, there exists a path of connections (possibly
@@ -466,17 +470,19 @@ public class GraphUtil
 	public static final int MSPCost (
 		final int[][] weightedEdgeArray)
 	{
-		java.util.HashMap<String, Integer> edgeWeightMap = new java.util.HashMap<String, Integer>();
+		HashMap<String, Integer> edgeWeightMap = new HashMap<String, Integer>();
 
-		java.util.HashMap<Integer, java.util.TreeMap<Integer, java.util.HashSet<Integer>>> weightedGraph =
-			new java.util.HashMap<Integer, java.util.TreeMap<Integer, java.util.HashSet<Integer>>>();
+		HashMap<Integer, TreeMap<Integer, HashSet<Integer>>> vertexNeighborSetWeightMap =
+			new HashMap<Integer, TreeMap<Integer, HashSet<Integer>>>();
 
 		for (int[] weightedEdge : weightedEdgeArray) {
-			weightedGraph.put (weightedEdge[0], new java.util.TreeMap<Integer,
-				java.util.HashSet<Integer>>());
+			if (!vertexNeighborSetWeightMap.containsKey (weightedEdge[0])) {
+				vertexNeighborSetWeightMap.put (weightedEdge[0], new TreeMap<Integer, HashSet<Integer>>());
+			}
 
-			weightedGraph.put (weightedEdge[1], new java.util.TreeMap<Integer,
-				java.util.HashSet<Integer>>());
+			if (!vertexNeighborSetWeightMap.containsKey (weightedEdge[1])) {
+				vertexNeighborSetWeightMap.put (weightedEdge[1], new TreeMap<Integer, HashSet<Integer>>());
+			}
 
 			edgeWeightMap.put (weightedEdge[0] + "_" + weightedEdge[1], weightedEdge[2]);
 
@@ -484,25 +490,25 @@ public class GraphUtil
 		}
 
 		for (int[] weightedEdge : weightedEdgeArray) {
-			java.util.TreeMap<Integer, java.util.HashSet<Integer>> weightSortedNeighborSet =
-				weightedGraph.get (weightedEdge[0]);
+			TreeMap<Integer, HashSet<Integer>> weightSortedNeighborSet =
+				vertexNeighborSetWeightMap.get (weightedEdge[0]);
 
-			if (weightSortedNeighborSet.containsKey (weightedEdge[2]))
+			if (weightSortedNeighborSet.containsKey (weightedEdge[2])) {
 				weightSortedNeighborSet.get (weightedEdge[2]).add (weightedEdge[1]);
-			else {
-				java.util.HashSet<Integer> neighborSet = new java.util.HashSet<Integer>();
+			} else {
+				HashSet<Integer> neighborSet = new HashSet<Integer>();
 
 				neighborSet.add (weightedEdge[1]);
 
 				weightSortedNeighborSet.put (weightedEdge[2], neighborSet);
 			}
 
-			weightSortedNeighborSet = weightedGraph.get (weightedEdge[1]);
+			weightSortedNeighborSet = vertexNeighborSetWeightMap.get (weightedEdge[1]);
 
-			if (weightSortedNeighborSet.containsKey (weightedEdge[2]))
+			if (weightSortedNeighborSet.containsKey (weightedEdge[2])) {
 				weightSortedNeighborSet.get (weightedEdge[2]).add (weightedEdge[0]);
-			else {
-				java.util.HashSet<Integer> neighborSet = new java.util.HashSet<Integer>();
+			} else {
+				HashSet<Integer> neighborSet = new HashSet<Integer>();
 
 				neighborSet.add (weightedEdge[0]);
 
@@ -513,74 +519,79 @@ public class GraphUtil
 		int cost = 0;
 		int startingVertex = weightedEdgeArray[0][0];
 
-		java.util.TreeMap<Integer, java.util.ArrayList<String>> edgePriorityQueue = new
-			java.util.TreeMap<Integer, java.util.ArrayList<String>>();
+		TreeMap<Integer, ArrayList<String>> edgeWeightPriorityQueue =
+			new TreeMap<Integer, ArrayList<String>>();
 
-		java.util.TreeMap<Integer, java.util.HashSet<Integer>> weightSortedNeighborSet =
-			weightedGraph.get (startingVertex);
+		TreeMap<Integer, HashSet<Integer>> weightSortedNeighborSetMap =
+			vertexNeighborSetWeightMap.get (startingVertex);
 
-		if (weightSortedNeighborSet.isEmpty()) return -1;
+		if (weightSortedNeighborSetMap.isEmpty()) {
+			return -1;
+		}
 
-		for (int edgeWeight : weightSortedNeighborSet.keySet()) {
-			for (int neighborVertex : weightSortedNeighborSet.get (edgeWeight)) {
-				if (edgePriorityQueue.containsKey (edgeWeight))
-					edgePriorityQueue.get (edgeWeight).add (startingVertex + "_" + neighborVertex);
-				else {
-					java.util.ArrayList<String> edgeList = new java.util.ArrayList<String>();
+		for (int edgeWeight : weightSortedNeighborSetMap.keySet()) {
+			for (int neighborVertex : weightSortedNeighborSetMap.get (edgeWeight)) {
+				if (edgeWeightPriorityQueue.containsKey (edgeWeight)) {
+					edgeWeightPriorityQueue.get (edgeWeight).add (startingVertex + "_" + neighborVertex);
+				} else {
+					ArrayList<String> edgeList = new ArrayList<String>();
 
 					edgeList.add (startingVertex + "_" + neighborVertex);
 
-					edgePriorityQueue.put (edgeWeight, edgeList);
+					edgeWeightPriorityQueue.put (edgeWeight, edgeList);
 				}
 			}
 		}
 
-		java.util.ArrayList<String> spanningEdgeList = new java.util.ArrayList<String>();
+		ArrayList<String> spanningEdgeList = new ArrayList<String>();
 
-		java.util.HashSet<Integer> visitedVertexSet = new java.util.HashSet<Integer>();
+		HashSet<Integer> visitedVertexSet = new HashSet<Integer>();
 
 		visitedVertexSet.add (startingVertex);
 
-		while (!edgePriorityQueue.isEmpty()) {
-			int shortestDistance = edgePriorityQueue.firstKey();
+		while (!edgeWeightPriorityQueue.isEmpty()) {
+			int shortestDistance = edgeWeightPriorityQueue.firstKey();
 
-			java.util.ArrayList<String> edgeList = edgePriorityQueue.get (shortestDistance);
+			ArrayList<String> edgeList = edgeWeightPriorityQueue.get (shortestDistance);
 
 			String nextEdge = edgeList.remove (0);
 
-			if (edgeList.isEmpty()) edgePriorityQueue.remove (shortestDistance);
+			if (edgeList.isEmpty()) {
+				edgeWeightPriorityQueue.remove (shortestDistance);
+			}
 
 			int nextVertex = Integer.parseInt (nextEdge.split ("_")[1]);
 
 			if (!visitedVertexSet.contains (nextVertex)) {
-				visitedVertexSet.add (nextVertex);
-
 				spanningEdgeList.add (nextEdge);
 
-				weightSortedNeighborSet = weightedGraph.get (nextVertex);
+				visitedVertexSet.add (nextVertex);
 
-				if (weightSortedNeighborSet.isEmpty()) continue;
+				if ((weightSortedNeighborSetMap = vertexNeighborSetWeightMap.get (nextVertex)).isEmpty()) {
+					continue;
+				}
 
-				for (int edgeWeight : weightSortedNeighborSet.keySet()) {
-					for (int neighborVertex : weightSortedNeighborSet.get (edgeWeight)) {
-						if (edgePriorityQueue.containsKey (edgeWeight))
-							edgePriorityQueue.get (edgeWeight).add (nextVertex + "_" + neighborVertex);
-						else {
-							edgeList = new java.util.ArrayList<String>();
+				for (int edgeWeight : weightSortedNeighborSetMap.keySet()) {
+					for (int neighborVertex : weightSortedNeighborSetMap.get (edgeWeight)) {
+						if (edgeWeightPriorityQueue.containsKey (edgeWeight)) {
+							edgeWeightPriorityQueue.get (edgeWeight).add (nextVertex + "_" + neighborVertex);
+						} else {
+							(edgeList = new ArrayList<String>()).add (nextVertex + "_" + neighborVertex);
 
-							edgeList.add (nextVertex + "_" + neighborVertex);
-
-							edgePriorityQueue.put (edgeWeight, edgeList);
+							edgeWeightPriorityQueue.put (edgeWeight, edgeList);
 						}
 					}
 				}
 			}
 		}
 
-		if (visitedVertexSet.size() < weightedGraph.size()) return -1;
+		if (visitedVertexSet.size() < vertexNeighborSetWeightMap.size()) {
+			return -1;
+		}
 
-		for (String edge : spanningEdgeList)
+		for (String edge : spanningEdgeList) {
 			cost = cost + edgeWeightMap.get (edge);
+		}
 
 		return cost;
 	}

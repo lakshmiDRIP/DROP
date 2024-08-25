@@ -1,6 +1,13 @@
 
 package org.drip.service.common;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
@@ -96,15 +103,14 @@ public class PhoneLetterCombinationGenerator
 		new java.util.HashMap<java.lang.Character, char[]>();
 
 	/**
-	 * Generate the Standard PhoneLetterCombinationGenerator
+	 * Generate the Standard <i>PhoneLetterCombinationGenerator</i>
 	 * 
-	 * @return The Standard PhoneLetterCombinationGenerator
+	 * @return The Standard <i>PhoneLetterCombinationGenerator</i>
 	 */
 
 	public static final PhoneLetterCombinationGenerator Standard()
 	{
-		java.util.Map<java.lang.Character, char[]> digitCharacterMap = new
-			java.util.HashMap<java.lang.Character, char[]>();
+		Map<Character, char[]> digitCharacterMap = new HashMap<Character, char[]>();
 
 		digitCharacterMap.put ('1', new char[] {'A', 'B', 'C'});
 
@@ -128,7 +134,7 @@ public class PhoneLetterCombinationGenerator
 
 		try {
 			return new PhoneLetterCombinationGenerator (digitCharacterMap);
-		} catch (java.lang.Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -140,15 +146,16 @@ public class PhoneLetterCombinationGenerator
 	 * 
 	 * @param digitCharacterMap The Digit To Character Array Map
 	 * 
-	 * @throws java.lang.Exception Thrown if the Input is Invalid
+	 * @throws Exception Thrown if the Input is Invalid
 	 */
 
 	public PhoneLetterCombinationGenerator (
-		final java.util.Map<java.lang.Character, char[]> digitCharacterMap)
-		throws java.lang.Exception
+		final Map<Character, char[]> digitCharacterMap)
+		throws Exception
 	{
-		if (null == (_digitCharacterMap = digitCharacterMap) || 0 == _digitCharacterMap.size())
-			throw new java.lang.Exception ("PhoneLetterCombinationGenerator Constructor => Invalid Input");
+		if (null == (_digitCharacterMap = digitCharacterMap) || 0 == _digitCharacterMap.size()) {
+			throw new Exception ("PhoneLetterCombinationGenerator Constructor => Invalid Input");
+		}
 	}
 
 	/**
@@ -157,7 +164,7 @@ public class PhoneLetterCombinationGenerator
 	 * @return Digit to Character Array Map
 	 */
 
-	public java.util.Map<java.lang.Character, char[]> digitCharacterMap()
+	public Map<Character, char[]> digitCharacterMap()
 	{
 		return _digitCharacterMap;
 	}
@@ -171,21 +178,25 @@ public class PhoneLetterCombinationGenerator
 	 * @return Set of Candidate Characters
 	 */
 
-	public java.util.Set<java.lang.String> candidateCharacterSet (
+	public Set<String> candidateCharacterSet (
 		final char digit,
 		final int count)
 	{
-		if (!_digitCharacterMap.containsKey (digit)) return null;
+		if (!_digitCharacterMap.containsKey (digit)) {
+			return null;
+		}
 
 		char[] charArray = _digitCharacterMap.get (digit);
 
-		if (count > charArray.length) return null;
+		if (count > charArray.length) {
+			return null;
+		}
 
-		java.util.Set<java.lang.String> candidateCharacterSet = new java.util.HashSet<java.lang.String>();
+		Set<String> candidateCharacterSet = new HashSet<String>();
 
-		if (1 == count)
+		if (1 == count) {
 			candidateCharacterSet.add ("" + charArray[0]);
-		else if (2 == count) {
+		} else if (2 == count) {
 			candidateCharacterSet.add (charArray[0] + "" + charArray[0]);
 
 			candidateCharacterSet.add ("" + charArray[1]);
@@ -210,17 +221,16 @@ public class PhoneLetterCombinationGenerator
 	 * @return The Candidate Sequence Sets
 	 */
 
-	public java.util.Set<java.lang.String> sequenceSet (
-		final java.lang.String number)
+	public Set<String> sequenceSet (
+		final String number)
 	{
-		java.util.Set<java.lang.String> sequenceSet = new java.util.HashSet<java.lang.String>();
+		Set<String> sequenceSet = new HashSet<String>();
 
 		char[] digitArray = number.toCharArray();
 
-		java.util.List<java.lang.Integer> numberIndexQueue = new java.util.ArrayList<java.lang.Integer>();
+		List<Integer> numberIndexQueue = new ArrayList<Integer>();
 
-		java.util.List<java.lang.String> numberCombinationQueue = new
-			java.util.ArrayList<java.lang.String>();
+		List<String> numberCombinationQueue = new ArrayList<String>();
 
 		numberIndexQueue.add (0);
 
@@ -231,7 +241,7 @@ public class PhoneLetterCombinationGenerator
 
 			int leftIndex = numberIndexQueue.remove (tailIndex);
 
-			java.lang.String combination = numberCombinationQueue.remove (tailIndex);
+			String combination = numberCombinationQueue.remove (tailIndex);
 
 			if (leftIndex >= digitArray.length) {
 				sequenceSet.add (combination);
@@ -241,11 +251,11 @@ public class PhoneLetterCombinationGenerator
 
 			int rightIndex = leftIndex;
 
-			while (rightIndex < digitArray.length && digitArray[leftIndex] == digitArray[rightIndex])
+			while (rightIndex < digitArray.length && digitArray[leftIndex] == digitArray[rightIndex]) {
 				++rightIndex;
+			}
 
-			for (java.lang.String candidate : candidateCharacterSet (digitArray[leftIndex], rightIndex -
-				leftIndex)) {
+			for (String candidate : candidateCharacterSet (digitArray[leftIndex], rightIndex - leftIndex)) {
 				numberIndexQueue.add (rightIndex);
 
 				numberCombinationQueue.add (combination + candidate);
@@ -261,7 +271,8 @@ public class PhoneLetterCombinationGenerator
 	 * @param args Input Arguments
 	 */
 
-	public static final void main (String[] args)
+	public static final void main (
+		final String[] argumentArray)
 	{
 		PhoneLetterCombinationGenerator phoneLetterCombinationGenerator =
 			PhoneLetterCombinationGenerator.Standard();
