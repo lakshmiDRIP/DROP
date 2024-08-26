@@ -2,7 +2,7 @@
 package org.drip.sample.shortestpath;
 
 import org.drip.graph.bellmanford.EdgeRelaxationPathGenerator;
-import org.drip.graph.core.DirectedGraph;
+import org.drip.graph.core.Directed;
 import org.drip.graph.core.Edge;
 import org.drip.graph.core.Path;
 import org.drip.service.common.FormatUtil;
@@ -153,7 +153,7 @@ public class BellmanFordSinglePair
 			"Jaipur    "
 		};
 
-		DirectedGraph graph = new DirectedGraph();
+		Directed<Double> graph = new Directed<Double>();
 
 		graph.addBidirectionalEdge (
 			new Edge (

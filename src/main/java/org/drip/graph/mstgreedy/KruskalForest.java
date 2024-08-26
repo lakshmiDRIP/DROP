@@ -111,8 +111,8 @@ package org.drip.graph.mstgreedy;
  * @author Lakshmi Krishnamurthy
  */
 
-public class KruskalForest
-	extends org.drip.graph.core.Forest
+public class KruskalForest<V>
+	extends org.drip.graph.core.Forest<V>
 {
 
 	/**

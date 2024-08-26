@@ -115,7 +115,7 @@ package org.drip.graph.search;
 
 public class DepthFirst
 {
-	private org.drip.graph.core.Network _network = null;
+	private org.drip.graph.core.Network<?> _network = null;
 
 	/**
 	 * DepthFirst Constructor
@@ -126,7 +126,7 @@ public class DepthFirst
 	 */
 
 	public DepthFirst (
-		final org.drip.graph.core.Network network)
+		final org.drip.graph.core.Network<?> network)
 		throws java.lang.Exception
 	{
 		if (null == (_network = network))
@@ -143,7 +143,7 @@ public class DepthFirst
 	 * @return The Graph Network
 	 */
 
-	public org.drip.graph.core.Network network()
+	public org.drip.graph.core.Network<?> network()
 	{
 		return _network;
 	}
@@ -173,7 +173,7 @@ public class DepthFirst
 			vertexName
 		);
 
-		org.drip.graph.core.Vertex vertex = _network.vertexMap().get (
+		org.drip.graph.core.Vertex<?> vertex = _network.vertexMap().get (
 			vertexName
 		);
 
@@ -237,7 +237,7 @@ public class DepthFirst
 			vertexName
 		);
 
-		java.util.Map<java.lang.String, org.drip.graph.core.Vertex> vertexMap = _network.vertexMap();
+		java.util.Map<java.lang.String, org.drip.graph.core.Vertex<?>> vertexMap = _network.vertexMap();
 
 		while (!processVertexList.isEmpty())
 		{
@@ -258,7 +258,7 @@ public class DepthFirst
 				return false;
 			}
 
-			org.drip.graph.core.Vertex currentVertex = vertexMap.get (
+			org.drip.graph.core.Vertex<?> currentVertex = vertexMap.get (
 				currentVertexName
 			);
 

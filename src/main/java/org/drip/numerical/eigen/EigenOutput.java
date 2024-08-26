@@ -163,6 +163,17 @@ public class EigenOutput
 	}
 
 	/**
+	 * Retrieve the Eigen-Dimension
+	 * 
+	 * @return The Eigen-Dimension
+	 */
+
+	public int dimension()
+	{
+		return _eigenValueArray.length;
+	}
+
+	/**
 	 * Retrieve the Eigenvalue Multiplicity Map
 	 * 
 	 * @return Eigenvalue Multiplicity Map

@@ -76,7 +76,7 @@ package org.drip.graph.core;
  */
 
 /**
- * <i>DirectedGraphType</i> holds the Pre-specified Directed Graph Types. The References are:
+ * <i>DirectedType</i> holds the Pre-specified Directed Graph Types. The References are:
  * 
  * <br><br>
  *  <ul>
@@ -110,7 +110,7 @@ package org.drip.graph.core;
  * @author Lakshmi Krishnamurthy
  */
 
-public class DirectedGraphType
+public class DirectedType
 {
 
 	/**
@@ -148,5 +148,4 @@ public class DirectedGraphType
 	 */
 
 	public static final int N_DIMENSIONAL_HYPERCUBE = 16;
-
 }

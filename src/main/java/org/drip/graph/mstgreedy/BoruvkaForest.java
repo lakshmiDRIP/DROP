@@ -111,17 +111,17 @@ package org.drip.graph.mstgreedy;
  * @author Lakshmi Krishnamurthy
  */
 
-public class BoruvkaForest
-	extends org.drip.graph.mstgreedy.KruskalForest
+public class BoruvkaForest<V>
+	extends org.drip.graph.mstgreedy.KruskalForest<V>
 {
 	private java.util.Map<java.lang.String, java.lang.Double> _treeNameDistanceMap = null;
-	private org.drip.graph.heap.PriorityQueue<java.lang.Double, org.drip.graph.core.Tree>
+	private org.drip.graph.heap.PriorityQueue<java.lang.Double, org.drip.graph.core.Tree<?>>
 		_orderedTreePriorityQueue = null;
 
 	private boolean updateOrderedTreeMap (
 		final java.lang.String treeName,
-		final org.drip.graph.core.Tree tree,
-		final org.drip.graph.core.DirectedGraph graph,
+		final org.drip.graph.core.Tree<?> tree,
+		final org.drip.graph.core.Directed<?> graph,
 		final boolean descending)
 	{
 		org.drip.graph.heap.PriorityQueue<java.lang.Double, org.drip.graph.core.Edge> edgePriorityQueue =
@@ -151,7 +151,7 @@ public class BoruvkaForest
 	private boolean updateOrderedTreeMap (
 		final java.lang.String sourceTreeName,
 		final java.lang.String destinationTreeName,
-		final org.drip.graph.core.DirectedGraph graph,
+		final org.drip.graph.core.Directed<?> graph,
 		final boolean minHeap)
 	{
 		_orderedTreePriorityQueue.delete (
@@ -170,7 +170,7 @@ public class BoruvkaForest
 			destinationTreeName
 		);
 
-		org.drip.graph.core.Tree sourceTree = treeMap().get (
+		org.drip.graph.core.Tree<?> sourceTree = treeMap().get (
 			sourceTreeName
 		);
 
@@ -212,7 +212,7 @@ public class BoruvkaForest
 		_treeNameDistanceMap = new org.drip.analytics.support.CaseInsensitiveHashMap<java.lang.Double>();
 
 		_orderedTreePriorityQueue =
-			new org.drip.graph.heap.BinomialTreePriorityQueue<java.lang.Double, org.drip.graph.core.Tree> (
+			new org.drip.graph.heap.BinomialTreePriorityQueue<java.lang.Double, org.drip.graph.core.Tree<?>> (
 				minHeap
 			);
 	}
@@ -228,7 +228,7 @@ public class BoruvkaForest
 
 	public boolean unitVertexTree (
 		final java.lang.String vertexName,
-		final org.drip.graph.core.DirectedGraph graph)
+		final org.drip.graph.core.Directed<?> graph)
 	{
 		return super.unitVertexTree (
 			vertexName,
@@ -256,8 +256,8 @@ public class BoruvkaForest
 
 	public boolean addTree (
 		final java.lang.String treeName,
-		final org.drip.graph.core.Tree tree,
-		final org.drip.graph.core.DirectedGraph graph,
+		final org.drip.graph.core.Tree<?> tree,
+		final org.drip.graph.core.Directed<?> graph,
 		final boolean descending)
 	{
 		return super.addTree (
@@ -282,7 +282,7 @@ public class BoruvkaForest
 	 */
 
 	public boolean conditionalBoruvkaMerge (
-		final org.drip.graph.core.DirectedGraph graph,
+		final org.drip.graph.core.Directed<?> graph,
 		final boolean maximum)
 	{
 		org.drip.graph.core.Edge edge = _orderedTreePriorityQueue.extremum().item().edgePriorityQueue (

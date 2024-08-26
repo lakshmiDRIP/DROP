@@ -116,8 +116,8 @@ package org.drip.graph.mst;
  * @author Lakshmi Krishnamurthy
  */
 
-public class CompleteRandomGraph
-	extends org.drip.graph.core.DirectedGraph
+public class CompleteRandomGraph<V>
+	extends org.drip.graph.core.Directed<V>
 {
 	private org.drip.measure.crng.RandomNumberGenerator _randomNumberGenerator = null;
 
@@ -129,12 +129,12 @@ public class CompleteRandomGraph
 	 * @return Uniform Instance of the Complete Random Graph
 	 */
 
-	public static final CompleteRandomGraph Uniform (
+	public static <V> CompleteRandomGraph<?> Uniform (
 		final int vertexCount)
 	{
 		try
 		{
-			return new CompleteRandomGraph (
+			return new CompleteRandomGraph<V> (
 				vertexCount,
 				new org.drip.measure.crng.RandomNumberGenerator()
 			);

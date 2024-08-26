@@ -129,7 +129,7 @@ public class BannisterEppsteinPathGenerator
 	 */
 
 	public BannisterEppsteinPathGenerator (
-		final org.drip.graph.core.DirectedGraph graph,
+		final org.drip.graph.core.Directed<?> graph,
 		final boolean shortestPath,
 		final org.drip.graph.astar.FHeuristic fHeuristic)
 		throws java.lang.Exception
@@ -141,7 +141,7 @@ public class BannisterEppsteinPathGenerator
 		);
 	}
 
-	@Override public org.drip.graph.bellmanford.EdgePartition edgePartition()
+	@Override public org.drip.graph.bellmanford.EdgePartition<?> edgePartition()
 	{
 		return org.drip.graph.bellmanford.EdgePartition.FromGraph (
 			graph(),

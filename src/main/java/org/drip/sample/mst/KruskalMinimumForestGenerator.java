@@ -4,7 +4,7 @@ package org.drip.sample.mst;
 import java.util.Map;
 
 import org.drip.graph.core.Edge;
-import org.drip.graph.core.DirectedGraph;
+import org.drip.graph.core.Directed;
 import org.drip.graph.core.Tree;
 import org.drip.graph.mstgreedy.KruskalGenerator;
 import org.drip.service.env.EnvManager;
@@ -154,7 +154,7 @@ public class KruskalMinimumForestGenerator
 			"jaipur    "
 		};
 
-		DirectedGraph graph = new DirectedGraph();
+		Directed<Double> graph = new Directed<Double>();
 
 		graph.addBidirectionalEdge (
 			new Edge (
@@ -252,14 +252,14 @@ public class KruskalMinimumForestGenerator
 			)
 		);
 
-		KruskalGenerator kruskal = new KruskalGenerator (
+		KruskalGenerator<?> kruskal = new KruskalGenerator<Double> (
 			graph,
 			false
 		);
 
-		Map<String, Tree> minimumSpanningForest = kruskal.optimalSpanningForest().treeMap();
+		Map<String, Tree<?>> minimumSpanningForest = kruskal.optimalSpanningForest().treeMap();
 
-		for (Tree minimumSpanningTree : minimumSpanningForest.values())
+		for (Tree<?> minimumSpanningTree : minimumSpanningForest.values())
 		{
 			System.out.println (
 				"\t|-----------------------------------------------------------------------------------|"

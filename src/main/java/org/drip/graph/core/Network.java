@@ -1,6 +1,13 @@
 
 package org.drip.graph.core;
 
+import java.util.Map;
+import java.util.Set;
+
+import org.drip.analytics.support.CaseInsensitiveHashMap;
+import org.drip.graph.heap.BinomialTreePriorityQueue;
+import org.drip.graph.heap.PriorityQueue;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
@@ -111,89 +118,91 @@ package org.drip.graph.core;
  * @author Lakshmi Krishnamurthy
  */
 
-abstract public class Network
+abstract public class Network<V>
 {
-	private java.lang.String _initialVertexName = "";
+	private String _initialVertexName = "";
 
-	protected java.util.Map<java.lang.String, org.drip.graph.core.Edge> _edgeMap = null;
-	protected java.util.Map<java.lang.String, org.drip.graph.core.Vertex> _vertexMap = null;
+	protected Map<String, Edge> _edgeMap = null;
+	protected Map<String, Vertex<?>> _vertexMap = null;
 
-	protected java.lang.String addVertexEdge (
-		final org.drip.graph.core.Edge edge)
+	protected String addVertexEdge (
+		final Edge edge)
 	{
-		java.lang.String edgeKey = "";
+		String edgeKey = "";
 
-		java.lang.String sourceVertexName = edge.sourceVertexName();
+		String sourceVertexName = edge.sourceVertexName();
 
-		java.lang.String destinationVertexName = edge.destinationVertexName();
+		String destinationVertexName = edge.destinationVertexName();
 
-		if (_vertexMap.containsKey (
-			sourceVertexName
-		))
-		{
-			edgeKey = _vertexMap.get (
-				sourceVertexName
-			).addEdge (
-				edge
-			);
-		}
-		else
-		{
-			try
-			{
-				org.drip.graph.core.Vertex vertex = new org.drip.graph.core.Vertex (
-					sourceVertexName
-				);
+		if (_vertexMap.containsKey (sourceVertexName)) {
+			edgeKey = _vertexMap.get (sourceVertexName).addEdge (edge);
+		} else {
+			try {
+				Vertex<?> vertex = Vertex.Standard (sourceVertexName);
 
-				edgeKey = vertex.addEdge (
-					edge
-				);
+				edgeKey = vertex.addEdge (edge);
 
-				_vertexMap.put (
-					sourceVertexName,
-					vertex
-				);
-			}
-			catch (java.lang.Exception e)
-			{
+				_vertexMap.put (sourceVertexName, vertex);
+			} catch (Exception e) {
 				e.printStackTrace();
 
 				return null;
 			}
 		}
 
-		if (!_vertexMap.containsKey (
-			destinationVertexName
-		))
-		{
-			addVertex (
-				destinationVertexName
-			);
+		if (!_vertexMap.containsKey (destinationVertexName)) {
+			addVertex (destinationVertexName);
+		}
+
+		return edgeKey;
+	}
+
+	protected String addVertexEdge (
+		final Edge edge,
+		final Map<String, V> vertexValueMap)
+	{
+		String edgeKey = "";
+
+		String sourceVertexName = edge.sourceVertexName();
+
+		String destinationVertexName = edge.destinationVertexName();
+
+		if (_vertexMap.containsKey (sourceVertexName)) {
+			edgeKey = _vertexMap.get (sourceVertexName).addEdge (edge);
+		} else {
+			try {
+				Vertex<V> vertex = new Vertex<V> (sourceVertexName, vertexValueMap.get (sourceVertexName));
+
+				edgeKey = vertex.addEdge (edge);
+
+				_vertexMap.put (sourceVertexName, vertex);
+			} catch (Exception e) {
+				e.printStackTrace();
+
+				return null;
+			}
+		}
+
+		if (!_vertexMap.containsKey (destinationVertexName)) {
+			addVertex (destinationVertexName, vertexValueMap.get (destinationVertexName));
 		}
 
 		return edgeKey;
 	}
 
 	protected boolean removeVertexEdge (
-		final java.lang.String vertexName,
-		final java.lang.String edgeKey)
+		final String vertexName,
+		final String edgeKey)
 	{
-		return _vertexMap.containsKey (
-			vertexName
-		) ? _vertexMap.get (
-			vertexName
-		).removeEdge (
-			edgeKey
-		) : true;
+		return _vertexMap.containsKey (vertexName) ?
+			_vertexMap.get (vertexName).removeEdge (edgeKey) : true;
 	}
 
 	protected Network()
 	{
-		_edgeMap =
-			new org.drip.analytics.support.CaseInsensitiveHashMap<org.drip.graph.core.Edge>();
+		_edgeMap = new CaseInsensitiveHashMap<Edge>();
 
-		_vertexMap =
-			new org.drip.analytics.support.CaseInsensitiveHashMap<org.drip.graph.core.Vertex>();
+		_vertexMap = new CaseInsensitiveHashMap<Vertex<?>>();
 	}
 
 	/**
@@ -202,7 +211,7 @@ abstract public class Network
 	 * @return The Vertex Map
 	 */
 
-	public java.util.Map<java.lang.String, org.drip.graph.core.Vertex> vertexMap()
+	public Map<String, Vertex<?>> vertexMap()
 	{
 		return _vertexMap;
 	}
@@ -213,7 +222,7 @@ abstract public class Network
 	 * @return The Edge Map
 	 */
 
-	public java.util.Map<java.lang.String, org.drip.graph.core.Edge> edgeMap()
+	public Map<String, Edge> edgeMap()
 	{
 		return _edgeMap;
 	}
@@ -224,7 +233,7 @@ abstract public class Network
 	 * @return The Initial Vertex Name
 	 */
 
-	public java.lang.String initialVertexName()
+	public String initialVertexName()
 	{
 		return _initialVertexName;
 	}
@@ -257,7 +266,7 @@ abstract public class Network
 	 * @return The Set of Vertex Names
 	 */
 
-	public java.util.Set<java.lang.String> vertexNameSet()
+	public Set<String> vertexNameSet()
 	{
 		return _vertexMap.keySet();
 	}
@@ -271,33 +280,51 @@ abstract public class Network
 	 */
 
 	public boolean addVertex (
-		final java.lang.String vertexName)
+		final String vertexName)
 	{
-		if (null == vertexName || vertexName.isEmpty() ||
-			_vertexMap.containsKey (
-				vertexName
-			)
-		)
-		{
+		if (null == vertexName || vertexName.isEmpty() || _vertexMap.containsKey (vertexName)) {
 			return false;
 		}
 
-		if (_initialVertexName.isEmpty())
-		{
+		if (_initialVertexName.isEmpty()) {
 			_initialVertexName = vertexName;
 		}
 
-		try
-		{
-			_vertexMap.put (
-				vertexName,
-				new org.drip.graph.core.Vertex (
-					vertexName
-				)
-			);
+		try {
+			_vertexMap.put (vertexName, Vertex.Standard (vertexName));
+		} catch (Exception e) {
+			e.printStackTrace();
+
+			return false;
 		}
-		catch (java.lang.Exception e)
-		{
+
+		return true;
+	}
+
+	/**
+	 * Add a Vertex to the Network
+	 * 
+	 * @param vertexName The Vertex Name
+	 * @param vertexValue The Vertex Value
+	 * 
+	 * @return TRUE - The Vertex successfully added to the Network
+	 */
+
+	public boolean addVertex (
+		final String vertexName,
+		final V vertexValue)
+	{
+		if (null == vertexName || vertexName.isEmpty() || _vertexMap.containsKey (vertexName)) {
+			return false;
+		}
+
+		if (_initialVertexName.isEmpty()) {
+			_initialVertexName = vertexName;
+		}
+
+		try {
+			_vertexMap.put (vertexName, new Vertex<V> (vertexName, vertexValue));
+		} catch (Exception e) {
 			e.printStackTrace();
 
 			return false;
@@ -315,31 +342,55 @@ abstract public class Network
 	 */
 
 	public boolean addEdge (
-		final org.drip.graph.core.Edge edge)
+		final Edge edge)
 	{
-		if (null == edge)
-		{
+		if (null == edge) {
 			return false;
 		}
 
-		java.lang.String edgeKey = addVertexEdge (
-			edge
-		);
+		String edgeKey = addVertexEdge (edge);
 
-		if (null == edgeKey || edgeKey.isEmpty())
-		{
+		if (null == edgeKey || edgeKey.isEmpty()) {
 			return false;
 		}
 
-		if (_initialVertexName.isEmpty())
-		{
+		if (_initialVertexName.isEmpty()) {
 			_initialVertexName = edge.sourceVertexName();
 		}
 
-		_edgeMap.put (
-			edgeKey,
-			edge
-		);
+		_edgeMap.put (edgeKey, edge);
+
+		return true;
+	}
+
+	/**
+	 * Add an Edge to the Network
+	 * 
+	 * @param edge The Edge
+	 * @param vertexValueMap Vertex Value Map
+	 * 
+	 * @return TRUE - The Edge successfully added
+	 */
+
+	public boolean addEdge (
+		final Edge edge,
+		final Map<String, V> vertexValueMap)
+	{
+		if (null == edge) {
+			return false;
+		}
+
+		String edgeKey = addVertexEdge (edge, vertexValueMap);
+
+		if (null == edgeKey || edgeKey.isEmpty()) {
+			return false;
+		}
+
+		if (_initialVertexName.isEmpty()) {
+			_initialVertexName = edge.sourceVertexName();
+		}
+
+		_edgeMap.put (edgeKey, edge);
 
 		return true;
 	}
@@ -353,13 +404,25 @@ abstract public class Network
 	 */
 
 	public boolean addBidirectionalEdge (
-		final org.drip.graph.core.Edge edge)
+		final Edge edge)
 	{
-		return addEdge (
-			edge
-		) && addEdge (
-			edge.invert()
-		);
+		return addEdge (edge) && addEdge (edge.invert());
+	}
+
+	/**
+	 * Add a Bidirectional Edge to the Network
+	 * 
+	 * @param edge The Bidirectional Edge
+	 * @param vertexValueMap Vertex Value Map
+	 * 
+	 * @return TRUE - The Bidirectional Edge successfully added
+	 */
+
+	public boolean addBidirectionalEdge (
+		final Edge edge,
+		final Map<String, V> vertexValueMap)
+	{
+		return addEdge (edge, vertexValueMap) && addEdge (edge.invert(), vertexValueMap);
 	}
 
 	/**
@@ -371,30 +434,15 @@ abstract public class Network
 	 */
 
 	public boolean removeEdge (
-		final java.lang.String edgeKey)
+		final String edgeKey)
 	{
-		if (null == edgeKey ||
-			!_edgeMap.containsKey (
-				edgeKey
-			)
-		)
+		if (null == edgeKey || !_edgeMap.containsKey (edgeKey) ||
+			!removeVertexEdge (_edgeMap.get (edgeKey).sourceVertexName(), edgeKey))
 		{
 			return false;
 		}
 
-		if (!removeVertexEdge (
-			_edgeMap.get (
-				edgeKey
-			).sourceVertexName(),
-			edgeKey
-		))
-		{
-			return false;
-		}
-
-		_edgeMap.remove (
-			edgeKey
-		);
+		_edgeMap.remove (edgeKey);
 
 		return true;
 	}
@@ -407,21 +455,14 @@ abstract public class Network
 	 * @return The Edge Priority Queue
 	 */
 
-	public org.drip.graph.heap.PriorityQueue<java.lang.Double, java.lang.String> edgePriorityQueue (
+	public PriorityQueue<Double, String> edgePriorityQueue (
 		final boolean minHeap)
 	{
-		org.drip.graph.heap.PriorityQueue<java.lang.Double, java.lang.String> edgePriorityQueue =
-			new org.drip.graph.heap.BinomialTreePriorityQueue<java.lang.Double, java.lang.String> (
-				minHeap
-			);
+		PriorityQueue<Double, String> edgePriorityQueue =
+			new BinomialTreePriorityQueue<Double, String> (minHeap);
 
-		for (java.util.Map.Entry<java.lang.String, org.drip.graph.core.Edge> edgeMapEntry :
-			_edgeMap.entrySet())
-		{
-			edgePriorityQueue.insert (
-				edgeMapEntry.getValue().weight(),
-				edgeMapEntry.getKey()
-			);
+		for (Map.Entry<String, Edge> edgeMapEntry : _edgeMap.entrySet()) {
+			edgePriorityQueue.insert (edgeMapEntry.getValue().weight(), edgeMapEntry.getKey());
 		}
 
 		return edgePriorityQueue;
@@ -447,11 +488,9 @@ abstract public class Network
 	 */
 
 	public boolean containsVertex (
-		final java.lang.String vertexName)
+		final String vertexName)
 	{
-		return null != vertexName && _vertexMap.containsKey (
-			vertexName
-		);
+		return null != vertexName && _vertexMap.containsKey (vertexName);
 	}
 
 	/**
@@ -464,8 +503,7 @@ abstract public class Network
 	{
 		double length = 0.;
 
-		for (org.drip.graph.core.Edge edge : _edgeMap.values())
-		{
+		for (Edge edge : _edgeMap.values()) {
 			length = length + edge.weight();
 		}
 
@@ -481,13 +519,10 @@ abstract public class Network
 	 */
 
 	public boolean isEdgeACycle (
-		final org.drip.graph.core.Edge edge)
+		final Edge edge)
 	{
-		return null == edge ? false : _vertexMap.containsKey (
-			edge.sourceVertexName()
-		) && _vertexMap.containsKey (
-			edge.destinationVertexName()
-		);
+		return null != edge && _vertexMap.containsKey (edge.sourceVertexName()) &&
+			_vertexMap.containsKey (edge.destinationVertexName());
 	}
 
 	/**
@@ -499,19 +534,14 @@ abstract public class Network
 	 */
 
 	public boolean containsEdge (
-		final org.drip.graph.core.Edge edgeOther)
+		final Edge edgeOther)
 	{
-		if (null == edgeOther)
-		{
+		if (null == edgeOther) {
 			return false;
 		}
 
-		for (org.drip.graph.core.Edge edge : _edgeMap.values())
-		{
-			if (edge.compareWith (
-				edgeOther
-			))
-			{
+		for (Edge edge : _edgeMap.values()) {
+			if (edge.compareWith (edgeOther)) {
 				return true;
 			}
 		}

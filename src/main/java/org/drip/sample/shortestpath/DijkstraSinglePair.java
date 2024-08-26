@@ -1,7 +1,7 @@
 
 package org.drip.sample.shortestpath;
 
-import org.drip.graph.core.DirectedGraph;
+import org.drip.graph.core.Directed;
 import org.drip.graph.core.Edge;
 import org.drip.graph.core.Path;
 import org.drip.graph.shortestpath.DijkstraPathGenerator;
@@ -155,7 +155,7 @@ public class DijkstraSinglePair
 			"Jaipur    "
 		};
 
-		DirectedGraph graph = new DirectedGraph();
+		Directed<Double> graph = new Directed<Double>();
 
 		graph.addBidirectionalEdge (
 			new Edge (

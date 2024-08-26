@@ -168,7 +168,7 @@ public class FHeuristic
 	}
 
 	@Override public double evaluate (
-		final org.drip.graph.core.Vertex vertex)
+		final org.drip.graph.core.Vertex<?> vertex)
 		throws java.lang.Exception
 	{
 		return _gHeuristic.evaluate (
@@ -190,7 +190,7 @@ public class FHeuristic
 	 */
 
 	public boolean isMonotone (
-		final org.drip.graph.core.Network graph,
+		final org.drip.graph.core.Network<?> graph,
 		final org.drip.graph.core.Edge edge)
 			throws java.lang.Exception
 	{
@@ -203,7 +203,7 @@ public class FHeuristic
 			);
 		}
 
-		java.util.Map<java.lang.String, org.drip.graph.core.Vertex> vertexMap = graph.vertexMap();
+		java.util.Map<java.lang.String, org.drip.graph.core.Vertex<?>> vertexMap = graph.vertexMap();
 
 		return evaluate (
 			vertexMap.get (
@@ -228,7 +228,7 @@ public class FHeuristic
 	 */
 
 	public boolean isConsistent (
-		final org.drip.graph.core.Network graph,
+		final org.drip.graph.core.Network<?> graph,
 		final org.drip.graph.core.Edge edge)
 			throws java.lang.Exception
 	{
@@ -250,7 +250,7 @@ public class FHeuristic
 	 */
 
 	public double reducedWeight (
-		final org.drip.graph.core.Network graph,
+		final org.drip.graph.core.Network<?> graph,
 		final org.drip.graph.core.Edge edge)
 			throws java.lang.Exception
 	{
@@ -263,7 +263,7 @@ public class FHeuristic
 			);
 		}
 
-		java.util.Map<java.lang.String, org.drip.graph.core.Vertex> vertexMap = graph.vertexMap();
+		java.util.Map<java.lang.String, org.drip.graph.core.Vertex<?>> vertexMap = graph.vertexMap();
 
 		return edge.weight() + evaluate (
 			vertexMap.get (

@@ -159,7 +159,7 @@ public class EdgeRelaxationPathGenerator
 	{
 		boolean shortestPath = shortestPath();
 
-		org.drip.graph.core.DirectedGraph graph = graph();
+		org.drip.graph.core.Directed<?> graph = graph();
 
 		java.util.Map<java.lang.String, org.drip.graph.core.Edge> edgeMap = graph.edgeMap();
 
@@ -211,7 +211,7 @@ public class EdgeRelaxationPathGenerator
 	 */
 
 	public EdgeRelaxationPathGenerator (
-		final org.drip.graph.core.DirectedGraph graph,
+		final org.drip.graph.core.Directed<?> graph,
 		final boolean shortestPath,
 		final org.drip.graph.astar.FHeuristic fHeuristic)
 		throws java.lang.Exception
@@ -233,7 +233,7 @@ public class EdgeRelaxationPathGenerator
 
 		boolean shortestPath = shortestPath();
 
-		org.drip.graph.core.DirectedGraph graph = graph();
+		org.drip.graph.core.Directed<?> graph = graph();
 
 		java.util.Set<java.lang.String> vertexNameSet = graph.vertexNameSet();
 

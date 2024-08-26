@@ -110,8 +110,8 @@ package org.drip.graph.core;
  * @author Lakshmi Krishnamurthy
  */
 
-public class CompleteBipartite
-	extends org.drip.graph.core.DirectedGraph
+public class CompleteBipartite<V>
+	extends org.drip.graph.core.Directed<V>
 {
 	private java.util.Set<java.lang.String> _vertexNameSetP = null;
 	private java.util.Set<java.lang.String> _vertexNameSetQ = null;
@@ -271,7 +271,7 @@ public class CompleteBipartite
 
 	@Override public int type()
 	{
-		return org.drip.graph.core.DirectedGraphType.COMPLETE_BIPARTITE;
+		return org.drip.graph.core.DirectedType.COMPLETE_BIPARTITE;
 	}
 
 	@Override public double spanningTreeCount()

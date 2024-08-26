@@ -113,11 +113,11 @@ package org.drip.graph.bellmanford;
  * @author Lakshmi Krishnamurthy
  */
 
-public class EdgePartition
+public class EdgePartition<V>
 {
 	private java.util.List<java.lang.String> _vertexNameList = null;
-	private org.drip.graph.core.DirectedGraph _forwardDirectedGraph = null;
-	private org.drip.graph.core.DirectedGraph _backwardDirectedGraph = null;
+	private org.drip.graph.core.Directed<?> _forwardDirectedGraph = null;
+	private org.drip.graph.core.Directed<?> _backwardDirectedGraph = null;
 	private java.util.Map<java.lang.String, java.lang.Integer> _vertexIndexMap = null;
 
 	private static final java.util.List<java.lang.String> ShuffleVertexNameCollection (
@@ -148,8 +148,8 @@ public class EdgePartition
 	 * @return EdgePartition from a Graph
 	 */
 
-	public static final EdgePartition FromGraph (
-		final org.drip.graph.core.DirectedGraph graph,
+	public static <V> EdgePartition<?> FromGraph (
+		final org.drip.graph.core.Directed<?> graph,
 		final boolean randomizeVertexes)
 	{
 		if (null == graph)
@@ -185,9 +185,9 @@ public class EdgePartition
 			);
 		}
 
-		org.drip.graph.core.DirectedGraph forwardDirectedGraph = new org.drip.graph.core.DirectedGraph();
+		org.drip.graph.core.Directed<?> forwardDirectedGraph = new org.drip.graph.core.Directed<V>();
 
-		org.drip.graph.core.DirectedGraph backwardDirectedGraph = new org.drip.graph.core.DirectedGraph();
+		org.drip.graph.core.Directed<?> backwardDirectedGraph = new org.drip.graph.core.Directed<V>();
 
 		for (org.drip.graph.core.Edge edge : graph.edgeMap().values())
 		{
@@ -218,7 +218,7 @@ public class EdgePartition
 
 		try
 		{
-			return new EdgePartition (
+			return new EdgePartition<V> (
 				vertexIndexMap,
 				vertexNameList,
 				forwardDirectedGraph,
@@ -247,8 +247,8 @@ public class EdgePartition
 	public EdgePartition (
 		final java.util.Map<java.lang.String, java.lang.Integer> vertexIndexMap,
 		final java.util.List<java.lang.String> vertexNameList,
-		final org.drip.graph.core.DirectedGraph forwardDirectedGraph,
-		final org.drip.graph.core.DirectedGraph backwardDirectedGraph)
+		final org.drip.graph.core.Directed<?> forwardDirectedGraph,
+		final org.drip.graph.core.Directed<?> backwardDirectedGraph)
 		throws java.lang.Exception
 	{
 		if (null == (_vertexIndexMap = vertexIndexMap) ||
@@ -302,7 +302,7 @@ public class EdgePartition
 	 * @return The Forward Directed Graph
 	 */
 
-	public org.drip.graph.core.DirectedGraph forwardDirectedGraph()
+	public org.drip.graph.core.Directed<?> forwardDirectedGraph()
 	{
 		return _forwardDirectedGraph;
 	}
@@ -313,7 +313,7 @@ public class EdgePartition
 	 * @return The Backward Directed Graph
 	 */
 
-	public org.drip.graph.core.DirectedGraph backwardDirectedGraph()
+	public org.drip.graph.core.Directed<?> backwardDirectedGraph()
 	{
 		return _backwardDirectedGraph;
 	}

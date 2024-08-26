@@ -4,7 +4,7 @@ package org.drip.sample.shortestpath;
 import java.util.List;
 
 import org.drip.graph.bellmanford.YenReducedRelaxationPathGenerator;
-import org.drip.graph.core.DirectedGraph;
+import org.drip.graph.core.Directed;
 import org.drip.graph.core.Edge;
 import org.drip.graph.core.Path;
 import org.drip.graph.shortestpath.OptimalPathGenerator;
@@ -159,7 +159,7 @@ public class YenReducedRelaxationSingleSource
 			"Jaipur    "
 		};
 
-		DirectedGraph graph = new DirectedGraph();
+		Directed<Double> graph = new Directed<Double>();
 
 		graph.addBidirectionalEdge (
 			new Edge (

@@ -129,6 +129,6 @@ public interface VertexFunction
 	 */
 
 	public abstract double evaluate (
-		final org.drip.graph.core.Vertex vertex)
+		final org.drip.graph.core.Vertex<?> vertex)
 		throws java.lang.Exception;
 }

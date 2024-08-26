@@ -119,7 +119,7 @@ public abstract class EdgePartitionGenerator
 {
 
 	private static final boolean ProcessVertex (
-		final org.drip.graph.core.Vertex vertex,
+		final org.drip.graph.core.Vertex<?> vertex,
 		final org.drip.graph.shortestpath.VertexAugmentor vertexAugmentor,
 		final boolean shortestPath)
 	{
@@ -153,7 +153,7 @@ public abstract class EdgePartitionGenerator
 	private static final boolean ProcessSubgraph (
 		final int vertexCount,
 		final boolean forward,
-		final org.drip.graph.core.DirectedGraph graph,
+		final org.drip.graph.core.Directed<?> graph,
 		final java.util.List<java.lang.String> vertexNameList,
 		final org.drip.graph.shortestpath.VertexAugmentor vertexAugmentor,
 		final boolean shortestPath)
@@ -161,7 +161,7 @@ public abstract class EdgePartitionGenerator
 		int vertexIndex = forward ? 0 : vertexCount - 1;
 		int finalVertexIndex = forward ? vertexCount - 1 : 0;
 
-		java.util.Map<java.lang.String, org.drip.graph.core.Vertex> forwardVertexMap = graph.vertexMap();
+		java.util.Map<java.lang.String, org.drip.graph.core.Vertex<?>> forwardVertexMap = graph.vertexMap();
 
 		while (vertexIndex != finalVertexIndex)
 		{
@@ -202,11 +202,11 @@ public abstract class EdgePartitionGenerator
 		final org.drip.graph.shortestpath.VertexAugmentor vertexAugmentor,
 		final org.drip.graph.bellmanford.VertexRelaxationControl vertexRelaxationControl)
 	{
-		org.drip.graph.bellmanford.EdgePartition edgePartition = edgePartition();
+		org.drip.graph.bellmanford.EdgePartition<?> edgePartition = edgePartition();
 
 		java.util.List<java.lang.String> vertexNameList = edgePartition.vertexNameList();
 
-		org.drip.graph.core.DirectedGraph graph = graph();
+		org.drip.graph.core.Directed<?> graph = graph();
 
 		boolean shortestPath = shortestPath();
 
@@ -230,7 +230,7 @@ public abstract class EdgePartitionGenerator
 	}
 
 	protected EdgePartitionGenerator (
-		final org.drip.graph.core.DirectedGraph graph,
+		final org.drip.graph.core.Directed<?> graph,
 		final boolean shortestPath,
 		final org.drip.graph.astar.FHeuristic fHeuristic)
 		throws java.lang.Exception
@@ -248,5 +248,5 @@ public abstract class EdgePartitionGenerator
 	 * @return The Edge Partition
 	 */
 
-	public abstract org.drip.graph.bellmanford.EdgePartition edgePartition();
+	public abstract org.drip.graph.bellmanford.EdgePartition<?> edgePartition();
 }

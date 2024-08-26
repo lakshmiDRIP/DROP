@@ -130,7 +130,7 @@ public class DijkstraPathGenerator
 	 */
 
 	public DijkstraPathGenerator (
-		final org.drip.graph.core.DirectedGraph graph,
+		final org.drip.graph.core.Directed<?> graph,
 		final boolean shortestPath,
 		final org.drip.graph.astar.FHeuristic fHeuristic)
 		throws java.lang.Exception
@@ -158,7 +158,7 @@ public class DijkstraPathGenerator
 
 		boolean shortestPath = shortestPath();
 
-		java.util.Map<java.lang.String, org.drip.graph.core.Vertex> vertexMap = graph().vertexMap();
+		java.util.Map<java.lang.String, org.drip.graph.core.Vertex<?>> vertexMap = graph().vertexMap();
 
 		org.drip.graph.shortestpath.VertexAugmentor vertexAugmentor = null;
 

@@ -158,7 +158,7 @@ public class DynamicWeightFHeuristic
 				new org.drip.graph.astar.VertexFunction()
 				{
 					@Override public double evaluate (
-						final org.drip.graph.core.Vertex vertex)
+						final org.drip.graph.core.Vertex<?> vertex)
 						throws java.lang.Exception
 					{
 						double wHeuristicValue = 1. - (
@@ -239,7 +239,7 @@ public class DynamicWeightFHeuristic
 	}
 
 	@Override public double evaluate (
-		final org.drip.graph.core.Vertex vertex)
+		final org.drip.graph.core.Vertex<?> vertex)
 		throws java.lang.Exception
 	{
 		return gHeuristic().evaluate (

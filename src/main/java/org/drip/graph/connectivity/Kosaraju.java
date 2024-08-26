@@ -117,16 +117,16 @@ package org.drip.graph.connectivity;
 
 public class Kosaraju
 {
-	private org.drip.graph.core.Network _graph = null;
+	private org.drip.graph.core.Network<?> _graph = null;
 
 	private boolean updateVisitation (
-		final org.drip.graph.core.Vertex vertex,
+		final org.drip.graph.core.Vertex<?> vertex,
 		final java.util.Map<java.lang.String, java.lang.Boolean> vertexVisitationIndicatorMap,
 		final java.util.List<java.lang.String> componentVertexNameList)
 	{
 		java.lang.String vertexName = vertex.name();
 
-		java.util.Map<java.lang.String, org.drip.graph.core.Vertex> vertexMap = _graph.vertexMap();
+		java.util.Map<java.lang.String, org.drip.graph.core.Vertex<?>> vertexMap = _graph.vertexMap();
 
 		if (!vertexVisitationIndicatorMap.containsKey (
 			vertexName
@@ -166,7 +166,7 @@ public class Kosaraju
 	}
 
 	private boolean assignComponent (
-		final org.drip.graph.core.Vertex vertex,
+		final org.drip.graph.core.Vertex<?> vertex,
 		final java.lang.String rootVertexName,
 		final java.util.Map<java.lang.String, java.lang.String> vertexRootComponentMap)
 	{
@@ -181,7 +181,7 @@ public class Kosaraju
 				rootVertexName
 			);
 
-			java.util.Map<java.lang.String, org.drip.graph.core.Vertex> vertexMap = _graph.vertexMap();
+			java.util.Map<java.lang.String, org.drip.graph.core.Vertex<?>> vertexMap = _graph.vertexMap();
 
 			java.util.Set<java.lang.String> neighboringVertexNameSet = vertex.neighboringVertexNameSet();
 
@@ -215,7 +215,7 @@ public class Kosaraju
 	 */
 
 	public Kosaraju (
-		final org.drip.graph.core.Network graph)
+		final org.drip.graph.core.Network<?> graph)
 		throws java.lang.Exception
 	{
 		if (null == (_graph = graph))
@@ -232,7 +232,7 @@ public class Kosaraju
 	 * @return The Network Graph
 	 */
 
-	public org.drip.graph.core.Network graph()
+	public org.drip.graph.core.Network<?> graph()
 	{
 		return _graph;
 	}
@@ -245,7 +245,7 @@ public class Kosaraju
 
 	public java.util.Map<java.lang.String, java.lang.String> vertexRootComponentMap()
 	{
-		java.util.Map<java.lang.String, org.drip.graph.core.Vertex> vertexMap = _graph.vertexMap();
+		java.util.Map<java.lang.String, org.drip.graph.core.Vertex<?>> vertexMap = _graph.vertexMap();
 
 		if (0 == vertexMap.size())
 		{

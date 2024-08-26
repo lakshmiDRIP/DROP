@@ -119,7 +119,7 @@ public class VertexAugmentor
 	private boolean _shortestPath = false;
 	private java.lang.String _sourceVertexName = "";
 	private org.drip.graph.astar.FHeuristic _fHeuristic = null;
-	private java.util.Map<java.lang.String, org.drip.graph.core.Vertex> _vertexMap = null;
+	private java.util.Map<java.lang.String, org.drip.graph.core.Vertex<?>> _vertexMap = null;
 	private java.util.Map<java.lang.String, org.drip.graph.shortestpath.AugmentedVertex> _augmentedVertexMap
 		= null;
 
@@ -147,7 +147,7 @@ public class VertexAugmentor
 		final java.lang.String sourceVertexName,
 		final boolean shortestPath,
 		final org.drip.graph.astar.FHeuristic fHeuristic,
-		final java.util.Map<java.lang.String, org.drip.graph.core.Vertex> vertexMap)
+		final java.util.Map<java.lang.String, org.drip.graph.core.Vertex<?>> vertexMap)
 		throws java.lang.Exception
 	{
 		if (null == (_sourceVertexName = sourceVertexName) || _sourceVertexName.isEmpty())
@@ -166,14 +166,15 @@ public class VertexAugmentor
 		}
 		else
 		{
-			org.drip.graph.core.Vertex sourceVertex = (_vertexMap = vertexMap).get (
+			org.drip.graph.core.Vertex<?> sourceVertex = (_vertexMap = vertexMap).get (
 				sourceVertexName
 			);
 
 			sourceAugmentedVertex = new org.drip.graph.shortestpath.AugmentedVertex (
 				_fHeuristic.gHeuristic().evaluate (
 					sourceVertex
-				), _fHeuristic.hHeuristic().evaluate (
+				),
+				_fHeuristic.hHeuristic().evaluate (
 					sourceVertex
 				)
 			);
@@ -250,7 +251,7 @@ public class VertexAugmentor
 	 * @return The Underlying Graph Vertex Map
 	 */
 
-	public java.util.Map<java.lang.String, org.drip.graph.core.Vertex> vertexMap()
+	public java.util.Map<java.lang.String, org.drip.graph.core.Vertex<?>> vertexMap()
 	{
 		return _vertexMap;
 	}
@@ -287,7 +288,7 @@ public class VertexAugmentor
 				}
 				else
 				{
-					org.drip.graph.core.Vertex augmentedGraphVertex = _vertexMap.get (
+					org.drip.graph.core.Vertex<?> augmentedGraphVertex = _vertexMap.get (
 						vertexName
 					);
 
@@ -372,7 +373,7 @@ public class VertexAugmentor
 			}
 			else
 			{
-				org.drip.graph.core.Vertex augmentedGraphVertex = _vertexMap.get (
+				org.drip.graph.core.Vertex<?> augmentedGraphVertex = _vertexMap.get (
 					augmentedVertexName
 				);
 

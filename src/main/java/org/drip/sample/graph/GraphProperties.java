@@ -2,7 +2,7 @@
 package org.drip.sample.graph;
 
 import org.drip.graph.core.Edge;
-import org.drip.graph.core.DirectedGraph;
+import org.drip.graph.core.Directed;
 import org.drip.service.env.EnvManager;
 
 /*
@@ -147,7 +147,7 @@ public class GraphProperties
 			"jaipur    "
 		};
 
-		DirectedGraph graph = new DirectedGraph();
+		Directed<Double> graph = new Directed<Double>();
 
 		graph.addBidirectionalEdge (
 			new Edge (

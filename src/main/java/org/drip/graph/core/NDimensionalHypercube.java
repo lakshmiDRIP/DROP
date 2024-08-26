@@ -1,6 +1,8 @@
 
 package org.drip.graph.core;
 
+import org.drip.numerical.common.NumberUtil;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
@@ -110,8 +112,7 @@ package org.drip.graph.core;
  * @author Lakshmi Krishnamurthy
  */
 
-public class NDimensionalHypercube
-	extends org.drip.graph.core.DirectedGraph
+public class NDimensionalHypercube<V> extends Directed<V>
 {
 
 	/**
@@ -145,7 +146,7 @@ public class NDimensionalHypercube
 
 	@Override public int type()
 	{
-		return org.drip.graph.core.DirectedGraphType.N_DIMENSIONAL_HYPERCUBE;
+		return DirectedType.N_DIMENSIONAL_HYPERCUBE;
 	}
 
 	@Override public double spanningTreeCount()
@@ -154,25 +155,10 @@ public class NDimensionalHypercube
 
 		double spanningTreeCount = 1.;
 
-		for (int k = 2;
-			k <= n;
-			++k)
-		{
-			spanningTreeCount = spanningTreeCount * java.lang.Math.pow (
-				k,
-				org.drip.numerical.common.NumberUtil.NCK (
-					n,
-					k
-				)
-			);
+		for (int k = 2; k <= n; ++k) {
+			spanningTreeCount = spanningTreeCount * Math.pow (k, NumberUtil.NCK (n, k));
 		}
 
-		return spanningTreeCount * java.lang.Math.pow (
-			2,
-			java.lang.Math.pow (
-				2,
-				n
-			) - n - 1
-		);
+		return spanningTreeCount * Math.pow (2, Math.pow (2, n) - n - 1);
 	}
 }

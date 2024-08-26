@@ -165,7 +165,7 @@ public class StaticWeightFHeuristic
 	}
 
 	@Override public double evaluate (
-		final org.drip.graph.core.Vertex vertex)
+		final org.drip.graph.core.Vertex<?> vertex)
 		throws java.lang.Exception
 	{
 		return gHeuristic().evaluate (

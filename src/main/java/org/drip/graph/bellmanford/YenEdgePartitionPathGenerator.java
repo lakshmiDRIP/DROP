@@ -117,7 +117,7 @@ package org.drip.graph.bellmanford;
 public class YenEdgePartitionPathGenerator
 	extends org.drip.graph.bellmanford.EdgePartitionGenerator
 {
-	private org.drip.graph.bellmanford.EdgePartition _edgePartition = null;
+	private org.drip.graph.bellmanford.EdgePartition<?> _edgePartition = null;
 
 	/**
 	 * YenEdgePartitionPathGenerator Constructor
@@ -130,7 +130,7 @@ public class YenEdgePartitionPathGenerator
 	 */
 
 	public YenEdgePartitionPathGenerator (
-		final org.drip.graph.core.DirectedGraph graph,
+		final org.drip.graph.core.Directed<?> graph,
 		final boolean shortestPath,
 		final org.drip.graph.astar.FHeuristic fHeuristic)
 		throws java.lang.Exception
@@ -153,7 +153,7 @@ public class YenEdgePartitionPathGenerator
 		}
 	}
 
-	@Override public org.drip.graph.bellmanford.EdgePartition edgePartition()
+	@Override public org.drip.graph.bellmanford.EdgePartition<?> edgePartition()
 	{
 		return _edgePartition;
 	}

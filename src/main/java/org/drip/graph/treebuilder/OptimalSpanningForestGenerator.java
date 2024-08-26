@@ -122,10 +122,10 @@ package org.drip.graph.treebuilder;
 public abstract class OptimalSpanningForestGenerator
 {
 	private boolean _maximum = false;
-	protected org.drip.graph.core.DirectedGraph _graph = null;
+	protected org.drip.graph.core.Directed<?> _graph = null;
 
 	protected OptimalSpanningForestGenerator (
-		final org.drip.graph.core.DirectedGraph graph,
+		final org.drip.graph.core.Directed<?> graph,
 		final boolean maximum)
 		throws java.lang.Exception
 	{
@@ -145,7 +145,7 @@ public abstract class OptimalSpanningForestGenerator
 	 * @return The Graph
 	 */
 
-	public org.drip.graph.core.DirectedGraph graph()
+	public org.drip.graph.core.Directed<?> graph()
 	{
 		return _graph;
 	}
@@ -167,5 +167,5 @@ public abstract class OptimalSpanningForestGenerator
 	 * @return Optimal Spanning Forest
 	 */
 
-	public abstract org.drip.graph.core.Forest optimalSpanningForest();
+	public abstract org.drip.graph.core.Forest<?> optimalSpanningForest();
 }

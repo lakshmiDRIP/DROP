@@ -113,7 +113,7 @@ package org.drip.graph.mstgreedy;
  * @author Lakshmi Krishnamurthy
  */
 
-public class ReverseDeleteGenerator
+public class ReverseDeleteGenerator<V>
 	extends org.drip.graph.treebuilder.OptimalSpanningForestGenerator
 {
 
@@ -127,7 +127,7 @@ public class ReverseDeleteGenerator
 	 */
 
 	public ReverseDeleteGenerator (
-		final org.drip.graph.core.DirectedGraph graph,
+		final org.drip.graph.core.Directed<?> graph,
 		final boolean maximum)
 		throws java.lang.Exception
 	{
@@ -137,7 +137,7 @@ public class ReverseDeleteGenerator
 		);
 	}
 
-	@Override public org.drip.graph.core.Forest optimalSpanningForest()
+	@Override public org.drip.graph.core.Forest<?> optimalSpanningForest()
 	{
 		if (!_graph.isConnected())
 		{
@@ -178,7 +178,7 @@ public class ReverseDeleteGenerator
 
 		try
 		{
-			return new org.drip.graph.mstgreedy.KruskalGenerator (
+			return new org.drip.graph.mstgreedy.KruskalGenerator<V> (
 				_graph,
 				maximum
 			).optimalSpanningForest();

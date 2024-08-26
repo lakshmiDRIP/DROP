@@ -1,6 +1,12 @@
 
 package org.drip.graph.core;
 
+import java.util.Collection;
+import java.util.Map;
+
+import org.drip.graph.heap.BinomialTreePriorityQueue;
+import org.drip.graph.heap.PriorityQueue;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
@@ -110,8 +116,7 @@ package org.drip.graph.core;
  * @author Lakshmi Krishnamurthy
  */
 
-public class Tree
-	extends org.drip.graph.core.Network
+public class Tree<V> extends Network<V>
 {
 
 	/**
@@ -132,27 +137,45 @@ public class Tree
 	 */
 
 	public boolean addStandaloneVertex (
-		final java.lang.String vertexName)
+		final String vertexName)
 	{
-		if (null == vertexName || vertexName.isEmpty() ||
-			!_vertexMap.isEmpty() ||
-			!_edgeMap.isEmpty()
-		)
+		if (null == vertexName || vertexName.isEmpty() || !_vertexMap.isEmpty() || !_edgeMap.isEmpty()) {
+			return false;
+		}
+
+		try {
+			_vertexMap.put (vertexName, Vertex.Standard (vertexName));
+		} catch (Exception e) {
+			e.printStackTrace();
+
+			return false;
+		}
+
+		return true;
+	}
+
+	/**
+	 * Add a Stand-alone Vertex to the Network
+	 *  
+	 * @param vertexName The Stand-alone Vertex Name
+	 * @param vertexValueMap Vertex Value Map
+	 * 
+	 * @return TRUE - The Stand-alone Vertex successfully added to the Network
+	 */
+
+	public boolean addStandaloneVertex (
+		final String vertexName,
+		final Map<String, V> vertexValueMap)
+	{
+		if (null == vertexName || vertexName.isEmpty() || !_vertexMap.isEmpty() || !_edgeMap.isEmpty() |
+			null == vertexValueMap)
 		{
 			return false;
 		}
 
-		try
-		{
-			_vertexMap.put (
-				vertexName,
-				new org.drip.graph.core.Vertex (
-					vertexName
-				)
-			);
-		}
-		catch (java.lang.Exception e)
-		{
+		try {
+			_vertexMap.put (vertexName, new Vertex<V> (vertexName, vertexValueMap.get (vertexName)));
+		} catch (Exception e) {
 			e.printStackTrace();
 
 			return false;
@@ -171,31 +194,55 @@ public class Tree
 	 */
 
 	public boolean absorbTreeAndEdge (
-		final org.drip.graph.core.Tree tree,
-		final org.drip.graph.core.Edge edge)
+		final Tree<?> tree,
+		final Edge edge)
 	{
-		if (null == tree ||
-			!addEdge (
-				edge
-			)
-		)
-		{
+		if (null == tree || !addEdge (edge)) {
 			return false;
 		}
 
-		java.util.Collection<org.drip.graph.core.Edge> treeEdgeCollection = tree.edgeMap().values();
+		Collection<Edge> treeEdgeCollection = tree.edgeMap().values();
 
-		if (null == treeEdgeCollection || 0 == treeEdgeCollection.size())
-		{
+		if (null == treeEdgeCollection || 0 == treeEdgeCollection.size()) {
 			return true;
 		}
 
-		for (org.drip.graph.core.Edge treeEdge : treeEdgeCollection)
-		{
-			if (!addEdge (
-				treeEdge
-			))
-			{
+		for (Edge treeEdge : treeEdgeCollection) {
+			if (!addEdge (treeEdge)) {
+				return false;
+			}
+		}
+
+		return true;
+	}
+
+	/**
+	 * Absorb the Specified Tree and Edge
+	 * 
+	 * @param tree The Tree
+	 * @param edge The Edge
+	 * @param vertexValueMap Vertex Value Map
+	 * 
+	 * @return TRUE - The Tree and Edge successfully absorbed
+	 */
+
+	public boolean absorbTreeAndEdge (
+		final Tree<V> tree,
+		final Edge edge,
+		final Map<String, V> vertexValueMap)
+	{
+		if (null == tree || !addEdge (edge, vertexValueMap)) {
+			return false;
+		}
+
+		Collection<Edge> treeEdgeCollection = tree.edgeMap().values();
+
+		if (null == treeEdgeCollection || 0 == treeEdgeCollection.size()) {
+			return true;
+		}
+
+		for (Edge treeEdge : treeEdgeCollection) {
+			if (!addEdge (treeEdge, vertexValueMap)) {
 				return false;
 			}
 		}
@@ -206,71 +253,52 @@ public class Tree
 	/**
 	 * Construct and Retrieve the Edge Priority Queue from the Graph
 	 * 
-	 * @param graph The Graph
+	 * @param network The Graph Network
 	 * @param minHeap TRUE - The Edge Priority Queue is in the Descending Order of Distance
 	 * 
 	 * @return The Tree Adjacency Map
 	 */
 
-	public org.drip.graph.heap.PriorityQueue<java.lang.Double, org.drip.graph.core.Edge> edgePriorityQueue (
-		final org.drip.graph.core.DirectedGraph graph,
+	public PriorityQueue<Double, Edge> edgePriorityQueue (
+		final Network<?> network,
 		final boolean minHeap)
 	{
-		if (null == graph)
-		{
+		if (null == network) {
 			return null;
 		}
 
-		java.util.Map<java.lang.String, org.drip.graph.core.Edge> graphEdgeMap = graph.edgeMap();
+		Map<String, Edge> graphEdgeMap = network.edgeMap();
 
-		java.util.Map<java.lang.String, org.drip.graph.core.Vertex> graphVertexMap = graph.vertexMap();
+		Map<String, Vertex<?>> graphVertexMap = network.vertexMap();
 
-		org.drip.graph.heap.PriorityQueue<java.lang.Double, org.drip.graph.core.Edge> edgePriorityQueue =
-			new org.drip.graph.heap.BinomialTreePriorityQueue<java.lang.Double, org.drip.graph.core.Edge> (
-				minHeap
-			);
+		PriorityQueue<Double, Edge> edgePriorityQueue =
+			new BinomialTreePriorityQueue<Double, Edge> (minHeap);
 
-		for (java.lang.String vertexName : _vertexMap.keySet())
-		{
-			if (!graphVertexMap.containsKey (
-				vertexName
-			))
-			{
+		for (String vertexName : _vertexMap.keySet()) {
+			if (!graphVertexMap.containsKey (vertexName)) {
 				return null;
 			}
 
-			org.drip.graph.core.Vertex vertex = graphVertexMap.get (
-				vertexName
-			);
+			Vertex<?> vertex = graphVertexMap.get (vertexName);
 
-			if (vertex.isLeaf())
-			{
+			if (vertex.isLeaf()) {
 				continue;
 			}
 
-			for (java.lang.String graphEdgeKey : vertex.edgeMap().keySet())
-			{
-				org.drip.graph.core.Edge graphEdge = graphEdgeMap.get (
-					graphEdgeKey
-				);
+			for (String graphEdgeKey : vertex.edgeMap().keySet()) {
+				Edge graphEdge = graphEdgeMap.get (graphEdgeKey);
 
-				java.lang.String sourceVertexName = graphEdge.sourceVertexName();
+				String sourceVertexName = graphEdge.sourceVertexName();
 
-				java.lang.String destinationVertexName = graphEdge.destinationVertexName();
+				String destinationVertexName = graphEdge.destinationVertexName();
 
-				if (_vertexMap.containsKey (
-					sourceVertexName
-				) && _vertexMap.containsKey (
-					destinationVertexName
-				))
+				if (_vertexMap.containsKey (sourceVertexName) &&
+					_vertexMap.containsKey (destinationVertexName))
 				{
 					continue;
 				}
 
-				edgePriorityQueue.insert (
-					graphEdge.weight(),
-					graphEdge
-				);
+				edgePriorityQueue.insert (graphEdge.weight(), graphEdge);
 			}
 		}
 
@@ -283,27 +311,21 @@ public class Tree
 	 * @return The Maximum Bottleneck Edge of the Tree
 	 */
 
-	public org.drip.graph.core.Edge maximumBottleneckEdge()
+	public Edge maximumBottleneckEdge()
 	{
-		java.util.Map<java.lang.String, org.drip.graph.core.Edge> edgeMap = edgeMap();
+		Map<String, Edge> edgeMap = edgeMap();
 
-		if (null == edgeMap || 0 == edgeMap.size())
-		{
+		if (null == edgeMap || 0 == edgeMap.size()) {
 			return null;
 		}
 
-		org.drip.graph.core.Edge bottleneckEdge = null;
+		Edge bottleneckEdge = null;
 
-		for (org.drip.graph.core.Edge edge : edgeMap.values())
-		{
-			if (null == bottleneckEdge)
-			{
+		for (Edge edge : edgeMap.values()) {
+			if (null == bottleneckEdge) {
 				bottleneckEdge = edge;
-			}
-			else
-			{
-				if (edge.weight() > bottleneckEdge.weight())
-				{
+			} else {
+				if (edge.weight() > bottleneckEdge.weight()) {
 					bottleneckEdge = edge;
 				}
 			}
@@ -318,27 +340,21 @@ public class Tree
 	 * @return The Minimum Bottleneck Edge of the Tree
 	 */
 
-	public org.drip.graph.core.Edge minimumBottleneckEdge()
+	public Edge minimumBottleneckEdge()
 	{
-		java.util.Map<java.lang.String, org.drip.graph.core.Edge> edgeMap = edgeMap();
+		Map<String, Edge> edgeMap = edgeMap();
 
-		if (null == edgeMap || 0 == edgeMap.size())
-		{
+		if (null == edgeMap || 0 == edgeMap.size()) {
 			return null;
 		}
 
-		org.drip.graph.core.Edge bottleneckEdge = null;
+		Edge bottleneckEdge = null;
 
-		for (org.drip.graph.core.Edge edge : edgeMap.values())
-		{
-			if (null == bottleneckEdge)
-			{
+		for (Edge edge : edgeMap.values()) {
+			if (null == bottleneckEdge) {
 				bottleneckEdge = edge;
-			}
-			else
-			{
-				if (edge.weight() < bottleneckEdge.weight())
-				{
+			} else {
+				if (edge.weight() < bottleneckEdge.weight()) {
 					bottleneckEdge = edge;
 				}
 			}

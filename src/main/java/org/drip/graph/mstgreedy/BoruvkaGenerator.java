@@ -116,7 +116,7 @@ package org.drip.graph.mstgreedy;
  * @author Lakshmi Krishnamurthy
  */
 
-public class BoruvkaGenerator
+public class BoruvkaGenerator<V>
 	extends org.drip.graph.treebuilder.OptimalSpanningForestGenerator
 {
 
@@ -130,7 +130,7 @@ public class BoruvkaGenerator
 	 */
 
 	public BoruvkaGenerator (
-		final org.drip.graph.core.DirectedGraph graph,
+		final org.drip.graph.core.Directed<?> graph,
 		final boolean maximum)
 		throws java.lang.Exception
 	{
@@ -140,13 +140,13 @@ public class BoruvkaGenerator
 		);
 	}
 
-	@Override public org.drip.graph.core.Forest optimalSpanningForest()
+	@Override public org.drip.graph.core.Forest<?> optimalSpanningForest()
 	{
 		java.util.Set<java.lang.String> vertexNameSet = _graph.vertexMap().keySet();
 
 		boolean maximum = maximum();
 
-		org.drip.graph.mstgreedy.BoruvkaForest forest = new org.drip.graph.mstgreedy.BoruvkaForest (
+		org.drip.graph.mstgreedy.BoruvkaForest<?> forest = new org.drip.graph.mstgreedy.BoruvkaForest<V> (
 			!maximum
 		);
 

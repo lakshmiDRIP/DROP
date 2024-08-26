@@ -112,7 +112,7 @@ package org.drip.graph.bellmanford;
  * @author Lakshmi Krishnamurthy
  */
 
-public class JohnsonPathGenerator
+public class JohnsonPathGenerator<V>
 	extends org.drip.graph.shortestpath.OptimalPathGenerator
 {
 
@@ -127,7 +127,7 @@ public class JohnsonPathGenerator
 	 */
 
 	public JohnsonPathGenerator (
-		final org.drip.graph.core.DirectedGraph graph,
+		final org.drip.graph.core.Directed<?> graph,
 		final boolean shortestPath,
 		final org.drip.graph.astar.FHeuristic fHeuristic)
 		throws java.lang.Exception
@@ -147,9 +147,9 @@ public class JohnsonPathGenerator
 			return null;
 		}
 
-		org.drip.graph.core.DirectedGraph graph = graph();
+		org.drip.graph.core.Directed<?> graph = graph();
 
-		org.drip.graph.core.DirectedGraph graphClone = graph.clone();
+		org.drip.graph.core.Directed<?> graphClone = graph.clone();
 
 		java.util.Set<java.lang.String> vertexNameSet = graph.vertexNameSet();
 
@@ -197,7 +197,7 @@ public class JohnsonPathGenerator
 			return null;
 		}
 
-		org.drip.graph.core.DirectedGraph bellmanFordGraph = new org.drip.graph.core.DirectedGraph();
+		org.drip.graph.core.Directed<?> bellmanFordGraph = new org.drip.graph.core.Directed<V>();
 
 		java.util.Map<java.lang.String, org.drip.graph.shortestpath.AugmentedVertex> augmentedVertexMap =
 			bellmanFordVertexAugmentor.augmentedVertexMap();

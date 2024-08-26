@@ -118,9 +118,9 @@ package org.drip.graph.astar;
 
 public class VertexContext
 {
-	private org.drip.graph.core.Vertex _parent = null;
-	private org.drip.graph.core.Vertex _current = null;
-	private org.drip.graph.core.Vertex _mostRecentlyExpanded = null;
+	private org.drip.graph.core.Vertex<?> _parent = null;
+	private org.drip.graph.core.Vertex<?> _current = null;
+	private org.drip.graph.core.Vertex<?> _mostRecentlyExpanded = null;
 
 	/**
 	 * VertexContext Constructor
@@ -133,9 +133,9 @@ public class VertexContext
 	 */
 
 	public VertexContext (
-		final org.drip.graph.core.Vertex current,
-		final org.drip.graph.core.Vertex parent,
-		final org.drip.graph.core.Vertex mostRecentlyExpanded)
+		final org.drip.graph.core.Vertex<?> current,
+		final org.drip.graph.core.Vertex<?> parent,
+		final org.drip.graph.core.Vertex<?> mostRecentlyExpanded)
 		throws java.lang.Exception
 	{
 		if (null == (_current = current) ||
@@ -156,7 +156,7 @@ public class VertexContext
 	 * @return The Current Vertex
 	 */
 
-	public org.drip.graph.core.Vertex current()
+	public org.drip.graph.core.Vertex<?> current()
 	{
 		return _current;
 	}
@@ -167,7 +167,7 @@ public class VertexContext
 	 * @return The Parent Vertex
 	 */
 
-	public org.drip.graph.core.Vertex parent()
+	public org.drip.graph.core.Vertex<?> parent()
 	{
 		return _parent;
 	}
@@ -178,7 +178,7 @@ public class VertexContext
 	 * @return The Most Recently Expanded Vertex
 	 */
 
-	public org.drip.graph.core.Vertex mostRecentlyExpanded()
+	public org.drip.graph.core.Vertex<?> mostRecentlyExpanded()
 	{
 		return _mostRecentlyExpanded;
 	}

@@ -115,9 +115,9 @@ package org.drip.graph.mst;
  * @author Lakshmi Krishnamurthy
  */
 
-public class CompleteRandomGraphEnsemble
+public class CompleteRandomGraphEnsemble<V>
 {
-	private org.drip.graph.mst.CompleteRandomGraph _completeRandomGraph = null;
+	private org.drip.graph.mst.CompleteRandomGraph<?> _completeRandomGraph = null;
 	private org.drip.graph.treebuilder.OptimalSpanningForestGenerator _minimumSpanningForestGenerator = null;
 
 	/**
@@ -128,14 +128,14 @@ public class CompleteRandomGraphEnsemble
 	 * @return The CompleteRandomGraphEnsemble Instance
 	 */
 
-	public static final CompleteRandomGraphEnsemble Prim (
-		final org.drip.graph.mst.CompleteRandomGraph completeRandomGraph)
+	public static <V> CompleteRandomGraphEnsemble<?> Prim (
+		final org.drip.graph.mst.CompleteRandomGraph<?> completeRandomGraph)
 	{
 		try
 		{
-			return new CompleteRandomGraphEnsemble (
+			return new CompleteRandomGraphEnsemble<V> (
 				completeRandomGraph,
-				new org.drip.graph.mstgreedy.PrimGenerator (
+				new org.drip.graph.mstgreedy.PrimGenerator<V> (
 					completeRandomGraph,
 					false
 				)
@@ -157,14 +157,14 @@ public class CompleteRandomGraphEnsemble
 	 * @return The CompleteRandomGraphEnsemble Instance
 	 */
 
-	public static final CompleteRandomGraphEnsemble Kruskal (
-		final org.drip.graph.mst.CompleteRandomGraph completeRandomGraph)
+	public static <V> CompleteRandomGraphEnsemble<?> Kruskal (
+		final org.drip.graph.mst.CompleteRandomGraph<?> completeRandomGraph)
 	{
 		try
 		{
-			return new CompleteRandomGraphEnsemble (
+			return new CompleteRandomGraphEnsemble<V> (
 				completeRandomGraph,
-				new org.drip.graph.mstgreedy.KruskalGenerator (
+				new org.drip.graph.mstgreedy.KruskalGenerator<V> (
 					completeRandomGraph,
 					false
 				)
@@ -186,14 +186,14 @@ public class CompleteRandomGraphEnsemble
 	 * @return The CompleteRandomGraphEnsemble Instance
 	 */
 
-	public static final CompleteRandomGraphEnsemble ReverseDelete (
-		final org.drip.graph.mst.CompleteRandomGraph completeRandomGraph)
+	public static <V> CompleteRandomGraphEnsemble<?> ReverseDelete (
+		final org.drip.graph.mst.CompleteRandomGraph<?> completeRandomGraph)
 	{
 		try
 		{
-			return new CompleteRandomGraphEnsemble (
+			return new CompleteRandomGraphEnsemble<V> (
 				completeRandomGraph,
-				new org.drip.graph.mstgreedy.ReverseDeleteGenerator (
+				new org.drip.graph.mstgreedy.ReverseDeleteGenerator<V> (
 					completeRandomGraph,
 					false
 				)
@@ -215,14 +215,14 @@ public class CompleteRandomGraphEnsemble
 	 * @return The CompleteRandomGraphEnsemble Instance
 	 */
 
-	public static final CompleteRandomGraphEnsemble Boruvka (
-		final org.drip.graph.mst.CompleteRandomGraph completeRandomGraph)
+	public static <V> CompleteRandomGraphEnsemble<?> Boruvka (
+		final org.drip.graph.mst.CompleteRandomGraph<?> completeRandomGraph)
 	{
 		try
 		{
-			return new CompleteRandomGraphEnsemble (
+			return new CompleteRandomGraphEnsemble<V> (
 				completeRandomGraph,
-				new org.drip.graph.mstgreedy.BoruvkaGenerator (
+				new org.drip.graph.mstgreedy.BoruvkaGenerator<V> (
 					completeRandomGraph,
 					false
 				)
@@ -246,7 +246,7 @@ public class CompleteRandomGraphEnsemble
 	 */
 
 	public CompleteRandomGraphEnsemble (
-		final org.drip.graph.mst.CompleteRandomGraph completeRandomGraph,
+		final org.drip.graph.mst.CompleteRandomGraph<?> completeRandomGraph,
 		final org.drip.graph.treebuilder.OptimalSpanningForestGenerator minimumSpanningForestGenerator)
 		throws java.lang.Exception
 	{
@@ -266,7 +266,7 @@ public class CompleteRandomGraphEnsemble
 	 * @return The Underlying Complete Random Graph
 	 */
 
-	public org.drip.graph.mst.CompleteRandomGraph completeRandomGraph()
+	public org.drip.graph.mst.CompleteRandomGraph<?> completeRandomGraph()
 	{
 		return _completeRandomGraph;
 	}
@@ -293,7 +293,7 @@ public class CompleteRandomGraphEnsemble
 	public double length()
 		throws java.lang.Exception
 	{
-		org.drip.graph.core.Forest minimumSpanningForest =
+		org.drip.graph.core.Forest<?> minimumSpanningForest =
 			_minimumSpanningForestGenerator.optimalSpanningForest();
 
 		if (null == minimumSpanningForest)

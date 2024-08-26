@@ -138,7 +138,7 @@ public class YenReducedRelaxationPathGenerator
 	 */
 
 	public YenReducedRelaxationPathGenerator (
-		final org.drip.graph.core.DirectedGraph graph,
+		final org.drip.graph.core.Directed<?> graph,
 		final boolean shortestPath,
 		final org.drip.graph.astar.FHeuristic fHeuristic)
 		throws java.lang.Exception

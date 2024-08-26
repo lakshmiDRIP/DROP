@@ -1,6 +1,8 @@
 
 package org.drip.measure.crng;
 
+import org.drip.numerical.eigen.EigenOutput;
+import org.drip.numerical.matrix.R1SquareEigenized;
 import org.drip.numerical.matrix.R1Triangular;
 
 /*
@@ -402,5 +404,34 @@ public class RandomMatrixGenerator
     	}
 
 		return R1Triangular.Standard (r2Array);
+	}
+
+	/**
+	 * Construct an Eigenized Square Matrix of Random Elements up to the Maximum Value
+	 * 
+	 * @param elementCount Number of Elements in the Array
+	 * @param maximumElement Maximum Element
+	 * @param isEntryInteger TRUE - Entry is an Integer
+	 * 
+	 * @return Eigenized Square Matrix of Random Elements up to the Maximum Value
+	 */
+
+	public static final R1SquareEigenized EigenizedR1Square (
+		final int elementCount,
+		final double maximumElement,
+		final boolean isEntryInteger)
+	{
+		try {
+			return R1SquareEigenized.Standard (
+				new EigenOutput (
+					RdRandomSequence.TwoD (elementCount, maximumElement, isEntryInteger),
+					RdRandomSequence.OneD (elementCount, maximumElement, isEntryInteger)
+				)
+			);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return null;
 	}
 }

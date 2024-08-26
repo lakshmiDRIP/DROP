@@ -117,7 +117,7 @@ package org.drip.graph.shortestpath;
 public class FloydWarshall
 {
 	private boolean _shortestPath = false;
-	private org.drip.graph.core.DirectedGraph _graph = null;
+	private org.drip.graph.core.Directed<?> _graph = null;
 	private org.drip.graph.astar.FHeuristic _fHeuristic = null;
 
 	/**
@@ -131,7 +131,7 @@ public class FloydWarshall
 	 */
 
 	public FloydWarshall (
-		final org.drip.graph.core.DirectedGraph graph,
+		final org.drip.graph.core.Directed<?> graph,
 		final boolean shortestPath,
 		final org.drip.graph.astar.FHeuristic fHeuristic)
 		throws java.lang.Exception
@@ -153,7 +153,7 @@ public class FloydWarshall
 	 * @return Graph underlying the Path Generator
 	 */
 
-	public org.drip.graph.core.DirectedGraph graph()
+	public org.drip.graph.core.Directed<?> graph()
 	{
 		return _graph;
 	}

@@ -120,7 +120,7 @@ public abstract class DirectedGraphMSTGenerator
 	extends org.drip.graph.treebuilder.OptimalSpanningForestGenerator
 {
 	protected DirectedGraphMSTGenerator (
-		final org.drip.graph.core.DirectedGraph graph,
+		final org.drip.graph.core.Directed<?> graph,
 		final boolean maximum)
 		throws java.lang.Exception
 	{

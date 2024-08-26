@@ -122,7 +122,7 @@ public abstract class SteinerTreeGenerator
 	private java.util.Set<java.lang.String> _vertexNameSet = null;
 
 	protected SteinerTreeGenerator (
-		final org.drip.graph.core.DirectedGraph graph,
+		final org.drip.graph.core.Directed<?> graph,
 		final boolean maximum,
 		final java.util.Set<java.lang.String> vertexNameSet)
 		throws java.lang.Exception

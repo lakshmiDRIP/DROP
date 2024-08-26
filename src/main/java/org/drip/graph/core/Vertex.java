@@ -111,12 +111,32 @@ package org.drip.graph.core;
  * @author Lakshmi Krishnamurthy
  */
 
-public class Vertex
+public class Vertex<V>
 {
+	private V _value = null;
 	private java.lang.String _name = "";
 	private java.util.Map<java.lang.String, org.drip.graph.core.Edge> _edgeMap = null;
 	private java.util.Map<java.lang.String, java.lang.Integer> _destinationCounterMap = null;
 
+	/**
+	 * Construct a Standard, Non-templated Instance of Vertex
+	 * 
+	 * @param name Vertex Name
+	 * 
+	 * @return Standard, Non-templated Instance of Vertex
+	 */
+
+	public static Vertex<?> Standard (
+		final String name)
+	{
+		try {
+			return new Vertex<> (name, null);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return null;
+	}
 
 	private int incrementDestinationEdgeCounterMap (
 		final java.lang.String destinationVertexName)
@@ -175,12 +195,14 @@ public class Vertex
 	 * Vertex Constructor
 	 * 
 	 * @param name The Vertex Name
+	 * @param value The Vertex Value
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public Vertex (
-		final java.lang.String name)
+		final java.lang.String name,
+		final V value)
 		throws java.lang.Exception
 	{
 		if (null == (_name = name) || _name.isEmpty())
@@ -189,6 +211,8 @@ public class Vertex
 				"Vertex Constructor => Invalid Inputs"
 			);
 		}
+
+		_value = value;
 
 		_edgeMap = new org.drip.analytics.support.CaseInsensitiveHashMap<org.drip.graph.core.Edge>();
 
@@ -204,6 +228,17 @@ public class Vertex
 	public java.lang.String name()
 	{
 		return _name;
+	}
+
+	/**
+	 * Retrieve the Vertex Value
+	 * 
+	 * @return The Vertex Value
+	 */
+
+	public V value()
+	{
+		return _value;
 	}
 
 	/**

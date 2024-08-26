@@ -114,7 +114,7 @@ package org.drip.graph.mstgreedy;
  * @author Lakshmi Krishnamurthy
  */
 
-public class KruskalGenerator
+public class KruskalGenerator<V>
 	extends org.drip.graph.treebuilder.OptimalSpanningForestGenerator
 {
 
@@ -128,7 +128,7 @@ public class KruskalGenerator
 	 */
 
 	public KruskalGenerator (
-		final org.drip.graph.core.DirectedGraph graph,
+		final org.drip.graph.core.Directed<?> graph,
 		final boolean maximum)
 		throws java.lang.Exception
 	{
@@ -138,9 +138,9 @@ public class KruskalGenerator
 		);
 	}
 
-	@Override public org.drip.graph.core.Forest optimalSpanningForest()
+	@Override public org.drip.graph.core.Forest<?> optimalSpanningForest()
 	{
-		org.drip.graph.core.Forest forest = new org.drip.graph.mstgreedy.KruskalForest();
+		org.drip.graph.core.Forest<?> forest = new org.drip.graph.mstgreedy.KruskalForest<V>();
 
 		for (java.lang.String vertexName : _graph.vertexMap().keySet())
 		{

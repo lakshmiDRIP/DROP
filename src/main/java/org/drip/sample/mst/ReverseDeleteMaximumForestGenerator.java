@@ -4,7 +4,7 @@ package org.drip.sample.mst;
 import java.util.Map;
 
 import org.drip.graph.core.Edge;
-import org.drip.graph.core.DirectedGraph;
+import org.drip.graph.core.Directed;
 import org.drip.graph.core.Tree;
 import org.drip.graph.mstgreedy.ReverseDeleteGenerator;
 import org.drip.service.env.EnvManager;
@@ -153,7 +153,7 @@ public class ReverseDeleteMaximumForestGenerator
 			"jaipur    "
 		};
 
-		DirectedGraph graph = new DirectedGraph();
+		Directed<Double> graph = new Directed<Double>();
 
 		graph.addBidirectionalEdge (
 			new Edge (
@@ -251,14 +251,14 @@ public class ReverseDeleteMaximumForestGenerator
 			)
 		);
 
-		ReverseDeleteGenerator reverseDelete = new ReverseDeleteGenerator (
+		ReverseDeleteGenerator<?> reverseDelete = new ReverseDeleteGenerator<Double> (
 			graph,
 			true
 		);
 
-		Map<String, Tree> maximumSpanningForest = reverseDelete.optimalSpanningForest().treeMap();
+		Map<String, Tree<?>> maximumSpanningForest = reverseDelete.optimalSpanningForest().treeMap();
 
-		for (Tree maximumSpanningTree : maximumSpanningForest.values())
+		for (Tree<?> maximumSpanningTree : maximumSpanningForest.values())
 		{
 			System.out.println (
 				"\t|-----------------------------------------------------------------------------------|"

@@ -114,7 +114,7 @@ package org.drip.graph.search;
 
 public class BreadthFirst
 {
-	private org.drip.graph.core.Network _network = null;
+	private org.drip.graph.core.Network<?> _network = null;
 
 	/**
 	 * BreadthFirst Constructor
@@ -125,7 +125,7 @@ public class BreadthFirst
 	 */
 
 	public BreadthFirst (
-		final org.drip.graph.core.Network network)
+		final org.drip.graph.core.Network<?> network)
 		throws java.lang.Exception
 	{
 		if (null == (_network = network))
@@ -142,7 +142,7 @@ public class BreadthFirst
 	 * @return The Graph Network
 	 */
 
-	public org.drip.graph.core.Network network()
+	public org.drip.graph.core.Network<?> network()
 	{
 		return _network;
 	}
@@ -174,7 +174,7 @@ public class BreadthFirst
 			vertexName
 		);
 
-		java.util.Map<java.lang.String, org.drip.graph.core.Vertex> vertexMap = _network.vertexMap();
+		java.util.Map<java.lang.String, org.drip.graph.core.Vertex<?>> vertexMap = _network.vertexMap();
 
 		while (!processVertexList.isEmpty())
 		{
@@ -189,7 +189,7 @@ public class BreadthFirst
 				return false;
 			}
 
-			org.drip.graph.core.Vertex currentVertex = vertexMap.get (
+			org.drip.graph.core.Vertex<?> currentVertex = vertexMap.get (
 				currentVertexName
 			);
 

@@ -120,7 +120,7 @@ public abstract class RectilinearMSTGenerator
 	extends org.drip.graph.treebuilder.OptimalSpanningForestGenerator
 {
 	protected RectilinearMSTGenerator (
-		final org.drip.graph.core.DirectedGraph graph,
+		final org.drip.graph.core.Directed<?> graph,
 		final boolean maximum)
 		throws java.lang.Exception
 	{

@@ -4,7 +4,7 @@ package org.drip.sample.connectivity;
 import java.util.Map;
 
 import org.drip.graph.connectivity.Kosaraju;
-import org.drip.graph.core.DirectedGraph;
+import org.drip.graph.core.Directed;
 import org.drip.graph.core.Edge;
 import org.drip.service.env.EnvManager;
 
@@ -155,7 +155,7 @@ public class KosarajuSCC
 			"Jaipur    "
 		};
 
-		DirectedGraph graph = new DirectedGraph();
+		Directed<Double> graph = new Directed<Double>();
 
 		graph.addBidirectionalEdge (
 			new Edge (

@@ -119,7 +119,7 @@ package org.drip.graph.mstgreedy;
  * @author Lakshmi Krishnamurthy
  */
 
-public class PrimGenerator
+public class PrimGenerator<V>
 	extends org.drip.graph.treebuilder.OptimalSpanningForestGenerator
 {
 
@@ -129,7 +129,7 @@ public class PrimGenerator
 		final java.util.Set<java.lang.String> visitedVertexSet,
 		final java.lang.String currentVertexName)
 	{
-		org.drip.graph.core.Vertex currentVertex = _graph.vertexMap().get (
+		org.drip.graph.core.Vertex<?> currentVertex = _graph.vertexMap().get (
 			currentVertexName
 		);
 
@@ -155,7 +155,7 @@ public class PrimGenerator
 	}
 
 	private java.lang.String uncoveredVertex (
-		final org.drip.graph.core.Forest forest)
+		final org.drip.graph.core.Forest<?> forest)
 	{
 		java.util.Set<java.lang.String> graphVertexNameSet = _graph.vertexNameSet();
 
@@ -184,7 +184,7 @@ public class PrimGenerator
 	 */
 
 	public PrimGenerator (
-		final org.drip.graph.core.DirectedGraph graph,
+		final org.drip.graph.core.Directed<?> graph,
 		final boolean maximum)
 		throws java.lang.Exception
 	{
@@ -202,7 +202,7 @@ public class PrimGenerator
 	 * @return The Minimum Spanning Tree
 	 */
 
-	public org.drip.graph.core.Tree minimumSpanningTree (
+	public org.drip.graph.core.Tree<?> minimumSpanningTree (
 		final java.lang.String initialVertexName)
 	{
 		if (null == initialVertexName || initialVertexName.isEmpty())
@@ -210,7 +210,7 @@ public class PrimGenerator
 			return null;
 		}
 
-		org.drip.graph.core.Tree minimumSpanningTree = new org.drip.graph.core.Tree();
+		org.drip.graph.core.Tree<?> minimumSpanningTree = new org.drip.graph.core.Tree<V>();
 
 		java.util.Set<java.lang.String> visitedVertexSet = new java.util.HashSet<java.lang.String>();
 
@@ -266,10 +266,10 @@ public class PrimGenerator
 	 * @return The Minimum Spanning Forest
 	 */
 
-	public org.drip.graph.core.Forest minimumSpanningForest (
+	public org.drip.graph.core.Forest<?> minimumSpanningForest (
 		final java.lang.String initialVertexName)
 	{
-		org.drip.graph.core.Tree minimumSpanningTreeInitial = minimumSpanningTree (
+		org.drip.graph.core.Tree<?> minimumSpanningTreeInitial = minimumSpanningTree (
 			initialVertexName
 		);
 
@@ -278,7 +278,7 @@ public class PrimGenerator
 			return null;
 		}
 
-		org.drip.graph.core.Forest forest = new org.drip.graph.core.Forest();
+		org.drip.graph.core.Forest<?> forest = new org.drip.graph.core.Forest<V>();
 
 		if (!forest.addTree (
 			initialVertexName,
@@ -295,7 +295,7 @@ public class PrimGenerator
 
 		while (!uncoveredVertex.isEmpty())
 		{
-			org.drip.graph.core.Tree minimumSpanningTree = minimumSpanningTree (
+			org.drip.graph.core.Tree<?> minimumSpanningTree = minimumSpanningTree (
 				initialVertexName
 			);
 
@@ -318,7 +318,7 @@ public class PrimGenerator
 		return forest;
 	}
 
-	@Override public org.drip.graph.core.Forest optimalSpanningForest()
+	@Override public org.drip.graph.core.Forest<?> optimalSpanningForest()
 	{
 		java.lang.String initialVertexName = _graph.initialVertexName();
 

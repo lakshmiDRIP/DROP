@@ -8,7 +8,7 @@ import java.util.Set;
 import org.drip.analytics.support.CaseInsensitiveHashMap;
 import org.drip.graph.core.Edge;
 import org.drip.graph.core.CompleteBipartite;
-import org.drip.graph.core.DirectedGraph;
+import org.drip.graph.core.Directed;
 import org.drip.graph.core.Tree;
 import org.drip.graph.mstgreedy.KruskalGenerator;
 import org.drip.graph.mstgreedy.PrimGenerator;
@@ -276,7 +276,7 @@ public class CompleteBipartiteProperties
 			1782.
 		);
 
-		DirectedGraph graph = new CompleteBipartite (
+		Directed<?> graph = new CompleteBipartite<Double> (
 			VertexNameSet (
 				vertexNameArrayP
 			),
@@ -340,14 +340,14 @@ public class CompleteBipartiteProperties
 
 		System.out.println();
 
-		KruskalGenerator kruskal = new KruskalGenerator (
+		KruskalGenerator<?> kruskal = new KruskalGenerator<Double> (
 			graph,
 			false
 		);
 
-		Map<String, Tree> minimumSpanningForest = kruskal.optimalSpanningForest().treeMap();
+		Map<String, Tree<?>> minimumSpanningForest = kruskal.optimalSpanningForest().treeMap();
 
-		for (Tree minimumSpanningTree : minimumSpanningForest.values())
+		for (Tree<?> minimumSpanningTree : minimumSpanningForest.values())
 		{
 			System.out.println (
 				"\t|-----------------------------------------------------------------------------------|"
@@ -383,14 +383,14 @@ public class CompleteBipartiteProperties
 
 		System.out.println();
 
-		PrimGenerator prim = new PrimGenerator (
+		PrimGenerator<?> prim = new PrimGenerator<Double> (
 			graph,
 			false
 		);
 
 		minimumSpanningForest = prim.optimalSpanningForest().treeMap();
 
-		for (Tree minimumSpanningTree : minimumSpanningForest.values())
+		for (Tree<?> minimumSpanningTree : minimumSpanningForest.values())
 		{
 			System.out.println (
 				"\t|-----------------------------------------------------------------------------------|"

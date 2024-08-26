@@ -110,10 +110,10 @@ package org.drip.graph.core;
  * @author Lakshmi Krishnamurthy
  */
 
-public class Forest
+public class Forest<V>
 {
 	private java.util.Set<java.lang.String> _vertexSet = null;
-	private java.util.Map<java.lang.String, org.drip.graph.core.Tree> _treeMap = null;
+	private java.util.Map<java.lang.String, org.drip.graph.core.Tree<?>> _treeMap = null;
 	private java.util.Map<java.lang.String, java.lang.String> _containingTreeNameMap = null;
 
 	/**
@@ -124,7 +124,7 @@ public class Forest
 	{
 		_vertexSet = new java.util.HashSet<java.lang.String>();
 
-		_treeMap = new org.drip.analytics.support.CaseInsensitiveHashMap<org.drip.graph.core.Tree>();
+		_treeMap = new org.drip.analytics.support.CaseInsensitiveHashMap<org.drip.graph.core.Tree<?>>();
 
 		_containingTreeNameMap = new org.drip.analytics.support.CaseInsensitiveHashMap<java.lang.String>();
 	}
@@ -135,7 +135,7 @@ public class Forest
 	 * @return Map of Trees in the Forest
 	 */
 
-	public java.util.Map<java.lang.String, org.drip.graph.core.Tree> treeMap()
+	public java.util.Map<java.lang.String, org.drip.graph.core.Tree<?>> treeMap()
 	{
 		return _treeMap;
 	}
@@ -173,7 +173,7 @@ public class Forest
 
 	public boolean unitVertexTree (
 		final java.lang.String vertexName,
-		final org.drip.graph.core.DirectedGraph graph)
+		final org.drip.graph.core.Directed<?> graph)
 	{
 		if (null == vertexName || vertexName.isEmpty() ||
 			null == graph)
@@ -181,7 +181,7 @@ public class Forest
 			return false;
 		}
 
-		org.drip.graph.core.Tree tree = new org.drip.graph.core.Tree();
+		org.drip.graph.core.Tree<V> tree = new org.drip.graph.core.Tree<V>();
 
 		if (!tree.addStandaloneVertex (
 			vertexName
@@ -215,8 +215,8 @@ public class Forest
 
 	public boolean addTree (
 		final java.lang.String treeName,
-		final org.drip.graph.core.Tree tree,
-		final org.drip.graph.core.DirectedGraph graph)
+		final org.drip.graph.core.Tree<?> tree,
+		final org.drip.graph.core.Directed<?> graph)
 	{
 		if (null == treeName || _treeMap.containsKey (
 				treeName
@@ -284,7 +284,7 @@ public class Forest
 	 * @return Tree that contains the specified Vertex
 	 */
 
-	public org.drip.graph.core.Tree containingTree (
+	public org.drip.graph.core.Tree<?> containingTree (
 		final java.lang.String vertexName)
 	{
 		return containsVertex (
@@ -307,7 +307,7 @@ public class Forest
 
 	public boolean conditionalMerge (
 		final org.drip.graph.core.Edge edge,
-		final org.drip.graph.core.DirectedGraph graph)
+		final org.drip.graph.core.Directed<?> graph)
 	{
 		if (null == edge ||
 			null == graph)
@@ -344,7 +344,7 @@ public class Forest
 			return true;
 		}
 
-		org.drip.graph.core.Tree destinationTree = _treeMap.get (
+		org.drip.graph.core.Tree<?> destinationTree = _treeMap.get (
 			destinationTreeName
 		);
 
@@ -385,7 +385,7 @@ public class Forest
 	{
 		double length = 0.;
 
-		for (org.drip.graph.core.Tree tree : _treeMap.values())
+		for (org.drip.graph.core.Tree<?> tree : _treeMap.values())
 		{
 			length = length + tree.length();
 		}

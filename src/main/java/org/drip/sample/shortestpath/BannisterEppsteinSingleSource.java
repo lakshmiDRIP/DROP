@@ -4,7 +4,7 @@ package org.drip.sample.shortestpath;
 import java.util.List;
 
 import org.drip.graph.bellmanford.BannisterEppsteinPathGenerator;
-import org.drip.graph.core.DirectedGraph;
+import org.drip.graph.core.Directed;
 import org.drip.graph.core.Edge;
 import org.drip.graph.core.Path;
 import org.drip.graph.shortestpath.OptimalPathGenerator;
@@ -157,7 +157,7 @@ public class BannisterEppsteinSingleSource
 			"Jaipur    "
 		};
 
-		DirectedGraph graph = new DirectedGraph();
+		Directed<Double> graph = new Directed<Double>();
 
 		graph.addBidirectionalEdge (
 			new Edge (

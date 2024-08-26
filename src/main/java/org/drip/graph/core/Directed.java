@@ -1,6 +1,18 @@
 
 package org.drip.graph.core;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import org.drip.analytics.support.CaseInsensitiveHashMap;
+import org.drip.function.matrix.Square;
+import org.drip.graph.search.BreadthFirst;
+import org.drip.graph.search.OrderedVertexGroup;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
@@ -76,8 +88,7 @@ package org.drip.graph.core;
  */
 
 /**
- * <i>DirectedGraph</i> implements the Vertex/Edge Topology corresponding to a Directed Graph. The References
- * 	are:
+ * <i>Directed</i> implements the Vertex/Edge Topology corresponding to a Directed Graph. The References are:
  * 
  * <br><br>
  *  <ul>
@@ -111,15 +122,14 @@ package org.drip.graph.core;
  * @author Lakshmi Krishnamurthy
  */
 
-public class DirectedGraph
-	extends org.drip.graph.core.Network
+public class Directed<V> extends Network<V>
 {
 
 	/**
-	 * DirectedGraph Constructor
+	 * Directed Constructor
 	 */
 
-	public DirectedGraph()
+	public Directed()
 	{
 		super();
 	}
@@ -133,27 +143,20 @@ public class DirectedGraph
 	 */
 
 	public boolean addGraph (
-		final org.drip.graph.core.DirectedGraph graph)
+		final Directed<V> graph)
 	{
-		if (null == graph)
-		{
+		if (null == graph) {
 			return false;
 		}
 
-		java.util.Collection<org.drip.graph.core.Edge> edgeCollection =
-			graph.edgeMap().values();
+		Collection<Edge> edgeCollection = graph.edgeMap().values();
 
-		if (null == edgeCollection || 0 == edgeCollection.size())
-		{
+		if (null == edgeCollection || 0 == edgeCollection.size()) {
 			return true;
 		}
 
-		for (org.drip.graph.core.Edge edge : edgeCollection)
-		{
-			if (!addEdge (
-				edge
-			))
-			{
+		for (Edge edge : edgeCollection) {
+			if (!addEdge (edge)) {
 				return false;
 			}
 		}
@@ -167,18 +170,14 @@ public class DirectedGraph
 	 * @return The Cloned Graph
 	 */
 
-	public DirectedGraph clone()
+	public Directed<V> clone()
 	{
-		DirectedGraph clone = new DirectedGraph();
+		Directed<V> clone = new Directed<V>();
 
-		java.util.Collection<org.drip.graph.core.Edge> edgeCollection = edgeMap().values();
+		Collection<Edge> edgeCollection = edgeMap().values();
 
-		for (org.drip.graph.core.Edge edge : edgeCollection)
-		{
-			if (!clone.addEdge (
-				edge
-			))
-			{
+		for (Edge edge : edgeCollection) {
+			if (!clone.addEdge (edge)) {
 				return null;
 			}
 		}
@@ -194,30 +193,19 @@ public class DirectedGraph
 
 	public boolean isConnected()
 	{
-		if (_vertexMap.isEmpty())
-		{
+		if (_vertexMap.isEmpty()) {
 			return false;
 		}
 
-		java.util.Set<java.lang.String> vertexNameSet = _vertexMap.keySet();
+		Set<String> vertexNameSet = _vertexMap.keySet();
 
-		org.drip.graph.search.OrderedVertexGroup orderedSearch =
-			new org.drip.graph.search.OrderedVertexGroup();
+		OrderedVertexGroup orderedSearch = new OrderedVertexGroup();
 
-		try
-		{
-			if (!new org.drip.graph.search.BreadthFirst (
-				this
-			).nonRecursive (
-				initialVertexName(),
-				orderedSearch
-			))
-			{
+		try {
+			if (!new BreadthFirst (this).nonRecursive (initialVertexName(), orderedSearch)) {
 				return false;
 			}
-		}
-		catch (java.lang.Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -233,34 +221,24 @@ public class DirectedGraph
 	 */
 
 	public boolean isTreeSpanning (
-		final org.drip.graph.core.Tree tree)
+		final Tree<?> tree)
 	{
-		if (null == tree)
-		{
+		if (null == tree) {
 			return false;
 		}
 
-		java.util.Set<java.lang.String> graphVertexNameSet = new java.util.HashSet<java.lang.String>();
+		Set<String> graphVertexNameSet = new HashSet<String>();
 
-		for (org.drip.graph.core.Vertex graphVertex : _vertexMap.values())
-		{
-			graphVertexNameSet.add (
-				graphVertex.name()
-			);
+		for (Vertex<?> graphVertex : _vertexMap.values()) {
+			graphVertexNameSet.add (graphVertex.name());
 		}
 
-		for (java.lang.String treeVertexName : tree.vertexMap().keySet())
-		{
-			if (!graphVertexNameSet.contains (
-				treeVertexName
-			))
-			{
+		for (String treeVertexName : tree.vertexMap().keySet()) {
+			if (!graphVertexNameSet.contains (treeVertexName)) {
 				return false;
 			}
 
-			graphVertexNameSet.remove (
-				treeVertexName
-			);
+			graphVertexNameSet.remove (treeVertexName);
 		}
 
 		return 0 == graphVertexNameSet.size();
@@ -274,31 +252,21 @@ public class DirectedGraph
 	 * @return Set of the Fundamental Cycles using the Spanning Tree
 	 */
 
-	public java.util.Set<org.drip.graph.core.Edge> fundamentalCycleEdgeSet (
-		final org.drip.graph.core.Tree tree)
+	public Set<Edge> fundamentalCycleEdgeSet (
+		final Tree<?> tree)
 	{
-		if (null == tree)
-		{
+		if (null == tree) {
 			return null;
 		}
 
-		java.util.Set<org.drip.graph.core.Edge> edgeSet =
-			new java.util.HashSet<org.drip.graph.core.Edge> (
-				_edgeMap.values()
-			);
+		Set<Edge> edgeSet =new HashSet<Edge> (_edgeMap.values());
 
-		for (org.drip.graph.core.Edge edge : tree.edgeMap().values())
-		{
-			if (!containsEdge (
-				edge
-			))
-			{
+		for (Edge edge : tree.edgeMap().values()) {
+			if (!containsEdge (edge)) {
 				return null;
 			}
 
-			edgeSet.remove (
-				edge
-			);
+			edgeSet.remove (edge);
 		}
 
 		return edgeSet;
@@ -310,18 +278,13 @@ public class DirectedGraph
 	 * @return List of the Leaf Vertex Names
 	 */
 
-	public java.util.List<java.lang.String> leafVertexNameList()
+	public List<String> leafVertexNameList()
 	{
-		java.util.List<java.lang.String> leafVertexNameList = new java.util.ArrayList<java.lang.String>();
+		List<String> leafVertexNameList = new ArrayList<String>();
 
-		for (java.util.Map.Entry<java.lang.String, org.drip.graph.core.Vertex> vertexMapEntry :
-			_vertexMap.entrySet())
-		{
-			if (vertexMapEntry.getValue().isLeaf())
-			{
-				leafVertexNameList.add (
-					vertexMapEntry.getKey()
-				);
+		for (Map.Entry<String, Vertex<?>> vertexMapEntry : _vertexMap.entrySet()) {
+			if (vertexMapEntry.getValue().isLeaf()) {
+				leafVertexNameList.add (vertexMapEntry.getKey());
 			}
 		}
 
@@ -336,37 +299,24 @@ public class DirectedGraph
 
 	public boolean containsCycle()
 	{
-		java.util.List<java.lang.String> leafVertexNameList = leafVertexNameList();
+		List<String> leafVertexNameList = leafVertexNameList();
 
-		if (null == leafVertexNameList || 0 == leafVertexNameList.size())
-		{
+		if (null == leafVertexNameList || 0 == leafVertexNameList.size()) {
 			return true;
 		}
 
-		for (java.lang.String leafVertexName : leafVertexNameList)
-		{
-			org.drip.graph.search.OrderedVertexGroup orderedSearch =
-				new org.drip.graph.search.OrderedVertexGroup();
+		for (String leafVertexName : leafVertexNameList) {
+			OrderedVertexGroup orderedSearch = new OrderedVertexGroup();
 
-			try
-			{
-				if (!new org.drip.graph.search.BreadthFirst (
-					this
-				).nonRecursive (
-					leafVertexName,
-					orderedSearch
-				))
-				{
+			try {
+				if (!new BreadthFirst (this).nonRecursive (leafVertexName, orderedSearch)) {
 					return false;
 				}
-			}
-			catch (java.lang.Exception e)
-			{
+			} catch (Exception e) {
 				e.printStackTrace();
 			}
 
-			if (orderedSearch.containsCycle())
-			{
+			if (orderedSearch.containsCycle()) {
 				return true;
 			}
 		}
@@ -382,7 +332,7 @@ public class DirectedGraph
 
 	public boolean isCyclical()
 	{
-		java.util.List<java.lang.String> leafVertexNameList = leafVertexNameList();
+		List<String> leafVertexNameList = leafVertexNameList();
 
 		return null == leafVertexNameList || 0 == leafVertexNameList.size() ? true : false;
 	}
@@ -406,25 +356,15 @@ public class DirectedGraph
 
 	public boolean isComplete()
 	{
-		java.util.Set<java.lang.String> graphVertexNameSet = _vertexMap.keySet();
+		Set<String> graphVertexNameSet = _vertexMap.keySet();
 
-		for (java.util.Map.Entry<java.lang.String, org.drip.graph.core.Vertex> vertexMapEntry :
-			_vertexMap.entrySet())
-		{
-			java.lang.String vertexName = vertexMapEntry.getKey();
+		for (Map.Entry<String, Vertex<?>> vertexMapEntry : _vertexMap.entrySet()) {
+			String vertexName = vertexMapEntry.getKey();
 
-			java.util.Set<java.lang.String> neighborSet =
-				vertexMapEntry.getValue().neighboringVertexNameSet();
+			Set<String> neighborSet = vertexMapEntry.getValue().neighboringVertexNameSet();
 
-			for (java.lang.String graphVertexName : graphVertexNameSet)
-			{
-				if (!neighborSet.contains (
-						vertexName
-					) && !graphVertexName.equalsIgnoreCase (
-						vertexName
-					)
-				)
-				{
+			for (String graphVertexName : graphVertexNameSet) {
+				if (!neighborSet.contains (vertexName) && !graphVertexName.equalsIgnoreCase (vertexName)) {
 					return false;
 				}
 			}
@@ -443,13 +383,7 @@ public class DirectedGraph
 	{
 		int vertexCount = _vertexMap.size();
 
-		return 0.5 * _edgeMap.size() >= vertexCount * java.lang.Math.log (
-			java.lang.Math.log (
-				java.lang.Math.log (
-					vertexCount
-				)
-			)
-		);
+		return 0.5 * _edgeMap.size() >= vertexCount * Math.log (Math.log (Math.log (vertexCount)));
 	}
 
 	/**
@@ -458,16 +392,12 @@ public class DirectedGraph
 	 * @return Map of the Vertex Adjacency Degree
 	 */
 
-	public java.util.Map<java.lang.String, java.lang.Integer> vertexDegreeMap()
+	public Map<String, Integer> vertexDegreeMap()
 	{
-		java.util.Map<java.lang.String, java.lang.Integer> vertexDegreeMap =
-			new org.drip.analytics.support.CaseInsensitiveHashMap<java.lang.Integer>();
+		Map<String, Integer> vertexDegreeMap = new CaseInsensitiveHashMap<Integer>();
 
-		for (java.util.Map.Entry<java.lang.String, org.drip.graph.core.Vertex> vertexMapEntry :
-			_vertexMap.entrySet())
-		{
-			java.util.Set<java.lang.String> neighboringVertexNameSet =
-				vertexMapEntry.getValue().neighboringVertexNameSet();
+		for (Map.Entry<String, Vertex<?>> vertexMapEntry : _vertexMap.entrySet()) {
+			Set<String> neighboringVertexNameSet = vertexMapEntry.getValue().neighboringVertexNameSet();
 
 			vertexDegreeMap.put (
 				vertexMapEntry.getKey(),
@@ -488,8 +418,8 @@ public class DirectedGraph
 	 */
 
 	public boolean areVertexesAdjacent (
-		final java.lang.String vertexName1,
-		final java.lang.String vertexName2)
+		final String vertexName1,
+		final String vertexName2)
 	{
 		if (null == vertexName1 || vertexName1.isEmpty() ||
 			null == vertexName2 || vertexName2.isEmpty())
@@ -497,9 +427,7 @@ public class DirectedGraph
 			return false;
 		}
 
-		return _edgeMap.containsKey (
-			vertexName1 + "_" + vertexName2
-		);
+		return _edgeMap.containsKey (vertexName1 + "_" + vertexName2);
 	}
 
 	/**
@@ -510,22 +438,19 @@ public class DirectedGraph
 
 	public int type()
 	{
-		if (isTree())
-		{
-			return org.drip.graph.core.DirectedGraphType.TREE;
+		if (isTree()) {
+			return DirectedType.TREE;
 		}
 
-		if (isCyclical())
-		{
-			return org.drip.graph.core.DirectedGraphType.CYCLICAL;
+		if (isCyclical()) {
+			return DirectedType.CYCLICAL;
 		}
 
-		if (isComplete())
-		{
-			return org.drip.graph.core.DirectedGraphType.COMPLETE;
+		if (isComplete()) {
+			return DirectedType.COMPLETE;
 		}
 
-		return org.drip.graph.core.DirectedGraphType.UNSPECIFIED;
+		return DirectedType.UNSPECIFIED;
 	}
 
 	/**
@@ -536,47 +461,32 @@ public class DirectedGraph
 
 	public double kirchoffSpanningTreeCount()
 	{
-		java.util.Map<java.lang.String, java.lang.Integer> vertexDegreeMap = vertexDegreeMap();
+		Map<String, Integer> vertexDegreeMap = vertexDegreeMap();
 
-		java.util.Set<java.lang.String> vertexNameSetI = vertexDegreeMap.keySet();
+		Set<String> vertexNameSetI = vertexDegreeMap.keySet();
 
-		java.util.Set<java.lang.String> vertexNameSetJ = vertexDegreeMap.keySet();
+		Set<String> vertexNameSetJ = vertexDegreeMap.keySet();
 
 		int vertexCount = vertexDegreeMap.size();
 
 		double[][] laplacianMatrix = new double[vertexCount][vertexCount];
 		double[][] laplacianMatrixCoFactor = new double[vertexCount - 1][vertexCount - 1];
 
-		for (int vertexIndexI = 0;
-			vertexIndexI < vertexCount;
-			++vertexIndexI)
-		{
-			for (int vertexIndexJ = 0;
-				vertexIndexJ < vertexCount;
-				++vertexIndexJ)
-			{
+		for (int vertexIndexI = 0; vertexIndexI < vertexCount; ++vertexIndexI) {
+			for (int vertexIndexJ = 0; vertexIndexJ < vertexCount; ++vertexIndexJ) {
 				laplacianMatrix[vertexIndexI][vertexIndexJ] = 0.;
 			}
 		}
 
 		int vertexIndexI = 0;
 
-		for (java.lang.String vertexNameI : vertexNameSetI)
-		{
+		for (String vertexNameI : vertexNameSetI) {
 			int vertexIndexJ = 0;
 
-			for (java.lang.String vertexNameJ : vertexNameSetJ)
-			{
-				if (vertexNameI.equalsIgnoreCase (
-					vertexNameJ
-				))
-				{
-					laplacianMatrix[vertexIndexI][vertexIndexJ] = vertexDegreeMap.get (
-						vertexNameI
-					);
-				}
-				else
-				{
+			for (String vertexNameJ : vertexNameSetJ) {
+				if (vertexNameI.equalsIgnoreCase (vertexNameJ)) {
+					laplacianMatrix[vertexIndexI][vertexIndexJ] = vertexDegreeMap.get (vertexNameI);
+				} else {
 					laplacianMatrix[vertexIndexI][vertexIndexJ] = areVertexesAdjacent (
 						vertexNameI,
 						vertexNameJ
@@ -589,27 +499,16 @@ public class DirectedGraph
 			++vertexIndexI;
 		}
 
-		for (vertexIndexI = 0;
-			vertexIndexI < vertexCount - 1;
-			++vertexIndexI)
-		{
-			for (int vertexIndexJ = 0;
-				vertexIndexJ < vertexCount - 1;
-				++vertexIndexJ)
-			{
+		for (vertexIndexI = 0; vertexIndexI < vertexCount - 1; ++vertexIndexI) {
+			for (int vertexIndexJ = 0; vertexIndexJ < vertexCount - 1; ++vertexIndexJ) {
 				laplacianMatrixCoFactor[vertexIndexI][vertexIndexJ] =
 					laplacianMatrix[vertexIndexI][vertexIndexJ];
 			}
 		}
 
-		try
-		{
-			return new org.drip.function.matrix.Square (
-				laplacianMatrixCoFactor
-			).determinant();
-		}
-		catch (java.lang.Exception e)
-		{
+		try {
+			return new Square (laplacianMatrixCoFactor).determinant();
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -624,31 +523,24 @@ public class DirectedGraph
 
 	public double spanningTreeCount()
 	{
-		if (!isConnected())
-		{
+		if (!isConnected()) {
 			return 0;
 		}
 
 		int type = type();
 
-		if (type == org.drip.graph.core.DirectedGraphType.TREE)
-		{
+		if (type == DirectedType.TREE) {
 			return 1;
 		}
 
-		if (type == org.drip.graph.core.DirectedGraphType.CYCLICAL)
-		{
+		if (type == DirectedType.CYCLICAL) {
 			return _vertexMap.size();
 		}
 
-		if (type == org.drip.graph.core.DirectedGraphType.COMPLETE)
-		{
+		if (type == DirectedType.COMPLETE) {
 			int n = _vertexMap.size();
 
-			return java.lang.Math.pow (
-				n,
-				n - 2
-			);
+			return Math.pow (n, n - 2);
 		}
 
 		return kirchoffSpanningTreeCount();
@@ -660,36 +552,24 @@ public class DirectedGraph
 	 * @return The Transposed Graph
 	 */
 
-	public DirectedGraph Transpose()
+	public Directed<V> Transpose()
 	{
-		java.util.Collection<org.drip.graph.core.Edge> edgeCollection = _edgeMap.values();
+		Collection<Edge> edgeCollection = _edgeMap.values();
 
-		DirectedGraph directedGraphTranspose = new DirectedGraph();
+		Directed<V> directedGraphTranspose = new Directed<V>();
 
-		if (!edgeCollection.isEmpty())
-		{
-			for (org.drip.graph.core.Edge edge : edgeCollection)
-			{
-				if (!directedGraphTranspose.addEdge (
-					edge.invert()
-				))
-				{
+		if (!edgeCollection.isEmpty()) {
+			for (Edge edge : edgeCollection) {
+				if (!directedGraphTranspose.addEdge (edge.invert())) {
 					return null;
 				}
 			}
-		}
-		else
-		{
-			java.util.Collection<org.drip.graph.core.Vertex> vertexCollection = _vertexMap.values();
+		} else {
+			Collection<Vertex<?>> vertexCollection = _vertexMap.values();
 
-			if (!vertexCollection.isEmpty())
-			{
-				for (org.drip.graph.core.Vertex vertex : vertexCollection)
-				{
-					if (!directedGraphTranspose.addVertex (
-						vertex.name()
-					))
-					{
+			if (!vertexCollection.isEmpty()) {
+				for (Vertex<?> vertex : vertexCollection) {
+					if (!directedGraphTranspose.addVertex (vertex.name())) {
 						return null;
 					}
 				}

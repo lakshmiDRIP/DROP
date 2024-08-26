@@ -128,7 +128,7 @@ public class FloydWarshallDistanceMatrix
 	 */
 
 	public static final FloydWarshallDistanceMatrix FromGraph (
-		final org.drip.graph.core.DirectedGraph graph)
+		final org.drip.graph.core.Directed<?> graph)
 	{
 		if (null == graph || graph.isEmpty())
 		{
