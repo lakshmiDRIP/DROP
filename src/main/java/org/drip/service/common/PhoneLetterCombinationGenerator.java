@@ -268,7 +268,7 @@ public class PhoneLetterCombinationGenerator
 	/**
 	 * Entry Point
 	 * 
-	 * @param args Input Arguments
+	 * @param argumentArray Input Arguments
 	 */
 
 	public static final void main (

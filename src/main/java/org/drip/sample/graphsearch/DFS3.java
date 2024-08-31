@@ -144,7 +144,7 @@ public class DFS3
 			"Jaipur    "
 		};
 
-		Directed graph = new Directed();
+		Directed<Double> graph = new Directed<Double>();
 
 		graph.addBidirectionalEdge (
 			new Edge (

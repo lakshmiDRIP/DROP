@@ -272,6 +272,21 @@ abstract public class Network<V>
 	}
 
 	/**
+	 * Retrieve the Value contained in the Vertex
+	 * 
+	 * @param vertexName Vertex Name
+	 * 
+	 * @return Value contained in the Vertex
+	 */
+
+	@SuppressWarnings ("unchecked") public V vertexValue (
+		final String vertexName)
+	{
+		return null == vertexName || vertexName.isEmpty() || _vertexMap.containsKey (vertexName) ?
+			null : (V) _vertexMap.get (vertexName).value();
+	}
+
+	/**
 	 * Add a Vertex to the Network
 	 *  
 	 * @param vertexName The Vertex Name

@@ -5,7 +5,7 @@ import java.util.Map;
 
 import org.drip.function.definition.R2ToR1;
 import org.drip.graph.mst.SteeleCompleteUniformRandomEntry;
-import org.drip.graph.mst.SteeleCompleteUniformRandomMST;
+import org.drip.graph.mst.SteeleCompleteUniformRandomTree;
 import org.drip.measure.gamma.R1ShapeScaleDistribution;
 import org.drip.service.common.FormatUtil;
 import org.drip.service.env.EnvManager;
@@ -149,7 +149,7 @@ public class CompleteUniformRandomSteele
 
 		int digammaTermCount = 1000;
 
-		SteeleCompleteUniformRandomMST.Init();
+		SteeleCompleteUniformRandomTree.Init();
 
 		System.out.println ("\t|---------------------------------------------------||");
 
@@ -160,14 +160,14 @@ public class CompleteUniformRandomSteele
 		System.out.println (
 			"\t| U[0, 1] Asymptotic Frieze MST Length => " +
 			FormatUtil.FormatDouble (
-				SteeleCompleteUniformRandomMST.AsymptoticFriezeMSTLength(), 1, 6, 1.
+				SteeleCompleteUniformRandomTree.AsymptoticFriezeMSTLength(), 1, 6, 1.
 			) + " ||"
 		);
 
 		System.out.println (
 			"\t| Gamma Asymptotic Frieze MST Length   => " +
 			FormatUtil.FormatDouble (
-				SteeleCompleteUniformRandomMST.AsymptoticFriezeMSTLength (
+				SteeleCompleteUniformRandomTree.AsymptoticFriezeMSTLength (
 					R1ShapeScaleDistribution.ShapeRate (
 						1.,
 						1.,
@@ -220,7 +220,7 @@ public class CompleteUniformRandomSteele
 		System.out.println ("\t|---------------------------------------------------||");
 
 		for (Map.Entry<Integer, SteeleCompleteUniformRandomEntry> vertexCountMapEntry :
-			SteeleCompleteUniformRandomMST.VertexCountMap().entrySet())
+			SteeleCompleteUniformRandomTree.VertexCountMap().entrySet())
 		{
 			SteeleCompleteUniformRandomEntry steeleCompleteUniformRandomEntry =
 				vertexCountMapEntry.getValue();

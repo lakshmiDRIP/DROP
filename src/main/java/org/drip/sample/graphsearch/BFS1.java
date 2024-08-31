@@ -137,7 +137,7 @@ public class BFS1
 			""
 		);
 
-		Directed graph = new Directed();
+		Directed<Double> graph = new Directed<Double>();
 
 		graph.addBidirectionalEdge (
 			new Edge (

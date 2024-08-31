@@ -76,7 +76,7 @@ package org.drip.graph.mst;
  */
 
 /**
- * <i>SteeleCompleteUniformRandomMST</i> holds the Expected Length of the MST computed by Steele (2002) for
+ * <i>SteeleCompleteUniformRandomTree</i> holds the Expected Length of the MST computed by Steele (2002) for
  * 	Graphs with small Number of Vertexes. The References are:
  * 
  * <br><br>
@@ -116,7 +116,7 @@ package org.drip.graph.mst;
  * @author Lakshmi Krishnamurthy
  */
 
-public class SteeleCompleteUniformRandomMST
+public class SteeleCompleteUniformRandomTree
 {
 	private static final
 		java.util.Map<java.lang.Integer, org.drip.graph.mst.SteeleCompleteUniformRandomEntry>
@@ -289,7 +289,7 @@ public class SteeleCompleteUniformRandomMST
 		if (null == r1Univariate)
 		{
 			throw new java.lang.Exception (
-				"SteeleCompleteUniformRandomMST::AsymptoticFriezeMSTLength => Invalid Inputs"
+				"SteeleCompleteUniformRandomTree::AsymptoticFriezeMSTLength => Invalid Inputs"
 			);
 		}
 

@@ -138,7 +138,7 @@ public class DFS2
 			""
 		);
 
-		Directed graph = new Directed();
+		Directed<Double> graph = new Directed<Double>();
 
 		graph.addEdge (
 			new Edge (
