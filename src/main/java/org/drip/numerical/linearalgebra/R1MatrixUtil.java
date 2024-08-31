@@ -216,6 +216,30 @@ public class R1MatrixUtil
 	}
 
 	/**
+	 * Compute the Power of the Input Matrix. Unsafe Methods do not validate the Input Arguments, so <b>use
+	 * 	caution</b> in applying these Methods
+	 * 
+	 * @param a Vector A
+	 * 
+	 * @return The Power Matrix
+	 */
+
+	public static final double[][] UnsafePower (
+		final double[][] a,
+		final int k)
+	{
+		double[][] aPower = a;
+
+		for (int i = 2; i <= k; ++i) {
+			if (null == (aPower = UnsafeProduct (aPower, a))) {
+				return null;
+			}
+		}
+
+		return aPower;
+	}
+
+	/**
 	 * Orthogonalize the Specified Matrix Using the RQ Graham-Schmidt Method. Unsafe Methods do not validate
 	 * 	the Input Arguments, so <b>use caution</b> in applying these Methods
 	 * 
@@ -444,6 +468,22 @@ public class R1MatrixUtil
 		return null == a || 0 == a.length || 0 == a[0].length ||
 			null == b || a[0].length != b.length || 0 == b[0].length ?
 			null : UnsafeProduct (a, b);
+	}
+
+	/**
+	 * Compute the Power of the Input Matrix
+	 * 
+	 * @param a Matrix A
+	 * @param k Power Exponent
+	 * 
+	 * @return The Matrix Power
+	 */
+
+	public static final double[][] Power (
+		final double[][] a,
+		final int k)
+	{
+		return null == a || 0 == a.length || 0 == a[0].length || 0 >= k ? null : UnsafePower (a, k);
 	}
 
 	/**

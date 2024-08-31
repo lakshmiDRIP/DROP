@@ -115,7 +115,7 @@ package org.drip.numerical.estimation;
  * @author Lakshmi Krishnamurthy
  */
 
-public class R0ToR1Series extends org.drip.numerical.estimation.RxToR1Series
+public class R0ToR1Series extends org.drip.numerical.estimation.RkToR1Series
 {
 	private boolean _cumulative = false;
 	private org.drip.numerical.estimation.R0ToR1SeriesTerm _r0Tor1SeriesTerm = null;

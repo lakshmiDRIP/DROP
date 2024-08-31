@@ -322,6 +322,22 @@ public class R1Square
 	}
 
 	/**
+	 * Compute the k<sup>th</sup> Power
+	 * 
+	 * @param k Power k
+	 * 
+	 * @return k<sup>th</sup> Power
+	 */
+
+	public R1Square power (
+		final int k)
+	{
+		double[][] powerR1Grid = R1MatrixUtil.UnsafePower (_r1Grid, k);
+
+		return null == powerR1Grid ? null : new R1Square (powerR1Grid);
+	}
+
+	/**
 	 * Retrieve the Eigenvalue Multiplicity Map
 	 * 
 	 * @return Eigenvalue Multiplicity Map

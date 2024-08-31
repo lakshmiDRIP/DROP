@@ -1,15 +1,12 @@
 
-package org.drip.numerical.estimation;
+package org.drip.numerical.matrixnorm;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
- * Copyright (C) 2022 Lakshmi Krishnamurthy
- * Copyright (C) 2021 Lakshmi Krishnamurthy
- * Copyright (C) 2020 Lakshmi Krishnamurthy
- * Copyright (C) 2019 Lakshmi Krishnamurthy
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
  * 
  *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
  *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
@@ -77,78 +74,57 @@ package org.drip.numerical.estimation;
  */
 
 /**
- * <i>RxToR1Series</i> contains the R<sup>x</sup> To R<sup>1</sup> Expansion Terms in the Ordered Series of
- * the Numerical Estimate for a Function. The References are:
+ * <i>R1SquareEvaluatorValidator</i> contains the Validation Criteria of the Norm Evaluator of a
+ * 	R<sup>1</sup> Square Matrix. The References are:
  * 
  * <br><br>
  * 	<ul>
  * 		<li>
- * 			Mortici, C. (2011): Improved Asymptotic Formulas for the Gamma Function <i>Computers and
- * 				Mathematics with Applications</i> <b>61 (11)</b> 3364-3369
+ * 			Alon, N., and A. Naor (2004): Approximating the Cut-norm via Grothendieck Inequality
+ * 				<i>Proceedings of the 36<sup>th</sup> Annual ACM Symposium on Theory of Computing STOC’04</i>
+ * 				<b>ACM</b> Chicago IL
  * 		</li>
  * 		<li>
- * 			National Institute of Standards and Technology (2018): NIST Digital Library of Mathematical
- * 				Functions https://dlmf.nist.gov/5.11
+ * 			Golub, G. H., and C. F. van Loan (1996): <i>Matrix Computations 3<sup>rd</sup> Edition</i>
+ * 				<b>Johns Hopkins University Press</b> Baltimore MD
  * 		</li>
  * 		<li>
- * 			Nemes, G. (2010): On the Coefficients of the Asymptotic Expansion of n!
- * 				https://arxiv.org/abs/1003.2907 <b>arXiv</b>
+ * 			Horn, R. A., and C. R. Johnson (2013): <i>Matrix Analysis 2<sup>nd</sup> Edition</i> <b>Cambridge
+ * 				University Press</b> Cambridge UK
  * 		</li>
  * 		<li>
- * 			Toth V. T. (2016): Programmable Calculators – The Gamma Function
- * 				http://www.rskey.org/CMS/index.php/the-library/11
+ * 			Lazslo, L. (2012): <i>Large Networks and Graph Limits</i> <b>American Mathematical Society</b>
+ * 				Providence RI
  * 		</li>
  * 		<li>
- * 			Wikipedia (2019): Stirling's Approximation
- * 				https://en.wikipedia.org/wiki/Stirling%27s_approximation
+ * 			Wikipedia (2024): Matrix Norm https://en.wikipedia.org/wiki/Matrix_norm
  * 		</li>
  * 	</ul>
- *
- *	<br><br>
+ * 
+ * <br><br>
  *  <ul>
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md">Numerical Analysis Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/numerical">Numerical Quadrature, Differentiation, Eigenization, Linear Algebra, and Utilities</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/numerical/estimation/README.md">Function Numerical Estimates/Corrections/Bounds</a></li>
+ *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/numerical/README.md">Numerical Quadrature, Differentiation, Eigenization, Linear Algebra, and Utilities</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/numerical/matrixnorm/README.md">Implementation of Matrix Norm Variants</a></li>
  *  </ul>
+ * <br><br>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public abstract class RxToR1Series extends org.drip.function.definition.R1ToR1
+public class R1SquareEvaluatorValidator
 {
-	private boolean _proportional = false;
-	private java.util.TreeMap<java.lang.Integer, java.lang.Double> _termWeightMap = null;
-
-	protected RxToR1Series (
-		final boolean proportional,
-		final java.util.TreeMap<java.lang.Integer, java.lang.Double> termWeightMap)
-	{
-		super (null);
-
-		_proportional = proportional;
-		_termWeightMap = termWeightMap;
-	}
+	private boolean _positiveValued = false;
 
 	/**
-	 * Indicate if the R<sup>x</sup> To R<sup>1</sup> Series Expansion Term is Proportional
+	 * Indicate if the Norm is Positive Valued
 	 * 
-	 * @return TRUE - The R<sup>x</sup> To R<sup>1</sup> Series Expansion Term is Proportional
+	 * @return TRUE - Norm is Positive Valued
 	 */
 
-	public boolean proportional()
+	public boolean positiveValued()
 	{
-		return _proportional;
-	}
-
-	/**
-	 * Retrieve the R<sup>x</sup> To R<sup>1</sup> Series Expansion Term Weight Map
-	 * 
-	 * @return The R<sup>x</sup> To R<sup>1</sup> Series Expansion Term Weight Map
-	 */
-
-	public java.util.TreeMap<java.lang.Integer, java.lang.Double> termWeightMap()
-	{
-		return _termWeightMap;
+		return _positiveValued;
 	}
 }
