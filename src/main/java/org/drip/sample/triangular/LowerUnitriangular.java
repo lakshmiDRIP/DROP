@@ -181,7 +181,7 @@ public class LowerUnitriangular
 		);
 
 		double[][] baseTransposeProduct =
-			lowerUnitriangular.product (lowerUnitriangular.transpose()).r1Grid();
+			lowerUnitriangular.multiply (lowerUnitriangular.transpose()).r1Grid();
 
 		for (int i = 0; i < lowerUnitriangularR2Array.length; ++i) {
 			System.out.println (
@@ -200,7 +200,7 @@ public class LowerUnitriangular
 		);
 
 		double[][] transposeBaseProduct =
-			lowerUnitriangular.transpose().product (lowerUnitriangular).r1Grid();
+			lowerUnitriangular.transpose().multiply (lowerUnitriangular).r1Grid();
 
 		for (int i = 0; i < lowerUnitriangularR2Array.length; ++i) {
 			System.out.println (

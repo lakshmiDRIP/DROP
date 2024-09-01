@@ -1,8 +1,6 @@
 
 package org.drip.numerical.matrixnorm;
 
-import org.drip.numerical.matrix.R1Square;
-
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
@@ -76,7 +74,8 @@ import org.drip.numerical.matrix.R1Square;
  */
 
 /**
- * <i>R1SquareEvaluator</i> exposes the Norm of a R<sup>1</sup>Square Matrix. The References are:
+ * <i>AlphaBetaEvaluator</i> exposes the row/column alpha/beta Vector Norm of a R<sup>1</sup>Square Matrix.
+ * 	The References are:
  * 
  * <br><br>
  * 	<ul>
@@ -114,68 +113,49 @@ import org.drip.numerical.matrix.R1Square;
  * @author Lakshmi Krishnamurthy
  */
 
-public abstract class R1SquareEvaluator
+public abstract class AlphaBetaEvaluator extends R1SquareEvaluator
 {
+	private int _beta = Integer.MIN_VALUE;
+	private int _alpha = Integer.MIN_VALUE;
 
 	/**
-	 * Compute the Norm of the R<sup>1</sup>Square Matrix
+	 * <i>AlphaBetaEvaluator</i> Constructor
 	 * 
-	 * @param r1Square R<sup>1</sup>Square Matrix
+	 * @param alpha Alpha Vector Norm Index
+	 * @param beta Beta Vector Norm Index
 	 * 
-	 * @return Norm of the R<sup>1</sup>Square Matrix
-	 * 
-	 * @throws Exception
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
-	public abstract double norm (
-		final R1Square r1Square
-	) throws Exception;
-
-	/**
-	 * Construct a Norm Validator for the Suite of Inputs
-	 * 
-	 * @param a Matrix A
-	 * @param b Matrix B
-	 * @param alpha Alpha Scale
-	 * 
-	 * @return The Norm Validator
-	 */
-
-	public R1SquareEvaluatorValidator validator (
-		final R1Square a,
-		final R1Square b,
-		final double alpha)
+	public AlphaBetaEvaluator (
+		final int alpha,
+		final int beta)
+		throws Exception
 	{
-		double normA = Double.NaN;
-		double normB = Double.NaN;
-		double normAB = Double.NaN;
-		double alphaNormA = Double.NaN;
-		double normAPlusB = Double.NaN;
-
-		try {
-			normA = norm (a);
-
-			normB = norm (b);
-
-			normAPlusB = norm (a.add (b));
-
-			normAB = norm (a.multiply (b));
-
-			alphaNormA = norm (a.scale (alpha));
-		} catch (Exception e) {
-			e.printStackTrace();
-
-			return null;
+		if (0 >= (_alpha = alpha) || 0 >= (_beta = beta)) {
+			throw new Exception ("AlphaBetaEvaluator Constructor => Invalid Inputs");
 		}
+	}
 
-		return R1SquareEvaluatorValidator.Standard (
-			normA,
-			a.r1Grid(),
-			normB,
-			alphaNormA,
-			alpha,
-			normAPlusB,
-			normAB
-		);
+	/**
+	 * Retrieve the Alpha Vector Norm Index
+	 * 
+	 * @return Alpha Vector Norm Index
+	 */
+
+	public int alpha()
+	{
+		return _alpha;
+	}
+
+	/**
+	 * Retrieve the Beta Vector Norm Index
+	 * 
+	 * @return Beta Vector Norm Index
+	 */
+
+	public int beta()
+	{
+		return _beta;
 	}
 }

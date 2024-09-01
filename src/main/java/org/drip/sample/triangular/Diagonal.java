@@ -176,7 +176,7 @@ public class Diagonal
 			"\t|----------------------------------------------------------------------------------||"
 		);
 
-		double[][] baseTransposeProduct = diagonal.product (diagonal.transpose()).r1Grid();
+		double[][] baseTransposeProduct = diagonal.multiply (diagonal.transpose()).r1Grid();
 
 		for (int i = 0; i < diagonalR2Array.length; ++i) {
 			System.out.println (
@@ -194,7 +194,7 @@ public class Diagonal
 			"\t|----------------------------------------------------------------------------------||"
 		);
 
-		double[][] transposeBaseProduct = diagonal.transpose().product (diagonal).r1Grid();
+		double[][] transposeBaseProduct = diagonal.transpose().multiply (diagonal).r1Grid();
 
 		for (int i = 0; i < diagonalR2Array.length; ++i) {
 			System.out.println (

@@ -181,7 +181,7 @@ public class StrictlyLower
 		);
 
 		double[][] baseTransposeProduct =
-			strictlyLowerTriangular.product (strictlyLowerTriangular.transpose()).r1Grid();
+			strictlyLowerTriangular.multiply (strictlyLowerTriangular.transpose()).r1Grid();
 
 		for (int i = 0; i < strictlyLowerTriangularR2Array.length; ++i) {
 			System.out.println (
@@ -200,7 +200,7 @@ public class StrictlyLower
 		);
 
 		double[][] transposeBaseProduct =
-			strictlyLowerTriangular.transpose().product (strictlyLowerTriangular).r1Grid();
+			strictlyLowerTriangular.transpose().multiply (strictlyLowerTriangular).r1Grid();
 
 		for (int i = 0; i < strictlyLowerTriangularR2Array.length; ++i) {
 			System.out.println (

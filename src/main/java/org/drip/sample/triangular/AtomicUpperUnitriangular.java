@@ -181,7 +181,7 @@ public class AtomicUpperUnitriangular
 		);
 
 		double[][] baseTransposeProduct =
-			atomicUpperTriangular.product (atomicUpperTriangular.transpose()).r1Grid();
+			atomicUpperTriangular.multiply (atomicUpperTriangular.transpose()).r1Grid();
 
 		for (int i = 0; i < strictlyUpperTriangularR2Array.length; ++i) {
 			System.out.println (
@@ -200,7 +200,7 @@ public class AtomicUpperUnitriangular
 		);
 
 		double[][] transposeBaseProduct =
-			atomicUpperTriangular.transpose().product (atomicUpperTriangular).r1Grid();
+			atomicUpperTriangular.transpose().multiply (atomicUpperTriangular).r1Grid();
 
 		for (int i = 0; i < strictlyUpperTriangularR2Array.length; ++i) {
 			System.out.println (

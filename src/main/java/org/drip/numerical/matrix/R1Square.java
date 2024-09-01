@@ -188,14 +188,98 @@ public class R1Square
 	}
 
 	/**
+	 * Compute the Addition with the other Square Matrix
+	 * 
+	 * @param squareMatrixOther "Other" Square Matrix
+	 * 
+	 * @return Resulting Matrix
+	 */
+
+	public R1Square add (
+		final R1Square squareMatrixOther)
+	{
+		if (null == squareMatrixOther || _r1Grid.length != squareMatrixOther.size()) {
+			return null;
+		}
+
+		double[][] r1GridOther = squareMatrixOther.r1Grid();
+
+		double[][] r1GridAddition = new double[_r1Grid.length][_r1Grid.length];
+
+		for (int rowIndex = 0; rowIndex < _r1Grid.length; ++rowIndex) {
+			for (int columnIndex = 0; columnIndex < _r1Grid.length; ++columnIndex) {
+				r1GridAddition[rowIndex][columnIndex] =
+					_r1Grid[rowIndex][columnIndex] + r1GridOther[rowIndex][columnIndex];
+			}
+		}
+
+		return new R1Square (r1GridAddition);
+	}
+
+	/**
+	 * Scale the Square Matrix
+	 * 
+	 * @param scale Scalar to Scale by
+	 * 
+	 * @return Resulting Matrix
+	 */
+
+	public R1Square scale (
+		final double scale)
+	{
+		if (!NumberUtil.IsValid (scale)) {
+			return null;
+		}
+
+		double[][] r1GridScale = new double[_r1Grid.length][_r1Grid.length];
+
+		for (int rowIndex = 0; rowIndex < _r1Grid.length; ++rowIndex) {
+			for (int columnIndex = 0; columnIndex < _r1Grid.length; ++columnIndex) {
+				r1GridScale[rowIndex][columnIndex] = _r1Grid[rowIndex][columnIndex] * scale;
+			}
+		}
+
+		return new R1Square (r1GridScale);
+	}
+
+	/**
+	 * Compute the Subtraction with the other Square Matrix
+	 * 
+	 * @param squareMatrixOther "Other" Square Matrix
+	 * 
+	 * @return Resulting Matrix
+	 */
+
+	public R1Square subtract (
+		final R1Square squareMatrixOther)
+	{
+		if (null == squareMatrixOther || _r1Grid.length != squareMatrixOther.size()) {
+			return null;
+		}
+
+		double[][] r1GridOther = squareMatrixOther.r1Grid();
+
+		double[][] r1GridSubtraction = new double[_r1Grid.length][_r1Grid.length];
+
+		for (int rowIndex = 0; rowIndex < _r1Grid.length; ++rowIndex) {
+			for (int columnIndex = 0; columnIndex < _r1Grid.length; ++columnIndex) {
+				r1GridSubtraction[rowIndex][columnIndex] =
+					_r1Grid[rowIndex][columnIndex] - r1GridOther[rowIndex][columnIndex];
+			}
+		}
+
+		return new R1Square (r1GridSubtraction);
+	}
+
+	/**
 	 * Compute the Product with the other Square Matrix
 	 * 
 	 * @param squareMatrixOther "Other" Square Matrix
 	 * 
-	 * @return Resulting Product
+	 * @return Resulting Matrix
 	 */
 
-	public R1Square product (
+	public R1Square multiply (
 		final R1Square squareMatrixOther)
 	{
 		if (null == squareMatrixOther || _r1Grid.length != squareMatrixOther.size()) {
@@ -230,9 +314,9 @@ public class R1Square
 	{
 		R1Square squareMatrixTranspose = transpose();
 
-		double[][] r1GridTransposeTimesR1Grid = product (squareMatrixTranspose).r1Grid();
+		double[][] r1GridTransposeTimesR1Grid = multiply (squareMatrixTranspose).r1Grid();
 
-		double[][] r1GridTimesR1GridTranspose = squareMatrixTranspose.product (this).r1Grid();
+		double[][] r1GridTimesR1GridTranspose = squareMatrixTranspose.multiply (this).r1Grid();
 
 		for (int i = 0; i < _r1Grid.length; ++i) {
 			for (int j = 0; j < _r1Grid.length; ++j) {

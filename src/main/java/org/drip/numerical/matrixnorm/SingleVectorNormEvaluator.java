@@ -1,8 +1,6 @@
 
 package org.drip.numerical.matrixnorm;
 
-import org.drip.numerical.matrix.R1Square;
-
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
@@ -76,7 +74,8 @@ import org.drip.numerical.matrix.R1Square;
  */
 
 /**
- * <i>R1SquareEvaluator</i> exposes the Norm of a R<sup>1</sup>Square Matrix. The References are:
+ * <i>SingleVectorNormEvaluator</i> exposes the Single Vector p-Norm of a R<sup>1</sup>Square Matrix. The
+ * 	References are:
  * 
  * <br><br>
  * 	<ul>
@@ -114,68 +113,24 @@ import org.drip.numerical.matrix.R1Square;
  * @author Lakshmi Krishnamurthy
  */
 
-public abstract class R1SquareEvaluator
+public abstract class SingleVectorNormEvaluator extends R1SquareEvaluator
 {
+	private int _p = Integer.MIN_VALUE;
 
-	/**
-	 * Compute the Norm of the R<sup>1</sup>Square Matrix
-	 * 
-	 * @param r1Square R<sup>1</sup>Square Matrix
-	 * 
-	 * @return Norm of the R<sup>1</sup>Square Matrix
-	 * 
-	 * @throws Exception
-	 */
-
-	public abstract double norm (
-		final R1Square r1Square
-	) throws Exception;
-
-	/**
-	 * Construct a Norm Validator for the Suite of Inputs
-	 * 
-	 * @param a Matrix A
-	 * @param b Matrix B
-	 * @param alpha Alpha Scale
-	 * 
-	 * @return The Norm Validator
-	 */
-
-	public R1SquareEvaluatorValidator validator (
-		final R1Square a,
-		final R1Square b,
-		final double alpha)
+	protected SingleVectorNormEvaluator (
+		final int p)
 	{
-		double normA = Double.NaN;
-		double normB = Double.NaN;
-		double normAB = Double.NaN;
-		double alphaNormA = Double.NaN;
-		double normAPlusB = Double.NaN;
+		_p = p;
+	}
 
-		try {
-			normA = norm (a);
+	/**
+	 * Retrieve the p-Norm Index
+	 * 
+	 * @return p-Norm Index
+	 */
 
-			normB = norm (b);
-
-			normAPlusB = norm (a.add (b));
-
-			normAB = norm (a.multiply (b));
-
-			alphaNormA = norm (a.scale (alpha));
-		} catch (Exception e) {
-			e.printStackTrace();
-
-			return null;
-		}
-
-		return R1SquareEvaluatorValidator.Standard (
-			normA,
-			a.r1Grid(),
-			normB,
-			alphaNormA,
-			alpha,
-			normAPlusB,
-			normAB
-		);
+	public int p()
+	{
+		return _p;
 	}
 }

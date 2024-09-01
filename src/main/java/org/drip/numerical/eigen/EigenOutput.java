@@ -265,6 +265,27 @@ public class EigenOutput
 	}
 
 	/**
+	 * Compute the Maximum Eigenvalue
+	 * 
+	 * @return Maximum Eigenvalue
+	 */
+
+	public double maximumEigenvalue()
+	{
+		double maximumEigenvalue = Math.abs (_eigenValueArray[0]);
+
+		for (int i = 1; i < _eigenValueArray.length; ++i) {
+			double absoluteEigenvalue = Math.abs (_eigenValueArray[i]);
+
+			if (maximumEigenvalue < absoluteEigenvalue) {
+				maximumEigenvalue = absoluteEigenvalue;
+			}
+		}
+
+		return maximumEigenvalue;
+	}
+
+	/**
 	 * Compute the Spectral Radius using the Eigenvalue Array
 	 * 
 	 * @return Spectral Radius
@@ -272,16 +293,17 @@ public class EigenOutput
 
 	public double spectralRadius()
 	{
-		double spectralRadius = Math.abs (_eigenValueArray[0]);
+		return maximumEigenvalue();
+	}
 
-		for (int i = 1; i < _eigenValueArray.length; ++i) {
-			double absoluteEigenvalue = Math.abs (_eigenValueArray[i]);
+	/**
+	 * Compute the Spectral Norm using the Eigenvalue Array
+	 * 
+	 * @return Spectral Norm
+	 */
 
-			if (spectralRadius < absoluteEigenvalue) {
-				spectralRadius = absoluteEigenvalue;
-			}
-		}
-
-		return spectralRadius;
+	public double spectralNorm()
+	{
+		return maximumEigenvalue();
 	}
 }

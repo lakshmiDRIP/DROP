@@ -76,7 +76,8 @@ import org.drip.numerical.matrix.R1Square;
  */
 
 /**
- * <i>R1SquareEvaluator</i> exposes the Norm of a R<sup>1</sup>Square Matrix. The References are:
+ * <i>PInfinityEvaluator</i> exposes the P<sup>Infinity</sup> Norm of a R<sup>1</sup> Square Matrix. The
+ *  References are:
  * 
  * <br><br>
  * 	<ul>
@@ -114,8 +115,17 @@ import org.drip.numerical.matrix.R1Square;
  * @author Lakshmi Krishnamurthy
  */
 
-public abstract class R1SquareEvaluator
+public class PInfinityEvaluator extends SingleVectorNormEvaluator
 {
+
+	/**
+	 * <i>PInfinityEvaluator</i> Constructor
+	 */
+
+	public PInfinityEvaluator()
+	{
+		super (Integer.MAX_VALUE);
+	}
 
 	/**
 	 * Compute the Norm of the R<sup>1</sup>Square Matrix
@@ -127,55 +137,29 @@ public abstract class R1SquareEvaluator
 	 * @throws Exception
 	 */
 
-	public abstract double norm (
-		final R1Square r1Square
-	) throws Exception;
-
-	/**
-	 * Construct a Norm Validator for the Suite of Inputs
-	 * 
-	 * @param a Matrix A
-	 * @param b Matrix B
-	 * @param alpha Alpha Scale
-	 * 
-	 * @return The Norm Validator
-	 */
-
-	public R1SquareEvaluatorValidator validator (
-		final R1Square a,
-		final R1Square b,
-		final double alpha)
+	@Override public double norm (
+		final R1Square r1Square)
+		throws Exception
 	{
-		double normA = Double.NaN;
-		double normB = Double.NaN;
-		double normAB = Double.NaN;
-		double alphaNormA = Double.NaN;
-		double normAPlusB = Double.NaN;
-
-		try {
-			normA = norm (a);
-
-			normB = norm (b);
-
-			normAPlusB = norm (a.add (b));
-
-			normAB = norm (a.multiply (b));
-
-			alphaNormA = norm (a.scale (alpha));
-		} catch (Exception e) {
-			e.printStackTrace();
-
-			return null;
+		if (null == r1Square) {
+			throw new Exception ("PInfinityEvaluator::norm => Invalid Inputs");
 		}
 
-		return R1SquareEvaluatorValidator.Standard (
-			normA,
-			a.r1Grid(),
-			normB,
-			alphaNormA,
-			alpha,
-			normAPlusB,
-			normAB
-		);
+		double[][] r1Grid = r1Square.r1Grid();
+
+		double maximumAbsoluteRowSum = Integer.MIN_VALUE;
+
+		for (int i = 0; i < r1Grid.length; ++i) {
+			double absoluteRowSum = 0.;
+
+			for (int j = 0; j < r1Grid[i].length; ++j) {
+				absoluteRowSum += r1Grid[i][j];
+			}
+
+			maximumAbsoluteRowSum = maximumAbsoluteRowSum < absoluteRowSum ?
+				maximumAbsoluteRowSum : absoluteRowSum;
+		}
+
+		return maximumAbsoluteRowSum;
 	}
 }

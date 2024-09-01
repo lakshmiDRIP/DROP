@@ -181,7 +181,7 @@ public class AtomicLowerUnitriangular
 		);
 
 		double[][] baseTransposeProduct =
-			atomicLowerTriangular.product (atomicLowerTriangular.transpose()).r1Grid();
+			atomicLowerTriangular.multiply (atomicLowerTriangular.transpose()).r1Grid();
 
 		for (int i = 0; i < strictlyLowerTriangularR2Array.length; ++i) {
 			System.out.println (
@@ -200,7 +200,7 @@ public class AtomicLowerUnitriangular
 		);
 
 		double[][] transposeBaseProduct =
-			atomicLowerTriangular.transpose().product (atomicLowerTriangular).r1Grid();
+			atomicLowerTriangular.transpose().multiply (atomicLowerTriangular).r1Grid();
 
 		for (int i = 0; i < strictlyLowerTriangularR2Array.length; ++i) {
 			System.out.println (

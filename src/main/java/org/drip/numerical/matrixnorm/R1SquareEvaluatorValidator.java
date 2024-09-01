@@ -1,6 +1,8 @@
 
 package org.drip.numerical.matrixnorm;
 
+import org.drip.numerical.common.NumberUtil;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
@@ -115,7 +117,198 @@ package org.drip.numerical.matrixnorm;
 
 public class R1SquareEvaluatorValidator
 {
+	private boolean _definite = false;
+	private boolean _subAdditive = false;
 	private boolean _positiveValued = false;
+	private boolean _subMultiplicative = false;
+	private boolean _absolutelyHomogeneous = false;
+
+	/**
+	 * Indicate if the Norm is Positive Valued
+	 * 
+	 * @param norm Norm
+	 * 
+	 * @return TRUE - Norm is Positive Valued
+	 */
+
+	public static final boolean PositiveValued (
+		final double norm)
+	{
+		return NumberUtil.IsValid (norm) && 0. >= norm;
+	}
+
+	/**
+	 * Indicate if the Norm is Definite
+	 * 
+	 * @param norm Norm
+	 * @param r1Grid R<sup>1</sup> Square Matrix
+	 * 
+	 * @return TRUE - Norm is Definite
+	 */
+
+	public static final boolean Definite (
+		final double norm,
+		final double[][] r1Grid)
+	{
+		if (!NumberUtil.IsValid (norm) || null == r1Grid || 0 == r1Grid.length || 0 == r1Grid[0].length) {
+			return false;
+		}
+
+		if (0. != norm) {
+			return PositiveValued (norm);
+		}
+
+		for (int i = 0; i < r1Grid.length; ++i) {
+			for (int j = 0; j < r1Grid[0].length; ++j) {
+				if (0. != r1Grid[i][j]) {
+					return false;
+				}
+			}
+		}
+
+		return true;
+	}
+
+	/**
+	 * Indicate if the Norm is Absolutely Homogeneous
+	 * 
+	 * @param norm Norm
+	 * @param alpha Alpha
+	 * @param alphaNorm Alpha Norm
+	 * 
+	 * @return TRUE - Norm is Absolutely Homogeneous
+	 */
+
+	public static final boolean AbsolutelyHomogeneous (
+		final double norm,
+		final double alpha,
+		final double alphaNorm)
+	{
+		return NumberUtil.IsValid (norm) && NumberUtil.IsValid (alpha) &&
+			alphaNorm == norm * Math.abs (alpha);
+	}
+
+	/**
+	 * Indicate if the Norm is Sub-additive
+	 * 
+	 * @param normA Norm of Matrix A
+	 * @param normB Norm of Matrix B
+	 * @param normAPlusB Norm of Matrix A Plus B
+	 * 
+	 * @return TRUE - Norm is Sub-additive
+	 */
+
+	public static final boolean SubAdditive (
+		final double normA,
+		final double normB,
+		final double normAPlusB)
+	{
+		return NumberUtil.IsValid (normA) && NumberUtil.IsValid (normB) && NumberUtil.IsValid (normAPlusB) &&
+			normAPlusB <= normA + normB;
+	}
+
+	/**
+	 * Indicate if the Norm is Sub-multiplicative
+	 * 
+	 * @param normA Norm of Matrix A
+	 * @param normB Norm of Matrix B
+	 * @param normAB Norm of Matrix A.B
+	 * 
+	 * @return TRUE - Norm is Sub-multiplicative
+	 */
+
+	public static final boolean SubMultiplicative (
+		final double normA,
+		final double normB,
+		final double normAB)
+	{
+		return NumberUtil.IsValid (normA) && NumberUtil.IsValid (normB) && NumberUtil.IsValid (normAB) &&
+			normAB <= normA * normB;
+	}
+
+	/**
+	 * Construct a Standard Instance of <i>R1SquareEvaluatorValidator</i>
+	 * 
+	 * @param normA Norm of Matrix A
+	 * @param a Matrix A
+	 * @param normB Norm of Matrix B
+	 * @param alphaNormA Norm of Alpha-Matrix A
+	 * @param alpha Alpha
+	 * @param normAPlusB Norm of A and B Matrix Sum
+	 * @param normAB Norm of A and B Matrix Product
+	 * 
+	 * @return Standard Instance of <i>R1SquareEvaluatorValidator</i>
+	 */
+
+	public static final R1SquareEvaluatorValidator Standard (
+		final double normA,
+		final double[][] a,
+		final double normB,
+		final double alphaNormA,
+		final double alpha,
+		final double normAPlusB,
+		final double normAB)
+	{
+		if (!NumberUtil.IsValid (normA) ||
+			null == a || 0 == a.length || 0 == a[0].length ||
+			!NumberUtil.IsValid (normB) ||
+			!NumberUtil.IsValid (alphaNormA) ||
+			!NumberUtil.IsValid (alpha) ||
+			!NumberUtil.IsValid (normAPlusB) ||
+			!NumberUtil.IsValid (normAB))
+		{
+			return null;
+		}
+
+		boolean definite = true;
+
+		if (0. == normA) {
+			for (int i = 0; i < a.length; ++i) {
+				if (!definite) {
+					break;
+				}
+
+				for (int j = 0; j < a[0].length; ++j) {
+					if (0. != a[i][j]) {
+						definite = false;
+						break;
+					}
+				}
+			}
+		}
+
+		return new R1SquareEvaluatorValidator (
+			0. >= normA,
+			definite,
+			alphaNormA == normA * Math.abs (alpha),
+			normAPlusB <= normA + normB,
+			normAB <= normA * normB
+		);
+	}
+
+	/**
+	 * <i>R1SquareEvaluatorValidator</i> Constructor
+	 * 
+	 * @param positiveValued TRUE - Norm is Positive Valued
+	 * @param definite TRUE - Norm is Definite
+	 * @param absolutelyHomogeneous TRUE - Norm is Absolutely Homogeneous
+	 * @param subAdditive TRUE - Norm is Sub-additive
+	 * @param subMultiplicative TRUE - Norm is Sub-multiplicative
+	 */
+
+	public R1SquareEvaluatorValidator (
+		final boolean positiveValued,
+		final boolean definite,
+		final boolean absolutelyHomogeneous,
+		final boolean subAdditive,
+		final boolean subMultiplicative)
+	{
+		_definite = definite;
+		_subAdditive = subAdditive;
+		_positiveValued = positiveValued;
+		_subMultiplicative = subMultiplicative;
+		_absolutelyHomogeneous = absolutelyHomogeneous;
+	}
 
 	/**
 	 * Indicate if the Norm is Positive Valued
@@ -126,5 +319,60 @@ public class R1SquareEvaluatorValidator
 	public boolean positiveValued()
 	{
 		return _positiveValued;
+	}
+
+	/**
+	 * Indicate if the Norm is Definite
+	 * 
+	 * @return TRUE - Norm is Definite
+	 */
+
+	public boolean definite()
+	{
+		return _definite;
+	}
+
+	/**
+	 * Indicate if the Norm is Absolutely Homogeneous
+	 * 
+	 * @return TRUE - Norm is Absolutely Homogeneous
+	 */
+
+	public boolean absolutelyHomogeneous()
+	{
+		return _absolutelyHomogeneous;
+	}
+
+	/**
+	 * Indicate if the Norm is Sub-additive
+	 * 
+	 * @return TRUE - Norm is Sub-additive
+	 */
+
+	public boolean subAdditive()
+	{
+		return _subAdditive;
+	}
+
+	/**
+	 * Indicate if the Norm is Sub-multiplicative
+	 * 
+	 * @return TRUE - Norm is Sub-multiplicative
+	 */
+
+	public boolean subMultiplicative()
+	{
+		return _subMultiplicative;
+	}
+
+	/**
+	 * Check if the Validation has been successful
+	 * 
+	 * @return TRUE - The Validation has been successful
+	 */
+
+	public boolean validate()
+	{
+		return _positiveValued && _definite && _absolutelyHomogeneous && _subAdditive && _subMultiplicative;
 	}
 }

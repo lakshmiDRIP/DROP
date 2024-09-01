@@ -216,6 +216,56 @@ public class R1MatrixUtil
 	}
 
 	/**
+	 * Compute the Addition of the Input Matrices. Unsafe Methods do not validate the Input Arguments, so
+	 * 	<b>use caution</b> in applying these Methods
+	 * 
+	 * @param a Vector A
+	 * @param b Vector B
+	 * 
+	 * @return The Addition Matrix
+	 */
+
+	public static final double[][] UnsafeAdd (
+		final double[][] a,
+		final double[][] b)
+	{
+		double[][] addition = new double[a.length][b[0].length];
+
+		for (int rowIndex = 0; rowIndex < a.length; ++rowIndex) {
+			for (int columnIndex = 0; columnIndex < b[0].length; ++columnIndex) {
+				addition[rowIndex][columnIndex] = a[rowIndex][columnIndex] + b[rowIndex][columnIndex];
+			}
+		}
+
+		return addition;
+	}
+
+	/**
+	 * Compute the Subtraction of the Input Matrices. Unsafe Methods do not validate the Input Arguments, so
+	 * 	<b>use caution</b> in applying these Methods
+	 * 
+	 * @param a Vector A
+	 * @param b Vector B
+	 * 
+	 * @return The Subtraction Matrix
+	 */
+
+	public static final double[][] UnsafeSubtract (
+		final double[][] a,
+		final double[][] b)
+	{
+		double[][] subtraction = new double[a.length][b[0].length];
+
+		for (int rowIndex = 0; rowIndex < a.length; ++rowIndex) {
+			for (int columnIndex = 0; columnIndex < b[0].length; ++columnIndex) {
+				subtraction[rowIndex][columnIndex] = a[rowIndex][columnIndex] - b[rowIndex][columnIndex];
+			}
+		}
+
+		return subtraction;
+	}
+
+	/**
 	 * Compute the Power of the Input Matrix. Unsafe Methods do not validate the Input Arguments, so <b>use
 	 * 	caution</b> in applying these Methods
 	 * 
@@ -468,6 +518,42 @@ public class R1MatrixUtil
 		return null == a || 0 == a.length || 0 == a[0].length ||
 			null == b || a[0].length != b.length || 0 == b[0].length ?
 			null : UnsafeProduct (a, b);
+	}
+
+	/**
+	 * Compute the Addition of the Input Matrices
+	 * 
+	 * @param a Matrix A
+	 * @param b Matrix B
+	 * 
+	 * @return The Addition
+	 */
+
+	public static final double[][] Add (
+		final double[][] a,
+		final double[][] b)
+	{
+		return null == a || 0 == a.length || 0 == a[0].length ||
+			null == b || a[0].length != b.length || 0 == b[0].length ?
+			null : UnsafeAdd (a, b);
+	}
+
+	/**
+	 * Compute the Subtraction of the Input Matrices
+	 * 
+	 * @param a Matrix A
+	 * @param b Matrix B
+	 * 
+	 * @return The Subtraction
+	 */
+
+	public static final double[][] Subtract (
+		final double[][] a,
+		final double[][] b)
+	{
+		return null == a || 0 == a.length || 0 == a[0].length ||
+			null == b || a[0].length != b.length || 0 == b[0].length ?
+			null : UnsafeSubtract (a, b);
 	}
 
 	/**
