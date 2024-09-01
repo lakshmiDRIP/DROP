@@ -1,6 +1,8 @@
 
 package org.drip.numerical.matrixnorm;
 
+import org.drip.numerical.matrix.R1Square;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
@@ -74,8 +76,8 @@ package org.drip.numerical.matrixnorm;
  */
 
 /**
- * <i>SingleVectorNormEvaluator</i> exposes the Single Vector p-Norm applicable to both Rows/Columns of a
- * 	R<sup>1</sup> Square Matrix. The References are:
+ * <i>FrobeniusEvaluator</i> computes the Entry-wise L<sup>2</sup> Norm of the Entries of the R<sup>1</sup>
+ * 	Square Matrix. The References are:
  * 
  * <br><br>
  * 	<ul>
@@ -113,38 +115,78 @@ package org.drip.numerical.matrixnorm;
  * @author Lakshmi Krishnamurthy
  */
 
-public abstract class SingleVectorNormEvaluator extends R1SquareEvaluator
+public class FrobeniusEvaluator extends EntryWiseEvaluator
 {
-	private int _p = Integer.MIN_VALUE;
 
-	protected SingleVectorNormEvaluator (
-		final int p)
+	/**
+	 * <i>FrobeniusEvaluator</i> Constructor
+	 * 
+	 * @throws Exception Thrown if the Inputs are Invalid
+	 */
+
+	public FrobeniusEvaluator()
 		throws Exception
 	{
-		if (0 >= (_p = p)) {
-			throw new Exception ("SingleVectorNormEvaluator Constructor => Invalid Inputs");
+		super (2, 2);
+	}
+
+	/**
+	 * Compute the Norm of the R<sup>1</sup> Square Matrix
+	 * 
+	 * @param r1Square R<sup>1</sup> Square Matrix
+	 * 
+	 * @return Norm of the R<sup>1</sup> Square Matrix
+	 * 
+	 * @throws Exception Thrown if the Norm cannot be calculated
+	 */
+
+	@Override public double norm (
+		final R1Square r1Square)
+		throws Exception
+	{
+		if (null == r1Square) {
+			throw new Exception ("FrobeniusEvaluator::norm => Invalid Inputs");
 		}
+
+		double[][] r1Grid = r1Square.r1Grid();
+
+		double frobeniusNormCumulative = Integer.MIN_VALUE;
+
+		for (int i = 0; i < r1Grid.length; ++i) {
+			for (int j = 0; j < r1Grid[i].length; ++j) {
+				frobeniusNormCumulative += r1Grid[i][j] * r1Grid[i][j];
+			}
+		}
+
+		return Math.sqrt (frobeniusNormCumulative);
 	}
 
 	/**
-	 * Retrieve the p-Norm
+	 * Compute the Trace-based Norm of the R<sup>1</sup> Square Matrix
 	 * 
-	 * @return p-Norm
+	 * @param r1Square R<sup>1</sup> Square Matrix
+	 * 
+	 * @return Trace-based Norm of the R<sup>1</sup> Square Matrix
+	 * 
+	 * @throws Exception Thrown if the Norm cannot be calculated
 	 */
 
-	public int p()
+	public double traceNorm (
+		final R1Square r1Square)
+		throws Exception
 	{
-		return _p;
-	}
+		if (null == r1Square) {
+			throw new Exception ("FrobeniusEvaluator::traceNorm => Invalid Inputs");
+		}
 
-	/**
-	 * Retrieve the Compatible Vector p-Norm
-	 * 
-	 * @return Compatible Vector p-Norm
-	 */
+		R1Square conjugareTransposeProduct = r1Square.transpose().multiply (r1Square);
 
-	public int compatibleVectorP()
-	{
-		return _p;
+		if (null == conjugareTransposeProduct) {
+			throw new Exception (
+				"FrobeniusEvaluator::traceNorm => Cannot compute Conjugate Transpose Product"
+			);
+		}
+
+		return Math.sqrt (conjugareTransposeProduct.trace());
 	}
 }

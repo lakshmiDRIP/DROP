@@ -76,7 +76,7 @@ import org.drip.numerical.common.NumberUtil;
  */
 
 /**
- * <i>R1SquareEvaluatorValidator</i> contains the Validation Criteria of the Norm Evaluator of a
+ * <i>R1SquareConsistencyValidator</i> contains the Consistency Validation Checks for the Norm Evaluator of a
  * 	R<sup>1</sup> Square Matrix. The References are:
  * 
  * <br><br>
@@ -115,13 +115,14 @@ import org.drip.numerical.common.NumberUtil;
  * @author Lakshmi Krishnamurthy
  */
 
-public class R1SquareEvaluatorValidator
+public class R1SquareConsistencyValidator
 {
 	private boolean _definite = false;
-	private boolean _subAdditive = false;
 	private boolean _positiveValued = false;
-	private boolean _subMultiplicative = false;
 	private boolean _absolutelyHomogeneous = false;
+	private boolean _matrixMatrixSubAdditive = false;
+	private boolean _matrixMatrixSubMultiplicative = false;
+	private boolean _matrixVectorSubMultiplicative = false;
 
 	/**
 	 * Indicate if the Norm is Positive Valued
@@ -189,16 +190,16 @@ public class R1SquareEvaluatorValidator
 	}
 
 	/**
-	 * Indicate if the Norm is Sub-additive
+	 * Indicate if the Norm is Matrix-Matrix Sub-additive
 	 * 
 	 * @param normA Norm of Matrix A
 	 * @param normB Norm of Matrix B
 	 * @param normAPlusB Norm of Matrix A Plus B
 	 * 
-	 * @return TRUE - Norm is Sub-additive
+	 * @return TRUE - Norm is Matrix-Matrix Sub-additive
 	 */
 
-	public static final boolean SubAdditive (
+	public static final boolean MatrixMatrixSubAdditive (
 		final double normA,
 		final double normB,
 		final double normAPlusB)
@@ -208,16 +209,16 @@ public class R1SquareEvaluatorValidator
 	}
 
 	/**
-	 * Indicate if the Norm is Sub-multiplicative
+	 * Indicate if the Norm is Matrix-Matrix Sub-multiplicative
 	 * 
 	 * @param normA Norm of Matrix A
 	 * @param normB Norm of Matrix B
 	 * @param normAB Norm of Matrix A.B
 	 * 
-	 * @return TRUE - Norm is Sub-multiplicative
+	 * @return TRUE - Norm is Matrix-Matrix Sub-multiplicative
 	 */
 
-	public static final boolean SubMultiplicative (
+	public static final boolean MatrixMatrixSubMultiplicative (
 		final double normA,
 		final double normB,
 		final double normAB)
@@ -227,27 +228,50 @@ public class R1SquareEvaluatorValidator
 	}
 
 	/**
-	 * Construct a Standard Instance of <i>R1SquareEvaluatorValidator</i>
+	 * Indicate if the Norm is Matrix-Vector Sub-multiplicative
+	 * 
+	 * @param normA Norm of Matrix A
+	 * @param normX Norm of Vector X
+	 * @param normAX Norm of Matrix A.X
+	 * 
+	 * @return TRUE - Norm is Matrix-Vector Sub-multiplicative
+	 */
+
+	public static final boolean MatrixVectorSubMultiplicative (
+		final double normA,
+		final double normX,
+		final double normAX)
+	{
+		return NumberUtil.IsValid (normA) && NumberUtil.IsValid (normX) && NumberUtil.IsValid (normAX) &&
+			normAX <= normA * normX;
+	}
+
+	/**
+	 * Construct a Standard Instance of <i>R1SquareConsistencyValidator</i>
 	 * 
 	 * @param normA Norm of Matrix A
 	 * @param a Matrix A
 	 * @param normB Norm of Matrix B
 	 * @param alphaNormA Norm of Alpha-Matrix A
 	 * @param alpha Alpha
-	 * @param normAPlusB Norm of A and B Matrix Sum
-	 * @param normAB Norm of A and B Matrix Product
+	 * @param normAPlusB Norm of A and B Matrix-Matrix Sum
+	 * @param normAB Norm of A and B Matrix-Matrix Product
+	 * @param normV Norm of Vector V
+	 * @param normAV Norm of A and V Matrix-Vector Product
 	 * 
-	 * @return Standard Instance of <i>R1SquareEvaluatorValidator</i>
+	 * @return Standard Instance of <i>R1SquareConsistencyValidator</i>
 	 */
 
-	public static final R1SquareEvaluatorValidator Standard (
+	public static final R1SquareConsistencyValidator Standard (
 		final double normA,
 		final double[][] a,
 		final double normB,
 		final double alphaNormA,
 		final double alpha,
 		final double normAPlusB,
-		final double normAB)
+		final double normAB,
+		final double normV,
+		final double normAV)
 	{
 		if (!NumberUtil.IsValid (normA) ||
 			null == a || 0 == a.length || 0 == a[0].length ||
@@ -255,7 +279,9 @@ public class R1SquareEvaluatorValidator
 			!NumberUtil.IsValid (alphaNormA) ||
 			!NumberUtil.IsValid (alpha) ||
 			!NumberUtil.IsValid (normAPlusB) ||
-			!NumberUtil.IsValid (normAB))
+			!NumberUtil.IsValid (normAB) ||
+			!NumberUtil.IsValid (normV) ||
+			!NumberUtil.IsValid (normAV))
 		{
 			return null;
 		}
@@ -277,37 +303,41 @@ public class R1SquareEvaluatorValidator
 			}
 		}
 
-		return new R1SquareEvaluatorValidator (
+		return new R1SquareConsistencyValidator (
 			0. >= normA,
 			definite,
 			alphaNormA == normA * Math.abs (alpha),
 			normAPlusB <= normA + normB,
-			normAB <= normA * normB
+			normAB <= normA * normB,
+			normAV <= normA * normV
 		);
 	}
 
 	/**
-	 * <i>R1SquareEvaluatorValidator</i> Constructor
+	 * <i>R1SquareConsistencyValidator</i> Constructor
 	 * 
 	 * @param positiveValued TRUE - Norm is Positive Valued
 	 * @param definite TRUE - Norm is Definite
 	 * @param absolutelyHomogeneous TRUE - Norm is Absolutely Homogeneous
-	 * @param subAdditive TRUE - Norm is Sub-additive
-	 * @param subMultiplicative TRUE - Norm is Sub-multiplicative
+	 * @param matrixMatrixSubAdditive TRUE - Norm is Matrix-Matrix Sub-additive
+	 * @param matrixMatrixSubMultiplicative TRUE - Norm is Matrix-Matrix Sub-multiplicative
+	 * @param matrixVectorSubMultiplicative TRUE - Norm is Matrix-Vector Sub-multiplicative
 	 */
 
-	public R1SquareEvaluatorValidator (
+	public R1SquareConsistencyValidator (
 		final boolean positiveValued,
 		final boolean definite,
 		final boolean absolutelyHomogeneous,
-		final boolean subAdditive,
-		final boolean subMultiplicative)
+		final boolean matrixMatrixSubAdditive,
+		final boolean matrixMatrixSubMultiplicative,
+		final boolean matrixVectorSubMultiplicative)
 	{
 		_definite = definite;
-		_subAdditive = subAdditive;
 		_positiveValued = positiveValued;
-		_subMultiplicative = subMultiplicative;
 		_absolutelyHomogeneous = absolutelyHomogeneous;
+		_matrixMatrixSubAdditive = matrixMatrixSubAdditive;
+		_matrixMatrixSubMultiplicative = matrixMatrixSubMultiplicative;
+		_matrixVectorSubMultiplicative = matrixVectorSubMultiplicative;
 	}
 
 	/**
@@ -344,25 +374,36 @@ public class R1SquareEvaluatorValidator
 	}
 
 	/**
-	 * Indicate if the Norm is Sub-additive
+	 * Indicate if the Norm is Matrix-Matrix Sub-additive
 	 * 
-	 * @return TRUE - Norm is Sub-additive
+	 * @return TRUE - Norm is Matrix-Matrix Sub-additive
 	 */
 
-	public boolean subAdditive()
+	public boolean matrixMatrixSubAdditive()
 	{
-		return _subAdditive;
+		return _matrixMatrixSubAdditive;
 	}
 
 	/**
-	 * Indicate if the Norm is Sub-multiplicative
+	 * Indicate if the Norm is Matrix-Matrix Sub-multiplicative
 	 * 
-	 * @return TRUE - Norm is Sub-multiplicative
+	 * @return TRUE - Norm is Matrix-Matrix Sub-multiplicative
 	 */
 
-	public boolean subMultiplicative()
+	public boolean matrixMatrixSubMultiplicative()
 	{
-		return _subMultiplicative;
+		return _matrixMatrixSubMultiplicative;
+	}
+
+	/**
+	 * Indicate if the Norm is Matrix-Vector Sub-multiplicative
+	 * 
+	 * @return TRUE - Norm is Matrix-Vector Sub-multiplicative
+	 */
+
+	public boolean matrixVectorSubMultiplicative()
+	{
+		return _matrixVectorSubMultiplicative;
 	}
 
 	/**
@@ -373,6 +414,7 @@ public class R1SquareEvaluatorValidator
 
 	public boolean validate()
 	{
-		return _positiveValued && _definite && _absolutelyHomogeneous && _subAdditive && _subMultiplicative;
+		return _positiveValued && _definite && _absolutelyHomogeneous && _matrixMatrixSubAdditive &&
+			_matrixMatrixSubMultiplicative && _matrixVectorSubMultiplicative;
 	}
 }

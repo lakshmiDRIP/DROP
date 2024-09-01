@@ -1,6 +1,7 @@
 
 package org.drip.numerical.matrixnorm;
 
+import org.drip.numerical.eigen.EigenOutput;
 import org.drip.numerical.matrix.R1Square;
 
 /*
@@ -76,8 +77,8 @@ import org.drip.numerical.matrix.R1Square;
  */
 
 /**
- * <i>PInfinityEvaluator</i> exposes the P<sup>Infinity</sup> Norm of a R<sup>1</sup> Square Matrix. The
- *  References are:
+ * <i>SingleVectorNorm2Evaluator</i> exposes the Single Vector p = 2 Norm applicable to both Rows/Columns of
+ * 	a R<sup>1</sup> Square Matrix. The References are:
  * 
  * <br><br>
  * 	<ul>
@@ -115,16 +116,19 @@ import org.drip.numerical.matrix.R1Square;
  * @author Lakshmi Krishnamurthy
  */
 
-public class PInfinityEvaluator extends SingleVectorNormEvaluator
+public class SingleVectorNorm2Evaluator extends SingleVectorNormEvaluator
 {
 
 	/**
-	 * <i>PInfinityEvaluator</i> Constructor
+	 * <i>SingleVectorNorm2Evaluator</i> Constructor
+	 * 
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
-	public PInfinityEvaluator()
+	public SingleVectorNorm2Evaluator()
+		throws Exception
 	{
-		super (Integer.MAX_VALUE);
+		super (2);
 	}
 
 	/**
@@ -142,24 +146,15 @@ public class PInfinityEvaluator extends SingleVectorNormEvaluator
 		throws Exception
 	{
 		if (null == r1Square) {
-			throw new Exception ("PInfinityEvaluator::norm => Invalid Inputs");
+			throw new Exception ("SingleVectorNorm2Evaluator::norm => Invalid Inputs");
 		}
 
-		double[][] r1Grid = r1Square.r1Grid();
+		EigenOutput eigenOutput = r1Square.svd();
 
-		double maximumAbsoluteRowSum = Integer.MIN_VALUE;
-
-		for (int i = 0; i < r1Grid.length; ++i) {
-			double absoluteRowSum = 0.;
-
-			for (int j = 0; j < r1Grid[i].length; ++j) {
-				absoluteRowSum += r1Grid[i][j];
-			}
-
-			maximumAbsoluteRowSum = maximumAbsoluteRowSum < absoluteRowSum ?
-				maximumAbsoluteRowSum : absoluteRowSum;
+		if (null == eigenOutput) {
+			throw new Exception ("SingleVectorNorm2Evaluator::norm => Cannot Eigenize");
 		}
 
-		return maximumAbsoluteRowSum;
+		return eigenOutput.spectralNorm();
 	}
 }

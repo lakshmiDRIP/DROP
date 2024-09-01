@@ -76,7 +76,8 @@ import org.drip.numerical.matrix.R1Square;
  */
 
 /**
- * <i>P1Evaluator</i> exposes the P<sup>1</sup> Norm of a R<sup>1</sup> Square Matrix. The References are:
+ * <i>DoubleVectorOneTwoEvaluator</i> exposes the row/column alpha = 1/beta = 2 Vector Norm of a
+ * 	R<sup>1</sup> Square Matrix. The References are:
  * 
  * <br><br>
  * 	<ul>
@@ -114,16 +115,19 @@ import org.drip.numerical.matrix.R1Square;
  * @author Lakshmi Krishnamurthy
  */
 
-public class P1Evaluator extends SingleVectorNormEvaluator
+public class DoubleVectorOneTwoEvaluator extends DoubleVectorNormEvaluator
 {
 
 	/**
-	 * <i>P1Evaluator</i> Constructor
+	 * <i>DoubleVectorOneTwoEvaluator</i> Constructor
+	 * 
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
-	public P1Evaluator()
+	public DoubleVectorOneTwoEvaluator()
+		throws Exception
 	{
-		super (1);
+		super (1, 2);
 	}
 
 	/**
@@ -141,24 +145,25 @@ public class P1Evaluator extends SingleVectorNormEvaluator
 		throws Exception
 	{
 		if (null == r1Square) {
-			throw new Exception ("P1Evaluator::norm => Invalid Inputs");
+			throw new Exception ("DoubleVectorOneTwoEvaluator::norm => Invalid Inputs");
 		}
 
 		double[][] r1Grid = r1Square.transpose().r1Grid();
 
-		double maximumAbsoluteColumnSum = Integer.MIN_VALUE;
+		double maximumColumnNorm = Integer.MIN_VALUE;
 
 		for (int i = 0; i < r1Grid.length; ++i) {
-			double absoluteColumnSum = 0.;
+			double columnNorm = 0.;
 
 			for (int j = 0; j < r1Grid[i].length; ++j) {
-				absoluteColumnSum += r1Grid[i][j];
+				columnNorm += r1Grid[i][j] * r1Grid[i][j];
 			}
 
-			maximumAbsoluteColumnSum = maximumAbsoluteColumnSum < absoluteColumnSum ?
-				maximumAbsoluteColumnSum : absoluteColumnSum;
+			columnNorm = Math.sqrt (columnNorm);
+
+			maximumColumnNorm = maximumColumnNorm < columnNorm ? maximumColumnNorm : columnNorm;
 		}
 
-		return maximumAbsoluteColumnSum;
+		return maximumColumnNorm;
 	}
 }

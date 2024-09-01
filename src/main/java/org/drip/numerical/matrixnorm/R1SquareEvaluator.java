@@ -1,6 +1,7 @@
 
 package org.drip.numerical.matrixnorm;
 
+import org.drip.numerical.common.NumberUtil;
 import org.drip.numerical.matrix.R1Square;
 
 /*
@@ -132,25 +133,39 @@ public abstract class R1SquareEvaluator
 	) throws Exception;
 
 	/**
-	 * Construct a Norm Validator for the Suite of Inputs
+	 * Construct a Norm Consistency Validator for the Suite of Inputs
 	 * 
 	 * @param a Matrix A
 	 * @param b Matrix B
+	 * @param v Vector V
 	 * @param alpha Alpha Scale
+	 * @param p Vector Norm Index
 	 * 
-	 * @return The Norm Validator
+	 * @return The Norm Consistency Validator
 	 */
 
-	public R1SquareEvaluatorValidator validator (
+	public R1SquareConsistencyValidator validator (
 		final R1Square a,
 		final R1Square b,
-		final double alpha)
+		final double[] v,
+		final double alpha,
+		final int p)
 	{
+		if (null == v || 0 == v.length || !NumberUtil.IsValid (v)) {
+			return null;
+		}
+
 		double normA = Double.NaN;
 		double normB = Double.NaN;
 		double normAB = Double.NaN;
+		double normAV = Double.NaN;
 		double alphaNormA = Double.NaN;
 		double normAPlusB = Double.NaN;
+		double normVExponentiated = 0.;
+
+		for (int i = 0; i < v.length; ++i) {
+			normVExponentiated += Math.pow (Math.abs (v[i]), p);
+		}
 
 		try {
 			normA = norm (a);
@@ -162,20 +177,24 @@ public abstract class R1SquareEvaluator
 			normAB = norm (a.multiply (b));
 
 			alphaNormA = norm (a.scale (alpha));
+
+			normAV = norm (a.multiply (v));
 		} catch (Exception e) {
 			e.printStackTrace();
 
 			return null;
 		}
 
-		return R1SquareEvaluatorValidator.Standard (
+		return R1SquareConsistencyValidator.Standard (
 			normA,
 			a.r1Grid(),
 			normB,
 			alphaNormA,
 			alpha,
 			normAPlusB,
-			normAB
+			normAB,
+			Math.pow (normVExponentiated, 1. / p),
+			normAV
 		);
 	}
 }

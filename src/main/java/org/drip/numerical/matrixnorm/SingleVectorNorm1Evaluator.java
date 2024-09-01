@@ -1,6 +1,8 @@
 
 package org.drip.numerical.matrixnorm;
 
+import org.drip.numerical.matrix.R1Square;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
@@ -74,8 +76,8 @@ package org.drip.numerical.matrixnorm;
  */
 
 /**
- * <i>SingleVectorNormEvaluator</i> exposes the Single Vector p-Norm applicable to both Rows/Columns of a
- * 	R<sup>1</sup> Square Matrix. The References are:
+ * <i>SingleVectorNorm1Evaluator</i> exposes the Single Vector p = 1 Norm applicable to both Rows/Columns of
+ * 	a R<sup>1</sup> Square Matrix. The References are:
  * 
  * <br><br>
  * 	<ul>
@@ -113,38 +115,54 @@ package org.drip.numerical.matrixnorm;
  * @author Lakshmi Krishnamurthy
  */
 
-public abstract class SingleVectorNormEvaluator extends R1SquareEvaluator
+public class SingleVectorNorm1Evaluator extends SingleVectorNormEvaluator
 {
-	private int _p = Integer.MIN_VALUE;
 
-	protected SingleVectorNormEvaluator (
-		final int p)
+	/**
+	 * <i>SingleVectorNorm1Evaluator</i> Constructor
+	 * 
+	 * @throws Exception Thrown if the Inputs are Invalid
+	 */
+
+	public SingleVectorNorm1Evaluator()
 		throws Exception
 	{
-		if (0 >= (_p = p)) {
-			throw new Exception ("SingleVectorNormEvaluator Constructor => Invalid Inputs");
+		super (1);
+	}
+
+	/**
+	 * Compute the Norm of the R<sup>1</sup>Square Matrix
+	 * 
+	 * @param r1Square R<sup>1</sup>Square Matrix
+	 * 
+	 * @return Norm of the R<sup>1</sup>Square Matrix
+	 * 
+	 * @throws Exception
+	 */
+
+	@Override public double norm (
+		final R1Square r1Square)
+		throws Exception
+	{
+		if (null == r1Square) {
+			throw new Exception ("SingleVectorNorm1Evaluator::norm => Invalid Inputs");
 		}
-	}
 
-	/**
-	 * Retrieve the p-Norm
-	 * 
-	 * @return p-Norm
-	 */
+		double[][] r1Grid = r1Square.transpose().r1Grid();
 
-	public int p()
-	{
-		return _p;
-	}
+		double maximumAbsoluteColumnSum = Integer.MIN_VALUE;
 
-	/**
-	 * Retrieve the Compatible Vector p-Norm
-	 * 
-	 * @return Compatible Vector p-Norm
-	 */
+		for (int i = 0; i < r1Grid.length; ++i) {
+			double absoluteColumnSum = 0.;
 
-	public int compatibleVectorP()
-	{
-		return _p;
+			for (int j = 0; j < r1Grid[i].length; ++j) {
+				absoluteColumnSum += r1Grid[i][j];
+			}
+
+			maximumAbsoluteColumnSum = maximumAbsoluteColumnSum < absoluteColumnSum ?
+				maximumAbsoluteColumnSum : absoluteColumnSum;
+		}
+
+		return maximumAbsoluteColumnSum;
 	}
 }

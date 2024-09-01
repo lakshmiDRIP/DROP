@@ -216,6 +216,70 @@ public class R1MatrixUtil
 	}
 
 	/**
+	 * Compute the Product of an Input Matrix and a Vector. Unsafe Methods do not validate the Input
+	 * 	Arguments, so <b>use caution</b> in applying these Methods
+	 * 
+	 * @param a Matrix A
+	 * @param b Vector B
+	 * 
+	 * @return The Product
+	 */
+
+	public static final double[] UnsafeProduct (
+		final double[][] a,
+		final double[] b)
+	{
+		double[] product = new double[a.length];
+
+		for (int rowIndex = 0; rowIndex < a.length; ++rowIndex) {
+			product[rowIndex] = 0.;
+
+			for (int columnIndex = 0; columnIndex < a[0].length; ++columnIndex) {
+				if (!NumberUtil.IsValid (a[rowIndex][columnIndex]) || !NumberUtil.IsValid (b[columnIndex])) {
+					return null;
+				}
+
+				product[rowIndex] += a[rowIndex][columnIndex] * b[columnIndex];
+			}
+		}
+
+		return product;
+	}
+
+	/**
+	 * Compute the Product of an Input Vector and a Matrix. Unsafe Methods do not validate the Input
+	 * 	Arguments, so <b>use caution</b> in applying these Methods
+	 * 
+	 * @param a Column A
+	 * @param b Matrix B
+	 * 
+	 * @return The Product
+	 */
+
+	public static final double[][] UnsafeProduct (
+		final double[] a,
+		final double[][] b)
+	{
+		double[][] product = new double[a.length][b.length];
+
+		for (int rowIndex = 0; rowIndex < a.length; ++rowIndex) {
+			for (int columnIndex = 0; columnIndex < b.length; ++columnIndex) {
+				product[rowIndex][columnIndex] = 0.;
+
+				for (int i = 0; i < a.length; ++i) {
+					if (!NumberUtil.IsValid (a[rowIndex]) || !NumberUtil.IsValid (b[i][columnIndex])) {
+						return null;
+					}
+
+					product[rowIndex][columnIndex] += a[rowIndex] * b[i][columnIndex];
+				}
+			}
+		}
+
+		return product;
+	}
+
+	/**
 	 * Compute the Addition of the Input Matrices. Unsafe Methods do not validate the Input Arguments, so
 	 * 	<b>use caution</b> in applying these Methods
 	 * 
@@ -270,6 +334,7 @@ public class R1MatrixUtil
 	 * 	caution</b> in applying these Methods
 	 * 
 	 * @param a Vector A
+	 * @param k Power Exponent
 	 * 
 	 * @return The Power Matrix
 	 */
@@ -287,6 +352,34 @@ public class R1MatrixUtil
 		}
 
 		return aPower;
+	}
+
+	/**
+	 * Compute the Trace of the Input Matrix. Unsafe Methods do not validate the Input Arguments, so <b>use
+	 * 	caution</b> in applying these Methods
+	 * 
+	 * @param a Vector A
+	 * 
+	 * @return The Trace
+	 * 
+	 * @throws Exception Thrown if Trace cannot be Calculated
+	 */
+
+	public static final double UnsafeTrace (
+		final double[][] a)
+		throws Exception
+	{
+		double trace = 0.;
+
+		for (int i = 0; i < a.length; ++i) {
+			if (!NumberUtil.IsValid (a[i][i])) {
+				throw new Exception ("R1MatrixUtil::UnsafeTrace => Invalid Matrix Entry");
+			}
+
+			trace += a[i][i];
+		}
+
+		return trace;
 	}
 
 	/**
@@ -427,79 +520,37 @@ public class R1MatrixUtil
 	}
 
 	/**
-	 * Compute the Product of an Input Matrix and a Column
+	 * Compute the Product of an Input Matrix and a Vector
 	 * 
-	 * @param aadblA Matrix A
-	 * @param adblB Array B
+	 * @param a Matrix A
+	 * @param b Array B
 	 * 
 	 * @return The Product
 	 */
 
 	public static final double[] Product (
-		final double[][] aadblA,
-		final double[] adblB)
+		final double[][] a,
+		final double[] b)
 	{
-		if (null == aadblA || null == adblB) return null;
-
-		int iNumACol = aadblA[0].length;
-		int iNumProductCol = adblB.length;
-		int iNumProductRow = aadblA.length;
-		double[] adblProduct = new double[iNumProductRow];
-
-		if (0 == iNumACol || iNumACol != adblB.length || 0 == iNumProductRow || 0 == iNumProductCol)
-			return null;
-
-		for (int iRow = 0; iRow < iNumProductRow; ++iRow) {
-			adblProduct[iRow] = 0.;
-
-			for (int i = 0; i < iNumACol; ++i) {
-				if (!org.drip.numerical.common.NumberUtil.IsValid (aadblA[iRow][i]) ||
-					!org.drip.numerical.common.NumberUtil.IsValid (adblB[i]))
-					return null;
-
-				adblProduct[iRow] += aadblA[iRow][i] * adblB[i];
-			}
-		}
-
-		return adblProduct;
+		return null == a || null == b || 0 == a.length || 0 == a[0].length || a[0].length != b.length ?
+			null : UnsafeProduct (a, b);
 	}
 
 	/**
-	 * Compute the Product of an input column and a matrix
+	 * Compute the Product of an Input Vector and a Matrix
 	 * 
-	 * @param adblA Column A
-	 * @param aadblB Matrix B
+	 * @param a Vector A
+	 * @param b Matrix B
 	 * 
 	 * @return The Product
 	 */
 
 	public static final double[][] Product (
-		final double[] adblA,
-		final double[][] aadblB)
+		final double[] a,
+		final double[][] b)
 	{
-		if (null == adblA || null == aadblB) return null;
-
-		int iNumACol = adblA.length;
-		int iNumProductCol = aadblB.length;
-		double[][] aadblProduct = new double[iNumACol][iNumProductCol];
-
-		if (0 == iNumACol || iNumACol != aadblB.length || 0 == iNumProductCol) return null;
-
-		for (int iRow = 0; iRow < iNumACol; ++iRow) {
-			for (int iCol = 0; iCol < iNumProductCol; ++iCol) {
-				aadblProduct[iRow][iCol] = 0.;
-
-				for (int i = 0; i < iNumACol; ++i) {
-					if (!org.drip.numerical.common.NumberUtil.IsValid (adblA[iRow]) ||
-						!org.drip.numerical.common.NumberUtil.IsValid (aadblB[i][iCol]))
-						return null;
-
-					aadblProduct[iRow][iCol] += adblA[iRow] * aadblB[i][iCol];
-				}
-			}
-		}
-
-		return aadblProduct;
+		return null == a || null == b || 0 == a.length || a.length != b.length || 0 == b[0].length ?
+			null : UnsafeProduct (a, b);
 	}
 
 	/**
@@ -570,6 +621,27 @@ public class R1MatrixUtil
 		final int k)
 	{
 		return null == a || 0 == a.length || 0 == a[0].length || 0 >= k ? null : UnsafePower (a, k);
+	}
+
+	/**
+	 * Compute the Trace of the Input Matrix
+	 * 
+	 * @param a Vector A
+	 * 
+	 * @return The Trace
+	 * 
+	 * @throws Exception Thrown if Trace cannot be Calculated
+	 */
+
+	public static final double Trace (
+		final double[][] a)
+		throws Exception
+	{
+		if (null == a || 0 == a.length || 0 == a[0].length) {
+			throw new Exception ("R1MatrixUtil::Trace => Invalid Input Matrix");
+		}
+
+		return UnsafeTrace (a);
 	}
 
 	/**

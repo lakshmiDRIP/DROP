@@ -177,6 +177,23 @@ public class R1Square
 	}
 
 	/**
+	 * Compute the Trace
+	 * 
+	 * @return The Trace
+	 */
+
+	public double trace()
+	{
+		double trace = 0.;
+
+		for (int i = 0; i < _r1Grid.length; ++i) {
+			trace += _r1Grid[i][i];
+		}
+
+		return trace;
+	}
+
+	/**
 	 * Transpose the Square Matrix
 	 * 
 	 * @return The Transposed Square Matrix
@@ -297,6 +314,40 @@ public class R1Square
 				for (int i = 0; i < _r1Grid.length; ++i) {
 					r1GridProduct[rowIndex][columnIndex] +=
 						_r1Grid[rowIndex][i] * r1GridOther[i][columnIndex];
+				}
+			}
+		}
+
+		return new R1Square (r1GridProduct);
+	}
+
+	/**
+	 * Compute the Product with the Vector
+	 * 
+	 * @param r1Array Vector Array
+	 * 
+	 * @return Resulting Matrix
+	 */
+
+	public R1Square multiply (
+		final double[] r1Array)
+	{
+		if (null == r1Array || 0 == r1Array.length || r1Array.length != _r1Grid.length) {
+			return null;
+		}
+
+		double[][] r1GridProduct = new double[_r1Grid.length][_r1Grid.length];
+
+		for (int rowIndex = 0; rowIndex < r1Array.length; ++rowIndex) {
+			for (int columnIndex = 0; columnIndex < _r1Grid.length; ++columnIndex) {
+				r1GridProduct[rowIndex][columnIndex] = 0.;
+
+				for (int i = 0; i < r1Array.length; ++i) {
+					if (!NumberUtil.IsValid (r1Array[rowIndex])) {
+						return null;
+					}
+
+					r1GridProduct[rowIndex][columnIndex] += r1Array[rowIndex] * _r1Grid[i][columnIndex];
 				}
 			}
 		}

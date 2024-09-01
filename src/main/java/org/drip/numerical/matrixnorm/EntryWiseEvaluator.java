@@ -1,7 +1,6 @@
 
 package org.drip.numerical.matrixnorm;
 
-import org.drip.numerical.eigen.EigenOutput;
 import org.drip.numerical.matrix.R1Square;
 
 /*
@@ -77,7 +76,8 @@ import org.drip.numerical.matrix.R1Square;
  */
 
 /**
- * <i>P2Evaluator</i> exposes the P<sup>2</sup> Norm of a R<sup>1</sup> Square Matrix. The References are:
+ * <i>EntryWiseEvaluator</i> computes the Entry-wise Norm of a R<sup>1</sup>Square Matrix. The References
+ * 	are:
  * 
  * <br><br>
  * 	<ul>
@@ -115,16 +115,87 @@ import org.drip.numerical.matrix.R1Square;
  * @author Lakshmi Krishnamurthy
  */
 
-public class P2Evaluator extends SingleVectorNormEvaluator
+public class EntryWiseEvaluator extends R1SquareEvaluator
 {
+	private int _p = Integer.MIN_VALUE;
+	private int _q = Integer.MIN_VALUE;
 
 	/**
-	 * <i>P2Evaluator</i> Constructor
+	 * Construct a L<sub>2, 1</sub> Instance of <i>EntryWiseEvaluator</i>
+	 * 
+	 * @return L<sub>2, 1</sub> Instance of <i>EntryWiseEvaluator</i>
 	 */
 
-	public P2Evaluator()
+	public static final EntryWiseEvaluator L2_1()
 	{
-		super (2);
+		try {
+			return new EntryWiseEvaluator (2, 1);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
+	 * Construct a L<sub>p, p</sub> Instance of <i>EntryWiseEvaluator</i>
+	 * 
+	 * @param p p Norm
+	 * 
+	 * @return L<sub>p, p</sub> Instance of <i>EntryWiseEvaluator</i>
+	 */
+
+	public static final EntryWiseEvaluator Lp_p (
+		final int p)
+	{
+		try {
+			return new EntryWiseEvaluator (p, p);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
+	 * <i>EntryWiseEvaluator</i> Constructor
+	 * 
+	 * @param p p Norm
+	 * @param q q Norm
+	 * 
+	 * @throws Exception Thrown if the Inputs are Invalid
+	 */
+
+	public EntryWiseEvaluator (
+		final int p,
+		final int q)
+		throws Exception
+	{
+		if (0 >= (_p = p) || 0 >= (_q = q)) {
+			throw new Exception ("EntryWiseEvaluator Constructor => Invalid Inputs");
+		}
+	}
+
+	/**
+	 * Retrieve the p Norm
+	 * 
+	 * @return p Norm
+	 */
+
+	public int p()
+	{
+		return _p;
+	}
+
+	/**
+	 * Retrieve the q Norm
+	 * 
+	 * @return q Norm
+	 */
+
+	public int q()
+	{
+		return _q;
 	}
 
 	/**
@@ -142,15 +213,24 @@ public class P2Evaluator extends SingleVectorNormEvaluator
 		throws Exception
 	{
 		if (null == r1Square) {
-			throw new Exception ("P2Evaluator::norm => Invalid Inputs");
+			throw new Exception ("EntryWiseEvaluator::norm => Invalid Inputs");
 		}
 
-		EigenOutput eigenOutput = r1Square.svd();
+		double[][] r1Grid = r1Square.transpose().r1Grid();
 
-		if (null == eigenOutput) {
-			throw new Exception ("P2Evaluator::norm => Cannot Eigenize");
+		double pqNormCumulative = Integer.MIN_VALUE;
+		double qOverP = _q  /_p;
+
+		for (int i = 0; i < r1Grid.length; ++i) {
+			double pNormCumulative = 0.;
+
+			for (int j = 0; j < r1Grid[i].length; ++j) {
+				pNormCumulative += Math.pow (Math.abs (r1Grid[i][j]), _p);
+			}
+
+			pqNormCumulative += Math.pow (pNormCumulative, qOverP);
 		}
 
-		return eigenOutput.spectralNorm();
+		return Math.pow (pqNormCumulative, 1. / _q);
 	}
 }

@@ -1,6 +1,8 @@
 
 package org.drip.numerical.matrixnorm;
 
+import org.drip.numerical.matrix.R1Square;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
@@ -74,8 +76,8 @@ package org.drip.numerical.matrixnorm;
  */
 
 /**
- * <i>AlphaBetaEvaluator</i> exposes the row/column alpha/beta Vector Norm of a R<sup>1</sup>Square Matrix.
- * 	The References are:
+ * <i>SingleVectorNormInfinityEvaluator</i> exposes the Single Vector p = Infinity Norm applicable to both
+ * 	Rows/Columns of a R<sup>1</sup> Square Matrix. The References are:
  * 
  * <br><br>
  * 	<ul>
@@ -113,49 +115,54 @@ package org.drip.numerical.matrixnorm;
  * @author Lakshmi Krishnamurthy
  */
 
-public abstract class AlphaBetaEvaluator extends R1SquareEvaluator
+public class SingleVectorNormInfinityEvaluator extends SingleVectorNormEvaluator
 {
-	private int _beta = Integer.MIN_VALUE;
-	private int _alpha = Integer.MIN_VALUE;
 
 	/**
-	 * <i>AlphaBetaEvaluator</i> Constructor
-	 * 
-	 * @param alpha Alpha Vector Norm Index
-	 * @param beta Beta Vector Norm Index
+	 * <i>SingleVectorNormInfinityEvaluator</i> Constructor
 	 * 
 	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
-	public AlphaBetaEvaluator (
-		final int alpha,
-		final int beta)
+	public SingleVectorNormInfinityEvaluator()
 		throws Exception
 	{
-		if (0 >= (_alpha = alpha) || 0 >= (_beta = beta)) {
-			throw new Exception ("AlphaBetaEvaluator Constructor => Invalid Inputs");
+		super (Integer.MAX_VALUE);
+	}
+
+	/**
+	 * Compute the Norm of the R<sup>1</sup>Square Matrix
+	 * 
+	 * @param r1Square R<sup>1</sup>Square Matrix
+	 * 
+	 * @return Norm of the R<sup>1</sup>Square Matrix
+	 * 
+	 * @throws Exception
+	 */
+
+	@Override public double norm (
+		final R1Square r1Square)
+		throws Exception
+	{
+		if (null == r1Square) {
+			throw new Exception ("SingleVectorNormInfinityEvaluator::norm => Invalid Inputs");
 		}
-	}
 
-	/**
-	 * Retrieve the Alpha Vector Norm Index
-	 * 
-	 * @return Alpha Vector Norm Index
-	 */
+		double[][] r1Grid = r1Square.r1Grid();
 
-	public int alpha()
-	{
-		return _alpha;
-	}
+		double maximumAbsoluteRowSum = Integer.MIN_VALUE;
 
-	/**
-	 * Retrieve the Beta Vector Norm Index
-	 * 
-	 * @return Beta Vector Norm Index
-	 */
+		for (int i = 0; i < r1Grid.length; ++i) {
+			double absoluteRowSum = 0.;
 
-	public int beta()
-	{
-		return _beta;
+			for (int j = 0; j < r1Grid[i].length; ++j) {
+				absoluteRowSum += r1Grid[i][j];
+			}
+
+			maximumAbsoluteRowSum = maximumAbsoluteRowSum < absoluteRowSum ?
+				maximumAbsoluteRowSum : absoluteRowSum;
+		}
+
+		return maximumAbsoluteRowSum;
 	}
 }

@@ -1,6 +1,8 @@
 
 package org.drip.numerical.matrixnorm;
 
+import org.drip.numerical.matrix.R1Square;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
@@ -74,7 +76,7 @@ package org.drip.numerical.matrixnorm;
  */
 
 /**
- * <i>SingleVectorNormEvaluator</i> exposes the Single Vector p-Norm applicable to both Rows/Columns of a
+ * <i>DoubleVectorTwoInfinityEvaluator</i> exposes the row/column alpha = 2/beta = Infinity Vector Norm of a
  * 	R<sup>1</sup> Square Matrix. The References are:
  * 
  * <br><br>
@@ -113,38 +115,55 @@ package org.drip.numerical.matrixnorm;
  * @author Lakshmi Krishnamurthy
  */
 
-public abstract class SingleVectorNormEvaluator extends R1SquareEvaluator
+public class DoubleVectorTwoInfinityEvaluator extends DoubleVectorNormEvaluator
 {
-	private int _p = Integer.MIN_VALUE;
 
-	protected SingleVectorNormEvaluator (
-		final int p)
+	/**
+	 * <i>DoubleVectorTwoInfinityEvaluator</i> Constructor
+	 * 
+	 * @throws Exception Thrown if the Inputs are Invalid
+	 */
+
+	public DoubleVectorTwoInfinityEvaluator()
 		throws Exception
 	{
-		if (0 >= (_p = p)) {
-			throw new Exception ("SingleVectorNormEvaluator Constructor => Invalid Inputs");
+		super (2, Integer.MAX_VALUE);
+	}
+
+	/**
+	 * Compute the Norm of the R<sup>1</sup>Square Matrix
+	 * 
+	 * @param r1Square R<sup>1</sup>Square Matrix
+	 * 
+	 * @return Norm of the R<sup>1</sup>Square Matrix
+	 * 
+	 * @throws Exception
+	 */
+
+	@Override public double norm (
+		final R1Square r1Square)
+		throws Exception
+	{
+		if (null == r1Square) {
+			throw new Exception ("DoubleVectorTwoInfinityEvaluator::norm => Invalid Inputs");
 		}
-	}
 
-	/**
-	 * Retrieve the p-Norm
-	 * 
-	 * @return p-Norm
-	 */
+		double[][] r1Grid = r1Square.r1Grid();
 
-	public int p()
-	{
-		return _p;
-	}
+		double maximumRowNorm = Integer.MIN_VALUE;
 
-	/**
-	 * Retrieve the Compatible Vector p-Norm
-	 * 
-	 * @return Compatible Vector p-Norm
-	 */
+		for (int i = 0; i < r1Grid.length; ++i) {
+			double rowNorm = 0.;
 
-	public int compatibleVectorP()
-	{
-		return _p;
+			for (int j = 0; j < r1Grid[i].length; ++j) {
+				rowNorm += r1Grid[i][j] * r1Grid[i][j];
+			}
+
+			rowNorm = Math.sqrt (rowNorm);
+
+			maximumRowNorm = maximumRowNorm < rowNorm ? maximumRowNorm : rowNorm;
+		}
+
+		return maximumRowNorm;
 	}
 }

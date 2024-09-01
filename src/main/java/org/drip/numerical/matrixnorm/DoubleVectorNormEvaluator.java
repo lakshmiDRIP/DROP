@@ -74,8 +74,8 @@ package org.drip.numerical.matrixnorm;
  */
 
 /**
- * <i>SingleVectorNormEvaluator</i> exposes the Single Vector p-Norm applicable to both Rows/Columns of a
- * 	R<sup>1</sup> Square Matrix. The References are:
+ * <i>DoubleVectorNormEvaluator</i> exposes the row/column alpha/beta Vector Norm of a R<sup>1</sup>Square Matrix.
+ * 	The References are:
  * 
  * <br><br>
  * 	<ul>
@@ -113,38 +113,49 @@ package org.drip.numerical.matrixnorm;
  * @author Lakshmi Krishnamurthy
  */
 
-public abstract class SingleVectorNormEvaluator extends R1SquareEvaluator
+public abstract class DoubleVectorNormEvaluator extends R1SquareEvaluator
 {
-	private int _p = Integer.MIN_VALUE;
+	private int _rowAlpha = Integer.MIN_VALUE;
+	private int _columnBeta = Integer.MIN_VALUE;
 
-	protected SingleVectorNormEvaluator (
-		final int p)
+	/**
+	 * <i>DoubleVectorNormEvaluator</i> Constructor
+	 * 
+	 * @param rowAlpha Alpha Row Vector Norm
+	 * @param columnBeta Beta Column Vector Norm
+	 * 
+	 * @throws Exception Thrown if the Inputs are Invalid
+	 */
+
+	public DoubleVectorNormEvaluator (
+		final int rowAlpha,
+		final int columnBeta)
 		throws Exception
 	{
-		if (0 >= (_p = p)) {
-			throw new Exception ("SingleVectorNormEvaluator Constructor => Invalid Inputs");
+		if (0 >= (_rowAlpha = rowAlpha) || 0 >= (_columnBeta = columnBeta)) {
+			throw new Exception ("DoubleVectorNormEvaluator Constructor => Invalid Inputs");
 		}
 	}
 
 	/**
-	 * Retrieve the p-Norm
+	 * Retrieve the Alpha Row Vector Norm
 	 * 
-	 * @return p-Norm
+	 * @return Alpha Row Vector Norm
 	 */
 
-	public int p()
+	public int rowAlpha()
 	{
-		return _p;
+		return _rowAlpha;
 	}
 
 	/**
-	 * Retrieve the Compatible Vector p-Norm
+	 * Retrieve the Beta Column Vector Norm
 	 * 
-	 * @return Compatible Vector p-Norm
+	 * @return Beta Column Vector Norm
 	 */
 
-	public int compatibleVectorP()
+	public int columnBeta()
 	{
-		return _p;
+		return _columnBeta;
 	}
 }
