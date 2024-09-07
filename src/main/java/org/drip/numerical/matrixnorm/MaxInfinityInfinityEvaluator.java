@@ -1,25 +1,14 @@
 
-package org.drip.sample.matrix;
+package org.drip.numerical.matrixnorm;
 
-import org.drip.numerical.eigenization.*;
-import org.drip.service.common.FormatUtil;
-import org.drip.service.env.EnvManager;
+import org.drip.numerical.matrix.R1Square;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
- * Copyright (C) 2022 Lakshmi Krishnamurthy
- * Copyright (C) 2021 Lakshmi Krishnamurthy
- * Copyright (C) 2020 Lakshmi Krishnamurthy
- * Copyright (C) 2019 Lakshmi Krishnamurthy
- * Copyright (C) 2018 Lakshmi Krishnamurthy
- * Copyright (C) 2017 Lakshmi Krishnamurthy
- * Copyright (C) 2016 Lakshmi Krishnamurthy
- * Copyright (C) 2015 Lakshmi Krishnamurthy
- * Copyright (C) 2014 Lakshmi Krishnamurthy
- * Copyright (C) 2013 Lakshmi Krishnamurthy
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
  * 
  *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
  *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
@@ -87,95 +76,90 @@ import org.drip.service.env.EnvManager;
  */
 
 /**
- * <i>Eigenization</i> demonstrates how to generate the eigenvalue and eigenvector for the Input Matrix.
- *  
+ * <i>MaxInfinityInfinityEvaluator</i> computes the Entry-wise L<sup>Infinity, Infinity</sup> Norm of the
+ * 	Entries of the R<sup>1</sup> Square Matrix. The References are:
+ * 
+ * <br><br>
+ * 	<ul>
+ * 		<li>
+ * 			Alon, N., and A. Naor (2004): Approximating the Cut-norm via Grothendieck Inequality
+ * 				<i>Proceedings of the 36<sup>th</sup> Annual ACM Symposium on Theory of Computing STOC’04</i>
+ * 				<b>ACM</b> Chicago IL
+ * 		</li>
+ * 		<li>
+ * 			Golub, G. H., and C. F. van Loan (1996): <i>Matrix Computations 3<sup>rd</sup> Edition</i>
+ * 				<b>Johns Hopkins University Press</b> Baltimore MD
+ * 		</li>
+ * 		<li>
+ * 			Horn, R. A., and C. R. Johnson (2013): <i>Matrix Analysis 2<sup>nd</sup> Edition</i> <b>Cambridge
+ * 				University Press</b> Cambridge UK
+ * 		</li>
+ * 		<li>
+ * 			Lazslo, L. (2012): <i>Large Networks and Graph Limits</i> <b>American Mathematical Society</b>
+ * 				Providence RI
+ * 		</li>
+ * 		<li>
+ * 			Wikipedia (2024): Matrix Norm https://en.wikipedia.org/wiki/Matrix_norm
+ * 		</li>
+ * 	</ul>
+ * 
  * <br><br>
  *  <ul>
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md">Numerical Analysis Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/README.md">DROP API Construction and Usage</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/matrix/README.md">Cholesky Factorization, PCA, and Eigenization</a></li>
+ *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/numerical/README.md">Numerical Quadrature, Differentiation, Eigenization, Linear Algebra, and Utilities</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/numerical/matrixnorm/README.md">Implementation of Matrix Norm Variants</a></li>
  *  </ul>
  * <br><br>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class Eigenization {
+public class MaxInfinityInfinityEvaluator extends EntryWiseEvaluator
+{
 
-	private static final void EigenRun (
-		final QREigenComponentExtractor qrece)
+	/**
+	 * <i>MaxInfinityInfinityEvaluator</i> Constructor
+	 * 
+	 * @throws Exception Thrown if the Inputs are Invalid
+	 */
+
+	public MaxInfinityInfinityEvaluator()
+		throws Exception
 	{
-		double dblCorr1 = 0.5 * Math.random();
-
-		double dblCorr2 = 0.5 * Math.random();
-
-		double[][] aadblA = {
-			{     1.0, dblCorr1,      0.0},
-			{dblCorr1,      1.0, dblCorr2},
-			{     0.0, dblCorr2,      1.0}
-		};
-
-		EigenOutput eo = qrece.eigenize (aadblA);
-
-		if (null == eo) return;
-
-		System.out.println ("\n\t|----------------------------------------|");
-
-		System.out.println (
-			"\t|-----------" +
-			FormatUtil.FormatDouble (dblCorr1, 1, 4, 1.) + " ||| " +
-			FormatUtil.FormatDouble (dblCorr2, 1, 4, 1.) + " ---------|"
-		);
-
-		System.out.println ("\t|----------------------------------------|");
-
-		for (int i = 0; i < aadblA.length; ++i) {
-			java.lang.String strDump = "\t[" + FormatUtil.FormatDouble (eo.eigenValueArray()[i], 1, 4, 1.) + "] => ";
-
-			for (int j = 0; j < aadblA.length; ++j)
-				strDump += FormatUtil.FormatDouble (eo.eigenVectorArray()[i][j], 1, 4, 1.) + " | ";
-
-			System.out.println (strDump);
-		}
-
-		EigenComponent ec = qrece.principalComponent (aadblA);
-
-		double[] adblEigenvector = ec.eigenVector();
-
-		java.lang.String strDump = "[" + FormatUtil.FormatDouble (ec.eigenValue(), 1, 4, 1.) + "] => ";
-
-		for (int i = 0; i < adblEigenvector.length; ++i)
-			strDump += FormatUtil.FormatDouble (adblEigenvector[i], 1, 4, 1.) + " | ";
-
-		System.out.println ("\t" + strDump);
-
-		System.out.println ("\t|----------------------------------------|");
+		super (Integer.MAX_VALUE, Integer.MAX_VALUE);
 	}
 
 	/**
-	 * Entry Point
+	 * Compute the Max Norm of the R<sup>1</sup> Square Matrix
 	 * 
-	 * @param astrArgs Command Line Argument Array
+	 * @param r1Square R<sup>1</sup> Square Matrix
 	 * 
-	 * @throws Exception Thrown on Error/Exception Situation
+	 * @return Max Norm of the R<sup>1</sup> Square Matrix
+	 * 
+	 * @throws Exception Thrown if the Norm cannot be calculated
 	 */
 
-	public static final void main (
-		final String[] astrArgs)
+	@Override public double norm (
+		final R1Square r1Square)
 		throws Exception
 	{
-		EnvManager.InitEnv ("");
+		if (null == r1Square) {
+			throw new Exception ("MaxInfinityInfinityEvaluator::norm => Invalid Inputs");
+		}
 
-		QREigenComponentExtractor qrece = new QREigenComponentExtractor (
-			50
-		);
+		double[][] r1Grid = r1Square.r1Grid();
 
-		int iNumRun = 10;
+		double maxElement = Integer.MIN_VALUE;
 
-		for (int iRun = 0; iRun < iNumRun; ++iRun)
-			EigenRun (qrece);
+		for (int i = 0; i < r1Grid.length; ++i) {
+			for (int j = 0; j < r1Grid[i].length; ++j) {
+				double absoluteValue = Math.abs (r1Grid[i][j]);
 
-		EnvManager.TerminateEnv();
+				maxElement = maxElement > absoluteValue ? maxElement : absoluteValue;
+			}
+		}
+
+		return maxElement * r1Square.size();
 	}
 }

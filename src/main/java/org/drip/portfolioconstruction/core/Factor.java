@@ -116,7 +116,8 @@ public class Factor
 		super (
 			name,
 			id,
-			description
+			description,
+			BlockCategory.FACTOR
 		);
 	}
 }

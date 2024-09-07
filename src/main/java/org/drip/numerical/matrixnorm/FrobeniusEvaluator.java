@@ -76,8 +76,8 @@ import org.drip.numerical.matrix.R1Square;
  */
 
 /**
- * <i>FrobeniusEvaluator</i> computes the Entry-wise L<sup>2</sup> Norm of the Entries of the R<sup>1</sup>
- * 	Square Matrix. The References are:
+ * <i>FrobeniusEvaluator</i> computes the Entry-wise L<sup>2, 2</sup> Norm of the Entries of the
+ * 	R<sup>1</sup> Square Matrix. The References are:
  * 
  * <br><br>
  * 	<ul>
@@ -188,5 +188,26 @@ public class FrobeniusEvaluator extends EntryWiseEvaluator
 		}
 
 		return Math.sqrt (conjugareTransposeProduct.trace());
+	}
+
+	/**
+	 * Compute the SVD-based Norm of the R<sup>1</sup> Square Matrix
+	 * 
+	 * @param r1Square R<sup>1</sup> Square Matrix
+	 * 
+	 * @return SVD-based Norm of the R<sup>1</sup> Square Matrix
+	 * 
+	 * @throws Exception Thrown if the Norm cannot be calculated
+	 */
+
+	public double svdNorm (
+		final R1Square r1Square)
+		throws Exception
+	{
+		if (null == r1Square) {
+			throw new Exception ("FrobeniusEvaluator::svdNorm => Invalid Inputs");
+		}
+
+		return r1Square.svdBasedFrobeniusNorm();
 	}
 }

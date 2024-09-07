@@ -97,6 +97,7 @@ public class Block
 {
 	private java.lang.String _id = "";
 	private java.lang.String _name = "";
+	private int _category = Integer.MIN_VALUE;
 	private java.lang.String _description = "";
 	private java.util.Date _dateTimeStamp = null;
 
@@ -104,19 +105,22 @@ public class Block
 	 * Construct a Standard Instance of a Block
 	 * 
 	 * @param name The Block Name
+	 * @param category Block Category
 	 * 
 	 * @return The Standard Block Instance
 	 */
 
 	public static final Block Standard (
-		final java.lang.String name)
+		final java.lang.String name,
+		final int category)
 	{
 		try
 		{
 			return new Block (
 				name,
 				name,
-				name
+				name,
+				category
 			);
 		}
 		catch (java.lang.Exception e)
@@ -133,6 +137,7 @@ public class Block
 	 * @param name The Name
 	 * @param id The ID
 	 * @param description The Description
+	 * @param category Block Category
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
@@ -140,7 +145,8 @@ public class Block
 	public Block (
 		final java.lang.String name,
 		final java.lang.String id,
-		final java.lang.String description)
+		final java.lang.String description,
+		final int category)
 		throws java.lang.Exception
 	{
 		if (null == (_name = name) || _name.isEmpty() ||
@@ -151,6 +157,8 @@ public class Block
 				"Block Constructor => Invalid Inputs"
 			);
 		}
+
+		_category = category;
 
 		_dateTimeStamp = new java.util.Date();
 	}
@@ -197,6 +205,17 @@ public class Block
 	public java.util.Date timeStamp()
 	{
 		return _dateTimeStamp;
+	}
+
+	/**
+	 * Retrieve the Block Category
+	 * 
+	 * @return Block Category
+	 */
+
+	public int category()
+	{
+		return _category;
 	}
 
 	@Override public int hashCode()

@@ -2,8 +2,8 @@
 package org.drip.simm.foundation;
 
 import org.drip.numerical.common.NumberUtil;
-import org.drip.numerical.eigen.EigenComponent;
-import org.drip.numerical.eigen.PowerIterationComponentExtractor;
+import org.drip.numerical.eigenization.EigenComponent;
+import org.drip.numerical.eigenization.PowerIterationComponentExtractor;
 import org.drip.numerical.linearalgebra.R1MatrixUtil;
 
 /*

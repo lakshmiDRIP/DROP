@@ -128,7 +128,8 @@ public class TaxAccountingScheme
 		super (
 			name,
 			id,
-			description
+			description,
+			BlockCategory.TAX_ACCOUNTING_SCHEME
 		);
 
 		if (!org.drip.numerical.common.NumberUtil.IsValid (_shortTermTaxRate = shortTermTaxRate) ||

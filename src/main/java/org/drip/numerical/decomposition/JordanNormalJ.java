@@ -1,7 +1,5 @@
 
-package org.drip.numerical.jordannormalform;
-
-import org.drip.numerical.common.NumberUtil;
+package org.drip.numerical.decomposition;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -76,7 +74,8 @@ import org.drip.numerical.common.NumberUtil;
  */
 
 /**
- * <i>JSubM</i> implements the J<sub>m<sub>i</sub></sub> Jordan Normal Form Matrix. The References are:
+ * <i>JordanNormalJ</i> implements the J in the Jordan Normal Form Matrix VJV<sup>-1</sup>. The References
+ * 	are:
  * 
  * <br><br>
  *  <ul>
@@ -105,70 +104,78 @@ import org.drip.numerical.common.NumberUtil;
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/GraphAlgorithmLibrary.md">Graph Algorithm Library</a></li>
  *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/numerical/README.md">Numerical Quadrature, Differentiation, Eigenization, Linear Algebra, and Utilities</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/numerical/jordanform/README.md">Implementation of Jordan Normal Form</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/numerical/decomposition/README.md">Jordan Normal, UV, and QR Decompositions</a></li>
  *  </ul>
  * <br><br>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class JSubM
+public class JordanNormalJ
 {
 	private double[][] _r1Grid = null;
-	private double _lambda = Double.NaN;
-	private int _mSubI = Integer.MIN_VALUE;
+	private int _size = Integer.MIN_VALUE;
+	private JordanNormalJSubM[] _jSubMArray = null;
 
 	/**
-	 * <i>JSubM</i> Constructor
+	 * <i>JordanNormalJ</i> Constructor
 	 * 
-	 * @param lambda Lambda
-	 * @param mSubI Size - m<sub>i</sub>
+	 * @param jSubMArray <i>JSubM</i> Array
 	 * 
 	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
-	public JSubM (
-		final double lambda,
-		final int mSubI)
+	public JordanNormalJ (
+		final JordanNormalJSubM[] jSubMArray)
 		throws Exception
 	{
-		if (!NumberUtil.IsValid (_lambda = lambda) || 0 >= (_mSubI = mSubI)) {
-			throw new Exception ("JSubM Constructor => Invalid Inputs");
+		if (null == (_jSubMArray = jSubMArray) || 0 == _jSubMArray.length) {
+			throw new Exception ("JordanNormalJ Constructor => Invalid Inputs");
 		}
 
-		_r1Grid = new double[_mSubI][_mSubI];
+		_size = 0;
 
-		for (int i = 0; i < _mSubI; ++i) {
-			for (int j = 0; j < _mSubI; ++j) {
-				_r1Grid[i][j] = i == j ? _lambda : 0.;
+		for (int i = 0; i < _jSubMArray.length; ++i) {
+			if (null == _jSubMArray[i]) {
+				throw new Exception ("JordanNormalJ Constructor => Invalid Inputs");
+			}
+
+			_size += _jSubMArray[i].mSubI();
+		}
+
+		int startIndex = 0;
+		_r1Grid = new double[_size][_size];
+
+		for (int i = 0; i < _size; ++i) {
+			for (int j = 0; j < _size; ++j) {
+				_r1Grid[i][j] = 0.;
 			}
 		}
 
-		for (int i = 1; i < _mSubI; ++i) {
-			_r1Grid[i - 1][i] = 1.;
+		for (int k = 0; k < _jSubMArray.length; ++k) {
+			int mSubI = _jSubMArray[k].mSubI();
+
+			double[][] jSubMR1Grid = _jSubMArray[k].r1Grid();
+
+			for (int i = 0; i < mSubI; ++i) {
+				for (int j = 0; j < mSubI; ++j) {
+					_r1Grid[startIndex + i][startIndex + j] = jSubMR1Grid[i][j];
+				}
+			}
+
+			startIndex += mSubI;
 		}
 	}
 
 	/**
-	 * Retrieve the Size - m<sub>i</sub>
+	 * Retrieve the <i>JSubM</i> Array
 	 * 
-	 * @return The Size - m<sub>i</sub>
+	 * @return The <i>JSubM</i> Array
 	 */
 
-	public int mSubI()
+	public JordanNormalJSubM[] jSubMArray()
 	{
-		return _mSubI;
-	}
-
-	/**
-	 * Retrieve the Lambda
-	 * 
-	 * @return The Lambda
-	 */
-
-	public double lambda()
-	{
-		return _lambda;
+		return _jSubMArray;
 	}
 
 	/**
@@ -183,34 +190,58 @@ public class JSubM
 	}
 
 	/**
-	 * <i>JSubM</i> to the power of k
+	 * <i>J</i> to the power of k
 	 * 
 	 * @param k K
 	 * 
-	 * @return <i>JSubM</i> to the power of k
+	 * @return <i>J</i> to the power of k
 	 */
 
 	public double[][] power (
 		final int k)
 	{
-		if (0 >= k || k < _mSubI - 1) {
+		if (0 >= k) {
 			return null;
 		}
 
-		double[][] r1Grid = new double[_mSubI][_mSubI];
+		int startIndex = 0;
+		double[][] r1Grid = new double[_size][_size];
 
-		for (int i = 0; i < _mSubI; ++i) {
-			for (int j = 0; j < _mSubI; ++j) {
-				if (i > j) {
-					r1Grid[i][j] = 0.;
-				} else if (i == j) {
-					r1Grid[i][j] = Math.pow (_lambda, k);
-				} else {
-					r1Grid[i][j] = NumberUtil.NCK (k, j - i) * Math.pow (_lambda, k + i - j);
-				}
+		for (int i = 0; i < _size; ++i) {
+			for (int j = 0; j < _size; ++j) {
+				r1Grid[i][j] = 0.;
 			}
 		}
 
+		for (int p = 0; p < _jSubMArray.length; ++p) {
+			int mSubI = _jSubMArray[k].mSubI();
+
+			double[][] jSubMR1Grid = _jSubMArray[p].power (k);
+
+			if (null == jSubMR1Grid) {
+				return null;
+			}
+
+			for (int i = 0; i < mSubI; ++i) {
+				for (int j = 0; j < mSubI; ++j) {
+					_r1Grid[startIndex + i][startIndex + j] = jSubMR1Grid[i][j];
+				}
+			}
+
+			startIndex += mSubI;
+		}
+
 		return r1Grid;
+	}
+
+	/**
+	 * Is this Diagonal
+	 * 
+	 * @return YES - This is Diagonal
+	 */
+
+	public boolean isDiagonal()
+	{
+		return true;
 	}
 }

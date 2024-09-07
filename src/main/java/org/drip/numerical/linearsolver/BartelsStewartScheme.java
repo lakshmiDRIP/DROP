@@ -3,8 +3,8 @@ package org.drip.numerical.linearsolver;
 
 import org.drip.measure.crng.RdRandomSequence;
 import org.drip.numerical.common.NumberUtil;
+import org.drip.numerical.decomposition.QR;
 import org.drip.numerical.linearalgebra.R1MatrixUtil;
-import org.drip.numerical.linearalgebra.QR;
 import org.drip.numerical.linearalgebra.SylvesterEquation;
 import org.drip.numerical.matrix.R1Square;
 

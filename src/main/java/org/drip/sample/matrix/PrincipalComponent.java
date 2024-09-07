@@ -1,7 +1,7 @@
 
 package org.drip.sample.matrix;
 
-import org.drip.numerical.eigen.*;
+import org.drip.numerical.eigenization.*;
 import org.drip.service.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 

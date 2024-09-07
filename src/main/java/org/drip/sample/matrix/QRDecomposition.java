@@ -2,6 +2,7 @@
 package org.drip.sample.matrix;
 
 import org.drip.numerical.common.NumberUtil;
+import org.drip.numerical.decomposition.QR;
 import org.drip.numerical.linearalgebra.*;
 import org.drip.service.env.EnvManager;
 

@@ -7,21 +7,21 @@ DROP Numerical Eigen Package implements the Eigen Component Extraction Methodolo
 
 ## Class Components
 
- * [***ComponentExtractor***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/numerical/eigen/ComponentExtractor.java)
+ * [***ComponentExtractor***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/numerical/eigenization/ComponentExtractor.java)
  <i>ComponentExtractor</i> Interface exposes the Methods that extract the Linear System Components using the
  Power Iteration Method.
 
- * [***EigenComponent***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/numerical/eigen/EigenComponent.java)
+ * [***EigenComponent***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/numerical/eigenization/EigenComponent.java)
  <i>EigenComponent</i> holds the Component's Eigenvector and the corresponding Eigenvalue.
 
- * [***EigenOutput***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/numerical/eigen/EigenOutput.java)
+ * [***EigenOutput***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/numerical/eigenization/EigenOutput.java)
  <i>EigenOutput</i> holds the results of the Eigenization Operation - the Eigenvectors and the Eigenvalues.
 
- * [***PowerIterationComponentExtractor***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/numerical/eigen/PowerIterationComponentExtractor.java)
+ * [***PowerIterationComponentExtractor***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/numerical/eigenization/PowerIterationComponentExtractor.java)
  <i>PowerIterationComponentExtractor</i> extracts the Linear System Components using the Power Iteration
  Method.
 
- * [***QREigenComponentExtractor***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/numerical/eigen/QREigenComponentExtractor.java)
+ * [***QREigenComponentExtractor***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/numerical/eigenization/QREigenComponentExtractor.java)
  <i>QREigenComponentExtractor</i> extracts the Eigenvalues and Eigenvectors using QR Decomposition.
 
 

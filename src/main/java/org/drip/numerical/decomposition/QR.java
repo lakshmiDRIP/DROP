@@ -1,9 +1,5 @@
 
-package org.drip.sample.matrix;
-
-import org.drip.numerical.eigenization.*;
-import org.drip.service.common.FormatUtil;
-import org.drip.service.env.EnvManager;
+package org.drip.numerical.decomposition;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -18,8 +14,6 @@ import org.drip.service.env.EnvManager;
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
  * Copyright (C) 2015 Lakshmi Krishnamurthy
- * Copyright (C) 2014 Lakshmi Krishnamurthy
- * Copyright (C) 2013 Lakshmi Krishnamurthy
  * 
  *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
  *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
@@ -87,95 +81,67 @@ import org.drip.service.env.EnvManager;
  */
 
 /**
- * <i>Eigenization</i> demonstrates how to generate the eigenvalue and eigenvector for the Input Matrix.
- *  
+ * <i>QR</i> holds the Results of QR Decomposition - viz., the Q and the R Matrices.
+ * 
  * <br><br>
  *  <ul>
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md">Numerical Analysis Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/README.md">DROP API Construction and Usage</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/matrix/README.md">Cholesky Factorization, PCA, and Eigenization</a></li>
+ *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/numerical/README.md">Numerical Quadrature, Differentiation, Eigenization, Linear Algebra, and Utilities</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/numerical/decomposition/README.md">Jordan Normal, UV, and QR Decompositions</a></li>
  *  </ul>
  * <br><br>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class Eigenization {
+public class QR {
+	private double[][] _aadblQ = null;
+	private double[][] _aadblR = null;
 
-	private static final void EigenRun (
-		final QREigenComponentExtractor qrece)
+	/**
+	 * QR Constructor
+	 * 
+	 * @param aadblQ Q
+	 * @param aadblR R
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public QR (
+		final double[][] aadblQ,
+		final double[][] aadblR)
+		throws java.lang.Exception
 	{
-		double dblCorr1 = 0.5 * Math.random();
+		if (null == (_aadblQ = aadblQ) || null == (_aadblR = aadblR))
+			throw new java.lang.Exception ("QR ctr: Invalid Inputs!");
 
-		double dblCorr2 = 0.5 * Math.random();
+		int iSize = _aadblQ.length;
 
-		double[][] aadblA = {
-			{     1.0, dblCorr1,      0.0},
-			{dblCorr1,      1.0, dblCorr2},
-			{     0.0, dblCorr2,      1.0}
-		};
-
-		EigenOutput eo = qrece.eigenize (aadblA);
-
-		if (null == eo) return;
-
-		System.out.println ("\n\t|----------------------------------------|");
-
-		System.out.println (
-			"\t|-----------" +
-			FormatUtil.FormatDouble (dblCorr1, 1, 4, 1.) + " ||| " +
-			FormatUtil.FormatDouble (dblCorr2, 1, 4, 1.) + " ---------|"
-		);
-
-		System.out.println ("\t|----------------------------------------|");
-
-		for (int i = 0; i < aadblA.length; ++i) {
-			java.lang.String strDump = "\t[" + FormatUtil.FormatDouble (eo.eigenValueArray()[i], 1, 4, 1.) + "] => ";
-
-			for (int j = 0; j < aadblA.length; ++j)
-				strDump += FormatUtil.FormatDouble (eo.eigenVectorArray()[i][j], 1, 4, 1.) + " | ";
-
-			System.out.println (strDump);
-		}
-
-		EigenComponent ec = qrece.principalComponent (aadblA);
-
-		double[] adblEigenvector = ec.eigenVector();
-
-		java.lang.String strDump = "[" + FormatUtil.FormatDouble (ec.eigenValue(), 1, 4, 1.) + "] => ";
-
-		for (int i = 0; i < adblEigenvector.length; ++i)
-			strDump += FormatUtil.FormatDouble (adblEigenvector[i], 1, 4, 1.) + " | ";
-
-		System.out.println ("\t" + strDump);
-
-		System.out.println ("\t|----------------------------------------|");
+		if (0 == iSize || null == _aadblQ[0] || iSize != _aadblQ[0].length || iSize != _aadblR.length || null
+			== _aadblR[0] || iSize != _aadblR[0].length)
+			throw new java.lang.Exception ("QR ctr: Invalid Inputs!");
 	}
 
 	/**
-	 * Entry Point
+	 * Retrieve Q
 	 * 
-	 * @param astrArgs Command Line Argument Array
-	 * 
-	 * @throws Exception Thrown on Error/Exception Situation
+	 * @return Q
 	 */
 
-	public static final void main (
-		final String[] astrArgs)
-		throws Exception
+	public double[][] q()
 	{
-		EnvManager.InitEnv ("");
+		return _aadblQ;
+	}
 
-		QREigenComponentExtractor qrece = new QREigenComponentExtractor (
-			50
-		);
+	/**
+	 * Retrieve R
+	 * 
+	 * @return R
+	 */
 
-		int iNumRun = 10;
-
-		for (int iRun = 0; iRun < iNumRun; ++iRun)
-			EigenRun (qrece);
-
-		EnvManager.TerminateEnv();
+	public double[][] r()
+	{
+		return _aadblR;
 	}
 }

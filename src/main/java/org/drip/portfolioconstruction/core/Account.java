@@ -128,7 +128,8 @@ public class Account
 		super (
 			name,
 			id,
-			description
+			description,
+			BlockCategory.ACCOUNT
 		);
 
 		_holdings = holdings;

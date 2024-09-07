@@ -122,7 +122,8 @@ public class Asset
 		super (
 			name,
 			id,
-			description
+			description,
+			BlockCategory.ASSET
 		);
 
 		if (null == (_currency = currency) || _currency.isEmpty() ||

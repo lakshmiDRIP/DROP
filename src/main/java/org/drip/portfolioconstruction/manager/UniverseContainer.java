@@ -1,9 +1,8 @@
 
-package org.drip.sample.matrix;
+package org.drip.portfolioconstruction.manager;
 
-import org.drip.numerical.eigenization.*;
-import org.drip.service.common.FormatUtil;
-import org.drip.service.env.EnvManager;
+import org.drip.analytics.support.CaseInsensitiveTreeMap;
+import org.drip.portfolioconstruction.composite.Holdings;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -16,10 +15,6 @@ import org.drip.service.env.EnvManager;
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
- * Copyright (C) 2016 Lakshmi Krishnamurthy
- * Copyright (C) 2015 Lakshmi Krishnamurthy
- * Copyright (C) 2014 Lakshmi Krishnamurthy
- * Copyright (C) 2013 Lakshmi Krishnamurthy
  * 
  *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
  *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
@@ -87,95 +82,88 @@ import org.drip.service.env.EnvManager;
  */
 
 /**
- * <i>Eigenization</i> demonstrates how to generate the eigenvalue and eigenvector for the Input Matrix.
- *  
- * <br><br>
+ * <i>HoldingsContainer</i> maintains a Universe of the Holdings.
+ *
+ *	<br><br>
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md">Numerical Analysis Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/README.md">DROP API Construction and Usage</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/matrix/README.md">Cholesky Factorization, PCA, and Eigenization</a></li>
+ *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md">Portfolio Core Module</a></li>
+ *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/AssetAllocationAnalyticsLibrary.md">Asset Allocation Analytics</a></li>
+ *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/portfolioconstruction/README.md">Portfolio Construction under Allocation Constraints</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/portfolioconstruction/manager/README.md">Portfolio Construction Component Framework Manager</a></li>
  *  </ul>
- * <br><br>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class Eigenization {
+public class UniverseContainer
+{
+	private CaseInsensitiveTreeMap<Holdings> _holdingsMap = null;
 
-	private static final void EigenRun (
-		final QREigenComponentExtractor qrece)
+	/**
+	 * <i>UniverseContainer</i> Constructor
+	 */
+
+	public UniverseContainer()
 	{
-		double dblCorr1 = 0.5 * Math.random();
-
-		double dblCorr2 = 0.5 * Math.random();
-
-		double[][] aadblA = {
-			{     1.0, dblCorr1,      0.0},
-			{dblCorr1,      1.0, dblCorr2},
-			{     0.0, dblCorr2,      1.0}
-		};
-
-		EigenOutput eo = qrece.eigenize (aadblA);
-
-		if (null == eo) return;
-
-		System.out.println ("\n\t|----------------------------------------|");
-
-		System.out.println (
-			"\t|-----------" +
-			FormatUtil.FormatDouble (dblCorr1, 1, 4, 1.) + " ||| " +
-			FormatUtil.FormatDouble (dblCorr2, 1, 4, 1.) + " ---------|"
-		);
-
-		System.out.println ("\t|----------------------------------------|");
-
-		for (int i = 0; i < aadblA.length; ++i) {
-			java.lang.String strDump = "\t[" + FormatUtil.FormatDouble (eo.eigenValueArray()[i], 1, 4, 1.) + "] => ";
-
-			for (int j = 0; j < aadblA.length; ++j)
-				strDump += FormatUtil.FormatDouble (eo.eigenVectorArray()[i][j], 1, 4, 1.) + " | ";
-
-			System.out.println (strDump);
-		}
-
-		EigenComponent ec = qrece.principalComponent (aadblA);
-
-		double[] adblEigenvector = ec.eigenVector();
-
-		java.lang.String strDump = "[" + FormatUtil.FormatDouble (ec.eigenValue(), 1, 4, 1.) + "] => ";
-
-		for (int i = 0; i < adblEigenvector.length; ++i)
-			strDump += FormatUtil.FormatDouble (adblEigenvector[i], 1, 4, 1.) + " | ";
-
-		System.out.println ("\t" + strDump);
-
-		System.out.println ("\t|----------------------------------------|");
+		_holdingsMap = new CaseInsensitiveTreeMap<Holdings>();
 	}
 
 	/**
-	 * Entry Point
+	 * Retrieve the Holdings Map
 	 * 
-	 * @param astrArgs Command Line Argument Array
-	 * 
-	 * @throws Exception Thrown on Error/Exception Situation
+	 * @return Holdings Map
 	 */
 
-	public static final void main (
-		final String[] astrArgs)
-		throws Exception
+	public CaseInsensitiveTreeMap<Holdings> holdingsMap()
 	{
-		EnvManager.InitEnv ("");
+		return _holdingsMap;
+	}
 
-		QREigenComponentExtractor qrece = new QREigenComponentExtractor (
-			50
-		);
+	/**
+	 * Add a Holdings Entity
+	 * 
+	 * @param holdings Holdings Entity
+	 * 
+	 * @return TRUE - The Holdings Entity successfully added
+	 */
 
-		int iNumRun = 10;
+	public boolean addHoldings (
+		final Holdings holdings)
+	{
+		if (null == holdings) {
+			return false;
+		}
 
-		for (int iRun = 0; iRun < iNumRun; ++iRun)
-			EigenRun (qrece);
+		_holdingsMap.put (holdings.id(), holdings);
 
-		EnvManager.TerminateEnv();
+		return true;
+	}
+
+	/**
+	 * Indicate if the Holdings is contained in the Universe
+	 * 
+	 * @param holdings Holdings
+	 * 
+	 * @return TRUE - The Holdings is contained in the Universe
+	 */
+
+	public boolean containsHoldings (
+		final Holdings holdings)
+	{
+		return null != holdings && _holdingsMap.containsKey (holdings.id());
+	}
+
+	/**
+	 * Retrieve the Holdings corresponding to the ID
+	 * 
+	 * @param id ID
+	 * 
+	 * @return Holdings corresponding to the ID
+	 */
+
+	public Holdings retrieveHoldings (
+		final String id)
+	{
+		return null == id || _holdingsMap.containsKey (id) ? null : _holdingsMap.get (id);
 	}
 }

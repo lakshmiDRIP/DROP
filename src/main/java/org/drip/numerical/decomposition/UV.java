@@ -1,19 +1,12 @@
 
-package org.drip.numerical.linearalgebra;
+package org.drip.numerical.decomposition;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
- * Copyright (C) 2022 Lakshmi Krishnamurthy
- * Copyright (C) 2021 Lakshmi Krishnamurthy
- * Copyright (C) 2020 Lakshmi Krishnamurthy
- * Copyright (C) 2019 Lakshmi Krishnamurthy
- * Copyright (C) 2018 Lakshmi Krishnamurthy
- * Copyright (C) 2017 Lakshmi Krishnamurthy
- * Copyright (C) 2016 Lakshmi Krishnamurthy
- * Copyright (C) 2015 Lakshmi Krishnamurthy
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
  * 
  *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
  *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
@@ -81,67 +74,90 @@ package org.drip.numerical.linearalgebra;
  */
 
 /**
- * <i>QR</i> holds the Results of QR Decomposition - viz., the Q and the R Matrices.
+ * <i>UV</i> holds the components of a UV Decomposition. The References are:
+ * 
+ * <br><br>
+ * 	<ul>
+ * 		<li>
+ * 			Alon, N., and A. Naor (2004): Approximating the Cut-norm via Grothendieck Inequality
+ * 				<i>Proceedings of the 36<sup>th</sup> Annual ACM Symposium on Theory of Computing STOC’04</i>
+ * 				<b>ACM</b> Chicago IL
+ * 		</li>
+ * 		<li>
+ * 			Golub, G. H., and C. F. van Loan (1996): <i>Matrix Computations 3<sup>rd</sup> Edition</i>
+ * 				<b>Johns Hopkins University Press</b> Baltimore MD
+ * 		</li>
+ * 		<li>
+ * 			Horn, R. A., and C. R. Johnson (2013): <i>Matrix Analysis 2<sup>nd</sup> Edition</i> <b>Cambridge
+ * 				University Press</b> Cambridge UK
+ * 		</li>
+ * 		<li>
+ * 			Lazslo, L. (2012): <i>Large Networks and Graph Limits</i> <b>American Mathematical Society</b>
+ * 				Providence RI
+ * 		</li>
+ * 		<li>
+ * 			Wikipedia (2024): Matrix Norm https://en.wikipedia.org/wiki/Matrix_norm
+ * 		</li>
+ * 	</ul>
  * 
  * <br><br>
  *  <ul>
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md">Numerical Analysis Library</a></li>
  *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/numerical/README.md">Numerical Quadrature, Differentiation, Eigenization, Linear Algebra, and Utilities</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/numerical/linearalgebra/README.md">Linear Algebra Matrix Transform Library</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/numerical/matrixnorm/README.md">Implementation of Matrix Norm Variants</a></li>
  *  </ul>
  * <br><br>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class QR {
-	private double[][] _aadblQ = null;
-	private double[][] _aadblR = null;
+public class UV
+{
+	private double[][] _u = null;
+	private double[][] _v = null;
 
 	/**
-	 * QR Constructor
+	 * UV Constructor
 	 * 
-	 * @param aadblQ Q
-	 * @param aadblR R
+	 * @param u U
+	 * @param v v
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
-	public QR (
-		final double[][] aadblQ,
-		final double[][] aadblR)
-		throws java.lang.Exception
+	public UV (
+		final double[][] u,
+		final double[][] v)
+		throws Exception
 	{
-		if (null == (_aadblQ = aadblQ) || null == (_aadblR = aadblR))
-			throw new java.lang.Exception ("QR ctr: Invalid Inputs!");
-
-		int iSize = _aadblQ.length;
-
-		if (0 == iSize || null == _aadblQ[0] || iSize != _aadblQ[0].length || iSize != _aadblR.length || null
-			== _aadblR[0] || iSize != _aadblR[0].length)
-			throw new java.lang.Exception ("QR ctr: Invalid Inputs!");
+		if (null == (_u = u) || null == (_v = v) ||
+			0 == _u.length || null == _u[0] || _u.length != _u[0].length ||
+			_u.length != _v.length || null == _v[0] || _u.length != _v[0].length)
+		{
+			throw new Exception ("UV ctr: Invalid Inputs!");
+		}
 	}
 
 	/**
-	 * Retrieve Q
+	 * Retrieve the Decomposed <code>U</code>
 	 * 
-	 * @return Q
+	 * @return Decomposed <code>U</code>
 	 */
 
-	public double[][] q()
+	public double[][] u()
 	{
-		return _aadblQ;
+		return _u;
 	}
 
 	/**
-	 * Retrieve R
+	 * Retrieve the Decomposed <code>V</code>
 	 * 
-	 * @return R
+	 * @return Decomposed <code>V</code>
 	 */
 
-	public double[][] r()
+	public double[][] v()
 	{
-		return _aadblR;
+		return _v;
 	}
 }

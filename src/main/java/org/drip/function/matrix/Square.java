@@ -193,11 +193,11 @@ public class Square
 	 * @return The Eigen-Components of the Square Matrix
 	 */
 
-	public org.drip.numerical.eigen.EigenOutput eigenize()
+	public org.drip.numerical.eigenization.EigenOutput eigenize()
 	{
 		try
 		{
-			return new org.drip.numerical.eigen.QREigenComponentExtractor (
+			return new org.drip.numerical.eigenization.QREigenComponentExtractor (
 				100
 			).eigenize (
 				_grid
@@ -222,7 +222,7 @@ public class Square
 		org.drip.function.matrix.FrobeniusCovariance frobeniusCovariance =
 			new org.drip.function.matrix.FrobeniusCovariance();
 
-		org.drip.numerical.eigen.EigenOutput eigenOutput = eigenize();
+		org.drip.numerical.eigenization.EigenOutput eigenOutput = eigenize();
 
 		if (null == eigenOutput)
 		{
@@ -395,7 +395,7 @@ public class Square
 
 	public double determinant()
 	{
-		org.drip.numerical.eigen.EigenOutput eigenOutput = eigenize();
+		org.drip.numerical.eigenization.EigenOutput eigenOutput = eigenize();
 
 		if (null == eigenOutput)
 		{

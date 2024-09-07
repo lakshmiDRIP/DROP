@@ -1,5 +1,7 @@
 
-package org.drip.numerical.jordannormalform;
+package org.drip.numerical.decomposition;
+
+import org.drip.numerical.linearalgebra.R1MatrixUtil;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -74,7 +76,8 @@ package org.drip.numerical.jordannormalform;
  */
 
 /**
- * <i>J</i> implements the J in the Jordan Normal Form Matrix VJV<sup>-1</sup>. The References are:
+ * <i>JordanNormalVJ</i> holds the V and the J components of the Jordan Normal Form Matrix. The References
+ * 	are:
  * 
  * <br><br>
  *  <ul>
@@ -103,136 +106,72 @@ package org.drip.numerical.jordannormalform;
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/GraphAlgorithmLibrary.md">Graph Algorithm Library</a></li>
  *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/numerical/README.md">Numerical Quadrature, Differentiation, Eigenization, Linear Algebra, and Utilities</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/numerical/jordanform/README.md">Implementation of Jordan Normal Form</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/numerical/decomposition/README.md">Jordan Normal, UV, and QR Decompositions</a></li>
  *  </ul>
  * <br><br>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class J
+public class JordanNormalVJ
 {
-	private double[][] _r1Grid = null;
-	private JSubM[] _jSubMArray = null;
-	private int _size = Integer.MIN_VALUE;
+	private double[][] _v = null;
+	private JordanNormalJ _j = null;
 
-	public J (
-		final JSubM[] jSubMArray)
+	/**
+	 * <i>JordanNormalVJ</i> Constructor
+	 * 
+	 * @param j Jordan Normal <i>J</i>
+	 * @param v Jordan Normal <i>V</i>
+	 * 
+	 * @throws Exception Thrown if the Inputs are Invalid
+	 */
+
+	public JordanNormalVJ (
+		final JordanNormalJ j,
+		final double[][] v)
 		throws Exception
 	{
-		if (null == (_jSubMArray = jSubMArray) || 0 == _jSubMArray.length) {
-			throw new Exception ("J Constructor => Invalid Inputs");
-		}
-
-		_size = 0;
-
-		for (int i = 0; i < _jSubMArray.length; ++i) {
-			if (null == _jSubMArray[i]) {
-				throw new Exception ("J Constructor => Invalid Inputs");
-			}
-
-			_size += _jSubMArray[i].mSubI();
-		}
-
-		int startIndex = 0;
-		_r1Grid = new double[_size][_size];
-
-		for (int i = 0; i < _size; ++i) {
-			for (int j = 0; j < _size; ++j) {
-				_r1Grid[i][j] = 0.;
-			}
-		}
-
-		for (int k = 0; k < _jSubMArray.length; ++k) {
-			int mSubI = _jSubMArray[k].mSubI();
-
-			double[][] jSubMR1Grid = _jSubMArray[k].r1Grid();
-
-			for (int i = 0; i < mSubI; ++i) {
-				for (int j = 0; j < mSubI; ++j) {
-					_r1Grid[startIndex + i][startIndex + j] = jSubMR1Grid[i][j];
-				}
-			}
-
-			startIndex += mSubI;
+		if (null == (_j = j) || null == (_v = v) || 0 == _v.length || 0 == _v[0].length) {
+			throw new Exception ("JordanNormalVJ Constructor => Invalid Inputs");
 		}
 	}
 
 	/**
-	 * Retrieve the <i>JSubM</i> Array
+	 * Retrieve the Jordan Normal <i>J</i> Matrix
 	 * 
-	 * @return The <i>JSubM</i> Array
+	 * @return Jordan Normal <i>J</i> Matrix
 	 */
 
-	public JSubM[] jSubMArray()
+	public JordanNormalJ j()
 	{
-		return _jSubMArray;
+		return _j;
 	}
 
 	/**
-	 * Retrieve the R1 Grid
+	 * Retrieve the Jordan Normal <i>V</i> Matrix
 	 * 
-	 * @return The R1 Grid
+	 * @return Jordan Normal <i>V</i> Matrix
 	 */
 
-	public double[][] r1Grid()
+	public double[][] v()
 	{
-		return _r1Grid;
+		return _v;
 	}
 
 	/**
-	 * <i>J</i> to the power of k
+	 * Recover the Original Matrix using V.J.V<sup>-1</sup>
 	 * 
-	 * @param k K
-	 * 
-	 * @return <i>J</i> to the power of k
+	 * @return The Original Matrix
 	 */
 
-	public double[][] power (
-		final int k)
+	public double[][] recoverOriginal()
 	{
-		if (0 >= k) {
-			return null;
-		}
+		double[][] vj = R1MatrixUtil.Product (_v, _j.r1Grid());
 
-		int startIndex = 0;
-		double[][] r1Grid = new double[_size][_size];
-
-		for (int i = 0; i < _size; ++i) {
-			for (int j = 0; j < _size; ++j) {
-				r1Grid[i][j] = 0.;
-			}
-		}
-
-		for (int p = 0; p < _jSubMArray.length; ++p) {
-			int mSubI = _jSubMArray[k].mSubI();
-
-			double[][] jSubMR1Grid = _jSubMArray[p].power (k);
-
-			if (null == jSubMR1Grid) {
-				return null;
-			}
-
-			for (int i = 0; i < mSubI; ++i) {
-				for (int j = 0; j < mSubI; ++j) {
-					_r1Grid[startIndex + i][startIndex + j] = jSubMR1Grid[i][j];
-				}
-			}
-
-			startIndex += mSubI;
-		}
-
-		return r1Grid;
-	}
-
-	/**
-	 * Is this Diagonal
-	 * 
-	 * @return YES - This is Diagonal
-	 */
-
-	public boolean isDiagonal()
-	{
-		return true;
+		return null == vj ? null : R1MatrixUtil.Product (
+			vj,
+			R1MatrixUtil.InvertUsingGaussianElimination (_v)
+		);
 	}
 }

@@ -1,6 +1,8 @@
 
 package org.drip.portfolioconstruction.risk;
 
+import org.drip.portfolioconstruction.core.BlockCategory;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
@@ -118,7 +120,8 @@ public class AttributeJointDense
 		super (
 			name,
 			id,
-			description
+			description,
+			BlockCategory.ATTRIBUTE_JOINT_DENSE
 		);
 	}
 

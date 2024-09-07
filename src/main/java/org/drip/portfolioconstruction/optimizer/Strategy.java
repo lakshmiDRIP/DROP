@@ -1,6 +1,8 @@
 
 package org.drip.portfolioconstruction.optimizer;
 
+import org.drip.portfolioconstruction.core.BlockCategory;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
@@ -131,7 +133,8 @@ public class Strategy
 		super (
 			name,
 			id,
-			description
+			description,
+			BlockCategory.STRATEGY
 		);
 
 		_constraintHierarchy = constraintHierarchy;

@@ -1,6 +1,8 @@
 
 package org.drip.portfolioconstruction.cost;
 
+import org.drip.portfolioconstruction.core.BlockCategory;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
@@ -105,7 +107,8 @@ public abstract class TransactionCharge extends org.drip.portfolioconstruction.c
 		super (
 			name,
 			id,
-			description
+			description,
+			BlockCategory.TRANSACTION_CHARGE
 		);
 	}
 

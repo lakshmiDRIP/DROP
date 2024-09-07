@@ -7,8 +7,8 @@ import org.drip.function.definition.R1ToR1;
 import org.drip.function.matrix.FrobeniusCovariance;
 import org.drip.function.matrix.Square;
 import org.drip.numerical.common.NumberUtil;
-import org.drip.numerical.eigen.EigenOutput;
-import org.drip.numerical.eigen.QREigenComponentExtractor;
+import org.drip.numerical.eigenization.EigenOutput;
+import org.drip.numerical.eigenization.QREigenComponentExtractor;
 import org.drip.numerical.linearalgebra.R1MatrixUtil;
 import org.drip.service.env.EnvManager;
 

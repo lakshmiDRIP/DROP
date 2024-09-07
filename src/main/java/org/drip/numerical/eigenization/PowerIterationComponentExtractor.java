@@ -1,10 +1,5 @@
 
-package org.drip.numerical.eigen;
-
-import java.util.HashMap;
-import java.util.Map;
-
-import org.drip.function.definition.R1ToR1;
+package org.drip.numerical.eigenization;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -86,224 +81,194 @@ import org.drip.function.definition.R1ToR1;
  */
 
 /**
- * <i>EigenOutput</i> holds the results of the Eigenization Operation - the Eigenvectors and the Eigenvalues.
+ * <i>PowerIterationComponentExtractor</i> extracts the Linear System Components using the Power Iteration
+ * Method.
  * 
  * <br><br>
  *  <ul>
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md">Numerical Analysis Library</a></li>
  *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/numerical">Numerical Quadrature, Differentiation, Eigenization, Linear Algebra, and Utilities</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/numerical/eigen">QR PICE Eigen-Component Extraction Methodologies</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/numerical/eigenization">Eigen-value and Eigen-component Extraction Schemes</a></li>
  *  </ul>
  * <br><br>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class EigenOutput
+public class PowerIterationComponentExtractor
+	implements org.drip.numerical.eigenization.ComponentExtractor
 {
-	private double[] _eigenValueArray = null;
-	private double[][] _eigenVectorArray = null;
+	private int _maxIterations = -1;
+	private boolean _isToleranceAbsolute = false;
+	private double _tolerance = java.lang.Double.NaN;
 
 	/**
-	 * EigenOutput Constructor
+	 * PowerIterationComponentExtractor Constructor
 	 * 
-	 * @param eigenVectorArray Array of Eigenvectors
-	 * @param eigenValueArray Array of Eigenvalues
+	 * @param maxIterations Maximum Number of Iterations
+	 * @param tolerance Tolerance
+	 * @param isToleranceAbsolute Is Tolerance Absolute
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public EigenOutput (
-		final double[][] eigenVectorArray,
-		final double[] eigenValueArray)
+	public PowerIterationComponentExtractor (
+		final int maxIterations,
+		final double tolerance,
+		final boolean isToleranceAbsolute)
 		throws java.lang.Exception
 	{
-		if (null == (_eigenVectorArray = eigenVectorArray) ||
-			null == (_eigenValueArray = eigenValueArray)
+		if (0 >= (_maxIterations = maxIterations) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (
+				_tolerance = tolerance
+			) || 0. == _tolerance
 		)
 		{
 			throw new java.lang.Exception (
-				"EigenOutput ctr: Invalid Inputs"
+				"PowerIterationComponentExtractor ctr: Invalid Inputs!"
 			);
 		}
 
-		int eigenComponentCount = _eigenValueArray.length;
+		_isToleranceAbsolute = isToleranceAbsolute;
+	}
 
-		if (0 == eigenComponentCount || eigenComponentCount != _eigenVectorArray.length ||
-			null == _eigenVectorArray[0] || eigenComponentCount != _eigenVectorArray[0].length
-		)
+	/**
+	 * Retrieve the Maximum Number of Iterations
+	 * 
+	 * @return The Maximum Number of Iterations
+	 */
+
+	public int maxIterations()
+	{
+		return _maxIterations;
+	}
+
+	/**
+	 * Retrieve the Tolerance Level
+	 * 
+	 * @return The Tolerance Level
+	 */
+
+	public double tolerance()
+	{
+		return _tolerance;
+	}
+
+	/**
+	 * Indicate if the specified Tolerance is Absolute
+	 * 
+	 * @return TRUE - The specified Tolerance is Absolute
+	 */
+
+	public boolean isToleranceAbsolute()
+	{
+		return _isToleranceAbsolute;
+	}
+
+	@Override public org.drip.numerical.eigenization.EigenComponent principalComponent (
+		final double[][] a)
+	{
+		if (null == a)
 		{
-			throw new java.lang.Exception (
-				"EigenOutput ctr: Invalid Inputs"
-			);
-		}
-	}
-
-	/**
-	 * Retrieve the Array of Eigenvectors
-	 * 
-	 * @return The Array of Eigenvectors
-	 */
-
-	public double[][] eigenVectorArray()
-	{
-		return _eigenVectorArray;
-	}
-
-	/**
-	 * Retrieve the Array of Eigenvalues
-	 * 
-	 * @return The Array of Eigenvalues
-	 */
-
-	public double[] eigenValueArray()
-	{
-		return _eigenValueArray;
-	}
-
-	/**
-	 * Retrieve the Eigen-Dimension
-	 * 
-	 * @return The Eigen-Dimension
-	 */
-
-	public int dimension()
-	{
-		return _eigenValueArray.length;
-	}
-
-	/**
-	 * Retrieve the Eigenvalue Multiplicity Map
-	 * 
-	 * @return Eigenvalue Multiplicity Map
-	 */
-
-	public Map<Double, Integer> eigenValueMultiplicityMap()
-	{
-		Map<Double, Integer> eigenValueMultiplicityMap = new HashMap<Double, Integer>();
-
-		for (double eigenValue : _eigenValueArray) {
-			eigenValueMultiplicityMap.put (
-				eigenValue,
-				eigenValueMultiplicityMap.containsKey (eigenValue) ?
-					eigenValueMultiplicityMap.get (eigenValue) + 1 : 1
-			);
+			return null;
 		}
 
-		return eigenValueMultiplicityMap;
-	}
+		int iterationIndex = 0;
+		int componentCount = a.length;
+		double eigenValue = componentCount;
+		double[] eigenVector = new double[componentCount];
+		double[] eigenVectorArray = new double[componentCount];
 
-	/**
-	 * Compute the Determinant of the Matrix
-	 * 
-	 * @return Determinant of the Matrix
-	 */
-
-	public double determinant()
-	{
-		double determinant = 1.;
-
-		for (double eigenValue : _eigenValueArray) {
-			determinant *= eigenValue;
-		}
-
-		return determinant;
-	}
-
-	/**
-	 * Retrieve the Characteristic Polynomial of the Eigenvalues
-	 * 
-	 * @return Characteristic Polynomial of the Eigenvalues
-	 */
-
-	public R1ToR1 characteristicPolynomial()
-	{
-		return new R1ToR1 (null)
+		if (0 == componentCount || null == a[0] || componentCount != a[0].length)
 		{
-			@Override public double evaluate (
-				final double x)
-				throws Exception
+			return null;
+		}
+
+		for (int componentIndex = 0;
+			componentIndex < componentCount;
+			++componentIndex)
+		{
+			eigenVector[componentIndex] = 1.;
+		}
+
+		eigenVector = org.drip.numerical.linearalgebra.R1MatrixUtil.Normalize (
+			eigenVector
+		);
+
+		double oldEigenValue = eigenValue;
+		double absoluteTolerance = _isToleranceAbsolute ? _tolerance : eigenValue * _tolerance;
+		absoluteTolerance = absoluteTolerance > _tolerance ? absoluteTolerance : _tolerance;
+
+		while (iterationIndex < _maxIterations)
+		{
+			for (int componentIndexI = 0;
+				componentIndexI < componentCount;
+				++componentIndexI)
 			{
-				double value = 1.;
+				eigenVectorArray[componentIndexI] = 0.;
 
-				for (double eigenValue : _eigenValueArray) {
-					value *= (x - eigenValue);
+				for (int componentIndexJ = 0;
+					componentIndexJ < componentCount;
+					++componentIndexJ)
+				{
+					eigenVectorArray[componentIndexI] +=
+						a[componentIndexI][componentIndexJ] * eigenVector[componentIndexJ];
 				}
-
-				return value;
-			}
-		};
-	}
-
-	/**
-	 * Compute the Condition Number using the Eigenvalue Array
-	 * 
-	 * @return Condition Number
-	 */
-
-	public double conditionNumber()
-	{
-		double firstAbsoluteEigenvalue = Math.abs (_eigenValueArray[0]);
-
-		double minimumEigenvalue = firstAbsoluteEigenvalue;
-		double maximumEigenvalue = firstAbsoluteEigenvalue;
-
-		for (int i = 1; i < _eigenValueArray.length; ++i) {
-			double absoluteEigenvalue = Math.abs (_eigenValueArray[i]);
-
-			if (minimumEigenvalue > absoluteEigenvalue) {
-				minimumEigenvalue = absoluteEigenvalue;
 			}
 
-			if (maximumEigenvalue < absoluteEigenvalue) {
-				maximumEigenvalue = absoluteEigenvalue;
+			eigenVectorArray = org.drip.numerical.linearalgebra.R1MatrixUtil.Normalize (
+				eigenVectorArray
+			);
+
+			try {
+				eigenValue = org.drip.numerical.linearalgebra.R1MatrixUtil.RayleighQuotient (
+					a,
+					eigenVectorArray
+				);
 			}
+			catch (java.lang.Exception e)
+			{
+				e.printStackTrace();
+
+				return null;
+			}
+
+			if (absoluteTolerance > java.lang.Math.abs (
+				eigenValue - oldEigenValue
+			))
+			{
+				break;
+			}
+
+			eigenVector = eigenVectorArray;
+			oldEigenValue = eigenValue;
+			++iterationIndex;
 		}
 
-		return maximumEigenvalue / minimumEigenvalue;
-	}
-
-	/**
-	 * Compute the Maximum Eigenvalue
-	 * 
-	 * @return Maximum Eigenvalue
-	 */
-
-	public double maximumEigenvalue()
-	{
-		double maximumEigenvalue = Math.abs (_eigenValueArray[0]);
-
-		for (int i = 1; i < _eigenValueArray.length; ++i) {
-			double absoluteEigenvalue = Math.abs (_eigenValueArray[i]);
-
-			if (maximumEigenvalue < absoluteEigenvalue) {
-				maximumEigenvalue = absoluteEigenvalue;
-			}
+		if (iterationIndex >= _maxIterations)
+		{
+			return null;
 		}
 
-		return maximumEigenvalue;
+		try
+		{
+			return new org.drip.numerical.eigenization.EigenComponent (
+				eigenVectorArray,
+				eigenValue
+			);
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
 	}
 
-	/**
-	 * Compute the Spectral Radius using the Eigenvalue Array
-	 * 
-	 * @return Spectral Radius
-	 */
-
-	public double spectralRadius()
+	@Override public org.drip.numerical.eigenization.EigenOutput eigenize (
+		final double[][] a)
 	{
-		return maximumEigenvalue();
-	}
-
-	/**
-	 * Compute the Spectral Norm using the Eigenvalue Array
-	 * 
-	 * @return Spectral Norm
-	 */
-
-	public double spectralNorm()
-	{
-		return maximumEigenvalue();
+		return null;
 	}
 }

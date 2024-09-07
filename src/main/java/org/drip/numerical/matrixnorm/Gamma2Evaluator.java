@@ -1,25 +1,16 @@
 
-package org.drip.sample.matrix;
+package org.drip.numerical.matrixnorm;
 
-import org.drip.numerical.eigenization.*;
-import org.drip.service.common.FormatUtil;
-import org.drip.service.env.EnvManager;
+import org.drip.numerical.decomposition.SingularValueDecomposer;
+import org.drip.numerical.decomposition.UV;
+import org.drip.numerical.matrix.R1Square;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
- * Copyright (C) 2022 Lakshmi Krishnamurthy
- * Copyright (C) 2021 Lakshmi Krishnamurthy
- * Copyright (C) 2020 Lakshmi Krishnamurthy
- * Copyright (C) 2019 Lakshmi Krishnamurthy
- * Copyright (C) 2018 Lakshmi Krishnamurthy
- * Copyright (C) 2017 Lakshmi Krishnamurthy
- * Copyright (C) 2016 Lakshmi Krishnamurthy
- * Copyright (C) 2015 Lakshmi Krishnamurthy
- * Copyright (C) 2014 Lakshmi Krishnamurthy
- * Copyright (C) 2013 Lakshmi Krishnamurthy
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
  * 
  *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
  *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
@@ -87,95 +78,112 @@ import org.drip.service.env.EnvManager;
  */
 
 /**
- * <i>Eigenization</i> demonstrates how to generate the eigenvalue and eigenvector for the Input Matrix.
- *  
+ * <i>Gamma2Evaluator</i> computes the Max Norm variant of the Gamma<sub>2</sub> Evaluator of the
+ * 	R<sup>1</sup> Square Matrix. The References are:
+ * 
+ * <br><br>
+ * 	<ul>
+ * 		<li>
+ * 			Alon, N., and A. Naor (2004): Approximating the Cut-norm via Grothendieck Inequality
+ * 				<i>Proceedings of the 36<sup>th</sup> Annual ACM Symposium on Theory of Computing STOC’04</i>
+ * 				<b>ACM</b> Chicago IL
+ * 		</li>
+ * 		<li>
+ * 			Golub, G. H., and C. F. van Loan (1996): <i>Matrix Computations 3<sup>rd</sup> Edition</i>
+ * 				<b>Johns Hopkins University Press</b> Baltimore MD
+ * 		</li>
+ * 		<li>
+ * 			Horn, R. A., and C. R. Johnson (2013): <i>Matrix Analysis 2<sup>nd</sup> Edition</i> <b>Cambridge
+ * 				University Press</b> Cambridge UK
+ * 		</li>
+ * 		<li>
+ * 			Lazslo, L. (2012): <i>Large Networks and Graph Limits</i> <b>American Mathematical Society</b>
+ * 				Providence RI
+ * 		</li>
+ * 		<li>
+ * 			Wikipedia (2024): Matrix Norm https://en.wikipedia.org/wiki/Matrix_norm
+ * 		</li>
+ * 	</ul>
+ * 
  * <br><br>
  *  <ul>
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md">Numerical Analysis Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/README.md">DROP API Construction and Usage</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/matrix/README.md">Cholesky Factorization, PCA, and Eigenization</a></li>
+ *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/numerical/README.md">Numerical Quadrature, Differentiation, Eigenization, Linear Algebra, and Utilities</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/numerical/matrixnorm/README.md">Implementation of Matrix Norm Variants</a></li>
  *  </ul>
  * <br><br>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class Eigenization {
+public class Gamma2Evaluator extends MaxInfinityInfinityEvaluator
+{
+	private SingularValueDecomposer _singularValueDecomposer = null;
 
-	private static final void EigenRun (
-		final QREigenComponentExtractor qrece)
+	private static final double TwoInfinityNorm (
+		final double[][] r1Grid)
 	{
-		double dblCorr1 = 0.5 * Math.random();
+		double twoInfinityNorm = Integer.MIN_VALUE;
 
-		double dblCorr2 = 0.5 * Math.random();
+		for (int i = 0; i < r1Grid.length; ++i) {
+			double columnNorm = 0.;
 
-		double[][] aadblA = {
-			{     1.0, dblCorr1,      0.0},
-			{dblCorr1,      1.0, dblCorr2},
-			{     0.0, dblCorr2,      1.0}
-		};
+			for (int j = 0; j < r1Grid[i].length; ++j) {
+				columnNorm += r1Grid[i][j] * r1Grid[i][j];
+			}
 
-		EigenOutput eo = qrece.eigenize (aadblA);
+			columnNorm = Math.sqrt (columnNorm);
 
-		if (null == eo) return;
-
-		System.out.println ("\n\t|----------------------------------------|");
-
-		System.out.println (
-			"\t|-----------" +
-			FormatUtil.FormatDouble (dblCorr1, 1, 4, 1.) + " ||| " +
-			FormatUtil.FormatDouble (dblCorr2, 1, 4, 1.) + " ---------|"
-		);
-
-		System.out.println ("\t|----------------------------------------|");
-
-		for (int i = 0; i < aadblA.length; ++i) {
-			java.lang.String strDump = "\t[" + FormatUtil.FormatDouble (eo.eigenValueArray()[i], 1, 4, 1.) + "] => ";
-
-			for (int j = 0; j < aadblA.length; ++j)
-				strDump += FormatUtil.FormatDouble (eo.eigenVectorArray()[i][j], 1, 4, 1.) + " | ";
-
-			System.out.println (strDump);
+			twoInfinityNorm = twoInfinityNorm < columnNorm ? twoInfinityNorm : columnNorm;
 		}
 
-		EigenComponent ec = qrece.principalComponent (aadblA);
-
-		double[] adblEigenvector = ec.eigenVector();
-
-		java.lang.String strDump = "[" + FormatUtil.FormatDouble (ec.eigenValue(), 1, 4, 1.) + "] => ";
-
-		for (int i = 0; i < adblEigenvector.length; ++i)
-			strDump += FormatUtil.FormatDouble (adblEigenvector[i], 1, 4, 1.) + " | ";
-
-		System.out.println ("\t" + strDump);
-
-		System.out.println ("\t|----------------------------------------|");
+		return twoInfinityNorm;
 	}
 
 	/**
-	 * Entry Point
+	 * <i>Gamma2Evaluator</i> Constructor
 	 * 
-	 * @param astrArgs Command Line Argument Array
-	 * 
-	 * @throws Exception Thrown on Error/Exception Situation
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
-	public static final void main (
-		final String[] astrArgs)
+	public Gamma2Evaluator()
 		throws Exception
 	{
-		EnvManager.InitEnv ("");
+		super();
+	}
 
-		QREigenComponentExtractor qrece = new QREigenComponentExtractor (
-			50
-		);
+	/**
+	 * Retrieve the <i>SingularValueDecomposer</i> Instance
+	 * 
+	 * @return The <i>SingularValueDecomposer</i> Instance
+	 */
 
-		int iNumRun = 10;
+	public SingularValueDecomposer singularValueDecomposer()
+	{
+		return _singularValueDecomposer;
+	}
 
-		for (int iRun = 0; iRun < iNumRun; ++iRun)
-			EigenRun (qrece);
+	/**
+	 * Compute the Max Norm of the R<sup>1</sup> Square Matrix
+	 * 
+	 * @param r1Square R<sup>1</sup> Square Matrix
+	 * 
+	 * @return Max Norm of the R<sup>1</sup> Square Matrix
+	 * 
+	 * @throws Exception Thrown if the Norm cannot be calculated
+	 */
 
-		EnvManager.TerminateEnv();
+	@Override public double norm (
+		final R1Square r1Square)
+		throws Exception
+	{
+		UV uv = _singularValueDecomposer.decompose (r1Square);
+
+		if (null == uv) {
+			throw new Exception ("Gamma2Evaluator::norm => Cannot do SVD on the Input");
+		}
+
+		return TwoInfinityNorm (uv.u()) + TwoInfinityNorm (uv.v());
 	}
 }

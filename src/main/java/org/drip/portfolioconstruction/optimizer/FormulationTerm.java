@@ -1,6 +1,8 @@
 
 package org.drip.portfolioconstruction.optimizer;
 
+import org.drip.portfolioconstruction.core.BlockCategory;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
@@ -97,22 +99,23 @@ package org.drip.portfolioconstruction.optimizer;
 public abstract class FormulationTerm
 	extends org.drip.portfolioconstruction.core.Block
 {
-	private java.lang.String _category = "";
+	private java.lang.String _objectiveCategory = "";
 
 	protected FormulationTerm (
 		final java.lang.String name,
 		final java.lang.String id,
 		final java.lang.String description,
-		final java.lang.String category)
+		final java.lang.String objectiveCategory)
 		throws java.lang.Exception
 	{
 		super (
 			name,
 			id,
-			description
+			description,
+			BlockCategory.FORMULATION_TERM
 		);
 
-		if (null == (_category = category) || _category.isEmpty())
+		if (null == (_objectiveCategory = objectiveCategory) || _objectiveCategory.isEmpty())
 		{
 			throw new java.lang.Exception (
 				"FormulationTerm Constructor => Invalid Inputs"
@@ -126,9 +129,9 @@ public abstract class FormulationTerm
 	 * @return The Objective Term Category
 	 */
 
-	public java.lang.String category()
+	public java.lang.String objectiveCategory()
 	{
-		return _category;
+		return _objectiveCategory;
 	}
 
 	/**

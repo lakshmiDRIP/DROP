@@ -1,6 +1,8 @@
 
 package org.drip.portfolioconstruction.risk;
 
+import org.drip.portfolioconstruction.core.BlockCategory;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
@@ -236,7 +238,7 @@ public class AttributeJointFactor
 		final java.lang.String description)
 		throws java.lang.Exception
 	{
-		super (name, id, description);
+		super (name, id, description, BlockCategory.ATTRIBUTE_JOINT_FACTOR);
 	}
 
 	/**

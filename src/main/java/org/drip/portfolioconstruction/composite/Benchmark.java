@@ -1,6 +1,8 @@
 
 package org.drip.portfolioconstruction.composite;
 
+import org.drip.portfolioconstruction.core.BlockCategory;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
@@ -160,7 +162,8 @@ public class Benchmark
 		super (
 			name,
 			id,
-			description
+			description,
+			BlockCategory.BENCHMARK
 		);
 
 		if (null == (_type = type) || _type.isEmpty() ||
@@ -180,17 +183,6 @@ public class Benchmark
 	public java.lang.String type()
 	{
 		return _type;
-	}
-
-	/**
-	 * Retrieve the Benchmark Category
-	 * 
-	 * @return The Benchmark Category
-	 */
-
-	public java.lang.String category()
-	{
-		return _category;
 	}
 
 	/**

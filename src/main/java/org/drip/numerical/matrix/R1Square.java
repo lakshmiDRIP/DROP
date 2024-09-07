@@ -5,10 +5,10 @@ import java.util.Map;
 
 import org.drip.function.definition.R1ToR1;
 import org.drip.numerical.common.NumberUtil;
-import org.drip.numerical.eigen.EigenOutput;
-import org.drip.numerical.eigen.QREigenComponentExtractor;
+import org.drip.numerical.decomposition.QR;
+import org.drip.numerical.eigenization.EigenOutput;
+import org.drip.numerical.eigenization.QREigenComponentExtractor;
 import org.drip.numerical.linearalgebra.R1MatrixUtil;
-import org.drip.numerical.linearalgebra.QR;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -437,6 +437,26 @@ public class R1Square
 	public EigenOutput svd()
 	{
 		return QREigenComponentExtractor.Standard().eigenize (_r1Grid);
+	}
+
+	/**
+	 * Compute the Frobenius Norm of the Eigenvalues
+	 * 
+	 * @return Frobenius Norm of the Eigenvalues
+	 * 
+	 * @throws Exception Thrown if the R<sup>1</sup> Square Matrix cannot be eigenized
+	 */
+
+	public double svdBasedFrobeniusNorm()
+		throws Exception
+	{
+		EigenOutput svdEigenOutput = svd();
+
+		if (null == svdEigenOutput) {
+			throw new Exception ("R1Square::svdBasedFrobeniusNorm => Cannot eigenize");
+		}
+
+		return svdEigenOutput.frobeniusNorm();
 	}
 
 	/**

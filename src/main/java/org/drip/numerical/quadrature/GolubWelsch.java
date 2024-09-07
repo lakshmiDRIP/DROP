@@ -214,8 +214,8 @@ public class GolubWelsch
 
 		try
 		{
-			org.drip.numerical.eigen.EigenComponent[] orderedEigenComponentArray = new
-				org.drip.numerical.eigen.QREigenComponentExtractor (
+			org.drip.numerical.eigenization.EigenComponent[] orderedEigenComponentArray = new
+				org.drip.numerical.eigenization.QREigenComponentExtractor (
 					100
 				).orderedEigenComponentArray (symmetricTridiagonal());
 

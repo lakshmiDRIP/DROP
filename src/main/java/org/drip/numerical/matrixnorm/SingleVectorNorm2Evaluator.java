@@ -1,7 +1,7 @@
 
 package org.drip.numerical.matrixnorm;
 
-import org.drip.numerical.eigen.EigenOutput;
+import org.drip.numerical.eigenization.EigenOutput;
 import org.drip.numerical.matrix.R1Square;
 
 /*

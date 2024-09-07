@@ -1,5 +1,5 @@
 
-package org.drip.numerical.eigen;
+package org.drip.numerical.eigenization;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -88,7 +88,7 @@ package org.drip.numerical.eigen;
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md">Numerical Analysis Library</a></li>
  *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/numerical">Numerical Quadrature, Differentiation, Eigenization, Linear Algebra, and Utilities</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/numerical/eigen">QR PICE Eigen-Component Extraction Methodologies</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/numerical/eigenization">Eigen-value and Eigen-component Extraction Schemes</a></li>
  *  </ul>
  * <br><br>
  *
@@ -96,7 +96,7 @@ package org.drip.numerical.eigen;
  */
 
 public class QREigenComponentExtractor
-	implements org.drip.numerical.eigen.ComponentExtractor
+	implements org.drip.numerical.eigenization.ComponentExtractor
 {
 
 	/**
@@ -153,10 +153,10 @@ public class QREigenComponentExtractor
 		return _maxIterations;
 	}
 
-	@Override public org.drip.numerical.eigen.EigenOutput eigenize (
+	@Override public org.drip.numerical.eigenization.EigenOutput eigenize (
 		final double[][] a)
 	{
-		org.drip.numerical.linearalgebra.QR qr = org.drip.numerical.linearalgebra.R1MatrixUtil.QRDecomposition (
+		org.drip.numerical.decomposition.QR qr = org.drip.numerical.linearalgebra.R1MatrixUtil.QRDecomposition (
 			a
 		);
 
@@ -244,7 +244,7 @@ public class QREigenComponentExtractor
 
 		try
 		{
-			return new org.drip.numerical.eigen.EigenOutput (
+			return new org.drip.numerical.eigenization.EigenOutput (
 				org.drip.numerical.linearalgebra.R1MatrixUtil.Transpose (
 					b
 				),
@@ -267,7 +267,7 @@ public class QREigenComponentExtractor
 	 */
 
 	public java.util.List<java.lang.Integer> eigenComponentOrderList ( 
-		final org.drip.numerical.eigen.EigenOutput eigenOutput)
+		final org.drip.numerical.eigenization.EigenOutput eigenOutput)
 	{
 		if (null == eigenOutput)
 		{
@@ -338,10 +338,10 @@ public class QREigenComponentExtractor
 	 * @return The Ordered List of Eigen Components arranged by Ascending Eigenvalue
 	 */
 
-	public org.drip.numerical.eigen.EigenComponent[] orderedEigenComponentArray (
+	public org.drip.numerical.eigenization.EigenComponent[] orderedEigenComponentArray (
 		final double[][] a)
 	{
-		org.drip.numerical.eigen.EigenOutput eigenOutput = eigenize (
+		org.drip.numerical.eigenization.EigenOutput eigenOutput = eigenize (
 			a
 		);
 
@@ -360,8 +360,8 @@ public class QREigenComponentExtractor
 
 		int eigenComponentCount = eigenComponentOrderList.size();
 
-		org.drip.numerical.eigen.EigenComponent[] eigenComponentArray =
-			new org.drip.numerical.eigen.EigenComponent[eigenComponentCount];
+		org.drip.numerical.eigenization.EigenComponent[] eigenComponentArray =
+			new org.drip.numerical.eigenization.EigenComponent[eigenComponentCount];
 
 		for (int eigenComponentIndex = 0;
 			eigenComponentIndex < eigenComponentCount;
@@ -373,7 +373,7 @@ public class QREigenComponentExtractor
 
 			try
 			{
-				eigenComponentArray[eigenComponentIndex] = new org.drip.numerical.eigen.EigenComponent (
+				eigenComponentArray[eigenComponentIndex] = new org.drip.numerical.eigenization.EigenComponent (
 					eigenVectorArray[eigenComponentOrder],
 					eigenValueArray[eigenComponentOrder]
 				);
@@ -389,10 +389,10 @@ public class QREigenComponentExtractor
 		return eigenComponentArray;
 	}
 
-	@Override public org.drip.numerical.eigen.EigenComponent principalComponent (
+	@Override public org.drip.numerical.eigenization.EigenComponent principalComponent (
 		final double[][] a)
 	{
-		org.drip.numerical.eigen.EigenComponent[] eigenComponentArray = orderedEigenComponentArray (
+		org.drip.numerical.eigenization.EigenComponent[] eigenComponentArray = orderedEigenComponentArray (
 			a
 		);
 
@@ -410,7 +410,7 @@ public class QREigenComponentExtractor
 	public org.drip.numerical.linearalgebra.UD udForm (
 		final double[][] a)
 	{
-		org.drip.numerical.eigen.EigenComponent[] eigenComponentArray = orderedEigenComponentArray (
+		org.drip.numerical.eigenization.EigenComponent[] eigenComponentArray = orderedEigenComponentArray (
 			a
 		);
 

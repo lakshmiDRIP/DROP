@@ -111,10 +111,10 @@ public class PrincipalFactorSequenceGenerator extends org.drip.sequence.random.M
 		if (0 >= iNumFactor || iNumFactor > iNumVariate)
 			throw new java.lang.Exception ("PrincipalFactorSequenceGenerator ctr: Invalid Inputs");
 
-		org.drip.numerical.eigen.QREigenComponentExtractor qrece = new
-			org.drip.numerical.eigen.QREigenComponentExtractor (80);
+		org.drip.numerical.eigenization.QREigenComponentExtractor qrece = new
+			org.drip.numerical.eigenization.QREigenComponentExtractor (80);
 
-		org.drip.numerical.eigen.EigenComponent[] aEC = qrece.orderedEigenComponentArray (aadblCorrelation);
+		org.drip.numerical.eigenization.EigenComponent[] aEC = qrece.orderedEigenComponentArray (aadblCorrelation);
 
 		if (null == aEC || 0 == aEC.length)
 			throw new java.lang.Exception ("PrincipalFactorSequenceGenerator ctr: Invalid Inputs");

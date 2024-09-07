@@ -1,7 +1,7 @@
 
-package org.drip.numerical.jordannormalform;
+package org.drip.numerical.decomposition;
 
-import org.drip.numerical.linearalgebra.R1MatrixUtil;
+import org.drip.numerical.common.NumberUtil;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -76,8 +76,8 @@ import org.drip.numerical.linearalgebra.R1MatrixUtil;
  */
 
 /**
- * <i>VJDecomposition</i> holds the V and the J components of the Jordan Normal Form Matrix. The References
- * 	are:
+ * <i>JordanNormalJSubM</i> implements the J<sub>m<sub>i</sub></sub> Jordan Normal Form Matrix. The
+ * 	References are:
  * 
  * <br><br>
  *  <ul>
@@ -106,72 +106,112 @@ import org.drip.numerical.linearalgebra.R1MatrixUtil;
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/GraphAlgorithmLibrary.md">Graph Algorithm Library</a></li>
  *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/numerical/README.md">Numerical Quadrature, Differentiation, Eigenization, Linear Algebra, and Utilities</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/numerical/jordanform/README.md">Implementation of Jordan Normal Form</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/numerical/decomposition/README.md">Jordan Normal, UV, and QR Decompositions</a></li>
  *  </ul>
  * <br><br>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class VJDecomposition
+public class JordanNormalJSubM
 {
-	private J _j = null;
-	private double[][] _v = null;
+	private double[][] _r1Grid = null;
+	private double _lambda = Double.NaN;
+	private int _mSubI = Integer.MIN_VALUE;
 
 	/**
-	 * <i>VJDecomposition</i> Constructor
+	 * <i>JordanNormalJSubM</i> Constructor
 	 * 
-	 * @param j <i>J</i> Matrix
-	 * @param v <i>V</i> Matrix
+	 * @param lambda Lambda
+	 * @param mSubI Size - m<sub>i</sub>
 	 * 
 	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
-	public VJDecomposition (
-		final J j,
-		final double[][] v)
+	public JordanNormalJSubM (
+		final double lambda,
+		final int mSubI)
 		throws Exception
 	{
-		if (null == (_j = j) || null == (_v = v) || 0 == _v.length || 0 == _v[0].length) {
-			throw new Exception ("VJDecomposition Constructor => Invalid Inputs");
+		if (!NumberUtil.IsValid (_lambda = lambda) || 0 >= (_mSubI = mSubI)) {
+			throw new Exception ("JordanNormalJSubM Constructor => Invalid Inputs");
+		}
+
+		_r1Grid = new double[_mSubI][_mSubI];
+
+		for (int i = 0; i < _mSubI; ++i) {
+			for (int j = 0; j < _mSubI; ++j) {
+				_r1Grid[i][j] = i == j ? _lambda : 0.;
+			}
+		}
+
+		for (int i = 1; i < _mSubI; ++i) {
+			_r1Grid[i - 1][i] = 1.;
 		}
 	}
 
 	/**
-	 * Retrieve the <i>J</i> Matrix
+	 * Retrieve the Size - m<sub>i</sub>
 	 * 
-	 * @return <i>J</i> Matrix
+	 * @return The Size - m<sub>i</sub>
 	 */
 
-	public J j()
+	public int mSubI()
 	{
-		return _j;
+		return _mSubI;
 	}
 
 	/**
-	 * Retrieve the <i>V</i> Matrix
+	 * Retrieve the Lambda
 	 * 
-	 * @return <i>V</i> Matrix
+	 * @return The Lambda
 	 */
 
-	public double[][] v()
+	public double lambda()
 	{
-		return _v;
+		return _lambda;
 	}
 
 	/**
-	 * Recover the Original Matrix using V.J.V<sup>-1</sup>
+	 * Retrieve the R1 Grid
 	 * 
-	 * @return The Original Matrix
+	 * @return The R1 Grid
 	 */
 
-	public double[][] recoverOriginal()
+	public double[][] r1Grid()
 	{
-		double[][] vj = R1MatrixUtil.Product (_v, _j.r1Grid());
+		return _r1Grid;
+	}
 
-		return null == vj ? null : R1MatrixUtil.Product (
-			vj,
-			R1MatrixUtil.InvertUsingGaussianElimination (_v)
-		);
+	/**
+	 * <i>JSubM</i> to the power of k
+	 * 
+	 * @param k K
+	 * 
+	 * @return <i>JSubM</i> to the power of k
+	 */
+
+	public double[][] power (
+		final int k)
+	{
+		if (0 >= k || k < _mSubI - 1) {
+			return null;
+		}
+
+		double[][] r1Grid = new double[_mSubI][_mSubI];
+
+		for (int i = 0; i < _mSubI; ++i) {
+			for (int j = 0; j < _mSubI; ++j) {
+				if (i > j) {
+					r1Grid[i][j] = 0.;
+				} else if (i == j) {
+					r1Grid[i][j] = Math.pow (_lambda, k);
+				} else {
+					r1Grid[i][j] = NumberUtil.NCK (k, j - i) * Math.pow (_lambda, k + i - j);
+				}
+			}
+		}
+
+		return r1Grid;
 	}
 }

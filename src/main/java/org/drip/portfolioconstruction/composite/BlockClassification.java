@@ -1,6 +1,8 @@
 
 package org.drip.portfolioconstruction.composite;
 
+import org.drip.portfolioconstruction.core.BlockCategory;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
@@ -116,7 +118,8 @@ public class BlockClassification extends org.drip.portfolioconstruction.core.Blo
 		super (
 			name,
 			id,
-			description
+			description,
+			BlockCategory.BLOCK_CLASSIFICATION
 		);
 	}
 

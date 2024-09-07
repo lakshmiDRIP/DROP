@@ -1,6 +1,8 @@
 
 package org.drip.portfolioconstruction.optimizer;
 
+import org.drip.portfolioconstruction.core.BlockCategory;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
@@ -122,7 +124,8 @@ public class Rebalancer
 		super (
 			name,
 			id,
-			description
+			description,
+			BlockCategory.REBALANCER
 		);
 
 		if (null == (_account = account) ||
