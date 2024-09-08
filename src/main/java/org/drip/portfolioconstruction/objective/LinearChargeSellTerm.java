@@ -1,6 +1,9 @@
 
 package org.drip.portfolioconstruction.objective;
 
+import org.drip.portfolioconstruction.composite.Holdings;
+import org.drip.portfolioconstruction.core.AssetPosition;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
@@ -102,7 +105,7 @@ public class LinearChargeSellTerm
 	 * LinearChargeSellTerm Constructor
 	 * 
 	 * @param name Name of the Objective Term
-	 * @param initialHoldingsArray Initial Holdings
+	 * @param initialHoldings The Initial Holdings
 	 * @param linearTransactionChargeArray Array of Linear Transaction Charge Instances
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
@@ -110,7 +113,7 @@ public class LinearChargeSellTerm
 
 	public LinearChargeSellTerm (
 		final java.lang.String name,
-		final double[] initialHoldingsArray,
+		final Holdings initialHoldings,
 		final org.drip.portfolioconstruction.cost.TransactionChargeLinear[] linearTransactionChargeArray)
 		throws java.lang.Exception
 	{
@@ -118,7 +121,7 @@ public class LinearChargeSellTerm
 			name,
 			"OT_LINEAR_SELL_TRANSACTION_CHARGE",
 			"Linear Sell Only Transaction Charge Objective Function",
-			initialHoldingsArray,
+			initialHoldings,
 			linearTransactionChargeArray
 		);
 	}
@@ -129,7 +132,7 @@ public class LinearChargeSellTerm
 		{
 			@Override public int dimension()
 			{
-				return initialHoldingsArray().length;
+				return initialHoldings().size();
 			}
 
 			@Override public double evaluate (
@@ -145,7 +148,7 @@ public class LinearChargeSellTerm
 				org.drip.portfolioconstruction.cost.TransactionChargeLinear[] linearTransactionChargeArray =
 					(org.drip.portfolioconstruction.cost.TransactionChargeLinear[]) transactionChargeArray();
 
-				double[] initialHoldingsArray = initialHoldingsArray();
+				AssetPosition[] initialAssetPositionArray = initialHoldings().toArray();
 
 				double linearChargeSellTerm = 0.;
 				int assetCount = linearTransactionChargeArray.length;
@@ -158,10 +161,12 @@ public class LinearChargeSellTerm
 
 				for (int assetIndex = 0; assetIndex < assetCount; ++assetIndex)
 				{
-					if (variateArray[assetIndex] < initialHoldingsArray[assetIndex])
+					double initialSize = initialAssetPositionArray[assetIndex].quantity();
+
+					if (variateArray[assetIndex] < initialSize)
 					{
 						linearChargeSellTerm += linearTransactionChargeArray[assetIndex].estimate (
-							initialHoldingsArray[assetIndex],
+							initialSize,
 							variateArray[assetIndex]
 						);
 					}

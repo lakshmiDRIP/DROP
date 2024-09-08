@@ -1,6 +1,8 @@
 
 package org.drip.portfolioconstruction.objective;
 
+import org.drip.portfolioconstruction.composite.Holdings;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
@@ -102,7 +104,7 @@ public class ExpectedReturnsTerm
 	 * ExpectedReturnsTerm Constructor
 	 * 
 	 * @param name Name of the Expected Returns Objective Term
-	 * @param initialHoldingsArray Initial Holdings Array
+	 * @param initialHoldings Initial Holdings
 	 * @param alphaArray Asset Alpha Aray
 	 * @param benchmarkConstrictedHoldingsArray Benchmark Constricted Holdings Array
 	 * 
@@ -111,7 +113,7 @@ public class ExpectedReturnsTerm
 
 	public ExpectedReturnsTerm (
 		final java.lang.String name,
-		final double[] initialHoldingsArray,
+		final Holdings initialHoldings,
 		final double[] alphaArray,
 		final double[] benchmarkConstrictedHoldingsArray)
 		throws java.lang.Exception
@@ -120,7 +122,7 @@ public class ExpectedReturnsTerm
 			name,
 			"OT_EXPECTED_RETURN",
 			"Expected Portfolio Returns Objective Term",
-			initialHoldingsArray,
+			initialHoldings,
 			alphaArray,
 			benchmarkConstrictedHoldingsArray
 		);
@@ -132,7 +134,7 @@ public class ExpectedReturnsTerm
 		{
 			@Override public int dimension()
 			{
-				return initialHoldingsArray().length;
+				return initialHoldings().size();
 			}
 
 			@Override public double evaluate (

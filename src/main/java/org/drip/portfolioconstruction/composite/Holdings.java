@@ -1,6 +1,7 @@
 
 package org.drip.portfolioconstruction.composite;
 
+import org.drip.portfolioconstruction.core.AssetPosition;
 import org.drip.portfolioconstruction.core.BlockCategory;
 
 /*
@@ -98,8 +99,8 @@ public class Holdings extends org.drip.portfolioconstruction.core.Block
 {
 	private java.lang.String _currency = "";
 
-	private org.drip.analytics.support.CaseInsensitiveTreeMap<java.lang.Double> _quantityMap =
-		new org.drip.analytics.support.CaseInsensitiveTreeMap<java.lang.Double>();
+	private org.drip.analytics.support.CaseInsensitiveTreeMap<AssetPosition> _assetPositionMap =
+		new org.drip.analytics.support.CaseInsensitiveTreeMap<AssetPosition>();
 
 	/**
 	 * Holdings Constructor
@@ -140,7 +141,7 @@ public class Holdings extends org.drip.portfolioconstruction.core.Block
 
 	public java.util.Set<java.lang.String> assetIDSet()
 	{
-		return _quantityMap.keySet();
+		return _assetPositionMap.keySet();
 	}
 
 	/**
@@ -149,33 +150,40 @@ public class Holdings extends org.drip.portfolioconstruction.core.Block
 	 * @return The Map of Holdings Amount
 	 */
 
-	public java.util.Map<java.lang.String, java.lang.Double> quantityMap()
+	public java.util.Map<java.lang.String, AssetPosition> quantityMap()
 	{
-		return _quantityMap;
+		return _assetPositionMap;
 	}
 
 	/**
-	 * Add an Asset/Amount Pair
+	 * Retrieve the Size of the Holdings
 	 * 
-	 * @param assetID The Asset ID
-	 * @param quantity The Amount in the Portfolio
+	 * @return Size of the Holdings
+	 */
+
+	public int size()
+	{
+		return _assetPositionMap.size();
+	}
+
+	/**
+	 * Add an Asset Position
 	 * 
-	 * @return TRUE - The Asset/Amount has been successfully added
+	 * @param assetPosition The Asset Position
+	 * 
+	 * @return TRUE - The Asset Position has been successfully added
 	 */
 
 	public boolean add (
-		final java.lang.String assetID,
-		final double quantity)
+		final AssetPosition assetPosition)
 	{
-		if (null == assetID || assetID.isEmpty() ||
-			!org.drip.numerical.common.NumberUtil.IsValid (quantity))
-		{
+		if (null == assetPosition) {
 			return false;
 		}
 
-		_quantityMap.put (
-			assetID,
-			quantity
+		_assetPositionMap.put (
+			assetPosition.id(),
+			assetPosition
 		);
 
 		return true;
@@ -192,29 +200,21 @@ public class Holdings extends org.drip.portfolioconstruction.core.Block
 	public boolean contains (
 		final java.lang.String assetID)
 	{
-		return null != assetID && !_quantityMap.containsKey (assetID);
+		return null != assetID && !_assetPositionMap.containsKey (assetID);
 	}
 
 	/**
-	 * Retrieves the Holdings Quantity for the Asset (if it exists)
+	 * Retrieves the Holdings Asset Position for the Asset (if it exists)
 	 * 
 	 * @param assetID The Asset ID
 	 * 
-	 * @return The Holdings Quantity for the Asset (if it exists)
-	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @return The Holdings Asset Position for the Asset (if it exists)
 	 */
 
-	public double quantity (
+	public AssetPosition assetPosition (
 		final java.lang.String assetID)
-		throws java.lang.Exception
 	{
-		if (!contains (assetID))
-		{
-			throw new java.lang.Exception ("Holdings::quantity => Invalid Inputs");
-		}
-
-		return _quantityMap.get (assetID);
+		return contains (assetID) ? _assetPositionMap.get (assetID) : null;
 	}
 
 	/**
@@ -229,33 +229,25 @@ public class Holdings extends org.drip.portfolioconstruction.core.Block
 	}
 
 	/**
-	 * Retrieves the Cash Holdings
+	 * Retrieves the Cash Holdings Position
 	 * 
-	 * @return The Cash Holdings
+	 * @return The Cash Holdings Position
 	 */
 
-	public double cash()
+	public AssetPosition cash()
 	{
-		try
-		{
-			return quantity ("CASH::" + _currency);
-		}
-		catch (java.lang.Exception e)
-		{
-		}
-
-		return 0.;
+		return assetPosition ("CASH::" + _currency);
 	}
 
 	/**
-	 * Retrieve the Array Form of the Holdings Quantity
+	 * Retrieve the Array Form of the Holdings Asset Position
 	 * 
-	 * @return Array Form of the Holdings Quantity
+	 * @return Array Form of the Holdings Asset Position
 	 */
 
-	public double[] toArray()
+	public AssetPosition[] toArray()
 	{
-		int size = _quantityMap.size();
+		int size = _assetPositionMap.size();
 
 		if (0 == size)
 		{
@@ -263,15 +255,15 @@ public class Holdings extends org.drip.portfolioconstruction.core.Block
 		}
 
 		int assetIndex = 0;
-		double[] quantityArray = new double[size];
+		AssetPosition[] assetPositionArray = new AssetPosition[size];
 
-		for (java.util.Map.Entry<java.lang.String, java.lang.Double> quantityMapEntry :
-			_quantityMap.entrySet())
+		for (java.util.Map.Entry<java.lang.String, AssetPosition> assetPositionMapEntry :
+			_assetPositionMap.entrySet())
 		{
-			quantityArray[assetIndex++] = quantityMapEntry.getValue();
+			assetPositionArray[assetIndex++] = assetPositionMapEntry.getValue();
 		}
 
-		return quantityArray;
+		return assetPositionArray;
 	}
 
 	/**
@@ -282,7 +274,7 @@ public class Holdings extends org.drip.portfolioconstruction.core.Block
 	 * @return Constriction of "This" Holdings
 	 */
 
-	public double[] constrict (
+	public AssetPosition[] constrict (
 		final org.drip.portfolioconstruction.composite.Holdings holdingsOther)
 	{
 		if (null == holdingsOther)
@@ -292,43 +284,30 @@ public class Holdings extends org.drip.portfolioconstruction.core.Block
 
 		java.util.Set<java.lang.String> assetIDSet = holdingsOther.assetIDSet();
 
-		java.util.List<java.lang.Double> quantityList = new java.util.ArrayList<java.lang.Double>();
+		java.util.List<AssetPosition> assetPositionList = new java.util.ArrayList<AssetPosition>();
 
 		for (java.lang.String assetID : assetIDSet)
 		{
-			try
-			{
-				quantityList.add (
-					contains (
-						assetID
-					) ? quantity (
-						assetID
-					) : 0.
-				);
-			}
-			catch (java.lang.Exception e)
-			{
-				e.printStackTrace();
-
-				return null;
+			if (contains (assetID)) {
+				assetPositionList.add (assetPosition (assetID));
 			}
 		}
 
 		int assetCount = assetIDSet.size();
 
-		if (quantityList.size() != assetCount)
+		if (assetPositionList.size() != assetCount)
 		{
 			return null;
 		}
 
 		int assetIndex = 0;
-		double[] assetQuantityArray = new double[assetCount];
+		AssetPosition[] assetPositionArray = new AssetPosition[assetCount];
 
-		for (double quantity : quantityList)
+		for (AssetPosition quantity : assetPositionList)
 		{
-			assetQuantityArray[assetIndex++] = quantity;
+			assetPositionArray[assetIndex++] = quantity;
 		}
 
-		return assetQuantityArray;
+		return assetPositionArray;
 	}
 }

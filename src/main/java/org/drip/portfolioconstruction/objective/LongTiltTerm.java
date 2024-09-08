@@ -1,6 +1,9 @@
 
 package org.drip.portfolioconstruction.objective;
 
+import org.drip.portfolioconstruction.composite.Holdings;
+import org.drip.portfolioconstruction.core.AssetPosition;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
@@ -101,7 +104,7 @@ public class LongTiltTerm
 	 * LongTiltTerm Constructor
 	 * 
 	 * @param name The Objective Term Name
-	 * @param initialHoldingsArray The Initial Holdings Array
+	 * @param initialHoldings The Initial Holdings
 	 * @param magnitudeArray The Tilt Magnitude Block Attribute Array
 	 * @param membershipArray The Tilt Membership Block Classification Array
 	 * 
@@ -110,7 +113,7 @@ public class LongTiltTerm
 
 	public LongTiltTerm (
 		final java.lang.String name,
-		final double[] initialHoldingsArray,
+		final Holdings initialHoldings,
 		final double[] magnitudeArray,
 		final double[] membershipArray)
 		throws java.lang.Exception
@@ -119,7 +122,7 @@ public class LongTiltTerm
 			name,
 			"OBJECTIVE_TERM_LONG_TILT",
 			"Long Tilt Objective Term",
-			initialHoldingsArray,
+			initialHoldings,
 			magnitudeArray,
 			membershipArray
 		);
@@ -131,7 +134,7 @@ public class LongTiltTerm
 		{
 			@Override public int dimension()
 			{
-				return initialHoldingsArray().length;
+				return initialHoldings().size();
 			}
 
 			@Override public double evaluate (
@@ -155,13 +158,13 @@ public class LongTiltTerm
 
 				double[] membershipArray = membershipArray();
 
-				double[] initialHoldingsArray = initialHoldingsArray();
+				AssetPosition[] initialAssetPositionArray = initialHoldings().toArray();
 
 				for (int dimensionIndex = 0; dimensionIndex < dimension; ++dimensionIndex)
 				{
 					tiltValue += magnitudeArray[dimensionIndex] * membershipArray[dimensionIndex] * (
 						java.lang.Math.abs (variateArray[dimensionIndex]) -
-						java.lang.Math.abs (initialHoldingsArray[dimensionIndex])
+						java.lang.Math.abs (initialAssetPositionArray[dimensionIndex].quantity())
 					);
 				}
 
@@ -192,8 +195,10 @@ public class LongTiltTerm
 					return 0.;
 				}
 
-				return (variateArray[variateIndex] > initialHoldingsArray()[variateIndex] ? 1. : -1.) *
-					magnitudeArray()[variateIndex] * membershipArray()[variateIndex];
+				return (
+					variateArray[variateIndex] > initialHoldings().toArray()[variateIndex].quantity() ?
+						1. : -1.
+				) * magnitudeArray()[variateIndex] * membershipArray()[variateIndex];
 			}
 		};
 	}

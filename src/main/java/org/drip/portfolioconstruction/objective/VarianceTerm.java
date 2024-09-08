@@ -1,6 +1,8 @@
 
 package org.drip.portfolioconstruction.objective;
 
+import org.drip.portfolioconstruction.composite.Holdings;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
@@ -102,7 +104,7 @@ public class VarianceTerm
 	 * VarianceTerm Constructor
 	 * 
 	 * @param name Name of the Objective Function
-	 * @param initialHoldingsArray The Initial Holdings
+	 * @param initialHoldings Initial Holdings
 	 * @param assetCovarianceMatrix The Asset Covariance
 	 * @param benchmarkConstrictedHoldingsArray The Constricted Benchmark Holdings
 	 * 
@@ -111,7 +113,7 @@ public class VarianceTerm
 
 	public VarianceTerm (
 		final java.lang.String name,
-		final double[] initialHoldingsArray,
+		final Holdings initialHoldings,
 		final double[][] assetCovarianceMatrix,
 		final double[] benchmarkConstrictedHoldingsArray)
 		throws java.lang.Exception
@@ -120,7 +122,7 @@ public class VarianceTerm
 			name,
 			"OT_VARIANCE",
 			"Variance Objective Term",
-			initialHoldingsArray,
+			initialHoldings,
 			assetCovarianceMatrix,
 			benchmarkConstrictedHoldingsArray
 		);
@@ -132,7 +134,7 @@ public class VarianceTerm
 		{
 			@Override public int dimension()
 			{
-				return initialHoldingsArray().length;
+				return initialHoldings().size();
 			}
 
 			@Override public double evaluate (

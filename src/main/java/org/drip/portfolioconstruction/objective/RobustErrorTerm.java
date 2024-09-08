@@ -1,6 +1,8 @@
 
 package org.drip.portfolioconstruction.objective;
 
+import org.drip.portfolioconstruction.composite.Holdings;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
@@ -105,7 +107,7 @@ public abstract class RobustErrorTerm
 	 * RobustErrorTerm Constructor
 	 * 
 	 * @param name Name of the Expected Returns Objective Term
-	 * @param initialHoldingsArray Initial Holdings Array
+	 * @param initialHoldings Initial Holdings
 	 * @param alphaArray Asset Alpha Array
 	 * @param alphaUncertaintyMatrix Alpha Uncertainty Matrix
 	 * @param assetCovarianceMatrix Asset Co-variance Matrix
@@ -117,7 +119,7 @@ public abstract class RobustErrorTerm
 
 	public RobustErrorTerm (
 		final java.lang.String name,
-		final double[] initialHoldingsArray,
+		final Holdings initialHoldings,
 		final double[] alphaArray,
 		final double[][] alphaUncertaintyMatrix,
 		final double[][] assetCovarianceMatrix,
@@ -129,12 +131,12 @@ public abstract class RobustErrorTerm
 			name,
 			"OT_ROBUST",
 			"Robust Error Portfolio Returns Objective Term",
-			initialHoldingsArray,
+			initialHoldings,
 			alphaArray,
 			benchmarkConstrictedHoldingsArray
 		);
 
-		int assetCount = initialHoldingsArray.length;
+		int assetCount = initialHoldings.size();
 
 		if (!org.drip.numerical.common.NumberUtil.IsValid (_confidenceLevel = confidenceLevel) ||
 			null == (_alphaUncertaintyMatrix = alphaUncertaintyMatrix) ||

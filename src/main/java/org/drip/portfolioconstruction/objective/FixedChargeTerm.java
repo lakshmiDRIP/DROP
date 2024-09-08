@@ -1,6 +1,9 @@
 
 package org.drip.portfolioconstruction.objective;
 
+import org.drip.portfolioconstruction.composite.Holdings;
+import org.drip.portfolioconstruction.core.AssetPosition;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
@@ -102,7 +105,7 @@ public class FixedChargeTerm
 	 * FixedChargeTerm Constructor
 	 * 
 	 * @param name Name of the Objective Term
-	 * @param initialHoldingsArray Array of Initial Holdings
+	 * @param initialHoldings The Initial Holdings
 	 * @param fixedTransactionChargeArray Array of Asset Fixed Transaction Charge Instances
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
@@ -110,7 +113,7 @@ public class FixedChargeTerm
 
 	public FixedChargeTerm (
 		final java.lang.String name,
-		final double[] initialHoldingsArray,
+		final Holdings initialHoldings,
 		final org.drip.portfolioconstruction.cost.TransactionCharge[] fixedTransactionChargeArray)
 		throws java.lang.Exception
 	{
@@ -118,7 +121,7 @@ public class FixedChargeTerm
 			name,
 			"OT_BUY_SELL_FIXED_CHARGE",
 			"Fixed Buy/Sell Transaction Charge Objective Function",
-			initialHoldingsArray,
+			initialHoldings,
 			fixedTransactionChargeArray
 		);
 	}
@@ -129,7 +132,7 @@ public class FixedChargeTerm
 		{
 			@Override public int dimension()
 			{
-				return initialHoldingsArray().length;
+				return initialHoldings().size();
 			}
 
 			@Override public double evaluate (
@@ -144,7 +147,7 @@ public class FixedChargeTerm
 				org.drip.portfolioconstruction.cost.TransactionChargeFixed[] fixedTransactionChargeArray =
 					(org.drip.portfolioconstruction.cost.TransactionChargeFixed[]) transactionChargeArray();
 
-				double[] initialHoldingsArray = initialHoldingsArray();
+				AssetPosition[] initialAssetPositionArray = initialHoldings().toArray();
 
 				int assetCount = fixedTransactionChargeArray.length;
 				double fixedChargeTerm = 0.;
@@ -158,7 +161,7 @@ public class FixedChargeTerm
 				for (int assetIndex = 0; assetIndex < assetCount; ++assetIndex)
 				{
 					fixedChargeTerm += fixedTransactionChargeArray[assetIndex].estimate (
-						initialHoldingsArray[assetIndex],
+						initialAssetPositionArray[assetIndex].quantity(),
 						variateArray[assetIndex]
 					);
 				}

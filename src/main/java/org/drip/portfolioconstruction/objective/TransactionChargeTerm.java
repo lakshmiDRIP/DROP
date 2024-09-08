@@ -1,6 +1,9 @@
 
 package org.drip.portfolioconstruction.objective;
 
+import org.drip.portfolioconstruction.composite.Holdings;
+import org.drip.portfolioconstruction.core.AssetPosition;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
@@ -103,7 +106,7 @@ public abstract class TransactionChargeTerm
 		final java.lang.String name,
 		final java.lang.String id,
 		final java.lang.String description,
-		final double[] initialHoldingsArray,
+		final Holdings initialHoldings,
 		final org.drip.portfolioconstruction.cost.TransactionCharge[] transactionChargeArray)
 		throws java.lang.Exception
 	{
@@ -112,10 +115,10 @@ public abstract class TransactionChargeTerm
 			id,
 			description,
 			"TRANSACTION_COST",
-			initialHoldingsArray
+			initialHoldings
 		);
 
-		int assetCount = initialHoldingsArray.length;
+		int assetCount = initialHoldings.size();
 
 		if (null == (_transactionChargeArray = transactionChargeArray) ||
 			assetCount != _transactionChargeArray.length)
@@ -149,25 +152,26 @@ public abstract class TransactionChargeTerm
 		{
 			@Override public int dimension()
 			{
-				return initialHoldingsArray().length;
+				return initialHoldings().size();
 			}
 
 			@Override public double evaluate (
-				final double[] variateArray)
+				final double[] finalQuantityArray)
 				throws java.lang.Exception
 			{
-				if (null == variateArray || !org.drip.numerical.common.NumberUtil.IsValid (variateArray))
+				if (null == finalQuantityArray ||
+					!org.drip.numerical.common.NumberUtil.IsValid (finalQuantityArray))
 				{
 					throw new java.lang.Exception
 						("TransactionChargeTerm::rdToR1::evaluate => Invalid Input");
 				}
 
-				double[] initialHoldingsArray = initialHoldingsArray();
+				AssetPosition[] initialAssetPositionArray = initialHoldings().toArray();
 
 				int assetCount = _transactionChargeArray.length;
 				double fixedChargeTerm = 0.;
 
-				if (variateArray.length != assetCount)
+				if (finalQuantityArray.length != assetCount)
 				{
 					throw new java.lang.Exception
 						("TransactionChargeTerm::rdToR1::evaluate => Invalid Variate Dimension");
@@ -176,8 +180,8 @@ public abstract class TransactionChargeTerm
 				for (int assetIndex = 0; assetIndex < assetCount; ++assetIndex)
 				{
 					fixedChargeTerm += _transactionChargeArray[assetIndex].estimate (
-						initialHoldingsArray[assetIndex],
-						variateArray[assetIndex]
+						initialAssetPositionArray[assetIndex].quantity(),
+						finalQuantityArray[assetIndex]
 					);
 				}
 

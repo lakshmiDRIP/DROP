@@ -1,6 +1,8 @@
 
 package org.drip.portfolioconstruction.objective;
 
+import org.drip.portfolioconstruction.composite.Holdings;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
@@ -104,7 +106,7 @@ public abstract class ReturnsTerm
 		final java.lang.String name,
 		final java.lang.String id,
 		final java.lang.String description,
-		final double[] initialHoldingsArray,
+		final Holdings initialHoldings,
 		final double[] alphaArray,
 		final double[] benchmarkConstrictedHoldingsArray)
 		throws java.lang.Exception
@@ -114,10 +116,10 @@ public abstract class ReturnsTerm
 			id,
 			description,
 			"RETURNS",
-			initialHoldingsArray
+			initialHoldings
 		);
 
-		int assetCount = initialHoldingsArray.length;
+		int assetCount = initialHoldings.size();
 
 		if (null == (_alphaArray = alphaArray) || !org.drip.numerical.common.NumberUtil.IsValid (_alphaArray)
 			|| assetCount != _alphaArray.length)

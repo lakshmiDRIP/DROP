@@ -1,6 +1,9 @@
 
 package org.drip.portfolioconstruction.objective;
 
+import org.drip.portfolioconstruction.composite.Holdings;
+import org.drip.portfolioconstruction.core.AssetPosition;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
@@ -103,7 +106,7 @@ public class GoldmanSachsShortfallTerm
 	 * GoldmanSachsShortfallTerm Constructor
 	 * 
 	 * @param name Name of the Objective Term
-	 * @param initialHoldingsArray Initial Holdings
+	 * @param initialHoldings The Initial Holdings
 	 * @param goldmanSachsShortfallTransactionChargeArray Array of Asset Goldman Sachs Transaction Charge
 	 * 	Instances
 	 * 
@@ -112,7 +115,7 @@ public class GoldmanSachsShortfallTerm
 
 	public GoldmanSachsShortfallTerm (
 		final java.lang.String name,
-		final double[] initialHoldingsArray,
+		final Holdings initialHoldings,
 		final org.drip.portfolioconstruction.cost.TransactionChargeGoldmanSachsShortfall[]
 			goldmanSachsShortfallTransactionChargeArray)
 		throws java.lang.Exception
@@ -121,7 +124,7 @@ public class GoldmanSachsShortfallTerm
 			name,
 			"OT_GOLDMAN_SACHS_SHORTFALL_TRANSACTION_CHARGE",
 			"Goldman Sachs Shortfall Objective Function",
-			initialHoldingsArray,
+			initialHoldings,
 			goldmanSachsShortfallTransactionChargeArray
 		);
 	}
@@ -132,7 +135,7 @@ public class GoldmanSachsShortfallTerm
 		{
 			@Override public int dimension()
 			{
-				return initialHoldingsArray().length;
+				return initialHoldings().size();
 			}
 
 			@Override public double evaluate (
@@ -150,7 +153,7 @@ public class GoldmanSachsShortfallTerm
 						(org.drip.portfolioconstruction.cost.TransactionChargeGoldmanSachsShortfall[])
 							transactionChargeArray();
 
-				double[] initialHoldingsArray = initialHoldingsArray();
+				AssetPosition[] initialAssetPositionArray = initialHoldings().toArray();
 
 				int assetCount = goldmanSachsShortfallTransactionChargeArray.length;
 				double goldmanSachsShortfallChargeTerm = 0.;
@@ -165,7 +168,7 @@ public class GoldmanSachsShortfallTerm
 				{
 					goldmanSachsShortfallChargeTerm +=
 						goldmanSachsShortfallTransactionChargeArray[assetIndex].estimate (
-							initialHoldingsArray[assetIndex],
+							initialAssetPositionArray[assetIndex].quantity(),
 							variateArray[assetIndex]
 						);
 				}

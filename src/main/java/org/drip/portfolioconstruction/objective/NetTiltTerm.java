@@ -1,6 +1,9 @@
 
 package org.drip.portfolioconstruction.objective;
 
+import org.drip.portfolioconstruction.composite.Holdings;
+import org.drip.portfolioconstruction.core.AssetPosition;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
@@ -101,7 +104,7 @@ public class NetTiltTerm
 	 * NetTiltTerm Constructor
 	 * 
 	 * @param name The Objective Term Name
-	 * @param initialHoldingsArray The Array of Initial Holdings
+	 * @param initialHoldings Initial Holdings
 	 * @param magnitudeArray The Tilt Magnitude Block Attribute Array
 	 * @param membershipArray The Tilt Membership Block Classification Array
 	 * 
@@ -110,7 +113,7 @@ public class NetTiltTerm
 
 	public NetTiltTerm (
 		final java.lang.String name,
-		final double[] initialHoldingsArray,
+		final Holdings initialHoldings,
 		final double[] magnitudeArray,
 		final double[] membershipArray)
 		throws java.lang.Exception
@@ -119,7 +122,7 @@ public class NetTiltTerm
 			name,
 			"OBJECTIVE_TERM_NET_TILT",
 			"Net Tilt Objective Term",
-			initialHoldingsArray,
+			initialHoldings,
 			magnitudeArray,
 			membershipArray
 		);
@@ -131,20 +134,23 @@ public class NetTiltTerm
 		{
 			@Override public int dimension()
 			{
-				return initialHoldingsArray().length;
+				return initialHoldings().size();
 			}
 
 			@Override public double evaluate (
-				final double[] variateArray)
+				final double[] finalQuantityArray)
 				throws java.lang.Exception
 			{
-				if (null == variateArray || !org.drip.numerical.common.NumberUtil.IsValid (variateArray))
+				if (null == finalQuantityArray ||
+					!org.drip.numerical.common.NumberUtil.IsValid (finalQuantityArray))
 				{
 					throw new java.lang.Exception ("NetTiltTerm::rdToR1::evaluate => Invalid Inputs");
 				}
 
 				double tiltValue = 0.;
-				int dimension = variateArray.length;
+				int dimension = finalQuantityArray.length;
+
+				AssetPosition[] initialAssetPositionArray = initialHoldings().toArray();
 
 				if (dimension != dimension())
 				{
@@ -155,13 +161,12 @@ public class NetTiltTerm
 
 				double[] membershipArray = membershipArray();
 
-				double[] initialHoldingsArray = initialHoldingsArray();
-
 				for (int dimensionIndex = 0; dimensionIndex < dimension; ++dimensionIndex)
 				{
 					tiltValue += magnitudeArray[dimensionIndex] * membershipArray[dimensionIndex] *
 						java.lang.Math.abs (
-							variateArray[dimensionIndex] - initialHoldingsArray[dimensionIndex]
+							finalQuantityArray[dimensionIndex] -
+								initialAssetPositionArray[dimensionIndex].quantity()
 						);
 				}
 
@@ -169,18 +174,18 @@ public class NetTiltTerm
 			}
 
 			@Override public double derivative (
-				final double[] variateArray,
+				final double[] finalQuantityArray,
 				final int variateIndex,
 				final int derivativeOrder)
 				throws java.lang.Exception
 			{
 				if (0 == derivativeOrder ||
-					null == variateArray || !org.drip.numerical.common.NumberUtil.IsValid (variateArray))
+					null == finalQuantityArray || !org.drip.numerical.common.NumberUtil.IsValid (finalQuantityArray))
 				{
 					throw new java.lang.Exception ("NetTiltTerm::rdToR1::derivative => Invalid Inputs");
 				}
 
-				int dimension = variateArray.length;
+				int dimension = finalQuantityArray.length;
 
 				if (dimension != dimension() || variateIndex >= dimension)
 				{
@@ -192,8 +197,10 @@ public class NetTiltTerm
 					return 0.;
 				}
 
-				return (variateArray[variateIndex] > initialHoldingsArray()[variateIndex] ? 1. : -1.) *
-					magnitudeArray()[variateIndex] * membershipArray()[variateIndex];
+				return (
+					finalQuantityArray[variateIndex] > initialHoldings().toArray()[variateIndex].quantity() ?
+						1. : -1.
+				) * magnitudeArray()[variateIndex] * membershipArray()[variateIndex];
 			}
 		};
 	}

@@ -1,6 +1,8 @@
 
 package org.drip.portfolioconstruction.objective;
 
+import org.drip.portfolioconstruction.composite.Holdings;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
@@ -102,7 +104,7 @@ public abstract class CustomTransactionChargeTerm
 	 * CustomTransactionChargeTerm Constructor
 	 * 
 	 * @param name Name of the Objective Term
-	 * @param initialHoldingsArray Array of Initial Holdings
+	 * @param initialHoldings Initial Holdings
 	 * @param transactionChargeArray Array of Asset Transaction Charge Instances
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
@@ -110,7 +112,7 @@ public abstract class CustomTransactionChargeTerm
 
 	public CustomTransactionChargeTerm (
 		final java.lang.String name,
-		final double[] initialHoldingsArray,
+		final Holdings initialHoldings,
 		final org.drip.portfolioconstruction.cost.TransactionCharge[] transactionChargeArray)
 		throws java.lang.Exception
 	{
@@ -119,7 +121,7 @@ public abstract class CustomTransactionChargeTerm
 			"OT_TRANSACTION_CHARGE",
 			"Optimizes for Transaction Charge for Trades",
 			"TRANSACTION_CHARGE",
-			initialHoldingsArray
+			initialHoldings
 		);
 	}
 }

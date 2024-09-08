@@ -1,6 +1,8 @@
 
 package org.drip.portfolioconstruction.objective;
 
+import org.drip.portfolioconstruction.composite.Holdings;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
@@ -102,7 +104,7 @@ public abstract class TaxTerm
 		final java.lang.String name,
 		final java.lang.String id,
 		final java.lang.String description,
-		final double[] initialHoldingsArray,
+		final Holdings initialHoldings,
 		final org.drip.portfolioconstruction.objective.TaxationScheme taxationScheme)
 		throws java.lang.Exception
 	{
@@ -111,7 +113,7 @@ public abstract class TaxTerm
 			id,
 			description,
 			"TAX",
-			initialHoldingsArray
+			initialHoldings
 		);
 
 		if (null == (_taxationScheme = taxationScheme))

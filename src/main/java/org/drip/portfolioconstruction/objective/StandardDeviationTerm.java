@@ -1,6 +1,8 @@
 
 package org.drip.portfolioconstruction.objective;
 
+import org.drip.portfolioconstruction.composite.Holdings;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
@@ -102,7 +104,7 @@ public class StandardDeviationTerm
 	 * StandardDeviationTerm Constructor
 	 * 
 	 * @param name Name of the Objective Function
-	 * @param initialHoldingsArray The Initial Holdings Array
+	 * @param initialHoldings Initial Holdings
 	 * @param assetCovarianceMatrix The Asset Covariance Matrix
 	 * @param benchmarkConstrictedHoldingsArray The Constricted Benchmark Holdings Array
 	 * 
@@ -111,7 +113,7 @@ public class StandardDeviationTerm
 
 	public StandardDeviationTerm (
 		final java.lang.String name,
-		final double[] initialHoldingsArray,
+		final Holdings initialHoldings,
 		final double[][] assetCovarianceMatrix,
 		final double[] benchmarkConstrictedHoldingsArray)
 		throws java.lang.Exception
@@ -120,7 +122,7 @@ public class StandardDeviationTerm
 			name,
 			"OT_STANDARD_DEVIATION",
 			"Standard Deviation Objective Term",
-			initialHoldingsArray,
+			initialHoldings,
 			assetCovarianceMatrix,
 			benchmarkConstrictedHoldingsArray
 		);
@@ -132,7 +134,7 @@ public class StandardDeviationTerm
 		{
 			@Override public int dimension()
 			{
-				return initialHoldingsArray().length;
+				return initialHoldings().size();
 			}
 
 			@Override public double evaluate (

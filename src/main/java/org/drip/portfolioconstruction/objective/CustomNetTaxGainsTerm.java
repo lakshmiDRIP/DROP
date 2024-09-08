@@ -1,6 +1,9 @@
 
 package org.drip.portfolioconstruction.objective;
 
+import org.drip.portfolioconstruction.composite.Holdings;
+import org.drip.portfolioconstruction.core.AssetPosition;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
@@ -101,7 +104,7 @@ public class CustomNetTaxGainsTerm
 	 * CustomNetTaxGainsTerm Constructor
 	 * 
 	 * @param name Name of the Objective Function
-	 * @param initialHoldingsArray The Initial Holdings
+	 * @param initialHoldings Initial Holdings
 	 * @param taxationScheme The Taxation Scheme
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
@@ -109,7 +112,7 @@ public class CustomNetTaxGainsTerm
 
 	public CustomNetTaxGainsTerm (
 		final java.lang.String name,
-		final double[] initialHoldingsArray,
+		final Holdings initialHoldings,
 		final org.drip.portfolioconstruction.objective.TaxationScheme taxationScheme)
 		throws java.lang.Exception
 	{
@@ -117,7 +120,7 @@ public class CustomNetTaxGainsTerm
 			name,
 			"OT_CUSTOM_NET_TAX_GAINS",
 			"Portfolio Custom Net Tax Gains Objective Term",
-			initialHoldingsArray,
+			initialHoldings,
 			taxationScheme
 		);
 	}
@@ -128,17 +131,22 @@ public class CustomNetTaxGainsTerm
 		{
 			@Override public int dimension()
 			{
-				return initialHoldingsArray().length;
+				return initialHoldings().size();
 			}
 
 			@Override public double evaluate (
-				final double[] variateArray)
+				final double[] finalSizeArray)
 				throws java.lang.Exception
 			{
-				return taxationScheme().customNetTaxGain (
-					initialHoldingsArray(),
-					variateArray
-				);
+				AssetPosition[] assetPositionArray = initialHoldings().toArray();
+
+				double[] initialSizeArray = new double[assetPositionArray.length];
+
+				for (int i = 0; i < assetPositionArray.length; ++i) {
+					initialSizeArray[i] = assetPositionArray[i].quantity();
+				}
+
+				return taxationScheme().customNetTaxGain (initialSizeArray, finalSizeArray);
 			}
 		};
 	}

@@ -1,6 +1,10 @@
 
-package org.drip.portfolioconstruction.manager;
+package org.drip.portfolioconstruction.core;
 
+import java.util.Map;
+import java.util.Set;
+
+import org.drip.analytics.support.CaseInsensitiveHashMap;
 import org.drip.analytics.support.CaseInsensitiveTreeMap;
 import org.drip.portfolioconstruction.composite.Holdings;
 
@@ -82,30 +86,34 @@ import org.drip.portfolioconstruction.composite.Holdings;
  */
 
 /**
- * <i>HoldingsContainer</i> maintains a Universe of the Holdings.
+ * <i>Universe</i> contains all the Assets in the Universe.
  *
  *	<br><br>
  *  <ul>
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md">Portfolio Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/AssetAllocationAnalyticsLibrary.md">Asset Allocation Analytics</a></li>
  *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/portfolioconstruction/README.md">Portfolio Construction under Allocation Constraints</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/portfolioconstruction/manager/README.md">Portfolio Construction Component Framework Manager</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/portfolioconstruction/core/README.md">Core Portfolio Construction Component Suite</a></li>
  *  </ul>
+ * <br><br>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class UniverseContainer
+public class Universe
 {
-	private CaseInsensitiveTreeMap<Holdings> _holdingsMap = null;
+	private Map<String, Holdings> _holdingsMap = null;
+	private Map<String, AssetPosition> _assetPositionMap = null;
 
 	/**
-	 * <i>UniverseContainer</i> Constructor
+	 * Empty Universe Constructor
 	 */
 
-	public UniverseContainer()
+	public Universe()
 	{
 		_holdingsMap = new CaseInsensitiveTreeMap<Holdings>();
+
+		_assetPositionMap = new CaseInsensitiveHashMap<AssetPosition>();
 	}
 
 	/**
@@ -114,9 +122,40 @@ public class UniverseContainer
 	 * @return Holdings Map
 	 */
 
-	public CaseInsensitiveTreeMap<Holdings> holdingsMap()
+	public Map<String, Holdings> holdingsMap()
 	{
 		return _holdingsMap;
+	}
+
+	/**
+	 * Retrieve the Asset Position Map
+	 * 
+	 * @return Asset Position Map
+	 */
+
+	public Map<String, AssetPosition> assetPositionMap()
+	{
+		return _assetPositionMap;
+	}
+
+	/**
+	 * Add an Asset Position to the Universe
+	 * 
+	 * @param assetPosition Asset Position to be added
+	 * 
+	 * @return TRUE - The Asset Position has been added successfully
+	 */
+
+	public boolean addAssetPosition (
+		final AssetPosition assetPosition)
+	{
+		if (null == assetPosition) {
+			return false;
+		}
+
+		_assetPositionMap.put (assetPosition.id(), assetPosition);
+
+		return true;
 	}
 
 	/**
@@ -140,6 +179,34 @@ public class UniverseContainer
 	}
 
 	/**
+	 * Indicate if the Asset is contained in the Universe
+	 * 
+	 * @param asset The Asset Position Instance
+	 * 
+	 * @return TRUE - The Asset is contained in the Universe
+	 */
+
+	public boolean containsAssetInPosition (
+		final Asset asset)
+	{
+		return null != asset && _assetPositionMap.containsKey (asset.id());
+	}
+
+	/**
+	 * Indicate if the Asset Position is contained in the Universe
+	 * 
+	 * @param assetPosition The Asset Position Instance
+	 * 
+	 * @return TRUE - The Asset Position is contained in the Universe
+	 */
+
+	public boolean containsAssetPosition (
+		final AssetPosition assetPosition)
+	{
+		return null != assetPosition && _assetPositionMap.containsKey (assetPosition.id());
+	}
+
+	/**
 	 * Indicate if the Holdings is contained in the Universe
 	 * 
 	 * @param holdings Holdings
@@ -151,6 +218,96 @@ public class UniverseContainer
 		final Holdings holdings)
 	{
 		return null != holdings && _holdingsMap.containsKey (holdings.id());
+	}
+
+	/**
+	 * Indicate if the Asset is contained in the Universe Holdings
+	 * 
+	 * @param asset The Asset Position Instance
+	 * 
+	 * @return TRUE - The Asset is contained in the Universe Holdings
+	 */
+
+	public boolean containsAssetInHoldings (
+		final Asset asset)
+	{
+		if (null == asset || _assetPositionMap.isEmpty()) {
+			return false;
+		}
+
+		String assetID = asset.id();
+
+		for (Holdings holdings : _holdingsMap.values()) {
+			if (holdings.contains (assetID)) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	/**
+	 * Indicate if the Asset Position is contained in the Universe
+	 * 
+	 * @param id The Asset Position ID
+	 * 
+	 * @return TRUE - The Asset Position is contained in the Universe
+	 */
+
+	public boolean containsAssetPosition (
+		final String id)
+	{
+		return null != id && !id.isEmpty() && _assetPositionMap.containsKey (id);
+	}
+
+	/**
+	 * Indicate if the Holdings is contained in the Universe
+	 * 
+	 * @param id Holdings ID
+	 * 
+	 * @return TRUE - The Holdings is contained in the Universe
+	 */
+
+	public boolean containsHoldings (
+		final String id)
+	{
+		return null != id && !id.isEmpty() && _holdingsMap.containsKey (id);
+	}
+
+	/**
+	 * Retrieve the List of the Asset Position Identifiers
+	 * 
+	 * @return The List of the Asset Position Identifiers
+	 */
+
+	public Set<String> assetPositionIDSet()
+	{
+		return _assetPositionMap.keySet();
+	}
+
+	/**
+	 * Retrieve the List of the Holdings Identifiers
+	 * 
+	 * @return The List of the Holdings Identifiers
+	 */
+
+	public Set<String> holdingsIDSet()
+	{
+		return _holdingsMap.keySet();
+	}
+
+	/**
+	 * Retrieve the Asset Position corresponding to the ID
+	 * 
+	 * @param id ID
+	 * 
+	 * @return Asset Position corresponding to the ID
+	 */
+
+	public Asset retrieveAssetPosition (
+		final String id)
+	{
+		return null == id || _assetPositionMap.containsKey (id) ? null : _assetPositionMap.get (id);
 	}
 
 	/**

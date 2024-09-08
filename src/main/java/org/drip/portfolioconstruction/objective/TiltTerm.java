@@ -1,6 +1,8 @@
 
 package org.drip.portfolioconstruction.objective;
 
+import org.drip.portfolioconstruction.composite.Holdings;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
@@ -103,7 +105,7 @@ public abstract class TiltTerm
 		final java.lang.String name,
 		final java.lang.String id,
 		final java.lang.String description,
-		final double[] initialHoldingsArray,
+		final Holdings initialHoldings,
 		final double[] magnitudeArray,
 		final double[] membershipArray)
 		throws java.lang.Exception
@@ -113,10 +115,10 @@ public abstract class TiltTerm
 			id,
 			description,
 			"TILT",
-			initialHoldingsArray
+			initialHoldings
 		);
 
-		int assetCount = initialHoldingsArray.length;
+		int assetCount = initialHoldings.size();
 
 		if (null == (_magnitudeArray = magnitudeArray) ||
 			!org.drip.numerical.common.NumberUtil.IsValid (_magnitudeArray) ||

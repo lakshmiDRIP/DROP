@@ -1,6 +1,9 @@
 
 package org.drip.portfolioconstruction.objective;
 
+import org.drip.portfolioconstruction.composite.Holdings;
+import org.drip.portfolioconstruction.core.AssetPosition;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
@@ -101,7 +104,7 @@ public class ShortTiltTerm
 	 * ShortTiltTerm Constructor
 	 * 
 	 * @param name The Objective Term Name
-	 * @param initialHoldingsArray The Initial Holdings
+	 * @param initialHoldings The Initial Holdings
 	 * @param magnitudeArray The Tilt Magnitude Block Attribute Array
 	 * @param membershipArray The Tilt Membership Block Classification Array
 	 * 
@@ -110,7 +113,7 @@ public class ShortTiltTerm
 
 	public ShortTiltTerm (
 		final java.lang.String name,
-		final double[] initialHoldingsArray,
+		final Holdings initialHoldings,
 		final double[] magnitudeArray,
 		final double[] membershipArray)
 		throws java.lang.Exception
@@ -119,7 +122,7 @@ public class ShortTiltTerm
 			name,
 			"OBJECTIVE_TERM_SHORT_TILT",
 			"Short Tilt Objective Term",
-			initialHoldingsArray,
+			initialHoldings,
 			magnitudeArray,
 			membershipArray
 		);
@@ -130,7 +133,7 @@ public class ShortTiltTerm
 		return new org.drip.function.definition.RdToR1 (null) {
 			@Override public int dimension()
 			{
-				return initialHoldingsArray().length;
+				return initialHoldings().size();
 			}
 
 			@Override public double evaluate (
@@ -154,7 +157,7 @@ public class ShortTiltTerm
 
 				double[] membershipArray = membershipArray();
 
-				double[] initialHoldingsArray = initialHoldingsArray();
+				AssetPosition[] initialAssetPositionArray = initialHoldings().toArray();
 
 				for (int dimensionIndex = 0; dimensionIndex < dimension; ++dimensionIndex)
 				{
@@ -164,7 +167,7 @@ public class ShortTiltTerm
 							variateArray[dimensionIndex]
 						) -
 						java.lang.Math.abs (
-							initialHoldingsArray[dimensionIndex]
+							initialAssetPositionArray[dimensionIndex].quantity()
 						)
 					);
 				}
@@ -196,8 +199,10 @@ public class ShortTiltTerm
 					return 0.;
 				}
 
-				return (variateArray[variateIndex] > initialHoldingsArray()[variateIndex] ? -1. : 1.) *
-					magnitudeArray()[variateIndex] * membershipArray()[variateIndex];
+				return (
+					variateArray[variateIndex] > initialHoldings().toArray()[variateIndex].quantity() ?
+						-1. : 1.
+				) * magnitudeArray()[variateIndex] * membershipArray()[variateIndex];
 			}
 		};
 	}

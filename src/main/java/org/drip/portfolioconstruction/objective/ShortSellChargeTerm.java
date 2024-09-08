@@ -1,6 +1,9 @@
 
 package org.drip.portfolioconstruction.objective;
 
+import org.drip.portfolioconstruction.composite.Holdings;
+import org.drip.portfolioconstruction.core.AssetPosition;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
@@ -102,7 +105,7 @@ public class ShortSellChargeTerm
 	 * ShortSellChargeTerm Conastructor
 	 * 
 	 * @param name Name of the Objective Term
-	 * @param initialHoldingsArray Initial Holdings
+	 * @param initialHoldings The Initial Holdings
 	 * @param transactionChargeArray Array of Asset Transaction Charge Instances
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
@@ -110,7 +113,7 @@ public class ShortSellChargeTerm
 
 	public ShortSellChargeTerm (
 		final java.lang.String name,
-		final double[] initialHoldingsArray,
+		final Holdings initialHoldings,
 		final org.drip.portfolioconstruction.cost.TransactionCharge[] transactionChargeArray)
 		throws java.lang.Exception
 	{
@@ -118,7 +121,7 @@ public class ShortSellChargeTerm
 			name,
 			"OT_SHORT_SELL_CHARGE",
 			"Short Sell Transaction Charge Objective Function",
-			initialHoldingsArray,
+			initialHoldings,
 			transactionChargeArray
 		);
 	}
@@ -129,7 +132,7 @@ public class ShortSellChargeTerm
 		{
 			@Override public int dimension()
 			{
-				return initialHoldingsArray().length;
+				return initialHoldings().size();
 			}
 
 			@Override public double evaluate (
@@ -144,7 +147,7 @@ public class ShortSellChargeTerm
 				org.drip.portfolioconstruction.cost.TransactionCharge[] transactionChargeArray =
 					transactionChargeArray();
 
-				double[] initialHoldingsArray = initialHoldingsArray();
+				AssetPosition[] initialAssetPositionArray = initialHoldings().toArray();
 
 				int assetCount = transactionChargeArray.length;
 				double shortSellChargeTerm = 0.;
@@ -157,10 +160,12 @@ public class ShortSellChargeTerm
 
 				for (int assetIndex = 0; assetIndex < assetCount; ++assetIndex)
 				{
-					if (variateArray[assetIndex] < initialHoldingsArray[assetIndex])
+					double initialSize = initialAssetPositionArray[assetIndex].quantity();
+
+					if (variateArray[assetIndex] < initialSize)
 					{
 						shortSellChargeTerm += transactionChargeArray[assetIndex].estimate (
-							initialHoldingsArray[assetIndex],
+							initialSize,
 							variateArray[assetIndex]
 						);
 					}

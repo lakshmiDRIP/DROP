@@ -1,6 +1,9 @@
 
 package org.drip.portfolioconstruction.objective;
 
+import org.drip.portfolioconstruction.composite.Holdings;
+import org.drip.portfolioconstruction.core.AssetPosition;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
@@ -101,7 +104,7 @@ public class TaxLiabilityTerm
 	 * TaxLiabilityTerm Constructor
 	 * 
 	 * @param name Name of the Objective Function
-	 * @param initialHoldingsArray The Initial Holdings
+	 * @param initialHoldings The Initial Holdings
 	 * @param taxationScheme The Taxation Scheme
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
@@ -109,7 +112,7 @@ public class TaxLiabilityTerm
 
 	public TaxLiabilityTerm (
 		final java.lang.String name,
-		final double[] initialHoldingsArray,
+		final Holdings initialHoldings,
 		final org.drip.portfolioconstruction.objective.TaxationScheme taxationScheme)
 		throws java.lang.Exception
 	{
@@ -117,7 +120,7 @@ public class TaxLiabilityTerm
 			name,
 			"OT_TAX_LIABILITY",
 			"Portfolio Net Tax Liability Objective Term",
-			initialHoldingsArray,
+			initialHoldings,
 			taxationScheme
 		);
 	}
@@ -128,15 +131,23 @@ public class TaxLiabilityTerm
 		{
 			@Override public int dimension()
 			{
-				return initialHoldingsArray().length;
+				return initialHoldings().size();
 			}
 
 			@Override public double evaluate (
 				final double[] variateArray)
 				throws java.lang.Exception
 			{
+				AssetPosition[] initialAssetPositionArray = initialHoldings().toArray();
+
+				double[] initialHoldingsArray = new double[initialAssetPositionArray.length];
+
+				for (int i = 0; i < initialAssetPositionArray.length; ++i) {
+					initialHoldingsArray[i] = initialAssetPositionArray[i].quantity();
+				}
+
 				return taxationScheme().taxLiability (
-					initialHoldingsArray(),
+					initialHoldingsArray,
 					variateArray
 				);
 			}
