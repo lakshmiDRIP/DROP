@@ -96,7 +96,7 @@ public class AssetPosition extends Asset
 	private double _unitPrice = Double.NaN;
 
 	/**
-	 * Asset Constructor
+	 * <i>AssetPosition</i> Constructor
 	 * 
 	 * @param name The Asset Name
 	 * @param id The Asset ID
@@ -161,5 +161,30 @@ public class AssetPosition extends Asset
 	public double marketValue()
 	{
 		return _quantity * _unitPrice;
+	}
+
+	/**
+	 * Clone the Asset Position Instance
+	 * 
+	 * @return The Asset Position Instance
+	 */
+
+	@Override public AssetPosition clone()
+	{
+		try {
+			return new AssetPosition (
+				name(),
+				id(),
+				description(),
+				currency(),
+				sector(),
+				_quantity,
+				_unitPrice
+			);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return null;
 	}
 }

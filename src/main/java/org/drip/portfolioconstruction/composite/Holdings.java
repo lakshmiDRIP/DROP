@@ -1,6 +1,9 @@
 
 package org.drip.portfolioconstruction.composite;
 
+import java.util.Map;
+import java.util.Set;
+
 import org.drip.portfolioconstruction.core.AssetPosition;
 import org.drip.portfolioconstruction.core.BlockCategory;
 
@@ -150,7 +153,7 @@ public class Holdings extends org.drip.portfolioconstruction.core.Block
 	 * @return The Map of Holdings Amount
 	 */
 
-	public java.util.Map<java.lang.String, AssetPosition> quantityMap()
+	public java.util.Map<java.lang.String, AssetPosition> assetPositionMap()
 	{
 		return _assetPositionMap;
 	}
@@ -267,6 +270,52 @@ public class Holdings extends org.drip.portfolioconstruction.core.Block
 	}
 
 	/**
+	 * Retrieve the Market Value of the Holdings
+	 * 
+	 * @return Market Value of the Holdings
+	 */
+
+	public double marketValue()
+	{
+		int size = _assetPositionMap.size();
+
+		if (0 == size) {
+			return 0.;
+		}
+
+		double marketValue = 0;
+
+		for (Map.Entry<String, AssetPosition> assetPositionMapEntry : _assetPositionMap.entrySet()) {
+			marketValue += assetPositionMapEntry.getValue().marketValue();
+		}
+
+		return marketValue;
+	}
+
+	/**
+	 * Retrieve the Absolute Market Value of the Holdings
+	 * 
+	 * @return Absolute Market Value of the Holdings
+	 */
+
+	public double absoluteMarketValue()
+	{
+		int size = _assetPositionMap.size();
+
+		if (0 == size) {
+			return 0.;
+		}
+
+		double absoluteMarketValue = 0;
+
+		for (Map.Entry<String, AssetPosition> assetPositionMapEntry : _assetPositionMap.entrySet()) {
+			absoluteMarketValue += Math.abs (assetPositionMapEntry.getValue().marketValue());
+		}
+
+		return absoluteMarketValue;
+	}
+
+	/**
 	 * Constrict "This" Holdings to those of the Assets in the "Other" Holdings
 	 * 
 	 * @param holdingsOther The Other Holdings Instance
@@ -309,5 +358,30 @@ public class Holdings extends org.drip.portfolioconstruction.core.Block
 		}
 
 		return assetPositionArray;
+	}
+
+	/**
+	 * Clone the Holdings Instance
+	 * 
+	 * @return The Holdings Instance
+	 */
+
+	@Override public Holdings clone()
+	{
+		try {
+			Holdings clone = new Holdings (name(), id(), description(), currency());
+
+			Set<String> assetIdSet = _assetPositionMap.keySet();
+
+			for (String assetId : assetIdSet) {
+				_assetPositionMap.put (assetId, _assetPositionMap.get (assetId).clone());
+			}
+
+			return clone;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return null;
 	}
 }

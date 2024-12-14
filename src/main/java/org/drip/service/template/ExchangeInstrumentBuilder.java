@@ -1,11 +1,25 @@
 
 package org.drip.service.template;
 
+import org.drip.analytics.date.JulianDate;
+import org.drip.market.exchange.TreasuryFuturesContract;
+import org.drip.market.exchange.TreasuryFuturesContractContainer;
+import org.drip.market.exchange.TreasuryFuturesConvention;
+import org.drip.market.exchange.TreasuryFuturesConventionContainer;
+import org.drip.market.exchange.TreasuryFuturesEligibility;
+import org.drip.market.exchange.TreasuryFuturesSettle;
+import org.drip.product.creator.SingleStreamComponentBuilder;
+import org.drip.product.govvie.TreasuryFutures;
+import org.drip.product.rates.SingleStreamComponent;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -82,143 +96,172 @@ package org.drip.service.template;
 
 /**
  * <i>ExchangeInstrumentBuilder</i> contains static Helper API to facilitate Construction of Exchange-traded
- * Instruments.
- * 
- * <br><br>
+ * 	Instruments. It provides the following Functionality:
+ *
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationSupportLibrary.md">Computation Support</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/README.md">Environment, Product/Definition Containers, and Scenario/State Manipulation APIs</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/template/README.md">Curve Construction Product Builder Templates</a></li>
+ * 		<li>Generate a Forward Rate Futures Contract corresponding to the Spot Date</li>
+ * 		<li>Generate a Forward Rate Futures Pack corresponding to the Spot Date and the Specified Number of Contracts</li>
+ * 		<li>Generate an Instance of Treasury Futures given the Inputs</li>
+ * 		<li>Generate the Treasury Futures Instance #1</li>
+ * 		<li>Generate the Treasury Futures Instance #2</li>
  *  </ul>
- * <br><br>
+ *
+ *	<br>
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationSupportLibrary.md">Computation Support</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/README.md">Environment, Product/Definition Containers, and Scenario/State Manipulation APIs</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/template/README.md">Curve Construction Product Builder Templates</a></td></tr>
+ *  </table>
+ *	<br>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class ExchangeInstrumentBuilder {
+public class ExchangeInstrumentBuilder
+{
 
 	/**
 	 * Generate a Forward Rate Futures Contract corresponding to the Spot Date
 	 * 
-	 * @param dtSpot Spot date specifying the contract issue
-	 * @param strCurrency Contract Currency
+	 * @param spotDate Spot date specifying the contract issue
+	 * @param currency Contract Currency
 	 * 
 	 * @return Forward Rate Futures Component
 	 */
 
-	public static org.drip.product.rates.SingleStreamComponent ForwardRateFutures (
-		final org.drip.analytics.date.JulianDate dtSpot,
-		final java.lang.String strCurrency)
+	public static SingleStreamComponent ForwardRateFutures (
+		final JulianDate spotDate,
+		final String currency)
 	{
-		if (null == dtSpot) return null;
+		if (null == spotDate) {
+			return null;
+		}
 
-		org.drip.product.rates.SingleStreamComponent[] aFutures =
-			org.drip.product.creator.SingleStreamComponentBuilder.ForwardRateFuturesPack (dtSpot.addBusDays
-				(0, strCurrency), 1, strCurrency);
+		SingleStreamComponent[] futuresComponentArray = SingleStreamComponentBuilder.ForwardRateFuturesPack (
+			spotDate.addBusDays (0, currency),
+			1,
+			currency
+		);
 
-		return null == aFutures || 1 != aFutures.length ? null : aFutures[0];
+		return null == futuresComponentArray || 1 != futuresComponentArray.length ?
+			null : futuresComponentArray[0];
 	}
 
 	/**
 	 * Generate a Forward Rate Futures Pack corresponding to the Spot Date and the Specified Number of
 	 *  Contracts
 	 * 
-	 * @param dtSpot Spot date specifying the contract issue
-	 * @param iNumContract Number of contracts
+	 * @param spotDate Spot date specifying the contract issue
+	 * @param contractCount Number of contracts
 	 * @param strCurrency Contract currency
 	 * 
 	 * @return Array containing the Forward Rate Futures Pack
 	 */
 
-	public static org.drip.product.rates.SingleStreamComponent[] ForwardRateFuturesPack (
-		final org.drip.analytics.date.JulianDate dtSpot,
-		final int iNumContract,
-		final java.lang.String strCurrency)
+	public static SingleStreamComponent[] ForwardRateFuturesPack (
+		final JulianDate spotDate,
+		final int contractCount,
+		final String strCurrency)
 	{
-		return null == dtSpot ? null :
-			org.drip.product.creator.SingleStreamComponentBuilder.ForwardRateFuturesPack (dtSpot.addBusDays
-				(0, strCurrency), iNumContract, strCurrency);
+		return null == spotDate ? null : SingleStreamComponentBuilder.ForwardRateFuturesPack (
+			spotDate.addBusDays (0, strCurrency),
+			contractCount,
+			strCurrency
+		);
 	}
 
 	/**
 	 * Generate an Instance of Treasury Futures given the Inputs
 	 * 
-	 * @param dtSpot The Futures Spot Date
-	 * @param strCode The Treasury Code
-	 * @param adtEffective Array of Effective Dates
-	 * @param adtMaturity Array of Maturity Dates
-	 * @param adblCoupon Array of Coupons
-	 * @param adblConversionFactor The Bond Conversion Factor
-	 * @param strUnderlierType The Underlier Type, e.g., TREASURY
-	 * @param strUnderlierSubtype The Futures Underlier Sub-type, i.e., BONDS
-	 * @param strMaturityTenor The Futures Maturity Tenor
+	 * @param spotDate The Futures Spot Date
+	 * @param code The Treasury Code
+	 * @param effectiveDateArray Array of Effective Dates
+	 * @param maturityDateArray Array of Maturity Dates
+	 * @param couponArray Array of Coupons
+	 * @param conversionFactorArray The Bond Conversion Factor
+	 * @param underlierType The Underlier Type, e.g., TREASURY
+	 * @param underlierSubtype The Futures Underlier Sub-type, i.e., BONDS
+	 * @param maturityTenor The Futures Maturity Tenor
 	 * 
 	 * @return The Treasury Futures Instance
 	 */
 
-	public static org.drip.product.govvie.TreasuryFutures TreasuryFutures (
-		final org.drip.analytics.date.JulianDate dtSpot,
-		final java.lang.String strCode,
-		final org.drip.analytics.date.JulianDate[] adtEffective,
-		final org.drip.analytics.date.JulianDate[] adtMaturity,
-		final double[] adblCoupon,
-		final double[] adblConversionFactor,
-		final java.lang.String strUnderlierType,
-		final java.lang.String strUnderlierSubtype,
-		final java.lang.String strMaturityTenor)
+	public static TreasuryFutures TreasuryFutures (
+		final JulianDate spotDate,
+		final String code,
+		final JulianDate[] effectiveDateArray,
+		final JulianDate[] maturityDateArray,
+		final double[] couponArray,
+		final double[] conversionFactorArray,
+		final String underlierType,
+		final String underlierSubtype,
+		final String maturityTenor)
 	{
-		if (null == dtSpot) return null;
+		if (null == spotDate) {
+			return null;
+		}
 
 		try {
-			org.drip.product.govvie.TreasuryFutures tsyFutures = new org.drip.product.govvie.TreasuryFutures
-				(org.drip.service.template.TreasuryBuilder.FromCode (strCode, adtEffective, adtMaturity,
-					adblCoupon), adblConversionFactor, null);
+			TreasuryFutures treasuryFutures = new TreasuryFutures (
+				TreasuryBuilder.FromCode (code, effectiveDateArray, maturityDateArray, couponArray),
+				conversionFactorArray,
+				null
+			);
 
-			java.lang.String strCurrency = tsyFutures.basket()[0].currency();
+			String currency = treasuryFutures.basket()[0].currency();
 
-			if (!tsyFutures.setExpiry (dtSpot.addBusDays (0, strCurrency).nextBondFuturesIMM (3,
-				strCurrency)))
+			if (!treasuryFutures.setExpiry (
+				spotDate.addBusDays (0, currency).nextBondFuturesIMM (3, currency)
+			))
+			{
 				return null;
-
-			tsyFutures.setType (strCode);
-
-			org.drip.market.exchange.TreasuryFuturesConvention bfc =
-				org.drip.market.exchange.TreasuryFuturesConventionContainer.FromJurisdictionTypeMaturity
-					(strCurrency, strUnderlierType, strUnderlierSubtype, strMaturityTenor);
-
-			if (null == bfc) return tsyFutures;
-
-			double dblBasketNotional = bfc.basketNotional();
-
-			double dblMinimumPriceMovement = bfc.minimumPriceMovement();
-
-			tsyFutures.setNotionalValue (dblBasketNotional);
-
-			tsyFutures.setMinimumPriceMovement (dblMinimumPriceMovement);
-
-			tsyFutures.setTickValue (dblBasketNotional * dblMinimumPriceMovement);
-
-			org.drip.market.exchange.TreasuryFuturesEligibility bfe = bfc.eligibility();
-
-			if (null != bfe) {
-				tsyFutures.setMaximumMaturity (bfe.maturityCeiling());
-
-				tsyFutures.setMinimumMaturity (bfe.maturityFloor());
 			}
 
-			org.drip.market.exchange.TreasuryFuturesSettle bfs = bfc.settle();
+			treasuryFutures.setType (code);
 
-			if (null != bfs) {
-				tsyFutures.setReferenceCoupon (bfs.currentReferenceYield());
+			TreasuryFuturesConvention treasuryFuturesConvention =
+				TreasuryFuturesConventionContainer.FromJurisdictionTypeMaturity (
+					currency,
+					underlierType,
+					underlierSubtype,
+					maturityTenor
+				);
 
-				tsyFutures.setLastTradingDayLag (bfs.expiryLastTradingLag());
-
-				tsyFutures.setDeliveryMonths (bfs.deliveryMonths());
+			if (null == treasuryFuturesConvention) {
+				return treasuryFutures;
 			}
 
-			return tsyFutures;
-		} catch (java.lang.Exception e) {
+			double basketNotional = treasuryFuturesConvention.basketNotional();
+
+			double minimumPriceMovement = treasuryFuturesConvention.minimumPriceMovement();
+
+			treasuryFutures.setNotionalValue (basketNotional);
+
+			treasuryFutures.setMinimumPriceMovement (minimumPriceMovement);
+
+			treasuryFutures.setTickValue (basketNotional * minimumPriceMovement);
+
+			TreasuryFuturesEligibility treasuryFuturesEligibility = treasuryFuturesConvention.eligibility();
+
+			if (null != treasuryFuturesEligibility) {
+				treasuryFutures.setMaximumMaturity (treasuryFuturesEligibility.maturityCeiling());
+
+				treasuryFutures.setMinimumMaturity (treasuryFuturesEligibility.maturityFloor());
+			}
+
+			TreasuryFuturesSettle treasuryFuturesSettle = treasuryFuturesConvention.settle();
+
+			if (null != treasuryFuturesSettle) {
+				treasuryFutures.setReferenceCoupon (treasuryFuturesSettle.currentReferenceYield());
+
+				treasuryFutures.setLastTradingDayLag (treasuryFuturesSettle.expiryLastTradingLag());
+
+				treasuryFutures.setDeliveryMonths (treasuryFuturesSettle.deliveryMonths());
+			}
+
+			return treasuryFutures;
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -228,93 +271,112 @@ public class ExchangeInstrumentBuilder {
 	/**
 	 * Generate the Treasury Futures Instance
 	 * 
-	 * @param dtSpot The Spot Date Instance
-	 * @param strFuturesCode The Treasury Futures Code
-	 * @param aiFuturesComponentTreasuryEffectiveDate Array of the Treasury Futures Component Effective Date
-	 * @param aiFuturesComponentTreasuryMaturityDate Array of the Treasury Futures Component Maturity Date
-	 * @param adblFuturesComponentTreasuryCoupon Array of the Treasury Futures Component Coupon
-	 * @param adblFuturesComponentConversionFactor Array of the Treasury Futures Component Conversion Factor
-	 * @param strFuturesComponentUnderlierSubtype Treasury Futures Component Underlier SubType (BILL/BOND)
-	 * @param strFuturesReferenceMaturityTenor Treasury Futures Component Reference Maturity Tenor
+	 * @param spotDate The Spot Date Instance
+	 * @param futuresCode The Treasury Futures Code
+	 * @param futuresComponentTreasuryEffectiveDateArray Array of Treasury Futures Component Effective Date
+	 * @param futuresComponentTreasuryMaturityDateArray Array of the Treasury Futures Component Maturity Date
+	 * @param futuresComponentTreasuryCouponArray Array of the Treasury Futures Component Coupon
+	 * @param futuresComponentConversionFactorArray Array of the Treasury Futures Component Conversion Factor
+	 * @param futuresComponentUnderlierSubtype Treasury Futures Component Underlier SubType (BILL/BOND)
+	 * @param futuresReferenceMaturityTenor Treasury Futures Component Reference Maturity Tenor
 	 * 
 	 * @return The Treasury Futures Instance
 	 */
 
-	public static final org.drip.product.govvie.TreasuryFutures TreasuryFutures (
-		final org.drip.analytics.date.JulianDate dtSpot,
-		final java.lang.String strFuturesCode,
-		final int[] aiFuturesComponentTreasuryEffectiveDate,
-		final int[] aiFuturesComponentTreasuryMaturityDate,
-		final double[] adblFuturesComponentTreasuryCoupon,
-		final double[] adblFuturesComponentConversionFactor,
-		final java.lang.String strFuturesComponentUnderlierSubtype,
-		final java.lang.String strFuturesReferenceMaturityTenor)
+	public static final TreasuryFutures TreasuryFutures (
+		final JulianDate spotDate,
+		final String futuresCode,
+		final int[] futuresComponentTreasuryEffectiveDateArray,
+		final int[] futuresComponentTreasuryMaturityDateArray,
+		final double[] futuresComponentTreasuryCouponArray,
+		final double[] futuresComponentConversionFactorArray,
+		final String futuresComponentUnderlierSubtype,
+		final String futuresReferenceMaturityTenor)
 	{
-		if (null == dtSpot || null == aiFuturesComponentTreasuryMaturityDate || null ==
-			aiFuturesComponentTreasuryEffectiveDate)
+		if (null == spotDate ||
+			null == futuresComponentTreasuryMaturityDateArray ||
+			null == futuresComponentTreasuryEffectiveDateArray)
+		{
 			return null;
+		}
 
-		int iNumFuturesComponentMaturity = aiFuturesComponentTreasuryMaturityDate.length;
-		int iNumFuturesComponentEffective = aiFuturesComponentTreasuryEffectiveDate.length;
-		org.drip.analytics.date.JulianDate[] adtFuturesComponentTreasuryMaturity = null;
-		org.drip.analytics.date.JulianDate[] adtFuturesComponentTreasuryEffective = null;
+		JulianDate[] futuresComponentTreasuryMaturityArray = null;
+		JulianDate[] futuresComponentTreasuryEffectiveArray = null;
+		int futuresComponentMaturityCount = futuresComponentTreasuryMaturityDateArray.length;
+		int futuresComponentEffectiveCount = futuresComponentTreasuryEffectiveDateArray.length;
 
-		if (0 != iNumFuturesComponentMaturity)
-			adtFuturesComponentTreasuryMaturity = new
-				org.drip.analytics.date.JulianDate[iNumFuturesComponentMaturity];
+		if (0 != futuresComponentMaturityCount) {
+			futuresComponentTreasuryMaturityArray = new JulianDate[futuresComponentMaturityCount];
+		}
 
-		if (0 != iNumFuturesComponentEffective)
-			adtFuturesComponentTreasuryEffective = new
-				org.drip.analytics.date.JulianDate[iNumFuturesComponentEffective];
+		if (0 != futuresComponentEffectiveCount) {
+			futuresComponentTreasuryEffectiveArray = new JulianDate[futuresComponentEffectiveCount];
+		}
 
 		try {
-			for (int i = 0; i < iNumFuturesComponentMaturity; ++i)
-				adtFuturesComponentTreasuryMaturity[i] = new org.drip.analytics.date.JulianDate
-					(aiFuturesComponentTreasuryMaturityDate[i]);
+			for (int i = 0; i < futuresComponentMaturityCount; ++i) {
+				futuresComponentTreasuryMaturityArray[i] = new JulianDate (
+					futuresComponentTreasuryMaturityDateArray[i]
+				);
+			}
 
-			for (int i = 0; i < iNumFuturesComponentEffective; ++i)
-				adtFuturesComponentTreasuryEffective[i] = new org.drip.analytics.date.JulianDate
-					(aiFuturesComponentTreasuryEffectiveDate[i]);
-		} catch (java.lang.Exception e) {
+			for (int i = 0; i < futuresComponentEffectiveCount; ++i) {
+				futuresComponentTreasuryEffectiveArray[i] = new JulianDate (
+					futuresComponentTreasuryEffectiveDateArray[i]
+				);
+			}
+		} catch (Exception e) {
 			e.printStackTrace();
 
 			return null;
 		}
 
-		return TreasuryFutures (dtSpot, strFuturesCode, adtFuturesComponentTreasuryEffective,
-			adtFuturesComponentTreasuryMaturity, adblFuturesComponentTreasuryCoupon,
-				adblFuturesComponentConversionFactor, "TREASURY", strFuturesComponentUnderlierSubtype,
-					strFuturesReferenceMaturityTenor);
+		return TreasuryFutures (
+			spotDate,
+			futuresCode,
+			futuresComponentTreasuryEffectiveArray,
+			futuresComponentTreasuryMaturityArray,
+			futuresComponentTreasuryCouponArray,
+			futuresComponentConversionFactorArray,
+			"TREASURY",
+			futuresComponentUnderlierSubtype,
+			futuresReferenceMaturityTenor
+		);
 	}
 
 	/**
 	 * Generate the Treasury Futures Instance
 	 * 
-	 * @param dtSpot The Spot Date Instance
-	 * @param strFuturesCode The Treasury Futures Code
-	 * @param aiFuturesComponentTreasuryEffectiveDate Array of the Treasury Futures Component Effective Date
-	 * @param aiFuturesComponentTreasuryMaturityDate Array of the Treasury Futures Component Maturity Date
-	 * @param adblFuturesComponentTreasuryCoupon Array of the Treasury Futures Component Coupon
-	 * @param adblFuturesComponentConversionFactor Array of the Treasury Futures Component Conversion Factor
+	 * @param spotDate The Spot Date Instance
+	 * @param futuresCode The Treasury Futures Code
+	 * @param futuresComponentTreasuryEffectiveDateArray Array of Treasury Futures Component Effective Date
+	 * @param futuresComponentTreasuryMaturityDateArray Array of Treasury Futures Component Maturity Date
+	 * @param futuresComponentTreasuryCouponArray Array of Treasury Futures Component Coupon
+	 * @param futuresComponentConversionFactorArray Array of Treasury Futures Component Conversion Factor
 	 * 
 	 * @return The Treasury Futures Instance
 	 */
 
-	public static final org.drip.product.govvie.TreasuryFutures TreasuryFutures (
-		final org.drip.analytics.date.JulianDate dtSpot,
-		final java.lang.String strFuturesCode,
-		final int[] aiFuturesComponentTreasuryEffectiveDate,
-		final int[] aiFuturesComponentTreasuryMaturityDate,
-		final double[] adblFuturesComponentTreasuryCoupon,
-		final double[] adblFuturesComponentConversionFactor)
+	public static final TreasuryFutures TreasuryFutures (
+		final JulianDate spotDate,
+		final String futuresCode,
+		final int[] futuresComponentTreasuryEffectiveDateArray,
+		final int[] futuresComponentTreasuryMaturityDateArray,
+		final double[] futuresComponentTreasuryCouponArray,
+		final double[] futuresComponentConversionFactorArray)
 	{
-		org.drip.market.exchange.TreasuryFuturesContract tfc =
-			org.drip.market.exchange.TreasuryFuturesContractContainer.TreasuryFuturesContract
-				(strFuturesCode);
+		TreasuryFuturesContract treasuryFuturesContract =
+			TreasuryFuturesContractContainer.TreasuryFuturesContract (futuresCode);
 
-		return null == tfc ? null : TreasuryFutures (dtSpot, tfc.code(),
-			aiFuturesComponentTreasuryEffectiveDate, aiFuturesComponentTreasuryMaturityDate,
-				adblFuturesComponentTreasuryCoupon, adblFuturesComponentConversionFactor, tfc.type(),
-					tfc.tenor());
+		return null == treasuryFuturesContract ? null : TreasuryFutures (
+			spotDate,
+			treasuryFuturesContract.code(),
+			futuresComponentTreasuryEffectiveDateArray,
+			futuresComponentTreasuryMaturityDateArray,
+			futuresComponentTreasuryCouponArray,
+			futuresComponentConversionFactorArray,
+			treasuryFuturesContract.type(),
+			treasuryFuturesContract.tenor()
+		);
 	}
 }

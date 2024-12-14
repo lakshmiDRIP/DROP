@@ -1,6 +1,8 @@
 
 package org.drip.portfolioconstruction.postoptimization;
 
+import org.drip.numerical.common.NumberUtil;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
@@ -75,7 +77,7 @@ package org.drip.portfolioconstruction.postoptimization;
  */
 
 /**
- * <i>HoldingsPruner</i> contains settings for generating the post-optimized portfolio.
+ * <i>FinalAllocationProcessControl</i> contains settings for processing the post-optimized portfolio.
  *
  *	<br><br>
  *  <ul>
@@ -89,12 +91,35 @@ package org.drip.portfolioconstruction.postoptimization;
  * @author Lakshmi Krishnamurthy
  */
 
-public class HoldingsPruner
+public class FinalAllocationProcessControl
 {
 	private boolean _filterOutBuys = false;
+	private boolean _filterOutSells = false;
+	private double _minimumTradePercent = Double.NaN;
 
 	/**
-	 * Filter Out Buys
+	 * <i>FinalAllocationProcessControl</i> Constructor
+	 * 
+	 * @param filterOutBuys TRUE - Filter Out Buys
+	 * @param filterOutSells TRUE - Filter Out Sells
+	 * @param minimumTradePercent TRUE - Minimum Trade Percent is Set
+	 * 
+	 * @throws Exception Thrown if the Inputs are Invalid
+	 */
+
+	public FinalAllocationProcessControl (
+		final boolean filterOutBuys,
+		final boolean filterOutSells,
+		final double minimumTradePercent)
+		throws Exception
+	{
+		_filterOutBuys = filterOutBuys;
+		_filterOutSells = filterOutSells;
+		_minimumTradePercent = minimumTradePercent;
+	}
+
+	/**
+	 * Retrieve the Filter Out Buys Flag
 	 * 
 	 * @return TRUE - Filter Out Buys
 	 */
@@ -102,5 +127,38 @@ public class HoldingsPruner
 	public boolean filterOutBuys()
 	{
 		return _filterOutBuys;
+	}
+
+	/**
+	 * Retrieve the Filter Out Sells Flag
+	 * 
+	 * @return TRUE - Filter Out Sells
+	 */
+
+	public boolean filterOutSells()
+	{
+		return _filterOutSells;
+	}
+
+	/**
+	 * Indicate if the Minimum Trade Percent is Set
+	 * 
+	 * @return TRUE - Minimum Trade Percent is Set
+	 */
+
+	public boolean isMinimumTradePercentSet()
+	{
+		return NumberUtil.IsValid (_minimumTradePercent);
+	}
+
+	/**
+	 * Retrieve the Minimum Trade Percent
+	 * 
+	 * @return Minimum Trade Percent
+	 */
+
+	public double minimumTradePercent()
+	{
+		return _minimumTradePercent;
 	}
 }
