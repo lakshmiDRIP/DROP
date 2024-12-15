@@ -127,11 +127,43 @@ import org.drip.state.volatility.VolatilityCurve;
  * 	States as Curves/Surfaces. It provides the following Functionality:
  *
  *  <ul>
- * 		<li>Generate a Forward Rate Futures Contract corresponding to the Spot Date</li>
- * 		<li>Generate a Forward Rate Futures Pack corresponding to the Spot Date and the Specified Number of Contracts</li>
- * 		<li>Generate an Instance of Treasury Futures given the Inputs</li>
- * 		<li>Generate the Treasury Futures Instance #1</li>
- * 		<li>Generate the Treasury Futures Instance #2</li>
+ * 		<li>Shape Preserving Latent State</li>
+ * 		<li>Smoothened Latent State</li>
+ * 		<li>Construct a Funding Curve Based off of the Input Exchange/OTC Market Instruments Using the specified Spline</li>
+ * 		<li>Construct a Single Stretch Funding Curve Based off of the Input Exchange/OTC Market Instruments Using the specified Spline</li>
+ * 		<li>Construct a Shape Preserving Single Stretch Funding Curve Based off of the Input Exchange/OTC Market Instruments</li>
+ * 		<li>Construct a Shape Preserving Funding Curve Based off of the Input Exchange/OTC Market Instruments</li>
+ * 		<li>Construct a Smooth Funding Curve Based off of the Input Exchange/OTC Market Instruments</li>
+ * 		<li>Construct a Smooth Single Stretch Funding Curve Based off of the Input Exchange/OTC Market Instruments</li>
+ * 		<li>Construct a Funding Curve Based off of the Input Exchange/OTC Market Instruments</li>
+ * 		<li>Construct a Single Stretch Funding Curve Based off of the Input Exchange/OTC Market Instruments</li>
+ * 		<li>Construct a Instance of the Forward Curve off of Exchange/OTC Market Instruments</li>
+ * 		<li>Construct a Instance of the Shape Preserving Forward Curve off of Exchange/OTC Market Instruments</li>
+ * 		<li>Construct a Instance of Smooth Forward Curve off of Exchange/OTC Market Instruments</li>
+ * 		<li>Construct a Instance of the Smooth/Shape Preserving Forward Curve off of Exchange/OTC Market Instruments</li>
+ * 		<li>Construct an Overnight Curve from Overnight Exchange/OTC Market Instruments</li>
+ * 		<li>Construct a Shape Preserving Overnight Curve from Overnight Exchange/OTC Market Instruments</li>
+ * 		<li>Construct a Smooth Overnight Curve from Overnight Exchange/OTC Market Instruments</li>
+ * 		<li>Construct an Overnight Curve from Overnight Exchange/OTC Market Instruments</li>
+ * 		<li>Construct a Credit Curve from Overnight Exchange/OTC Market Instruments</li>
+ * 		<li>Construct a Credit Curve from the specified Calibration CDS Instruments</li>
+ * 		<li>Construct a Govvie Curve from the Treasury Instruments</li>
+ * 		<li>Construct a Shape Preserving Govvie Curve from the Treasury Instruments</li>
+ * 		<li>Construct a Smooth Govvie Curve from the Treasury Instruments</li>
+ * 		<li>Construct a Govvie Curve from the Treasury Instruments</li>
+ * 		<li>Construct an FX Curve from the FX Forward Instruments</li>
+ * 		<li>Construct a Shape Preserving FX Curve from the FX Forward Instruments</li>
+ * 		<li>Construct a Smooth FX Curve from the FX Forward Instruments</li>
+ * 		<li>Construct an FX Curve from the FX Forward Instruments</li>
+ * 		<li>Forward Rate Volatility Latent State Construction from Cap/Floor Instruments</li>
+ * 		<li>Construct a Map of Tenor Bumped Funding Curve Based off of the Input Exchange/OTC Market Instruments</li>
+ * 		<li>Construct a Map of Tenor Bumped Funding Curve Based off of the Underlying Forward Curve Shift</li>
+ * 		<li>Construct a Map of Tenor Bumped Forward Curve Based off of the Input Exchange/OTC Market Instruments</li>
+ * 		<li>Construct a Map of Tenor + Parallel Bumped Overnight Curves</li>
+ * 		<li>Construct a Tenor + Parallel Map of Bumped Credit Curves from Overnight Exchange/OTC Market Instruments</li>
+ * 		<li>Construct a Tenor + Parallel Map of Govvie Curves from the Treasury Instruments</li>
+ * 		<li>Construct a Tenor + Parallel Map of FX Curve from the FX Instruments</li>
+ * 		<li>Construct a Tenor + Parallel Forward Volatility Latent State Construction from Cap/Floor Instruments</li>
  *  </ul>
  *
  *	<br>
@@ -3583,10 +3615,10 @@ public class LatentMarketStateBuilder
 	/**
 	 * Construct a Tenor + Parallel Map of Govvie Curves from the Treasury Instruments
 	 * 
-	 * @param strCode The Govvie Code
+	 * @param govvieCode The Govvie Code
 	 * @param spotDate Spot Date
-	 * @param adtEffective Array of Effective Dates
-	 * @param adtMaturity Array of Maturity Dates
+	 * @param effectiveDateArray Array of Effective Dates
+	 * @param maturityDateArray Array of Maturity Dates
 	 * @param couponArray Array of Coupons
 	 * @param quoteArray Array of Market Quotes
 	 * @param calibrationMeasure Calibration Measure
@@ -3597,35 +3629,47 @@ public class LatentMarketStateBuilder
 	 * @return Map of Govvie Curve Instance
 	 */
 
-	public static final CaseInsensitiveTreeMap<GovvieCurve>
-		BumpedGovvieCurve (
-			final String strCode,
-			final JulianDate spotDate,
-			final JulianDate[] adtEffective,
-			final JulianDate[] adtMaturity,
-			final double[] couponArray,
-			final double[] quoteArray,
-			final String calibrationMeasure,
-			final int latentStateType,
-			final double bumpAmount,
-			final boolean isProportional)
+	public static final CaseInsensitiveTreeMap<GovvieCurve> BumpedGovvieCurve (
+		final String govvieCode,
+		final JulianDate spotDate,
+		final JulianDate[] effectiveDateArray,
+		final JulianDate[] maturityDateArray,
+		final double[] couponArray,
+		final double[] quoteArray,
+		final String calibrationMeasure,
+		final int latentStateType,
+		final double bumpAmount,
+		final boolean isProportional)
 	{
-		if (!NumberUtil.IsValid (bumpAmount)) return null;
+		if (!NumberUtil.IsValid (bumpAmount)) {
+			return null;
+		}
 
-		CaseInsensitiveTreeMap<GovvieCurve> mapBumpedCurve =
-			new CaseInsensitiveTreeMap<GovvieCurve>();
+		CaseInsensitiveTreeMap<GovvieCurve> bumpedGovvieCurveMap = new CaseInsensitiveTreeMap<GovvieCurve>();
 
 		if (null != quoteArray) {
-			int iNumComp = quoteArray.length;
-
-			for (int i = 0; i < iNumComp; ++i) {
+			for (int quoteIndex = 0; quoteIndex < quoteArray.length; ++quoteIndex) {
 				try {
-					GovvieCurve gcBumped = GovvieCurve (strCode, spotDate, adtEffective,
-						adtMaturity, couponArray, Helper.TweakManifestMeasure
-							(quoteArray, new ManifestMeasureTweak (i,
-								isProportional, bumpAmount)), calibrationMeasure, latentStateType);
+					GovvieCurve bumpedGovvieCurve = GovvieCurve (
+						govvieCode,
+						spotDate,
+						effectiveDateArray,
+						maturityDateArray,
+						couponArray,
+						Helper.TweakManifestMeasure (
+							quoteArray,
+							new ManifestMeasureTweak (quoteIndex, isProportional, bumpAmount)
+						),
+						calibrationMeasure,
+						latentStateType
+					);
 
-					if (null != gcBumped) mapBumpedCurve.put ("TSY::" + adtMaturity[i], gcBumped);
+					if (null != bumpedGovvieCurve) {
+						bumpedGovvieCurveMap.put (
+							"TSY::" + maturityDateArray[quoteIndex],
+							bumpedGovvieCurve
+						);
+					}
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -3633,34 +3677,54 @@ public class LatentMarketStateBuilder
 		}
 
 		try {
-			GovvieCurve gcBase = GovvieCurve (strCode, spotDate, adtEffective,
-				adtMaturity, couponArray, quoteArray, calibrationMeasure, latentStateType);
+			GovvieCurve baseGovvieCurve = GovvieCurve (
+				govvieCode,
+				spotDate,
+				effectiveDateArray,
+				maturityDateArray,
+				couponArray,
+				quoteArray,
+				calibrationMeasure,
+				latentStateType
+			);
 
-			if (null != gcBase) mapBumpedCurve.put ("BASE", gcBase);
+			if (null != baseGovvieCurve) {
+				bumpedGovvieCurveMap.put ("BASE", baseGovvieCurve);
+			}
 
-			GovvieCurve gcBumped = GovvieCurve (strCode, spotDate, adtEffective,
-				adtMaturity, couponArray, Helper.TweakManifestMeasure (quoteArray,
-					new ManifestMeasureTweak
-						(ManifestMeasureTweak.FLAT, isProportional, bumpAmount)),
-							calibrationMeasure, latentStateType);
+			GovvieCurve bumpedGovvieCurve = GovvieCurve (
+				govvieCode,
+				spotDate,
+				effectiveDateArray,
+				maturityDateArray,
+				couponArray,
+				Helper.TweakManifestMeasure (
+					quoteArray,
+					new ManifestMeasureTweak (ManifestMeasureTweak.FLAT, isProportional, bumpAmount)
+				),
+				calibrationMeasure,
+				latentStateType
+			);
 
-			if (null != gcBumped) mapBumpedCurve.put ("BUMP", gcBumped);
+			if (null != bumpedGovvieCurve) {
+				bumpedGovvieCurveMap.put ("BUMP", bumpedGovvieCurve);
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
-		return mapBumpedCurve;
+		return bumpedGovvieCurveMap;
 	}
 
 	/**
 	 * Construct a Tenor + Parallel Map of FX Curve from the FX Instruments
 	 * 
 	 * @param spotDate Spot Date
-	 * @param cp The FX Currency Pair
+	 * @param currencyPair The FX Currency Pair
 	 * @param maturityTenorArray Array of Maturity Tenors
 	 * @param quoteArray Array of FX Forwards
 	 * @param calibrationMeasure Calibration Measure
-	 * @param dblFXSpot FX Spot
+	 * @param fxSpot FX Spot
 	 * @param latentStateType SHAPE PRESERVING/SMOOTH
 	 * @param bumpAmount The Tenor Node Bump Amount
 	 * @param isProportional TRUE - The Bump Applied is Proportional
@@ -3668,35 +3732,42 @@ public class LatentMarketStateBuilder
 	 * @return Map of FX Curve Instance
 	 */
 
-	public static final CaseInsensitiveTreeMap<FXCurve>
-		BumpedFXCurve (
-			final JulianDate spotDate,
-			final CurrencyPair cp,
-			final String[] maturityTenorArray,
-			final double[] quoteArray,
-			final String calibrationMeasure,
-			final double dblFXSpot,
-			final int latentStateType,
-			final double bumpAmount,
-			final boolean isProportional)
+	public static final CaseInsensitiveTreeMap<FXCurve> BumpedFXCurve (
+		final JulianDate spotDate,
+		final CurrencyPair currencyPair,
+		final String[] maturityTenorArray,
+		final double[] quoteArray,
+		final String calibrationMeasure,
+		final double fxSpot,
+		final int latentStateType,
+		final double bumpAmount,
+		final boolean isProportional)
 	{
-		if (!NumberUtil.IsValid (bumpAmount)) return null;
+		if (!NumberUtil.IsValid (bumpAmount)) {
+			return null;
+		}
 
-		CaseInsensitiveTreeMap<FXCurve> mapBumpedCurve = new
-			CaseInsensitiveTreeMap<FXCurve>();
+		CaseInsensitiveTreeMap<FXCurve> bumpedFXCurveMap = new CaseInsensitiveTreeMap<FXCurve>();
 
 		if (null != quoteArray) {
-			int iNumComp = quoteArray.length;
-
-			for (int i = 0; i < iNumComp; ++i) {
+			for (int quoteIndex = 0; quoteIndex < quoteArray.length; ++quoteIndex) {
 				try {
-					FXCurve fxCurveBumped = FXCurve (spotDate, cp, maturityTenorArray,
-						Helper.TweakManifestMeasure (quoteArray, new
-							ManifestMeasureTweak (i, isProportional, bumpAmount)),
-								calibrationMeasure, dblFXSpot, latentStateType);
+					FXCurve bumpedFXCurve = FXCurve (
+						spotDate,
+						currencyPair,
+						maturityTenorArray,
+						Helper.TweakManifestMeasure (
+							quoteArray,
+							new ManifestMeasureTweak (quoteIndex, isProportional, bumpAmount)
+						),
+						calibrationMeasure,
+						fxSpot,
+						latentStateType
+					);
 
-					if (null != fxCurveBumped)
-						mapBumpedCurve.put ("FXFWD::" + maturityTenorArray[i], fxCurveBumped);
+					if (null != bumpedFXCurve) {
+						bumpedFXCurveMap.put ("FXFWD::" + maturityTenorArray[quoteIndex], bumpedFXCurve);
+					}
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -3704,23 +3775,41 @@ public class LatentMarketStateBuilder
 		}
 
 		try {
-			FXCurve fxCurveBase = FXCurve (spotDate, cp, maturityTenorArray, quoteArray,
-				calibrationMeasure, dblFXSpot, latentStateType);
+			FXCurve baseFXCurve = FXCurve (
+				spotDate,
+				currencyPair,
+				maturityTenorArray,
+				quoteArray,
+				calibrationMeasure,
+				fxSpot,
+				latentStateType
+			);
 
-			if (null != fxCurveBase) mapBumpedCurve.put ("BASE", fxCurveBase);
+			if (null != baseFXCurve) {
+				bumpedFXCurveMap.put ("BASE", baseFXCurve);
+			}
 
-			FXCurve fxCurveBump = FXCurve (spotDate, cp, maturityTenorArray,
-				Helper.TweakManifestMeasure (quoteArray, new
-					ManifestMeasureTweak
-						(ManifestMeasureTweak.FLAT, isProportional, bumpAmount)),
-							calibrationMeasure, dblFXSpot, latentStateType);
+			FXCurve bumpedFXCurve = FXCurve (
+				spotDate,
+				currencyPair,
+				maturityTenorArray,
+				Helper.TweakManifestMeasure (
+					quoteArray,
+					new ManifestMeasureTweak (ManifestMeasureTweak.FLAT, isProportional, bumpAmount)
+				),
+				calibrationMeasure,
+				fxSpot,
+				latentStateType
+			);
 
-			if (null != fxCurveBump) mapBumpedCurve.put ("BUMP", fxCurveBump);
+			if (null != bumpedFXCurve) {
+				bumpedFXCurveMap.put ("BUMP", bumpedFXCurve);
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
-		return mapBumpedCurve;
+		return bumpedFXCurveMap;
 	}
 
 	/**
@@ -3728,54 +3817,63 @@ public class LatentMarketStateBuilder
 	 * 
 	 * @param spotDate Spot Date
 	 * @param forwardLabel Forward Label
-	 * @param bIsCap TRUE - Create and Use Array of Caps
+	 * @param isCap TRUE - Create and Use Array of Caps
 	 * @param maturityTenorArray Array of Cap/floor Maturities
-	 * @param adblStrike Array of Cap/Floor Strikes
+	 * @param strikeArray Array of Cap/Floor Strikes
 	 * @param quoteArray Array of Cap/Floor Quotes
 	 * @param calibrationMeasure Calibration Measure
-	 * @param dc Discount Curve Instance
-	 * @param fc Forward Curve Instance
+	 * @param mergedDiscountForwardCurve Discount Curve Instance
+	 * @param forwardCurve Forward Curve Instance
 	 * @param bumpAmount The Tenor Node Bump Amount
 	 * @param isProportional TRUE - The Bump Applied is Proportional
 	 * 
 	 * @return Map of Forward Volatility Curve Instance
 	 */
 
-	public static final
-		CaseInsensitiveTreeMap<VolatilityCurve>
-			BumpedForwardVolatilityCurve (
-				final JulianDate spotDate,
-				final ForwardLabel forwardLabel,
-				final boolean bIsCap,
-				final String[] maturityTenorArray,
-				final double[] adblStrike,
-				final double[] quoteArray,
-				final String calibrationMeasure,
-				final MergedDiscountForwardCurve dc,
-				final ForwardCurve fc,
-				final double bumpAmount,
-				final boolean isProportional)
+	public static final CaseInsensitiveTreeMap<VolatilityCurve> BumpedForwardVolatilityCurve (
+		final JulianDate spotDate,
+		final ForwardLabel forwardLabel,
+		final boolean isCap,
+		final String[] maturityTenorArray,
+		final double[] strikeArray,
+		final double[] quoteArray,
+		final String calibrationMeasure,
+		final MergedDiscountForwardCurve mergedDiscountForwardCurve,
+		final ForwardCurve forwardCurve,
+		final double bumpAmount,
+		final boolean isProportional)
 	{
-		if (!NumberUtil.IsValid (bumpAmount)) return null;
+		if (!NumberUtil.IsValid (bumpAmount)) {
+			return null;
+		}
 
-		CaseInsensitiveTreeMap<VolatilityCurve>
-			mapBumpedCurve = new
-				CaseInsensitiveTreeMap<VolatilityCurve>();
+		CaseInsensitiveTreeMap<VolatilityCurve> bumpedVolatilityCurveMap =
+			new CaseInsensitiveTreeMap<VolatilityCurve>();
 
 		if (null != quoteArray) {
-			int iNumComp = quoteArray.length;
-
-			for (int i = 0; i < iNumComp; ++i) {
+			for (int quoteIndex = 0; quoteIndex < quoteArray.length; ++quoteIndex) {
 				try {
-					VolatilityCurve forwardVolatilityCurveBumped =
-						ForwardRateVolatilityCurve (spotDate, forwardLabel, bIsCap, maturityTenorArray,
-							adblStrike, Helper.TweakManifestMeasure (quoteArray,
-								new ManifestMeasureTweak (i, isProportional,
-									bumpAmount)), calibrationMeasure, dc, fc);
+					VolatilityCurve forwardVolatilityCurveBumped = ForwardRateVolatilityCurve (
+						spotDate,
+						forwardLabel,
+						isCap,
+						maturityTenorArray,
+						strikeArray,
+						Helper.TweakManifestMeasure (
+							quoteArray,
+							new ManifestMeasureTweak (quoteIndex, isProportional, bumpAmount)
+						),
+						calibrationMeasure,
+						mergedDiscountForwardCurve,
+						forwardCurve
+					);
 
-					if (null != forwardVolatilityCurveBumped)
-						mapBumpedCurve.put ("CAPFLOOR::" + maturityTenorArray[i],
-							forwardVolatilityCurveBumped);
+					if (null != forwardVolatilityCurveBumped) {
+						bumpedVolatilityCurveMap.put (
+							"CAPFLOOR::" + maturityTenorArray[quoteIndex],
+							forwardVolatilityCurveBumped
+						);
+					}
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -3783,24 +3881,44 @@ public class LatentMarketStateBuilder
 		}
 
 		try {
-			VolatilityCurve forwardVolatilityCurveBase = ForwardRateVolatilityCurve
-				(spotDate, forwardLabel, bIsCap, maturityTenorArray, adblStrike, quoteArray, calibrationMeasure, dc, fc);
+			VolatilityCurve forwardVolatilityCurveBase = ForwardRateVolatilityCurve (
+				spotDate,
+				forwardLabel,
+				isCap,
+				maturityTenorArray,
+				strikeArray,
+				quoteArray,
+				calibrationMeasure,
+				mergedDiscountForwardCurve,
+				forwardCurve
+			);
 
-			if (null != forwardVolatilityCurveBase) mapBumpedCurve.put ("BASE", forwardVolatilityCurveBase);
+			if (null != forwardVolatilityCurveBase) {
+				bumpedVolatilityCurveMap.put ("BASE", forwardVolatilityCurveBase);
+			}
 
-			VolatilityCurve forwardVolatilityCurveBumped =
-				ForwardRateVolatilityCurve (spotDate, forwardLabel, bIsCap, maturityTenorArray, adblStrike,
-					Helper.TweakManifestMeasure (quoteArray, new
-						ManifestMeasureTweak
-							(ManifestMeasureTweak.FLAT, isProportional, bumpAmount)),
-								calibrationMeasure, dc, fc);
+			VolatilityCurve forwardVolatilityCurveBumped = ForwardRateVolatilityCurve (
+				spotDate,
+				forwardLabel,
+				isCap,
+				maturityTenorArray,
+				strikeArray,
+				Helper.TweakManifestMeasure (
+					quoteArray,
+					new ManifestMeasureTweak (ManifestMeasureTweak.FLAT, isProportional, bumpAmount)
+				),
+				calibrationMeasure,
+				mergedDiscountForwardCurve,
+				forwardCurve
+			);
 
-			if (null != forwardVolatilityCurveBumped)
-				mapBumpedCurve.put ("BUMP", forwardVolatilityCurveBumped);
+			if (null != forwardVolatilityCurveBumped) {
+				bumpedVolatilityCurveMap.put ("BUMP", forwardVolatilityCurveBumped);
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
-		return mapBumpedCurve;
+		return bumpedVolatilityCurveMap;
 	}
 }
