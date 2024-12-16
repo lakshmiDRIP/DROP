@@ -1,11 +1,20 @@
 
 package org.drip.service.template;
 
+import org.drip.analytics.date.JulianDate;
+import org.drip.market.issue.TreasurySetting;
+import org.drip.market.issue.TreasurySettingContainer;
+import org.drip.product.creator.BondBuilder;
+import org.drip.product.govvie.TreasuryComponent;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -82,319 +91,426 @@ package org.drip.service.template;
 
 /**
  * <i>TreasuryBuilder</i> contains Static Helper API to facilitate Construction of the Sovereign Treasury
- * Bonds.
- * 
- * <br><br>
+ * 	Bonds. It provides the following Functionality:
+ *
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalCore.md">Numerical Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/AlgorithmSupportLibrary.md">Algorithm Support Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service">Service</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/template">Curve Construction Product Builder Templates</a></li>
+ * 		<li>Construct an Instance of the Australian Treasury AUD AGB Bond</li>
+ * 		<li>Construct an Instance of the Italian Treasury EUR BTPS Bond</li>
+ * 		<li>Construct an Instance of the Canadian Government CAD CAN Bond</li>
+ * 		<li>Construct an Instance of the German Treasury EUR DBR Bond</li>
+ * 		<li>Construct an Instance of the French Treasury EUR FRTR Bond</li>
+ * 		<li>Construct an Instance of the Greek Treasury EUR GGB Bond</li>
+ * 		<li>Construct an Instance of the UK Treasury GBP GILT Bond</li>
+ * 		<li>Construct an Instance of the Japanese Treasury JPY JGB Bond</li>
+ * 		<li>Construct an Instance of the Mexican Treasury MXN MBONO Bond</li>
+ * 		<li>Construct an Instance of the Spanish Treasury EUR SPGB Bond</li>
+ * 		<li>Construct an Instance of the US Treasury USD UST Bond</li>
+ * 		<li>Construct an Instance of the Treasury Bond From the Code</li>
+ * 		<li>Construct an Array of the Treasury Instances from the Code</li>
  *  </ul>
- * <br><br>
+ *
+ *	<br>
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationSupportLibrary.md">Computation Support</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/README.md">Environment, Product/Definition Containers, and Scenario/State Manipulation APIs</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/template/README.md">Curve Construction Product Builder Templates</a></td></tr>
+ *  </table>
+ *	<br>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class TreasuryBuilder {
+public class TreasuryBuilder
+{
 
 	/**
 	 * Construct an Instance of the Australian Treasury AUD AGB Bond
 	 * 
-	 * @param dtEffective Effective Date
-	 * @param dtMaturity Maturity Date
-	 * @param dblCoupon Coupon
+	 * @param effectiveDate Effective Date
+	 * @param maturityDate Maturity Date
+	 * @param coupon Coupon
 	 * 
 	 * @return Instance of the Australian Treasury AUD AGB Bond
 	 */
 
-	public static final org.drip.product.govvie.TreasuryComponent AGB (
-		final org.drip.analytics.date.JulianDate dtEffective,
-		final org.drip.analytics.date.JulianDate dtMaturity,
-		final double dblCoupon)
+	public static final TreasuryComponent AGB (
+		final JulianDate effectiveDate,
+		final JulianDate maturityDate,
+		final double coupon)
 	{
-		org.drip.market.issue.TreasurySetting ts =
-			org.drip.market.issue.TreasurySettingContainer.TreasurySetting ("AGB");
+		TreasurySetting treasurySetting = TreasurySettingContainer.TreasurySetting ("AGB");
 
-		return null == ts ? null : org.drip.product.creator.BondBuilder.Treasury (ts.code(), dtEffective,
-			dtMaturity, ts.currency(), dblCoupon, ts.frequency(), ts.dayCount());
+		return null == treasurySetting ? null : BondBuilder.Treasury (
+			treasurySetting.code(),
+			effectiveDate,
+			maturityDate,
+			treasurySetting.currency(),
+			coupon,
+			treasurySetting.frequency(),
+			treasurySetting.dayCount()
+		);
 	}
 
 	/**
 	 * Construct an Instance of the Italian Treasury EUR BTPS Bond
 	 * 
-	 * @param dtEffective Effective Date
-	 * @param dtMaturity Maturity Date
-	 * @param dblCoupon Coupon
+	 * @param effectiveDate Effective Date
+	 * @param maturityDate Maturity Date
+	 * @param coupon Coupon
 	 * 
 	 * @return Instance of the Italian Treasury EUR BTPS Bond
 	 */
 
-	public static final org.drip.product.govvie.TreasuryComponent BTPS (
-		final org.drip.analytics.date.JulianDate dtEffective,
-		final org.drip.analytics.date.JulianDate dtMaturity,
-		final double dblCoupon)
+	public static final TreasuryComponent BTPS (
+		final JulianDate effectiveDate,
+		final JulianDate maturityDate,
+		final double coupon)
 	{
-		org.drip.market.issue.TreasurySetting ts =
-			org.drip.market.issue.TreasurySettingContainer.TreasurySetting ("BTPS");
+		TreasurySetting treasurySetting = TreasurySettingContainer.TreasurySetting ("BTPS");
 
-		return null == ts ? null : org.drip.product.creator.BondBuilder.Treasury (ts.code(), dtEffective,
-			dtMaturity, ts.currency(), dblCoupon, ts.frequency(), ts.dayCount());
+		return null == treasurySetting ? null : BondBuilder.Treasury (
+			treasurySetting.code(),
+			effectiveDate,
+			maturityDate,
+			treasurySetting.currency(),
+			coupon,
+			treasurySetting.frequency(),
+			treasurySetting.dayCount()
+		);
 	}
 
 	/**
 	 * Construct an Instance of the Canadian Government CAD CAN Bond
 	 * 
-	 * @param dtEffective Effective Date
-	 * @param dtMaturity Maturity Date
-	 * @param dblCoupon Coupon
+	 * @param effectiveDate Effective Date
+	 * @param maturityDate Maturity Date
+	 * @param coupon Coupon
 	 * 
 	 * @return Instance of the Canadian Government CAD CAN Bond
 	 */
 
-	public static final org.drip.product.govvie.TreasuryComponent CAN (
-		final org.drip.analytics.date.JulianDate dtEffective,
-		final org.drip.analytics.date.JulianDate dtMaturity,
-		final double dblCoupon)
+	public static final TreasuryComponent CAN (
+		final JulianDate effectiveDate,
+		final JulianDate maturityDate,
+		final double coupon)
 	{
-		org.drip.market.issue.TreasurySetting ts =
-			org.drip.market.issue.TreasurySettingContainer.TreasurySetting ("CAN");
+		TreasurySetting treasurySetting = TreasurySettingContainer.TreasurySetting ("CAN");
 
-		return null == ts ? null : org.drip.product.creator.BondBuilder.Treasury (ts.code(), dtEffective,
-			dtMaturity, ts.currency(), dblCoupon, ts.frequency(), ts.dayCount());
+		return null == treasurySetting ? null : BondBuilder.Treasury (
+			treasurySetting.code(),
+			effectiveDate,
+			maturityDate,
+			treasurySetting.currency(),
+			coupon,
+			treasurySetting.frequency(),
+			treasurySetting.dayCount()
+		);
 	}
 
 	/**
 	 * Construct an Instance of the German Treasury EUR DBR Bond
 	 * 
-	 * @param dtEffective Effective Date
-	 * @param dtMaturity Maturity Date
-	 * @param dblCoupon Coupon
+	 * @param effectiveDate Effective Date
+	 * @param maturityDate Maturity Date
+	 * @param coupon Coupon
 	 * 
 	 * @return Instance of the German Treasury EUR DBR Bond
 	 */
 
-	public static final org.drip.product.govvie.TreasuryComponent DBR (
-		final org.drip.analytics.date.JulianDate dtEffective,
-		final org.drip.analytics.date.JulianDate dtMaturity,
-		final double dblCoupon)
+	public static final TreasuryComponent DBR (
+		final JulianDate effectiveDate,
+		final JulianDate maturityDate,
+		final double coupon)
 	{
-		org.drip.market.issue.TreasurySetting ts =
-			org.drip.market.issue.TreasurySettingContainer.TreasurySetting ("DBR");
+		TreasurySetting treasurySetting = TreasurySettingContainer.TreasurySetting ("DBR");
 
-		return null == ts ? null : org.drip.product.creator.BondBuilder.Treasury (ts.code(), dtEffective,
-			dtMaturity, ts.currency(), dblCoupon, ts.frequency(), ts.dayCount());
+		return null == treasurySetting ? null : BondBuilder.Treasury (
+			treasurySetting.code(),
+			effectiveDate,
+			maturityDate,
+			treasurySetting.currency(),
+			coupon,
+			treasurySetting.frequency(),
+			treasurySetting.dayCount()
+		);
 	}
 
 	/**
 	 * Construct an Instance of the French Treasury EUR FRTR Bond
 	 * 
-	 * @param dtEffective Effective Date
-	 * @param dtMaturity Maturity Date
-	 * @param dblCoupon Coupon
+	 * @param effectiveDate Effective Date
+	 * @param maturityDate Maturity Date
+	 * @param coupon Coupon
 	 * 
 	 * @return Instance of the French Treasury EUR FRTR Bond
 	 */
 
-	public static final org.drip.product.govvie.TreasuryComponent FRTR (
-		final org.drip.analytics.date.JulianDate dtEffective,
-		final org.drip.analytics.date.JulianDate dtMaturity,
-		final double dblCoupon)
+	public static final TreasuryComponent FRTR (
+		final JulianDate effectiveDate,
+		final JulianDate maturityDate,
+		final double coupon)
 	{
-		org.drip.market.issue.TreasurySetting ts =
-			org.drip.market.issue.TreasurySettingContainer.TreasurySetting ("FRTR");
+		TreasurySetting treasurySetting = TreasurySettingContainer.TreasurySetting ("FRTR");
 
-		return null == ts ? null : org.drip.product.creator.BondBuilder.Treasury (ts.code(), dtEffective,
-			dtMaturity, ts.currency(), dblCoupon, ts.frequency(), ts.dayCount());
+		return null == treasurySetting ? null : BondBuilder.Treasury (
+			treasurySetting.code(),
+			effectiveDate,
+			maturityDate,
+			treasurySetting.currency(),
+			coupon,
+			treasurySetting.frequency(),
+			treasurySetting.dayCount()
+		);
 	}
 
 	/**
 	 * Construct an Instance of the Greek Treasury EUR GGB Bond
 	 * 
-	 * @param dtEffective Effective Date
-	 * @param dtMaturity Maturity Date
-	 * @param dblCoupon Coupon
+	 * @param effectiveDate Effective Date
+	 * @param maturityDate Maturity Date
+	 * @param coupon Coupon
 	 * 
 	 * @return Instance of the Greek Treasury EUR GGB Bond
 	 */
 
-	public static final org.drip.product.govvie.TreasuryComponent GGB (
-		final org.drip.analytics.date.JulianDate dtEffective,
-		final org.drip.analytics.date.JulianDate dtMaturity,
-		final double dblCoupon)
+	public static final TreasuryComponent GGB (
+		final JulianDate effectiveDate,
+		final JulianDate maturityDate,
+		final double coupon)
 	{
-		org.drip.market.issue.TreasurySetting ts =
-			org.drip.market.issue.TreasurySettingContainer.TreasurySetting ("GGB");
+		TreasurySetting treasurySetting = TreasurySettingContainer.TreasurySetting ("GGB");
 
-		return null == ts ? null : org.drip.product.creator.BondBuilder.Treasury (ts.code(), dtEffective,
-			dtMaturity, ts.currency(), dblCoupon, ts.frequency(), ts.dayCount());
+		return null == treasurySetting ? null : BondBuilder.Treasury (
+			treasurySetting.code(),
+			effectiveDate,
+			maturityDate,
+			treasurySetting.currency(),
+			coupon,
+			treasurySetting.frequency(),
+			treasurySetting.dayCount()
+		);
 	}
 
 	/**
 	 * Construct an Instance of the UK Treasury GBP GILT Bond
 	 * 
-	 * @param dtEffective Effective Date
-	 * @param dtMaturity Maturity Date
-	 * @param dblCoupon Coupon
+	 * @param effectiveDate Effective Date
+	 * @param maturityDate Maturity Date
+	 * @param coupon Coupon
 	 * 
 	 * @return Instance of the UK Treasury GBP GILT Bond
 	 */
 
-	public static final org.drip.product.govvie.TreasuryComponent GILT (
-		final org.drip.analytics.date.JulianDate dtEffective,
-		final org.drip.analytics.date.JulianDate dtMaturity,
-		final double dblCoupon)
+	public static final TreasuryComponent GILT (
+		final JulianDate effectiveDate,
+		final JulianDate maturityDate,
+		final double coupon)
 	{
-		org.drip.market.issue.TreasurySetting ts =
-			org.drip.market.issue.TreasurySettingContainer.TreasurySetting ("GILT");
+		TreasurySetting treasurySetting = TreasurySettingContainer.TreasurySetting ("GILT");
 
-		return null == ts ? null : org.drip.product.creator.BondBuilder.Treasury (ts.code(), dtEffective,
-			dtMaturity, ts.currency(), dblCoupon, ts.frequency(), ts.dayCount());
+		return null == treasurySetting ? null : BondBuilder.Treasury (
+			treasurySetting.code(),
+			effectiveDate,
+			maturityDate,
+			treasurySetting.currency(),
+			coupon,
+			treasurySetting.frequency(),
+			treasurySetting.dayCount()
+		);
 	}
 
 	/**
 	 * Construct an Instance of the Japanese Treasury JPY JGB Bond
 	 * 
-	 * @param dtEffective Effective Date
-	 * @param dtMaturity Maturity Date
-	 * @param dblCoupon Coupon
+	 * @param effectiveDate Effective Date
+	 * @param maturityDate Maturity Date
+	 * @param coupon Coupon
 	 * 
 	 * @return Instance of the Japanese Treasury JPY JGB Bond
 	 */
 
-	public static final org.drip.product.govvie.TreasuryComponent JGB (
-		final org.drip.analytics.date.JulianDate dtEffective,
-		final org.drip.analytics.date.JulianDate dtMaturity,
-		final double dblCoupon)
+	public static final TreasuryComponent JGB (
+		final JulianDate effectiveDate,
+		final JulianDate maturityDate,
+		final double coupon)
 	{
-		org.drip.market.issue.TreasurySetting ts =
-			org.drip.market.issue.TreasurySettingContainer.TreasurySetting ("JGB");
+		TreasurySetting treasurySetting = TreasurySettingContainer.TreasurySetting ("JGB");
 
-		return null == ts ? null : org.drip.product.creator.BondBuilder.Treasury (ts.code(), dtEffective,
-			dtMaturity, ts.currency(), dblCoupon, ts.frequency(), ts.dayCount());
+		return null == treasurySetting ? null : BondBuilder.Treasury (
+			treasurySetting.code(),
+			effectiveDate,
+			maturityDate,
+			treasurySetting.currency(),
+			coupon,
+			treasurySetting.frequency(),
+			treasurySetting.dayCount()
+		);
 	}
 
 	/**
 	 * Construct an Instance of the Mexican Treasury MXN MBONO Bond
 	 * 
-	 * @param dtEffective Effective Date
-	 * @param dtMaturity Maturity Date
-	 * @param dblCoupon Coupon
+	 * @param effectiveDate Effective Date
+	 * @param maturityDate Maturity Date
+	 * @param coupon Coupon
 	 * 
 	 * @return Instance of the Mexican Treasury MXN MBONO Bond
 	 */
 
-	public static final org.drip.product.govvie.TreasuryComponent MBONO (
-		final org.drip.analytics.date.JulianDate dtEffective,
-		final org.drip.analytics.date.JulianDate dtMaturity,
-		final double dblCoupon)
+	public static final TreasuryComponent MBONO (
+		final JulianDate effectiveDate,
+		final JulianDate maturityDate,
+		final double coupon)
 	{
-		org.drip.market.issue.TreasurySetting ts =
-			org.drip.market.issue.TreasurySettingContainer.TreasurySetting ("MBONO");
+		TreasurySetting treasurySetting = TreasurySettingContainer.TreasurySetting ("MBONO");
 
-		return null == ts ? null : org.drip.product.creator.BondBuilder.Treasury (ts.code(), dtEffective,
-			dtMaturity, ts.currency(), dblCoupon, ts.frequency(), ts.dayCount());
+		return null == treasurySetting ? null : BondBuilder.Treasury (
+			treasurySetting.code(),
+			effectiveDate,
+			maturityDate,
+			treasurySetting.currency(),
+			coupon,
+			treasurySetting.frequency(),
+			treasurySetting.dayCount()
+		);
 	}
 
 	/**
 	 * Construct an Instance of the Spanish Treasury EUR SPGB Bond
 	 * 
-	 * @param dtEffective Effective Date
-	 * @param dtMaturity Maturity Date
-	 * @param dblCoupon Coupon
+	 * @param effectiveDate Effective Date
+	 * @param maturityDate Maturity Date
+	 * @param coupon Coupon
 	 * 
 	 * @return Instance of the Spanish Treasury EUR SPGB Bond
 	 */
 
-	public static final org.drip.product.govvie.TreasuryComponent SPGB (
-		final org.drip.analytics.date.JulianDate dtEffective,
-		final org.drip.analytics.date.JulianDate dtMaturity,
-		final double dblCoupon)
+	public static final TreasuryComponent SPGB (
+		final JulianDate effectiveDate,
+		final JulianDate maturityDate,
+		final double coupon)
 	{
-		org.drip.market.issue.TreasurySetting ts =
-			org.drip.market.issue.TreasurySettingContainer.TreasurySetting ("SPGB");
+		TreasurySetting treasurySetting = TreasurySettingContainer.TreasurySetting ("SPGB");
 
-		return null == ts ? null : org.drip.product.creator.BondBuilder.Treasury (ts.code(), dtEffective,
-			dtMaturity, ts.currency(), dblCoupon, ts.frequency(), ts.dayCount());
+		return null == treasurySetting ? null : BondBuilder.Treasury (
+			treasurySetting.code(),
+			effectiveDate,
+			maturityDate,
+			treasurySetting.currency(),
+			coupon,
+			treasurySetting.frequency(),
+			treasurySetting.dayCount()
+		);
 	}
 
 	/**
 	 * Construct an Instance of the US Treasury USD UST Bond
 	 * 
-	 * @param dtEffective Effective Date
-	 * @param dtMaturity Maturity Date
-	 * @param dblCoupon Coupon
+	 * @param effectiveDate Effective Date
+	 * @param maturityDate Maturity Date
+	 * @param coupon Coupon
 	 * 
 	 * @return Instance of the US Treasury USD UST Bond
 	 */
 
-	public static final org.drip.product.govvie.TreasuryComponent UST (
-		final org.drip.analytics.date.JulianDate dtEffective,
-		final org.drip.analytics.date.JulianDate dtMaturity,
-		final double dblCoupon)
+	public static final TreasuryComponent UST (
+		final JulianDate effectiveDate,
+		final JulianDate maturityDate,
+		final double coupon)
 	{
-		org.drip.market.issue.TreasurySetting ts =
-			org.drip.market.issue.TreasurySettingContainer.TreasurySetting ("UST");
+		TreasurySetting treasurySetting = TreasurySettingContainer.TreasurySetting ("UST");
 
-		return null == ts ? null : org.drip.product.creator.BondBuilder.Treasury (ts.code(), dtEffective,
-			dtMaturity, ts.currency(), dblCoupon, ts.frequency(), ts.dayCount());
+		return null == treasurySetting ? null : BondBuilder.Treasury (
+			treasurySetting.code(),
+			effectiveDate,
+			maturityDate,
+			treasurySetting.currency(),
+			coupon,
+			treasurySetting.frequency(),
+			treasurySetting.dayCount()
+		);
 	}
 
 	/**
 	 * Construct an Instance of the Treasury Bond From the Code
 	 * 
 	 * @param strCode The Treasury Code
-	 * @param dtEffective Effective Date
-	 * @param dtMaturity Maturity Date
-	 * @param dblCoupon Coupon
+	 * @param effectiveDate Effective Date
+	 * @param maturityDate Maturity Date
+	 * @param coupon Coupon
 	 * 
 	 * @return Instance of the Treasury Bond From the Code
 	 */
 
-	public static final org.drip.product.govvie.TreasuryComponent FromCode (
+	public static final TreasuryComponent FromCode (
 		final java.lang.String strCode,
-		final org.drip.analytics.date.JulianDate dtEffective,
-		final org.drip.analytics.date.JulianDate dtMaturity,
-		final double dblCoupon)
+		final JulianDate effectiveDate,
+		final JulianDate maturityDate,
+		final double coupon)
 	{
-		org.drip.market.issue.TreasurySetting ts =
-			org.drip.market.issue.TreasurySettingContainer.TreasurySetting (strCode);
+		TreasurySetting treasurySetting = TreasurySettingContainer.TreasurySetting (strCode);
 
-		return null == ts ? null : org.drip.product.creator.BondBuilder.Treasury (ts.code(), dtEffective,
-			dtMaturity, ts.currency(), dblCoupon, ts.frequency(), ts.dayCount());
+		return null == treasurySetting ? null : BondBuilder.Treasury (
+			treasurySetting.code(),
+			effectiveDate,
+			maturityDate,
+			treasurySetting.currency(),
+			coupon,
+			treasurySetting.frequency(),
+			treasurySetting.dayCount()
+		);
 	}
 
 	/**
 	 * Construct an Array of the Treasury Instances from the Code
 	 * 
-	 * @param strCode The Treasury Code
-	 * @param adtEffective Array of Effective Dates
-	 * @param adtMaturity Array of Maturity Dates
-	 * @param adblCoupon Array of Coupons
+	 * @param treasuryCode The Treasury Code
+	 * @param effectiveDateArray Array of Effective Dates
+	 * @param maturityDateArray Array of Maturity Dates
+	 * @param couponArray Array of Coupons
 	 * 
 	 * @return Array of the Treasury Instances from the Code
 	 */
 
-	public static final org.drip.product.govvie.TreasuryComponent[] FromCode (
-		final java.lang.String strCode,
-		final org.drip.analytics.date.JulianDate[] adtEffective,
-		final org.drip.analytics.date.JulianDate[] adtMaturity,
-		final double[] adblCoupon)
+	public static final TreasuryComponent[] FromCode (
+		final String treasuryCode,
+		final JulianDate[] effectiveDateArray,
+		final JulianDate[] maturityDateArray,
+		final double[] couponArray)
 	{
-		if (null == adtEffective || null == adtMaturity || null == adblCoupon) return null;
-
-		int iNumTreasury = adtEffective.length;
-		org.drip.product.govvie.TreasuryComponent[] aTreasury = new
-			org.drip.product.govvie.TreasuryComponent[iNumTreasury];
-
-		if (0 == iNumTreasury || iNumTreasury != adtMaturity.length || iNumTreasury != adblCoupon.length)
+		if (null == effectiveDateArray || 0 == effectiveDateArray.length ||
+			null == maturityDateArray ||
+			null == couponArray)
+		{
 			return null;
-
-		for (int i = 0; i < iNumTreasury; ++i) {
-			if (null == (aTreasury[i] = FromCode (strCode, adtEffective[i], adtMaturity[i], adblCoupon[i])))
-				return null;
 		}
 
-		return aTreasury;
+		TreasuryComponent[] treasuryComponentArray = new TreasuryComponent[effectiveDateArray.length];
+
+		if (effectiveDateArray.length != maturityDateArray.length ||
+			effectiveDateArray.length != couponArray.length)
+		{
+			return null;
+		}
+
+		for (int effectiveDateIndex = 0;
+			effectiveDateIndex < effectiveDateArray.length;
+			++effectiveDateIndex)
+		{
+			if (null == (
+				treasuryComponentArray[effectiveDateIndex] = FromCode (
+					treasuryCode,
+					effectiveDateArray[effectiveDateIndex],
+					maturityDateArray[effectiveDateIndex],
+					couponArray[effectiveDateIndex]
+				)
+			))
+			{
+				return null;
+			}
+		}
+
+		return treasuryComponentArray;
 	}
 }

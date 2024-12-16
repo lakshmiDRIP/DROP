@@ -12,6 +12,7 @@ import org.drip.market.otc.IBORFloatFloatContainer;
 import org.drip.market.otc.OvernightFixedFloatContainer;
 import org.drip.param.period.ComposableFloatingUnitSetting;
 import org.drip.param.period.CompositePeriodSetting;
+import org.drip.pricer.option.BlackScholesAlgorithm;
 import org.drip.product.creator.CDSBuilder;
 import org.drip.product.creator.SingleStreamComponentBuilder;
 import org.drip.product.definition.CreditDefaultSwap;
@@ -19,6 +20,7 @@ import org.drip.product.fra.FRAStandardCapFloor;
 import org.drip.product.fra.FRAStandardComponent;
 import org.drip.product.fx.FXForwardComponent;
 import org.drip.product.params.CurrencyPair;
+import org.drip.product.params.LastTradingDateSetting;
 import org.drip.product.rates.FixFloatComponent;
 import org.drip.product.rates.FloatFloatComponent;
 import org.drip.product.rates.SingleStreamComponent;
@@ -113,11 +115,30 @@ import org.drip.state.identifier.OvernightLabel;
  * 	provides the following Functionality:
  *
  *  <ul>
- * 		<li>Generate a Forward Rate Futures Contract corresponding to the Spot Date</li>
- * 		<li>Generate a Forward Rate Futures Pack corresponding to the Spot Date and the Specified Number of Contracts</li>
- * 		<li>Generate an Instance of Treasury Futures given the Inputs</li>
- * 		<li>Generate the Treasury Futures Instance #1</li>
- * 		<li>Generate the Treasury Futures Instance #2</li>
+ * 		<li>Construct an OTC Funding Deposit Instrument from the Spot Date and the Maturity Tenor</li>
+ * 		<li>Construct an OTC Forward Deposit Instrument from Spot Date and the Maturity Tenor</li>
+ * 		<li>Construct an OTC Overnight Deposit Instrument from the Spot Date and the Maturity Tenor</li>
+ * 		<li>Create a Standard FRA from the Spot Date, the Forward Label, and the Strike</li>
+ * 		<li>Construct an OTC Standard Fix Float Swap using the specified Input Parameters</li>
+ * 		<li>Construct a Standard Fix Float Swap Instances</li>
+ * 		<li>Construct an Instance of OTC OIS Fix Float Swap</li>
+ * 		<li>Construct an OTC Float-Float Swap Instance</li>
+ * 		<li>Create an Instance of the OTC CDS</li>
+ * 		<li>Create an OTC FX Forward Component</li>
+ * 		<li>Construct an Array of OTC Funding Deposit Instruments from their corresponding Maturity Tenors</li>
+ * 		<li>Construct an Array of OTC Funding Deposit and Futures Instruments</li>
+ * 		<li>Construct an Array of OTC Forward Deposit Instruments from the corresponding Maturity Tenors</li>
+ * 		<li>Construct an Array of OTC Overnight Deposit Instrument from their Maturity Tenors</li>
+ * 		<li>Create an Array of Standard FRAs from the Spot Date, the Forward Label, and the Strike</li>
+ * 		<li>Construct an Array of OTC Fix Float Swaps using the specified Input Parameters</li>
+ * 		<li>Construct an Array of Custom Fix Float Swap Instances</li>
+ * 		<li>Construct an Array of OTC Fix Float OIS Instances</li>
+ * 		<li>Construct an Array of OTC OIS Fix-Float Futures</li>
+ * 		<li>Construct an Array of OTC Float-Float Swap Instances</li>
+ * 		<li>Create an Array of the OTC CDS Instance</li>
+ * 		<li>Create an Array of OTC FX Forward Components</li>
+ * 		<li>Construct an Instance of the Standard OTC FRA Cap/Floor</li>
+ * 		<li>Construct the Array of Standard OTC FRA Cap/Floors</li>
  *  </ul>
  *
  *	<br>
@@ -513,7 +534,7 @@ public class OTCInstrumentBuilder
 	}
 
 	/**
-	 * Create an Instance of the OTC CDS.
+	 * Create an Instance of the OTC CDS
 	 * 
 	 * @param spotDate The Spot Date
 	 * @param maturityTenor Maturity Tenor
@@ -842,21 +863,29 @@ public class OTCInstrumentBuilder
 		final String index,
 		final double coupon)
 	{
-		if (null == maturityTenorArray) return null;
-
-		int iNumFixFloat = maturityTenorArray.length;
-		FixFloatComponent[] aFFC = new
-			FixFloatComponent[iNumFixFloat];
-
-		if (0 == iNumFixFloat) return null;
-
-		for (int i = 0; i < iNumFixFloat; ++i) {
-			if (null == (aFFC[i] = FixFloatStandard (spotDate, currency, location, maturityTenorArray[i],
-				index, 0.)))
-				return null;
+		if (null == maturityTenorArray || 0 == maturityTenorArray.length) {
+			return null;
 		}
 
-		return aFFC;
+		FixFloatComponent[] fixFloatComponentArray = new FixFloatComponent[maturityTenorArray.length];
+
+		for (int maturityIndex = 0; maturityIndex < maturityTenorArray.length; ++maturityIndex) {
+			if (null == (
+				fixFloatComponentArray[maturityIndex] = FixFloatStandard (
+					spotDate,
+					currency,
+					location,
+					maturityTenorArray[maturityIndex],
+					index,
+					0.
+				)
+			))
+			{
+				return null;
+			}
+		}
+
+		return fixFloatComponentArray;
 	}
 
 	/**
@@ -874,15 +903,15 @@ public class OTCInstrumentBuilder
 		final ForwardLabel forwardLabel,
 		final String[] maturityTenorArray)
 	{
-		if (null == spotDate || null == forwardLabel || null == maturityTenorArray) return null;
+		if (null == spotDate || null == forwardLabel ||
+			null == maturityTenorArray || 0 == maturityTenorArray.length)
+		{
+			return null;
+		}
 
-		int iNumComp = maturityTenorArray.length;
-		CompositePeriodSetting cpsFloating = null;
-		ComposableFloatingUnitSetting cfusFloating = null;
-		FixFloatComponent[] aFFC = new
-			FixFloatComponent[iNumComp];
-
-		if (0 == iNumComp) return null;
+		CompositePeriodSetting floatingCompositePeriodSetting = null;
+		ComposableFloatingUnitSetting composableFloatingUnitSetting = null;
+		FixFloatComponent[] fixFloatComponentArray = new FixFloatComponent[maturityTenorArray.length];
 
 		String currency = forwardLabel.currency();
 
@@ -893,46 +922,79 @@ public class OTCInstrumentBuilder
 		JulianDate effectiveDate = spotDate.addBusDays (0, currency).addDays (2);
 
 		try {
-			cfusFloating = new ComposableFloatingUnitSetting (forwardTenor,
-				CompositePeriodBuilder.EDGE_DATE_SEQUENCE_REGULAR, null,
-					forwardLabel,
-						CompositePeriodBuilder.REFERENCE_PERIOD_IN_ADVANCE, 0.);
+			composableFloatingUnitSetting = new ComposableFloatingUnitSetting (
+				forwardTenor,
+				CompositePeriodBuilder.EDGE_DATE_SEQUENCE_REGULAR,
+				null,
+				forwardLabel,
+				CompositePeriodBuilder.REFERENCE_PERIOD_IN_ADVANCE,
+				0.
+			);
 
-			cpsFloating = new CompositePeriodSetting (12 / tenorInMonths,
-				forwardTenor, currency, null, -1., null, null, null, null);
+			floatingCompositePeriodSetting = new CompositePeriodSetting (
+				12 / tenorInMonths,
+				forwardTenor,
+				currency,
+				null,
+				-1.,
+				null,
+				null,
+				null,
+				null
+			);
 		} catch (Exception e) {
 			e.printStackTrace();
 
 			return null;
 		}
 
-		for (int i = 0; i < iNumComp; ++i) {
-			FixedFloatSwapConvention ffsc =
-				IBORFixedFloatContainer.ConventionFromJurisdiction (currency, "ALL",
-					maturityTenorArray[i], "MAIN");
+		for (int maturityIndex = 0; maturityIndex < maturityTenorArray.length; ++maturityIndex) {
+			FixedFloatSwapConvention fixedFloatSwapConvention =
+				IBORFixedFloatContainer.ConventionFromJurisdiction (
+					currency,
+					"ALL",
+					maturityTenorArray[maturityIndex],
+					"MAIN"
+				);
 
-			if (null == ffsc) return null;
+			if (null == fixedFloatSwapConvention) {
+				return null;
+			}
 
 			try {
-				Stream floatingStream = new Stream
-					(CompositePeriodBuilder.FloatingCompositeUnit
-						(CompositePeriodBuilder.RegularEdgeDates (effectiveDate,
-							forwardTenor, maturityTenorArray[i], null), cpsFloating, cfusFloating));
-
-				Stream fixedStream = ffsc.fixedStreamConvention().createStream
-					(effectiveDate, maturityTenorArray[i], 0., 1.);
-
-				aFFC[i] = new FixFloatComponent (fixedStream, floatingStream, null);
+				fixFloatComponentArray[maturityIndex] = new FixFloatComponent (
+					fixedFloatSwapConvention.fixedStreamConvention().createStream (
+						effectiveDate,
+						maturityTenorArray[maturityIndex],
+						0.,
+						1.
+					),
+					new Stream (
+						CompositePeriodBuilder.FloatingCompositeUnit (
+							CompositePeriodBuilder.RegularEdgeDates (
+								effectiveDate,
+								forwardTenor,
+								maturityTenorArray[maturityIndex],
+								null
+							),
+							floatingCompositePeriodSetting,
+							composableFloatingUnitSetting
+						)
+					),
+					null
+				);
 			} catch (Exception e) {
 				e.printStackTrace();
 
 				return null;
 			}
 
-			aFFC[i].setPrimaryCode ("FixFloat:" + maturityTenorArray[i]);
+			fixFloatComponentArray[maturityIndex].setPrimaryCode (
+				"FixFloat:" + maturityTenorArray[maturityIndex]
+			);
 		}
 
-		return aFFC;
+		return fixFloatComponentArray;
 	}
 
 	/**
@@ -941,7 +1003,7 @@ public class OTCInstrumentBuilder
 	 * @param spotDate Spot Date
 	 * @param currency Currency
 	 * @param maturityTenorArray Array of OIS Maturity Tenors
-	 * @param acoupon OIS Fixed Rate Coupon
+	 * @param couponArray OIS Fixed Rate Coupon
 	 * @param useFundingCurve TRUE - Floater Based off of Fund
 	 * 
 	 * @return Array of Fix Float OIS Instances
@@ -951,24 +1013,31 @@ public class OTCInstrumentBuilder
 		final JulianDate spotDate,
 		final String currency,
 		final String[] maturityTenorArray,
-		final double[] acoupon,
+		final double[] couponArray,
 		final boolean useFundingCurve)
 	{
-		if (null == maturityTenorArray) return null;
-
-		int iNumOIS = maturityTenorArray.length;
-		FixFloatComponent[] aFixFloatOIS = new
-			FixFloatComponent[iNumOIS];
-
-		if (0 == iNumOIS) return null;
-
-		for (int i = 0; i < iNumOIS; ++i) {
-			if (null == (aFixFloatOIS[i] = OISFixFloat (spotDate, currency, maturityTenorArray[i],
-				acoupon[i], useFundingCurve)))
-				return null;
+		if (null == maturityTenorArray || 0 == maturityTenorArray.length) {
+			return null;
 		}
 
-		return aFixFloatOIS;
+		FixFloatComponent[] fixFloatOISComponentArray = new FixFloatComponent[maturityTenorArray.length];
+
+		for (int maturityIndex = 0; maturityIndex < maturityTenorArray.length; ++maturityIndex) {
+			if (null == (
+				fixFloatOISComponentArray[maturityIndex] = OISFixFloat (
+					spotDate,
+					currency,
+					maturityTenorArray[maturityIndex],
+					couponArray[maturityIndex],
+					useFundingCurve
+				)
+			))
+			{
+				return null;
+			}
+		}
+
+		return fixFloatOISComponentArray;
 	}
 
 	/**
@@ -978,7 +1047,7 @@ public class OTCInstrumentBuilder
 	 * @param currency Currency
 	 * @param effectiveTenorArray Array of Effective Tenors
 	 * @param maturityTenorArray Array of Maturity Tenors
-	 * @param acoupon Array of Coupons
+	 * @param couponArray Array of Coupons
 	 * @param useFundingCurve TRUE - Floater Based off of Fund
 	 * 
 	 * @return Array of OIS Fix-Float Futures
@@ -989,27 +1058,44 @@ public class OTCInstrumentBuilder
 		final String currency,
 		final String[] effectiveTenorArray,
 		final String[] maturityTenorArray,
-		final double[] acoupon,
+		final double[] couponArray,
 		final boolean useFundingCurve)
 	{
-		if (null == spotDate || null == effectiveTenorArray || null == maturityTenorArray || null == acoupon)
+		if (null == spotDate ||
+			null == effectiveTenorArray || 0 == effectiveTenorArray.length ||
+			null == maturityTenorArray ||
+			null == couponArray)
+		{
 			return null;
-
-		int iNumOISFutures = effectiveTenorArray.length;
-		FixFloatComponent[] aOISFutures = new
-			FixFloatComponent[iNumOISFutures];
-
-		if (0 == iNumOISFutures || iNumOISFutures != maturityTenorArray.length || iNumOISFutures !=
-			acoupon.length)
-			return null;
-
-		for (int i = 0; i < iNumOISFutures; ++i) {
-			if (null == (aOISFutures[i] = OISFixFloat (spotDate.addTenor (effectiveTenorArray[i]), currency,
-				maturityTenorArray[i], acoupon[i], useFundingCurve)))
-				return null;
 		}
 
-		return aOISFutures;
+		FixFloatComponent[] fixFloatComponentArray = new FixFloatComponent[effectiveTenorArray.length];
+
+		if (effectiveTenorArray.length != maturityTenorArray.length ||
+			effectiveTenorArray.length != couponArray.length)
+		{
+			return null;
+		}
+
+		for (int effectiveTenorIndex = 0;
+			effectiveTenorIndex < effectiveTenorArray.length;
+			++effectiveTenorIndex)
+		{
+			if (null == (
+				fixFloatComponentArray[effectiveTenorIndex] = OISFixFloat (
+					spotDate.addTenor (effectiveTenorArray[effectiveTenorIndex]),
+					currency,
+					maturityTenorArray[effectiveTenorIndex],
+					couponArray[effectiveTenorIndex],
+					useFundingCurve
+				)
+			))
+			{
+				return null;
+			}
+		}
+
+		return fixFloatComponentArray;
 	}
 
 	/**
@@ -1031,32 +1117,45 @@ public class OTCInstrumentBuilder
 		final String[] maturityTenorArray,
 		final double basis)
 	{
-		if (null == maturityTenorArray) return null;
-
-		FloatFloatSwapConvention ffsc =
-			IBORFloatFloatContainer.ConventionFromJurisdiction (currency);
-
-		int iNumFFC = maturityTenorArray.length;
-		FloatFloatComponent[] aFFC = new
-			FloatFloatComponent[iNumFFC];
-
-		if (null == ffsc || 0 == iNumFFC) return null;
-
-		for (int i = 0; i < iNumFFC; ++i) {
-			if (null == (aFFC[i] = ffsc.createFloatFloatComponent (spotDate, derivedTenor,
-				maturityTenorArray[i], basis, 1.)))
-				return null;
+		if (null == maturityTenorArray || 0 == maturityTenorArray.length) {
+			return null;
 		}
 
-		return aFFC;
+		FloatFloatSwapConvention floatFloatSwapConvention =
+			IBORFloatFloatContainer.ConventionFromJurisdiction (currency);
+
+		FloatFloatComponent[] floatFloatComponentArray = new FloatFloatComponent[maturityTenorArray.length];
+
+		if (null == floatFloatSwapConvention) {
+			return null;
+		}
+
+		for (int maturityIndex = 0; maturityIndex < maturityTenorArray.length; ++maturityIndex) {
+			if (null == (
+				floatFloatComponentArray[maturityIndex] =
+					floatFloatSwapConvention.createFloatFloatComponent (
+						spotDate,
+						derivedTenor,
+						maturityTenorArray[maturityIndex],
+						basis,
+						1.
+					)
+				)
+			)
+			{
+				return null;
+			}
+		}
+
+		return floatFloatComponentArray;
 	}
 
 	/**
-	 * Create an Array of the OTC CDS Instance.
+	 * Create an Array of the OTC CDS Instance
 	 * 
 	 * @param spotDate Spot Date
 	 * @param maturityTenorArray Array of Maturity Tenors
-	 * @param acoupon Array of Coupon
+	 * @param couponArray Array of Coupon
 	 * @param currency Currency
 	 * @param credit Credit Curve
 	 * 
@@ -1066,39 +1165,55 @@ public class OTCInstrumentBuilder
 	public static final CreditDefaultSwap[] CDS (
 		final JulianDate spotDate,
 		final String[] maturityTenorArray,
-		final double[] acoupon,
+		final double[] couponArray,
 		final String currency,
 		final String credit)
 	{
-		if (null == spotDate || null == currency || null == maturityTenorArray || null == acoupon)
+		if (null == spotDate ||
+			null == currency ||
+			null == maturityTenorArray || 0 == maturityTenorArray.length ||
+			null == couponArray)
+		{
 			return null;
+		}
 
-		int iNumCDS = maturityTenorArray.length;
 		String calendar = currency;
-		CreditDefaultSwap[] aCDS = new
-			CreditDefaultSwap[iNumCDS];
+		CreditDefaultSwap[] cdsArray = new CreditDefaultSwap[maturityTenorArray.length];
 
-		if (0 == iNumCDS || iNumCDS != acoupon.length) return null;
+		if (maturityTenorArray.length != couponArray.length) {
+			return null;
+		}
 
-		JulianDate firstCouponDate = spotDate.addBusDays (0, calendar).nextCreditIMM
-			(3);
+		JulianDate firstCouponDate = spotDate.addBusDays (0, calendar).nextCreditIMM (3);
 
-		if (null == firstCouponDate) return null;
+		if (null == firstCouponDate) {
+			return null;
+		}
 
 		JulianDate effectiveDate = firstCouponDate.subtractTenor ("3M");
 
-		if (null == effectiveDate) return null;
+		if (null == effectiveDate) {
+			return null;
+		}
 
-		double dblRecovery = "CAD".equalsIgnoreCase (currency) || "EUR".equalsIgnoreCase (currency) ||
+		double recovery = "CAD".equalsIgnoreCase (currency) || "EUR".equalsIgnoreCase (currency) ||
 			"GBP".equalsIgnoreCase (currency) || "HKD".equalsIgnoreCase (currency) ||
-				"USD".equalsIgnoreCase (currency) ? 0.40 : 0.25;
+			"USD".equalsIgnoreCase (currency) ? 0.40 : 0.25;
 
-		for (int i = 0; i < iNumCDS; ++i)
-			aCDS[i] = CDSBuilder.CreateCDS (effectiveDate, firstCouponDate.addTenor
-				(maturityTenorArray[i]), acoupon[i], currency, dblRecovery, credit, calendar,
-					true);
+		for (int maturityIndex = 0; maturityIndex < maturityTenorArray.length; ++maturityIndex) {
+			cdsArray[maturityIndex] = CDSBuilder.CreateCDS (
+				effectiveDate,
+				firstCouponDate.addTenor (maturityTenorArray[maturityIndex]),
+				couponArray[maturityIndex],
+				currency,
+				recovery,
+				credit,
+				calendar,
+				true
+			);
+		}
 
-		return aCDS;
+		return cdsArray;
 	}
 
 	/**
@@ -1113,21 +1228,24 @@ public class OTCInstrumentBuilder
 
 	public static final FXForwardComponent[] FXForward (
 		final JulianDate spotDate,
-		final org.drip.product.params.CurrencyPair currencyPair,
+		final CurrencyPair currencyPair,
 		final String[] maturityTenorArray)
 	{
-		if (null == maturityTenorArray) return null;
+		if (null == maturityTenorArray || 0 == maturityTenorArray.length) {
+			return null;
+		}
 
-		int iNumFXComp = maturityTenorArray.length;
-		FXForwardComponent[] aFXFC = new 
-			FXForwardComponent[iNumFXComp];
+		FXForwardComponent[] fxForwardComponentArray = new FXForwardComponent[maturityTenorArray.length];
 
-		if (0 == iNumFXComp) return null;
+		for (int maturityIndex = 0; maturityIndex < maturityTenorArray.length; ++maturityIndex) {
+			fxForwardComponentArray[maturityIndex] = FXForward (
+				spotDate,
+				currencyPair,
+				maturityTenorArray[maturityIndex]
+			);
+		}
 
-		for (int i = 0; i < iNumFXComp; ++i)
-			aFXFC[i] = FXForward (spotDate, currencyPair, maturityTenorArray[i]);
-
-		return aFXFC;
+		return fxForwardComponentArray;
 	}
 
 	/**
@@ -1137,7 +1255,7 @@ public class OTCInstrumentBuilder
 	 * @param forwardLabel The Forward Label
 	 * @param maturityTenor Cap/Floor Maturity Tenor
 	 * @param strike Cap/Floor Strike
-	 * @param bIsCap TRUE - Contract is a Cap
+	 * @param isCap TRUE - Contract is a Cap
 	 * 
 	 * @return The Cap/Floor Instance
 	 */
@@ -1147,42 +1265,61 @@ public class OTCInstrumentBuilder
 		final ForwardLabel forwardLabel,
 		final String maturityTenor,
 		final double strike,
-		final boolean bIsCap)
+		final boolean isCap)
 	{
-		if (null == spotDate || null == forwardLabel) return null;
-
-		String forwardTenor = forwardLabel.tenor();
+		if (null == spotDate || null == forwardLabel) {
+			return null;
+		}
 
 		String currency = forwardLabel.currency();
 
-		String calendar = currency;
+		String forwardTenor = forwardLabel.tenor();
 
-		JulianDate effectiveDate = spotDate.addBusDays (0, calendar);
+		JulianDate effectiveDate = spotDate.addBusDays (0, currency);
 
 		try {
-			ComposableFloatingUnitSetting cfus = new
-				ComposableFloatingUnitSetting (forwardTenor,
-					CompositePeriodBuilder.EDGE_DATE_SEQUENCE_SINGLE, null,
-						forwardLabel,
+			return new FRAStandardCapFloor (
+				forwardLabel.fullyQualifiedName() + (isCap ? "::CAP" : "::FLOOR"),
+				new Stream (
+					CompositePeriodBuilder.FloatingCompositeUnit (
+						CompositePeriodBuilder.RegularEdgeDates (
+							effectiveDate.julian(),
+							forwardTenor,
+							maturityTenor,
+							null
+						),
+						new CompositePeriodSetting (
+							Helper.TenorToFreq (forwardTenor),
+							forwardTenor,
+							currency,
+							null,
+							1.,
+							null,
+							null,
+							null,
+							null
+						),
+						new ComposableFloatingUnitSetting (
+							forwardTenor,
+							CompositePeriodBuilder.EDGE_DATE_SEQUENCE_SINGLE,
+							null,
+							forwardLabel,
 							CompositePeriodBuilder.REFERENCE_PERIOD_IN_ADVANCE,
-								0.);
-
-			CompositePeriodSetting cps = new
-				CompositePeriodSetting
-					(Helper.TenorToFreq (forwardTenor),
-						forwardTenor, currency, null, 1., null, null, null, null);
-
-			Stream floatStream = new Stream
-				(CompositePeriodBuilder.FloatingCompositeUnit
-					(CompositePeriodBuilder.RegularEdgeDates
-						(effectiveDate.julian(), forwardTenor, maturityTenor, null), cps, cfus));
-
-			return new FRAStandardCapFloor (forwardLabel.fullyQualifiedName() + (bIsCap
-				? "::CAP" : "::FLOOR"), floatStream, "ParForward", bIsCap, strike, new
-					org.drip.product.params.LastTradingDateSetting
-						(org.drip.product.params.LastTradingDateSetting.MID_CURVE_OPTION_QUARTERLY, "",
-							Integer.MIN_VALUE), null, new
-								org.drip.pricer.option.BlackScholesAlgorithm());
+							0.
+						)
+					)
+				),
+				"ParForward",
+				isCap,
+				strike,
+				new LastTradingDateSetting (
+					LastTradingDateSetting.MID_CURVE_OPTION_QUARTERLY,
+					"",
+					Integer.MIN_VALUE
+				),
+				null,
+				new BlackScholesAlgorithm()
+			);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -1191,38 +1328,49 @@ public class OTCInstrumentBuilder
 	}
 
 	/**
-	 * Construct an Instance of the Standard OTC FRA Cap/Floor
+	 * Construct the Array of Standard OTC FRA Cap/Floors
 	 * 
 	 * @param spotDate Spot Date
 	 * @param forwardLabel The Forward Label
 	 * @param maturityTenorArray Array of Cap/Floor Maturity Tenors
-	 * @param astrike Array of Cap/Floor Strikes
-	 * @param bIsCap TRUE - Contract is a Cap
+	 * @param strikeArray Array of Cap/Floor Strikes
+	 * @param isCap TRUE - Contract is a Cap
 	 * 
-	 * @return The Cap/Floor Instance
+	 * @return The Cap/Floor Array
 	 */
 
 	public static final FRAStandardCapFloor[] CapFloor (
 		final JulianDate spotDate,
 		final ForwardLabel forwardLabel,
 		final String[] maturityTenorArray,
-		final double[] astrike,
-		final boolean bIsCap)
+		final double[] strikeArray,
+		final boolean isCap)
 	{
-		if (null == maturityTenorArray || null == astrike) return null;
-
-		int iNumCapFloor = maturityTenorArray.length;
-		FRAStandardCapFloor[] aFRACapFloor = new
-			FRAStandardCapFloor[iNumCapFloor];
-
-		if (0 == iNumCapFloor || iNumCapFloor != astrike.length) return null;
-
-		for (int i = 0; i < iNumCapFloor; ++i) {
-			if (null == (aFRACapFloor[i] = OTCInstrumentBuilder.CapFloor (spotDate,
-				forwardLabel, maturityTenorArray[i], astrike[i], bIsCap)))
-				return null;
+		if (null == maturityTenorArray || 0 == maturityTenorArray.length || null == strikeArray) {
+			return null;
 		}
 
-		return aFRACapFloor;
+		FRAStandardCapFloor[] fraStandardCapFloorArray = new FRAStandardCapFloor[maturityTenorArray.length];
+
+		if (maturityTenorArray.length != strikeArray.length) {
+			return null;
+		}
+
+		for (int maturityIndex = 0; maturityIndex < maturityTenorArray.length; ++maturityIndex) {
+			if (null == (
+				fraStandardCapFloorArray[maturityIndex] = OTCInstrumentBuilder.CapFloor (
+					spotDate,
+					forwardLabel,
+					maturityTenorArray[maturityIndex],
+					strikeArray[maturityIndex],
+					isCap
+				)
+			))
+			{
+				return null;
+			}
+		}
+
+		return fraStandardCapFloorArray;
 	}
 }

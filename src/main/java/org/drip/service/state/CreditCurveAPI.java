@@ -1,11 +1,23 @@
 
 package org.drip.service.state;
 
+import org.drip.analytics.date.JulianDate;
+import org.drip.historical.state.CreditCurveMetrics;
+import org.drip.market.otc.CreditIndexConvention;
+import org.drip.market.otc.CreditIndexConventionContainer;
+import org.drip.product.definition.CreditDefaultSwap;
+import org.drip.service.template.LatentMarketStateBuilder;
+import org.drip.state.credit.CreditCurve;
+import org.drip.state.discount.MergedDiscountForwardCurve;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -80,88 +92,113 @@ package org.drip.service.state;
  */
 
 /**
- * <i>CreditCurveAPI</i> computes the Metrics associated the Credit Curve State.
- * 
- * <br><br>
+ * <i>CreditCurveAPI</i> computes the Metrics associated the Credit Curve State. It provides the following
+ * 	Functionality:
+ *
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationSupportLibrary.md">Computation Support</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/README.md">Environment, Product/Definition Containers, and Scenario/State Manipulation APIs</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/state/README.md">Curve Based State Metric Generator</a></li>
+ * 		<li>Construct an Instance of the Australian Treasury AUD AGB Bond</li>
  *  </ul>
- * <br><br>
+ *
+ *	<br>
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationSupportLibrary.md">Computation Support</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/README.md">Environment, Product/Definition Containers, and Scenario/State Manipulation APIs</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/state/README.md">Curve Based State Metric Generator</a></td></tr>
+ *  </table>
+ *	<br>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class CreditCurveAPI {
+public class CreditCurveAPI
+{
 
 	/**
 	 * Generate the Horizon Metrics for the Specified Inputs
 	 * 
-	 * @param dtSpot The Spot Date
-	 * @param astrFundingFixingMaturityTenor Array of the Funding Fixing Curve Calibration Instrument Tenors
-	 * @param adblFundingFixingQuote Array of the Funding Fixing Curve Calibration Instrument Quotes
-	 * @param strFullCreditIndexName The Full Credit Index Name
-	 * @param dblCreditIndexQuotedSpread The Credit Index Quoted Spread
-	 * @param astrForTenor Array of the "For" Tenors
+	 * @param spotDate The Spot Date
+	 * @param fundingFixingMaturityTenorArray Array of the Funding Fixing Curve Calibration Instrument Tenors
+	 * @param fundingFixingQuoteArray Array of the Funding Fixing Curve Calibration Instrument Quotes
+	 * @param fullCreditIndexName The Full Credit Index Name
+	 * @param creditIndexQuotedSpread The Credit Index Quoted Spread
+	 * @param forTenorArray Array of the "For" Tenors
 	 * 
 	 * @return Map of the Dated Credit Curve Metrics
 	 */
 
-	public static final org.drip.historical.state.CreditCurveMetrics DailyMetrics (
-		final org.drip.analytics.date.JulianDate dtSpot,
-		final java.lang.String[] astrFundingFixingMaturityTenor,
-		final double[] adblFundingFixingQuote,
-		final java.lang.String strFullCreditIndexName,
-		final double dblCreditIndexQuotedSpread,
-		final java.lang.String[] astrForTenor)
+	public static final CreditCurveMetrics DailyMetrics (
+		final JulianDate spotDate,
+		final String[] fundingFixingMaturityTenorArray,
+		final double[] fundingFixingQuoteArray,
+		final String fullCreditIndexName,
+		final double creditIndexQuotedSpread,
+		final String[] forTenorArray)
 	{
-		if (null == dtSpot || null == astrFundingFixingMaturityTenor || null == adblFundingFixingQuote ||
-			null == astrForTenor)
+		if (null == spotDate ||
+			null == fundingFixingMaturityTenorArray || 0 == fundingFixingMaturityTenorArray.length ||
+			null == fundingFixingQuoteArray ||
+			null == forTenorArray || 0 == forTenorArray.length ||
+			0 == fundingFixingMaturityTenorArray.length ||
+			fundingFixingMaturityTenorArray.length != fundingFixingQuoteArray.length)
+		{
 			return null;
+		}
 
-		int iNumForTenor = astrForTenor.length;
-		int iNumFundingFixingInstrument = astrFundingFixingMaturityTenor.length;
+		CreditIndexConvention creditIndexConvention = CreditIndexConventionContainer.ConventionFromFullName (
+			fullCreditIndexName
+		);
 
-		if (0 == iNumFundingFixingInstrument || iNumFundingFixingInstrument != adblFundingFixingQuote.length
-			|| 0 == iNumForTenor)
+		if (null == creditIndexConvention) {
 			return null;
+		}
 
-		org.drip.market.otc.CreditIndexConvention cic =
-			org.drip.market.otc.CreditIndexConventionContainer.ConventionFromFullName
-				(strFullCreditIndexName);
+		MergedDiscountForwardCurve fundingFixingDiscountCurve = LatentMarketStateBuilder.FundingCurve (
+			spotDate,
+			creditIndexConvention.currency(),
+			null,
+			null,
+			"ForwardRate",
+			null,
+			"ForwardRate",
+			fundingFixingMaturityTenorArray,
+			fundingFixingQuoteArray,
+			"SwapRate",
+			LatentMarketStateBuilder.SHAPE_PRESERVING
+		);
 
-		if (null == cic) return null;
+		if (null == fundingFixingDiscountCurve) {
+			return null;
+		}
 
-		org.drip.state.discount.MergedDiscountForwardCurve dcFundingFixing =
-			org.drip.service.template.LatentMarketStateBuilder.FundingCurve (dtSpot, cic.currency(), null,
-				null, "ForwardRate", null, "ForwardRate", astrFundingFixingMaturityTenor,
-					adblFundingFixingQuote, "SwapRate",
-						org.drip.service.template.LatentMarketStateBuilder.SHAPE_PRESERVING);
+		CreditCurve creditCurve = LatentMarketStateBuilder.CreditCurve (
+			spotDate,
+			new CreditDefaultSwap[] {creditIndexConvention.indexCDS()},
+			new double[] {creditIndexQuotedSpread},
+			"FairPremium",
+			fundingFixingDiscountCurve
+		);
 
-		if (null == dcFundingFixing) return null;
-
-		org.drip.state.credit.CreditCurve cc = org.drip.service.template.LatentMarketStateBuilder.CreditCurve
-			(dtSpot, new org.drip.product.definition.CreditDefaultSwap[] {cic.indexCDS()}, new double[]
-				{dblCreditIndexQuotedSpread}, "FairPremium", dcFundingFixing);
-
-		if (null == cc) return null;
+		if (null == creditCurve) {
+			return null;
+		}
 
 		try {
-			org.drip.historical.state.CreditCurveMetrics ccm = new
-				org.drip.historical.state.CreditCurveMetrics (dtSpot);
+			CreditCurveMetrics creditCurveMetrics = new CreditCurveMetrics (spotDate);
 
-			for (int j = 0; j < iNumForTenor; ++j) {
-				org.drip.analytics.date.JulianDate dtFor = dtSpot.addTenor (astrForTenor[j]);
+			for (int forTenorIndex = 0; forTenorIndex < forTenorArray.length; ++forTenorIndex) {
+				JulianDate forDate = spotDate.addTenor (forTenorArray[forTenorIndex]);
 
-				if (null == dtFor || !ccm.addSurvivalProbability (dtFor, cc.survival (dtFor)) ||
-					!ccm.addRecoveryRate (dtFor, cc.recovery (dtFor)))
+				if (null == forDate ||
+					!creditCurveMetrics.addSurvivalProbability (forDate, creditCurve.survival (forDate)) ||
+					!creditCurveMetrics.addRecoveryRate (forDate, creditCurve.recovery (forDate)))
+				{
 					continue;
+				}
 			}
 
-			return ccm;
-		} catch (java.lang.Exception e) {
+			return creditCurveMetrics;
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -171,70 +208,68 @@ public class CreditCurveAPI {
 	/**
 	 * Generate the Horizon Metrics for the Specified Inputs
 	 * 
-	 * @param adtSpot Array of Horizon Dates
-	 * @param astrFundingFixingMaturityTenor Array of the Funding Fixing Curve Calibration Instrument Tenors
-	 * @param aadblFundingFixingQuote Array of the Funding Fixing Curve Calibration Instrument Quotes
-	 * @param astrFullCreditIndexName Array of the Full Credit Index Names
-	 * @param adblCreditIndexQuotedSpread Array of the Credit Index Quoted Spreads
-	 * @param astrForTenor Array of the "For" Tenors
+	 * @param aspotDate Array of Horizon Dates
+	 * @param fundingFixingMaturityTenorArray Array of the Funding Fixing Curve Calibration Instrument Tenors
+	 * @param afundingFixingQuoteArray Array of the Funding Fixing Curve Calibration Instrument Quotes
+	 * @param afullCreditIndexName Array of the Full Credit Index Names
+	 * @param acreditIndexQuotedSpread Array of the Credit Index Quoted Spreads
+	 * @param forTenorArray Array of the "For" Tenors
 	 * 
 	 * @return Map of the Dated Credit Curve Metrics
 	 */
 
-	public static final java.util.TreeMap<org.drip.analytics.date.JulianDate,
-		org.drip.historical.state.CreditCurveMetrics> HorizonMetrics (
-			final org.drip.analytics.date.JulianDate[] adtSpot,
-			final java.lang.String[] astrFundingFixingMaturityTenor,
-			final double[][] aadblFundingFixingQuote,
-			final java.lang.String[] astrFullCreditIndexName,
-			final double[] adblCreditIndexQuotedSpread,
-			final java.lang.String[] astrForTenor)
+	public static final java.util.TreeMap<JulianDate, CreditCurveMetrics> HorizonMetrics (
+		final JulianDate[] aspotDate,
+		final String[] fundingFixingMaturityTenorArray,
+		final double[][] afundingFixingQuoteArray,
+		final String[] afullCreditIndexName,
+		final double[] acreditIndexQuotedSpread,
+		final String[] forTenorArray)
 	{
-		if (null == adtSpot || null == astrFundingFixingMaturityTenor || null == aadblFundingFixingQuote ||
-			null == astrFullCreditIndexName || null == adblCreditIndexQuotedSpread || null == astrForTenor)
+		if (null == aspotDate || null == fundingFixingMaturityTenorArray || null == afundingFixingQuoteArray ||
+			null == afullCreditIndexName || null == acreditIndexQuotedSpread || null == forTenorArray)
 			return null;
 
-		int iNumSpot = adtSpot.length;
-		int iNumForTenor = astrForTenor.length;
-		int iNumFundingFixingInstrument = astrFundingFixingMaturityTenor.length;
+		int iNumSpot = aspotDate.length;
+		int iNumForTenor = forTenorArray.length;
+		int iNumFundingFixingInstrument = fundingFixingMaturityTenorArray.length;
 
-		if (0 == iNumSpot || iNumSpot != aadblFundingFixingQuote.length || iNumSpot !=
-			astrFullCreditIndexName.length || iNumSpot != adblCreditIndexQuotedSpread.length || 0 ==
+		if (0 == iNumSpot || iNumSpot != afundingFixingQuoteArray.length || iNumSpot !=
+			afullCreditIndexName.length || iNumSpot != acreditIndexQuotedSpread.length || 0 ==
 				iNumFundingFixingInstrument || 0 == iNumForTenor)
 			return null;
 
-		java.util.TreeMap<org.drip.analytics.date.JulianDate, org.drip.historical.state.CreditCurveMetrics>
-			mapCCM = new java.util.TreeMap<org.drip.analytics.date.JulianDate,
-				org.drip.historical.state.CreditCurveMetrics>();
+		java.util.TreeMap<JulianDate, CreditCurveMetrics>
+			mapCCM = new java.util.TreeMap<JulianDate,
+				CreditCurveMetrics>();
 
 		for (int i = 0; i < iNumSpot; ++i) {
-			org.drip.market.otc.CreditIndexConvention cic =
-				org.drip.market.otc.CreditIndexConventionContainer.ConventionFromFullName
-					(astrFullCreditIndexName[i]);
+			CreditIndexConvention creditIndexConvention =
+				CreditIndexConventionContainer.ConventionFromFullName (afullCreditIndexName[i]);
 
-			if (null == cic) continue;
+			if (null == creditIndexConvention) continue;
 
-			org.drip.state.discount.MergedDiscountForwardCurve dcFundingFixing =
-				org.drip.service.template.LatentMarketStateBuilder.FundingCurve (adtSpot[i], cic.currency(),
-					null, null, "ForwardRate", null, "ForwardRate", astrFundingFixingMaturityTenor,
-						aadblFundingFixingQuote[i], "SwapRate",
-							org.drip.service.template.LatentMarketStateBuilder.SHAPE_PRESERVING);
+			MergedDiscountForwardCurve dcFundingFixing =
+				LatentMarketStateBuilder.FundingCurve (aspotDate[i], creditIndexConvention.currency(),
+					null, null, "ForwardRate", null, "ForwardRate", fundingFixingMaturityTenorArray,
+						afundingFixingQuoteArray[i], "SwapRate",
+							LatentMarketStateBuilder.SHAPE_PRESERVING);
 
 			if (null == dcFundingFixing) continue;
 
-			org.drip.state.credit.CreditCurve cc =
-				org.drip.service.template.LatentMarketStateBuilder.CreditCurve (adtSpot[i], new
-					org.drip.product.definition.CreditDefaultSwap[] {cic.indexCDS()}, new double[]
-						{adblCreditIndexQuotedSpread[i]}, "FairPremium", dcFundingFixing);
+			CreditCurve cc =
+				LatentMarketStateBuilder.CreditCurve (aspotDate[i], new
+					CreditDefaultSwap[] {creditIndexConvention.indexCDS()}, new double[]
+						{acreditIndexQuotedSpread[i]}, "FairPremium", dcFundingFixing);
 
 			if (null == cc) continue;
 
 			try {
-				org.drip.historical.state.CreditCurveMetrics ccm = new
-					org.drip.historical.state.CreditCurveMetrics (adtSpot[i]);
+				CreditCurveMetrics ccm = new
+					CreditCurveMetrics (aspotDate[i]);
 
 				for (int j = 0; j < iNumForTenor; ++j) {
-					org.drip.analytics.date.JulianDate dtFor = adtSpot[i].addTenor (astrForTenor[j]);
+					JulianDate dtFor = aspotDate[i].addTenor (forTenorArray[j]);
 
 					if (null == dtFor) continue;
 
@@ -243,8 +278,8 @@ public class CreditCurveAPI {
 						continue;
 				}
 
-				mapCCM.put (adtSpot[i], ccm);
-			} catch (java.lang.Exception e) {
+				mapCCM.put (aspotDate[i], ccm);
+			} catch (Exception e) {
 				e.printStackTrace();
 
 				continue;
