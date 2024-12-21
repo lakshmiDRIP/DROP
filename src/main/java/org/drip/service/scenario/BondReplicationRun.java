@@ -1,11 +1,18 @@
 
 package org.drip.service.scenario;
 
+import java.util.Map;
+
+import org.drip.analytics.support.CaseInsensitiveHashMap;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -79,29 +86,40 @@ package org.drip.service.scenario;
  */
 
 /**
- * <i>BondReplicationRun</i> holds the Results of a Full Bond Replication Run.
- * 
- * <br><br>
+ * <i>BondReplicationRun</i> holds the Results of a Full Bond Replication Run. It provides the following
+ *  Functionality:
+ *
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationSupportLibrary.md">Computation Support</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/README.md">Environment, Product/Definition Containers, and Scenario/State Manipulation APIs</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/scenario/README.md">Custom Scenario Service Metric Generator</a></li>
+ * 		<li>Empty <i>BondReplicationRun</i> Constructor</li>
+ * 		<li>Add a Named Field</li>
+ * 		<li>Add a Named Field Map</li>
+ * 		<li>Retrieve the Named Field Metrics</li>
+ * 		<li>Retrieve the Named Field Map Metrics</li>
+ * 		<li>Generate the Headers</li>
+ * 		<li>Generate the Values</li>
+ * 		<li>Display the Measures</li>
  *  </ul>
- * <br><br>
+ *
+ *	<br>
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationSupportLibrary.md">Computation Support</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/README.md">Environment, Product/Definition Containers, and Scenario/State Manipulation APIs</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/scenario/README.md">Custom Scenario Service Metric Generator</a></td></tr>
+ *  </table>
+ *	<br>
  * 
  * @author Lakshmi Krishnamurthy
  */
 
-public class BondReplicationRun {
-	private java.util.Map<java.lang.String, org.drip.service.scenario.NamedField> _mapNF = new
-		org.drip.analytics.support.CaseInsensitiveHashMap<org.drip.service.scenario.NamedField>();
+public class BondReplicationRun
+{
+	private Map<String, NamedField> _namedFieldMap = new CaseInsensitiveHashMap<NamedField>();
 
-	private java.util.Map<java.lang.String, org.drip.service.scenario.NamedFieldMap> _mapNFM = new
-		org.drip.analytics.support.CaseInsensitiveHashMap<org.drip.service.scenario.NamedFieldMap>();
+	private Map<String, NamedFieldMap> _namedFieldMapMap = new CaseInsensitiveHashMap<NamedFieldMap>();
 
 	/**
-	 * Empty ReplicationRun Constructor
+	 * Empty <i>BondReplicationRun</i> Constructor
 	 */
 
 	public BondReplicationRun()
@@ -111,17 +129,19 @@ public class BondReplicationRun {
 	/**
 	 * Add a Named Field
 	 * 
-	 * @param nf The Named Field
+	 * @param namedField The Named Field
 	 * 
 	 * @return TRUE - The Named Field Successfully added
 	 */
 
 	public boolean addNamedField (
-		final org.drip.service.scenario.NamedField nf)
+		final NamedField namedField)
 	{
-		if (null == nf) return false;
+		if (null == namedField) {
+			return false;
+		}
 
-		_mapNF.put (nf.name(), nf);
+		_namedFieldMap.put (namedField.name(), namedField);
 
 		return true;
 	}
@@ -129,17 +149,19 @@ public class BondReplicationRun {
 	/**
 	 * Add a Named Field Map
 	 * 
-	 * @param nfm The Named Field Map
+	 * @param namedFieldMap The Named Field Map
 	 * 
 	 * @return TRUE - The Named Field Map Successfully added
 	 */
 
 	public boolean addNamedFieldMap (
-		final org.drip.service.scenario.NamedFieldMap nfm)
+		final NamedFieldMap namedFieldMap)
 	{
-		if (null == nfm) return false;
+		if (null == namedFieldMap) {
+			return false;
+		}
 
-		_mapNFM.put (nfm.name(), nfm);
+		_namedFieldMapMap.put (namedFieldMap.name(), namedFieldMap);
 
 		return true;
 	}
@@ -150,9 +172,9 @@ public class BondReplicationRun {
 	 * @return The Named Field Metrics
 	 */
 
-	public java.util.Map<java.lang.String, org.drip.service.scenario.NamedField> namedField()
+	public Map<String, NamedField> namedField()
 	{
-		return _mapNF;
+		return _namedFieldMap;
 	}
 
 	/**
@@ -161,36 +183,36 @@ public class BondReplicationRun {
 	 * @return The Named Field Map Metrics
 	 */
 
-	public java.util.Map<java.lang.String, org.drip.service.scenario.NamedFieldMap> namedFieldMap()
+	public Map<String, NamedFieldMap> namedFieldMap()
 	{
-		return _mapNFM;
+		return _namedFieldMapMap;
 	}
 
 	/**
-	 * Generate The Headers
+	 * Generate the Headers
 	 * 
 	 * @return The Headers
 	 */
 
-	public java.lang.String header()
+	public String header()
 	{
-		java.lang.String strHeader = "";
+		String header = "";
 
-		for (java.util.Map.Entry<java.lang.String, org.drip.service.scenario.NamedField> meNF :
-			_mapNF.entrySet())
-			strHeader = strHeader + meNF.getKey() + ",";
-
-		for (java.util.Map.Entry<java.lang.String, org.drip.service.scenario.NamedFieldMap> meNFM :
-			_mapNFM.entrySet()) {
-			java.lang.String strNFMKey = meNFM.getKey() + ",";
-
-			org.drip.service.scenario.NamedFieldMap nfm = meNFM.getValue();
-
-			for (java.util.Map.Entry<java.lang.String, java.lang.Double> meNFMEntry : nfm.value().entrySet())
-				strHeader = strHeader + strNFMKey + "::" + meNFMEntry.getKey() + ",";
+		for (Map.Entry<String, NamedField> namedFieldMapEntry : _namedFieldMap.entrySet()) {
+			header = header + namedFieldMapEntry.getKey() + ",";
 		}
 
-		return strHeader;
+		for (Map.Entry<String, NamedFieldMap> namedFieldMapMapEntry : _namedFieldMapMap.entrySet()) {
+			String namedFieldMapMapEntryKey = namedFieldMapMapEntry.getKey() + ",";
+
+			NamedFieldMap namedFieldMap = namedFieldMapMapEntry.getValue();
+
+			for (Map.Entry<String, Double> meNFMEntry : namedFieldMap.value().entrySet()) {
+				header = header + namedFieldMapMapEntryKey + "::" + meNFMEntry.getKey() + ",";
+			}
+		}
+
+		return header;
 	}
 
 	/**
@@ -199,23 +221,23 @@ public class BondReplicationRun {
 	 * @return The Values
 	 */
 
-	public java.lang.String value()
+	public String value()
 	{
-		java.lang.String strValue = "";
+		String value = "";
 
-		for (java.util.Map.Entry<java.lang.String, org.drip.service.scenario.NamedField> meNF :
-			_mapNF.entrySet())
-			strValue = strValue + meNF.getValue().value() + ",";
-
-		for (java.util.Map.Entry<java.lang.String, org.drip.service.scenario.NamedFieldMap> meNFM :
-			_mapNFM.entrySet()) {
-			org.drip.service.scenario.NamedFieldMap nfm = meNFM.getValue();
-
-			for (java.util.Map.Entry<java.lang.String, java.lang.Double> meNFMEntry : nfm.value().entrySet())
-				strValue = strValue + meNFMEntry.getValue() + ",";
+		for (Map.Entry<String, NamedField> namedFieldMapEntry : _namedFieldMap.entrySet()) {
+			value = value + namedFieldMapEntry.getValue().value() + ",";
 		}
 
-		return strValue;
+		for (Map.Entry<String, NamedFieldMap> namedFieldMapMapEntry : _namedFieldMapMap.entrySet()) {
+			for (Map.Entry<String, Double> namedFieldMapMapValueEntry :
+				namedFieldMapMapEntry.getValue().value().entrySet())
+			{
+				value = value + namedFieldMapMapValueEntry.getValue() + ",";
+			}
+		}
+
+		return value;
 	}
 
 	/**
@@ -224,25 +246,26 @@ public class BondReplicationRun {
 	 * @return The Measures
 	 */
 
-	public java.lang.String display()
+	public String display()
 	{
-		java.lang.String strValue = "";
+		String value = "";
 
-		for (java.util.Map.Entry<java.lang.String, org.drip.service.scenario.NamedField> meNF :
-			_mapNF.entrySet())
-			strValue = strValue + meNF.getKey() + " => " + meNF.getValue().value() + "\n";
-
-		for (java.util.Map.Entry<java.lang.String, org.drip.service.scenario.NamedFieldMap> meNFM :
-			_mapNFM.entrySet()) {
-			org.drip.service.scenario.NamedFieldMap nfm = meNFM.getValue();
-
-			java.lang.String strNFMKey = meNFM.getKey();
-
-			for (java.util.Map.Entry<java.lang.String, java.lang.Double> meNFMEntry : nfm.value().entrySet())
-				strValue = strValue + strNFMKey + "::" + meNFMEntry.getKey() + " => " + meNFMEntry.getValue()
-					+ "\n";
+		for (Map.Entry<String, NamedField> namedFieldMapEntry : _namedFieldMap.entrySet()) {
+			value = value + namedFieldMapEntry.getKey() + " => " + namedFieldMapEntry.getValue().value() +
+				"\n";
 		}
 
-		return strValue;
+		for (Map.Entry<String, NamedFieldMap> namedFieldMapMapEntry : _namedFieldMapMap.entrySet()) {
+			NamedFieldMap namedFieldMap = namedFieldMapMapEntry.getValue();
+
+			String namedFieldMapMapEntryKey = namedFieldMapMapEntry.getKey();
+
+			for (Map.Entry<String, Double> namedFieldMapMapEntryValue : namedFieldMap.value().entrySet()) {
+				value = value + namedFieldMapMapEntryKey + "::" + namedFieldMapMapEntryValue.getKey() +
+					" => " + namedFieldMapMapEntryValue.getValue() + "\n";
+			}
+		}
+
+		return value;
 	}
 }

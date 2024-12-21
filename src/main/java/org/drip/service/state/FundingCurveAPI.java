@@ -1,11 +1,23 @@
 
 package org.drip.service.state;
 
+import java.util.Map;
+import java.util.TreeMap;
+
+import org.drip.analytics.date.JulianDate;
+import org.drip.analytics.support.Helper;
+import org.drip.historical.state.FundingCurveMetrics;
+import org.drip.service.template.LatentMarketStateBuilder;
+import org.drip.state.discount.MergedDiscountForwardCurve;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -80,93 +92,120 @@ package org.drip.service.state;
  */
 
 /**
- * <i>FundingCurveAPI</i> computes the Metrics associated the Funding Curve State.
- * 
- * <br><br>
+ * <i>FundingCurveAPI</i> computes the Metrics associated the Funding Curve State. It provides the following
+ * 	Functionality:
+ *
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationSupportLibrary.md">Computation Support</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/README.md">Environment, Product/Definition Containers, and Scenario/State Manipulation APIs</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/state/README.md">Curve Based State Metric Generator</a></li>
+ * 		<li>Generate the Funding Curve Daily Metrics</li>
+ * 		<li>Generate the Funding Curve Horizon Metrics</li>
+ * 		<li>Generate the Funding Curve Map</li>
  *  </ul>
- * <br><br>
+ *
+ *	<br>
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationSupportLibrary.md">Computation Support</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/README.md">Environment, Product/Definition Containers, and Scenario/State Manipulation APIs</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/state/README.md">Curve Based State Metric Generator</a></td></tr>
+ *  </table>
+ *	<br>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class FundingCurveAPI {
+public class FundingCurveAPI
+{
 
 	/**
 	 * Generate the Funding Curve Daily Metrics
 	 * 
-	 * @param dtSpot The Spot Date
-	 * @param astrFixFloatMaturityTenor Array of Fix Float Maturity Tenors
-	 * @param adblFixFloatQuote Array of Fix Float Swap Rates
-	 * @param astrInTenor Array of "In" Tenors
-	 * @param astrForTenor Array of "For" Tenors
-	 * @param strCurrency Funding Currency
-	 * @param iLatentStateType Latent State Type
+	 * @param spotDate The Spot Date
+	 * @param fixFloatMaturityTenorArray Array of Fix Float Maturity Tenors
+	 * @param fixFloatQuoteGrid Array of Fix Float Swap Rates
+	 * @param inTenorArray Array of "In" Tenors
+	 * @param forTenorArray Array of "For" Tenors
+	 * @param currency Funding Currency
+	 * @param latentStateType Latent State Type
 	 * 
 	 * @return The Funding Curve Daily Metrics
 	 */
 
-	public static final org.drip.historical.state.FundingCurveMetrics DailyMetrics (
-		final org.drip.analytics.date.JulianDate dtSpot,
-		final java.lang.String[] astrFixFloatMaturityTenor,
-		final double[] adblFixFloatQuote,
-		final java.lang.String[] astrInTenor,
-		final java.lang.String[] astrForTenor,
-		final java.lang.String strCurrency,
-		final int iLatentStateType)
+	public static final FundingCurveMetrics DailyMetrics (
+		final JulianDate spotDate,
+		final String[] fixFloatMaturityTenorArray,
+		final double[] fixFloatQuoteGrid,
+		final String[] inTenorArray,
+		final String[] forTenorArray,
+		final String currency,
+		final int latentStateType)
 	{
-		if (null == dtSpot || null == astrFixFloatMaturityTenor || null == adblFixFloatQuote || null ==
-			astrInTenor || null == astrForTenor)
+		if (null == spotDate ||
+			null == fixFloatMaturityTenorArray || 0 == fixFloatMaturityTenorArray.length ||
+			null == fixFloatQuoteGrid || 0 == fixFloatQuoteGrid.length ||
+			null == inTenorArray || 0 == inTenorArray.length ||
+			null == forTenorArray || 0 == forTenorArray.length ||
+			fixFloatQuoteGrid.length != fixFloatMaturityTenorArray.length)
+		{
 			return null;
+		}
 
-		int iNumInTenor = astrInTenor.length;
-		int iNumForTenor = astrForTenor.length;
-		int iNumFixFloatQuote = adblFixFloatQuote.length;
-		double[] adblForTenorDCF = new double[iNumForTenor];
-		int iNumCalibrationInstrument = astrFixFloatMaturityTenor.length;
+		double[] forTenorDayCountFractionArray = new double[forTenorArray.length];
 
-		if (0 == iNumCalibrationInstrument || iNumFixFloatQuote != iNumCalibrationInstrument || 0 ==
-			iNumInTenor || 0 == iNumForTenor)
-			return null;
-
-		for (int i = 0; i < iNumForTenor; ++i) {
+		for (int forTenorIndex = 0; forTenorIndex < forTenorArray.length; ++forTenorIndex) {
 			try {
-				adblForTenorDCF[i] = org.drip.analytics.support.Helper.TenorToYearFraction (astrForTenor[i]);
-			} catch (java.lang.Exception e) {
+				forTenorDayCountFractionArray[forTenorIndex] = Helper.TenorToYearFraction (
+					forTenorArray[forTenorIndex]
+				);
+			} catch (Exception e) {
 				e.printStackTrace();
 
 				return null;
 			}
 		}
 
-		org.drip.state.discount.MergedDiscountForwardCurve dcFunding =
-			org.drip.service.template.LatentMarketStateBuilder.FundingCurve (dtSpot, strCurrency, null, null,
-				"ForwardRate", null, "ForwardRate", astrFixFloatMaturityTenor, adblFixFloatQuote, "SwapRate",
-					iLatentStateType);
+		MergedDiscountForwardCurve fundingDiscountCurve = LatentMarketStateBuilder.FundingCurve (
+			spotDate,
+			currency,
+			null,
+			null,
+			"ForwardRate",
+			null,
+			"ForwardRate",
+			fixFloatMaturityTenorArray,
+			fixFloatQuoteGrid,
+			"SwapRate",
+			latentStateType
+		);
 
-		if (null == dcFunding) return null;
+		if (null == fundingDiscountCurve) {
+			return null;
+		}
 
 		try {
-			org.drip.historical.state.FundingCurveMetrics fcm = new
-				org.drip.historical.state.FundingCurveMetrics (dtSpot);
+			FundingCurveMetrics fundingCurveMetrics = new FundingCurveMetrics (spotDate);
 
-			for (java.lang.String strInTenor : astrInTenor) {
-				org.drip.analytics.date.JulianDate dtIn = dtSpot.addTenor (strInTenor);
+			for (String inTenor : inTenorArray) {
+				JulianDate inTenorDate = spotDate.addTenor (inTenor);
 
-				for (int j = 0; j < iNumForTenor; ++j) {
-					if (!fcm.addNativeForwardRate (strInTenor, astrForTenor[j], java.lang.Math.pow
-						(dcFunding.df (dtIn) / dcFunding.df (dtIn.addTenor (astrForTenor[j])), 1. /
-							adblForTenorDCF[j]) - 1.))
+				for (int forTenorIndex = 0; forTenorIndex < forTenorArray.length; ++forTenorIndex) {
+					if (!fundingCurveMetrics.addNativeForwardRate (
+						inTenor,
+						forTenorArray[forTenorIndex],
+						Math.pow (
+							fundingDiscountCurve.df (inTenorDate) /fundingDiscountCurve.df (
+								inTenorDate.addTenor (forTenorArray[forTenorIndex])
+							),
+							1. / forTenorDayCountFractionArray[forTenorIndex]
+						) - 1.
+					))
+					{
 						continue;
+					}
 				}
 			}
 
-			return fcm;
-		} catch (java.lang.Exception e) {
+			return fundingCurveMetrics;
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -176,136 +215,168 @@ public class FundingCurveAPI {
 	/**
 	 * Generate the Funding Curve Horizon Metrics
 	 * 
-	 * @param adtSpot Array of Spot
-	 * @param astrFixFloatMaturityTenor Array of Fix Float Maturity Tenors
-	 * @param aadblFixFloatQuote Array of Fix Float Swap Rates
-	 * @param astrInTenor Array of "In" Tenors
-	 * @param astrForTenor Array of "For" Tenors
-	 * @param strCurrency Funding Currency
-	 * @param iLatentStateType Latent State Type
+	 * @param spotDateArray Array of Spot
+	 * @param fixFloatMaturityTenorArray Array of Fix Float Maturity Tenors
+	 * @param fixFloatQuoteGrid Array of Fix Float Swap Rates
+	 * @param inTenorArray Array of "In" Tenors
+	 * @param forTenorArray Array of "For" Tenors
+	 * @param currency Funding Currency
+	 * @param latentStateType Latent State Type
 	 * 
 	 * @return The Funding Curve Horizon Metrics
 	 */
 
-	public static final java.util.Map<org.drip.analytics.date.JulianDate,
-		org.drip.historical.state.FundingCurveMetrics> HorizonMetrics (
-			final org.drip.analytics.date.JulianDate[] adtSpot,
-			final java.lang.String[] astrFixFloatMaturityTenor,
-			final double[][] aadblFixFloatQuote,
-			final java.lang.String[] astrInTenor,
-			final java.lang.String[] astrForTenor,
-			final java.lang.String strCurrency,
-			final int iLatentStateType)
+	public static final Map<JulianDate, FundingCurveMetrics> HorizonMetrics (
+		final JulianDate[] spotDateArray,
+		final String[] fixFloatMaturityTenorArray,
+		final double[][] fixFloatQuoteGrid,
+		final String[] inTenorArray,
+		final String[] forTenorArray,
+		final String currency,
+		final int latentStateType)
 	{
-		if (null == adtSpot || null == astrFixFloatMaturityTenor || null == aadblFixFloatQuote || null ==
-			astrInTenor || null == astrForTenor)
+		if (null == spotDateArray || 0 == spotDateArray.length ||
+			null == fixFloatMaturityTenorArray || 0 == fixFloatMaturityTenorArray.length ||
+			null == fixFloatQuoteGrid ||
+			null == inTenorArray || 0 == inTenorArray.length ||
+			null == forTenorArray || 0 == forTenorArray.length)
+		{
 			return null;
+		}
 
-		int iNumClose = adtSpot.length;
-		int iNumInTenor = astrInTenor.length;
-		int iNumForTenor = astrForTenor.length;
-		double[] adblForTenorDCF = new double[iNumForTenor];
-		int iNumCalibrationInstrument = astrFixFloatMaturityTenor.length;
+		double[] forTenorDayCountFractionArray = new double[forTenorArray.length];
 
-		if (0 == iNumClose || 0 == iNumCalibrationInstrument || 0 == iNumInTenor || 0 == iNumForTenor)
-			return null;
-
-		for (int i = 0; i < iNumForTenor; ++i) {
+		for (int forTenorIndex = 0; forTenorIndex < forTenorArray.length; ++forTenorIndex) {
 			try {
-				adblForTenorDCF[i] = org.drip.analytics.support.Helper.TenorToYearFraction (astrForTenor[i]);
-			} catch (java.lang.Exception e) {
+				forTenorDayCountFractionArray[forTenorIndex] =
+					Helper.TenorToYearFraction (forTenorArray[forTenorIndex]);
+			} catch (Exception e) {
 				e.printStackTrace();
 
 				return null;
 			}
 		}
 
-		java.util.Map<org.drip.analytics.date.JulianDate, org.drip.historical.state.FundingCurveMetrics>
-			mapFCM = new java.util.TreeMap<org.drip.analytics.date.JulianDate,
-				org.drip.historical.state.FundingCurveMetrics>();
+		Map<JulianDate, FundingCurveMetrics> fundingCurveMetricsMap =
+			new TreeMap<JulianDate, FundingCurveMetrics>();
 
-		for (int i = 0; i < iNumClose; ++i) {
-			org.drip.historical.state.FundingCurveMetrics fcm = null;
-			int iNumFixFloatQuote = null == aadblFixFloatQuote[i] ? 0 : aadblFixFloatQuote[i].length;
+		for (int spotDateIndex = 0; spotDateIndex < spotDateArray.length; ++spotDateIndex) {
+			FundingCurveMetrics fundingCurveMetrics = null;
+			int fixFloatQuoteCount = null == fixFloatQuoteGrid[spotDateIndex] ?
+				0 : fixFloatQuoteGrid[spotDateIndex].length;
 
-			if (0 == iNumFixFloatQuote || iNumFixFloatQuote != iNumCalibrationInstrument) continue;
+			if (fixFloatQuoteCount != fixFloatMaturityTenorArray.length) {
+				continue;
+			}
 
-			org.drip.state.discount.MergedDiscountForwardCurve dcFunding =
-				org.drip.service.template.LatentMarketStateBuilder.FundingCurve (adtSpot[i], strCurrency,
-					null, null, "ForwardRate", null, "ForwardRate", astrFixFloatMaturityTenor,
-						aadblFixFloatQuote[i], "SwapRate", iLatentStateType);
+			MergedDiscountForwardCurve fundingDiscountCurve = LatentMarketStateBuilder.FundingCurve (
+				spotDateArray[spotDateIndex],
+				currency,
+				null,
+				null,
+				"ForwardRate",
+				null,
+				"ForwardRate",
+				fixFloatMaturityTenorArray,
+				fixFloatQuoteGrid[spotDateIndex],
+				"SwapRate",
+				latentStateType
+			);
 
-			if (null == dcFunding) continue;
+			if (null == fundingDiscountCurve) {
+				continue;
+			}
 
 			try {
-				fcm = new org.drip.historical.state.FundingCurveMetrics (adtSpot[i]);
+				fundingCurveMetrics = new FundingCurveMetrics (spotDateArray[spotDateIndex]);
 
-				for (java.lang.String strInTenor : astrInTenor) {
-					org.drip.analytics.date.JulianDate dtIn = adtSpot[i].addTenor (strInTenor);
+				for (String inTenor : inTenorArray) {
+					JulianDate inTenorDate = spotDateArray[spotDateIndex].addTenor (inTenor);
 
-					for (int j = 0; j < iNumForTenor; ++j) {
-						if (!fcm.addNativeForwardRate (strInTenor, astrForTenor[j], java.lang.Math.pow
-							(dcFunding.df (dtIn) / dcFunding.df (dtIn.addTenor (astrForTenor[j])), 1. /
-								adblForTenorDCF[j]) - 1.))
+					for (int forTenorIndex = 0; forTenorIndex < forTenorArray.length; ++forTenorIndex) {
+						if (!fundingCurveMetrics.addNativeForwardRate (
+							inTenor,
+							forTenorArray[forTenorIndex],
+							Math.pow (
+								fundingDiscountCurve.df (inTenorDate) / fundingDiscountCurve.df (
+									inTenorDate.addTenor (forTenorArray[forTenorIndex])
+								),
+								1. / forTenorDayCountFractionArray[forTenorIndex]
+							) - 1.
+						))
+						{
 							continue;
+						}
 					}
 				}
-			} catch (java.lang.Exception e) {
+			} catch (Exception e) {
 				e.printStackTrace();
 
 				continue;
 			}
 
-			mapFCM.put (adtSpot[i], fcm);
+			fundingCurveMetricsMap.put (spotDateArray[spotDateIndex], fundingCurveMetrics);
 		}
 
-		return mapFCM;
+		return fundingCurveMetricsMap;
 	}
 
 	/**
 	 * Generate the Funding Curve Map
 	 * 
-	 * @param adtSpot Array of Spot
-	 * @param astrFixFloatMaturityTenor Array of Fix Float Maturity Tenors
-	 * @param aadblFixFloatQuote Array of Fix Float Swap Rates
-	 * @param strCurrency Funding Currency
-	 * @param iLatentStateType Latent State Type
+	 * @param spotDateArray Array of Spot
+	 * @param fixFloatMaturityTenorArray Array of Fix Float Maturity Tenors
+	 * @param fixFloatQuoteGrid Array of Fix Float Swap Rates
+	 * @param currency Funding Currency
+	 * @param latentStateType Latent State Type
 	 * 
 	 * @return The Funding Curve Map
 	 */
 
-	public static final java.util.Map<org.drip.analytics.date.JulianDate,
-		org.drip.state.discount.MergedDiscountForwardCurve> HistoricalMap (
-			final org.drip.analytics.date.JulianDate[] adtSpot,
-			final java.lang.String[] astrFixFloatMaturityTenor,
-			final double[][] aadblFixFloatQuote,
-			final java.lang.String strCurrency,
-			final int iLatentStateType)
+	public static final Map<JulianDate, MergedDiscountForwardCurve> HistoricalMap (
+		final JulianDate[] spotDateArray,
+		final String[] fixFloatMaturityTenorArray,
+		final double[][] fixFloatQuoteGrid,
+		final String currency,
+		final int latentStateType)
 	{
-		if (null == adtSpot || null == astrFixFloatMaturityTenor || null == aadblFixFloatQuote) return null;
+		if (null == spotDateArray || 0 == spotDateArray.length ||
+			null == fixFloatMaturityTenorArray || 0 == fixFloatMaturityTenorArray.length ||
+			null == fixFloatQuoteGrid)
+		{
+			return null;
+		}
 
-		int iNumClose = adtSpot.length;
-		int iNumCalibrationInstrument = astrFixFloatMaturityTenor.length;
+		Map<JulianDate, MergedDiscountForwardCurve> mapFundingCurve =
+			new TreeMap<JulianDate, MergedDiscountForwardCurve>();
 
-		if (0 == iNumClose || 0 == iNumCalibrationInstrument) return null;
+		for (int spotDateIndex = 0; spotDateIndex < spotDateArray.length; ++spotDateIndex) {
+			int fixFloatQuoteCount = null == fixFloatQuoteGrid[spotDateIndex] ?
+				0 : fixFloatQuoteGrid[spotDateIndex].length;
 
-		java.util.Map<org.drip.analytics.date.JulianDate, org.drip.state.discount.MergedDiscountForwardCurve>
-			mapFundingCurve = new java.util.TreeMap<org.drip.analytics.date.JulianDate,
-				org.drip.state.discount.MergedDiscountForwardCurve>();
+			if (fixFloatQuoteCount != fixFloatMaturityTenorArray.length) {
+				continue;
+			}
 
-		for (int i = 0; i < iNumClose; ++i) {
-			int iNumFixFloatQuote = null == aadblFixFloatQuote[i] ? 0 : aadblFixFloatQuote[i].length;
+			MergedDiscountForwardCurve fundingDiscountCurve = LatentMarketStateBuilder.FundingCurve (
+				spotDateArray[spotDateIndex],
+				currency,
+				null,
+				null,
+				"ForwardRate",
+				null,
+				"ForwardRate",
+				fixFloatMaturityTenorArray,
+				fixFloatQuoteGrid[spotDateIndex],
+				"SwapRate",
+				latentStateType
+			);
 
-			if (0 == iNumFixFloatQuote || iNumFixFloatQuote != iNumCalibrationInstrument) continue;
+			if (null == fundingDiscountCurve) {
+				continue;
+			}
 
-			org.drip.state.discount.MergedDiscountForwardCurve dcFunding =
-				org.drip.service.template.LatentMarketStateBuilder.FundingCurve (adtSpot[i], strCurrency,
-					null, null, "ForwardRate", null, "ForwardRate", astrFixFloatMaturityTenor,
-						aadblFixFloatQuote[i], "SwapRate", iLatentStateType);
-
-			if (null == dcFunding) continue;
-
-			mapFundingCurve.put (adtSpot[i], dcFunding);
+			mapFundingCurve.put (spotDateArray[spotDateIndex], fundingDiscountCurve);
 		}
 
 		return mapFundingCurve;

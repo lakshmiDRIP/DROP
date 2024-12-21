@@ -1,6 +1,8 @@
 
 package org.drip.service.state;
 
+import java.util.TreeMap;
+
 import org.drip.analytics.date.JulianDate;
 import org.drip.historical.state.CreditCurveMetrics;
 import org.drip.market.otc.CreditIndexConvention;
@@ -96,7 +98,8 @@ import org.drip.state.discount.MergedDiscountForwardCurve;
  * 	Functionality:
  *
  *  <ul>
- * 		<li>Construct an Instance of the Australian Treasury AUD AGB Bond</li>
+ * 		<li>Generate the Daily Metrics for the Specified Inputs</li>
+ * 		<li>Generate the Horizon Metrics for the Specified Inputs</li>
  *  </ul>
  *
  *	<br>
@@ -115,7 +118,7 @@ public class CreditCurveAPI
 {
 
 	/**
-	 * Generate the Horizon Metrics for the Specified Inputs
+	 * Generate the Daily Metrics for the Specified Inputs
 	 * 
 	 * @param spotDate The Spot Date
 	 * @param fundingFixingMaturityTenorArray Array of the Funding Fixing Curve Calibration Instrument Tenors
@@ -208,77 +211,100 @@ public class CreditCurveAPI
 	/**
 	 * Generate the Horizon Metrics for the Specified Inputs
 	 * 
-	 * @param aspotDate Array of Horizon Dates
+	 * @param spotDateArray Array of Horizon Dates
 	 * @param fundingFixingMaturityTenorArray Array of the Funding Fixing Curve Calibration Instrument Tenors
-	 * @param afundingFixingQuoteArray Array of the Funding Fixing Curve Calibration Instrument Quotes
-	 * @param afullCreditIndexName Array of the Full Credit Index Names
-	 * @param acreditIndexQuotedSpread Array of the Credit Index Quoted Spreads
+	 * @param fundingFixingQuoteArray Array of the Funding Fixing Curve Calibration Instrument Quotes
+	 * @param fullCreditIndexNameArray Array of the Full Credit Index Names
+	 * @param creditIndexQuotedSpreadArray Array of the Credit Index Quoted Spreads
 	 * @param forTenorArray Array of the "For" Tenors
 	 * 
 	 * @return Map of the Dated Credit Curve Metrics
 	 */
 
 	public static final java.util.TreeMap<JulianDate, CreditCurveMetrics> HorizonMetrics (
-		final JulianDate[] aspotDate,
+		final JulianDate[] spotDateArray,
 		final String[] fundingFixingMaturityTenorArray,
-		final double[][] afundingFixingQuoteArray,
-		final String[] afullCreditIndexName,
-		final double[] acreditIndexQuotedSpread,
+		final double[][] fundingFixingQuoteArray,
+		final String[] fullCreditIndexNameArray,
+		final double[] creditIndexQuotedSpreadArray,
 		final String[] forTenorArray)
 	{
-		if (null == aspotDate || null == fundingFixingMaturityTenorArray || null == afundingFixingQuoteArray ||
-			null == afullCreditIndexName || null == acreditIndexQuotedSpread || null == forTenorArray)
+		if (null == spotDateArray || 0 == spotDateArray.length ||
+			null == fundingFixingMaturityTenorArray || 0 == fundingFixingMaturityTenorArray.length ||
+			null == fundingFixingQuoteArray ||
+			null == fullCreditIndexNameArray ||
+			null == creditIndexQuotedSpreadArray ||
+			null == forTenorArray || 0 == forTenorArray.length)
+		{
 			return null;
+		}
 
-		int iNumSpot = aspotDate.length;
-		int iNumForTenor = forTenorArray.length;
-		int iNumFundingFixingInstrument = fundingFixingMaturityTenorArray.length;
-
-		if (0 == iNumSpot || iNumSpot != afundingFixingQuoteArray.length || iNumSpot !=
-			afullCreditIndexName.length || iNumSpot != acreditIndexQuotedSpread.length || 0 ==
-				iNumFundingFixingInstrument || 0 == iNumForTenor)
+		if (spotDateArray.length != fundingFixingQuoteArray.length ||
+			spotDateArray.length != fullCreditIndexNameArray.length ||
+			spotDateArray.length != creditIndexQuotedSpreadArray.length)
+		{
 			return null;
+		}
 
-		java.util.TreeMap<JulianDate, CreditCurveMetrics>
-			mapCCM = new java.util.TreeMap<JulianDate,
-				CreditCurveMetrics>();
+		TreeMap<JulianDate, CreditCurveMetrics> creditCurveMetricsMap =
+			new TreeMap<JulianDate, CreditCurveMetrics>();
 
-		for (int i = 0; i < iNumSpot; ++i) {
+		for (int spotDateIndex = 0; spotDateIndex < spotDateArray.length; ++spotDateIndex) {
 			CreditIndexConvention creditIndexConvention =
-				CreditIndexConventionContainer.ConventionFromFullName (afullCreditIndexName[i]);
+				CreditIndexConventionContainer.ConventionFromFullName (
+					fullCreditIndexNameArray[spotDateIndex]
+			);
 
-			if (null == creditIndexConvention) continue;
+			if (null == creditIndexConvention) {
+				continue;
+			}
 
-			MergedDiscountForwardCurve dcFundingFixing =
-				LatentMarketStateBuilder.FundingCurve (aspotDate[i], creditIndexConvention.currency(),
-					null, null, "ForwardRate", null, "ForwardRate", fundingFixingMaturityTenorArray,
-						afundingFixingQuoteArray[i], "SwapRate",
-							LatentMarketStateBuilder.SHAPE_PRESERVING);
+			MergedDiscountForwardCurve fundingFixingDiscountCurve = LatentMarketStateBuilder.FundingCurve (
+				spotDateArray[spotDateIndex],
+				creditIndexConvention.currency(),
+				null,
+				null,
+				"ForwardRate",
+				null,
+				"ForwardRate",
+				fundingFixingMaturityTenorArray,
+				fundingFixingQuoteArray[spotDateIndex],
+				"SwapRate",
+				LatentMarketStateBuilder.SHAPE_PRESERVING
+			);
 
-			if (null == dcFundingFixing) continue;
+			if (null == fundingFixingDiscountCurve) {
+				continue;
+			}
 
-			CreditCurve cc =
-				LatentMarketStateBuilder.CreditCurve (aspotDate[i], new
-					CreditDefaultSwap[] {creditIndexConvention.indexCDS()}, new double[]
-						{acreditIndexQuotedSpread[i]}, "FairPremium", dcFundingFixing);
+			CreditCurve creditCurve = LatentMarketStateBuilder.CreditCurve (
+				spotDateArray[spotDateIndex],
+				new CreditDefaultSwap[] {creditIndexConvention.indexCDS()},
+				new double[] {creditIndexQuotedSpreadArray[spotDateIndex]},
+				"FairPremium",
+				fundingFixingDiscountCurve
+			);
 
-			if (null == cc) continue;
+			if (null == creditCurve) {
+				continue;
+			}
 
 			try {
-				CreditCurveMetrics ccm = new
-					CreditCurveMetrics (aspotDate[i]);
+				CreditCurveMetrics creditCurveMetrics =
+					new CreditCurveMetrics (spotDateArray[spotDateIndex]);
 
-				for (int j = 0; j < iNumForTenor; ++j) {
-					JulianDate dtFor = aspotDate[i].addTenor (forTenorArray[j]);
+				for (int forTenorIndex = 0; forTenorIndex < forTenorArray.length; ++forTenorIndex) {
+					JulianDate dtFor = spotDateArray[spotDateIndex].addTenor (forTenorArray[forTenorIndex]);
 
-					if (null == dtFor) continue;
-
-					if (!ccm.addSurvivalProbability (dtFor, cc.survival (dtFor)) || !ccm.addRecoveryRate
-						(dtFor, cc.recovery (dtFor)))
+					if (null == dtFor ||
+						!creditCurveMetrics.addSurvivalProbability (dtFor, creditCurve.survival (dtFor)) ||
+						!creditCurveMetrics.addRecoveryRate (dtFor, creditCurve.recovery (dtFor)))
+					{
 						continue;
+					}
 				}
 
-				mapCCM.put (aspotDate[i], ccm);
+				creditCurveMetricsMap.put (spotDateArray[spotDateIndex], creditCurveMetrics);
 			} catch (Exception e) {
 				e.printStackTrace();
 
@@ -286,6 +312,6 @@ public class CreditCurveAPI
 			}
 		}
 
-		return mapCCM;
+		return creditCurveMetricsMap;
 	}
 }

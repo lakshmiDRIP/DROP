@@ -1,6 +1,8 @@
 
 package org.drip.service.scenario;
 
+import java.util.Map;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
@@ -79,41 +81,49 @@ package org.drip.service.scenario;
  */
 
 /**
- * <i>NamedFieldMap</i> holds a Double Map of Field Values and their Name.
- * 
- * <br><br>
+ * <i>NamedFieldMap</i> holds a Double Map of Field Values and their Name. It provides the following
+ *  Functionality:
+ *
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationSupportLibrary.md">Computation Support</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/README.md">Environment, Product/Definition Containers, and Scenario/State Manipulation APIs</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/scenario/README.md">Custom Scenario Service Metric Generator</a></li>
+ * 		<li><i>NamedFieldMap</i> Constructor</li>
+ * 		<li>Retrieve the Field Name</li>
+ * 		<li>Retrieve the Field Value Map</li>
  *  </ul>
- * <br><br>
+ *
+ *	<br>
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationSupportLibrary.md">Computation Support</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/README.md">Environment, Product/Definition Containers, and Scenario/State Manipulation APIs</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/scenario/README.md">Custom Scenario Service Metric Generator</a></td></tr>
+ *  </table>
+ *	<br>
  * 
  * @author Lakshmi Krishnamurthy
  */
 
-public class NamedFieldMap {
-	private java.lang.String _strName = "";
-	private java.util.Map<java.lang.String, java.lang.Double> _mapValue = null;
+public class NamedFieldMap
+{
+	private String _name = "";
+	private Map<String, Double> _value = null;
 
 	/**
-	 * NamedFieldMap Constructor
+	 * <i>NamedFieldMap</i> Constructor
 	 * 
-	 * @param strName Field Name
-	 * @param mapValue Field Value Map
+	 * @param name Field Name
+	 * @param value Field Value Map
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public NamedFieldMap (
-		final java.lang.String strName,
-		final java.util.Map<java.lang.String, java.lang.Double>  mapValue)
-		throws java.lang.Exception
+		final String name,
+		final Map<String, Double> value)
+		throws Exception
 	{
-		if (null == (_strName = strName) || _strName.isEmpty() || null == (_mapValue = mapValue) || 0 ==
-			mapValue.size())
-			throw new java.lang.Exception ("NamedFieldMap Constructor => Invalid Inputs");
+		if (null == (_name = name) || _name.isEmpty() || null == (_value = value) || _value.isEmpty()) {
+			throw new Exception ("NamedFieldMap Constructor => Invalid Inputs");
+		}
 	}
 
 	/**
@@ -122,9 +132,9 @@ public class NamedFieldMap {
 	 * @return The Field Name
 	 */
 
-	public java.lang.String name()
+	public String name()
 	{
-		return _strName;
+		return _name;
 	}
 
 	/**
@@ -133,8 +143,8 @@ public class NamedFieldMap {
 	 * @return The Field Value Map
 	 */
 
-	public java.util.Map<java.lang.String, java.lang.Double> value()
+	public Map<String, Double> value()
 	{
-		return _mapValue;
+		return _value;
 	}
 }

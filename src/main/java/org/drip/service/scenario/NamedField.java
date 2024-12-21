@@ -6,6 +6,9 @@ package org.drip.service.scenario;
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -79,42 +82,50 @@ package org.drip.service.scenario;
  */
 
 /**
- * <i>NamedField</i> holds a Double Field Name and Value.
- * 
- * <br><br>
+ * <i>NamedField</i> holds a Double Field Name and Value. It provides the following Functionality:
+ *
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationSupportLibrary.md">Computation Support</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/README.md">Environment, Product/Definition Containers, and Scenario/State Manipulation APIs</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/scenario/README.md">Custom Scenario Service Metric Generator</a></li>
+ * 		<li><i>NamedField</i> Constructor</li>
+ * 		<li>Retrieve the Field Name</li>
+ * 		<li>Retrieve the Field Value</li>
  *  </ul>
- * <br><br>
+ *
+ *	<br>
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationSupportLibrary.md">Computation Support</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/README.md">Environment, Product/Definition Containers, and Scenario/State Manipulation APIs</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/scenario/README.md">Custom Scenario Service Metric Generator</a></td></tr>
+ *  </table>
+ *	<br>
  * 
  * @author Lakshmi Krishnamurthy
  */
 
-public class NamedField {
-	private java.lang.String _strName = "";
-	private double _dblValue = java.lang.Double.NaN;
+public class NamedField
+{
+	private String _name = "";
+	private double _value = Double.NaN;
 
 	/**
-	 * NamedField Constructor
+	 * <i>NamedField</i> Constructor
 	 * 
-	 * @param strName Field Name
-	 * @param dblValue Field Value
+	 * @param name Field Name
+	 * @param value Field Value
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public NamedField (
-		final java.lang.String strName,
-		final double dblValue)
-		throws java.lang.Exception
+		final String name,
+		final double value)
+		throws Exception
 	{
-		if (null == (_strName = strName) || _strName.isEmpty())
-			throw new java.lang.Exception ("NamedField Constructor => Invalid Inputs");
+		if (null == (_name = name) || _name.isEmpty()) {
+			throw new Exception ("NamedField Constructor => Invalid Inputs");
+		}
 
-		_dblValue = dblValue;
+		_value = value;
 	}
 
 	/**
@@ -123,9 +134,9 @@ public class NamedField {
 	 * @return The Field Name
 	 */
 
-	public java.lang.String name()
+	public String name()
 	{
-		return _strName;
+		return _name;
 	}
 
 	/**
@@ -136,6 +147,6 @@ public class NamedField {
 
 	public double value()
 	{
-		return _dblValue;
+		return _value;
 	}
 }

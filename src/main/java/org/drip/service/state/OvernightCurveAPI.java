@@ -1,11 +1,23 @@
 
 package org.drip.service.state;
 
+import java.util.Map;
+import java.util.TreeMap;
+
+import org.drip.analytics.date.JulianDate;
+import org.drip.analytics.support.Helper;
+import org.drip.historical.state.FundingCurveMetrics;
+import org.drip.service.template.LatentMarketStateBuilder;
+import org.drip.state.discount.MergedDiscountForwardCurve;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -80,93 +92,123 @@ package org.drip.service.state;
  */
 
 /**
- * <i>OvernightCurveAPI</i> computes the Metrics associated the Overnight Curve State.
- * 
- * <br><br>
+ * <i>OvernightCurveAPI</i> computes the Metrics associated the Overnight Curve State. It provides the
+ * 	following Functionality:
+ *
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationSupportLibrary.md">Computation Support</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/README.md">Environment, Product/Definition Containers, and Scenario/State Manipulation APIs</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/state/README.md">Curve Based State Metric Generator</a></li>
+ * 		<li>Generate the Overnight Curve Horizon Metrics for the Specified Date</li>
+ * 		<li>Generate the Overnight Curve Horizon Metrics For an Array of Closing Dates</li>
  *  </ul>
- * <br><br>
+ *
+ *	<br>
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationSupportLibrary.md">Computation Support</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/README.md">Environment, Product/Definition Containers, and Scenario/State Manipulation APIs</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/state/README.md">Curve Based State Metric Generator</a></td></tr>
+ *  </table>
+ *	<br>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class OvernightCurveAPI {
+public class OvernightCurveAPI
+{
 
 	/**
 	 * Generate the Overnight Curve Horizon Metrics for the Specified Date
 	 * 
-	 * @param dtSpot The Spot Date
-	 * @param astrOvernightCurveOISTenor Array of Overnight Curve Fix Float OIS Maturity Tenors
-	 * @param adblOvernightCurveOISQuote Array of Overnight Curve OIS Rates
-	 * @param astrInTenor Array of "In" Tenors
-	 * @param astrForTenor Array of "For" Tenors
-	 * @param strCurrency Overnight Currency
-	 * @param iLatentStateType Latent State Type
+	 * @param spotDate The Spot Date
+	 * @param overnightCurveOISTenorAray Array of Overnight Curve Fix Float OIS Maturity Tenors
+	 * @param overnightCurveOISQuoteGrid Array of Overnight Curve OIS Rates
+	 * @param inTenorArray Array of "In" Tenors
+	 * @param forTenorArray Array of "For" Tenors
+	 * @param currency Overnight Currency
+	 * @param latentStateType Latent State Type
 	 * 
 	 * @return The Overnight Curve Horizon Metrics
 	 */
 
-	public static final org.drip.historical.state.FundingCurveMetrics DailyMetrics (
-		final org.drip.analytics.date.JulianDate dtSpot,
-		final java.lang.String[] astrOvernightCurveOISTenor,
-		final double[] adblOvernightCurveOISQuote,
-		final java.lang.String[] astrInTenor,
-		final java.lang.String[] astrForTenor,
-		final java.lang.String strCurrency,
-		final int iLatentStateType)
+	public static final FundingCurveMetrics DailyMetrics (
+		final JulianDate spotDate,
+		final String[] overnightCurveOISTenorAray,
+		final double[] overnightCurveOISQuoteGrid,
+		final String[] inTenorArray,
+		final String[] forTenorArray,
+		final String currency,
+		final int latentStateType)
 	{
-		if (null == dtSpot || null == astrOvernightCurveOISTenor || null == adblOvernightCurveOISQuote ||
-			null == astrInTenor || null == astrForTenor)
+		if (null == spotDate ||
+			null == overnightCurveOISTenorAray || 0 == overnightCurveOISTenorAray.length ||
+			null == overnightCurveOISQuoteGrid || 0 == overnightCurveOISQuoteGrid.length ||
+			null == inTenorArray || 0 == inTenorArray.length ||
+			null == forTenorArray || 0 == forTenorArray.length ||
+			overnightCurveOISQuoteGrid.length != overnightCurveOISTenorAray.length)
+		{
 			return null;
+		}
 
-		int iNumInTenor = astrInTenor.length;
-		int iNumForTenor = astrForTenor.length;
-		double[] adblForTenorDCF = new double[iNumForTenor];
-		int iNumCalibrationInstrument = astrOvernightCurveOISTenor.length;
-		int iNumOISQuote = null == adblOvernightCurveOISQuote ? 0 : adblOvernightCurveOISQuote.length;
+		double[] forTenorDayCountFractionArray = new double[forTenorArray.length];
 
-		if (0 == iNumCalibrationInstrument || 0 == iNumInTenor || 0 == iNumForTenor || iNumOISQuote !=
-			iNumCalibrationInstrument)
-			return null;
-
-		for (int i = 0; i < iNumForTenor; ++i) {
+		for (int forTenorIndex = 0; forTenorIndex < forTenorArray.length; ++forTenorIndex) {
 			try {
-				adblForTenorDCF[i] = org.drip.analytics.support.Helper.TenorToYearFraction (astrForTenor[i]);
-			} catch (java.lang.Exception e) {
+				forTenorDayCountFractionArray[forTenorIndex] =
+					Helper.TenorToYearFraction (forTenorArray[forTenorIndex]);
+			} catch (Exception e) {
 				e.printStackTrace();
 
 				return null;
 			}
 		}
 
-		org.drip.state.discount.MergedDiscountForwardCurve dcOvernight =
-			org.drip.service.template.LatentMarketStateBuilder.OvernightCurve (dtSpot, strCurrency, null,
-				null, "Rate", astrOvernightCurveOISTenor, adblOvernightCurveOISQuote, "SwapRate", null, null,
-					null, "SwapRate", null, null, "SwapRate", iLatentStateType);
+		MergedDiscountForwardCurve overnightDiscountCurve = LatentMarketStateBuilder.OvernightCurve (
+			spotDate,
+			currency,
+			null,
+			null,
+			"Rate",
+			overnightCurveOISTenorAray,
+			overnightCurveOISQuoteGrid,
+			"SwapRate",
+			null,
+			null,
+			null,
+			"SwapRate",
+			null,
+			null,
+			"SwapRate",
+			latentStateType
+		);
 
-		if (null == dcOvernight) return null;
+		if (null == overnightDiscountCurve) {
+			return null;
+		}
 
 		try {
-			org.drip.historical.state.FundingCurveMetrics fcm = new
-				org.drip.historical.state.FundingCurveMetrics (dtSpot);
+			FundingCurveMetrics fundingCurveMetrics = new FundingCurveMetrics (spotDate);
 
-			for (java.lang.String strInTenor : astrInTenor) {
-				org.drip.analytics.date.JulianDate dtIn = dtSpot.addTenor (strInTenor);
+			for (String inTenor : inTenorArray) {
+				JulianDate dtIn = spotDate.addTenor (inTenor);
 
-				for (int j = 0; j < iNumForTenor; ++j) {
-					if (!fcm.addNativeForwardRate (strInTenor, astrForTenor[j], java.lang.Math.pow
-						(dcOvernight.df (dtIn) / dcOvernight.df (dtIn.addTenor (astrForTenor[j])), 1. /
-							adblForTenorDCF[j]) - 1.))
+				for (int forTenorIndex = 0; forTenorIndex < forTenorArray.length; ++forTenorIndex) {
+					if (!fundingCurveMetrics.addNativeForwardRate (
+						inTenor,
+						forTenorArray[forTenorIndex],
+						Math.pow (
+							overnightDiscountCurve.df (dtIn) / overnightDiscountCurve.df (
+								dtIn.addTenor (forTenorArray[forTenorIndex])
+							),
+							1. / forTenorDayCountFractionArray[forTenorIndex]
+						) - 1.
+					))
+					{
 						return null;
+					}
 				}
 			}
 
-			return fcm;
-		} catch (java.lang.Exception e) {
+			return fundingCurveMetrics;
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -176,90 +218,114 @@ public class OvernightCurveAPI {
 	/**
 	 * Generate the Overnight Curve Horizon Metrics For an Array of Closing Dates
 	 * 
-	 * @param adtSpot Array of Spot
-	 * @param astrOvernightCurveOISTenor Array of Overnight Curve Fix Float OIS Maturity Tenors
-	 * @param aadblOvernightCurveOISQuote Array of Overnight Curve OIS Rates
-	 * @param astrInTenor Array of "In" Tenors
-	 * @param astrForTenor Array of "For" Tenors
-	 * @param strCurrency Overnight Currency
-	 * @param iLatentStateType Latent State Type
+	 * @param spotDateArray Array of Spot
+	 * @param overnightCurveOISTenorAray Array of Overnight Curve Fix Float OIS Maturity Tenors
+	 * @param overnightCurveOISQuoteGrid Array of Overnight Curve OIS Rates
+	 * @param inTenorArray Array of "In" Tenors
+	 * @param forTenorArray Array of "For" Tenors
+	 * @param currency Overnight Currency
+	 * @param latentStateType Latent State Type
 	 * 
 	 * @return The Overnight Curve Horizon Metrics
 	 */
 
-	public static final java.util.Map<org.drip.analytics.date.JulianDate,
-		org.drip.historical.state.FundingCurveMetrics> HorizonMetrics (
-			final org.drip.analytics.date.JulianDate[] adtSpot,
-			final java.lang.String[] astrOvernightCurveOISTenor,
-			final double[][] aadblOvernightCurveOISQuote,
-			final java.lang.String[] astrInTenor,
-			final java.lang.String[] astrForTenor,
-			final java.lang.String strCurrency,
-			final int iLatentStateType)
+	public static final Map<JulianDate, FundingCurveMetrics> HorizonMetrics (
+		final JulianDate[] spotDateArray,
+		final String[] overnightCurveOISTenorAray,
+		final double[][] overnightCurveOISQuoteGrid,
+		final String[] inTenorArray,
+		final String[] forTenorArray,
+		final String currency,
+		final int latentStateType)
 	{
-		if (null == adtSpot || null == astrOvernightCurveOISTenor || null == aadblOvernightCurveOISQuote ||
-			null == astrInTenor || null == astrForTenor)
+		if (null == spotDateArray || 0 == spotDateArray.length ||
+			null == overnightCurveOISTenorAray || 0 == overnightCurveOISTenorAray.length ||
+			null == overnightCurveOISQuoteGrid ||
+			null == inTenorArray || 0 == inTenorArray.length ||
+			null == forTenorArray || 0 == forTenorArray.length)
+		{
 			return null;
+		}
 
-		int iNumClose = adtSpot.length;
-		int iNumInTenor = astrInTenor.length;
-		int iNumForTenor = astrForTenor.length;
-		double[] adblForTenorDCF = new double[iNumForTenor];
-		int iNumCalibrationInstrument = astrOvernightCurveOISTenor.length;
+		double[] forTenorDayCountFractionArray = new double[forTenorArray.length];
 
-		if (0 == iNumClose || 0 == iNumCalibrationInstrument || 0 == iNumInTenor || 0 == iNumForTenor)
-			return null;
-
-		for (int i = 0; i < iNumForTenor; ++i) {
+		for (int forTenorIndex = 0; forTenorIndex < forTenorArray.length; ++forTenorIndex) {
 			try {
-				adblForTenorDCF[i] = org.drip.analytics.support.Helper.TenorToYearFraction (astrForTenor[i]);
-			} catch (java.lang.Exception e) {
+				forTenorDayCountFractionArray[forTenorIndex] =
+					Helper.TenorToYearFraction (forTenorArray[forTenorIndex]);
+			} catch (Exception e) {
 				e.printStackTrace();
 
 				return null;
 			}
 		}
 
-		java.util.Map<org.drip.analytics.date.JulianDate, org.drip.historical.state.FundingCurveMetrics>
-			mapFCM = new java.util.TreeMap<org.drip.analytics.date.JulianDate,
-				org.drip.historical.state.FundingCurveMetrics>();
+		Map<JulianDate, FundingCurveMetrics> fundingCurveMetricsMap =
+			new TreeMap<JulianDate, FundingCurveMetrics>();
 
-		for (int i = 0; i < iNumClose; ++i) {
-			org.drip.historical.state.FundingCurveMetrics fcm = null;
-			int iNumOISQuote = null == aadblOvernightCurveOISQuote[i] ? 0 :
-				aadblOvernightCurveOISQuote[i].length;
+		for (int spotDateIndex = 0; spotDateIndex < spotDateArray.length; ++spotDateIndex) {
+			FundingCurveMetrics fundingCurveMetrics = null;
+			int oisQuoteCount = null == overnightCurveOISQuoteGrid[spotDateIndex] ? 0 :
+				overnightCurveOISQuoteGrid[spotDateIndex].length;
 
-			if (0 == iNumOISQuote || iNumOISQuote != iNumCalibrationInstrument) continue;
+			if (0 == oisQuoteCount || oisQuoteCount != overnightCurveOISTenorAray.length) {
+				continue;
+			}
 
-			org.drip.state.discount.MergedDiscountForwardCurve dcOvernight =
-				org.drip.service.template.LatentMarketStateBuilder.OvernightCurve (adtSpot[i], strCurrency,
-					null, null, "Rate", astrOvernightCurveOISTenor, aadblOvernightCurveOISQuote[i],
-						"SwapRate", null, null, null, "SwapRate", null, null, "SwapRate", iLatentStateType);
+			MergedDiscountForwardCurve overnightDiscounCurve = LatentMarketStateBuilder.OvernightCurve (
+				spotDateArray[spotDateIndex],
+				currency,
+				null,
+				null,
+				"Rate",
+				overnightCurveOISTenorAray,
+				overnightCurveOISQuoteGrid[spotDateIndex],
+				"SwapRate",
+				null,
+				null,
+				null,
+				"SwapRate",
+				null,
+				null,
+				"SwapRate",
+				latentStateType
+			);
 
-			if (null == dcOvernight) continue;
+			if (null == overnightDiscounCurve) {
+				continue;
+			}
 
 			try {
-				fcm = new org.drip.historical.state.FundingCurveMetrics (adtSpot[i]);
+				fundingCurveMetrics = new FundingCurveMetrics (spotDateArray[spotDateIndex]);
 
-				for (java.lang.String strInTenor : astrInTenor) {
-					org.drip.analytics.date.JulianDate dtIn = adtSpot[i].addTenor (strInTenor);
+				for (String inTenor : inTenorArray) {
+					JulianDate inTenorDate = spotDateArray[spotDateIndex].addTenor (inTenor);
 
-					for (int j = 0; j < iNumForTenor; ++j) {
-						if (!fcm.addNativeForwardRate (strInTenor, astrForTenor[j], java.lang.Math.pow
-							(dcOvernight.df (dtIn) / dcOvernight.df (dtIn.addTenor (astrForTenor[j])), 1. /
-								adblForTenorDCF[j]) - 1.))
+					for (int forTenorIndex = 0; forTenorIndex < forTenorArray.length; ++forTenorIndex) {
+						if (!fundingCurveMetrics.addNativeForwardRate (
+							inTenor,
+							forTenorArray[forTenorIndex],
+							Math.pow (
+								overnightDiscounCurve.df (inTenorDate) / overnightDiscounCurve.df (
+									inTenorDate.addTenor (forTenorArray[forTenorIndex])
+								),
+								1. / forTenorDayCountFractionArray[forTenorIndex]
+							) - 1.
+						))
+						{
 							continue;
+						}
 					}
 				}
-			} catch (java.lang.Exception e) {
+			} catch (Exception e) {
 				e.printStackTrace();
 
 				continue;
 			}
 
-			mapFCM.put (adtSpot[i], fcm);
+			fundingCurveMetricsMap.put (spotDateArray[spotDateIndex], fundingCurveMetrics);
 		}
 
-		return mapFCM;
+		return fundingCurveMetricsMap;
 	}
 }
