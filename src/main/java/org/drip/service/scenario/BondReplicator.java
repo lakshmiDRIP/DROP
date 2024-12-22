@@ -7,6 +7,7 @@ import org.drip.analytics.cashflow.ComposableUnitFloatingPeriod;
 import org.drip.analytics.cashflow.CompositeFloatingPeriod;
 import org.drip.analytics.cashflow.CompositePeriod;
 import org.drip.analytics.date.JulianDate;
+import org.drip.analytics.output.BondEOSMetrics;
 import org.drip.analytics.support.CaseInsensitiveHashMap;
 import org.drip.analytics.support.Helper;
 import org.drip.numerical.common.NumberUtil;
@@ -18,6 +19,7 @@ import org.drip.param.valuation.ValuationParams;
 import org.drip.param.valuation.WorkoutInfo;
 import org.drip.product.credit.BondComponent;
 import org.drip.product.definition.CalibratableComponent;
+import org.drip.product.params.EmbeddedOptionSchedule;
 import org.drip.service.template.LatentMarketStateBuilder;
 import org.drip.state.creator.ScenarioCreditCurveBuilder;
 import org.drip.state.credit.CreditCurve;
@@ -114,7 +116,55 @@ import org.drip.state.sequence.GovvieBuilderSettings;
  * 	following Functionality:
  *
  *  <ul>
- * 		<li>Empty <i>BondReplicationRun</i> Constructor</li>
+ * 		<li>Subordinate Corporate Recovery Rate</li>
+ * 		<li>Senior Corporate Recovery Rate</li>
+ * 		<li>Loan Corporate Recovery Rate</li>
+ * 		<li>Generate a Standard Subordinate Corporate <i>BondReplicator</i> Instance</li>
+ * 		<li>Generate a Standard Senior Corporate <i>BondReplicator</i> Instance</li>
+ * 		<li>Generate a Standard Corporate Loan <i>BondReplicator</i> Instance</li>
+ * 		<li><i>BondReplicator</i> Constructor</li>
+ * 		<li>Retrieve the Bond Current Market Price</li>
+ * 		<li>Retrieve the Bond Issue Price</li>
+ * 		<li>Retrieve the Bond Issue Amount</li>
+ * 		<li>Retrieve the Value Date</li>
+ * 		<li>Retrieve the Array of Deposit Instrument Maturity Tenors</li>
+ * 		<li>Retrieve the Array of Deposit Instrument Quotes</li>
+ * 		<li>Retrieve the Array of Futures Instrument Quotes</li>
+ * 		<li>Retrieve the Array of Fix-Float IRS Instrument Maturity Tenors</li>
+ * 		<li>Retrieve the Array of Fix-Float IRS Instrument Quotes</li>
+ * 		<li>Retrieve the Recovery Rate</li>
+ * 		<li>Retrieve the Custom Yield Bump</li>
+ * 		<li>Retrieve the Custom Credit Basis Bump</li>
+ * 		<li>Retrieve the Z Spread Bump</li>
+ * 		<li>Retrieve the Tenor Quote Bump</li>
+ * 		<li>Retrieve the Spread Duration Multiplier</li>
+ * 		<li>Retrieve the Govvie Code</li>
+ * 		<li>Retrieve the Array of Govvie Instrument Maturity Tenors</li>
+ * 		<li>Retrieve the Array of Govvie Yield Quotes</li>
+ * 		<li>Retrieve the Flag that indicates the Generation the Credit Metrics from the Market Price</li>
+ * 		<li>Retrieve the Array of CDS Instrument Maturity Tenors</li>
+ * 		<li>Retrieve the Array of CDS Quotes</li>
+ * 		<li>Retrieve the FX Rate</li>
+ * 		<li>Retrieve the Settle Lag</li>
+ * 		<li>Retrieve the Bond Component Instance</li>
+ * 		<li>Retrieve the Settle Date</li>
+ * 		<li>Retrieve the Valuation Parameters</li>
+ * 		<li>Retrieve the Map of the Tenor Bumped Up Instances of the Funding Curve CSQC</li>
+ * 		<li>Retrieve the Map of the Tenor Bumped Down Instances of the Funding Curve CSQC</li>
+ * 		<li>Retrieve the Map of the Tenor Bumped Up Instances of the Forward Funding Curve CSQC</li>
+ * 		<li>Retrieve the Map of the Tenor Bumped Down Instances of the Forward Funding Curve CSQC</li>
+ * 		<li>Retrieve the Map of the Tenor Bumped Up Instances of the Govvie Curve CSQC</li>
+ * 		<li>Retrieve the Map of the Tenor Bumped Down Instances of the Govvie Curve CSQC</li>
+ * 		<li>Retrieve the Map of the Tenor Bumped Instances of the Credit Curve CSQC
+ * 		<li>Retrieve the CSQC built out of the Base Funding Curve</li>
+ * 		<li>Retrieve the CSQC built out of the Base Euro Dollar Curve</li>
+ * 		<li>Retrieve the CSQC built out of the Base Credit Curve</li>
+ * 		<li>Retrieve the CSQC built out of the Funding Curve Flat Bumped 1 bp</li>
+ * 		<li>Retrieve the CSQC built out of the Credit Curve Flat Bumped 1 bp</li>
+ * 		<li>Retrieve the Reset Date</li>
+ * 		<li>Retrieve the Reset Rate</li>
+ * 		<li>Retrieve the EOS Metrics Replicator</li>
+ * 		<li>Generate an Instance of a Replication Run</li>
  *  </ul>
  *
  *	<br>
@@ -206,7 +256,7 @@ public class BondReplicator
 		new CaseInsensitiveHashMap<CurveSurfaceQuoteContainer>();
 
 	/**
-	 * Generate a Standard Subordinate Corporate BondReplicator Instance
+	 * Generate a Standard Subordinate Corporate <i>BondReplicator</i> Instance
 	 * 
 	 * @param currentPrice Current Price
 	 * @param issuePrice Issue Price
@@ -290,7 +340,7 @@ public class BondReplicator
 	}
 
 	/**
-	 * Generate a Standard Senior Corporate BondReplicator Instance
+	 * Generate a Standard Senior Corporate <i>BondReplicator</i> Instance
 	 * 
 	 * @param currentPrice Current Price
 	 * @param issuePrice Issue Price
@@ -374,7 +424,7 @@ public class BondReplicator
 	}
 
 	/**
-	 * Generate a Standard Corporate Loan BondReplicator Instance
+	 * Generate a Standard Corporate Loan <i>BondReplicator</i> Instance
 	 * 
 	 * @param currentPrice Current Price
 	 * @param issuePrice Issue Price
@@ -1697,101 +1747,100 @@ public class BondReplicator
 
 	public BondReplicationRun generateRun()
 	{
-		int iMaturityDate = _bondComponent.maturityDate().julian();
+		int maturityDate = _bondComponent.maturityDate().julian();
 
-		double dblNextPutFactor = 1.;
-		double dblNextCallFactor = 1.;
-		int iNextPutDate = iMaturityDate;
-		int iNextCallDate = iMaturityDate;
-		double dblCV01 = Double.NaN;
-		double dblAccrued = Double.NaN;
-		double dblYield01 = Double.NaN;
-		double dblNominalYield = Double.NaN;
-		double dblBEYToMaturity = Double.NaN;
-		double dblOASToExercise = Double.NaN;
-		double dblOASToMaturity = Double.NaN;
-		double dblSpreadDuration = Double.NaN;
-		double dblYieldToMaturity = Double.NaN;
-		double dblParOASToExercise = Double.NaN;
-		double dblESpreadToExercise = Double.NaN;
-		double dblISpreadToExercise = Double.NaN;
-		double dblJSpreadToExercise = Double.NaN;
-		double dblNSpreadToExercise = Double.NaN;
-		double dblZSpreadToExercise = Double.NaN;
-		double dblZSpreadToMaturity = Double.NaN;
-		double dblBondBasisToExercise = Double.NaN;
-		double dblBondBasisToMaturity = Double.NaN;
-		double dblConvexityToExercise = Double.NaN;
-		double dblWALCreditToExercise = Double.NaN;
-		double dblParZSpreadToExercise = Double.NaN;
-		double dblCreditBasisToExercise = Double.NaN;
-		double dblWALLossOnlyToExercise = Double.NaN;
-		double dblYieldFromPriceNextPut = Double.NaN;
-		double dblYieldFromPriceNextCall = Double.NaN;
-		double dblWALCouponOnlyToExercise = Double.NaN;
-		double dblDiscountMarginToExercise = Double.NaN;
-		double dblParCreditBasisToExercise = Double.NaN;
-		double dblYieldToMaturityFwdCoupon = Double.NaN;
-		double dblEffectiveDurationAdjusted = Double.NaN;
-		double dblMacaulayDurationToMaturity = Double.NaN;
-		double dblModifiedDurationToExercise = Double.NaN;
-		double dblModifiedDurationToMaturity = Double.NaN;
-		double dblWALPrincipalOnlyToExercise = Double.NaN;
-		double dblWALPrincipalOnlyToMaturity = Double.NaN;
-		Map<String, Double> mapCreditKRD = null;
-		Map<String, Double> mapCreditKPRD = null;
+		double cv01 = Double.NaN;
+		double nextPutFactor = 1.;
+		double nextCallFactor = 1.;
+		double accrued = Double.NaN;
+		double yield01 = Double.NaN;
+		int nextPutDate = maturityDate;
+		int nextCallDate = maturityDate;
+		double nominalYield = Double.NaN;
+		double beyToMaturity = Double.NaN;
+		double oasToExercise = Double.NaN;
+		double oasToMaturity = Double.NaN;
+		double spreadDuration = Double.NaN;
+		double yieldToMaturity = Double.NaN;
+		double parOASToExercise = Double.NaN;
+		double eSpreadToExercise = Double.NaN;
+		double iSpreadToExercise = Double.NaN;
+		double jSpreadToExercise = Double.NaN;
+		double nSpreadToExercise = Double.NaN;
+		double zSpreadToExercise = Double.NaN;
+		double zSpreadToMaturity = Double.NaN;
+		double bondBasisToExercise = Double.NaN;
+		double bondBasisToMaturity = Double.NaN;
+		double convexityToExercise = Double.NaN;
+		double walCreditToExercise = Double.NaN;
+		Map<String, Double> creditKRDMap = null;
+		double parZSpreadToExercise = Double.NaN;
+		Map<String, Double> creditKPRDMap = null;
+		double creditBasisToExercise = Double.NaN;
+		double walLossOnlyToExercise = Double.NaN;
+		double yieldFromPriceNextPut = Double.NaN;
+		double yieldFromPriceNextCall = Double.NaN;
+		double walCouponOnlyToExercise = Double.NaN;
+		double discountMarginToExercise = Double.NaN;
+		double parCreditBasisToExercise = Double.NaN;
+		double effectiveDurationAdjusted = Double.NaN;
+		double macaulayDurationToMaturity = Double.NaN;
+		double modifiedDurationToExercise = Double.NaN;
+		double modifiedDurationToMaturity = Double.NaN;
+		double walPrincipalOnlyToExercise = Double.NaN;
+		double walPrincipalOnlyToMaturity = Double.NaN;
+		double yieldToMaturityForwardCoupon = Double.NaN;
 
-		int iValueDate = _valuationDate.julian();
+		int valueDate = _valuationDate.julian();
 
 		String currency = _bondComponent.currency();
 
-		org.drip.product.params.EmbeddedOptionSchedule eosPut = _bondComponent.putSchedule();
+		BondReplicationRun bondReplicationRun = new BondReplicationRun();
 
-		org.drip.product.params.EmbeddedOptionSchedule eosCall = _bondComponent.callSchedule();
+		EmbeddedOptionSchedule putEmbeddedOptionSchedule = _bondComponent.putSchedule();
 
-		BondReplicationRun arr = new
-			BondReplicationRun();
+		EmbeddedOptionSchedule callEmbeddedOptionSchedule = _bondComponent.callSchedule();
 
-		WorkoutInfo wi = _bondComponent.exerciseYieldFromPrice (_valuationParams, _fundingBaseCurveSurfaceQuoteContainer,
-			null, _currentPrice);
+		WorkoutInfo workoutInfo = _bondComponent.exerciseYieldFromPrice (
+			_valuationParams,
+			_fundingBaseCurveSurfaceQuoteContainer,
+			null,
+			_currentPrice
+		);
 
-		if (null == wi) return null;
+		if (null == workoutInfo) {
+			return null;
+		}
 
-		int iWorkoutDate = wi.date();
+		int workoutDate = workoutInfo.date();
 
-		double dblWorkoutFactor = wi.factor();
+		double workoutFactor = workoutInfo.factor();
 
-		double dblYieldToExercise = wi.yield();
+		double yieldToExercise = workoutInfo.yield();
 
-		Map<String, Double> mapLIBORKRD = new
-			CaseInsensitiveHashMap<Double>();
+		Map<String, Double> liborKRDMap = new CaseInsensitiveHashMap<Double>();
 
-		Map<String, Double> mapLIBORKPRD = new
-			CaseInsensitiveHashMap<Double>();
+		Map<String, Double> liborKPRDMap = new CaseInsensitiveHashMap<Double>();
 
-		Map<String, Double> mapFundingKRD = new
-			CaseInsensitiveHashMap<Double>();
+		Map<String, Double> govvieKRDMap = new CaseInsensitiveHashMap<Double>();
 
-		Map<String, Double> mapFundingKPRD = new
-			CaseInsensitiveHashMap<Double>();
+		Map<String, Double> govvieKPRDMap = new CaseInsensitiveHashMap<Double>();
 
-		Map<String, Double> mapGovvieKRD = new
-			CaseInsensitiveHashMap<Double>();
+		Map<String, Double> fundingKRDMap = new CaseInsensitiveHashMap<Double>();
 
-		Map<String, Double> mapGovvieKPRD = new
-			CaseInsensitiveHashMap<Double>();
+		Map<String, Double> fundingKPRDMap = new CaseInsensitiveHashMap<Double>();
 
 		try {
-			if (null != eosCall) {
-				iNextCallDate = eosCall.nextDate (iValueDate);
+			if (null != callEmbeddedOptionSchedule) {
+				nextCallDate = callEmbeddedOptionSchedule.nextDate (valueDate);
 
-				dblNextCallFactor = eosCall.nextFactor (iValueDate);
+				nextCallFactor = callEmbeddedOptionSchedule.nextFactor (valueDate);
 			}
 
-			if (null != eosPut) {
-				iNextPutDate = eosPut.nextDate (iValueDate);
+			if (null != putEmbeddedOptionSchedule) {
+				nextPutDate = putEmbeddedOptionSchedule.nextDate (valueDate);
 
-				dblNextPutFactor = eosPut.nextFactor (iValueDate);
+				nextPutFactor = putEmbeddedOptionSchedule.nextFactor (valueDate);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -1800,7 +1849,7 @@ public class BondReplicator
 		}
 
 		try {
-			dblAccrued = _bondComponent.accrued (_settleDate.julian(), _fundingBaseCurveSurfaceQuoteContainer);
+			accrued = _bondComponent.accrued (_settleDate.julian(), _fundingBaseCurveSurfaceQuoteContainer);
 		} catch (Exception e) {
 			e.printStackTrace();
 
@@ -1808,7 +1857,12 @@ public class BondReplicator
 		}
 
 		try {
-			dblYieldToMaturity = _bondComponent.yieldFromPrice (_valuationParams, _fundingBaseCurveSurfaceQuoteContainer, null, _currentPrice);
+			yieldToMaturity = _bondComponent.yieldFromPrice (
+				_valuationParams,
+				_fundingBaseCurveSurfaceQuoteContainer,
+				null,
+				_currentPrice
+			);
 		} catch (Exception e) {
 			e.printStackTrace();
 
@@ -1816,9 +1870,12 @@ public class BondReplicator
 		}
 
 		try {
-			dblBEYToMaturity = _bondComponent.yieldFromPrice (_valuationParams, _fundingBaseCurveSurfaceQuoteContainer,
+			beyToMaturity = _bondComponent.yieldFromPrice (
+				_valuationParams,
+				_fundingBaseCurveSurfaceQuoteContainer,
 				ValuationCustomizationParams.BondEquivalent (currency),
-					_currentPrice);
+				_currentPrice
+			);
 		} catch (Exception e) {
 			e.printStackTrace();
 
@@ -1826,9 +1883,20 @@ public class BondReplicator
 		}
 
 		try {
-			dblYieldToMaturityFwdCoupon = _bondComponent.yieldFromPrice (_valuationParams, _fundingBaseCurveSurfaceQuoteContainer, new
-				ValuationCustomizationParams (_bondComponent.couponDC(), _bondComponent.freq(), false,
-					null, currency, false, true), _currentPrice);
+			yieldToMaturityForwardCoupon = _bondComponent.yieldFromPrice (
+				_valuationParams,
+				_fundingBaseCurveSurfaceQuoteContainer,
+				new ValuationCustomizationParams (
+					_bondComponent.couponDC(),
+					_bondComponent.freq(),
+					false,
+					null,
+					currency,
+					false,
+					true
+				),
+				_currentPrice
+			);
 		} catch (Exception e) {
 			e.printStackTrace();
 
@@ -1836,8 +1904,14 @@ public class BondReplicator
 		}
 
 		try {
-			dblYieldFromPriceNextCall = _bondComponent.yieldFromPrice (_valuationParams, _fundingBaseCurveSurfaceQuoteContainer, null,
-				iNextCallDate, dblNextCallFactor, _currentPrice);
+			yieldFromPriceNextCall = _bondComponent.yieldFromPrice (
+				_valuationParams,
+				_fundingBaseCurveSurfaceQuoteContainer,
+				null,
+				nextCallDate,
+				nextCallFactor,
+				_currentPrice
+			);
 		} catch (Exception e) {
 			e.printStackTrace();
 
@@ -1845,8 +1919,14 @@ public class BondReplicator
 		}
 
 		try {
-			dblYieldFromPriceNextPut = _bondComponent.yieldFromPrice (_valuationParams, _fundingBaseCurveSurfaceQuoteContainer, null,
-				iNextPutDate, dblNextPutFactor, _currentPrice);
+			yieldFromPriceNextPut = _bondComponent.yieldFromPrice (
+				_valuationParams,
+				_fundingBaseCurveSurfaceQuoteContainer,
+				null,
+				nextPutDate,
+				nextPutFactor,
+				_currentPrice
+			);
 		} catch (Exception e) {
 			e.printStackTrace();
 
@@ -1854,7 +1934,12 @@ public class BondReplicator
 		}
 
 		try {
-			dblNominalYield = _bondComponent.yieldFromPrice (_valuationParams, _fundingBaseCurveSurfaceQuoteContainer, null, _issuePrice);
+			nominalYield = _bondComponent.yieldFromPrice (
+				_valuationParams,
+				_fundingBaseCurveSurfaceQuoteContainer,
+				null,
+				_issuePrice
+			);
 		} catch (Exception e) {
 			e.printStackTrace();
 
@@ -1862,7 +1947,12 @@ public class BondReplicator
 		}
 
 		try {
-			dblOASToMaturity = _bondComponent.oasFromPrice (_valuationParams, _fundingBaseCurveSurfaceQuoteContainer, null, _currentPrice);
+			oasToMaturity = _bondComponent.oasFromPrice (
+				_valuationParams,
+				_fundingBaseCurveSurfaceQuoteContainer,
+				null,
+				_currentPrice
+			);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -1870,116 +1960,227 @@ public class BondReplicator
 		boolean isBondFloater = _bondComponent.isFloater();
 
 		try {
-			dblZSpreadToMaturity = isBondFloater ? _bondComponent.discountMarginFromPrice (_valuationParams,
-				_fundingBaseCurveSurfaceQuoteContainer, null, _currentPrice) : _bondComponent.zSpreadFromPrice (_valuationParams,
-					_fundingBaseCurveSurfaceQuoteContainer, null, _currentPrice);
+			zSpreadToMaturity = isBondFloater ? _bondComponent.discountMarginFromPrice (
+				_valuationParams,
+				_fundingBaseCurveSurfaceQuoteContainer,
+				null,
+				_currentPrice
+			) : _bondComponent.zSpreadFromPrice (
+				_valuationParams,
+				_fundingBaseCurveSurfaceQuoteContainer,
+				null,
+				_currentPrice
+			);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
 		try {
-			 dblZSpreadToExercise = isBondFloater ? _bondComponent.discountMarginFromPrice (_valuationParams,
-				_fundingBaseCurveSurfaceQuoteContainer, null, iWorkoutDate, dblWorkoutFactor, _currentPrice) :
-					_bondComponent.zSpreadFromPrice (_valuationParams, _fundingBaseCurveSurfaceQuoteContainer, null, iWorkoutDate,
-						dblWorkoutFactor, _currentPrice);
+			 zSpreadToExercise = isBondFloater ? _bondComponent.discountMarginFromPrice (
+				 _valuationParams,
+				_fundingBaseCurveSurfaceQuoteContainer,
+				null,
+				workoutDate,
+				workoutFactor,
+				_currentPrice
+			) : _bondComponent.zSpreadFromPrice (
+				_valuationParams,
+				_fundingBaseCurveSurfaceQuoteContainer,
+				null,
+				workoutDate,
+				workoutFactor,
+				_currentPrice
+			);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
 		try {
-			 dblParZSpreadToExercise = isBondFloater ? _bondComponent.discountMarginFromPrice (_valuationParams,
-				_fundingBaseCurveSurfaceQuoteContainer, null, iWorkoutDate, dblWorkoutFactor, _issuePrice) :
-					_bondComponent.zSpreadFromPrice (_valuationParams, _fundingBaseCurveSurfaceQuoteContainer, null, iWorkoutDate,
-						dblWorkoutFactor, _issuePrice);
+			 parZSpreadToExercise = isBondFloater ? _bondComponent.discountMarginFromPrice (
+				 _valuationParams,
+				_fundingBaseCurveSurfaceQuoteContainer,
+				null,
+				workoutDate,
+				workoutFactor,
+				_issuePrice
+			) : _bondComponent.zSpreadFromPrice (
+				_valuationParams,
+				_fundingBaseCurveSurfaceQuoteContainer,
+				null,
+				workoutDate,
+				workoutFactor,
+				_issuePrice
+			);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
 		try {
-			dblBondBasisToMaturity = _bondComponent.bondBasisFromPrice (_valuationParams, _fundingBaseCurveSurfaceQuoteContainer, null,
-				_currentPrice);
+			bondBasisToMaturity = _bondComponent.bondBasisFromPrice (
+				_valuationParams,
+				_fundingBaseCurveSurfaceQuoteContainer,
+				null,
+				_currentPrice
+			);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
 		try {
-			dblBondBasisToExercise = _bondComponent.bondBasisFromPrice (_valuationParams, _fundingBaseCurveSurfaceQuoteContainer, null,
-				iWorkoutDate, dblWorkoutFactor, _currentPrice);
+			bondBasisToExercise = _bondComponent.bondBasisFromPrice (
+				_valuationParams,
+				_fundingBaseCurveSurfaceQuoteContainer,
+				null,
+				workoutDate,
+				workoutFactor,
+				_currentPrice
+			);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
 		try {
-			dblModifiedDurationToMaturity = (_currentPrice - _bondComponent.priceFromBondBasis (_valuationParams,
-				_funding01UpCurveSurfaceQuoteContainer, null, dblBondBasisToMaturity)) / _currentPrice;
+			modifiedDurationToMaturity = (
+				_currentPrice - _bondComponent.priceFromBondBasis (
+					_valuationParams,
+					_funding01UpCurveSurfaceQuoteContainer,
+					null,
+					bondBasisToMaturity
+				)
+			) / _currentPrice;
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
 		try {
-			dblMacaulayDurationToMaturity = _bondComponent.macaulayDurationFromPrice (_valuationParams, _fundingBaseCurveSurfaceQuoteContainer,
-				null, _currentPrice);
+			macaulayDurationToMaturity = _bondComponent.macaulayDurationFromPrice (
+				_valuationParams,
+				_fundingBaseCurveSurfaceQuoteContainer,
+				null,
+				_currentPrice
+			);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
 		try {
-			dblModifiedDurationToExercise = (_currentPrice - _bondComponent.priceFromBondBasis (_valuationParams,
-				_funding01UpCurveSurfaceQuoteContainer, null, iWorkoutDate, dblWorkoutFactor, dblBondBasisToExercise)) /
-					_currentPrice;
+			modifiedDurationToExercise = (
+				_currentPrice - _bondComponent.priceFromBondBasis (
+					_valuationParams,
+					_funding01UpCurveSurfaceQuoteContainer,
+					null,
+					workoutDate,
+					workoutFactor,
+					bondBasisToExercise
+				)
+			) / _currentPrice;
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
 		try {
-			dblYield01 = 0.5 * (_bondComponent.priceFromYield (_valuationParams, _fundingBaseCurveSurfaceQuoteContainer, null, iWorkoutDate,
-				dblWorkoutFactor, dblYieldToExercise - 0.0001 * _customYieldBump) - _bondComponent.priceFromYield
-					(_valuationParams, _fundingBaseCurveSurfaceQuoteContainer, null, iWorkoutDate, dblWorkoutFactor, dblYieldToExercise +
-						0.0001 * _customYieldBump)) / _customYieldBump;
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-		try {
-			if (null != _creditBaseCurveSurfaceQuoteContainer)
-				dblCreditBasisToExercise = _marketPriceCreditMetrics ? 0. : _bondComponent.creditBasisFromPrice
-					(_valuationParams, _creditBaseCurveSurfaceQuoteContainer, null, iWorkoutDate, dblWorkoutFactor, _currentPrice);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-		try {
-			if (null != _creditBaseCurveSurfaceQuoteContainer)
-				dblParCreditBasisToExercise = _bondComponent.creditBasisFromPrice (_valuationParams, _creditBaseCurveSurfaceQuoteContainer, null,
-					iWorkoutDate, dblWorkoutFactor, _issuePrice);
+			yield01 = 0.5 * (
+				_bondComponent.priceFromYield (
+					_valuationParams,
+					_fundingBaseCurveSurfaceQuoteContainer,
+					null,
+					workoutDate,
+					workoutFactor,
+					yieldToExercise - 0.0001 * _customYieldBump
+				) - _bondComponent.priceFromYield (
+					_valuationParams,
+					_fundingBaseCurveSurfaceQuoteContainer,
+					null,
+					workoutDate,
+					workoutFactor,
+					yieldToExercise + 0.0001 * _customYieldBump
+				)
+			) / _customYieldBump;
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
 		try {
 			if (null != _creditBaseCurveSurfaceQuoteContainer) {
-				if (!_marketPriceCreditMetrics)
-					dblEffectiveDurationAdjusted = (_currentPrice - _bondComponent.priceFromCreditBasis
-						(_valuationParams, _creditBaseCurveSurfaceQuoteContainer, null, iWorkoutDate, dblWorkoutFactor,
-							dblCreditBasisToExercise + 0.0001 * _customCreditBasisBump)) /
-								_currentPrice / _customCreditBasisBump;
-				else {
-					EntityCDSLabel cl = _bondComponent.creditLabel();
+				creditBasisToExercise = _marketPriceCreditMetrics ? 0. :
+					_bondComponent.creditBasisFromPrice (
+						_valuationParams,
+						_creditBaseCurveSurfaceQuoteContainer,
+						null,
+						workoutDate,
+						workoutFactor,
+						_currentPrice
+					);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 
-					CreditCurve ccBase = _creditBaseCurveSurfaceQuoteContainer.creditState (cl);
+		try {
+			if (null != _creditBaseCurveSurfaceQuoteContainer) {
+				parCreditBasisToExercise = _bondComponent.creditBasisFromPrice (
+					_valuationParams,
+					_creditBaseCurveSurfaceQuoteContainer,
+					null,
+					workoutDate,
+					workoutFactor,
+					_issuePrice
+				);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 
-					CreditCurve ccAdj =
-						ScenarioCreditCurveBuilder.FlatHazard (_valuationDate.julian(),
-							cl.referenceEntity(), currency, ccBase.hazard (_bondComponent.maturityDate()) + 0.0001
-								* _customCreditBasisBump, _recoveryRate);
+		try {
+			if (null != _creditBaseCurveSurfaceQuoteContainer) {
+				if (!_marketPriceCreditMetrics) {
+					effectiveDurationAdjusted = (
+						_currentPrice - _bondComponent.priceFromCreditBasis (
+							_valuationParams,
+							_creditBaseCurveSurfaceQuoteContainer,
+							null,
+							workoutDate,
+							workoutFactor,
+							creditBasisToExercise + 0.0001 * _customCreditBasisBump
+						)
+					) / _currentPrice / _customCreditBasisBump;
+				} else {
+					EntityCDSLabel entityCDSLabel = _bondComponent.creditLabel();
 
-					if (null != ccAdj)
-						dblEffectiveDurationAdjusted = (_currentPrice - _bondComponent.priceFromCreditBasis
-							(_valuationParams, MarketParamsBuilder.Create
-								(_creditBaseCurveSurfaceQuoteContainer.fundingState (_bondComponent.fundingLabel()),
-									_creditBaseCurveSurfaceQuoteContainer.govvieState (_bondComponent.govvieLabel()), ccAdj, "", null, null,
-										_creditBaseCurveSurfaceQuoteContainer.fixings()), null, iWorkoutDate, dblWorkoutFactor,
-											0.)) / _currentPrice / _customCreditBasisBump;
+					CreditCurve baseCreditCurve =
+						_creditBaseCurveSurfaceQuoteContainer.creditState (entityCDSLabel);
+
+					CreditCurve adjustedCreditCurve = ScenarioCreditCurveBuilder.FlatHazard (
+						_valuationDate.julian(),
+						entityCDSLabel.referenceEntity(),
+						currency,
+						baseCreditCurve.hazard (_bondComponent.maturityDate()) +
+							0.0001 * _customCreditBasisBump,
+						_recoveryRate
+					);
+
+					if (null != adjustedCreditCurve) {
+						effectiveDurationAdjusted = (
+							_currentPrice - _bondComponent.priceFromCreditBasis (
+								_valuationParams,
+								MarketParamsBuilder.Create (
+									_creditBaseCurveSurfaceQuoteContainer.fundingState (
+										_bondComponent.fundingLabel()
+									),
+									_creditBaseCurveSurfaceQuoteContainer.govvieState (
+										_bondComponent.govvieLabel()
+									),
+									adjustedCreditCurve,
+									"",
+									null,
+									null,
+									_creditBaseCurveSurfaceQuoteContainer.fixings()
+								),
+								null, workoutDate, workoutFactor,
+								0.
+							)
+						) / _currentPrice / _customCreditBasisBump;
+					}
 				}
 			}
 		} catch (Exception e) {
@@ -1987,437 +2188,750 @@ public class BondReplicator
 		}
 
 		try {
-			dblSpreadDuration = _spreadDurationMultiplier * (_currentPrice - (isBondFloater ?
-				_bondComponent.priceFromDiscountMargin (_valuationParams, _fundingBaseCurveSurfaceQuoteContainer, null, iWorkoutDate,
-					dblWorkoutFactor, dblZSpreadToExercise + 0.0001 * _zSpreadBump) :
-						_bondComponent.priceFromZSpread (_valuationParams, _fundingBaseCurveSurfaceQuoteContainer, null, iWorkoutDate,
-							dblWorkoutFactor, dblZSpreadToExercise + 0.0001 * _zSpreadBump))) /
-								_currentPrice;
+			spreadDuration = _spreadDurationMultiplier * (
+				_currentPrice - (
+					isBondFloater ? _bondComponent.priceFromDiscountMargin (
+						_valuationParams,
+						_fundingBaseCurveSurfaceQuoteContainer,
+						null, workoutDate,
+						workoutFactor,
+						zSpreadToExercise + 0.0001 * _zSpreadBump
+					) : _bondComponent.priceFromZSpread (
+						_valuationParams,
+						_fundingBaseCurveSurfaceQuoteContainer,
+						null,
+						workoutDate,
+						workoutFactor,
+						zSpreadToExercise + 0.0001 * _zSpreadBump
+					)
+				)
+			) / _currentPrice;
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
 		try {
-			if (null != _credit01UpCurveSurfaceQuoteContainer)
-				dblCV01 = _currentPrice - _bondComponent.priceFromCreditBasis (_valuationParams, _credit01UpCurveSurfaceQuoteContainer, null,
-					iWorkoutDate, dblWorkoutFactor, dblCreditBasisToExercise);
+			if (null != _credit01UpCurveSurfaceQuoteContainer) {
+				cv01 = _currentPrice - _bondComponent.priceFromCreditBasis (
+					_valuationParams,
+					_credit01UpCurveSurfaceQuoteContainer,
+					null,
+					workoutDate,
+					workoutFactor,
+					creditBasisToExercise
+				);
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
 		try {
-			dblConvexityToExercise = _bondComponent.convexityFromPrice (_valuationParams, _fundingBaseCurveSurfaceQuoteContainer, null,
-				iWorkoutDate, dblWorkoutFactor, _currentPrice);
+			convexityToExercise = _bondComponent.convexityFromPrice (
+				_valuationParams,
+				_fundingBaseCurveSurfaceQuoteContainer,
+				null,
+				workoutDate,
+				workoutFactor,
+				_currentPrice
+			);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
 		try {
-			dblDiscountMarginToExercise = dblYieldToExercise - _fundingBaseCurveSurfaceQuoteContainer.fundingState
-				(_bondComponent.fundingLabel()).libor (_valuationParams.valueDate(), "1M");
+			discountMarginToExercise = yieldToExercise -
+				_fundingBaseCurveSurfaceQuoteContainer.fundingState (
+					_bondComponent.fundingLabel()
+				).libor (
+					_valuationParams.valueDate(),
+					"1M"
+				);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
 		try {
-			dblESpreadToExercise = isBondFloater ? _bondComponent.discountMarginFromPrice (_valuationParams,
-				_euroDollarFundingCurveSurfaceQuoteContainer, null, iWorkoutDate, dblWorkoutFactor, _currentPrice) :
-					_bondComponent.zSpreadFromPrice (_valuationParams, _euroDollarFundingCurveSurfaceQuoteContainer, null, iWorkoutDate,
-						dblWorkoutFactor, _currentPrice);
+			eSpreadToExercise = isBondFloater ? _bondComponent.discountMarginFromPrice (
+				_valuationParams,
+				_euroDollarFundingCurveSurfaceQuoteContainer,
+				null,
+				workoutDate,
+				workoutFactor,
+				_currentPrice
+			) : _bondComponent.zSpreadFromPrice (
+				_valuationParams,
+				_euroDollarFundingCurveSurfaceQuoteContainer,
+				null,
+				workoutDate,
+				workoutFactor,
+				_currentPrice
+			);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
 		try {
-			dblISpreadToExercise = _bondComponent.iSpreadFromPrice (_valuationParams, _fundingBaseCurveSurfaceQuoteContainer, null, iWorkoutDate,
-				dblWorkoutFactor, _currentPrice);
+			iSpreadToExercise = _bondComponent.iSpreadFromPrice (
+				_valuationParams,
+				_fundingBaseCurveSurfaceQuoteContainer,
+				null,
+				workoutDate,
+				workoutFactor,
+				_currentPrice
+			);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
 		try {
-			dblJSpreadToExercise = _bondComponent.jSpreadFromPrice (_valuationParams, _fundingBaseCurveSurfaceQuoteContainer, null, iWorkoutDate,
-				dblWorkoutFactor, _currentPrice);
+			jSpreadToExercise = _bondComponent.jSpreadFromPrice (
+				_valuationParams,
+				_fundingBaseCurveSurfaceQuoteContainer,
+				null,
+				workoutDate,
+				workoutFactor,
+				_currentPrice
+			);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
 		try {
-			dblNSpreadToExercise = _bondComponent.nSpreadFromPrice (_valuationParams, _fundingBaseCurveSurfaceQuoteContainer, null, iWorkoutDate,
-				dblWorkoutFactor, _currentPrice);
+			nSpreadToExercise = _bondComponent.nSpreadFromPrice (
+				_valuationParams,
+				_fundingBaseCurveSurfaceQuoteContainer,
+				null,
+				workoutDate,
+				workoutFactor,
+				_currentPrice
+			);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
 		try {
-			dblWALPrincipalOnlyToExercise = _bondComponent.weightedAverageLifePrincipalOnly (_valuationParams,
-				_fundingBaseCurveSurfaceQuoteContainer, iWorkoutDate, dblWorkoutFactor);
+			walPrincipalOnlyToExercise = _bondComponent.weightedAverageLifePrincipalOnly (
+				_valuationParams,
+				_fundingBaseCurveSurfaceQuoteContainer,
+				workoutDate,
+				workoutFactor
+			);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
 		try {
-			dblWALPrincipalOnlyToMaturity = _bondComponent.weightedAverageLifePrincipalOnly (_valuationParams,
-				_fundingBaseCurveSurfaceQuoteContainer, iMaturityDate, 1.);
+			walPrincipalOnlyToMaturity = _bondComponent.weightedAverageLifePrincipalOnly (
+				_valuationParams,
+				_fundingBaseCurveSurfaceQuoteContainer,
+				maturityDate,
+				1.
+			);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
 		try {
-			if (null != _creditBaseCurveSurfaceQuoteContainer)
-				dblWALLossOnlyToExercise = _bondComponent.weightedAverageLifeLossOnly (_valuationParams, _creditBaseCurveSurfaceQuoteContainer,
-					iWorkoutDate, dblWorkoutFactor);
+			if (null != _creditBaseCurveSurfaceQuoteContainer) {
+				walLossOnlyToExercise = _bondComponent.weightedAverageLifeLossOnly (
+					_valuationParams,
+					_creditBaseCurveSurfaceQuoteContainer,
+					workoutDate,
+					workoutFactor
+				);
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
 		try {
-			dblWALCouponOnlyToExercise = _bondComponent.weightedAverageLifeCouponOnly (_valuationParams, _fundingBaseCurveSurfaceQuoteContainer,
-				iWorkoutDate, dblWorkoutFactor);
+			walCouponOnlyToExercise = _bondComponent.weightedAverageLifeCouponOnly (
+				_valuationParams,
+				_fundingBaseCurveSurfaceQuoteContainer,
+				workoutDate,
+				workoutFactor
+			);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
 		try {
-			if (null != _creditBaseCurveSurfaceQuoteContainer)
-				dblWALCreditToExercise = _bondComponent.weightedAverageLifeCredit (_valuationParams, _creditBaseCurveSurfaceQuoteContainer,
-					iWorkoutDate, dblWorkoutFactor);
+			if (null != _creditBaseCurveSurfaceQuoteContainer) {
+				walCreditToExercise = _bondComponent.weightedAverageLifeCredit (
+					_valuationParams,
+					_creditBaseCurveSurfaceQuoteContainer,
+					workoutDate,
+					workoutFactor
+				);
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
 		try {
-			dblOASToExercise = _bondComponent.oasFromPrice (_valuationParams, _fundingBaseCurveSurfaceQuoteContainer, null, iWorkoutDate,
-				dblWorkoutFactor, _currentPrice);
+			oasToExercise = _bondComponent.oasFromPrice (
+				_valuationParams,
+				_fundingBaseCurveSurfaceQuoteContainer,
+				null,
+				workoutDate,
+				workoutFactor,
+				_currentPrice
+			);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
 		try {
-			dblParOASToExercise = _bondComponent.oasFromPrice (_valuationParams, _fundingBaseCurveSurfaceQuoteContainer, null, iWorkoutDate,
-				dblWorkoutFactor, _issuePrice);
+			parOASToExercise = _bondComponent.oasFromPrice (
+				_valuationParams,
+				_fundingBaseCurveSurfaceQuoteContainer,
+				null,
+				workoutDate,
+				workoutFactor,
+				_issuePrice
+			);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
-		double dblEffectiveDuration = dblYield01 / _currentPrice;
+		double effectiveDuration = yield01 / _currentPrice;
 
 		try {
-			for (Map.Entry<String, CurveSurfaceQuoteContainer>
-				meCSQCUp : _fundingUpCurveSurfaceQuoteContainerMap.entrySet()) {
-				String key = meCSQCUp.getKey();
+			for (Map.Entry<String, CurveSurfaceQuoteContainer> fundingUpCurveSurfaceQuoteContainerMapEntry :
+				_fundingUpCurveSurfaceQuoteContainerMap.entrySet())
+			{
+				String key = fundingUpCurveSurfaceQuoteContainerMapEntry.getKey();
 
-				CurveSurfaceQuoteContainer csqcTenorUp = meCSQCUp.getValue();
+				CurveSurfaceQuoteContainer tenorUpCurveSurfaceQuoteContainer =
+					fundingUpCurveSurfaceQuoteContainerMapEntry.getValue();
 
-				CurveSurfaceQuoteContainer csqcTenorDown = _fundingDownCurveSurfaceQuoteContainerMap.get
-					(key);
+				CurveSurfaceQuoteContainer tenorDownCurveSurfaceQuoteContainer =
+					_fundingDownCurveSurfaceQuoteContainerMap.get (key);
 
-				double dblTenorFundingUpPrice = isBondFloater ? _bondComponent.priceFromFundingCurve (_valuationParams,
-					csqcTenorUp, iWorkoutDate, dblWorkoutFactor, 0.) : _bondComponent.priceFromZSpread (_valuationParams,
-						csqcTenorUp, null, iWorkoutDate, dblWorkoutFactor, dblZSpreadToExercise);
+				double tenorFundingUpPrice = isBondFloater ? _bondComponent.priceFromFundingCurve (
+					_valuationParams,
+					tenorUpCurveSurfaceQuoteContainer,
+					workoutDate,
+					workoutFactor,
+					0.
+				) : _bondComponent.priceFromZSpread (
+					_valuationParams,
+					tenorUpCurveSurfaceQuoteContainer,
+					null,
+					workoutDate,
+					workoutFactor,
+					zSpreadToExercise
+				);
 
-				double dblTenorFundingUpParPrice = isBondFloater ? _bondComponent.priceFromFundingCurve
-					(_valuationParams, csqcTenorUp, iWorkoutDate, dblWorkoutFactor, 0.) : _bondComponent.priceFromZSpread
-						(_valuationParams, csqcTenorUp, null, iWorkoutDate, dblWorkoutFactor,
-							dblParZSpreadToExercise);
+				double tenorFundingUpParPrice = isBondFloater ? _bondComponent.priceFromFundingCurve (
+					_valuationParams,
+					tenorUpCurveSurfaceQuoteContainer,
+					workoutDate,
+					workoutFactor,
+					0.
+				) : _bondComponent.priceFromZSpread (
+					_valuationParams,
+					tenorUpCurveSurfaceQuoteContainer,
+					null,
+					workoutDate,
+					workoutFactor,
+					parZSpreadToExercise
+				);
 
-				double dblTenorFundingDownPrice = isBondFloater ? _bondComponent.priceFromFundingCurve
-					(_valuationParams, csqcTenorDown, iWorkoutDate, dblWorkoutFactor, 0.) : _bondComponent.priceFromZSpread
-						(_valuationParams, csqcTenorDown, null, iWorkoutDate, dblWorkoutFactor,
-							dblZSpreadToExercise);
+				double tenorFundingDownPrice = isBondFloater ? _bondComponent.priceFromFundingCurve (
+					_valuationParams,
+					tenorDownCurveSurfaceQuoteContainer,
+					workoutDate,
+					workoutFactor,
+					0.
+				) : _bondComponent.priceFromZSpread (
+					_valuationParams,
+					tenorDownCurveSurfaceQuoteContainer,
+					null,
+					workoutDate,
+					workoutFactor,
+					zSpreadToExercise
+				);
 
-				double dblTenorFundingDownParPrice = isBondFloater ? _bondComponent.priceFromFundingCurve
-					(_valuationParams, csqcTenorDown, iWorkoutDate, dblWorkoutFactor, 0.) : _bondComponent.priceFromZSpread
-						(_valuationParams, csqcTenorDown, null, iWorkoutDate, dblWorkoutFactor,
-							dblParZSpreadToExercise);
+				double tenorFundingDownParPrice = isBondFloater ? _bondComponent.priceFromFundingCurve (
+					_valuationParams,
+					tenorDownCurveSurfaceQuoteContainer,
+					workoutDate,
+					workoutFactor,
+					0.
+				) : _bondComponent.priceFromZSpread (
+					_valuationParams,
+					tenorDownCurveSurfaceQuoteContainer,
+					null,
+					workoutDate,
+					workoutFactor,
+					parZSpreadToExercise
+				);
 
-				double dblBaseFloaterPrice = 0.5 * (dblTenorFundingDownPrice + dblTenorFundingUpPrice);
+				double baseFloaterPrice = 0.5 * (tenorFundingDownPrice + tenorFundingUpPrice);
 
-				mapFundingKRD.put (key, 0.5 * (dblTenorFundingDownPrice - dblTenorFundingUpPrice) /
-					(isBondFloater ? dblBaseFloaterPrice : _currentPrice) / _tenorBump);
+				fundingKRDMap.put (
+					key,
+					0.5 * (tenorFundingDownPrice - tenorFundingUpPrice) /
+						(isBondFloater ? baseFloaterPrice : _currentPrice) / _tenorBump
+				);
 
-				mapFundingKPRD.put (key, 0.5 * (dblTenorFundingDownParPrice - dblTenorFundingUpParPrice) /
-					(isBondFloater ? dblBaseFloaterPrice : _issuePrice) / _tenorBump);
+				fundingKPRDMap.put (
+					key,
+					0.5 * (tenorFundingDownParPrice - tenorFundingUpParPrice) /
+						(isBondFloater ? baseFloaterPrice : _issuePrice) / _tenorBump
+				);
 			}
 
 			for (Map.Entry<String, CurveSurfaceQuoteContainer>
-				meCSQCUp : _forwardFundingUpCurveSurfaceQuoteContainerMap.entrySet()) {
-				String key = meCSQCUp.getKey();
+				forwardFundingUpCurveSurfaceQuoteContainerMapEntry :
+					_forwardFundingUpCurveSurfaceQuoteContainerMap.entrySet())
+			{
+				String key = forwardFundingUpCurveSurfaceQuoteContainerMapEntry.getKey();
 
-				CurveSurfaceQuoteContainer csqcTenorUp = meCSQCUp.getValue();
+				CurveSurfaceQuoteContainer tenorUpCurveSurfaceQuoteContainer =
+					forwardFundingUpCurveSurfaceQuoteContainerMapEntry.getValue();
 
-				CurveSurfaceQuoteContainer csqcTenorDown =
+				CurveSurfaceQuoteContainer tenorDownCurveSurfaceQuoteContainer =
 					_forwardFundingDownCurveSurfaceQuoteContainerMap.get (key);
 
-				double dblTenorForwardUpPrice = isBondFloater ? _bondComponent.priceFromFundingCurve (_valuationParams,
-					csqcTenorUp, iWorkoutDate, dblWorkoutFactor, 0.) : _bondComponent.priceFromZSpread (_valuationParams,
-						csqcTenorUp, null, iWorkoutDate, dblWorkoutFactor, dblZSpreadToExercise);
+				double tenorForwardUpPrice = isBondFloater ? _bondComponent.priceFromFundingCurve (
+					_valuationParams,
+					tenorUpCurveSurfaceQuoteContainer,
+					workoutDate,
+					workoutFactor,
+					0.
+				) : _bondComponent.priceFromZSpread (
+					_valuationParams,
+					tenorUpCurveSurfaceQuoteContainer,
+					null,
+					workoutDate,
+					workoutFactor,
+					zSpreadToExercise
+				);
 
-				double dblTenorForwardUpParPrice = isBondFloater ? _bondComponent.priceFromFundingCurve
-					(_valuationParams, csqcTenorUp, iWorkoutDate, dblWorkoutFactor, 0.) : _bondComponent.priceFromZSpread
-						(_valuationParams, csqcTenorUp, null, iWorkoutDate, dblWorkoutFactor,
-							dblParZSpreadToExercise);
+				double tenorForwardUpParPrice = isBondFloater ? _bondComponent.priceFromFundingCurve (
+					_valuationParams,
+					tenorUpCurveSurfaceQuoteContainer,
+					workoutDate,
+					workoutFactor,
+					0.
+				) : _bondComponent.priceFromZSpread (
+					_valuationParams,
+					tenorUpCurveSurfaceQuoteContainer,
+					null,
+					workoutDate,
+					workoutFactor,
+					parZSpreadToExercise
+				);
 
-				double dblTenorForwardDownPrice = isBondFloater ? _bondComponent.priceFromFundingCurve
-					(_valuationParams, csqcTenorDown, iWorkoutDate, dblWorkoutFactor, 0.) : _bondComponent.priceFromZSpread
-						(_valuationParams, csqcTenorDown, null, iWorkoutDate, dblWorkoutFactor,
-							dblZSpreadToExercise);
+				double tenorForwardDownPrice = isBondFloater ? _bondComponent.priceFromFundingCurve (
+					_valuationParams,
+					tenorDownCurveSurfaceQuoteContainer,
+					workoutDate,
+					workoutFactor,
+					0.
+				) : _bondComponent.priceFromZSpread (
+					_valuationParams,
+					tenorDownCurveSurfaceQuoteContainer,
+					null,
+					workoutDate,
+					workoutFactor,
+					zSpreadToExercise
+				);
 
-				double dblTenorForwardDownParPrice = isBondFloater ? _bondComponent.priceFromFundingCurve
-					(_valuationParams, csqcTenorDown, iWorkoutDate, dblWorkoutFactor, 0.) : _bondComponent.priceFromZSpread
-						(_valuationParams, csqcTenorDown, null, iWorkoutDate, dblWorkoutFactor,
-							dblParZSpreadToExercise);
+				double tenorForwardDownParPrice = isBondFloater ? _bondComponent.priceFromFundingCurve (
+					_valuationParams,
+					tenorDownCurveSurfaceQuoteContainer,
+					workoutDate,
+					workoutFactor,
+					0.
+				) : _bondComponent.priceFromZSpread (
+					_valuationParams,
+					tenorDownCurveSurfaceQuoteContainer,
+					null,
+					workoutDate,
+					workoutFactor,
+					parZSpreadToExercise
+				);
 
-				double dblBaseFloaterPrice = 0.5 * (dblTenorForwardDownPrice + dblTenorForwardUpPrice);
+				double baseFloaterPrice = 0.5 * (tenorForwardDownPrice + tenorForwardUpPrice);
 
-				mapLIBORKRD.put (key, 0.5 * (dblTenorForwardDownPrice - dblTenorForwardUpPrice) /
-					(isBondFloater ? dblBaseFloaterPrice : _currentPrice) / _tenorBump);
+				liborKRDMap.put (
+					key,
+					0.5 * (tenorForwardDownPrice - tenorForwardUpPrice) /
+						(isBondFloater ? baseFloaterPrice : _currentPrice) / _tenorBump
+				);
 
-				mapLIBORKPRD.put (key, 0.5 * (dblTenorForwardDownParPrice - dblTenorForwardUpParPrice) /
-					(isBondFloater ? dblBaseFloaterPrice : _issuePrice) / _tenorBump);
+				liborKPRDMap.put (
+					key,
+					0.5 * (tenorForwardDownParPrice - tenorForwardUpParPrice) /
+						(isBondFloater ? baseFloaterPrice : _issuePrice) / _tenorBump
+				);
 			}
 
-			for (Map.Entry<String, CurveSurfaceQuoteContainer>
-				meCSQCUp : _govvieUpCurveSurfaceQuoteContainerMap.entrySet()) {
-				String key = meCSQCUp.getKey();
+			for (Map.Entry<String, CurveSurfaceQuoteContainer> govvieUpCurveSurfaceQuoteContainerMapEntry :
+				_govvieUpCurveSurfaceQuoteContainerMap.entrySet())
+			{
+				String key = govvieUpCurveSurfaceQuoteContainerMapEntry.getKey();
 
-				CurveSurfaceQuoteContainer csqcTenorUp = meCSQCUp.getValue();
+				CurveSurfaceQuoteContainer tenorUpCurveSurfaceQuoteContainer =
+					govvieUpCurveSurfaceQuoteContainerMapEntry.getValue();
 
-				CurveSurfaceQuoteContainer csqcTenorDown = _govvieDownCurveSurfaceQuoteContainerMap.get
-					(key);
+				CurveSurfaceQuoteContainer tenorDownCurveSurfaceQuoteContainer =
+					_govvieDownCurveSurfaceQuoteContainerMap.get (key);
 
-				mapGovvieKRD.put (key, 0.5 * (_bondComponent.priceFromOAS (_valuationParams, csqcTenorDown, null,
-					iWorkoutDate, dblWorkoutFactor, dblOASToExercise) - _bondComponent.priceFromOAS (_valuationParams,
-						csqcTenorUp, null, iWorkoutDate, dblWorkoutFactor, dblOASToExercise)) /
-							_currentPrice / _tenorBump);
+				govvieKRDMap.put (
+					key,
+					0.5 * (
+						_bondComponent.priceFromOAS (
+							_valuationParams,
+							tenorDownCurveSurfaceQuoteContainer,
+							null,
+							workoutDate,
+							workoutFactor,
+							oasToExercise
+						) - _bondComponent.priceFromOAS (
+							_valuationParams,
+							tenorUpCurveSurfaceQuoteContainer,
+							null,
+							workoutDate,
+							workoutFactor,
+							oasToExercise
+						)
+					) / _currentPrice / _tenorBump
+				);
 
-				mapGovvieKPRD.put (key, 0.5 * (_bondComponent.priceFromOAS (_valuationParams, csqcTenorDown, null,
-					iWorkoutDate, dblWorkoutFactor, dblParOASToExercise) - _bondComponent.priceFromOAS (_valuationParams,
-						csqcTenorUp, null, iWorkoutDate, dblWorkoutFactor, dblParOASToExercise)) /
-							_issuePrice / _tenorBump);
+				govvieKPRDMap.put (
+					key,
+					0.5 * (
+						_bondComponent.priceFromOAS (
+							_valuationParams,
+							tenorDownCurveSurfaceQuoteContainer,
+							null,
+							workoutDate,
+							workoutFactor,
+							parOASToExercise
+						) - _bondComponent.priceFromOAS (
+							_valuationParams,
+							tenorUpCurveSurfaceQuoteContainer,
+							null,
+							workoutDate,
+							workoutFactor,
+							parOASToExercise
+						)
+					) / _issuePrice / _tenorBump
+				);
 			}
 
 			if (null != _curveSurfaceQuoteContainerMap) {
-				mapCreditKRD = new CaseInsensitiveHashMap<Double>();
+				creditKRDMap = new CaseInsensitiveHashMap<Double>();
 
-				mapCreditKPRD = new CaseInsensitiveHashMap<Double>();
+				creditKPRDMap = new CaseInsensitiveHashMap<Double>();
 
-				for (Map.Entry<String, CurveSurfaceQuoteContainer>
-					meCSQC : _curveSurfaceQuoteContainerMap.entrySet()) {
-					String key = meCSQC.getKey();
+				for (Map.Entry<String, CurveSurfaceQuoteContainer> curveSurfaceQuoteContainerMapEntry :
+					_curveSurfaceQuoteContainerMap.entrySet())
+				{
+					String key = curveSurfaceQuoteContainerMapEntry.getKey();
 
-					CurveSurfaceQuoteContainer csqcTenor = meCSQC.getValue();
+					CurveSurfaceQuoteContainer tenorCurveSurfaceQuoteContainer =
+						curveSurfaceQuoteContainerMapEntry.getValue();
 
-					mapCreditKRD.put (key, (_currentPrice - _bondComponent.priceFromCreditBasis (_valuationParams,
-						csqcTenor, null, iWorkoutDate, dblWorkoutFactor, dblCreditBasisToExercise)) /
-							_currentPrice);
+					creditKRDMap.put (
+						key,
+						(
+							_currentPrice - _bondComponent.priceFromCreditBasis (
+								_valuationParams,
+								tenorCurveSurfaceQuoteContainer,
+								null,
+								workoutDate,
+								workoutFactor,
+								creditBasisToExercise
+							)
+						) / _currentPrice
+					);
 
-					mapCreditKPRD.put (key, (_issuePrice - _bondComponent.priceFromCreditBasis (_valuationParams,
-						csqcTenor, null, iWorkoutDate, dblWorkoutFactor, dblParCreditBasisToExercise)) /
-							_issuePrice);
+					creditKPRDMap.put (
+						key,
+						(
+							_issuePrice - _bondComponent.priceFromCreditBasis (
+								_valuationParams,
+								tenorCurveSurfaceQuoteContainer,
+								null,
+								workoutDate,
+								workoutFactor,
+								parCreditBasisToExercise
+							)
+						) / _issuePrice
+					);
 				}
 			}
 
-			org.drip.analytics.output.BondEOSMetrics bem = null == _eosMetricsReplicator ? null : _eosMetricsReplicator.generateRun();
+			BondEOSMetrics bondEOSMetrics = null == _eosMetricsReplicator ?
+				null : _eosMetricsReplicator.generateRun();
 
-			if (null != bem)
-			{
-				if (!arr.addNamedField (new NamedField ("MCOAS", bem.oas())))
+			if (null != bondEOSMetrics) {
+				if (!bondReplicationRun.addNamedField (new NamedField ("MCOAS", bondEOSMetrics.oas()))) {
 					return null;
+				}
 
-				if (!arr.addNamedField (new NamedField ("MCDuration",
-					bem.oasDuration())))
+				if (!bondReplicationRun.addNamedField (
+					new NamedField ("MCDuration", bondEOSMetrics.oasDuration())
+				))
+				{
 					return null;
+				}
 
-				if (!arr.addNamedField (new NamedField ("MCConvexity",
-					bem.oasConvexity())))
+				if (!bondReplicationRun.addNamedField (
+					new NamedField ("MCConvexity", bondEOSMetrics.oasConvexity())
+				))
+				{
 					return null;
+				}
 			}
 
-			if (!arr.addNamedField (new NamedField ("Price", _currentPrice)))
+			if (!bondReplicationRun.addNamedField (new NamedField ("Price", _currentPrice))) {
 				return null;
+			}
 
-			if (!arr.addNamedField (new NamedField ("Market Value",
-				_currentPrice * _issueAmount)))
+			if (!bondReplicationRun.addNamedField (
+				new NamedField ("Market Value", _currentPrice * _issueAmount)
+			))
+			{
 				return null;
+			}
 
-			if (!arr.addNamedField (new NamedField ("Accrued", dblAccrued)))
+			if (!bondReplicationRun.addNamedField (new NamedField ("Accrued", accrued))) {
 				return null;
+			}
 
-			if (!arr.addNamedField (new NamedField ("Accrued$", dblAccrued *
-				_issueAmount)))
+			if (!bondReplicationRun.addNamedField (new NamedField ("Accrued$", accrued * _issueAmount))) {
 				return null;
+			}
 
-			if (!arr.addNamedField (new NamedField ("Accrued Interest Factor",
-				dblAccrued * _fx)))
+			if (!bondReplicationRun.addNamedField (
+				new NamedField ("Accrued Interest Factor", accrued * _fx)
+			))
+			{
 				return null;
+			}
 
-			if (!arr.addNamedField (new NamedField ("Yield To Maturity",
-				dblYieldToMaturity)))
+			if (!bondReplicationRun.addNamedField (new NamedField ("Yield To Maturity", yieldToMaturity))) {
 				return null;
+			}
 
-			if (!arr.addNamedField (new NamedField ("Yield To Maturity CBE",
-				dblBEYToMaturity)))
+			if (!bondReplicationRun.addNamedField (new NamedField ("Yield To Maturity CBE", beyToMaturity)))
+			{
 				return null;
+			}
 
-			if (!arr.addNamedField (new NamedField ("YTM fwdCpn",
-				dblYieldToMaturityFwdCoupon)))
+			if (!bondReplicationRun.addNamedField (
+				new NamedField ("YTM fwdCpn", yieldToMaturityForwardCoupon)
+			))
+			{
 				return null;
+			}
 
-			if (!arr.addNamedField (new NamedField ("Yield To Worst",
-				dblYieldToExercise)))
+			if (!bondReplicationRun.addNamedField (new NamedField ("Yield To Worst", yieldToExercise))) {
 				return null;
+			}
 
-			if (!arr.addNamedField (new NamedField ("YIELD TO CALL",
-				dblYieldFromPriceNextCall)))
+			if (!bondReplicationRun.addNamedField (new NamedField ("YIELD TO CALL", yieldFromPriceNextCall)))
+			{
 				return null;
+			}
 
-			if (!arr.addNamedField (new NamedField ("YIELD TO PUT",
-				dblYieldFromPriceNextPut)))
+			if (!bondReplicationRun.addNamedField (new NamedField ("YIELD TO PUT", yieldFromPriceNextPut))) {
 				return null;
+			}
 
-			if (!arr.addNamedField (new NamedField ("Nominal Yield",
-				dblNominalYield)))
+			if (!bondReplicationRun.addNamedField (new NamedField ("Nominal Yield", nominalYield))) {
 				return null;
+			}
 
-			if (!arr.addNamedField (new NamedField ("Z_Spread", dblOASToExercise)))
+			if (!bondReplicationRun.addNamedField (new NamedField ("Z_Spread", oasToExercise))) {
 				return null;
+			}
 
-			if (!arr.addNamedField (new NamedField ("Z_Vol_OAS",
-				dblZSpreadToExercise)))
+			if (!bondReplicationRun.addNamedField (new NamedField ("Z_Vol_OAS", zSpreadToExercise))) {
 				return null;
+			}
 
-			if (!arr.addNamedField (new NamedField ("OAS", dblZSpreadToMaturity)))
+			if (!bondReplicationRun.addNamedField (new NamedField ("OAS", zSpreadToMaturity))) {
 				return null;
+			}
 
-			if (!arr.addNamedField (new NamedField ("TSY OAS", dblOASToMaturity)))
+			if (!bondReplicationRun.addNamedField (new NamedField ("TSY OAS", oasToMaturity))) {
 				return null;
+			}
 
-			if (!arr.addNamedField (new NamedField ("MOD DUR",
-				dblModifiedDurationToMaturity)))
+			if (!bondReplicationRun.addNamedField (new NamedField ("MOD DUR", modifiedDurationToMaturity))) {
 				return null;
+			}
 
-			if (!arr.addNamedField (new NamedField ("MACAULAY DURATION",
-				dblMacaulayDurationToMaturity)))
+			if (!bondReplicationRun.addNamedField (
+				new NamedField ("MACAULAY DURATION", macaulayDurationToMaturity)
+			))
+			{
 				return null;
+			}
 
-			if (!arr.addNamedField (new NamedField ("MOD DUR TO WORST",
-				dblModifiedDurationToExercise)))
+			if (!bondReplicationRun.addNamedField (
+				new NamedField ("MOD DUR TO WORST", modifiedDurationToExercise)
+			))
+			{
 				return null;
+			}
 
-			if (!arr.addNamedField (new NamedField ("Funding DURATION",
-				mapFundingKRD.get ("bump"))))
+			if (!bondReplicationRun.addNamedField (
+				new NamedField ("Funding DURATION", fundingKRDMap.get ("bump"))
+			))
+			{
 				return null;
+			}
 
-			if (!arr.addNamedField (new NamedField ("LIBOR DURATION",
-				mapLIBORKRD.get ("bump"))))
+			if (!bondReplicationRun.addNamedField (
+				new NamedField ("LIBOR DURATION", liborKRDMap.get ("bump"))
+			))
+			{
 				return null;
+			}
 
-			if (!arr.addNamedField (new NamedField ("TREASURY DURATION",
-				mapGovvieKRD.get ("bump"))))
+			if (!bondReplicationRun.addNamedField (
+				new NamedField ("TREASURY DURATION", govvieKRDMap.get ("bump"))
+			))
+			{
 				return null;
+			}
 
-			if (!arr.addNamedField (new NamedField ("EFFECTIVE DURATION",
-				dblEffectiveDuration)))
+			if (!bondReplicationRun.addNamedField (new NamedField ("EFFECTIVE DURATION", effectiveDuration)))
+			{
 				return null;
+			}
 
-			if (!arr.addNamedField (new NamedField ("EFFECTIVE DURATION ADJ",
-				dblEffectiveDurationAdjusted)))
+			if (!bondReplicationRun.addNamedField (
+				new NamedField ("EFFECTIVE DURATION ADJ", effectiveDurationAdjusted)
+			))
+			{
 				return null;
+			}
 
-			if (!arr.addNamedField (new NamedField ("OAD MULT",
-				dblEffectiveDurationAdjusted / dblEffectiveDuration)))
+			if (!bondReplicationRun.addNamedField (
+				new NamedField ("OAD MULT", effectiveDurationAdjusted / effectiveDuration)
+			))
+			{
 				return null;
+			}
 
-			if (!arr.addNamedField (new NamedField ("Spread Dur",
-				dblSpreadDuration)))
+			if (!bondReplicationRun.addNamedField (new NamedField ("Spread Dur", spreadDuration))) {
 				return null;
+			}
 
-			if (!arr.addNamedField (new NamedField ("Spread Dur $",
-				dblSpreadDuration * _issueAmount)))
+			if (!bondReplicationRun.addNamedField (
+				new NamedField ("Spread Dur $", spreadDuration * _issueAmount)
+			))
+			{
 				return null;
+			}
 
-			if (!arr.addNamedField (new NamedField ("DV01", dblYield01)))
+			if (!bondReplicationRun.addNamedField (new NamedField ("DV01", yield01))) {
 				return null;
+			}
 
-			if (!arr.addNamedField (new NamedField ("CV01", dblCV01))) return null;
-
-			if (!arr.addNamedField (new NamedField ("Convexity",
-				dblConvexityToExercise)))
+			if (!bondReplicationRun.addNamedField (new NamedField ("CV01", cv01))) {
 				return null;
+			}
 
-			if (!arr.addNamedField (new NamedField ("Modified Convexity",
-				dblConvexityToExercise)))
+			if (!bondReplicationRun.addNamedField (new NamedField ("Convexity", convexityToExercise))) {
 				return null;
+			}
 
-			if (!arr.addNamedField (new NamedField ("DISCOUNT MARGIN",
-				dblDiscountMarginToExercise)))
+			if (!bondReplicationRun.addNamedField (
+				new NamedField ("Modified Convexity", convexityToExercise)
+			))
+			{
 				return null;
+			}
 
-			if (!arr.addNamedField (new NamedField ("E-Spread",
-				dblESpreadToExercise)))
+			if (!bondReplicationRun.addNamedField (
+				new NamedField ("DISCOUNT MARGIN", discountMarginToExercise)
+			))
+			{
 				return null;
+			}
 
-			if (!arr.addNamedField (new NamedField ("I-Spread",
-				dblISpreadToExercise)))
+			if (!bondReplicationRun.addNamedField (new NamedField ("E-Spread", eSpreadToExercise))) {
 				return null;
+			}
 
-			if (!arr.addNamedField (new NamedField ("J-Spread",
-				dblJSpreadToExercise)))
+			if (!bondReplicationRun.addNamedField (new NamedField ("I-Spread", iSpreadToExercise))) {
 				return null;
+			}
 
-			if (!arr.addNamedField (new NamedField ("N-Spread",
-				dblNSpreadToExercise)))
+			if (!bondReplicationRun.addNamedField (new NamedField ("J-Spread", jSpreadToExercise))) {
 				return null;
+			}
 
-			if (!arr.addNamedField (new NamedField ("WAL To Worst",
-				dblWALPrincipalOnlyToExercise)))
+			if (!bondReplicationRun.addNamedField (new NamedField ("N-Spread", nSpreadToExercise))) {
 				return null;
+			}
 
-			if (!arr.addNamedField (new NamedField ("WAL",
-				dblWALPrincipalOnlyToMaturity)))
+			if (!bondReplicationRun.addNamedField (
+				new NamedField ("WAL To Worst", walPrincipalOnlyToExercise)
+			))
+			{
 				return null;
+			}
 
-			if (!arr.addNamedField (new NamedField ("WAL2",
-				dblWALLossOnlyToExercise)))
+			if (!bondReplicationRun.addNamedField (new NamedField ("WAL", walPrincipalOnlyToMaturity))) {
 				return null;
+			}
 
-			if (!arr.addNamedField (new NamedField ("WAL3",
-				!NumberUtil.IsValid (dblWALCouponOnlyToExercise) ? 0. :
-					dblWALCouponOnlyToExercise)))
+			if (!bondReplicationRun.addNamedField (new NamedField ("WAL2", walLossOnlyToExercise))) {
 				return null;
+			}
 
-			if (!arr.addNamedField (new NamedField ("WAL4",
-				dblWALPrincipalOnlyToMaturity)))
+			if (!bondReplicationRun.addNamedField (
+				new NamedField (
+					"WAL3",
+					!NumberUtil.IsValid (walCouponOnlyToExercise) ? 0. : walCouponOnlyToExercise
+				)
+			))
+			{
 				return null;
+			}
 
-			if (!arr.addNamedField (new NamedField ("WAL_Adj",
-				dblWALCreditToExercise)))
+			if (!bondReplicationRun.addNamedField (new NamedField ("WAL4", walPrincipalOnlyToMaturity))) {
 				return null;
+			}
 
-			if (!arr.addNamedFieldMap (new NamedFieldMap ("Funding KRD",
-				mapFundingKRD)))
+			if (!bondReplicationRun.addNamedField (new NamedField ("WAL_Adj", walCreditToExercise))) {
 				return null;
+			}
 
-			if (!arr.addNamedFieldMap (new NamedFieldMap ("Funding KPRD",
-				mapFundingKPRD)))
+			if (!bondReplicationRun.addNamedFieldMap (new NamedFieldMap ("Funding KRD", fundingKRDMap))) {
 				return null;
+			}
 
-			if (!arr.addNamedFieldMap (new NamedFieldMap ("LIBOR KRD",
-				mapLIBORKRD)))
+			if (!bondReplicationRun.addNamedFieldMap (new NamedFieldMap ("Funding KPRD", fundingKPRDMap))) {
 				return null;
+			}
 
-			if (!arr.addNamedFieldMap (new NamedFieldMap ("LIBOR KPRD",
-				mapLIBORKPRD)))
+			if (!bondReplicationRun.addNamedFieldMap (new NamedFieldMap ("LIBOR KRD", liborKRDMap))) {
 				return null;
+			}
 
-			if (!arr.addNamedFieldMap (new NamedFieldMap ("Govvie KRD",
-				mapGovvieKRD)))
+			if (!bondReplicationRun.addNamedFieldMap (new NamedFieldMap ("LIBOR KPRD", liborKPRDMap))) {
 				return null;
+			}
 
-			if (!arr.addNamedFieldMap (new NamedFieldMap ("Govvie KPRD",
-				mapGovvieKPRD)))
+			if (!bondReplicationRun.addNamedFieldMap (new NamedFieldMap ("Govvie KRD", govvieKRDMap))) {
 				return null;
+			}
+
+			if (!bondReplicationRun.addNamedFieldMap (new NamedFieldMap ("Govvie KPRD", govvieKPRDMap))) {
+				return null;
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 
@@ -2425,25 +2939,23 @@ public class BondReplicator
 		}
 
 		try {
-			if (null != mapCreditKRD)
-				arr.addNamedFieldMap (new NamedFieldMap ("Credit KRD",
-					mapCreditKRD));
+			if (null != creditKRDMap) {
+				bondReplicationRun.addNamedFieldMap (new NamedFieldMap ("Credit KRD", creditKRDMap));
+			}
 
-			if (null != mapCreditKPRD)
-				arr.addNamedFieldMap (new NamedFieldMap ("Credit KPRD",
-					mapCreditKPRD));
+			if (null != creditKPRDMap) {
+				bondReplicationRun.addNamedFieldMap (new NamedFieldMap ("Credit KPRD", creditKPRDMap));
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
-		System.out.println ("Workout        : " + new JulianDate (iWorkoutDate));
+		System.out.println ("Workout        : " + new JulianDate (workoutDate));
 
-		System.out.println ("Next Call Date : " + new JulianDate (iNextCallDate) +
-			" | " + dblNextCallFactor);
+		System.out.println ("Next Call Date : " + new JulianDate (nextCallDate) + " | " + nextCallFactor);
 
-		System.out.println ("Maturity Date  : " + new JulianDate (iMaturityDate) +
-			" | 1.0");
+		System.out.println ("Maturity Date  : " + new JulianDate (maturityDate) + " | 1.0");
 
-		return arr;
+		return bondReplicationRun;
 	}
 }
