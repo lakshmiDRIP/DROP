@@ -1,11 +1,18 @@
 
 package org.drip.service.representation;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.StringTokenizer;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -82,66 +89,173 @@ package org.drip.service.representation;
 
 /**
  * <i>ItemList</i> is an Adaptation of the ItemList Interface from the RFC4627 compliant JSON Simple
- * (https://code.google.com/p/json-simple/).
+ * 	(https://code.google.com/p/json-simple/).
  *
  * 		|a:b:c| = |a|,|b|,|c|
  * 		|:| = ||,||
  * 		|a:| = |a|,||
  *
- *	<br><br>
+ *  It provides the following Functionality:
+ *
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationSupportLibrary.md">Computation Support</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/README.md">Environment, Product/Definition Containers, and Scenario/State Manipulation APIs</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/representation">RFC4627 Compliant JSON Message Object</a></li>
+ * 		<li>Split the String using the Separator</li>
+ * 		<li><i>ItemList</i> Constructor #1</li>
+ * 		<li><i>ItemList</i> Constructor #2</li>
+ * 		<li>Split the String using the Separator</li>
+ * 		<li><i>ItemList</i> Constructor #3</li>
+ * 		<li>Retrieve the List of Items</li>
+ * 		<li>Retrieve the Array of Items</li>
+ * 		<li>Set the Separator</li>
+ * 		<li>Add the Specified Item at the Location</li>
+ * 		<li>Add the Specified Item</li>
+ * 		<li>Add all the Items in the List</li>
+ * 		<li>Add all the Items in the Input String #1</li>
+ * 		<li>Add all the Items in the Input String #2</li>
+ * 		<li>Add all the Items in the Input String #3</li>
+ * 		<li>Retrieve the Indexed Item</li>
+ * 		<li>Retrieve the Number of Items</li>
+ * 		<li>Convert the Item List to String</li>
+ * 		<li>Generate the Item-separated String</li>
+ * 		<li>Clear the List</li>
+ * 		<li>Reset the List</li>
  *  </ul>
+ *
+ *	<br>
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationSupportLibrary.md">Computation Support</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/README.md">Environment, Product/Definition Containers, and Scenario/State Manipulation APIs</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/representation/README.md">RFC4627 Compliant JSON Message Object</a></td></tr>
+ *  </table>
+ *	<br>
  *
  * @author Fang Yidong
  * @author Lakshmi Krishnamurthy
  */
 
-public class ItemList {
-    private String sp=",";
-    @SuppressWarnings ("rawtypes") java.util.List items=new java.util.ArrayList();
+public class ItemList
+{
+    private String _separator = ",";
+
+    @SuppressWarnings ("rawtypes") List items = new ArrayList();
 
     /**
      * Empty ItemList Constructor
      */
 
-    public ItemList(){}
+    public ItemList()
+    {
+    }
 
     /**
-     * ItemList Constructor
+     * Split the String using the Separator
+     * 
+     * @param s Input String
+     * @param separator Separator
+     * @param appendList List to Append to
+     */
+
+    @SuppressWarnings ({"rawtypes", "unchecked"}) public void split (
+		final String s,
+		final String separator,
+		final List appendList)
+    {
+        if (null == s || null == separator) {
+            return;
+        }
+
+        int position = 0;
+        int previousPosition = 0;
+
+        do {
+        	previousPosition = position;
+
+        	position = s.indexOf (separator,position);
+
+        	if (-1 == position) {
+                break;
+        	}
+
+        	appendList.add (s.substring (previousPosition,position).trim());
+
+        	position += separator.length();
+        } while (-1 != position);
+
+        appendList.add (s.substring (previousPosition).trim());
+    }
+
+    /**
+     * <i>ItemList</i> Constructor #1
      * 
      * @param s Input String
      */
 
-    public ItemList(String s){
-            this.split(s,sp,items);
+    public ItemList (
+		final String s)
+    {
+        split (s, _separator, items);
     }
 
     /**
-     * ItemList Constructor
+     * <i>ItemList</i> Constructor #2
      * 
      * @param s Input String
-     * @param sp Separator
+     * @param separator Separator
      */
 
-    public ItemList(String s,String sp){
-            this.sp=s;
-            this.split(s,sp,items);
+    public ItemList (
+		final String s,
+		final String separator)
+    {
+    	_separator = s;
+
+    	split (s, separator, items);
     }
 
     /**
-     * ItemList Constructor
+     * Split the String using the Separator
      * 
      * @param s Input String
-     * @param sp Separator
+     * @param separator Separator
+     * @param appendList List to Append to
      * @param isMultiToken TRUE - Token is Multiple
      */
 
-    public ItemList(String s,String sp,boolean isMultiToken){
-            split(s,sp,items,isMultiToken);
+    @SuppressWarnings ({"rawtypes", "unchecked"}) public void split (
+		final String s,
+		final String separator,
+		final List appendList,
+		final boolean isMultiToken)
+    {
+        if (null == s || null == separator) {
+            return;
+        }
+
+        if (isMultiToken) {
+        	StringTokenizer stringTokenizer = new StringTokenizer (s, separator);
+
+        	while (stringTokenizer.hasMoreTokens()) {
+                appendList.add (stringTokenizer.nextToken().trim());
+            }
+        } else {
+            split (s, separator, appendList);
+        }
+    }
+
+    /**
+     * <i>ItemList</i> Constructor #3
+     * 
+     * @param s Input String
+     * @param separator Separator
+     * @param isMultiToken TRUE - Token is Multiple
+     */
+
+    public ItemList (
+		final String s,
+		final String separator,
+		final boolean isMultiToken)
+    {
+        split (s, separator, items, isMultiToken);
     }
 
     /**
@@ -150,8 +264,9 @@ public class ItemList {
      * @return List of Items
      */
 
-    @SuppressWarnings ("rawtypes") public java.util.List getItems(){
-            return this.items;
+    @SuppressWarnings ("rawtypes") public List getItems()
+    {
+        return items;
     }
 
     /**
@@ -160,65 +275,21 @@ public class ItemList {
      * @return Array of Items
      */
 
-    public String[] getArray(){
-            return (String[])this.items.toArray();
-    }
-
-    /**
-     * Split the String using the Separator
-     * 
-     * @param s Input String
-     * @param sp Separator
-     * @param append List to Append to
-     * @param isMultiToken TRUE - Token is Multiple
-     */
-
-    @SuppressWarnings ({"rawtypes", "unchecked"}) public void split(String s,String sp,java.util.List append,boolean isMultiToken){
-            if(s==null || sp==null)
-                    return;
-            if(isMultiToken){
-            	java.util.StringTokenizer tokens=new java.util.StringTokenizer(s,sp);
-                    while(tokens.hasMoreTokens()){
-                            append.add(tokens.nextToken().trim());
-                    }
-            }
-            else{
-                    this.split(s,sp,append);
-            }
-    }
-
-    /**
-     * Split the String using the Separator
-     * 
-     * @param s Input String
-     * @param sp Separator
-     * @param append List to Append to
-     */
-
-    @SuppressWarnings ({"rawtypes", "unchecked"}) public void split(String s,String sp,java.util.List append){
-            if(s==null || sp==null)
-                    return;
-            int pos=0;
-            int prevPos=0;
-            do{
-                    prevPos=pos;
-                    pos=s.indexOf(sp,pos);
-                    if(pos==-1)
-                            break;
-                    append.add(s.substring(prevPos,pos).trim());
-                    pos+=sp.length();
-            }while(pos!=-1);
-            append.add(s.substring(prevPos).trim());
+    public String[] getArray()
+    {
+        return (String[]) items.toArray();
     }
 
     /**
      * Set the Separator
      * 
-     * @param sp The Separator
+     * @param separator The Separator
      */
 
-    public void setSP(String sp){
-            this.sp=sp;
+    public void setSP (
+		final String separator)
+    {
+    	_separator = separator;
     }
 
     /**
@@ -228,10 +299,15 @@ public class ItemList {
      * @param item Item
      */
     
-    @SuppressWarnings ("unchecked") public void add(int i,String item){
-            if(item==null)
-                    return;
-            items.add(i,item.trim());
+    @SuppressWarnings ("unchecked") public void add (
+		final int i,
+		final String item)
+    {
+        if (null == item) {
+            return;
+        }
+
+        items.add (i, item.trim());
     }
 
     /**
@@ -240,61 +316,82 @@ public class ItemList {
      * @param item Item
      */
 
-    @SuppressWarnings ("unchecked") public void add(String item){
-            if(item==null)
-                    return;
-            items.add(item.trim());
+    @SuppressWarnings ("unchecked") public void add (
+		final String item)
+    {
+        if (null == item) {
+            return;
+        }
+
+        items.add (item.trim());
     }
 
     /**
-     * Add all the Items in the List
+     * Add all the Items in the List #1
      * 
-     * @param list List of Items
+     * @param itemList List of Items
      */
     
-    @SuppressWarnings ("unchecked") public void addAll(ItemList list){
-            items.addAll(list.items);
+    @SuppressWarnings ("unchecked") public void addAll (
+		final ItemList itemList)
+    {
+        items.addAll (itemList.items);
     }
 
     /**
-     * Add all the Items in the Input String
+     * Add all the Items in the Input String #1
      * 
      * @param s Input String
      */
     
-    public void addAll(String s){
-            this.split(s,sp,items);
+    public void addAll (
+		final String s)
+    {
+        split (s, _separator, items);
     }
 
     /**
-     * Add all the Items in the Input String
+     * Add all the Items in the Input String #2
      * 
      * @param s Input String
-     * @param sp Separator
+     * @param separator Separator
      */
     
-    public void addAll(String s,String sp){
-            this.split(s,sp,items);
+    public void addAll (
+		final String s,
+		final String separator)
+    {
+        split (s, separator, items);
     }
 
     /**
-     * Add all the Items in the Input String
+     * Add all the Items in the Input String #3
      * 
      * @param s Input String
-     * @param sp Separator
+     * @param separator Separator
      * @param isMultiToken TRUE - Multiple Token
      */
 
-    public void addAll(String s,String sp,boolean isMultiToken){
-            this.split(s,sp,items,isMultiToken);
+    public void addAll (
+		final String s,
+		final String separator,
+		final boolean isMultiToken)
+    {
+        split (s, separator, items, isMultiToken);
     }
-    
+
     /**
+     * Retrieve the Indexed Item
+     * 
      * @param i 0-based
+     * 
      * @return i
      */
-    public String get(int i){
-            return (String)items.get(i);
+
+    public String get (
+		final int i)
+    {
+        return (String) items.get (i);
     }
 
     /**
@@ -303,51 +400,59 @@ public class ItemList {
      * @return Number of Items
      */
 
-    public int size(){
-            return items.size();
+    public int size()
+    {
+        return items.size();
     }
 
-    @Override public String toString(){
-            return toString(sp);
+    @Override public String toString()
+    {
+        return toString (_separator);
     }
 
     /**
      * Generate the Item-separated String
      * 
-     * @param sp Separator
+     * @param separator Separator
      * 
      * @return Item-separated String
      */
 
-    public String toString(String sp){
-            StringBuffer sb=new StringBuffer();
-            
-            for(int i=0;i<items.size();i++){
-                    if(i==0)
-                            sb.append(items.get(i));
-                    else{
-                            sb.append(sp);
-                            sb.append(items.get(i));
-                    }
-            }
-            return sb.toString();
+    public String toString (
+		final String separator)
+    {
+        StringBuffer stringBuffer = new StringBuffer();
+        
+        for (int itemIndex = 0; itemIndex < items.size(); ++itemIndex) {
+            if (0 == itemIndex) {
+            	stringBuffer.append (items.get (itemIndex));
+            } else {
+            	stringBuffer.append (separator);
 
+            	stringBuffer.append (items.get (itemIndex));
+            }
+        }
+
+        return stringBuffer.toString();
     }
 
     /**
      * Clear the List
      */
 
-    public void clear(){
-            items.clear();
+    public void clear()
+    {
+        items.clear();
     }
 
     /**
      * Reset the List
      */
 
-    public void reset(){
-            sp=",";
-            items.clear();
+    public void reset()
+    {
+    	_separator = ",";
+
+    	items.clear();
     }
 }

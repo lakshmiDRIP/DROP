@@ -1,11 +1,23 @@
 
 package org.drip.service.scenario;
 
+import org.drip.analytics.output.BondEOSMetrics;
+import org.drip.measure.dynamics.DiffusionEvaluatorLogarithmic;
+import org.drip.measure.process.DiffusionEvolver;
+import org.drip.numerical.common.NumberUtil;
+import org.drip.param.market.CurveSurfaceQuoteContainer;
+import org.drip.param.valuation.ValuationParams;
+import org.drip.product.credit.BondComponent;
+import org.drip.state.sequence.GovvieBuilderSettings;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -79,67 +91,76 @@ package org.drip.service.scenario;
  */
 
 /**
- * <i>EOSMetricsReplicator</i> generates the EOS Metrics for Bonds with Embedded Option Schedules.
- * 
- * <br><br>
+ * <i>EOSMetricsReplicator</i> generates the EOS Metrics for Bonds with Embedded Option Schedules. It
+ * 	provides the following Functionality:
+ *
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationSupportLibrary.md">Computation Support</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/README.md">Environment, Product/Definition Containers, and Scenario/State Manipulation APIs</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/scenario/README.md">Custom Scenario Service Metric Generator</a></li>
+ * 		<li>Standard Static <i>EOSMetricsReplicator</i> Creator</li>
+ * 		<li><i>EOSMetricsReplicator</i> Constructor</li>
+ * 		<li>Retrieve the Underlying Bond</li>
+ * 		<li>Retrieve the Valuation Parameters</li>
+ * 		<li>Retrieve the Market Parameters</li>
+ * 		<li>Retrieve the Price</li>
+ * 		<li>Retrieve the Diffusion Evolver</li>
+ * 		<li>Retrieve the Govvie Builder Settings</li>
+ * 		<li>Retrieve the Number of Simulation Paths</li>
+ * 		<li>Generate an Instance of a Replication Run</li>
  *  </ul>
- * <br><br>
+ *
+ *	<br>
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationSupportLibrary.md">Computation Support</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/README.md">Environment, Product/Definition Containers, and Scenario/State Manipulation APIs</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/scenario/README.md">Custom Scenario Service Metric Generator</a></td></tr>
+ *  </table>
+ *	<br>
  * 
  * @author Lakshmi Krishnamurthy
  */
 
 public class EOSMetricsReplicator
 {
-	private int _iNumPath = -1;
-	private double _dblPrice = java.lang.Double.NaN;
-	private org.drip.product.credit.BondComponent _bond = null;
-	private org.drip.measure.process.DiffusionEvolver _de = null;
-	private org.drip.state.sequence.GovvieBuilderSettings _gbs = null;
-	private org.drip.param.valuation.ValuationParams _valParams = null;
-	private org.drip.param.market.CurveSurfaceQuoteContainer _csqc = null;
+	private int _pathCount = -1;
+	private double _price = Double.NaN;
+	private BondComponent _bondComponent = null;
+	private ValuationParams _valuationParams = null;
+	private DiffusionEvolver _diffusionEvolver = null;
+	private GovvieBuilderSettings _govvieBuilderSettings = null;
+	private CurveSurfaceQuoteContainer _curveSurfaceQuoteContainer = null;
 
 	/**
-	 * Standard Static EOSMetricsReplicator Creator
+	 * Standard Static <i>EOSMetricsReplicator</i> Creator
 	 * 
-	 * @param bond Bond Instance
-	 * @param valParams Valuation Parameters
-	 * @param csqc Market Parameters
-	 * @param gbs Govvie Builder Settings
-	 * @param dblLogNormalVolatility Long Normal Treasury Forward Volatility
-	 * @param dblPrice Market Price
+	 * @param bondComponent Bond Instance
+	 * @param valuationParams Valuation Parameters
+	 * @param curveSurfaceQuoteContainer Market Parameters
+	 * @param govvieBuilderSettings Govvie Builder Settings
+	 * @param logNormalVolatility Long Normal Treasury Forward Volatility
+	 * @param price Market Price
 	 * 
-	 * @return EOSMetricsReplicator Instance
+	 * @return <i>EOSMetricsReplicator</i> Instance
 	 */
 
 	public static final EOSMetricsReplicator Standard (
-		final org.drip.product.credit.BondComponent bond,
-		final org.drip.param.valuation.ValuationParams valParams,
-		final org.drip.param.market.CurveSurfaceQuoteContainer csqc,
-		final org.drip.state.sequence.GovvieBuilderSettings gbs,
-		final double dblLogNormalVolatility,
-		final double dblPrice)
+		final BondComponent bondComponent,
+		final ValuationParams valuationParams,
+		final CurveSurfaceQuoteContainer curveSurfaceQuoteContainer,
+		final GovvieBuilderSettings govvieBuilderSettings,
+		final double logNormalVolatility,
+		final double price)
 	{
 		try {
 			return new EOSMetricsReplicator (
-				bond,
-				valParams,
-				csqc,
-				gbs,
-				new org.drip.measure.process.DiffusionEvolver (
-					org.drip.measure.dynamics.DiffusionEvaluatorLogarithmic.Standard (
-						0.,
-						dblLogNormalVolatility
-					)
-				),
+				bondComponent,
+				valuationParams,
+				curveSurfaceQuoteContainer,
+				govvieBuilderSettings,
+				new DiffusionEvolver (DiffusionEvaluatorLogarithmic.Standard (0., logNormalVolatility)),
 				50,
-				dblPrice
+				price
 			);
-		} catch (java.lang.Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -147,37 +168,40 @@ public class EOSMetricsReplicator
 	}
 
 	/**
-	 * EOSMetricsReplicator Constructor
+	 * <i>EOSMetricsReplicator</i> Constructor
 	 * 
-	 * @param bond Bond Instance
-	 * @param valParams Valuation Parameters
-	 * @param csqc Market Parameters
-	 * @param gbs Govvie Builder Settings
-	 * @param de Diffusion Evolver
-	 * @param iNumPath Number of Simulation Paths
-	 * @param dblPrice Market Price
+	 * @param bondComponent Bond Instance
+	 * @param valuationParams Valuation Parameters
+	 * @param curveSurfaceQuoteContainer Market Parameters
+	 * @param govvieBuilderSettings Govvie Builder Settings
+	 * @param diffusionEvolver Diffusion Evolver
+	 * @param pathCount Number of Simulation Paths
+	 * @param price Market Price
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid/Inconsistent
+	 * @throws Exception Thrown if the Inputs are Invalid/Inconsistent
 	 */
 
 	public EOSMetricsReplicator (
-		final org.drip.product.credit.BondComponent bond,
-		final org.drip.param.valuation.ValuationParams valParams,
-		final org.drip.param.market.CurveSurfaceQuoteContainer csqc,
-		final org.drip.state.sequence.GovvieBuilderSettings gbs,
-		final org.drip.measure.process.DiffusionEvolver de,
-		final int iNumPath,
-		final double dblPrice)
-		throws java.lang.Exception
+		final BondComponent bondComponent,
+		final ValuationParams valuationParams,
+		final CurveSurfaceQuoteContainer curveSurfaceQuoteContainer,
+		final GovvieBuilderSettings govvieBuilderSettings,
+		final DiffusionEvolver diffusionEvolver,
+		final int pathCount,
+		final double price)
+		throws Exception
 	{
-		if (null == (_bond = bond) || (!_bond.callable() && _bond.putable()) ||
-			null == (_valParams = valParams) ||
-			null == (_csqc = csqc) ||
-			null == (_gbs = gbs) ||
-			null == (_de = de) ||
-			0 >= (_iNumPath = iNumPath) ||
-			!org.drip.numerical.common.NumberUtil.IsValid (_dblPrice = dblPrice))
-			throw new java.lang.Exception ("EOSMetricsReplicator Constructor => Invalid Inputs");
+		if (null == (_bondComponent = bondComponent) ||
+			(!_bondComponent.callable() && _bondComponent.putable()) ||
+			null == (_valuationParams = valuationParams) ||
+			null == (_curveSurfaceQuoteContainer = curveSurfaceQuoteContainer) ||
+			null == (_govvieBuilderSettings = govvieBuilderSettings) ||
+			null == (_diffusionEvolver = diffusionEvolver) ||
+			0 >= (_pathCount = pathCount) ||
+			!NumberUtil.IsValid (_price = price))
+		{
+			throw new Exception ("EOSMetricsReplicator Constructor => Invalid Inputs");
+		}
 	}
 
 	/**
@@ -186,9 +210,9 @@ public class EOSMetricsReplicator
 	 * @return The Underlying Bond
 	 */
 
-	public org.drip.product.credit.BondComponent bond()
+	public BondComponent bond()
 	{
-		return _bond;
+		return _bondComponent;
 	}
 
 	/**
@@ -197,9 +221,9 @@ public class EOSMetricsReplicator
 	 * @return The Valuation Parameters
 	 */
 
-	public org.drip.param.valuation.ValuationParams valuationParameters()
+	public ValuationParams valuationParameters()
 	{
-		return _valParams;
+		return _valuationParams;
 	}
 
 	/**
@@ -208,9 +232,9 @@ public class EOSMetricsReplicator
 	 * @return The Market Parameters
 	 */
 
-	public org.drip.param.market.CurveSurfaceQuoteContainer marketParameters()
+	public CurveSurfaceQuoteContainer marketParameters()
 	{
-		return _csqc;
+		return _curveSurfaceQuoteContainer;
 	}
 
 	/**
@@ -221,7 +245,7 @@ public class EOSMetricsReplicator
 
 	public double price()
 	{
-		return _dblPrice;
+		return _price;
 	}
 
 	/**
@@ -230,9 +254,9 @@ public class EOSMetricsReplicator
 	 * @return The Diffusion Evolver
 	 */
 
-	public org.drip.measure.process.DiffusionEvolver diffusionEvolver()
+	public DiffusionEvolver diffusionEvolver()
 	{
-		return _de;
+		return _diffusionEvolver;
 	}
 
 	/**
@@ -241,9 +265,9 @@ public class EOSMetricsReplicator
 	 * @return The Govvie Builder Settings
 	 */
 
-	public org.drip.state.sequence.GovvieBuilderSettings govvieBuilderSetting()
+	public GovvieBuilderSettings govvieBuilderSetting()
 	{
-		return _gbs;
+		return _govvieBuilderSettings;
 	}
 
 	/**
@@ -254,7 +278,7 @@ public class EOSMetricsReplicator
 
 	public int numPath()
 	{
-		return _iNumPath;
+		return _pathCount;
 	}
 
 	/**
@@ -263,24 +287,24 @@ public class EOSMetricsReplicator
 	 * @return Instance of a Replication Run
 	 */
 
-	public org.drip.analytics.output.BondEOSMetrics generateRun()
+	public BondEOSMetrics generateRun()
 	{
-		return _bond.callable() ? _bond.callMetrics (
-			_valParams,
-			_csqc,
+		return _bondComponent.callable() ? _bondComponent.callMetrics (
+			_valuationParams,
+			_curveSurfaceQuoteContainer,
 			null,
-			_dblPrice,
-			_gbs,
-			_de,
-			_iNumPath
-		) :  _bond.putMetrics (
-			_valParams,
-			_csqc,
+			_price,
+			_govvieBuilderSettings,
+			_diffusionEvolver,
+			_pathCount
+		) :  _bondComponent.putMetrics (
+			_valuationParams,
+			_curveSurfaceQuoteContainer,
 			null,
-			_dblPrice,
-			_gbs,
-			_de,
-			_iNumPath
+			_price,
+			_govvieBuilderSettings,
+			_diffusionEvolver,
+			_pathCount
 		);
 	}
 }
