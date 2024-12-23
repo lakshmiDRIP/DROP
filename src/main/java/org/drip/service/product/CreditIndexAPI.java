@@ -1,11 +1,31 @@
 
 package org.drip.service.product;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
+import org.drip.analytics.date.JulianDate;
+import org.drip.historical.attribution.CDSMarketSnap;
+import org.drip.historical.attribution.PositionChangeComponents;
+import org.drip.market.otc.CreditIndexConvention;
+import org.drip.market.otc.CreditIndexConventionContainer;
+import org.drip.numerical.common.NumberUtil;
+import org.drip.param.market.CurveSurfaceQuoteContainer;
+import org.drip.param.valuation.ValuationParams;
+import org.drip.product.definition.CreditDefaultSwap;
+import org.drip.state.credit.CreditCurve;
+import org.drip.state.discount.DiscountCurve;
+import org.drip.state.discount.MergedDiscountForwardCurve;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -80,132 +100,201 @@ package org.drip.service.product;
  */
 
 /**
- * <i>CreditIndexAPI</i> contains the Functionality associated with the Horizon Analysis of the CDS Index.
- * 
- * <br><br>
+ * <i>CreditIndexAPI</i> contains the Functionality associated with the Horizon Analysis of the CDS Index. It
+ * 	provides the following Functionality:
+ *
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationSupportLibrary.md">Computation Support</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/README.md">Environment, Product/Definition Containers, and Scenario/State Manipulation APIs</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/product/README.md">Product Horizon PnL Attribution Decomposition</a></li>
+ * 		<li>Encode a list into JSON text and write it to out.</li>
  *  </ul>
- * <br><br>
+ *
+ *	<br>
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationSupportLibrary.md">Computation Support</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/README.md">Environment, Product/Definition Containers, and Scenario/State Manipulation APIs</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/product/README.md">Product Horizon PnL Attribution Decomposition</a></td></tr>
+ *  </table>
+ *	<br>
  * 
  * @author Lakshmi Krishnamurthy
  */
 
-public class CreditIndexAPI {
+public class CreditIndexAPI
+{
 
-	static class ParCDS {
-		double _dblFairPremium = java.lang.Double.NaN;
-		double _dblFixedCoupon = java.lang.Double.NaN;
-		org.drip.product.definition.CreditDefaultSwap _cds = null;
+	/**
+	 * Implementation of <i>ParCDS</i> Inner Class
+	 */
+
+	static class ParCDS
+	{
+		double _fairPremium = Double.NaN;
+		double _fixedCoupon = Double.NaN;
+		CreditDefaultSwap _creditDefaultSwap = null;
+
+		/**
+		 * <i>ParCDS</i> Constructor
+		 * 
+		 * @param creditDefaultSwap CDS Instance
+		 * @param fixedCoupon Fixed Coupon
+		 * @param fairPremium Fair Premium
+		 */
 
 		ParCDS (
-			final org.drip.product.definition.CreditDefaultSwap cds,
-			final double dblFixedCoupon,
-			final double dblFairPremium)
+			final CreditDefaultSwap creditDefaultSwap,
+			final double fixedCoupon,
+			final double fairPremium)
 		{
-			_cds = cds;
-			_dblFixedCoupon = dblFixedCoupon;
-			_dblFairPremium = dblFairPremium;
+			_fairPremium = fairPremium;
+			_fixedCoupon = fixedCoupon;
+			_creditDefaultSwap = creditDefaultSwap;
 		}
+
+		/**
+		 * Retrieve the Fair Premium
+		 * 
+		 * @return Fair Premium
+		 */
 
 		double fairPremium()
 		{
-			return _dblFairPremium;
+			return _fairPremium;
 		}
+
+		/**
+		 * Retrieve the Fixed Coupon
+		 * 
+		 * @return Fixed Coupon
+		 */
 
 		double fixedCoupon()
 		{
-			return _dblFixedCoupon;
+			return _fixedCoupon;
 		}
 
-		org.drip.product.definition.CreditDefaultSwap cds()
+		/**
+		 * Retrieve the CDS Instance
+		 * 
+		 * @return CDS Instance
+		 */
+
+		CreditDefaultSwap cds()
 		{
-			return _cds;
+			return _creditDefaultSwap;
 		}
 	};
 
 	private static final ParCDS HorizonCreditIndex (
-		final org.drip.state.discount.DiscountCurve dc,
-		final org.drip.state.credit.CreditCurve cc,
-		final java.lang.String strFullCreditIndexName)
+		final DiscountCurve discountCurve,
+		final CreditCurve creditCurve,
+		final String fullCreditIndexName)
 	{
-		org.drip.market.otc.CreditIndexConvention cic =
-			org.drip.market.otc.CreditIndexConventionContainer.ConventionFromFullName
-				(strFullCreditIndexName);
+		CreditIndexConvention creditIndexConvention =
+			CreditIndexConventionContainer.ConventionFromFullName (fullCreditIndexName);
 
-		if (null == cic) return null;
-
-		org.drip.product.definition.CreditDefaultSwap cdsIndex = cic.indexCDS();
-
-		if (null == cdsIndex) return null;
-
-		org.drip.param.market.CurveSurfaceQuoteContainer csqc = new
-			org.drip.param.market.CurveSurfaceQuoteContainer();
-
-		if (!csqc.setFundingState ((org.drip.state.discount.MergedDiscountForwardCurve) dc) ||
-			!csqc.setCreditState (cc))
+		if (null == creditIndexConvention) {
 			return null;
+		}
+
+		CreditDefaultSwap cdsIndex = creditIndexConvention.indexCDS();
+
+		if (null == cdsIndex) {
+			return null;
+		}
+
+		CurveSurfaceQuoteContainer curveSurfaceQuoteContainer = new CurveSurfaceQuoteContainer();
+
+		if (!curveSurfaceQuoteContainer.setFundingState ((MergedDiscountForwardCurve) discountCurve) ||
+			!curveSurfaceQuoteContainer.setCreditState (creditCurve))
+		{
+			return null;
+		}
 
 		try {
-			return new ParCDS (cdsIndex, cic.fixedCoupon(), 0.0001 * cdsIndex.measureValue
-				(org.drip.param.valuation.ValuationParams.Spot (dc.epoch().julian()), null, csqc, null,
-					"FairPremium"));
-		} catch (java.lang.Exception e) {
+			return new ParCDS (
+				cdsIndex,
+				creditIndexConvention.fixedCoupon(),
+				0.0001 * cdsIndex.measureValue (
+					ValuationParams.Spot (discountCurve.epoch().julian()),
+					null,
+					curveSurfaceQuoteContainer,
+					null,
+					"FairPremium"
+				)
+			);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
 		return null;
 	}
 
-	private static final org.drip.historical.attribution.CDSMarketSnap MarketValuationSnap (
-		final org.drip.product.definition.CreditDefaultSwap cds,
-		final org.drip.state.discount.DiscountCurve dc,
-		final org.drip.state.credit.CreditCurve cc,
-		final org.drip.param.market.CurveSurfaceQuoteContainer csqc,
-		final double dblRollDownFairPremium)
+	private static final CDSMarketSnap MarketValuationSnap (
+		final CreditDefaultSwap creditDefaultSwap,
+		final DiscountCurve discountCurve,
+		final CreditCurve creditCurve,
+		final CurveSurfaceQuoteContainer curveSurfaceQuoteContainer,
+		final double rollDownFairPremium)
 	{
-		if (!csqc.setFundingState ((org.drip.state.discount.MergedDiscountForwardCurve) dc) ||
-			!csqc.setCreditState (cc))
+		if (!curveSurfaceQuoteContainer.setFundingState ((MergedDiscountForwardCurve) discountCurve) ||
+			!curveSurfaceQuoteContainer.setCreditState (creditCurve))
+		{
 			return null;
+		}
 
-		org.drip.analytics.date.JulianDate dt = dc.epoch();
+		JulianDate epochDate = discountCurve.epoch();
 
-		java.util.Map<java.lang.String, java.lang.Double> mapCDS = cds.value
-			(org.drip.param.valuation.ValuationParams.Spot (dt.julian()), null, csqc, null);
+		Map<String, Double> creditDefaultSwapMap = creditDefaultSwap.value (
+			ValuationParams.Spot (epochDate.julian()),
+			null,
+			curveSurfaceQuoteContainer,
+			null
+		);
 
-		if (null == mapCDS || !mapCDS.containsKey ("Accrued") || !mapCDS.containsKey ("CleanDV01") ||
-			!mapCDS.containsKey ("CleanPV") || !mapCDS.containsKey ("CleanCouponPV") || !mapCDS.containsKey
-				("CumulativeCouponAmount") || !mapCDS.containsKey ("FairPremium") || !mapCDS.containsKey
-					("LossPV"))
+		if (null == creditDefaultSwapMap ||
+			!creditDefaultSwapMap.containsKey ("Accrued") ||
+			!creditDefaultSwapMap.containsKey ("CleanDV01") ||
+			!creditDefaultSwapMap.containsKey ("CleanPV") ||
+			!creditDefaultSwapMap.containsKey ("CleanCouponPV") ||
+			!creditDefaultSwapMap.containsKey ("CumulativeCouponAmount") ||
+			!creditDefaultSwapMap.containsKey ("FairPremium") ||
+			!creditDefaultSwapMap.containsKey ("LossPV"))
+		{
 			return null;
+		}
 
-		double dblCleanPV = mapCDS.get ("CleanPV");
+		double cleanPV = creditDefaultSwapMap.get ("CleanPV");
 
-		double dblFairPremium = 0.0001 * mapCDS.get ("FairPremium");
+		JulianDate effectiveDate = creditDefaultSwap.effectiveDate();
 
-		org.drip.analytics.date.JulianDate dtEffective = cds.effectiveDate();
+		double fairPremium = 0.0001 * creditDefaultSwapMap.get ("FairPremium");
 
-		double dblFairPremiumSensitivity = 10000. * mapCDS.get ("CleanDV01");
+		double fairPremiumSensitivity = 10000. * creditDefaultSwapMap.get ("CleanDV01");
 
 		try {
-			org.drip.historical.attribution.CDSMarketSnap cdsms = new
-				org.drip.historical.attribution.CDSMarketSnap (dt, dblCleanPV);
+			CDSMarketSnap cdsMarketSnap = new CDSMarketSnap (epochDate, cleanPV);
 
-			return cdsms.setEffectiveDate (dtEffective) && cdsms.setMaturityDate (cds.maturityDate()) &&
-				cdsms.setCleanDV01 (dblFairPremiumSensitivity) && cdsms.setCurrentFairPremium
-					(dblFairPremium) && cdsms.setRollDownFairPremium (dblRollDownFairPremium) &&
-						cdsms.setAccrued (mapCDS.get ("Accrued")) && cdsms.setCumulativeCouponAmount
-							(mapCDS.get ("CumulativeCouponAmount")) && cdsms.setCreditLabel
-								(cds.creditLabel().fullyQualifiedName()) && cdsms.setRecoveryRate
-									(cds.recovery (dtEffective.julian(), cc)) && cdsms.setCouponPV
-										(mapCDS.get ("CleanCouponPV")) && cdsms.setLossPV (mapCDS.get
-											("LossPV")) && cdsms.setFairPremiumMarketFactor (dblFairPremium,
-												-1. * dblFairPremiumSensitivity, dblRollDownFairPremium) ?
-													cdsms : null;
-		} catch (java.lang.Exception e) {
+			return cdsMarketSnap.setEffectiveDate (effectiveDate) &&
+				cdsMarketSnap.setMaturityDate (creditDefaultSwap.maturityDate()) &&
+				cdsMarketSnap.setCleanDV01 (fairPremiumSensitivity) &&
+				cdsMarketSnap.setCurrentFairPremium (fairPremium) &&
+				cdsMarketSnap.setRollDownFairPremium (rollDownFairPremium) &&
+				cdsMarketSnap.setAccrued (creditDefaultSwapMap.get ("Accrued")) &&
+				cdsMarketSnap.setCumulativeCouponAmount (
+					creditDefaultSwapMap.get ("CumulativeCouponAmount")
+				) &&
+				cdsMarketSnap.setCreditLabel (creditDefaultSwap.creditLabel().fullyQualifiedName()) &&
+				cdsMarketSnap.setRecoveryRate (
+					creditDefaultSwap.recovery (effectiveDate.julian(), creditCurve)
+				) &&
+				cdsMarketSnap.setCouponPV (creditDefaultSwapMap.get ("CleanCouponPV")) &&
+				cdsMarketSnap.setLossPV (creditDefaultSwapMap.get ("LossPV")) &&
+				cdsMarketSnap.setFairPremiumMarketFactor (
+					fairPremium,
+					-1. * fairPremiumSensitivity,
+					rollDownFairPremium
+				) ? cdsMarketSnap : null;
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -213,103 +302,151 @@ public class CreditIndexAPI {
 	}
 
 	private static final double RollDownFairPremium (
-		final org.drip.product.definition.CreditDefaultSwap cds,
-		final int iSpotDate,
-		final org.drip.state.discount.DiscountCurve dcPrevious,
-		final org.drip.state.credit.CreditCurve ccPrevious,
-		final org.drip.param.market.CurveSurfaceQuoteContainer csqc)
-		throws java.lang.Exception
+		final CreditDefaultSwap creditDefaultSwap,
+		final int spotDate,
+		final DiscountCurve previousDiscountCurve,
+		final CreditCurve previousCreditCurve,
+		final CurveSurfaceQuoteContainer curveSurfaceQuoteContainer)
+		throws Exception
 	{
-		if (!csqc.setFundingState ((org.drip.state.discount.MergedDiscountForwardCurve) dcPrevious) ||
-			!csqc.setCreditState (ccPrevious))
-			throw new java.lang.Exception ("CreditIndexAPI::RollDownFairPremium => Invalid Inputs");
+		if (!curveSurfaceQuoteContainer.setFundingState ((MergedDiscountForwardCurve) previousDiscountCurve)
+			|| !curveSurfaceQuoteContainer.setCreditState (previousCreditCurve))
+		{
+			throw new Exception ("CreditIndexAPI::RollDownFairPremium => Invalid Inputs");
+		}
 
-		java.util.Map<java.lang.String, java.lang.Double> mapCDS = cds.value
-			(org.drip.param.valuation.ValuationParams.Spot (iSpotDate), null, csqc, null);
+		Map<String, Double> creditDefaultSwapMap = creditDefaultSwap.value (
+			ValuationParams.Spot (spotDate),
+			null,
+			curveSurfaceQuoteContainer,
+			null
+		);
 
-		if (null == mapCDS || !mapCDS.containsKey ("FairPremium"))
-			throw new java.lang.Exception ("CreditIndexAPI::RollDownFairPremium => Invalid Inputs");
+		if (null == creditDefaultSwapMap || !creditDefaultSwapMap.containsKey ("FairPremium")) {
+			throw new Exception ("CreditIndexAPI::RollDownFairPremium => Invalid Inputs");
+		}
 
-		return 0.0001 * mapCDS.get ("FairPremium");
+		return 0.0001 * creditDefaultSwapMap.get ("FairPremium");
 	}
 
 	/**
 	 * Generate the CDS Horizon Change Attribution
 	 * 
-	 * @param dcFirst The First Discount Curve
-	 * @param ccFirst The First Credit Curve
-	 * @param dcSecond The Second Discount Curve
-	 * @param ccSecond The Second Credit Curve
-	 * @param strFullCreditIndexName The Full Credit Index Name
+	 * @param firstDiscountCurve The First Discount Curve
+	 * @param firstCreditCurve The First Credit Curve
+	 * @param secondDiscountCurve The Second Discount Curve
+	 * @param secondCreditCurve The Second Credit Curve
+	 * @param fullCreditIndexName The Full Credit Index Name
 	 * 
 	 * @return The CDS Horizon Change Attribution
 	 */
 
-	public static final org.drip.historical.attribution.PositionChangeComponents HorizonChangeAttribution (
-		final org.drip.state.discount.DiscountCurve dcFirst,
-		final org.drip.state.credit.CreditCurve ccFirst,
-		final org.drip.state.discount.DiscountCurve dcSecond,
-		final org.drip.state.credit.CreditCurve ccSecond,
-		final java.lang.String strFullCreditIndexName)
+	public static final PositionChangeComponents HorizonChangeAttribution (
+		final DiscountCurve firstDiscountCurve,
+		final CreditCurve firstCreditCurve,
+		final DiscountCurve secondDiscountCurve,
+		final CreditCurve secondCreditCurve,
+		final String fullCreditIndexName)
 	{
-		if (null == dcFirst || null == ccFirst || null == dcSecond || null == ccSecond) return null;
-
-		int iFirstDate = dcFirst.epoch().julian();
-
-		int iSecondDate = dcSecond.epoch().julian();
-
-		java.lang.String strCurrency = dcSecond.currency();
-
-		if (!strCurrency.equalsIgnoreCase (dcFirst.currency()) || iFirstDate >= iSecondDate ||
-			ccFirst.epoch().julian() != iFirstDate || ccSecond.epoch().julian() != iSecondDate)
+		if (null == firstDiscountCurve ||
+			null == firstCreditCurve ||
+			null == secondDiscountCurve ||
+			null == secondCreditCurve)
+		{
 			return null;
+		}
 
-		ParCDS parCDS = HorizonCreditIndex (dcFirst, ccFirst, strFullCreditIndexName);
+		int secondDate = secondDiscountCurve.epoch().julian();
 
-		if (null == parCDS) return null;
+		int firstDate = firstDiscountCurve.epoch().julian();
 
-		org.drip.product.definition.CreditDefaultSwap cds = parCDS.cds();
+		String currency = secondDiscountCurve.currency();
 
-		if (null == cds) return null;
+		if (!currency.equalsIgnoreCase (firstDiscountCurve.currency()) ||
+			firstDate >= secondDate ||
+			firstCreditCurve.epoch().julian() != firstDate ||
+			secondCreditCurve.epoch().julian() != secondDate)
+		{
+			return null;
+		}
 
-		double dblFixedCoupon = parCDS.fixedCoupon();
+		ParCDS parCDS = HorizonCreditIndex (firstDiscountCurve, firstCreditCurve, fullCreditIndexName);
 
-		double dblInitialFairPremium = parCDS.fairPremium();
+		if (null == parCDS) {
+			return null;
+		}
 
-		org.drip.param.market.CurveSurfaceQuoteContainer csqc = new
-			org.drip.param.market.CurveSurfaceQuoteContainer();
+		CreditDefaultSwap cds = parCDS.cds();
 
-		double dblRollDownFairPremium = java.lang.Double.NaN;
+		if (null == cds) {
+			return null;
+		}
+
+		double rollDownFairPremium = Double.NaN;
+
+		double fixedCoupon = parCDS.fixedCoupon();
+
+		double initialFairPremium = parCDS.fairPremium();
+
+		CurveSurfaceQuoteContainer curveSurfaceQuoteContainer = new CurveSurfaceQuoteContainer();
 
 		try {
-			dblRollDownFairPremium = RollDownFairPremium (cds, iSecondDate, dcFirst, ccFirst, csqc);
-		} catch (java.lang.Exception e) {
+			rollDownFairPremium = RollDownFairPremium (
+				cds,
+				secondDate,
+				firstDiscountCurve,
+				firstCreditCurve,
+				curveSurfaceQuoteContainer
+			);
+		} catch (Exception e) {
 			e.printStackTrace();
 
 			return null;
 		}
 
-		if (!org.drip.numerical.common.NumberUtil.IsValid (dblRollDownFairPremium)) return null;
-
-		org.drip.historical.attribution.CDSMarketSnap cdsmsFirst = MarketValuationSnap (cds, dcFirst,
-			ccFirst, csqc, dblRollDownFairPremium);
-
-		if (null == cdsmsFirst || !cdsmsFirst.setInitialFairPremium (dblInitialFairPremium) ||
-			!cdsmsFirst.setFixedCoupon (dblFixedCoupon))
+		if (!NumberUtil.IsValid (rollDownFairPremium)) {
 			return null;
+		}
 
-		org.drip.historical.attribution.CDSMarketSnap cdsmsSecond = MarketValuationSnap (cds, dcSecond,
-			ccSecond, csqc, dblRollDownFairPremium);
+		CDSMarketSnap cdsMarketSnapFirst = MarketValuationSnap (
+			cds,
+			firstDiscountCurve,
+			firstCreditCurve,
+			curveSurfaceQuoteContainer,
+			rollDownFairPremium
+		);
 
-		if (null == cdsmsSecond || !cdsmsSecond.setInitialFairPremium (dblInitialFairPremium) ||
-			!cdsmsSecond.setFixedCoupon (dblFixedCoupon))
+		if (null == cdsMarketSnapFirst ||
+			!cdsMarketSnapFirst.setInitialFairPremium (initialFairPremium) ||
+			!cdsMarketSnapFirst.setFixedCoupon (fixedCoupon))
+		{
 			return null;
+		}
+
+		CDSMarketSnap cdsMarketSnapSecond = MarketValuationSnap (
+			cds,
+			secondDiscountCurve,
+			secondCreditCurve,
+			curveSurfaceQuoteContainer,
+			rollDownFairPremium
+		);
+
+		if (null == cdsMarketSnapSecond ||
+			!cdsMarketSnapSecond.setInitialFairPremium (initialFairPremium) ||
+			!cdsMarketSnapSecond.setFixedCoupon (fixedCoupon))
+		{
+			return null;
+		}
 
 		try {
-			return new org.drip.historical.attribution.PositionChangeComponents (false, cdsmsFirst,
-				cdsmsSecond, cdsmsSecond.cumulativeCouponAmount() - cdsmsFirst.cumulativeCouponAmount(),
-					null);
-		} catch (java.lang.Exception e) {
+			return new PositionChangeComponents (
+				false,
+				cdsMarketSnapFirst,
+				cdsMarketSnapSecond,
+				cdsMarketSnapSecond.cumulativeCouponAmount() - cdsMarketSnapFirst.cumulativeCouponAmount(),
+				null
+			);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -323,31 +460,31 @@ public class CreditIndexAPI {
 	 * @param iHorizonGap The Horizon Gap
 	 * @param astrFundingFixingMaturityTenor Array of Funding Fixing Maturity Tenors
 	 * @param aadblFundingFixingQuote Double Array of Funding Fixing Swap Rates
-	 * @param astrFullCreditIndexName Array of the Full Credit Index Names
+	 * @param afullCreditIndexName Array of the Full Credit Index Names
 	 * @param adblCreditIndexQuotedSpread Array of the Quoted Spreads
 	 * 
 	 * @return The Funding/Credit Curve Horizon Metrics
 	 */
 
-	public static final java.util.List<org.drip.historical.attribution.PositionChangeComponents>
+	public static final List<PositionChangeComponents>
 		HorizonChangeAttribution (
-			final org.drip.analytics.date.JulianDate[] adtSpot,
+			final JulianDate[] adtSpot,
 			final int iHorizonGap,
-			final java.lang.String[] astrFundingFixingMaturityTenor,
+			final String[] astrFundingFixingMaturityTenor,
 			final double[][] aadblFundingFixingQuote,
-			final java.lang.String[] astrFullCreditIndexName,
+			final String[] afullCreditIndexName,
 			final double[] adblCreditIndexQuotedSpread)
 	{
 		if (null == adtSpot || 0 >= iHorizonGap || null == astrFundingFixingMaturityTenor || null ==
-			aadblFundingFixingQuote || null == astrFullCreditIndexName || null ==
+			aadblFundingFixingQuote || null == afullCreditIndexName || null ==
 				adblCreditIndexQuotedSpread)
 			return null;
 
 		int iNumClose = adtSpot.length;
 		int iNumFundingInstrument = astrFundingFixingMaturityTenor.length;
 
-		java.util.List<org.drip.historical.attribution.PositionChangeComponents> lsPCC = new
-			java.util.ArrayList<org.drip.historical.attribution.PositionChangeComponents>();
+		List<PositionChangeComponents> lsPCC = new
+			ArrayList<PositionChangeComponents>();
 
 		for (int i = iHorizonGap; i < iNumClose; ++i) {
 			int iNumSecondFundingQuote = null == aadblFundingFixingQuote[i] ? 0 :
@@ -359,40 +496,40 @@ public class CreditIndexAPI {
 				iNumSecondFundingQuote || iNumSecondFundingQuote != iNumFundingInstrument)
 				continue;
 
-			org.drip.market.otc.CreditIndexConvention cic =
-				org.drip.market.otc.CreditIndexConventionContainer.ConventionFromFullName
-					(astrFullCreditIndexName[i]);
+			CreditIndexConvention cic =
+				CreditIndexConventionContainer.ConventionFromFullName
+					(afullCreditIndexName[i]);
 
 			if (null == cic) return null;
 
-			java.lang.String strCurrency = cic.currency();
+			String currency = cic.currency();
 
-			org.drip.product.definition.CreditDefaultSwap cdsIndex = cic.indexCDS();
+			CreditDefaultSwap cdsIndex = cic.indexCDS();
 
-			org.drip.state.discount.MergedDiscountForwardCurve dcFundingFixingFirst =
+			MergedDiscountForwardCurve dcFundingFixingFirst =
 				org.drip.service.template.LatentMarketStateBuilder.FundingCurve (adtSpot[i - iHorizonGap],
-					strCurrency, null, null, "ForwardRate", null, "ForwardRate",
+					currency, null, null, "ForwardRate", null, "ForwardRate",
 						astrFundingFixingMaturityTenor, aadblFundingFixingQuote[i - iHorizonGap], "SwapRate",
 							org.drip.service.template.LatentMarketStateBuilder.SHAPE_PRESERVING);
 
-			org.drip.state.credit.CreditCurve ccFirst =
+			CreditCurve firstCreditCurve =
 				org.drip.service.template.LatentMarketStateBuilder.CreditCurve (adtSpot[i - iHorizonGap], new
-					org.drip.product.definition.CreditDefaultSwap[] {cdsIndex}, new double[]
+					CreditDefaultSwap[] {cdsIndex}, new double[]
 						{adblCreditIndexQuotedSpread[i - iHorizonGap]}, "FairPremium", dcFundingFixingFirst);
 
-			org.drip.state.discount.MergedDiscountForwardCurve dcFundingFixingSecond =
-				org.drip.service.template.LatentMarketStateBuilder.FundingCurve (adtSpot[i], strCurrency,
+			MergedDiscountForwardCurve dcFundingFixingSecond =
+				org.drip.service.template.LatentMarketStateBuilder.FundingCurve (adtSpot[i], currency,
 					null, null, "ForwardRate", null, "ForwardRate", astrFundingFixingMaturityTenor,
 						aadblFundingFixingQuote[i], "SwapRate",
 							org.drip.service.template.LatentMarketStateBuilder.SHAPE_PRESERVING);
 
-			org.drip.state.credit.CreditCurve ccSecond =
+			CreditCurve secondCreditCurve =
 				org.drip.service.template.LatentMarketStateBuilder.CreditCurve (adtSpot[i], new
-					org.drip.product.definition.CreditDefaultSwap[] {cdsIndex}, new double[]
+					CreditDefaultSwap[] {cdsIndex}, new double[]
 						{adblCreditIndexQuotedSpread[i]}, "FairPremium", dcFundingFixingSecond);
 
-			lsPCC.add (HorizonChangeAttribution (dcFundingFixingFirst, ccFirst, dcFundingFixingSecond,
-				ccSecond, astrFullCreditIndexName[i]));
+			lsPCC.add (HorizonChangeAttribution (dcFundingFixingFirst, firstCreditCurve, dcFundingFixingSecond,
+				secondCreditCurve, afullCreditIndexName[i]));
 		}
 
 		return lsPCC;

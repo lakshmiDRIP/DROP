@@ -1,11 +1,20 @@
 
 package org.drip.service.representation;
 
+import java.io.IOException;
+import java.io.Writer;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -82,87 +91,129 @@ package org.drip.service.representation;
 
 /**
  * <i>JSONObject</i> is an Adaptation of the JSONObject Class from the RFC4627 compliant JSON Simple
- * (https://code.google.com/p/json-simple/).
+ * 	(https://code.google.com/p/json-simple/). It provides the following Functionality:
  *
- *	<br><br>
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationSupportLibrary.md">Computation Support</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/README.md">Environment, Product/Definition Containers, and Scenario/State Manipulation APIs</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/representation">RFC4627 Compliant JSON Message Object</a></li>
+ * 		<li>Escape quotes, \, /, \r, \n, \b, \f, \t and other control characters (U+0000 through U+001F). It's the same as JSONValue.escape() only for compatibility here</li>
+ * 		<li>Encode a map into JSON text and write it to out. If this map is also a <i>JSONAware</i> or <i>JSONStreamAware</i>, <i>JSONAware</i>, or <i>JSONStreamAware</i> specific behavior will be ignored at this top level</li>
+ * 		<li>Convert a map to JSON text. The result is a JSON object.  If this map is also a <i>JSONAware</i>, <i>JSONAware</i> specific behavior will be omitted at this top level</li>
+ * 		<li>Encode "this" map into JSON text and write it to out. If this map is also a <i>JSONAware</i> or <i>JSONStreamAware</i>, <i>JSONAware</i>, or <i>JSONStreamAware</i> specific behavior will be ignored at this top level</li>
+ * 		<li>Convert "this" map to JSON text. The result is a JSON object.  If this map is also a <i>JSONAware</i>, <i>JSONAware</i> specific behavior will be omitted at this top level</li>
+ * 		<li>Convert "this" to JSON text - this directly defers to JSON'izer</li>
  *  </ul>
+ *
+ *	<br>
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationSupportLibrary.md">Computation Support</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/README.md">Environment, Product/Definition Containers, and Scenario/State Manipulation APIs</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/representation/README.md">RFC4627 Compliant JSON Message Object</a></td></tr>
+ *  </table>
+ *	<br>
  * 
  * @author Fang Yidong
  * @author Lakshmi Krishnamurthy
  */
 
-@SuppressWarnings ("rawtypes") public class JSONObject extends java.util.HashMap implements java.util.Map, JSONAware, JSONStreamAware{
-    
+@SuppressWarnings ("rawtypes") public class JSONObject
+	extends HashMap
+	implements Map, JSONAware, JSONStreamAware
+{
     private static final long serialVersionUID = -503443796854799292L;
 
-    /**
-     * Empty JSONObject Constructor
-     */
+    private static String toJSONString (
+		final String key,
+		final Object value,
+		final StringBuffer stringBuffer)
+    {
+    	stringBuffer.append ('\"');
 
-    public JSONObject() {
-            super();
+        if (null == key) {
+        	stringBuffer.append ("null");
+        } else {
+        	JSONValue.escape (key, stringBuffer);
+        }
+
+        stringBuffer.append ('\"').append (':');
+
+        stringBuffer.append (JSONValue.toJSONString (value));
+
+        return stringBuffer.toString();
     }
 
     /**
-     * Allows creation of a JSONObject from a Map. After that, both the
-     * generated JSONObject and the Map can be modified independently.
+     * Escape quotes, \, /, \r, \n, \b, \f, \t and other control characters (U+0000 through U+001F). It's the
+     * 	same as JSONValue.escape() only for compatibility here.
      * 
-     * @param map Input JSON Map
+     * @see org.drip.service.representation.JSONValue#escape(String)
+     * 
+     * @param s The Input String
+     * 
+     * @return Escaped String
      */
 
-    @SuppressWarnings ("unchecked") public JSONObject(java.util.Map map) {
-            super(map);
+    public static String escape (
+		final String s)
+    {
+        return JSONValue.escape (s);
     }
 
+	/**
+	 * Encode a map into JSON text and write it to out. If this map is also a <i>JSONAware</i> or
+	 * 	<i>JSONStreamAware</i>, <i>JSONAware</i>, or <i>JSONStreamAware</i> specific behavior will be ignored
+	 *  at this top level.
+	 * 
+	 * @see org.drip.service.representation.JSONValue#writeJSONString(Object, Writer)
+	 * 
+	 * @param map Input Map
+	 * @param outputWriter Output Writer
+	 * 
+	 * @throws IOException Thrown if the Inputs are Invalid
+	 */
 
-/**
- * Encode a map into JSON text and write it to out.
- * If this map is also a JSONAware or JSONStreamAware, JSONAware or JSONStreamAware specific behaviours will be ignored at this top level.
- * 
- * @see org.drip.service.representation.JSONValue#writeJSONString(Object, Writer)
- * 
- * @param map Input Map
- * @param out Output Writer
- * 
- * @throws java.io.IOException Thrown if the Inputs are Invalid
- */
-    public static void writeJSONString(java.util.Map map, java.io.Writer out) throws java.io.IOException {
-            if(map == null){
-                    out.write("null");
-                    return;
-            }
-            
-            boolean first = true;
-            java.util.Iterator iter=map.entrySet().iterator();
-            
-    out.write('{');
-            while(iter.hasNext()){
-        if(first)
-            first = false;
-        else
-            out.write(',');
-        java.util.Map.Entry entry=(java.util.Map.Entry)iter.next();
-        out.write('\"');
-        out.write(escape(String.valueOf(entry.getKey())));
-        out.write('\"');
-        out.write(':');
-                    JSONValue.writeJSONString(entry.getValue(), out);
-            }
-            out.write('}');
+    public static void writeJSONString (
+		final Map map,
+		final Writer outputWriter)
+		throws IOException
+    {
+        if (null == map) {
+        	outputWriter.write ("null");
+
+        	return;
+        }
+
+        boolean first = true;
+
+        Iterator iterator = map.entrySet().iterator();
+
+        outputWriter.write ('{');
+
+        while (iterator.hasNext()) {
+	        if (first) {
+	            first = false;
+	        } else {
+	        	outputWriter.write (',');
+	        }
+
+	        Map.Entry entry = (Map.Entry) iterator.next();
+
+	        outputWriter.write('\"');
+
+	        outputWriter.write (escape (String.valueOf (entry.getKey())));
+
+	        outputWriter.write ('\"');
+
+	        outputWriter.write (':');
+
+	        JSONValue.writeJSONString (entry.getValue(), outputWriter);
+        }
+
+        outputWriter.write ('}');
     }
 
-    public void writeJSONString(java.io.Writer out) throws java.io.IOException{
-            writeJSONString(this, out);
-    }
-    
     /**
-     * Convert a map to JSON text. The result is a JSON object. 
-     * If this map is also a JSONAware, JSONAware specific behaviours will be omitted at this top level.
+     * Convert a map to JSON text. The result is a JSON object.  If this map is also a <i>JSONAware</i>,
+     * 	<i>JSONAware</i> specific behavior will be omitted at this top level.
      * 
      * @see org.drip.service.representation.JSONValue#toJSONString(Object)
      * 
@@ -170,47 +221,37 @@ package org.drip.service.representation;
      * 
      * @return JSON text, or "null" if map is null.
      */
-    public static String toJSONString(java.util.Map map){
-            if(map == null)
-                    return "null";
-            
-    StringBuffer sb = new StringBuffer();
-    boolean first = true;
-    java.util.Iterator iter=map.entrySet().iterator();
-            
-    sb.append('{');
-            while(iter.hasNext()){
-        if(first)
-            first = false;
-        else
-            sb.append(',');
-        
-        java.util.Map.Entry entry=(java.util.Map.Entry)iter.next();
-                    toJSONString(String.valueOf(entry.getKey()),entry.getValue(), sb);
-            }
-    sb.append('}');
-            return sb.toString();
-    }
-    
-    public String toJSONString(){
-            return toJSONString(this);
-    }
-    
-    private static String toJSONString(String key,Object value, StringBuffer sb){
-            sb.append('\"');
-    if(key == null)
-        sb.append("null");
-    else
-        JSONValue.escape(key, sb);
-            sb.append('\"').append(':');
-            
-            sb.append(JSONValue.toJSONString(value));
-            
-            return sb.toString();
-    }
-    
-    @Override public String toString(){
-            return toJSONString();
+
+    public static String toJSONString (
+		final Map map)
+    {
+        if (null == map) {
+            return "null";
+        }
+
+	    StringBuffer stringBuffer = new StringBuffer();
+	    
+	    Iterator iterator = map.entrySet().iterator();
+
+	    stringBuffer.append ('{');
+
+	    boolean first = true;
+
+	    while (iterator.hasNext()) {
+	    	if (first) {
+	    		first = false;
+	    	} else {
+	    		stringBuffer.append (',');
+	    	}
+
+	    	Map.Entry entry = (Map.Entry) iterator.next();
+
+	    	toJSONString (String.valueOf (entry.getKey()), entry.getValue(), stringBuffer);
+        }
+
+	    stringBuffer.append ('}');
+
+	    return stringBuffer.toString();
     }
 
     /**
@@ -222,22 +263,89 @@ package org.drip.service.representation;
      * @return The JSONized Key-Value String
      */
 
-    public static String toString(String key,Object value){
-    StringBuffer sb = new StringBuffer();
-            toJSONString(key, value, sb);
-    return sb.toString();
+    public static String toString (
+		final String key,
+		final Object value)
+    {
+	    StringBuffer stringBuffer = new StringBuffer();
+
+	    toJSONString (key, value, stringBuffer);
+
+	    return stringBuffer.toString();
     }
-    
+
     /**
-     * Escape quotes, \, /, \r, \n, \b, \f, \t and other control characters (U+0000 through U+001F).
-     * It's the same as JSONValue.escape() only for compatibility here.
-     * 
-     * @see org.drip.service.representation.JSONValue#escape(String)
-     * 
-     * @param s The Input String
-     * @return Escaped String
+     * Empty <i>JSONObject</i> Constructor
+     * JSONize the key-value String
+     * Empty <i>JSONObject</i> Constructor
+     * Allows creation of a <i>JSONObject</i> from a Map. After that, both the generated <i>JSONObject</i>
+     * 	and the Map can be modified independently.
+	 * Encode "this" map into JSON text and write it to out. If this map is also a <i>JSONAware</i> or
+	 * 	<i>JSONStreamAware</i>, <i>JSONAware</i>, or <i>JSONStreamAware</i> specific behavior will be ignored
+	 *  at this top level.
      */
-    public static String escape(String s){
-            return JSONValue.escape(s);
+
+    public JSONObject()
+    {
+        super();
+    }
+
+    /**
+     * Allows creation of a <i>JSONObject</i> from a Map. After that, both the generated <i>JSONObject</i>
+     * 	and the Map can be modified independently.
+     * 
+     * @param map Input JSON Map
+     */
+
+    @SuppressWarnings ("unchecked") public JSONObject (
+		final Map map)
+    {
+        super (map);
+    }
+
+	/**
+	 * Encode "this" map into JSON text and write it to out. If this map is also a <i>JSONAware</i> or
+	 * 	<i>JSONStreamAware</i>, <i>JSONAware</i>, or <i>JSONStreamAware</i> specific behavior will be ignored
+	 *  at this top level.
+	 * 
+	 * @see org.drip.service.representation.JSONValue#writeJSONString(Object, Writer)
+	 * 
+	 * @param outputWriter Output Writer
+	 * 
+	 * @throws IOException Thrown if the Inputs are Invalid
+	 */
+
+    public void writeJSONString (
+		final Writer outputWriter)
+		throws IOException
+    {
+        writeJSONString (this, outputWriter);
+    }
+
+    /**
+     * Convert "this" map to JSON text. The result is a JSON object.  If this map is also a <i>JSONAware</i>,
+     * 	<i>JSONAware</i> specific behavior will be omitted at this top level.
+     * 
+     * @see org.drip.service.representation.JSONValue#toJSONString(Object)
+     * 
+     * @return JSON text, or "null" if map is null.
+     */
+
+    public String toJSONString()
+    {
+        return toJSONString (this);
+    }
+
+    /**
+     * Convert "this" to JSON text - this directly defers to JSON'izer
+     * 
+     * @see org.drip.service.representation.JSONValue#toJSONString(Object)
+     * 
+     * @return JSON text, or "null" if map is null.
+     */
+    
+    @Override public String toString()
+    {
+        return toJSONString();
     }
 }

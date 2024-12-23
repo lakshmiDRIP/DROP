@@ -1,11 +1,18 @@
 
 package org.drip.service.representation;
 
+import java.io.IOException;
+import java.io.StringReader;
+import java.io.Writer;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -82,22 +89,28 @@ package org.drip.service.representation;
 
 /**
  * <i>JSONValue</i> is an Adaptation of the JSONValue Class from the RFC4627 compliant JSON Simple
- * (https://code.google.com/p/json-simple/).
+ * 	(https://code.google.com/p/json-simple/). It provides the following Functionality:
  *
- *	<br><br>
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationSupportLibrary.md">Computation Support</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/README.md">Environment, Product/Definition Containers, and Scenario/State Manipulation APIs</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/representation">RFC4627 Compliant JSON Message Object</a></li>
+ * 		<li>Write JSON string to out</li>
  *  </ul>
+ *
+ *	<br>
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationSupportLibrary.md">Computation Support</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/README.md">Environment, Product/Definition Containers, and Scenario/State Manipulation APIs</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/representation/README.md">RFC4627 Compliant JSON Message Object</a></td></tr>
+ *  </table>
+ *	<br>
  * 
  * @author Fang Yidong
  * @author Lakshmi Krishnamurthy
  */
 
 public class JSONValue {
-    /**
+
+	/**
      * Parse JSON text into java object from the input source. 
      * Please use parseWithException() if you don't want to ignore the exception.
      * 
@@ -115,7 +128,7 @@ public class JSONValue {
      *      null
      * 
      */
-    public static Object parse(java.io.Reader in){
+    /* public static Object parse(String in){
             try{
                     org.drip.service.jsonparser.LexicalProcessor parser=new org.drip.service.jsonparser.LexicalProcessor();
                     return parser.parse(in);
@@ -123,7 +136,7 @@ public class JSONValue {
             catch(Exception e){
                     return null;
             }
-    }
+    } */
 
     /**
      * Parse the Input String into an Object
@@ -134,7 +147,7 @@ public class JSONValue {
      */
 
     public static Object parse(String s){
-    	java.io.StringReader in=new java.io.StringReader(s);
+    	StringReader in=new StringReader(s);
             return parse(in);
     }
 
@@ -152,14 +165,14 @@ public class JSONValue {
      *      java.lang.Boolean,
      *      null
      * 
-     * @throws java.io.IOException Thrown if the Inputs are Invalid
+     * @throws IOException Thrown if the Inputs are Invalid
      * 
      * @throws org.drip.service.jsonparser.ParseException Thrown if the Inputs are Invalid
      */
-    public static Object parseWithException(java.io.Reader in) throws java.io.IOException, org.drip.service.jsonparser.ParseException{
+    /* public static Object parseWithException(Reader in) throws IOException, org.drip.service.jsonparser.ParseException{
     	org.drip.service.jsonparser.LexicalProcessor parser=new org.drip.service.jsonparser.LexicalProcessor();
             return parser.parse(in);
-    }
+    } */
     
     /**
      * Parse JSON text into java object from the input string.
@@ -197,9 +210,9 @@ public class JSONValue {
  * @param value The JSON Object
  * @param out The JSON Writer
  * 
- * @throws java.io.IOException Thrown if the Inputs are Invalid
+ * @throws IOException Thrown if the Inputs are Invalid
  */
-    @SuppressWarnings ("rawtypes") public static void writeJSONString(Object value, java.io.Writer out) throws java.io.IOException {
+    @SuppressWarnings ("rawtypes") public static void writeJSONString(Object value, Writer out) throws IOException {
             if(value == null){
                     out.write("null");
                     return;
