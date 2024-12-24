@@ -1,11 +1,30 @@
 
 package org.drip.service.product;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.drip.analytics.date.JulianDate;
+import org.drip.analytics.support.CaseInsensitiveHashMap;
+import org.drip.historical.attribution.PositionChangeComponents;
+import org.drip.historical.engine.FixFloatExplainProcessor;
+import org.drip.historical.engine.HorizonChangeExplainExecutor;
+import org.drip.market.otc.FixedFloatSwapConvention;
+import org.drip.market.otc.IBORFixedFloatContainer;
+import org.drip.param.market.CurveSurfaceQuoteContainer;
+import org.drip.param.valuation.ValuationParams;
+import org.drip.product.rates.FixFloatComponent;
+import org.drip.service.template.LatentMarketStateBuilder;
+import org.drip.state.discount.MergedDiscountForwardCurve;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -81,93 +100,139 @@ package org.drip.service.product;
 
 /**
  * <i>FixFloatAPI</i> contains the Functionality associated with the Horizon Analysis of the Fix Float Swap.
- * 
- * <br><br>
+ *  It provides the following Functionality:
+ *
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationSupportLibrary.md">Computation Support</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/README.md">Environment, Product/Definition Containers, and Scenario/State Manipulation APIs</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/product/README.md">Product Horizon PnL Attribution Decomposition</a></li>
+ * 		<li>Compute the Horizon Change Attribution Details for the Specified Fix-Float Swap</li>
+ * 		<li>Generate the Funding Curve Horizon Metrics #1</li>
+ * 		<li>Generate the Funding Curve Horizon Metrics #2</li>
  *  </ul>
- * <br><br>
+ *
+ *	<br>
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationSupportLibrary.md">Computation Support</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/README.md">Environment, Product/Definition Containers, and Scenario/State Manipulation APIs</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/product/README.md">Product Horizon PnL Attribution Decomposition</a></td></tr>
+ *  </table>
+ *	<br>
  * 
  * @author Lakshmi Krishnamurthy
  */
 
-public class FixFloatAPI {
+public class FixFloatAPI
+{
 
 	/**
 	 * Compute the Horizon Change Attribution Details for the Specified Fix-Float Swap
 	 * 
-	 * @param dcFirst First Day Discount Curve
-	 * @param dcSecond Second Date Discount Curve
-	 * @param mapRollDownDiscountCurve Map of the Roll Down Discount Curve
-	 * @param strMaturityTenor Fix Float Swap Maturity Tenor
+	 * @param firstDiscountCurve First Day Discount Curve
+	 * @param secondDiscountCurve Second Date Discount Curve
+	 * @param rollDownDiscountCurveMap Map of the Roll Down Discount Curve
+	 * @param maturityTenor Fix Float Swap Maturity Tenor
 	 * 
 	 * @return The Horizon Change Attribution Instance
 	 */
 
-	public static final org.drip.historical.attribution.PositionChangeComponents HorizonChangeAttribution (
-		final org.drip.state.discount.MergedDiscountForwardCurve dcFirst,
-		final org.drip.state.discount.MergedDiscountForwardCurve dcSecond,
-		final
-			org.drip.analytics.support.CaseInsensitiveHashMap<org.drip.state.discount.MergedDiscountForwardCurve>
-			mapRollDownDiscountCurve,
-		final java.lang.String strMaturityTenor)
+	public static final PositionChangeComponents HorizonChangeAttribution (
+		final MergedDiscountForwardCurve firstDiscountCurve,
+		final MergedDiscountForwardCurve secondDiscountCurve,
+		final CaseInsensitiveHashMap<MergedDiscountForwardCurve> rollDownDiscountCurveMap,
+		final String maturityTenor)
 	{
-		if (null == mapRollDownDiscountCurve || 0 == mapRollDownDiscountCurve.size()) return null;
+		if (null == rollDownDiscountCurveMap || 0 == rollDownDiscountCurveMap.size()) {
+			return null;
+		}
 
-		org.drip.market.otc.FixedFloatSwapConvention ffsc =
-			org.drip.market.otc.IBORFixedFloatContainer.ConventionFromJurisdiction (dcFirst.currency(),
-				"ALL", strMaturityTenor, "MAIN");
+		FixedFloatSwapConvention fixedFloatSwapConvention =
+			IBORFixedFloatContainer.ConventionFromJurisdiction (
+				firstDiscountCurve.currency(),
+				"ALL",
+				maturityTenor,
+				"MAIN"
+			);
 
-		if (null == ffsc) return null;
+		if (null == fixedFloatSwapConvention) {
+			return null;
+		}
 
-		int iSettleLag = ffsc.spotLag();
+		int settleLag = fixedFloatSwapConvention.spotLag();
 
-		org.drip.analytics.date.JulianDate dtFirst = dcFirst.epoch();
+		JulianDate firstDiscountCurveDate = firstDiscountCurve.epoch();
 
-		org.drip.product.rates.FixFloatComponent ffc = ffsc.createFixFloatComponent (dtFirst,
-			strMaturityTenor, 0., 0., 1.);
+		FixFloatComponent fixFloatComponent = fixedFloatSwapConvention.createFixFloatComponent (
+			firstDiscountCurveDate,
+			maturityTenor,
+			0.,
+			0.,
+			1.
+		);
 
-		if (null == ffc) return null;
+		if (null == fixFloatComponent) {
+			return null;
+		}
 
-		org.drip.param.market.CurveSurfaceQuoteContainer csqcFirst = new
-			org.drip.param.market.CurveSurfaceQuoteContainer();
+		CurveSurfaceQuoteContainer firstCurveSurfaceQuoteContainer = new CurveSurfaceQuoteContainer();
 
-		if (!csqcFirst.setFundingState (dcFirst)) return null;
+		if (!firstCurveSurfaceQuoteContainer.setFundingState (firstDiscountCurve)) {
+			return null;
+		}
 
-		org.drip.param.market.CurveSurfaceQuoteContainer csqcSecond = new
-			org.drip.param.market.CurveSurfaceQuoteContainer();
+		CurveSurfaceQuoteContainer secondCurveSurfaceQuoteContainer = new CurveSurfaceQuoteContainer();
 
-		if (!csqcSecond.setFundingState (dcSecond)) return null;
+		if (!secondCurveSurfaceQuoteContainer.setFundingState (secondDiscountCurve)) {
+			return null;
+		}
 
-		org.drip.analytics.support.CaseInsensitiveHashMap<org.drip.param.market.CurveSurfaceQuoteContainer>
-			mapCSQCRollDown = new
-				org.drip.analytics.support.CaseInsensitiveHashMap<org.drip.param.market.CurveSurfaceQuoteContainer>();
+		CaseInsensitiveHashMap<CurveSurfaceQuoteContainer> curveSurfaceQuoteContainerRollDownMap =
+			new CaseInsensitiveHashMap<CurveSurfaceQuoteContainer>();
 
-		for (java.lang.String strRollDownTenor : mapRollDownDiscountCurve.keySet()) {
-			org.drip.param.market.CurveSurfaceQuoteContainer csqcRollDown = new
-				org.drip.param.market.CurveSurfaceQuoteContainer();
+		for (String rollDownTenor : rollDownDiscountCurveMap.keySet()) {
+			CurveSurfaceQuoteContainer curveSurfaceQuoteContainerRollDown = new CurveSurfaceQuoteContainer();
 
-			org.drip.state.discount.MergedDiscountForwardCurve dcRollDown = mapRollDownDiscountCurve.get
-				(strRollDownTenor);
+			MergedDiscountForwardCurve rollDownDiscountCurve = rollDownDiscountCurveMap.get (rollDownTenor);
 
-			if (null == dcRollDown || !csqcRollDown.setFundingState (dcRollDown)) return null;
+			if (null == rollDownDiscountCurve ||
+				!curveSurfaceQuoteContainerRollDown.setFundingState (rollDownDiscountCurve)) 
+			{
+				return null;
+			}
 
-			mapCSQCRollDown.put (strRollDownTenor, csqcRollDown);
+			curveSurfaceQuoteContainerRollDownMap.put (rollDownTenor, curveSurfaceQuoteContainerRollDown);
 		}
 
 		try {
-			double dblSwapRate = ffc.measureValue (org.drip.param.valuation.ValuationParams.Spot
-				(dtFirst.addBusDays (iSettleLag, ffc.payCurrency()).julian()), null, csqcFirst, null,
-					"SwapRate");
+			double swapRate = fixFloatComponent.measureValue (
+				ValuationParams.Spot (
+					firstDiscountCurveDate.addBusDays (settleLag, fixFloatComponent.payCurrency()).julian()
+				),
+				null,
+				firstCurveSurfaceQuoteContainer,
+				null,
+				"SwapRate"
+			);
 
-			return org.drip.historical.engine.HorizonChangeExplainExecutor.GenerateAttribution (new
-				org.drip.historical.engine.FixFloatExplainProcessor (ffsc.createFixFloatComponent (dtFirst,
-					strMaturityTenor, dblSwapRate, 0., 1.), iSettleLag, "SwapRate", dblSwapRate, dtFirst,
-						dcSecond.epoch(), csqcFirst, csqcSecond, mapCSQCRollDown));
-		} catch (java.lang.Exception e) {
+			return HorizonChangeExplainExecutor.GenerateAttribution (
+				new
+				FixFloatExplainProcessor (
+					fixedFloatSwapConvention.createFixFloatComponent (
+						firstDiscountCurveDate,
+						maturityTenor,
+						swapRate,
+						0.,
+						1.
+					),
+					settleLag,
+					"SwapRate",
+					swapRate,
+					firstDiscountCurveDate,
+					secondDiscountCurve.epoch(),
+					firstCurveSurfaceQuoteContainer,
+					secondCurveSurfaceQuoteContainer,
+					curveSurfaceQuoteContainerRollDownMap
+				)
+			);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -177,154 +242,222 @@ public class FixFloatAPI {
 	/**
 	 * Generate the Funding Curve Horizon Metrics
 	 * 
-	 * @param dtFirst The First Date
-	 * @param dtSecond The Second Date
-	 * @param astrFundingDepositInstrumentTenor Array of Funding Curve Deposit Instrument Maturity Tenors
-	 * @param adblFirstFundingDepositInstrument Array of First Date Funding Curve Deposit Instrument Quotes
-	 * @param adblSecondFundingDepositInstrument Array of Second Date Funding Curve Deposit Instrument Quotes
-	 * @param astrFundingFixFloatTenor Array of Funding Curve Fix Float Instrument Maturity Tenors
-	 * @param adblFirstFundingFixFloat Array of First Date Funding Curve Fix Float Swap Rates
-	 * @param adblSecondFundingFixFloat Array of Second Date Funding Curve Fix Float Swap Rates
-	 * @param strCurrency Funding Currency
-	 * @param strMaturityTenor Maturity Tenor
-	 * @param astrRollDownHorizon Array of the Roll Down Horizon Tenors
-	 * @param iLatentStateType Latent State Type
+	 * @param firstDiscountCurveDate The First Date
+	 * @param secondDiscountCurveDate The Second Date
+	 * @param fundingDepositInstrumentTenorArray Array of Funding Curve Deposit Instrument Maturity Tenors
+	 * @param firstFundingDepositInstrumentArray Array of First Date Funding Curve Deposit Instrument Quotes
+	 * @param secondFundingDepositInstrumentArray Array of Second Date Funding Curve Deposit Instrument
+	 *  Quotes
+	 * @param fundingFixFloatTenorArray Array of Funding Curve Fix Float Instrument Maturity Tenors
+	 * @param firstFundingFixFloatArray Array of First Date Funding Curve Fix Float Swap Rates
+	 * @param secondFundingFixFloatArray Array of Second Date Funding Curve Fix Float Swap Rates
+	 * @param currency Funding Currency
+	 * @param maturityTenor Maturity Tenor
+	 * @param rollDownHorizonTenorArray Array of the Roll Down Horizon Tenors
+	 * @param latentStateType Latent State Type
 	 * 
 	 * @return The Funding Curve Horizon Metrics
 	 */
 
-	public static final org.drip.historical.attribution.PositionChangeComponents HorizonChangeAttribution (
-		final org.drip.analytics.date.JulianDate dtFirst,
-		final org.drip.analytics.date.JulianDate dtSecond,
-		final java.lang.String[] astrFundingDepositInstrumentTenor,
-		final double[] adblFirstFundingDepositInstrument,
-		final double[] adblSecondFundingDepositInstrument,
-		final java.lang.String[] astrFundingFixFloatTenor,
-		final double[] adblFirstFundingFixFloat,
-		final double[] adblSecondFundingFixFloat,
-		final java.lang.String strCurrency,
-		final java.lang.String strMaturityTenor,
-		final java.lang.String[] astrRollDownHorizon,
-		final int iLatentStateType)
+	public static final PositionChangeComponents HorizonChangeAttribution (
+		final JulianDate firstDiscountCurveDate,
+		final JulianDate secondDiscountCurveDate,
+		final String[] fundingDepositInstrumentTenorArray,
+		final double[] firstFundingDepositInstrumentArray,
+		final double[] secondFundingDepositInstrumentArray,
+		final String[] fundingFixFloatTenorArray,
+		final double[] firstFundingFixFloatArray,
+		final double[] secondFundingFixFloatArray,
+		final String currency,
+		final String maturityTenor,
+		final String[] rollDownHorizonTenorArray,
+		final int latentStateType)
 	{
-		if (null == dtFirst || null == dtSecond || dtFirst.julian() >= dtSecond.julian()) return null;
-
-		int iNumFundingDepositInstrument = null == astrFundingDepositInstrumentTenor ? 0 :
-			astrFundingDepositInstrumentTenor.length;
-		int iNumFirstFundingDepositInstrument = null == adblFirstFundingDepositInstrument ? 0 :
-			adblFirstFundingDepositInstrument.length;
-		int iNumSecondFundingDepositInstrument = null == adblSecondFundingDepositInstrument ? 0 :
-			adblSecondFundingDepositInstrument.length;
-		int iNumFundingFixFloat = null == astrFundingFixFloatTenor ? 0 : astrFundingFixFloatTenor.length;
-		int iNumFirstFundingFixFloat = null == adblFirstFundingFixFloat ? 0 :
-			adblFirstFundingFixFloat.length;
-		int iNumSecondFundingFixFloat = null == adblSecondFundingFixFloat ? 0 :
-			adblSecondFundingFixFloat.length;
-		int iNumRollDownHorizon = null == astrRollDownHorizon ? 0 : astrRollDownHorizon .length;
-
-		org.drip.analytics.support.CaseInsensitiveHashMap<org.drip.state.discount.MergedDiscountForwardCurve>
-			mapRollDownDiscountCurve = 0 == iNumRollDownHorizon ? null : new
-				org.drip.analytics.support.CaseInsensitiveHashMap<org.drip.state.discount.MergedDiscountForwardCurve>();
-
-		if (0 == iNumFundingDepositInstrument || iNumFundingDepositInstrument !=
-			iNumFirstFundingDepositInstrument || iNumFundingDepositInstrument !=
-				iNumSecondFundingDepositInstrument || 0 == iNumFundingFixFloat || iNumFundingFixFloat !=
-					iNumFirstFundingFixFloat || iNumFundingFixFloat != iNumSecondFundingFixFloat)
+		if (null == firstDiscountCurveDate ||
+			null == secondDiscountCurveDate ||
+			firstDiscountCurveDate.julian() >= secondDiscountCurveDate.julian())
+		{
 			return null;
-
-		org.drip.state.discount.MergedDiscountForwardCurve dcFirst =
-			org.drip.service.template.LatentMarketStateBuilder.FundingCurve (dtFirst, strCurrency,
-				astrFundingDepositInstrumentTenor, adblFirstFundingDepositInstrument, "ForwardRate", null,
-					"ForwardRate", astrFundingFixFloatTenor, adblFirstFundingFixFloat, "SwapRate",
-						iLatentStateType);
-
-		org.drip.state.discount.MergedDiscountForwardCurve dcSecond =
-			org.drip.service.template.LatentMarketStateBuilder.FundingCurve (dtSecond, strCurrency,
-				astrFundingDepositInstrumentTenor, adblSecondFundingDepositInstrument, "ForwardRate", null,
-					"ForwardRate", astrFundingFixFloatTenor, adblSecondFundingFixFloat, "SwapRate",
-						iLatentStateType);
-
-		org.drip.state.discount.MergedDiscountForwardCurve dcRollDown =
-			org.drip.service.template.LatentMarketStateBuilder.FundingCurve (dtSecond, strCurrency,
-				astrFundingDepositInstrumentTenor, adblFirstFundingDepositInstrument, "ForwardRate", null,
-					"ForwardRate", astrFundingFixFloatTenor, adblFirstFundingFixFloat, "SwapRate",
-						iLatentStateType);
-
-		if (null == dcRollDown) return null;
-
-		mapRollDownDiscountCurve.put ("Native", dcRollDown);
-
-		for (int j = 0; j < iNumRollDownHorizon; ++j) {
-			org.drip.state.discount.MergedDiscountForwardCurve dcHorizonRollDown =
-				org.drip.service.template.LatentMarketStateBuilder.FundingCurve (dtFirst.addTenor
-					(astrRollDownHorizon[j]), strCurrency, astrFundingDepositInstrumentTenor,
-						adblFirstFundingDepositInstrument, "ForwardRate", null, "ForwardRate",
-							astrFundingFixFloatTenor, adblFirstFundingFixFloat, "SwapRate",
-								iLatentStateType);
-
-			if (null == dcHorizonRollDown) return null;
-
-			mapRollDownDiscountCurve.put (astrRollDownHorizon[j], dcHorizonRollDown);
 		}
 
-		return HorizonChangeAttribution (dcFirst, dcSecond, mapRollDownDiscountCurve, strMaturityTenor);
+		int fundingDepositInstrumentCount = null == fundingDepositInstrumentTenorArray ? 0 :
+			fundingDepositInstrumentTenorArray.length;
+		int firstFundingDepositInstrumentCount = null == firstFundingDepositInstrumentArray ? 0 :
+			firstFundingDepositInstrumentArray.length;
+		int secondFundingDepositInstrumentCount = null == secondFundingDepositInstrumentArray ? 0 :
+			secondFundingDepositInstrumentArray.length;
+		int fundingFixFloatCount = null == fundingFixFloatTenorArray ? 0 : fundingFixFloatTenorArray.length;
+		int firstFundingFixFloatCount = null == firstFundingFixFloatArray ? 0 :
+			firstFundingFixFloatArray.length;
+		int secondFundingFixFloatCount = null == secondFundingFixFloatArray ? 0 :
+			secondFundingFixFloatArray.length;
+		int rollDownHorizonCount = null == rollDownHorizonTenorArray ? 0 : rollDownHorizonTenorArray .length;
+
+		CaseInsensitiveHashMap<MergedDiscountForwardCurve> rollDownDiscountCurveMap =
+			0 == rollDownHorizonCount ? null : new CaseInsensitiveHashMap<MergedDiscountForwardCurve>();
+
+		if (0 == fundingDepositInstrumentCount ||
+			fundingDepositInstrumentCount != firstFundingDepositInstrumentCount ||
+			fundingDepositInstrumentCount != secondFundingDepositInstrumentCount ||
+			0 == fundingFixFloatCount ||
+			fundingFixFloatCount != firstFundingFixFloatCount ||
+			fundingFixFloatCount != secondFundingFixFloatCount)
+		{
+			return null;
+		}
+
+		MergedDiscountForwardCurve firstDiscountCurve = LatentMarketStateBuilder.FundingCurve (
+			firstDiscountCurveDate,
+			currency,
+			fundingDepositInstrumentTenorArray,
+			firstFundingDepositInstrumentArray,
+			"ForwardRate",
+			null,
+			"ForwardRate",
+			fundingFixFloatTenorArray,
+			firstFundingFixFloatArray,
+			"SwapRate",
+			latentStateType
+		);
+
+		MergedDiscountForwardCurve secondDiscountCurve = LatentMarketStateBuilder.FundingCurve (
+			secondDiscountCurveDate,
+			currency,
+			fundingDepositInstrumentTenorArray,
+			secondFundingDepositInstrumentArray,
+			"ForwardRate",
+			null,
+			"ForwardRate",
+			fundingFixFloatTenorArray,
+			secondFundingFixFloatArray,
+			"SwapRate",
+			latentStateType
+		);
+
+		MergedDiscountForwardCurve rollDownDiscountCurve = LatentMarketStateBuilder.FundingCurve (
+			secondDiscountCurveDate,
+			currency,
+			fundingDepositInstrumentTenorArray,
+			firstFundingDepositInstrumentArray,
+			"ForwardRate",
+			null,
+			"ForwardRate",
+			fundingFixFloatTenorArray,
+			firstFundingFixFloatArray,
+			"SwapRate",
+			latentStateType
+		);
+
+		if (null == rollDownDiscountCurve) {
+			return null;
+		}
+
+		rollDownDiscountCurveMap.put ("Native", rollDownDiscountCurve);
+
+		for (int rollDownHorizon = 0; rollDownHorizon < rollDownHorizonCount; ++rollDownHorizon) {
+			MergedDiscountForwardCurve horizonRollDownDiscountCurve = LatentMarketStateBuilder.FundingCurve (
+				firstDiscountCurveDate.addTenor (rollDownHorizonTenorArray[rollDownHorizon]),
+				currency,
+				fundingDepositInstrumentTenorArray,
+				firstFundingDepositInstrumentArray,
+				"ForwardRate",
+				null,
+				"ForwardRate",
+				fundingFixFloatTenorArray,
+				firstFundingFixFloatArray,
+				"SwapRate",
+				latentStateType
+			);
+
+			if (null == horizonRollDownDiscountCurve) {
+				return null;
+			}
+
+			rollDownDiscountCurveMap.put (
+				rollDownHorizonTenorArray[rollDownHorizon],
+				horizonRollDownDiscountCurve
+			);
+		}
+
+		return HorizonChangeAttribution (
+			firstDiscountCurve,
+			secondDiscountCurve,
+			rollDownDiscountCurveMap,
+			maturityTenor
+		);
 	}
 
 	/**
 	 * Generate the Funding Curve Horizon Metrics
 	 * 
-	 * @param adtSpot Array of Spot
-	 * @param iHorizonGap The Horizon Gap
-	 * @param astrFundingDepositInstrumentTenor Array of Funding Curve Deposit Instrument Maturity Tenors
-	 * @param aadblFundingDepositInstrumentQuote Array of Funding Curve Deposit Instrument Forward Rates
-	 * @param astrFundingFixFloatTenor Array of Funding Curve Fix Float Instrument Maturity Tenors
-	 * @param aadblFundingFixFloatQuote Array of Funding Curve Fix Float Instrument Swap Rates
-	 * @param strCurrency Funding Currency
-	 * @param strMaturityTenor Maturity Tenor
-	 * @param astrRollDownHorizon Array of the Roll Down Horizon Tenors
-	 * @param iLatentStateType Latent State Type
+	 * @param spotDateArray Array of Spot
+	 * @param horizonGap The Horizon Gap
+	 * @param fundingDepositInstrumentTenorArray Array of Funding Curve Deposit Instrument Maturity Tenors
+	 * @param fundingDepositInstrumentQuoteGrid Array of Funding Curve Deposit Instrument Forward Rates
+	 * @param fundingFixFloatTenorArray Array of Funding Curve Fix Float Instrument Maturity Tenors
+	 * @param fundingFixFloatQuoteGrid Array of Funding Curve Fix Float Instrument Swap Rates
+	 * @param currency Funding Currency
+	 * @param maturityTenor Maturity Tenor
+	 * @param rollDownHorizonTenorArray Array of the Roll Down Horizon Tenors
+	 * @param latentStateType Latent State Type
 	 * 
 	 * @return The Funding Curve Horizon Metrics
 	 */
 
-	public static final java.util.List<org.drip.historical.attribution.PositionChangeComponents>
-		HorizonChangeAttribution (
-			final org.drip.analytics.date.JulianDate[] adtSpot,
-			final int iHorizonGap,
-			final java.lang.String[] astrFundingDepositInstrumentTenor,
-			final double[][] aadblFundingDepositInstrumentQuote,
-			final java.lang.String[] astrFundingFixFloatTenor,
-			final double[][] aadblFundingFixFloatQuote,
-			final java.lang.String strCurrency,
-			final java.lang.String strMaturityTenor,
-			final java.lang.String[] astrRollDownHorizon,
-			final int iLatentStateType)
+	public static final List<PositionChangeComponents> HorizonChangeAttribution (
+		final JulianDate[] spotDateArray,
+		final int horizonGap,
+		final String[] fundingDepositInstrumentTenorArray,
+		final double[][] fundingDepositInstrumentQuoteGrid,
+		final String[] fundingFixFloatTenorArray,
+		final double[][] fundingFixFloatQuoteGrid,
+		final String currency,
+		final String maturityTenor,
+		final String[] rollDownHorizonTenorArray,
+		final int latentStateType)
 	{
-		if (null == adtSpot || 0 >= iHorizonGap || null == aadblFundingDepositInstrumentQuote || null ==
-			aadblFundingFixFloatQuote)
+		if (null == spotDateArray ||
+			0 >= horizonGap ||
+			null == fundingDepositInstrumentQuoteGrid ||
+			null == fundingFixFloatQuoteGrid)
+		{
 			return null;
-
-		int iNumClose = adtSpot.length;
-		int iNumRollDownTenor = null == astrRollDownHorizon ? 0 : astrRollDownHorizon.length;
-
-		if (0 == iNumClose || iNumClose != aadblFundingDepositInstrumentQuote.length || iNumClose !=
-			aadblFundingFixFloatQuote.length || 0 == iNumRollDownTenor)
-			return null;
-
-		java.util.List<org.drip.historical.attribution.PositionChangeComponents> lsPCC = new
-			java.util.ArrayList<org.drip.historical.attribution.PositionChangeComponents>();
-
-		for (int i = iHorizonGap; i < iNumClose; ++i) {
-			org.drip.historical.attribution.PositionChangeComponents pcc = HorizonChangeAttribution
-				(adtSpot[i - iHorizonGap], adtSpot[i], astrFundingDepositInstrumentTenor,
-					aadblFundingDepositInstrumentQuote[i - iHorizonGap],
-						aadblFundingDepositInstrumentQuote[i], astrFundingFixFloatTenor,
-							aadblFundingFixFloatQuote[i - iHorizonGap], aadblFundingFixFloatQuote[i],
-								strCurrency, strMaturityTenor, astrRollDownHorizon, iLatentStateType);
-
-			if (null != pcc) lsPCC.add (pcc);
 		}
 
-		return lsPCC;
+		int iNumRollDownTenor = null == rollDownHorizonTenorArray ? 0 : rollDownHorizonTenorArray.length;
+
+		if (0 == spotDateArray.length ||
+			spotDateArray.length != fundingDepositInstrumentQuoteGrid.length ||
+			spotDateArray.length != fundingFixFloatQuoteGrid.length ||
+			0 == iNumRollDownTenor)
+		{
+			return null;
+		}
+
+		List<PositionChangeComponents> positionChangeComponentsList =
+			new ArrayList<PositionChangeComponents>();
+
+		for (int spotDateIndex = horizonGap; spotDateIndex < spotDateArray.length; ++spotDateIndex) {
+			PositionChangeComponents positionChangeComponents = HorizonChangeAttribution (
+				spotDateArray[spotDateIndex - horizonGap],
+				spotDateArray[spotDateIndex],
+				fundingDepositInstrumentTenorArray,
+				fundingDepositInstrumentQuoteGrid[spotDateIndex - horizonGap],
+				fundingDepositInstrumentQuoteGrid[spotDateIndex],
+				fundingFixFloatTenorArray,
+				fundingFixFloatQuoteGrid[spotDateIndex - horizonGap],
+				fundingFixFloatQuoteGrid[spotDateIndex],
+				currency,
+				maturityTenor,
+				rollDownHorizonTenorArray,
+				latentStateType
+			);
+
+			if (null != positionChangeComponents) {
+				positionChangeComponentsList.add (positionChangeComponents);
+			}
+		}
+
+		return positionChangeComponentsList;
 	}
 }

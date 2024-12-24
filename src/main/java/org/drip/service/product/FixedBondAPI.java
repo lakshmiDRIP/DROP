@@ -1,11 +1,36 @@
 
 package org.drip.service.product;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
+import org.drip.analytics.date.JulianDate;
+import org.drip.analytics.daycount.Convention;
+import org.drip.analytics.output.BondRVMeasures;
+import org.drip.analytics.support.CaseInsensitiveTreeMap;
+import org.drip.historical.attribution.BondMarketSnap;
+import org.drip.historical.attribution.PositionChangeComponents;
+import org.drip.numerical.common.NumberUtil;
+import org.drip.param.market.CurveSurfaceQuoteContainer;
+import org.drip.param.quote.MultiSided;
+import org.drip.param.quote.ProductMultiMeasure;
+import org.drip.param.valuation.ValuationParams;
+import org.drip.product.creator.BondBuilder;
+import org.drip.product.credit.BondComponent;
+import org.drip.service.common.FormatUtil;
+import org.drip.service.template.LatentMarketStateBuilder;
+import org.drip.state.discount.MergedDiscountForwardCurve;
+import org.drip.state.govvie.GovvieCurve;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -81,629 +106,880 @@ package org.drip.service.product;
 
 /**
  * <i>FixedBondAPI</i> demonstrates the Details behind the Pricing and the Scenario Runs behind a Fixed Bond.
- * 
- * <br><br>
+ *  It provides the following Functionality:
+ *
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationSupportLibrary.md">Computation Support</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/README.md">Environment, Product/Definition Containers, and Scenario/State Manipulation APIs</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/product/README.md">Product Horizon PnL Attribution Decomposition</a></li>
+ * 		<li>Generate a Full Map Invocation of the Bond Valuation Run</li>
+ * 		<li>Generate the Treasury Curve Tenor Key Rate Sensitivity/Duration</li>
+ * 		<li>Return Attribution for the Specified Bond Instance</li>
+ * 		<li>Generate the Relative Value Metrics for the Specified Bond</li>
  *  </ul>
- * <br><br>
+ *
+ *	<br>
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationSupportLibrary.md">Computation Support</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/README.md">Environment, Product/Definition Containers, and Scenario/State Manipulation APIs</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/product/README.md">Product Horizon PnL Attribution Decomposition</a></td></tr>
+ *  </table>
+ *	<br>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class FixedBondAPI {
+public class FixedBondAPI
+{
 
 	/**
 	 * Generate a Full Map Invocation of the Bond Valuation Run
 	 * 
-	 * @param strIssuerName Bond Issuer Name
-	 * @param iBondEffectiveDate Bond Effective Date
-	 * @param iBondMaturityDate Bond Maturity Date
-	 * @param dblBondCoupon Bond Coupon
-	 * @param iBondCouponFrequency Bond Coupon Frequency
-	 * @param strBondCouponDayCount Bond Coupon Day Count
-	 * @param strBondCouponCurrency Bond Coupon Currency
-	 * @param iSpotDate Spot Date
-	 * @param astrFundingCurveDepositTenor Deposit Instruments Tenor (for Funding Curve)
-	 * @param adblFundingCurveDepositQuote Deposit Instruments Quote (for Funding Curve)
-	 * @param strFundingCurveDepositMeasure Deposit Instruments Measure (for Funding Curve)
-	 * @param adblFundingCurveFuturesQuote Futures Instruments Tenor (for Funding Curve)
-	 * @param strFundingCurveFuturesMeasure Futures Instruments Measure (for Funding Curve)
-	 * @param astrFundingCurveFixFloatTenor Fix-Float Instruments Tenor (for Funding Curve)
-	 * @param adblFundingCurveFixFloatQuote Fix-Float Instruments Quote (for Funding Curve)
-	 * @param strFundingFixFloatMeasure Fix-Float Instruments Tenor (for Funding Curve)
-	 * @param strGovvieCode Govvie Bond Code (for Treasury Curve)
-	 * @param aiGovvieCurveTreasuryEffectiveDate Array of the Treasury Instrument Effective Date (for Treasury
-	 * 		Curve)
-	 * @param aiGovvieCurveTreasuryMaturityDate Array of the Treasury Instrument Maturity Date (for Treasury
-	 * 		Curve)
-	 * @param adblGovvieCurveTreasuryCoupon Array of the Treasury Instrument Coupon (for Treasury Curve)
-	 * @param adblGovvieCurveTreasuryYield Array of the Treasury Instrument Yield (for Treasury Curve)
-	 * @param strGovvieCurveTreasuryMeasure Treasury Instrument Measure (for Treasury Curve)
-	 * @param strCreditCurveName Credit Curve Name (for Credit Curve)
-	 * @param astrCreditCurveCDSTenor CDS Maturity Tenor (for Credit Curve)
-	 * @param adblCreditCurveCDSCoupon Array of CDS Fixed Coupon (for Credit Curve)
-	 * @param adblCreditCurveCDSQuote Array of CDS Market Quotes (for Credit Curve)
-	 * @param strCreditCurveCDSMeasure CDS Calibration Measure (for Credit Curve)
-	 * @param strBondMarketQuoteName Name of the Bond Market Quote
-	 * @param dblBondMarketQuote Bond Market Quote Value
+	 * @param issuerName Bond Issuer Name
+	 * @param bondEffectiveDate Bond Effective Date
+	 * @param bondMaturityDate Bond Maturity Date
+	 * @param bondCoupon Bond Coupon
+	 * @param bondCouponFrequency Bond Coupon Frequency
+	 * @param bondCouponDayCount Bond Coupon Day Count
+	 * @param bondCouponCurrency Bond Coupon Currency
+	 * @param spotDate Spot Date
+	 * @param fundingCurveDepositTenor Deposit Instruments Tenor (for Funding Curve)
+	 * @param fundingCurveDepositQuote Deposit Instruments Quote (for Funding Curve)
+	 * @param fundingCurveDepositMeasure Deposit Instruments Measure (for Funding Curve)
+	 * @param fundingCurveFuturesQuote Futures Instruments Tenor (for Funding Curve)
+	 * @param fundingCurveFuturesMeasure Futures Instruments Measure (for Funding Curve)
+	 * @param fundingCurveFixFloatTenor Fix-Float Instruments Tenor (for Funding Curve)
+	 * @param fundingCurveFixFloatQuote Fix-Float Instruments Quote (for Funding Curve)
+	 * @param fundingFixFloatMeasure Fix-Float Instruments Tenor (for Funding Curve)
+	 * @param govvieCode Govvie Bond Code (for Treasury Curve)
+	 * @param govvieCurveTreasuryEffectiveDateArray Array of the Treasury Instrument Effective Date (for
+	 * 	Treasury Curve)
+	 * @param govvieCurveTreasuryMaturityDateArray Array of the Treasury Instrument Maturity Date (for
+	 * 	Treasury Curve)
+	 * @param govvieCurveTreasuryCouponArray Array of the Treasury Instrument Coupon (for Treasury Curve)
+	 * @param govvieCurveTreasuryYieldArray Array of the Treasury Instrument Yield (for Treasury Curve)
+	 * @param govvieCurveTreasuryMeasure Treasury Instrument Measure (for Treasury Curve)
+	 * @param creditCurveName Credit Curve Name (for Credit Curve)
+	 * @param creditCurveCDSTenorArray CDS Maturity Tenor (for Credit Curve)
+	 * @param creditCurveCDSCouponArray Array of CDS Fixed Coupon (for Credit Curve)
+	 * @param creditCurveCDSQuoteArray Array of CDS Market Quotes (for Credit Curve)
+	 * @param creditCurveCDSMeasure CDS Calibration Measure (for Credit Curve)
+	 * @param bondMarketQuoteName Name of the Bond Market Quote
+	 * @param bondMarketQuote Bond Market Quote Value
 	 * 
 	 * @return The Output Measure Map
 	 */
 
-	public static final java.util.Map<java.lang.String, java.lang.Double> ValuationMetrics (
-		final java.lang.String strIssuerName,
-		final int iBondEffectiveDate,
-		final int iBondMaturityDate,
-		final double dblBondCoupon,
-		final int iBondCouponFrequency,
-		final java.lang.String strBondCouponDayCount,
-		final java.lang.String strBondCouponCurrency,
-		final int iSpotDate,
-		final java.lang.String[] astrFundingCurveDepositTenor,
-		final double[] adblFundingCurveDepositQuote,
-		final java.lang.String strFundingCurveDepositMeasure,
-		final double[] adblFundingCurveFuturesQuote,
-		final java.lang.String strFundingCurveFuturesMeasure,
-		final java.lang.String[] astrFundingCurveFixFloatTenor,
-		final double[] adblFundingCurveFixFloatQuote,
-		final java.lang.String strFundingFixFloatMeasure,
-		final java.lang.String strGovvieCode,
-		final int[] aiGovvieCurveTreasuryEffectiveDate,
-		final int[] aiGovvieCurveTreasuryMaturityDate,
-		final double[] adblGovvieCurveTreasuryCoupon,
-		final double[] adblGovvieCurveTreasuryYield,
-		final java.lang.String strGovvieCurveTreasuryMeasure,
-		final java.lang.String strCreditCurveName,
-		final java.lang.String[] astrCreditCurveCDSTenor,
-		final double[] adblCreditCurveCDSCoupon,
-		final double[] adblCreditCurveCDSQuote,
-		final java.lang.String strCreditCurveCDSMeasure,
-		final java.lang.String strBondMarketQuoteName,
-		final double dblBondMarketQuote)
+	public static final Map<String, Double> ValuationMetrics (
+		final String issuerName,
+		final int bondEffectiveDate,
+		final int bondMaturityDate,
+		final double bondCoupon,
+		final int bondCouponFrequency,
+		final String bondCouponDayCount,
+		final String bondCouponCurrency,
+		final int spotDate,
+		final String[] fundingCurveDepositTenor,
+		final double[] fundingCurveDepositQuote,
+		final String fundingCurveDepositMeasure,
+		final double[] fundingCurveFuturesQuote,
+		final String fundingCurveFuturesMeasure,
+		final String[] fundingCurveFixFloatTenor,
+		final double[] fundingCurveFixFloatQuote,
+		final String fundingFixFloatMeasure,
+		final String govvieCode,
+		final int[] govvieCurveTreasuryEffectiveDateArray,
+		final int[] govvieCurveTreasuryMaturityDateArray,
+		final double[] govvieCurveTreasuryCouponArray,
+		final double[] govvieCurveTreasuryYieldArray,
+		final String govvieCurveTreasuryMeasure,
+		final String creditCurveName,
+		final String[] creditCurveCDSTenorArray,
+		final double[] creditCurveCDSCouponArray,
+		final double[] creditCurveCDSQuoteArray,
+		final String creditCurveCDSMeasure,
+		final String bondMarketQuoteName,
+		final double bondMarketQuote)
 	{
-		org.drip.analytics.date.JulianDate dtSpot = null;
-		org.drip.analytics.date.JulianDate dtMaturity = null;
-		org.drip.analytics.date.JulianDate dtEffective = null;
-		org.drip.analytics.date.JulianDate[] adtGovvieCurveTreasuryMaturity = null;
-		org.drip.analytics.date.JulianDate[] adtGovvieCurveTreasuryEffective = null;
-		int iNumGovvieCurveMaturity = null == aiGovvieCurveTreasuryMaturityDate ? 0 :
-			aiGovvieCurveTreasuryMaturityDate.length;
-		int iNumGovvieCurveEffective = null == aiGovvieCurveTreasuryEffectiveDate ? 0 :
-			aiGovvieCurveTreasuryEffectiveDate.length;
-		java.lang.String[] astrTreasuryBenchmarkCode = new java.lang.String[] {"01YON", "02YON", "03YON",
-			"05YON", "07YON", "10YON", "30YON"};
-		int iNumTreasuryBenchmark = astrTreasuryBenchmarkCode.length;
+		JulianDate maturityDate = null;
+		JulianDate effectiveDate = null;
+		JulianDate julianSpotDate = null;
+		JulianDate[] govvieCurveMaturityDateArray = null;
+		JulianDate[] govvieCurveEffectiveDateArray = null;
+		String[] treasuryBenchmarkCodeArray = new String[] {
+			"01YON",
+			"02YON",
+			"03YON",
+			"05YON",
+			"07YON",
+			"10YON",
+			"30YON"
+		};
+		int govvieCurveMaturityCount = null == govvieCurveTreasuryMaturityDateArray ? 0 :
+			govvieCurveTreasuryMaturityDateArray.length;
+		int govvieCurveEffectiveCount = null == govvieCurveTreasuryEffectiveDateArray ? 0 :
+			govvieCurveTreasuryEffectiveDateArray.length;
 
-		if (0 != iNumGovvieCurveMaturity)
-			adtGovvieCurveTreasuryMaturity = new org.drip.analytics.date.JulianDate[iNumGovvieCurveMaturity];
+		if (0 != govvieCurveMaturityCount) {
+			govvieCurveMaturityDateArray = new JulianDate[govvieCurveMaturityCount];
+		}
 
-		if (0 != iNumGovvieCurveEffective)
-			adtGovvieCurveTreasuryEffective = new
-				org.drip.analytics.date.JulianDate[iNumGovvieCurveEffective];
+		if (0 != govvieCurveEffectiveCount) {
+			govvieCurveEffectiveDateArray = new JulianDate[govvieCurveEffectiveCount];
+		}
 
-		org.drip.param.market.CurveSurfaceQuoteContainer csqc = new
-			org.drip.param.market.CurveSurfaceQuoteContainer();
+		CurveSurfaceQuoteContainer curveSurfaceQuoteContainer = new CurveSurfaceQuoteContainer();
 
 		try {
-			dtSpot = new org.drip.analytics.date.JulianDate (iSpotDate);
+			julianSpotDate = new JulianDate (spotDate);
 
-			dtMaturity = new org.drip.analytics.date.JulianDate (iBondMaturityDate);
+			maturityDate = new JulianDate (bondMaturityDate);
 
-			dtEffective = new org.drip.analytics.date.JulianDate (iBondEffectiveDate);
+			effectiveDate = new JulianDate (bondEffectiveDate);
 
-			for (int i = 0; i < iNumGovvieCurveMaturity; ++i)
-				adtGovvieCurveTreasuryMaturity[i] = new org.drip.analytics.date.JulianDate
-					(aiGovvieCurveTreasuryMaturityDate[i]);
+			for (int govvieCurveMaturityIndex = 0;
+				govvieCurveMaturityIndex < govvieCurveMaturityCount;
+				++govvieCurveMaturityIndex)
+			{
+				govvieCurveMaturityDateArray[govvieCurveMaturityIndex] =
+					new JulianDate (govvieCurveTreasuryMaturityDateArray[govvieCurveMaturityIndex]);
+			}
 
-			for (int i = 0; i < iNumGovvieCurveEffective; ++i)
-				adtGovvieCurveTreasuryEffective[i] = new org.drip.analytics.date.JulianDate
-					(aiGovvieCurveTreasuryEffectiveDate[i]);
+			for (int govvieCurveEffectiveIndex = 0;
+				govvieCurveEffectiveIndex < govvieCurveEffectiveCount;
+				++govvieCurveEffectiveIndex)
+			{
+				govvieCurveEffectiveDateArray[govvieCurveEffectiveIndex] =
+					new JulianDate (govvieCurveTreasuryEffectiveDateArray[govvieCurveEffectiveIndex]);
+			}
 
-			if (null != adblGovvieCurveTreasuryYield && adblGovvieCurveTreasuryYield.length ==
-				iNumTreasuryBenchmark) {
-				for (int i = 0; i < iNumTreasuryBenchmark; ++i) {
-					org.drip.param.quote.ProductMultiMeasure pmm = new
-						org.drip.param.quote.ProductMultiMeasure();
+			if (null != govvieCurveTreasuryYieldArray &&
+				govvieCurveTreasuryYieldArray.length == treasuryBenchmarkCodeArray.length)
+			{
+				for (int treasuryBenchmarkCodeIndex = 0;
+					treasuryBenchmarkCodeIndex < treasuryBenchmarkCodeArray.length;
+					++treasuryBenchmarkCodeIndex)
+				{
+					ProductMultiMeasure productMultiMeasure = new ProductMultiMeasure();
 
-					pmm.addQuote ("Yield", new org.drip.param.quote.MultiSided ("mid",
-						adblGovvieCurveTreasuryYield[i]), true);
+					productMultiMeasure.addQuote (
+						"Yield",
+						new MultiSided ("mid", govvieCurveTreasuryYieldArray[treasuryBenchmarkCodeIndex]),
+						true
+					);
 
-					if (!csqc.setProductQuote (astrTreasuryBenchmarkCode[i], pmm)) return null;
+					if (!curveSurfaceQuoteContainer.setProductQuote (
+						treasuryBenchmarkCodeArray[treasuryBenchmarkCodeIndex],
+						productMultiMeasure
+					))
+					{
+						return null;
+					}
 				}
 			}
-		} catch (java.lang.Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 
 			return null;
 		}
 
-		org.drip.product.credit.BondComponent bond = org.drip.product.creator.BondBuilder.CreateSimpleFixed
-			(strIssuerName + " " + org.drip.service.common.FormatUtil.FormatDouble (dblBondCoupon, 1, 4, 100.)
-				+ " " + dtMaturity, strBondCouponCurrency, strIssuerName, dblBondCoupon,
-					iBondCouponFrequency, strBondCouponDayCount, dtEffective, dtMaturity, null, null);
+		BondComponent bond = BondBuilder.CreateSimpleFixed (
+			issuerName + " " + FormatUtil.FormatDouble (bondCoupon, 1, 4, 100.) + " " + maturityDate,
+			bondCouponCurrency,
+			issuerName,
+			bondCoupon,
+			bondCouponFrequency,
+			bondCouponDayCount,
+			effectiveDate,
+			maturityDate,
+			null,
+			null
+		);
 
-		if (null == bond) return null;
-
-		org.drip.param.quote.ProductMultiMeasure pmm = new org.drip.param.quote.ProductMultiMeasure();
-
-		try {
-			pmm.addQuote (strBondMarketQuoteName, new org.drip.param.quote.MultiSided ("mid",
-				dblBondMarketQuote), true);
-		} catch (java.lang.Exception e) {
+		if (null == bond) {
+			return null;
 		}
 
-		csqc.setProductQuote (bond.name(), pmm);
+		ProductMultiMeasure productMultiMeasure = new ProductMultiMeasure();
 
-		org.drip.state.discount.MergedDiscountForwardCurve dcFunding =
-			org.drip.service.template.LatentMarketStateBuilder.SmoothFundingCurve (dtSpot,
-				strBondCouponCurrency, astrFundingCurveDepositTenor, adblFundingCurveDepositQuote,
-					strFundingCurveDepositMeasure, adblFundingCurveFuturesQuote,
-						strFundingCurveFuturesMeasure, astrFundingCurveFixFloatTenor,
-							adblFundingCurveFixFloatQuote, strFundingFixFloatMeasure);
+		try {
+			productMultiMeasure.addQuote (
+				bondMarketQuoteName,
+				new MultiSided ("mid", bondMarketQuote),
+				true
+			);
+		} catch (Exception e) {
+		}
 
-		csqc.setFundingState (dcFunding);
+		curveSurfaceQuoteContainer.setProductQuote (bond.name(), productMultiMeasure);
 
-		csqc.setGovvieState (org.drip.service.template.LatentMarketStateBuilder.ShapePreservingGovvieCurve
-			(strGovvieCode, dtSpot, adtGovvieCurveTreasuryEffective, adtGovvieCurveTreasuryMaturity,
-				adblGovvieCurveTreasuryCoupon, adblGovvieCurveTreasuryYield, strGovvieCurveTreasuryMeasure));
+		MergedDiscountForwardCurve fundingDiscountCurve = LatentMarketStateBuilder.SmoothFundingCurve (
+			julianSpotDate,
+			bondCouponCurrency,
+			fundingCurveDepositTenor,
+			fundingCurveDepositQuote,
+			fundingCurveDepositMeasure,
+			fundingCurveFuturesQuote,
+			fundingCurveFuturesMeasure,
+			fundingCurveFixFloatTenor,
+			fundingCurveFixFloatQuote,
+			fundingFixFloatMeasure
+		);
 
-		csqc.setCreditState (org.drip.service.template.LatentMarketStateBuilder.CreditCurve (dtSpot,
-			strCreditCurveName, astrCreditCurveCDSTenor, adblCreditCurveCDSCoupon, adblCreditCurveCDSQuote,
-				strCreditCurveCDSMeasure, dcFunding));
+		curveSurfaceQuoteContainer.setFundingState (fundingDiscountCurve);
 
-		return bond.value (org.drip.param.valuation.ValuationParams.Spot (iSpotDate), null, csqc, null);
+		curveSurfaceQuoteContainer.setGovvieState (
+			LatentMarketStateBuilder.ShapePreservingGovvieCurve (
+				govvieCode,
+				julianSpotDate,
+				govvieCurveEffectiveDateArray,
+				govvieCurveMaturityDateArray,
+				govvieCurveTreasuryCouponArray,
+				govvieCurveTreasuryYieldArray,
+				govvieCurveTreasuryMeasure
+			)
+		);
+
+		curveSurfaceQuoteContainer.setCreditState (
+			LatentMarketStateBuilder.CreditCurve (
+				julianSpotDate,
+				creditCurveName,
+				creditCurveCDSTenorArray,
+				creditCurveCDSCouponArray,
+				creditCurveCDSQuoteArray,
+				creditCurveCDSMeasure,
+				fundingDiscountCurve
+			)
+		);
+
+		return bond.value (ValuationParams.Spot (spotDate), null, curveSurfaceQuoteContainer, null);
 	}
 
 	/**
 	 * Generate the Treasury Curve Tenor Key Rate Sensitivity/Duration
 	 * 
-	 * @param strIssuerName Bond Issuer Name
-	 * @param iBondEffectiveDate Bond Effective Date
-	 * @param iBondMaturityDate Bond Maturity Date
-	 * @param dblBondCoupon Bond Coupon
-	 * @param iBondCouponFrequency Bond Coupon Frequency
-	 * @param strBondCouponDayCount Bond Coupon Day Count
-	 * @param strBondCouponCurrency Bond Coupon Currency
-	 * @param iSpotDate Spot Date
-	 * @param strGovvieCode Govvie Bond Code (for Treasury Curve)
-	 * @param aiGovvieCurveTreasuryEffectiveDate Array of the Treasury Instrument Effective Date (for Treasury
-	 * 		Curve)
-	 * @param aiGovvieCurveTreasuryMaturityDate Array of the Treasury Instrument Maturity Date (for Treasury
-	 * 		Curve)
-	 * @param adblGovvieCurveTreasuryCoupon Array of the Treasury Instrument Coupon (for Treasury Curve)
-	 * @param adblGovvieCurveTreasuryYield Array of the Treasury Instrument Yield (for Treasury Curve)
-	 * @param strGovvieCurveTreasuryMeasure Treasury Instrument Measure (for Govvie Curve)
-	 * @param dblBondMarketCleanPrice Bond Market Clean Price
+	 * @param issuerName Bond Issuer Name
+	 * @param bondEffectiveDate Bond Effective Date
+	 * @param bondMaturityDate Bond Maturity Date
+	 * @param bondCoupon Bond Coupon
+	 * @param bondCouponFrequency Bond Coupon Frequency
+	 * @param bondCouponDayCount Bond Coupon Day Count
+	 * @param bondCouponCurrency Bond Coupon Currency
+	 * @param spotDate Spot Date
+	 * @param govvieCode Govvie Bond Code (for Treasury Curve)
+	 * @param govvieCurveTreasuryEffectiveDateArray Array of the Treasury Instrument Effective Date (for
+	 * 	Treasury Curve)
+	 * @param govvieCurveTreasuryMaturityDateArray Array of the Treasury Instrument Maturity Date (for
+	 * 	Treasury Curve)
+	 * @param govvieCurveTreasuryCouponArray Array of the Treasury Instrument Coupon (for Treasury Curve)
+	 * @param govvieCurveTreasuryYieldArray Array of the Treasury Instrument Yield (for Treasury Curve)
+	 * @param govvieCurveTreasuryMeasure Treasury Instrument Measure (for Govvie Curve)
+	 * @param bondMarketCleanPrice Bond Market Clean Price
 	 * 
 	 * @return The Treasury Curve Tenor Sensitivity/Duration
 	 */
 
-	public static final java.util.Map<java.lang.String, java.lang.Double> KeyRateDuration (
-		final java.lang.String strIssuerName,
-		final int iBondEffectiveDate,
-		final int iBondMaturityDate,
-		final double dblBondCoupon,
-		final int iBondCouponFrequency,
-		final java.lang.String strBondCouponDayCount,
-		final java.lang.String strBondCouponCurrency,
-		final int iSpotDate,
-		final java.lang.String strGovvieCode,
-		final int[] aiGovvieCurveTreasuryEffectiveDate,
-		final int[] aiGovvieCurveTreasuryMaturityDate,
-		final double[] adblGovvieCurveTreasuryCoupon,
-		final double[] adblGovvieCurveTreasuryYield,
-		final java.lang.String strGovvieCurveTreasuryMeasure,
-		final double dblBondMarketCleanPrice)
+	public static final Map<String, Double> KeyRateDuration (
+		final String issuerName,
+		final int bondEffectiveDate,
+		final int bondMaturityDate,
+		final double bondCoupon,
+		final int bondCouponFrequency,
+		final String bondCouponDayCount,
+		final String bondCouponCurrency,
+		final int spotDate,
+		final String govvieCode,
+		final int[] govvieCurveTreasuryEffectiveDateArray,
+		final int[] govvieCurveTreasuryMaturityDateArray,
+		final double[] govvieCurveTreasuryCouponArray,
+		final double[] govvieCurveTreasuryYieldArray,
+		final String govvieCurveTreasuryMeasure,
+		final double bondMarketCleanPrice)
 	{
-		double dblBaselineOAS = java.lang.Double.NaN;
-		org.drip.analytics.date.JulianDate dtSpot = null;
-		org.drip.analytics.date.JulianDate dtMaturity = null;
-		org.drip.analytics.date.JulianDate dtEffective = null;
-		org.drip.analytics.date.JulianDate[] adtGovvieCurveTreasuryMaturity = null;
-		org.drip.analytics.date.JulianDate[] adtGovvieCurveTreasuryEffective = null;
-		int iNumGovvieCurveMaturity = null == aiGovvieCurveTreasuryMaturityDate ? 0 :
-			aiGovvieCurveTreasuryMaturityDate.length;
-		int iNumGovvieCurveEffective = null == aiGovvieCurveTreasuryEffectiveDate ? 0 :
-			aiGovvieCurveTreasuryEffectiveDate.length;
-		java.lang.String[] astrTreasuryBenchmarkCode = new java.lang.String[] {"01YON", "02YON", "03YON",
-			"05YON", "07YON", "10YON", "30YON"};
-		int iNumTreasuryBenchmark = astrTreasuryBenchmarkCode.length;
+		JulianDate maturityDate = null;
+		double baselineOAS = Double.NaN;
+		JulianDate effectiveDate = null;
+		JulianDate julianSpotDate = null;
+		JulianDate[] govvieCurveMaturityDateArray = null;
+		JulianDate[] govvieCurveEffectiveDateArray = null;
+		int govvieCurveMaturityCount = null == govvieCurveTreasuryMaturityDateArray ? 0 :
+			govvieCurveTreasuryMaturityDateArray.length;
+		int govvieCurveEffectiveCount = null == govvieCurveTreasuryEffectiveDateArray ? 0 :
+			govvieCurveTreasuryEffectiveDateArray.length;
+		String[] treasuryBenchmarkCodeArray = new String[] {
+			"01YON",
+			"02YON",
+			"03YON",
+			"05YON",
+			"07YON",
+			"10YON",
+			"30YON"
+		};
 
-		if (0 != iNumGovvieCurveMaturity)
-			adtGovvieCurveTreasuryMaturity = new org.drip.analytics.date.JulianDate[iNumGovvieCurveMaturity];
+		if (0 != govvieCurveMaturityCount) {
+			govvieCurveMaturityDateArray = new JulianDate[govvieCurveMaturityCount];
+		}
 
-		if (0 != iNumGovvieCurveEffective)
-			adtGovvieCurveTreasuryEffective = new
-				org.drip.analytics.date.JulianDate[iNumGovvieCurveEffective];
+		if (0 != govvieCurveEffectiveCount) {
+			govvieCurveEffectiveDateArray = new JulianDate[govvieCurveEffectiveCount];
+		}
 
-		org.drip.param.market.CurveSurfaceQuoteContainer csqc = new
-			org.drip.param.market.CurveSurfaceQuoteContainer();
+		CurveSurfaceQuoteContainer curveSurfaceQuoteContainer = new CurveSurfaceQuoteContainer();
 
 		try {
-			dtSpot = new org.drip.analytics.date.JulianDate (iSpotDate);
+			julianSpotDate = new JulianDate (spotDate);
 
-			dtMaturity = new org.drip.analytics.date.JulianDate (iBondMaturityDate);
+			maturityDate = new JulianDate (bondMaturityDate);
 
-			dtEffective = new org.drip.analytics.date.JulianDate (iBondEffectiveDate);
+			effectiveDate = new JulianDate (bondEffectiveDate);
 
-			for (int i = 0; i < iNumGovvieCurveMaturity; ++i)
-				adtGovvieCurveTreasuryMaturity[i] = new org.drip.analytics.date.JulianDate
-					(aiGovvieCurveTreasuryMaturityDate[i]);
+			for (int maturityDateIndex = 0;
+				maturityDateIndex < govvieCurveMaturityCount;
+				++maturityDateIndex)
+			{
+				govvieCurveMaturityDateArray[maturityDateIndex] =
+					new JulianDate (govvieCurveTreasuryMaturityDateArray[maturityDateIndex]);
+			}
 
-			for (int i = 0; i < iNumGovvieCurveEffective; ++i)
-				adtGovvieCurveTreasuryEffective[i] = new org.drip.analytics.date.JulianDate
-					(aiGovvieCurveTreasuryEffectiveDate[i]);
+			for (int effectiveDateIndex = 0;
+				effectiveDateIndex < govvieCurveEffectiveCount;
+				++effectiveDateIndex)
+			{
+				govvieCurveEffectiveDateArray[effectiveDateIndex] =
+					new JulianDate (govvieCurveTreasuryEffectiveDateArray[effectiveDateIndex]);
+			}
 
-			if (null != adblGovvieCurveTreasuryYield && adblGovvieCurveTreasuryYield.length ==
-				iNumTreasuryBenchmark) {
-				for (int i = 0; i < iNumTreasuryBenchmark; ++i) {
-					org.drip.param.quote.ProductMultiMeasure pmm = new
-						org.drip.param.quote.ProductMultiMeasure();
+			if (null != govvieCurveTreasuryYieldArray &&
+				govvieCurveTreasuryYieldArray.length == treasuryBenchmarkCodeArray.length)
+			{
+				for (int treasuryBenchmarkIndex = 0;
+					treasuryBenchmarkIndex < treasuryBenchmarkCodeArray.length;
+					++treasuryBenchmarkIndex)
+				{
+					ProductMultiMeasure productMultiMeasure = new ProductMultiMeasure();
 
-					pmm.addQuote ("Yield", new org.drip.param.quote.MultiSided ("mid",
-						adblGovvieCurveTreasuryYield[i]), true);
+					productMultiMeasure.addQuote (
+						"Yield",
+						new MultiSided ("mid", govvieCurveTreasuryYieldArray[treasuryBenchmarkIndex]),
+						true
+					);
 
-					if (!csqc.setProductQuote (astrTreasuryBenchmarkCode[i], pmm)) return null;
+					if (!curveSurfaceQuoteContainer.setProductQuote (
+						treasuryBenchmarkCodeArray[treasuryBenchmarkIndex],
+						productMultiMeasure
+					))
+					{
+						return null;
+					}
 				}
 			}
-		} catch (java.lang.Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 
 			return null;
 		}
 
-		org.drip.product.credit.BondComponent bond = org.drip.product.creator.BondBuilder.CreateSimpleFixed
-			(strIssuerName + " " + org.drip.service.common.FormatUtil.FormatDouble (dblBondCoupon, 1, 4, 100.)
-				+ " " + dtMaturity, strBondCouponCurrency, strIssuerName, dblBondCoupon,
-					iBondCouponFrequency, strBondCouponDayCount, dtEffective, dtMaturity, null, null);
+		BondComponent bond = BondBuilder.CreateSimpleFixed (
+			issuerName + " " + FormatUtil.FormatDouble (bondCoupon, 1, 4, 100.) + " " + maturityDate,
+			bondCouponCurrency,
+			issuerName,
+			bondCoupon,
+			bondCouponFrequency,
+			bondCouponDayCount,
+			effectiveDate,
+			maturityDate,
+			null,
+			null
+		);
 
-		if (null == bond) return null;
+		if (null == bond) {
+			return null;
+		}
 
-		org.drip.param.quote.ProductMultiMeasure pmm = new org.drip.param.quote.ProductMultiMeasure();
+		ProductMultiMeasure productMultiMeasure = new ProductMultiMeasure();
 
 		try {
-			pmm.addQuote ("Price", new org.drip.param.quote.MultiSided ("mid", dblBondMarketCleanPrice),
-				true);
-		} catch (java.lang.Exception e) {
+			productMultiMeasure.addQuote ("Price", new MultiSided ("mid", bondMarketCleanPrice), true);
+		} catch (Exception e) {
 			e.printStackTrace();
 
 			return null;
 		}
 
-		csqc.setProductQuote (bond.name(), pmm);
+		curveSurfaceQuoteContainer.setProductQuote (bond.name(), productMultiMeasure);
 
-		org.drip.state.govvie.GovvieCurve gc =
-			org.drip.service.template.LatentMarketStateBuilder.ShapePreservingGovvieCurve (strGovvieCode,
-				dtSpot, adtGovvieCurveTreasuryEffective, adtGovvieCurveTreasuryMaturity,
-					adblGovvieCurveTreasuryCoupon, adblGovvieCurveTreasuryYield,
-						strGovvieCurveTreasuryMeasure);
+		GovvieCurve govvieCurve = LatentMarketStateBuilder.ShapePreservingGovvieCurve (
+			govvieCode,
+			julianSpotDate,
+			govvieCurveEffectiveDateArray,
+			govvieCurveMaturityDateArray,
+			govvieCurveTreasuryCouponArray,
+			govvieCurveTreasuryYieldArray,
+			govvieCurveTreasuryMeasure
+		);
 
-		csqc.setGovvieState (gc);
+		curveSurfaceQuoteContainer.setGovvieState (govvieCurve);
 
-		org.drip.param.valuation.ValuationParams valParams = org.drip.param.valuation.ValuationParams.Spot
-			(iSpotDate);
+		ValuationParams valParams = ValuationParams.Spot (spotDate);
 
 		try {
-			if (!org.drip.numerical.common.NumberUtil.IsValid (dblBaselineOAS = bond.oasFromPrice (valParams,
-				csqc, null, dblBondMarketCleanPrice)))
+			if (!NumberUtil.IsValid (
+				baselineOAS = bond.oasFromPrice (
+					valParams,
+					curveSurfaceQuoteContainer,
+					null,
+					bondMarketCleanPrice
+				)
+			))
+			{
 				return null;
-		} catch (java.lang.Exception e) {
+			}
+		} catch (Exception e) {
 			e.printStackTrace();
 
 			return null;
 		}
 
-		org.drip.analytics.support.CaseInsensitiveTreeMap<org.drip.state.govvie.GovvieCurve>
-			mapTenorGovvieCurve = org.drip.service.template.LatentMarketStateBuilder.BumpedGovvieCurve
-				(strGovvieCode, dtSpot, adtGovvieCurveTreasuryEffective, adtGovvieCurveTreasuryMaturity,
-					adblGovvieCurveTreasuryCoupon, adblGovvieCurveTreasuryYield,
-						strGovvieCurveTreasuryMeasure,
-							org.drip.service.template.LatentMarketStateBuilder.SHAPE_PRESERVING, 0.0001,
-								false);
+		CaseInsensitiveTreeMap<GovvieCurve> tenorGovvieCurveMap =
+			LatentMarketStateBuilder.BumpedGovvieCurve (
+				govvieCode,
+				julianSpotDate,
+				govvieCurveEffectiveDateArray,
+				govvieCurveMaturityDateArray,
+				govvieCurveTreasuryCouponArray,
+				govvieCurveTreasuryYieldArray,
+				govvieCurveTreasuryMeasure,
+				LatentMarketStateBuilder.SHAPE_PRESERVING,
+				0.0001,
+				false
+			);
 
-		if (null == mapTenorGovvieCurve || iNumTreasuryBenchmark > mapTenorGovvieCurve.size()) return null;
+		if (null == tenorGovvieCurveMap || treasuryBenchmarkCodeArray.length > tenorGovvieCurveMap.size()) {
+			return null;
+		}
 
-		org.drip.analytics.support.CaseInsensitiveTreeMap<java.lang.Double> mapKeyRateDuration = new
-			org.drip.analytics.support.CaseInsensitiveTreeMap<java.lang.Double>();
+		CaseInsensitiveTreeMap<Double> keyRateDurationMap = new CaseInsensitiveTreeMap<Double>();
 
-		for (java.util.Map.Entry<java.lang.String, org.drip.state.govvie.GovvieCurve> me :
-			mapTenorGovvieCurve.entrySet()) {
-			java.lang.String strKey = me.getKey();
+		for (Map.Entry<String, GovvieCurve> tenorGovvieCurveMapEntry : tenorGovvieCurveMap.entrySet()) {
+			String key = tenorGovvieCurveMapEntry.getKey();
 
-			if (!strKey.contains ("tsy")) continue;
+			if (!key.contains ("tsy")) {
+				continue;
+			}
 
-			if (!csqc.setGovvieState (me.getValue())) return null;
+			if (!curveSurfaceQuoteContainer.setGovvieState (tenorGovvieCurveMapEntry.getValue())) {
+				return null;
+			}
 
 			try {
-				mapKeyRateDuration.put (strKey, 10000. * (bond.priceFromOAS (valParams, csqc, null,
-					dblBaselineOAS) - dblBondMarketCleanPrice) / dblBondMarketCleanPrice);
-			} catch (java.lang.Exception e) {
+				keyRateDurationMap.put (
+					key,
+					10000. * (
+						bond.priceFromOAS (valParams, curveSurfaceQuoteContainer, null, baselineOAS) -
+							bondMarketCleanPrice
+					) / bondMarketCleanPrice
+				);
+			} catch (Exception e) {
 				e.printStackTrace();
 
 				return null;
 			}
 		}
 
-		return mapKeyRateDuration;
+		return keyRateDurationMap;
 	}
 
 	/**
 	 * Returns Attribution for the Specified Bond Instance
 	 * 
-	 * @param strIssuerName Bond Issuer Name
-	 * @param iBondEffectiveDate Bond Effective Date
-	 * @param iBondMaturityDate Bond Maturity Date
-	 * @param dblBondCoupon Bond Coupon
-	 * @param iBondCouponFrequency Bond Coupon Frequency
-	 * @param strBondCouponDayCount Bond Coupon Day Count
-	 * @param strBondCouponCurrency Bond Coupon Currency
-	 * @param adtSpot Array of Spot Dates
-	 * @param adblCleanPrice Array of Closing Clean Prices
+	 * @param issuerName Bond Issuer Name
+	 * @param bondEffectiveDate Bond Effective Date
+	 * @param bondMaturityDate Bond Maturity Date
+	 * @param bondCoupon Bond Coupon
+	 * @param bondCouponFrequency Bond Coupon Frequency
+	 * @param bondCouponDayCount Bond Coupon Day Count
+	 * @param bondCouponCurrency Bond Coupon Currency
+	 * @param julianSpotDateArray Array of Spot Dates
+	 * @param cleanPriceArray Array of Closing Clean Prices
 	 * 
 	 * @return List of the Position Change Components
 	 */
 
-	public static final java.util.List<org.drip.historical.attribution.PositionChangeComponents>
-		HorizonChangeAttribution (
-			final java.lang.String strIssuerName,
-			final int iBondEffectiveDate,
-			final int iBondMaturityDate,
-			final double dblBondCoupon,
-			final int iBondCouponFrequency,
-			final java.lang.String strBondCouponDayCount,
-			final java.lang.String strBondCouponCurrency,
-			final org.drip.analytics.date.JulianDate[] adtSpot,
-			final double[] adblCleanPrice)
+	public static final List<PositionChangeComponents> HorizonChangeAttribution (
+		final String issuerName,
+		final int bondEffectiveDate,
+		final int bondMaturityDate,
+		final double bondCoupon,
+		final int bondCouponFrequency,
+		final String bondCouponDayCount,
+		final String bondCouponCurrency,
+		final JulianDate[] julianSpotDateArray,
+		final double[] cleanPriceArray)
 	{
-		org.drip.analytics.date.JulianDate dtMaturity = null;
-		org.drip.analytics.date.JulianDate dtEffective = null;
+		JulianDate maturityDate = null;
+		JulianDate effectiveDate = null;
 
 		try {
-			dtMaturity = new org.drip.analytics.date.JulianDate (iBondMaturityDate);
+			maturityDate = new JulianDate (bondMaturityDate);
 
-			dtEffective = new org.drip.analytics.date.JulianDate (iBondEffectiveDate);
-		} catch (java.lang.Exception e) {
+			effectiveDate = new JulianDate (bondEffectiveDate);
+		} catch (Exception e) {
 			e.printStackTrace();
 
 			return null;
 		}
 
-		org.drip.product.credit.BondComponent bond = org.drip.product.creator.BondBuilder.CreateSimpleFixed
-			(strIssuerName + " " + org.drip.service.common.FormatUtil.FormatDouble (dblBondCoupon, 1, 4, 100.)
-				+ " " + dtMaturity, strBondCouponCurrency, strIssuerName, dblBondCoupon,
-					iBondCouponFrequency, strBondCouponDayCount, dtEffective, dtMaturity, null, null);
+		BondComponent bond = BondBuilder.CreateSimpleFixed (
+			issuerName + " " + FormatUtil.FormatDouble (bondCoupon, 1, 4, 100.) + " " + maturityDate,
+			bondCouponCurrency,
+			issuerName,
+			bondCoupon,
+			bondCouponFrequency,
+			bondCouponDayCount,
+			effectiveDate,
+			maturityDate,
+			null,
+			null
+		);
 
-		if (null == bond || null == adtSpot || null == adblCleanPrice) return null;
+		if (null == bond || null == julianSpotDateArray || null == cleanPriceArray) {
+			return null;
+		}
 
-		int iNumCloses = adtSpot.length;
-		int[] aiSpotDate = new int[iNumCloses];
-		double[] adblYield = new double[iNumCloses];
-		double[] adblDirtyPrice = new double[iNumCloses];
-		double[] adblModifiedDuration = new double[iNumCloses];
+		int[] spotDateArray = new int[julianSpotDateArray.length];
+		double[] yieldArray = new double[julianSpotDateArray.length];
+		double[] dirtyPriceArray = new double[julianSpotDateArray.length];
+		double[] modifiedDurationArray = new double[julianSpotDateArray.length];
 
-		if (1 >= iNumCloses || iNumCloses != adblCleanPrice.length) return null;
+		if (1 >= julianSpotDateArray.length || julianSpotDateArray.length != cleanPriceArray.length) {
+			return null;
+		}
 
-		for (int i = 0; i < iNumCloses; ++i) {
-			org.drip.param.valuation.ValuationParams valParamsSpot =
-				org.drip.param.valuation.ValuationParams.Spot (aiSpotDate[i] = adtSpot[i].julian());
+		for (int spotDateIndex = 0; spotDateIndex < julianSpotDateArray.length; ++spotDateIndex) {
+			ValuationParams spotValuationParams = ValuationParams.Spot (
+				spotDateArray[spotDateIndex] = julianSpotDateArray[spotDateIndex].julian()
+			);
 
 			try {
-				if (!org.drip.numerical.common.NumberUtil.IsValid (adblYield[i] = bond.yieldFromPrice
-					(valParamsSpot, null, null, adblCleanPrice[i])))
+				if (!NumberUtil.IsValid (
+					yieldArray[spotDateIndex] = bond.yieldFromPrice (
+						spotValuationParams,
+						null,
+						null,
+						cleanPriceArray[spotDateIndex]
+					)
+				))
+				{
 					return null;
+				}
 
-				if (!org.drip.numerical.common.NumberUtil.IsValid (adblModifiedDuration[i] =
-					bond.modifiedDurationFromPrice (valParamsSpot, null, null, adblCleanPrice[i])))
+				if (!NumberUtil.IsValid (
+					modifiedDurationArray[spotDateIndex] = bond.modifiedDurationFromPrice (
+						spotValuationParams,
+						null,
+						null,
+						cleanPriceArray[spotDateIndex]
+					)
+				))
+				{
 					return null;
+				}
 
-				if (!org.drip.numerical.common.NumberUtil.IsValid (adblDirtyPrice[i] = adblCleanPrice[i] +
-					bond.accrued (aiSpotDate[i], null)))
+				if (!NumberUtil.IsValid (
+					dirtyPriceArray[spotDateIndex] = cleanPriceArray[spotDateIndex] + bond.accrued (
+						spotDateArray[spotDateIndex],
+						null
+					)
+				))
+				{
 					return null;
-			} catch (java.lang.Exception e) {
+				}
+			} catch (Exception e) {
 				e.printStackTrace();
 
 				return null;
 			}
 		}
 
-		java.util.List<org.drip.historical.attribution.PositionChangeComponents> lsPCC = new
-			java.util.ArrayList<org.drip.historical.attribution.PositionChangeComponents>();
+		List<PositionChangeComponents> positionChangeComponentsList =
+			new ArrayList<PositionChangeComponents>();
 
-		for (int i = 1; i < iNumCloses; ++i) {
+		for (int spotDateIndex = 1; spotDateIndex < julianSpotDateArray.length; ++spotDateIndex) {
 			try {
-				org.drip.historical.attribution.BondMarketSnap bpms1 = new
-					org.drip.historical.attribution.BondMarketSnap (adtSpot[i - 1],
-						adblCleanPrice[i - 1]);
+				BondMarketSnap bondMarketSnap1 = new BondMarketSnap (
+					julianSpotDateArray[spotDateIndex - 1],
+					cleanPriceArray[spotDateIndex - 1]
+				);
 
-				if (!bpms1.setYieldMarketFactor (adblYield[i - 1], -1. * adblDirtyPrice[i - 1] *
-					adblModifiedDuration[i - 1], 0.))
+				if (!bondMarketSnap1.setYieldMarketFactor (
+					yieldArray[spotDateIndex - 1],
+					-1. * dirtyPriceArray[spotDateIndex - 1] * modifiedDurationArray[spotDateIndex - 1],
+					0.
+				))
+				{
 					return null;
+				}
 
-				org.drip.historical.attribution.BondMarketSnap bpms2 = new
-					org.drip.historical.attribution.BondMarketSnap (adtSpot[i], adblCleanPrice[i]);
+				BondMarketSnap bondMarketSnap2 = new BondMarketSnap (
+					julianSpotDateArray[spotDateIndex],
+					cleanPriceArray[spotDateIndex]
+				);
 
-				if (!bpms2.setYieldMarketFactor (adblYield[i], -1. * adblDirtyPrice[i] *
-					adblModifiedDuration[i], 0.))
+				if (!bondMarketSnap2.setYieldMarketFactor (
+					yieldArray[spotDateIndex],
+					-1. * dirtyPriceArray[spotDateIndex] * modifiedDurationArray[spotDateIndex],
+					0.
+				))
+				{
 					return null;
+				}
 
-				lsPCC.add (new org.drip.historical.attribution.PositionChangeComponents (false, bpms1, bpms2,
-					org.drip.analytics.daycount.Convention.YearFraction (aiSpotDate[i - 1],
-						aiSpotDate[i], strBondCouponDayCount, false, null, strBondCouponCurrency), null));
-			} catch (java.lang.Exception e) {
+				positionChangeComponentsList.add (
+					new PositionChangeComponents (
+						false,
+						bondMarketSnap1,
+						bondMarketSnap2,
+						Convention.YearFraction (
+							spotDateArray[spotDateIndex - 1],
+							spotDateArray[spotDateIndex],
+							bondCouponDayCount,
+							false,
+							null,
+							bondCouponCurrency
+						),
+						null
+					)
+				);
+			} catch (Exception e) {
 				e.printStackTrace();
 
 				return null;
 			}
 		}
 
-		return lsPCC;
+		return positionChangeComponentsList;
 	}
 
 	/**
 	 * Generate the Relative Value Metrics for the Specified Bond
 	 * 
-	 * @param strIssuerName Bond Issuer Name
-	 * @param iBondEffectiveDate Bond Effective Date
-	 * @param iBondMaturityDate Bond Maturity Date
-	 * @param dblBondCoupon Bond Coupon
-	 * @param iBondCouponFrequency Bond Coupon Frequency
-	 * @param strBondCouponDayCount Bond Coupon Day Count
-	 * @param strBondCouponCurrency Bond Coupon Currency
-	 * @param iSpotDate Spot Date
-	 * @param astrFundingCurveDepositTenor Deposit Instruments Tenor (for Funding Curve)
-	 * @param adblFundingCurveDepositQuote Deposit Instruments Quote (for Funding Curve)
-	 * @param strFundingCurveDepositMeasure Deposit Instruments Measure (for Funding Curve)
-	 * @param adblFundingCurveFuturesQuote Futures Instruments Tenor (for Funding Curve)
-	 * @param strFundingCurveFuturesMeasure Futures Instruments Measure (for Funding Curve)
-	 * @param astrFundingCurveFixFloatTenor Fix-Float Instruments Tenor (for Funding Curve)
-	 * @param adblFundingCurveFixFloatQuote Fix-Float Instruments Quote (for Funding Curve)
-	 * @param strFundingFixFloatMeasure Fix-Float Instruments Tenor (for Funding Curve)
-	 * @param strGovvieCode Govvie Bond Code (for Treasury Curve)
-	 * @param aiGovvieCurveTreasuryEffectiveDate Array of the Treasury Instrument Effective Date (for Treasury
-	 * 		Curve)
-	 * @param aiGovvieCurveTreasuryMaturityDate Array of the Treasury Instrument Maturity Date (for Treasury
-	 * 		Curve)
-	 * @param adblGovvieCurveTreasuryCoupon Array of the Treasury Instrument Coupon (for Treasury Curve)
-	 * @param adblGovvieCurveTreasuryYield Array of the Treasury Instrument Yield (for Treasury Curve)
-	 * @param strGovvieCurveTreasuryMeasure Treasury Instrument Measure (for Treasury Curve)
-	 * @param strCreditCurveName Credit Curve Name (for Credit Curve)
-	 * @param astrCreditCurveCDSTenor CDS Maturity Tenor (for Credit Curve)
-	 * @param adblCreditCurveCDSCoupon Array of CDS Fixed Coupon (for Credit Curve)
-	 * @param adblCreditCurveCDSQuote Array of CDS Market Quotes (for Credit Curve)
-	 * @param strCreditCurveCDSMeasure CDS Calibration Measure (for Credit Curve)
-	 * @param dblBondMarketCleanPrice Bond Market Clean Price
+	 * @param issuerName Bond Issuer Name
+	 * @param bondEffectiveDate Bond Effective Date
+	 * @param bondMaturityDate Bond Maturity Date
+	 * @param bondCoupon Bond Coupon
+	 * @param bondCouponFrequency Bond Coupon Frequency
+	 * @param bondCouponDayCount Bond Coupon Day Count
+	 * @param bondCouponCurrency Bond Coupon Currency
+	 * @param spotDate Spot Date
+	 * @param fundingCurveDepositTenor Deposit Instruments Tenor (for Funding Curve)
+	 * @param fundingCurveDepositQuote Deposit Instruments Quote (for Funding Curve)
+	 * @param fundingCurveDepositMeasure Deposit Instruments Measure (for Funding Curve)
+	 * @param fundingCurveFuturesQuote Futures Instruments Tenor (for Funding Curve)
+	 * @param fundingCurveFuturesMeasure Futures Instruments Measure (for Funding Curve)
+	 * @param fundingCurveFixFloatTenor Fix-Float Instruments Tenor (for Funding Curve)
+	 * @param fundingCurveFixFloatQuote Fix-Float Instruments Quote (for Funding Curve)
+	 * @param fundingFixFloatMeasure Fix-Float Instruments Tenor (for Funding Curve)
+	 * @param govvieCode Govvie Bond Code (for Treasury Curve)
+	 * @param govvieCurveTreasuryEffectiveDateArray Array of the Treasury Instrument Effective Date (for
+	 * 	Treasury Curve)
+	 * @param govvieCurveTreasuryMaturityDateArray Array of the Treasury Instrument Maturity Date (for
+	 * 	Treasury Curve)
+	 * @param govvieCurveTreasuryCouponArray Array of the Treasury Instrument Coupon (for Treasury Curve)
+	 * @param govvieCurveTreasuryYieldArray Array of the Treasury Instrument Yield (for Treasury Curve)
+	 * @param govvieCurveTreasuryMeasure Treasury Instrument Measure (for Treasury Curve)
+	 * @param creditCurveName Credit Curve Name (for Credit Curve)
+	 * @param creditCurveCDSTenorArray CDS Maturity Tenor (for Credit Curve)
+	 * @param creditCurveCDSCouponArray Array of CDS Fixed Coupon (for Credit Curve)
+	 * @param creditCurveCDSQuoteArray Array of CDS Market Quotes (for Credit Curve)
+	 * @param creditCurveCDSMeasure CDS Calibration Measure (for Credit Curve)
+	 * @param bondMarketCleanPrice Bond Market Clean Price
 	 * 
 	 * @return The Relative Value Metrics
 	 */
 
-	public static final org.drip.analytics.output.BondRVMeasures RelativeValueMetrics (
-		final java.lang.String strIssuerName,
-		final int iBondEffectiveDate,
-		final int iBondMaturityDate,
-		final double dblBondCoupon,
-		final int iBondCouponFrequency,
-		final java.lang.String strBondCouponDayCount,
-		final java.lang.String strBondCouponCurrency,
-		final int iSpotDate,
-		final java.lang.String[] astrFundingCurveDepositTenor,
-		final double[] adblFundingCurveDepositQuote,
-		final java.lang.String strFundingCurveDepositMeasure,
-		final double[] adblFundingCurveFuturesQuote,
-		final java.lang.String strFundingCurveFuturesMeasure,
-		final java.lang.String[] astrFundingCurveFixFloatTenor,
-		final double[] adblFundingCurveFixFloatQuote,
-		final java.lang.String strFundingFixFloatMeasure,
-		final java.lang.String strGovvieCode,
-		final int[] aiGovvieCurveTreasuryEffectiveDate,
-		final int[] aiGovvieCurveTreasuryMaturityDate,
-		final double[] adblGovvieCurveTreasuryCoupon,
-		final double[] adblGovvieCurveTreasuryYield,
-		final java.lang.String strGovvieCurveTreasuryMeasure,
-		final java.lang.String strCreditCurveName,
-		final java.lang.String[] astrCreditCurveCDSTenor,
-		final double[] adblCreditCurveCDSCoupon,
-		final double[] adblCreditCurveCDSQuote,
-		final java.lang.String strCreditCurveCDSMeasure,
-		final double dblBondMarketCleanPrice)
+	public static final BondRVMeasures RelativeValueMetrics (
+		final String issuerName,
+		final int bondEffectiveDate,
+		final int bondMaturityDate,
+		final double bondCoupon,
+		final int bondCouponFrequency,
+		final String bondCouponDayCount,
+		final String bondCouponCurrency,
+		final int spotDate,
+		final String[] fundingCurveDepositTenor,
+		final double[] fundingCurveDepositQuote,
+		final String fundingCurveDepositMeasure,
+		final double[] fundingCurveFuturesQuote,
+		final String fundingCurveFuturesMeasure,
+		final String[] fundingCurveFixFloatTenor,
+		final double[] fundingCurveFixFloatQuote,
+		final String fundingFixFloatMeasure,
+		final String govvieCode,
+		final int[] govvieCurveTreasuryEffectiveDateArray,
+		final int[] govvieCurveTreasuryMaturityDateArray,
+		final double[] govvieCurveTreasuryCouponArray,
+		final double[] govvieCurveTreasuryYieldArray,
+		final String govvieCurveTreasuryMeasure,
+		final String creditCurveName,
+		final String[] creditCurveCDSTenorArray,
+		final double[] creditCurveCDSCouponArray,
+		final double[] creditCurveCDSQuoteArray,
+		final String creditCurveCDSMeasure,
+		final double bondMarketCleanPrice)
 	{
-		org.drip.analytics.date.JulianDate dtSpot = null;
-		org.drip.analytics.date.JulianDate dtMaturity = null;
-		org.drip.analytics.date.JulianDate dtEffective = null;
-		org.drip.analytics.date.JulianDate[] adtGovvieCurveTreasuryMaturity = null;
-		org.drip.analytics.date.JulianDate[] adtGovvieCurveTreasuryEffective = null;
-		int iNumGovvieCurveMaturity = null == aiGovvieCurveTreasuryMaturityDate ? 0 :
-			aiGovvieCurveTreasuryMaturityDate.length;
-		int iNumGovvieCurveEffective = null == aiGovvieCurveTreasuryEffectiveDate ? 0 :
-			aiGovvieCurveTreasuryEffectiveDate.length;
-		java.lang.String[] astrTreasuryBenchmarkCode = new java.lang.String[] {"01YON", "02YON", "03YON",
-			"05YON", "07YON", "10YON", "30YON"};
-		int iNumTreasuryBenchmark = astrTreasuryBenchmarkCode.length;
+		JulianDate maturityDate = null;
+		JulianDate effectiveDate = null;
+		JulianDate julianSpotDate = null;
+		JulianDate[] govvieCurveMaturityDateArray = null;
+		JulianDate[] govvieCurveEffectiveDateArray = null;
+		int govvieCurveMaturityCount = null == govvieCurveTreasuryMaturityDateArray ? 0 :
+			govvieCurveTreasuryMaturityDateArray.length;
+		int govvieCurveEffectiveCount = null == govvieCurveTreasuryEffectiveDateArray ? 0 :
+			govvieCurveTreasuryEffectiveDateArray.length;
+		String[] treasuryBenchmarkCodeArray = new String[] {
+			"01YON",
+			"02YON",
+			"03YON",
+			"05YON",
+			"07YON",
+			"10YON",
+			"30YON"
+		};
 
-		if (0 != iNumGovvieCurveMaturity)
-			adtGovvieCurveTreasuryMaturity = new org.drip.analytics.date.JulianDate[iNumGovvieCurveMaturity];
+		if (0 != govvieCurveMaturityCount) {
+			govvieCurveMaturityDateArray = new JulianDate[govvieCurveMaturityCount];
+		}
 
-		if (0 != iNumGovvieCurveEffective)
-			adtGovvieCurveTreasuryEffective = new
-				org.drip.analytics.date.JulianDate[iNumGovvieCurveEffective];
+		if (0 != govvieCurveEffectiveCount) {
+			govvieCurveEffectiveDateArray = new JulianDate[govvieCurveEffectiveCount];
+		}
 
-		org.drip.param.market.CurveSurfaceQuoteContainer csqc = new
-			org.drip.param.market.CurveSurfaceQuoteContainer();
+		CurveSurfaceQuoteContainer curveSurfaceQuoteContainer = new CurveSurfaceQuoteContainer();
 
 		try {
-			dtSpot = new org.drip.analytics.date.JulianDate (iSpotDate);
+			julianSpotDate = new JulianDate (spotDate);
 
-			dtMaturity = new org.drip.analytics.date.JulianDate (iBondMaturityDate);
+			maturityDate = new JulianDate (bondMaturityDate);
 
-			dtEffective = new org.drip.analytics.date.JulianDate (iBondEffectiveDate);
+			effectiveDate = new JulianDate (bondEffectiveDate);
 
-			for (int i = 0; i < iNumGovvieCurveMaturity; ++i)
-				adtGovvieCurveTreasuryMaturity[i] = new org.drip.analytics.date.JulianDate
-					(aiGovvieCurveTreasuryMaturityDate[i]);
+			for (int maturityIndex = 0; maturityIndex < govvieCurveMaturityCount; ++maturityIndex) {
+				govvieCurveMaturityDateArray[maturityIndex] =
+					new JulianDate (govvieCurveTreasuryMaturityDateArray[maturityIndex]);
+			}
 
-			for (int i = 0; i < iNumGovvieCurveEffective; ++i)
-				adtGovvieCurveTreasuryEffective[i] = new org.drip.analytics.date.JulianDate
-					(aiGovvieCurveTreasuryEffectiveDate[i]);
+			for (int effectiveIndex = 0; effectiveIndex < govvieCurveEffectiveCount; ++effectiveIndex) {
+				govvieCurveEffectiveDateArray[effectiveIndex] =
+					new JulianDate (govvieCurveTreasuryEffectiveDateArray[effectiveIndex]);
+			}
 
-			if (null != adblGovvieCurveTreasuryYield && adblGovvieCurveTreasuryYield.length ==
-				iNumTreasuryBenchmark) {
-				for (int i = 0; i < iNumTreasuryBenchmark; ++i) {
-					org.drip.param.quote.ProductMultiMeasure pmm = new
-						org.drip.param.quote.ProductMultiMeasure();
+			if (null != govvieCurveTreasuryYieldArray &&
+				govvieCurveTreasuryYieldArray.length == treasuryBenchmarkCodeArray.length)
+			{
+				for (int treasuryBenchmarIndex = 0;
+					treasuryBenchmarIndex < treasuryBenchmarkCodeArray.length;
+					++treasuryBenchmarIndex)
+				{
+					ProductMultiMeasure productMultiMeasure = new ProductMultiMeasure();
 
-					pmm.addQuote ("Yield", new org.drip.param.quote.MultiSided ("mid",
-						adblGovvieCurveTreasuryYield[i]), true);
+					productMultiMeasure.addQuote (
+						"Yield",
+						new MultiSided ("mid", govvieCurveTreasuryYieldArray[treasuryBenchmarIndex]),
+						true
+					);
 
-					if (!csqc.setProductQuote (astrTreasuryBenchmarkCode[i], pmm)) return null;
+					if (!curveSurfaceQuoteContainer.setProductQuote (
+						treasuryBenchmarkCodeArray[treasuryBenchmarIndex],
+						productMultiMeasure
+					))
+					{
+						return null;
+					}
 				}
 			}
-		} catch (java.lang.Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 
 			return null;
 		}
 
-		org.drip.product.credit.BondComponent bond = org.drip.product.creator.BondBuilder.CreateSimpleFixed
-			(strIssuerName + " " + org.drip.service.common.FormatUtil.FormatDouble (dblBondCoupon, 1, 4, 100.)
-				+ " " + dtMaturity, strBondCouponCurrency, strIssuerName, dblBondCoupon,
-					iBondCouponFrequency, strBondCouponDayCount, dtEffective, dtMaturity, null, null);
+		BondComponent bond = BondBuilder.CreateSimpleFixed (
+			issuerName + " " + FormatUtil.FormatDouble (bondCoupon, 1, 4, 100.) + " " + maturityDate,
+			bondCouponCurrency,
+			issuerName,
+			bondCoupon,
+			bondCouponFrequency,
+			bondCouponDayCount,
+			effectiveDate,
+			maturityDate,
+			null,
+			null
+		);
 
-		if (null == bond) return null;
-
-		org.drip.param.quote.ProductMultiMeasure pmm = new org.drip.param.quote.ProductMultiMeasure();
-
-		try {
-			pmm.addQuote ("Price", new org.drip.param.quote.MultiSided ("mid", dblBondMarketCleanPrice),
-				true);
-		} catch (java.lang.Exception e) {
+		if (null == bond) {
+			return null;
 		}
 
-		csqc.setProductQuote (bond.name(), pmm);
+		ProductMultiMeasure productMultiMeasure = new ProductMultiMeasure();
 
-		org.drip.state.discount.MergedDiscountForwardCurve dcFunding =
-			org.drip.service.template.LatentMarketStateBuilder.SmoothFundingCurve (dtSpot,
-				strBondCouponCurrency, astrFundingCurveDepositTenor, adblFundingCurveDepositQuote,
-					strFundingCurveDepositMeasure, adblFundingCurveFuturesQuote,
-						strFundingCurveFuturesMeasure, astrFundingCurveFixFloatTenor,
-							adblFundingCurveFixFloatQuote, strFundingFixFloatMeasure);
+		try {
+			productMultiMeasure.addQuote ("Price", new MultiSided ("mid", bondMarketCleanPrice), true);
+		} catch (Exception e) {
+		}
 
-		csqc.setFundingState (dcFunding);
+		curveSurfaceQuoteContainer.setProductQuote (bond.name(), productMultiMeasure);
 
-		csqc.setGovvieState (org.drip.service.template.LatentMarketStateBuilder.ShapePreservingGovvieCurve
-			(strGovvieCode, dtSpot, adtGovvieCurveTreasuryEffective, adtGovvieCurveTreasuryMaturity,
-				adblGovvieCurveTreasuryCoupon, adblGovvieCurveTreasuryYield, strGovvieCurveTreasuryMeasure));
+		MergedDiscountForwardCurve fundingDiscountCurve = LatentMarketStateBuilder.SmoothFundingCurve (
+			julianSpotDate,
+			bondCouponCurrency,
+			fundingCurveDepositTenor,
+			fundingCurveDepositQuote,
+			fundingCurveDepositMeasure,
+			fundingCurveFuturesQuote,
+			fundingCurveFuturesMeasure,
+			fundingCurveFixFloatTenor,
+			fundingCurveFixFloatQuote,
+			fundingFixFloatMeasure
+		);
 
-		csqc.setCreditState (org.drip.service.template.LatentMarketStateBuilder.CreditCurve (dtSpot,
-			strCreditCurveName, astrCreditCurveCDSTenor, adblCreditCurveCDSCoupon, adblCreditCurveCDSQuote,
-				strCreditCurveCDSMeasure, dcFunding));
+		curveSurfaceQuoteContainer.setFundingState (fundingDiscountCurve);
 
-		org.drip.param.valuation.ValuationParams valParams = org.drip.param.valuation.ValuationParams.Spot
-			(iSpotDate);
+		curveSurfaceQuoteContainer.setGovvieState (
+			LatentMarketStateBuilder.ShapePreservingGovvieCurve (
+				govvieCode,
+				julianSpotDate,
+				govvieCurveEffectiveDateArray,
+				govvieCurveMaturityDateArray,
+				govvieCurveTreasuryCouponArray,
+				govvieCurveTreasuryYieldArray,
+				govvieCurveTreasuryMeasure
+			)
+		);
 
-		return bond.standardMeasures (valParams, null, csqc, null, bond.exerciseYieldFromPrice (valParams,
-			csqc, null, dblBondMarketCleanPrice), dblBondMarketCleanPrice);
+		curveSurfaceQuoteContainer.setCreditState (
+			LatentMarketStateBuilder.CreditCurve (
+				julianSpotDate,
+				creditCurveName,
+				creditCurveCDSTenorArray,
+				creditCurveCDSCouponArray,
+				creditCurveCDSQuoteArray,
+				creditCurveCDSMeasure,
+				fundingDiscountCurve
+			)
+		);
+
+		ValuationParams valuationParams = ValuationParams.Spot (spotDate);
+
+		return bond.standardMeasures (
+			valuationParams,
+			null,
+			curveSurfaceQuoteContainer,
+			null,
+			bond.exerciseYieldFromPrice (
+				valuationParams,
+				curveSurfaceQuoteContainer,
+				null,
+				bondMarketCleanPrice
+			),
+			bondMarketCleanPrice
+		);
 	}
 }

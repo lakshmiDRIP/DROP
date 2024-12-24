@@ -14,6 +14,7 @@ import org.drip.numerical.common.NumberUtil;
 import org.drip.param.market.CurveSurfaceQuoteContainer;
 import org.drip.param.valuation.ValuationParams;
 import org.drip.product.definition.CreditDefaultSwap;
+import org.drip.service.template.LatentMarketStateBuilder;
 import org.drip.state.credit.CreditCurve;
 import org.drip.state.discount.DiscountCurve;
 import org.drip.state.discount.MergedDiscountForwardCurve;
@@ -104,7 +105,15 @@ import org.drip.state.discount.MergedDiscountForwardCurve;
  * 	provides the following Functionality:
  *
  *  <ul>
- * 		<li>Encode a list into JSON text and write it to out.</li>
+ * 		<li>Implementation of <i>ParCDS</i> Inner Class</li>
+ * 		<ul>
+ * 			<li><i>ParCDS</i> Constructor</li>
+ * 			<li>Retrieve the Fair Premium</li>
+ * 			<li>Retrieve the Fixed Coupon</li>
+ * 			<li>Retrieve the CDS Instance</li>
+ * 		</ul>
+ * 		<li>Generate the CDS Horizon Change Attribution</li>
+ * 		<li>Generate the Funding/Credit Curve Horizon Metrics</li>
  *  </ul>
  *
  *	<br>
@@ -456,82 +465,117 @@ public class CreditIndexAPI
 	/**
 	 * Generate the Funding/Credit Curve Horizon Metrics
 	 * 
-	 * @param adtSpot Array of Spot
-	 * @param iHorizonGap The Horizon Gap
-	 * @param astrFundingFixingMaturityTenor Array of Funding Fixing Maturity Tenors
-	 * @param aadblFundingFixingQuote Double Array of Funding Fixing Swap Rates
-	 * @param afullCreditIndexName Array of the Full Credit Index Names
-	 * @param adblCreditIndexQuotedSpread Array of the Quoted Spreads
+	 * @param spotDateArray Array of Spot
+	 * @param horizonGap The Horizon Gap
+	 * @param fundingFixingMaturityTenorArray Array of Funding Fixing Maturity Tenors
+	 * @param fundingFixingQuoteGrid Double Array of Funding Fixing Swap Rates
+	 * @param fullCreditIndexNameArray Array of the Full Credit Index Names
+	 * @param creditIndexQuotedSpreadArray Array of the Quoted Spreads
 	 * 
 	 * @return The Funding/Credit Curve Horizon Metrics
 	 */
 
-	public static final List<PositionChangeComponents>
-		HorizonChangeAttribution (
-			final JulianDate[] adtSpot,
-			final int iHorizonGap,
-			final String[] astrFundingFixingMaturityTenor,
-			final double[][] aadblFundingFixingQuote,
-			final String[] afullCreditIndexName,
-			final double[] adblCreditIndexQuotedSpread)
+	public static final List<PositionChangeComponents> HorizonChangeAttribution (
+		final JulianDate[] spotDateArray,
+		final int horizonGap,
+		final String[] fundingFixingMaturityTenorArray,
+		final double[][] fundingFixingQuoteGrid,
+		final String[] fullCreditIndexNameArray,
+		final double[] creditIndexQuotedSpreadArray)
 	{
-		if (null == adtSpot || 0 >= iHorizonGap || null == astrFundingFixingMaturityTenor || null ==
-			aadblFundingFixingQuote || null == afullCreditIndexName || null ==
-				adblCreditIndexQuotedSpread)
+		if (null == spotDateArray || 0 == spotDateArray.length ||
+			0 >= horizonGap ||
+			null == fundingFixingMaturityTenorArray || 0 == fundingFixingMaturityTenorArray.length ||
+			null == fundingFixingQuoteGrid ||
+			null == fullCreditIndexNameArray ||
+			null == creditIndexQuotedSpreadArray)
+		{
 			return null;
-
-		int iNumClose = adtSpot.length;
-		int iNumFundingInstrument = astrFundingFixingMaturityTenor.length;
-
-		List<PositionChangeComponents> lsPCC = new
-			ArrayList<PositionChangeComponents>();
-
-		for (int i = iHorizonGap; i < iNumClose; ++i) {
-			int iNumSecondFundingQuote = null == aadblFundingFixingQuote[i] ? 0 :
-				aadblFundingFixingQuote[i].length;
-			int iNumFirstFundingQuote = null == aadblFundingFixingQuote[i - iHorizonGap] ? 0 :
-				aadblFundingFixingQuote[i - iHorizonGap].length;
-
-			if (0 == iNumFirstFundingQuote || iNumFirstFundingQuote != iNumFundingInstrument || 0 ==
-				iNumSecondFundingQuote || iNumSecondFundingQuote != iNumFundingInstrument)
-				continue;
-
-			CreditIndexConvention cic =
-				CreditIndexConventionContainer.ConventionFromFullName
-					(afullCreditIndexName[i]);
-
-			if (null == cic) return null;
-
-			String currency = cic.currency();
-
-			CreditDefaultSwap cdsIndex = cic.indexCDS();
-
-			MergedDiscountForwardCurve dcFundingFixingFirst =
-				org.drip.service.template.LatentMarketStateBuilder.FundingCurve (adtSpot[i - iHorizonGap],
-					currency, null, null, "ForwardRate", null, "ForwardRate",
-						astrFundingFixingMaturityTenor, aadblFundingFixingQuote[i - iHorizonGap], "SwapRate",
-							org.drip.service.template.LatentMarketStateBuilder.SHAPE_PRESERVING);
-
-			CreditCurve firstCreditCurve =
-				org.drip.service.template.LatentMarketStateBuilder.CreditCurve (adtSpot[i - iHorizonGap], new
-					CreditDefaultSwap[] {cdsIndex}, new double[]
-						{adblCreditIndexQuotedSpread[i - iHorizonGap]}, "FairPremium", dcFundingFixingFirst);
-
-			MergedDiscountForwardCurve dcFundingFixingSecond =
-				org.drip.service.template.LatentMarketStateBuilder.FundingCurve (adtSpot[i], currency,
-					null, null, "ForwardRate", null, "ForwardRate", astrFundingFixingMaturityTenor,
-						aadblFundingFixingQuote[i], "SwapRate",
-							org.drip.service.template.LatentMarketStateBuilder.SHAPE_PRESERVING);
-
-			CreditCurve secondCreditCurve =
-				org.drip.service.template.LatentMarketStateBuilder.CreditCurve (adtSpot[i], new
-					CreditDefaultSwap[] {cdsIndex}, new double[]
-						{adblCreditIndexQuotedSpread[i]}, "FairPremium", dcFundingFixingSecond);
-
-			lsPCC.add (HorizonChangeAttribution (dcFundingFixingFirst, firstCreditCurve, dcFundingFixingSecond,
-				secondCreditCurve, afullCreditIndexName[i]));
 		}
 
-		return lsPCC;
+		List<PositionChangeComponents> positionChangeComponentsList =
+			new ArrayList<PositionChangeComponents>();
+
+		for (int spotDateIndex = horizonGap; spotDateIndex < spotDateArray.length; ++spotDateIndex) {
+			int secondFundingQuoteCount = null == fundingFixingQuoteGrid[spotDateIndex] ? 0 :
+				fundingFixingQuoteGrid[spotDateIndex].length;
+			int firstFundingQuoteCount = null == fundingFixingQuoteGrid[spotDateIndex - horizonGap] ? 0 :
+				fundingFixingQuoteGrid[spotDateIndex - horizonGap].length;
+
+			if (0 == firstFundingQuoteCount ||
+				firstFundingQuoteCount != fundingFixingMaturityTenorArray.length ||
+				0 == secondFundingQuoteCount ||
+				secondFundingQuoteCount != fundingFixingMaturityTenorArray.length)
+			{
+				continue;
+			}
+
+			CreditIndexConvention creditIndexConvention =
+				CreditIndexConventionContainer.ConventionFromFullName (
+					fullCreditIndexNameArray[spotDateIndex]
+				);
+
+			if (null == creditIndexConvention) {
+				return null;
+			}
+
+			String currency = creditIndexConvention.currency();
+
+			CreditDefaultSwap cdsIndex = creditIndexConvention.indexCDS();
+
+			MergedDiscountForwardCurve firstFundingFixingDiscountCurve =
+				LatentMarketStateBuilder.FundingCurve (
+					spotDateArray[spotDateIndex - horizonGap],
+					currency,
+					null,
+					null,
+					"ForwardRate",
+					null,
+					"ForwardRate",
+					fundingFixingMaturityTenorArray,
+					fundingFixingQuoteGrid[spotDateIndex - horizonGap],
+					"SwapRate",
+					LatentMarketStateBuilder.SHAPE_PRESERVING
+				);
+
+			MergedDiscountForwardCurve secondFundingFixingDiscountCurve =
+				LatentMarketStateBuilder.FundingCurve (
+					spotDateArray[spotDateIndex],
+					currency,
+					null,
+					null,
+					"ForwardRate",
+					null,
+					"ForwardRate",
+					fundingFixingMaturityTenorArray,
+					fundingFixingQuoteGrid[spotDateIndex],
+					"SwapRate",
+					LatentMarketStateBuilder.SHAPE_PRESERVING
+				);
+
+			positionChangeComponentsList.add (
+				HorizonChangeAttribution (
+					firstFundingFixingDiscountCurve,
+					LatentMarketStateBuilder.CreditCurve (
+						spotDateArray[spotDateIndex - horizonGap],
+						new CreditDefaultSwap[] {cdsIndex},
+						new double[] {creditIndexQuotedSpreadArray[spotDateIndex - horizonGap]},
+						"FairPremium",
+						firstFundingFixingDiscountCurve
+					),
+					secondFundingFixingDiscountCurve,
+					LatentMarketStateBuilder.CreditCurve (
+						spotDateArray[spotDateIndex],
+						new CreditDefaultSwap[] {cdsIndex},
+						new double[] {creditIndexQuotedSpreadArray[spotDateIndex]},
+						"FairPremium",
+						secondFundingFixingDiscountCurve
+					),
+					fullCreditIndexNameArray[spotDateIndex]
+				)
+			);
+		}
+
+		return positionChangeComponentsList;
 	}
 }
