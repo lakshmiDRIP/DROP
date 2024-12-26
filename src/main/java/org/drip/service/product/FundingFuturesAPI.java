@@ -1,6 +1,20 @@
 
 package org.drip.service.product;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
+import org.drip.analytics.cashflow.ComposableUnitPeriod;
+import org.drip.analytics.date.JulianDate;
+import org.drip.historical.attribution.PositionChangeComponents;
+import org.drip.historical.attribution.PositionMarketSnap;
+import org.drip.param.market.CurveSurfaceQuoteContainer;
+import org.drip.param.valuation.ValuationParams;
+import org.drip.product.rates.SingleStreamComponent;
+import org.drip.service.template.ExchangeInstrumentBuilder;
+import org.drip.state.creator.ScenarioDiscountCurveBuilder;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
@@ -87,7 +101,8 @@ package org.drip.service.product;
  * 	Futures. It provides the following Functionality:
  *
  *  <ul>
- * 		<li>Compute the Horizon Change Attribution Details for the Specified Fix-Float Swap</li>
+ * 		<li>Generate the Funding Futures Horizon Metrics #1</li>
+ * 		<li>Generate the Funding Futures Horizon Metrics #2</li>
  *  </ul>
  *
  *	<br>
@@ -108,91 +123,160 @@ public class FundingFuturesAPI
 	/**
 	 * Generate the Funding Futures Horizon Metrics
 	 * 
-	 * @param dtPrevious Previous Date
-	 * @param dtSpot Spot Date
-	 * @param dtExpiry Expiry Date
-	 * @param dblPreviousQuote Previous Funding Futures Rates
-	 * @param dblSpotQuote Spot Funding Futures Rates
-	 * @param strCurrency Funding Currency
+	 * @param previousDate Previous Date
+	 * @param spotDate Spot Date
+	 * @param expiryDate Expiry Date
+	 * @param previousQuote Previous Funding Futures Rates
+	 * @param spotQuote Spot Funding Futures Rates
+	 * @param currency Funding Currency
 	 * 
 	 * @return The Funding Futures Horizon Metrics
 	 */
 
-	public static final org.drip.historical.attribution.PositionChangeComponents HorizonMetrics (
-		final org.drip.analytics.date.JulianDate dtPrevious,
-		final org.drip.analytics.date.JulianDate dtSpot,
-		final org.drip.analytics.date.JulianDate dtExpiry,
-		final double dblPreviousQuote,
-		final double dblSpotQuote,
-		final java.lang.String strCurrency)
+	public static final PositionChangeComponents HorizonMetrics (
+		final JulianDate previousDate,
+		final JulianDate spotDate,
+		final JulianDate expiryDate,
+		final double previousQuote,
+		final double spotQuote,
+		final String currency)
 	{
-		org.drip.product.rates.SingleStreamComponent sscFutures =
-			org.drip.service.template.ExchangeInstrumentBuilder.ForwardRateFutures (dtExpiry.addMonths (3),
-				strCurrency);
+		SingleStreamComponent futuresSingleStreamComponent = ExchangeInstrumentBuilder.ForwardRateFutures (
+			expiryDate.addMonths (3),
+			currency
+		);
 
-		if (null == sscFutures) return null;
-
-		org.drip.analytics.cashflow.ComposableUnitPeriod cup = sscFutures.couponPeriods().get
-			(0).periods().get (0);
-
-		org.drip.param.market.CurveSurfaceQuoteContainer csqc = new
-			org.drip.param.market.CurveSurfaceQuoteContainer();
-
-		if (!csqc.setFundingState
-			(org.drip.state.creator.ScenarioDiscountCurveBuilder.DiscretelyCompoundedFlatRate (dtPrevious,
-				strCurrency, dblPreviousQuote, cup.couponDC(), cup.freq())))
+		if (null == futuresSingleStreamComponent) {
 			return null;
+		}
 
-		java.util.Map<java.lang.String, java.lang.Double> mapPreviousMeasures = sscFutures.value
-			(org.drip.param.valuation.ValuationParams.Spot (dtPrevious.julian()), null, csqc, null);
+		ComposableUnitPeriod composableUnitPeriod =
+			futuresSingleStreamComponent.couponPeriods().get (0).periods().get (0);
 
-		if (null == mapPreviousMeasures || !mapPreviousMeasures.containsKey ("DV01") ||
-			!mapPreviousMeasures.containsKey ("ForwardRate") || !mapPreviousMeasures.containsKey ("PV"))
+		CurveSurfaceQuoteContainer curveSurfaceQuoteContainer = new CurveSurfaceQuoteContainer();
+
+		if (!curveSurfaceQuoteContainer.setFundingState (
+			ScenarioDiscountCurveBuilder.DiscretelyCompoundedFlatRate (
+				previousDate,
+				currency,
+				previousQuote,
+				composableUnitPeriod.couponDC(),
+				composableUnitPeriod.freq()
+			)
+		))
+		{
 			return null;
+		}
 
-		double dblPreviousDV01 = 10000. * mapPreviousMeasures.get ("DV01");
+		Map<String, Double> previousMeasuresMap = futuresSingleStreamComponent.value (
+			ValuationParams.Spot (previousDate.julian()),
+			null,
+			curveSurfaceQuoteContainer,
+			null
+		);
 
-		double dblPreviousForwardRate = mapPreviousMeasures.get ("ForwardRate");
-
-		if (!csqc.setFundingState
-			(org.drip.state.creator.ScenarioDiscountCurveBuilder.DiscretelyCompoundedFlatRate (dtSpot,
-				strCurrency, dblSpotQuote, cup.couponDC(), cup.freq())))
+		if (null == previousMeasuresMap ||
+			!previousMeasuresMap.containsKey ("DV01") ||
+			!previousMeasuresMap.containsKey ("ForwardRate") ||
+			!previousMeasuresMap.containsKey ("PV"))
+		{
 			return null;
+		}
 
-		java.util.Map<java.lang.String, java.lang.Double> mapSpotMeasures = sscFutures.value
-			(org.drip.param.valuation.ValuationParams.Spot (dtSpot.julian()), null, csqc, null);
+		double previousDV01 = 10000. * previousMeasuresMap.get ("DV01");
 
-		if (null == mapSpotMeasures || !mapSpotMeasures.containsKey ("DV01") || !mapSpotMeasures.containsKey
-			("ForwardRate") || !mapSpotMeasures.containsKey ("PV"))
+		double previousForwardRate = previousMeasuresMap.get ("ForwardRate");
+
+		if (!curveSurfaceQuoteContainer.setFundingState (
+			ScenarioDiscountCurveBuilder.DiscretelyCompoundedFlatRate (
+				spotDate,
+				currency,
+				spotQuote,
+				composableUnitPeriod.couponDC(),
+				composableUnitPeriod.freq()
+			)
+		))
+		{
 			return null;
+		}
 
-		double dblSpotDV01 = 10000. * mapSpotMeasures.get ("DV01");
+		Map<String, Double> spotMeasuresMap = futuresSingleStreamComponent.value (
+			ValuationParams.Spot (spotDate.julian()),
+			null,
+			curveSurfaceQuoteContainer,
+			null
+		);
 
-		double dblSpotForwardRate = mapSpotMeasures.get ("ForwardRate");
+		if (null == spotMeasuresMap ||
+			!spotMeasuresMap.containsKey ("DV01") ||
+			!spotMeasuresMap.containsKey ("ForwardRate") ||
+			!spotMeasuresMap.containsKey ("PV"))
+		{
+			return null;
+		}
+
+		double spotDV01 = 10000. * spotMeasuresMap.get ("DV01");
+
+		double spotForwardRate = spotMeasuresMap.get ("ForwardRate");
 
 		try {
-			org.drip.historical.attribution.PositionMarketSnap pmsPrevious = new
-				org.drip.historical.attribution.PositionMarketSnap (dtPrevious, mapPreviousMeasures.get
-					("PV"));
+			PositionMarketSnap previousPositionMarketSnap = new PositionMarketSnap (
+				previousDate,
+				previousMeasuresMap.get ("PV")
+			);
 
-			if (!pmsPrevious.addManifestMeasureSnap ("ForwardRate", dblPreviousForwardRate, dblPreviousDV01,
-				dblPreviousForwardRate) || !pmsPrevious.setR1 ("DV01", dblPreviousDV01) || !pmsPrevious.setR1
-					("ForwardRate", dblPreviousForwardRate) || !pmsPrevious.setC1 ("FloaterLabel",
-						sscFutures.forwardLabel().get ("DERIVED").fullyQualifiedName()))
+			if (!previousPositionMarketSnap.addManifestMeasureSnap (
+					"ForwardRate",
+					previousForwardRate, previousDV01,
+					previousForwardRate
+				) || !previousPositionMarketSnap.setR1 (
+					"DV01",
+					previousDV01
+				) || !previousPositionMarketSnap.setR1 (
+					"ForwardRate",
+					previousForwardRate
+				) || !previousPositionMarketSnap.setC1 (
+					"FloaterLabel",
+					futuresSingleStreamComponent.forwardLabel().get ("DERIVED").fullyQualifiedName()
+				)
+			)
+			{
 				return null;
+			}
 
-			org.drip.historical.attribution.PositionMarketSnap pmsSpot = new
-				org.drip.historical.attribution.PositionMarketSnap (dtSpot, mapSpotMeasures.get ("PV"));
+			PositionMarketSnap spotPositionMarketSnap = new PositionMarketSnap (
+				spotDate,
+				spotMeasuresMap.get ("PV")
+			);
 
-			if (!pmsSpot.addManifestMeasureSnap ("ForwardRate", dblSpotForwardRate, dblSpotDV01,
-				dblSpotForwardRate) || !pmsSpot.setR1 ("DV01", dblSpotDV01) || !pmsSpot.setR1 ("ForwardRate",
-					dblSpotForwardRate) || !pmsSpot.setC1 ("FloaterLabel", sscFutures.forwardLabel().get
-						("DERIVED").fullyQualifiedName()))
+			if (!spotPositionMarketSnap.addManifestMeasureSnap (
+					"ForwardRate",
+					spotForwardRate,
+					spotDV01,
+					spotForwardRate
+				) || !spotPositionMarketSnap.setR1 (
+					"DV01",
+					spotDV01
+				) || !spotPositionMarketSnap.setR1 (
+					"ForwardRate",
+					spotForwardRate
+				) || !spotPositionMarketSnap.setC1 (
+					"FloaterLabel",
+					futuresSingleStreamComponent.forwardLabel().get ("DERIVED").fullyQualifiedName()
+				)
+			)
+			{
 				return null;
+			}
 
-			return new org.drip.historical.attribution.PositionChangeComponents (false, pmsPrevious, pmsSpot,
-				0., null);
-		} catch (java.lang.Exception e) {
+			return new PositionChangeComponents (
+				false,
+				previousPositionMarketSnap,
+				spotPositionMarketSnap,
+				0.,
+				null
+			);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -202,42 +286,56 @@ public class FundingFuturesAPI
 	/**
 	 * Generate the Funding Futures Horizon Metrics
 	 * 
-	 * @param adt Array of Closing Dates
-	 * @param adtExpiry Array of Expiry Dates
-	 * @param adblFuturesQuote Array of Closing Futures Quotes
-	 * @param strCurrency Funding Currency
+	 * @param closingDateArray Array of Closing Dates
+	 * @param expiryDateArray Array of Expiry Dates
+	 * @param futuresQuoteArray Array of Closing Futures Quotes
+	 * @param currency Funding Currency
 	 * 
 	 * @return The Funding Futures Horizon Metrics
 	 */
 
-	public static final java.util.List<org.drip.historical.attribution.PositionChangeComponents>
-		HorizonChangeAttribution (
-			final org.drip.analytics.date.JulianDate[] adt,
-			final org.drip.analytics.date.JulianDate[] adtExpiry,
-			final double[] adblFuturesQuote,
-			final java.lang.String strCurrency)
+	public static final List<PositionChangeComponents> HorizonChangeAttribution (
+		final JulianDate[] closingDateArray,
+		final JulianDate[] expiryDateArray,
+		final double[] futuresQuoteArray,
+		final String currency)
 	{
-		if (null == adt || null == adtExpiry || null == adblFuturesQuote) return null;
-
-		int iNumClose = adt.length;
-
-		if (0 == iNumClose || iNumClose != adtExpiry.length || iNumClose != adblFuturesQuote.length)
+		if (null == closingDateArray || null == expiryDateArray || null == futuresQuoteArray) {
 			return null;
-
-		java.util.List<org.drip.historical.attribution.PositionChangeComponents> lsPCC = new
-			java.util.ArrayList<org.drip.historical.attribution.PositionChangeComponents>();
-
-		for (int i = 1; i < iNumClose; ++i) {
-			if (adtExpiry[i - 1].julian() != adtExpiry[i].julian()) continue;
-
-			org.drip.historical.attribution.PositionChangeComponents pcc = HorizonMetrics (adt[i - 1],
-				adt[i], adtExpiry[i], adblFuturesQuote[i - 1], adblFuturesQuote[i], strCurrency);
-
-			if (null == pcc) continue;
-
-			lsPCC.add (pcc);
 		}
 
-		return lsPCC;
+		if (0 == closingDateArray.length ||
+			closingDateArray.length != expiryDateArray.length ||
+			closingDateArray.length != futuresQuoteArray.length)
+		{
+			return null;
+		}
+
+		List<PositionChangeComponents> positionChangeComponentsList =
+			new ArrayList<PositionChangeComponents>();
+
+		for (int closingDateIndex = 1; closingDateIndex < closingDateArray.length; ++closingDateIndex) {
+			if (expiryDateArray[closingDateIndex - 1].julian() != expiryDateArray[closingDateIndex].julian())
+			{
+				continue;
+			}
+
+			PositionChangeComponents positionChangeComponents = HorizonMetrics (
+				closingDateArray[closingDateIndex - 1],
+				closingDateArray[closingDateIndex],
+				expiryDateArray[closingDateIndex],
+				futuresQuoteArray[closingDateIndex - 1],
+				futuresQuoteArray[closingDateIndex],
+				currency
+			);
+
+			if (null == positionChangeComponents) {
+				continue;
+			}
+
+			positionChangeComponentsList.add (positionChangeComponents);
+		}
+
+		return positionChangeComponentsList;
 	}
 }
