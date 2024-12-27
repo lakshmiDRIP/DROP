@@ -2,10 +2,8 @@
 package org.drip.portfolioconstruction.lean;
 
 import java.util.Map;
-import java.util.Set;
 
 import org.drip.analytics.support.CaseInsensitiveHashMap;
-import org.drip.numerical.common.NumberUtil;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -80,8 +78,7 @@ import org.drip.numerical.common.NumberUtil;
  */
 
 /**
- * <i>HoldingsContainer</i> implements the container that maintains the Asset Holdings Market Value and
- * 	Weight.
+ * <i>TradesContainer</i> implements the container that maintains the Map of Trades.
  *
  *	<br><br>
  *  <ul>
@@ -94,179 +91,110 @@ import org.drip.numerical.common.NumberUtil;
  * @author Lakshmi Krishnamurthy
  */
 
-public class HoldingsContainer
+public class TradesContainer
 {
-	private boolean _dirty = false;
-	private double _cashValue = Double.NaN;
-	private double _marketValue = Double.NaN;
+	private Map<String, Double> _assetQuantityMap = null;
 
-	private Map<String, Double> _assetWeightMap = new CaseInsensitiveHashMap<Double>();
+	/**
+	 * Construct a <i>TradesContainer</i> Instance from the Starting and the Ending Holdings
+	 * 
+	 * @param startingHoldingsContainer Starting <i>HoldingsContainer</i>
+	 * @param endingHoldingsContainer Ending <i>HoldingsContainer</i>
+	 * 
+	 * @return <i>TradesContainer</i> Instance
+	 */
 
-	private Map<String, Double> _assetMarketValueMap = new CaseInsensitiveHashMap<Double>();
-
-	private boolean unDirty()
+	public static final TradesContainer FromStartAndEndHoldings (
+		final HoldingsContainer startingHoldingsContainer,
+		final HoldingsContainer endingHoldingsContainer)
 	{
-		if (!_dirty || _assetMarketValueMap.isEmpty()) {
-			return false;
+		if (null == startingHoldingsContainer && null == endingHoldingsContainer) {
+			return null;
 		}
 
-		_dirty = false;
-		_marketValue = 0.;
+		Map<String, Double> assetQuantityMap = new CaseInsensitiveHashMap<Double>();
 
-		_assetWeightMap.clear();
+		if (null == startingHoldingsContainer) {
+			for (Map.Entry<String, Double> assetMarketValueMapEntry :
+				endingHoldingsContainer.assetMarketValueMap().entrySet())
+			{
+				assetQuantityMap.put (
+					assetMarketValueMapEntry.getKey(),
+					assetMarketValueMapEntry.getValue()
+				);
+			}
+		} else if (null == endingHoldingsContainer) {
+			for (Map.Entry<String, Double> assetMarketValueMapEntry :
+				startingHoldingsContainer.assetMarketValueMap().entrySet())
+			{
+				assetQuantityMap.put (
+					assetMarketValueMapEntry.getKey(),
+					-1. * assetMarketValueMapEntry.getValue()
+				);
+			}
+		} else {
+			Map<String, Double> startingAssetMarketValueMap =
+				startingHoldingsContainer.assetMarketValueMap();
 
-		for (Map.Entry<String, Double> assetMarketValueMapEntry : _assetMarketValueMap.entrySet()) {
-			_marketValue += assetMarketValueMapEntry.getValue();
+			for (Map.Entry<String, Double> assetMarketValueMapEntry :
+				endingHoldingsContainer.assetMarketValueMap().entrySet())
+			{
+				String assetID = assetMarketValueMapEntry.getKey();
+
+				assetQuantityMap.put (
+					assetID,
+					assetMarketValueMapEntry.getValue() - (
+						startingAssetMarketValueMap.containsKey (assetID) ?
+							startingAssetMarketValueMap.get (assetID) : 0.
+					)
+				);
+			}
+
+			for (Map.Entry<String, Double> assetMarketValueMapEntry :
+				startingHoldingsContainer.assetMarketValueMap().entrySet())
+			{
+				String assetID = assetMarketValueMapEntry.getKey();
+
+				if (!assetQuantityMap.containsKey (assetID)) {
+					assetQuantityMap.put ( assetID, -1. * assetMarketValueMapEntry.getValue());
+				}
+			}
 		}
 
-		if (0. == _marketValue) {
-			return true;
+		try {
+			return new TradesContainer (assetQuantityMap);
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 
-		for (Map.Entry<String, Double> assetMarketValueMapEntry : _assetMarketValueMap.entrySet()) {
-			_assetWeightMap.put (
-				assetMarketValueMapEntry.getKey(),
-				assetMarketValueMapEntry.getValue() / _marketValue
-			);
+		return null;
+	}
+
+	/**
+	 * <i>TradesContainer</i> Constructor
+	 * 
+	 * @param assetQuantityMap Asset Quantity Map
+	 * 
+	 * @throws Exception Thrown if the Inputs are Invalid
+	 */
+
+	public TradesContainer (
+		final Map<String, Double> assetQuantityMap)
+		throws Exception
+	{
+		if (null == (_assetQuantityMap = assetQuantityMap) || 0 == _assetQuantityMap.size()) {
+			throw new Exception ("TradesContainer Constructor => Invalid Asset Quantity Map");
 		}
-
-		return true;
 	}
 
 	/**
-	 * Empty <i>HoldingsContainer</i> Constructor
+	 * Retrieve the Asset Quantity Map
+	 * 
+	 * @return Asset Quantity Map
 	 */
 
-	public HoldingsContainer()
+	public Map<String, Double> assetQuantityMap()
 	{
-		_cashValue = 0.;
-		_marketValue = 0.;
-
-		_assetWeightMap = new CaseInsensitiveHashMap<Double>();
-
-		_assetMarketValueMap = new CaseInsensitiveHashMap<Double>();
-	}
-
-	/**
-	 * Retrieve the Map of Asset Market Values
-	 * 
-	 * @return Map of Asset Market Values
-	 */
-
-	public Map<String, Double> assetMarketValueMap()
-	{
-		return _assetMarketValueMap;
-	}
-
-	/**
-	 * Retrieve the Map of Asset Weights
-	 * 
-	 * @return Map of Asset Market Values
-	 */
-
-	public Map<String, Double> assetWeightMap()
-	{
-		unDirty();
-
-		return _assetWeightMap;
-	}
-
-	/**
-	 * Retrieve the Holdings Market Value
-	 * 
-	 * @return Holdings Market Value
-	 */
-
-	public double marketValue()
-	{
-		unDirty();
-
-		return _marketValue;
-	}
-
-	/**
-	 * Retrieve the Holdings Cash Value
-	 * 
-	 * @return Holdings Cash Value
-	 */
-
-	public double cashValue()
-	{
-		return _cashValue;
-	}
-
-	/**
-	 * Set the Asset to its Market Value on the Holdings
-	 * 
-	 * @param assetID Asset ID
-	 * @param assetMarketValue Asset Market Value
-	 * 
-	 * @return TRUE - Asset successfully set on the Holdings
-	 */
-
-	public boolean setAsset (
-		final String assetID,
-		final double assetMarketValue)
-	{
-		if (null == assetID || assetID.isEmpty() || NumberUtil.IsValid (assetMarketValue)) {
-			return false;
-		}
-
-		_assetMarketValueMap.put (assetID, assetMarketValue);
-
-		_dirty = true;
-		return true;
-	}
-
-	/**
-	 * Set the Cash Value on the Holdings
-	 * 
-	 * @param cashValue Cash Value
-	 * 
-	 * @return TRUE - Cash Value successfully set on the Holdings
-	 */
-
-	public boolean setCashValue (
-		final double cashValue)
-	{
-		if (NumberUtil.IsValid (cashValue)) {
-			return false;
-		}
-
-		_cashValue = cashValue;
-		_dirty = true;
-		return true;
-	}
-
-	/**
-	 * Retrieve the Set of Assets
-	 * 
-	 * @return Set of Assets
-	 */
-
-	public Set<String> assetSet()
-	{
-		return _assetMarketValueMap.keySet();
-	}
-
-	/**
-	 * Remove the Asset corresponding to the ID
-	 * 
-	 * @param assetID Asset ID
-	 * 
-	 * @return TRUE - Asset successfully removed
-	 */
-
-	public boolean removeAsset (
-		final String assetID)
-	{
-		if (null == assetID || !_assetMarketValueMap.containsKey (assetID)) {
-			return false;
-		}
-
-		_assetMarketValueMap.remove (assetID);
-
-		_dirty = true;
-		return true;
+		return _assetQuantityMap;
 	}
 }
