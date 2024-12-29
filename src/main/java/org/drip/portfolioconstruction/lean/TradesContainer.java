@@ -156,7 +156,7 @@ public class TradesContainer
 				String assetID = assetMarketValueMapEntry.getKey();
 
 				if (!assetQuantityMap.containsKey (assetID)) {
-					assetQuantityMap.put ( assetID, -1. * assetMarketValueMapEntry.getValue());
+					assetQuantityMap.put (assetID, -1. * assetMarketValueMapEntry.getValue());
 				}
 			}
 		}

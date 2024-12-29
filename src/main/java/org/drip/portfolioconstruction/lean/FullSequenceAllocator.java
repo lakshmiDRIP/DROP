@@ -1,8 +1,5 @@
 
-package org.drip.sample.leanallocator;
-
-import org.drip.portfolioconstruction.lean.HoldingsContainer;
-import org.drip.service.env.EnvManager;
+package org.drip.portfolioconstruction.lean;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -77,55 +74,44 @@ import org.drip.service.env.EnvManager;
  */
 
 /**
- * <i>BuyOnlyAllocation</i> illustrates the Filter-Sells Post-Processing Functionality of an Allocator.
+ * <i>FullSequenceAllocator</i> generates an Optimal Portfolio from the Initial Holdings and performs
+ * 	Post-Processing if necessary.
  *
  *	<br><br>
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md">Numerical Analysis Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/README.md">DROP API Construction and Usage</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/leanallocator/README.md">Construction/Usage of Lean Portfolio Allocator</a></li>
+ *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md">Portfolio Core Module</a></li>
+ *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/AssetAllocationAnalyticsLibrary.md">Asset Allocation Analytics</a></li>
+ *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/portfolioconstruction/README.md">Portfolio Construction under Allocation Constraints</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/portfolioconstruction/lean/README.md">"Lean" Portfolio Construction Utilities Suite</a></li>
  *  </ul>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class BuyOnlyAllocation
+public class FullSequenceAllocator
 {
+	private PostProcessorSettings _postProcessorSettings = null;
 
-	private static final int ZeroToHundred()
+	/**
+	 * <i>FullSequenceAllocator</i> Constructor
+	 * 
+	 * @param postProcessorSettings Post Processing Settings Instance
+	 */
+
+	public FullSequenceAllocator (
+		final PostProcessorSettings postProcessorSettings)
 	{
-		return (int) (Math.random() * 100.);
-	}
-
-	private static final HoldingsContainer RandomHoldings (
-		final int size,
-		final double cash)
-		throws Exception
-	{
-		HoldingsContainer holdingsContainer = new HoldingsContainer();
-
-		for (int i = 0; i < size; ++i) {
-			holdingsContainer.setAsset ("cusip_" + i, 100. * ZeroToHundred());
-		}
-
-		return holdingsContainer.setCashValue (cash) ? holdingsContainer : null;
+		_postProcessorSettings = postProcessorSettings;
 	}
 
 	/**
-	 * Entry Point
+	 * Retrieve the Post Processing Settings
 	 * 
-	 * @param argumentArray Command Line Argument Array
-	 * 
-	 * @throws Exception Thrown on Error/Exception Situation
+	 * @return Post Processing Settings
 	 */
 
-	public static final void main (
-		final String[] argumentArray)
-		throws Exception
+	public PostProcessorSettings postProcessorSettings()
 	{
-		EnvManager.InitEnv ("");
-
-		EnvManager.TerminateEnv();
+		return _postProcessorSettings;
 	}
 }

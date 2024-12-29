@@ -1,12 +1,6 @@
 
 package org.drip.portfolioconstruction.lean;
 
-import java.util.Map;
-import java.util.Set;
-
-import org.drip.analytics.support.CaseInsensitiveHashMap;
-import org.drip.numerical.common.NumberUtil;
-
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
@@ -80,8 +74,8 @@ import org.drip.numerical.common.NumberUtil;
  */
 
 /**
- * <i>HoldingsContainer</i> implements the container that maintains the Asset Holdings Market Value and
- * 	Weight.
+ * <i>FullSequenceAllocator</i> holds the Results of Optimization from the Initial Holdings and its eventual
+ * 	Post-Processing.
  *
  *	<br><br>
  *  <ul>
@@ -94,191 +88,49 @@ import org.drip.numerical.common.NumberUtil;
  * @author Lakshmi Krishnamurthy
  */
 
-public class HoldingsContainer
+public class FullSequenceAllocation
 {
-	private boolean _dirty = false;
-	private double _cashValue = Double.NaN;
-	private double _cashWeight = Double.NaN;
-	private double _marketValue = Double.NaN;
+	private HoldingsContainer _endingHoldings = null;
+	private HoldingsContainer _startingHoldings = null;
 
-	private Map<String, Double> _assetWeightMap = new CaseInsensitiveHashMap<Double>();
+	/**
+	 * <i>FullSequenceAllocation</i> Constructor
+	 * 
+	 * @param startingHoldings Starting Holdings
+	 * @param endingHoldings Ending Holdings
+	 * 
+	 * @throws Exception Thrown if the Inputs are Invalid
+	 */
 
-	private Map<String, Double> _assetMarketValueMap = new CaseInsensitiveHashMap<Double>();
-
-	private boolean unDirty()
+	public FullSequenceAllocation (
+		final HoldingsContainer startingHoldings,
+		final HoldingsContainer endingHoldings)
+		throws Exception
 	{
-		if (!_dirty || _assetMarketValueMap.isEmpty()) {
-			return false;
+		if (null == (_startingHoldings = startingHoldings) || null == (_endingHoldings = endingHoldings)) {
+			throw new Exception ("FullSequenceAllocation Constructor => Invalid Inputs");
 		}
-
-		_dirty = false;
-		_marketValue = _cashValue;
-		double cumulativeWeight = 0.;
-
-		_assetWeightMap.clear();
-
-		for (Map.Entry<String, Double> assetMarketValueMapEntry : _assetMarketValueMap.entrySet()) {
-			_marketValue += assetMarketValueMapEntry.getValue();
-		}
-
-		if (0. == _marketValue) {
-			return true;
-		}
-
-		for (Map.Entry<String, Double> assetMarketValueMapEntry : _assetMarketValueMap.entrySet()) {
-			double assetWeight = assetMarketValueMapEntry.getValue() / _marketValue;
-
-			_assetWeightMap.put (assetMarketValueMapEntry.getKey(), assetWeight);
-
-			cumulativeWeight += assetWeight;
-		}
-
-		_cashWeight = 1. - cumulativeWeight;
-		return true;
 	}
 
 	/**
-	 * Empty <i>HoldingsContainer</i> Constructor
+	 * Retrieve the Starting Holdings
+	 * 
+	 * @return Starting Holdings
 	 */
 
-	public HoldingsContainer()
+	public HoldingsContainer startingHoldings()
 	{
-		_cashValue = 0.;
-		_cashWeight = 0.;
-		_marketValue = 0.;
-
-		_assetWeightMap = new CaseInsensitiveHashMap<Double>();
-
-		_assetMarketValueMap = new CaseInsensitiveHashMap<Double>();
+		return _startingHoldings;
 	}
 
 	/**
-	 * Retrieve the Map of Asset Market Values
+	 * Retrieve the Ending Holdings
 	 * 
-	 * @return Map of Asset Market Values
+	 * @return Starting Holdings
 	 */
 
-	public Map<String, Double> assetMarketValueMap()
+	public HoldingsContainer endingHoldings()
 	{
-		return _assetMarketValueMap;
-	}
-
-	/**
-	 * Retrieve the Map of Asset Weights
-	 * 
-	 * @return Map of Asset Market Values
-	 */
-
-	public Map<String, Double> assetWeightMap()
-	{
-		unDirty();
-
-		return _assetWeightMap;
-	}
-
-	/**
-	 * Retrieve the Holdings Market Value
-	 * 
-	 * @return Holdings Market Value
-	 */
-
-	public double marketValue()
-	{
-		unDirty();
-
-		return _marketValue;
-	}
-
-	/**
-	 * Retrieve the Holdings Cash Value
-	 * 
-	 * @return Holdings Cash Value
-	 */
-
-	public double cashValue()
-	{
-		return _cashValue;
-	}
-
-	/**
-	 * Set the Asset to its Market Value on the Holdings
-	 * 
-	 * @param assetID Asset ID
-	 * @param assetMarketValue Asset Market Value
-	 * 
-	 * @return TRUE - Asset successfully set on the Holdings
-	 */
-
-	public boolean setAsset (
-		final String assetID,
-		final double assetMarketValue)
-	{
-		if (null == assetID || assetID.isEmpty() || !NumberUtil.IsValid (assetMarketValue)) {
-			return false;
-		}
-
-		_assetMarketValueMap.put (assetID, assetMarketValue);
-
-		_dirty = true;
-		return true;
-	}
-
-	/**
-	 * Set the Cash Value on the Holdings
-	 * 
-	 * @param cashValue Cash Value
-	 * 
-	 * @return TRUE - Cash Value successfully set on the Holdings
-	 */
-
-	public boolean setCashValue (
-		final double cashValue)
-	{
-		if (!NumberUtil.IsValid (cashValue)) {
-			return false;
-		}
-
-		_cashValue = cashValue;
-		_dirty = true;
-		return true;
-	}
-
-	/**
-	 * Retrieve the Set of Assets
-	 * 
-	 * @return Set of Assets
-	 */
-
-	public Set<String> assetSet()
-	{
-		return _assetMarketValueMap.keySet();
-	}
-
-	public double cashWeight()
-	{
-		unDirty();
-
-		return _cashWeight;
-	}
-
-	/**
-	 * Remove the Asset corresponding to the ID
-	 * 
-	 * @param assetID Asset ID
-	 * 
-	 * @return TRUE - Asset successfully removed
-	 */
-
-	public boolean removeAsset (
-		final String assetID)
-	{
-		if (null == assetID || !_assetMarketValueMap.containsKey (assetID)) {
-			return false;
-		}
-
-		_assetMarketValueMap.remove (assetID);
-
-		_dirty = true;
-		return true;
+		return _endingHoldings;
 	}
 }
