@@ -254,6 +254,12 @@ public class HoldingsContainer
 		return _assetMarketValueMap.keySet();
 	}
 
+	/**
+	 * Retrieve the Cash Weight
+	 * 
+	 * @return Cash Weight
+	 */
+
 	public double cashWeight()
 	{
 		unDirty();
@@ -280,5 +286,28 @@ public class HoldingsContainer
 
 		_dirty = true;
 		return true;
+	}
+
+	/**
+	 * Clone the Holdings Container Instance
+	 * 
+	 * @return Cloned Holdings Container Instance
+	 */
+
+	@Override public HoldingsContainer clone()
+	{
+		HoldingsContainer holdingsContainer = new HoldingsContainer();
+
+		for (Map.Entry<String, Double> assetMarketValueMapEntry : _assetMarketValueMap.entrySet()) {
+			if (!holdingsContainer.setAsset (
+				assetMarketValueMapEntry.getKey(),
+				assetMarketValueMapEntry.getValue()
+			))
+			{
+				return null;
+			}
+		}
+
+		return holdingsContainer.setCashValue (_cashValue) ? holdingsContainer : null;
 	}
 }

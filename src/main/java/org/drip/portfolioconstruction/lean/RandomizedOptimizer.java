@@ -1,6 +1,8 @@
 
 package org.drip.portfolioconstruction.lean;
 
+import org.drip.numerical.common.NumberUtil;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
@@ -74,7 +76,7 @@ package org.drip.portfolioconstruction.lean;
  */
 
 /**
- * <i>Optimizer</i> exposes Functionality for optimizing the given Portfolio
+ * <i>RandomizedOptimizer</i> generates Random Target Portfolio from the Input Holdings and its Market Value.
  *
  *	<br><br>
  *  <ul>
@@ -87,8 +89,43 @@ package org.drip.portfolioconstruction.lean;
  * @author Lakshmi Krishnamurthy
  */
 
-public interface Optimizer
+public class RandomizedOptimizer
+	implements Optimizer
 {
+	private double _assetSizeScaler = Double.NaN;
+
+	private int RandomToScale()
+	{
+		return (int) (Math.random() * _assetSizeScaler);
+	}
+
+	/**
+	 * <i>RandomizedOptimizer</i> Constructor
+	 * 
+	 * @param assetSizeScaler Asset Size Scaler
+	 * 
+	 * @throws Exception Thrown if the Inputs are Invalid
+	 */
+
+	public RandomizedOptimizer (
+		final double assetSizeScaler)
+		throws Exception
+	{
+		if (!NumberUtil.IsValid (_assetSizeScaler = assetSizeScaler)) {
+			throw new Exception ("RandomizedOptimizer Constructor => Invalid Inputs");
+		}
+	}
+
+	/**
+	 * Retrieve the Asset Size Scaler
+	 * 
+	 * @return Asset Size Scaler
+	 */
+
+	public double assetSizeScaler()
+	{
+		return _assetSizeScaler;
+	}
 
 	/**
 	 * Optimize from the Starting Holdings
@@ -98,7 +135,27 @@ public interface Optimizer
 	 * @return The Optimal Holdings
 	 */
 
-	public abstract HoldingsContainer optimize (
-		final HoldingsContainer startingHoldingsContainer
-	);
+	public HoldingsContainer optimize (
+		final HoldingsContainer startingHoldingsContainer)
+	{
+		if (null == startingHoldingsContainer) {
+			return null;
+		}
+
+		double cumulativeAssetMarketValue = 0.;
+
+		HoldingsContainer holdingsContainer = new HoldingsContainer();
+
+		for (String assetID : startingHoldingsContainer.assetSet()) {
+			double assetMarketValue = 100. * RandomToScale();
+
+			cumulativeAssetMarketValue += assetMarketValue;
+
+			holdingsContainer.setAsset (assetID, assetMarketValue);
+		}
+
+		return holdingsContainer.setCashValue (
+			startingHoldingsContainer.marketValue() - cumulativeAssetMarketValue
+		) ? holdingsContainer : null;
+	}
 }

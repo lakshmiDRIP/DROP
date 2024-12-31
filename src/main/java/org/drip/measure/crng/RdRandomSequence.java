@@ -98,6 +98,39 @@ public class RdRandomSequence
 {
 
 	/**
+	 * Generate a Random Digit
+	 * 
+	 * @return Random Digit
+	 */
+
+	public static final int RandomDigit()
+	{
+		return (int) (10. * Math.random());
+	}
+
+	/**
+	 * Generate a Random Alphabet
+	 * 
+	 * @return Random Alphabet
+	 */
+
+	public static final char RandomAlphabet()
+	{
+		return (char) (26. * Math.random() + (int) 'a');
+	}
+
+	/**
+	 * Generate a Random Alpha-numeric Character
+	 * 
+	 * @return Random Alpha-numeric Character
+	 */
+
+	public static final char RandomAlphaNumeric()
+	{
+		return (char) (36. * Math.random() + (int) 'a');
+	}
+
+	/**
 	 * Construct a 1D Array of Random Elements up to the Maximum Value
 	 * 
 	 * @param elementCount Number of Elements in the Array

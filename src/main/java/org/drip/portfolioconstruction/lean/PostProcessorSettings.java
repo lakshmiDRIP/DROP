@@ -89,20 +89,24 @@ package org.drip.portfolioconstruction.lean;
 
 public class PostProcessorSettings
 {
+	private boolean _filterBuys = false;
 	private boolean _filterSells = false;
 
 	/**
 	 * <i>PostProcessorSettings</i> Constructor
 	 * 
 	 * @param filterSells TRUE - Sells are to be removed
+	 * @param filterBuys TRUE - Buys are to be removed
 	 * 
 	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public PostProcessorSettings (
-		final boolean filterSells)
+		final boolean filterSells,
+		final boolean filterBuys)
 		throws Exception
 	{
+		_filterBuys = filterBuys;
 		_filterSells = filterSells;
 	}
 
@@ -115,5 +119,16 @@ public class PostProcessorSettings
 	public boolean filterSells()
 	{
 		return _filterSells;
+	}
+
+	/**
+	 * Indicate if Buys are to be removed
+	 * 
+	 * @return TRUE - Buys are to be removed
+	 */
+
+	public boolean filterBuys()
+	{
+		return _filterBuys;
 	}
 }

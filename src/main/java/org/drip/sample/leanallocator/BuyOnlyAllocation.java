@@ -1,5 +1,7 @@
 
-package org.drip.portfolioconstruction.lean;
+package org.drip.sample.leanallocator;
+
+import org.drip.service.env.EnvManager;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -74,7 +76,7 @@ package org.drip.portfolioconstruction.lean;
  */
 
 /**
- * <i>Optimizer</i> exposes Functionality for optimizing the given Portfolio
+ * <i>BuyOnlyAllocation</i> generates an Optimal Buy-Only Portfolio from the Initial Holdings.
  *
  *	<br><br>
  *  <ul>
@@ -87,18 +89,23 @@ package org.drip.portfolioconstruction.lean;
  * @author Lakshmi Krishnamurthy
  */
 
-public interface Optimizer
+public class BuyOnlyAllocation
 {
 
 	/**
-	 * Optimize from the Starting Holdings
+	 * Entry Point
 	 * 
-	 * @param startingHoldingsContainer Starting Holdings
+	 * @param argumentArray Command Line Argument Array
 	 * 
-	 * @return The Optimal Holdings
+	 * @throws Exception Thrown on Error/Exception Situation
 	 */
 
-	public abstract HoldingsContainer optimize (
-		final HoldingsContainer startingHoldingsContainer
-	);
+	public static final void main (
+		final String[] argumentArray)
+		throws Exception
+	{
+		EnvManager.InitEnv ("");
+
+		EnvManager.TerminateEnv();
+	}
 }

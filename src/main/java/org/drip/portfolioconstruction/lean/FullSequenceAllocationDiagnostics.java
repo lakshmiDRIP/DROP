@@ -74,7 +74,8 @@ package org.drip.portfolioconstruction.lean;
  */
 
 /**
- * <i>Optimizer</i> exposes Functionality for optimizing the given Portfolio
+ * <i>FullSequenceAllocationDiagnostics</i> augments <i>FullSequenceAllocation</i> by holding the Results of
+ * 	the pre-processed Allocation.
  *
  *	<br><br>
  *  <ul>
@@ -87,18 +88,84 @@ package org.drip.portfolioconstruction.lean;
  * @author Lakshmi Krishnamurthy
  */
 
-public interface Optimizer
+
+public class FullSequenceAllocationDiagnostics extends FullSequenceAllocation
 {
+	public HoldingsContainer _buyFilteredHoldings = null;
+	public HoldingsContainer _sellFilteredHoldings = null;
 
 	/**
-	 * Optimize from the Starting Holdings
+	 * <i>FullSequenceAllocationDiagnostics</i> Constructor
 	 * 
-	 * @param startingHoldingsContainer Starting Holdings
+	 * @param startingHoldings Starting Holdings
+	 * @param endingHoldings Ending Holdings
 	 * 
-	 * @return The Optimal Holdings
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
-	public abstract HoldingsContainer optimize (
-		final HoldingsContainer startingHoldingsContainer
-	);
+	public FullSequenceAllocationDiagnostics (
+		final HoldingsContainer startingHoldings,
+		final HoldingsContainer endingHoldings)
+		throws Exception
+	{
+		super (startingHoldings, endingHoldings);
+	}
+
+	/**
+	 * Retrieve the Buy-Filtered Holdings
+	 * 
+	 * @return Buy-Filtered Holdings
+	 */
+
+	public HoldingsContainer buyFilteredHoldings()
+	{
+		return _buyFilteredHoldings;
+	}
+
+	/**
+	 * Retrieve the Sell-Filtered Holdings
+	 * 
+	 * @return Sell-Filtered Holdings
+	 */
+
+	public HoldingsContainer sellFilteredHoldings()
+	{
+		return _sellFilteredHoldings;
+	}
+
+	/**
+	 * Set <i>Buy Filtered</i> Holdings Container
+	 * 
+	 * @param holdingsContainer <i>Buy Filtered</i> Holdings Container
+	 * 
+	 * @return <i>Buy Filtered</i> Holdings Container successfully set
+	 */
+
+	public boolean setBuyFiltered (
+		final HoldingsContainer holdingsContainer)
+	{
+		if (null == holdingsContainer) {
+			return false;
+		}
+
+		return null != (_buyFilteredHoldings = holdingsContainer.clone());
+	}
+
+	/**
+	 * Set <i>Sell Filtered</i> Holdings Container
+	 * 
+	 * @param holdingsContainer <i>Sell Filtered</i> Holdings Container
+	 * 
+	 * @return <i>Sell Filtered</i> Holdings Container successfully set
+	 */
+
+	public boolean setSellFiltered (
+		final HoldingsContainer holdingsContainer)
+	{
+		if (null == holdingsContainer) {
+			return false;
+		}
+
+		return null != (_sellFilteredHoldings = holdingsContainer.clone());
+	}
 }

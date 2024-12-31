@@ -1,6 +1,8 @@
 
 package org.drip.portfolioconstruction.lean;
 
+import java.util.Map;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
@@ -90,18 +92,37 @@ package org.drip.portfolioconstruction.lean;
 
 public class FullSequenceAllocator
 {
+	private Optimizer _optimizer = null;
 	private PostProcessorSettings _postProcessorSettings = null;
 
 	/**
 	 * <i>FullSequenceAllocator</i> Constructor
 	 * 
-	 * @param postProcessorSettings Post Processing Settings Instance
+	 * @param optimizer Optimizer
+	 * @param postProcessorSettings Post Processing Settings
 	 */
 
 	public FullSequenceAllocator (
+		final Optimizer optimizer,
 		final PostProcessorSettings postProcessorSettings)
+		throws Exception
 	{
+		if (null == (_optimizer = optimizer)) {
+			throw new Exception ("FullSequenceAllocator Constructor => Invalid Inputs");
+		}
+
 		_postProcessorSettings = postProcessorSettings;
+	}
+
+	/**
+	 * Retrieve the Optimizer
+	 * 
+	 * @return Optimizer
+	 */
+
+	public Optimizer optimizer()
+	{
+		return _optimizer;
 	}
 
 	/**
@@ -113,5 +134,61 @@ public class FullSequenceAllocator
 	public PostProcessorSettings postProcessorSettings()
 	{
 		return _postProcessorSettings;
+	}
+
+	/**
+	 * Allocate an Instance of Post-processed Target Holdings from the Initial Portfolio
+	 * 
+	 * @param startingHoldings Starting Holdings
+	 * 
+	 * @return Instance of Post-processed Target Holdings
+	 */
+
+	public FullSequenceAllocation allocate (
+		final HoldingsContainer startingHoldings)
+	{
+		HoldingsContainer endingHoldings = _optimizer.optimize (startingHoldings);
+
+		if (null == endingHoldings) {
+			return null;
+		}
+
+		if (null != _postProcessorSettings) {
+			Map<String, Double> startingAssetMarketValueMap = startingHoldings.assetMarketValueMap();
+
+			Map<String, Double> endingAssetMarketValueMap = endingHoldings.assetMarketValueMap();
+
+			if (_postProcessorSettings.filterSells()) {
+				for (String assetID : endingAssetMarketValueMap.keySet()) {
+					double startingAssetMarketValue = startingAssetMarketValueMap.containsKey (assetID) ?
+						startingAssetMarketValueMap.get (assetID) : 0.;
+
+					double tradeAmount = endingAssetMarketValueMap.get (assetID) - startingAssetMarketValue;
+
+					if (0. > tradeAmount) {
+						endingHoldings.setAsset (assetID, startingAssetMarketValue);
+					}
+				}
+			} else if (_postProcessorSettings.filterBuys()) {
+				for (String assetID : endingAssetMarketValueMap.keySet()) {
+					double startingAssetMarketValue = startingAssetMarketValueMap.containsKey (assetID) ?
+						startingAssetMarketValueMap.get (assetID) : 0.;
+
+					double tradeAmount = endingAssetMarketValueMap.get (assetID) - startingAssetMarketValue;
+
+					if (0. < tradeAmount) {
+						endingHoldings.setAsset (assetID, startingAssetMarketValue);
+					}
+				}
+			}
+		}
+
+		try {
+			return new FullSequenceAllocation (startingHoldings, endingHoldings);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return null;
 	}
 }
