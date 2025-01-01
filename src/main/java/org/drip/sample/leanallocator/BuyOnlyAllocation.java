@@ -1,6 +1,12 @@
 
 package org.drip.sample.leanallocator;
 
+import org.drip.measure.crng.RdRandomSequence;
+import org.drip.portfolioconstruction.lean.FullSequenceAllocation;
+import org.drip.portfolioconstruction.lean.FullSequenceAllocator;
+import org.drip.portfolioconstruction.lean.HoldingsContainer;
+import org.drip.portfolioconstruction.lean.PostProcessorSettings;
+import org.drip.portfolioconstruction.lean.RandomizedOptimizer;
 import org.drip.service.env.EnvManager;
 
 /*
@@ -92,6 +98,27 @@ import org.drip.service.env.EnvManager;
 public class BuyOnlyAllocation
 {
 
+	private static final int ScaledMarketValue (
+		final double scale)
+	{
+		return (int) (Math.random() * scale);
+	}
+
+	private static final HoldingsContainer RandomHoldings (
+		final int size,
+		final double scale,
+		final double cash)
+		throws Exception
+	{
+		HoldingsContainer holdingsContainer = new HoldingsContainer();
+
+		for (int i = 0; i < size; ++i) {
+			holdingsContainer.setAsset (RdRandomSequence.RandomCUSIP(), 100. * ScaledMarketValue (scale));
+		}
+
+		return holdingsContainer.setCashValue (cash) ? holdingsContainer : null;
+	}
+
 	/**
 	 * Entry Point
 	 * 
@@ -105,6 +132,25 @@ public class BuyOnlyAllocation
 		throws Exception
 	{
 		EnvManager.InitEnv ("");
+
+		int assetCount = 10;
+		double scale = 1000.;
+		double startingCashAssetEquivalent = 3.;
+
+		HoldingsContainer startingHoldings = RandomHoldings (
+			assetCount,
+			scale,
+			startingCashAssetEquivalent * assetCount
+		);
+
+		FullSequenceAllocator fullSequenceAllocator = new FullSequenceAllocator (
+			new RandomizedOptimizer (scale),
+			PostProcessorSettings.BuyOnly()
+		);
+
+		FullSequenceAllocation fullSequenceAllocation = fullSequenceAllocator.allocate (startingHoldings);
+
+		System.out.println (fullSequenceAllocation);
 
 		EnvManager.TerminateEnv();
 	}

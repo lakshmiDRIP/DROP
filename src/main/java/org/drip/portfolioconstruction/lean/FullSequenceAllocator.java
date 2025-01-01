@@ -93,6 +93,7 @@ import java.util.Map;
 public class FullSequenceAllocator
 {
 	private Optimizer _optimizer = null;
+	private boolean _diagnosticsOn = false;
 	private PostProcessorSettings _postProcessorSettings = null;
 
 	/**
@@ -137,6 +138,17 @@ public class FullSequenceAllocator
 	}
 
 	/**
+	 * Indicate if the Diagnostics is turned on
+	 * 
+	 * @return TRUE - Diagnostics is turned on
+	 */
+
+	public boolean diagnosticsOn()
+	{
+		return _diagnosticsOn;
+	}
+
+	/**
 	 * Allocate an Instance of Post-processed Target Holdings from the Initial Portfolio
 	 * 
 	 * @param startingHoldings Starting Holdings
@@ -147,10 +159,22 @@ public class FullSequenceAllocator
 	public FullSequenceAllocation allocate (
 		final HoldingsContainer startingHoldings)
 	{
+		FullSequenceAllocation fullSequenceAllocation = _diagnosticsOn ?
+			new FullSequenceAllocationDiagnostics() :
+			new FullSequenceAllocation();
+
+		if (!fullSequenceAllocation.startingHoldings (startingHoldings)) {
+			return null;
+		}
+
 		HoldingsContainer endingHoldings = _optimizer.optimize (startingHoldings);
 
 		if (null == endingHoldings) {
 			return null;
+		}
+
+		if (_diagnosticsOn) {
+			((FullSequenceAllocationDiagnostics) fullSequenceAllocation).setPreFiltered (endingHoldings);
 		}
 
 		if (null != _postProcessorSettings) {
@@ -183,12 +207,6 @@ public class FullSequenceAllocator
 			}
 		}
 
-		try {
-			return new FullSequenceAllocation (startingHoldings, endingHoldings);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-		return null;
+		return fullSequenceAllocation.endingHoldings (endingHoldings) ? fullSequenceAllocation : null;
 	}
 }

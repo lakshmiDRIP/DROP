@@ -93,6 +93,40 @@ public class PostProcessorSettings
 	private boolean _filterSells = false;
 
 	/**
+	 * Construct a Buy-only Version of <i>PostProcessorSettings</i>
+	 * 
+	 * @return Buy-only Version of <i>PostProcessorSettings</i>
+	 */
+
+	public static final PostProcessorSettings BuyOnly()
+	{
+		try {
+			return new PostProcessorSettings (true, false);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
+	 * Construct a Sell-only Version of <i>PostProcessorSettings</i>
+	 * 
+	 * @return Sell-only Version of <i>PostProcessorSettings</i>
+	 */
+
+	public static final PostProcessorSettings SellOnly()
+	{
+		try {
+			return new PostProcessorSettings (false, true);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
 	 * <i>PostProcessorSettings</i> Constructor
 	 * 
 	 * @param filterSells TRUE - Sells are to be removed

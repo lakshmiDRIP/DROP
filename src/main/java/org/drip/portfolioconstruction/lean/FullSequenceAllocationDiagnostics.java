@@ -91,81 +91,43 @@ package org.drip.portfolioconstruction.lean;
 
 public class FullSequenceAllocationDiagnostics extends FullSequenceAllocation
 {
-	public HoldingsContainer _buyFilteredHoldings = null;
-	public HoldingsContainer _sellFilteredHoldings = null;
+	public HoldingsContainer _preFilteredHoldings = null;
 
 	/**
-	 * <i>FullSequenceAllocationDiagnostics</i> Constructor
-	 * 
-	 * @param startingHoldings Starting Holdings
-	 * @param endingHoldings Ending Holdings
-	 * 
-	 * @throws Exception Thrown if the Inputs are Invalid
+	 * Empty <i>FullSequenceAllocationDiagnostics</i> Constructor
 	 */
 
-	public FullSequenceAllocationDiagnostics (
-		final HoldingsContainer startingHoldings,
-		final HoldingsContainer endingHoldings)
-		throws Exception
+	public FullSequenceAllocationDiagnostics()
 	{
-		super (startingHoldings, endingHoldings);
+		super();
 	}
 
 	/**
-	 * Retrieve the Buy-Filtered Holdings
+	 * Retrieve the Pre-Filtered Holdings
 	 * 
-	 * @return Buy-Filtered Holdings
+	 * @return Pre-Filtered Holdings
 	 */
 
-	public HoldingsContainer buyFilteredHoldings()
+	public HoldingsContainer preFilteredHoldings()
 	{
-		return _buyFilteredHoldings;
+		return _preFilteredHoldings;
 	}
 
 	/**
-	 * Retrieve the Sell-Filtered Holdings
+	 * Set <i>Pre-Filtered</i> Holdings Container
 	 * 
-	 * @return Sell-Filtered Holdings
+	 * @param holdingsContainer <i>Pre-Filtered</i> Holdings Container
+	 * 
+	 * @return <i>Pre-Filtered</i> Holdings Container successfully set
 	 */
 
-	public HoldingsContainer sellFilteredHoldings()
-	{
-		return _sellFilteredHoldings;
-	}
-
-	/**
-	 * Set <i>Buy Filtered</i> Holdings Container
-	 * 
-	 * @param holdingsContainer <i>Buy Filtered</i> Holdings Container
-	 * 
-	 * @return <i>Buy Filtered</i> Holdings Container successfully set
-	 */
-
-	public boolean setBuyFiltered (
+	public boolean setPreFiltered (
 		final HoldingsContainer holdingsContainer)
 	{
 		if (null == holdingsContainer) {
 			return false;
 		}
 
-		return null != (_buyFilteredHoldings = holdingsContainer.clone());
-	}
-
-	/**
-	 * Set <i>Sell Filtered</i> Holdings Container
-	 * 
-	 * @param holdingsContainer <i>Sell Filtered</i> Holdings Container
-	 * 
-	 * @return <i>Sell Filtered</i> Holdings Container successfully set
-	 */
-
-	public boolean setSellFiltered (
-		final HoldingsContainer holdingsContainer)
-	{
-		if (null == holdingsContainer) {
-			return false;
-		}
-
-		return null != (_sellFilteredHoldings = holdingsContainer.clone());
+		return null != (_preFilteredHoldings = holdingsContainer.clone());
 	}
 }

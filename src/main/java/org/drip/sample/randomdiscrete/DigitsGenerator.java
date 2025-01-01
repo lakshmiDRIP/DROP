@@ -1,5 +1,8 @@
 
-package org.drip.portfolioconstruction.lean;
+package org.drip.sample.randomdiscrete;
+
+import org.drip.measure.crng.RdRandomSequence;
+import org.drip.service.env.EnvManager;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -74,8 +77,7 @@ package org.drip.portfolioconstruction.lean;
  */
 
 /**
- * <i>FullSequenceAllocator</i> holds the Results of Optimization from the Initial Holdings and its eventual
- * 	Post-Processing.
+ * <i>DigitsGenerator</i> displays the Construction of Random Digits.
  *
  *	<br><br>
  *  <ul>
@@ -88,76 +90,54 @@ package org.drip.portfolioconstruction.lean;
  * @author Lakshmi Krishnamurthy
  */
 
-public class FullSequenceAllocation
+public class DigitsGenerator
 {
-	private HoldingsContainer _endingHoldings = null;
-	private HoldingsContainer _startingHoldings = null;
 
 	/**
-	 * Empty <i>FullSequenceAllocation</i> Constructor
+	 * Entry Point
+	 * 
+	 * @param argumentArray Command Line Argument Array
+	 * 
+	 * @throws Exception Thrown on Error/Exception Situation
 	 */
 
-	public FullSequenceAllocation()
+	public static final void main (
+		final String[] argumentArray)
+		throws Exception
 	{
-	}
+		EnvManager.InitEnv ("");
 
-	/**
-	 * Set the Starting Holdings
-	 * 
-	 * @param startingHoldings Starting Holdings
-	 * 
-	 * @return TRUE - The Starting Holdings successfully set
-	 */
+		int sampleCount = 50;
 
-	public boolean startingHoldings (
-		final HoldingsContainer startingHoldings)
-	{
-		if (null == startingHoldings) {
-			return false;
+		System.out.println ("\t|------------------------||");
+
+		System.out.println ("\t|  RANDOM DIGITS/CUSIP   ||");
+
+		System.out.println ("\t|------------------------||");
+
+		System.out.println ("\t| L -> R:                ||");
+
+		System.out.println ("\t|   - Random Digit       ||");
+
+		System.out.println ("\t|   - Random Upper Alpha ||");
+
+		System.out.println ("\t|   - Random Alphanumeric||");
+
+		System.out.println ("\t|   - Random CUSIP       ||");
+
+		System.out.println ("\t|------------------------||");
+
+		for (int sampleIndex = 0; sampleIndex < sampleCount; ++sampleIndex) {
+			System.out.println (
+				"\t| " + RdRandomSequence.RandomDigit() + " | " +
+					RdRandomSequence.RandomUpperAlpha() + " | " +
+					RdRandomSequence.RandomUpperAlphaNumeric() + " | " +
+					RdRandomSequence.RandomCUSIP() + " ||"
+			);
 		}
 
-		_startingHoldings = startingHoldings;
-		return true;
-	}
+		System.out.println ("\t|------------------------||");
 
-	/**
-	 * Set the Ending Holdings
-	 * 
-	 * @param endingHoldings Ending Holdings
-	 * 
-	 * @return TRUE - The Ending Holdings successfully set
-	 */
-
-	public boolean endingHoldings (
-		final HoldingsContainer endingHoldings)
-	{
-		if (null == endingHoldings) {
-			return false;
-		}
-
-		_endingHoldings = endingHoldings;
-		return true;
-	}
-
-	/**
-	 * Retrieve the Starting Holdings
-	 * 
-	 * @return Starting Holdings
-	 */
-
-	public HoldingsContainer startingHoldings()
-	{
-		return _startingHoldings;
-	}
-
-	/**
-	 * Retrieve the Ending Holdings
-	 * 
-	 * @return Starting Holdings
-	 */
-
-	public HoldingsContainer endingHoldings()
-	{
-		return _endingHoldings;
+		EnvManager.TerminateEnv();
 	}
 }

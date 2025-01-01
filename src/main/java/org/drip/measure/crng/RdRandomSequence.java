@@ -109,25 +109,44 @@ public class RdRandomSequence
 	}
 
 	/**
-	 * Generate a Random Alphabet
+	 * Generate a Random Upper-case Alphabet
 	 * 
-	 * @return Random Alphabet
+	 * @return Random Upper-case Alphabet
 	 */
 
-	public static final char RandomAlphabet()
+	public static final char RandomUpperAlpha()
 	{
-		return (char) (26. * Math.random() + (int) 'a');
+		return (char) (26. * Math.random() + (int) 'A');
 	}
 
 	/**
-	 * Generate a Random Alpha-numeric Character
+	 * Generate a Random Upper Alpha-numeric Character
 	 * 
-	 * @return Random Alpha-numeric Character
+	 * @return Random Upper Alpha-numeric Character
 	 */
 
-	public static final char RandomAlphaNumeric()
+	public static final char RandomUpperAlphaNumeric()
 	{
-		return (char) (36. * Math.random() + (int) 'a');
+		int ascii = (int) (36. * Math.random());
+
+		return (char) (ascii + (10 > ascii ? (int) '0' : (int) 'A' - 10));
+	}
+
+	/**
+	 * Generate a Random CUSIP
+	 * 
+	 * @return The CUSIP
+	 */
+
+	public static final String RandomCUSIP()
+	{
+		String cusip = "XS0" + RdRandomSequence.RandomDigit();
+
+		for (int i = 0; i < 6; ++i) {
+			cusip += RdRandomSequence.RandomUpperAlphaNumeric();
+		}
+
+		return cusip;
 	}
 
 	/**
