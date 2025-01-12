@@ -101,17 +101,20 @@ public class FullSequenceAllocator
 	 * 
 	 * @param optimizer Optimizer
 	 * @param postProcessorSettings Post Processing Settings
+	 * @param diagnosticsOn TRUE - Diagnostics is turned on
 	 */
 
 	public FullSequenceAllocator (
 		final Optimizer optimizer,
-		final PostProcessorSettings postProcessorSettings)
+		final PostProcessorSettings postProcessorSettings,
+		final boolean diagnosticsOn)
 		throws Exception
 	{
 		if (null == (_optimizer = optimizer)) {
 			throw new Exception ("FullSequenceAllocator Constructor => Invalid Inputs");
 		}
 
+		_diagnosticsOn = diagnosticsOn;
 		_postProcessorSettings = postProcessorSettings;
 	}
 
@@ -190,7 +193,7 @@ public class FullSequenceAllocator
 					double tradeAmount = endingAssetMarketValueMap.get (assetID) - startingAssetMarketValue;
 
 					if (0. > tradeAmount) {
-						endingHoldings.setAsset (assetID, startingAssetMarketValue);
+						endingHoldings.updateAsset (assetID, startingAssetMarketValue);
 					}
 				}
 			} else if (_postProcessorSettings.filterBuys()) {
@@ -201,7 +204,7 @@ public class FullSequenceAllocator
 					double tradeAmount = endingAssetMarketValueMap.get (assetID) - startingAssetMarketValue;
 
 					if (0. < tradeAmount) {
-						endingHoldings.setAsset (assetID, startingAssetMarketValue);
+						endingHoldings.updateAsset (assetID, startingAssetMarketValue);
 					}
 				}
 			}

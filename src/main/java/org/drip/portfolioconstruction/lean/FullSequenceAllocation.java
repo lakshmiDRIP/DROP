@@ -160,4 +160,15 @@ public class FullSequenceAllocation
 	{
 		return _endingHoldings;
 	}
+
+	/**
+	 * Retrieve the Trades Container
+	 * 
+	 * @return Trades Container
+	 */
+
+	public TradesContainer tradesContainer()
+	{
+		return TradesContainer.FromStartAndEndHoldings (_startingHoldings, _endingHoldings);
+	}
 }

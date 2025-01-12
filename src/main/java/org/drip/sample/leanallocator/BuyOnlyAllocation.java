@@ -1,12 +1,16 @@
 
 package org.drip.sample.leanallocator;
 
+import java.util.Map;
+
 import org.drip.measure.crng.RdRandomSequence;
-import org.drip.portfolioconstruction.lean.FullSequenceAllocation;
+import org.drip.portfolioconstruction.lean.FullSequenceAllocationDiagnostics;
 import org.drip.portfolioconstruction.lean.FullSequenceAllocator;
 import org.drip.portfolioconstruction.lean.HoldingsContainer;
 import org.drip.portfolioconstruction.lean.PostProcessorSettings;
 import org.drip.portfolioconstruction.lean.RandomizedOptimizer;
+import org.drip.portfolioconstruction.lean.TradesContainer;
+import org.drip.service.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 
 /*
@@ -14,6 +18,7 @@ import org.drip.service.env.EnvManager;
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
  * Copyright (C) 2024 Lakshmi Krishnamurthy
  * 
  *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
@@ -113,7 +118,10 @@ public class BuyOnlyAllocation
 		HoldingsContainer holdingsContainer = new HoldingsContainer();
 
 		for (int i = 0; i < size; ++i) {
-			holdingsContainer.setAsset (RdRandomSequence.RandomCUSIP(), 100. * ScaledMarketValue (scale));
+			holdingsContainer.setAsset (
+				RdRandomSequence.RandomCUSIP(),
+				100. * ScaledMarketValue (scale)
+			);
 		}
 
 		return holdingsContainer.setCashValue (cash) ? holdingsContainer : null;
@@ -140,17 +148,144 @@ public class BuyOnlyAllocation
 		HoldingsContainer startingHoldings = RandomHoldings (
 			assetCount,
 			scale,
-			startingCashAssetEquivalent * assetCount
+			startingCashAssetEquivalent * scale * 100.
 		);
 
 		FullSequenceAllocator fullSequenceAllocator = new FullSequenceAllocator (
 			new RandomizedOptimizer (scale),
-			PostProcessorSettings.BuyOnly()
+			PostProcessorSettings.BuyOnly(),
+			true
 		);
 
-		FullSequenceAllocation fullSequenceAllocation = fullSequenceAllocator.allocate (startingHoldings);
+		FullSequenceAllocationDiagnostics fullSequenceAllocationDiagnostics = 
+			(FullSequenceAllocationDiagnostics) fullSequenceAllocator.allocate (startingHoldings);
 
-		System.out.println (fullSequenceAllocation);
+		HoldingsContainer preFilteredHoldings = fullSequenceAllocationDiagnostics.preFilteredHoldings();
+
+		Map<String, Double> preFilteredAssetMarketValueMap = preFilteredHoldings.assetMarketValueMap();
+
+		Map<String, Double> startingAssetMarketValueMap = startingHoldings.assetMarketValueMap();
+
+		HoldingsContainer endingHoldings = fullSequenceAllocationDiagnostics.endingHoldings();
+
+		Map<String, Double> preFilteredAssetWeightMap = preFilteredHoldings.assetWeightMap();
+
+		Map<String, Double> endingAssetMarketValueMap = endingHoldings.assetMarketValueMap();
+
+		Map<String, Double> startingAssetWeightMap = startingHoldings.assetWeightMap();
+
+		Map<String, Double> endingAssetWeightMap = endingHoldings.assetWeightMap();
+
+		System.out.println (
+			"\t|-------------------------------------------------------------------------------||"
+		);
+
+		System.out.println (
+			"\t|                              BUY-ONLY ALLOCATION                              ||"
+		);
+
+		System.out.println (
+			"\t|-------------------------------------------------------------------------------||"
+		);
+
+		System.out.println (
+			"\t| L -> R:                                                                       ||"
+		);
+
+		System.out.println (
+			"\t|   - Asset ID                                                                  ||"
+		);
+
+		System.out.println (
+			"\t|   - Starting Asset Market Value                                               ||"
+		);
+
+		System.out.println (
+			"\t|   - Starting Asset Weight                                                     ||"
+		);
+
+		System.out.println (
+			"\t|   - Pre-filtered Asset Market Value                                           ||"
+		);
+
+		System.out.println (
+			"\t|   - Pre-filtered Asset Weight                                                 ||"
+		);
+
+		System.out.println (
+			"\t|   - Ending Asset Market Value                                                 ||"
+		);
+
+		System.out.println (
+			"\t|   - Ending Asset Weight                                                       ||"
+        );
+
+		System.out.println (
+			"\t|-------------------------------------------------------------------------------||"
+		);
+
+		System.out.println (
+			"\t|   Starting Holdings   ==>  Pre-filtered Holdings  ==>   Ending Holdings       ||"
+		);
+
+		System.out.println (
+			"\t|-------------------------------------------------------------------------------||"
+		);
+
+		for (String assetID : endingAssetWeightMap.keySet()) {
+			System.out.println (
+				"\t| " + assetID.toUpperCase() + " => " +
+				FormatUtil.FormatDouble (startingAssetMarketValueMap.get (assetID), 6, 0, 1.) + " |" +
+				FormatUtil.FormatDouble (startingAssetWeightMap.get(assetID), 1, 5, 1.) + "  ==> " +
+				FormatUtil.FormatDouble (preFilteredAssetMarketValueMap.get (assetID), 6, 0, 1.) + " |" +
+				FormatUtil.FormatDouble (preFilteredAssetWeightMap.get(assetID), 1, 5, 1.) + "  ==> " +
+				FormatUtil.FormatDouble (endingAssetMarketValueMap.get (assetID), 6, 0, 1.) + " |" +
+				FormatUtil.FormatDouble (endingAssetWeightMap.get(assetID), 1, 5, 1.) + " ||"
+			);
+		}
+
+		System.out.println (
+			"\t| CASH       => " +
+			FormatUtil.FormatDouble (startingHoldings.cashValue(), 6, 0, 1.) + " |" +
+			FormatUtil.FormatDouble (startingHoldings.cashWeight(), 1, 5, 1.) + "  ==> " +
+			FormatUtil.FormatDouble (preFilteredHoldings.cashValue(), 6, 0, 1.) + " |" +
+			FormatUtil.FormatDouble (preFilteredHoldings.cashWeight(), 1, 5, 1.) + "  ==> " +
+			FormatUtil.FormatDouble (endingHoldings.cashValue(), 6, 0, 1.) + " |" +
+			FormatUtil.FormatDouble (endingHoldings.cashWeight(), 1, 5, 1.) + " ||"
+		); 
+
+		System.out.println (
+			"\t|-------------------------------------------------------------------------------||"
+		);
+
+		System.out.println();
+
+		System.out.println ("\t|----------------------||");
+
+		System.out.println ("\t|      TRADE LIST      ||");
+
+		System.out.println ("\t|----------------------||");
+
+		System.out.println ("\t| L -> R:              ||");
+
+		System.out.println ("\t|  - Asset ID          ||");
+
+		System.out.println ("\t|  - Trade MV          ||");
+
+		System.out.println ("\t|----------------------||");
+
+		TradesContainer tradesContainer = fullSequenceAllocationDiagnostics.tradesContainer();
+
+		Map<String, Double> assetQuantityMap = tradesContainer.assetQuantityMap();
+
+		for (String assetID : assetQuantityMap.keySet()) {
+			System.out.println (
+				"\t| " + assetID.toUpperCase() + " => " +
+				FormatUtil.FormatDouble (assetQuantityMap.get (assetID), 5, 0, 1.) + " ||"
+			); 
+		}
+
+		System.out.println ("\t|----------------------||");
 
 		EnvManager.TerminateEnv();
 	}

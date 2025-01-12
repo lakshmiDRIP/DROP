@@ -224,6 +224,33 @@ public class HoldingsContainer
 	}
 
 	/**
+	 * Update the Asset to its Market Value on the Holdings
+	 * 
+	 * @param assetID Asset ID
+	 * @param assetMarketValue Asset Market Value
+	 * 
+	 * @return TRUE - Asset successfully updated on the Holdings
+	 */
+
+	public boolean updateAsset (
+		final String assetID,
+		final double assetMarketValue)
+	{
+		if (null == assetID || assetID.isEmpty() || !NumberUtil.IsValid (assetMarketValue)) {
+			return false;
+		}
+
+		_cashValue += assetMarketValue - (
+			_assetMarketValueMap.containsKey (assetID) ? 0. : _assetMarketValueMap.get (assetID)
+		);
+
+		_assetMarketValueMap.put (assetID, assetMarketValue);
+
+		_dirty = true;
+		return true;
+	}
+
+	/**
 	 * Set the Cash Value on the Holdings
 	 * 
 	 * @param cashValue Cash Value
