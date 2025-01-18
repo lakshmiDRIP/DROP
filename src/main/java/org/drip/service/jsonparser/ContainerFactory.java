@@ -1,11 +1,17 @@
 
 package org.drip.service.jsonparser;
 
+import java.util.List;
+import java.util.Map;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -81,31 +87,46 @@ package org.drip.service.jsonparser;
 
 /**
  * <i>ContainerFactory</i> is an Adaptation of the ContainerFactory Interface from the RFC4627 compliant JSON
- * Simple (https://code.google.com/p/json-simple/).
+ * 	Simple (https://code.google.com/p/json-simple/). It provides the following Functionality:
  *
- *	<br><br>
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationSupportLibrary.md">Computation Support</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/README.md">Environment, Product/Definition Containers, and Scenario/State Manipulation APIs</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/jsonparser">RFC4627 Compliant JSON Message Parser</a></li>
+ * 		<li>Retrieve the Map instance to store JSON object, or null if you want to use <code>org.json.simple.JSONObject</code></li>
+ * 		<li>Retrieve the Map instance to store JSON array, or null if you want to use <code>org.json.simple.JSONArray</code></li>
  *  </ul>
+ *
+ *	<br>
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationSupportLibrary.md">Computation Support</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/README.md">Environment, Product/Definition Containers, and Scenario/State Manipulation APIs</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/jsonparser/README.md">RFC4627 Compliant JSON Message Parser</a></td></tr>
+ *  </table>
+ *	<br>
  *
  * @author Fang Yidong
  * @author Lakshmi Krishnamurthy
  */
 
-public interface ContainerFactory {
+public interface ContainerFactory
+{
 
 	/**
-     * @return A Map instance to store JSON object, or null if you want to use org.json.simple.JSONObject.
+	 * Retrieve the Map instance to store JSON object, or null if you want to use
+     * 	<code>org.json.simple.JSONObject</code>
+     * 
+     * @return A Map instance to store JSON object, or null if you want to use
+     * 	<code>org.json.simple.JSONObject</code>.
      */
 
-	@SuppressWarnings ("rawtypes") java.util.Map createObjectContainer();
+	@SuppressWarnings ("rawtypes") Map createObjectContainer();
     
     /**
-     * @return A List instance to store JSON array, or null if you want to use org.json.simple.JSONArray. 
+     * Retrieve the List instance to store JSON array, or null if you want to use
+     * 	<code>org.json.simple.JSONArray</code>
+     *
+     * @return A List instance to store JSON array, or null if you want to use
+     * 	<code>org.json.simple.JSONArray</code>. 
      */
 
-    @SuppressWarnings ("rawtypes") java.util.List creatArrayContainer();
+    @SuppressWarnings ("rawtypes") List creatArrayContainer();
 }

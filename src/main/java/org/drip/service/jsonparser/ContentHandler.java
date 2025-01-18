@@ -1,11 +1,16 @@
 
 package org.drip.service.jsonparser;
 
+import java.io.IOException;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -81,39 +86,68 @@ package org.drip.service.jsonparser;
 
 /**
  * <i>ContentHandler</i> is an Adaptation of the ContentHandler Interface from the RFC4627 compliant JSON
- * Simple (https://code.google.com/p/json-simple/).
+ * 	Simple (https://code.google.com/p/json-simple/). It provides the following Functionality:
  *
- *	<br><br>
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationSupportLibrary.md">Computation Support</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/README.md">Environment, Product/Definition Containers, and Scenario/State Manipulation APIs</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/jsonparser">RFC4627 Compliant JSON Message Parser</a></li>
+ * 		<li>Receive notification of the beginning of JSON processing. The parser will invoke this method only once</li>
+ * 		<li>Receive notification of the end of JSON processing</li>
+ * 		<li>Receive notification of the beginning of a JSON object</li>
+ * 		<li>Receive notification of the end of a JSON object</li>
+ * 		<li>Receive notification of the beginning of a JSON object entry</li>
+ * 		<li>Receive notification of the end of the value of previous object entry</li>
+ * 		<li>Receive notification of the beginning of a JSON array</li>
+ * 		<li>Receive notification of the end of a JSON array</li>
+ * 		<li>Receive notification of the JSON primitive values:</li>
+ *  	<ul>
+ *      	<li>java.lang.String</li>
+ *      	<li>java.lang.Number</li>
+ *      	<li>java.lang.Boolean</li>
+ *      	<li>null</li>
+ *  	</ul>
  *  </ul>
+ *
+ *	<br>
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationSupportLibrary.md">Computation Support</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/README.md">Environment, Product/Definition Containers, and Scenario/State Manipulation APIs</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/jsonparser/README.md">RFC4627 Compliant JSON Message Parser</a></td></tr>
+ *  </table>
+ *	<br>
  *
  * @author Fang Yidong
  * @author Lakshmi Krishnamurthy
  */
 
-public interface ContentHandler {
-    /**
-     * Receive notification of the beginning of JSON processing.
-     * The parser will invoke this method only once.
+public interface ContentHandler
+{
+
+	/**
+     * Receive notification of the beginning of JSON processing. The parser will invoke this method only
+     * 	once.
      * 
-     * @throws ParseException JSONParser will stop and throw the same exception to the caller when receiving this exception.
+     * @throws ParseException JSONParser will stop and throw the same exception to the caller when receiving
+     *  this exception.
      * 
-     * @throws java.io.IOException JSONParser will stop and throw the same exception to the caller when receiving this exception.
+     * @throws IOException JSONParser will stop and throw the same exception to the caller when receiving
+     * 	this exception.
      */
-    void startJSON() throws ParseException, java.io.IOException;
+
+	void startJSON()
+		throws ParseException, IOException;
     
     /**
-     * Receive notification of the end of JSON processing.
+     * Receive notification of the end of JSON processing
      * 
-     * @throws ParseException JSONParser will stop and throw the same exception to the caller when receiving this exception.
+     * @throws ParseException JSONParser will stop and throw the same exception to the caller when receiving
+     * 	 this exception.
      * 
-     * @throws java.io.IOException JSONParser will stop and throw the same exception to the caller when receiving this exception.
+     * @throws IOException JSONParser will stop and throw the same exception to the caller when receiving
+     * 	this exception.
      */
-    void endJSON() throws ParseException, java.io.IOException;
+
+	void endJSON()
+		throws ParseException, IOException;
     
     /**
      * Receive notification of the beginning of a JSON object.
@@ -122,23 +156,29 @@ public interface ContentHandler {
      * 
      * @throws ParseException JSONParser will stop and throw the same exception to the caller when receiving this exception.
      * 
-     * @throws java.io.IOException JSONParser will stop and throw the same exception to the caller when receiving this exception.
- * @see #endJSON
+     * @throws IOException JSONParser will stop and throw the same exception to the caller when receiving this exception.
+     * @see #endJSON
      */
-    boolean startObject() throws ParseException, java.io.IOException;
+
+	boolean startObject()
+		throws ParseException, IOException;
     
     /**
      * Receive notification of the end of a JSON object.
      * 
      * @return false if the handler wants to stop parsing after return.
      * 
-     * @throws ParseException JSONParser will stop and throw the same exception to the caller when receiving this exception.
+     * @throws ParseException JSONParser will stop and throw the same exception to the caller when receiving
+     * 	this exception.
      * 
-     * @throws java.io.IOException JSONParser will stop and throw the same exception to the caller when receiving this exception.
- * 
- * @see #startObject
+     * @throws IOException JSONParser will stop and throw the same exception to the caller when receiving
+     * 	this exception.
+	 * 
+	 * @see #startObject
      */
-    boolean endObject() throws ParseException, java.io.IOException;
+
+	boolean endObject()
+		throws ParseException, IOException;
     
     /**
      * Receive notification of the beginning of a JSON object entry.
@@ -147,13 +187,18 @@ public interface ContentHandler {
      * 
      * @return false if the handler wants to stop parsing after return.
      * 
-     * @throws ParseException JSONParser will stop and throw the same exception to the caller when receiving this exception.
+     * @throws ParseException JSONParser will stop and throw the same exception to the caller when receiving
+     * 	this exception.
      * 
-     * @throws java.io.IOException JSONParser will stop and throw the same exception to the caller when receiving this exception.
- * 
- * @see #endObjectEntry
+     * @throws IOException JSONParser will stop and throw the same exception to the caller when receiving
+     * 	this exception.
+	 * 
+	 * @see #endObjectEntry
      */
-    boolean startObjectEntry(String key) throws ParseException, java.io.IOException;
+
+	boolean startObjectEntry (
+		final String key)
+		throws ParseException, IOException;
     
     /**
      * Receive notification of the end of the value of previous object entry.
@@ -162,11 +207,13 @@ public interface ContentHandler {
      * 
      * @throws ParseException JSONParser will stop and throw the same exception to the caller when receiving this exception.
      * 
-     * @throws java.io.IOException JSONParser will stop and throw the same exception to the caller when receiving this exception.
- * 
- * @see #startObjectEntry
+     * @throws IOException JSONParser will stop and throw the same exception to the caller when receiving this exception.
+	 * 
+	 * @see #startObjectEntry
      */
-    boolean endObjectEntry() throws ParseException, java.io.IOException;
+
+	boolean endObjectEntry()
+		throws ParseException, IOException;
     
     /**
      * Receive notification of the beginning of a JSON array.
@@ -175,11 +222,13 @@ public interface ContentHandler {
      * 
      * @throws ParseException JSONParser will stop and throw the same exception to the caller when receiving this exception.
      * 
-     * @throws java.io.IOException JSONParser will stop and throw the same exception to the caller when receiving this exception.
- * 
- * @see #endArray
+     * @throws IOException JSONParser will stop and throw the same exception to the caller when receiving this exception.
+	 * 
+	 * @see #endArray
      */
-    boolean startArray() throws ParseException, java.io.IOException;
+
+	boolean startArray()
+		throws ParseException, IOException;
     
     /**
      * Receive notification of the end of a JSON array.
@@ -188,11 +237,13 @@ public interface ContentHandler {
      * 
      * @throws ParseException JSONParser will stop and throw the same exception to the caller when receiving this exception.
      * 
-     * @throws java.io.IOException JSONParser will stop and throw the same exception to the caller when receiving this exception.
- * 
- * @see #startArray
+     * @throws IOException JSONParser will stop and throw the same exception to the caller when receiving this exception.
+	 * 
+	 * @see #startArray
      */
-    boolean endArray() throws ParseException, java.io.IOException;
+
+    boolean endArray()
+		throws ParseException, IOException;
     
     /**
      * Receive notification of the JSON primitive values:
@@ -211,7 +262,10 @@ public interface ContentHandler {
      * 
      * @throws ParseException JSONParser will stop and throw the same exception to the caller when receiving this exception.
      * 
-     * @throws java.io.IOException JSONParser will stop and throw the same exception to the caller when receiving this exception.
+     * @throws IOException JSONParser will stop and throw the same exception to the caller when receiving this exception.
      */
-    boolean primitive(Object value) throws ParseException, java.io.IOException;
+
+    boolean primitive (
+		final Object value)
+		throws ParseException, IOException;
 }

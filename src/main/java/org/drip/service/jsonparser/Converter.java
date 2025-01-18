@@ -1,11 +1,19 @@
 
 package org.drip.service.jsonparser;
 
+import org.drip.analytics.date.DateUtil;
+import org.drip.analytics.date.JulianDate;
+import org.drip.service.representation.JSONArray;
+import org.drip.service.representation.JSONObject;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -81,179 +89,198 @@ package org.drip.service.jsonparser;
 
 /**
  * <i>TypeConverter</i> transforms the JSON Object to certain Primitive/Simple Data Type Arrays, i.e.,
- * double, integer, String, or JulianDate Arrays.
+ * double, integer, String, or JulianDate Arrays. It provides the following Functionality:
  *
- *	<br><br>
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationSupportLibrary.md">Computation Support</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/README.md">Environment, Product/Definition Containers, and Scenario/State Manipulation APIs</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/jsonparser">RFC4627 Compliant JSON Message Parser</a></li>
+ * 		<li>Receive notification of the beginning of JSON processing. The parser will invoke this method only once</li>
  *  </ul>
+ *
+ *	<br>
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationSupportLibrary.md">Computation Support</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/README.md">Environment, Product/Definition Containers, and Scenario/State Manipulation APIs</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/jsonparser/README.md">RFC4627 Compliant JSON Message Parser</a></td></tr>
+ *  </table>
+ *	<br>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class Converter {
+public class Converter
+{
 
 	/**
 	 * Convert the JSON Entry to a String
 	 * 
 	 * @param json The Object
-	 * @param strEntryKey The Entry Key
+	 * @param entryKey The Entry Key
 	 * 
 	 * @return The String Form of the JSON Entry
 	 */
 
-	public static final java.lang.String StringEntry (
-		final org.drip.service.representation.JSONObject json,
-		final java.lang.String strEntryKey)
+	public static final String StringEntry (
+		final JSONObject json,
+		final String entryKey)
 	{
-		if (null == json || !json.containsKey (strEntryKey)) return null;
+		if (null == json || !json.containsKey (entryKey)) return null;
 
-		java.lang.Object objEntry = json.get (strEntryKey);
+		Object entry = json.get (entryKey);
 
-		return null == objEntry || !(objEntry instanceof java.lang.String) ? null : (java.lang.String)
-			objEntry;
+		return null == entry || !(entry instanceof String) ? null : (String) entry;
 	}
 
 	/**
 	 * Convert the JSON Entry to a String Array
 	 * 
 	 * @param json The Object
-	 * @param strEntryKey The Entry Key
+	 * @param entryKey The Entry Key
 	 * 
 	 * @return The String Array From of the JSON Entry
 	 */
 
-	public static final java.lang.String[] StringArrayEntry (
-		final org.drip.service.representation.JSONObject json,
-		final java.lang.String strEntryKey)
+	public static final String[] StringArrayEntry (
+		final JSONObject json,
+		final String entryKey)
 	{
-		if (null == json || !json.containsKey (strEntryKey)) return null;
-
-		java.lang.Object objEntry = json.get (strEntryKey);
-
-		if (null == objEntry || !(objEntry instanceof org.drip.service.representation.JSONArray)) return null;
-
-		org.drip.service.representation.JSONArray jsonArray = (org.drip.service.representation.JSONArray) objEntry;
-
-		int iNumElement = jsonArray.size();
-
-		if (0 == iNumElement) return null;
-
-		java.lang.String[] astr = new java.lang.String[iNumElement];
-
-		for (int i = 0; i < iNumElement; ++i) {
-			java.lang.Object objElement = jsonArray.get (i);
-
-			astr[i] = null == objElement || !(objElement instanceof java.lang.String) ? null :
-				(java.lang.String) objElement;
+		if (null == json || !json.containsKey (entryKey)) {
+			return null;
 		}
 
-		return astr;
+		Object entry = json.get (entryKey);
+
+		if (null == entry || !(entry instanceof JSONArray)) {
+			return null;
+		}
+
+		JSONArray jsonArray = (JSONArray) entry;
+
+		int elementCount = jsonArray.size();
+
+		if (0 == elementCount) {
+			return null;
+		}
+
+		String[] stringArray = new String[elementCount];
+
+		for (int elementIndex = 0; elementIndex < elementCount; ++elementIndex) {
+			Object objElement = jsonArray.get (elementIndex);
+
+			stringArray[elementIndex] =
+				null == objElement || !(objElement instanceof String) ? null : (String) objElement;
+		}
+
+		return stringArray;
 	}
 
 	/**
 	 * Convert the JSON Entry to a Date
 	 * 
 	 * @param json The Object
-	 * @param strEntryKey The Entry Key
+	 * @param entryKey The Entry Key
 	 * 
 	 * @return The Date Form of the JSON Entry
 	 */
 
-	public static final org.drip.analytics.date.JulianDate DateEntry (
-		final org.drip.service.representation.JSONObject json,
-		final java.lang.String strEntryKey)
+	public static final JulianDate DateEntry (
+		final JSONObject json,
+		final String entryKey)
 	{
-		return org.drip.analytics.date.DateUtil.CreateFromDDMMMYYYY (StringEntry (json, strEntryKey));
+		return DateUtil.CreateFromDDMMMYYYY (StringEntry (json, entryKey));
 	}
 
 	/**
 	 * Convert the JSON Entry to a Date Array
 	 * 
 	 * @param json The Object
-	 * @param strEntryKey The Entry Key
+	 * @param entryKey The Entry Key
 	 * 
 	 * @return The Date Array From of the JSON Entry
 	 */
 
-	public static final org.drip.analytics.date.JulianDate[] DateArrayEntry (
-		final org.drip.service.representation.JSONObject json,
-		final java.lang.String strEntryKey)
+	public static final JulianDate[] DateArrayEntry (
+		final JSONObject json,
+		final String entryKey)
 	{
-		if (null == json || !json.containsKey (strEntryKey)) return null;
-
-		java.lang.Object objEntry = json.get (strEntryKey);
-
-		if (null == objEntry || !(objEntry instanceof org.drip.service.representation.JSONArray)) return null;
-
-		org.drip.service.representation.JSONArray jsonArray = (org.drip.service.representation.JSONArray) objEntry;
-
-		int iNumElement = jsonArray.size();
-
-		if (0 == iNumElement) return null;
-
-		org.drip.analytics.date.JulianDate[] adt = new org.drip.analytics.date.JulianDate[iNumElement];
-
-		for (int i = 0; i < iNumElement; ++i) {
-			java.lang.Object objElement = jsonArray.get (i);
-
-			if (null == objElement || !(objElement instanceof java.lang.String) || null == (adt[i] =
-				org.drip.analytics.date.DateUtil.CreateFromMDY ((java.lang.String) objElement, "/")))
-				return null;
+		if (null == json || !json.containsKey (entryKey)) {
+			return null;
 		}
 
-		return adt;
+		Object entry = json.get (entryKey);
+
+		if (null == entry || !(entry instanceof JSONArray)) {
+			return null;
+		}
+
+		JSONArray jsonArray = (JSONArray) entry;
+
+		int elementCount = jsonArray.size();
+
+		if (0 == elementCount) {
+			return null;
+		}
+
+		JulianDate[] dateArray = new JulianDate[elementCount];
+
+		for (int element = 0; element < elementCount; ++element) {
+			Object objElement = jsonArray.get (element);
+
+			if (null == objElement || !(objElement instanceof String) ||
+				null == (dateArray[element] = DateUtil.CreateFromMDY ((String) objElement, "/")))
+			{
+				return null;
+			}
+		}
+
+		return dateArray;
 	}
 
 	/**
 	 * Convert the JSON Entry to a Double
 	 * 
 	 * @param json The Object
-	 * @param strEntryKey The Entry Key
+	 * @param entryKey The Entry Key
 	 * 
 	 * @return The Double Form of the JSON Entry
      * 
-     * @throws java.lang.Exception Thrown if the Inputs are Invalid
+     * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public static final double DoubleEntry (
-		final org.drip.service.representation.JSONObject json,
-		final java.lang.String strEntryKey)
-		throws java.lang.Exception
+		final JSONObject json,
+		final String entryKey)
+		throws Exception
 	{
-		if (null == json || !json.containsKey (strEntryKey))
-			throw new java.lang.Exception ("Converter::DoubleEntry => Invalid Inputs");
+		if (null == json || !json.containsKey (entryKey))
+			throw new Exception ("Converter::DoubleEntry => Invalid Inputs");
 
-		java.lang.Object objEntry = json.get (strEntryKey);
+		Object objEntry = json.get (entryKey);
 
-		if (null == objEntry) throw new java.lang.Exception ("Converter::DoubleEntry => Invalid Inputs");
+		if (null == objEntry) throw new Exception ("Converter::DoubleEntry => Invalid Inputs");
 
-		return java.lang.Double.parseDouble (objEntry.toString().trim());
+		return Double.parseDouble (objEntry.toString().trim());
 	}
 
 	/**
 	 * Convert the JSON Entry to a Double Array
 	 * 
 	 * @param json The Object
-	 * @param strEntryKey The Entry Key
+	 * @param entryKey The Entry Key
 	 * 
 	 * @return The Double Array From of the JSON Entry
 	 */
 
 	public static final double[] DoubleArrayEntry (
-		final org.drip.service.representation.JSONObject json,
-		final java.lang.String strEntryKey)
+		final JSONObject json,
+		final String entryKey)
 	{
-		if (null == json || !json.containsKey (strEntryKey)) return null;
+		if (null == json || !json.containsKey (entryKey)) return null;
 
-		java.lang.Object objEntry = json.get (strEntryKey);
+		Object objEntry = json.get (entryKey);
 
-		if (null == objEntry || !(objEntry instanceof org.drip.service.representation.JSONArray)) return null;
+		if (null == objEntry || !(objEntry instanceof JSONArray)) return null;
 
-		org.drip.service.representation.JSONArray jsonArray = (org.drip.service.representation.JSONArray) objEntry;
+		JSONArray jsonArray = (JSONArray) objEntry;
 
 		int iNumElement = jsonArray.size();
 
@@ -262,13 +289,13 @@ public class Converter {
 		double[] adbl = new double[iNumElement];
 
 		for (int i = 0; i < iNumElement; ++i) {
-			java.lang.Object objElement = jsonArray.get (i);
+			Object objElement = jsonArray.get (i);
 
 			if (null == objElement) return null;
 
 			try {
-				adbl[i] = java.lang.Double.parseDouble (objElement.toString().trim());
-			} catch (java.lang.Exception e) {
+				adbl[i] = Double.parseDouble (objElement.toString().trim());
+			} catch (Exception e) {
 				e.printStackTrace();
 
 				return null;
@@ -282,22 +309,22 @@ public class Converter {
 	 * Convert the JSON Entry to a Dual Double Array
 	 * 
 	 * @param json The Object
-	 * @param strEntryKey The Entry Key
+	 * @param entryKey The Entry Key
 	 * 
 	 * @return The Dual Double Array From of the JSON Entry
 	 */
 
 	public static final double[][] DualDoubleArrayEntry (
-		final org.drip.service.representation.JSONObject json,
-		final java.lang.String strEntryKey)
+		final JSONObject json,
+		final String entryKey)
 	{
-		if (null == json || !json.containsKey (strEntryKey)) return null;
+		if (null == json || !json.containsKey (entryKey)) return null;
 
-		java.lang.Object objEntry = json.get (strEntryKey);
+		Object objEntry = json.get (entryKey);
 
-		if (null == objEntry || !(objEntry instanceof org.drip.service.representation.JSONArray)) return null;
+		if (null == objEntry || !(objEntry instanceof JSONArray)) return null;
 
-		org.drip.service.representation.JSONArray jsonArray = (org.drip.service.representation.JSONArray) objEntry;
+		JSONArray jsonArray = (JSONArray) objEntry;
 
 		int iNumOuterElement = jsonArray.size();
 
@@ -306,12 +333,12 @@ public class Converter {
 		double[][] aadbl = new double[iNumOuterElement][];
 
 		for (int i = 0; i < iNumOuterElement; ++i) {
-			java.lang.Object objOuterElement = jsonArray.get (i);
+			Object objOuterElement = jsonArray.get (i);
 
-			if (null == objOuterElement || !(objOuterElement instanceof org.drip.service.representation.JSONArray))
+			if (null == objOuterElement || !(objOuterElement instanceof JSONArray))
 				return null;
 
-			org.drip.service.representation.JSONArray jsonOuterArray = (org.drip.service.representation.JSONArray) objOuterElement;
+			JSONArray jsonOuterArray = (JSONArray) objOuterElement;
 
 			int iNumInnerElement = jsonOuterArray.size();
 
@@ -321,13 +348,13 @@ public class Converter {
 
 			try {
 				for (int j = 0; j < iNumInnerElement; ++j) {
-					java.lang.Object objInnerElement = jsonOuterArray.get (j);
+					Object objInnerElement = jsonOuterArray.get (j);
 
 					if (null == objInnerElement) return null;
 
-					aadbl[i][j] = java.lang.Double.parseDouble (objInnerElement.toString().trim());
+					aadbl[i][j] = Double.parseDouble (objInnerElement.toString().trim());
 				}
-			} catch (java.lang.Exception e) {
+			} catch (Exception e) {
 				e.printStackTrace();
 
 				return null;
@@ -341,26 +368,26 @@ public class Converter {
 	 * Convert the JSON Entry to an Integer
 	 * 
 	 * @param json The Object
-	 * @param strEntryKey The Entry Key
+	 * @param entryKey The Entry Key
 	 * 
 	 * @return The Integer Form of the JSON Entry
      * 
-     * @throws java.lang.Exception Thrown if the Inputs are Invalid
+     * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public static final int IntegerEntry (
-		final org.drip.service.representation.JSONObject json,
-		final java.lang.String strEntryKey)
-		throws java.lang.Exception
+		final JSONObject json,
+		final String entryKey)
+		throws Exception
 	{
-		if (null == json || !json.containsKey (strEntryKey))
-			throw new java.lang.Exception ("Converter::IntegerEntry => Invalid Inputs");
+		if (null == json || !json.containsKey (entryKey))
+			throw new Exception ("Converter::IntegerEntry => Invalid Inputs");
 
-		java.lang.Object objEntry = json.get (strEntryKey);
+		Object objEntry = json.get (entryKey);
 
-		if (null == objEntry) throw new java.lang.Exception ("Converter::IntegerEntry => Invalid Inputs");
+		if (null == objEntry) throw new Exception ("Converter::IntegerEntry => Invalid Inputs");
 
-		return java.lang.Integer.parseInt (objEntry.toString().trim());
+		return Integer.parseInt (objEntry.toString().trim());
 	}
 
 	/**
@@ -372,11 +399,11 @@ public class Converter {
 	 */
 
 	public static final int[] IntegerArrayEntry (
-		final java.lang.Object objJSON)
+		final Object objJSON)
 	{
-		if (null == objJSON || !(objJSON instanceof org.drip.service.representation.JSONArray)) return null;
+		if (null == objJSON || !(objJSON instanceof JSONArray)) return null;
 
-		org.drip.service.representation.JSONArray jsonArray = (org.drip.service.representation.JSONArray) objJSON;
+		JSONArray jsonArray = (JSONArray) objJSON;
 
 		int iNumElement = jsonArray.size();
 
@@ -385,11 +412,11 @@ public class Converter {
 		int[] ai = new int[iNumElement];
 
 		for (int i = 0; i < iNumElement; ++i) {
-			java.lang.Object json = jsonArray.get (i);
+			Object json = jsonArray.get (i);
 
 			if (null == json) return null;
 
-			ai[i] = java.lang.Integer.parseInt (json.toString().trim());
+			ai[i] = Integer.parseInt (json.toString().trim());
 		}
 
 		return ai;
@@ -399,26 +426,27 @@ public class Converter {
 	 * Convert the JSON Entry to an Boolean
 	 * 
 	 * @param json The Object
-	 * @param strEntryKey The Entry Key
+	 * @param entryKey The Entry Key
 	 * 
 	 * @return The Boolean Form of the JSON Entry
      * 
-     * @throws java.lang.Exception Thrown if the Inputs are Invalid
+     * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public static final boolean BooleanEntry (
-		final org.drip.service.representation.JSONObject json,
-		final java.lang.String strEntryKey)
-		throws java.lang.Exception
+		final JSONObject json,
+		final String entryKey)
+		throws Exception
 	{
-		if (null == json || !json.containsKey (strEntryKey))
-			throw new java.lang.Exception ("Converter::BooleanEntry => Invalid Inputs");
+		if (null == json || !json.containsKey (entryKey)) {
+			throw new Exception ("Converter::BooleanEntry => Invalid Inputs");
+		}
 
-		java.lang.Object objEntry = json.get (strEntryKey);
+		Object objEntry = json.get (entryKey);
 
-		if (null == objEntry) throw new java.lang.Exception ("Converter::BooleanEntry => Invalid Inputs");
+		if (null == objEntry) throw new Exception ("Converter::BooleanEntry => Invalid Inputs");
 
-		return java.lang.Boolean.parseBoolean (objEntry.toString().trim());
+		return Boolean.parseBoolean (objEntry.toString().trim());
 	}
 
 	/**
@@ -430,11 +458,11 @@ public class Converter {
 	 */
 
 	public static final boolean[] BooleanArrayEntry (
-		final java.lang.Object objJSON)
+		final Object objJSON)
 	{
-		if (null == objJSON || !(objJSON instanceof org.drip.service.representation.JSONArray)) return null;
+		if (null == objJSON || !(objJSON instanceof JSONArray)) return null;
 
-		org.drip.service.representation.JSONArray jsonArray = (org.drip.service.representation.JSONArray) objJSON;
+		JSONArray jsonArray = (JSONArray) objJSON;
 
 		int iNumElement = jsonArray.size();
 
@@ -443,11 +471,11 @@ public class Converter {
 		boolean[] ab = new boolean[iNumElement];
 
 		for (int i = 0; i < iNumElement; ++i) {
-			java.lang.Object json = jsonArray.get (i);
+			Object json = jsonArray.get (i);
 
 			if (null == json) return null;
 
-			ab[i] = java.lang.Boolean.parseBoolean (json.toString().trim());
+			ab[i] = Boolean.parseBoolean (json.toString().trim());
 		}
 
 		return ab;
@@ -461,14 +489,14 @@ public class Converter {
 	 * @return The JSON Array Instance
 	 */
 
-	@SuppressWarnings ("unchecked") public static final org.drip.service.representation.JSONArray Array (
-		final java.lang.String[] astr)
+	@SuppressWarnings ("unchecked") public static final JSONArray Array (
+		final String[] astr)
 	{
 		if (null == astr || 0 == astr.length) return null;
 
-		org.drip.service.representation.JSONArray jsonArray = new org.drip.service.representation.JSONArray();
+		JSONArray jsonArray = new JSONArray();
 
-		for (java.lang.String str : astr)
+		for (String str : astr)
 			jsonArray.add (str);
 
 		return jsonArray;
@@ -482,12 +510,12 @@ public class Converter {
 	 * @return The JSON Array Instance
 	 */
 
-	@SuppressWarnings ("unchecked") public static final org.drip.service.representation.JSONArray Array (
+	@SuppressWarnings ("unchecked") public static final JSONArray Array (
 		final int[] ai)
 	{
 		if (null == ai || 0 == ai.length) return null;
 
-		org.drip.service.representation.JSONArray jsonArray = new org.drip.service.representation.JSONArray();
+		JSONArray jsonArray = new JSONArray();
 
 		for (int i : ai)
 			jsonArray.add (i);
@@ -503,12 +531,12 @@ public class Converter {
 	 * @return The JSON Array Instance
 	 */
 
-	@SuppressWarnings ("unchecked") public static final org.drip.service.representation.JSONArray Array (
+	@SuppressWarnings ("unchecked") public static final JSONArray Array (
 		final double[] adbl)
 	{
 		if (null == adbl || 0 == adbl.length) return null;
 
-		org.drip.service.representation.JSONArray jsonArray = new org.drip.service.representation.JSONArray();
+		JSONArray jsonArray = new JSONArray();
 
 		for (double dbl : adbl)
 			jsonArray.add (dbl);
@@ -524,12 +552,12 @@ public class Converter {
 	 * @return The JSON 2D Array Instance
 	 */
 
-	@SuppressWarnings ("unchecked") public static final org.drip.service.representation.JSONArray Array (
+	@SuppressWarnings ("unchecked") public static final JSONArray Array (
 		final double[][] aadbl)
 	{
 		if (null == aadbl || 0 == aadbl.length) return null;
 
-		org.drip.service.representation.JSONArray jsonArray = new org.drip.service.representation.JSONArray();
+		JSONArray jsonArray = new JSONArray();
 
 		for (double[] adbl : aadbl)
 			jsonArray.add (Array (adbl));
@@ -545,12 +573,12 @@ public class Converter {
 	 * @return The JSON Array Instance
 	 */
 
-	@SuppressWarnings ("unchecked") public static final org.drip.service.representation.JSONArray Array (
+	@SuppressWarnings ("unchecked") public static final JSONArray Array (
 		final boolean[] ab)
 	{
 		if (null == ab || 0 == ab.length) return null;
 
-		org.drip.service.representation.JSONArray jsonArray = new org.drip.service.representation.JSONArray();
+		JSONArray jsonArray = new JSONArray();
 
 		for (boolean b : ab)
 			jsonArray.add (b);
@@ -561,19 +589,19 @@ public class Converter {
 	/**
 	 * Construct a JSON Array out of the JulianDate Array
 	 * 
-	 * @param adt The JulianDate Array
+	 * @param dateArray The JulianDate Array
 	 * 
 	 * @return The JSON Array Instance
 	 */
 
-	@SuppressWarnings ("unchecked") public static final org.drip.service.representation.JSONArray Array (
-		final org.drip.analytics.date.JulianDate[] adt)
+	@SuppressWarnings ("unchecked") public static final JSONArray Array (
+		final JulianDate[] dateArray)
 	{
-		if (null == adt || 0 == adt.length) return null;
+		if (null == dateArray || 0 == dateArray.length) return null;
 
-		org.drip.service.representation.JSONArray jsonArray = new org.drip.service.representation.JSONArray();
+		JSONArray jsonArray = new JSONArray();
 
-		for (org.drip.analytics.date.JulianDate dt : adt)
+		for (JulianDate dt : dateArray)
 			jsonArray.add (dt);
 
 		return jsonArray;
