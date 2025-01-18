@@ -6,12 +6,18 @@ import java.util.List;
 import java.util.Map;
 
 import org.drip.analytics.date.JulianDate;
+import org.drip.analytics.support.CaseInsensitiveTreeMap;
+import org.drip.historical.attribution.PositionChangeComponents;
+import org.drip.historical.attribution.TreasuryFuturesMarketSnap;
+import org.drip.numerical.common.NumberUtil;
 import org.drip.param.market.CurveSurfaceQuoteContainer;
 import org.drip.param.quote.MultiSided;
 import org.drip.param.quote.ProductMultiMeasure;
 import org.drip.param.valuation.ValuationParams;
+import org.drip.product.credit.BondComponent;
 import org.drip.product.definition.Bond;
 import org.drip.product.govvie.TreasuryFutures;
+import org.drip.product.params.CTDEntry;
 import org.drip.service.template.ExchangeInstrumentBuilder;
 import org.drip.service.template.LatentMarketStateBuilder;
 import org.drip.service.template.TreasuryBuilder;
@@ -368,53 +374,82 @@ public class TreasuryFuturesAPI
 		final String govvieCurveTreasuryMeasure,
 		final double[] futuresComponentTreasuryPriceArray)
 	{
-		double dblBaselineCTDOAS = Double.NaN;
 		JulianDate julianSpotDate = null;
+		double baselineCTDOAS = Double.NaN;
 		JulianDate[] govvieCurveTreasuryMaturityArray = null;
 		JulianDate[] govvieCurveTreasuryEffectiveArray = null;
 		int govvieCurveMaturityCount = null == govvieCurveTreasuryMaturityDateArray ? 0 :
 			govvieCurveTreasuryMaturityDateArray.length;
 		int govvieCurveEffectiveCount = null == govvieCurveTreasuryEffectiveDateArray ? 0 :
 			govvieCurveTreasuryEffectiveDateArray.length;
-		String[] treasuryBenchmarkCodeArray = new String[] {"01YON", "02YON", "03YON",
-			"05YON", "07YON", "10YON", "30YON"};
+		String[] treasuryBenchmarkCodeArray = new String[] {
+			"01YON",
+			"02YON",
+			"03YON",
+			"05YON",
+			"07YON",
+			"10YON",
+			"30YON"
+		};
 		int treasuryBenchmarkCount = treasuryBenchmarkCodeArray.length;
 		int futuresComponentCount = null == futuresComponentTreasuryPriceArray ? 0 :
 			futuresComponentTreasuryPriceArray.length;
 
-		if (0 == futuresComponentCount) return null;
+		if (0 == futuresComponentCount) {
+			return null;
+		}
 
-		if (0 != govvieCurveMaturityCount)
+		if (0 != govvieCurveMaturityCount) {
 			govvieCurveTreasuryMaturityArray = new JulianDate[govvieCurveMaturityCount];
+		}
 
-		if (0 != govvieCurveEffectiveCount)
-			govvieCurveTreasuryEffectiveArray = new
-				JulianDate[govvieCurveEffectiveCount];
+		if (0 != govvieCurveEffectiveCount) {
+			govvieCurveTreasuryEffectiveArray = new JulianDate[govvieCurveEffectiveCount];
+		}
 
-		CurveSurfaceQuoteContainer curveSurfaceQuoteContainer = new
-			CurveSurfaceQuoteContainer();
+		CurveSurfaceQuoteContainer curveSurfaceQuoteContainer = new CurveSurfaceQuoteContainer();
 
 		try {
 			julianSpotDate = new JulianDate (spotDate);
 
-			for (int i = 0; i < govvieCurveMaturityCount; ++i)
-				govvieCurveTreasuryMaturityArray[i] = new JulianDate
-					(govvieCurveTreasuryMaturityDateArray[i]);
+			for (int govvieCurveMaturityIndex = 0;
+				govvieCurveMaturityIndex < govvieCurveMaturityCount;
+				++govvieCurveMaturityIndex)
+			{
+				govvieCurveTreasuryMaturityArray[govvieCurveMaturityIndex] =
+					new JulianDate (govvieCurveTreasuryMaturityDateArray[govvieCurveMaturityIndex]);
+			}
 
-			for (int i = 0; i < govvieCurveEffectiveCount; ++i)
-				govvieCurveTreasuryEffectiveArray[i] = new JulianDate
-					(govvieCurveTreasuryEffectiveDateArray[i]);
+			for (int govvieCurveEffectiveIndex = 0;
+				govvieCurveEffectiveIndex < govvieCurveEffectiveCount;
+				++govvieCurveEffectiveIndex)
+			{
+				govvieCurveTreasuryEffectiveArray[govvieCurveEffectiveIndex] =
+					new JulianDate (govvieCurveTreasuryEffectiveDateArray[govvieCurveEffectiveIndex]);
+			}
 
-			if (null != govvieCurveTreasuryYieldArray && govvieCurveTreasuryYieldArray.length ==
-				treasuryBenchmarkCount) {
-				for (int i = 0; i < treasuryBenchmarkCount; ++i) {
-					ProductMultiMeasure pmm = new
-						ProductMultiMeasure();
+			if (null != govvieCurveTreasuryYieldArray &&
+				govvieCurveTreasuryYieldArray.length == treasuryBenchmarkCount)
+			{
+				for (int treasuryBenchmark = 0;
+					treasuryBenchmark < treasuryBenchmarkCount;
+					++treasuryBenchmark)
+				{
+					ProductMultiMeasure productMultiMeasure = new ProductMultiMeasure();
 
-					pmm.addQuote ("Yield", new MultiSided ("mid",
-						govvieCurveTreasuryYieldArray[i]), true);
+					productMultiMeasure.addQuote (
+						"Yield",
+						new MultiSided ("mid", govvieCurveTreasuryYieldArray[treasuryBenchmark]),
+						true
+					);
 
-					if (!curveSurfaceQuoteContainer.setProductQuote (treasuryBenchmarkCodeArray[i], pmm)) return null;
+					if (!curveSurfaceQuoteContainer.setProductQuote (
+						treasuryBenchmarkCodeArray[treasuryBenchmark],
+						productMultiMeasure
+					))
+					{
+						return null;
+					}
 				}
 			}
 		} catch (Exception e) {
@@ -423,96 +458,157 @@ public class TreasuryFuturesAPI
 			return null;
 		}
 
-		TreasuryFutures treasuryFutures =
-			ExchangeInstrumentBuilder.TreasuryFutures (julianSpotDate, futuresCodeArray,
-				futuresComponentTreasuryEffectiveDateArray, futuresComponentTreasuryMaturityDateArray,
-					futuresComponentTreasuryCouponArray, futuresComponentConversionFactorArray);
+		TreasuryFutures treasuryFutures = ExchangeInstrumentBuilder.TreasuryFutures (
+			julianSpotDate,
+			futuresCodeArray,
+			futuresComponentTreasuryEffectiveDateArray,
+			futuresComponentTreasuryMaturityDateArray,
+			futuresComponentTreasuryCouponArray,
+			futuresComponentConversionFactorArray
+		);
 
-		if (null == treasuryFutures) return null;
+		if (null == treasuryFutures) {
+			return null;
+		}
 
 		Bond[] bondComponentArray = treasuryFutures.basket();
 
-		for (int i = 0; i < futuresComponentCount; ++i) {
-			ProductMultiMeasure pmm = new ProductMultiMeasure();
+		for (int futuresComponent = 0; futuresComponent < futuresComponentCount; ++futuresComponent) {
+			ProductMultiMeasure productMultiMeasure = new ProductMultiMeasure();
 
 			try {
-				pmm.addQuote ("Price", new MultiSided ("mid",
-					futuresComponentTreasuryPriceArray[i]), true);
+				productMultiMeasure.addQuote (
+					"Price",
+					new MultiSided ("mid", futuresComponentTreasuryPriceArray[futuresComponent]),
+					true
+				);
 			} catch (Exception e) {
 				e.printStackTrace();
 
 				return null;
 			}
 
-			if (!curveSurfaceQuoteContainer.setProductQuote (bondComponentArray[i].name(), pmm)) return null;
+			if (!curveSurfaceQuoteContainer.setProductQuote (
+				bondComponentArray[futuresComponent].name(),
+				productMultiMeasure
+			))
+			{
+				return null;
+			}
 		}
 
-		String strTreasuryType = treasuryFutures.type();
+		String treasuryType = treasuryFutures.type();
 
-		if (!curveSurfaceQuoteContainer.setGovvieState
-			(LatentMarketStateBuilder.ShapePreservingGovvieCurve (strTreasuryType,
-				julianSpotDate, govvieCurveTreasuryEffectiveArray, govvieCurveTreasuryMaturityArray,
-					govvieCurveTreasuryCouponArray, govvieCurveTreasuryYieldArray,
-						govvieCurveTreasuryMeasure)))
+		if (!curveSurfaceQuoteContainer.setGovvieState (
+			LatentMarketStateBuilder.ShapePreservingGovvieCurve (
+				treasuryType,
+				julianSpotDate,
+				govvieCurveTreasuryEffectiveArray,
+				govvieCurveTreasuryMaturityArray,
+				govvieCurveTreasuryCouponArray,
+				govvieCurveTreasuryYieldArray,
+				govvieCurveTreasuryMeasure
+			)
+		))
+		{
 			return null;
+		}
 
-		org.drip.product.params.CTDEntry ctdEntry = treasuryFutures.cheapestToDeliverYield (spotDate,
-			futuresComponentTreasuryPriceArray);
+		CTDEntry ctdEntry = treasuryFutures.cheapestToDeliverYield (
+			spotDate,
+			futuresComponentTreasuryPriceArray
+		);
 
-		if (null == ctdEntry) return null;
+		if (null == ctdEntry) {
+			return null;
+		}
 
-		Bond bondCTD = ctdEntry.bond();
+		Bond ctdBond = ctdEntry.bond();
 
-		if (null == bondCTD) return null;
+		if (null == ctdBond) {
+			return null;
+		}
 
-		double dblCTDExpiryPrice = ctdEntry.forwardPrice();
+		double ctdExpiryPrice = ctdEntry.forwardPrice();
 
-		ValuationParams valParamsExpiry =
-			ValuationParams.Spot (treasuryFutures.expiry().julian());
+		ValuationParams expiryValuationParams = ValuationParams.Spot (treasuryFutures.expiry().julian());
 
 		try {
-			if (!org.drip.numerical.common.NumberUtil.IsValid (dblBaselineCTDOAS = bondCTD.oasFromPrice
-				(valParamsExpiry, curveSurfaceQuoteContainer, null, dblCTDExpiryPrice)))
+			if (!NumberUtil.IsValid (
+				baselineCTDOAS = ctdBond.oasFromPrice (
+					expiryValuationParams,
+					curveSurfaceQuoteContainer,
+					null,
+					ctdExpiryPrice
+				)
+			))
+			{
 				return null;
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 
 			return null;
 		}
 
-		org.drip.analytics.support.CaseInsensitiveTreeMap<GovvieCurve>
-			mapTenorGovvieCurve = LatentMarketStateBuilder.BumpedGovvieCurve
-				(strTreasuryType, julianSpotDate, govvieCurveTreasuryEffectiveArray, govvieCurveTreasuryMaturityArray,
-					govvieCurveTreasuryCouponArray, govvieCurveTreasuryYieldArray,
-						govvieCurveTreasuryMeasure,
-							LatentMarketStateBuilder.SHAPE_PRESERVING, 0.0001,
-								false);
+		CaseInsensitiveTreeMap<GovvieCurve> tenorGovvieCurveMap =
+			LatentMarketStateBuilder.BumpedGovvieCurve (
+				treasuryType,
+				julianSpotDate,
+				govvieCurveTreasuryEffectiveArray,
+				govvieCurveTreasuryMaturityArray,
+				govvieCurveTreasuryCouponArray,
+				govvieCurveTreasuryYieldArray,
+				govvieCurveTreasuryMeasure,
+				LatentMarketStateBuilder.SHAPE_PRESERVING,
+				0.0001,
+				false
+			);
 
-		if (null == mapTenorGovvieCurve || treasuryBenchmarkCount > mapTenorGovvieCurve.size()) return null;
+		if (null == tenorGovvieCurveMap || treasuryBenchmarkCount > tenorGovvieCurveMap.size()) {
+			return null;
+		}
 
-		org.drip.analytics.support.CaseInsensitiveTreeMap<Double> mapKeyRateDuration = new
-			org.drip.analytics.support.CaseInsensitiveTreeMap<Double>();
+		CaseInsensitiveTreeMap<Double> keyRateDurationMap = new CaseInsensitiveTreeMap<Double>();
 
-		for (Map.Entry<String, GovvieCurve> me :
-			mapTenorGovvieCurve.entrySet()) {
-			String strKey = me.getKey();
+		for (Map.Entry<String, GovvieCurve> tenorGovvieCurveMapEntry : tenorGovvieCurveMap.entrySet()) {
+			String tenorGovvieCurveMapKey = tenorGovvieCurveMapEntry.getKey();
 
-			if (!strKey.contains ("tsy")) continue;
+			if (!tenorGovvieCurveMapKey.contains ("tsy")) {
+				continue;
+			}
 
-			if (!curveSurfaceQuoteContainer.setGovvieState (me.getValue())) return null;
+			if (!curveSurfaceQuoteContainer.setGovvieState (tenorGovvieCurveMapEntry.getValue())) {
+				return null;
+			}
 
-			org.drip.product.params.CTDEntry tenorCTDEntry = treasuryFutures.cheapestToDeliverYield (spotDate,
-				futuresComponentTreasuryPriceArray);
+			CTDEntry tenorCTDEntry = treasuryFutures.cheapestToDeliverYield (
+				spotDate,
+				futuresComponentTreasuryPriceArray
+			);
 
-			if (null == tenorCTDEntry) return null;
+			if (null == tenorCTDEntry) {
+				return null;
+			}
 
 			Bond tenorBondCTD = tenorCTDEntry.bond();
 
-			if (null == tenorBondCTD) return null;
+			if (null == tenorBondCTD) {
+				return null;
+			}
 
 			try {
-				mapKeyRateDuration.put (strKey, 10000. * (tenorBondCTD.priceFromOAS (valParamsExpiry, curveSurfaceQuoteContainer,
-					null, dblBaselineCTDOAS) - dblCTDExpiryPrice) / dblCTDExpiryPrice);
+				keyRateDurationMap.put (
+					tenorGovvieCurveMapKey,
+					10000. * (
+						tenorBondCTD.priceFromOAS (
+							expiryValuationParams,
+							curveSurfaceQuoteContainer,
+							null,
+							baselineCTDOAS
+						) - ctdExpiryPrice
+					) / ctdExpiryPrice
+				);
 			} catch (Exception e) {
 				e.printStackTrace();
 
@@ -520,177 +616,238 @@ public class TreasuryFuturesAPI
 			}
 		}
 
-		return mapKeyRateDuration;
+		return keyRateDurationMap;
 	}
 
 	/**
 	 * Returns Attribution for the Treasury Futures
 	 * 
-	 * @param strTreasuryCode The Treasury Code
-	 * @param adtEffective Array of Effective Dates
-	 * @param adtMaturity Array of Maturity Dates
-	 * @param adblCoupon Array of Coupons
-	 * @param adtExpiry Array of Futures Expiry Dates
-	 * @param ajulianSpotDate Array of Spot Dates
-	 * @param adblCleanPrice Array of Closing Clean Prices
-	 * @param adblConversionFactor Array of the Conversion Factor
+	 * @param treasuryCode The Treasury Code
+	 * @param effectiveDateArray Array of Effective Dates
+	 * @param maturityDateArray Array of Maturity Dates
+	 * @param couponArray Array of Coupons
+	 * @param expiryDateArray Array of Futures Expiry Dates
+	 * @param spotDateArray Array of Spot Dates
+	 * @param cleanPriceArray Array of Closing Clean Prices
+	 * @param conversionFactorArray Array of the Conversion Factor
 	 * 
 	 * @return List of the Position Change Components
 	 */
 
-	public static final List<org.drip.historical.attribution.PositionChangeComponents>
-		HorizonChangeAttribution (
-			final String strTreasuryCode,
-			final JulianDate[] adtEffective,
-			final JulianDate[] adtMaturity,
-			final double[] adblCoupon,
-			final JulianDate[] adtExpiry,
-			final JulianDate[] ajulianSpotDate,
-			final double[] adblCleanPrice,
-			final double[] adblConversionFactor)
+	public static final List<PositionChangeComponents> HorizonChangeAttribution (
+		final String treasuryCode,
+		final JulianDate[] effectiveDateArray,
+		final JulianDate[] maturityDateArray,
+		final double[] couponArray,
+		final JulianDate[] expiryDateArray,
+		final JulianDate[] spotDateArray,
+		final double[] cleanPriceArray,
+		final double[] conversionFactorArray)
 	{
-		org.drip.product.credit.BondComponent[] aTreasury =
-			TreasuryBuilder.FromCode (strTreasuryCode, adtEffective, adtMaturity,
-				adblCoupon);
+		BondComponent[] treasuryComponentArray = TreasuryBuilder.FromCode (
+			treasuryCode,
+			effectiveDateArray,
+			maturityDateArray,
+			couponArray
+		);
 
-		if (null == aTreasury || null == adtExpiry || null == ajulianSpotDate || null == adblCleanPrice || null ==
-			adblConversionFactor)
+		if (null == treasuryComponentArray ||
+			null == expiryDateArray ||
+			null == spotDateArray ||
+			null == cleanPriceArray ||
+			null == conversionFactorArray)
+		{
 			return null;
+		}
 
-		int iNumCloses = ajulianSpotDate.length;
-		int[] aiExpiryDate = new int[iNumCloses];
-		double[] adblYield = new double[iNumCloses];
-		double[] adblForwardAccrued = new double[iNumCloses];
-		double[] adblForwardCleanPrice = new double[iNumCloses];
-		double[] adblForwardModifiedDuration = new double[iNumCloses];
+		int closesCount = spotDateArray.length;
+		int[] expiryDateIntegerArray = new int[closesCount];
+		double[] yieldArray = new double[closesCount];
+		double[] forwardAccrualArray = new double[closesCount];
+		double[] forwardCleanPriceArray = new double[closesCount];
+		double[] forwardModifiedDurationArray = new double[closesCount];
 
-		if (1 >= iNumCloses || iNumCloses != aTreasury.length || iNumCloses != adblCleanPrice.length ||
-			iNumCloses != adtExpiry.length || iNumCloses != adblConversionFactor.length)
+		if (1 >= closesCount ||
+			closesCount != treasuryComponentArray.length ||
+			closesCount != cleanPriceArray.length ||
+			closesCount != expiryDateArray.length ||
+			closesCount != conversionFactorArray.length)
+		{
 			return null;
+		}
 
-		List<org.drip.historical.attribution.PositionChangeComponents> lsPCC = new
-			ArrayList<org.drip.historical.attribution.PositionChangeComponents>();
+		List<PositionChangeComponents> positionChangeComponentsList =
+			new ArrayList<PositionChangeComponents>();
 
-		for (int i = 0; i < iNumCloses; ++i) {
-			if (null == aTreasury[i]) return null;
+		for (int closesIndex = 0; closesIndex < closesCount; ++closesIndex) {
+			if (null == treasuryComponentArray[closesIndex]) {
+				return null;
+			}
 
-			ValuationParams valParamsSpot =
-				ValuationParams.Spot (ajulianSpotDate[i].julian());
+			ValuationParams valParamsSpot = ValuationParams.Spot (spotDateArray[closesIndex].julian());
 
-			ValuationParams valParamsExpiry =
-				ValuationParams.Spot (aiExpiryDate[i] = adtExpiry[i].julian());
+			ValuationParams expiryValuationParams = ValuationParams.Spot (
+				expiryDateIntegerArray[closesIndex] = expiryDateArray[closesIndex].julian()
+			);
 
 			try {
-				adblForwardAccrued[i] = aTreasury[i].accrued (aiExpiryDate[i], null);
+				forwardAccrualArray[closesIndex] =
+					treasuryComponentArray[closesIndex].accrued (expiryDateIntegerArray[closesIndex], null);
 
-				adblYield[i] = aTreasury[i].yieldFromPrice (valParamsSpot, null, null, adblCleanPrice[i]);
+				yieldArray[closesIndex] = treasuryComponentArray[closesIndex].yieldFromPrice (
+					valParamsSpot,
+					null,
+					null,
+					cleanPriceArray[closesIndex]
+				);
 
-				adblForwardCleanPrice[i] = aTreasury[i].priceFromYield (valParamsExpiry, null, null,
-					adblYield[i]);
+				forwardCleanPriceArray[closesIndex] = treasuryComponentArray[closesIndex].priceFromYield (
+					expiryValuationParams,
+					null,
+					null,
+					yieldArray[closesIndex]
+				);
 
-				adblForwardModifiedDuration[i] = aTreasury[i].modifiedDurationFromPrice (valParamsExpiry,
-					null, null, adblForwardCleanPrice[i]) * 10000.;
+				forwardModifiedDurationArray[closesIndex] =
+					treasuryComponentArray[closesIndex].modifiedDurationFromPrice (
+						expiryValuationParams,
+						null,
+						null,
+						forwardCleanPriceArray[closesIndex]
+				) * 10000.;
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
 		}
 
-		for (int i = 1; i < iNumCloses; ++i) {
-			if (adblConversionFactor[i] != adblConversionFactor[i - 1]) continue;
+		for (int closesIndex = 1; closesIndex < closesCount; ++closesIndex) {
+			if (conversionFactorArray[closesIndex] != conversionFactorArray[closesIndex - 1]) {
+				continue;
+			}
 
-			String strCurrentBondName = aTreasury[i].name();
+			String currentBondName = treasuryComponentArray[closesIndex].name();
 
-			String strPreviousBondName = aTreasury[i - 1].name();
+			String previousBondName = treasuryComponentArray[closesIndex - 1].name();
 
-			double dblScaledPrice1 = (adblForwardCleanPrice[i - 1] + adblForwardAccrued[i - 1]) /
-				adblConversionFactor[i - 1];
-			double dblScaledPrice2 = (adblForwardCleanPrice[i] + adblForwardAccrued[i]) /
-				adblConversionFactor[i];
+			double scaledPrice1 = (
+				forwardCleanPriceArray[closesIndex - 1] + forwardAccrualArray[closesIndex - 1]
+			) / conversionFactorArray[closesIndex - 1];
+			double scaledPrice2 = (
+				forwardCleanPriceArray[closesIndex] + forwardAccrualArray[closesIndex]
+			) / conversionFactorArray[closesIndex];
 
 			try {
-				org.drip.historical.attribution.TreasuryFuturesMarketSnap tfpms1 = new
-					org.drip.historical.attribution.TreasuryFuturesMarketSnap (ajulianSpotDate[i - 1],
-						dblScaledPrice1);
+				TreasuryFuturesMarketSnap treasuryFuturesMarketSnap1 = new TreasuryFuturesMarketSnap (
+					spotDateArray[closesIndex - 1],
+					scaledPrice1
+				);
 
-				if (!tfpms1.setYieldMarketFactor (adblYield[i - 1], -1. * dblScaledPrice1 *
-					adblForwardModifiedDuration[i - 1], 0.) || !tfpms1.setExpiryDate (adtExpiry[i - 1]) ||
-						!tfpms1.setCTDName (strPreviousBondName) || !tfpms1.setCleanExpiryPrice
-							(adblForwardCleanPrice[i - 1]) || !tfpms1.setConversionFactor
-								(adblConversionFactor[i - 1]))
+				if (!treasuryFuturesMarketSnap1.setYieldMarketFactor (
+						yieldArray[closesIndex - 1],
+						-1. * scaledPrice1 * forwardModifiedDurationArray[closesIndex - 1],
+						0.
+					) || !treasuryFuturesMarketSnap1.setExpiryDate (
+						expiryDateArray[closesIndex - 1]
+					) || !treasuryFuturesMarketSnap1.setCTDName (
+						previousBondName
+					) || !treasuryFuturesMarketSnap1.setCleanExpiryPrice (
+						forwardCleanPriceArray[closesIndex - 1]
+					) || !treasuryFuturesMarketSnap1.setConversionFactor (
+						conversionFactorArray[closesIndex - 1]
+					)
+				)
+				{
 					return null;
+				}
 
-				org.drip.historical.attribution.TreasuryFuturesMarketSnap tfpms2 = new
-					org.drip.historical.attribution.TreasuryFuturesMarketSnap (ajulianSpotDate[i],
-						dblScaledPrice2);
+				TreasuryFuturesMarketSnap treasuryFuturesMarketSnap2 = new TreasuryFuturesMarketSnap (
+					spotDateArray[closesIndex],
+					scaledPrice2
+				);
 
-				if (!tfpms2.setYieldMarketFactor (adblYield[i], -1. * dblScaledPrice2 *
-					adblForwardModifiedDuration[i], 0.) || !tfpms2.setExpiryDate (adtExpiry[i]) ||
-						!tfpms2.setCTDName (strCurrentBondName) || !tfpms2.setCleanExpiryPrice
-							(adblForwardCleanPrice[i]) || !tfpms2.setConversionFactor
-								(adblConversionFactor[i]))
+				if (!treasuryFuturesMarketSnap2.setYieldMarketFactor (
+						yieldArray[closesIndex],
+						-1. * scaledPrice2 * forwardModifiedDurationArray[closesIndex],
+						0.
+					) || !treasuryFuturesMarketSnap2.setExpiryDate (
+						expiryDateArray[closesIndex]
+					) || !treasuryFuturesMarketSnap2.setCTDName (
+						currentBondName
+					) || !treasuryFuturesMarketSnap2.setCleanExpiryPrice (
+						forwardCleanPriceArray[closesIndex]
+					) || !treasuryFuturesMarketSnap2.setConversionFactor (
+						conversionFactorArray[closesIndex]
+					)
+				)
+				{
 					return null;
+				}
 
-				org.drip.historical.attribution.PositionChangeComponents pcc = new
-					org.drip.historical.attribution.PositionChangeComponents (false, tfpms1, tfpms2, 0.,
-						null);
-
-				lsPCC.add (pcc);
+				positionChangeComponentsList.add (
+					new PositionChangeComponents (
+						false,
+						treasuryFuturesMarketSnap1,
+						treasuryFuturesMarketSnap2,
+						0.,
+						null
+					)
+				);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
 		}
 
-		return lsPCC;
+		return positionChangeComponentsList;
 	}
 
 	/**
 	 * Generate the Horizon Treasury Curve Tenor Key Rate Sensitivity/Duration
 	 * 
-	 * @param strTreasuryType The Treasury Type
-	 * @param adtEffective Array of Effective Dates
-	 * @param adtMaturity Array of Maturity Dates
-	 * @param adblCoupon Array of Coupons
-	 * @param adtExpiry Array of Futures Expiry Dates
-	 * @param ajulianSpotDate Array of Spot Dates
-	 * @param adblCleanPrice Array of Closing Clean Prices
-	 * @param astrBenchmarkTenor Array of Benchmark Tenors
-	 * @param agovvieCurveTreasuryYieldArray Array of the Treasury Instrument Yield (for Treasury Curve)
+	 * @param treasuryType The Treasury Type
+	 * @param effectiveDateArray Array of Effective Dates
+	 * @param maturityDateArray Array of Maturity Dates
+	 * @param couponArray Array of Coupons
+	 * @param expiryDateArray Array of Futures Expiry Dates
+	 * @param spotDateArray Array of Spot Dates
+	 * @param cleanPriceArray Array of Closing Clean Prices
+	 * @param benchmarkTenorArray Array of Benchmark Tenors
+	 * @param govvieCurveTreasuryYieldArray Array of the Treasury Instrument Yield (for Treasury Curve)
 	 * 
 	 * @return The Treasury Curve Tenor Sensitivity/Duration
 	 */
 
 	public static final List<org.drip.historical.sensitivity.TenorDurationNodeMetrics>
 		HorizonKeyRateDuration (
-			final String strTreasuryType,
-			final JulianDate[] adtEffective,
-			final JulianDate[] adtMaturity,
-			final double[] adblCoupon,
-			final JulianDate[] adtExpiry,
-			final JulianDate[] ajulianSpotDate,
-			final double[] adblCleanPrice,
-			final String[] astrBenchmarkTenor,
-			final double[][] agovvieCurveTreasuryYieldArray)
+			final String treasuryType,
+			final JulianDate[] effectiveDateArray,
+			final JulianDate[] maturityDateArray,
+			final double[] couponArray,
+			final JulianDate[] expiryDateArray,
+			final JulianDate[] spotDateArray,
+			final double[] cleanPriceArray,
+			final String[] benchmarkTenorArray,
+			final double[][] govvieCurveTreasuryYieldArray)
 	{
-		if (null == ajulianSpotDate || null == astrBenchmarkTenor || null == agovvieCurveTreasuryYieldArray || null ==
-			agovvieCurveTreasuryYieldArray[0])
+		if (null == spotDateArray || null == benchmarkTenorArray || null == govvieCurveTreasuryYieldArray || null ==
+			govvieCurveTreasuryYieldArray[0])
 			return null;
 
 		double dblExpiryCleanPrice = Double.NaN;
 		double dblExpiryGSpread = Double.NaN;
-		int iNumBenchmark = astrBenchmarkTenor.length;
+		int iNumBenchmark = benchmarkTenorArray.length;
 		double dblExpiryYield = Double.NaN;
 		double dblSpotGSpread = Double.NaN;
 		double dblSpotYield = Double.NaN;
-		int iNumCloses = ajulianSpotDate.length;
+		int closesCount = spotDateArray.length;
 
-		if (0 >= iNumCloses || iNumCloses != agovvieCurveTreasuryYieldArray.length) return null;
+		if (0 >= closesCount || closesCount != govvieCurveTreasuryYieldArray.length) return null;
 
 		List<org.drip.historical.sensitivity.TenorDurationNodeMetrics> lsTDNM = new
 			ArrayList<org.drip.historical.sensitivity.TenorDurationNodeMetrics>();
 
-		for (int i = 0; i < iNumCloses; ++i) {
-			if (null == agovvieCurveTreasuryYieldArray[i] || iNumBenchmark !=
-				agovvieCurveTreasuryYieldArray[i].length)
+		for (int i = 0; i < closesCount; ++i) {
+			if (null == govvieCurveTreasuryYieldArray[i] || iNumBenchmark !=
+				govvieCurveTreasuryYieldArray[i].length)
 				return null;
 
 			JulianDate[] govvieCurveTreasuryEffectiveArray = new
@@ -701,16 +858,16 @@ public class TreasuryFuturesAPI
 			double dblParallelKRD = 0.;
 
 			for (int j = 0; j < iNumBenchmark; ++j) {
-				govvieCurveTreasuryEffectiveArray[j] = ajulianSpotDate[i];
+				govvieCurveTreasuryEffectiveArray[j] = spotDateArray[i];
 
-				govvieCurveTreasuryMaturityArray[j] = ajulianSpotDate[i].addTenor (astrBenchmarkTenor[j]);
+				govvieCurveTreasuryMaturityArray[j] = spotDateArray[i].addTenor (benchmarkTenorArray[j]);
 			}
 
 			GovvieCurve govvieCurve =
 				LatentMarketStateBuilder.ShapePreservingGovvieCurve
-					(strTreasuryType, ajulianSpotDate[i], govvieCurveTreasuryEffectiveArray,
-						govvieCurveTreasuryMaturityArray, agovvieCurveTreasuryYieldArray[i],
-							agovvieCurveTreasuryYieldArray[i], "Yield");
+					(treasuryType, spotDateArray[i], govvieCurveTreasuryEffectiveArray,
+						govvieCurveTreasuryMaturityArray, govvieCurveTreasuryYieldArray[i],
+							govvieCurveTreasuryYieldArray[i], "Yield");
 
 			CurveSurfaceQuoteContainer curveSurfaceQuoteContainer = new
 				CurveSurfaceQuoteContainer();
@@ -718,46 +875,46 @@ public class TreasuryFuturesAPI
 			if (!curveSurfaceQuoteContainer.setGovvieState (govvieCurve)) continue;
 
 			ValuationParams valParamsSpot =
-				ValuationParams.Spot (ajulianSpotDate[i].julian());
+				ValuationParams.Spot (spotDateArray[i].julian());
 
-			ValuationParams valParamsExpiry =
-				ValuationParams.Spot (adtExpiry[i].julian());
+			ValuationParams expiryValuationParams =
+				ValuationParams.Spot (expiryDateArray[i].julian());
 
-			org.drip.product.credit.BondComponent bondCTD =
-				TreasuryBuilder.FromCode (strTreasuryType, adtEffective[i],
-					adtMaturity[i], adblCoupon[i]);
+			BondComponent ctdBond =
+				TreasuryBuilder.FromCode (treasuryType, effectiveDateArray[i],
+					maturityDateArray[i], couponArray[i]);
 
-			if (null == bondCTD) continue;
+			if (null == ctdBond) continue;
 
 			try {
-				dblSpotGSpread = bondCTD.gSpreadFromPrice (valParamsSpot, curveSurfaceQuoteContainer, null, adblCleanPrice[i]);
+				dblSpotGSpread = ctdBond.gSpreadFromPrice (valParamsSpot, curveSurfaceQuoteContainer, null, cleanPriceArray[i]);
 
-				dblSpotYield = bondCTD.yieldFromPrice (valParamsSpot, curveSurfaceQuoteContainer, null, adblCleanPrice[i]);
+				dblSpotYield = ctdBond.yieldFromPrice (valParamsSpot, curveSurfaceQuoteContainer, null, cleanPriceArray[i]);
 
-				dblExpiryCleanPrice = bondCTD.priceFromGSpread (valParamsExpiry, curveSurfaceQuoteContainer, null, dblSpotGSpread);
+				dblExpiryCleanPrice = ctdBond.priceFromGSpread (expiryValuationParams, curveSurfaceQuoteContainer, null, dblSpotGSpread);
 
-				dblExpiryGSpread = bondCTD.gSpreadFromPrice (valParamsExpiry, curveSurfaceQuoteContainer, null,
+				dblExpiryGSpread = ctdBond.gSpreadFromPrice (expiryValuationParams, curveSurfaceQuoteContainer, null,
 					dblExpiryCleanPrice);
 
-				dblExpiryYield = bondCTD.yieldFromPrice (valParamsExpiry, curveSurfaceQuoteContainer, null, dblExpiryCleanPrice);
+				dblExpiryYield = ctdBond.yieldFromPrice (expiryValuationParams, curveSurfaceQuoteContainer, null, dblExpiryCleanPrice);
 			} catch (Exception e) {
 				e.printStackTrace();
 
 				continue;
 			}
 
-			org.drip.analytics.support.CaseInsensitiveTreeMap<GovvieCurve>
-				mapTenorGovvieCurve = LatentMarketStateBuilder.BumpedGovvieCurve
-					(strTreasuryType, ajulianSpotDate[i], govvieCurveTreasuryEffectiveArray,
-						govvieCurveTreasuryMaturityArray, agovvieCurveTreasuryYieldArray[i],
-							agovvieCurveTreasuryYieldArray[i], "Yield",
+			CaseInsensitiveTreeMap<GovvieCurve>
+				tenorGovvieCurveMap = LatentMarketStateBuilder.BumpedGovvieCurve
+					(treasuryType, spotDateArray[i], govvieCurveTreasuryEffectiveArray,
+						govvieCurveTreasuryMaturityArray, govvieCurveTreasuryYieldArray[i],
+							govvieCurveTreasuryYieldArray[i], "Yield",
 								LatentMarketStateBuilder.SHAPE_PRESERVING, 0.0001,
 									false);
 
-			if (null == mapTenorGovvieCurve || iNumBenchmark > mapTenorGovvieCurve.size()) continue;
+			if (null == tenorGovvieCurveMap || iNumBenchmark > tenorGovvieCurveMap.size()) continue;
 
 			try {
-				tdnm = new org.drip.historical.sensitivity.TenorDurationNodeMetrics (ajulianSpotDate[i]);
+				tdnm = new org.drip.historical.sensitivity.TenorDurationNodeMetrics (spotDateArray[i]);
 			} catch (Exception e) {
 				e.printStackTrace();
 
@@ -772,29 +929,29 @@ public class TreasuryFuturesAPI
 
 			tdnm.setR1 ("ExpiryYield", dblExpiryYield);
 
-			tdnm.setDate ("ExpiryDate", adtExpiry[i]);
+			tdnm.setDate ("ExpiryDate", expiryDateArray[i]);
 
-			tdnm.setC1 ("CTDName", bondCTD.name());
+			tdnm.setC1 ("CTDName", ctdBond.name());
 
-			tdnm.setR1 ("SpotCTDCleanPrice", adblCleanPrice[i]);
+			tdnm.setR1 ("SpotCTDCleanPrice", cleanPriceArray[i]);
 
 			tdnm.setR1 ("ExpiryCTDCleanPrice", dblExpiryCleanPrice);
 
 			for (Map.Entry<String, GovvieCurve> me :
-				mapTenorGovvieCurve.entrySet()) {
-				String strKey = me.getKey();
+				tenorGovvieCurveMap.entrySet()) {
+				String tenorGovvieCurveMapKey = me.getKey();
 
-				if (!strKey.contains ("tsy")) continue;
+				if (!tenorGovvieCurveMapKey.contains ("tsy")) continue;
 
 				if (!curveSurfaceQuoteContainer.setGovvieState (me.getValue())) return null;
 
 				double dblTenorKRD = Double.NaN;
 
 				try {
-					dblTenorKRD = -10000. * (bondCTD.priceFromGSpread (valParamsExpiry, curveSurfaceQuoteContainer, null,
+					dblTenorKRD = -10000. * (ctdBond.priceFromGSpread (expiryValuationParams, curveSurfaceQuoteContainer, null,
 						dblSpotGSpread) - dblExpiryCleanPrice) / dblExpiryCleanPrice;
 
-					if (!tdnm.addKRDNode (strKey, dblTenorKRD)) continue;
+					if (!tdnm.addKRDNode (tenorGovvieCurveMapKey, dblTenorKRD)) continue;
 
 					dblParallelKRD += dblTenorKRD;
 				} catch (Exception e) {
