@@ -1,11 +1,27 @@
 
 package org.drip.service.product;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.drip.analytics.date.JulianDate;
+import org.drip.analytics.support.CaseInsensitiveHashMap;
+import org.drip.historical.attribution.PositionChangeComponents;
+import org.drip.historical.engine.HorizonChangeExplainExecutor;
+import org.drip.historical.engine.TreasuryBondExplainProcessor;
+import org.drip.param.market.CurveSurfaceQuoteContainer;
+import org.drip.service.template.LatentMarketStateBuilder;
+import org.drip.service.template.TreasuryBuilder;
+import org.drip.state.govvie.GovvieCurve;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -81,89 +97,114 @@ package org.drip.service.product;
 
 /**
  * <i>TreasuryAPI</i> demonstrates the Details behind the Pricing and the Scenario Runs behind a Treasury
- * Bond.
- * 
- * <br><br>
- *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationSupportLibrary.md">Computation Support</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/README.md">Environment, Product/Definition Containers, and Scenario/State Manipulation APIs</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/product/README.md">Product Horizon PnL Attribution Decomposition</a></li>
- *  </ul>
- * <br><br>
+ * 	Bond. It provides the following Functionality:
  *
+ *  <ul>
+ * 		<li>Compute the Horizon Change Attribution Details for the Specified Treasury Bond</li>
+ * 		<li>Generate the Govvie Curve Horizon Metrics #1</li>
+ * 		<li>Generate the Govvie Curve Horizon Metrics #2</li>
+ *  </ul>
+ *
+ *	<br>
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationSupportLibrary.md">Computation Support</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/README.md">Environment, Product/Definition Containers, and Scenario/State Manipulation APIs</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/product/README.md">Product Horizon PnL Attribution Decomposition</a></td></tr>
+ *  </table>
+ *	<br>
+ * 
  * @author Lakshmi Krishnamurthy
  */
 
-public class TreasuryAPI {
+public class TreasuryAPI
+{
 
 	/**
 	 * Compute the Horizon Change Attribution Details for the Specified Treasury Bond
 	 * 
-	 * @param gcFirst First Day Govvie Curve
-	 * @param gcSecond Second Date Govvie Curve
-	 * @param mapRollDownGovvieCurve Map of the Roll Down Govvie Curves
-	 * @param strMaturityTenor Treasury Bond Maturity Tenor
-	 * @param strCode Treasury Bond Code
+	 * @param day1GovvieCurve First Day Govvie Curve
+	 * @param day2GovvieCurve Second Date Govvie Curve
+	 * @param rollDownGovvieCurveMap Map of the Roll Down Govvie Curves
+	 * @param maturityTenor Treasury Bond Maturity Tenor
+	 * @param treasuryCode Treasury Bond Code
 	 * 
 	 * @return The Horizon Change Attribution Instance
 	 */
 
-	public static final org.drip.historical.attribution.PositionChangeComponents HorizonChangeAttribution (
-		final org.drip.state.govvie.GovvieCurve gcFirst,
-		final org.drip.state.govvie.GovvieCurve gcSecond,
-		final org.drip.analytics.support.CaseInsensitiveHashMap<org.drip.state.govvie.GovvieCurve>
-			mapRollDownGovvieCurve,
-		final java.lang.String strMaturityTenor,
-		final java.lang.String strCode)
+	public static final PositionChangeComponents HorizonChangeAttribution (
+		final GovvieCurve day1GovvieCurve,
+		final GovvieCurve day2GovvieCurve,
+		final CaseInsensitiveHashMap<GovvieCurve> rollDownGovvieCurveMap,
+		final String maturityTenor,
+		final String treasuryCode)
 	{
-		if (null == gcFirst || null == mapRollDownGovvieCurve || 0 == mapRollDownGovvieCurve.size())
+		if (null == day1GovvieCurve || null == rollDownGovvieCurveMap || 0 == rollDownGovvieCurveMap.size())
+		{
 			return null;
+		}
 
-		double dblFirstGovvieCurveYield = java.lang.Double.NaN;
+		double firstGovvieCurveYield = Double.NaN;
 
 		try {
-			dblFirstGovvieCurveYield = gcFirst.yld (strMaturityTenor);
-		} catch (java.lang.Exception e) {
+			firstGovvieCurveYield = day1GovvieCurve.yld (maturityTenor);
+		} catch (Exception e) {
 			e.printStackTrace();
 
 			return null;
 		}
 
-		org.drip.analytics.date.JulianDate dtFirst = gcFirst.epoch();
+		JulianDate day1GovvieCurveEpochDate = day1GovvieCurve.epoch();
 
-		org.drip.param.market.CurveSurfaceQuoteContainer csqcFirst = new
-			org.drip.param.market.CurveSurfaceQuoteContainer();
+		CurveSurfaceQuoteContainer firstCurveSurfaceQuoteContainer = new CurveSurfaceQuoteContainer();
 
-		if (!csqcFirst.setGovvieState (gcFirst)) return null;
+		if (!firstCurveSurfaceQuoteContainer.setGovvieState (day1GovvieCurve)) {
+			return null;
+		}
 
-		org.drip.param.market.CurveSurfaceQuoteContainer csqcSecond = new
-			org.drip.param.market.CurveSurfaceQuoteContainer();
+		CurveSurfaceQuoteContainer secondCurveSurfaceQuoteContainer = new CurveSurfaceQuoteContainer();
 
-		if (!csqcSecond.setGovvieState (gcSecond)) return null;
+		if (!secondCurveSurfaceQuoteContainer.setGovvieState (day2GovvieCurve)) {
+			return null;
+		}
 
-		org.drip.analytics.support.CaseInsensitiveHashMap<org.drip.param.market.CurveSurfaceQuoteContainer>
-			mapCSQCRollDown = new
-				org.drip.analytics.support.CaseInsensitiveHashMap<org.drip.param.market.CurveSurfaceQuoteContainer>();
+		CaseInsensitiveHashMap<CurveSurfaceQuoteContainer> rollDownCurveSurfaceQuoteContainerMap =
+			new CaseInsensitiveHashMap<CurveSurfaceQuoteContainer>();
 
-		for (java.lang.String strRollDownTenor : mapRollDownGovvieCurve.keySet()) {
-			org.drip.param.market.CurveSurfaceQuoteContainer csqcRollDown = new
-				org.drip.param.market.CurveSurfaceQuoteContainer();
+		for (String rollDownTenor : rollDownGovvieCurveMap.keySet()) {
+			CurveSurfaceQuoteContainer rollDownCurveSurfaceQuoteContainer = new CurveSurfaceQuoteContainer();
 
-			org.drip.state.govvie.GovvieCurve gcRollDown = mapRollDownGovvieCurve.get (strRollDownTenor);
+			GovvieCurve rollDownGovvieCurve = rollDownGovvieCurveMap.get (rollDownTenor);
 
-			if (null == gcRollDown || !csqcRollDown.setGovvieState (gcRollDown)) return null;
+			if (null == rollDownGovvieCurve ||
+				!rollDownCurveSurfaceQuoteContainer.setGovvieState (rollDownGovvieCurve))
+			{
+				return null;
+			}
 
-			mapCSQCRollDown.put (strRollDownTenor, csqcRollDown);
+			rollDownCurveSurfaceQuoteContainerMap.put (rollDownTenor, rollDownCurveSurfaceQuoteContainer);
 		}
 
 		try {
-			return org.drip.historical.engine.HorizonChangeExplainExecutor.GenerateAttribution (new
-				org.drip.historical.engine.TreasuryBondExplainProcessor
-					(org.drip.service.template.TreasuryBuilder.FromCode (strCode, dtFirst, dtFirst.addTenor
-						(strMaturityTenor), dblFirstGovvieCurveYield), "Yield", dblFirstGovvieCurveYield,
-							dtFirst, gcSecond.epoch(), csqcFirst, csqcSecond, mapCSQCRollDown));
-		} catch (java.lang.Exception e) {
+			return HorizonChangeExplainExecutor.GenerateAttribution (
+				new
+				TreasuryBondExplainProcessor (
+					TreasuryBuilder.FromCode (
+						treasuryCode,
+						day1GovvieCurveEpochDate,
+						day1GovvieCurveEpochDate.addTenor (maturityTenor),
+						firstGovvieCurveYield
+					),
+					"Yield",
+					firstGovvieCurveYield,
+					day1GovvieCurveEpochDate,
+					day2GovvieCurve.epoch(),
+					firstCurveSurfaceQuoteContainer,
+					secondCurveSurfaceQuoteContainer,
+					rollDownCurveSurfaceQuoteContainerMap
+				)
+			);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -171,159 +212,223 @@ public class TreasuryAPI {
 	}
 
 	/**
-	 * Generate the Govvie Curve Horizon Metrics
+	 * Generate the Govvie Curve Horizon Metrics #1
 	 * 
-	 * @param dtFirst The First Date
-	 * @param dtSecond The Second Date
-	 * @param astrGovvieTreasuryInstrumentTenor Array of Govvie Curve Treasury Instrument Maturity Tenors
-	 * @param adblFirstGovvieTreasuryInstrument Array of First Date Govvie Curve Treasury Instrument Quotes
-	 * @param adblSecondGovvieTreasuryInstrument Array of Second Date Govvie Curve Treasury Instrument Quotes
-	 * @param strMaturityTenor Treasury Bond Maturity Tenor
-	 * @param strCode Treasury Bond Code
-	 * @param astrRollDownHorizon Array of the Roll Down Horizon Tenors
-	 * @param iLatentStateType Latent State Type
+	 * @param day1GovvieCurveEpochDate The First Date
+	 * @param secondCurveDate The Second Date
+	 * @param govvieTreasuryInstrumentTenorArray Array of Govvie Curve Treasury Instrument Maturity Tenors
+	 * @param firstGovvieTreasuryInstrumentArray Array of First Date Govvie Curve Treasury Instrument Quotes
+	 * @param secondGovvieTreasuryInstrumentArray Array of Second Date Govvie Curve Treasury Instrument Quotes
+	 * @param maturityTenor Treasury Bond Maturity Tenor
+	 * @param treasuryCode Treasury Bond Code
+	 * @param rollDownHorizonTenorArray Array of the Roll Down Horizon Tenors
+	 * @param latentStateType Latent State Type
 	 * 
 	 * @return The Govvie Curve Horizon Metrics
 	 */
 
-	public static final org.drip.historical.attribution.PositionChangeComponents HorizonChangeAttribution (
-		final org.drip.analytics.date.JulianDate dtFirst,
-		final org.drip.analytics.date.JulianDate dtSecond,
-		final java.lang.String[] astrGovvieTreasuryInstrumentTenor,
-		final double[] adblFirstGovvieTreasuryInstrument,
-		final double[] adblSecondGovvieTreasuryInstrument,
-		final java.lang.String strMaturityTenor,
-		final java.lang.String strCode,
-		final java.lang.String[] astrRollDownHorizon,
-		final int iLatentStateType)
+	public static final PositionChangeComponents HorizonChangeAttribution (
+		final JulianDate day1GovvieCurveEpochDate,
+		final JulianDate secondCurveDate,
+		final String[] govvieTreasuryInstrumentTenorArray,
+		final double[] firstGovvieTreasuryInstrumentArray,
+		final double[] secondGovvieTreasuryInstrumentArray,
+		final String maturityTenor,
+		final String treasuryCode,
+		final String[] rollDownHorizonTenorArray,
+		final int latentStateType)
 	{
-		if (null == dtFirst || null == dtSecond || dtFirst.julian() >= dtSecond.julian()) return null;
-
-		int iNumGovvieTreasuryInstrument = null == astrGovvieTreasuryInstrumentTenor ? 0 :
-			astrGovvieTreasuryInstrumentTenor.length;
-		int iNumFirstGovvieTreasuryInstrument = null == adblFirstGovvieTreasuryInstrument ? 0 :
-			adblFirstGovvieTreasuryInstrument.length;
-		int iNumSecondGovvieTreasuryInstrument = null == adblSecondGovvieTreasuryInstrument ? 0 :
-			adblSecondGovvieTreasuryInstrument.length;
-		int iNumRollDownHorizon = null == astrRollDownHorizon ? 0 : astrRollDownHorizon .length;
-		org.drip.analytics.date.JulianDate[] adtFirstEffective = new
-			org.drip.analytics.date.JulianDate[iNumGovvieTreasuryInstrument];
-		org.drip.analytics.date.JulianDate[] adtFirstMaturity = new
-			org.drip.analytics.date.JulianDate[iNumGovvieTreasuryInstrument];
-		org.drip.analytics.date.JulianDate[] adtSecondEffective = new
-			org.drip.analytics.date.JulianDate[iNumGovvieTreasuryInstrument];
-		org.drip.analytics.date.JulianDate[] adtSecondMaturity = new
-			org.drip.analytics.date.JulianDate[iNumGovvieTreasuryInstrument];
-		org.drip.analytics.date.JulianDate[] adtRollDownEffective = new
-			org.drip.analytics.date.JulianDate[iNumGovvieTreasuryInstrument];
-		org.drip.analytics.date.JulianDate[] adtRollDownMaturity = new
-			org.drip.analytics.date.JulianDate[iNumGovvieTreasuryInstrument];
-
-		org.drip.analytics.support.CaseInsensitiveHashMap<org.drip.state.govvie.GovvieCurve>
-			mapRollDownGovvieCurve = 0 == iNumRollDownHorizon ? null : new
-				org.drip.analytics.support.CaseInsensitiveHashMap<org.drip.state.govvie.GovvieCurve>();
-
-		if (0 == iNumGovvieTreasuryInstrument || iNumGovvieTreasuryInstrument !=
-			iNumFirstGovvieTreasuryInstrument || iNumGovvieTreasuryInstrument !=
-				iNumSecondGovvieTreasuryInstrument)
+		if (null == day1GovvieCurveEpochDate || null == secondCurveDate ||
+			day1GovvieCurveEpochDate.julian() >= secondCurveDate.julian())
+		{
 			return null;
-
-		for (int i = 0; i < iNumGovvieTreasuryInstrument; ++i) {
-			adtFirstMaturity[i] = (adtFirstEffective[i] = dtFirst).addTenor
-				(astrGovvieTreasuryInstrumentTenor[i]);
-
-			adtSecondMaturity[i] = (adtSecondEffective[i] = dtSecond).addTenor
-				(astrGovvieTreasuryInstrumentTenor[i]);
 		}
 
-		org.drip.state.govvie.GovvieCurve gcFirst =
-			org.drip.service.template.LatentMarketStateBuilder.GovvieCurve (strCode, dtFirst,
-				adtFirstEffective, adtFirstMaturity, adblFirstGovvieTreasuryInstrument,
-					adblFirstGovvieTreasuryInstrument, "Yield", iLatentStateType);
+		int govvieTreasuryInstrumentCount = null == govvieTreasuryInstrumentTenorArray ? 0 :
+			govvieTreasuryInstrumentTenorArray.length;
+		int firstGovvieTreasuryInstrumentCount = null == firstGovvieTreasuryInstrumentArray ? 0 :
+			firstGovvieTreasuryInstrumentArray.length;
+		int secondGovvieTreasuryInstrumentCount = null == secondGovvieTreasuryInstrumentArray ? 0 :
+			secondGovvieTreasuryInstrumentArray.length;
+		int rollDownHorizonCount = null == rollDownHorizonTenorArray ? 0 : rollDownHorizonTenorArray .length;
+		JulianDate[] day1GovvieCurveEpochDateEffectiveArray = new JulianDate[govvieTreasuryInstrumentCount];
+		JulianDate[] day1GovvieCurveEpochDateMaturityArray = new JulianDate[govvieTreasuryInstrumentCount];
+		JulianDate[] secondCurveDateEffectiveArray = new JulianDate[govvieTreasuryInstrumentCount];
+		JulianDate[] secondCurveDateMaturityArray = new JulianDate[govvieTreasuryInstrumentCount];
+		JulianDate[] rollDownEffectiveDateArray = new JulianDate[govvieTreasuryInstrumentCount];
+		JulianDate[] rollDownMaturityDateArray = new JulianDate[govvieTreasuryInstrumentCount];
 
-		org.drip.state.govvie.GovvieCurve gcSecond =
-			org.drip.service.template.LatentMarketStateBuilder.GovvieCurve (strCode, dtSecond,
-				adtSecondEffective, adtSecondMaturity, adblSecondGovvieTreasuryInstrument,
-					adblSecondGovvieTreasuryInstrument, "Yield", iLatentStateType);
+		CaseInsensitiveHashMap<GovvieCurve> rollDownGovvieCurveMap = 0 == rollDownHorizonCount ?
+			null : new CaseInsensitiveHashMap<GovvieCurve>();
 
-		org.drip.state.govvie.GovvieCurve gcRollDown =
-			org.drip.service.template.LatentMarketStateBuilder.GovvieCurve (strCode, dtSecond,
-				adtSecondEffective, adtSecondMaturity, adblFirstGovvieTreasuryInstrument,
-					adblFirstGovvieTreasuryInstrument, "Yield", iLatentStateType);
-
-		if (null == gcRollDown) return null;
-
-		mapRollDownGovvieCurve.put ("Native", gcRollDown);
-
-		for (int j = 0; j < iNumRollDownHorizon; ++j) {
-			org.drip.analytics.date.JulianDate dtRollDown = dtFirst.addTenor (astrRollDownHorizon[j]);
-
-			for (int i = 0; i < iNumGovvieTreasuryInstrument; ++i)
-				adtRollDownMaturity[i] = (adtRollDownEffective[i] = dtRollDown).addTenor
-					(astrGovvieTreasuryInstrumentTenor[i]);
-
-			org.drip.state.govvie.GovvieCurve gcHorizonRollDown =
-				org.drip.service.template.LatentMarketStateBuilder.GovvieCurve (strCode, dtRollDown,
-					adtRollDownEffective, adtRollDownMaturity, adblFirstGovvieTreasuryInstrument,
-						adblFirstGovvieTreasuryInstrument, "Yield", iLatentStateType);
-
-			if (null == gcHorizonRollDown) return null;
-
-			mapRollDownGovvieCurve.put (astrRollDownHorizon[j], gcHorizonRollDown);
+		if (0 == govvieTreasuryInstrumentCount ||
+			govvieTreasuryInstrumentCount != firstGovvieTreasuryInstrumentCount ||
+			govvieTreasuryInstrumentCount != secondGovvieTreasuryInstrumentCount)
+		{
+			return null;
 		}
 
-		return HorizonChangeAttribution (gcFirst, gcSecond, mapRollDownGovvieCurve, strMaturityTenor,
-			strCode);
+		for (int govvieTreasuryInstrument = 0;
+			govvieTreasuryInstrument < govvieTreasuryInstrumentCount;
+			++govvieTreasuryInstrument)
+		{
+			day1GovvieCurveEpochDateMaturityArray[govvieTreasuryInstrument] = (
+				day1GovvieCurveEpochDateEffectiveArray[govvieTreasuryInstrument] = day1GovvieCurveEpochDate
+			).addTenor (
+				govvieTreasuryInstrumentTenorArray[govvieTreasuryInstrument]
+			);
+
+			secondCurveDateMaturityArray[govvieTreasuryInstrument] = (
+				secondCurveDateEffectiveArray[govvieTreasuryInstrument] = secondCurveDate
+			).addTenor (
+				govvieTreasuryInstrumentTenorArray[govvieTreasuryInstrument]
+			);
+		}
+
+		GovvieCurve day1GovvieCurve = LatentMarketStateBuilder.GovvieCurve (
+			treasuryCode,
+			day1GovvieCurveEpochDate,
+			day1GovvieCurveEpochDateEffectiveArray,
+			day1GovvieCurveEpochDateMaturityArray,
+			firstGovvieTreasuryInstrumentArray,
+			firstGovvieTreasuryInstrumentArray,
+			"Yield",
+			latentStateType
+		);
+
+		GovvieCurve day2GovvieCurve = LatentMarketStateBuilder.GovvieCurve (
+			treasuryCode,
+			secondCurveDate,
+			secondCurveDateEffectiveArray,
+			secondCurveDateMaturityArray,
+			secondGovvieTreasuryInstrumentArray,
+			secondGovvieTreasuryInstrumentArray,
+			"Yield",
+			latentStateType
+		);
+
+		GovvieCurve rollDownGovvieCurve = LatentMarketStateBuilder.GovvieCurve (
+			treasuryCode,
+			secondCurveDate,
+			secondCurveDateEffectiveArray,
+			secondCurveDateMaturityArray,
+			firstGovvieTreasuryInstrumentArray,
+			firstGovvieTreasuryInstrumentArray,
+			"Yield",
+			latentStateType
+		);
+
+		if (null == rollDownGovvieCurve) {
+			return null;
+		}
+
+		rollDownGovvieCurveMap.put ("Native", rollDownGovvieCurve);
+
+		for (int rollDownHorizon = 0; rollDownHorizon < rollDownHorizonCount; ++rollDownHorizon) {
+			JulianDate rollDownDate =
+				day1GovvieCurveEpochDate.addTenor (rollDownHorizonTenorArray[rollDownHorizon]);
+
+			for (int govvieTreasuryInstrument = 0;
+				govvieTreasuryInstrument < govvieTreasuryInstrumentCount;
+				++govvieTreasuryInstrument)
+			{
+				rollDownMaturityDateArray[govvieTreasuryInstrument] = (
+					rollDownEffectiveDateArray[govvieTreasuryInstrument] = rollDownDate
+				).addTenor (
+					govvieTreasuryInstrumentTenorArray[govvieTreasuryInstrument]
+				);
+			}
+
+			GovvieCurve horizonRollDownGovvieCurve = LatentMarketStateBuilder.GovvieCurve (
+				treasuryCode,
+				rollDownDate,
+				rollDownEffectiveDateArray,
+				rollDownMaturityDateArray,
+				firstGovvieTreasuryInstrumentArray,
+				firstGovvieTreasuryInstrumentArray,
+				"Yield",
+				latentStateType
+			);
+
+			if (null == horizonRollDownGovvieCurve) {
+				return null;
+			}
+
+			rollDownGovvieCurveMap.put (
+				rollDownHorizonTenorArray[rollDownHorizon],
+				horizonRollDownGovvieCurve
+			);
+		}
+
+		return HorizonChangeAttribution (
+			day1GovvieCurve,
+			day2GovvieCurve,
+			rollDownGovvieCurveMap,
+			maturityTenor,
+			treasuryCode
+		);
 	}
 
 	/**
-	 * Generate the Govvie Curve Horizon Metrics
+	 * Generate the Govvie Curve Horizon Metrics #2
 	 * 
-	 * @param adtSpot Array of the Spot Dates
-	 * @param iHorizonGap The Horizon Gap
-	 * @param astrGovvieTreasuryInstrumentTenor Array of Govvie Curve Treasury Instrument Maturity Tenors
-	 * @param aadblGovvieTreasuryInstrumentQuote Array of Govvie Curve Treasury Instrument Quotes
-	 * @param strMaturityTenor Treasury Bond Maturity Tenor
-	 * @param strCode Treasury Bond Code
-	 * @param astrRollDownHorizon Array of the Roll Down Horizon Tenors
-	 * @param iLatentStateType Latent State Type
+	 * @param spotDateArray Array of the Spot Dates
+	 * @param horizonGap The Horizon Gap
+	 * @param govvieTreasuryInstrumentTenorArray Array of Govvie Curve Treasury Instrument Maturity Tenors
+	 * @param govvieTreasuryInstrumentQuoteGrid Array of Govvie Curve Treasury Instrument Quotes
+	 * @param maturityTenor Treasury Bond Maturity Tenor
+	 * @param treasuryCode Treasury Bond Code
+	 * @param rollDownHorizonTenorArray Array of the Roll Down Horizon Tenors
+	 * @param latentStateType Latent State Type
 	 * 
 	 * @return The Govvie Curve Horizon Metrics
 	 */
 
-	public static final java.util.List<org.drip.historical.attribution.PositionChangeComponents>
-		HorizonChangeAttribution (
-			final org.drip.analytics.date.JulianDate[] adtSpot,
-			final int iHorizonGap,
-			final java.lang.String[] astrGovvieTreasuryInstrumentTenor,
-			final double[][] aadblGovvieTreasuryInstrumentQuote,
-			final java.lang.String strMaturityTenor,
-			final java.lang.String strCode,
-			final java.lang.String[] astrRollDownHorizon,
-			final int iLatentStateType)
+	public static final List<PositionChangeComponents> HorizonChangeAttribution (
+		final JulianDate[] spotDateArray,
+		final int horizonGap,
+		final String[] govvieTreasuryInstrumentTenorArray,
+		final double[][] govvieTreasuryInstrumentQuoteGrid,
+		final String maturityTenor,
+		final String treasuryCode,
+		final String[] rollDownHorizonTenorArray,
+		final int latentStateType)
 	{
-		if (null == adtSpot || 0 >= iHorizonGap || null == aadblGovvieTreasuryInstrumentQuote) return null;
-
-		int iNumClose = adtSpot.length;
-		int iNumRollDownTenor = null == astrRollDownHorizon ? 0 : astrRollDownHorizon.length;
-
-		if (0 == iNumClose || iNumClose != aadblGovvieTreasuryInstrumentQuote.length || 0 ==
-			iNumRollDownTenor)
+		if (null == spotDateArray || 0 >= horizonGap || null == govvieTreasuryInstrumentQuoteGrid) {
 			return null;
-
-		java.util.List<org.drip.historical.attribution.PositionChangeComponents> lsPCC = new
-			java.util.ArrayList<org.drip.historical.attribution.PositionChangeComponents>();
-
-		for (int i = iHorizonGap; i < iNumClose; ++i) {
-			org.drip.historical.attribution.PositionChangeComponents pcc = HorizonChangeAttribution
-				(adtSpot[i - iHorizonGap], adtSpot[i], astrGovvieTreasuryInstrumentTenor,
-					aadblGovvieTreasuryInstrumentQuote[i - iHorizonGap],
-						aadblGovvieTreasuryInstrumentQuote[i], strMaturityTenor, strCode,
-							astrRollDownHorizon, iLatentStateType);
-
-			if (null != pcc) lsPCC.add (pcc);
 		}
 
-		return lsPCC;
+		int closeDaysCount = spotDateArray.length;
+		int rollDownTenorCount = null == rollDownHorizonTenorArray ? 0 : rollDownHorizonTenorArray.length;
+
+		if (0 == closeDaysCount ||
+			closeDaysCount != govvieTreasuryInstrumentQuoteGrid.length ||
+			0 == rollDownTenorCount)
+		{
+			return null;
+		}
+
+		List<PositionChangeComponents> positionChangeComponentsList =
+			new ArrayList<PositionChangeComponents>();
+
+		for (int closeDaysIndex = horizonGap; closeDaysIndex < closeDaysCount; ++closeDaysIndex) {
+			PositionChangeComponents positionChangeComponents = HorizonChangeAttribution (
+				spotDateArray[closeDaysIndex - horizonGap],
+				spotDateArray[closeDaysIndex],
+				govvieTreasuryInstrumentTenorArray,
+				govvieTreasuryInstrumentQuoteGrid[closeDaysIndex - horizonGap],
+				govvieTreasuryInstrumentQuoteGrid[closeDaysIndex],
+				maturityTenor,
+				treasuryCode,
+				rollDownHorizonTenorArray,
+				latentStateType
+			);
+
+			if (null != positionChangeComponents) {
+				positionChangeComponentsList.add (positionChangeComponents);
+			}
+		}
+
+		return positionChangeComponentsList;
 	}
 }

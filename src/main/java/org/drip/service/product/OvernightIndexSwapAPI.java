@@ -1,11 +1,24 @@
 
 package org.drip.service.product;
 
+import java.util.Map;
+
+import org.drip.analytics.date.JulianDate;
+import org.drip.param.market.CurveSurfaceQuoteContainer;
+import org.drip.param.valuation.ValuationParams;
+import org.drip.service.env.EnvManager;
+import org.drip.service.template.LatentMarketStateBuilder;
+import org.drip.service.template.OTCInstrumentBuilder;
+import org.drip.state.discount.MergedDiscountForwardCurve;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -80,69 +93,95 @@ package org.drip.service.product;
  */
 
 /**
- * <i>OvernightIndexSwapAPI</i> exposes the Pricing and the Scenario Runs for an Overnight Index Swap.
- * 
- * <br><br>
- *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationSupportLibrary.md">Computation Support</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/README.md">Environment, Product/Definition Containers, and Scenario/State Manipulation APIs</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/product/README.md">Product Horizon PnL Attribution Decomposition</a></li>
- *  </ul>
- * <br><br>
+ * <i>OvernightIndexSwapAPI</i> exposes the Pricing and the Scenario Runs for an Overnight Index Swap. It
+ * 	provides the following Functionality:
  *
+ *  <ul>
+ * 		<li>Generate Full Set of Metrics for the Specified OIS</li>
+ *  </ul>
+ *
+ *	<br>
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationSupportLibrary.md">Computation Support</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/README.md">Environment, Product/Definition Containers, and Scenario/State Manipulation APIs</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/product/README.md">Product Horizon PnL Attribution Decomposition</a></td></tr>
+ *  </table>
+ *	<br>
+ * 
  * @author Lakshmi Krishnamurthy
  */
 
-public class OvernightIndexSwapAPI {
+public class OvernightIndexSwapAPI
+{
 
 	/**
 	 * Generate Full Set of Metrics for the Specified OIS
 	 * 
-	 * @param strOISCurrency OIS Currency
-	 * @param strOISTenor OIS Tenor
-	 * @param dblOISCoupon OIS Coupon
-	 * @param iSpotDate Spot Date
-	 * @param astrOvernightCurveDepositTenor Overnight Curve Calibration Deposit Tenor
-	 * @param adblOvernightCurveDepositQuote Overnight Tenor Calibration Deposit Quote
-	 * @param astrOvernightCurveOISTenor Overnight Curve Calibration OIS Tenor
-	 * @param adblOvernightCurveOISQuote Overnight Curve Calibration OIS Quote
-	 * @param bFund TRUE - Floater Based off of Fund
+	 * @param oisCurrency OIS Currency
+	 * @param oisTenor OIS Tenor
+	 * @param oisCoupon OIS Coupon
+	 * @param spotDate Spot Date
+	 * @param overnightCurveDepositTenorArray Overnight Curve Calibration Deposit Tenor
+	 * @param overnightCurveDepositQuoteArray Overnight Tenor Calibration Deposit Quote
+	 * @param overnightCurveOISTenorArray Overnight Curve Calibration OIS Tenor
+	 * @param overnightCurveOISQuoteArray Overnight Curve Calibration OIS Quote
+	 * @param floaterBasedOffOfFunding TRUE - Floater Based off of Fund
 	 * 
 	 * @return Map of Valuation Metrics
 	 */
 
-	public static final java.util.Map<java.lang.String, java.lang.Double> ValuationMetrics (
-		final java.lang.String strOISCurrency,
-		final java.lang.String strOISTenor,
-		final double dblOISCoupon,
-		final int iSpotDate,
-		final java.lang.String[] astrOvernightCurveDepositTenor,
-		final double[] adblOvernightCurveDepositQuote,
-		final java.lang.String[] astrOvernightCurveOISTenor,
-		final double[] adblOvernightCurveOISQuote,
-		final boolean bFund)
+	public static final Map<String, Double> ValuationMetrics (
+		final String oisCurrency,
+		final String oisTenor,
+		final double oisCoupon,
+		final int spotDate,
+		final String[] overnightCurveDepositTenorArray,
+		final double[] overnightCurveDepositQuoteArray,
+		final String[] overnightCurveOISTenorArray,
+		final double[] overnightCurveOISQuoteArray,
+		final boolean floaterBasedOffOfFunding)
 	{
-		org.drip.service.env.EnvManager.InitEnv ("");
+		EnvManager.InitEnv ("");
 
-		org.drip.analytics.date.JulianDate dtSpot = new org.drip.analytics.date.JulianDate (iSpotDate);
+		JulianDate julianSpotDate = new JulianDate (spotDate);
 
-		org.drip.state.discount.MergedDiscountForwardCurve dcOvernight =
-			org.drip.service.template.LatentMarketStateBuilder.SmoothOvernightCurve (dtSpot, strOISCurrency,
-				astrOvernightCurveDepositTenor, adblOvernightCurveDepositQuote, "Rate",
-					astrOvernightCurveOISTenor, adblOvernightCurveOISQuote, "SwapRate", null, null, null,
-						"SwapRate", null, null, "SwapRate");
+		MergedDiscountForwardCurve overnightDiscountCurve = LatentMarketStateBuilder.SmoothOvernightCurve (
+			julianSpotDate,
+			oisCurrency,
+			overnightCurveDepositTenorArray,
+			overnightCurveDepositQuoteArray,
+			"Rate",
+			overnightCurveOISTenorArray,
+			overnightCurveOISQuoteArray,
+			"SwapRate",
+			null,
+			null,
+			null,
+			"SwapRate",
+			null,
+			null,
+			"SwapRate"
+		);
 
-		if (null == dcOvernight) return null;
+		if (null == overnightDiscountCurve) {
+			return null;
+		}
 
-		org.drip.product.rates.FixFloatComponent oisFixFloat =
-			org.drip.service.template.OTCInstrumentBuilder.OISFixFloat (dtSpot, strOISCurrency, strOISTenor,
-				dblOISCoupon, bFund);
+		CurveSurfaceQuoteContainer curveSurfaceQuoteContainer = new CurveSurfaceQuoteContainer();
 
-		org.drip.param.market.CurveSurfaceQuoteContainer csqc = new
-			org.drip.param.market.CurveSurfaceQuoteContainer();
-
-		return csqc.setFundingState (dcOvernight) ? oisFixFloat.value
-			(org.drip.param.valuation.ValuationParams.Spot (iSpotDate), null, csqc, null) : null;
+		return curveSurfaceQuoteContainer.setFundingState (overnightDiscountCurve) ?
+			OTCInstrumentBuilder.OISFixFloat (
+				julianSpotDate,
+				oisCurrency,
+				oisTenor,
+				oisCoupon,
+				floaterBasedOffOfFunding
+			).value (
+				ValuationParams.Spot (spotDate),
+				null,
+				curveSurfaceQuoteContainer,
+				null
+			) : null;
 	}
 }
