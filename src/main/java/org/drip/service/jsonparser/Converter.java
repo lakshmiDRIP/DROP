@@ -89,10 +89,26 @@ import org.drip.service.representation.JSONObject;
 
 /**
  * <i>TypeConverter</i> transforms the JSON Object to certain Primitive/Simple Data Type Arrays, i.e.,
- * double, integer, String, or JulianDate Arrays. It provides the following Functionality:
+ * 	double, integer, String, or JulianDate Arrays. It provides the following Functionality:
  *
  *  <ul>
- * 		<li>Receive notification of the beginning of JSON processing. The parser will invoke this method only once</li>
+ * 		<li>Convert the JSON Entry to a String</li>
+ * 		<li>Convert the JSON Entry to a String Array</li>
+ * 		<li>Convert the JSON Entry to a Date</li>
+ * 		<li>Convert the JSON Entry to a Date Array</li>
+ * 		<li>Convert the JSON Entry to a Double</li>
+ * 		<li>Convert the JSON Entry to a Double Array</li>
+ * 		<li>Convert the JSON Entry to a Dual Double Array</li>
+ * 		<li>Convert the JSON Entry to an Integer</li>
+ * 		<li>Convert the JSON Entry to an Integer Array</li>
+ * 		<li>Convert the JSON Entry to an Boolean</li>
+ * 		<li>Convert the JSON Entry to a Boolean Array</li>
+ * 		<li>Construct a JSON Array out of the String Array</li>
+ * 		<li>Construct a JSON Array out of the Integer Array</li>
+ * 		<li>Construct a JSON Array out of the Double Array</li>
+ * 		<li>Construct a JSON 2D Array out of the 2D Double Array</li>
+ * 		<li>Construct a JSON Array out of the JulianDate Array</li>
+ * 		<li>Construct a JSON Array out of the Boolean Array</li>
  *  </ul>
  *
  *	<br>
@@ -251,14 +267,17 @@ public class Converter
 		final String entryKey)
 		throws Exception
 	{
-		if (null == json || !json.containsKey (entryKey))
+		if (null == json || !json.containsKey (entryKey)) {
 			throw new Exception ("Converter::DoubleEntry => Invalid Inputs");
+		}
 
-		Object objEntry = json.get (entryKey);
+		Object entry = json.get (entryKey);
 
-		if (null == objEntry) throw new Exception ("Converter::DoubleEntry => Invalid Inputs");
+		if (null == entry) {
+			throw new Exception ("Converter::DoubleEntry => Invalid Inputs");
+		}
 
-		return Double.parseDouble (objEntry.toString().trim());
+		return Double.parseDouble (entry.toString().trim());
 	}
 
 	/**
@@ -274,27 +293,33 @@ public class Converter
 		final JSONObject json,
 		final String entryKey)
 	{
-		if (null == json || !json.containsKey (entryKey)) return null;
+		if (null == json || !json.containsKey (entryKey)) {
+			return null;
+		}
 
-		Object objEntry = json.get (entryKey);
+		Object entry = json.get (entryKey);
 
-		if (null == objEntry || !(objEntry instanceof JSONArray)) return null;
+		if (null == entry || !(entry instanceof JSONArray)) return null;
 
-		JSONArray jsonArray = (JSONArray) objEntry;
+		JSONArray jsonArray = (JSONArray) entry;
 
-		int iNumElement = jsonArray.size();
+		int elementCount = jsonArray.size();
 
-		if (0 == iNumElement) return null;
+		if (0 == elementCount) {
+			return null;
+		}
 
-		double[] adbl = new double[iNumElement];
+		double[] doubleArray = new double[elementCount];
 
-		for (int i = 0; i < iNumElement; ++i) {
-			Object objElement = jsonArray.get (i);
+		for (int element = 0; element < elementCount; ++element) {
+			Object objElement = jsonArray.get (element);
 
-			if (null == objElement) return null;
+			if (null == objElement) {
+				return null;
+			}
 
 			try {
-				adbl[i] = Double.parseDouble (objElement.toString().trim());
+				doubleArray[element] = Double.parseDouble (objElement.toString().trim());
 			} catch (Exception e) {
 				e.printStackTrace();
 
@@ -302,7 +327,7 @@ public class Converter
 			}
 		}
 
-		return adbl;
+		return doubleArray;
 	}
 
 	/**
@@ -318,41 +343,53 @@ public class Converter
 		final JSONObject json,
 		final String entryKey)
 	{
-		if (null == json || !json.containsKey (entryKey)) return null;
+		if (null == json || !json.containsKey (entryKey)) {
+			return null;
+		}
 
 		Object objEntry = json.get (entryKey);
 
-		if (null == objEntry || !(objEntry instanceof JSONArray)) return null;
+		if (null == objEntry || !(objEntry instanceof JSONArray)) {
+			return null;
+		}
 
 		JSONArray jsonArray = (JSONArray) objEntry;
 
-		int iNumOuterElement = jsonArray.size();
+		int outerElement = jsonArray.size();
 
-		if (0 == iNumOuterElement) return null;
+		if (0 == outerElement) {
+			return null;
+		}
 
-		double[][] aadbl = new double[iNumOuterElement][];
+		double[][] elementGrid = new double[outerElement][];
 
-		for (int i = 0; i < iNumOuterElement; ++i) {
-			Object objOuterElement = jsonArray.get (i);
+		for (int rowIndex = 0; rowIndex < outerElement; ++rowIndex) {
+			Object objOuterElement = jsonArray.get (rowIndex);
 
-			if (null == objOuterElement || !(objOuterElement instanceof JSONArray))
+			if (null == objOuterElement || !(objOuterElement instanceof JSONArray)) {
 				return null;
+			}
 
 			JSONArray jsonOuterArray = (JSONArray) objOuterElement;
 
-			int iNumInnerElement = jsonOuterArray.size();
+			int innerElementCount = jsonOuterArray.size();
 
-			if (0 == iNumInnerElement) return null;
+			if (0 == innerElementCount) {
+				return null;
+			}
 
-			aadbl[i] = new double[iNumInnerElement];
+			elementGrid[rowIndex] = new double[innerElementCount];
 
 			try {
-				for (int j = 0; j < iNumInnerElement; ++j) {
-					Object objInnerElement = jsonOuterArray.get (j);
+				for (int columnIndex = 0; columnIndex < innerElementCount; ++columnIndex) {
+					Object objInnerElement = jsonOuterArray.get (columnIndex);
 
-					if (null == objInnerElement) return null;
+					if (null == objInnerElement) {
+						return null;
+					}
 
-					aadbl[i][j] = Double.parseDouble (objInnerElement.toString().trim());
+					elementGrid[rowIndex][columnIndex] =
+						Double.parseDouble (objInnerElement.toString().trim());
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -361,7 +398,7 @@ public class Converter
 			}
 		}
 
-		return aadbl;
+		return elementGrid;
 	}
 
 	/**
@@ -380,12 +417,15 @@ public class Converter
 		final String entryKey)
 		throws Exception
 	{
-		if (null == json || !json.containsKey (entryKey))
+		if (null == json || !json.containsKey (entryKey)) {
 			throw new Exception ("Converter::IntegerEntry => Invalid Inputs");
+		}
 
 		Object objEntry = json.get (entryKey);
 
-		if (null == objEntry) throw new Exception ("Converter::IntegerEntry => Invalid Inputs");
+		if (null == objEntry) {
+			throw new Exception ("Converter::IntegerEntry => Invalid Inputs");
+		}
 
 		return Integer.parseInt (objEntry.toString().trim());
 	}
@@ -393,33 +433,39 @@ public class Converter
 	/**
 	 * Convert the JSON Entry to an Integer Array
 	 * 
-	 * @param objJSON The JSON Object
+	 * @param json The JSON Object
 	 * 
 	 * @return The Integer Array From of the JSON Entry
 	 */
 
 	public static final int[] IntegerArrayEntry (
-		final Object objJSON)
+		final Object json)
 	{
-		if (null == objJSON || !(objJSON instanceof JSONArray)) return null;
-
-		JSONArray jsonArray = (JSONArray) objJSON;
-
-		int iNumElement = jsonArray.size();
-
-		if (0 == iNumElement) return null;
-
-		int[] ai = new int[iNumElement];
-
-		for (int i = 0; i < iNumElement; ++i) {
-			Object json = jsonArray.get (i);
-
-			if (null == json) return null;
-
-			ai[i] = Integer.parseInt (json.toString().trim());
+		if (null == json || !(json instanceof JSONArray)) {
+			return null;
 		}
 
-		return ai;
+		JSONArray jsonArray = (JSONArray) json;
+
+		int elementCount = jsonArray.size();
+
+		if (0 == elementCount) {
+			return null;
+		}
+
+		int[] integerArray = new int[elementCount];
+
+		for (int elementIndex = 0; elementIndex < elementCount; ++elementIndex) {
+			Object jsonElement = jsonArray.get (elementIndex);
+
+			if (null == jsonElement) {
+				return null;
+			}
+
+			integerArray[elementIndex] = Integer.parseInt (jsonElement.toString().trim());
+		}
+
+		return integerArray;
 	}
 
 	/**
@@ -442,62 +488,73 @@ public class Converter
 			throw new Exception ("Converter::BooleanEntry => Invalid Inputs");
 		}
 
-		Object objEntry = json.get (entryKey);
+		Object entry = json.get (entryKey);
 
-		if (null == objEntry) throw new Exception ("Converter::BooleanEntry => Invalid Inputs");
+		if (null == entry) {
+			throw new Exception ("Converter::BooleanEntry => Invalid Inputs");
+		}
 
-		return Boolean.parseBoolean (objEntry.toString().trim());
+		return Boolean.parseBoolean (entry.toString().trim());
 	}
 
 	/**
 	 * Convert the JSON Entry to a Boolean Array
 	 * 
-	 * @param objJSON The Object
+	 * @param jsonObject The Object
 	 * 
 	 * @return The Boolean Array From of the JSON Entry
 	 */
 
 	public static final boolean[] BooleanArrayEntry (
-		final Object objJSON)
+		final Object jsonObject)
 	{
-		if (null == objJSON || !(objJSON instanceof JSONArray)) return null;
-
-		JSONArray jsonArray = (JSONArray) objJSON;
-
-		int iNumElement = jsonArray.size();
-
-		if (0 == iNumElement) return null;
-
-		boolean[] ab = new boolean[iNumElement];
-
-		for (int i = 0; i < iNumElement; ++i) {
-			Object json = jsonArray.get (i);
-
-			if (null == json) return null;
-
-			ab[i] = Boolean.parseBoolean (json.toString().trim());
+		if (null == jsonObject || !(jsonObject instanceof JSONArray)) {
+			return null;
 		}
 
-		return ab;
+		JSONArray jsonArray = (JSONArray) jsonObject;
+
+		int elementCount = jsonArray.size();
+
+		if (0 == elementCount) {
+			return null;
+		}
+
+		boolean[] booleanArray = new boolean[elementCount];
+
+		for (int elementIndex = 0; elementIndex < elementCount; ++elementIndex) {
+			Object json = jsonArray.get (elementIndex);
+
+			if (null == json) {
+				return null;
+			}
+
+			booleanArray[elementIndex] = Boolean.parseBoolean (json.toString().trim());
+		}
+
+		return booleanArray;
 	}
 
 	/**
 	 * Construct a JSON Array out of the String Array
 	 * 
-	 * @param astr The String Array
+	 * @param stringArray The String Array
 	 * 
 	 * @return The JSON Array Instance
 	 */
 
 	@SuppressWarnings ("unchecked") public static final JSONArray Array (
-		final String[] astr)
+		final String[] stringArray)
 	{
-		if (null == astr || 0 == astr.length) return null;
+		if (null == stringArray || 0 == stringArray.length) {
+			return null;
+		}
 
 		JSONArray jsonArray = new JSONArray();
 
-		for (String str : astr)
-			jsonArray.add (str);
+		for (String s : stringArray) {
+			jsonArray.add (s);
+		}
 
 		return jsonArray;
 	}
@@ -505,20 +562,23 @@ public class Converter
 	/**
 	 * Construct a JSON Array out of the Integer Array
 	 * 
-	 * @param ai The Integer Array
+	 * @param integerArray The Integer Array
 	 * 
 	 * @return The JSON Array Instance
 	 */
 
 	@SuppressWarnings ("unchecked") public static final JSONArray Array (
-		final int[] ai)
+		final int[] integerArray)
 	{
-		if (null == ai || 0 == ai.length) return null;
+		if (null == integerArray || 0 == integerArray.length) {
+			return null;
+		}
 
 		JSONArray jsonArray = new JSONArray();
 
-		for (int i : ai)
+		for (int i : integerArray) {
 			jsonArray.add (i);
+		}
 
 		return jsonArray;
 	}
@@ -526,20 +586,23 @@ public class Converter
 	/**
 	 * Construct a JSON Array out of the Double Array
 	 * 
-	 * @param adbl The Double Array
+	 * @param doubleArray The Double Array
 	 * 
 	 * @return The JSON Array Instance
 	 */
 
 	@SuppressWarnings ("unchecked") public static final JSONArray Array (
-		final double[] adbl)
+		final double[] doubleArray)
 	{
-		if (null == adbl || 0 == adbl.length) return null;
+		if (null == doubleArray || 0 == doubleArray.length) {
+			return null;
+		}
 
 		JSONArray jsonArray = new JSONArray();
 
-		for (double dbl : adbl)
-			jsonArray.add (dbl);
+		for (double d : doubleArray) {
+			jsonArray.add (d);
+		}
 
 		return jsonArray;
 	}
@@ -547,41 +610,47 @@ public class Converter
 	/**
 	 * Construct a JSON 2D Array out of the 2D Double Array
 	 * 
-	 * @param aadbl The 2D Double Array
+	 * @param grid The 2D Double Array
 	 * 
 	 * @return The JSON 2D Array Instance
 	 */
 
 	@SuppressWarnings ("unchecked") public static final JSONArray Array (
-		final double[][] aadbl)
+		final double[][] grid)
 	{
-		if (null == aadbl || 0 == aadbl.length) return null;
+		if (null == grid || 0 == grid.length) {
+			return null;
+		}
 
 		JSONArray jsonArray = new JSONArray();
 
-		for (double[] adbl : aadbl)
-			jsonArray.add (Array (adbl));
+		for (double[] row : grid) {
+			jsonArray.add (Array (row));
+		}
 
 		return jsonArray;
 	}
 
 	/**
-	 * Construct a JSON Array out of the Boolean Array
+	 * Construct a JSON Array out of the JulianDate Array
 	 * 
-	 * @param ab The Boolean Array
+	 * @param booleanArray The Boolean Array
 	 * 
 	 * @return The JSON Array Instance
 	 */
 
 	@SuppressWarnings ("unchecked") public static final JSONArray Array (
-		final boolean[] ab)
+		final boolean[] booleanArray)
 	{
-		if (null == ab || 0 == ab.length) return null;
+		if (null == booleanArray || 0 == booleanArray.length) {
+			return null;
+		}
 
 		JSONArray jsonArray = new JSONArray();
 
-		for (boolean b : ab)
+		for (boolean b : booleanArray) {
 			jsonArray.add (b);
+		}
 
 		return jsonArray;
 	}
@@ -597,12 +666,15 @@ public class Converter
 	@SuppressWarnings ("unchecked") public static final JSONArray Array (
 		final JulianDate[] dateArray)
 	{
-		if (null == dateArray || 0 == dateArray.length) return null;
+		if (null == dateArray || 0 == dateArray.length) {
+			return null;
+		}
 
 		JSONArray jsonArray = new JSONArray();
 
-		for (JulianDate dt : dateArray)
-			jsonArray.add (dt);
+		for (JulianDate date : dateArray) {
+			jsonArray.add (date);
+		}
 
 		return jsonArray;
 	}

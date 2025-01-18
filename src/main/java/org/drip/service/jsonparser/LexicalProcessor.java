@@ -1,11 +1,21 @@
 
 package org.drip.service.jsonparser;
 
+import java.io.IOException;
+import java.io.Reader;
+import java.io.StringReader;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -81,77 +91,83 @@ package org.drip.service.jsonparser;
 
 /**
  * <i>LexicalProcessor</i> is an Adaptation of the JSONParser Class from the RFC4627 compliant JSON Simple
- * (https://code.google.com/p/json-simple/).
+ * (https://code.google.com/p/json-simple/). It provides the following Functionality:
  *
- *	<br><br>
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationSupportLibrary.md">Computation Support</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/README.md">Environment, Product/Definition Containers, and Scenario/State Manipulation APIs</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/jsonparser">RFC4627 Compliant JSON Message Parser</a></li>
+ * 		<li>Convert the JSON Entry to a String</li>
  *  </ul>
+ *
+ *	<br>
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationSupportLibrary.md">Computation Support</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/README.md">Environment, Product/Definition Containers, and Scenario/State Manipulation APIs</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/jsonparser/README.md">RFC4627 Compliant JSON Message Parser</a></td></tr>
+ *  </table>
+ *	<br>
  *
  * @author Fang Yidong
  * @author Lakshmi Krishnamurthy
  */
 
-public class LexicalProcessor {
+public class LexicalProcessor
+{
 
 	/**
 	 * Processor Initialized
 	 */
 
-	public static final int S_INIT=0;
+	public static final int S_INIT = 0;
 
 	/**
 	 * Processor Initialized with Value
 	 */
 
-    public static final int S_IN_FINISHED_VALUE=1;//string,number,boolean,null,object,array
+    public static final int S_IN_FINISHED_VALUE = 1; //string, number, boolean, null, object, array
 
 	/**
 	 * Processor Initialized with Object
 	 */
 
-    public static final int S_IN_OBJECT=2;
+    public static final int S_IN_OBJECT = 2;
 
 	/**
 	 * Processor Initialized with Array
 	 */
 
-    public static final int S_IN_ARRAY=3;
+    public static final int S_IN_ARRAY = 3;
 
 	/**
 	 * Processor Initialized with Key Pair
 	 */
 
-    public static final int S_PASSED_PAIR_KEY=4;
+    public static final int S_PASSED_PAIR_KEY = 4;
 
 	/**
 	 * Processor Initialized with Value Pair
 	 */
 
-    public static final int S_IN_PAIR_VALUE=5;
+    public static final int S_IN_PAIR_VALUE = 5;
 
 	/**
 	 * Processor Finished
 	 */
 
-    public static final int S_END=6;
+    public static final int S_END = 6;
 
 	/**
 	 * Processor In Error
 	 */
 
-    public static final int S_IN_ERROR=-1;
+    public static final int S_IN_ERROR = -1;
     
-    @SuppressWarnings ("rawtypes") private java.util.LinkedList handlerStatusStack;
+    @SuppressWarnings ("rawtypes") private LinkedList _handlerStatusStack = null;
 
-    private Yylex lexer = new Yylex((java.io.Reader)null);
-    private Yytoken token = null;
-    private int status = S_INIT;
+    private Yylex _yylexer = new Yylex ((Reader) null);
+    private Yytoken _yyToken = null;
+    private int _status = S_INIT;
     
-    @SuppressWarnings ("rawtypes") private int peekStatus(java.util.LinkedList statusStack){
+    @SuppressWarnings ("rawtypes") private int peekStatus(LinkedList statusStack){
             if(statusStack.size()==0)
                     return -1;
             Integer status=(Integer)statusStack.getFirst();
@@ -163,9 +179,9 @@ public class LexicalProcessor {
  *
  */
 public void reset(){
-    token = null;
-    status = S_INIT;
-    handlerStatusStack = null;
+	_yyToken = null;
+	_status = S_INIT;
+    _handlerStatusStack = null;
 }
 
 /**
@@ -173,8 +189,8 @@ public void reset(){
  * 
  * @param in - The new character reader.
  */
-    public void reset(java.io.Reader in){
-            lexer.yyreset(in);
+    public void reset(Reader in){
+    	_yylexer.yyreset(in);
             reset();
     }
     
@@ -184,7 +200,7 @@ public void reset(){
      * @return The position of the beginning of the current token.
      */
     public int getPosition(){
-            return lexer.getPosition();
+            return _yylexer.getPosition();
     }
 
     /**
@@ -213,11 +229,11 @@ public void reset(){
      */
 
     public Object parse(String s, ContainerFactory containerFactory) throws ParseException{
-    	java.io.StringReader in=new java.io.StringReader(s);
+    	StringReader in=new StringReader(s);
             try{
                     return parse(in, containerFactory);
             }
-            catch(java.io.IOException ie){
+            catch(IOException ie){
                     /*
                      * Actually it will never happen.
                      */
@@ -232,12 +248,12 @@ public void reset(){
      * 
      * @return The Parsed Object
      * 
-     * @throws java.io.IOException Thrown if the IOException is encountered
+     * @throws IOException Thrown if the IOException is encountered
      * 
      * @throws ParseException Thrown if the Inputs are Invalid
      */
 
-    public Object parse(java.io.Reader in) throws java.io.IOException, ParseException{
+    public Object parse(Reader in) throws IOException, ParseException{
             return parse(in, (ContainerFactory)null);
     }
     
@@ -254,187 +270,187 @@ public void reset(){
      *      java.lang.Boolean,
      *      null
      * 
-	 * @throws java.io.IOException Thrown if the Inputs are Invalid
+	 * @throws IOException Thrown if the Inputs are Invalid
      * 
 	 * @throws ParseException Thrown if the Inputs are Invalid
      */
-    @SuppressWarnings ({"rawtypes", "unchecked"}) public Object parse(java.io.Reader in, ContainerFactory containerFactory) throws java.io.IOException, ParseException{
+    @SuppressWarnings ({"rawtypes", "unchecked"}) public Object parse(Reader in, ContainerFactory containerFactory) throws IOException, ParseException{
             reset(in);
-            java.util.LinkedList statusStack = new java.util.LinkedList();
-            java.util.LinkedList valueStack = new java.util.LinkedList();
+            LinkedList statusStack = new LinkedList();
+            LinkedList valueStack = new LinkedList();
             
             try{
                     do{
                             nextToken();
-                            switch(status){
+                            switch(_status){
                             case S_INIT:
-                                    switch(token.type){
+                                    switch(_yyToken.type){
                                     case Yytoken.TYPE_VALUE:
-                                            status=S_IN_FINISHED_VALUE;
-                                            statusStack.addFirst(status);
-                                            valueStack.addFirst(token.value);
+                                    	_status=S_IN_FINISHED_VALUE;
+                                            statusStack.addFirst(_status);
+                                            valueStack.addFirst(_yyToken.value);
                                             break;
                                     case Yytoken.TYPE_LEFT_BRACE:
-                                            status=S_IN_OBJECT;
-                                            statusStack.addFirst(status);
+                                    	_status=S_IN_OBJECT;
+                                            statusStack.addFirst(_status);
                                             valueStack.addFirst(createObjectContainer(containerFactory));
                                             break;
                                     case Yytoken.TYPE_LEFT_SQUARE:
-                                            status=S_IN_ARRAY;
-                                            statusStack.addFirst(status);
+                                    	_status=S_IN_ARRAY;
+                                            statusStack.addFirst(_status);
                                             valueStack.addFirst(createArrayContainer(containerFactory));
                                             break;
                                     default:
-                                            status=S_IN_ERROR;
+                                    	_status=S_IN_ERROR;
                                     }//inner switch
                                     break;
                                     
                             case S_IN_FINISHED_VALUE:
-                                    if(token.type==Yytoken.TYPE_EOF)
+                                    if(_yyToken.type==Yytoken.TYPE_EOF)
                                             return valueStack.removeFirst();
                                     else
-                                            throw new ParseException(getPosition(), ParseException.ERROR_UNEXPECTED_TOKEN, token);
+                                            throw new ParseException(getPosition(), ParseException.ERROR_UNEXPECTED_TOKEN, _yyToken);
                                     
                             case S_IN_OBJECT:
-                                    switch(token.type){
+                                    switch(_yyToken.type){
                                     case Yytoken.TYPE_COMMA:
                                             break;
                                     case Yytoken.TYPE_VALUE:
-                                            if(token.value instanceof String){
-                                                    String key=(String)token.value;
+                                            if(_yyToken.value instanceof String){
+                                                    String key=(String)_yyToken.value;
                                                     valueStack.addFirst(key);
-                                                    status=S_PASSED_PAIR_KEY;
-                                                    statusStack.addFirst(status);
+                                                    _status=S_PASSED_PAIR_KEY;
+                                                    statusStack.addFirst(_status);
                                             }
                                             else{
-                                                    status=S_IN_ERROR;
+                                            	_status=S_IN_ERROR;
                                             }
                                             break;
                                     case Yytoken.TYPE_RIGHT_BRACE:
                                             if(valueStack.size()>1){
                                                     statusStack.removeFirst();
                                                     valueStack.removeFirst();
-                                                    status=peekStatus(statusStack);
+                                                    _status=peekStatus(statusStack);
                                             }
                                             else{
-                                                    status=S_IN_FINISHED_VALUE;
+                                            	_status=S_IN_FINISHED_VALUE;
                                             }
                                             break;
                                     default:
-                                            status=S_IN_ERROR;
+                                    	_status=S_IN_ERROR;
                                             break;
                                     }//inner switch
                                     break;
                                     
                             case S_PASSED_PAIR_KEY:
-                                    switch(token.type){
+                                    switch(_yyToken.type){
                                     case Yytoken.TYPE_COLON:
                                             break;
                                     case Yytoken.TYPE_VALUE:
                                             statusStack.removeFirst();
                                             String key=(String)valueStack.removeFirst();
-                                            java.util.Map parent=(java.util.Map)valueStack.getFirst();
-                                            parent.put(key,token.value);
-                                            status=peekStatus(statusStack);
+                                            Map parent=(Map)valueStack.getFirst();
+                                            parent.put(key,_yyToken.value);
+                                            _status=peekStatus(statusStack);
                                             break;
                                     case Yytoken.TYPE_LEFT_SQUARE:
                                             statusStack.removeFirst();
                                             key=(String)valueStack.removeFirst();
-                                            parent=(java.util.Map)valueStack.getFirst();
-                                            java.util.List newArray=createArrayContainer(containerFactory);
+                                            parent=(Map)valueStack.getFirst();
+                                            List newArray=createArrayContainer(containerFactory);
                                             parent.put(key,newArray);
-                                            status=S_IN_ARRAY;
-                                            statusStack.addFirst(status);
+                                            _status=S_IN_ARRAY;
+                                            statusStack.addFirst(_status);
                                             valueStack.addFirst(newArray);
                                             break;
                                     case Yytoken.TYPE_LEFT_BRACE:
                                             statusStack.removeFirst();
                                             key=(String)valueStack.removeFirst();
-                                            parent=(java.util.Map)valueStack.getFirst();
-                                            java.util.Map newObject=createObjectContainer(containerFactory);
+                                            parent=(Map)valueStack.getFirst();
+                                            Map newObject=createObjectContainer(containerFactory);
                                             parent.put(key,newObject);
-                                            status=S_IN_OBJECT;
-                                            statusStack.addFirst(status);
+                                            _status=S_IN_OBJECT;
+                                            statusStack.addFirst(_status);
                                             valueStack.addFirst(newObject);
                                             break;
                                     default:
-                                            status=S_IN_ERROR;
+                                    	_status=S_IN_ERROR;
                                     }
                                     break;
                                     
                             case S_IN_ARRAY:
-                                    switch(token.type){
+                                    switch(_yyToken.type){
                                     case Yytoken.TYPE_COMMA:
                                             break;
                                     case Yytoken.TYPE_VALUE:
-                                    	java.util.List val=(java.util.List)valueStack.getFirst();
-                                            val.add(token.value);
+                                    	List val=(List)valueStack.getFirst();
+                                            val.add(_yyToken.value);
                                             break;
                                     case Yytoken.TYPE_RIGHT_SQUARE:
                                             if(valueStack.size()>1){
                                                     statusStack.removeFirst();
                                                     valueStack.removeFirst();
-                                                    status=peekStatus(statusStack);
+                                                    _status=peekStatus(statusStack);
                                             }
                                             else{
-                                                    status=S_IN_FINISHED_VALUE;
+                                            	_status=S_IN_FINISHED_VALUE;
                                             }
                                             break;
                                     case Yytoken.TYPE_LEFT_BRACE:
-                                            val=(java.util.List)valueStack.getFirst();
-                                            java.util.Map newObject=createObjectContainer(containerFactory);
+                                            val=(List)valueStack.getFirst();
+                                            Map newObject=createObjectContainer(containerFactory);
                                             val.add(newObject);
-                                            status=S_IN_OBJECT;
-                                            statusStack.addFirst(status);
+                                            _status=S_IN_OBJECT;
+                                            statusStack.addFirst(_status);
                                             valueStack.addFirst(newObject);
                                             break;
                                     case Yytoken.TYPE_LEFT_SQUARE:
-                                            val=(java.util.List)valueStack.getFirst();
-                                            java.util.List newArray=createArrayContainer(containerFactory);
+                                            val=(List)valueStack.getFirst();
+                                            List newArray=createArrayContainer(containerFactory);
                                             val.add(newArray);
-                                            status=S_IN_ARRAY;
-                                            statusStack.addFirst(status);
+                                            _status=S_IN_ARRAY;
+                                            statusStack.addFirst(_status);
                                             valueStack.addFirst(newArray);
                                             break;
                                     default:
-                                            status=S_IN_ERROR;
+                                    	_status=S_IN_ERROR;
                                     }//inner switch
                                     break;
                             case S_IN_ERROR:
-                                    throw new ParseException(getPosition(), ParseException.ERROR_UNEXPECTED_TOKEN, token);
+                                    throw new ParseException(getPosition(), ParseException.ERROR_UNEXPECTED_TOKEN, _yyToken);
                             }//switch
-                            if(status==S_IN_ERROR){
-                                    throw new ParseException(getPosition(), ParseException.ERROR_UNEXPECTED_TOKEN, token);
+                            if(_status==S_IN_ERROR){
+                                    throw new ParseException(getPosition(), ParseException.ERROR_UNEXPECTED_TOKEN, _yyToken);
                             }
-                    }while(token.type!=Yytoken.TYPE_EOF);
+                    }while(_yyToken.type!=Yytoken.TYPE_EOF);
             }
-            catch(java.io.IOException ie){
+            catch(IOException ie){
                     throw ie;
             }
-            
-            throw new ParseException(getPosition(), ParseException.ERROR_UNEXPECTED_TOKEN, token);
+
+            throw new ParseException(getPosition(), ParseException.ERROR_UNEXPECTED_TOKEN, _yyToken);
     }
     
-    private void nextToken() throws ParseException, java.io.IOException{
-            token = lexer.yylex();
-            if(token == null)
-                    token = new Yytoken(Yytoken.TYPE_EOF, null);
+    private void nextToken() throws ParseException, IOException{
+    	_yyToken = _yylexer.yylex();
+            if(_yyToken == null)
+            	_yyToken = new Yytoken(Yytoken.TYPE_EOF, null);
     }
     
-    @SuppressWarnings ("rawtypes") private java.util.Map createObjectContainer(ContainerFactory containerFactory){
+    @SuppressWarnings ("rawtypes") private Map createObjectContainer(ContainerFactory containerFactory){
             if(containerFactory == null)
                     return new org.drip.service.representation.JSONObject();
-            java.util.Map m = containerFactory.createObjectContainer();
+            Map m = containerFactory.createObjectContainer();
             
             if(m == null)
                     return new org.drip.service.representation.JSONObject();
             return m;
     }
     
-    @SuppressWarnings ("rawtypes") private java.util.List createArrayContainer(ContainerFactory containerFactory){
+    @SuppressWarnings ("rawtypes") private List createArrayContainer(ContainerFactory containerFactory){
             if(containerFactory == null)
                     return new org.drip.service.representation.JSONArray();
-            java.util.List l = containerFactory.creatArrayContainer();
+            List l = containerFactory.creatArrayContainer();
             
             if(l == null)
                     return new org.drip.service.representation.JSONArray();
@@ -465,11 +481,11 @@ public void reset(){
      */
 
     public void parse(String s, ContentHandler contentHandler, boolean isResume) throws ParseException{
-    	java.io.StringReader in=new java.io.StringReader(s);
+    	StringReader in=new StringReader(s);
             try{
                     parse(in, contentHandler, isResume);
             }
-            catch(java.io.IOException ie){
+            catch(IOException ie){
                     /*
                      * Actually it will never happen.
                      */
@@ -483,12 +499,12 @@ public void reset(){
      * @param in Input Reader
      * @param contentHandler The Content Handler
      * 
-     * @throws java.io.IOException Thrown if the IOException is encountered
+     * @throws IOException Thrown if the IOException is encountered
      * 
      * @throws ParseException Thrown if Parser Exception encountered
      */
     
-    public void parse(java.io.Reader in, ContentHandler contentHandler) throws java.io.IOException, ParseException{
+    public void parse(Reader in, ContentHandler contentHandler) throws IOException, ParseException{
             parse(in, contentHandler, false);
     }
     
@@ -503,110 +519,110 @@ public void reset(){
  *                   If set to true, resume parsing the old stream, and parameter 'in' will be ignored. 
      *                   If this method is called for the first time in this instance, isResume will be ignored.
      * 
-     * @throws java.io.IOException Thrown if the Inputs are Invalid
+     * @throws IOException Thrown if the Inputs are Invalid
      * 
 	 * @throws ParseException Thrown if the Inputs are Invalid
      */
-    @SuppressWarnings ({"rawtypes", "unchecked"}) public void parse(java.io.Reader in, ContentHandler contentHandler, boolean isResume) throws java.io.IOException, ParseException{
+    @SuppressWarnings ({"rawtypes", "unchecked"}) public void parse(Reader in, ContentHandler contentHandler, boolean isResume) throws IOException, ParseException{
             if(!isResume){
                     reset(in);
-                    handlerStatusStack = new java.util.LinkedList();
+                    _handlerStatusStack = new LinkedList();
             }
             else{
-                    if(handlerStatusStack == null){
+                    if(_handlerStatusStack == null){
                             isResume = false;
                             reset(in);
-                            handlerStatusStack = new java.util.LinkedList();
+                            _handlerStatusStack = new LinkedList();
                     }
             }
             
-            java.util.LinkedList statusStack = handlerStatusStack;    
+            LinkedList statusStack = _handlerStatusStack;    
             
             try{
                     do{
-                            switch(status){
+                            switch(_status){
                             case S_INIT:
                                     contentHandler.startJSON();
                                     nextToken();
-                                    switch(token.type){
+                                    switch(_yyToken.type){
                                     case Yytoken.TYPE_VALUE:
-                                            status=S_IN_FINISHED_VALUE;
-                                            statusStack.addFirst(status);
-                                            if(!contentHandler.primitive(token.value))
+                                    	_status=S_IN_FINISHED_VALUE;
+                                            statusStack.addFirst(_status);
+                                            if(!contentHandler.primitive(_yyToken.value))
                                                     return;
                                             break;
                                     case Yytoken.TYPE_LEFT_BRACE:
-                                            status=S_IN_OBJECT;
-                                            statusStack.addFirst(status);
+                                    	_status=S_IN_OBJECT;
+                                            statusStack.addFirst(_status);
                                             if(!contentHandler.startObject())
                                                     return;
                                             break;
                                     case Yytoken.TYPE_LEFT_SQUARE:
-                                            status=S_IN_ARRAY;
-                                            statusStack.addFirst(status);
+                                    	_status=S_IN_ARRAY;
+                                            statusStack.addFirst(_status);
                                             if(!contentHandler.startArray())
                                                     return;
                                             break;
                                     default:
-                                            status=S_IN_ERROR;
+                                    	_status=S_IN_ERROR;
                                     }//inner switch
                                     break;
                                     
                             case S_IN_FINISHED_VALUE:
                                     nextToken();
-                                    if(token.type==Yytoken.TYPE_EOF){
+                                    if(_yyToken.type==Yytoken.TYPE_EOF){
                                             contentHandler.endJSON();
-                                            status = S_END;
+                                            _status = S_END;
                                             return;
                                     }
                                     else{
-                                            status = S_IN_ERROR;
-                                            throw new ParseException(getPosition(), ParseException.ERROR_UNEXPECTED_TOKEN, token);
+                                    	_status = S_IN_ERROR;
+                                            throw new ParseException(getPosition(), ParseException.ERROR_UNEXPECTED_TOKEN, _yyToken);
                                     }
                     
                             case S_IN_OBJECT:
                                     nextToken();
-                                    switch(token.type){
+                                    switch(_yyToken.type){
                                     case Yytoken.TYPE_COMMA:
                                             break;
                                     case Yytoken.TYPE_VALUE:
-                                            if(token.value instanceof String){
-                                                    String key=(String)token.value;
-                                                    status=S_PASSED_PAIR_KEY;
-                                                    statusStack.addFirst(status);
+                                            if(_yyToken.value instanceof String){
+                                                    String key=(String)_yyToken.value;
+                                                    _status=S_PASSED_PAIR_KEY;
+                                                    statusStack.addFirst(_status);
                                                     if(!contentHandler.startObjectEntry(key))
                                                             return;
                                             }
                                             else{
-                                                    status=S_IN_ERROR;
+                                            	_status=S_IN_ERROR;
                                             }
                                             break;
                                     case Yytoken.TYPE_RIGHT_BRACE:
                                             if(statusStack.size()>1){
                                                     statusStack.removeFirst();
-                                                    status=peekStatus(statusStack);
+                                                    _status=peekStatus(statusStack);
                                             }
                                             else{
-                                                    status=S_IN_FINISHED_VALUE;
+                                            	_status=S_IN_FINISHED_VALUE;
                                             }
                                             if(!contentHandler.endObject())
                                                     return;
                                             break;
                                     default:
-                                            status=S_IN_ERROR;
+                                    	_status=S_IN_ERROR;
                                             break;
                                     }//inner switch
                                     break;
                                     
                             case S_PASSED_PAIR_KEY:
                                     nextToken();
-                                    switch(token.type){
+                                    switch(_yyToken.type){
                                     case Yytoken.TYPE_COLON:
                                             break;
                                     case Yytoken.TYPE_VALUE:
                                             statusStack.removeFirst();
-                                            status=peekStatus(statusStack);
-                                            if(!contentHandler.primitive(token.value))
+                                            _status=peekStatus(statusStack);
+                                            if(!contentHandler.primitive(_yyToken.value))
                                                     return;
                                             if(!contentHandler.endObjectEntry())
                                                     return;
@@ -614,21 +630,21 @@ public void reset(){
                                     case Yytoken.TYPE_LEFT_SQUARE:
                                             statusStack.removeFirst();
                                             statusStack.addFirst(S_IN_PAIR_VALUE);
-                                            status=S_IN_ARRAY;
-                                            statusStack.addFirst(status);
+                                            _status=S_IN_ARRAY;
+                                            statusStack.addFirst(_status);
                                             if(!contentHandler.startArray())
                                                     return;
                                             break;
                                     case Yytoken.TYPE_LEFT_BRACE:
                                             statusStack.removeFirst();
                                             statusStack.addFirst(S_IN_PAIR_VALUE);
-                                            status=S_IN_OBJECT;
-                                            statusStack.addFirst(status);
+                                            _status=S_IN_OBJECT;
+                                            statusStack.addFirst(_status);
                                             if(!contentHandler.startObject())
                                                     return;
                                             break;
                                     default:
-                                            status=S_IN_ERROR;
+                                    	_status=S_IN_ERROR;
                                     }
                                     break;
                             
@@ -638,45 +654,45 @@ public void reset(){
                                      * therefore delay consuming token until next round.
                                      */
                                     statusStack.removeFirst();
-                                    status = peekStatus(statusStack);
+                                    _status = peekStatus(statusStack);
                                     if(!contentHandler.endObjectEntry())
                                             return;
                                     break;
                                     
                             case S_IN_ARRAY:
                                     nextToken();
-                                    switch(token.type){
+                                    switch(_yyToken.type){
                                     case Yytoken.TYPE_COMMA:
                                             break;
                                     case Yytoken.TYPE_VALUE:
-                                            if(!contentHandler.primitive(token.value))
+                                            if(!contentHandler.primitive(_yyToken.value))
                                                     return;
                                             break;
                                     case Yytoken.TYPE_RIGHT_SQUARE:
                                             if(statusStack.size()>1){
                                                     statusStack.removeFirst();
-                                                    status=peekStatus(statusStack);
+                                                    _status=peekStatus(statusStack);
                                             }
                                             else{
-                                                    status=S_IN_FINISHED_VALUE;
+                                            	_status=S_IN_FINISHED_VALUE;
                                             }
                                             if(!contentHandler.endArray())
                                                     return;
                                             break;
                                     case Yytoken.TYPE_LEFT_BRACE:
-                                            status=S_IN_OBJECT;
-                                            statusStack.addFirst(status);
+                                    	_status=S_IN_OBJECT;
+                                            statusStack.addFirst(_status);
                                             if(!contentHandler.startObject())
                                                     return;
                                             break;
                                     case Yytoken.TYPE_LEFT_SQUARE:
-                                            status=S_IN_ARRAY;
-                                            statusStack.addFirst(status);
+                                    	_status=S_IN_ARRAY;
+                                            statusStack.addFirst(_status);
                                             if(!contentHandler.startArray())
                                                     return;
                                             break;
                                     default:
-                                            status=S_IN_ERROR;
+                                    	_status=S_IN_ERROR;
                                     }//inner switch
                                     break;
                                     
@@ -684,31 +700,31 @@ public void reset(){
                                     return;
                                     
                             case S_IN_ERROR:
-                                    throw new ParseException(getPosition(), ParseException.ERROR_UNEXPECTED_TOKEN, token);
+                                    throw new ParseException(getPosition(), ParseException.ERROR_UNEXPECTED_TOKEN, _yyToken);
                             }//switch
-                            if(status==S_IN_ERROR){
-                                    throw new ParseException(getPosition(), ParseException.ERROR_UNEXPECTED_TOKEN, token);
+                            if(_status==S_IN_ERROR){
+                                    throw new ParseException(getPosition(), ParseException.ERROR_UNEXPECTED_TOKEN, _yyToken);
                             }
-                    }while(token.type!=Yytoken.TYPE_EOF);
+                    }while(_yyToken.type!=Yytoken.TYPE_EOF);
             }
-            catch(java.io.IOException ie){
-                    status = S_IN_ERROR;
+            catch(IOException ie){
+            	_status = S_IN_ERROR;
                     throw ie;
             }
             catch(ParseException pe){
-                    status = S_IN_ERROR;
+            	_status = S_IN_ERROR;
                     throw pe;
             }
             catch(RuntimeException re){
-                    status = S_IN_ERROR;
+            	_status = S_IN_ERROR;
                     throw re;
             }
             catch(Error e){
-                    status = S_IN_ERROR;
+            	_status = S_IN_ERROR;
                     throw e;
             }
             
-            status = S_IN_ERROR;
-            throw new ParseException(getPosition(), ParseException.ERROR_UNEXPECTED_TOKEN, token);
+            _status = S_IN_ERROR;
+            throw new ParseException(getPosition(), ParseException.ERROR_UNEXPECTED_TOKEN, _yyToken);
     }
 }

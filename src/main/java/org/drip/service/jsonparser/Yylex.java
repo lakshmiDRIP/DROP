@@ -1,6 +1,11 @@
 
 package org.drip.service.jsonparser;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
@@ -316,7 +321,7 @@ public class Yylex {
 	  }
 
 	  /** the input device */
-	  private java.io.Reader zzReader;
+	  private Reader zzReader;
 
 	  /** the current state of the DFA */
 	  private int zzState;
@@ -372,22 +377,22 @@ public class Yylex {
 
 	  /**
 	   * Creates a new scanner
-	   * There is also a java.io.InputStream version of this constructor.
+	   * There is also a InputStream version of this constructor.
 	   *
-	   * @param   in  the java.io.Reader to read input from.
+	   * @param   in  the Reader to read input from.
 	   */
-	  public Yylex(java.io.Reader in) {
+	  public Yylex(Reader in) {
 	    this.zzReader = in;
 	  }
 
 	  /**
 	   * Creates a new scanner.
-	   * There is also java.io.Reader version of this constructor.
+	   * There is also Reader version of this constructor.
 	   *
-	   * @param   in  the java.io.Inputstream to read input from.
+	   * @param   in  the Inputstream to read input from.
 	   */
-	  Yylex(java.io.InputStream in) {
-	    this(new java.io.InputStreamReader(in));
+	  Yylex(InputStream in) {
+	    this(new InputStreamReader(in));
 	  }
 
 	  /** 
@@ -414,9 +419,9 @@ public class Yylex {
 	   *
 	   * @return      <code>false</code>, iff there was new input.
 	   * 
-	   * @exception   java.io.IOException  if any I/O-Error occurs
+	   * @exception   IOException  if any I/O-Error occurs
 	   */
-	  private boolean zzRefill() throws java.io.IOException {
+	  private boolean zzRefill() throws IOException {
 
 	    /* first: make room (if you can) */
 	    if (zzStartRead > 0) {
@@ -466,9 +471,9 @@ public class Yylex {
 	  /**
 	   * Closes the input stream.
 	   * 
-	   * @throws java.io.IOException Thrown if the Inputs are Invalid
+	   * @throws IOException Thrown if the Inputs are Invalid
 	   */
-	  public final void yyclose() throws java.io.IOException {
+	  public final void yyclose() throws IOException {
 	    zzAtEOF = true;            /* indicate end of file */
 	    zzEndRead = zzStartRead;  /* invalidate buffer    */
 
@@ -486,7 +491,7 @@ public class Yylex {
 	   *
 	   * @param reader   the new input stream 
 	   */
-	  public final void yyreset(java.io.Reader reader) {
+	  public final void yyreset(Reader reader) {
 	    zzReader = reader;
 	    zzAtBOL  = true;
 	    zzAtEOF  = false;
@@ -604,12 +609,12 @@ public class Yylex {
 	   *
 	   * @return      the next token
 	   * 
-	   * @throws   java.io.IOException  if any I/O-Error occurs
+	   * @throws   IOException  if any I/O-Error occurs
 	   * 
 	   * @throws ParseException Thrown if Inputs are Invalid
 	   */
 
-	  public Yytoken yylex() throws java.io.IOException, ParseException {
+	  public Yytoken yylex() throws IOException, ParseException {
 	    int zzInput;
 	    int zzAction;
 
