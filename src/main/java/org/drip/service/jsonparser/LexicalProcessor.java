@@ -97,7 +97,25 @@ import org.drip.service.representation.JSONObject;
  * (https://code.google.com/p/json-simple/). It provides the following Functionality:
  *
  *  <ul>
- * 		<li>Convert the JSON Entry to a String</li>
+ * 		<li>Processor Initialized</li>
+ * 		<li>Processor Initialized with Value</li>
+ * 		<li>Processor Initialized with Object</li>
+ * 		<li>Processor Initialized with Array</li>
+ * 		<li>Processor Initialized with Key Pair</li>
+ * 		<li>Processor Initialized with Value Pair</li>
+ * 		<li>Processor Finished</li>
+ * 		<li>Processor In Error</li>
+ * 		<li>Reset the parser to the initial state without resetting the underlying reader</li>
+ * 		<li>Reset the parser to the initial state with a new character reader</li>
+ * 		<li>Retrieve the position of the beginning of the current token</li>
+ * 		<li>Parse JSON text into java object from the input source</li>
+ * 		<li>Parse the JSON String</li>
+ * 		<li>Parse an Object from the String</li>
+ * 		<li>Parse from the Input Reader</li>
+ * 		<li>Stream processing of JSON text</li>
+ * 		<li>Parse the String using the specified Content Handler #1</li>
+ * 		<li>Parse the String using the specified Content Handler #2</li>
+ * 		<li>Parse from the Input Reader using the specified Content Handler</li>
  *  </ul>
  *
  *	<br>
@@ -210,7 +228,7 @@ public class LexicalProcessor
     }
 
 	/**
-	 *  Reset the parser to the initial state without resetting the underlying reader
+	 * Reset the parser to the initial state without resetting the underlying reader
 	 */
 
     public void reset()
@@ -855,7 +873,7 @@ public class LexicalProcessor
     }
 
     /**
-     * Parse the String using the specified Content Handler
+     * Parse the String using the specified Content Handler #1
      * 
      * @param s Input String
      * @param contentHandler The Content Handler
@@ -864,21 +882,28 @@ public class LexicalProcessor
      * @throws ParseException Thrown if Parser Exception encountered
      */
 
-    public void parse(String s, ContentHandler contentHandler, boolean isResume) throws ParseException{
-    	StringReader in=new StringReader(s);
-            try{
-                    parse(in, contentHandler, isResume);
-            }
-            catch(IOException ie){
-                    /*
-                     * Actually it will never happen.
-                     */
-                    throw new ParseException(-1, ParseException.ERROR_UNEXPECTED_EXCEPTION, ie);
-            }
+    public void parse (
+		final String s,
+		final ContentHandler contentHandler,
+		final boolean isResume)
+		throws ParseException
+    {
+    	StringReader in = new StringReader(s);
+
+    	try {
+            parse (in, contentHandler, isResume);
+        } catch (IOException ie) {
+
+        	/*
+             * Actually it will never happen.
+             */
+
+        	throw new ParseException (-1, ParseException.ERROR_UNEXPECTED_EXCEPTION, ie);
+        }
     }
 
     /**
-     * Parse the String using the specified Content Handler
+     * Parse the String using the specified Content Handler #2
      * 
      * @param s Input String
      * @param contentHandler The Content Handler
@@ -905,7 +930,11 @@ public class LexicalProcessor
      * @throws ParseException Thrown if Parser Exception encountered
      */
     
-    public void parse(Reader in, ContentHandler contentHandler) throws IOException, ParseException{
-            parse(in, contentHandler, false);
+    public void parse (
+		final Reader in,
+		final ContentHandler contentHandler)
+		throws IOException, ParseException
+    {
+        parse (in, contentHandler, false);
     }
 }
