@@ -1,11 +1,30 @@
 
 package org.drip.service.json;
 
+import java.util.Map;
+
+import org.drip.analytics.cashflow.CompositePeriod;
+import org.drip.analytics.cashflow.LossQuadratureMetrics;
+import org.drip.analytics.date.JulianDate;
+import org.drip.param.market.CurveSurfaceQuoteContainer;
+import org.drip.param.valuation.ValuationParams;
+import org.drip.product.definition.CreditDefaultSwap;
+import org.drip.service.jsonparser.Converter;
+import org.drip.service.representation.JSONArray;
+import org.drip.service.representation.JSONObject;
+import org.drip.service.template.OTCInstrumentBuilder;
+import org.drip.state.credit.CreditCurve;
+import org.drip.state.discount.MergedDiscountForwardCurve;
+import org.drip.state.identifier.EntityCDSLabel;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -81,21 +100,26 @@ package org.drip.service.json;
 
 /**
  * <i>CreditDefaultSwapProcessor</i> Sets Up and Executes a JSON Based In/Out Credit Default Swap Valuation
- * Processor.
- * 
- * <br><br>
+ * 	Processor. It provides the following Functionality:
+ *
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationSupportLibrary.md">Computation Support</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/README.md">Environment, Product/Definition Containers, and Scenario/State Manipulation APIs</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/json/README.md">JSON Based Valuation Request Service</a></li>
+ * 		<li>JSON Based in/out Credit Default Swap Curve Metrics Thunker</li>
  *  </ul>
- * <br><br>
+ *
+ *	<br>
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationSupportLibrary.md">Computation Support</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/README.md">Environment, Product/Definition Containers, and Scenario/State Manipulation APIs</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/json/README.md">JSON Based Valuation Request Service</a></td></tr>
+ *  </table>
+ *	<br>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class CreditDefaultSwapProcessor {
+public class CreditDefaultSwapProcessor
+{
 
 	/**
 	 * JSON Based in/out Credit Default Swap Curve Metrics Thunker
@@ -105,119 +129,142 @@ public class CreditDefaultSwapProcessor {
 	 * @return JSON Credit Default Swap Curve Metrics Response
 	 */
 
-	@SuppressWarnings ("unchecked") static final org.drip.service.representation.JSONObject CurveMetrics (
-		final org.drip.service.representation.JSONObject jsonParameter)
+	@SuppressWarnings ("unchecked") static final JSONObject CurveMetrics (
+		final JSONObject jsonParameter)
 	{
-		org.drip.state.discount.MergedDiscountForwardCurve dcFunding =
-			org.drip.service.json.LatentStateProcessor.FundingCurve (jsonParameter);
+		MergedDiscountForwardCurve fundingDiscountCurve = LatentStateProcessor.FundingCurve (jsonParameter);
 
-		org.drip.state.credit.CreditCurve ccSurvivalRecovery =
-			org.drip.service.json.LatentStateProcessor.CreditCurve (jsonParameter, dcFunding);
+		CreditCurve survivalRecoveryCreditCurve = LatentStateProcessor.CreditCurve (
+			jsonParameter,
+			fundingDiscountCurve
+		);
 
-		if (null == ccSurvivalRecovery) return null;
+		if (null == survivalRecoveryCreditCurve) {
+			return null;
+		}
 
-		org.drip.param.market.CurveSurfaceQuoteContainer csqc = new
-			org.drip.param.market.CurveSurfaceQuoteContainer();
+		CurveSurfaceQuoteContainer curveSurfaceQuoteContainer = new CurveSurfaceQuoteContainer();
 
-		if (!csqc.setFundingState (dcFunding) || !csqc.setCreditState (ccSurvivalRecovery)) return null;
+		if (!curveSurfaceQuoteContainer.setFundingState (fundingDiscountCurve) ||
+			!curveSurfaceQuoteContainer.setCreditState (survivalRecoveryCreditCurve))
+		{
+			return null;
+		}
 
-		org.drip.analytics.date.JulianDate dtSpot = dcFunding.epoch();
+		JulianDate spotDate = fundingDiscountCurve.epoch();
 
-		org.drip.product.definition.CreditDefaultSwap cds = null;
+		CreditDefaultSwap cds = null;
 
 		try {
-			cds = org.drip.service.template.OTCInstrumentBuilder.CDS (dtSpot,
-				org.drip.service.jsonparser.Converter.StringEntry (jsonParameter, "CDSMaturity"),
-					org.drip.service.jsonparser.Converter.DoubleEntry (jsonParameter, "CDSCoupon"),
-						dcFunding.currency(), ((org.drip.state.identifier.EntityCDSLabel)
-							(ccSurvivalRecovery.label())).referenceEntity());
-		} catch (java.lang.Exception e) {
+			cds = OTCInstrumentBuilder.CDS (
+				spotDate,
+				Converter.StringEntry (jsonParameter, "CDSMaturity"),
+				Converter.DoubleEntry (jsonParameter, "CDSCoupon"),
+				fundingDiscountCurve.currency(),
+				((EntityCDSLabel) (survivalRecoveryCreditCurve.label())).referenceEntity()
+			);
+		} catch (Exception e) {
 			e.printStackTrace();
 
 			return null;
 		}
 
-		if (null == cds) return null;
+		if (null == cds) {
+			return null;
+		}
 
-		java.util.Map<java.lang.String, java.lang.Double> mapResult = cds.value
-			(org.drip.param.valuation.ValuationParams.Spot (dtSpot.julian()), null, csqc, null);
+		Map<String, Double> cdsMetricMap = cds.value (
+			ValuationParams.Spot (spotDate.julian()),
+			null,
+			curveSurfaceQuoteContainer,
+			null
+		);
 
-		if (null == mapResult) return null;
+		if (null == cdsMetricMap) {
+			return null;
+		}
 
-		org.drip.service.representation.JSONObject jsonResponse = new org.drip.service.representation.JSONObject();
+		JSONObject jsonResponse = new JSONObject();
 
-		for (java.util.Map.Entry<java.lang.String, java.lang.Double> me : mapResult.entrySet())
-			jsonResponse.put (me.getKey(), me.getValue());
+		for (Map.Entry<String, Double> cdsMetricMapEntry : cdsMetricMap.entrySet()) {
+			jsonResponse.put (cdsMetricMapEntry.getKey(), cdsMetricMapEntry.getValue());
+		}
 
-		org.drip.service.representation.JSONArray jsonCouponFlowArray = new org.drip.service.representation.JSONArray();
+		JSONArray jsonCouponFlowArray = new JSONArray();
 
-		for (org.drip.analytics.cashflow.CompositePeriod cp : cds.couponPeriods()) {
-			org.drip.service.representation.JSONObject jsonCouponFlow = new org.drip.service.representation.JSONObject();
+		for (CompositePeriod compositePeriod : cds.couponPeriods()) {
+			JSONObject jsonCouponFlow = new JSONObject();
 
 			try {
-				jsonCouponFlow.put ("StartDate", new org.drip.analytics.date.JulianDate
-					(cp.startDate()).toString());
+				jsonCouponFlow.put ("StartDate", new JulianDate (compositePeriod.startDate()).toString());
 
-				jsonCouponFlow.put ("EndDate", new org.drip.analytics.date.JulianDate
-					(cp.endDate()).toString());
+				jsonCouponFlow.put ("EndDate", new JulianDate (compositePeriod.endDate()).toString());
 
-				jsonCouponFlow.put ("PayDate", new org.drip.analytics.date.JulianDate
-					(cp.payDate()).toString());
+				jsonCouponFlow.put ("PayDate", new JulianDate (compositePeriod.payDate()).toString());
 
-				jsonCouponFlow.put ("CouponDCF", cp.couponDCF());
+				jsonCouponFlow.put ("CouponDCF", compositePeriod.couponDCF());
 
-				jsonCouponFlow.put ("PayDiscountFactor", cp.df (csqc));
+				jsonCouponFlow.put ("PayDiscountFactor", compositePeriod.df (curveSurfaceQuoteContainer));
 
-				jsonCouponFlow.put ("SurvivalProbability", cp.survival (csqc));
-			} catch (java.lang.Exception e) {
+				jsonCouponFlow.put (
+					"SurvivalProbability",
+					compositePeriod.survival (curveSurfaceQuoteContainer)
+				);
+			} catch (Exception e) {
 				e.printStackTrace();
 
 				return null;
 			}
 
-			jsonCouponFlow.put ("BaseNotional", cp.baseNotional());
+			jsonCouponFlow.put ("BaseNotional", compositePeriod.baseNotional());
 
-			jsonCouponFlow.put ("Tenor", cp.tenor());
+			jsonCouponFlow.put ("Tenor", compositePeriod.tenor());
 
-			jsonCouponFlow.put ("FundingLabel", cp.fundingLabel().fullyQualifiedName());
+			jsonCouponFlow.put ("FundingLabel", compositePeriod.fundingLabel().fullyQualifiedName());
 
-			jsonCouponFlow.put ("CreditLabel", cp.creditLabel().fullyQualifiedName());
+			jsonCouponFlow.put ("CreditLabel", compositePeriod.creditLabel().fullyQualifiedName());
 
-			jsonCouponFlow.put ("ReferenceRate", cp.couponMetrics (dtSpot.julian(), csqc).rate());
+			jsonCouponFlow.put (
+				"ReferenceRate",
+				compositePeriod.couponMetrics (spotDate.julian(), curveSurfaceQuoteContainer).rate()
+			);
 
 			jsonCouponFlowArray.add (jsonCouponFlow);
 		}
 
 		jsonResponse.put ("CouponFlow", jsonCouponFlowArray);
 
-		org.drip.service.representation.JSONArray jsonLossFlowArray = new org.drip.service.representation.JSONArray();
+		JSONArray jsonLossFlowArray = new JSONArray();
 
-		for (org.drip.analytics.cashflow.LossQuadratureMetrics lqm : cds.lossFlow (dtSpot, csqc)) {
-			org.drip.service.representation.JSONObject jsonLossFlow = new org.drip.service.representation.JSONObject();
+		for (LossQuadratureMetrics lossQuadratureMetrics :
+			cds.lossFlow (spotDate, curveSurfaceQuoteContainer))
+		{
+			JSONObject jsonLossFlow = new JSONObject();
 
 			try {
-				jsonLossFlow.put ("StartDate", new org.drip.analytics.date.JulianDate
-					(lqm.startDate()).toString());
+				jsonLossFlow.put (
+					"StartDate",
+					new JulianDate (lossQuadratureMetrics.startDate()).toString()
+				);
 
-				jsonLossFlow.put ("EndDate", new org.drip.analytics.date.JulianDate
-					(lqm.endDate()).toString());
-			} catch (java.lang.Exception e) {
+				jsonLossFlow.put ("EndDate", new JulianDate (lossQuadratureMetrics.endDate()).toString());
+			} catch (Exception e) {
 				e.printStackTrace();
 
 				return null;
 			}
 
-			jsonLossFlow.put ("StartSurvival", lqm.startSurvival());
+			jsonLossFlow.put ("StartSurvival", lossQuadratureMetrics.startSurvival());
 
-			jsonLossFlow.put ("EndSurvival", lqm.endSurvival());
+			jsonLossFlow.put ("EndSurvival", lossQuadratureMetrics.endSurvival());
 
-			jsonLossFlow.put ("EffectiveNotional", lqm.effectiveNotional());
+			jsonLossFlow.put ("EffectiveNotional", lossQuadratureMetrics.effectiveNotional());
 
-			jsonLossFlow.put ("EffectiveRecovery", lqm.effectiveRecovery());
+			jsonLossFlow.put ("EffectiveRecovery", lossQuadratureMetrics.effectiveRecovery());
 
-			jsonLossFlow.put ("EffectiveAccrual", lqm.accrualDCF());
+			jsonLossFlow.put ("EffectiveAccrual", lossQuadratureMetrics.accrualDCF());
 
-			jsonLossFlow.put ("EffectiveDF", lqm.effectiveDF());
+			jsonLossFlow.put ("EffectiveDF", lossQuadratureMetrics.effectiveDF());
 
 			jsonLossFlowArray.add (jsonLossFlow);
 		}

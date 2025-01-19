@@ -1,6 +1,11 @@
 
 package org.drip.service.json;
 
+import java.util.List;
+
+import org.drip.analytics.cashflow.CompositePeriod;
+import org.drip.analytics.date.JulianDate;
+import org.drip.analytics.support.Helper;
 import org.drip.param.market.CurveSurfaceQuoteContainer;
 import org.drip.param.valuation.ValuationParams;
 import org.drip.product.creator.BondBuilder;
@@ -8,6 +13,7 @@ import org.drip.product.credit.BondComponent;
 import org.drip.service.jsonparser.Converter;
 import org.drip.service.representation.JSONArray;
 import org.drip.service.representation.JSONObject;
+import org.drip.state.credit.CreditCurve;
 import org.drip.state.discount.MergedDiscountForwardCurve;
 
 /*
@@ -95,7 +101,9 @@ import org.drip.state.discount.MergedDiscountForwardCurve;
  * 	following Functionality:
  *
  *  <ul>
- * 		<li>This character denotes the end of file</li>
+ * 		<li>JSON Based in/out Bond Secular Metrics Thunker</li>
+ * 		<li>JSON Based in/out Bond Curve Metrics Thunker</li>
+ * 		<li>JSON Based in/out Bond Curve Cash Flow Thunker</li>
  *  </ul>
  *
  *	<br>
@@ -270,54 +278,58 @@ public class BondProcessor
 	@SuppressWarnings ("unchecked") static final JSONObject CurveMetrics (
 		final JSONObject jsonParameter)
 	{
-		MergedDiscountForwardCurve fundingDiscountCurve =
-			LatentStateProcessor.FundingCurve (jsonParameter);
+		MergedDiscountForwardCurve fundingDiscountCurve = LatentStateProcessor.FundingCurve (jsonParameter);
 
-		if (null == fundingDiscountCurve) return null;
-
-		CurveSurfaceQuoteContainer curveSurfaceQuoteContainer = new
-			CurveSurfaceQuoteContainer();
-
-		if (!curveSurfaceQuoteContainer.setFundingState (fundingDiscountCurve) || !curveSurfaceQuoteContainer.setGovvieState
-			(LatentStateProcessor.TreasuryCurve (jsonParameter)))
+		if (null == fundingDiscountCurve) {
 			return null;
+		}
+
+		CurveSurfaceQuoteContainer curveSurfaceQuoteContainer = new CurveSurfaceQuoteContainer();
+
+		if (!curveSurfaceQuoteContainer.setFundingState (fundingDiscountCurve) ||
+			!curveSurfaceQuoteContainer.setGovvieState (LatentStateProcessor.TreasuryCurve (jsonParameter)))
+		{
+			return null;
+		}
 
 		double cleanPrice = Double.NaN;
 		BondComponent bondComponent = null;
 
-		int iSpotDate = fundingDiscountCurve.epoch().julian();
+		int spotDate = fundingDiscountCurve.epoch().julian();
 
-		ValuationParams valuationParams = ValuationParams.Spot (iSpotDate);
+		ValuationParams valuationParams = ValuationParams.Spot (spotDate);
 
-		org.drip.analytics.date.JulianDate dtMaturity = Converter.DateEntry
-			(jsonParameter, "BondMaturityDate");
+		JulianDate maturityDate = Converter.DateEntry (jsonParameter, "BondMaturityDate");
 
 		try {
-			if (null == (bondComponent = BondBuilder.CreateSimpleFixed
-				(Converter.StringEntry (jsonParameter, "BondName"),
-					fundingDiscountCurve.currency(), "", Converter.DoubleEntry (jsonParameter,
-						"BondCoupon"), Converter.IntegerEntry (jsonParameter,
-							"BondFrequency"), Converter.StringEntry (jsonParameter,
-								"BondDayCount"), Converter.DateEntry (jsonParameter,
-									"BondEffectiveDate"), dtMaturity, null, null)))
+			if (null == (
+				bondComponent = BondBuilder.CreateSimpleFixed (
+					Converter.StringEntry (jsonParameter, "BondName"),
+					fundingDiscountCurve.currency(),
+					"",
+					Converter.DoubleEntry (jsonParameter, "BondCoupon"),
+					Converter.IntegerEntry (jsonParameter, "BondFrequency"),
+					Converter.StringEntry (jsonParameter, "BondDayCount"),
+					Converter.DateEntry (jsonParameter, "BondEffectiveDate"),
+					maturityDate,
+					null,
+					null
+				)
+			))
+			{
 				return null;
+			}
 
-
-			if (jsonParameter.containsKey ("BondCleanPrice"))
-				cleanPrice = Converter.DoubleEntry (
-					jsonParameter,
-					"BondCleanPrice"
-				);
-			else if (jsonParameter.containsKey("BondYield"))
+			if (jsonParameter.containsKey ("BondCleanPrice")) {
+				cleanPrice = Converter.DoubleEntry (jsonParameter, "BondCleanPrice");
+			} else if (jsonParameter.containsKey ("BondYield")) {
 				cleanPrice = bondComponent.priceFromYield (
 					valuationParams,
 					curveSurfaceQuoteContainer,
 					null,
-					Converter.DoubleEntry (
-						jsonParameter,
-						"BondYield"
-					)
+					Converter.DoubleEntry (jsonParameter, "BondYield")
 				);
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 
@@ -330,48 +342,84 @@ public class BondProcessor
 
 		jsonResponse.put ("BondEffectiveDate", bondComponent.effectiveDate().toString());
 
-		jsonResponse.put ("BondMaturityDate", dtMaturity.toString());
+		jsonResponse.put ("BondMaturityDate", maturityDate.toString());
 
 		jsonResponse.put ("BondFirstCouponDate", bondComponent.firstCouponDate().toString());
 
 		jsonResponse.put ("BondCleanPrice", cleanPrice);
 
 		try {
-			jsonResponse.put ("BondASW", bondComponent.aswFromPrice (valuationParams, curveSurfaceQuoteContainer, null, cleanPrice));
+			jsonResponse.put (
+				"BondASW",
+				bondComponent.aswFromPrice (valuationParams, curveSurfaceQuoteContainer, null, cleanPrice)
+			);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
 		try {
-			jsonResponse.put ("BondGSpread", bondComponent.gSpreadFromPrice (valuationParams, curveSurfaceQuoteContainer, null, cleanPrice));
+			jsonResponse.put (
+				"BondGSpread",
+				bondComponent.gSpreadFromPrice (
+					valuationParams,
+					curveSurfaceQuoteContainer,
+					null,
+					cleanPrice
+				)
+			);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
 		try {
-			jsonResponse.put ("BondISpread", bondComponent.iSpreadFromPrice (valuationParams, curveSurfaceQuoteContainer, null, cleanPrice));
+			jsonResponse.put (
+				"BondISpread",
+				bondComponent.iSpreadFromPrice (
+					valuationParams,
+					curveSurfaceQuoteContainer,
+					null,
+					cleanPrice
+				)
+			);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
 		try {
-			jsonResponse.put ("BondOAS", bondComponent.oasFromPrice (valuationParams, curveSurfaceQuoteContainer, null, cleanPrice));
+			jsonResponse.put (
+				"BondOAS",
+				bondComponent.oasFromPrice (valuationParams, curveSurfaceQuoteContainer, null, cleanPrice)
+			);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
 		try {
-			jsonResponse.put ("BondTreasurySpread", bondComponent.tsySpreadFromPrice (valuationParams, curveSurfaceQuoteContainer, null,
-				cleanPrice));
+			jsonResponse.put (
+				"BondTreasurySpread",
+				bondComponent.tsySpreadFromPrice (
+					valuationParams,
+					curveSurfaceQuoteContainer,
+					null,
+					cleanPrice
+				)
+			);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
-		jsonResponse.put ("BondTreasuryBenchmark", org.drip.analytics.support.Helper.BaseTsyBmk
-			(iSpotDate, dtMaturity.julian()));
+		jsonResponse.put ("BondTreasuryBenchmark", Helper.BaseTsyBmk (spotDate, maturityDate.julian()));
 
 		try {
-			jsonResponse.put ("BondZSpread", bondComponent.zSpreadFromPrice (valuationParams, curveSurfaceQuoteContainer, null, cleanPrice));
+			jsonResponse.put (
+				"BondZSpread",
+				bondComponent.zSpreadFromPrice (
+					valuationParams,
+					curveSurfaceQuoteContainer,
+					null,
+					cleanPrice
+				)
+			);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -390,39 +438,47 @@ public class BondProcessor
 	@SuppressWarnings ("unchecked") static final JSONObject CashFlows (
 		final JSONObject jsonParameter)
 	{
-		MergedDiscountForwardCurve fundingDiscountCurve =
-			LatentStateProcessor.FundingCurve (jsonParameter);
+		MergedDiscountForwardCurve fundingDiscountCurve = LatentStateProcessor.FundingCurve (jsonParameter);
 
-		if (null == fundingDiscountCurve) return null;
+		if (null == fundingDiscountCurve) {
+			return null;
+		}
 
-		CurveSurfaceQuoteContainer curveSurfaceQuoteContainer = new
-			CurveSurfaceQuoteContainer();
+		CurveSurfaceQuoteContainer curveSurfaceQuoteContainer = new CurveSurfaceQuoteContainer();
 
-		if (!curveSurfaceQuoteContainer.setFundingState (fundingDiscountCurve)) return null;
+		if (!curveSurfaceQuoteContainer.setFundingState (fundingDiscountCurve)) {
+			return null;
+		}
 
-		org.drip.state.credit.CreditCurve cc = LatentStateProcessor.CreditCurve
-			(jsonParameter, fundingDiscountCurve);
+		CreditCurve creditCurve = LatentStateProcessor.CreditCurve (jsonParameter, fundingDiscountCurve);
 
-		curveSurfaceQuoteContainer.setCreditState (cc);
+		curveSurfaceQuoteContainer.setCreditState (creditCurve);
 
-		double dblValueNotional = 1.;
+		double valueNotional = 1.;
 		BondComponent bondComponent = null;
 
-		org.drip.analytics.date.JulianDate dtMaturity = Converter.DateEntry
-			(jsonParameter, "BondMaturityDate");
+		JulianDate maturityDate = Converter.DateEntry (jsonParameter, "BondMaturityDate");
 
 		try {
-			if (null == (bondComponent = BondBuilder.CreateSimpleFixed
-				(Converter.StringEntry (jsonParameter, "BondName"),
-						fundingDiscountCurve.currency(), "", Converter.DoubleEntry (jsonParameter,
-						"BondCoupon"), Converter.IntegerEntry (jsonParameter,
-							"BondFrequency"), Converter.StringEntry (jsonParameter,
-								"BondDayCount"), Converter.DateEntry (jsonParameter,
-									"BondEffectiveDate"), dtMaturity, null, null)))
+			if (null == (
+				bondComponent = BondBuilder.CreateSimpleFixed (
+					Converter.StringEntry (jsonParameter, "BondName"),
+					fundingDiscountCurve.currency(),
+					"",
+					Converter.DoubleEntry (jsonParameter, "BondCoupon"),
+					Converter.IntegerEntry (jsonParameter, "BondFrequency"),
+					Converter.StringEntry (jsonParameter, "BondDayCount"),
+					Converter.DateEntry (jsonParameter, "BondEffectiveDate"),
+					maturityDate,
+					null,
+					null
+				)
+			))
+			{
 				return null;
+			}
 
-			dblValueNotional = Converter.DoubleEntry (jsonParameter,
-				"BondValueNotional");
+			valueNotional = Converter.DoubleEntry (jsonParameter, "BondValueNotional");
 		} catch (Exception e) {
 			e.printStackTrace();
 
@@ -433,46 +489,50 @@ public class BondProcessor
 
 		jsonResponse.put ("BondName", bondComponent.name());
 
-		java.util.List<org.drip.analytics.cashflow.CompositePeriod> lsCP = bondComponent.couponPeriods();
+		List<CompositePeriod> compositePeriodList = bondComponent.couponPeriods();
 
-		if (null == lsCP || 0 == lsCP.size()) return null;
+		if (null == compositePeriodList || 0 == compositePeriodList.size()) {
+			return null;
+		}
 
 		JSONArray jsonCashFlowArray = new JSONArray();
 
-		for (org.drip.analytics.cashflow.CompositePeriod cp : lsCP) {
-			if (null == cp) return null;
+		for (CompositePeriod compositePeriod : compositePeriodList) {
+			if (null == compositePeriod) {
+				return null;
+			}
 
 			JSONObject jsonCashFlow = new JSONObject();
 
-			jsonCashFlow.put ("StartDate", new org.drip.analytics.date.JulianDate
-				(cp.startDate()).toString());
+			jsonCashFlow.put ("StartDate", new JulianDate (compositePeriod.startDate()).toString());
 
-			jsonCashFlow.put ("EndDate", new org.drip.analytics.date.JulianDate (cp.endDate()).toString());
+			jsonCashFlow.put ("EndDate", new JulianDate (compositePeriod.endDate()).toString());
 
-			jsonCashFlow.put ("PayDate", new org.drip.analytics.date.JulianDate (cp.payDate()).toString());
+			jsonCashFlow.put ("PayDate", new JulianDate (compositePeriod.payDate()).toString());
 
 			try {
-				double dblCouponRate = cp.periods().get (0).baseRate (curveSurfaceQuoteContainer);
+				double couponRate = compositePeriod.periods().get (0).baseRate (curveSurfaceQuoteContainer);
 
-				jsonCashFlow.put ("FixingDate", new org.drip.analytics.date.JulianDate
-					(cp.fxFixingDate()).toString());
+				jsonCashFlow.put ("FixingDate", new JulianDate (compositePeriod.fxFixingDate()).toString());
 
-				jsonCashFlow.put ("CouponDCF", cp.couponDCF());
+				jsonCashFlow.put ("CouponDCF", compositePeriod.couponDCF());
 
-				jsonCashFlow.put ("CouponRate", dblCouponRate);
+				jsonCashFlow.put ("CouponRate", couponRate);
 
-				if (null != cc) jsonCashFlow.put ("SurvivalFactor", cc.survival (cp.payDate()));
+				if (null != creditCurve) {
+					jsonCashFlow.put ("SurvivalFactor", creditCurve.survival (compositePeriod.payDate()));
+				}
 
-				jsonCashFlow.put ("PayDiscountFactor", cp.df (curveSurfaceQuoteContainer));
+				jsonCashFlow.put ("PayDiscountFactor", compositePeriod.df (curveSurfaceQuoteContainer));
 
-				jsonCashFlow.put ("CouponAmount", dblCouponRate * dblValueNotional);
+				jsonCashFlow.put ("CouponAmount", couponRate * valueNotional);
 			} catch (Exception e) {
 				e.printStackTrace();
 
 				return null;
 			}
 
-			jsonCashFlow.put ("BaseNotional", cp.baseNotional() * dblValueNotional);
+			jsonCashFlow.put ("BaseNotional", compositePeriod.baseNotional() * valueNotional);
 
 			jsonCashFlowArray.add (jsonCashFlow);
 		}
