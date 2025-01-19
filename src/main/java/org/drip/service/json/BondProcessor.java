@@ -1,11 +1,23 @@
 
 package org.drip.service.json;
 
+import org.drip.param.market.CurveSurfaceQuoteContainer;
+import org.drip.param.valuation.ValuationParams;
+import org.drip.product.creator.BondBuilder;
+import org.drip.product.credit.BondComponent;
+import org.drip.service.jsonparser.Converter;
+import org.drip.service.representation.JSONArray;
+import org.drip.service.representation.JSONObject;
+import org.drip.state.discount.MergedDiscountForwardCurve;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -79,21 +91,27 @@ package org.drip.service.json;
  */
 
 /**
- * <i>BondProcessor</i> Sets Up and Executes a JSON Based In/Out Bond Valuation Processor.
- * 
- * <br><br>
+ * <i>BondProcessor</i> Sets Up and Executes a JSON Based In/Out Bond Valuation Processor. It provides the
+ * 	following Functionality:
+ *
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationSupportLibrary.md">Computation Support</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/README.md">Environment, Product/Definition Containers, and Scenario/State Manipulation APIs</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/json/README.md">JSON Based Valuation Request Service</a></li>
+ * 		<li>This character denotes the end of file</li>
  *  </ul>
- * <br><br>
+ *
+ *	<br>
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationSupportLibrary.md">Computation Support</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/README.md">Environment, Product/Definition Containers, and Scenario/State Manipulation APIs</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/json/README.md">JSON Based Valuation Request Service</a></td></tr>
+ *  </table>
+ *	<br>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class BondProcessor {
+public class BondProcessor
+{
 
 	/**
 	 * JSON Based in/out Bond Secular Metrics Thunker
@@ -103,96 +121,136 @@ public class BondProcessor {
 	 * @return JSON Bond Secular Metrics Response
 	 */
 
-	@SuppressWarnings ("unchecked") static final org.drip.service.representation.JSONObject SecularMetrics (
-		final org.drip.service.representation.JSONObject jsonParameter)
+	@SuppressWarnings ("unchecked") static final JSONObject SecularMetrics (
+		final JSONObject jsonParameter)
 	{
-		org.drip.state.discount.MergedDiscountForwardCurve dcFunding =
-			org.drip.service.json.LatentStateProcessor.FundingCurve (jsonParameter);
+		MergedDiscountForwardCurve fundingDiscountCurve = LatentStateProcessor.FundingCurve (jsonParameter);
 
-		if (null == dcFunding) return null;
+		if (null == fundingDiscountCurve) {
+			return null;
+		}
 
-		org.drip.param.market.CurveSurfaceQuoteContainer csqc = new
-			org.drip.param.market.CurveSurfaceQuoteContainer();
+		CurveSurfaceQuoteContainer curveSurfaceQuoteContainer = new CurveSurfaceQuoteContainer();
 
-		if (!csqc.setFundingState (dcFunding)) return null;
+		if (!curveSurfaceQuoteContainer.setFundingState (fundingDiscountCurve)) {
+			return null;
+		}
 
-		double dblCleanPrice = java.lang.Double.NaN;
-		org.drip.product.credit.BondComponent bond = null;
+		double cleanPrice = Double.NaN;
+		BondComponent bondComponent = null;
 
-		org.drip.param.valuation.ValuationParams valParams = org.drip.param.valuation.ValuationParams.Spot
-			(dcFunding.epoch().julian());
+		ValuationParams valuationParams = ValuationParams.Spot (fundingDiscountCurve.epoch().julian());
 
 		try {
-			if (null == (bond = org.drip.product.creator.BondBuilder.CreateSimpleFixed
-				(org.drip.service.jsonparser.Converter.StringEntry (jsonParameter, "BondName"),
-					dcFunding.currency(), "", org.drip.service.jsonparser.Converter.DoubleEntry (jsonParameter,
-						"BondCoupon"), org.drip.service.jsonparser.Converter.IntegerEntry (jsonParameter,
-							"BondFrequency"), org.drip.service.jsonparser.Converter.StringEntry (jsonParameter,
-								"BondDayCount"), org.drip.service.jsonparser.Converter.DateEntry (jsonParameter,
-									"BondEffectiveDate"), org.drip.service.jsonparser.Converter.DateEntry
-										(jsonParameter, "BondMaturityDate"), null, null)))
-				return null;
-
-			if (jsonParameter.containsKey ("BondCleanPrice"))
-				dblCleanPrice = org.drip.service.jsonparser.Converter.DoubleEntry (
-					jsonParameter,
-					"BondCleanPrice"
-				);
-			else if (jsonParameter.containsKey("BondYield"))
-				dblCleanPrice = bond.priceFromYield (
-					valParams,
-					csqc,
+			if (null == (
+				bondComponent = BondBuilder.CreateSimpleFixed (
+					Converter.StringEntry (jsonParameter, "BondName"),
+					fundingDiscountCurve.currency(),
+					"",
+					Converter.DoubleEntry (jsonParameter, "BondCoupon"),
+					Converter.IntegerEntry (jsonParameter, "BondFrequency"),
+					Converter.StringEntry (jsonParameter, "BondDayCount"),
+					Converter.DateEntry (jsonParameter, "BondEffectiveDate"),
+					Converter.DateEntry (jsonParameter, "BondMaturityDate"),
 					null,
-					org.drip.service.jsonparser.Converter.DoubleEntry (
-						jsonParameter,
-						"BondYield"
-					)
+					null
+				)
+			))
+			{
+				return null;
+			}
+
+			if (jsonParameter.containsKey ("BondCleanPrice")) {
+				cleanPrice = Converter.DoubleEntry (jsonParameter, "BondCleanPrice");
+			} else if (jsonParameter.containsKey("BondYield")) {
+				cleanPrice = bondComponent.priceFromYield (
+					valuationParams,
+					curveSurfaceQuoteContainer,
+					null,
+					Converter.DoubleEntry (jsonParameter, "BondYield")
 				);
-		} catch (java.lang.Exception e) {
+			}
+		} catch (Exception e) {
 			e.printStackTrace();
 
 			return null;
 		}
 
-		org.drip.service.representation.JSONObject jsonResponse = new org.drip.service.representation.JSONObject();
+		JSONObject jsonResponse = new JSONObject();
 
-		jsonResponse.put ("BondName", bond.name());
+		jsonResponse.put ("BondName", bondComponent.name());
 
-		jsonResponse.put ("BondEffectiveDate", bond.effectiveDate().toString());
+		jsonResponse.put ("BondEffectiveDate", bondComponent.effectiveDate().toString());
 
-		jsonResponse.put ("BondMaturityDate", bond.maturityDate().toString());
+		jsonResponse.put ("BondMaturityDate", bondComponent.maturityDate().toString());
 
-		jsonResponse.put ("BondFirstCouponDate", bond.firstCouponDate().toString());
+		jsonResponse.put ("BondFirstCouponDate", bondComponent.firstCouponDate().toString());
 
-		jsonResponse.put ("BondCleanPrice", dblCleanPrice);
+		jsonResponse.put ("BondCleanPrice", cleanPrice);
 
 		try {
-			double accrued = bond.accrued (valParams.valueDate(), csqc);
+			double accrued = bondComponent.accrued (valuationParams.valueDate(), curveSurfaceQuoteContainer);
 
 			jsonResponse.put ("BondAccrued", accrued);
 
-			double dblYield01 = bond.yield01FromPrice (valParams, csqc, null, dblCleanPrice);
+			double yield01 = bondComponent.yield01FromPrice (
+				valuationParams,
+				curveSurfaceQuoteContainer,
+				null,
+				cleanPrice
+			);
 
-			jsonResponse.put ("BondYield", bond.yieldFromPrice (valParams, csqc, null, dblCleanPrice));
+			jsonResponse.put (
+				"BondYield",
+				bondComponent.yieldFromPrice (valuationParams, curveSurfaceQuoteContainer, null, cleanPrice)
+			);
 
-			jsonResponse.put ("BondMacaulayDuration", bond.macaulayDurationFromPrice (valParams, csqc, null,
-				dblCleanPrice));
+			jsonResponse.put (
+				"BondMacaulayDuration",
+				bondComponent.macaulayDurationFromPrice (
+					valuationParams,
+					curveSurfaceQuoteContainer,
+					null,
+					cleanPrice
+				)
+			);
 
-			jsonResponse.put ("BondModifiedDuration", 10000. * bond.modifiedDurationFromPrice (valParams,
-				csqc, null, dblCleanPrice));
+			jsonResponse.put (
+				"BondModifiedDuration",
+				10000. * bondComponent.modifiedDurationFromPrice (
+					valuationParams,
+					curveSurfaceQuoteContainer,
+					null,
+					cleanPrice
+				)
+			);
 
-			jsonResponse.put ("BondConvexity", 1000000. * bond.convexityFromPrice (valParams, csqc, null,
-				dblCleanPrice));
+			jsonResponse.put (
+				"BondConvexity",
+				1000000. * bondComponent.convexityFromPrice (
+					valuationParams,
+					curveSurfaceQuoteContainer,
+					null,
+					cleanPrice
+				)
+			);
 
-			jsonResponse.put ("BondBasis", 10000. * bond.bondBasisFromPrice (valParams, csqc, null,
-				dblCleanPrice));
+			jsonResponse.put (
+				"BondBasis",
+				10000. * bondComponent.bondBasisFromPrice (
+					valuationParams,
+					curveSurfaceQuoteContainer,
+					null,
+					cleanPrice
+				)
+			);
 
-			jsonResponse.put ("BondDirtyPrice", dblCleanPrice + accrued);
+			jsonResponse.put ("BondDirtyPrice", cleanPrice + accrued);
 
-			jsonResponse.put ("BondYield01", 10000. * dblYield01);
+			jsonResponse.put ("BondYield01", 10000. * yield01);
 
-			jsonResponse.put ("BondDV01", 10000. * dblYield01);
-		} catch (java.lang.Exception e) {
+			jsonResponse.put ("BondDV01", 10000. * yield01);
+		} catch (Exception e) {
 			e.printStackTrace();
 
 			return null;
@@ -209,104 +267,103 @@ public class BondProcessor {
 	 * @return JSON Bond Curve Metrics Response
 	 */
 
-	@SuppressWarnings ("unchecked") static final org.drip.service.representation.JSONObject CurveMetrics (
-		final org.drip.service.representation.JSONObject jsonParameter)
+	@SuppressWarnings ("unchecked") static final JSONObject CurveMetrics (
+		final JSONObject jsonParameter)
 	{
-		org.drip.state.discount.MergedDiscountForwardCurve dcFunding =
-			org.drip.service.json.LatentStateProcessor.FundingCurve (jsonParameter);
+		MergedDiscountForwardCurve fundingDiscountCurve =
+			LatentStateProcessor.FundingCurve (jsonParameter);
 
-		if (null == dcFunding) return null;
+		if (null == fundingDiscountCurve) return null;
 
-		org.drip.param.market.CurveSurfaceQuoteContainer csqc = new
-			org.drip.param.market.CurveSurfaceQuoteContainer();
+		CurveSurfaceQuoteContainer curveSurfaceQuoteContainer = new
+			CurveSurfaceQuoteContainer();
 
-		if (!csqc.setFundingState (dcFunding) || !csqc.setGovvieState
-			(org.drip.service.json.LatentStateProcessor.TreasuryCurve (jsonParameter)))
+		if (!curveSurfaceQuoteContainer.setFundingState (fundingDiscountCurve) || !curveSurfaceQuoteContainer.setGovvieState
+			(LatentStateProcessor.TreasuryCurve (jsonParameter)))
 			return null;
 
-		double dblCleanPrice = java.lang.Double.NaN;
-		org.drip.product.credit.BondComponent bond = null;
+		double cleanPrice = Double.NaN;
+		BondComponent bondComponent = null;
 
-		int iSpotDate = dcFunding.epoch().julian();
+		int iSpotDate = fundingDiscountCurve.epoch().julian();
 
-		org.drip.param.valuation.ValuationParams valParams = org.drip.param.valuation.ValuationParams.Spot
-			(iSpotDate);
+		ValuationParams valuationParams = ValuationParams.Spot (iSpotDate);
 
-		org.drip.analytics.date.JulianDate dtMaturity = org.drip.service.jsonparser.Converter.DateEntry
+		org.drip.analytics.date.JulianDate dtMaturity = Converter.DateEntry
 			(jsonParameter, "BondMaturityDate");
 
 		try {
-			if (null == (bond = org.drip.product.creator.BondBuilder.CreateSimpleFixed
-				(org.drip.service.jsonparser.Converter.StringEntry (jsonParameter, "BondName"),
-					dcFunding.currency(), "", org.drip.service.jsonparser.Converter.DoubleEntry (jsonParameter,
-						"BondCoupon"), org.drip.service.jsonparser.Converter.IntegerEntry (jsonParameter,
-							"BondFrequency"), org.drip.service.jsonparser.Converter.StringEntry (jsonParameter,
-								"BondDayCount"), org.drip.service.jsonparser.Converter.DateEntry (jsonParameter,
+			if (null == (bondComponent = BondBuilder.CreateSimpleFixed
+				(Converter.StringEntry (jsonParameter, "BondName"),
+					fundingDiscountCurve.currency(), "", Converter.DoubleEntry (jsonParameter,
+						"BondCoupon"), Converter.IntegerEntry (jsonParameter,
+							"BondFrequency"), Converter.StringEntry (jsonParameter,
+								"BondDayCount"), Converter.DateEntry (jsonParameter,
 									"BondEffectiveDate"), dtMaturity, null, null)))
 				return null;
 
 
 			if (jsonParameter.containsKey ("BondCleanPrice"))
-				dblCleanPrice = org.drip.service.jsonparser.Converter.DoubleEntry (
+				cleanPrice = Converter.DoubleEntry (
 					jsonParameter,
 					"BondCleanPrice"
 				);
 			else if (jsonParameter.containsKey("BondYield"))
-				dblCleanPrice = bond.priceFromYield (
-					valParams,
-					csqc,
+				cleanPrice = bondComponent.priceFromYield (
+					valuationParams,
+					curveSurfaceQuoteContainer,
 					null,
-					org.drip.service.jsonparser.Converter.DoubleEntry (
+					Converter.DoubleEntry (
 						jsonParameter,
 						"BondYield"
 					)
 				);
-		} catch (java.lang.Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 
 			return null;
 		}
 
-		org.drip.service.representation.JSONObject jsonResponse = new org.drip.service.representation.JSONObject();
+		JSONObject jsonResponse = new JSONObject();
 
-		jsonResponse.put ("BondName", bond.name());
+		jsonResponse.put ("BondName", bondComponent.name());
 
-		jsonResponse.put ("BondEffectiveDate", bond.effectiveDate().toString());
+		jsonResponse.put ("BondEffectiveDate", bondComponent.effectiveDate().toString());
 
 		jsonResponse.put ("BondMaturityDate", dtMaturity.toString());
 
-		jsonResponse.put ("BondFirstCouponDate", bond.firstCouponDate().toString());
+		jsonResponse.put ("BondFirstCouponDate", bondComponent.firstCouponDate().toString());
 
-		jsonResponse.put ("BondCleanPrice", dblCleanPrice);
+		jsonResponse.put ("BondCleanPrice", cleanPrice);
 
 		try {
-			jsonResponse.put ("BondASW", bond.aswFromPrice (valParams, csqc, null, dblCleanPrice));
-		} catch (java.lang.Exception e) {
+			jsonResponse.put ("BondASW", bondComponent.aswFromPrice (valuationParams, curveSurfaceQuoteContainer, null, cleanPrice));
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
 		try {
-			jsonResponse.put ("BondGSpread", bond.gSpreadFromPrice (valParams, csqc, null, dblCleanPrice));
-		} catch (java.lang.Exception e) {
+			jsonResponse.put ("BondGSpread", bondComponent.gSpreadFromPrice (valuationParams, curveSurfaceQuoteContainer, null, cleanPrice));
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
 		try {
-			jsonResponse.put ("BondISpread", bond.iSpreadFromPrice (valParams, csqc, null, dblCleanPrice));
-		} catch (java.lang.Exception e) {
+			jsonResponse.put ("BondISpread", bondComponent.iSpreadFromPrice (valuationParams, curveSurfaceQuoteContainer, null, cleanPrice));
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
 		try {
-			jsonResponse.put ("BondOAS", bond.oasFromPrice (valParams, csqc, null, dblCleanPrice));
-		} catch (java.lang.Exception e) {
+			jsonResponse.put ("BondOAS", bondComponent.oasFromPrice (valuationParams, curveSurfaceQuoteContainer, null, cleanPrice));
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
 		try {
-			jsonResponse.put ("BondTreasurySpread", bond.tsySpreadFromPrice (valParams, csqc, null,
-				dblCleanPrice));
-		} catch (java.lang.Exception e) {
+			jsonResponse.put ("BondTreasurySpread", bondComponent.tsySpreadFromPrice (valuationParams, curveSurfaceQuoteContainer, null,
+				cleanPrice));
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -314,8 +371,8 @@ public class BondProcessor {
 			(iSpotDate, dtMaturity.julian()));
 
 		try {
-			jsonResponse.put ("BondZSpread", bond.zSpreadFromPrice (valParams, csqc, null, dblCleanPrice));
-		} catch (java.lang.Exception e) {
+			jsonResponse.put ("BondZSpread", bondComponent.zSpreadFromPrice (valuationParams, curveSurfaceQuoteContainer, null, cleanPrice));
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -330,62 +387,62 @@ public class BondProcessor {
 	 * @return JSON Bond Cash Flow Response
 	 */
 
-	@SuppressWarnings ("unchecked") static final org.drip.service.representation.JSONObject CashFlows (
-		final org.drip.service.representation.JSONObject jsonParameter)
+	@SuppressWarnings ("unchecked") static final JSONObject CashFlows (
+		final JSONObject jsonParameter)
 	{
-		org.drip.state.discount.MergedDiscountForwardCurve dcFunding =
-			org.drip.service.json.LatentStateProcessor.FundingCurve (jsonParameter);
+		MergedDiscountForwardCurve fundingDiscountCurve =
+			LatentStateProcessor.FundingCurve (jsonParameter);
 
-		if (null == dcFunding) return null;
+		if (null == fundingDiscountCurve) return null;
 
-		org.drip.param.market.CurveSurfaceQuoteContainer csqc = new
-			org.drip.param.market.CurveSurfaceQuoteContainer();
+		CurveSurfaceQuoteContainer curveSurfaceQuoteContainer = new
+			CurveSurfaceQuoteContainer();
 
-		if (!csqc.setFundingState (dcFunding)) return null;
+		if (!curveSurfaceQuoteContainer.setFundingState (fundingDiscountCurve)) return null;
 
-		org.drip.state.credit.CreditCurve cc = org.drip.service.json.LatentStateProcessor.CreditCurve
-			(jsonParameter, dcFunding);
+		org.drip.state.credit.CreditCurve cc = LatentStateProcessor.CreditCurve
+			(jsonParameter, fundingDiscountCurve);
 
-		csqc.setCreditState (cc);
+		curveSurfaceQuoteContainer.setCreditState (cc);
 
 		double dblValueNotional = 1.;
-		org.drip.product.credit.BondComponent bond = null;
+		BondComponent bondComponent = null;
 
-		org.drip.analytics.date.JulianDate dtMaturity = org.drip.service.jsonparser.Converter.DateEntry
+		org.drip.analytics.date.JulianDate dtMaturity = Converter.DateEntry
 			(jsonParameter, "BondMaturityDate");
 
 		try {
-			if (null == (bond = org.drip.product.creator.BondBuilder.CreateSimpleFixed
-				(org.drip.service.jsonparser.Converter.StringEntry (jsonParameter, "BondName"),
-					dcFunding.currency(), "", org.drip.service.jsonparser.Converter.DoubleEntry (jsonParameter,
-						"BondCoupon"), org.drip.service.jsonparser.Converter.IntegerEntry (jsonParameter,
-							"BondFrequency"), org.drip.service.jsonparser.Converter.StringEntry (jsonParameter,
-								"BondDayCount"), org.drip.service.jsonparser.Converter.DateEntry (jsonParameter,
+			if (null == (bondComponent = BondBuilder.CreateSimpleFixed
+				(Converter.StringEntry (jsonParameter, "BondName"),
+						fundingDiscountCurve.currency(), "", Converter.DoubleEntry (jsonParameter,
+						"BondCoupon"), Converter.IntegerEntry (jsonParameter,
+							"BondFrequency"), Converter.StringEntry (jsonParameter,
+								"BondDayCount"), Converter.DateEntry (jsonParameter,
 									"BondEffectiveDate"), dtMaturity, null, null)))
 				return null;
 
-			dblValueNotional = org.drip.service.jsonparser.Converter.DoubleEntry (jsonParameter,
+			dblValueNotional = Converter.DoubleEntry (jsonParameter,
 				"BondValueNotional");
-		} catch (java.lang.Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 
 			return null;
 		}
 
-		org.drip.service.representation.JSONObject jsonResponse = new org.drip.service.representation.JSONObject();
+		JSONObject jsonResponse = new JSONObject();
 
-		jsonResponse.put ("BondName", bond.name());
+		jsonResponse.put ("BondName", bondComponent.name());
 
-		java.util.List<org.drip.analytics.cashflow.CompositePeriod> lsCP = bond.couponPeriods();
+		java.util.List<org.drip.analytics.cashflow.CompositePeriod> lsCP = bondComponent.couponPeriods();
 
 		if (null == lsCP || 0 == lsCP.size()) return null;
 
-		org.drip.service.representation.JSONArray jsonCashFlowArray = new org.drip.service.representation.JSONArray();
+		JSONArray jsonCashFlowArray = new JSONArray();
 
 		for (org.drip.analytics.cashflow.CompositePeriod cp : lsCP) {
 			if (null == cp) return null;
 
-			org.drip.service.representation.JSONObject jsonCashFlow = new org.drip.service.representation.JSONObject();
+			JSONObject jsonCashFlow = new JSONObject();
 
 			jsonCashFlow.put ("StartDate", new org.drip.analytics.date.JulianDate
 				(cp.startDate()).toString());
@@ -395,7 +452,7 @@ public class BondProcessor {
 			jsonCashFlow.put ("PayDate", new org.drip.analytics.date.JulianDate (cp.payDate()).toString());
 
 			try {
-				double dblCouponRate = cp.periods().get (0).baseRate (csqc);
+				double dblCouponRate = cp.periods().get (0).baseRate (curveSurfaceQuoteContainer);
 
 				jsonCashFlow.put ("FixingDate", new org.drip.analytics.date.JulianDate
 					(cp.fxFixingDate()).toString());
@@ -406,10 +463,10 @@ public class BondProcessor {
 
 				if (null != cc) jsonCashFlow.put ("SurvivalFactor", cc.survival (cp.payDate()));
 
-				jsonCashFlow.put ("PayDiscountFactor", cp.df (csqc));
+				jsonCashFlow.put ("PayDiscountFactor", cp.df (curveSurfaceQuoteContainer));
 
 				jsonCashFlow.put ("CouponAmount", dblCouponRate * dblValueNotional);
-			} catch (java.lang.Exception e) {
+			} catch (Exception e) {
 				e.printStackTrace();
 
 				return null;
