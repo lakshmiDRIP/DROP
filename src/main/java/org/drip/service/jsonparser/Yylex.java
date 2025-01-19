@@ -111,20 +111,30 @@ import java.io.Reader;
 public class Yylex
 {
 
-	  /** This character denotes the end of file */
-	  public static final int YYEOF = -1;
+	/**
+	 * This character denotes the end of file
+	 */
 
-	  /** initial size of the lookahead buffer */
-	  private static final int ZZ_BUFFERSIZE = 16384;
+	public static final int YYEOF = -1;
 
-	  /** lexical states */
-	  public static final int YYINITIAL = 0;
+	/**
+	 * Initial size of the lookahead buffer
+	 */
 
-	  /**
-	   * Lexical State - BEGIN
-	   */
+	private static final int ZZ_BUFFERSIZE = 16384;
 
-	  public static final int STRING_BEGIN = 2;
+	/**
+	 * Lexical states
+	 */
+
+	public static final int YYINITIAL = 0;
+
+
+	/**
+	 * Lexical State - BEGIN
+	 */
+
+	public static final int STRING_BEGIN = 2;
 
 	  /**
 	   * ZZ_LEXSTATE[l] is the state in the DFA for the lexical state l
@@ -132,63 +142,84 @@ public class Yylex
 	   *                  at the beginning of a line
 	   * l is of the form l = 2*k, k a non negative integer
 	   */
-	  private static final int ZZ_LEXSTATE[] = { 
-	     0,  0,  1, 1
-	  };
+
+	private static final int ZZ_LEXSTATE[] =
+	{
+		0,
+		0,
+	    1,
+	    1
+	};
 
 	  /** 
 	   * Translates characters to character classes
 	   */
-	  private static final String ZZ_CMAP_PACKED = 
+
+	private static final String ZZ_CMAP_PACKED = 
 	    "\11\0\1\7\1\7\2\0\1\7\22\0\1\7\1\0\1\11\10\0"+
 	    "\1\6\1\31\1\2\1\4\1\12\12\3\1\32\6\0\4\1\1\5"+
 	    "\1\1\24\0\1\27\1\10\1\30\3\0\1\22\1\13\2\1\1\21"+
 	    "\1\14\5\0\1\23\1\0\1\15\3\0\1\16\1\24\1\17\1\20"+
 	    "\5\0\1\25\1\0\1\26\uff82\0";
 
-	  /** 
-	   * Translates characters to character classes
-	   */
-	  private static final char [] ZZ_CMAP = zzUnpackCMap(ZZ_CMAP_PACKED);
+	/** 
+	 * Translates characters to character classes
+	 */
 
-	  /** 
-	   * Translates DFA states to action switch labels.
-	   */
-	  private static final int [] ZZ_ACTION = zzUnpackAction();
+	private static final char[] ZZ_CMAP = ZZUnpackCMap (ZZ_CMAP_PACKED);
 
-	  private static final String ZZ_ACTION_PACKED_0 =
+	/** 
+	 * Translates DFA states to action switch labels.
+	 */
+
+	private static final int[] ZZ_ACTION = ZZUnpackAction();
+
+	private static final String ZZ_ACTION_PACKED_0 =
 	    "\2\0\2\1\1\2\1\3\1\4\3\1\1\5\1\6"+
 	    "\1\7\1\10\1\11\1\12\1\13\1\14\1\15\5\0"+
 	    "\1\14\1\16\1\17\1\20\1\21\1\22\1\23\1\24"+
 	    "\1\0\1\25\1\0\1\25\4\0\1\26\1\27\2\0"+
 	    "\1\30";
 
-	  private static int [] zzUnpackAction() {
-	    int [] result = new int[45];
-	    int offset = 0;
-	    offset = zzUnpackAction(ZZ_ACTION_PACKED_0, offset, result);
-	    return result;
-	  }
+	private static int ZZUnpackAction (
+		final String packed,
+		final int offset,
+		final int [] resultArray)
+	{
+	    int i = 0; /* index in packed string  */
+	    int j = offset; /* index in unpacked array */
 
-	  private static int zzUnpackAction(String packed, int offset, int [] result) {
-	    int i = 0;       /* index in packed string  */
-	    int j = offset;  /* index in unpacked array */
 	    int l = packed.length();
+
 	    while (i < l) {
-	      int count = packed.charAt(i++);
-	      int value = packed.charAt(i++);
-	      do result[j++] = value; while (--count > 0);
+	      int count = packed.charAt (i++);
+
+	      int value = packed.charAt (i++);
+
+	      do {
+	    	  resultArray[j++] = value;
+	      } while (0 < --count);
 	    }
+
 	    return j;
 	  }
 
+	private static int[] ZZUnpackAction()
+	{
+	    int [] resultArray = new int[45];
+
+	    ZZUnpackAction (ZZ_ACTION_PACKED_0, 0, resultArray);
+
+	    return resultArray;
+	}
 
 	  /** 
 	   * Translates a state to a row index in the transition table
 	   */
-	  private static final int [] ZZ_ROWMAP = zzUnpackRowMap();
 
-	  private static final String ZZ_ROWMAP_PACKED_0 =
+	private static final int[] ZZ_ROWMAP = ZZUnpackRowMap();
+
+	private static final String ZZ_ROWMAP_PACKED_0 =
 	    "\0\0\0\33\0\66\0\121\0\154\0\207\0\66\0\242"+
 	    "\0\275\0\330\0\66\0\66\0\66\0\66\0\66\0\66"+
 	    "\0\363\0\u010e\0\66\0\u0129\0\u0144\0\u015f\0\u017a\0\u0195"+
@@ -196,28 +227,38 @@ public class Yylex
 	    "\0\u01b0\0\u01cb\0\u01e6\0\u01e6\0\u0201\0\u021c\0\u0237\0\u0252"+
 	    "\0\66\0\66\0\u026d\0\u0288\0\66";
 
-	  private static int [] zzUnpackRowMap() {
-	    int [] result = new int[45];
-	    int offset = 0;
-	    offset = zzUnpackRowMap(ZZ_ROWMAP_PACKED_0, offset, result);
-	    return result;
-	  }
+	private static int[] ZZUnpackRowMap()
+	{
+	    int [] resultArray = new int[45];
 
-	  private static int zzUnpackRowMap(String packed, int offset, int [] result) {
-	    int i = 0;  /* index in packed string  */
-	    int j = offset;  /* index in unpacked array */
+	    ZZUnpackRowMap (ZZ_ROWMAP_PACKED_0, 0, resultArray);
+
+	    return resultArray;
+	}
+
+	private static int ZZUnpackRowMap (
+		final String packed,
+		final int offset,
+		final int[] resultArray)
+	{
+	    int i = 0; /* index in packed string  */
+	    int j = offset; /* index in unpacked array */
+
 	    int l = packed.length();
-	    while (i < l) {
-	      int high = packed.charAt(i++) << 16;
-	      result[j++] = high | packed.charAt(i++);
-	    }
-	    return j;
-	  }
 
-	  /** 
-	   * The transition table of the DFA
-	   */
-	  private static final int ZZ_TRANS [] = {
+	    while (i < l) {
+	      resultArray[j++] = (packed.charAt (i++) << 16) | packed.charAt (i++);
+	    }
+
+	    return j;
+	}
+
+	/** 
+	 * The transition table of the DFA
+	 */
+
+	private static final int ZZ_TRANS[] =
+	{
 	    2, 2, 3, 4, 2, 2, 2, 5, 2, 6, 
 	    2, 2, 7, 8, 2, 9, 2, 2, 2, 2, 
 	    2, 10, 11, 12, 13, 14, 15, 16, 16, 16, 
@@ -286,123 +327,128 @@ public class Yylex
 	    -1, 44, -1, 44, -1, -1, -1, -1, -1, 44, 
 	    44, -1, -1, -1, -1, 44, 44, -1, -1, -1, 
 	    -1, -1, -1, -1, -1, 
-	  };
+	};
 
-	  /* error codes */
-	  private static final int ZZ_UNKNOWN_ERROR = 0;
-	  private static final int ZZ_NO_MATCH = 1;
-	  private static final int ZZ_PUSHBACK_2BIG = 2;
+	/* error codes */
 
-	  /* error messages for the codes above */
-	  private static final String ZZ_ERROR_MSG[] = {
+	private static final int ZZ_UNKNOWN_ERROR = 0;
+	private static final int ZZ_NO_MATCH = 1;
+	private static final int ZZ_PUSHBACK_2BIG = 2;
+
+	/* error messages for the codes above */
+
+	private static final String ZZ_ERROR_MSG[] =
+	{
 	    "Unkown internal scanner error",
 	    "Error: could not match input",
 	    "Error: pushback value was too large"
-	  };
+	};
 
-	  /**
-	   * ZZ_ATTRIBUTE[aState] contains the attributes of state <code>aState</code>
-	   */
-	  private static final int [] ZZ_ATTRIBUTE = zzUnpackAttribute();
+	/**
+	 * ZZ_ATTRIBUTE[aState] contains the attributes of state <code>aState</code>
+	 */
 
-	  private static final String ZZ_ATTRIBUTE_PACKED_0 =
+	private static final int [] ZZ_ATTRIBUTE = ZZUnpackAttribute();
+
+	private static final String ZZ_ATTRIBUTE_PACKED_0 =
 	    "\2\0\1\11\3\1\1\11\3\1\6\11\2\1\1\11"+
 	    "\5\0\10\11\1\0\1\1\1\0\1\1\4\0\2\11"+
 	    "\2\0\1\11";
 
-	  private static int [] zzUnpackAttribute() {
-	    int [] result = new int[45];
-	    int offset = 0;
-	    offset = zzUnpackAttribute(ZZ_ATTRIBUTE_PACKED_0, offset, result);
-	    return result;
-	  }
+	private static int ZZUnpackAttribute (
+		final String packed,
+		final int offset,
+		final int[] resultArray)
+	{
+	    int i = 0; /* index in packed string  */
+	    int j = offset; /* index in unpacked array */
 
-	  private static int zzUnpackAttribute(String packed, int offset, int [] result) {
-	    int i = 0;       /* index in packed string  */
-	    int j = offset;  /* index in unpacked array */
 	    int l = packed.length();
+
 	    while (i < l) {
 	      int count = packed.charAt(i++);
+
 	      int value = packed.charAt(i++);
-	      do result[j++] = value; while (--count > 0);
+
+	      do {
+	    	  resultArray[j++] = value;
+	      } while (--count > 0);
 	    }
+
 	    return j;
 	  }
 
+	  private static int [] ZZUnpackAttribute()
+	  {
+	    int[] resultArray = new int[45];
+
+	    ZZUnpackAttribute (ZZ_ATTRIBUTE_PACKED_0, 0, resultArray);
+
+	    return resultArray;
+	  }
+
 	  /** the input device */
-	  private Reader zzReader;
+
+	  private Reader _zzReader = null;
 
 	  /** the current state of the DFA */
-	  private int zzState;
+
+	  private int _zzState = Integer.MIN_VALUE;
 
 	  /** the current lexical state */
-	  private int zzLexicalState = YYINITIAL;
+
+	  private int _zzLexicalState = YYINITIAL;
 
 	  /** this buffer contains the current text to be matched and is
 	      the source of the yytext() string */
-	  private char zzBuffer[] = new char[ZZ_BUFFERSIZE];
+
+	  private char _zzBufferArray[] = new char[ZZ_BUFFERSIZE];
 
 	  /** the textposition at the last accepting state */
-	  private int zzMarkedPos;
+
+	  private int _zzMarkedPosition = Integer.MIN_VALUE;
 
 	  /** the current text position in the buffer */
-	  private int zzCurrentPos;
+
+	  private int _zzCurrentPosition = Integer.MIN_VALUE;
 
 	  /** startRead marks the beginning of the yytext() string in the buffer */
-	  private int zzStartRead;
+
+	  private int _zzStartRead = Integer.MIN_VALUE;
 
 	  /** endRead marks the last character in the buffer, that has been read
 	      from input */
-	  private int zzEndRead;
+
+	  private int _zzEndRead = Integer.MIN_VALUE;
 
 	  /** number of newlines encountered up to the start of the matched text */
-	  int yyline;
+
+	  int yyline = Integer.MIN_VALUE;
 
 	  /** the number of characters up to the start of the matched text */
-	  private int yychar;
+
+	  private int _yychar = Integer.MIN_VALUE;
 
 	  /**
 	   * the number of characters from the last newline up to the start of the 
 	   * matched text
 	   */
-	  int yycolumn;
+
+	  int yycolumn = Integer.MIN_VALUE;
 
 	  /** 
 	   * zzAtBOL == true <=> the scanner is currently at the beginning of a line
 	   */
+
 	  boolean zzAtBOL = true;
 
 	  /** zzAtEOF == true <=> the scanner is at the EOF */
-	  private boolean zzAtEOF;
+
+	  private boolean _zzAtEOF = false;
 
 	  /* user code: */
-	private StringBuffer sb=new StringBuffer();
 
-	int getPosition(){
-	        return yychar;
-	}
-
-
-
-	  /**
-	   * Creates a new scanner
-	   * There is also a InputStream version of this constructor.
-	   *
-	   * @param   in  the Reader to read input from.
-	   */
-	  public Yylex(Reader in) {
-	    this.zzReader = in;
-	  }
-
-	  /**
-	   * Creates a new scanner.
-	   * There is also Reader version of this constructor.
-	   *
-	   * @param   in  the Inputstream to read input from.
-	   */
-	  Yylex(InputStream in) {
-	    this(new InputStreamReader(in));
-	  }
+	  private StringBuffer _stringBuffer = new StringBuffer();
 
 	  /** 
 	   * Unpacks the compressed character translation table.
@@ -410,18 +456,26 @@ public class Yylex
 	   * @param packed   the packed character translation table
 	   * @return         the unpacked character translation table
 	   */
-	  private static char [] zzUnpackCMap(String packed) {
-	    char [] map = new char[0x10000];
+
+	  private static char[] ZZUnpackCMap (
+		  final String packed)
+	  {
+	    char[] map = new char[0x10000];
 	    int i = 0;  /* index in packed string  */
 	    int j = 0;  /* index in unpacked array */
+
 	    while (i < 90) {
-	      int  count = packed.charAt(i++);
+	      int count = packed.charAt(i++);
+
 	      char value = packed.charAt(i++);
-	      do map[j++] = value; while (--count > 0);
+
+	      do {
+	    	  map[j++] = value;
+	      } while (--count > 0);
 	    }
+
 	    return map;
 	  }
-
 
 	  /**
 	   * Refills the input buffer.
@@ -430,86 +484,137 @@ public class Yylex
 	   * 
 	   * @exception   IOException  if any I/O-Error occurs
 	   */
-	  private boolean zzRefill() throws IOException {
+
+	  private boolean zzRefill()
+		  throws IOException
+	  {
 
 	    /* first: make room (if you can) */
-	    if (zzStartRead > 0) {
-	      System.arraycopy(zzBuffer, zzStartRead,
-	                       zzBuffer, 0,
-	                       zzEndRead-zzStartRead);
 
-	      /* translate stored positions */
-	      zzEndRead-= zzStartRead;
-	      zzCurrentPos-= zzStartRead;
-	      zzMarkedPos-= zzStartRead;
-	      zzStartRead = 0;
+		if (0 < _zzStartRead) {
+			System.arraycopy (_zzBufferArray, _zzStartRead, _zzBufferArray, 0, _zzEndRead - _zzStartRead);
+
+			/* translate stored positions */
+
+			_zzCurrentPosition -= _zzStartRead;
+			_zzMarkedPosition -= _zzStartRead;
+			_zzEndRead-= _zzStartRead;
+			_zzStartRead = 0;
 	    }
 
 	    /* is the buffer big enough? */
-	    if (zzCurrentPos >= zzBuffer.length) {
-	      /* if not: blow it up */
-	      char newBuffer[] = new char[zzCurrentPos*2];
-	      System.arraycopy(zzBuffer, 0, newBuffer, 0, zzBuffer.length);
-	      zzBuffer = newBuffer;
+
+		if (_zzCurrentPosition >= _zzBufferArray.length) {
+
+			/* if not: blow it up */
+
+			char newBuffer[] = new char[_zzCurrentPosition * 2];
+
+			System.arraycopy (_zzBufferArray, 0, newBuffer, 0, _zzBufferArray.length);
+
+			_zzBufferArray = newBuffer;
 	    }
 
 	    /* finally: fill the buffer with new input */
-	    int numRead = zzReader.read(zzBuffer, zzEndRead,
-	                                            zzBuffer.length-zzEndRead);
 
-	    if (numRead > 0) {
-	      zzEndRead+= numRead;
+		int numRead = _zzReader.read (_zzBufferArray, _zzEndRead, _zzBufferArray.length - _zzEndRead);
+
+	    if (0 < numRead) {
+	      _zzEndRead+= numRead;
 	      return false;
 	    }
+
 	    // unlikely but not impossible: read 0 characters, but not at end of stream    
-	    if (numRead == 0) {
-	      int c = zzReader.read();
-	      if (c == -1) {
-	        return true;
-	      } else {
-	        zzBuffer[zzEndRead++] = (char) c;
-	        return false;
-	      }     
+
+	    if (0 == numRead) {
+	      int c = _zzReader.read();
+
+	      if (-1 == c) {
+	    	  return true;
+	      }
+
+	      _zzBufferArray[_zzEndRead++] = (char) c;
+	       return false;
 	    }
 
-	        // numRead < 0
+        // numRead < 0
+
 	    return true;
 	  }
 
+	  /**
+	   * Retrieve the Position
+	   * 
+	   * @return The Position
+	   */
+
+	  int getPosition()
+	  {
+	      return _yychar;
+	  }
+
+	  /**
+	   * Creates a new scanner. There is also Reader version of this constructor.
+	   *
+	   * @param   in  the Inputstream to read input from.
+	   */
+
+	  Yylex (
+		  final InputStream in)
+	  {
+		  this (new InputStreamReader (in));
+	  }
+
+	  /**
+	   * Creates a new scanner. There is also a InputStream version of this constructor.
+	   *
+	   * @param in The Reader to read input from.
+	   */
+
+	  public Yylex (
+		  final Reader in)
+	  {
+		  _zzReader = in;
+	  }
 	    
 	  /**
 	   * Closes the input stream.
 	   * 
 	   * @throws IOException Thrown if the Inputs are Invalid
 	   */
-	  public final void yyclose() throws IOException {
-	    zzAtEOF = true;            /* indicate end of file */
-	    zzEndRead = zzStartRead;  /* invalidate buffer    */
 
-	    if (zzReader != null)
-	      zzReader.close();
+	  public final void yyclose()
+		  throws IOException
+	  {
+		  _zzAtEOF = true; /* indicate end of file */
+		  _zzEndRead = _zzStartRead; /* invalidate buffer */
+
+		  if (null != _zzReader) {
+			  _zzReader.close();
+		  }
 	  }
 
 
 	  /**
-	   * Resets the scanner to read from a new input stream.
-	   * Does not close the old reader.
+	   * Resets the scanner to read from a new input stream. Does not close the old reader.
 	   *
 	   * All internal variables are reset, the old input stream 
 	   * <b>cannot</b> be reused (internal buffer is discarded and lost).
 	   *
-	   * @param reader   the new input stream 
+	   * @param reader The new input stream 
 	   */
-	  public final void yyreset(Reader reader) {
-	    zzReader = reader;
-	    zzAtBOL  = true;
-	    zzAtEOF  = false;
-	    zzEndRead = zzStartRead = 0;
-	    zzCurrentPos = zzMarkedPos = 0;
-	    yyline = yychar = yycolumn = 0;
-	    zzLexicalState = YYINITIAL;
-	  }
 
+	  public final void yyreset (
+		  final Reader reader)
+	  {
+		  zzAtBOL  = true;
+		  _zzAtEOF  = false;
+		  _zzReader = reader;
+		  _zzLexicalState = YYINITIAL;
+		  _zzEndRead = _zzStartRead = 0;
+		  yyline = _yychar = yycolumn = 0;
+		  _zzCurrentPosition = _zzMarkedPosition = 0;
+	  }
 
 	  /**
 	   * Returns the current lexical state.
@@ -517,18 +622,21 @@ public class Yylex
 	   * @return The Current Lexical State.
 	   */
 
-	  public final int yystate() {
-	    return zzLexicalState;
+	  public final int yystate()
+	  {
+		  return _zzLexicalState;
 	  }
-
 
 	  /**
 	   * Enters a new lexical state
 	   *
 	   * @param newState the new lexical state
 	   */
-	  public final void yybegin(int newState) {
-	    zzLexicalState = newState;
+
+	  public final void yybegin (
+		  final int newState)
+	  {
+		  _zzLexicalState = newState;
 	  }
 
 
@@ -538,10 +646,10 @@ public class Yylex
 	   * @return The Text.
 	   */
 
-	  public final String yytext() {
-	    return new String( zzBuffer, zzStartRead, zzMarkedPos-zzStartRead );
+	  public final String yytext()
+	  {
+		  return new String (_zzBufferArray, _zzStartRead, _zzMarkedPosition -_zzStartRead);
 	  }
-
 
 	  /**
 	   * Returns the character at position <b>pos</b> from the 
@@ -555,7 +663,7 @@ public class Yylex
 	   * @return the character at position pos
 	   */
 	  public final char yycharat(int pos) {
-	    return zzBuffer[zzStartRead+pos];
+	    return _zzBufferArray[_zzStartRead+pos];
 	  }
 
 
@@ -565,7 +673,7 @@ public class Yylex
 	   * @return The Length.
 	   */
 	  public final int yylength() {
-	    return zzMarkedPos-zzStartRead;
+	    return _zzMarkedPosition -_zzStartRead;
 	  }
 
 
@@ -608,7 +716,7 @@ public class Yylex
 	    if ( number > yylength() )
 	      zzScanError(ZZ_PUSHBACK_2BIG);
 
-	    zzMarkedPos -= number;
+	    _zzMarkedPosition -= number;
 	  }
 
 
@@ -630,8 +738,8 @@ public class Yylex
 	    // cached fields:
 	    int zzCurrentPosL;
 	    int zzMarkedPosL;
-	    int zzEndReadL = zzEndRead;
-	    char [] zzBufferL = zzBuffer;
+	    int zzEndReadL = _zzEndRead;
+	    char [] zzBufferL = _zzBufferArray;
 	    char [] zzCMapL = ZZ_CMAP;
 
 	    int [] zzTransL = ZZ_TRANS;
@@ -639,36 +747,35 @@ public class Yylex
 	    int [] zzAttrL = ZZ_ATTRIBUTE;
 
 	    while (true) {
-	      zzMarkedPosL = zzMarkedPos;
+	      zzMarkedPosL = _zzMarkedPosition;
 
-	      yychar+= zzMarkedPosL-zzStartRead;
+	      _yychar+= zzMarkedPosL-_zzStartRead;
 
 	      zzAction = -1;
 
-	      zzCurrentPosL = zzCurrentPos = zzStartRead = zzMarkedPosL;
+	      zzCurrentPosL = _zzCurrentPosition = _zzStartRead = zzMarkedPosL;
 	  
-	      zzState = ZZ_LEXSTATE[zzLexicalState];
-
+	      _zzState = ZZ_LEXSTATE[_zzLexicalState];
 
 	      zzForAction: {
 	        while (true) {
 	    
 	          if (zzCurrentPosL < zzEndReadL)
 	            zzInput = zzBufferL[zzCurrentPosL++];
-	          else if (zzAtEOF) {
+	          else if (_zzAtEOF) {
 	            zzInput = YYEOF;
 	            break zzForAction;
 	          }
 	          else {
 	            // store back cached positions
-	            zzCurrentPos  = zzCurrentPosL;
-	            zzMarkedPos   = zzMarkedPosL;
+	            _zzCurrentPosition  = zzCurrentPosL;
+	            _zzMarkedPosition   = zzMarkedPosL;
 	            boolean eof = zzRefill();
 	            // get translated positions and possibly new buffer
-	            zzCurrentPosL  = zzCurrentPos;
-	            zzMarkedPosL   = zzMarkedPos;
-	            zzBufferL      = zzBuffer;
-	            zzEndReadL     = zzEndRead;
+	            zzCurrentPosL  = _zzCurrentPosition;
+	            zzMarkedPosL   = _zzMarkedPosition;
+	            zzBufferL      = _zzBufferArray;
+	            zzEndReadL     = _zzEndRead;
 	            if (eof) {
 	              zzInput = YYEOF;
 	              break zzForAction;
@@ -677,13 +784,13 @@ public class Yylex
 	              zzInput = zzBufferL[zzCurrentPosL++];
 	            }
 	          }
-	          int zzNext = zzTransL[ zzRowMapL[zzState] + zzCMapL[zzInput] ];
+	          int zzNext = zzTransL[ zzRowMapL[_zzState] + zzCMapL[zzInput] ];
 	          if (zzNext == -1) break zzForAction;
-	          zzState = zzNext;
+	          _zzState = zzNext;
 
-	          int zzAttributes = zzAttrL[zzState];
+	          int zzAttributes = zzAttrL[_zzState];
 	          if ( (zzAttributes & 1) == 1 ) {
-	            zzAction = zzState;
+	            zzAction = _zzState;
 	            zzMarkedPosL = zzCurrentPosL;
 	            if ( (zzAttributes & 8) == 8 ) break zzForAction;
 	          }
@@ -692,19 +799,19 @@ public class Yylex
 	      }
 
 	      // store back cached position
-	      zzMarkedPos = zzMarkedPosL;
+	      _zzMarkedPosition = zzMarkedPosL;
 
 	      switch (zzAction < 0 ? zzAction : ZZ_ACTION[zzAction]) {
 	        case 11: 
-	          { sb.append(yytext());
+	          { _stringBuffer.append(yytext());
 	          }
 	        case 25: break;
 	        case 4: 
-	          { sb.delete(0, sb.length());yybegin(STRING_BEGIN);
+	          { _stringBuffer.delete(0, _stringBuffer.length());yybegin(STRING_BEGIN);
 	          }
 	        case 26: break;
 	        case 16: 
-	          { sb.append('\b');
+	          { _stringBuffer.append('\b');
 	          }
 	        case 27: break;
 	        case 6: 
@@ -720,11 +827,11 @@ public class Yylex
 	          }
 	        case 30: break;
 	        case 13: 
-	          { yybegin(YYINITIAL);return new Yytoken(Yytoken.TYPE_VALUE, sb.toString());
+	          { yybegin(YYINITIAL);return new Yytoken(Yytoken.TYPE_VALUE, _stringBuffer.toString());
 	          }
 	        case 31: break;
 	        case 12: 
-	          { sb.append('\\');
+	          { _stringBuffer.append('\\');
 	          }
 	        case 32: break;
 	        case 21: 
@@ -732,7 +839,7 @@ public class Yylex
 	          }
 	        case 33: break;
 	        case 1: 
-	          { throw new ParseException(yychar, ParseException.ERROR_UNEXPECTED_CHAR, yycharat (0));
+	          { throw new ParseException(_yychar, ParseException.ERROR_UNEXPECTED_CHAR, yycharat (0));
 	          }
 	        case 34: break;
 	        case 8: 
@@ -740,11 +847,11 @@ public class Yylex
 	          }
 	        case 35: break;
 	        case 19: 
-	          { sb.append('\r');
+	          { _stringBuffer.append('\r');
 	          }
 	        case 36: break;
 	        case 15: 
-	          { sb.append('/');
+	          { _stringBuffer.append('/');
 	          }
 	        case 37: break;
 	        case 10: 
@@ -752,7 +859,7 @@ public class Yylex
 	          }
 	        case 38: break;
 	        case 14: 
-	          { sb.append('"');
+	          { _stringBuffer.append('"');
 	          }
 	        case 39: break;
 	        case 5: 
@@ -760,21 +867,21 @@ public class Yylex
 	          }
 	        case 40: break;
 	        case 17: 
-	          { sb.append('\f');
+	          { _stringBuffer.append('\f');
 	          }
 	        case 41: break;
 	        case 24: 
 	          { try{
-	                                                                                                                int ch=Integer.parseInt(yytext().substring(2),16);
-	                                                                                                                sb.append((char)ch);
-	                                                                                                        }
-	                                                                                                        catch(Exception e){
-	                                                                                                                throw new ParseException(yychar, ParseException.ERROR_UNEXPECTED_EXCEPTION, e);
-	                                                                                                        }
+                        int ch=Integer.parseInt(yytext().substring(2),16);
+                        _stringBuffer.append((char)ch);
+                }
+                catch(Exception e){
+                        throw new ParseException(_yychar, ParseException.ERROR_UNEXPECTED_EXCEPTION, e);
+                }
 	          }
 	        case 42: break;
 	        case 20: 
-	          { sb.append('\t');
+	          { _stringBuffer.append('\t');
 	          }
 	        case 43: break;
 	        case 7: 
@@ -786,7 +893,7 @@ public class Yylex
 	          }
 	        case 45: break;
 	        case 18: 
-	          { sb.append('\n');
+	          { _stringBuffer.append('\n');
 	          }
 	        case 46: break;
 	        case 9: 
@@ -798,8 +905,8 @@ public class Yylex
 	          }
 	        case 48: break;
 	        default: 
-	          if (zzInput == YYEOF && zzStartRead == zzCurrentPos) {
-	            zzAtEOF = true;
+	          if (zzInput == YYEOF && _zzStartRead == _zzCurrentPosition) {
+	            _zzAtEOF = true;
 	            return null;
 	          } 
 	          else {

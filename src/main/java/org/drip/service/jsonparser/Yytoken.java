@@ -87,7 +87,18 @@ package org.drip.service.jsonparser;
  * 	(https://code.google.com/p/json-simple/). It provides the following Functionality:
  *
  *  <ul>
- * 		<li>Error - Unexpected Character</li>
+ * 		<li>Value Token</li>
+ * 		<li>Left Brace Token</li>
+ * 		<li>Right Brace Token</li>
+ * 		<li>Left Square Token</li>
+ * 		<li>Right Square Token</li>
+ * 		<li>Comma Token</li>
+ * 		<li>Colon Token</li>
+ * 		<li>EOF Token</li>
+ * 		<li>Type</li>
+ * 		<li>Value</li>
+ * 		<li><i>Yytoken</i> Constructor</li>
+ * 		<li>String Version of the State</li>
  *  </ul>
  *
  *	<br>
@@ -116,96 +127,123 @@ public class Yytoken
 	 * Left Brace Token
 	 */
 
-    public static final int TYPE_LEFT_BRACE=1;
+    public static final int TYPE_LEFT_BRACE = 1;
 
 	/**
 	 * Right Brace Token
 	 */
 
-    public static final int TYPE_RIGHT_BRACE=2;
+    public static final int TYPE_RIGHT_BRACE = 2;
 
 	/**
 	 * Left Square Token
 	 */
 
-    public static final int TYPE_LEFT_SQUARE=3;
+    public static final int TYPE_LEFT_SQUARE = 3;
 
 	/**
 	 * Right Square Token
 	 */
 
-    public static final int TYPE_RIGHT_SQUARE=4;
+    public static final int TYPE_RIGHT_SQUARE = 4;
 
 	/**
 	 * Comma Token
 	 */
 
-    public static final int TYPE_COMMA=5;
+    public static final int TYPE_COMMA = 5;
 
 	/**
 	 * Colon Token
 	 */
 
-    public static final int TYPE_COLON=6;
+    public static final int TYPE_COLON = 6;
 
 	/**
 	 * EOF Token
 	 */
 
-    public static final int TYPE_EOF=-1;//end of file
+    public static final int TYPE_EOF = -1; // end of file
 
 	/**
 	 * Type
 	 */
 
-    public int type=0;
+    public int type = 0;
 
 	/**
 	 * Value
 	 */
 
-    public Object value=null;
+    public Object value = null;
 
     /**
-     * Yytoken Constructor
+     * <i>Yytoken</i> Constructor
      * 
      * @param type Token Type
      * @param value Token Value
      */
 
-    public Yytoken(int type,Object value){
-            this.type=type;
-            this.value=value;
+    public Yytoken (
+		final int type,
+		final Object value)
+    {
+        this.type = type;
+        this.value = value;
     }
 
-    @Override public String toString(){
-            StringBuffer sb = new StringBuffer();
-            switch(type){
-            case TYPE_VALUE:
-                    sb.append("VALUE(").append(value).append(")");
-                    break;
-            case TYPE_LEFT_BRACE:
-                    sb.append("LEFT BRACE({)");
-                    break;
-            case TYPE_RIGHT_BRACE:
-                    sb.append("RIGHT BRACE(})");
-                    break;
-            case TYPE_LEFT_SQUARE:
-                    sb.append("LEFT SQUARE([)");
-                    break;
-            case TYPE_RIGHT_SQUARE:
-                    sb.append("RIGHT SQUARE(])");
-                    break;
-            case TYPE_COMMA:
-                    sb.append("COMMA(,)");
-                    break;
-            case TYPE_COLON:
-                    sb.append("COLON(:)");
-                    break;
-            case TYPE_EOF:
-                    sb.append("END OF FILE");
-                    break;
-            }
-            return sb.toString();
+    /**
+     * String Version of the State
+     * 
+     * @return String Version of the State
+     */
+
+    @Override public String toString()
+    {
+        StringBuffer stringBuffer = new StringBuffer();
+
+        switch (type) {
+        	case TYPE_VALUE:
+        		stringBuffer.append ("VALUE(").append (value).append (")");
+
+        		break;
+
+        	case TYPE_LEFT_BRACE:
+        		stringBuffer.append ("LEFT BRACE({)");
+
+        		break;
+
+        	case TYPE_RIGHT_BRACE:
+        		stringBuffer.append ("RIGHT BRACE(})");
+
+                break;
+
+        	case TYPE_LEFT_SQUARE:
+        		stringBuffer.append ("LEFT SQUARE([)");
+
+        		break;
+
+        	case TYPE_RIGHT_SQUARE:
+        		stringBuffer.append ("RIGHT SQUARE(])");
+
+        		break;
+
+        	case TYPE_COMMA:
+        		stringBuffer.append ("COMMA(,)");
+
+        		break;
+
+        	case TYPE_COLON:
+        		stringBuffer.append ("COLON(:)");
+
+        		break;
+
+        	case TYPE_EOF:
+        		stringBuffer.append ("END OF FILE");
+
+        		break;
+        }
+
+        return stringBuffer.toString();
     }
 }
