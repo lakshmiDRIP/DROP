@@ -97,7 +97,7 @@ import java.io.Reader;
  * 		<li>Lexical State - BEGIN</li>
  * 		<li>Number of newlines encountered up to the start of the matched text</li>
  * 		<li>The number of characters from the last newline up to the start of the matched text</li>
- * 		<li>zzAtBOL == true <=> the scanner is currently at the beginning of a line</li>
+ * 		<li>zzAtBOL == true - the scanner is currently at the beginning of a line</li>
  * 		<li>Retrieve the Position</li>
  * 		<li>Create a new scanner. There is also Reader version of this constructor</li>
  * 		<li>Create a new scanner. There is also a InputStream version of this constructor</li>

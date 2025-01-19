@@ -1,8 +1,13 @@
 
 package org.drip.service.json;
 
+import org.drip.analytics.date.JulianDate;
+import org.drip.analytics.daycount.Convention;
+import org.drip.service.jsonparser.Converter;
+import org.drip.service.representation.JSONObject;
+
 /*
- * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ * -*- mode: java; tab-widateh: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
@@ -87,7 +92,9 @@ package org.drip.service.json;
  *  following Functionality:
  *
  *  <ul>
- * 		<li>JSON Based in/out Credit Default Swap Curve Metrics Thunker</li>
+ * 		<li>JSON Based in/out Date Holiday Check Thunker</li>
+ * 		<li>JSON Based in/out Date Adjustment Thunker</li>
+ * 		<li>JSON Based in/out Date Offset Thunker</li>
  *  </ul>
  *
  *	<br>
@@ -102,7 +109,8 @@ package org.drip.service.json;
  * @author Lakshmi Krishnamurthy
  */
 
-public class DateProcessor {
+public class DateProcessor
+{
 
 	/**
 	 * JSON Based in/out Date Holiday Check Thunker
@@ -112,28 +120,31 @@ public class DateProcessor {
 	 * @return JSON Date Holiday Check Response
 	 */
 
-	@SuppressWarnings ("unchecked") static final org.drip.service.representation.JSONObject IsHoliday (
-		final org.drip.service.representation.JSONObject jsonParameter)
+	@SuppressWarnings ("unchecked") static final JSONObject IsHoliday (
+		final JSONObject jsonParameter)
 	{
-		org.drip.analytics.date.JulianDate dt = org.drip.service.jsonparser.Converter.DateEntry (jsonParameter,
-			"Date");
+		JulianDate date = Converter.DateEntry (jsonParameter, "Date");
 
-		if (null == dt) return null;
+		if (null == date) {
+			return null;
+		}
 
-		boolean bIsHoliday = false;
+		boolean isHoliday = false;
 
 		try {
-			bIsHoliday = org.drip.analytics.daycount.Convention.IsHoliday (dt.julian(),
-				org.drip.service.jsonparser.Converter.StringEntry (jsonParameter, "Calendar"));
-		} catch (java.lang.Exception e) {
+			isHoliday = Convention.IsHoliday (
+				date.julian(),
+				Converter.StringEntry (jsonParameter, "Calendar")
+			);
+		} catch (Exception e) {
 			e.printStackTrace();
 
 			return null;
 		}
 
-		org.drip.service.representation.JSONObject jsonResponse = new org.drip.service.representation.JSONObject();
+		JSONObject jsonResponse = new JSONObject();
 
-		jsonResponse.put ("IsHoliday", bIsHoliday);
+		jsonResponse.put ("IsHoliday", isHoliday);
 
 		return jsonResponse;
 	}
@@ -146,34 +157,36 @@ public class DateProcessor {
 	 * @return JSON Date Adjustment Response
 	 */
 
-	@SuppressWarnings ("unchecked") static final org.drip.service.representation.JSONObject AdjustBusinessDays (
-		final org.drip.service.representation.JSONObject jsonParameter)
+	@SuppressWarnings ("unchecked") static final JSONObject AdjustBusinessDays (
+		final JSONObject jsonParameter)
 	{
-		org.drip.analytics.date.JulianDate dt = org.drip.service.jsonparser.Converter.DateEntry (jsonParameter,
-			"Date");
+		JulianDate date = Converter.DateEntry (jsonParameter, "Date");
 
-		if (null == dt) return null;
+		if (null == date) {
+			return null;
+		}
 
-		java.lang.String strCalendar = org.drip.service.jsonparser.Converter.StringEntry (jsonParameter,
-			"Calendar");
+		String calendar = Converter.StringEntry (jsonParameter, "Calendar");
 
-		int iDaysToAdjust = 0;
+		int daysToAdjust = 0;
 
 		try {
-			iDaysToAdjust = org.drip.service.jsonparser.Converter.IntegerEntry (jsonParameter, "DaysToAdjust");
-		} catch (java.lang.Exception e) {
+			daysToAdjust = Converter.IntegerEntry (jsonParameter, "DaysToAdjust");
+		} catch (Exception e) {
 			e.printStackTrace();
 
 			return null;
 		}
 
-		org.drip.analytics.date.JulianDate dtOut = dt.addBusDays (iDaysToAdjust, strCalendar);
+		JulianDate dateOut = date.addBusDays (daysToAdjust, calendar);
 
-		if (null == dtOut) return null;
+		if (null == dateOut) {
+			return null;
+		}
 
-		org.drip.service.representation.JSONObject jsonResponse = new org.drip.service.representation.JSONObject();
+		JSONObject jsonResponse = new JSONObject();
 
-		jsonResponse.put ("DateOut", dtOut.toString());
+		jsonResponse.put ("DateOut", dateOut.toString());
 
 		return jsonResponse;
 	}
@@ -186,31 +199,34 @@ public class DateProcessor {
 	 * @return JSON Date Offset Response
 	 */
 
-	@SuppressWarnings ("unchecked") static final org.drip.service.representation.JSONObject AddDays (
-		final org.drip.service.representation.JSONObject jsonParameter)
+	@SuppressWarnings ("unchecked") static final JSONObject AddDays (
+		final JSONObject jsonParameter)
 	{
-		org.drip.analytics.date.JulianDate dt = org.drip.service.jsonparser.Converter.DateEntry (jsonParameter,
-			"Date");
+		JulianDate date = Converter.DateEntry (jsonParameter, "Date");
 
-		if (null == dt) return null;
+		if (null == date) {
+			return null;
+		}
 
-		int iDaysToAdd = 0;
+		int daysToAdd = 0;
 
 		try {
-			iDaysToAdd = org.drip.service.jsonparser.Converter.IntegerEntry (jsonParameter, "DaysToAdd");
-		} catch (java.lang.Exception e) {
+			daysToAdd = Converter.IntegerEntry (jsonParameter, "DaysToAdd");
+		} catch (Exception e) {
 			e.printStackTrace();
 
 			return null;
 		}
 
-		org.drip.analytics.date.JulianDate dtOut = dt.addDays (iDaysToAdd);
+		JulianDate dateOut = date.addDays (daysToAdd);
 
-		if (null == dtOut) return null;
+		if (null == dateOut) {
+			return null;
+		}
 
-		org.drip.service.representation.JSONObject jsonResponse = new org.drip.service.representation.JSONObject();
+		JSONObject jsonResponse = new JSONObject();
 
-		jsonResponse.put ("DateOut", dtOut.toString());
+		jsonResponse.put ("DateOut", dateOut.toString());
 
 		return jsonResponse;
 	}
