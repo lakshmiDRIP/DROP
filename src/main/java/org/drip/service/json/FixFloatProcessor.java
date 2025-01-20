@@ -101,7 +101,7 @@ import org.drip.state.identifier.ForwardLabel;
  * 	provides the following Functionality:
  *
  *  <ul>
- * 		<li>JSON Based in/out Constant Payment Asset Backed Loan Secular Metrics Thunker</li>
+ * 		<li>JSON Based in/out Funding Fix Float Curve Metrics Thunker</li>
  *  </ul>
  *
  *	<br>
