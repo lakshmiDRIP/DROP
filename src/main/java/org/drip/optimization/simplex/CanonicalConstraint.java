@@ -118,6 +118,85 @@ public class CanonicalConstraint
 	private LinearExpression _lhs = null;
 
 	/**
+	 * Construct a Less-Than Canonical Constraint
+	 * 
+	 * @param lhs Constraint LHS Expression
+	 * @param rhs Constraint RHS Value
+	 * 
+	 * @return The LTE Canonical Constraint
+	 */
+
+	public static final CanonicalConstraint LT (
+		final LinearExpression lhs,
+		final double rhs)
+	{
+		try {
+			return new CanonicalConstraint (lhs, rhs);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
+	 * Construct a Greater-Than Canonical Constraint
+	 * 
+	 * @param lhs Constraint LHS Expression
+	 * @param rhs Constraint RHS Value
+	 * 
+	 * @return The LTE Canonical Constraint
+	 */
+
+	public static final CanonicalConstraint GT (
+		final LinearExpression lhs,
+		final double rhs)
+	{
+		if (null == lhs || !lhs.negate()) {
+			return null;
+		}
+
+		try {
+			return new CanonicalConstraint (lhs, rhs);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
+	 * Construct the Array of Canonical Constraints that decomposes the Equality
+	 * 
+	 * @param lhs Constraint LHS Expression
+	 * @param rhs Constraint RHS Value
+	 * 
+	 * @return Array of Canonical Constraints
+	 */
+
+	public static final CanonicalConstraint[] EQ (
+		final LinearExpression lhs,
+		final double rhs)
+	{
+		CanonicalConstraint ltCanonicalConstraint = LT (lhs, rhs);
+
+		if (null == ltCanonicalConstraint) {
+			return null;
+		}
+
+		CanonicalConstraint gtCanonicalConstraint = GT (lhs, rhs);
+
+		if (null == gtCanonicalConstraint) {
+			return null;
+		}
+
+		return new CanonicalConstraint[] {
+			ltCanonicalConstraint,
+			gtCanonicalConstraint
+		};
+	}
+
+	/**
 	 * <i>CanonicalConstraint</i> Constructor
 	 * 
 	 * @param lhs Constraint LHS Expression

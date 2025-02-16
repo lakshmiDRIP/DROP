@@ -110,7 +110,18 @@ package org.drip.optimization.simplex;
  * @author Lakshmi Krishnamurthy
  */
 
-public class DantzigSolver
+public interface DantzigSolver
 {
 
+	/**
+	 * Construct the Optimal Solution to the Simplex
+	 * 
+	 * @param canonicalForm Canonical Form of the Simplex Problem
+	 * 
+	 * @return The Optimal Solution
+	 */
+
+	public abstract LinearExpression optimize (
+		final CanonicalForm canonicalForm
+	);
 }

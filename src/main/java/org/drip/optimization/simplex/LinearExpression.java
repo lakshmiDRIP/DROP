@@ -189,4 +189,19 @@ public class LinearExpression extends RdToR1
 
 		return evaluation;
 	}
+
+	/**
+	 * Negate the Array of Constraint Coefficients
+	 * 
+	 * @return Array of Constraint Coefficients Negated
+	 */
+
+	public boolean negate()
+	{
+		for (int coefficientIndex = 0; coefficientIndex < _coefficientArray.length; ++coefficientIndex) {
+			_coefficientArray[coefficientIndex] = -1. * _coefficientArray[coefficientIndex];
+		}
+
+		return true;
+	}
 }

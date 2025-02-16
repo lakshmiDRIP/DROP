@@ -74,7 +74,7 @@ package org.drip.optimization.simplex;
  */
 
 /**
- * <i>CanonicalForm</i> implements the Canonical Form of the Simplex Scheme. The References are:
+ * <i>CanonicalForm</i> exposes the Canonical Form of the Simplex Scheme. The References are:
  * 
  * <br><br>
  * 	<ul>
