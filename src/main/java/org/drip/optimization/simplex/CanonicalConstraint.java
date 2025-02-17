@@ -114,8 +114,28 @@ import org.drip.numerical.common.NumberUtil;
 
 public class CanonicalConstraint
 {
+
+	/**
+	 * TYPE - EQUALITY Constraint
+	 */
+
+	public static final int EQ = 1;
+
+	/**
+	 * TYPE - GREATER-THAN Constraint
+	 */
+
+	public static final int GT = 2;
+
+	/**
+	 * TYPE - LESSER-THAN Constraint
+	 */
+
+	public static final int LT = 3;
+
 	private double _rhs = Double.NaN;
 	private LinearExpression _lhs = null;
+	private int _type = Integer.MIN_VALUE;
 
 	/**
 	 * Construct a Less-Than Canonical Constraint
@@ -123,7 +143,7 @@ public class CanonicalConstraint
 	 * @param lhs Constraint LHS Expression
 	 * @param rhs Constraint RHS Value
 	 * 
-	 * @return The LTE Canonical Constraint
+	 * @return The LT Canonical Constraint
 	 */
 
 	public static final CanonicalConstraint LT (
@@ -131,7 +151,7 @@ public class CanonicalConstraint
 		final double rhs)
 	{
 		try {
-			return new CanonicalConstraint (lhs, rhs);
+			return new CanonicalConstraint (lhs, rhs, LT);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -145,19 +165,15 @@ public class CanonicalConstraint
 	 * @param lhs Constraint LHS Expression
 	 * @param rhs Constraint RHS Value
 	 * 
-	 * @return The LTE Canonical Constraint
+	 * @return The GT Canonical Constraint
 	 */
 
 	public static final CanonicalConstraint GT (
 		final LinearExpression lhs,
 		final double rhs)
 	{
-		if (null == lhs || !lhs.negate()) {
-			return null;
-		}
-
 		try {
-			return new CanonicalConstraint (lhs, rhs);
+			return new CanonicalConstraint (lhs, rhs, GT);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -166,34 +182,25 @@ public class CanonicalConstraint
 	}
 
 	/**
-	 * Construct the Array of Canonical Constraints that decomposes the Equality
+	 * Construct an Equality Canonical Constraint
 	 * 
 	 * @param lhs Constraint LHS Expression
 	 * @param rhs Constraint RHS Value
 	 * 
-	 * @return Array of Canonical Constraints
+	 * @return Equality Canonical Constraint
 	 */
 
-	public static final CanonicalConstraint[] EQ (
+	public static final CanonicalConstraint EQ (
 		final LinearExpression lhs,
 		final double rhs)
 	{
-		CanonicalConstraint ltCanonicalConstraint = LT (lhs, rhs);
-
-		if (null == ltCanonicalConstraint) {
-			return null;
+		try {
+			return new CanonicalConstraint (lhs, rhs, EQ);
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 
-		CanonicalConstraint gtCanonicalConstraint = GT (lhs, rhs);
-
-		if (null == gtCanonicalConstraint) {
-			return null;
-		}
-
-		return new CanonicalConstraint[] {
-			ltCanonicalConstraint,
-			gtCanonicalConstraint
-		};
+		return null;
 	}
 
 	/**
@@ -201,18 +208,33 @@ public class CanonicalConstraint
 	 * 
 	 * @param lhs Constraint LHS Expression
 	 * @param rhs Constraint RHS Value
+	 * @param type One of EQ/GT/LT
 	 * 
 	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public CanonicalConstraint (
 		final LinearExpression lhs,
-		final double rhs)
+		final double rhs,
+		final int type)
 		throws Exception
 	{
 		if (null == (_lhs = lhs) || !NumberUtil.IsValid (_rhs = rhs)) {
 			throw new Exception ("CanonicalConstraint Constructor => Invalid Inputs");
 		}
+
+		_type = type;
+	}
+
+	/**
+	 * Retrieve the Constraint Type
+	 * 
+	 * @return The Constraint Type
+	 */
+
+	public int type()
+	{
+		return _type;
 	}
 
 	/**

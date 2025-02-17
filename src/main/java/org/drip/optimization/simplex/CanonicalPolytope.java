@@ -113,22 +113,26 @@ package org.drip.optimization.simplex;
 
 public class CanonicalPolytope
 {
+	private int _unrestrictedVariableCount = Integer.MIN_VALUE;
 	private CanonicalConstraint[] _canonicalConstraintArray = null;
 
 	/**
 	 * <i>CanonicalPolytope</i> Constructor
 	 * 
+	 * @param unrestrictedVariableCount Number of Unrestricted Variables
 	 * @param canonicalConstraintArray Array of <i>CanonicalConstraint</i>'s
 	 * 
 	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public CanonicalPolytope (
+		final int unrestrictedVariableCount,
 		final CanonicalConstraint[] canonicalConstraintArray)
 		throws Exception
 	{
 		if (null == (_canonicalConstraintArray = canonicalConstraintArray) ||
-			0 == _canonicalConstraintArray.length)
+			0 == _canonicalConstraintArray.length ||
+			0 > (_unrestrictedVariableCount = unrestrictedVariableCount))
 		{
 			throw new Exception ("CanonicalPolytope Constructor => Invalid Inputs");
 		}
@@ -152,6 +156,17 @@ public class CanonicalPolytope
 	}
 
 	/**
+	 * Retrieve the Number of Unrestricted Variables
+	 * 
+	 * @return Number of Unrestricted Variables
+	 */
+
+	public int unrestrictedVariableCount()
+	{
+		return _unrestrictedVariableCount;
+	}
+
+	/**
 	 * Retrieve the Array of <i>CanonicalConstraint</i>'s
 	 * 
 	 * @return Array of <i>CanonicalConstraint</i>'s
@@ -171,5 +186,24 @@ public class CanonicalPolytope
 	public int dimension()
 	{
 		return _canonicalConstraintArray[0].dimension();
+	}
+
+	/**
+	 * Compute the Size of a Standard Row
+	 * 
+	 * @return Size of a Standard Row
+	 */
+
+	public int standardRowSize()
+	{
+		int standardRowSize = 0;
+
+		int dimension = _canonicalConstraintArray[0].dimension();
+
+		for (CanonicalConstraint canonicalConstraint : _canonicalConstraintArray) {
+			standardRowSize += dimension + (CanonicalConstraint.EQ == canonicalConstraint.type() ? 0 : 1);
+		}
+
+		return standardRowSize + 2 * _unrestrictedVariableCount;
 	}
 }

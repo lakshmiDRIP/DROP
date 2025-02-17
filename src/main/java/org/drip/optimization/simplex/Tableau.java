@@ -1,9 +1,6 @@
 
 package org.drip.optimization.simplex;
 
-import org.drip.function.definition.RdToR1;
-import org.drip.numerical.common.NumberUtil;
-
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
@@ -77,8 +74,7 @@ import org.drip.numerical.common.NumberUtil;
  */
 
 /**
- * <i>LinearExpression</i> implements the R<sup>d</sup> to R<sup>1</sup> Linear Expression. The References
- * 	are:
+ * <i>Tableau</i> exposes the Tableau Form of the Simplex Scheme. The References are:
  * 
  * <br><br>
  * 	<ul>
@@ -114,79 +110,70 @@ import org.drip.numerical.common.NumberUtil;
  * @author Lakshmi Krishnamurthy
  */
 
-public class LinearExpression extends RdToR1
+public class Tableau
 {
-	private double[] _coefficientArray = null;
+	private double[][] _constraintMatrix = null;
+	private double[] _constraintValueArray = null;
+	private double[] _objectiveCoefficientArray = null;
 
 	/**
-	 * <i>LinearExpression</i> Constructor
+	 * <i>Tableau</i> Constructor
 	 * 
-	 * @param coefficientArray Array of Coefficients
+	 * @param objectiveCoefficientArray Objective Coefficient Array
+	 * @param constraintMatrix Constraint Matrix
+	 * @param constraintValueArray Constraint Value Array
 	 * 
-	 * @throws Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if Inputs are Invalid
 	 */
 
-	public LinearExpression (
-		final double[] coefficientArray)
+	public Tableau (
+		final double[] objectiveCoefficientArray,
+		final double[][] constraintMatrix,
+		final double[] constraintValueArray)
 		throws Exception
 	{
-		super (null);
-
-		if (null == (_coefficientArray = coefficientArray) || 0 >= _coefficientArray.length) {
-			throw new Exception ("LinearExpression Constructor => Invalid Inputs");
+		if (null == (_objectiveCoefficientArray = objectiveCoefficientArray) ||
+				0 == _objectiveCoefficientArray.length ||
+			null == (_constraintMatrix = constraintMatrix) ||
+				0 == _constraintMatrix.length ||
+				_objectiveCoefficientArray.length != _constraintMatrix[0].length ||
+			null == (_constraintValueArray = constraintValueArray) ||
+				_constraintValueArray.length != _constraintMatrix.length)
+		{
+			throw new Exception ("Tableau Constructor => Invalid Inputs");
 		}
 	}
 
 	/**
-	 * Retrieve the Array of Coefficients
+	 * Retrieve the Constraint Matrix
 	 * 
-	 * @return Array of Coefficients
+	 * @return Constraint Matrix
 	 */
 
-	public double[] coefficientArray()
+	public double[][] constraintMatrix()
 	{
-		return _coefficientArray;
+		return _constraintMatrix;
 	}
 
 	/**
-	 * Retrieve the Dimension of the Expression
+	 * Retrieve the Constraint Value Array
 	 * 
-	 * @return The Dimension of the Expression
+	 * @return Constraint Value Array
 	 */
 
-	@Override public int dimension()
+	public double[] constraintValueArray()
 	{
-		return _coefficientArray.length;
+		return _constraintValueArray;
 	}
 
 	/**
-	 * Evaluate the Expression for the given Input Variates
+	 * Retrieve the Objective Coefficient Array
 	 * 
-	 * @param variateArray Array of Input Variates
-	 *  
-	 * @return The Expression Value
-	 * 
-	 * @throws Exception Thrown if the Expression cannot be evaluated
+	 * @return Objective Coefficient Array
 	 */
 
-	@Override public double evaluate (
-		final double[] variateArray)
-		throws Exception
+	public double[] objectiveCoefficientArray()
 	{
-		if (null == variateArray || _coefficientArray.length != variateArray.length) {
-			throw new Exception ("LinearExpression::evaluate => Invalid Inputs");
-		}
-
-		double evaluation = 0.;
-
-		for (int coefficientIndex = 0; coefficientIndex < _coefficientArray.length; ++coefficientIndex) {
-			if (!NumberUtil.IsValid (variateArray[coefficientIndex])) {
-				throw new Exception ("LinearExpression::evaluate => Invalid Inputs");
-			}
-
-			evaluation += _coefficientArray[coefficientIndex] * variateArray[coefficientIndex];
-		}
-
-		return evaluation;
+		return _objectiveCoefficientArray;
 	}
 }

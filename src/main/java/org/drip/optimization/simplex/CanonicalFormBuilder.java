@@ -115,9 +115,30 @@ import java.util.List;
 public class CanonicalFormBuilder
 {
 	private LinearExpression _objectiveFunction = null;
+	private int _unrestrictedVariableCount = Integer.MIN_VALUE;
 	private List<CanonicalConstraint> _eqCanonicalConstraintList = null;
 	private List<CanonicalConstraint> _gtCanonicalConstraintList = null;
 	private List<CanonicalConstraint> _ltCanonicalConstraintList = null;
+
+	/**
+	 * <i>CanonicalFormBuilder</i> Constructor
+	 * 
+	 * @param unrestrictedVariableCount Number of Unrestricted Variables
+	 * @param objectiveFunction Objective Function
+	 * 
+	 * @throws Exception Thrown if the Inputs are Invalid
+	 */
+
+	public CanonicalFormBuilder (
+		final int unrestrictedVariableCount,
+		final LinearExpression objectiveFunction)
+		throws Exception
+	{
+		if (null == (_objectiveFunction = objectiveFunction) ||
+			0 > (_unrestrictedVariableCount = unrestrictedVariableCount)) {
+			throw new Exception ("CanonicalFormBuilder Constructor => Invalid Inputs");
+		}
+	}
 
 	/**
 	 * Retrieve the Objective Function
@@ -128,6 +149,17 @@ public class CanonicalFormBuilder
 	public LinearExpression objectiveFunction()
 	{
 		return _objectiveFunction;
+	}
+
+	/**
+	 * Retrieve the Number of Unrestricted Variables
+	 * 
+	 * @return Number of Unrestricted Variables
+	 */
+
+	public int unrestrictedVariableCount()
+	{
+		return _unrestrictedVariableCount;
 	}
 
 	/**
@@ -161,5 +193,135 @@ public class CanonicalFormBuilder
 	public List<CanonicalConstraint> ltCanonicalConstraintList()
 	{
 		return _ltCanonicalConstraintList;
+	}
+
+	/**
+	 * Convert the Equality Constraint to its Canonical Form and add it to the Constraint List
+	 * 
+	 * @param canonicalConstraint Canonical Constraint
+	 * 
+	 * @return TRUE - Equality Constraint converted to its Canonical Form and added to the Constraint List
+	 */
+
+	public boolean addEQCanonicalConstraint (
+		final CanonicalConstraint canonicalConstraint)
+	{
+		if (null == canonicalConstraint) {
+			return false;
+		}
+
+		CanonicalConstraint eqCanonicalConstraint = CanonicalConstraint.EQ (
+			canonicalConstraint.lhs(),
+			canonicalConstraint.rhs()
+		);
+
+		if (null == eqCanonicalConstraint) {
+			return false;
+		}
+
+		_eqCanonicalConstraintList.add (eqCanonicalConstraint);
+
+		return true;
+	}
+
+	/**
+	 * Convert the Greater-Than Constraint to its Canonical Form and add it to the Constraint List
+	 * 
+	 * @param canonicalConstraint Canonical Constraint
+	 * 
+	 * @return TRUE - Greater-Than Constraint converted to its Canonical Form and added to the Constraint
+	 * 	List
+	 */
+
+	public boolean addGTCanonicalConstraint (
+		final CanonicalConstraint canonicalConstraint)
+	{
+		if (null == canonicalConstraint) {
+			return false;
+		}
+
+		CanonicalConstraint gtCanonicalConstraint = CanonicalConstraint.GT (
+			canonicalConstraint.lhs(),
+			canonicalConstraint.rhs()
+		);
+
+		if (null == gtCanonicalConstraint) {
+			return false;
+		}
+
+		_gtCanonicalConstraintList.add (gtCanonicalConstraint);
+
+		return true;
+	}
+
+	/**
+	 * Convert the Less-Than Constraint to its Canonical Form and add it to the Constraint List
+	 * 
+	 * @param canonicalConstraint Canonical Constraint
+	 * 
+	 * @return TRUE - Less-Than Constraint converted to its Canonical Form and added to the Constraint List
+	 */
+
+	public boolean addLTCanonicalConstraint (
+		final CanonicalConstraint canonicalConstraint)
+	{
+		if (null == canonicalConstraint) {
+			return false;
+		}
+
+		CanonicalConstraint ltCanonicalConstraint = CanonicalConstraint.LT (
+			canonicalConstraint.lhs(),
+			canonicalConstraint.rhs()
+		);
+
+		if (null == ltCanonicalConstraint) {
+			return false;
+		}
+
+		_ltCanonicalConstraintList.add (ltCanonicalConstraint);
+
+		return true;
+	}
+
+	/**
+	 * Construct an Instance of Simplex <i>CanonicalForm</i> from the EQ/LT/GT Constraints and the Objective
+	 * 
+	 * @return <i>CanonicalForm</i> Instance
+	 */
+
+	public CanonicalForm build()
+	{
+		int i = 0;
+
+		int eqCanonicalConstraintSize = _eqCanonicalConstraintList.size();
+
+		int gtCanonicalConstraintSize = _gtCanonicalConstraintList.size();
+
+		CanonicalConstraint[] canonicalConstraintArray =
+			new CanonicalConstraint[eqCanonicalConstraintSize + gtCanonicalConstraintSize +
+			                        _ltCanonicalConstraintList.size()];
+
+		for (CanonicalConstraint canonicalConstraint : _eqCanonicalConstraintList) {
+			canonicalConstraintArray[i++] = canonicalConstraint;
+		}
+
+		for (CanonicalConstraint canonicalConstraint : _gtCanonicalConstraintList) {
+			canonicalConstraintArray[i++] = canonicalConstraint;
+		}
+
+		for (CanonicalConstraint canonicalConstraint : _ltCanonicalConstraintList) {
+			canonicalConstraintArray[i++] = canonicalConstraint;
+		}
+
+		try {
+			return new CanonicalForm (
+				_objectiveFunction,
+				new CanonicalPolytope (_unrestrictedVariableCount, canonicalConstraintArray)
+			);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return null;
 	}
 }
