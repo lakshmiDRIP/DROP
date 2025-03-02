@@ -1,15 +1,20 @@
 
-package org.drip.optimization.simplex;
+package org.drip.sample.simplex;
 
-import org.drip.function.definition.RdToR1;
-import org.drip.numerical.common.NumberUtil;
+import org.drip.optimization.simplex.CanonicalConstraint;
+import org.drip.optimization.simplex.CanonicalForm;
+import org.drip.optimization.simplex.CanonicalFormBuilder;
+import org.drip.optimization.simplex.LinearExpression;
+import org.drip.service.env.EnvManager;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
- * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2022 Lakshmi Krishnamurthy
+ * Copyright (C) 2021 Lakshmi Krishnamurthy
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
  * 
  *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
  *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
@@ -77,127 +82,76 @@ import org.drip.numerical.common.NumberUtil;
  */
 
 /**
- * <i>LinearExpression</i> implements the R<sup>d</sup> to R<sup>1</sup> Linear Expression. The References
- * 	are:
+ * <i>CanonicalFormConstructor</i> illustrates the Formulation and Canonicalization of the Simplex Canonical
+ * 	Form. The References are:
  * 
  * <br><br>
- * 	<ul>
+ *  <ul>
  *  	<li>
- * 			Dadush, D., and S. Huiberts (2020): A Friendly Smoothed Analysis of the Simplex Method <i>SIAM
- * 				Journal on Computing</i> <b>49 (5)</b> 449-499
+ * 			Murty, K. G. (1983): <i>Linear Programming</i> <b>John Wiley and Sons</b> New York
  *  	</li>
- * 		<li>
- * 			Dantzig, G. B., and M. N. Thapa (1997): <i>Linear Programming 1: Introduction</i>
- * 				<b>Springer-Verlag</b> New York NY
- * 		</li>
- * 		<li>
- * 			Murty, K. G. (1983): <i>Linear Programming</i> <b>John Wiley and Sons</b> New York NY
- * 		</li>
- * 		<li>
- * 			Nering, E. D., and A. W. Tucker (1993): <i>Linear Programs and Related Problems</i>
- * 				<b>Academic Press</b> Cambridge MA
- * 		</li>
- * 		<li>
- * 			Padberg, M. (1999): <i> Linear Optimization and Extensions 2<sup>nd</sup> Edition</i>
- * 				<b>Springer-Verlag</b> New York NY
- * 		</li>
- * 	</ul>
+ *  	<li>
+ * 			Nering, E. D., and A. W. Tucker (1993): <i>Linear Programs and Related Problems</i> <b>Academic
+ * 				Press</b>
+ *  	</li>
+ *  	<li>
+ * 			Padberg, M. W. (1999): <i>Linear Optimization and Extensions 2<sup>nd</sup> Edition</i>
+ * 				<b>Springer-Verlag</b>
+ *  	</li>
+ *  	<li>
+ * 			van der Bei, R. J. (2008): Linear Programming: Foundations and Extensions 3<sup>rd</sup> Edition
+ * 				<i>International Series in Operations Research and Management Science</i> <b>114
+ * 				Springer-Verlag</b>
+ *  	</li>
+ *  	<li>
+ * 			Wikipedia (2020): Simplex Algorithm https://en.wikipedia.org/wiki/Simplex_algorithm
+ *  	</li>
+ *  </ul>
  *
  *	<br><br>
  *  <ul>
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md">Numerical Optimizer Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/optimization/README.md">Necessary, Sufficient, and Regularity Checks for Gradient Descent in a Constrained Optimization Setup</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/optimization/simplex">R<sup>d</sup> to R<sup>1</sup> Simplex Scheme</a></li>
+ *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/README.md">DROP API Construction and Usage</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/simplex/README.md">LP Simplex Formulation and Solution</a></li>
  *  </ul>
- * 
+ *
  * @author Lakshmi Krishnamurthy
  */
 
-public class LinearExpression extends RdToR1
-{
-	private double[] _coefficientArray = null;
+public class CanonicalFormConstructor {
 
-	/**
-	 * <i>LinearExpression</i> Constructor
-	 * 
-	 * @param coefficientArray Array of Coefficients
-	 * 
-	 * @throws Exception Thrown if the Inputs are Invalid
-	 */
-
-	public LinearExpression (
-		final double[] coefficientArray)
+	public static final void main (
+		final String[] argumentArray)
 		throws Exception
 	{
-		super (null);
+		EnvManager.InitEnv ("");
 
-		if (null == (_coefficientArray = coefficientArray) || 0 >= _coefficientArray.length) {
-			throw new Exception ("LinearExpression Constructor => Invalid Inputs");
-		}
-	}
+		double[] objectiveCoefficient = new double[] {-2., -3., -4.};
+		double[] constraintCoefficient1 = new double[] {3., 2., 1.};
+		double[] constraintCoefficient2 = new double[] {2., 5., 3.};
+		double constraintRHS1 = 10.;
+		double constraintRHS2 = 15.;
 
-	/**
-	 * Retrieve the Array of Coefficients
-	 * 
-	 * @return Array of Coefficients
-	 */
+		CanonicalFormBuilder canonicalFormBuilder = new CanonicalFormBuilder (
+			0,
+			new LinearExpression (objectiveCoefficient)
+		);
 
-	public double[] coefficientArray()
-	{
-		return _coefficientArray;
-	}
+		canonicalFormBuilder.addCanonicalConstraint (
+			CanonicalConstraint.LT (new LinearExpression (constraintCoefficient1), constraintRHS1)
+		);
 
-	/**
-	 * Retrieve the Dimension of the Expression
-	 * 
-	 * @return The Dimension of the Expression
-	 */
+		canonicalFormBuilder.addCanonicalConstraint (
+			CanonicalConstraint.LT (new LinearExpression (constraintCoefficient2), constraintRHS2)
+		);
 
-	@Override public int dimension()
-	{
-		return _coefficientArray.length;
-	}
+		System.out.println (canonicalFormBuilder);
 
-	/**
-	 * Evaluate the Expression for the given Input Variates
-	 * 
-	 * @param variateArray Array of Input Variates
-	 *  
-	 * @return The Expression Value
-	 * 
-	 * @throws Exception Thrown if the Expression cannot be evaluated
-	 */
+		CanonicalForm canonicalForm = canonicalFormBuilder.build();
 
-	@Override public double evaluate (
-		final double[] variateArray)
-		throws Exception
-	{
-		if (null == variateArray || _coefficientArray.length != variateArray.length) {
-			throw new Exception ("LinearExpression::evaluate => Invalid Inputs");
-		}
+		System.out.println (canonicalForm);
 
-		double evaluation = 0.;
-
-		for (int coefficientIndex = 0; coefficientIndex < _coefficientArray.length; ++coefficientIndex) {
-			if (!NumberUtil.IsValid (variateArray[coefficientIndex])) {
-				throw new Exception ("LinearExpression::evaluate => Invalid Inputs");
-			}
-
-			evaluation += _coefficientArray[coefficientIndex] * variateArray[coefficientIndex];
-		}
-
-		return evaluation;
-	}
-
-	/**
-	 * Convert the Linear Expression into a String
-	 * 
-	 * @return The Linear Expression into a String
-	 */
-
-	@Override public String toString()
-	{
-		return NumberUtil.ArrayRow (_coefficientArray, 3, 6, false);
+		EnvManager.TerminateEnv();
 	}
 }

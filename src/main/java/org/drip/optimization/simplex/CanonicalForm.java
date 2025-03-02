@@ -157,4 +157,16 @@ public class CanonicalForm
 	{
 		return _constraintPolytope;
 	}
+
+	/**
+	 * Convert the Canonical Form into a String
+	 * 
+	 * @return The Canonical Form into a String
+	 */
+
+	@Override public String toString()
+	{
+		return "Objective Function => " + _objectiveFunction + "\n" +
+			"Constraint Polytope => " + _constraintPolytope + "\n";
+	}
 }

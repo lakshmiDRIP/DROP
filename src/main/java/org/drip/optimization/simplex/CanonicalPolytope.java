@@ -189,21 +189,78 @@ public class CanonicalPolytope
 	}
 
 	/**
-	 * Compute the Size of a Standard Row
+	 * Compute the Size of a Tableau Row
 	 * 
-	 * @return Size of a Standard Row
+	 * @return Size of a Tableau Row
 	 */
 
-	public int standardRowSize()
+	public int tableauRowSize()
 	{
-		int standardRowSize = 0;
+		int tableauRowSize = 0;
 
 		int dimension = _canonicalConstraintArray[0].dimension();
 
 		for (CanonicalConstraint canonicalConstraint : _canonicalConstraintArray) {
-			standardRowSize += dimension + (CanonicalConstraint.EQ == canonicalConstraint.type() ? 0 : 1);
+			tableauRowSize += dimension + (CanonicalConstraint.EQ == canonicalConstraint.type() ? 0 : 1);
 		}
 
-		return standardRowSize + 2 * _unrestrictedVariableCount;
+		return tableauRowSize + 2 * _unrestrictedVariableCount;
+	}
+
+	/**
+	 * Construct the Tableau <i>A</i>
+	 * 
+	 * @return Tableau <i>A</i>
+	 */
+
+	public double[][] tableauA()
+	{
+		int tableauRowSize = tableauRowSize();
+
+		int dimension = _canonicalConstraintArray[0].dimension();
+
+		int constraintCount = _canonicalConstraintArray.length;
+		double[][] tableauA = new double[dimension][];
+		int unrestrictedVariable = 0;
+		int constraintIndex = 0;
+
+		for (CanonicalConstraint canonicalConstraint : _canonicalConstraintArray) {
+			tableauA[constraintIndex] = canonicalConstraint.tableauRow (tableauRowSize, constraintIndex);
+
+			++constraintIndex;
+		}
+
+		for (constraintIndex = 0; constraintIndex < constraintCount; ++constraintIndex) {
+			for (int columnIndex = dimension; columnIndex < tableauRowSize; ++columnIndex) {
+				if (columnIndex == dimension + unrestrictedVariable) {
+					tableauA[constraintIndex][columnIndex] = 1.;
+				} else if (columnIndex == dimension + unrestrictedVariable + 1) {
+					tableauA[constraintIndex][columnIndex] = -1.;
+				} else {
+					tableauA[constraintIndex][columnIndex] = 0.;
+				}
+			}
+
+			++unrestrictedVariable;
+		}
+
+		return tableauA;
+	}
+
+	/**
+	 * Convert the Canonical Polytope into a String
+	 * 
+	 * @return The Canonical Polytope into a String
+	 */
+
+	@Override public String toString()
+	{
+		String s = "Unrestricted Variable Count => " + _unrestrictedVariableCount + "\n";
+
+		for (CanonicalConstraint canonicalConstraint : _canonicalConstraintArray) {
+			s += "Polytope Constraint => " + canonicalConstraint.toString() + "\n";
+		}
+
+		return s;
 	}
 }

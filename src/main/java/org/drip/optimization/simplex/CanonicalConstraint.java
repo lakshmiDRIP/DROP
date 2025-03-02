@@ -2,6 +2,7 @@
 package org.drip.optimization.simplex;
 
 import org.drip.numerical.common.NumberUtil;
+import org.drip.service.common.FormatUtil;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -268,5 +269,66 @@ public class CanonicalConstraint
 	public int dimension()
 	{
 		return _lhs.dimension();
+	}
+
+	/**
+	 * Construct a Row corresponding to the Constraint in the Tableau
+	 * 
+	 * @param rowLength Length of the Constraint Row
+	 * @param index Constraint Index
+	 * 
+	 * @return Corresponding Constraint Row in the Tableau
+	 */
+
+	public double[] tableauRow (
+		final int rowLength,
+		final int index)
+	{
+		int dimension = _lhs.dimension();
+
+		if (0 >= rowLength || 0 >= index || index >= rowLength || dimension > rowLength) {
+			return null;
+		}
+
+		double[] tableauRow = new double[rowLength];
+
+		double[] coefficientArray = _lhs.coefficientArray();
+
+		for (int columnIndex = 0; columnIndex < rowLength; ++columnIndex) {
+			if (columnIndex < dimension) {
+				tableauRow[columnIndex] = coefficientArray[columnIndex];
+			} else if (columnIndex == index) {
+				if (GT == _type) {
+					tableauRow[columnIndex] = -1.;
+				} else if (LT == _type) {
+					tableauRow[columnIndex] = 1.;
+				}
+			} else {
+				tableauRow[columnIndex] = 0.;
+			}
+		}
+
+		return tableauRow;
+	}
+
+	/**
+	 * Convert the Canonical Constraint into a String
+	 * 
+	 * @return The Canonical Constraint into a String
+	 */
+
+	@Override public String toString()
+	{
+		String s = _lhs.toString();
+
+		if (EQ == _type) {
+			s += " ==";
+		} else if (GT == _type) {
+			s += " >=";
+		} else if (LT == _type) {
+			s += " <=";
+		}
+
+		return s + FormatUtil.FormatDouble (_rhs, 3, 6, 1.);
 	}
 }
