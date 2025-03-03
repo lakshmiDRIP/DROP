@@ -159,6 +159,90 @@ public class CanonicalForm
 	}
 
 	/**
+	 * Construct the Tableau <i>A</i>
+	 * 
+	 * @return Tableau <i>A</i>
+	 */
+
+	public double[][] tableauA()
+	{
+		return _constraintPolytope.tableauA();
+	}
+
+	/**
+	 * Construct the Tableau <i>B</i>
+	 * 
+	 * @return Tableau <i>B</i>
+	 */
+
+	public double[] tableauB()
+	{
+		return _constraintPolytope.tableauB();
+	}
+
+	/**
+	 * Construct the Tableau <i>C</i>
+	 * 
+	 * @return Tableau <i>C</i>
+	 */
+
+	public double[] tableauC()
+	{
+		double[] objectiveCoefficientArray = _objectiveFunction.coefficientArray();
+
+		double[] tableauC = new double[objectiveCoefficientArray.length];
+
+		for (int coefficientIndex = 0;
+			coefficientIndex < objectiveCoefficientArray.length;
+			++coefficientIndex)
+		{
+			tableauC[coefficientIndex] = -1. * objectiveCoefficientArray[coefficientIndex];
+		}
+
+		return tableauC;
+	}
+
+	/**
+	 * Construct the Full Tableau
+	 * 
+	 * @return Full Tableau
+	 */
+
+	public double[][] tableau()
+	{
+		int constraintCount = _constraintPolytope.constraintCount();
+
+		double[][] tableau = new double[constraintCount + 1][_constraintPolytope.tableauRowSize() + 2];
+
+		tableau[0][0] = 1.;
+
+		for (int constraintIndex = 0; constraintIndex < constraintCount; ++constraintIndex) {
+			tableau[constraintIndex+1][0] = 0.;
+		}
+
+		double[] tableauC = tableauC();
+
+		double[] tableauB = tableauB();
+
+		double[][] tableauA = tableauA();
+
+		for (int tableauCIndex = 0; tableauCIndex < tableauC.length; ++tableauCIndex) {
+			tableau[0][tableauCIndex + 1] = tableauC[tableauCIndex];
+		}
+
+		for (int tableauRowIndex = 0; tableauRowIndex < tableauA.length; ++tableauRowIndex) {
+			for (int tableauColumnIndex = 0; tableauColumnIndex < tableauA[0].length; ++tableauColumnIndex) {
+				tableau[tableauRowIndex + 1][tableauColumnIndex + 1] =
+					tableauA[tableauRowIndex][tableauColumnIndex];
+			}
+
+			tableau[tableauRowIndex + 1][tableauA[0].length + 1] = tableauB[tableauRowIndex];
+		}
+
+		return tableau;
+	}
+
+	/**
 	 * Convert the Canonical Form into a String
 	 * 
 	 * @return The Canonical Form into a String

@@ -1,6 +1,7 @@
 
 package org.drip.sample.simplex;
 
+import org.drip.numerical.common.NumberUtil;
 import org.drip.optimization.simplex.CanonicalConstraint;
 import org.drip.optimization.simplex.CanonicalForm;
 import org.drip.optimization.simplex.CanonicalFormBuilder;
@@ -150,7 +151,11 @@ public class CanonicalFormConstructor {
 
 		CanonicalForm canonicalForm = canonicalFormBuilder.build();
 
-		System.out.println (canonicalForm);
+		NumberUtil.Print2DArray ("\tTableau A", canonicalForm.tableauA(), false);
+
+		NumberUtil.Print1DArray ("\tTableau B", canonicalForm.tableauB(), false);
+
+		NumberUtil.Print1DArray ("\tTableau C", canonicalForm.tableauC(), false);
 
 		EnvManager.TerminateEnv();
 	}

@@ -189,6 +189,17 @@ public class CanonicalPolytope
 	}
 
 	/**
+	 * Retrieve the Constraint Count
+	 * 
+	 * @return Constraint Count
+	 */
+
+	public int constraintCount()
+	{
+		return _canonicalConstraintArray.length;
+	}
+
+	/**
 	 * Compute the Size of a Tableau Row
 	 * 
 	 * @return Size of a Tableau Row
@@ -196,15 +207,7 @@ public class CanonicalPolytope
 
 	public int tableauRowSize()
 	{
-		int tableauRowSize = 0;
-
-		int dimension = _canonicalConstraintArray[0].dimension();
-
-		for (CanonicalConstraint canonicalConstraint : _canonicalConstraintArray) {
-			tableauRowSize += dimension + (CanonicalConstraint.EQ == canonicalConstraint.type() ? 0 : 1);
-		}
-
-		return tableauRowSize + 2 * _unrestrictedVariableCount;
+		return _canonicalConstraintArray[0].dimension() + 1 + 2 * _unrestrictedVariableCount;
 	}
 
 	/**
@@ -220,21 +223,35 @@ public class CanonicalPolytope
 		int dimension = _canonicalConstraintArray[0].dimension();
 
 		int constraintCount = _canonicalConstraintArray.length;
-		double[][] tableauA = new double[dimension][];
+		double[][] tableauA = new double[constraintCount][];
 		int unrestrictedVariable = 0;
 		int constraintIndex = 0;
 
 		for (CanonicalConstraint canonicalConstraint : _canonicalConstraintArray) {
 			tableauA[constraintIndex] = canonicalConstraint.tableauRow (tableauRowSize, constraintIndex);
 
+			int constraintType = canonicalConstraint.type();
+
+			if (CanonicalConstraint.GT == constraintType) {
+				tableauA[constraintIndex][dimension] = -1.;
+			} else if (CanonicalConstraint.LT == constraintType) {
+				tableauA[constraintIndex][dimension] = 1.;
+			} else {
+				tableauA[constraintIndex][dimension] = 0.;
+			}
+
 			++constraintIndex;
 		}
 
+		if (0 == _unrestrictedVariableCount) {
+			return tableauA;
+		}
+
 		for (constraintIndex = 0; constraintIndex < constraintCount; ++constraintIndex) {
-			for (int columnIndex = dimension; columnIndex < tableauRowSize; ++columnIndex) {
-				if (columnIndex == dimension + unrestrictedVariable) {
+			for (int columnIndex = dimension + 1; columnIndex < tableauRowSize; ++columnIndex) {
+				if (columnIndex == dimension + 1 + 2 * unrestrictedVariable) {
 					tableauA[constraintIndex][columnIndex] = 1.;
-				} else if (columnIndex == dimension + unrestrictedVariable + 1) {
+				} else if (columnIndex == dimension + 1 + 2 * unrestrictedVariable + 1) {
 					tableauA[constraintIndex][columnIndex] = -1.;
 				} else {
 					tableauA[constraintIndex][columnIndex] = 0.;
@@ -245,6 +262,26 @@ public class CanonicalPolytope
 		}
 
 		return tableauA;
+	}
+
+	/**
+	 * Construct the Tableau <i>B</i>
+	 * 
+	 * @return Tableau <i>B</i>
+	 */
+
+	public double[] tableauB()
+	{
+		double[] tableauB = new double[_canonicalConstraintArray.length];
+		int constraintIndex = 0;
+
+		for (CanonicalConstraint canonicalConstraint : _canonicalConstraintArray) {
+			tableauB[constraintIndex] = canonicalConstraint.rhs();
+
+			++constraintIndex;
+		}
+
+		return tableauB;
 	}
 
 	/**

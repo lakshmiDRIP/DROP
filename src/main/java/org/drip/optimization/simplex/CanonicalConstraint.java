@@ -281,23 +281,23 @@ public class CanonicalConstraint
 	 */
 
 	public double[] tableauRow (
-		final int rowLength,
-		final int index)
+		final int tableauRowSize,
+		final int constraintIndex)
 	{
 		int dimension = _lhs.dimension();
 
-		if (0 >= rowLength || 0 >= index || index >= rowLength || dimension > rowLength) {
+		if (0 >= tableauRowSize || 0 > constraintIndex || dimension > tableauRowSize) {
 			return null;
 		}
 
-		double[] tableauRow = new double[rowLength];
+		double[] tableauRow = new double[tableauRowSize];
 
 		double[] coefficientArray = _lhs.coefficientArray();
 
-		for (int columnIndex = 0; columnIndex < rowLength; ++columnIndex) {
+		for (int columnIndex = 0; columnIndex < tableauRowSize; ++columnIndex) {
 			if (columnIndex < dimension) {
 				tableauRow[columnIndex] = coefficientArray[columnIndex];
-			} else if (columnIndex == index) {
+			} else if (columnIndex == constraintIndex) {
 				if (GT == _type) {
 					tableauRow[columnIndex] = -1.;
 				} else if (LT == _type) {
