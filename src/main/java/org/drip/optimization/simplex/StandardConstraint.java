@@ -77,7 +77,7 @@ import org.drip.service.common.FormatUtil;
  */
 
 /**
- * <i>CanonicalConstraint</i> implements the Canonical Constraint of the Simplex Scheme. The References are:
+ * <i>StandardConstraint</i> implements the Standard Constraint of the Simplex Scheme. The References are:
  * 
  * <br><br>
  * 	<ul>
@@ -113,7 +113,7 @@ import org.drip.service.common.FormatUtil;
  * @author Lakshmi Krishnamurthy
  */
 
-public class CanonicalConstraint
+public class StandardConstraint
 {
 
 	/**
@@ -139,20 +139,20 @@ public class CanonicalConstraint
 	private int _type = Integer.MIN_VALUE;
 
 	/**
-	 * Construct a Less-Than Canonical Constraint
+	 * Construct a Less-Than Standard Constraint
 	 * 
 	 * @param lhs Constraint LHS Expression
 	 * @param rhs Constraint RHS Value
 	 * 
-	 * @return The LT Canonical Constraint
+	 * @return The LT Standard Constraint
 	 */
 
-	public static final CanonicalConstraint LT (
+	public static final StandardConstraint LT (
 		final LinearExpression lhs,
 		final double rhs)
 	{
 		try {
-			return new CanonicalConstraint (lhs, rhs, LT);
+			return new StandardConstraint (lhs, rhs, LT);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -161,20 +161,20 @@ public class CanonicalConstraint
 	}
 
 	/**
-	 * Construct a Greater-Than Canonical Constraint
+	 * Construct a Greater-Than Standard Constraint
 	 * 
 	 * @param lhs Constraint LHS Expression
 	 * @param rhs Constraint RHS Value
 	 * 
-	 * @return The GT Canonical Constraint
+	 * @return The GT Standard Constraint
 	 */
 
-	public static final CanonicalConstraint GT (
+	public static final StandardConstraint GT (
 		final LinearExpression lhs,
 		final double rhs)
 	{
 		try {
-			return new CanonicalConstraint (lhs, rhs, GT);
+			return new StandardConstraint (lhs, rhs, GT);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -183,20 +183,20 @@ public class CanonicalConstraint
 	}
 
 	/**
-	 * Construct an Equality Canonical Constraint
+	 * Construct an Equality Standard Constraint
 	 * 
 	 * @param lhs Constraint LHS Expression
 	 * @param rhs Constraint RHS Value
 	 * 
-	 * @return Equality Canonical Constraint
+	 * @return Equality Standard Constraint
 	 */
 
-	public static final CanonicalConstraint EQ (
+	public static final StandardConstraint EQ (
 		final LinearExpression lhs,
 		final double rhs)
 	{
 		try {
-			return new CanonicalConstraint (lhs, rhs, EQ);
+			return new StandardConstraint (lhs, rhs, EQ);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -205,7 +205,7 @@ public class CanonicalConstraint
 	}
 
 	/**
-	 * <i>CanonicalConstraint</i> Constructor
+	 * <i>StandardConstraint</i> Constructor
 	 * 
 	 * @param lhs Constraint LHS Expression
 	 * @param rhs Constraint RHS Value
@@ -214,14 +214,14 @@ public class CanonicalConstraint
 	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
-	public CanonicalConstraint (
+	public StandardConstraint (
 		final LinearExpression lhs,
 		final double rhs,
 		final int type)
 		throws Exception
 	{
 		if (null == (_lhs = lhs) || !NumberUtil.IsValid (_rhs = rhs)) {
-			throw new Exception ("CanonicalConstraint Constructor => Invalid Inputs");
+			throw new Exception ("StandardConstraint Constructor => Invalid Inputs");
 		}
 
 		_type = type;
@@ -297,7 +297,7 @@ public class CanonicalConstraint
 		for (int columnIndex = 0; columnIndex < tableauRowSize; ++columnIndex) {
 			if (columnIndex < dimension) {
 				tableauRow[columnIndex] = coefficientArray[columnIndex];
-			} else if (columnIndex == constraintIndex) {
+			} else if (columnIndex == dimension + constraintIndex) {
 				if (GT == _type) {
 					tableauRow[columnIndex] = -1.;
 				} else if (LT == _type) {

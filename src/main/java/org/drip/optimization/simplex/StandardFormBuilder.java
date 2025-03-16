@@ -77,7 +77,7 @@ import java.util.List;
  */
 
 /**
- * <i>CanonicalFormBuilder</i> builds the Canonical Form of the Simplex Scheme. The References are:
+ * <i>StandardFormBuilder</i> builds the Standard Form of the Simplex Scheme. The References are:
  * 
  * <br><br>
  * 	<ul>
@@ -113,67 +113,67 @@ import java.util.List;
  * @author Lakshmi Krishnamurthy
  */
 
-public class CanonicalFormBuilder
+public class StandardFormBuilder
 {
 	private LinearExpression _objectiveFunction = null;
 	private int _unrestrictedVariableCount = Integer.MIN_VALUE;
-	private List<CanonicalConstraint> _eqCanonicalConstraintList = null;
-	private List<CanonicalConstraint> _gtCanonicalConstraintList = null;
-	private List<CanonicalConstraint> _ltCanonicalConstraintList = null;
+	private List<StandardConstraint> _eqStandardConstraintList = null;
+	private List<StandardConstraint> _gtStandardConstraintList = null;
+	private List<StandardConstraint> _ltStandardConstraintList = null;
 
-	private boolean addEQCanonicalConstraint (
-		final CanonicalConstraint canonicalConstraint)
+	private boolean addEQStandardConstraint (
+		final StandardConstraint standardConstraint)
 	{
-		CanonicalConstraint eqCanonicalConstraint = CanonicalConstraint.EQ (
-			canonicalConstraint.lhs(),
-			canonicalConstraint.rhs()
+		StandardConstraint eqStandardConstraint = StandardConstraint.EQ (
+			standardConstraint.lhs(),
+			standardConstraint.rhs()
 		);
 
-		if (null == eqCanonicalConstraint) {
+		if (null == eqStandardConstraint) {
 			return false;
 		}
 
-		_eqCanonicalConstraintList.add (eqCanonicalConstraint);
+		_eqStandardConstraintList.add (eqStandardConstraint);
 
 		return true;
 	}
 
-	private boolean addGTCanonicalConstraint (
-		final CanonicalConstraint canonicalConstraint)
+	private boolean addGTStandardConstraint (
+		final StandardConstraint standardConstraint)
 	{
-		CanonicalConstraint gtCanonicalConstraint = CanonicalConstraint.GT (
-			canonicalConstraint.lhs(),
-			canonicalConstraint.rhs()
+		StandardConstraint gtStandardConstraint = StandardConstraint.GT (
+			standardConstraint.lhs(),
+			standardConstraint.rhs()
 		);
 
-		if (null == gtCanonicalConstraint) {
+		if (null == gtStandardConstraint) {
 			return false;
 		}
 
-		_gtCanonicalConstraintList.add (gtCanonicalConstraint);
+		_gtStandardConstraintList.add (gtStandardConstraint);
 
 		return true;
 	}
 
-	private boolean addLTCanonicalConstraint (
-		final CanonicalConstraint canonicalConstraint)
+	private boolean addLTStandardConstraint (
+		final StandardConstraint standardConstraint)
 	{
-		CanonicalConstraint ltCanonicalConstraint = CanonicalConstraint.LT (
-			canonicalConstraint.lhs(),
-			canonicalConstraint.rhs()
+		StandardConstraint ltStandardConstraint = StandardConstraint.LT (
+			standardConstraint.lhs(),
+			standardConstraint.rhs()
 		);
 
-		if (null == ltCanonicalConstraint) {
+		if (null == ltStandardConstraint) {
 			return false;
 		}
 
-		_ltCanonicalConstraintList.add (ltCanonicalConstraint);
+		_ltStandardConstraintList.add (ltStandardConstraint);
 
 		return true;
 	}
 
 	/**
-	 * <i>CanonicalFormBuilder</i> Constructor
+	 * <i>StandardFormBuilder</i> Constructor
 	 * 
 	 * @param unrestrictedVariableCount Number of Unrestricted Variables
 	 * @param objectiveFunction Objective Function
@@ -181,21 +181,21 @@ public class CanonicalFormBuilder
 	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
-	public CanonicalFormBuilder (
+	public StandardFormBuilder (
 		final int unrestrictedVariableCount,
 		final LinearExpression objectiveFunction)
 		throws Exception
 	{
 		if (null == (_objectiveFunction = objectiveFunction) ||
 			0 > (_unrestrictedVariableCount = unrestrictedVariableCount)) {
-			throw new Exception ("CanonicalFormBuilder Constructor => Invalid Inputs");
+			throw new Exception ("StandardFormBuilder Constructor => Invalid Inputs");
 		}
 
-		_eqCanonicalConstraintList = new ArrayList<CanonicalConstraint>();
+		_eqStandardConstraintList = new ArrayList<StandardConstraint>();
 
-		_gtCanonicalConstraintList = new ArrayList<CanonicalConstraint>();
+		_gtStandardConstraintList = new ArrayList<StandardConstraint>();
 
-		_ltCanonicalConstraintList = new ArrayList<CanonicalConstraint>();
+		_ltStandardConstraintList = new ArrayList<StandardConstraint>();
 	}
 
 	/**
@@ -226,9 +226,9 @@ public class CanonicalFormBuilder
 	 * @return List of Equality Constraints
 	 */
 
-	public List<CanonicalConstraint> eqCanonicalConstraintList()
+	public List<StandardConstraint> eqStandardConstraintList()
 	{
-		return _eqCanonicalConstraintList;
+		return _eqStandardConstraintList;
 	}
 
 	/**
@@ -237,9 +237,9 @@ public class CanonicalFormBuilder
 	 * @return List of Greater-Than Constraints
 	 */
 
-	public List<CanonicalConstraint> gtCanonicalConstraintList()
+	public List<StandardConstraint> gtStandardConstraintList()
 	{
-		return _gtCanonicalConstraintList;
+		return _gtStandardConstraintList;
 	}
 
 	/**
@@ -248,36 +248,36 @@ public class CanonicalFormBuilder
 	 * @return List of Less-Than Constraints
 	 */
 
-	public List<CanonicalConstraint> ltCanonicalConstraintList()
+	public List<StandardConstraint> ltStandardConstraintList()
 	{
-		return _ltCanonicalConstraintList;
+		return _ltStandardConstraintList;
 	}
 
 	/**
-	 * Convert the Constraint to its Canonical Form and add it to the Constraint List
+	 * Convert the Constraint to its Standard Form and add it to the Constraint List
 	 * 
-	 * @param canonicalConstraint Canonical Constraint
+	 * @param standardConstraint Standard Constraint
 	 * 
-	 * @return TRUE - Constraint converted to its Canonical Form and added to the Constraint List
+	 * @return TRUE - Constraint converted to its Standard Form and added to the Constraint List
 	 */
 
-	public boolean addCanonicalConstraint (
-		final CanonicalConstraint canonicalConstraint)
+	public boolean addStandardConstraint (
+		final StandardConstraint standardConstraint)
 	{
-		if (null == canonicalConstraint) {
+		if (null == standardConstraint) {
 			return false;
 		}
 
-		if (CanonicalConstraint.EQ == canonicalConstraint.type()) {
-			return addEQCanonicalConstraint (canonicalConstraint);
+		if (StandardConstraint.EQ == standardConstraint.type()) {
+			return addEQStandardConstraint (standardConstraint);
 		}
 
-		if (CanonicalConstraint.GT == canonicalConstraint.type()) {
-			return addGTCanonicalConstraint (canonicalConstraint);
+		if (StandardConstraint.GT == standardConstraint.type()) {
+			return addGTStandardConstraint (standardConstraint);
 		}
 
-		if (CanonicalConstraint.LT == canonicalConstraint.type()) {
-			return addLTCanonicalConstraint (canonicalConstraint);
+		if (StandardConstraint.LT == standardConstraint.type()) {
+			return addLTStandardConstraint (standardConstraint);
 		}
 
 		return false;
@@ -289,34 +289,34 @@ public class CanonicalFormBuilder
 	 * @return <i>CanonicalForm</i> Instance
 	 */
 
-	public CanonicalForm build()
+	public StandardForm build()
 	{
 		int i = 0;
 
-		int eqCanonicalConstraintSize = _eqCanonicalConstraintList.size();
+		int eqStandardConstraintSize = _eqStandardConstraintList.size();
 
-		int gtCanonicalConstraintSize = _gtCanonicalConstraintList.size();
+		int gtStandardConstraintSize = _gtStandardConstraintList.size();
 
-		CanonicalConstraint[] canonicalConstraintArray =
-			new CanonicalConstraint[eqCanonicalConstraintSize + gtCanonicalConstraintSize +
-			                        _ltCanonicalConstraintList.size()];
+		StandardConstraint[] standardConstraintArray =
+			new StandardConstraint[eqStandardConstraintSize + gtStandardConstraintSize +
+			                       _ltStandardConstraintList.size()];
 
-		for (CanonicalConstraint canonicalConstraint : _eqCanonicalConstraintList) {
-			canonicalConstraintArray[i++] = canonicalConstraint;
+		for (StandardConstraint standardConstraint : _eqStandardConstraintList) {
+			standardConstraintArray[i++] = standardConstraint;
 		}
 
-		for (CanonicalConstraint canonicalConstraint : _gtCanonicalConstraintList) {
-			canonicalConstraintArray[i++] = canonicalConstraint;
+		for (StandardConstraint standardConstraint : _gtStandardConstraintList) {
+			standardConstraintArray[i++] = standardConstraint;
 		}
 
-		for (CanonicalConstraint canonicalConstraint : _ltCanonicalConstraintList) {
-			canonicalConstraintArray[i++] = canonicalConstraint;
+		for (StandardConstraint standardConstraint : _ltStandardConstraintList) {
+			standardConstraintArray[i++] = standardConstraint;
 		}
 
 		try {
-			return new CanonicalForm (
+			return new StandardForm (
 				_objectiveFunction,
-				new CanonicalPolytope (_unrestrictedVariableCount, canonicalConstraintArray)
+				new StandardPolytope (_unrestrictedVariableCount, standardConstraintArray)
 			);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -326,25 +326,25 @@ public class CanonicalFormBuilder
 	}
 
 	/**
-	 * Convert the Canonical Form Builder into a String
+	 * Convert the Standard Form Builder into a String
 	 * 
-	 * @return The Canonical Form Builder into a String
+	 * @return The Standard Form Builder into a String
 	 */
 
 	@Override public String toString()
 	{
 		String s = "Objective Function => " + _objectiveFunction.toString() + "\n";
 
-		for (CanonicalConstraint canonicalConstraint : _eqCanonicalConstraintList) {
-			s += "EQ Constraint => " + canonicalConstraint.toString() + "\n";
+		for (StandardConstraint standardConstraint : _eqStandardConstraintList) {
+			s += "EQ Constraint => " + standardConstraint.toString() + "\n";
 		}
 
-		for (CanonicalConstraint canonicalConstraint : _gtCanonicalConstraintList) {
-			s += "GT Constraint => " + canonicalConstraint.toString() + "\n";
+		for (StandardConstraint standardConstraint : _gtStandardConstraintList) {
+			s += "GT Constraint => " + standardConstraint.toString() + "\n";
 		}
 
-		for (CanonicalConstraint canonicalConstraint : _ltCanonicalConstraintList) {
-			s += "LT Constraint => " + canonicalConstraint.toString() + "\n";
+		for (StandardConstraint standardConstraint : _ltStandardConstraintList) {
+			s += "LT Constraint => " + standardConstraint.toString() + "\n";
 		}
 
 		return s;

@@ -74,7 +74,8 @@ package org.drip.optimization.simplex;
  */
 
 /**
- * <i>CanonicalForm</i> exposes the Canonical Form of the Simplex Scheme. The References are:
+ * <i>StandardPolytope</i> implements the Standard Constraint Polytope of the Simplex Scheme. The References
+ * 	are:
  * 
  * <br><br>
  * 	<ul>
@@ -110,52 +111,103 @@ package org.drip.optimization.simplex;
  * @author Lakshmi Krishnamurthy
  */
 
-public class CanonicalForm
+public class StandardPolytope
 {
-	private LinearExpression _objectiveFunction = null;
-	private CanonicalPolytope _constraintPolytope = null;
+	private int _unrestrictedVariableCount = Integer.MIN_VALUE;
+	private StandardConstraint[] _standardConstraintArray = null;
 
 	/**
-	 * <i>CanonicalForm</i> Constructor
+	 * <i>StandardPolytope</i> Constructor
 	 * 
-	 * @param objectiveFunction Objective Function
-	 * @param constraintPolytope Constraint Polytope
+	 * @param unrestrictedVariableCount Number of Unrestricted Variables
+	 * @param standardConstraintArray Array of <i>StandardConstraint</i>'s
 	 * 
 	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
-	public CanonicalForm (
-		final LinearExpression objectiveFunction,
-		final CanonicalPolytope constraintPolytope)
+	public StandardPolytope (
+		final int unrestrictedVariableCount,
+		final StandardConstraint[] standardConstraintArray)
 		throws Exception
 	{
-		if (null == (_objectiveFunction = objectiveFunction) ||
-			null == (_constraintPolytope = constraintPolytope))
+		if (null == (_standardConstraintArray = standardConstraintArray) ||
+			0 == _standardConstraintArray.length ||
+			0 > (_unrestrictedVariableCount = unrestrictedVariableCount))
 		{
-			throw new Exception ("CanonicalForm Constructor => Invalid Inputs");
+			throw new Exception ("StandardPolytope Constructor => Invalid Inputs");
+		}
+
+		int constraintDimension = -1;
+
+		for (int constraintIndex = 0; constraintIndex < _standardConstraintArray.length; ++constraintIndex) {
+			if (null == standardConstraintArray[constraintIndex]) {
+				throw new Exception ("StandardPolytope Constructor => Invalid Inputs");
+			}
+
+			if (-1 == constraintDimension) {
+				constraintDimension = standardConstraintArray[constraintIndex].dimension();
+			} else {
+				if (constraintDimension != standardConstraintArray[constraintIndex].dimension()) {
+					throw new Exception ("StandardPolytope Constructor => Invalid Inputs");
+				}
+			}
 		}
 	}
 
 	/**
-	 * Retrieve the Simplex Objective Function
+	 * Retrieve the Number of Unrestricted Variables
 	 * 
-	 * @return The Simplex Objective Function
+	 * @return Number of Unrestricted Variables
 	 */
 
-	public LinearExpression objectiveFunction()
+	public int unrestrictedVariableCount()
 	{
-		return _objectiveFunction;
+		return _unrestrictedVariableCount;
 	}
 
 	/**
-	 * Retrieve the Simplex Canonical Polytope
+	 * Retrieve the Array of <i>StandardConstraint</i>'s
 	 * 
-	 * @return The Simplex Canonical Polytope
+	 * @return Array of <i>StandardConstraint</i>'s
 	 */
 
-	public CanonicalPolytope constraintPolytope()
+	public StandardConstraint[] standardConstraintArray()
 	{
-		return _constraintPolytope;
+		return _standardConstraintArray;
+	}
+
+	/**
+	 * Retrieve the Constraint Dimension
+	 * 
+	 * @return Constraint Dimension
+	 */
+
+	public int dimension()
+	{
+		return _standardConstraintArray[0].dimension();
+	}
+
+	/**
+	 * Retrieve the Constraint Count
+	 * 
+	 * @return Constraint Count
+	 */
+
+	public int constraintCount()
+	{
+		return _standardConstraintArray.length;
+	}
+
+	/**
+	 * Compute the Size of a Tableau Row
+	 * 
+	 * @return Size of a Tableau Row
+	 */
+
+	public int tableauRowSize()
+	{
+		return _standardConstraintArray[0].dimension() + _standardConstraintArray.length +
+			2 * _unrestrictedVariableCount;
 	}
 
 	/**
@@ -166,7 +218,50 @@ public class CanonicalForm
 
 	public double[][] tableauA()
 	{
-		return _constraintPolytope.tableauA();
+		int tableauRowSize = tableauRowSize();
+
+		int dimension = _standardConstraintArray[0].dimension();
+
+		int constraintCount = _standardConstraintArray.length;
+		double[][] tableauA = new double[constraintCount][];
+		int unrestrictedVariable = 0;
+		int constraintIndex = 0;
+
+		for (StandardConstraint canonicalConstraint : _standardConstraintArray) {
+			tableauA[constraintIndex] = canonicalConstraint.tableauRow (tableauRowSize, constraintIndex);
+
+			int constraintType = canonicalConstraint.type();
+
+			if (StandardConstraint.GT == constraintType) {
+				tableauA[constraintIndex][dimension + constraintIndex] = -1.;
+			} else if (StandardConstraint.LT == constraintType) {
+				tableauA[constraintIndex][dimension + constraintIndex] = 1.;
+			} else {
+				tableauA[constraintIndex][dimension + constraintIndex] = 0.;
+			}
+
+			++constraintIndex;
+		}
+
+		if (0 == _unrestrictedVariableCount) {
+			return tableauA;
+		}
+
+		for (constraintIndex = 0; constraintIndex < constraintCount; ++constraintIndex) {
+			for (int columnIndex = dimension + 1; columnIndex < tableauRowSize; ++columnIndex) {
+				if (columnIndex == dimension + 1 + 2 * unrestrictedVariable) {
+					tableauA[constraintIndex][columnIndex] = 1.;
+				} else if (columnIndex == dimension + 1 + 2 * unrestrictedVariable + 1) {
+					tableauA[constraintIndex][columnIndex] = -1.;
+				} else {
+					tableauA[constraintIndex][columnIndex] = 0.;
+				}
+			}
+
+			++unrestrictedVariable;
+		}
+
+		return tableauA;
 	}
 
 	/**
@@ -177,80 +272,53 @@ public class CanonicalForm
 
 	public double[] tableauB()
 	{
-		return _constraintPolytope.tableauB();
+		int constraintIndex = 0;
+		double[] tableauB = new double[_standardConstraintArray.length];
+
+		for (StandardConstraint canonicalConstraint : _standardConstraintArray) {
+			tableauB[constraintIndex] = canonicalConstraint.rhs();
+
+			++constraintIndex;
+		}
+
+		return tableauB;
 	}
 
 	/**
-	 * Construct the Tableau <i>C</i>
+	 * Retrieve the Slack Variable Count
 	 * 
-	 * @return Tableau <i>C</i>
+	 * @return Slack Variable Count
 	 */
 
-	public double[] tableauC()
+	public int slackVariableCount()
 	{
-		double[] objectiveCoefficientArray = _objectiveFunction.coefficientArray();
+		int slackVariableCount = 0;
 
-		double[] tableauC = new double[objectiveCoefficientArray.length];
+		for (StandardConstraint canonicalConstraint : _standardConstraintArray) {
+			int constraintType = canonicalConstraint.type();
 
-		for (int coefficientIndex = 0;
-			coefficientIndex < objectiveCoefficientArray.length;
-			++coefficientIndex)
-		{
-			tableauC[coefficientIndex] = -1. * objectiveCoefficientArray[coefficientIndex];
-		}
-
-		return tableauC;
-	}
-
-	/**
-	 * Construct the Full Tableau
-	 * 
-	 * @return Full Tableau
-	 */
-
-	public double[][] tableau()
-	{
-		int constraintCount = _constraintPolytope.constraintCount();
-
-		double[][] tableau = new double[constraintCount + 1][_constraintPolytope.tableauRowSize() + 2];
-
-		tableau[0][0] = 1.;
-
-		for (int constraintIndex = 0; constraintIndex < constraintCount; ++constraintIndex) {
-			tableau[constraintIndex+1][0] = 0.;
-		}
-
-		double[] tableauC = tableauC();
-
-		double[] tableauB = tableauB();
-
-		double[][] tableauA = tableauA();
-
-		for (int tableauCIndex = 0; tableauCIndex < tableauC.length; ++tableauCIndex) {
-			tableau[0][tableauCIndex + 1] = tableauC[tableauCIndex];
-		}
-
-		for (int tableauRowIndex = 0; tableauRowIndex < tableauA.length; ++tableauRowIndex) {
-			for (int tableauColumnIndex = 0; tableauColumnIndex < tableauA[0].length; ++tableauColumnIndex) {
-				tableau[tableauRowIndex + 1][tableauColumnIndex + 1] =
-					tableauA[tableauRowIndex][tableauColumnIndex];
+			if (StandardConstraint.EQ != constraintType) {
+				++slackVariableCount;
 			}
-
-			tableau[tableauRowIndex + 1][tableauA[0].length + 1] = tableauB[tableauRowIndex];
 		}
 
-		return tableau;
+		return slackVariableCount;
 	}
 
 	/**
-	 * Convert the Canonical Form into a String
+	 * Convert the Standard Polytope into a String
 	 * 
-	 * @return The Canonical Form into a String
+	 * @return The Standard Polytope into a String
 	 */
 
 	@Override public String toString()
 	{
-		return "Objective Function => " + _objectiveFunction + "\n" +
-			"Constraint Polytope => " + _constraintPolytope + "\n";
+		String s = "Unrestricted Variable Count => " + _unrestrictedVariableCount + "\n";
+
+		for (StandardConstraint standardConstraint : _standardConstraintArray) {
+			s += "Polytope Constraint => " + standardConstraint.toString() + "\n";
+		}
+
+		return s;
 	}
 }

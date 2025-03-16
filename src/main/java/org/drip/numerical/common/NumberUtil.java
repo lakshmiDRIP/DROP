@@ -1054,6 +1054,41 @@ public class NumberUtil {
 	}
 
 	/**
+	 * Print the Matrix by Decimal-Formatting the Contents
+	 * 
+	 * @param description Row Description
+	 * @param matrix Matrix to be Printed
+	 * @param leftPlaces Number of Digits to the Left of the Decimal
+	 * @param rightPlaces Number of Digits to the Right of the Decimal
+	 * 
+	 * @return TRUE => Matrix successfully printed
+	 */
+
+	public static final boolean PrintMatrix (
+		final String description,
+		final double[][] matrix,
+		final int leftPlaces,
+		final int rightPlaces)
+	{
+		if (null == matrix || 0 == matrix.length) {
+			return false;
+		}
+
+		for (int rowIndex = 0; rowIndex < matrix.length; ++rowIndex) {
+			String row = description + " =>";
+
+			for (int columnIndex = 0; columnIndex < matrix[rowIndex].length; ++columnIndex) {
+				row += FormatUtil.FormatDouble (matrix[rowIndex][columnIndex], leftPlaces, rightPlaces, 1.) +
+					" |";
+			}
+
+			System.out.println (row);
+		}
+
+		return true;
+	}
+
+	/**
 	 * Compute (n - 0.5)!
 	 * 
 	 * @param n n

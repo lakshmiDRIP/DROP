@@ -2,9 +2,9 @@
 package org.drip.sample.simplex;
 
 import org.drip.numerical.common.NumberUtil;
-import org.drip.optimization.simplex.CanonicalConstraint;
-import org.drip.optimization.simplex.CanonicalForm;
-import org.drip.optimization.simplex.CanonicalFormBuilder;
+import org.drip.optimization.simplex.StandardConstraint;
+import org.drip.optimization.simplex.StandardForm;
+import org.drip.optimization.simplex.StandardFormBuilder;
 import org.drip.optimization.simplex.LinearExpression;
 import org.drip.service.env.EnvManager;
 
@@ -13,9 +13,7 @@ import org.drip.service.env.EnvManager;
  */
 
 /*!
- * Copyright (C) 2022 Lakshmi Krishnamurthy
- * Copyright (C) 2021 Lakshmi Krishnamurthy
- * Copyright (C) 2020 Lakshmi Krishnamurthy
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
  * 
  *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
  *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
@@ -83,7 +81,7 @@ import org.drip.service.env.EnvManager;
  */
 
 /**
- * <i>CanonicalFormConstructor</i> illustrates the Formulation and Canonicalization of the Simplex Canonical
+ * <i>StandardFormConstructor</i> illustrates the Formulation and Standardization of the Simplex Canonical
  * 	Form. The References are:
  * 
  * <br><br>
@@ -120,7 +118,7 @@ import org.drip.service.env.EnvManager;
  * @author Lakshmi Krishnamurthy
  */
 
-public class CanonicalFormConstructor {
+public class StandardFormConstructor {
 
 	public static final void main (
 		final String[] argumentArray)
@@ -134,28 +132,52 @@ public class CanonicalFormConstructor {
 		double constraintRHS1 = 10.;
 		double constraintRHS2 = 15.;
 
-		CanonicalFormBuilder canonicalFormBuilder = new CanonicalFormBuilder (
+		StandardFormBuilder standardFormBuilder = new StandardFormBuilder (
 			0,
 			new LinearExpression (objectiveCoefficient)
 		);
 
-		canonicalFormBuilder.addCanonicalConstraint (
-			CanonicalConstraint.LT (new LinearExpression (constraintCoefficient1), constraintRHS1)
+		standardFormBuilder.addStandardConstraint (
+			StandardConstraint.LT (new LinearExpression (constraintCoefficient1), constraintRHS1)
 		);
 
-		canonicalFormBuilder.addCanonicalConstraint (
-			CanonicalConstraint.LT (new LinearExpression (constraintCoefficient2), constraintRHS2)
+		standardFormBuilder.addStandardConstraint (
+			StandardConstraint.LT (new LinearExpression (constraintCoefficient2), constraintRHS2)
 		);
 
-		System.out.println (canonicalFormBuilder);
+		System.out.println (standardFormBuilder);
 
-		CanonicalForm canonicalForm = canonicalFormBuilder.build();
+		StandardForm standardForm = standardFormBuilder.build();
 
-		NumberUtil.Print2DArray ("\tTableau A", canonicalForm.tableauA(), false);
+		System.out.println ("\t-------------------------");
 
-		NumberUtil.Print1DArray ("\tTableau B", canonicalForm.tableauB(), false);
+		NumberUtil.Print2DArray ("\tTableau A", standardForm.tableauA(), false);
 
-		NumberUtil.Print1DArray ("\tTableau C", canonicalForm.tableauC(), false);
+		System.out.println ("\t-------------------------");
+
+		NumberUtil.Print1DArray ("\tTableau B", standardForm.tableauB(), false);
+
+		System.out.println ("\t-------------------------");
+
+		NumberUtil.Print1DArray ("\tTableau C", standardForm.tableauC(), false);
+
+		System.out.println ("\t-------------------------");
+
+		NumberUtil.Print2DArray ("\tFull Tableau", standardForm.tableau(), false);
+
+		System.out.println ("\t-------------------------");
+
+		NumberUtil.Print1DArray ("\tBasic Feasible Solution", standardForm.basicFeasibleSolution(), false);
+
+		System.out.println ("\t-------------------------");
+
+		System.out.println ("\t" + standardForm.pivotRowIndexForColumn (2));
+
+		System.out.println ("\t-------------------------");
+
+		System.out.println ("\t" + standardForm.pivotRowIndexForColumn (3));
+
+		System.out.println ("\t-------------------------");
 
 		EnvManager.TerminateEnv();
 	}

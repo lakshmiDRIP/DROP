@@ -122,6 +122,6 @@ public interface DantzigSolver
 	 */
 
 	public abstract LinearExpression optimize (
-		final CanonicalForm canonicalForm
+		final StandardForm canonicalForm
 	);
 }
