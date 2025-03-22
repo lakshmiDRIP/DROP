@@ -80,6 +80,14 @@ Transaction Cost Analytics Library contains the Functionality to estimate single
  * Central Limit Order Book
 	* Overview
 	* References
+ * Auction On-Demand
+	* Efficient Trading with On-demand Auctions
+	* Highlights
+	* Features
+	* Safety Features
+	* Auction Overview
+	* Order Types
+	* References
  * Retail SOR Strategy Builder
 	* Retail SOR Wave Instructions
 	* Phase-based Conditional Action
