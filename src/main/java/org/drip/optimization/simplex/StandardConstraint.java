@@ -274,8 +274,8 @@ public class StandardConstraint
 	/**
 	 * Construct a Row corresponding to the Constraint in the Tableau
 	 * 
-	 * @param rowLength Length of the Constraint Row
-	 * @param index Constraint Index
+	 * @param tableauRowSize Length of the Constraint Row
+	 * @param constraintIndex Constraint Index
 	 * 
 	 * @return Corresponding Constraint Row in the Tableau
 	 */
