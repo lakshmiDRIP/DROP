@@ -243,23 +243,20 @@ public class StandardForm
 	}
 
 	/**
-	 * Compute the Pivot Row Index given the Pivot Column Index
+	 * Conduct the Pivot Run given the Pivot Column Index
 	 * 
 	 * @param pivotColumnIndex Pivot Column Index
 	 * 
-	 * @return Pivot Row Index
-	 * 
-	 * @throws Exception Thrown if the Inputs are Invalid
+	 * @return Pivot Run
 	 */
 
-	public int pivotRowIndexForColumn (
+	public ColumnPivotingDiagnostics pivotRowIndexForColumn (
 		final int pivotColumnIndex)
-		throws Exception
 	{
 		int dimension = _constraintPolytope.dimension();
 
 		if (0 >= pivotColumnIndex || pivotColumnIndex > dimension) {
-			throw new Exception ("StandardForm::pivotRowIndexForColumn => Invalid Pivot Column");
+			return null;
 		}
 
 		double[][] tableau = tableau();
@@ -287,7 +284,18 @@ public class StandardForm
 			++tableauRowIndex;
 		}
 
-		return pivotRowIndex;
+		try {
+			return new ColumnPivotingDiagnostics (
+				pivotColumnIndex,
+				pivotRowIndex,
+				1. / tableau[pivotRowIndex][pivotColumnIndex],
+				minimumImpliedVariate
+			);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return null;
 	}
 
 	/**

@@ -1,12 +1,7 @@
 
-package org.drip.sample.simplex;
+package org.drip.optimization.simplex;
 
-import org.drip.numerical.common.NumberUtil;
-import org.drip.optimization.simplex.StandardConstraint;
-import org.drip.optimization.simplex.StandardForm;
-import org.drip.optimization.simplex.StandardFormBuilder;
-import org.drip.optimization.simplex.LinearExpression;
-import org.drip.service.env.EnvManager;
+import java.util.Map;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -81,100 +76,54 @@ import org.drip.service.env.EnvManager;
  */
 
 /**
- * <i>StandardFormConstructor</i> illustrates the Formulation and Standardization of the Simplex Canonical
- * 	Form. The References are:
+ * <i>PivotRun</i> holds the Run Sequence of a Set of Pivoting Operations. The References are:
  * 
  * <br><br>
- *  <ul>
+ * 	<ul>
  *  	<li>
- * 			Murty, K. G. (1983): <i>Linear Programming</i> <b>John Wiley and Sons</b> New York
+ * 			Dadush, D., and S. Huiberts (2020): A Friendly Smoothed Analysis of the Simplex Method <i>SIAM
+ * 				Journal on Computing</i> <b>49 (5)</b> 449-499
  *  	</li>
- *  	<li>
- * 			Nering, E. D., and A. W. Tucker (1993): <i>Linear Programs and Related Problems</i> <b>Academic
- * 				Press</b>
- *  	</li>
- *  	<li>
- * 			Padberg, M. W. (1999): <i>Linear Optimization and Extensions 2<sup>nd</sup> Edition</i>
- * 				<b>Springer-Verlag</b>
- *  	</li>
- *  	<li>
- * 			van der Bei, R. J. (2008): Linear Programming: Foundations and Extensions 3<sup>rd</sup> Edition
- * 				<i>International Series in Operations Research and Management Science</i> <b>114
- * 				Springer-Verlag</b>
- *  	</li>
- *  	<li>
- * 			Wikipedia (2020): Simplex Algorithm https://en.wikipedia.org/wiki/Simplex_algorithm
- *  	</li>
- *  </ul>
+ * 		<li>
+ * 			Dantzig, G. B., and M. N. Thapa (1997): <i>Linear Programming 1: Introduction</i>
+ * 				<b>Springer-Verlag</b> New York NY
+ * 		</li>
+ * 		<li>
+ * 			Murty, K. G. (1983): <i>Linear Programming</i> <b>John Wiley and Sons</b> New York NY
+ * 		</li>
+ * 		<li>
+ * 			Nering, E. D., and A. W. Tucker (1993): <i>Linear Programs and Related Problems</i>
+ * 				<b>Academic Press</b> Cambridge MA
+ * 		</li>
+ * 		<li>
+ * 			Padberg, M. (1999): <i> Linear Optimization and Extensions 2<sup>nd</sup> Edition</i>
+ * 				<b>Springer-Verlag</b> New York NY
+ * 		</li>
+ * 	</ul>
  *
  *	<br><br>
  *  <ul>
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md">Numerical Optimizer Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/README.md">DROP API Construction and Usage</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/simplex/README.md">LP Simplex Formulation and Solution</a></li>
+ *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/optimization/README.md">Necessary, Sufficient, and Regularity Checks for Gradient Descent in a Constrained Optimization Setup</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/optimization/simplex">R<sup>d</sup> to R<sup>1</sup> Simplex Scheme</a></li>
  *  </ul>
- *
+ * 
  * @author Lakshmi Krishnamurthy
  */
 
-public class StandardFormConstructor {
+public class PivotRun
+{
+	private Map<Integer, Integer> _rowToColumnMap = null;
 
-	public static final void main (
-		final String[] argumentArray)
-		throws Exception
+	/**
+	 * Retrieve the Pivot Row-to-Column Map
+	 * 
+	 * @return Pivot Row-to-Column Map
+	 */
+
+	public Map<Integer, Integer> rowToColumnMap()
 	{
-		EnvManager.InitEnv ("");
-
-		double[] objectiveCoefficient = new double[] {-2., -3., -4.};
-		double[] constraintCoefficient1 = new double[] {3., 2., 1.};
-		double[] constraintCoefficient2 = new double[] {2., 5., 3.};
-		double constraintRHS1 = 10.;
-		double constraintRHS2 = 15.;
-
-		StandardFormBuilder standardFormBuilder = new StandardFormBuilder (
-			0,
-			new LinearExpression (objectiveCoefficient)
-		);
-
-		standardFormBuilder.addStandardConstraint (
-			StandardConstraint.LT (new LinearExpression (constraintCoefficient1), constraintRHS1)
-		);
-
-		standardFormBuilder.addStandardConstraint (
-			StandardConstraint.LT (new LinearExpression (constraintCoefficient2), constraintRHS2)
-		);
-
-		System.out.println (standardFormBuilder);
-
-		StandardForm standardForm = standardFormBuilder.build();
-
-		System.out.println ("\t-------------------------");
-
-		NumberUtil.Print2DArray ("\tTableau A", standardForm.tableauA(), false);
-
-		System.out.println ("\t-------------------------");
-
-		NumberUtil.Print1DArray ("\tTableau B", standardForm.tableauB(), false);
-
-		System.out.println ("\t-------------------------");
-
-		NumberUtil.Print1DArray ("\tTableau C", standardForm.tableauC(), false);
-
-		System.out.println ("\t-------------------------");
-
-		NumberUtil.Print2DArray ("\tFull Tableau", standardForm.tableau(), false);
-
-		System.out.println ("\t-------------------------");
-
-		NumberUtil.Print1DArray ("\tBasic Feasible Solution", standardForm.basicFeasibleSolution(), false);
-
-		System.out.println ("\t-------------------------");
-
-		System.out.println ("\t" + standardForm.pivotRowIndexForColumn (3));
-
-		System.out.println ("\t-------------------------");
-
-		EnvManager.TerminateEnv();
+		return _rowToColumnMap;
 	}
 }

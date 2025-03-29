@@ -1,12 +1,8 @@
 
-package org.drip.sample.simplex;
+package org.drip.optimization.simplex;
 
 import org.drip.numerical.common.NumberUtil;
-import org.drip.optimization.simplex.StandardConstraint;
-import org.drip.optimization.simplex.StandardForm;
-import org.drip.optimization.simplex.StandardFormBuilder;
-import org.drip.optimization.simplex.LinearExpression;
-import org.drip.service.env.EnvManager;
+import org.drip.service.common.FormatUtil;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -81,100 +77,134 @@ import org.drip.service.env.EnvManager;
  */
 
 /**
- * <i>StandardFormConstructor</i> illustrates the Formulation and Standardization of the Simplex Canonical
- * 	Form. The References are:
+ * <i>ColumnPivotingDiagnostics</i> holds the Diagnostics of a Column Pivoting Run. The References are:
  * 
  * <br><br>
- *  <ul>
+ * 	<ul>
  *  	<li>
- * 			Murty, K. G. (1983): <i>Linear Programming</i> <b>John Wiley and Sons</b> New York
+ * 			Dadush, D., and S. Huiberts (2020): A Friendly Smoothed Analysis of the Simplex Method <i>SIAM
+ * 				Journal on Computing</i> <b>49 (5)</b> 449-499
  *  	</li>
- *  	<li>
- * 			Nering, E. D., and A. W. Tucker (1993): <i>Linear Programs and Related Problems</i> <b>Academic
- * 				Press</b>
- *  	</li>
- *  	<li>
- * 			Padberg, M. W. (1999): <i>Linear Optimization and Extensions 2<sup>nd</sup> Edition</i>
- * 				<b>Springer-Verlag</b>
- *  	</li>
- *  	<li>
- * 			van der Bei, R. J. (2008): Linear Programming: Foundations and Extensions 3<sup>rd</sup> Edition
- * 				<i>International Series in Operations Research and Management Science</i> <b>114
- * 				Springer-Verlag</b>
- *  	</li>
- *  	<li>
- * 			Wikipedia (2020): Simplex Algorithm https://en.wikipedia.org/wiki/Simplex_algorithm
- *  	</li>
- *  </ul>
+ * 		<li>
+ * 			Dantzig, G. B., and M. N. Thapa (1997): <i>Linear Programming 1: Introduction</i>
+ * 				<b>Springer-Verlag</b> New York NY
+ * 		</li>
+ * 		<li>
+ * 			Murty, K. G. (1983): <i>Linear Programming</i> <b>John Wiley and Sons</b> New York NY
+ * 		</li>
+ * 		<li>
+ * 			Nering, E. D., and A. W. Tucker (1993): <i>Linear Programs and Related Problems</i>
+ * 				<b>Academic Press</b> Cambridge MA
+ * 		</li>
+ * 		<li>
+ * 			Padberg, M. (1999): <i> Linear Optimization and Extensions 2<sup>nd</sup> Edition</i>
+ * 				<b>Springer-Verlag</b> New York NY
+ * 		</li>
+ * 	</ul>
  *
  *	<br><br>
  *  <ul>
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md">Numerical Optimizer Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/README.md">DROP API Construction and Usage</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/simplex/README.md">LP Simplex Formulation and Solution</a></li>
+ *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/optimization/README.md">Necessary, Sufficient, and Regularity Checks for Gradient Descent in a Constrained Optimization Setup</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/optimization/simplex">R<sup>d</sup> to R<sup>1</sup> Simplex Scheme</a></li>
  *  </ul>
- *
+ * 
  * @author Lakshmi Krishnamurthy
  */
 
-public class StandardFormConstructor {
+public class ColumnPivotingDiagnostics
+{
+	private double _rowUnitScaler = Double.NaN;
+	private int _pivotIndex = Integer.MAX_VALUE;
+	private int _pivotRowIndex = Integer.MAX_VALUE;
+	private double _minimumImpliedVariate = Double.NaN;
 
-	public static final void main (
-		final String[] argumentArray)
+	/**
+	 * <i>ColumnPivotingDiagnostics</i> Constructor
+	 * 
+	 * @param pivotIndex Input Pivot Index
+	 * @param pivotRowIndex Pivot Row Index
+	 * @param rowUnitScaler Row Unit Scaler
+	 * @param minimumImpliedVariate Optimal Row Minimum Implied Variate
+	 * 
+	 * @throws Exception Thrown if the Inputs are Invalid
+	 */
+
+	public ColumnPivotingDiagnostics (
+		final int pivotIndex,
+		final int pivotRowIndex,
+		final double rowUnitScaler,
+		final double minimumImpliedVariate)
 		throws Exception
 	{
-		EnvManager.InitEnv ("");
+		if (!NumberUtil.IsValid (_rowUnitScaler = rowUnitScaler) ||
+			!NumberUtil.IsValid (_minimumImpliedVariate = minimumImpliedVariate))
+		{
+			throw new Exception ("ColumnPivotingDiagnostics Constructor => Invalid Inputs");
+		}
 
-		double[] objectiveCoefficient = new double[] {-2., -3., -4.};
-		double[] constraintCoefficient1 = new double[] {3., 2., 1.};
-		double[] constraintCoefficient2 = new double[] {2., 5., 3.};
-		double constraintRHS1 = 10.;
-		double constraintRHS2 = 15.;
+		_pivotIndex = pivotIndex;
+		_pivotRowIndex = pivotRowIndex;
+	}
 
-		StandardFormBuilder standardFormBuilder = new StandardFormBuilder (
-			0,
-			new LinearExpression (objectiveCoefficient)
-		);
+	/**
+	 * Retrieve the Pivot Column Index
+	 * 
+	 * @return Pivot Column Index
+	 */
 
-		standardFormBuilder.addStandardConstraint (
-			StandardConstraint.LT (new LinearExpression (constraintCoefficient1), constraintRHS1)
-		);
+	public int pivotIndex()
+	{
+		return _pivotIndex;
+	}
 
-		standardFormBuilder.addStandardConstraint (
-			StandardConstraint.LT (new LinearExpression (constraintCoefficient2), constraintRHS2)
-		);
+	/**
+	 * Retrieve the Pivot Row Index
+	 * 
+	 * @return Pivot Row Index
+	 */
 
-		System.out.println (standardFormBuilder);
+	public int pivotRowIndex()
+	{
+		return _pivotRowIndex;
+	}
 
-		StandardForm standardForm = standardFormBuilder.build();
+	/**
+	 * Retrieve the Row Unit Scaler
+	 * 
+	 * @return Row Unit Scaler
+	 */
 
-		System.out.println ("\t-------------------------");
+	public double rowUnitScaler()
+	{
+		return _rowUnitScaler;
+	}
 
-		NumberUtil.Print2DArray ("\tTableau A", standardForm.tableauA(), false);
+	/**
+	 * Retrieve the Optimal Row Minimum Implied Variate
+	 * 
+	 * @return Optimal Row Minimum Implied Variate
+	 */
 
-		System.out.println ("\t-------------------------");
+	public double minimumImpliedVariate()
+	{
+		return _minimumImpliedVariate;
+	}
 
-		NumberUtil.Print1DArray ("\tTableau B", standardForm.tableauB(), false);
+	/**
+	 * Convert the State to a JSON-like String
+	 * 
+	 * @return State to a JSON-like String
+	 */
 
-		System.out.println ("\t-------------------------");
-
-		NumberUtil.Print1DArray ("\tTableau C", standardForm.tableauC(), false);
-
-		System.out.println ("\t-------------------------");
-
-		NumberUtil.Print2DArray ("\tFull Tableau", standardForm.tableau(), false);
-
-		System.out.println ("\t-------------------------");
-
-		NumberUtil.Print1DArray ("\tBasic Feasible Solution", standardForm.basicFeasibleSolution(), false);
-
-		System.out.println ("\t-------------------------");
-
-		System.out.println ("\t" + standardForm.pivotRowIndexForColumn (3));
-
-		System.out.println ("\t-------------------------");
-
-		EnvManager.TerminateEnv();
+	@Override public String toString()
+	{
+		return "Column Pivoting Diagnostics:" + 
+			" Pivot Column Index => " + _pivotIndex +
+			"; Pivot Row Index => " + _pivotRowIndex +
+			"; Row Unit Scaler =>" + FormatUtil.FormatDouble (_rowUnitScaler, 4, 3, 1.) +
+			"; Optimal Row Minimum Implied Variate =>" +
+				FormatUtil.FormatDouble (_minimumImpliedVariate, 4, 3, 1.);
 	}
 }
