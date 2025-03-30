@@ -117,6 +117,103 @@ public class StandardForm
 	private LinearExpression _objectiveFunction = null;
 	private StandardPolytope _constraintPolytope = null;
 
+	private boolean pivotRowIndexForTableauColumn (
+		final int pivotColumnIndex,
+		final PivotRun pivotRun,
+		final double[][] tableau)
+	{
+		int dimension = _constraintPolytope.dimension();
+
+		if (0 >= pivotColumnIndex || pivotColumnIndex > dimension || null == pivotRun) {
+			return false;
+		}
+
+		double[] tableauB = tableauB();
+
+		int tableauRowIndex = 1;
+		int pivotRowIndex = Integer.MIN_VALUE;
+		double minimumImpliedVariate = Double.MAX_VALUE;
+
+		Collection<Integer> coveredRowSet = pivotRun.tableauColumnToRowMap().values();
+
+		while (tableauRowIndex < tableau.length) {
+			if (0. == tableau[tableauRowIndex][pivotColumnIndex] ||
+				coveredRowSet.contains (tableauRowIndex))
+			{
+				++tableauRowIndex;
+				continue;
+			}
+
+			double impliedVariate =
+				tableauB[tableauRowIndex - 1] / tableau[tableauRowIndex][pivotColumnIndex];
+
+			if (impliedVariate < minimumImpliedVariate) {
+				minimumImpliedVariate = impliedVariate;
+				pivotRowIndex = tableauRowIndex;
+			}
+
+			++tableauRowIndex;
+		}
+
+		if (!pivotRun.addTableauRowForColumn (pivotRowIndex, pivotColumnIndex)) {
+			return false;
+		}
+
+		return pivotRun instanceof PivotRunDiagnostics ? ((PivotRunDiagnostics) pivotRun).addColumnPivoting (
+			pivotColumnIndex,
+			pivotRowIndex,
+			1. / tableau[pivotRowIndex][pivotColumnIndex],
+			minimumImpliedVariate
+		) : true;
+	}
+
+	private boolean processTableauColumn (
+		final int pivotColumnIndex,
+		final PivotRun pivotRun,
+		final double[][] tableau)
+	{
+		if (!pivotRowIndexForTableauColumn (pivotColumnIndex, pivotRun, tableau)) {
+			return false;
+		}
+
+		int pivotRowIndex = pivotRun.tableauColumnToRowMap().get (pivotColumnIndex);
+
+		boolean optimumReached = false;
+		double unitRowScaler = 1. / tableau[pivotRowIndex][pivotColumnIndex];
+
+		for (int columnIndex = 1; columnIndex < tableau[pivotRowIndex].length; ++columnIndex) {
+			tableau[pivotRowIndex][columnIndex] *= unitRowScaler;
+		}
+
+		for (int tableauRowIndex = 0; tableauRowIndex < tableau.length; ++tableauRowIndex) {
+			if (optimumReached) {
+				break;
+			}
+
+			if (tableauRowIndex == pivotRowIndex) {
+				continue;
+			}
+
+			double pivotElement = tableau[tableauRowIndex][pivotColumnIndex];
+
+			for (int tableauColumnIndex = 0;
+				tableauColumnIndex < tableau[tableauRowIndex].length;
+				++tableauColumnIndex)
+			{
+				tableau[tableauRowIndex][tableauColumnIndex] -=
+					pivotElement * tableau[pivotRowIndex][tableauColumnIndex];
+			}
+
+			if (0 == tableauRowIndex && pivotRun.optimumReached (tableau)) {
+				optimumReached = true;
+				break;
+			}
+		}
+
+		return pivotRun instanceof PivotRunDiagnostics ?
+			((PivotRunDiagnostics) pivotRun).updateColumnPivotingTableau (pivotColumnIndex, tableau) : true;
+	}
+
 	/**
 	 * <i>StandardForm</i> Constructor
 	 * 
@@ -183,6 +280,39 @@ public class StandardForm
 	}
 
 	/**
+	 * Retrieve the Basic Variable Count
+	 * 
+	 * @return Basic Variable Count
+	 */
+
+	public int basicVariableCount()
+	{
+		return _constraintPolytope.dimension();
+	}
+
+	/**
+	 * Retrieve the Free Variable Count
+	 * 
+	 * @return Free Variable Count
+	 */
+
+	public int freeVariableCount()
+	{
+		return _constraintPolytope.tableauRowSize() - _constraintPolytope.dimension();
+	}
+
+	/**
+	 * Retrieve the Slack Variable Count
+	 * 
+	 * @return Slack Variable Count
+	 */
+
+	public int slackVariableCount()
+	{
+		return _constraintPolytope.slackVariableCount();
+	}
+
+	/**
 	 * Construct the Tableau <i>C</i>
 	 * 
 	 * @return Tableau <i>C</i>
@@ -245,126 +375,31 @@ public class StandardForm
 	}
 
 	/**
-	 * Conduct the Pivot Run given the Tableau Column Index
+	 * Process the Simplex Tableau to locate the Optimal Solution
 	 * 
-	 * @param pivotColumnIndex Pivot Column Index
-	 * @param pivotRun Pivot Run Manager
-	 * @param tableau Tableau
+	 * @param diagnosticsOn TRUE - Pivot Run Diagnostics Turned On
 	 * 
-	 * @return TRUE - The Pivot Run successfully completed
+	 * @return The Resulting Pivot Run
 	 */
 
-	public boolean pivotRowIndexForTableauColumn (
-		final int pivotColumnIndex,
-		final PivotRun pivotRun,
-		final double[][] tableau)
+	public PivotRun processTableau (
+		final boolean diagnosticsOn)
 	{
-		int dimension = _constraintPolytope.dimension();
+		PivotRun pivotRun = diagnosticsOn ? new PivotRunDiagnostics() : new PivotRun();
 
-		if (0 >= pivotColumnIndex || pivotColumnIndex > dimension || null == pivotRun) {
-			return false;
-		}
+		int pivotColumnIndex = basicVariableCount();
 
-		double[] tableauB = tableauB();
-
-		int tableauRowIndex = 1;
-		int pivotRowIndex = Integer.MIN_VALUE;
-		double minimumImpliedVariate = Double.MAX_VALUE;
-
-		Collection<Integer> coveredRowSet = pivotRun.tableauColumnToRowMap().values();
-
-		while (tableauRowIndex < tableau.length) {
-			if (0. == tableau[tableauRowIndex][pivotColumnIndex] ||
-				coveredRowSet.contains (tableauRowIndex))
-			{
-				++tableauRowIndex;
-				continue;
-			}
-
-			double impliedVariate =
-				tableauB[tableauRowIndex - 1] / tableau[tableauRowIndex][pivotColumnIndex];
-
-			if (impliedVariate < minimumImpliedVariate) {
-				minimumImpliedVariate = impliedVariate;
-				pivotRowIndex = tableauRowIndex;
-			}
-
-			++tableauRowIndex;
-		}
-
-		if (!pivotRun.addTableauRowForColumn (pivotRowIndex, pivotColumnIndex)) {
-			return false;
-		}
-
-		return pivotRun instanceof PivotRunDiagnostics ? ((PivotRunDiagnostics) pivotRun).addColumnPivoting (
-			pivotColumnIndex,
-			pivotRowIndex,
-			1. / tableau[pivotRowIndex][pivotColumnIndex],
-			minimumImpliedVariate
-		) : true;
-	}
-
-	/**
-	 * Conduct the Pivot Run given the Tableau Column Index
-	 * 
-	 * @param pivotColumnIndex Pivot Column Index
-	 * @param pivotRun Pivot Run Manager
-	 * 
-	 * @return TRUE - The Pivot Run successfully completed
-	 */
-
-	public boolean processTableauColumn (
-		final int pivotColumnIndex,
-		final PivotRun pivotRun)
-	{
 		double[][] tableau = tableau();
 
-		if (!pivotRowIndexForTableauColumn (pivotColumnIndex, pivotRun, tableau)) {
-			return false;
+		while (1 <= pivotColumnIndex) {
+			if (!processTableauColumn (pivotColumnIndex, pivotRun, tableau) || pivotRun.optimumReached()) {
+				break;
+			}
+
+			--pivotColumnIndex;
 		}
 
-		int pivotRowIndex = pivotRun.tableauColumnToRowMap().get (pivotColumnIndex);
-
-		double unitRowScaler = 1. / tableau[pivotRowIndex][pivotColumnIndex];
-
-		for (int columnIndex = 1; columnIndex < tableau[pivotRowIndex].length; ++columnIndex) {
-			tableau[pivotRowIndex][columnIndex] *= unitRowScaler;
-		}
-
-		return true;
-	}
-
-	/**
-	 * Retrieve the Basic Variable Count
-	 * 
-	 * @return Basic Variable Count
-	 */
-
-	public int basicVariableCount()
-	{
-		return _constraintPolytope.dimension();
-	}
-
-	/**
-	 * Retrieve the Free Variable Count
-	 * 
-	 * @return Free Variable Count
-	 */
-
-	public int freeVariableCount()
-	{
-		return _constraintPolytope.tableauRowSize() - _constraintPolytope.dimension();
-	}
-
-	/**
-	 * Retrieve the Slack Variable Count
-	 * 
-	 * @return Slack Variable Count
-	 */
-
-	public int slackVariableCount()
-	{
-		return _constraintPolytope.slackVariableCount();
+		return pivotRun;
 	}
 
 	/**

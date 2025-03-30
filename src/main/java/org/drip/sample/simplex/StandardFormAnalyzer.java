@@ -6,7 +6,6 @@ import org.drip.optimization.simplex.StandardConstraint;
 import org.drip.optimization.simplex.StandardForm;
 import org.drip.optimization.simplex.StandardFormBuilder;
 import org.drip.optimization.simplex.LinearExpression;
-import org.drip.optimization.simplex.PivotRunDiagnostics;
 import org.drip.service.env.EnvManager;
 
 /*
@@ -82,8 +81,8 @@ import org.drip.service.env.EnvManager;
  */
 
 /**
- * <i>StandardFormConstructor</i> illustrates the Formulation and Standardization of the Simplex Canonical
- * 	Form. The References are:
+ * <i>StandardFormAnalyzer</i> illustrates the Formulation, Standardization, and Analysis of the Simplex
+ * 	Canonical Form. The References are:
  * 
  * <br><br>
  *  <ul>
@@ -119,7 +118,8 @@ import org.drip.service.env.EnvManager;
  * @author Lakshmi Krishnamurthy
  */
 
-public class StandardFormConstructor {
+public class StandardFormAnalyzer
+{
 
 	public static final void main (
 		final String[] argumentArray)
@@ -172,11 +172,7 @@ public class StandardFormConstructor {
 
 		System.out.println ("\t-------------------------");
 
-		PivotRunDiagnostics pivotRunDiagnostics = new PivotRunDiagnostics();
-
-		standardForm.processTableauColumn (3, pivotRunDiagnostics);
-
-		System.out.println ("\t" + pivotRunDiagnostics);
+		System.out.println ("\t" + standardForm.processTableau (true));
 
 		System.out.println ("\t-------------------------");
 

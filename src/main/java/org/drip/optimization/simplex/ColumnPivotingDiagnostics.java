@@ -215,7 +215,26 @@ public class ColumnPivotingDiagnostics
 	public boolean updateTableau (
 		final double[][] updatedTableau)
 	{
-		return null != (_updatedTableau = updatedTableau);
+		if (null == updatedTableau) {
+			_updatedTableau = null;
+			return false;
+		}
+
+		if (null == _updatedTableau) {
+			_updatedTableau = new double[updatedTableau.length][updatedTableau[0].length];
+		}
+
+		for (int tableauRowIndex = 0; tableauRowIndex < updatedTableau.length; ++tableauRowIndex) {
+			for (int tableauColumnIndex = 0;
+				tableauColumnIndex < updatedTableau[tableauRowIndex].length;
+				++tableauColumnIndex)
+			{
+				_updatedTableau[tableauRowIndex][tableauColumnIndex] =
+					updatedTableau[tableauRowIndex][tableauColumnIndex];
+			}
+		}
+
+		return true;
 	}
 
 	/**

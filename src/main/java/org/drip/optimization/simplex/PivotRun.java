@@ -4,6 +4,8 @@ package org.drip.optimization.simplex;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.drip.service.common.FormatUtil;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
@@ -115,6 +117,8 @@ import java.util.Map;
 
 public class PivotRun
 {
+	private boolean _optimumReached = false;
+	private double _optimumValue = Double.NaN;
 	private Map<Integer, Integer> _tableauColumnToRowMap = null;
 
 	/**
@@ -138,10 +142,32 @@ public class PivotRun
 	}
 
 	/**
+	 * Retrieve the Optimum Value attained Indicator
+	 * 
+	 * @return Optimum Value attained Indicator
+	 */
+
+	public double optimumValue()
+	{
+		return _optimumValue;
+	}
+
+	/**
+	 * Retrieve the Optimum Simplex Value
+	 * 
+	 * @return Optimum Simplex Value
+	 */
+
+	public boolean optimumReached()
+	{
+		return _optimumReached;
+	}
+
+	/**
 	 * Add the Pivot Row Index corresponding to the Tableau Column
 	 * 
-	 * @param row Pivot Row Index
-	 * @param column Tableau Column Index
+	 * @param rowIndex Pivot Row Index
+	 * @param columnIndex Tableau Column Index
 	 * 
 	 * @return TRUE - Pivot Row Index corresponding to the Tableau Column successfully added
 	 */
@@ -160,6 +186,35 @@ public class PivotRun
 	}
 
 	/**
+	 * Indicate if the Objective Function Coefficients indicate that the Optimum has been reached
+	 * 
+	 * @param tableau Tableau
+	 * 
+	 * @return TRUE - Objective Function Optimum has been reached
+	 */
+
+	public boolean optimumReached (
+		final double[][] tableau)
+	{
+		if (_optimumReached) {
+			return true;
+		}
+
+		if (null == tableau || 0 == tableau.length) {
+			return false;
+		}
+
+		for (int tableauColumnIndex = 1; tableauColumnIndex < tableau[0].length; ++tableauColumnIndex) {
+			if (0. < tableau[0][tableauColumnIndex]) {
+				return false;
+			}
+		}
+
+		_optimumValue = tableau[0][tableau[0].length - 1];
+		return _optimumReached = true;
+	}
+
+	/**
 	 * Convert the State to a JSON-like String
 	 * 
 	 * @return State to a JSON-like String
@@ -167,6 +222,8 @@ public class PivotRun
 
 	@Override public String toString()
 	{
-		return "Pivot Run - Tableau Column to Row Map: " + _tableauColumnToRowMap;
+		return "Pivot Run - Tableau Column to Row Map: " + _tableauColumnToRowMap +
+			"; Optimum Value =>" + FormatUtil.FormatDouble (_optimumValue, 4, 3, 1.) +
+			"; Optimum Reached => " + _optimumReached + "; ";
 	}
 }

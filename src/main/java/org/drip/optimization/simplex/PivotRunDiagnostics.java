@@ -178,6 +178,24 @@ public class PivotRunDiagnostics
 	}
 
 	/**
+	 * Update the Tableau corresponding to Pivot Column Index
+	 * 
+	 * @param tableauColumnIndex The Pivot Tableau Column Index
+	 * @param updatedTableau Tableau to be Updated
+	 * 
+	 * @return TRUE - The Tableau corresponding to Pivot Column Index successfully updated
+	 */
+
+	public boolean updateColumnPivotingTableau (
+		final int tableauColumnIndex,
+		final double[][] updatedTableau)
+	{
+		_columnPivotingMap.get (tableauColumnIndex).updateTableau (updatedTableau);
+
+		return true;
+	}
+
+	/**
 	 * Convert the State to a JSON-like String
 	 * 
 	 * @return State to a JSON-like String
