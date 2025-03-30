@@ -150,6 +150,31 @@ public class RdRandomSequence
 	}
 
 	/**
+	 * Generate a Random Number within the Maximum Value
+	 * 
+	 * @param maximumElement Maximum Element
+	 * @param isEntryInteger TRUE - Entry is an Integer
+	 * 
+	 * @return Random Number within the Maximum Value
+	 * 
+	 * @throws Exception Thrown if the Maximum Element is Invalid
+	 */
+
+	public static final double Single (
+		final double maximumElement,
+		final boolean isEntryInteger)
+		throws Exception
+	{
+		if (0. >= maximumElement) {
+			throw new Exception ("RdRandomSequence::Single => Invalid Maximum Element");
+		}
+
+		double random = Math.random() * maximumElement;
+
+		return isEntryInteger ? (int) (random + 0.5) : random;
+	}
+
+	/**
 	 * Construct a 1D Array of Random Elements up to the Maximum Value
 	 * 
 	 * @param elementCount Number of Elements in the Array

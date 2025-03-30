@@ -9,7 +9,6 @@ import org.drip.optimization.simplex.StandardConstraint;
 import org.drip.optimization.simplex.StandardForm;
 import org.drip.optimization.simplex.StandardFormBuilder;
 import org.drip.service.common.FormatUtil;
-import org.drip.service.env.EnvManager;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -84,8 +83,8 @@ import org.drip.service.env.EnvManager;
  */
 
 /**
- * <i>ThreeDimensionTwoConstraints</i> constructs and optimizes a variety of 3D linear system with 2
- * 	constraints. The References are:
+ * <i>ConstrainedLinearProgrammingOptimizer</i> constructs and optimizes a variety of constrained linear
+ * 	systems and identifies the finite optimum if available. The References are:
  * 
  * <br><br>
  *  <ul>
@@ -121,18 +120,20 @@ import org.drip.service.env.EnvManager;
  * @author Lakshmi Krishnamurthy
  */
 
-public class ThreeDimensionTwoConstraints
+public class ConstrainedLinearProgrammingOptimizer
 {
 
 	private static final void OptimizerRun (
-		final String description)
+		final String description,
+		final int dimension,
+		final int constraintCount)
 		throws Exception
 	{
-		double[] objectiveCoefficientArray = RdRandomSequence.OneD (3, 10., true);
+		double[] objectiveCoefficientArray = RdRandomSequence.OneD (dimension, 10., true);
 
-		double[] constraintCoefficient1 = RdRandomSequence.OneD (3, 10., true);
+		double[] constraintCoefficient1 = RdRandomSequence.OneD (dimension, 10., true);
 
-		double[] constraintCoefficient2 = RdRandomSequence.OneD (3, 10., true);
+		double[] constraintCoefficient2 = RdRandomSequence.OneD (dimension, 10., true);
 
 		double constraintRHS1 = RdRandomSequence.Single (100., true);
 
@@ -144,24 +145,8 @@ public class ThreeDimensionTwoConstraints
 
 		System.out.println ("\t|-------------------------------------------------------|");
 
-		System.out.println ("\t|    " + description);
-
-		System.out.println ("\t|-------------------------------------------------------|");
-
 		System.out.println (
-			"\t| OBJECTIVE ARRAY: " + NumberUtil.ArrayRow (objectiveCoefficientArray, 2, 0, false)
-		);
-
-		System.out.println ("\t|-------------------------------------------------------|");
-
-		System.out.println (
-			"\t| CONSTRAINT #1: " + NumberUtil.ArrayRow (constraintCoefficient1, 2, 0, false) +
-				" =>" + FormatUtil.FormatDouble (constraintRHS1, 2, 0, 1.)
-		);
-
-		System.out.println (
-			"\t| CONSTRAINT #2: " + NumberUtil.ArrayRow (constraintCoefficient2, 2, 0, false) +
-				" =>" + FormatUtil.FormatDouble (constraintRHS2, 2, 0, 1.)
+			"\t|    " + description + "; Dimension: " + dimension + "; Constraints: " + constraintCount
 		);
 
 		System.out.println ("\t|-------------------------------------------------------|");
@@ -179,18 +164,13 @@ public class ThreeDimensionTwoConstraints
 			StandardConstraint.LT (new LinearExpression (constraintCoefficient2), constraintRHS2)
 		);
 
-		StandardForm standardForm = standardFormBuilder.build();
-
-		NumberUtil.PrintMatrix ("\t| Full Tableau", standardForm.tableau(), 2, 0);
-
 		System.out.println ("\t|-------------------------------------------------------|");
 
-		PivotRun pivotRun = standardForm.processTableau (false);
-
-		System.out.println ("\t| Finite Optimum Reached => " + pivotRun.finiteOptimumReached());
+		PivotRun pivotRun = standardFormBuilder.build().processTableau (false);
 
 		System.out.println (
-			"\t| Optimal Value          => " + FormatUtil.FormatDouble (pivotRun.optimumValue(), 2, 3, 1.)
+			"\t| Finite Optimum Reached => " + pivotRun.finiteOptimumReached() +
+				"; Optimal Value          => " + FormatUtil.FormatDouble (pivotRun.optimumValue(), 2, 3, 1.)
 		);
 
 		System.out.println ("\t|-------------------------------------------------------|");
@@ -198,20 +178,4 @@ public class ThreeDimensionTwoConstraints
 		System.out.println();
 	}
 
-	public static final void main (
-		final String[] argumentArray)
-		throws Exception
-	{
-		EnvManager.InitEnv ("");
-
-		OptimizerRun ("RUN #1");
-
-		OptimizerRun ("RUN #2");
-
-		OptimizerRun ("RUN #3");
-
-		OptimizerRun ("RUN #4");
-
-		OptimizerRun ("RUN #5");
-	}
 }

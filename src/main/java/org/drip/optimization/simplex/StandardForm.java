@@ -204,7 +204,7 @@ public class StandardForm
 					pivotElement * tableau[pivotRowIndex][tableauColumnIndex];
 			}
 
-			if (0 == tableauRowIndex && pivotRun.optimumReached (tableau)) {
+			if (0 == tableauRowIndex && pivotRun.finiteOptimumReached (tableau)) {
 				optimumReached = true;
 				break;
 			}
@@ -392,7 +392,9 @@ public class StandardForm
 		double[][] tableau = tableau();
 
 		while (1 <= pivotColumnIndex) {
-			if (!processTableauColumn (pivotColumnIndex, pivotRun, tableau) || pivotRun.optimumReached()) {
+			if (!processTableauColumn (pivotColumnIndex, pivotRun, tableau) ||
+				pivotRun.finiteOptimumReached())
+			{
 				break;
 			}
 

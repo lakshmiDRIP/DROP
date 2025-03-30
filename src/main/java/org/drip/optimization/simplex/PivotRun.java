@@ -117,8 +117,8 @@ import org.drip.service.common.FormatUtil;
 
 public class PivotRun
 {
-	private boolean _optimumReached = false;
-	private double _optimumValue = Double.NaN;
+	private boolean _finiteOptimumReached = false;
+	private double _optimumValue = Double.NEGATIVE_INFINITY;
 	private Map<Integer, Integer> _tableauColumnToRowMap = null;
 
 	/**
@@ -142,9 +142,9 @@ public class PivotRun
 	}
 
 	/**
-	 * Retrieve the Optimum Value attained Indicator
+	 * Retrieve the Optimum Simplex Value
 	 * 
-	 * @return Optimum Value attained Indicator
+	 * @return Optimum Simplex Value
 	 */
 
 	public double optimumValue()
@@ -153,14 +153,14 @@ public class PivotRun
 	}
 
 	/**
-	 * Retrieve the Optimum Simplex Value
+	 * Retrieve the Optimum Value attained Indicator
 	 * 
-	 * @return Optimum Simplex Value
+	 * @return Optimum Value attained Indicator
 	 */
 
-	public boolean optimumReached()
+	public boolean finiteOptimumReached()
 	{
-		return _optimumReached;
+		return _finiteOptimumReached;
 	}
 
 	/**
@@ -186,17 +186,17 @@ public class PivotRun
 	}
 
 	/**
-	 * Indicate if the Objective Function Coefficients indicate that the Optimum has been reached
+	 * Indicate if the Objective Function Coefficients indicate that the Finite Optimum has been reached
 	 * 
 	 * @param tableau Tableau
 	 * 
-	 * @return TRUE - Objective Function Optimum has been reached
+	 * @return TRUE - Finite Objective Function Optimum has been reached
 	 */
 
-	public boolean optimumReached (
+	public boolean finiteOptimumReached (
 		final double[][] tableau)
 	{
-		if (_optimumReached) {
+		if (_finiteOptimumReached) {
 			return true;
 		}
 
@@ -211,7 +211,7 @@ public class PivotRun
 		}
 
 		_optimumValue = tableau[0][tableau[0].length - 1];
-		return _optimumReached = true;
+		return _finiteOptimumReached = true;
 	}
 
 	/**
@@ -224,6 +224,6 @@ public class PivotRun
 	{
 		return "Pivot Run - Tableau Column to Row Map: " + _tableauColumnToRowMap +
 			"; Optimum Value =>" + FormatUtil.FormatDouble (_optimumValue, 4, 3, 1.) +
-			"; Optimum Reached => " + _optimumReached + "; ";
+			"; Finite Optimum Reached => " + _finiteOptimumReached + "; ";
 	}
 }
