@@ -6,6 +6,7 @@ import org.drip.optimization.simplex.StandardConstraint;
 import org.drip.optimization.simplex.StandardForm;
 import org.drip.optimization.simplex.StandardFormBuilder;
 import org.drip.optimization.simplex.LinearExpression;
+import org.drip.optimization.simplex.PivotRunDiagnostics;
 import org.drip.service.env.EnvManager;
 
 /*
@@ -171,7 +172,11 @@ public class StandardFormConstructor {
 
 		System.out.println ("\t-------------------------");
 
-		System.out.println ("\t" + standardForm.pivotRowIndexForColumn (3));
+		PivotRunDiagnostics pivotRunDiagnostics = new PivotRunDiagnostics();
+
+		standardForm.processTableauColumn (3, pivotRunDiagnostics);
+
+		System.out.println ("\t" + pivotRunDiagnostics);
 
 		System.out.println ("\t-------------------------");
 

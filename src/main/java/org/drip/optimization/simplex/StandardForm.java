@@ -1,6 +1,8 @@
 
 package org.drip.optimization.simplex;
 
+import java.util.Collection;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
@@ -243,38 +245,44 @@ public class StandardForm
 	}
 
 	/**
-	 * Conduct the Pivot Run given the Pivot Column Index
+	 * Conduct the Pivot Run given the Tableau Column Index
 	 * 
 	 * @param pivotColumnIndex Pivot Column Index
+	 * @param pivotRun Pivot Run Manager
+	 * @param tableau Tableau
 	 * 
-	 * @return Pivot Run
+	 * @return TRUE - The Pivot Run successfully completed
 	 */
 
-	public ColumnPivotingDiagnostics pivotRowIndexForColumn (
-		final int pivotColumnIndex)
+	public boolean pivotRowIndexForTableauColumn (
+		final int pivotColumnIndex,
+		final PivotRun pivotRun,
+		final double[][] tableau)
 	{
 		int dimension = _constraintPolytope.dimension();
 
-		if (0 >= pivotColumnIndex || pivotColumnIndex > dimension) {
-			return null;
+		if (0 >= pivotColumnIndex || pivotColumnIndex > dimension || null == pivotRun) {
+			return false;
 		}
 
-		double[][] tableau = tableau();
-
-		int lastTableauRowIndex = _constraintPolytope.tableauRowSize() - 1;
+		double[] tableauB = tableauB();
 
 		int tableauRowIndex = 1;
 		int pivotRowIndex = Integer.MIN_VALUE;
 		double minimumImpliedVariate = Double.MAX_VALUE;
 
+		Collection<Integer> coveredRowSet = pivotRun.tableauColumnToRowMap().values();
+
 		while (tableauRowIndex < tableau.length) {
-			if (0. == tableau[tableauRowIndex][pivotColumnIndex]) {
+			if (0. == tableau[tableauRowIndex][pivotColumnIndex] ||
+				coveredRowSet.contains (tableauRowIndex))
+			{
 				++tableauRowIndex;
 				continue;
 			}
 
 			double impliedVariate =
-				tableau[tableauRowIndex][lastTableauRowIndex] / tableau[tableauRowIndex][pivotColumnIndex];
+				tableauB[tableauRowIndex - 1] / tableau[tableauRowIndex][pivotColumnIndex];
 
 			if (impliedVariate < minimumImpliedVariate) {
 				minimumImpliedVariate = impliedVariate;
@@ -284,18 +292,46 @@ public class StandardForm
 			++tableauRowIndex;
 		}
 
-		try {
-			return new ColumnPivotingDiagnostics (
-				pivotColumnIndex,
-				pivotRowIndex,
-				1. / tableau[pivotRowIndex][pivotColumnIndex],
-				minimumImpliedVariate
-			);
-		} catch (Exception e) {
-			e.printStackTrace();
+		if (!pivotRun.addTableauRowForColumn (pivotRowIndex, pivotColumnIndex)) {
+			return false;
 		}
 
-		return null;
+		return pivotRun instanceof PivotRunDiagnostics ? ((PivotRunDiagnostics) pivotRun).addColumnPivoting (
+			pivotColumnIndex,
+			pivotRowIndex,
+			1. / tableau[pivotRowIndex][pivotColumnIndex],
+			minimumImpliedVariate
+		) : true;
+	}
+
+	/**
+	 * Conduct the Pivot Run given the Tableau Column Index
+	 * 
+	 * @param pivotColumnIndex Pivot Column Index
+	 * @param pivotRun Pivot Run Manager
+	 * 
+	 * @return TRUE - The Pivot Run successfully completed
+	 */
+
+	public boolean processTableauColumn (
+		final int pivotColumnIndex,
+		final PivotRun pivotRun)
+	{
+		double[][] tableau = tableau();
+
+		if (!pivotRowIndexForTableauColumn (pivotColumnIndex, pivotRun, tableau)) {
+			return false;
+		}
+
+		int pivotRowIndex = pivotRun.tableauColumnToRowMap().get (pivotColumnIndex);
+
+		double unitRowScaler = 1. / tableau[pivotRowIndex][pivotColumnIndex];
+
+		for (int columnIndex = 1; columnIndex < tableau[pivotRowIndex].length; ++columnIndex) {
+			tableau[pivotRowIndex][columnIndex] *= unitRowScaler;
+		}
+
+		return true;
 	}
 
 	/**

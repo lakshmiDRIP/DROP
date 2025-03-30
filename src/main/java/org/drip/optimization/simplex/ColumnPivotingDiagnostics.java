@@ -115,6 +115,7 @@ import org.drip.service.common.FormatUtil;
 
 public class ColumnPivotingDiagnostics
 {
+	private double[][] _updatedTableau = null;
 	private double _rowUnitScaler = Double.NaN;
 	private int _pivotIndex = Integer.MAX_VALUE;
 	private int _pivotRowIndex = Integer.MAX_VALUE;
@@ -193,6 +194,31 @@ public class ColumnPivotingDiagnostics
 	}
 
 	/**
+	 * Retrieve the Updated Tableau
+	 * 
+	 * @return Updated Tableau
+	 */
+
+	public double[][] updatedTableau()
+	{
+		return _updatedTableau;
+	}
+
+	/**
+	 * Update the Simplex Tableau
+	 * 
+	 * @param updatedTableau Simplex Tableau to Update
+	 * 
+	 * @return TRUE - Simplex Tableau Updated successfully
+	 */
+
+	public boolean updateTableau (
+		final double[][] updatedTableau)
+	{
+		return null != (_updatedTableau = updatedTableau);
+	}
+
+	/**
 	 * Convert the State to a JSON-like String
 	 * 
 	 * @return State to a JSON-like String
@@ -205,6 +231,9 @@ public class ColumnPivotingDiagnostics
 			"; Pivot Row Index => " + _pivotRowIndex +
 			"; Row Unit Scaler =>" + FormatUtil.FormatDouble (_rowUnitScaler, 4, 3, 1.) +
 			"; Optimal Row Minimum Implied Variate =>" +
-				FormatUtil.FormatDouble (_minimumImpliedVariate, 4, 3, 1.);
+				FormatUtil.FormatDouble (_minimumImpliedVariate, 4, 3, 1.) + (
+					null == _updatedTableau ? "" :
+						"\n" + NumberUtil.MatrixToString ("Updated Tableau", _updatedTableau, 4, 3)
+			);
 	}
 }

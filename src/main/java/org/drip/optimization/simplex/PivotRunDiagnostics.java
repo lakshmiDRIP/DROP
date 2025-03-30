@@ -77,7 +77,8 @@ import java.util.Map;
  */
 
 /**
- * <i>PivotRun</i> holds the Run Sequence of a Set of Pivoting Operations. The References are:
+ * <i>PivotRunDiagnostics</i> augments the Pivot Run Sequence with Column Pivoting Diagnostics. The
+ * 	References are:
  * 
  * <br><br>
  * 	<ul>
@@ -113,50 +114,67 @@ import java.util.Map;
  * @author Lakshmi Krishnamurthy
  */
 
-public class PivotRun
+public class PivotRunDiagnostics
+	extends PivotRun
 {
-	private Map<Integer, Integer> _tableauColumnToRowMap = null;
+	private Map<Integer, ColumnPivotingDiagnostics> _columnPivotingMap = null;
 
 	/**
-	 * Empty <i>PivotRun</i> Constructor
+	 * Empty <i>PivotRunDiagnostics</i> Constructor
 	 */
 
-	public PivotRun()
+	public PivotRunDiagnostics()
 	{
-		_tableauColumnToRowMap = new HashMap<Integer, Integer>();
+		super();
+
+		_columnPivotingMap = new HashMap<Integer, ColumnPivotingDiagnostics>();
 	}
 
 	/**
-	 * Retrieve the Pivot Tableau Column to Row Map
+	 * Retrieve the Map of <i>ColumnPivotingDiagnostics<i> Records
 	 * 
-	 * @return Pivot Tableau Column to Row Map
+	 * @return Map of <i>ColumnPivotingDiagnostics<i> Records
 	 */
 
-	public Map<Integer, Integer> tableauColumnToRowMap()
+	public Map<Integer, ColumnPivotingDiagnostics> columnPivotingMap()
 	{
-		return _tableauColumnToRowMap;
+		return _columnPivotingMap;
 	}
 
 	/**
-	 * Add the Pivot Row Index corresponding to the Tableau Column
+	 * Add a <i>ColumnPivotingDiagnostics<i> Record
 	 * 
-	 * @param row Pivot Row Index
-	 * @param column Tableau Column Index
+	 * @param tableauColumnIndex The Pivot Tableau Column Index
+	 * @param tableauRowIndex The Pivot Tableau Row Index
+	 * @param rowUnitScaler Row Unit Scaler
+	 * @param minimumImpliedVariate Corresponding Minimum Implied Variate
 	 * 
-	 * @return TRUE - Pivot Row Index corresponding to the Tableau Column successfully added
+	 * @return TRUE - The<i>ColumnPivotingDiagnostics<i> Record successfully added
 	 */
 
-	public boolean addTableauRowForColumn (
-		final int rowIndex,
-		final int columnIndex)
+	public boolean addColumnPivoting (
+		final int tableauColumnIndex,
+		final int tableauRowIndex,
+		final double rowUnitScaler,
+		final double minimumImpliedVariate)
 	{
-		if (1 > rowIndex || 1 > columnIndex) {
-			return false;
+		try {
+			_columnPivotingMap.put (
+				tableauColumnIndex,
+				new ColumnPivotingDiagnostics (
+					tableauColumnIndex,
+					tableauRowIndex,
+					rowUnitScaler,
+					minimumImpliedVariate
+				)
+			);
+
+			return true;
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 
-		_tableauColumnToRowMap.put (columnIndex, rowIndex);
-
-		return true;
+		return false;
 	}
 
 	/**
@@ -167,6 +185,9 @@ public class PivotRun
 
 	@Override public String toString()
 	{
-		return "Pivot Run - Tableau Column to Row Map: " + _tableauColumnToRowMap;
+		String display = super.toString();
+
+		display += "Pivot Run Diagnostics - Column Pivoting Map: " + _columnPivotingMap;
+		return display;
 	}
 }

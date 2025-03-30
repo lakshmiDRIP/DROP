@@ -1089,6 +1089,47 @@ public class NumberUtil {
 	}
 
 	/**
+	 * Stringify the Matrix by Decimal-Formatting the Contents
+	 * 
+	 * @param description Row Description
+	 * @param matrix Matrix to be Printed
+	 * @param leftPlaces Number of Digits to the Left of the Decimal
+	 * @param rightPlaces Number of Digits to the Right of the Decimal
+	 * 
+	 * @return Formatted Matrix
+	 */
+
+	public static final String MatrixToString (
+		final String description,
+		final double[][] matrix,
+		final int leftPlaces,
+		final int rightPlaces)
+	{
+		if (null == matrix || 0 == matrix.length) {
+			return "";
+		}
+
+		String matrixToString = "";
+
+		for (int rowIndex = 0; rowIndex < matrix.length; ++rowIndex) {
+			matrixToString += description + " =>";
+
+			for (int columnIndex = 0; columnIndex < matrix[rowIndex].length; ++columnIndex) {
+				matrixToString += FormatUtil.FormatDouble (
+					matrix[rowIndex][columnIndex],
+					leftPlaces,
+					rightPlaces,
+					1.
+				) + " |";
+			}
+
+			matrixToString += "\n";
+		}
+
+		return matrixToString;
+	}
+
+	/**
 	 * Compute (n - 0.5)!
 	 * 
 	 * @param n n
