@@ -6,9 +6,9 @@ import org.drip.numerical.common.NumberUtil;
 import org.drip.optimization.simplex.LinearExpression;
 import org.drip.optimization.simplex.PivotRun;
 import org.drip.optimization.simplex.StandardConstraint;
-import org.drip.optimization.simplex.StandardForm;
 import org.drip.optimization.simplex.StandardFormBuilder;
 import org.drip.service.common.FormatUtil;
+import org.drip.service.env.EnvManager;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -164,13 +164,22 @@ public class ConstrainedLinearProgrammingOptimizer
 			StandardConstraint.LT (new LinearExpression (constraintCoefficient2), constraintRHS2)
 		);
 
-		System.out.println ("\t|-------------------------------------------------------|");
-
 		PivotRun pivotRun = standardFormBuilder.build().processTableau (false);
 
 		System.out.println (
+			"\t| Relative Cost Coefficients: " + NumberUtil.ArrayRow (
+				pivotRun.relativeCostCoefficientArray(),
+				2,
+				3,
+				false
+			)
+		);
+
+		System.out.println ("\t|-------------------------------------------------------|");
+
+		System.out.println (
 			"\t| Finite Optimum Reached => " + pivotRun.finiteOptimumReached() +
-				"; Optimal Value          => " + FormatUtil.FormatDouble (pivotRun.optimumValue(), 2, 3, 1.)
+				"; Optimal Value => " + FormatUtil.FormatDouble (pivotRun.optimumValue(), 2, 3, 1.)
 		);
 
 		System.out.println ("\t|-------------------------------------------------------|");
@@ -178,4 +187,16 @@ public class ConstrainedLinearProgrammingOptimizer
 		System.out.println();
 	}
 
+	public static final void main (
+		final String[] argumentArray)
+		throws Exception
+	{
+		EnvManager.InitEnv ("");
+
+		OptimizerRun ("RUN #1", 5, 3);
+
+		OptimizerRun ("RUN #2", 7, 5);
+
+		OptimizerRun ("RUN #3", 8, 6);
+	}
 }

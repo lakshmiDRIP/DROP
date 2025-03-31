@@ -4,6 +4,7 @@ package org.drip.optimization.simplex;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.drip.numerical.common.NumberUtil;
 import org.drip.service.common.FormatUtil;
 
 /*
@@ -118,6 +119,7 @@ import org.drip.service.common.FormatUtil;
 public class PivotRun
 {
 	private boolean _finiteOptimumReached = false;
+	private double[] _relativeCostCoefficientArray = null;
 	private double _optimumValue = Double.NEGATIVE_INFINITY;
 	private Map<Integer, Integer> _tableauColumnToRowMap = null;
 
@@ -161,6 +163,17 @@ public class PivotRun
 	public boolean finiteOptimumReached()
 	{
 		return _finiteOptimumReached;
+	}
+
+	/**
+	 * Retrieve the Array of Objective Function (i.e., Relative Cost) Coefficients
+	 * 
+	 * @return Array of Objective Function (i.e., Relative Cost) Coefficients
+	 */
+
+	public double[] relativeCostCoefficientArray()
+	{
+		return _relativeCostCoefficientArray;
 	}
 
 	/**
@@ -215,6 +228,36 @@ public class PivotRun
 	}
 
 	/**
+	 * Set the Array of Objective Function (i.e., Relative Cost) Coefficients from the Tableau Row
+	 * 
+	 * @param objectiveFunctionTableauRow Objective Function Tableau Row
+	 * 
+	 * @return TRUE - Array of Objective Function (i.e., Relative Cost) Coefficients Set
+	 */
+
+	public boolean setRelativeCostCoefficientArray (
+		final double[] objectiveFunctionTableauRow)
+	{
+		if (null == objectiveFunctionTableauRow) {
+			return false;
+		}
+
+		_relativeCostCoefficientArray = new double[objectiveFunctionTableauRow.length - 1];
+
+		for (int objectiveFunctionTableauRowIndex = 1;
+			objectiveFunctionTableauRowIndex <objectiveFunctionTableauRow.length - 1;
+			++objectiveFunctionTableauRowIndex)
+		{
+			_relativeCostCoefficientArray[objectiveFunctionTableauRowIndex - 1] =
+				-1. * objectiveFunctionTableauRow[objectiveFunctionTableauRowIndex];
+		}
+
+		_relativeCostCoefficientArray[objectiveFunctionTableauRow.length - 2] =
+			objectiveFunctionTableauRow[objectiveFunctionTableauRow.length - 1];
+		return true;
+	}
+
+	/**
 	 * Convert the State to a JSON-like String
 	 * 
 	 * @return State to a JSON-like String
@@ -224,6 +267,8 @@ public class PivotRun
 	{
 		return "Pivot Run - Tableau Column to Row Map: " + _tableauColumnToRowMap +
 			"; Optimum Value =>" + FormatUtil.FormatDouble (_optimumValue, 4, 3, 1.) +
-			"; Finite Optimum Reached => " + _finiteOptimumReached + "; ";
+			"; Finite Optimum Reached => " + _finiteOptimumReached +
+			"; Objective Function Relative Coefficients =>" +
+				NumberUtil.ArrayRow (_relativeCostCoefficientArray, 4, 3, false) + "; ";
 	}
 }

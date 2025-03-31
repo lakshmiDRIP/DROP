@@ -392,6 +392,10 @@ public class StandardForm
 		double[][] tableau = tableau();
 
 		while (1 <= pivotColumnIndex) {
+			if (0. > tableau[0][pivotColumnIndex]) {
+				continue;
+			}
+
 			if (!processTableauColumn (pivotColumnIndex, pivotRun, tableau) ||
 				pivotRun.finiteOptimumReached())
 			{
@@ -401,7 +405,7 @@ public class StandardForm
 			--pivotColumnIndex;
 		}
 
-		return pivotRun;
+		return pivotRun.setRelativeCostCoefficientArray (tableau[0]) ? pivotRun : null;
 	}
 
 	/**
