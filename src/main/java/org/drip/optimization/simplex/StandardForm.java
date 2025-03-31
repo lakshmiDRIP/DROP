@@ -117,15 +117,16 @@ public class StandardForm
 	private LinearExpression _objectiveFunction = null;
 	private StandardPolytope _constraintPolytope = null;
 
-	private boolean pivotRowIndexForTableauColumn (
-		final int pivotColumnIndex,
+	private MinimumRatioRun minimumRatioTest (
+		final int enteringVariableColumnIndex,
 		final PivotRun pivotRun,
 		final double[][] tableau)
 	{
 		int dimension = _constraintPolytope.dimension();
 
-		if (0 >= pivotColumnIndex || pivotColumnIndex > dimension || null == pivotRun) {
-			return false;
+		if (0 >= enteringVariableColumnIndex || enteringVariableColumnIndex > dimension || null == pivotRun)
+		{
+			return null;
 		}
 
 		double[] tableauB = tableauB();
@@ -137,7 +138,7 @@ public class StandardForm
 		Collection<Integer> coveredRowSet = pivotRun.tableauColumnToRowMap().values();
 
 		while (tableauRowIndex < tableau.length) {
-			if (0. == tableau[tableauRowIndex][pivotColumnIndex] ||
+			if (0. == tableau[tableauRowIndex][enteringVariableColumnIndex] ||
 				coveredRowSet.contains (tableauRowIndex))
 			{
 				++tableauRowIndex;
@@ -145,7 +146,7 @@ public class StandardForm
 			}
 
 			double impliedVariate =
-				tableauB[tableauRowIndex - 1] / tableau[tableauRowIndex][pivotColumnIndex];
+				tableauB[tableauRowIndex - 1] / tableau[tableauRowIndex][enteringVariableColumnIndex];
 
 			if (impliedVariate < minimumImpliedVariate) {
 				minimumImpliedVariate = impliedVariate;
@@ -155,31 +156,51 @@ public class StandardForm
 			++tableauRowIndex;
 		}
 
-		if (!pivotRun.addTableauRowForColumn (pivotRowIndex, pivotColumnIndex)) {
+		try {
+			return new MinimumRatioRun (enteringVariableColumnIndex, pivotRowIndex, minimumImpliedVariate);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	private boolean pivotRowIndexForEnteringVariable (
+		final int enteringVariableColumnIndex,
+		final PivotRun pivotRun,
+		final double[][] tableau)
+	{
+		MinimumRatioRun minimumRatioRun = minimumRatioTest (enteringVariableColumnIndex, pivotRun, tableau);
+
+		if (null == minimumRatioRun) {
+			return false;
+		}
+
+		int pivotRowIndex = minimumRatioRun.pivotRowIndex();
+
+		if (!pivotRun.addTableauRowForColumn (pivotRowIndex, enteringVariableColumnIndex)) {
 			return false;
 		}
 
 		return pivotRun instanceof PivotRunDiagnostics ? ((PivotRunDiagnostics) pivotRun).addColumnPivoting (
-			pivotColumnIndex,
-			pivotRowIndex,
-			1. / tableau[pivotRowIndex][pivotColumnIndex],
-			minimumImpliedVariate
+			minimumRatioRun,
+			1. / tableau[pivotRowIndex][enteringVariableColumnIndex]
 		) : true;
 	}
 
-	private boolean processTableauColumn (
-		final int pivotColumnIndex,
+	private boolean processEnteringVariable (
+		final int enteringVariableColumnIndex,
 		final PivotRun pivotRun,
 		final double[][] tableau)
 	{
-		if (!pivotRowIndexForTableauColumn (pivotColumnIndex, pivotRun, tableau)) {
+		if (!pivotRowIndexForEnteringVariable (enteringVariableColumnIndex, pivotRun, tableau)) {
 			return false;
 		}
 
-		int pivotRowIndex = pivotRun.tableauColumnToRowMap().get (pivotColumnIndex);
+		int pivotRowIndex = pivotRun.tableauColumnToRowMap().get (enteringVariableColumnIndex);
 
 		boolean optimumReached = false;
-		double unitRowScaler = 1. / tableau[pivotRowIndex][pivotColumnIndex];
+		double unitRowScaler = 1. / tableau[pivotRowIndex][enteringVariableColumnIndex];
 
 		for (int columnIndex = 1; columnIndex < tableau[pivotRowIndex].length; ++columnIndex) {
 			tableau[pivotRowIndex][columnIndex] *= unitRowScaler;
@@ -194,7 +215,7 @@ public class StandardForm
 				continue;
 			}
 
-			double pivotElement = tableau[tableauRowIndex][pivotColumnIndex];
+			double pivotElement = tableau[tableauRowIndex][enteringVariableColumnIndex];
 
 			for (int tableauColumnIndex = 0;
 				tableauColumnIndex < tableau[tableauRowIndex].length;
@@ -211,7 +232,10 @@ public class StandardForm
 		}
 
 		return pivotRun instanceof PivotRunDiagnostics ?
-			((PivotRunDiagnostics) pivotRun).updateColumnPivotingTableau (pivotColumnIndex, tableau) : true;
+			((PivotRunDiagnostics) pivotRun).updateColumnPivotingTableau (
+				enteringVariableColumnIndex,
+				tableau
+			) : true;
 	}
 
 	/**
@@ -393,10 +417,11 @@ public class StandardForm
 
 		while (1 <= pivotColumnIndex) {
 			if (0. > tableau[0][pivotColumnIndex]) {
+				--pivotColumnIndex;
 				continue;
 			}
 
-			if (!processTableauColumn (pivotColumnIndex, pivotRun, tableau) ||
+			if (!processEnteringVariable (pivotColumnIndex, pivotRun, tableau) ||
 				pivotRun.finiteOptimumReached())
 			{
 				break;

@@ -117,58 +117,38 @@ public class ColumnPivotingDiagnostics
 {
 	private double[][] _updatedTableau = null;
 	private double _rowUnitScaler = Double.NaN;
-	private int _pivotIndex = Integer.MAX_VALUE;
-	private int _pivotRowIndex = Integer.MAX_VALUE;
-	private double _minimumImpliedVariate = Double.NaN;
+	private MinimumRatioRun _minimumRatioRun = null;
 
 	/**
 	 * <i>ColumnPivotingDiagnostics</i> Constructor
 	 * 
-	 * @param pivotIndex Input Pivot Index
-	 * @param pivotRowIndex Pivot Row Index
+	 * @param minimumRatioRun Minimum Ratio Run
 	 * @param rowUnitScaler Row Unit Scaler
-	 * @param minimumImpliedVariate Optimal Row Minimum Implied Variate
 	 * 
 	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public ColumnPivotingDiagnostics (
-		final int pivotIndex,
-		final int pivotRowIndex,
-		final double rowUnitScaler,
-		final double minimumImpliedVariate)
+		final MinimumRatioRun minimumRatioRun,
+		final double rowUnitScaler)
 		throws Exception
 	{
-		if (!NumberUtil.IsValid (_rowUnitScaler = rowUnitScaler) ||
-			!NumberUtil.IsValid (_minimumImpliedVariate = minimumImpliedVariate))
+		if (null == (_minimumRatioRun = minimumRatioRun) ||
+			!NumberUtil.IsValid (_rowUnitScaler = rowUnitScaler))
 		{
 			throw new Exception ("ColumnPivotingDiagnostics Constructor => Invalid Inputs");
 		}
-
-		_pivotIndex = pivotIndex;
-		_pivotRowIndex = pivotRowIndex;
 	}
 
 	/**
-	 * Retrieve the Pivot Column Index
+	 * Retrieve the Minimum Ratio Run
 	 * 
-	 * @return Pivot Column Index
+	 * @return Minimum Ratio Run
 	 */
 
-	public int pivotIndex()
+	public MinimumRatioRun minimumRatioRun()
 	{
-		return _pivotIndex;
-	}
-
-	/**
-	 * Retrieve the Pivot Row Index
-	 * 
-	 * @return Pivot Row Index
-	 */
-
-	public int pivotRowIndex()
-	{
-		return _pivotRowIndex;
+		return _minimumRatioRun;
 	}
 
 	/**
@@ -180,17 +160,6 @@ public class ColumnPivotingDiagnostics
 	public double rowUnitScaler()
 	{
 		return _rowUnitScaler;
-	}
-
-	/**
-	 * Retrieve the Optimal Row Minimum Implied Variate
-	 * 
-	 * @return Optimal Row Minimum Implied Variate
-	 */
-
-	public double minimumImpliedVariate()
-	{
-		return _minimumImpliedVariate;
 	}
 
 	/**
@@ -245,14 +214,10 @@ public class ColumnPivotingDiagnostics
 
 	@Override public String toString()
 	{
-		return "Column Pivoting Diagnostics:" + 
-			" Pivot Column Index => " + _pivotIndex +
-			"; Pivot Row Index => " + _pivotRowIndex +
-			"; Row Unit Scaler =>" + FormatUtil.FormatDouble (_rowUnitScaler, 4, 3, 1.) +
-			"; Optimal Row Minimum Implied Variate =>" +
-				FormatUtil.FormatDouble (_minimumImpliedVariate, 4, 3, 1.) + (
-					null == _updatedTableau ? "" :
-						"\n" + NumberUtil.MatrixToString ("Updated Tableau", _updatedTableau, 4, 3)
-			);
+		return "Column Pivoting Diagnostics: [" + _minimumRatioRun +
+			"]; Row Unit Scaler =>" + FormatUtil.FormatDouble (_rowUnitScaler, 4, 3, 1.) + (
+			null == _updatedTableau ? "" : "\n" +
+				NumberUtil.MatrixToString ("Updated Tableau", _updatedTableau, 4, 3)
+		);
 	}
 }

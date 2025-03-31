@@ -1,8 +1,8 @@
 
 package org.drip.optimization.simplex;
 
-import java.util.HashMap;
-import java.util.Map;
+import org.drip.numerical.common.NumberUtil;
+import org.drip.service.common.FormatUtil;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -77,8 +77,7 @@ import java.util.Map;
  */
 
 /**
- * <i>PivotRunDiagnostics</i> augments the Pivot Run Sequence with Column Pivoting Diagnostics. The
- * 	References are:
+ * <i>MinimumRatioRun</i> holds the results of a Minimum Ratio Test Run. The References are:
  * 
  * <br><br>
  * 	<ul>
@@ -114,80 +113,67 @@ import java.util.Map;
  * @author Lakshmi Krishnamurthy
  */
 
-public class PivotRunDiagnostics
-	extends PivotRun
+public class MinimumRatioRun
 {
-	private Map<Integer, ColumnPivotingDiagnostics> _columnPivotingMap = null;
+	private double _impliedVariate = Double.NaN;
+	private int _pivotRowIndex = Integer.MAX_VALUE;
+	private int _pivotColumnIndex = Integer.MAX_VALUE;
 
 	/**
-	 * Empty <i>PivotRunDiagnostics</i> Constructor
+	 * <i>MinimumRatioRun</i> Constructor
+	 * 
+	 * @param pivotColumnIndex Pivot Column Index
+	 * @param pivotRowIndex Pivot Row Index
+	 * @param impliedVariate Optimal Row Minimum Implied Variate
+	 * 
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
-	public PivotRunDiagnostics()
+	public MinimumRatioRun (
+		final int pivotColumnIndex,
+		final int pivotRowIndex,
+		final double impliedVariate)
+		throws Exception
 	{
-		super();
-
-		_columnPivotingMap = new HashMap<Integer, ColumnPivotingDiagnostics>();
-	}
-
-	/**
-	 * Retrieve the Map of <i>ColumnPivotingDiagnostics<i> Records
-	 * 
-	 * @return Map of <i>ColumnPivotingDiagnostics<i> Records
-	 */
-
-	public Map<Integer, ColumnPivotingDiagnostics> columnPivotingMap()
-	{
-		return _columnPivotingMap;
-	}
-
-	/**
-	 * Add a <i>ColumnPivotingDiagnostics<i> Record
-	 * 
-	 * @param minimumRatioRun Minimum Ratio Run
-	 * @param rowUnitScaler Row Unit Scaler
-	 * 
-	 * @return TRUE - The<i>ColumnPivotingDiagnostics<i> Record successfully added
-	 */
-
-	public boolean addColumnPivoting (
-		final MinimumRatioRun minimumRatioRun,
-		final double rowUnitScaler)
-	{
-		if (null == minimumRatioRun) {
-			return false;
+		if (!NumberUtil.IsValid (_impliedVariate = impliedVariate)) {
+			throw new Exception ("MinimumRatioRun Constructor => Invalid Inputs");
 		}
 
-		try {
-			_columnPivotingMap.put (
-				minimumRatioRun.pivotColumnIndex(),
-				new ColumnPivotingDiagnostics (minimumRatioRun, rowUnitScaler)
-			);
-
-			return true;
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-		return false;
+		_pivotRowIndex = pivotRowIndex;
+		_pivotColumnIndex = pivotColumnIndex;
 	}
 
 	/**
-	 * Update the Tableau corresponding to Pivot Column Index
+	 * Retrieve the Pivot Column Index
 	 * 
-	 * @param tableauColumnIndex The Pivot Tableau Column Index
-	 * @param updatedTableau Tableau to be Updated
-	 * 
-	 * @return TRUE - The Tableau corresponding to Pivot Column Index successfully updated
+	 * @return Pivot Column Index
 	 */
 
-	public boolean updateColumnPivotingTableau (
-		final int tableauColumnIndex,
-		final double[][] updatedTableau)
+	public int pivotColumnIndex()
 	{
-		_columnPivotingMap.get (tableauColumnIndex).updateTableau (updatedTableau);
+		return _pivotColumnIndex;
+	}
 
-		return true;
+	/**
+	 * Retrieve the Pivot Row Index
+	 * 
+	 * @return Pivot Row Index
+	 */
+
+	public int pivotRowIndex()
+	{
+		return _pivotRowIndex;
+	}
+
+	/**
+	 * Retrieve the Optimal Row Minimum Implied Variate
+	 * 
+	 * @return Optimal Row Minimum Implied Variate
+	 */
+
+	public double impliedVariate()
+	{
+		return _impliedVariate;
 	}
 
 	/**
@@ -198,9 +184,9 @@ public class PivotRunDiagnostics
 
 	@Override public String toString()
 	{
-		String display = super.toString();
-
-		display += "Pivot Run Diagnostics - Column Pivoting Map: " + _columnPivotingMap;
-		return display;
+		return "Minimum Ratio Run:" + 
+			" Pivot Column Index => " + _pivotColumnIndex +
+			"; Pivot Row Index => " + _pivotRowIndex +
+			"; Optimal Row Minimum Implied Variate =>" + FormatUtil.FormatDouble (_impliedVariate, 4, 3, 1.);
 	}
 }
