@@ -117,12 +117,12 @@ public class MinimumRatioRun
 {
 	private double _impliedVariate = Double.NaN;
 	private int _pivotRowIndex = Integer.MAX_VALUE;
-	private int _pivotColumnIndex = Integer.MAX_VALUE;
+	private int _enteringVariableColumnIndex = Integer.MAX_VALUE;
 
 	/**
 	 * <i>MinimumRatioRun</i> Constructor
 	 * 
-	 * @param pivotColumnIndex Pivot Column Index
+	 * @param enteringVariableColumnIndex Entering Variable Pivot Column Index
 	 * @param pivotRowIndex Pivot Row Index
 	 * @param impliedVariate Optimal Row Minimum Implied Variate
 	 * 
@@ -130,7 +130,7 @@ public class MinimumRatioRun
 	 */
 
 	public MinimumRatioRun (
-		final int pivotColumnIndex,
+		final int enteringVariableColumnIndex,
 		final int pivotRowIndex,
 		final double impliedVariate)
 		throws Exception
@@ -140,18 +140,18 @@ public class MinimumRatioRun
 		}
 
 		_pivotRowIndex = pivotRowIndex;
-		_pivotColumnIndex = pivotColumnIndex;
+		_enteringVariableColumnIndex = enteringVariableColumnIndex;
 	}
 
 	/**
-	 * Retrieve the Pivot Column Index
+	 * Retrieve the Entering Variable Pivot Column Index
 	 * 
-	 * @return Pivot Column Index
+	 * @return Entering Variable Pivot Column Index
 	 */
 
-	public int pivotColumnIndex()
+	public int enteringVariableColumnIndex()
 	{
-		return _pivotColumnIndex;
+		return _enteringVariableColumnIndex;
 	}
 
 	/**
@@ -185,7 +185,7 @@ public class MinimumRatioRun
 	@Override public String toString()
 	{
 		return "Minimum Ratio Run:" + 
-			" Pivot Column Index => " + _pivotColumnIndex +
+			" Entering Variable Pivot Column Index => " + _enteringVariableColumnIndex +
 			"; Pivot Row Index => " + _pivotRowIndex +
 			"; Optimal Row Minimum Implied Variate =>" + FormatUtil.FormatDouble (_impliedVariate, 4, 3, 1.);
 	}

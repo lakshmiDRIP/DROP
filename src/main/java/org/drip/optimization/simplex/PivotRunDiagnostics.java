@@ -160,7 +160,7 @@ public class PivotRunDiagnostics
 
 		try {
 			_columnPivotingMap.put (
-				minimumRatioRun.pivotColumnIndex(),
+				minimumRatioRun.enteringVariableColumnIndex(),
 				new ColumnPivotingDiagnostics (minimumRatioRun, rowUnitScaler)
 			);
 

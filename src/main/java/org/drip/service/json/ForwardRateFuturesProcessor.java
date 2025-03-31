@@ -1,11 +1,17 @@
 
 package org.drip.service.json;
 
+import org.drip.service.representation.JSONObject;
+import org.drip.state.discount.MergedDiscountForwardCurve;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -80,22 +86,23 @@ package org.drip.service.json;
  */
 
 /**
- * <i>ForwardRateFuturesProcessor</i> Sets Up and Executes a JSON Based In/Out Forward Rate Futures Valuation
- * Processor.
+ * <i>ForwardRateFuturesProcessor</i> Sets up and executes a JSON Based In/Out Forward Rate Futures Valuation
+ * 	Processor. It provides the following Functions:
  * 
- * <br><br>
- *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationSupportLibrary.md">Computation Support</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/README.md">Environment, Product/Definition Containers, and Scenario/State Manipulation APIs</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/json/README.md">JSON Based Valuation Request Service</a></li>
- *  </ul>
- * <br><br>
+ *	<br>
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationSupportLibrary.md">Computation Support</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/README.md">Environment, Product/Definition Containers, and Scenario/State Manipulation APIs</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/json/README.md">JSON Based Valuation Request Service</a></td></tr>
+ *  </table>
+ *	<br>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class ForwardRateFuturesProcessor {
+public class ForwardRateFuturesProcessor
+{
 
 	/**
 	 * JSON Based in/out Funding Futures Curve Metrics Thunker
@@ -105,25 +112,24 @@ public class ForwardRateFuturesProcessor {
 	 * @return JSON Funding Futures Curve Metrics Response
 	 */
 
-	@SuppressWarnings ("unchecked") static final org.drip.service.representation.JSONObject CurveMetrics (
-		final org.drip.service.representation.JSONObject jsonParameter)
+	@SuppressWarnings ("unchecked") static final JSONObject CurveMetrics (
+		final JSONObject jsonParameter)
 	{
-		org.drip.state.discount.MergedDiscountForwardCurve dcFunding =
-			org.drip.service.json.LatentStateProcessor.FundingCurve (jsonParameter);
+		MergedDiscountForwardCurve fundingDiscountCurve = LatentStateProcessor.FundingCurve (jsonParameter);
 
-		if (null == dcFunding) return null;
+		if (null == fundingDiscountCurve) return null;
 
 		org.drip.param.market.CurveSurfaceQuoteContainer csqc = new
 			org.drip.param.market.CurveSurfaceQuoteContainer();
 
-		if (!csqc.setFundingState (dcFunding)) return null;
+		if (!csqc.setFundingState (fundingDiscountCurve)) return null;
 
-		org.drip.analytics.date.JulianDate dtSpot = dcFunding.epoch();
+		org.drip.analytics.date.JulianDate dtSpot = fundingDiscountCurve.epoch();
 
 		org.drip.product.rates.SingleStreamComponent futures =
 			org.drip.service.template.ExchangeInstrumentBuilder.ForwardRateFutures (dtSpot.addTenor
 				(org.drip.service.jsonparser.Converter.StringEntry (jsonParameter, "FuturesEffectiveTenor")),
-					dcFunding.currency());
+				fundingDiscountCurve.currency());
 
 		if (null == futures) return null;
 
