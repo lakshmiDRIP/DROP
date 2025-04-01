@@ -6,6 +6,9 @@ package org.drip.service.env;
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -79,24 +82,29 @@ package org.drip.service.env;
  */
 
 /**
- * <i>InvocationManager</i> records the manages the Build/Execution Environment of an Invocation.
+ * <i>InvocationManager</i> records the manages the Build/Execution Environment of an Invocation. It provides
+ * 	the following Functions:
  * 
- * <br><br>
- *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationSupportLibrary.md">Computation Support</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/README.md">Environment, Product/Definition Containers, and Scenario/State Manipulation APIs</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/env/README.md">Library Module Loader Environment Manager</a></li>
- *  </ul>
- * <br><br>
+ * <ul>
+ * 		<li><i>InvocationRecord</i> Constructor</li>
+ * </ul>
+ *
+ *	<br>
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationSupportLibrary.md">Computation Support</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/README.md">Environment, Product/Definition Containers, and Scenario/State Manipulation APIs</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/env/README.md">Library Module Loader Environment Manager</a></td></tr>
+ *  </table>
+ *	<br>
  *
  * @author Lakshmi Krishnamurthy
  */
 
 public class InvocationManager
 {
-	private static org.drip.service.env.BuildRecord s_BuildRecordLatest = null;
-	private static org.drip.service.env.InvocationRecord s_InvocationRecord = null;
+	private static BuildRecord _buildRecordLatest = null;
+	private static InvocationRecord _invocationRecord = null;
 
 	/**
 	 * Initialize the Invocation Manager
@@ -106,16 +114,15 @@ public class InvocationManager
 
 	public static final boolean Init()
 	{
-		if (!org.drip.service.env.BuildManager.Init())
-		{
+		if (!BuildManager.Init()) {
 			System.out.println ("InvocationManager::Init => Cannot Initialize Build Manager!");
 
 			return false;
 		}
 
-		s_BuildRecordLatest = org.drip.service.env.BuildManager.latestBuildRecord();
+		_buildRecordLatest = BuildManager.latestBuildRecord();
 
-		s_InvocationRecord = new org.drip.service.env.InvocationRecord();
+		_invocationRecord = new InvocationRecord();
 
 		return true;
 	}
@@ -128,7 +135,9 @@ public class InvocationManager
 
 	public static final boolean Setup()
 	{
-		if (!s_InvocationRecord.recordSetup()) return false;
+		if (!_invocationRecord.recordSetup()) {
+			return false;
+		}
 
 		System.out.println();
 
@@ -138,18 +147,19 @@ public class InvocationManager
 
 		System.out.println ("\t|-----------------------------------------------------------------|");
 
-		System.out.println ("\t|    Build Version  => " + s_BuildRecordLatest.dripVersion() + " multi");
+		System.out.println ("\t|    Build Version  => " + _buildRecordLatest.dripVersion() + " multi");
 
-		System.out.println ("\t|    Build JVM (TM) => " + s_BuildRecordLatest.javaVersion() +
-			" mixed mode, sharing");
+		System.out.println (
+			"\t|    Build JVM (TM) => " + _buildRecordLatest.javaVersion() + " mixed mode, sharing"
+		);
 
-		System.out.println ("\t|    Build Snap     => " + s_BuildRecordLatest.timeStamp());
+		System.out.println ("\t|    Build Snap     => " + _buildRecordLatest.timeStamp());
 
-		System.out.println ("\t|    Start Time     => " + s_InvocationRecord.startSnap());
+		System.out.println ("\t|    Start Time     => " + _invocationRecord.startSnap());
 
-		System.out.println ("\t|    Setup Time     => " + s_InvocationRecord.setupSnap());
+		System.out.println ("\t|    Setup Time     => " + _invocationRecord.setupSnap());
 
-		System.out.println ("\t|    Setup Duration => " + s_InvocationRecord.setup (true));
+		System.out.println ("\t|    Setup Duration => " + _invocationRecord.setup (true));
 
 		System.out.println ("\t|-----------------------------------------------------------------|");
 
@@ -166,7 +176,7 @@ public class InvocationManager
 
 	public static final org.drip.service.env.BuildRecord latestBuildRecord()
 	{
-		return s_BuildRecordLatest;
+		return _buildRecordLatest;
 	}
 
 	/**
@@ -177,7 +187,7 @@ public class InvocationManager
 
 	public static final org.drip.service.env.InvocationRecord invocationRecord()
 	{
-		return s_InvocationRecord;
+		return _invocationRecord;
 	}
 
 	/**
@@ -188,7 +198,7 @@ public class InvocationManager
 
 	public static final boolean Terminate()
 	{
-		if (!s_InvocationRecord.recordFinish()) return false;
+		if (!_invocationRecord.recordFinish()) return false;
 
 		System.out.println();
 
@@ -198,22 +208,22 @@ public class InvocationManager
 
 		System.out.println ("\t|-----------------------------------------------------------------|");
 
-		System.out.println ("\t|    Build Version  => " + s_BuildRecordLatest.dripVersion() + " multi");
+		System.out.println ("\t|    Build Version  => " + _buildRecordLatest.dripVersion() + " multi");
 
-		System.out.println ("\t|    Build JVM (TM) => " + s_BuildRecordLatest.javaVersion() +
+		System.out.println ("\t|    Build JVM (TM) => " + _buildRecordLatest.javaVersion() +
 			" mixed mode, sharing");
 
-		System.out.println ("\t|    Build Snap     => " + s_BuildRecordLatest.timeStamp());
+		System.out.println ("\t|    Build Snap     => " + _buildRecordLatest.timeStamp());
 
-		System.out.println ("\t|    Start Time     => " + s_InvocationRecord.startSnap());
+		System.out.println ("\t|    Start Time     => " + _invocationRecord.startSnap());
 
-		System.out.println ("\t|    Setup Time     => " + s_InvocationRecord.setupSnap());
+		System.out.println ("\t|    Setup Time     => " + _invocationRecord.setupSnap());
 
-		System.out.println ("\t|    Finish Time    => " + s_InvocationRecord.finishSnap());
+		System.out.println ("\t|    Finish Time    => " + _invocationRecord.finishSnap());
 
-		System.out.println ("\t|    Setup Duration => " + s_InvocationRecord.setup (true));
+		System.out.println ("\t|    Setup Duration => " + _invocationRecord.setup (true));
 
-		System.out.println ("\t|    Run Duration   => " + s_InvocationRecord.elapsed (true));
+		System.out.println ("\t|    Run Duration   => " + _invocationRecord.elapsed (true));
 
 		System.out.println ("\t|-----------------------------------------------------------------|");
 

@@ -12,6 +12,9 @@ import java.util.concurrent.TimeUnit;
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -92,7 +95,10 @@ import java.util.concurrent.TimeUnit;
  * 	Functions:
  * 
  * <ul>
- * 		<li>Initialize the Build Logs of the Build Manager</li>
+ * 		<li>Initialize the Cache Manager</li>
+ * 		<li>Put Method adds a Key/Value Pair to the In-Memory KV Store</li>
+ * 		<li>Contains Method checks the Presence of the specified Key</li>
+ * 		<li>Get Method retrieves the Value given the Key</li>
  * </ul>
  *
  *	<br>
@@ -134,7 +140,7 @@ public class CacheManager
 	}
 
 	/**
-	 * The Put Method adds a Key/Value Pair to the In-Memory KV Store
+	 * Put Method adds a Key/Value Pair to the In-Memory KV Store
 	 * 
 	 * @param key The Key
 	 * @param value The Value
@@ -179,34 +185,30 @@ public class CacheManager
 	}
 
 	/**
-	 * The Contains Method checks the Presence of the specified Key
+	 * Contains Method checks the Presence of the specified Key
 	 * 
-	 * @param strKey The Key
+	 * @param key The Key
 	 * 
 	 * @return Return Value from the Underlying HashMap.contains
 	 */
 
 	public static final boolean Contains (
-		final java.lang.String strKey)
+		final String key)
 	{
-		if (null == strKey || strKey.isEmpty()) return false;
-
-		return _cacheMap.contains (strKey);
+		return null != key && !key.isEmpty() && _cacheMap.contains (key);
 	}
 
 	/**
-	 * The Get Method retrieves the Value given the Key
+	 * Get Method retrieves the Value given the Key
 	 * 
-	 * @param strKey The Key
+	 * @param key The Key
 	 * 
 	 * @return Return Value from the Underlying HashMap.get
 	 */
 
-	public static final java.lang.String Get (
-		final java.lang.String strKey)
+	public static final String Get (
+		final String key)
 	{
-		if (null == strKey || strKey.isEmpty()) return null;
-
-		return _cacheMap.get (strKey);
+		return null == key || key.isEmpty() ? null : _cacheMap.get (key);
 	}
 }

@@ -1,11 +1,18 @@
 
 package org.drip.service.env;
 
+import java.util.Date;
+
+import org.drip.analytics.support.Helper;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -79,38 +86,50 @@ package org.drip.service.env;
  */
 
 /**
- * <i>InvocationRecord</i> implements the Invocation Start/Finish Times of a given Invocation.
+ * <i>InvocationRecord</i> implements the Invocation Start/Finish Times of a given Invocation. It provides
+ * 	the following Functions:
  * 
- * <br><br>
- *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationSupportLibrary.md">Computation Support</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/README.md">Environment, Product/Definition Containers, and Scenario/State Manipulation APIs</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/env/README.md">Library Module Loader Environment Manager</a></li>
- *  </ul>
- * <br><br>
+ * <ul>
+ * 		<li><i>InvocationRecord</i> Constructor</li>
+ * 		<li>Record the Setup of the Invocation Record</li>
+ * 		<li>Retrieve the Setup Time</li>
+ * 		<li>Record the Finish of the Invocation Record</li>
+ * 		<li>Retrieve the Elapsed Time</li>
+ * 		<li>Retrieve the Begin Snapshot</li>
+ * 		<li>Retrieve the Setup Snapshot</li>
+ * 		<li>Retrieve the Finish Snapshot</li>
+ * </ul>
+ *
+ *	<br>
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationSupportLibrary.md">Computation Support</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/README.md">Environment, Product/Definition Containers, and Scenario/State Manipulation APIs</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/env/README.md">Library Module Loader Environment Manager</a></td></tr>
+ *  </table>
+ *	<br>
  *
  * @author Lakshmi Krishnamurthy
  */
 
 public class InvocationRecord
 {
-	private long _lBeginNanos = -1L;
-	private long _lSetupNanos = -1L;
-	private long _lFinishNanos = -1L;
-	private java.util.Date _dtBegin = null;
-	private java.util.Date _dtSetup = null;
-	private java.util.Date _dtFinish = null;
+	private Date _beginDate = null;
+	private Date _setupDate = null;
+	private long _beginNanos = -1L;
+	private long _setupNanos = -1L;
+	private Date _finishDate = null;
+	private long _finishNanos = -1L;
 
 	/**
-	 * InvocationTimes Constructor
+	 * <i>InvocationRecord</i> Constructor
 	 */
 
 	public InvocationRecord()
 	{
-		_dtBegin = new java.util.Date();
+		_beginDate = new Date();
 
-		_lBeginNanos = System.nanoTime();
+		_beginNanos = System.nanoTime();
 	}
 
 	/**
@@ -121,9 +140,9 @@ public class InvocationRecord
 
 	public boolean recordSetup()
 	{
-		_lSetupNanos = System.nanoTime();
+		_setupNanos = System.nanoTime();
 
-		_dtSetup = new java.util.Date();
+		_setupDate = new Date();
 
 		return true;
 	}
@@ -131,17 +150,17 @@ public class InvocationRecord
 	/**
 	 * Retrieve the Setup Time
 	 * 
-	 * @param bHMS Generate the Result in Hours-Minutes-Seconds Format
+	 * @param generateHMS Generate the Result in Hours-Minutes-Seconds Format
 	 * 
 	 * @return The Setup Time
 	 */
 
-	public java.lang.String setup (
-		final boolean bHMS)
+	public String setup (
+		final boolean generateHMS)
 	{
-		long lElapsedNanos = _lSetupNanos - _lBeginNanos;
+		long elapsedNanos = _setupNanos - _beginNanos;
 
-		return bHMS ? org.drip.analytics.support.Helper.IntervalHMSMS (lElapsedNanos) : "" + lElapsedNanos;
+		return generateHMS ? Helper.IntervalHMSMS (elapsedNanos) : "" + elapsedNanos;
 	}
 
 	/**
@@ -152,9 +171,9 @@ public class InvocationRecord
 
 	public boolean recordFinish()
 	{
-		_lFinishNanos = System.nanoTime();
+		_finishNanos = System.nanoTime();
 
-		_dtFinish = new java.util.Date();
+		_finishDate = new Date();
 
 		return true;
 	}
@@ -162,17 +181,17 @@ public class InvocationRecord
 	/**
 	 * Retrieve the Elapsed Time
 	 * 
-	 * @param bHMS Generate the Result in Hours-Minutes-Seconds Format
+	 * @param generateHMS Generate the Result in Hours-Minutes-Seconds Format
 	 * 
 	 * @return The Elapsed Time
 	 */
 
-	public java.lang.String elapsed (
-		final boolean bHMS)
+	public String elapsed (
+		final boolean generateHMS)
 	{
-		long lElapsedNanos = _lFinishNanos - _lSetupNanos;
+		long elapsedNanos = _finishNanos - _setupNanos;
 
-		return bHMS ? org.drip.analytics.support.Helper.IntervalHMSMS (lElapsedNanos) : "" + lElapsedNanos;
+		return generateHMS ? Helper.IntervalHMSMS (elapsedNanos) : "" + elapsedNanos;
 	}
 
 	/**
@@ -181,9 +200,9 @@ public class InvocationRecord
 	 * @return The Begin Snapshot
 	 */
 
-	public java.util.Date startSnap()
+	public Date startSnap()
 	{
-		return _dtBegin;
+		return _beginDate;
 	}
 
 	/**
@@ -192,9 +211,9 @@ public class InvocationRecord
 	 * @return The Setup Snapshot
 	 */
 
-	public java.util.Date setupSnap()
+	public Date setupSnap()
 	{
-		return _dtSetup;
+		return _setupDate;
 	}
 
 	/**
@@ -203,8 +222,8 @@ public class InvocationRecord
 	 * @return The Finish Snapshot
 	 */
 
-	public java.util.Date finishSnap()
+	public Date finishSnap()
 	{
-		return _dtFinish;
+		return _finishDate;
 	}
 }
