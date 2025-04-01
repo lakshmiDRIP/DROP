@@ -6,6 +6,9 @@ package org.drip.service.env;
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -79,46 +82,56 @@ package org.drip.service.env;
  */
 
 /**
- * <i>BuildRecord</i> records the Build Log - DROP Version, Java Version, and Build Time Stamp.
+ * <i>BuildRecord</i> records the Build Log - DROP Version, Java Version, and Build Time Stamp. It provides
+ * 	the following Functions:
  * 
- * <br><br>
- *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationSupportLibrary.md">Computation Support</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/README.md">Environment, Product/Definition Containers, and Scenario/State Manipulation APIs</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/env/README.md">Library Module Loader Environment Manager</a></li>
- *  </ul>
- * <br><br>
+ * <ul>
+ * 		<li><i>BuildRecord</i> Constructor</li>
+ * 		<li>Retrieve the DRIP Build Version</li>
+ * 		<li>Retrieve the Java Build Version</li>
+ * 		<li>Retrieve the Build Time Stamp</li>
+ * </ul>
+ *
+ *	<br>
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationSupportLibrary.md">Computation Support</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/README.md">Environment, Product/Definition Containers, and Scenario/State Manipulation APIs</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/env/README.md">Library Module Loader Environment Manager</a></td></tr>
+ *  </table>
+ *	<br>
  * 
  * @author Lakshmi Krishnamurthy
  */
 
 public class BuildRecord
 {
-	private java.lang.String _strTimeStamp = "";
-	private java.lang.String _strDRIPVersion = "";
-	private java.lang.String _strJavaVersion = "";
+	private String _timeStamp = "";
+	private String _dripVersion = "";
+	private String _javaVersion = "";
 
 	/**
-	 * BuildRecord Constructor
+	 * <i>BuildRecord</i> Constructor
 	 * 
-	 * @param strDRIPVersion The DRIP Build Version
-	 * @param strJavaVersion The Java Build Version
-	 * @param strTimeStamp The DRIP Build Time Stamp
+	 * @param dripVersion DRIP Build Version
+	 * @param javaVersion Java Build Version
+	 * @param timeStamp DRIP Build Time Stamp
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public BuildRecord (
-		final java.lang.String strDRIPVersion,
-		final java.lang.String strJavaVersion,
-		final java.lang.String strTimeStamp)
-		throws java.lang.Exception
+		final String dripVersion,
+		final String javaVersion,
+		final String timeStamp)
+		throws Exception
 	{
-		if (null == (_strDRIPVersion = strDRIPVersion) || _strDRIPVersion.isEmpty() ||
-			null == (_strJavaVersion = strJavaVersion) || _strJavaVersion.isEmpty() ||
-			null == (_strTimeStamp = strTimeStamp) || _strTimeStamp.isEmpty())
-			throw new java.lang.Exception ("BuildRecord Constructor => Invalid Inputs");
+		if (null == (_dripVersion = dripVersion) || _dripVersion.isEmpty() ||
+			null == (_javaVersion = javaVersion) || _javaVersion.isEmpty() ||
+			null == (_timeStamp = timeStamp) || _timeStamp.isEmpty())
+		{
+			throw new Exception ("BuildRecord Constructor => Invalid Inputs");
+		}
 	}
 
 	/**
@@ -127,9 +140,9 @@ public class BuildRecord
 	 * @return The DRIP Build Version
 	 */
 
-	public java.lang.String dripVersion()
+	public String dripVersion()
 	{
-		return _strDRIPVersion;
+		return _dripVersion;
 	}
 
 	/**
@@ -138,9 +151,9 @@ public class BuildRecord
 	 * @return The Java Build Version
 	 */
 
-	public java.lang.String javaVersion()
+	public String javaVersion()
 	{
-		return _strJavaVersion;
+		return _javaVersion;
 	}
 
 	/**
@@ -149,8 +162,8 @@ public class BuildRecord
 	 * @return The Build Time Stamp
 	 */
 
-	public java.lang.String timeStamp()
+	public String timeStamp()
 	{
-		return _strTimeStamp;
+		return _timeStamp;
 	}
 }

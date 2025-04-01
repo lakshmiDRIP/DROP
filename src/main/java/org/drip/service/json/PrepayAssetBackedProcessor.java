@@ -101,7 +101,7 @@ import org.drip.state.discount.MergedDiscountForwardCurve;
  * 	Backed Loan Processor. It provides the following Functions:
  * 
  * <ul>
- * 		<li>JSON String Based in/out Generic Thunker</li>
+ * 		<li>JSON Based in/out Pre-Payable Asset Backed Loan Secular Metrics Thunker</li>
  * </ul>
  *
  *	<br>
