@@ -1,6 +1,12 @@
 
 package org.drip.service.env;
 
+import java.util.Date;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
@@ -82,27 +88,33 @@ package org.drip.service.env;
 
 /**
  * <i>CacheManager</i> implements the DRIP Cache Management Functionality, and contains the Functions to Add,
- * Delete, Retrieve, and Time out a Key-Value Pair along the lines of memcached.
+ * 	Delete, Retrieve, and Time out a Key-Value Pair along the lines of mem-cache-d. It provides the following
+ * 	Functions:
  * 
- * <br><br>
- *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationSupportLibrary.md">Computation Support</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/README.md">Environment, Product/Definition Containers, and Scenario/State Manipulation APIs</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/env/README.md">Library Module Loader Environment Manager</a></li>
- *  </ul>
- * <br><br>
+ * <ul>
+ * 		<li>Initialize the Build Logs of the Build Manager</li>
+ * </ul>
+ *
+ *	<br>
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationSupportLibrary.md">Computation Support</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/README.md">Environment, Product/Definition Containers, and Scenario/State Manipulation APIs</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/env/README.md">Library Module Loader Environment Manager</a></td></tr>
+ *  </table>
+ *	<br>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class CacheManager {
+public class CacheManager
+{
 	private static final boolean s_bLog = true;
-	private static java.util.concurrent.ConcurrentHashMap<java.lang.String, java.lang.String> s_mapCache =
-		null;
 
-	private static final java.util.concurrent.ScheduledExecutorService _ses =
-		java.util.concurrent.Executors.newScheduledThreadPool (1);
+	private static ConcurrentHashMap<String, String> _cacheMap = null;
+
+	private static final ScheduledExecutorService _scheduledExecutorService =
+		Executors.newScheduledThreadPool (1);
 
 	/**
 	 * Initialize the Cache Manager
@@ -112,9 +124,11 @@ public class CacheManager {
 
 	public static final boolean Init()
 	{
-		if (null != s_mapCache) return true;
+		if (null != _cacheMap) {
+			return true;
+		}
 
-		s_mapCache = new java.util.concurrent.ConcurrentHashMap<java.lang.String, java.lang.String>();
+		_cacheMap = new ConcurrentHashMap<String, String>();
 
 		return true;
 	}
@@ -122,35 +136,46 @@ public class CacheManager {
 	/**
 	 * The Put Method adds a Key/Value Pair to the In-Memory KV Store
 	 * 
-	 * @param strKey The Key
-	 * @param strValue The Value
-	 * @param lSecondsToExpiry The Time to Expiry of the Key/Value Pair
+	 * @param key The Key
+	 * @param value The Value
+	 * @param secondsToExpiry The Time to Expiry of the Key/Value Pair
 	 * 
 	 * @return Return Value from the Underlying HashMap.put
 	 */
 
-	public static final java.lang.String Put (
-		final java.lang.String strKey,
-		final java.lang.String strValue,
-		final long lSecondsToExpiry)
+	public static final String Put (
+		final String key,
+		final String value,
+		final long secondsToExpiry)
 	{
-		if (null == strKey || strKey.isEmpty() || null == strValue || strValue.isEmpty()) return null;
-
-		if (0 < lSecondsToExpiry) {
-			java.lang.Runnable timedTask = new java.lang.Runnable() {
-				@Override public void run() {
-					if (s_bLog)
-						System.out.println ("\t\t[" + new java.util.Date() + "] Removing " + strKey +
-							" from Thread " + java.lang.Thread.currentThread());
-
-					if (s_mapCache.contains (strKey)) s_mapCache.remove (strKey);
-				}
-			};
-
-			_ses.schedule (timedTask, lSecondsToExpiry, java.util.concurrent.TimeUnit.SECONDS);
+		if (null == key || key.isEmpty() || null == value || value.isEmpty()) {
+			return null;
 		}
 
-		return s_mapCache.put (strKey, strValue);
+		if (0L < secondsToExpiry) {
+			_scheduledExecutorService.schedule (
+				new Runnable()
+				{
+					@Override public void run()
+					{
+						if (s_bLog) {
+							System.out.println (
+								"\t\t[" + new Date() + "] Removing " + key + " from Thread " +
+									Thread.currentThread()
+							);
+						}
+
+						if (_cacheMap.contains (key)) {
+							_cacheMap.remove (key);
+						}
+					}
+				},
+				secondsToExpiry,
+				TimeUnit.SECONDS
+			);
+		}
+
+		return _cacheMap.put (key, value);
 	}
 
 	/**
@@ -166,7 +191,7 @@ public class CacheManager {
 	{
 		if (null == strKey || strKey.isEmpty()) return false;
 
-		return s_mapCache.contains (strKey);
+		return _cacheMap.contains (strKey);
 	}
 
 	/**
@@ -182,6 +207,6 @@ public class CacheManager {
 	{
 		if (null == strKey || strKey.isEmpty()) return null;
 
-		return s_mapCache.get (strKey);
+		return _cacheMap.get (strKey);
 	}
 }

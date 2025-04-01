@@ -85,7 +85,9 @@ package org.drip.service.env;
  * <i>BuildManager</i> maintains a Log of the Build Records. It provides the following Functions:
  * 
  * <ul>
- * 		<li><i>BuildRecord</i> Constructor</li>
+ * 		<li>Initialize the Build Logs of the Build Manager</li>
+ * 		<li>Retrieve the Array of Build Records</li>
+ * 		<li>Retrieve the Latest Build Record</li>
  * </ul>
  *
  *	<br>
