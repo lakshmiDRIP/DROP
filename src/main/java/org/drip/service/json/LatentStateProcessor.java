@@ -96,6 +96,14 @@ import org.drip.state.govvie.GovvieCurve;
  * <i>LatentStateProcessor</i> Sets Up and Executes a JSON Based In/Out Curve Processor. It exposes the
  * 	following Functions:
  *
+ *  <ul>
+ * 		<li>Construct a Funding Curve from the Input JSON</li>
+ * 		<li>Construct a Treasury Curve from the Input JSON</li>
+ * 		<li>Construct a Credit Curve from the Input JSON</li>
+ * 		<li>JSON Based in/out Funding Curve Sample</li>
+ * 		<li>JSON Based in/out Credit Curve Sample</li>
+ *  </ul>
+ *
  *	<br>
  *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
  *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>

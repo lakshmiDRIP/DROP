@@ -1,11 +1,20 @@
 
 package org.drip.service.json;
 
+import org.drip.service.assetallocation.BlackLittermanProcessor;
+import org.drip.service.assetallocation.PortfolioConstructionProcessor;
+import org.drip.service.env.EnvManager;
+import org.drip.service.representation.JSONObject;
+import org.drip.service.representation.JSONValue;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -82,21 +91,27 @@ package org.drip.service.json;
 
 /**
  * <i>KeyHoleSkeleton</i> forwards the JSON Request to the Appropriate Processor and retrieves the Response
- * JSON.
+ * 	JSON. It provides the following Functions:
  * 
- * <br><br>
- *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationSupportLibrary.md">Computation Support</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/README.md">Environment, Product/Definition Containers, and Scenario/State Manipulation APIs</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/json/README.md">JSON Based Valuation Request Service</a></li>
- *  </ul>
- * <br><br>
+ * <ul>
+ * 		<li>JSON Based in/out Generic Thunker</li>
+ * 		<li>JSON String Based in/out Generic Thunker</li>
+ * </ul>
+ *
+ *	<br>
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationSupportLibrary.md">Computation Support</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/README.md">Environment, Product/Definition Containers, and Scenario/State Manipulation APIs</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/json/README.md">JSON Based Valuation Request Service</a></td></tr>
+ *  </table>
+ *	<br>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class KeyHoleSkeleton {
+public class KeyHoleSkeleton
+{
 
 	/**
 	 * JSON Based in/out Generic Thunker
@@ -106,88 +121,114 @@ public class KeyHoleSkeleton {
 	 * @return JSON Response
 	 */
 
-	public static final org.drip.service.representation.JSONObject Thunker (
-		final org.drip.service.representation.JSONObject jsonInput)
+	public static final JSONObject Thunker (
+		final JSONObject jsonInput)
 	{
-    	if (null == jsonInput || !jsonInput.containsKey ("API") || !jsonInput.containsKey ("Parameters"))
+    	if (null == jsonInput || !jsonInput.containsKey ("API") || !jsonInput.containsKey ("Parameters")) {
 			return null;
+    	}
 
-		java.lang.Object objAPIName = jsonInput.get ("API");
+		Object apiNameObject = jsonInput.get ("API");
 
-		if (!(objAPIName instanceof java.lang.String)) return null;
+		if (!(apiNameObject instanceof String)) {
+			return null;
+		}
 
-		java.lang.String strAPIName = (java.lang.String) objAPIName;
+		String apiName = (java.lang.String) apiNameObject;
 
-		org.drip.service.env.EnvManager.InitEnv ("");
+		EnvManager.InitEnv ("");
 
-		java.lang.Object objParameter = jsonInput.get ("Parameters");
+		Object parameterObject = jsonInput.get ("Parameters");
 
-		if (null == objParameter) return null;
+		if (null == parameterObject) {
+			return null;
+		}
 
-		org.drip.service.representation.JSONObject jsonParameter = (org.drip.service.representation.JSONObject)
-    		org.drip.service.representation.JSONValue.parse (objParameter.toString());
+		JSONObject parameterJSON = (JSONObject) JSONValue.parse (parameterObject.toString());
 
-		if ("DATE::ISHOLIDAY".equalsIgnoreCase (strAPIName))
-			return org.drip.service.json.DateProcessor.IsHoliday (jsonParameter);
+		if ("DATE::ISHOLIDAY".equalsIgnoreCase (apiName)) {
+			return DateProcessor.IsHoliday (parameterJSON);
+		}
 
-		if ("DATE::ADDDAYS".equalsIgnoreCase (strAPIName))
-			return org.drip.service.json.DateProcessor.AddDays (jsonParameter);
+		if ("DATE::ADDDAYS".equalsIgnoreCase (apiName)) {
+			return DateProcessor.AddDays (parameterJSON);
+		}
 
-		if ("DATE::ADJUSTBUSINESSDAYS".equalsIgnoreCase (strAPIName))
-			return org.drip.service.json.DateProcessor.AdjustBusinessDays (jsonParameter);
+		if ("DATE::ADJUSTBUSINESSDAYS".equalsIgnoreCase (apiName)) {
+			return DateProcessor.AdjustBusinessDays (parameterJSON);
+		}
 
-		if ("FUNDINGSTATE".equalsIgnoreCase (strAPIName))
-			return org.drip.service.json.LatentStateProcessor.FundingCurveThunker (jsonParameter);
+		if ("FUNDINGSTATE".equalsIgnoreCase (apiName)) {
+			return LatentStateProcessor.FundingCurveThunker (parameterJSON);
+		}
 
-		if ("CREDITSTATE".equalsIgnoreCase (strAPIName))
-			return org.drip.service.json.LatentStateProcessor.CreditCurveThunker (jsonParameter);
+		if ("CREDITSTATE".equalsIgnoreCase (apiName)) {
+			return LatentStateProcessor.CreditCurveThunker (parameterJSON);
+		}
 
-		if ("DEPOSIT::SECULARMETRICS".equalsIgnoreCase (strAPIName)) return null;
+		if ("DEPOSIT::SECULARMETRICS".equalsIgnoreCase (apiName)) {
+			return null;
+		}
 
-		if ("DEPOSIT::CURVEMETRICS".equalsIgnoreCase (strAPIName))
-			return org.drip.service.json.DepositProcessor.CurveMetrics (jsonParameter);
+		if ("DEPOSIT::CURVEMETRICS".equalsIgnoreCase (apiName)) {
+			return DepositProcessor.CurveMetrics (parameterJSON);
+		}
 
-		if ("BOND::SECULARMETRICS".equalsIgnoreCase (strAPIName))
-			return org.drip.service.json.BondProcessor.SecularMetrics (jsonParameter);
+		if ("BOND::SECULARMETRICS".equalsIgnoreCase (apiName)) {
+			return BondProcessor.SecularMetrics (parameterJSON);
+		}
 
-		if ("BOND::CURVEMETRICS".equalsIgnoreCase (strAPIName))
-			return org.drip.service.json.BondProcessor.CurveMetrics (jsonParameter);
+		if ("BOND::CURVEMETRICS".equalsIgnoreCase (apiName)) {
+			return BondProcessor.CurveMetrics (parameterJSON);
+		}
 
-		if ("BOND::CASHFLOWS".equalsIgnoreCase (strAPIName))
-			return org.drip.service.json.BondProcessor.CashFlows (jsonParameter);
+		if ("BOND::CASHFLOWS".equalsIgnoreCase (apiName)) {
+			return BondProcessor.CashFlows (parameterJSON);
+		}
 
-		if ("FORWARDRATEFUTURES::SECULARMETRICS".equalsIgnoreCase (strAPIName)) return null;
+		if ("FORWARDRATEFUTURES::SECULARMETRICS".equalsIgnoreCase (apiName)) {
+			return null;
+		}
 
-		if ("FORWARDRATEFUTURES::CURVEMETRICS".equalsIgnoreCase (strAPIName))
-			return org.drip.service.json.ForwardRateFuturesProcessor.CurveMetrics (jsonParameter);
+		if ("FORWARDRATEFUTURES::CURVEMETRICS".equalsIgnoreCase (apiName)) {
+			return ForwardRateFuturesProcessor.CurveMetrics (parameterJSON);
+		}
 
-		if ("FIXFLOAT::SECULARMETRICS".equalsIgnoreCase (strAPIName))
-			return org.drip.service.json.FixFloatProcessor.CurveMetrics (jsonParameter);
+		if ("FIXFLOAT::SECULARMETRICS".equalsIgnoreCase (apiName)) {
+			return FixFloatProcessor.CurveMetrics (parameterJSON);
+		}
 
-		if ("CREDITDEFAULTSWAP::SECULARMETRICS".equalsIgnoreCase (strAPIName)) return null;
+		if ("CREDITDEFAULTSWAP::SECULARMETRICS".equalsIgnoreCase (apiName)) {
+			return null;
+		}
 
-		if ("CREDITDEFAULTSWAP::CURVEMETRICS".equalsIgnoreCase (strAPIName))
-			return org.drip.service.json.CreditDefaultSwapProcessor.CurveMetrics (jsonParameter);
+		if ("CREDITDEFAULTSWAP::CURVEMETRICS".equalsIgnoreCase (apiName)) {
+			return CreditDefaultSwapProcessor.CurveMetrics (parameterJSON);
+		}
 
-		if ("FIXEDASSETBACKED::SECULARMETRICS".equalsIgnoreCase (strAPIName))
-			return org.drip.service.json.FixedAssetBackedProcessor.SecularMetrics (jsonParameter);
+		if ("FIXEDASSETBACKED::SECULARMETRICS".equalsIgnoreCase (apiName)) {
+			return FixedAssetBackedProcessor.SecularMetrics (parameterJSON);
+		}
 
-		if ("PORTFOLIOALLOCATION::BUDGETCONSTRAINEDMEANVARIANCE".equalsIgnoreCase (strAPIName))
-			return org.drip.service.assetallocation.PortfolioConstructionProcessor.BudgetConstrainedAllocator
-				(jsonParameter);
+		if ("PORTFOLIOALLOCATION::BUDGETCONSTRAINEDMEANVARIANCE".equalsIgnoreCase (apiName)) {
+			return PortfolioConstructionProcessor.BudgetConstrainedAllocator (parameterJSON);
+		}
 
-		if ("PORTFOLIOALLOCATION::RETURNSCONSTRAINEDMEANVARIANCE".equalsIgnoreCase (strAPIName))
-			return org.drip.service.assetallocation.PortfolioConstructionProcessor.ReturnsConstrainedAllocator
-				(jsonParameter);
+		if ("PORTFOLIOALLOCATION::RETURNSCONSTRAINEDMEANVARIANCE".equalsIgnoreCase (apiName)) {
+			return PortfolioConstructionProcessor.ReturnsConstrainedAllocator (parameterJSON);
+		}
 
-		if ("PREPAYASSETBACKED::SECULARMETRICS".equalsIgnoreCase (strAPIName))
-			return org.drip.service.json.PrepayAssetBackedProcessor.SecularMetrics (jsonParameter);
+		if ("PREPAYASSETBACKED::SECULARMETRICS".equalsIgnoreCase (apiName)) {
+			return PrepayAssetBackedProcessor.SecularMetrics (parameterJSON);
+		}
 
-		if ("TREASURYBOND::SECULARMETRICS".equalsIgnoreCase (strAPIName))
-			return org.drip.service.json.TreasuryBondProcessor.SecularMetrics (jsonParameter);
+		if ("TREASURYBOND::SECULARMETRICS".equalsIgnoreCase (apiName)) {
+			return TreasuryBondProcessor.SecularMetrics (parameterJSON);
+		}
 
-		if ("BLACKLITTERMAN::BAYESIANMETRICS".equalsIgnoreCase (strAPIName))
-			return org.drip.service.assetallocation.BlackLittermanProcessor.Estimate (jsonParameter);
+		if ("BLACKLITTERMAN::BAYESIANMETRICS".equalsIgnoreCase (apiName)) {
+			return BlackLittermanProcessor.Estimate (parameterJSON);
+		}
 
 		return null;
 	}
@@ -195,21 +236,25 @@ public class KeyHoleSkeleton {
 	/**
 	 * JSON String Based in/out Generic Thunker
 	 * 
-	 * @param strJSONRequest JSON String Request
+	 * @param requestJSON JSON String Request
 	 * 
 	 * @return JSON String Response
 	 */
 
-	public static final java.lang.String Thunker (
-		final java.lang.String strJSONRequest)
+	public static final String Thunker (
+		final String requestJSON)
 	{
-    	if (null == strJSONRequest || strJSONRequest.isEmpty()) return null;
+    	if (null == requestJSON || requestJSON.isEmpty()) {
+    		return null;
+    	}
 
-		java.lang.Object objInput = org.drip.service.representation.JSONValue.parse (strJSONRequest);
+		Object inputObject = JSONValue.parse (requestJSON);
 
-		if (null == objInput || !(objInput instanceof org.drip.service.representation.JSONObject)) return null;
+		if (null == inputObject || !(inputObject instanceof JSONObject)) {
+			return null;
+		}
 
-		org.drip.service.representation.JSONObject jsonResponse = Thunker ((org.drip.service.representation.JSONObject) objInput);
+		JSONObject jsonResponse = Thunker ((JSONObject) inputObject);
 
 		return null == jsonResponse ? null : jsonResponse.toJSONString();
 	}

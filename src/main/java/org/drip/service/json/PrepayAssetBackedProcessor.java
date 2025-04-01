@@ -1,11 +1,28 @@
 
 package org.drip.service.json;
 
+import org.drip.analytics.cashflow.CompositePeriod;
+import org.drip.analytics.date.JulianDate;
+import org.drip.analytics.daycount.Convention;
+import org.drip.analytics.output.CompositePeriodCouponMetrics;
+import org.drip.analytics.support.Helper;
+import org.drip.param.market.CurveSurfaceQuoteContainer;
+import org.drip.param.valuation.ValuationParams;
+import org.drip.product.creator.ConstantPaymentBondBuilder;
+import org.drip.product.definition.Bond;
+import org.drip.service.jsonparser.Converter;
+import org.drip.service.representation.JSONArray;
+import org.drip.service.representation.JSONObject;
+import org.drip.state.discount.MergedDiscountForwardCurve;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -81,21 +98,26 @@ package org.drip.service.json;
 
 /**
  * <i>PrepayAssetBackedProcessor</i> Sets Up and Executes a JSON Based In/Out Product Pre-payable Asset
- * Backed Loan Processor.
+ * 	Backed Loan Processor. It provides the following Functions:
  * 
- * <br><br>
- *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationSupportLibrary.md">Computation Support</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/README.md">Environment, Product/Definition Containers, and Scenario/State Manipulation APIs</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/json/README.md">JSON Based Valuation Request Service</a></li>
- *  </ul>
- * <br><br>
+ * <ul>
+ * 		<li>JSON String Based in/out Generic Thunker</li>
+ * </ul>
+ *
+ *	<br>
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationSupportLibrary.md">Computation Support</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/README.md">Environment, Product/Definition Containers, and Scenario/State Manipulation APIs</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/json/README.md">JSON Based Valuation Request Service</a></td></tr>
+ *  </table>
+ *	<br>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class PrepayAssetBackedProcessor {
+public class PrepayAssetBackedProcessor
+{
 
 	/**
 	 * JSON Based in/out Pre-Payable Asset Backed Loan Secular Metrics Thunker
@@ -105,231 +127,272 @@ public class PrepayAssetBackedProcessor {
 	 * @return JSON Pre-Payable Asset Backed Loan Secular Metrics Response
 	 */
 
-	@SuppressWarnings ("unchecked") static final org.drip.service.representation.JSONObject SecularMetrics (
-		final org.drip.service.representation.JSONObject jsonParameter)
+	@SuppressWarnings ("unchecked") static final JSONObject SecularMetrics (
+		final JSONObject jsonParameter)
 	{
-		java.lang.String strBondName = org.drip.service.jsonparser.Converter.StringEntry (jsonParameter, "Name");
+		String currency = Converter.StringEntry (jsonParameter, "Currency");
 
-		java.lang.String strCurrency = org.drip.service.jsonparser.Converter.StringEntry (jsonParameter,
-			"Currency");
+		JulianDate effectiveDate = Converter.DateEntry (jsonParameter, "EffectiveDate");
 
-		java.lang.String strDayCount = org.drip.service.jsonparser.Converter.StringEntry (jsonParameter,
-			"DayCount");
+		if (null == effectiveDate) {
+			return null;
+		}
 
-		org.drip.analytics.date.JulianDate dtEffective = org.drip.service.jsonparser.Converter.DateEntry
-			(jsonParameter, "EffectiveDate");
+		JulianDate settleDate = Converter.DateEntry (jsonParameter, "SettleDate");
 
-		if (null == dtEffective) return null;
+		if (null == settleDate) {
+			return null;
+		}
 
-		int iEffectiveDate = dtEffective.julian();
+		int julianSettleDate = settleDate.julian();
 
-		org.drip.analytics.date.JulianDate dtSettle = org.drip.service.jsonparser.Converter.DateEntry
-			(jsonParameter, "SettleDate");
-
-		if (null == dtSettle) return null;
-
-		int iSettleDate = dtSettle.julian();
-
-		int iNumPayment = -1;
-		int iPayFrequency = -1;
-		double dblCleanPrice = 1.;
-		double dblCPR = java.lang.Double.NaN;
-		double dblCouponRate = java.lang.Double.NaN;
-		double dblBondNotional = java.lang.Double.NaN;
-		double dblServiceFeeRate = java.lang.Double.NaN;
-		double dblFixedMonthlyAmount = java.lang.Double.NaN;
-		double dblBeginPrincipalFactor = java.lang.Double.NaN;
+		int payFrequency = -1;
+		int paymentCount = -1;
+		double cleanPrice = 1.;
+		double cpr = Double.NaN;
+		double couponRate = Double.NaN;
+		double bondNotional = Double.NaN;
+		double serviceFeeRate = Double.NaN;
+		double fixedMonthlyAmount = Double.NaN;
+		double beginPrincipalFactor = Double.NaN;
 
 		try {
-			dblCPR = org.drip.service.jsonparser.Converter.DoubleEntry (jsonParameter, "CPR");
+			cpr = Converter.DoubleEntry (jsonParameter, "CPR");
 
-			iNumPayment = org.drip.service.jsonparser.Converter.IntegerEntry (jsonParameter, "NumPayment");
+			couponRate = Converter.DoubleEntry (jsonParameter, "CouponRate");
 
-			dblCouponRate = org.drip.service.jsonparser.Converter.DoubleEntry (jsonParameter, "CouponRate");
+			paymentCount = Converter.IntegerEntry (jsonParameter, "NumPayment");
 
-			iPayFrequency = org.drip.service.jsonparser.Converter.IntegerEntry (jsonParameter, "PayFrequency");
+			bondNotional = Converter.DoubleEntry (jsonParameter, "BondNotional");
 
-			dblBondNotional = org.drip.service.jsonparser.Converter.DoubleEntry (jsonParameter, "BondNotional");
+			payFrequency = Converter.IntegerEntry (jsonParameter, "PayFrequency");
 
-			dblServiceFeeRate = org.drip.service.jsonparser.Converter.DoubleEntry (jsonParameter, "ServiceFeeRate");
+			serviceFeeRate = Converter.DoubleEntry (jsonParameter, "ServiceFeeRate");
 
-			dblFixedMonthlyAmount = org.drip.service.jsonparser.Converter.DoubleEntry (jsonParameter,
-				"FixedMonthlyAmount");
+			fixedMonthlyAmount = Converter.DoubleEntry (jsonParameter, "FixedMonthlyAmount");
 
-			dblBeginPrincipalFactor = org.drip.service.jsonparser.Converter.DoubleEntry (jsonParameter,
-				"BeginPrincipalFactor");
-		} catch (java.lang.Exception e) {
+			beginPrincipalFactor = Converter.DoubleEntry (jsonParameter, "BeginPrincipalFactor");
+		} catch (Exception e) {
 			e.printStackTrace();
 
 			return null;
 		}
 
-		org.drip.product.definition.Bond fpmb = org.drip.product.creator.ConstantPaymentBondBuilder.Prepay
-			(strBondName, dtEffective, strCurrency, iNumPayment, strDayCount, iPayFrequency, dblCouponRate,
-				dblServiceFeeRate, dblCPR, dblFixedMonthlyAmount, dblBondNotional);
+		Bond constantPaymentBond = ConstantPaymentBondBuilder.Prepay (
+			Converter.StringEntry (jsonParameter, "Name"),
+			effectiveDate,
+			currency,
+			paymentCount,
+			Converter.StringEntry (jsonParameter, "DayCount"),
+			payFrequency,
+			couponRate,
+			serviceFeeRate,
+			cpr,
+			fixedMonthlyAmount,
+			bondNotional
+		);
 
-		if (null == fpmb || fpmb.maturityDate().julian() <= iSettleDate) return null;
+		if (null == constantPaymentBond || constantPaymentBond.maturityDate().julian() <= julianSettleDate) {
+			return null;
+		}
 
-		org.drip.service.representation.JSONObject jsonResponse = new org.drip.service.representation.JSONObject();
+		JSONObject responseJSON = new JSONObject();
 
-		org.drip.service.representation.JSONArray jsonCouponFlowArray = new org.drip.service.representation.JSONArray();
+		JSONArray couponFlowJSONArray = new JSONArray();
 
-		for (org.drip.analytics.cashflow.CompositePeriod cp : fpmb.couponPeriods()) {
-			org.drip.service.representation.JSONObject jsonCouponFlow = new org.drip.service.representation.JSONObject();
+		for (CompositePeriod compositePeriod : constantPaymentBond.couponPeriods()) {
+			JSONObject couponFlowJSON = new JSONObject();
 
-			org.drip.analytics.output.CompositePeriodCouponMetrics cpcm = cp.couponMetrics (iEffectiveDate,
-				null);
+			CompositePeriodCouponMetrics compositePeriodCouponMetrics = compositePeriod.couponMetrics (
+				effectiveDate.julian(),
+				null
+			);
 
-			if (null == cpcm) return null;
+			if (null == compositePeriodCouponMetrics) {
+				return null;
+			}
 
-			double dblPeriodCouponRate = cpcm.rate();
+			double periodCouponRate = compositePeriodCouponMetrics.rate();
 
-			jsonCouponFlow.put ("FeeRate", dblServiceFeeRate);
+			couponFlowJSON.put ("PrincipalFactor", beginPrincipalFactor);
 
-			jsonCouponFlow.put ("CouponRate", dblPeriodCouponRate);
+			couponFlowJSON.put ("CouponRate", periodCouponRate);
 
-			jsonCouponFlow.put ("PrincipalFactor", dblBeginPrincipalFactor);
+			couponFlowJSON.put ("FeeRate", serviceFeeRate);
 
 			try {
-				double dblEndPrincipalFactor = fpmb.notional (cp.endDate());
+				double endPrincipalFactor = constantPaymentBond.notional (compositePeriod.endDate());
 
-				double dblYieldDF = org.drip.analytics.support.Helper.Yield2DF (iPayFrequency, dblCouponRate,
-					org.drip.analytics.daycount.Convention.YearFraction (dtEffective.julian(), cp.endDate(),
-						"30/360", false, null, strCurrency));
+				couponFlowJSON.put ("EndDate", new JulianDate (compositePeriod.endDate()).toString());
 
-				jsonCouponFlow.put ("StartDate", new org.drip.analytics.date.JulianDate
-					(cp.startDate()).toString());
+				couponFlowJSON.put ("PayDate", new JulianDate (compositePeriod.payDate()).toString());
 
-				jsonCouponFlow.put ("EndDate", new org.drip.analytics.date.JulianDate
-					(cp.endDate()).toString());
+				couponFlowJSON.put ("StartDate", new JulianDate (compositePeriod.startDate()).toString());
 
-				jsonCouponFlow.put ("PayDate", new org.drip.analytics.date.JulianDate
-					(cp.payDate()).toString());
+				double couponDCF = compositePeriod.couponDCF();
 
-				double dblCouponDCF = cp.couponDCF();
+				couponFlowJSON.put ("AccrualDays", couponDCF * 365.);
 
-				jsonCouponFlow.put ("AccrualDays", dblCouponDCF * 365.);
+				couponFlowJSON.put ("AccrualFraction", couponDCF);
 
-				jsonCouponFlow.put ("AccrualFraction", dblCouponDCF);
+				double couponAmount = beginPrincipalFactor * periodCouponRate * couponDCF * bondNotional;
+				double principalAmount = (beginPrincipalFactor - endPrincipalFactor) * bondNotional;
+				beginPrincipalFactor = endPrincipalFactor;
+				double beginNotional = beginPrincipalFactor * bondNotional;
 
-				double dblCouponAmount = dblBeginPrincipalFactor * dblPeriodCouponRate * dblCouponDCF *
-					dblBondNotional;
-				double dblFeeAmount = dblBeginPrincipalFactor * dblServiceFeeRate * dblCouponDCF *
-					dblBondNotional;
-				double dblPrincipalAmount = (dblBeginPrincipalFactor - dblEndPrincipalFactor) *
-					dblBondNotional;
-				double dblTotalAmount = dblPrincipalAmount + dblCouponAmount;
-				dblBeginPrincipalFactor = dblEndPrincipalFactor;
-				double dblBeginNotional = dblBeginPrincipalFactor * dblBondNotional;
+				couponFlowJSON.put ("SurvivalFactor", 1.);
 
-				jsonCouponFlow.put ("BeginPrincipal", dblBeginNotional);
+				couponFlowJSON.put ("Notional", beginNotional);
 
-				jsonCouponFlow.put ("Notional", dblBeginNotional);
+				couponFlowJSON.put ("CouponAmount", couponAmount);
 
-				jsonCouponFlow.put ("EndPrincipal", dblEndPrincipalFactor * dblBondNotional);
+				couponFlowJSON.put ("BeginPrincipal", beginNotional);
 
-				jsonCouponFlow.put ("PrincipalAmount", dblPrincipalAmount);
+				couponFlowJSON.put ("PrincipalAmount", principalAmount);
 
-				jsonCouponFlow.put ("CouponAmount", dblCouponAmount);
+				couponFlowJSON.put ("TotalAmount", principalAmount + couponAmount);
 
-				jsonCouponFlow.put ("TotalAmount", dblTotalAmount);
+				couponFlowJSON.put ("EndPrincipal", endPrincipalFactor * bondNotional);
 
-				jsonCouponFlow.put ("DiscountFactor", dblYieldDF);
+				couponFlowJSON.put (
+					"FeeAmount",
+					beginPrincipalFactor * serviceFeeRate * couponDCF * bondNotional
+				);
 
-				jsonCouponFlow.put ("FeeAmount", dblFeeAmount);
-
-				jsonCouponFlow.put ("SurvivalFactor", 1.);
-			} catch (java.lang.Exception e) {
+				couponFlowJSON.put (
+					"DiscountFactor",
+					Helper.Yield2DF (
+						payFrequency,
+						couponRate,
+						Convention.YearFraction (
+							effectiveDate.julian(),
+							compositePeriod.endDate(),
+							"30/360",
+							false,
+							null,
+							currency
+						)
+					)
+				);
+			} catch (Exception e) {
 				e.printStackTrace();
 
 				return null;
 			}
 
-			jsonCouponFlowArray.add (jsonCouponFlow);
+			couponFlowJSONArray.add (couponFlowJSON);
 		}
 
-		jsonResponse.put ("CouponFlow", jsonCouponFlowArray);
+		responseJSON.put ("CouponFlow", couponFlowJSONArray);
 
-		jsonResponse.put ("CleanPrice", 100. * dblCleanPrice);
+		responseJSON.put ("CleanPrice", 100. * cleanPrice);
 
-		jsonResponse.put ("Face", dblBondNotional);
+		responseJSON.put ("Face", bondNotional);
 
-		org.drip.analytics.date.JulianDate dtPreviousCouponDate = fpmb.previousCouponDate (dtSettle);
+		JulianDate previousCouponDate = constantPaymentBond.previousCouponDate (settleDate);
 
-		if (null != dtPreviousCouponDate) {
-			jsonResponse.put ("AccrualDays", dtPreviousCouponDate.julian() - iSettleDate);
+		int julianPreviousCouponDate = previousCouponDate.julian();
 
-			jsonResponse.put ("PreviousCouponDate", dtPreviousCouponDate.toString());
+		if (null != previousCouponDate) {
+			responseJSON.put ("PreviousCouponDate", previousCouponDate.toString());
+
+			responseJSON.put ("AccrualDays", julianPreviousCouponDate - julianSettleDate);
 		}
 
-		org.drip.param.valuation.ValuationParams valParams = org.drip.param.valuation.ValuationParams.Spot
-			(iSettleDate);
+		ValuationParams valuationParams = ValuationParams.Spot (julianSettleDate);
 
 		try {
-			double dblAccruedAmount = fpmb.accrued (iSettleDate, null) * dblBondNotional;
+			double accruedAmount = constantPaymentBond.accrued (julianSettleDate, null) * bondNotional;
 
-			double dblCurrentPrincipal = fpmb.notional (dtPreviousCouponDate.julian()) * dblBondNotional;
+			double risk = constantPaymentBond.yield01FromPrice (valuationParams, null, null, cleanPrice);
 
-			double dblRisk = fpmb.yield01FromPrice (valParams, null, null, dblCleanPrice);
+			double currentPrincipal = constantPaymentBond.notional (julianPreviousCouponDate) * bondNotional;
 
-			jsonResponse.put ("Accrued", dblAccruedAmount);
+			responseJSON.put ("Y01", risk);
 
-			jsonResponse.put ("Convexity", fpmb.convexityFromPrice (valParams, null, null, dblCleanPrice));
+			responseJSON.put ("Risk", risk);
 
-			jsonResponse.put ("CurrentPrincipal", dblCurrentPrincipal);
+			responseJSON.put ("Yield01", risk);
 
-			jsonResponse.put ("DV01", dblRisk * dblBondNotional);
+			responseJSON.put ("Accrued", accruedAmount);
 
-			jsonResponse.put ("ModifiedDuration", fpmb.modifiedDurationFromPrice (valParams, null, null,
-				dblCleanPrice));
+			responseJSON.put ("Notional", bondNotional);
 
-			jsonResponse.put ("Notional", dblBondNotional);
+			responseJSON.put ("DV01", risk * bondNotional);
 
-			jsonResponse.put ("NPV", dblCurrentPrincipal + dblAccruedAmount);
+			responseJSON.put ("SettleDate", settleDate.toString());
 
-			jsonResponse.put ("Risk", dblRisk);
+			responseJSON.put ("CurrentPrincipal", currentPrincipal);
 
-			jsonResponse.put ("SettleDate", dtSettle.toString());
+			responseJSON.put ("NPV", currentPrincipal + accruedAmount);
 
-			jsonResponse.put ("Total", dblCurrentPrincipal + dblAccruedAmount);
+			responseJSON.put ("Total", currentPrincipal + accruedAmount);
 
-			jsonResponse.put ("Yield", fpmb.yieldFromPrice (valParams, null, null, dblCleanPrice));
+			responseJSON.put (
+				"Yield",
+				constantPaymentBond.yieldFromPrice (valuationParams, null, null, cleanPrice)
+			);
 
-			jsonResponse.put ("Yield01", dblRisk);
+			responseJSON.put (
+				"Convexity",
+				constantPaymentBond.convexityFromPrice (valuationParams, null, null, cleanPrice)
+			);
 
-			jsonResponse.put ("Y01", dblRisk);
-		} catch (java.lang.Exception e) {
+			responseJSON.put (
+				"ModifiedDuration",
+				constantPaymentBond.modifiedDurationFromPrice (valuationParams, null, null, cleanPrice)
+			);
+		} catch (Exception e) {
 			e.printStackTrace();
 
 			return null;
 		}
 
-		org.drip.state.discount.MergedDiscountForwardCurve dcFunding =
-			org.drip.service.json.LatentStateProcessor.FundingCurve (jsonParameter);
+		MergedDiscountForwardCurve fundingDiscountCurve = LatentStateProcessor.FundingCurve (jsonParameter);
 
-		if (null == dcFunding) return jsonResponse;
-
-		org.drip.param.market.CurveSurfaceQuoteContainer csqc = new
-			org.drip.param.market.CurveSurfaceQuoteContainer();
-
-		if (!csqc.setFundingState (dcFunding)) return jsonResponse;
-
-		try {
-			jsonResponse.put ("DiscountedPrice", fpmb.priceFromDiscountMargin (valParams, csqc, null, 0.));
-		} catch (java.lang.Exception e) {
+		if (null == fundingDiscountCurve) {
+			return responseJSON;
 		}
 
-		if (!csqc.setCreditState (org.drip.service.json.LatentStateProcessor.CreditCurve (jsonParameter,
-			dcFunding)))
-			return jsonResponse;
+		CurveSurfaceQuoteContainer curveSurfaceQuoteContainer = new CurveSurfaceQuoteContainer();
 
-		try {
-			jsonResponse.put ("DiscountedCreditPrice", fpmb.priceFromCreditBasis (valParams, csqc, null,
-				0.));
-		} catch (java.lang.Exception e) {
+		if (!curveSurfaceQuoteContainer.setFundingState (fundingDiscountCurve)) {
+			return responseJSON;
 		}
 
-		return jsonResponse;
+		try {
+			responseJSON.put (
+				"DiscountedPrice",
+				constantPaymentBond.priceFromDiscountMargin (
+					valuationParams,
+					curveSurfaceQuoteContainer,
+					null,
+					0.
+				)
+			);
+		} catch (Exception e) {
+		}
+
+		if (!curveSurfaceQuoteContainer.setCreditState (
+			LatentStateProcessor.CreditCurve (jsonParameter, fundingDiscountCurve)
+		))
+		{
+			return responseJSON;
+		}
+
+		try {
+			responseJSON.put (
+				"DiscountedCreditPrice",
+				constantPaymentBond.priceFromCreditBasis (
+					valuationParams,
+					curveSurfaceQuoteContainer,
+					null,
+					0.
+				)
+			);
+		} catch (Exception e) {
+		}
+
+		return responseJSON;
 	}
-
 }

@@ -1,8 +1,19 @@
 
 package org.drip.service.json;
 
+import java.util.Map;
+
+import org.drip.analytics.cashflow.CompositePeriod;
+import org.drip.analytics.date.JulianDate;
+import org.drip.param.market.CurveSurfaceQuoteContainer;
+import org.drip.param.valuation.ValuationParams;
+import org.drip.product.rates.SingleStreamComponent;
+import org.drip.service.jsonparser.Converter;
+import org.drip.service.representation.JSONArray;
 import org.drip.service.representation.JSONObject;
+import org.drip.service.template.ExchangeInstrumentBuilder;
 import org.drip.state.discount.MergedDiscountForwardCurve;
+import org.drip.state.identifier.ForwardLabel;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -88,7 +99,11 @@ import org.drip.state.discount.MergedDiscountForwardCurve;
 /**
  * <i>ForwardRateFuturesProcessor</i> Sets up and executes a JSON Based In/Out Forward Rate Futures Valuation
  * 	Processor. It provides the following Functions:
- * 
+ *
+ *  <ul>
+ * 		<li>JSON Based in/out Funding Futures Curve Metrics Thunker</li>
+ *  </ul>
+ *
  *	<br>
  *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
  *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
@@ -117,74 +132,92 @@ public class ForwardRateFuturesProcessor
 	{
 		MergedDiscountForwardCurve fundingDiscountCurve = LatentStateProcessor.FundingCurve (jsonParameter);
 
-		if (null == fundingDiscountCurve) return null;
+		if (null == fundingDiscountCurve) {
+			return null;
+		}
 
-		org.drip.param.market.CurveSurfaceQuoteContainer csqc = new
-			org.drip.param.market.CurveSurfaceQuoteContainer();
+		CurveSurfaceQuoteContainer curveSurfaceQuoteContainer = new CurveSurfaceQuoteContainer();
 
-		if (!csqc.setFundingState (fundingDiscountCurve)) return null;
+		if (!curveSurfaceQuoteContainer.setFundingState (fundingDiscountCurve)) {
+			return null;
+		}
 
-		org.drip.analytics.date.JulianDate dtSpot = fundingDiscountCurve.epoch();
+		JulianDate spotDate = fundingDiscountCurve.epoch();
 
-		org.drip.product.rates.SingleStreamComponent futures =
-			org.drip.service.template.ExchangeInstrumentBuilder.ForwardRateFutures (dtSpot.addTenor
-				(org.drip.service.jsonparser.Converter.StringEntry (jsonParameter, "FuturesEffectiveTenor")),
-				fundingDiscountCurve.currency());
+		SingleStreamComponent futuresSingleStreamComponent = ExchangeInstrumentBuilder.ForwardRateFutures (
+			spotDate.addTenor (Converter.StringEntry (jsonParameter, "FuturesEffectiveTenor")),
+			fundingDiscountCurve.currency()
+		);
 
-		if (null == futures) return null;
+		if (null == futuresSingleStreamComponent) {
+			return null;
+		}
 
-		java.util.Map<java.lang.String, java.lang.Double> mapResult = futures.value
-			(org.drip.param.valuation.ValuationParams.Spot (dtSpot.julian()), null, csqc, null);
+		Map<String, Double> futuresSingleStreamComponentResultMap = futuresSingleStreamComponent.value (
+			ValuationParams.Spot (spotDate.julian()),
+			null,
+			curveSurfaceQuoteContainer,
+			null
+		);
 
-		if (null == mapResult) return null;
+		if (null == futuresSingleStreamComponentResultMap) {
+			return null;
+		}
 
-		org.drip.service.representation.JSONObject jsonResponse = new org.drip.service.representation.JSONObject();
+		JSONObject jsonResponse = new JSONObject();
 
-		for (java.util.Map.Entry<java.lang.String, java.lang.Double> me : mapResult.entrySet())
-			jsonResponse.put (me.getKey(), me.getValue());
+		for (Map.Entry<String, Double> futuresSingleStreamComponentResultMapEntry :
+			futuresSingleStreamComponentResultMap.entrySet())
+		{
+			jsonResponse.put (
+				futuresSingleStreamComponentResultMapEntry.getKey(),
+				futuresSingleStreamComponentResultMapEntry.getValue()
+			);
+		}
 
-		org.drip.service.representation.JSONArray jsonCashFlowArray = new org.drip.service.representation.JSONArray();
+		JSONArray cashFlowJSONArray = new JSONArray();
 
-		for (org.drip.analytics.cashflow.CompositePeriod cp : futures.couponPeriods()) {
-			org.drip.service.representation.JSONObject jsonCashFlow = new org.drip.service.representation.JSONObject();
+		for (CompositePeriod compositePeriod : futuresSingleStreamComponent.couponPeriods()) {
+			JSONObject cashFlowJSON = new JSONObject();
 
 			try {
-				jsonCashFlow.put ("StartDate", new org.drip.analytics.date.JulianDate
-					(cp.startDate()).toString());
+				cashFlowJSON.put ("CouponDCF", compositePeriod.couponDCF());
 
-				jsonCashFlow.put ("EndDate", new org.drip.analytics.date.JulianDate
-					(cp.endDate()).toString());
+				cashFlowJSON.put ("EndDate", new JulianDate (compositePeriod.endDate()).toString());
 
-				jsonCashFlow.put ("PayDate", new org.drip.analytics.date.JulianDate
-					(cp.payDate()).toString());
+				cashFlowJSON.put ("PayDate", new JulianDate (compositePeriod.payDate()).toString());
 
-				jsonCashFlow.put ("FixingDate", new org.drip.analytics.date.JulianDate
-					(cp.fxFixingDate()).toString());
+				cashFlowJSON.put ("PayDiscountFactor", compositePeriod.df (curveSurfaceQuoteContainer));
 
-				jsonCashFlow.put ("CouponDCF", cp.couponDCF());
+				cashFlowJSON.put ("StartDate", new JulianDate (compositePeriod.startDate()).toString());
 
-				jsonCashFlow.put ("PayDiscountFactor", cp.df (csqc));
-			} catch (java.lang.Exception e) {
+				cashFlowJSON.put ("FixingDate", new JulianDate (compositePeriod.fxFixingDate()).toString());
+			} catch (Exception e) {
 				e.printStackTrace();
 
 				return null;
 			}
 
-			jsonCashFlow.put ("BaseNotional", cp.baseNotional());
+			cashFlowJSON.put (
+				"ReferenceRate",
+				compositePeriod.couponMetrics (spotDate.julian(), curveSurfaceQuoteContainer).rate()
+			);
 
-			jsonCashFlow.put ("Tenor", cp.tenor());
+			cashFlowJSON.put (
+				"ForwardLabel",
+				((ForwardLabel) compositePeriod.floaterLabel()).fullyQualifiedName()
+			);
 
-			jsonCashFlow.put ("FundingLabel", cp.fundingLabel().fullyQualifiedName());
+			cashFlowJSON.put ("FundingLabel", compositePeriod.fundingLabel().fullyQualifiedName());
 
-			jsonCashFlow.put ("ForwardLabel", ((org.drip.state.identifier.ForwardLabel)
-				cp.floaterLabel()).fullyQualifiedName());
+			cashFlowJSON.put ("BaseNotional", compositePeriod.baseNotional());
 
-			jsonCashFlow.put ("ReferenceRate", cp.couponMetrics (dtSpot.julian(), csqc).rate());
+			cashFlowJSON.put ("Tenor", compositePeriod.tenor());
 
-			jsonCashFlowArray.add (jsonCashFlow);
+			cashFlowJSONArray.add (cashFlowJSON);
 		}
 
-		jsonResponse.put ("FloatingCashFlow", jsonCashFlowArray);
+		jsonResponse.put ("FloatingCashFlow", cashFlowJSONArray);
 
 		return jsonResponse;
 	}
