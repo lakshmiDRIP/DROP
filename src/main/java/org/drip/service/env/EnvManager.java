@@ -156,7 +156,7 @@ public class EnvManager
 			return null;
 		}
 
-		if (!org.drip.service.env.StandardCDXManager.InitStandardCDXSeries()) {
+		if (!org.drip.service.env.StandardCDXManager.InitializeSeries()) {
 			System.out.println ("EnvManager::InitEnv => Cannot Initialize standard CDX Indexes!");
 
 			return null;
