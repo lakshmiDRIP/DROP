@@ -1,11 +1,26 @@
 
 package org.drip.service.env;
 
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeMap;
+
+import org.drip.analytics.date.DateUtil;
+import org.drip.analytics.date.JulianDate;
+import org.drip.analytics.support.CaseInsensitiveTreeMap;
+import org.drip.product.definition.BasketProduct;
+import org.drip.product.params.StandardCDXParams;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -86,7 +101,7 @@ package org.drip.service.env;
 
 /**
  * <i>StandardCDXManager</i> implements the creation and the static details of the all the NA, EU, SovX,
- * EMEA, and ASIA standardized CDS indices. It exposes the following functionality:
+ * 	EMEA, and ASIA standardized CDS indices. It exposes the following functionality:
  * 
  * <br><br>
  *  <ul>
@@ -111,94 +126,72 @@ package org.drip.service.env;
  *  	</li>
  *  </ul>
  * 
- * <br><br>
- *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationSupportLibrary.md">Computation Support</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/README.md">Environment, Product/Definition Containers, and Scenario/State Manipulation APIs</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/env/README.md">Library Module Loader Environment Manager</a></li>
- *  </ul>
- * <br><br>
+ *	<br>
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationSupportLibrary.md">Computation Support</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/README.md">Environment, Product/Definition Containers, and Scenario/State Manipulation APIs</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/env/README.md">Library Module Loader Environment Manager</a></td></tr>
+ *  </table>
+ *	<br>
  *  
  * @author Lakshmi Krishnamurthy
  */
 
-public class StandardCDXManager {
-	private static org.drip.analytics.support.CaseInsensitiveTreeMap<org.drip.product.definition.BasketProduct>
-		_mapStandardCDX = null;
-	private static org.drip.analytics.support.CaseInsensitiveTreeMap<org.drip.product.params.StandardCDXParams>
-		_mapStandardCDXParams = null;
-	private static
-		org.drip.analytics.support.CaseInsensitiveTreeMap<java.util.Map<org.drip.analytics.date.JulianDate,
-			java.lang.Integer>> _mmIndexFirstCouponSeries = null;
-	private static org.drip.analytics.support.CaseInsensitiveTreeMap<java.util.Map<java.lang.Integer,
-		org.drip.analytics.date.JulianDate>> _mmIndexSeriesFirstCoupon = null;
+public class StandardCDXManager
+{
+	private static CaseInsensitiveTreeMap<BasketProduct> _indexMap = null;
+	private static CaseInsensitiveTreeMap<StandardCDXParams> _indexParamsMap = null;
+	private static CaseInsensitiveTreeMap<Map<JulianDate, Integer>> _seriesFirstCouponDateToIndexSequence =
+		null;
+	private static CaseInsensitiveTreeMap<Map<Integer, JulianDate>> _seriesIndexSequenceToFirstCouponDate =
+		null;
 
-	private static final boolean SetupStandardCDXParams()
+	private static final boolean SetupParams()
 	{
-		_mapStandardCDXParams = new
-			org.drip.analytics.support.CaseInsensitiveTreeMap<org.drip.product.params.StandardCDXParams>();
+		_indexParamsMap = new CaseInsensitiveTreeMap<StandardCDXParams>();
 
 		try {
-			_mapStandardCDXParams.put ("CDX.NA.IG", new org.drip.product.params.StandardCDXParams (125,
-				"USD", 0.01));
+			_indexParamsMap.put ("CDX.NA.IG", new StandardCDXParams (125, "USD", 0.01));
 
-			_mapStandardCDXParams.put ("CDX.NA.HY", new org.drip.product.params.StandardCDXParams (100,
-				"USD", 0.05));
+			_indexParamsMap.put ("CDX.NA.HY", new StandardCDXParams (100, "USD", 0.05));
 
-			_mapStandardCDXParams.put ("CDX.NA.HVOL", new org.drip.product.params.StandardCDXParams (30,
-				"USD", 0.01));
+			_indexParamsMap.put ("CDX.NA.HVOL", new StandardCDXParams (30, "USD", 0.01));
 
-			_mapStandardCDXParams.put ("CDX.NA.HIVOL", new org.drip.product.params.StandardCDXParams (30,
-				"USD", 0.01));
+			_indexParamsMap.put ("CDX.NA.HIVOL", new StandardCDXParams (30, "USD", 0.01));
 
-			_mapStandardCDXParams.put ("CDX.NA.XO", new org.drip.product.params.StandardCDXParams (35, "USD",
-				0.034));
+			_indexParamsMap.put ("CDX.NA.XO", new StandardCDXParams (35, "USD", 0.034));
 
-			_mapStandardCDXParams.put ("CDX.NA.HY.BB", new org.drip.product.params.StandardCDXParams (40,
-				"USD", 0.05));
+			_indexParamsMap.put ("CDX.NA.HY.BB", new StandardCDXParams (40, "USD", 0.05));
 
-			_mapStandardCDXParams.put ("CDX.NA.HY.B", new org.drip.product.params.StandardCDXParams (37,
-				"USD", 0.05));
+			_indexParamsMap.put ("CDX.NA.HY.B", new StandardCDXParams (37, "USD", 0.05));
 
-			_mapStandardCDXParams.put ("ITRX.EU.IG", new org.drip.product.params.StandardCDXParams (125,
-				"EUR", 0.01));
+			_indexParamsMap.put ("ITRX.EU.IG", new StandardCDXParams (125, "EUR", 0.01));
 
-			_mapStandardCDXParams.put ("ITRAXX.EU.IG", new org.drip.product.params.StandardCDXParams (125,
-				"EUR", 0.01));
+			_indexParamsMap.put ("ITRAXX.EU.IG", new StandardCDXParams (125, "EUR", 0.01));
 
-			_mapStandardCDXParams.put ("ITRX.EU.HVOL", new org.drip.product.params.StandardCDXParams (30,
-				"EUR", 0.01));
+			_indexParamsMap.put ("ITRX.EU.HVOL", new StandardCDXParams (30, "EUR", 0.01));
 
-			_mapStandardCDXParams.put ("ITRAXX.EU.HVOL", new org.drip.product.params.StandardCDXParams (30,
-				"EUR", 0.01));
+			_indexParamsMap.put ("ITRAXX.EU.HVOL", new StandardCDXParams (30, "EUR", 0.01));
 
-			_mapStandardCDXParams.put ("ITRX.EU.XO", new org.drip.product.params.StandardCDXParams (50,
-				"EUR", 0.05));
+			_indexParamsMap.put ("ITRX.EU.XO", new StandardCDXParams (50, "EUR", 0.05));
 
-			_mapStandardCDXParams.put ("ITRAXX.EU.XO", new org.drip.product.params.StandardCDXParams (50,
-				"EUR", 0.05));
+			_indexParamsMap.put ("ITRAXX.EU.XO", new StandardCDXParams (50, "EUR", 0.05));
 
-			_mapStandardCDXParams.put ("ITRX.EU.NONFIN", new org.drip.product.params.StandardCDXParams (50,
-				"EUR", 0.05));
+			_indexParamsMap.put ("ITRX.EU.NONFIN", new StandardCDXParams (50, "EUR", 0.05));
 
-			_mapStandardCDXParams.put ("ITRAXX.EU.NONFIN", new org.drip.product.params.StandardCDXParams (50,
-				"EUR", 0.05));
+			_indexParamsMap.put ("ITRAXX.EU.NONFIN", new StandardCDXParams (50, "EUR", 0.05));
 
-			_mapStandardCDXParams.put ("ITRX.EU.FINSNR", new org.drip.product.params.StandardCDXParams (20,
-				"EUR", 0.01));
+			_indexParamsMap.put ("ITRX.EU.FINSNR", new StandardCDXParams (20, "EUR", 0.01));
 
-			_mapStandardCDXParams.put ("ITRAXX.EU.FINSNR", new org.drip.product.params.StandardCDXParams (20,
-				"EUR", 0.01));
+			_indexParamsMap.put ("ITRAXX.EU.FINSNR", new StandardCDXParams (20, "EUR", 0.01));
 
-			_mapStandardCDXParams.put ("ITRX.EU.FINSUB", new org.drip.product.params.StandardCDXParams (20,
-				"EUR", 0.01));
+			_indexParamsMap.put ("ITRX.EU.FINSUB", new StandardCDXParams (20, "EUR", 0.01));
 
-			_mapStandardCDXParams.put ("ITRAXX.EU.FINSUB", new org.drip.product.params.StandardCDXParams (20,
-				"EUR", 0.01));
+			_indexParamsMap.put ("ITRAXX.EU.FINSUB", new StandardCDXParams (20, "EUR", 0.01));
 
 			return true;
-		} catch (java.lang.Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -206,355 +199,310 @@ public class StandardCDXManager {
 	}
 
 	private static final boolean UpdateIndexMaps (
-		final java.util.Map<org.drip.analytics.date.JulianDate, java.lang.Integer> mapDateSeries,
-		final java.util.Map<java.lang.Integer, org.drip.analytics.date.JulianDate> mapSeriesDate,
-		final org.drip.analytics.date.JulianDate dt,
-		final int iSeries)
+		final Map<JulianDate, Integer> dateSeriesMap,
+		final Map<Integer, JulianDate> seriesDateMap,
+		final JulianDate date,
+		final int series)
 	{
-		mapDateSeries.put (dt, iSeries);
+		dateSeriesMap.put (date, series);
 
-		mapSeriesDate.put (iSeries, dt);
+		seriesDateMap.put (series, date);
 
 		return true;
 	}
 
 	private static final boolean PresetNA_IG_HY_HVOL_HYBB_HYBSeries()
 	{
-		java.util.Map<org.drip.analytics.date.JulianDate, java.lang.Integer> mapDateSeries = new
-			java.util.TreeMap<org.drip.analytics.date.JulianDate, java.lang.Integer>();
+		Map<JulianDate, Integer> dateSeriesMap = new TreeMap<JulianDate, Integer>();
 
-		java.util.Map<java.lang.Integer, org.drip.analytics.date.JulianDate> mapSeriesDate = new
-			java.util.TreeMap<java.lang.Integer, org.drip.analytics.date.JulianDate>();
+		Map<Integer, JulianDate> seriesDateMap = new TreeMap<Integer, JulianDate>();
 
-		UpdateIndexMaps (mapDateSeries, mapSeriesDate, org.drip.analytics.date.DateUtil.CreateFromYMD
-			(2014, 6, 20), 22);
+		UpdateIndexMaps (dateSeriesMap, seriesDateMap, DateUtil.CreateFromYMD (2014, 6, 20), 22);
 
-		UpdateIndexMaps (mapDateSeries, mapSeriesDate, org.drip.analytics.date.DateUtil.CreateFromYMD
-			(2013, 12, 20), 21);
+		UpdateIndexMaps (dateSeriesMap, seriesDateMap, DateUtil.CreateFromYMD (2013, 12, 20), 21);
 
-		UpdateIndexMaps (mapDateSeries, mapSeriesDate, org.drip.analytics.date.DateUtil.CreateFromYMD
-			(2013, 6, 20), 20);
+		UpdateIndexMaps (dateSeriesMap, seriesDateMap, DateUtil.CreateFromYMD (2013, 6, 20), 20);
 
-		UpdateIndexMaps (mapDateSeries, mapSeriesDate, org.drip.analytics.date.DateUtil.CreateFromYMD
-			(2012, 12, 20), 19);
+		UpdateIndexMaps (dateSeriesMap, seriesDateMap, DateUtil.CreateFromYMD (2012, 12, 20), 19);
 
-		UpdateIndexMaps (mapDateSeries, mapSeriesDate, org.drip.analytics.date.DateUtil.CreateFromYMD
-			(2012, 6, 20), 18);
+		UpdateIndexMaps (dateSeriesMap, seriesDateMap, DateUtil.CreateFromYMD (2012, 6, 20), 18);
 
-		UpdateIndexMaps (mapDateSeries, mapSeriesDate, org.drip.analytics.date.DateUtil.CreateFromYMD
-			(2011, 12, 20), 17);
+		UpdateIndexMaps (dateSeriesMap, seriesDateMap, DateUtil.CreateFromYMD (2011, 12, 20), 17);
 
-		UpdateIndexMaps (mapDateSeries, mapSeriesDate, org.drip.analytics.date.DateUtil.CreateFromYMD
-			(2011, 6, 20), 16);
+		UpdateIndexMaps (dateSeriesMap, seriesDateMap, DateUtil.CreateFromYMD (2011, 6, 20), 16);
 
-		UpdateIndexMaps (mapDateSeries, mapSeriesDate, org.drip.analytics.date.DateUtil.CreateFromYMD
-			(2010, 12, 20), 15);
+		UpdateIndexMaps (dateSeriesMap, seriesDateMap, DateUtil.CreateFromYMD (2010, 12, 20), 15);
 
-		UpdateIndexMaps (mapDateSeries, mapSeriesDate, org.drip.analytics.date.DateUtil.CreateFromYMD
-			(2010, 6, 20), 14);
+		UpdateIndexMaps (dateSeriesMap, seriesDateMap, DateUtil.CreateFromYMD (2010, 6, 20), 14);
 
-		UpdateIndexMaps (mapDateSeries, mapSeriesDate, org.drip.analytics.date.DateUtil.CreateFromYMD
-			(2009, 12, 20), 13);
+		UpdateIndexMaps (dateSeriesMap, seriesDateMap, DateUtil.CreateFromYMD (2009, 12, 20), 13);
 
-		UpdateIndexMaps (mapDateSeries, mapSeriesDate, org.drip.analytics.date.DateUtil.CreateFromYMD
-			(2009, 6, 20), 12);
+		UpdateIndexMaps (dateSeriesMap, seriesDateMap, DateUtil.CreateFromYMD (2009, 6, 20), 12);
 
-		UpdateIndexMaps (mapDateSeries, mapSeriesDate, org.drip.analytics.date.DateUtil.CreateFromYMD
-			(2008, 12, 20), 11);
+		UpdateIndexMaps (dateSeriesMap, seriesDateMap, DateUtil.CreateFromYMD (2008, 12, 20), 11);
 
-		UpdateIndexMaps (mapDateSeries, mapSeriesDate, org.drip.analytics.date.DateUtil.CreateFromYMD
-			(2008, 6, 20), 10);
+		UpdateIndexMaps (dateSeriesMap, seriesDateMap, DateUtil.CreateFromYMD (2008, 6, 20), 10);
 
-		UpdateIndexMaps (mapDateSeries, mapSeriesDate, org.drip.analytics.date.DateUtil.CreateFromYMD
-			(2007, 12, 20), 9);
+		UpdateIndexMaps (dateSeriesMap, seriesDateMap, DateUtil.CreateFromYMD (2007, 12, 20), 9);
 
-		UpdateIndexMaps (mapDateSeries, mapSeriesDate, org.drip.analytics.date.DateUtil.CreateFromYMD
-			(2007, 6, 20), 8);
+		UpdateIndexMaps (dateSeriesMap, seriesDateMap, DateUtil.CreateFromYMD (2007, 6, 20), 8);
 
-		UpdateIndexMaps (mapDateSeries, mapSeriesDate, org.drip.analytics.date.DateUtil.CreateFromYMD
-			(2006, 12, 20), 7);
+		UpdateIndexMaps (dateSeriesMap, seriesDateMap, DateUtil.CreateFromYMD (2006, 12, 20), 7);
 
-		UpdateIndexMaps (mapDateSeries, mapSeriesDate, org.drip.analytics.date.DateUtil.CreateFromYMD
-			(2006, 6, 20), 6);
+		UpdateIndexMaps (dateSeriesMap, seriesDateMap, DateUtil.CreateFromYMD (2006, 6, 20), 6);
 
-		UpdateIndexMaps (mapDateSeries, mapSeriesDate, org.drip.analytics.date.DateUtil.CreateFromYMD
-			(2005, 12, 20), 5);
+		UpdateIndexMaps (dateSeriesMap, seriesDateMap, DateUtil.CreateFromYMD (2005, 12, 20), 5);
 
-		UpdateIndexMaps (mapDateSeries, mapSeriesDate, org.drip.analytics.date.DateUtil.CreateFromYMD
-			(2005, 6, 20), 4);
+		UpdateIndexMaps (dateSeriesMap, seriesDateMap, DateUtil.CreateFromYMD (2005, 6, 20), 4);
 
-		UpdateIndexMaps (mapDateSeries, mapSeriesDate, org.drip.analytics.date.DateUtil.CreateFromYMD
-			(2004, 12, 20), 3);
+		UpdateIndexMaps (dateSeriesMap, seriesDateMap, DateUtil.CreateFromYMD (2004, 12, 20), 3);
 
-		UpdateIndexMaps (mapDateSeries, mapSeriesDate, org.drip.analytics.date.DateUtil.CreateFromYMD
-			(2004, 6, 20), 2);
+		UpdateIndexMaps (dateSeriesMap, seriesDateMap, DateUtil.CreateFromYMD (2004, 6, 20), 2);
 
-		UpdateIndexMaps (mapDateSeries, mapSeriesDate, org.drip.analytics.date.DateUtil.CreateFromYMD
-			(2003, 12, 20), 1);
+		UpdateIndexMaps (dateSeriesMap, seriesDateMap, DateUtil.CreateFromYMD (2003, 12, 20), 1);
 
-		_mmIndexFirstCouponSeries.put ("CDX.NA.IG", mapDateSeries);
+		_seriesFirstCouponDateToIndexSequence.put ("CDX.NA.IG", dateSeriesMap);
 
-		_mmIndexSeriesFirstCoupon.put ("CDX.NA.IG", mapSeriesDate);
+		_seriesIndexSequenceToFirstCouponDate.put ("CDX.NA.IG", seriesDateMap);
 
-		_mmIndexFirstCouponSeries.put ("CDX.NA.HY", mapDateSeries);
+		_seriesFirstCouponDateToIndexSequence.put ("CDX.NA.HY", dateSeriesMap);
 
-		_mmIndexSeriesFirstCoupon.put ("CDX.NA.HY", mapSeriesDate);
+		_seriesIndexSequenceToFirstCouponDate.put ("CDX.NA.HY", seriesDateMap);
 
-		_mmIndexFirstCouponSeries.put ("CDX.NA.HVOL", mapDateSeries);
+		_seriesFirstCouponDateToIndexSequence.put ("CDX.NA.HVOL", dateSeriesMap);
 
-		_mmIndexSeriesFirstCoupon.put ("CDX.NA.HVOL", mapSeriesDate);
+		_seriesIndexSequenceToFirstCouponDate.put ("CDX.NA.HVOL", seriesDateMap);
 
-		_mmIndexFirstCouponSeries.put ("CDX.NA.HIVOL", mapDateSeries);
+		_seriesFirstCouponDateToIndexSequence.put ("CDX.NA.HIVOL", dateSeriesMap);
 
-		_mmIndexSeriesFirstCoupon.put ("CDX.NA.HIVOL", mapSeriesDate);
+		_seriesIndexSequenceToFirstCouponDate.put ("CDX.NA.HIVOL", seriesDateMap);
 
-		_mmIndexFirstCouponSeries.put ("CDX.NA.HY.B", mapDateSeries);
+		_seriesFirstCouponDateToIndexSequence.put ("CDX.NA.HY.B", dateSeriesMap);
 
-		_mmIndexSeriesFirstCoupon.put ("CDX.NA.HY.B", mapSeriesDate);
+		_seriesIndexSequenceToFirstCouponDate.put ("CDX.NA.HY.B", seriesDateMap);
 
-		_mmIndexFirstCouponSeries.put ("CDX.NA.HY.BB", mapDateSeries);
+		_seriesFirstCouponDateToIndexSequence.put ("CDX.NA.HY.BB", dateSeriesMap);
 
-		_mmIndexSeriesFirstCoupon.put ("CDX.NA.HY.BB", mapSeriesDate);
+		_seriesIndexSequenceToFirstCouponDate.put ("CDX.NA.HY.BB", seriesDateMap);
 
 		return true;
 	}
 
 	private static final boolean PresetNAXOSeries()
 	{
-		java.util.Map<org.drip.analytics.date.JulianDate, java.lang.Integer> mapDateSeries = new
-			java.util.TreeMap<org.drip.analytics.date.JulianDate, java.lang.Integer>();
+		Map<JulianDate, Integer> dateSeriesMap = new TreeMap<JulianDate, Integer>();
 
-		java.util.Map<java.lang.Integer, org.drip.analytics.date.JulianDate> mapSeriesDate = new
-			java.util.TreeMap<java.lang.Integer, org.drip.analytics.date.JulianDate>();
+		Map<Integer, JulianDate> seriesDateMap = new TreeMap<Integer, JulianDate>();
 
-		UpdateIndexMaps (mapDateSeries, mapSeriesDate, org.drip.analytics.date.DateUtil.CreateFromYMD
-			(2014, 6, 20), 16);
+		UpdateIndexMaps (dateSeriesMap, seriesDateMap, DateUtil.CreateFromYMD (2014, 6, 20), 16);
 
-		UpdateIndexMaps (mapDateSeries, mapSeriesDate, org.drip.analytics.date.DateUtil.CreateFromYMD
-			(2013, 12, 20), 15);
+		UpdateIndexMaps (dateSeriesMap, seriesDateMap, DateUtil.CreateFromYMD (2013, 12, 20), 15);
 
-		UpdateIndexMaps (mapDateSeries, mapSeriesDate, org.drip.analytics.date.DateUtil.CreateFromYMD
-			(2013, 6, 20), 14);
+		UpdateIndexMaps (dateSeriesMap, seriesDateMap, DateUtil.CreateFromYMD (2013, 6, 20), 14);
 
-		UpdateIndexMaps (mapDateSeries, mapSeriesDate, org.drip.analytics.date.DateUtil.CreateFromYMD
-			(2012, 12, 20), 13);
+		UpdateIndexMaps (dateSeriesMap, seriesDateMap, DateUtil.CreateFromYMD (2012, 12, 20), 13);
 
-		UpdateIndexMaps (mapDateSeries, mapSeriesDate, org.drip.analytics.date.DateUtil.CreateFromYMD
-			(2012, 6, 20), 12);
+		UpdateIndexMaps (dateSeriesMap, seriesDateMap, DateUtil.CreateFromYMD (2012, 6, 20), 12);
 
-		UpdateIndexMaps (mapDateSeries, mapSeriesDate, org.drip.analytics.date.DateUtil.CreateFromYMD
-			(2011, 12, 20), 11);
+		UpdateIndexMaps (dateSeriesMap, seriesDateMap, DateUtil.CreateFromYMD (2011, 12, 20), 11);
 
-		UpdateIndexMaps (mapDateSeries, mapSeriesDate, org.drip.analytics.date.DateUtil.CreateFromYMD
-			(2011, 6, 20), 10);
+		UpdateIndexMaps (dateSeriesMap, seriesDateMap, DateUtil.CreateFromYMD (2011, 6, 20), 10);
 
-		UpdateIndexMaps (mapDateSeries, mapSeriesDate, org.drip.analytics.date.DateUtil.CreateFromYMD
-			(2010, 12, 20), 9);
+		UpdateIndexMaps (dateSeriesMap, seriesDateMap, DateUtil.CreateFromYMD (2010, 12, 20), 9);
 
-		UpdateIndexMaps (mapDateSeries, mapSeriesDate, org.drip.analytics.date.DateUtil.CreateFromYMD
-			(2010, 6, 20), 8);
+		UpdateIndexMaps (dateSeriesMap, seriesDateMap, DateUtil.CreateFromYMD (2010, 6, 20), 8);
 
-		UpdateIndexMaps (mapDateSeries, mapSeriesDate, org.drip.analytics.date.DateUtil.CreateFromYMD
-			(2009, 12, 20), 7);
+		UpdateIndexMaps (dateSeriesMap, seriesDateMap, DateUtil.CreateFromYMD (2009, 12, 20), 7);
 
-		UpdateIndexMaps (mapDateSeries, mapSeriesDate, org.drip.analytics.date.DateUtil.CreateFromYMD
-			(2009, 6, 20), 6);
+		UpdateIndexMaps (dateSeriesMap, seriesDateMap, DateUtil.CreateFromYMD (2009, 6, 20), 6);
 
-		UpdateIndexMaps (mapDateSeries, mapSeriesDate, org.drip.analytics.date.DateUtil.CreateFromYMD
-			(2008, 12, 20), 5);
+		UpdateIndexMaps (dateSeriesMap, seriesDateMap, DateUtil.CreateFromYMD (2008, 12, 20), 5);
 
-		UpdateIndexMaps (mapDateSeries, mapSeriesDate, org.drip.analytics.date.DateUtil.CreateFromYMD
-			(2008, 6, 20), 4);
+		UpdateIndexMaps (dateSeriesMap, seriesDateMap, DateUtil.CreateFromYMD (2008, 6, 20), 4);
 
-		UpdateIndexMaps (mapDateSeries, mapSeriesDate, org.drip.analytics.date.DateUtil.CreateFromYMD
-			(2007, 12, 20), 3);
+		UpdateIndexMaps (dateSeriesMap, seriesDateMap, DateUtil.CreateFromYMD (2007, 12, 20), 3);
 
-		UpdateIndexMaps (mapDateSeries, mapSeriesDate, org.drip.analytics.date.DateUtil.CreateFromYMD
-			(2007, 6, 20), 2);
+		UpdateIndexMaps (dateSeriesMap, seriesDateMap, DateUtil.CreateFromYMD (2007, 6, 20), 2);
 
-		UpdateIndexMaps (mapDateSeries, mapSeriesDate, org.drip.analytics.date.DateUtil.CreateFromYMD
-			(2006, 12, 20), 1);
+		UpdateIndexMaps (dateSeriesMap, seriesDateMap, DateUtil.CreateFromYMD (2006, 12, 20), 1);
 
-		_mmIndexFirstCouponSeries.put ("CDX.NA.XO", mapDateSeries);
+		_seriesFirstCouponDateToIndexSequence.put ("CDX.NA.XO", dateSeriesMap);
 
-		_mmIndexSeriesFirstCoupon.put ("CDX.NA.XO", mapSeriesDate);
+		_seriesIndexSequenceToFirstCouponDate.put ("CDX.NA.XO", seriesDateMap);
 
 		return true;
 	}
 
 	private static final boolean PresetEMSeries()
 	{
-		java.util.Map<org.drip.analytics.date.JulianDate, java.lang.Integer> mapDateSeries = new
-			java.util.TreeMap<org.drip.analytics.date.JulianDate, java.lang.Integer>();
+		Map<JulianDate, Integer> dateSeriesMap = new
+			TreeMap<JulianDate, Integer>();
 
-		java.util.Map<java.lang.Integer, org.drip.analytics.date.JulianDate> mapSeriesDate = new
-			java.util.TreeMap<java.lang.Integer, org.drip.analytics.date.JulianDate>();
+		Map<Integer, JulianDate> seriesDateMap = new
+			TreeMap<Integer, JulianDate>();
 
-		UpdateIndexMaps (mapDateSeries, mapSeriesDate, org.drip.analytics.date.DateUtil.CreateFromYMD
+		UpdateIndexMaps (dateSeriesMap, seriesDateMap, DateUtil.CreateFromYMD
 			(2014, 6, 20), 21);
 
-		UpdateIndexMaps (mapDateSeries, mapSeriesDate, org.drip.analytics.date.DateUtil.CreateFromYMD
+		UpdateIndexMaps (dateSeriesMap, seriesDateMap, DateUtil.CreateFromYMD
 			(2013, 12, 20), 20);
 
-		UpdateIndexMaps (mapDateSeries, mapSeriesDate, org.drip.analytics.date.DateUtil.CreateFromYMD
+		UpdateIndexMaps (dateSeriesMap, seriesDateMap, DateUtil.CreateFromYMD
 			(2013, 6, 20), 19);
 
-		UpdateIndexMaps (mapDateSeries, mapSeriesDate, org.drip.analytics.date.DateUtil.CreateFromYMD
+		UpdateIndexMaps (dateSeriesMap, seriesDateMap, DateUtil.CreateFromYMD
 			(2012, 12, 20), 18);
 
-		UpdateIndexMaps (mapDateSeries, mapSeriesDate, org.drip.analytics.date.DateUtil.CreateFromYMD
+		UpdateIndexMaps (dateSeriesMap, seriesDateMap, DateUtil.CreateFromYMD
 			(2012, 6, 20), 17);
 
-		UpdateIndexMaps (mapDateSeries, mapSeriesDate, org.drip.analytics.date.DateUtil.CreateFromYMD
+		UpdateIndexMaps (dateSeriesMap, seriesDateMap, DateUtil.CreateFromYMD
 			(2011, 12, 20), 16);
 
-		UpdateIndexMaps (mapDateSeries, mapSeriesDate, org.drip.analytics.date.DateUtil.CreateFromYMD
+		UpdateIndexMaps (dateSeriesMap, seriesDateMap, DateUtil.CreateFromYMD
 			(2011, 6, 20), 15);
 
-		UpdateIndexMaps (mapDateSeries, mapSeriesDate, org.drip.analytics.date.DateUtil.CreateFromYMD
+		UpdateIndexMaps (dateSeriesMap, seriesDateMap, DateUtil.CreateFromYMD
 			(2010, 12, 20), 14);
 
-		UpdateIndexMaps (mapDateSeries, mapSeriesDate, org.drip.analytics.date.DateUtil.CreateFromYMD
+		UpdateIndexMaps (dateSeriesMap, seriesDateMap, DateUtil.CreateFromYMD
 			(2010, 6, 20), 13);
 
-		UpdateIndexMaps (mapDateSeries, mapSeriesDate, org.drip.analytics.date.DateUtil.CreateFromYMD
+		UpdateIndexMaps (dateSeriesMap, seriesDateMap, DateUtil.CreateFromYMD
 			(2009, 12, 20), 12);
 
-		UpdateIndexMaps (mapDateSeries, mapSeriesDate, org.drip.analytics.date.DateUtil.CreateFromYMD
+		UpdateIndexMaps (dateSeriesMap, seriesDateMap, DateUtil.CreateFromYMD
 			(2009, 6, 20), 11);
 
-		UpdateIndexMaps (mapDateSeries, mapSeriesDate, org.drip.analytics.date.DateUtil.CreateFromYMD
+		UpdateIndexMaps (dateSeriesMap, seriesDateMap, DateUtil.CreateFromYMD
 			(2008, 12, 20), 10);
 
-		UpdateIndexMaps (mapDateSeries, mapSeriesDate, org.drip.analytics.date.DateUtil.CreateFromYMD
+		UpdateIndexMaps (dateSeriesMap, seriesDateMap, DateUtil.CreateFromYMD
 			(2008, 6, 20), 9);
 
-		UpdateIndexMaps (mapDateSeries, mapSeriesDate, org.drip.analytics.date.DateUtil.CreateFromYMD
+		UpdateIndexMaps (dateSeriesMap, seriesDateMap, DateUtil.CreateFromYMD
 			(2007, 12, 20), 8);
 
-		UpdateIndexMaps (mapDateSeries, mapSeriesDate, org.drip.analytics.date.DateUtil.CreateFromYMD
+		UpdateIndexMaps (dateSeriesMap, seriesDateMap, DateUtil.CreateFromYMD
 			(2007, 6, 20), 7);
 
-		UpdateIndexMaps (mapDateSeries, mapSeriesDate, org.drip.analytics.date.DateUtil.CreateFromYMD
+		UpdateIndexMaps (dateSeriesMap, seriesDateMap, DateUtil.CreateFromYMD
 			(2006, 12, 20), 6);
 
-		UpdateIndexMaps (mapDateSeries, mapSeriesDate, org.drip.analytics.date.DateUtil.CreateFromYMD
+		UpdateIndexMaps (dateSeriesMap, seriesDateMap, DateUtil.CreateFromYMD
 			(2006, 6, 20), 5);
 
-		UpdateIndexMaps (mapDateSeries, mapSeriesDate, org.drip.analytics.date.DateUtil.CreateFromYMD
+		UpdateIndexMaps (dateSeriesMap, seriesDateMap, DateUtil.CreateFromYMD
 			(2005, 12, 20), 4);
 
-		UpdateIndexMaps (mapDateSeries, mapSeriesDate, org.drip.analytics.date.DateUtil.CreateFromYMD
+		UpdateIndexMaps (dateSeriesMap, seriesDateMap, DateUtil.CreateFromYMD
 			(2005, 6, 20), 3);
 
-		UpdateIndexMaps (mapDateSeries, mapSeriesDate, org.drip.analytics.date.DateUtil.CreateFromYMD
+		UpdateIndexMaps (dateSeriesMap, seriesDateMap, DateUtil.CreateFromYMD
 			(2004, 12, 20), 2);
 
-		UpdateIndexMaps (mapDateSeries, mapSeriesDate, org.drip.analytics.date.DateUtil.CreateFromYMD
+		UpdateIndexMaps (dateSeriesMap, seriesDateMap, DateUtil.CreateFromYMD
 			(2004, 6, 20), 1);
 
-		_mmIndexFirstCouponSeries.put ("CDX.EM", mapDateSeries);
+		_seriesFirstCouponDateToIndexSequence.put ("CDX.EM", dateSeriesMap);
 
-		_mmIndexSeriesFirstCoupon.put ("CDX.EM", mapSeriesDate);
+		_seriesIndexSequenceToFirstCouponDate.put ("CDX.EM", seriesDateMap);
 
 		return true;
 	}
 
 	private static final boolean PresetEUSeries()
 	{
-		java.util.Map<org.drip.analytics.date.JulianDate, java.lang.Integer> mapDateSeries = new
-			java.util.TreeMap<org.drip.analytics.date.JulianDate, java.lang.Integer>();
+		Map<JulianDate, Integer> dateSeriesMap = new TreeMap<JulianDate, Integer>();
 
-		java.util.Map<java.lang.Integer, org.drip.analytics.date.JulianDate> mapSeriesDate = new
-			java.util.TreeMap<java.lang.Integer, org.drip.analytics.date.JulianDate>();
+		Map<Integer, JulianDate> seriesDateMap = new TreeMap<Integer, JulianDate>();
 
-		UpdateIndexMaps (mapDateSeries, mapSeriesDate, org.drip.analytics.date.DateUtil.CreateFromYMD
-			(2014, 6, 20), 20);
+		UpdateIndexMaps (dateSeriesMap, seriesDateMap, DateUtil.CreateFromYMD (2014, 6, 20), 20);
 
-		UpdateIndexMaps (mapDateSeries, mapSeriesDate, org.drip.analytics.date.DateUtil.CreateFromYMD
+		UpdateIndexMaps (dateSeriesMap, seriesDateMap, DateUtil.CreateFromYMD
 			(2013, 12, 20), 19);
 
-		UpdateIndexMaps (mapDateSeries, mapSeriesDate, org.drip.analytics.date.DateUtil.CreateFromYMD
+		UpdateIndexMaps (dateSeriesMap, seriesDateMap, DateUtil.CreateFromYMD
 			(2013, 6, 20), 18);
 
-		UpdateIndexMaps (mapDateSeries, mapSeriesDate, org.drip.analytics.date.DateUtil.CreateFromYMD
+		UpdateIndexMaps (dateSeriesMap, seriesDateMap, DateUtil.CreateFromYMD
 			(2012, 12, 20), 17);
 
-		UpdateIndexMaps (mapDateSeries, mapSeriesDate, org.drip.analytics.date.DateUtil.CreateFromYMD
+		UpdateIndexMaps (dateSeriesMap, seriesDateMap, DateUtil.CreateFromYMD
 			(2012, 6, 20), 16);
 
-		UpdateIndexMaps (mapDateSeries, mapSeriesDate, org.drip.analytics.date.DateUtil.CreateFromYMD
+		UpdateIndexMaps (dateSeriesMap, seriesDateMap, DateUtil.CreateFromYMD
 			(2011, 12, 20), 15);
 
-		UpdateIndexMaps (mapDateSeries, mapSeriesDate, org.drip.analytics.date.DateUtil.CreateFromYMD
+		UpdateIndexMaps (dateSeriesMap, seriesDateMap, DateUtil.CreateFromYMD
 			(2011, 6, 20), 14);
 
-		UpdateIndexMaps (mapDateSeries, mapSeriesDate, org.drip.analytics.date.DateUtil.CreateFromYMD
+		UpdateIndexMaps (dateSeriesMap, seriesDateMap, DateUtil.CreateFromYMD
 			(2010, 12, 20), 13);
 
-		UpdateIndexMaps (mapDateSeries, mapSeriesDate, org.drip.analytics.date.DateUtil.CreateFromYMD
+		UpdateIndexMaps (dateSeriesMap, seriesDateMap, DateUtil.CreateFromYMD
 			(2010, 6, 20), 12);
 
-		UpdateIndexMaps (mapDateSeries, mapSeriesDate, org.drip.analytics.date.DateUtil.CreateFromYMD
+		UpdateIndexMaps (dateSeriesMap, seriesDateMap, DateUtil.CreateFromYMD
 			(2009, 12, 20), 11);
 
-		UpdateIndexMaps (mapDateSeries, mapSeriesDate, org.drip.analytics.date.DateUtil.CreateFromYMD
+		UpdateIndexMaps (dateSeriesMap, seriesDateMap, DateUtil.CreateFromYMD
 			(2009, 6, 20), 10);
 
-		UpdateIndexMaps (mapDateSeries, mapSeriesDate, org.drip.analytics.date.DateUtil.CreateFromYMD
+		UpdateIndexMaps (dateSeriesMap, seriesDateMap, DateUtil.CreateFromYMD
 			(2008, 12, 20), 9);
 
-		UpdateIndexMaps (mapDateSeries, mapSeriesDate, org.drip.analytics.date.DateUtil.CreateFromYMD
+		UpdateIndexMaps (dateSeriesMap, seriesDateMap, DateUtil.CreateFromYMD
 			(2008, 6, 20), 8);
 
-		UpdateIndexMaps (mapDateSeries, mapSeriesDate, org.drip.analytics.date.DateUtil.CreateFromYMD
+		UpdateIndexMaps (dateSeriesMap, seriesDateMap, DateUtil.CreateFromYMD
 			(2007, 12, 20), 7);
 
-		UpdateIndexMaps (mapDateSeries, mapSeriesDate, org.drip.analytics.date.DateUtil.CreateFromYMD
+		UpdateIndexMaps (dateSeriesMap, seriesDateMap, DateUtil.CreateFromYMD
 			(2007, 6, 20), 6);
 
-		UpdateIndexMaps (mapDateSeries, mapSeriesDate, org.drip.analytics.date.DateUtil.CreateFromYMD
+		UpdateIndexMaps (dateSeriesMap, seriesDateMap, DateUtil.CreateFromYMD
 			(2006, 12, 20), 5);
 
-		UpdateIndexMaps (mapDateSeries, mapSeriesDate, org.drip.analytics.date.DateUtil.CreateFromYMD
+		UpdateIndexMaps (dateSeriesMap, seriesDateMap, DateUtil.CreateFromYMD
 			(2006, 6, 20), 4);
 
-		UpdateIndexMaps (mapDateSeries, mapSeriesDate, org.drip.analytics.date.DateUtil.CreateFromYMD
+		UpdateIndexMaps (dateSeriesMap, seriesDateMap, DateUtil.CreateFromYMD
 			(2005, 12, 20), 3);
 
-		UpdateIndexMaps (mapDateSeries, mapSeriesDate, org.drip.analytics.date.DateUtil.CreateFromYMD
+		UpdateIndexMaps (dateSeriesMap, seriesDateMap, DateUtil.CreateFromYMD
 			(2005, 6, 20), 2);
 
-		UpdateIndexMaps (mapDateSeries, mapSeriesDate, org.drip.analytics.date.DateUtil.CreateFromYMD
+		UpdateIndexMaps (dateSeriesMap, seriesDateMap, DateUtil.CreateFromYMD
 			(2004, 12, 20), 1);
 
-		_mmIndexFirstCouponSeries.put ("ITRX.EU.IG", mapDateSeries);
+		_seriesFirstCouponDateToIndexSequence.put ("ITRX.EU.IG", dateSeriesMap);
 
-		_mmIndexSeriesFirstCoupon.put ("ITRX.EU.IG", mapSeriesDate);
+		_seriesIndexSequenceToFirstCouponDate.put ("ITRX.EU.IG", seriesDateMap);
 
-		_mmIndexFirstCouponSeries.put ("ITRX.EU.HVOL", mapDateSeries);
+		_seriesFirstCouponDateToIndexSequence.put ("ITRX.EU.HVOL", dateSeriesMap);
 
-		_mmIndexSeriesFirstCoupon.put ("ITRX.EU.HVOL", mapSeriesDate);
+		_seriesIndexSequenceToFirstCouponDate.put ("ITRX.EU.HVOL", seriesDateMap);
 
-		_mmIndexFirstCouponSeries.put ("ITRX.EU.HIVOL", mapDateSeries);
+		_seriesFirstCouponDateToIndexSequence.put ("ITRX.EU.HIVOL", dateSeriesMap);
 
-		_mmIndexSeriesFirstCoupon.put ("ITRX.EU.HIVOL", mapSeriesDate);
+		_seriesIndexSequenceToFirstCouponDate.put ("ITRX.EU.HIVOL", seriesDateMap);
 
-		_mmIndexFirstCouponSeries.put ("ITRX.EU.XO", mapDateSeries);
+		_seriesFirstCouponDateToIndexSequence.put ("ITRX.EU.XO", dateSeriesMap);
 
-		_mmIndexSeriesFirstCoupon.put ("ITRX.EU.XO", mapSeriesDate);
+		_seriesIndexSequenceToFirstCouponDate.put ("ITRX.EU.XO", seriesDateMap);
 
-		_mmIndexFirstCouponSeries.put ("ITRX.EU.FINSNR", mapDateSeries);
+		_seriesFirstCouponDateToIndexSequence.put ("ITRX.EU.FINSNR", dateSeriesMap);
 
-		_mmIndexSeriesFirstCoupon.put ("ITRX.EU.FINSNR", mapSeriesDate);
+		_seriesIndexSequenceToFirstCouponDate.put ("ITRX.EU.FINSNR", seriesDateMap);
 
-		_mmIndexFirstCouponSeries.put ("ITRX.EU.FINSUB", mapDateSeries);
+		_seriesFirstCouponDateToIndexSequence.put ("ITRX.EU.FINSUB", dateSeriesMap);
 
-		_mmIndexSeriesFirstCoupon.put ("ITRX.EU.FINSUB", mapSeriesDate);
+		_seriesIndexSequenceToFirstCouponDate.put ("ITRX.EU.FINSUB", seriesDateMap);
 
-		_mmIndexFirstCouponSeries.put ("ITRX.EU.NONFIN", mapDateSeries);
+		_seriesFirstCouponDateToIndexSequence.put ("ITRX.EU.NONFIN", dateSeriesMap);
 
-		_mmIndexSeriesFirstCoupon.put ("ITRX.EU.NONFIN", mapSeriesDate);
+		_seriesIndexSequenceToFirstCouponDate.put ("ITRX.EU.NONFIN", seriesDateMap);
 
 		return true;
 	}
@@ -567,18 +515,18 @@ public class StandardCDXManager {
 
 	public static final boolean InitStandardCDXSeries()
 	{
-		if (null != _mapStandardCDX) return true;
+		if (null != _indexMap) return true;
 
-		_mapStandardCDX = new
+		_indexMap = new
 			org.drip.analytics.support.CaseInsensitiveTreeMap<org.drip.product.definition.BasketProduct>();
 
-		_mmIndexFirstCouponSeries = new
-			org.drip.analytics.support.CaseInsensitiveTreeMap<java.util.Map<org.drip.analytics.date.JulianDate,
-			java.lang.Integer>>();
+		_seriesFirstCouponDateToIndexSequence = new
+			org.drip.analytics.support.CaseInsensitiveTreeMap<Map<JulianDate,
+			Integer>>();
 
-		_mmIndexSeriesFirstCoupon = new
-			org.drip.analytics.support.CaseInsensitiveTreeMap<java.util.Map<java.lang.Integer,
-				org.drip.analytics.date.JulianDate>>();
+		_seriesIndexSequenceToFirstCouponDate = new
+			org.drip.analytics.support.CaseInsensitiveTreeMap<Map<Integer,
+				JulianDate>>();
 
 		if (!PresetNA_IG_HY_HVOL_HYBB_HYBSeries()) {
 			System.out.println ("Cannot initialize NA_IG_HY_HVOL_HYBB_HYB");
@@ -604,7 +552,7 @@ public class StandardCDXManager {
 			return false;
 		}
 
-		if (!SetupStandardCDXParams()) {
+		if (!SetupParams()) {
 			System.out.println ("Cannot setup standard CDX Params!");
 
 			return false;
@@ -614,14 +562,14 @@ public class StandardCDXManager {
 	}
 
 	private static final org.drip.product.definition.BasketProduct ConstructCDX (
-		final java.lang.String strTenor,
-		final org.drip.analytics.date.JulianDate dtFirstCoupon,
+		final String strTenor,
+		final JulianDate dtFirstCoupon,
 		final double dblCoupon,
-		final java.lang.String strIR,
+		final String strIR,
 		final int iNumComponents,
-		final java.lang.String strCDXName)
+		final String strCDXName)
 	{
-		java.lang.String[] astrCC = new java.lang.String[iNumComponents];
+		String[] astrCC = new String[iNumComponents];
 
 		for (int i = 0; i < iNumComponents; ++i)
 			astrCC[i] = "CC" + (i + 1);
@@ -631,21 +579,21 @@ public class StandardCDXManager {
 	}
 
 	private static final org.drip.product.definition.BasketProduct ConstructCDXEM (
-		final java.lang.String strTenor,
-		final org.drip.analytics.date.JulianDate dtFirstCoupon,
-		final java.lang.String strCDXName)
+		final String strTenor,
+		final JulianDate dtFirstCoupon,
+		final String strCDXName)
 	{
 		return org.drip.product.creator.CDSBasketBuilder.MakeCDX (dtFirstCoupon.subtractTenor ("3M"),
-			dtFirstCoupon.addTenor (strTenor), 0.05, "USD", new java.lang.String[] {"ARG", "VEN", "BRA",
+			dtFirstCoupon.addTenor (strTenor), 0.05, "USD", new String[] {"ARG", "VEN", "BRA",
 				"MAL", "COL", "HUN", "IND", "PAN", "PER", "SAF", "PHI", "TUR", "RUS", "UKR", "MEX"}, new
 					double[] {0.06, 0.08, 0.13, 0.04, 0.08, 0.03, 0.05, 0.03, 0.05, 0.03, 0.06, 0.11, 0.13,
 						0.03, 0.09}, strCDXName);
 	}
 
 	private static final org.drip.product.definition.BasketProduct MakePresetStandardCDX (
-		final java.lang.String strIndex,
+		final String strIndex,
 		final int iSeries,
-		final java.lang.String strTenor)
+		final String strTenor)
 	{
 		if (null == strIndex || strIndex.isEmpty() || null == strTenor || strTenor.isEmpty()) return null;
 
@@ -653,48 +601,48 @@ public class StandardCDXManager {
 
 		try {
 			cdxID = new org.drip.product.params.CDXIdentifier (iSeries, 1, strIndex, strTenor);
-		} catch (java.lang.Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
 		if (null == cdxID) return null;
 
-		java.lang.String strCDXCode = cdxID.getCode();
+		String strCDXCode = cdxID.getCode();
 
 		if (null == strCDXCode || strCDXCode.isEmpty()) return null;
 
-		org.drip.product.definition.BasketProduct cdx = _mapStandardCDX.get (strCDXCode);
+		org.drip.product.definition.BasketProduct cdx = _indexMap.get (strCDXCode);
 
 		if (null != cdx) return cdx;
 
-		java.util.Map<java.lang.Integer, org.drip.analytics.date.JulianDate> mapSeriesFirstCoupon =
-			_mmIndexSeriesFirstCoupon.get (strIndex);
+		Map<Integer, JulianDate> mapSeriesFirstCoupon =
+			_seriesIndexSequenceToFirstCouponDate.get (strIndex);
 
 		if (null == mapSeriesFirstCoupon) return null;
 
-		org.drip.analytics.date.JulianDate dtFirstCoupon = mapSeriesFirstCoupon.get (iSeries);
+		JulianDate dtFirstCoupon = mapSeriesFirstCoupon.get (iSeries);
 
 		if (null == dtFirstCoupon) return null;
 
 		if ("CDX.EM".equalsIgnoreCase (strIndex))
 			cdx = ConstructCDXEM (strTenor, dtFirstCoupon, strCDXCode);
 		else {
-			org.drip.product.params.StandardCDXParams cdxParams = _mapStandardCDXParams.get (strIndex);
+			org.drip.product.params.StandardCDXParams cdxParams = _indexParamsMap.get (strIndex);
 
 			if (null != cdxParams)
 				cdx = ConstructCDX (strTenor, dtFirstCoupon, cdxParams._dblCoupon, cdxParams._strCurrency,
 					cdxParams._iNumComponents, strCDXCode);
 		}
 
-		_mapStandardCDX.put (strCDXCode, cdx);
+		_indexMap.put (strCDXCode, cdx);
 
 		return cdx;
 	}
 
 	private static final org.drip.product.definition.BasketProduct MakePreLoadedStandardCDX (
-		final java.lang.String strIndex,
+		final String strIndex,
 		final int iSeries,
-		final java.lang.String strTenor)
+		final String strTenor)
 	{
 		if (null == strIndex || strIndex.isEmpty() || null == strTenor || strTenor.isEmpty()) return null;
 
@@ -702,13 +650,13 @@ public class StandardCDXManager {
 
 		try {
 			cdxID = new org.drip.product.params.CDXIdentifier (iSeries, 1, strIndex, strTenor);
-		} catch (java.lang.Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
 		if (null == cdxID) return null;
 
-		java.lang.String strCDXCode = cdxID.getCode();
+		String strCDXCode = cdxID.getCode();
 
 		if (null == strCDXCode || strCDXCode.isEmpty()) return null;
 
@@ -717,7 +665,7 @@ public class StandardCDXManager {
 
 		if (null == cdxrdb) return null;
 
-		java.lang.String[] astrCC = new java.lang.String[cdxrdb._iOriginalComponentCount];
+		String[] astrCC = new String[cdxrdb._iOriginalComponentCount];
 
 		for (int i = 0; i < cdxrdb._iOriginalComponentCount; ++i)
 			astrCC[i] = "CC" + (i + 1);
@@ -729,17 +677,17 @@ public class StandardCDXManager {
 	}
 
 	private static final org.drip.product.definition.BasketProduct GetPresetOnTheRun (
-		final java.lang.String strIndex,
-		final org.drip.analytics.date.JulianDate dt,
-		final java.lang.String strTenor)
+		final String strIndex,
+		final JulianDate dt,
+		final String strTenor)
 	{
 		if (null == dt || null == strIndex || strIndex.isEmpty() || null == strTenor || strTenor.isEmpty())
 			return null;
 
-		java.util.Map<org.drip.analytics.date.JulianDate, java.lang.Integer> mapFirstCouponSeries =
-			_mmIndexFirstCouponSeries.get (strIndex);
+		Map<JulianDate, Integer> mapFirstCouponSeries =
+				_seriesFirstCouponDateToIndexSequence.get (strIndex);
 
-		org.drip.analytics.date.JulianDate dtFirstCoupon = dt.nextCreditIMM (3);
+		JulianDate dtFirstCoupon = dt.nextCreditIMM (3);
 
 		if (null == dtFirstCoupon || null == mapFirstCouponSeries) return null;
 
@@ -752,17 +700,17 @@ public class StandardCDXManager {
 	}
 
 	private static final org.drip.product.definition.BasketProduct GetPreLoadedOnTheRun (
-		final java.lang.String strIndex,
-		final org.drip.analytics.date.JulianDate dt,
-		final java.lang.String strTenor)
+		final String strIndex,
+		final JulianDate dt,
+		final String strTenor)
 	{
 		if (null == dt || null == strIndex || strIndex.isEmpty() || null == strTenor || strTenor.isEmpty())
 			return null;
 
-		java.util.Map<org.drip.analytics.date.JulianDate, java.lang.Integer> mapFirstCouponSeries =
+		Map<JulianDate, Integer> mapFirstCouponSeries =
 			org.drip.product.creator.CDXRefDataHolder._mmCDXRDBFirstCouponSeries.get (strIndex);
 
-		org.drip.analytics.date.JulianDate dtFirstCoupon = dt.nextCreditIMM (3);
+		JulianDate dtFirstCoupon = dt.nextCreditIMM (3);
 
 		if (null == dtFirstCoupon || null == mapFirstCouponSeries) return null;
 
@@ -774,8 +722,8 @@ public class StandardCDXManager {
 		return MakePreLoadedStandardCDX (strIndex, mapFirstCouponSeries.get (dtFirstCoupon), strTenor);
 	}
 
-	private static final boolean DumpIndexDetails (
-		final java.lang.String strCDXCoverageFile)
+	public static final boolean DumpIndexDetails (
+		final String strCDXCoverageFile)
 	{
 		if (null == strCDXCoverageFile || strCDXCoverageFile.isEmpty()) return false;
 
@@ -785,36 +733,36 @@ public class StandardCDXManager {
 			bw = new java.io.BufferedWriter (new java.io.FileWriter (strCDXCoverageFile));
 
 			bw.write ("\n , Index Name, Description, Issue Date, Maturity Date, Frequency, Coupon\n");
-		} catch (java.lang.Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 
 			try {
 				bw.close();
-			} catch (java.lang.Exception e1) {
+			} catch (Exception e1) {
 				e1.printStackTrace();
 			}
 
 			return false;
 		}
 
-		for (java.util.Map.Entry<java.lang.String, org.drip.product.params.CDXRefDataParams> meCDXRefData :
+		for (Map.Entry<String, org.drip.product.params.CDXRefDataParams> meCDXRefData :
 			org.drip.product.creator.CDXRefDataHolder._mapCDXRefData.entrySet()) {
 			org.drip.product.params.CDXRefDataParams cdxrdb = meCDXRefData.getValue();
 
 			if (null == cdxrdb) continue;
 
-			java.lang.String strIndexDetails = " , " + meCDXRefData.getKey() + ", " + cdxrdb._strIndexName +
+			String strIndexDetails = " , " + meCDXRefData.getKey() + ", " + cdxrdb._strIndexName +
 				", " + cdxrdb._dtIssue + ", " + cdxrdb._dtMaturity + ", " + cdxrdb._iFrequency + ", " + (int)
 					(10000. * cdxrdb._dblCoupon) + "\n";
 
 			try {
 				bw.write (strIndexDetails);
-			} catch (java.lang.Exception e) {
+			} catch (Exception e) {
 				e.printStackTrace();
 
 				try {
 					bw.close();
-				} catch (java.lang.Exception e1) {
+				} catch (Exception e1) {
 					e1.printStackTrace();
 				}
 			}
@@ -822,7 +770,7 @@ public class StandardCDXManager {
 
 		try {
 			bw.close();
-		} catch (java.lang.Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -840,9 +788,9 @@ public class StandardCDXManager {
 	 */
 
 	public static final org.drip.product.definition.BasketProduct MakeStandardCDX (
-		final java.lang.String strIndex,
+		final String strIndex,
 		final int iSeries,
-		final java.lang.String strTenor)
+		final String strTenor)
 	{
 		org.drip.product.definition.BasketProduct bpCDX = MakePresetStandardCDX (strIndex, iSeries,
 			strTenor);
@@ -863,9 +811,9 @@ public class StandardCDXManager {
 	 */
 
 	public static final org.drip.product.definition.BasketProduct GetOnTheRun (
-		final java.lang.String strIndex,
-		final org.drip.analytics.date.JulianDate dt,
-		final java.lang.String strTenor)
+		final String strIndex,
+		final JulianDate dt,
+		final String strTenor)
 	{
 		org.drip.product.definition.BasketProduct bpCDX = GetPresetOnTheRun (strIndex, dt, strTenor);
 
@@ -880,9 +828,9 @@ public class StandardCDXManager {
 	 * @return Set of the pre-set CDX index names
 	 */
 
-	public static final java.util.Set<java.lang.String> GetPresetIndexNames()
+	public static final Set<String> GetPresetIndexNames()
 	{
-		return _mmIndexFirstCouponSeries.keySet();
+		return _seriesFirstCouponDateToIndexSequence.keySet();
 	}
 
 	/**
@@ -891,7 +839,7 @@ public class StandardCDXManager {
 	 * @return Set of the pre-loaded CDX index names
 	 */
 
-	public static final java.util.Set<java.lang.String> GetPreLoadedIndexNames()
+	public static final Set<String> GetPreLoadedIndexNames()
 	{
 		return org.drip.product.creator.CDXRefDataHolder._mmCDXRDBFirstCouponSeries.keySet();
 	}
@@ -902,9 +850,9 @@ public class StandardCDXManager {
 	 * @return Set of the pre-set and the pre-loaded CDX index names
 	 */
 
-	public static final java.util.Set<java.lang.String> GetCDXNames()
+	public static final Set<String> GetCDXNames()
 	{
-		java.util.Set<java.lang.String> setstrIndex = new java.util.HashSet<java.lang.String>();
+		Set<String> setstrIndex = new HashSet<String>();
 
 		setstrIndex.addAll (GetPreLoadedIndexNames());
 
@@ -921,13 +869,13 @@ public class StandardCDXManager {
 	 * @return Map of the CDX series/first coupon dates
 	 */
 
-	public static final java.util.Map<org.drip.analytics.date.JulianDate, java.lang.Integer>
+	public static final Map<JulianDate, Integer>
 		GetPresetCDXSeriesMap (
-			final java.lang.String strCDXName)
+			final String strCDXName)
 	{
 		if (null == strCDXName || strCDXName.isEmpty()) return null;
 
-		return _mmIndexFirstCouponSeries.get (strCDXName);
+		return _seriesFirstCouponDateToIndexSequence.get (strCDXName);
 	}
 
 	/**
@@ -938,9 +886,9 @@ public class StandardCDXManager {
 	 * @return Map of the CDX series/first coupon dates
 	 */
 
-	public static final java.util.Map<org.drip.analytics.date.JulianDate, java.lang.Integer>
+	public static final Map<JulianDate, Integer>
 		GetPreLoadedCDXSeriesMap (
-			final java.lang.String strCDXName)
+			final String strCDXName)
 	{
 		if (null == strCDXName || strCDXName.isEmpty()) return null;
 
@@ -955,20 +903,20 @@ public class StandardCDXManager {
 	 * @return Map of the CDX series/first coupon dates
 	 */
 
-	public static final java.util.Map<org.drip.analytics.date.JulianDate, java.lang.Integer> GetCDXSeriesMap(
-		final java.lang.String strCDXName)
+	public static final Map<JulianDate, Integer> GetCDXSeriesMap(
+		final String strCDXName)
 	{
 		if (null == strCDXName || strCDXName.isEmpty()) return null;
 
-		java.util.Map<org.drip.analytics.date.JulianDate, java.lang.Integer> mapFirstCouponSeries = new
-			java.util.HashMap<org.drip.analytics.date.JulianDate, java.lang.Integer>();
+		Map<JulianDate, Integer> mapFirstCouponSeries = new
+			HashMap<JulianDate, Integer>();
 
-		java.util.Map<org.drip.analytics.date.JulianDate, java.lang.Integer> mapPresetFirstCouponSeries =
+		Map<JulianDate, Integer> mapPresetFirstCouponSeries =
 			GetPresetCDXSeriesMap (strCDXName);
 
 		if (null != mapPresetFirstCouponSeries) mapFirstCouponSeries.putAll (mapPresetFirstCouponSeries);
 
-		java.util.Map<org.drip.analytics.date.JulianDate, java.lang.Integer> mapPreLoadedFirstCouponSeries =
+		Map<JulianDate, Integer> mapPreLoadedFirstCouponSeries =
 			GetPreLoadedCDXSeriesMap (strCDXName);
 
 		if (null != mapPreLoadedFirstCouponSeries)
@@ -983,14 +931,14 @@ public class StandardCDXManager {
 	 * @return Name/description map for all the pre-set CDS indices
 	 */
 
-	public static final org.drip.analytics.support.CaseInsensitiveTreeMap<java.lang.String>
+	public static final org.drip.analytics.support.CaseInsensitiveTreeMap<String>
 		GetPresetCDXDescriptions()
 	{
-		org.drip.analytics.support.CaseInsensitiveTreeMap<java.lang.String> mapCDXDescr = new
-			org.drip.analytics.support.CaseInsensitiveTreeMap<java.lang.String>();
+		org.drip.analytics.support.CaseInsensitiveTreeMap<String> mapCDXDescr = new
+			org.drip.analytics.support.CaseInsensitiveTreeMap<String>();
 
-		for (java.util.Map.Entry<java.lang.String, org.drip.product.params.StandardCDXParams> meCDXRefData :
-			_mapStandardCDXParams.entrySet())
+		for (Map.Entry<String, org.drip.product.params.StandardCDXParams> meCDXRefData :
+			_indexParamsMap.entrySet())
 			mapCDXDescr.put (meCDXRefData.getKey(), meCDXRefData.getKey());
 
 		return mapCDXDescr;
@@ -1002,13 +950,13 @@ public class StandardCDXManager {
 	 * @return Name/description map for all the pre-loaded CDS indices
 	 */
 
-	public static final org.drip.analytics.support.CaseInsensitiveTreeMap<java.lang.String>
+	public static final org.drip.analytics.support.CaseInsensitiveTreeMap<String>
 		GetPreLoadedCDXDescriptions()
 	{
-		org.drip.analytics.support.CaseInsensitiveTreeMap<java.lang.String> mapCDXDescr = new
-			org.drip.analytics.support.CaseInsensitiveTreeMap<java.lang.String>();
+		org.drip.analytics.support.CaseInsensitiveTreeMap<String> mapCDXDescr = new
+			org.drip.analytics.support.CaseInsensitiveTreeMap<String>();
 
-		for (java.util.Map.Entry<java.lang.String, org.drip.product.params.CDXRefDataParams> meCDXRefData :
+		for (Map.Entry<String, org.drip.product.params.CDXRefDataParams> meCDXRefData :
 			org.drip.product.creator.CDXRefDataHolder._mapCDXRefData.entrySet())
 			mapCDXDescr.put (meCDXRefData.getKey(), meCDXRefData.getValue()._strIndexName);
 
@@ -1021,33 +969,16 @@ public class StandardCDXManager {
 	 * @return Name/description map for all the CDS indices
 	 */
 
-	public static final org.drip.analytics.support.CaseInsensitiveTreeMap<java.lang.String>
+	public static final org.drip.analytics.support.CaseInsensitiveTreeMap<String>
 		GetCDXDescriptions()
 	{
-		org.drip.analytics.support.CaseInsensitiveTreeMap<java.lang.String> mapCDXDescr = new
-			org.drip.analytics.support.CaseInsensitiveTreeMap<java.lang.String>();
+		org.drip.analytics.support.CaseInsensitiveTreeMap<String> mapCDXDescr = new
+			org.drip.analytics.support.CaseInsensitiveTreeMap<String>();
 
 		mapCDXDescr.putAll (GetPreLoadedCDXDescriptions());
 
 		mapCDXDescr.putAll (GetPresetCDXDescriptions());
 
 		return mapCDXDescr;
-	}
-
-	/**
-	 * Entry Point
-	 * 
-	 * @param astrArgs Argument Array
-	 * 
-	 * @throws java.lang.Exception Propagate Exception Encountered
-	 */
-
-	public static final void main (
-		final java.lang.String[] astrArgs)
-		throws java.lang.Exception
-	{
-		if (!InitStandardCDXSeries()) System.out.println ("Cannot initialize InitStandardCDXSeries!");
-
-		DumpIndexDetails ("C:\\CreditAnalytics\\docs\\CDXCoverage.csv");
 	}
 }

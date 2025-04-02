@@ -86,7 +86,11 @@ package org.drip.service.env;
  * 	the following Functions:
  * 
  * <ul>
- * 		<li><i>InvocationRecord</i> Constructor</li>
+ * 		<li>Initialize the Invocation Manager</li>
+ * 		<li>Setup the Invocation Manager</li>
+ * 		<li>Retrieve the Latest Build Record</li>
+ * 		<li>Retrieve the Invocation Record</li>
+ * 		<li>Terminate the Invocation Manager</li>
  * </ul>
  *
  *	<br>
@@ -174,7 +178,7 @@ public class InvocationManager
 	 * @return The Latest Build Record
 	 */
 
-	public static final org.drip.service.env.BuildRecord latestBuildRecord()
+	public static final BuildRecord latestBuildRecord()
 	{
 		return _buildRecordLatest;
 	}
@@ -185,7 +189,7 @@ public class InvocationManager
 	 * @return The Invocation Record
 	 */
 
-	public static final org.drip.service.env.InvocationRecord invocationRecord()
+	public static final InvocationRecord invocationRecord()
 	{
 		return _invocationRecord;
 	}
@@ -198,7 +202,9 @@ public class InvocationManager
 
 	public static final boolean Terminate()
 	{
-		if (!_invocationRecord.recordFinish()) return false;
+		if (!_invocationRecord.recordFinish()) {
+			return false;
+		}
 
 		System.out.println();
 
@@ -210,8 +216,9 @@ public class InvocationManager
 
 		System.out.println ("\t|    Build Version  => " + _buildRecordLatest.dripVersion() + " multi");
 
-		System.out.println ("\t|    Build JVM (TM) => " + _buildRecordLatest.javaVersion() +
-			" mixed mode, sharing");
+		System.out.println (
+			"\t|    Build JVM (TM) => " + _buildRecordLatest.javaVersion() + " mixed mode, sharing"
+		);
 
 		System.out.println ("\t|    Build Snap     => " + _buildRecordLatest.timeStamp());
 

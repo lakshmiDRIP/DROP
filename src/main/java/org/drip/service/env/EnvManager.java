@@ -1,11 +1,19 @@
 
 package org.drip.service.env;
 
+import java.sql.Statement;
+
+import org.drip.analytics.daycount.Convention;
+import org.drip.analytics.support.Logger;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -86,39 +94,43 @@ package org.drip.service.env;
 
 /**
  * <i>EnvManager</i> sets the environment/connection parameters, and populates the market parameters for the
- * given EOD.
+ * 	given EOD. It provides the following Functions:
  * 
- * <br><br>
- *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationSupportLibrary.md">Computation Support</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/README.md">Environment, Product/Definition Containers, and Scenario/State Manipulation APIs</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/env/README.md">Library Module Loader Environment Manager</a></li>
- *  </ul>
- * <br><br>
+ * <ul>
+ * 		<li>Initialize the Invocation Manager</li>
+ * </ul>
+ *
+ *	<br>
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationSupportLibrary.md">Computation Support</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/README.md">Environment, Product/Definition Containers, and Scenario/State Manipulation APIs</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/env/README.md">Library Module Loader Environment Manager</a></td></tr>
+ *  </table>
+ *	<br>
  * 
  * @author Lakshmi Krishnamurthy
  */
 
-public class EnvManager {
-	private static boolean s_bInvocationCapture = false;
+public class EnvManager
+{
+	private static boolean _invocationCapture = false;
 
 	/**
 	 * Initialize the logger, the database connections, the day count parameters, and day count objects.
 	 * 
-	 * @param strConfig String representing the full path of the configuration file
-	 * @param bInvocationCapture TRUE - Run the Invocation Capture
+	 * @param configPath String representing the full path of the configuration file
+	 * @param invocationCapture TRUE - Run the Invocation Capture
 	 * 
 	 * @return SQL Statement representing the initialized object.
 	 */
 
-	public static final java.sql.Statement InitEnv (
-		final java.lang.String strConfig,
-		final boolean bInvocationCapture)
+	public static final Statement InitEnv (
+		final String configPath,
+		final boolean invocationCapture)
 	{
-		if (s_bInvocationCapture = bInvocationCapture)
-		{
-			if (!org.drip.service.env.InvocationManager.Init())
+		if (_invocationCapture = invocationCapture) {
+			if (!InvocationManager.Init())
 			{
 				System.out.println ("EnvManager::InitEnv => Cannot Initialize Invocation Manager!");
 
@@ -126,19 +138,19 @@ public class EnvManager {
 			}
 		}
 
-		if (!org.drip.analytics.support.Logger.Init (strConfig)) {
+		if (!Logger.Init (configPath)) {
 			System.out.println ("EnvManager::InitEnv => Cannot Initialize Logger Manager!");
 
 			return null;
 		}
 
-		if (!org.drip.service.env.CacheManager.Init()) {
+		if (!CacheManager.Init()) {
 			System.out.println ("EnvManager::InitEnv => Cannot Initialize Cache Manager!");
 
 			return null;
 		}
 
-		if (!org.drip.analytics.daycount.Convention.Init (strConfig)) {
+		if (!Convention.Init (configPath)) {
 			System.out.println ("EnvManager::InitEnv => Cannot Initialize Day Count Conventions!");
 
 			return null;
@@ -282,7 +294,7 @@ public class EnvManager {
 			return null;
 		}
 
-		if (s_bInvocationCapture)
+		if (_invocationCapture)
 		{
 			if (!org.drip.service.env.InvocationManager.Setup())
 			{
@@ -292,7 +304,7 @@ public class EnvManager {
 			}
 		}
 
-		return org.drip.param.config.ConfigLoader.OracleInit (strConfig);
+		return org.drip.param.config.ConfigLoader.OracleInit (configPath);
 	}
 
 	/**
@@ -320,6 +332,6 @@ public class EnvManager {
 
 	public static final boolean TerminateEnv()
 	{
-		return s_bInvocationCapture ? org.drip.service.env.InvocationManager.Terminate() : true;
+		return _invocationCapture ? org.drip.service.env.InvocationManager.Terminate() : true;
 	}
 }
