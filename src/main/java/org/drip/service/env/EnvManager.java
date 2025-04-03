@@ -5,6 +5,27 @@ import java.sql.Statement;
 
 import org.drip.analytics.daycount.Convention;
 import org.drip.analytics.support.Logger;
+import org.drip.capital.env.CapitalEstimationContextManager;
+import org.drip.capital.env.SystemicScenarioDefinitionContextManager;
+import org.drip.capital.env.SystemicScenarioDesignContextManager;
+import org.drip.market.definition.FXSettingContainer;
+import org.drip.market.definition.IBORIndexContainer;
+import org.drip.market.definition.OvernightIndexContainer;
+import org.drip.market.exchange.DeliverableSwapFuturesContainer;
+import org.drip.market.exchange.FuturesOptionsContainer;
+import org.drip.market.exchange.ShortTermFuturesContainer;
+import org.drip.market.exchange.TreasuryFuturesContractContainer;
+import org.drip.market.exchange.TreasuryFuturesConventionContainer;
+import org.drip.market.exchange.TreasuryFuturesOptionContainer;
+import org.drip.market.issue.TreasurySettingContainer;
+import org.drip.market.otc.CreditIndexConventionContainer;
+import org.drip.market.otc.CrossFloatConventionContainer;
+import org.drip.market.otc.IBORFixedFloatContainer;
+import org.drip.market.otc.IBORFloatFloatContainer;
+import org.drip.market.otc.OvernightFixedFloatContainer;
+import org.drip.market.otc.SwapOptionSettlementContainer;
+import org.drip.param.config.ConfigLoader;
+import org.drip.simm.common.ISDASettingsContainer;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -97,7 +118,9 @@ import org.drip.analytics.support.Logger;
  * 	given EOD. It provides the following Functions:
  * 
  * <ul>
- * 		<li>Initialize the Invocation Manager</li>
+ * 		<li>Initialize the logger, the database connections, the day count parameters, and day count objects</li>
+ * 		<li>Initialize the Environment Setup</li>
+ * 		<li>Terminate the Environment Frame Context</li>
  * </ul>
  *
  *	<br>
@@ -130,8 +153,7 @@ public class EnvManager
 		final boolean invocationCapture)
 	{
 		if (_invocationCapture = invocationCapture) {
-			if (!InvocationManager.Init())
-			{
+			if (!InvocationManager.Init()) {
 				System.out.println ("EnvManager::InitEnv => Cannot Initialize Invocation Manager!");
 
 				return null;
@@ -156,172 +178,173 @@ public class EnvManager
 			return null;
 		}
 
-		if (!org.drip.service.env.StandardCDXManager.InitializeSeries()) {
+		if (!StandardCDXManager.InitializeSeries()) {
 			System.out.println ("EnvManager::InitEnv => Cannot Initialize standard CDX Indexes!");
 
 			return null;
 		}
 
-		if (!org.drip.market.definition.OvernightIndexContainer.Init()) {
+		if (!OvernightIndexContainer.Init()) {
 			System.out.println ("EnvManager::InitEnv => Cannot Initialize Overnight Indexes!");
 
 			return null;
 		}
 
-		if (!org.drip.market.definition.IBORIndexContainer.Init()) {
+		if (!IBORIndexContainer.Init()) {
 			System.out.println ("EnvManager::InitEnv => Cannot Initialize IBOR Indexes!");
 
 			return null;
 		}
 
-		if (!org.drip.market.exchange.ShortTermFuturesContainer.Init()) {
+		if (!ShortTermFuturesContainer.Init()) {
 			System.out.println ("EnvManager::InitEnv => Cannot Initialize Short Term Futures!");
 
 			return null;
 		}
 
-		if (!org.drip.market.exchange.FuturesOptionsContainer.Init()) {
+		if (!FuturesOptionsContainer.Init()) {
 			System.out.println ("EnvManager::InitEnv => Cannot Initialize Short Term Futures Options!");
 
 			return null;
 		}
 
-		if (!org.drip.market.otc.IBORFixedFloatContainer.Init()) {
-			System.out.println
-				("EnvManager::InitEnv => Cannot Initialize IBOR Fix-Float Convention Settings!");
+		if (!IBORFixedFloatContainer.Init()) {
+			System.out.println (
+				"EnvManager::InitEnv => Cannot Initialize IBOR Fix-Float Convention Settings!"
+			);
 
 			return null;
 		}
 
-		if (!org.drip.market.otc.IBORFloatFloatContainer.Init()) {
-			System.out.println
-				("EnvManager::InitEnv => Cannot Initialize IBOR Float-Float Convention Settings!");
+		if (!IBORFloatFloatContainer.Init()) {
+			System.out.println (
+				"EnvManager::InitEnv => Cannot Initialize IBOR Float-Float Convention Settings!"
+			);
 
 			return null;
 		}
 
-		if (!org.drip.market.otc.OvernightFixedFloatContainer.Init()) {
-			System.out.println
-				("EnvManager::InitEnv => Cannot Initialize Overnight Fix-Float Convention Settings!");
+		if (!OvernightFixedFloatContainer.Init()) {
+			System.out.println (
+				"EnvManager::InitEnv => Cannot Initialize Overnight Fix-Float Convention Settings!"
+			);
 
 			return null;
 		}
 
-		if (!org.drip.market.exchange.DeliverableSwapFuturesContainer.Init()) {
-			System.out.println ("EnvManager::InitEnv => Cannot Initialize Deliverable Swap Futures Settings!");
+		if (!DeliverableSwapFuturesContainer.Init()) {
+			System.out.println (
+				"EnvManager::InitEnv => Cannot Initialize Deliverable Swap Futures Settings!"
+			);
 
 			return null;
 		}
 
-		if (!org.drip.market.otc.CrossFloatConventionContainer.Init()) {
-			System.out.println
-				("EnvManager::InitEnv => Cannot Initialize Cross-Currency Float-Float Convention Settings!");
+		if (!CrossFloatConventionContainer.Init()) {
+			System.out.println (
+				"EnvManager::InitEnv => Cannot Initialize Cross-Currency Float-Float Convention Settings!"
+			);
 
 			return null;
 		}
 
-		if (!org.drip.market.otc.SwapOptionSettlementContainer.Init()) {
-			System.out.println
-				("EnvManager::InitEnv => Cannot Initialize the Swap Option Settlement Conventions!");
+		if (!SwapOptionSettlementContainer.Init()) {
+			System.out.println (
+				"EnvManager::InitEnv => Cannot Initialize the Swap Option Settlement Conventions!"
+			);
 
 			return null;
 		}
 
-		if (!org.drip.market.otc.CreditIndexConventionContainer.Init()) {
+		if (!CreditIndexConventionContainer.Init()) {
 			System.out.println ("EnvManager::InitEnv => Cannot Initialize the Credit Index Conventions!");
 
 			return null;
 		}
 
-		if (!org.drip.market.exchange.TreasuryFuturesConventionContainer.Init()) {
-			System.out.println
-				("EnvManager::InitEnv => Cannot Initialize the Bond Futures Convention Conventions!");
+		if (!TreasuryFuturesConventionContainer.Init()) {
+			System.out.println (
+				"EnvManager::InitEnv => Cannot Initialize the Bond Futures Convention Conventions!"
+			);
 
 			return null;
 		}
 
-		if (!org.drip.market.exchange.TreasuryFuturesOptionContainer.Init()) {
-			System.out.println
-				("EnvManager::InitEnv => Cannot Initialize the Bond Futures Option Conventions!");
+		if (!TreasuryFuturesOptionContainer.Init()) {
+			System.out.println (
+				"EnvManager::InitEnv => Cannot Initialize the Bond Futures Option Conventions!"
+			);
 
 			return null;
 		}
 
-		if (!org.drip.market.definition.FXSettingContainer.Init()) {
+		if (!FXSettingContainer.Init()) {
 			System.out.println ("EnvManager::InitEnv => Cannot Initialize the FX Conventions!");
 
 			return null;
 		}
 
-		if (!org.drip.market.issue.TreasurySettingContainer.Init()) {
+		if (!TreasurySettingContainer.Init()) {
 			System.out.println ("EnvManager::InitEnv => Cannot Initialize the Treasury Settings!");
 
 			return null;
 		}
 
-		if (!org.drip.market.exchange.TreasuryFuturesContractContainer.Init()) {
+		if (!TreasuryFuturesContractContainer.Init()) {
 			System.out.println ("EnvManager::InitEnv => Cannot Initialize the Treasury Futures Contract!");
 
 			return null;
 		}
 
-		if (!org.drip.simm.common.ISDASettingsContainer.Init()) {
+		if (!ISDASettingsContainer.Init()) {
 			System.out.println ("EnvManager::InitEnv => Cannot Initialize ISDA SIMM 2.0 Specifications!");
 
 			return null;
 		}
 
-		if (!org.drip.capital.env.CapitalEstimationContextManager.Init())
-		{
-			System.out.println
-				("EnvManager::InitEnv => Cannot Initialize Capital Estimation Context Manager!");
+		if (!CapitalEstimationContextManager.Init()) {
+			System.out.println (
+				"EnvManager::InitEnv => Cannot Initialize Capital Estimation Context Manager!"
+			);
 
 			return null;
 		}
 
-		if (!org.drip.capital.env.SystemicScenarioDesignContextManager.Init())
-		{
+		if (!SystemicScenarioDesignContextManager.Init()) {
 			System.out.println ("EnvManager::InitEnv => Cannot Initialize GSST Design Context Manager!");
 
 			return null;
 		}
 
-		if (!org.drip.capital.env.SystemicScenarioDefinitionContextManager.Init())
-		{
-			System.out.println
-				("EnvManager::InitEnv => Cannot Initialize GSST Definition Context Manager!");
+		if (!SystemicScenarioDefinitionContextManager.Init()) {
+			System.out.println ("EnvManager::InitEnv => Cannot Initialize GSST Definition Context Manager!");
 
 			return null;
 		}
 
-		if (_invocationCapture)
-		{
-			if (!org.drip.service.env.InvocationManager.Setup())
-			{
+		if (_invocationCapture) {
+			if (!InvocationManager.Setup()) {
 				System.out.println ("EnvManager::InitEnv => Cannot Setup Invocation Manager!");
 
 				return null;
 			}
 		}
 
-		return org.drip.param.config.ConfigLoader.OracleInit (configPath);
+		return ConfigLoader.OracleInit (configPath);
 	}
 
 	/**
 	 * Initialize the Environment Setup
 	 * 
-	 * @param strConfig String representing the full path of the configuration file
+	 * @param configPath String representing the full path of the configuration file
 	 * 
 	 * @return SQL Statement representing the initialized object.
 	 */
 
-	public static final java.sql.Statement InitEnv (
-		final java.lang.String strConfig)
+	public static final Statement InitEnv (
+		final String configPath)
 	{
-		return InitEnv (
-			strConfig,
-			true
-		);
+		return InitEnv (configPath, true);
 	}
 
 	/**
@@ -332,6 +355,6 @@ public class EnvManager
 
 	public static final boolean TerminateEnv()
 	{
-		return _invocationCapture ? org.drip.service.env.InvocationManager.Terminate() : true;
+		return _invocationCapture ? InvocationManager.Terminate() : true;
 	}
 }

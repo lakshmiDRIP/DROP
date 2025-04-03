@@ -177,7 +177,7 @@ public class BuiltInCDSPortfolioDefinitions {
 		 * Descriptions of all the built-in CDX names
 		 */
 
-		CaseInsensitiveTreeMap<String> mapCDXDescr = StandardCDXManager.GetCDXDescriptions();
+		CaseInsensitiveTreeMap<String> mapCDXDescr = StandardCDXManager.GetIndexDescriptions();
 
 		/*
 		 * Construct the on-the run CDX.EM 5Y corresponding to T - 1Y

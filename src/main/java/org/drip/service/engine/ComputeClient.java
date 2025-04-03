@@ -1,11 +1,16 @@
 
 package org.drip.service.engine;
 
+import java.net.Socket;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -80,24 +85,30 @@ package org.drip.service.engine;
  */
 
 /**
- * <i>ComputeClient</i> contains the Functionality behind the DROP API Compute Service Client.
+ * <i>ComputeClient</i> contains the Functionality behind the DROP API Compute Service Client. It provides
+ * 	the following Functions:
  * 
- * <br><br>
- *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationSupportLibrary.md">Computation Support</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/README.md">Environment, Product/Definition Containers, and Scenario/State Manipulation APIs</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/engine/README.md">Compute Engine Request-Response Thunker</a></li>
- *  </ul>
- * <br><br>
+ * <ul>
+ * 		<li>Initialize the Environment Setup</li>
+ * </ul>
+ *
+ * <br>
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationSupportLibrary.md">Computation Support</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/README.md">Environment, Product/Definition Containers, and Scenario/State Manipulation APIs</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/engine/README.md">Compute Engine Request-Response Thunker</a></td></tr>
+ *  </table>
+ * <br>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class ComputeClient {
-	private int _iComputeServerPort = -1;
-	private java.lang.String _strComputeServerHost = "";
-	private java.net.Socket _socketComputeServer = null;
+public class ComputeClient
+{
+	private int _serverPort = -1;
+	private String _serverHost = "";
+	private Socket _socketServer = null;
 
 	/**
 	 * Construct Standard LocalHost-based Instance of the ComputeClient
@@ -112,7 +123,7 @@ public class ComputeClient {
 				org.drip.service.engine.ComputeServer.DRIP_COMPUTE_ENGINE_PORT);
 
 			return cc.initialize() ? cc : null;
-		} catch (java.lang.Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -120,22 +131,22 @@ public class ComputeClient {
 	}
 
 	/**
-	 * ComputeClient Constructor
+	 * <i>ComputeClient</i> Constructor
 	 * 
-	 * @param strComputeServerHost The Compute Server Host
-	 * @param iComputeServerPort The Compute Server Port
+	 * @param serverHost The Compute Server Host
+	 * @param serverPort The Compute Server Port
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public ComputeClient (
-		final java.lang.String strComputeServerHost,
-		final int iComputeServerPort)
-		throws java.lang.Exception
+		final String serverHost,
+		final int serverPort)
+		throws Exception
 	{
-		if (null == (_strComputeServerHost = strComputeServerHost) || 0 >= (_iComputeServerPort =
-			iComputeServerPort))
-			throw new java.lang.Exception ("ComputeClient Constructor => Invalid Inputs!");
+		if (null == (_serverHost = serverHost) || 0 >= (_serverPort = serverPort)) {
+			throw new Exception ("ComputeClient Constructor => Invalid Inputs!");
+		}
 	}
 
 	/**
@@ -144,9 +155,9 @@ public class ComputeClient {
 	 * @return The Compute Server Host
 	 */
 
-	public java.lang.String computeServerHost()
+	public String computeServerHost()
 	{
-		return _strComputeServerHost;
+		return _serverHost;
 	}
 
 	/**
@@ -157,7 +168,7 @@ public class ComputeClient {
 
 	public int computeServerPort()
 	{
-		return _iComputeServerPort;
+		return _serverPort;
 	}
 
 	/**
@@ -169,10 +180,10 @@ public class ComputeClient {
 	public boolean initialize()
 	{
 		try {
-	    	_socketComputeServer = new java.net.Socket (_strComputeServerHost, _iComputeServerPort);
+			_socketServer = new java.net.Socket (_serverHost, _serverPort);
 
 	    	return true;
-		} catch (java.lang.Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -193,18 +204,18 @@ public class ComputeClient {
 		if (!org.drip.service.engine.RequestResponseDecorator.AffixRequestHeaders (jsonRequest)) return null;
 
 		try {
-	    	java.io.PrintWriter pw = new java.io.PrintWriter (_socketComputeServer.getOutputStream(), true);
+	    	java.io.PrintWriter pw = new java.io.PrintWriter (_socketServer.getOutputStream(), true);
 
 	    	pw.write (jsonRequest.toJSONString() + "\n");
 
 	    	pw.flush();
 
-	    	java.lang.Object objResponse = org.drip.service.representation.JSONValue.parse (new java.io.BufferedReader
-	    		(new java.io.InputStreamReader (_socketComputeServer.getInputStream())).readLine());
+	    	Object objResponse = org.drip.service.representation.JSONValue.parse (new java.io.BufferedReader
+	    		(new java.io.InputStreamReader (_socketServer.getInputStream())).readLine());
 
 			return null == objResponse || !(objResponse instanceof org.drip.service.representation.JSONObject) ? null :
 				(org.drip.service.representation.JSONObject) objResponse;
-		} catch (java.lang.Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -216,12 +227,12 @@ public class ComputeClient {
 	 * 
 	 * @param astrArgs Argument Array
 	 * 
-	 * @throws java.lang.Exception Propagate Exception Encountered
+	 * @throws Exception Propagate Exception Encountered
 	 */
 
 	@SuppressWarnings ("unchecked") public static final void main (
-		final java.lang.String[] astrArgs)
-		throws java.lang.Exception
+		final String[] astrArgs)
+		throws Exception
 	{
 		org.drip.service.env.EnvManager.InitEnv ("");
 

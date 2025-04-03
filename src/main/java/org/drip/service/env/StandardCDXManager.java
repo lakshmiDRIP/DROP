@@ -111,25 +111,19 @@ import org.drip.product.params.StandardCDXParams;
  * 
  * <br><br>
  *  <ul>
- *  	<li>
- *  		Retrieve the full set of pre-set/pre-loaded CDX names/descriptions.
- *  	</li>
- *  	<li>
- *  		Retrieve all the CDX's given an index name.
- *  	</li>
- *  	<li>
- *  		Get the index, index series, and the effective/maturity dates for a given CDX.
- *  	</li>
- *  	<li>
- *  		Get all the on-the-runs for an index, date, and tenor.
- *  	</li>
- *  	<li>
- *  		Retrieve the full basket product corresponding to NA/EU/ASIA IG/HY/EM and other available
- *  			standard CDX.
- *  	</li>
- *  	<li>
- *  		Build a custom CDX product.
- *  	</li>
+ * 		<li>Initialize the Standard CDX Series</li>
+ * 		<li>Write the Index Details to a File</li>
+ * 		<li>Create a standard CDX from the index code, the index series, and the tenor</li>
+ * 		<li>Retrieve the on-the-run for the index and tenor corresponding to the specified date</li>
+ * 		<li>Retrieve a set of all the pre-set CDX index names</li>
+ * 		<li>Retrieve a set of all the pre-loaded CDX index names</li>
+ * 		<li>Retrieve the comprehensive set of pre-set and pre-loaded CDX index names</li>
+ * 		<li>Return the full set of pre-set CDX series/first coupon date pairs for the given CDX</li>
+ * 		<li>Return the full set of pre-loaded CDX series/first coupon date pairs for the given CDX</li>
+ * 		<li>Return the full set of CDX series/first coupon date pairs for the given CDX</li>
+ * 		<li>Retrieve the name/description map for all the pre-set CDS indices</li>
+ * 		<li>Retrieve the name/description map for all the pre-loaded CDS indices</li>
+ * 		<li>Retrieve the name/description map for all the CDS indices</li>
  *  </ul>
  * 
  *	<br>
@@ -840,7 +834,7 @@ public class StandardCDXManager
 	}
 
 	/**
-	 * Create a standard CDX from the index code, the index series, and the tenor.
+	 * Create a standard CDX from the index code, the index series, and the tenor
 	 * 
 	 * @param index The Index Code (CDX.NA.IG, CDX.NA.HY, etc)
 	 * @param series Index Series Number
@@ -1025,16 +1019,14 @@ public class StandardCDXManager
 	 * @return Name/description map for all the CDS indices
 	 */
 
-	public static final org.drip.analytics.support.CaseInsensitiveTreeMap<String>
-		GetCDXDescriptions()
+	public static final CaseInsensitiveTreeMap<String> GetIndexDescriptions()
 	{
-		org.drip.analytics.support.CaseInsensitiveTreeMap<String> mapCDXDescr = new
-			org.drip.analytics.support.CaseInsensitiveTreeMap<String>();
+		CaseInsensitiveTreeMap<String> indexDescriptionMap = new CaseInsensitiveTreeMap<String>();
 
-		mapCDXDescr.putAll (GetPreLoadedIndexDescriptions());
+		indexDescriptionMap.putAll (GetPreLoadedIndexDescriptions());
 
-		mapCDXDescr.putAll (GetPresetIndexDescriptions());
+		indexDescriptionMap.putAll (GetPresetIndexDescriptions());
 
-		return mapCDXDescr;
+		return indexDescriptionMap;
 	}
 }
