@@ -171,7 +171,7 @@ public class BuiltInCDSPortfolioDefinitions {
 		 * List of all the built-in CDX names
 		 */
 
-		Set<String> setstrCDXNames = StandardCDXManager.GetCDXNames();
+		Set<String> setstrCDXNames = StandardCDXManager.GetIndexNames();
 
 		/*
 		 * Descriptions of all the built-in CDX names
@@ -203,7 +203,7 @@ public class BuiltInCDSPortfolioDefinitions {
 		 * Retrieve the full set of date/index series set for ITRAXX.ENERGY
 		 */
 
-		Map<JulianDate, Integer> mapCDXSeries = StandardCDXManager.GetCDXSeriesMap ("ITRAXX.ENERGY");
+		Map<JulianDate, Integer> mapCDXSeries = StandardCDXManager.GetIndexSeriesMap ("ITRAXX.ENERGY");
 
 		// System.out.println (bpCDX.name() + ": " + bpCDX.effective() + "=>" + bpCDX.maturity());
 

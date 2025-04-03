@@ -1,6 +1,8 @@
 
 package org.drip.service.env;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -14,6 +16,7 @@ import org.drip.product.creator.CDSBasketBuilder;
 import org.drip.product.creator.CDXRefDataHolder;
 import org.drip.product.definition.BasketProduct;
 import org.drip.product.params.CDXIdentifier;
+import org.drip.product.params.CDXRefDataParams;
 import org.drip.product.params.StandardCDXParams;
 
 /*
@@ -607,6 +610,113 @@ public class StandardCDXManager
 		return cdxBasketProduct;
 	}
 
+	private static final BasketProduct MakePreLoadedIndex (
+		final String index,
+		final int series,
+		final String tenor)
+	{
+		if (null == index || index.isEmpty() || null == tenor || tenor.isEmpty()) {
+			return null;
+		}
+
+		CDXIdentifier cdxIdentifier = null;
+
+		try {
+			cdxIdentifier = new CDXIdentifier (series, 1, index, tenor);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		if (null == cdxIdentifier) {
+			return null;
+		}
+
+		String cdxCode = cdxIdentifier.getCode();
+
+		if (null == cdxCode || cdxCode.isEmpty()) {
+			return null;
+		}
+
+		CDXRefDataParams cdxRefDataParams = CDXRefDataHolder._mapCDXRefData.get (cdxCode);
+
+		if (null == cdxRefDataParams) {
+			return null;
+		}
+
+		String[] creditCurveNameArray = new String[cdxRefDataParams._iOriginalComponentCount];
+
+		for (int creditCurveIndex = 0;
+			creditCurveIndex < cdxRefDataParams._iOriginalComponentCount;
+			++creditCurveIndex)
+		{
+			creditCurveNameArray[creditCurveIndex] = "CC" + (creditCurveIndex + 1);
+		}
+
+		return CDSBasketBuilder.MakeCDX (
+			cdxRefDataParams._dtMaturity.subtractTenor (cdxRefDataParams._iIndexLifeSpan + "Y"),
+			cdxRefDataParams._dtMaturity,
+			cdxRefDataParams._dblCoupon,
+			cdxRefDataParams._strCurrency,
+			creditCurveNameArray,
+			cdxRefDataParams._strIndexClass + "." + cdxRefDataParams._strIndexGroupName + "." +
+				cdxRefDataParams._iIndexLifeSpan + "Y." + cdxRefDataParams._iIndexSeries + "." +
+				cdxRefDataParams._iIndexVersion
+		);
+	}
+
+	private static final BasketProduct GetPresetOnTheRun (
+		final String index,
+		final JulianDate date,
+		final String tenor)
+	{
+		if (null == date || null == index || index.isEmpty() || null == tenor || tenor.isEmpty()) {
+			return null;
+		}
+
+		Map<JulianDate, Integer> firstCouponDateSeriesMap =
+			_seriesFirstCouponDateToIndexSequence.get (index);
+
+		JulianDate firstCouponDate = date.nextCreditIMM (3);
+
+		if (null == firstCouponDate || null == firstCouponDateSeriesMap) {
+			return null;
+		}
+
+		if (null == firstCouponDateSeriesMap.get (firstCouponDate)) {
+			firstCouponDate = firstCouponDate.nextCreditIMM (3);
+		}
+
+		return null == firstCouponDate || null == firstCouponDateSeriesMap.get (firstCouponDate) ? null :
+			MakePresetIndex (index, firstCouponDateSeriesMap.get (firstCouponDate), tenor);
+	}
+
+	private static final BasketProduct GetPreLoadedOnTheRun (
+		final String index,
+		final JulianDate date,
+		final String tenor)
+	{
+		if (null == date || null == index || index.isEmpty() || null == tenor || tenor.isEmpty()) {
+			return null;
+		}
+
+		Map<JulianDate, Integer> firstCouponDateSeriesMap =
+			CDXRefDataHolder._mmCDXRDBFirstCouponSeries.get (index);
+
+		JulianDate firstCouponDate = date.nextCreditIMM (3);
+
+		if (null == firstCouponDate || null == firstCouponDateSeriesMap) {
+			return null;
+		}
+
+		if (null == firstCouponDateSeriesMap.get (firstCouponDate)) {
+			firstCouponDate = firstCouponDate.nextCreditIMM (3);
+		}
+
+		Integer series = null == firstCouponDate ? null : firstCouponDateSeriesMap.get (firstCouponDate);
+
+		return null == series ? null : MakePreLoadedIndex (index, series, tenor);
+	}
+
 	/**
 	 * Initialize the Standard CDX Series
 	 * 
@@ -658,105 +768,34 @@ public class StandardCDXManager
 		return CDXRefDataHolder.InitFullCDXRefDataSet();
 	}
 
-	private static final org.drip.product.definition.BasketProduct MakePreLoadedStandardCDX (
-		final String strIndex,
-		final int iSeries,
-		final String strTenor)
-	{
-		if (null == strIndex || strIndex.isEmpty() || null == strTenor || strTenor.isEmpty()) return null;
-
-		org.drip.product.params.CDXIdentifier cdxID = null;
-
-		try {
-			cdxID = new org.drip.product.params.CDXIdentifier (iSeries, 1, strIndex, strTenor);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-		if (null == cdxID) return null;
-
-		String strCDXCode = cdxID.getCode();
-
-		if (null == strCDXCode || strCDXCode.isEmpty()) return null;
-
-		org.drip.product.params.CDXRefDataParams cdxrdb =
-			org.drip.product.creator.CDXRefDataHolder._mapCDXRefData.get (strCDXCode);
-
-		if (null == cdxrdb) return null;
-
-		String[] astrCC = new String[cdxrdb._iOriginalComponentCount];
-
-		for (int i = 0; i < cdxrdb._iOriginalComponentCount; ++i)
-			astrCC[i] = "CC" + (i + 1);
-
-		return org.drip.product.creator.CDSBasketBuilder.MakeCDX (cdxrdb._dtMaturity.subtractTenor
-			(cdxrdb._iIndexLifeSpan + "Y"), cdxrdb._dtMaturity, cdxrdb._dblCoupon, cdxrdb._strCurrency,
-				astrCC, cdxrdb._strIndexClass + "." + cdxrdb._strIndexGroupName + "." +
-					cdxrdb._iIndexLifeSpan + "Y." + cdxrdb._iIndexSeries + "." + cdxrdb._iIndexVersion);
-	}
-
-	private static final org.drip.product.definition.BasketProduct GetPresetOnTheRun (
-		final String strIndex,
-		final JulianDate dt,
-		final String strTenor)
-	{
-		if (null == dt || null == strIndex || strIndex.isEmpty() || null == strTenor || strTenor.isEmpty())
-			return null;
-
-		Map<JulianDate, Integer> mapFirstCouponSeries =
-				_seriesFirstCouponDateToIndexSequence.get (strIndex);
-
-		JulianDate dtFirstCoupon = dt.nextCreditIMM (3);
-
-		if (null == dtFirstCoupon || null == mapFirstCouponSeries) return null;
-
-		if (null == mapFirstCouponSeries.get (dtFirstCoupon))
-			dtFirstCoupon = dtFirstCoupon.nextCreditIMM (3);
-
-		if (null == dtFirstCoupon || null == mapFirstCouponSeries.get (dtFirstCoupon)) return null;
-
-		return MakePresetIndex (strIndex, mapFirstCouponSeries.get (dtFirstCoupon), strTenor);
-	}
-
-	private static final org.drip.product.definition.BasketProduct GetPreLoadedOnTheRun (
-		final String strIndex,
-		final JulianDate dt,
-		final String strTenor)
-	{
-		if (null == dt || null == strIndex || strIndex.isEmpty() || null == strTenor || strTenor.isEmpty())
-			return null;
-
-		Map<JulianDate, Integer> mapFirstCouponSeries =
-			org.drip.product.creator.CDXRefDataHolder._mmCDXRDBFirstCouponSeries.get (strIndex);
-
-		JulianDate dtFirstCoupon = dt.nextCreditIMM (3);
-
-		if (null == dtFirstCoupon || null == mapFirstCouponSeries) return null;
-
-		if (null == mapFirstCouponSeries.get (dtFirstCoupon))
-			dtFirstCoupon = dtFirstCoupon.nextCreditIMM (3);
-
-		if (null == dtFirstCoupon || null == mapFirstCouponSeries.get (dtFirstCoupon)) return null;
-
-		return MakePreLoadedStandardCDX (strIndex, mapFirstCouponSeries.get (dtFirstCoupon), strTenor);
-	}
+	/**
+	 * Write the Index Details to a File
+	 * 
+	 * @param coverageFile Coverage File
+	 * 
+	 * @return TRUE - Index Details successfully written to a File
+	 */
 
 	public static final boolean DumpIndexDetails (
-		final String strCDXCoverageFile)
+		final String coverageFile)
 	{
-		if (null == strCDXCoverageFile || strCDXCoverageFile.isEmpty()) return false;
+		if (null == coverageFile || coverageFile.isEmpty()) {
+			return false;
+		}
 
-		java.io.BufferedWriter bw = null;
+		BufferedWriter bufferedWriter = null;
 
 		try {
-			bw = new java.io.BufferedWriter (new java.io.FileWriter (strCDXCoverageFile));
-
-			bw.write ("\n , Index Name, Description, Issue Date, Maturity Date, Frequency, Coupon\n");
+			(
+				bufferedWriter = new BufferedWriter (new FileWriter (coverageFile))
+			).write (
+				"\n , Index Name, Description, Issue Date, Maturity Date, Frequency, Coupon\n"
+			);
 		} catch (Exception e) {
 			e.printStackTrace();
 
 			try {
-				bw.close();
+				bufferedWriter.close();
 			} catch (Exception e1) {
 				e1.printStackTrace();
 			}
@@ -764,23 +803,27 @@ public class StandardCDXManager
 			return false;
 		}
 
-		for (Map.Entry<String, org.drip.product.params.CDXRefDataParams> meCDXRefData :
-			org.drip.product.creator.CDXRefDataHolder._mapCDXRefData.entrySet()) {
-			org.drip.product.params.CDXRefDataParams cdxrdb = meCDXRefData.getValue();
+		for (Map.Entry<String, CDXRefDataParams> cdxRefDataParamsMapEntry :
+			CDXRefDataHolder._mapCDXRefData.entrySet())
+		{
+			CDXRefDataParams cdxRefDataParams = cdxRefDataParamsMapEntry.getValue();
 
-			if (null == cdxrdb) continue;
-
-			String strIndexDetails = " , " + meCDXRefData.getKey() + ", " + cdxrdb._strIndexName +
-				", " + cdxrdb._dtIssue + ", " + cdxrdb._dtMaturity + ", " + cdxrdb._iFrequency + ", " + (int)
-					(10000. * cdxrdb._dblCoupon) + "\n";
+			if (null == cdxRefDataParams) {
+				continue;
+			}
 
 			try {
-				bw.write (strIndexDetails);
+				bufferedWriter.write (
+					" , " + cdxRefDataParamsMapEntry.getKey() + ", " + cdxRefDataParams._strIndexName +
+						", " + cdxRefDataParams._dtIssue + ", " + cdxRefDataParams._dtMaturity + ", " +
+						cdxRefDataParams._iFrequency + ", " + (int) (10000. * cdxRefDataParams._dblCoupon) +
+						"\n"
+				);
 			} catch (Exception e) {
 				e.printStackTrace();
 
 				try {
-					bw.close();
+					bufferedWriter.close();
 				} catch (Exception e1) {
 					e1.printStackTrace();
 				}
@@ -788,7 +831,7 @@ public class StandardCDXManager
 		}
 
 		try {
-			bw.close();
+			bufferedWriter.close();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -799,46 +842,41 @@ public class StandardCDXManager
 	/**
 	 * Create a standard CDX from the index code, the index series, and the tenor.
 	 * 
-	 * @param strIndex The Index Code (CDX.NA.IG, CDX.NA.HY, etc)
-	 * @param iSeries Index Series Number
-	 * @param strTenor The specific tenor - typical common ones are 3Y, 5Y, 7Y, and 10Y
+	 * @param index The Index Code (CDX.NA.IG, CDX.NA.HY, etc)
+	 * @param series Index Series Number
+	 * @param tenor The specific tenor - typical common ones are 3Y, 5Y, 7Y, and 10Y
 	 * 
 	 * @return The CDX Basket Product
 	 */
 
-	public static final org.drip.product.definition.BasketProduct MakeStandardCDX (
-		final String strIndex,
-		final int iSeries,
-		final String strTenor)
+	public static final BasketProduct MakeIndex (
+		final String index,
+		final int series,
+		final String tenor)
 	{
-		org.drip.product.definition.BasketProduct bpCDX = MakePresetIndex (strIndex, iSeries,
-			strTenor);
+		BasketProduct cdxBasketProduct = MakePresetIndex (index, series, tenor);
 
-		if (null != bpCDX) return bpCDX;
-
-		return MakePreLoadedStandardCDX (strIndex, iSeries, strTenor);
+		return null != cdxBasketProduct ? cdxBasketProduct : MakePreLoadedIndex (index, series, tenor);
 	}
 
 	/**
 	 * Retrieve the on-the-run for the index and tenor corresponding to the specified date
 	 * 
-	 * @param strIndex CDX/ITRAXX index
-	 * @param dt Specified date
-	 * @param strTenor Tenor
+	 * @param index CDX/ITRAXX index
+	 * @param date Specified date
+	 * @param tenor Tenor
 	 * 
 	 * @return CDX/ITRAXX Basket Product
 	 */
 
-	public static final org.drip.product.definition.BasketProduct GetOnTheRun (
-		final String strIndex,
-		final JulianDate dt,
-		final String strTenor)
+	public static final BasketProduct GetOnTheRun (
+		final String index,
+		final JulianDate date,
+		final String tenor)
 	{
-		org.drip.product.definition.BasketProduct bpCDX = GetPresetOnTheRun (strIndex, dt, strTenor);
+		BasketProduct cdxBasketProduct = GetPresetOnTheRun (index, date, tenor);
 
-		if (null != bpCDX) return bpCDX;
-
-		return GetPreLoadedOnTheRun (strIndex, dt, strTenor);
+		return null != cdxBasketProduct ? cdxBasketProduct : GetPreLoadedOnTheRun (index, date, tenor);
 	}
 
 	/**
@@ -860,7 +898,7 @@ public class StandardCDXManager
 
 	public static final Set<String> GetPreLoadedIndexNames()
 	{
-		return org.drip.product.creator.CDXRefDataHolder._mmCDXRDBFirstCouponSeries.keySet();
+		return CDXRefDataHolder._mmCDXRDBFirstCouponSeries.keySet();
 	}
 
 	/**
@@ -869,79 +907,77 @@ public class StandardCDXManager
 	 * @return Set of the pre-set and the pre-loaded CDX index names
 	 */
 
-	public static final Set<String> GetCDXNames()
+	public static final Set<String> GetIndexNames()
 	{
-		Set<String> setstrIndex = new HashSet<String>();
+		Set<String> indexNameSet = new HashSet<String>();
 
-		setstrIndex.addAll (GetPreLoadedIndexNames());
+		indexNameSet.addAll (GetPreLoadedIndexNames());
 
-		setstrIndex.addAll (GetPresetIndexNames());
+		indexNameSet.addAll (GetPresetIndexNames());
 
-		return setstrIndex;
+		return indexNameSet;
 	}
 
 	/**
 	 * Return the full set of pre-set CDX series/first coupon date pairs for the given CDX
 	 * 
-	 * @param strCDXName CDX Name
+	 * @param indexName CDX Name
 	 * 
 	 * @return Map of the CDX series/first coupon dates
 	 */
 
-	public static final Map<JulianDate, Integer>
-		GetPresetCDXSeriesMap (
-			final String strCDXName)
+	public static final Map<JulianDate, Integer> GetPresetIndexSeriesMap (
+		final String indexName)
 	{
-		if (null == strCDXName || strCDXName.isEmpty()) return null;
-
-		return _seriesFirstCouponDateToIndexSequence.get (strCDXName);
+		return null == indexName || indexName.isEmpty() ? null :
+			_seriesFirstCouponDateToIndexSequence.get (indexName);
 	}
 
 	/**
 	 * Return the full set of pre-loaded CDX series/first coupon date pairs for the given CDX
 	 * 
-	 * @param strCDXName CDX Name
+	 * @param indexName CDX Name
 	 * 
 	 * @return Map of the CDX series/first coupon dates
 	 */
 
-	public static final Map<JulianDate, Integer>
-		GetPreLoadedCDXSeriesMap (
-			final String strCDXName)
+	public static final Map<JulianDate, Integer> GetPreLoadedCDXSeriesMap (
+		final String indexName)
 	{
-		if (null == strCDXName || strCDXName.isEmpty()) return null;
-
-		return org.drip.product.creator.CDXRefDataHolder._mmCDXRDBFirstCouponSeries.get (strCDXName);
+		return null == indexName || indexName.isEmpty() ? null :
+			CDXRefDataHolder._mmCDXRDBFirstCouponSeries.get (indexName);
 	}
 
 	/**
 	 * Return the full set of CDX series/first coupon date pairs for the given CDX
 	 * 
-	 * @param strCDXName CDX Name
+	 * @param indexName CDX Name
 	 * 
 	 * @return Map of the CDX series/first coupon dates
 	 */
 
-	public static final Map<JulianDate, Integer> GetCDXSeriesMap(
-		final String strCDXName)
+	public static final Map<JulianDate, Integer> GetIndexSeriesMap (
+		final String indexName)
 	{
-		if (null == strCDXName || strCDXName.isEmpty()) return null;
+		if (null == indexName || indexName.isEmpty()) {
+			return null;
+		}
 
-		Map<JulianDate, Integer> mapFirstCouponSeries = new
-			HashMap<JulianDate, Integer>();
+		Map<JulianDate, Integer> firstCouponDateSeriesMap = new HashMap<JulianDate, Integer>();
 
-		Map<JulianDate, Integer> mapPresetFirstCouponSeries =
-			GetPresetCDXSeriesMap (strCDXName);
+		Map<JulianDate, Integer> presetFirstCouponDateSeriesMap = GetPresetIndexSeriesMap (indexName);
 
-		if (null != mapPresetFirstCouponSeries) mapFirstCouponSeries.putAll (mapPresetFirstCouponSeries);
+		if (null != presetFirstCouponDateSeriesMap) {
+			firstCouponDateSeriesMap.putAll (presetFirstCouponDateSeriesMap);
+		}
 
-		Map<JulianDate, Integer> mapPreLoadedFirstCouponSeries =
-			GetPreLoadedCDXSeriesMap (strCDXName);
+		Map<JulianDate, Integer> preLoadedFirstCouponDateSeriesMap = GetPreLoadedCDXSeriesMap (indexName);
 
-		if (null != mapPreLoadedFirstCouponSeries)
-			mapFirstCouponSeries.putAll (mapPreLoadedFirstCouponSeries);
+		if (null != preLoadedFirstCouponDateSeriesMap) {
+			firstCouponDateSeriesMap.putAll (preLoadedFirstCouponDateSeriesMap);
+		}
 
-		return mapFirstCouponSeries;
+		return firstCouponDateSeriesMap;
 	}
 
 	/**
@@ -950,17 +986,15 @@ public class StandardCDXManager
 	 * @return Name/description map for all the pre-set CDS indices
 	 */
 
-	public static final org.drip.analytics.support.CaseInsensitiveTreeMap<String>
-		GetPresetCDXDescriptions()
+	public static final CaseInsensitiveTreeMap<String> GetPresetIndexDescriptions()
 	{
-		org.drip.analytics.support.CaseInsensitiveTreeMap<String> mapCDXDescr = new
-			org.drip.analytics.support.CaseInsensitiveTreeMap<String>();
+		CaseInsensitiveTreeMap<String> indexDescriptionMap = new CaseInsensitiveTreeMap<String>();
 
-		for (Map.Entry<String, org.drip.product.params.StandardCDXParams> meCDXRefData :
-			_indexParamsMap.entrySet())
-			mapCDXDescr.put (meCDXRefData.getKey(), meCDXRefData.getKey());
+		for (Map.Entry<String, StandardCDXParams> standardCDXParamsMapEntry : _indexParamsMap.entrySet()) {
+			indexDescriptionMap.put (standardCDXParamsMapEntry.getKey(), standardCDXParamsMapEntry.getKey());
+		}
 
-		return mapCDXDescr;
+		return indexDescriptionMap;
 	}
 
 	/**
@@ -969,17 +1003,20 @@ public class StandardCDXManager
 	 * @return Name/description map for all the pre-loaded CDS indices
 	 */
 
-	public static final org.drip.analytics.support.CaseInsensitiveTreeMap<String>
-		GetPreLoadedCDXDescriptions()
+	public static final CaseInsensitiveTreeMap<String> GetPreLoadedIndexDescriptions()
 	{
-		org.drip.analytics.support.CaseInsensitiveTreeMap<String> mapCDXDescr = new
-			org.drip.analytics.support.CaseInsensitiveTreeMap<String>();
+		CaseInsensitiveTreeMap<String> indexDescriptionMap = new CaseInsensitiveTreeMap<String>();
 
-		for (Map.Entry<String, org.drip.product.params.CDXRefDataParams> meCDXRefData :
-			org.drip.product.creator.CDXRefDataHolder._mapCDXRefData.entrySet())
-			mapCDXDescr.put (meCDXRefData.getKey(), meCDXRefData.getValue()._strIndexName);
+		for (Map.Entry<String, CDXRefDataParams> cdxRefDataParamsMapEntry :
+			CDXRefDataHolder._mapCDXRefData.entrySet())
+		{
+			indexDescriptionMap.put (
+				cdxRefDataParamsMapEntry.getKey(),
+				cdxRefDataParamsMapEntry.getValue()._strIndexName
+			);
+		}
 
-		return mapCDXDescr;
+		return indexDescriptionMap;
 	}
 
 	/**
@@ -994,9 +1031,9 @@ public class StandardCDXManager
 		org.drip.analytics.support.CaseInsensitiveTreeMap<String> mapCDXDescr = new
 			org.drip.analytics.support.CaseInsensitiveTreeMap<String>();
 
-		mapCDXDescr.putAll (GetPreLoadedCDXDescriptions());
+		mapCDXDescr.putAll (GetPreLoadedIndexDescriptions());
 
-		mapCDXDescr.putAll (GetPresetCDXDescriptions());
+		mapCDXDescr.putAll (GetPresetIndexDescriptions());
 
 		return mapCDXDescr;
 	}
