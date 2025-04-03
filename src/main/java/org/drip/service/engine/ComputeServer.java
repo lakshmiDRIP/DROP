@@ -1,11 +1,24 @@
 
 package org.drip.service.engine;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.net.ServerSocket;
+import java.net.Socket;
+
+import org.drip.service.json.KeyHoleSkeleton;
+import org.drip.service.representation.JSONObject;
+import org.drip.service.representation.JSONValue;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -80,21 +93,27 @@ package org.drip.service.engine;
  */
 
 /**
- * <i>ComputeServer</i> contains the Functionality behind the DROP API Compute Service Engine.
+ * <i>ComputeServer</i> contains the Functionality behind the DROP API Compute Service Engine. It provides
+ * 	the following Functions:
  * 
- * <br><br>
- *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationSupportLibrary.md">Computation Support</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/README.md">Environment, Product/Definition Containers, and Scenario/State Manipulation APIs</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/engine/README.md">Compute Engine Request-Response Thunker</a></li>
- *  </ul>
- * <br><br>
+ * <ul>
+ * 		<li>Construct Standard LocalHost-based Instance of the <i>ComputeClient</i>
+ * </ul>
+ *
+ * <br>
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationSupportLibrary.md">Computation Support</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/README.md">Environment, Product/Definition Containers, and Scenario/State Manipulation APIs</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/engine/README.md">Compute Engine Request-Response Thunker</a></td></tr>
+ *  </table>
+ * <br>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class ComputeServer {
+public class ComputeServer
+{
 
 	/**
 	 * The DRIP compute Service Engine Port
@@ -102,13 +121,13 @@ public class ComputeServer {
 
 	public static final int DRIP_COMPUTE_ENGINE_PORT = 9090;
 
-	private int _iListenerPort = -1;
-	private java.net.ServerSocket _socketListener = null;
+	private int _listenerPort = -1;
+	private ServerSocket _listenerServerSocket = null;
 
 	/**
-	 * Create a Standard Instance of the ComputeServer
+	 * Create a Standard Instance of the <i>ComputeServer</i>
 	 * 
-	 * @return The Standard ComputeServer Instance
+	 * @return The Standard <i>ComputeServer</i> Instance
 	 */
 
 	public static final ComputeServer Standard()
@@ -117,7 +136,7 @@ public class ComputeServer {
 			ComputeServer cs = new ComputeServer (DRIP_COMPUTE_ENGINE_PORT);
 
 			return cs.initialize() ? cs : null;
-		} catch (java.lang.Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -125,19 +144,20 @@ public class ComputeServer {
 	}
 
 	/**
-	 * ComputServer Constructor
+	 * <i>ComputeServer</i> Constructor
 	 * 
-	 * @param iListenerPort The Listener Port
+	 * @param listenerPort The Listener Port
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public ComputeServer (
-		final int iListenerPort)
-		throws java.lang.Exception
+		final int listenerPort)
+		throws Exception
 	{
-		if (0 >= (_iListenerPort = iListenerPort))
-			throw new java.lang.Exception ("ComputeServer Constructor => Invalid Inputs");
+		if (0 >= (_listenerPort = listenerPort)) {
+			throw new Exception ("ComputeServer Constructor => Invalid Inputs");
+		}
 	}
 
 	/**
@@ -149,10 +169,10 @@ public class ComputeServer {
 	public boolean initialize()
 	{
 		try {
-			_socketListener = new java.net.ServerSocket (_iListenerPort);
+			_listenerServerSocket = new ServerSocket (_listenerPort);
 
 			return true;
-		} catch (java.lang.Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -169,41 +189,46 @@ public class ComputeServer {
 	{
         while (true) {
         	try {
-            	java.net.Socket s = _socketListener.accept();
+            	Socket listenerSocket = _listenerServerSocket.accept();
 
-	        	if (null == s) return false;
+	        	if (null == listenerSocket) {
+	        		return false;
+	        	}
 
-	        	java.lang.String strJSONRequest = new java.io.BufferedReader (new java.io.InputStreamReader
-	        		(s.getInputStream())).readLine();
+	        	String requestString = new BufferedReader (
+        			new InputStreamReader (listenerSocket.getInputStream())
+    			).readLine();
 
-	        	System.out.println (strJSONRequest);
+	        	System.out.println (requestString);
 
-	        	java.lang.Object objRequest = org.drip.service.representation.JSONValue.parse (strJSONRequest);
+	        	Object requestObject = JSONValue.parse (requestString);
 
-		    	if (null == objRequest || !(objRequest instanceof org.drip.service.representation.JSONObject))
+		    	if (null == requestObject || !(requestObject instanceof JSONObject)) {
 		    		return false;
+		    	}
 
-		    	org.drip.service.representation.JSONObject jsonRequest = (org.drip.service.representation.JSONObject) objRequest;
+		    	JSONObject requestJSON = (JSONObject) requestObject;
 
-		    	java.lang.Object objResponse = org.drip.service.representation.JSONValue.parse
-	    			(org.drip.service.json.KeyHoleSkeleton.Thunker (strJSONRequest));
+		    	Object responseObject = JSONValue.parse (KeyHoleSkeleton.Thunker (requestString));
 
-		    	if (null == objResponse) return false;
-
-		    	org.drip.service.representation.JSONObject jsonResponse = (org.drip.service.representation.JSONObject) objResponse;
-
-		    	if (!org.drip.service.engine.RequestResponseDecorator.AffixResponseHeaders (jsonResponse,
-		    		jsonRequest))
+		    	if (null == responseObject) {
 		    		return false;
+		    	}
 
-	        	System.out.println ("\n\n" + jsonResponse.toJSONString());
+		    	JSONObject responseJSON = (JSONObject) responseObject;
 
-            	java.io.PrintWriter pw = new java.io.PrintWriter (s.getOutputStream(), true);
+		    	if (!RequestResponseDecorator.AffixResponseHeaders (responseJSON, requestJSON)) {
+		    		return false;
+		    	}
 
-            	pw.write (jsonResponse.toJSONString() + "\n");
+	        	System.out.println ("\n\n" + responseJSON.toJSONString());
 
-            	pw.flush();
-        	} catch (java.lang.Exception e) {
+            	PrintWriter printWriter = new PrintWriter (listenerSocket.getOutputStream(), true);
+
+            	printWriter.write (responseJSON.toJSONString() + "\n");
+
+            	printWriter.flush();
+        	} catch (Exception e) {
         		e.printStackTrace();
 
         		return false;
@@ -216,12 +241,12 @@ public class ComputeServer {
 	 * 
 	 * @param astrArgs Argument Array
 	 * 
-	 * @throws java.lang.Exception Propagate Exception Encountered
+	 * @throws Exception Propagate Exception Encountered
 	 */
 
 	public static final void main (
-		final java.lang.String[] astrArgs)
-		throws java.lang.Exception
+		final String[] astrArgs)
+		throws Exception
 	{
 		org.drip.service.env.EnvManager.InitEnv ("");
 

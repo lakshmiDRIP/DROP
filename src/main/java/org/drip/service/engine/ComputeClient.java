@@ -1,7 +1,15 @@
 
 package org.drip.service.engine;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.net.Socket;
+
+import org.drip.service.env.EnvManager;
+import org.drip.service.jsonparser.Converter;
+import org.drip.service.representation.JSONObject;
+import org.drip.service.representation.JSONValue;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -89,7 +97,12 @@ import java.net.Socket;
  * 	the following Functions:
  * 
  * <ul>
- * 		<li>Initialize the Environment Setup</li>
+ * 		<li>Construct Standard LocalHost-based Instance of the <i>ComputeClient</i>
+ * 		<li>Retrieve the Compute Server Host
+ * 		<li>Retrieve the Compute Server Port
+ * 		<li>Establish a Connection to the Compute Server Engine
+ * 		<li>Invoke a Request on the Compute Server and Retrieve the Response
+ * 		<li>Entry Point
  * </ul>
  *
  * <br>
@@ -111,18 +124,20 @@ public class ComputeClient
 	private Socket _socketServer = null;
 
 	/**
-	 * Construct Standard LocalHost-based Instance of the ComputeClient
+	 * Construct Standard LocalHost-based Instance of the <i>ComputeClient</i>
 	 * 
-	 * @return The Standard LocalHost-based Instance of the ComputeClient
+	 * @return The Standard LocalHost-based Instance of the <i>ComputeClient</i>
 	 */
 
 	public static final ComputeClient Standard()
 	{
 		try {
-			ComputeClient cc = new ComputeClient ("127.0.0.1",
-				org.drip.service.engine.ComputeServer.DRIP_COMPUTE_ENGINE_PORT);
+			ComputeClient computeClient = new ComputeClient (
+				"127.0.0.1",
+				ComputeServer.DRIP_COMPUTE_ENGINE_PORT
+			);
 
-			return cc.initialize() ? cc : null;
+			return computeClient.initialize() ? computeClient : null;
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -155,7 +170,7 @@ public class ComputeClient
 	 * @return The Compute Server Host
 	 */
 
-	public String computeServerHost()
+	public String serverHost()
 	{
 		return _serverHost;
 	}
@@ -166,7 +181,7 @@ public class ComputeClient
 	 * @return The Compute Server Port
 	 */
 
-	public int computeServerPort()
+	public int serverPort()
 	{
 		return _serverPort;
 	}
@@ -180,7 +195,7 @@ public class ComputeClient
 	public boolean initialize()
 	{
 		try {
-			_socketServer = new java.net.Socket (_serverHost, _serverPort);
+			_socketServer = new Socket (_serverHost, _serverPort);
 
 	    	return true;
 		} catch (Exception e) {
@@ -193,28 +208,30 @@ public class ComputeClient
 	/**
 	 * Invoke a Request on the Compute Server and Retrieve the Response
 	 * 
-	 * @param jsonRequest The Input JSON Request
+	 * @param requestJSON The Input JSON Request
 	 * 
 	 * @return The Processed JSON Response
 	 */
 
-	public org.drip.service.representation.JSONObject invoke (
-		final org.drip.service.representation.JSONObject jsonRequest)
+	public JSONObject invoke (
+		final JSONObject requestJSON)
 	{
-		if (!org.drip.service.engine.RequestResponseDecorator.AffixRequestHeaders (jsonRequest)) return null;
+		if (!RequestResponseDecorator.AffixRequestHeaders (requestJSON)) {
+			return null;
+		}
 
 		try {
-	    	java.io.PrintWriter pw = new java.io.PrintWriter (_socketServer.getOutputStream(), true);
+	    	PrintWriter printWriter = new PrintWriter (_socketServer.getOutputStream(), true);
 
-	    	pw.write (jsonRequest.toJSONString() + "\n");
+	    	printWriter.write (requestJSON.toJSONString() + "\n");
 
-	    	pw.flush();
+	    	printWriter.flush();
 
-	    	Object objResponse = org.drip.service.representation.JSONValue.parse (new java.io.BufferedReader
-	    		(new java.io.InputStreamReader (_socketServer.getInputStream())).readLine());
+	    	Object response = JSONValue.parse (
+    			new BufferedReader (new InputStreamReader (_socketServer.getInputStream())).readLine()
+			);
 
-			return null == objResponse || !(objResponse instanceof org.drip.service.representation.JSONObject) ? null :
-				(org.drip.service.representation.JSONObject) objResponse;
+			return null == response || !(response instanceof JSONObject) ? null : (JSONObject) response;
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -225,28 +242,20 @@ public class ComputeClient
 	/**
 	 * Entry Point
 	 * 
-	 * @param astrArgs Argument Array
+	 * @param argumentArray Argument Array
 	 * 
 	 * @throws Exception Propagate Exception Encountered
 	 */
 
 	@SuppressWarnings ("unchecked") public static final void main (
-		final String[] astrArgs)
+		final String[] argumentArray)
 		throws Exception
 	{
-		org.drip.service.env.EnvManager.InitEnv ("");
+		EnvManager.InitEnv ("");
 
-		String[] astrAssetName = new String[] {
-			"TOK",
-			"EWJ",
-			"HYG",
-			"LQD",
-			"EMD",
-			"GSG",
-			"BWX"
-		};
+		String[] assetNameArray = new String[] {"TOK", "EWJ", "HYG", "LQD", "EMD", "GSG", "BWX"};
 
-		double[] adblAssetExpectedReturns = new double[] {
+		double[] expectedReturnsArray = new double[] {
 			0.008355,
 			0.007207,
 			0.006279,
@@ -256,7 +265,7 @@ public class ComputeClient
 			0.001570
 		};
 
-		double[][] aadblAssetReturnsCovariance = new double[][] {
+		double[][] returnsCovarianceMatrix = new double[][] {
 			{0.002733, 0.002083, 0.001593, 0.000488, 0.001172, 0.002312, 0.000710},
 			{0.002083, 0.002768, 0.001302, 0.000457, 0.001105, 0.001647, 0.000563},
 			{0.001593, 0.001302, 0.001463, 0.000639, 0.001050, 0.001110, 0.000519},
@@ -266,65 +275,49 @@ public class ComputeClient
 			{0.000710, 0.000563, 0.000519, 0.000370, 0.000661, 0.000749, 0.000703}
 		};
 
-		double[] adblAssetLowerBound = new double[] {
-			0.05,
-			0.05,
-			0.05,
-			0.10,
-			0.05,
-			0.05,
-			0.03
-		};
+		double[] assetWeightLowerBoundArray = new double[] {0.05, 0.05, 0.05, 0.10, 0.05, 0.05, 0.03};
 
-		double[] adblAssetUpperBound = new double[] {
-			0.40,
-			0.40,
-			0.30,
-			0.60,
-			0.35,
-			0.15,
-			0.50
-		};
+		double[] assetWeightUpperBoundArray = new double[] {0.40, 0.40, 0.30, 0.60, 0.35, 0.15, 0.50};
 
-		double[][] aadblBound = new double[adblAssetExpectedReturns.length][2];
+		double[][] assetWeightLowerUpperBoundConstraint = new double[expectedReturnsArray.length][2];
 
-		for (int i = 0; i < adblAssetExpectedReturns.length; ++i) {
-			aadblBound[i][0] = adblAssetLowerBound[i];
-			aadblBound[i][1] = adblAssetUpperBound[i];
+		for (int assetIndex = 0; assetIndex < expectedReturnsArray.length; ++assetIndex) {
+			assetWeightLowerUpperBoundConstraint[assetIndex][0] = assetWeightLowerBoundArray[assetIndex];
+			assetWeightLowerUpperBoundConstraint[assetIndex][1] = assetWeightUpperBoundArray[assetIndex];
 		}
 
-		org.drip.service.representation.JSONObject jsonParameters = new org.drip.service.representation.JSONObject();
+		JSONObject parametersJSON = new JSONObject();
 
-		jsonParameters.put ("AssetSet", org.drip.service.jsonparser.Converter.Array (astrAssetName));
+		parametersJSON.put ("AssetSet", Converter.Array (assetNameArray));
 
-		jsonParameters.put ("AssetExpectedReturns", org.drip.service.jsonparser.Converter.Array
-			(adblAssetExpectedReturns));
+		parametersJSON.put ("AssetExpectedReturns", Converter.Array (expectedReturnsArray));
 
-		jsonParameters.put ("AssetReturnsCovariance", org.drip.service.jsonparser.Converter.Array
-			(aadblAssetReturnsCovariance));
+		parametersJSON.put ("AssetReturnsCovariance", Converter.Array (returnsCovarianceMatrix));
 
-		for (int i = 0; i < adblAssetExpectedReturns.length; ++i) {
-			jsonParameters.put (astrAssetName[i] + "::LowerBound", aadblBound[i][0]);
+		for (int assetIndex = 0; assetIndex < expectedReturnsArray.length; ++assetIndex) {
+			parametersJSON.put (
+				assetNameArray[assetIndex] + "::LowerBound",
+				assetWeightLowerUpperBoundConstraint[assetIndex][0]
+			);
 
-			jsonParameters.put (astrAssetName[i] + "::UpperBound", aadblBound[i][1]);
+			parametersJSON.put (
+				assetNameArray[assetIndex] + "::UpperBound",
+				assetWeightLowerUpperBoundConstraint[assetIndex][1]
+			);
 		}
 
-		org.drip.service.representation.JSONObject jsonRequest = new org.drip.service.representation.JSONObject();
+		JSONObject requestJSON = new JSONObject();
 
-		jsonRequest.put ("API", "PORTFOLIOALLOCATION::BUDGETCONSTRAINEDMEANVARIANCE");
+		requestJSON.put ("API", "PORTFOLIOALLOCATION::BUDGETCONSTRAINEDMEANVARIANCE");
 
-		jsonRequest.put ("Parameters", jsonParameters);
+		requestJSON.put ("Parameters", parametersJSON);
 
 		System.out.println ("\n\t|---------------- JSON REQUEST -----------------|\n");
 
-		System.out.println (jsonRequest.toJSONString());
-
-		ComputeClient cc = Standard();
-
-		org.drip.service.representation.JSONObject jsonResponse = cc.invoke (jsonRequest);
+		System.out.println (requestJSON.toJSONString());
 
 		System.out.println ("\n\t|---------------- JSON RESPONSE ----------------|\n");
 
-		System.out.println (jsonResponse.toJSONString());
+		System.out.println (Standard().invoke (requestJSON).toJSONString());
 	}
 }

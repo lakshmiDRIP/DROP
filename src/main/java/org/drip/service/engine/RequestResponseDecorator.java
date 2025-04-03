@@ -1,11 +1,20 @@
 
 package org.drip.service.engine;
 
+import java.util.Date;
+
+import org.drip.service.common.StringUtil;
+import org.drip.service.jsonparser.Converter;
+import org.drip.service.representation.JSONObject;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -81,40 +90,48 @@ package org.drip.service.engine;
 
 /**
  * <i>RequestResponseDecorator</i> contains the Functionality behind the DROP API Compute Service Engine
- * Request and Response Header Fields Affixing/Decoration.
+ * 	Request and Response Header Fields Affixing/Decoration. It provides the following Functions:
  * 
- * <br><br>
- *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationSupportLibrary.md">Computation Support</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/README.md">Environment, Product/Definition Containers, and Scenario/State Manipulation APIs</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/engine/README.md">Compute Engine Request-Response Thunker</a></li>
- *  </ul>
- * <br><br>
+ * <ul>
+ * 		<li>Affix the Headers on the JSON Request</li>
+ * 		<li>Affix the Headers on the JSON Response</li>
+ * </ul>
+ *
+ * <br>
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationSupportLibrary.md">Computation Support</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/README.md">Environment, Product/Definition Containers, and Scenario/State Manipulation APIs</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/engine/README.md">Compute Engine Request-Response Thunker</a></td></tr>
+ *  </table>
+ * <br>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class RequestResponseDecorator {
+public class RequestResponseDecorator
+{
 
 	/**
 	 * Affix the Headers on the JSON Request
 	 * 
-	 * @param jsonRequest The JSON Request
+	 * @param requestJSON The JSON Request
 	 * 
 	 * @return TRUE - The Headers successfully affixed
 	 */
 
 	@SuppressWarnings ("unchecked") public static final boolean AffixRequestHeaders (
-		final org.drip.service.representation.JSONObject jsonRequest)
+		final JSONObject requestJSON)
 	{
-		if (null == jsonRequest) return false;
+		if (null == requestJSON) {
+			return false;
+		}
 
-		jsonRequest.put ("APITYPE", "REQUEST");
+		requestJSON.put ("APITYPE", "REQUEST");
 
-		jsonRequest.put ("REQUESTTIMESTAMP", new java.util.Date().toString());
+		requestJSON.put ("REQUESTTIMESTAMP", new Date().toString());
 
-		jsonRequest.put ("REQUESTID", org.drip.service.common.StringUtil.GUID());
+		requestJSON.put ("REQUESTID", StringUtil.GUID());
 
 		return true;
 	}
@@ -122,29 +139,29 @@ public class RequestResponseDecorator {
 	/**
 	 * Affix the Headers on the JSON Response
 	 * 
-	 * @param jsonResponse The JSON Response
-	 * @param jsonRequest The JSON Request
+	 * @param responseJSON The JSON Response
+	 * @param requestJSON The JSON Request
 	 * 
 	 * @return TRUE - The Headers successfully affixed
 	 */
 
 	@SuppressWarnings ("unchecked") public static final boolean AffixResponseHeaders (
-		final org.drip.service.representation.JSONObject jsonResponse,
-		final org.drip.service.representation.JSONObject jsonRequest)
+		final JSONObject responseJSON,
+		final JSONObject requestJSON)
 	{
-		if (null == jsonResponse || null == jsonRequest) return false;
+		if (null == responseJSON || null == requestJSON) {
+			return false;
+		}
 
-    	jsonResponse.put ("APITYPE", "RESPONSE");
+		responseJSON.put ("APITYPE", "RESPONSE");
 
-    	jsonResponse.put ("REQUESTTIMESTAMP", org.drip.service.jsonparser.Converter.StringEntry
-    		(jsonRequest, "REQUESTTIMESTAMP"));
+		responseJSON.put ("REQUESTTIMESTAMP", Converter.StringEntry (requestJSON, "REQUESTTIMESTAMP"));
 
-    	jsonResponse.put ("REQUESTID", org.drip.service.jsonparser.Converter.StringEntry (jsonRequest,
-    		"REQUESTID"));
+		responseJSON.put ("REQUESTID", Converter.StringEntry (requestJSON, "REQUESTID"));
 
-    	jsonResponse.put ("RESPONSETIMESTAMP", new java.util.Date().toString());
+		responseJSON.put ("RESPONSETIMESTAMP", new Date().toString());
 
-    	jsonResponse.put ("RESPONSEID", org.drip.service.common.StringUtil.GUID());
+		responseJSON.put ("RESPONSEID", StringUtil.GUID());
 
 		return true;
 	}
