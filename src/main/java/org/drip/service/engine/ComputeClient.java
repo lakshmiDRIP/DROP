@@ -97,12 +97,12 @@ import org.drip.service.representation.JSONValue;
  * 	the following Functions:
  * 
  * <ul>
- * 		<li>Construct Standard LocalHost-based Instance of the <i>ComputeClient</i>
- * 		<li>Retrieve the Compute Server Host
- * 		<li>Retrieve the Compute Server Port
- * 		<li>Establish a Connection to the Compute Server Engine
- * 		<li>Invoke a Request on the Compute Server and Retrieve the Response
- * 		<li>Entry Point
+ * 		<li>Construct Standard LocalHost-based Instance of the <i>ComputeClient</i></li>
+ * 		<li>Retrieve the Compute Server Host</li>
+ * 		<li>Retrieve the Compute Server Port</li>
+ * 		<li>Establish a Connection to the Compute Server Engine</li>
+ * 		<li>Invoke a Request on the Compute Server and Retrieve the Response</li>
+ * 		<li>Entry Point</li>
  * </ul>
  *
  * <br>

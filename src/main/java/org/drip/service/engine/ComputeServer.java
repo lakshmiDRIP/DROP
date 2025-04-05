@@ -7,6 +7,7 @@ import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 
+import org.drip.service.env.EnvManager;
 import org.drip.service.json.KeyHoleSkeleton;
 import org.drip.service.representation.JSONObject;
 import org.drip.service.representation.JSONValue;
@@ -97,7 +98,12 @@ import org.drip.service.representation.JSONValue;
  * 	the following Functions:
  * 
  * <ul>
- * 		<li>Construct Standard LocalHost-based Instance of the <i>ComputeClient</i>
+ * 		<li>The DRIP compute Service Engine Port</li>
+ * 		<li>Create a Standard Instance of the <i>ComputeServer</i></li>
+ * 		<li><i>ComputeServer</i> Constructor</li>
+ * 		<li>Initialize the Compute Server Engine Listener Setup</li>
+ * 		<li>Spin on the Listener Loop</li>
+ * 		<li>Entry Point</li>
  * </ul>
  *
  * <br>
@@ -133,9 +139,9 @@ public class ComputeServer
 	public static final ComputeServer Standard()
 	{
 		try {
-			ComputeServer cs = new ComputeServer (DRIP_COMPUTE_ENGINE_PORT);
+			ComputeServer computeServer = new ComputeServer (DRIP_COMPUTE_ENGINE_PORT);
 
-			return cs.initialize() ? cs : null;
+			return computeServer.initialize() ? computeServer : null;
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -239,19 +245,17 @@ public class ComputeServer
 	/**
 	 * Entry Point
 	 * 
-	 * @param astrArgs Argument Array
+	 * @param argumentArray Argument Array
 	 * 
 	 * @throws Exception Propagate Exception Encountered
 	 */
 
 	public static final void main (
-		final String[] astrArgs)
+		final String[] argumentArray)
 		throws Exception
 	{
-		org.drip.service.env.EnvManager.InitEnv ("");
+		EnvManager.InitEnv ("");
 
-		ComputeServer cs = ComputeServer.Standard();
-
-		cs.spin();
+		ComputeServer.Standard().spin();
 	}
 }
