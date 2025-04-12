@@ -1442,35 +1442,22 @@ public class ArrayUtil
 	 * The word can be constructed from letters of sequentially adjacent cell, where "adjacent" cells are
 	 *  those horizontally or vertically neighboring. The same letter cell may not be used more than once.
 	 *  
-	 * @param board The Board
+	 * @param boardGrid The Board Grid
 	 * @param word The Word
 	 * 
 	 * @return TRUE - The Word exists on the board
 	 */
 
 	public static final boolean WordExistsInBoard (
-		final char[][] board,
+		final char[][] boardGrid,
 		final String word)
 	{
 		char[] wordCharArray = word.toCharArray();
 
-		for (int row = 0;
-			row < board.length;
-			++row)
-		{
-			for (int column = 0;
-				column < board[0].length;
-				++column)
-			{
-				if (wordCharArray[0] == board[row][column])
-				{
-					if (WordExists (
-						row,
-						column,
-						board,
-						wordCharArray
-					))
-					{
+		for (int row = 0; row < boardGrid.length; ++row) {
+			for (int column = 0; column < boardGrid[0].length; ++column) {
+				if (wordCharArray[0] == boardGrid[row][column]) {
+					if (WordExists (row, column, boardGrid, wordCharArray)) {
 						return true;
 					}
 				}
@@ -1497,32 +1484,18 @@ public class ArrayUtil
 		int length = a.length;
 		int mismatchStartIndex = -1;
 
-		while (index < length)
-		{
-			while (index < length && a[index] == b[index])
-			{
+		while (index < length) {
+			while (index < length && a[index] == b[index]) {
 				++index;
 			}
 
 			mismatchStartIndex = index;
 
-			while (index < length && a[mismatchStartIndex] != b[index])
-			{
+			while (index < length && a[mismatchStartIndex] != b[index]) {
 				++index;
 			}
 
-			if (index == length)
-			{
-				return false;
-			}
-
-			if (!ReverseMatchPossible (
-				a,
-				b,
-				mismatchStartIndex,
-				index
-			))
-			{
+			if (index == length || !ReverseMatchPossible (a, b, mismatchStartIndex, index)) {
 				return false;
 			}
 
@@ -1534,7 +1507,7 @@ public class ArrayUtil
 
 	/**
 	 * There are n students, numbered from 1 to n, each with their own year-book. They would like to pass
-	 * 	their year- books around and get them signed by other students.
+	 * 	their year-books around and get them signed by other students.
 	 * 
 	 * You are given a list of n integers arr[1..n], which is guaranteed to be a permutation of 1..n (in
 	 * 	other words, it includes the integers from 1 to n exactly once each, in some order). The meaning of
@@ -1562,44 +1535,27 @@ public class ArrayUtil
 		final int[] studentArray)
 	{
 		int personCount = studentArray.length;
-		int[] book = new int[personCount];
+		int[] bookArray = new int[personCount];
 		int[] signatureArray = new int[personCount];
 
-		Set<Integer> bookNotAtOwner = new HashSet<Integer>();
+		Set<Integer> bookSetNotAtOwner = new HashSet<Integer>();
 
-		for (int person = 0;
-			person < personCount;
-			++person)
-		{
+		for (int person = 0; person < personCount; ++person) {
 			signatureArray[person] = 1;
-			book[person] = studentArray[person] - 1;
+			bookArray[person] = studentArray[person] - 1;
 
-			bookNotAtOwner.add (
-				person
-			);
+			bookSetNotAtOwner.add (person);
 		}
 
-		while (!bookNotAtOwner.isEmpty())
-		{
-			for (int person = 0;
-				person < personCount;
-				++person)
-			{
-				if (book[person] == person)
-				{
-					if (bookNotAtOwner.contains (
-						person
-					))
-					{
-						bookNotAtOwner.remove (
-							person
-						);
+		while (!bookSetNotAtOwner.isEmpty()) {
+			for (int person = 0; person < personCount; ++person) {
+				if (bookArray[person] == person) {
+					if (bookSetNotAtOwner.contains (person)) {
+						bookSetNotAtOwner.remove (person);
 					}
-				}
-				else
-				{
-					signatureArray[person]++;
-					book[person] = studentArray[book[person]] - 1;
+				} else {
+					++signatureArray[person];
+					bookArray[person] = studentArray[bookArray[person]] - 1;
 				}
 			}
 		}
@@ -1611,70 +1567,47 @@ public class ArrayUtil
 	 * You are given an array a of N integers. For each index i, you are required to determine the number of
 	 * 	contiguous sub-arrays that fulfills the following conditions:
 	 * 
-	 * 	The value at index i must be the maximum element in the contiguous subarrays, and:
+	 * 	The value at index i must be the maximum element in the contiguous sub-arrays, and:
 	 * 
-	 * 	These contiguous subarrays must either start from or end on index i.
+	 * 	These contiguous sub-arrays must either start from or end on index i.
 	 * 
-	 * @param arr Input Array
+	 * @param array Input Array
 	 * 
 	 * @return Number of Contiguous Sub-arrays
 	 */
 
 	public static final int[] CountSubArrays (
-		final int[] arr)
+		final int[] array)
 	{
-		int arrayLength = arr.length;
+		int arrayLength = array.length;
 		int[] subArrayCount = new int[arrayLength];
 		boolean[] peakEncountered = new boolean[arrayLength];
 
-		for (int i = 0;
-			i < arrayLength;
-			++i)
-		{
+		for (int i = 0; i < arrayLength; ++i) {
 			subArrayCount[i] = 1;
 			peakEncountered[i] = false;
 		}
 
-		for (int i = 0;
-			i < arrayLength;
-			++i)
-		{
-			for (int j = 0;
-				j < i;
-				++j)
-			{
-				if (arr[i] > arr[j])
+		for (int i = 0; i < arrayLength; ++i) {
+			for (int j = 0; j < i; ++j) {
+				if (array[i] > array[j])
 				{
 					peakEncountered[j] = true;
-				}
-				else if (!peakEncountered[j])
-				{
+				} else if (!peakEncountered[j]) {
 					++subArrayCount[j];
 				}
 			}
 		}
 
-		for (int i = 0;
-			i < arrayLength;
-			++i)
-		{
+		for (int i = 0; i < arrayLength; ++i) {
 			peakEncountered[i] = false;
 		}
 
-		for (int i = arrayLength - 1;
-			i >= 0;
-			--i)
-		{
-			for (int j = arrayLength - 1;
-				j > i;
-				--j)
-			{
-				if (arr[i] > arr[j])
-				{
+		for (int i = arrayLength - 1; i >= 0; --i) {
+			for (int j = arrayLength - 1; j > i; --j) {
+				if (array[i] > array[j]) {
 					peakEncountered[j] = true;
-				}
-				else if (!peakEncountered[j])
-				{
+				} else if (!peakEncountered[j]) {
 					++subArrayCount[j];
 				}
 			}
@@ -1696,21 +1629,13 @@ public class ArrayUtil
 		final int[][] pointGrid,
 		final int k)
 	{
-		TreeMap<Double, int[]> orderedPointMap =
-			new TreeMap<Double, int[]>();
+		TreeMap<Double, int[]> orderedPointMap = new TreeMap<Double, int[]>();
 
-		for (int pointIndex = 0;
-			pointIndex < pointGrid.length;
-			++pointIndex)
-		{
+		for (int pointIndex = 0; pointIndex < pointGrid.length; ++pointIndex) {
 			int x = pointGrid[pointIndex][0];
 			int y = pointGrid[pointIndex][1];
-			double distance = x * x + y * y;
 
-			orderedPointMap.put (
-				distance,
-				pointGrid[pointIndex]
-			);
+			orderedPointMap.put ((double) (x * x + y * y), pointGrid[pointIndex]);
 		}
 
 		int i = 0;
@@ -1718,16 +1643,12 @@ public class ArrayUtil
 
 		Set<Double> distanceSet = orderedPointMap.keySet();
 
-		for (double distance : distanceSet)
-		{
-			if (i >= k)
-			{
+		for (double distance : distanceSet) {
+			if (i >= k) {
 				break;
 			}
 
-			kClosestPoints[i++] = orderedPointMap.get (
-				distance
-			);
+			kClosestPoints[i++] = orderedPointMap.get (distance);
 		}
 
 		return kClosestPoints;
@@ -1749,10 +1670,7 @@ public class ArrayUtil
 		int[] arrayCursor = new int[arrayCount];
 		int[] arrayLength = new int[arrayCount];
 
-		for (int arrayIndex = 0;
-			arrayIndex < arrayCount;
-			++arrayIndex)
-		{
+		for (int arrayIndex = 0; arrayIndex < arrayCount; ++arrayIndex) {
 			arrayCursor[arrayIndex] = 0;
 			arrayLength[arrayIndex] = arrayOfArrays[arrayIndex].length;
 			mergedArrayLength = mergedArrayLength + arrayOfArrays[arrayIndex].length;
@@ -1761,25 +1679,19 @@ public class ArrayUtil
 		int mergedArrayIndex = 0;
 		int[] mergedArray = new int[mergedArrayLength];
 
-		while (mergedArrayIndex < mergedArrayLength)
-		{
+		while (mergedArrayIndex < mergedArrayLength) {
 			int startIndex = 0;
 
-			while (arrayCursor[startIndex] >= arrayLength[startIndex])
-			{
+			while (arrayCursor[startIndex] >= arrayLength[startIndex]) {
 				++startIndex;
 			}
 
 			int minArrayIndex = startIndex;
 			int minValue = arrayOfArrays[startIndex][arrayCursor[startIndex]];
 
-			for (int arrayIndex = startIndex + 1;
-				arrayIndex < arrayCount;
-				++arrayIndex)
-			{
+			for (int arrayIndex = startIndex + 1; arrayIndex < arrayCount; ++arrayIndex) {
 				if (arrayCursor[arrayIndex] < arrayLength[arrayIndex] &&
-					arrayOfArrays[arrayIndex][arrayCursor[arrayIndex]] < minValue
-				)
+					arrayOfArrays[arrayIndex][arrayCursor[arrayIndex]] < minValue)
 				{
 					minArrayIndex = arrayIndex;
 					minValue = arrayOfArrays[arrayIndex][arrayCursor[arrayIndex]];
@@ -1811,22 +1723,17 @@ public class ArrayUtil
 		int arrayLength = numberArray.length;
 		int[] nextGreaterElementArray = new int[arrayLength];
 
-		for (int i = 0;
-			i < arrayLength;
-			++i)
+		for (int i = 0; i < arrayLength; ++i)
 		{
 			int index = i + 1 == arrayLength ? 0 : i + 1;
 			int nextGreaterNumber = numberArray[i];
 
-			while (index != i)
-			{
-				if (numberArray[index] > nextGreaterNumber)
-				{
+			while (index != i) {
+				if (numberArray[index] > nextGreaterNumber) {
 					nextGreaterNumber = numberArray[index];
 				}
 
-				if (++index == arrayLength)
-				{
+				if (++index == arrayLength) {
 					index = 0;
 				}
 			}
@@ -1854,32 +1761,22 @@ public class ArrayUtil
 		final int k,
 		final int t)
 	{
-		if (null == numberArray || 0 == numberArray.length)
-		{
+		if (null == numberArray || 0 == numberArray.length) {
 			return false;
 		}
 
 		int arrayLength = numberArray.length;
 
-		if (0 > k || k >= arrayLength ||
-			0 > t || t >= arrayLength)
-		{
+		if (0 > k || k >= arrayLength || 0 > t || t >= arrayLength) {
 			return false;
 		}
 
-		for (int index = 0;
-			index < arrayLength;
-			++index)
-		{
+		for (int index = 0; index < arrayLength; ++index) {
 			int compareIndex = index < k ? 0 : index - k;
 			int upperIndex = index + k >= arrayLength ? arrayLength - 1 : index + k;
 
-			while (compareIndex <= upperIndex)
-			{
-				if (compareIndex != index && Math.abs (
-						numberArray[index] - numberArray[compareIndex]
-					) <= t
-				)
+			while (compareIndex <= upperIndex) {
+				if (compareIndex != index && Math.abs (numberArray[index] - numberArray[compareIndex]) <= t)
 				{
 					return true;
 				}
