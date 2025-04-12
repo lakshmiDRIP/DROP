@@ -435,19 +435,42 @@ public class ArrayUtil
     	for (int prime : primeSet) {
     		maximumPrime = maximumPrime < prime ? prime : maximumPrime;
 
-    		if (0 == number % prime) return false;
+    		if (0 == number % prime) {
+    			return false;
+    		}
     	}
 
     	for (int nextNumber = maximumPrime + 1; nextNumber <= 1 + (int) Math.sqrt (number); ++nextNumber) {
     		if (IsPrime (primeSet, nextNumber)) {
     			primeSet.add (nextNumber);
 
-        		if (0 == number % nextNumber) return false;
+        		if (0 == number % nextNumber) {
+        			return false;
+        		}
     		}
     	}
 
     	return true;
     }
+
+	private static final int[] ExcludeAndSort2 (
+		final int[] numberArray,
+		final int excludeIndex)
+	{
+		int excludeAndSortIndex = 0;
+		int excludeAndSortArraySize = numberArray.length - 1;
+		int[] excludeAndSortArray = new int[excludeAndSortArraySize];
+
+		for (int numberArrayIndex = 0; numberArrayIndex < numberArray.length; ++numberArrayIndex) {
+			if (numberArrayIndex != excludeIndex) {
+				excludeAndSortArray[excludeAndSortIndex++] = numberArray[numberArrayIndex];
+			}
+		}
+
+		Arrays.sort (excludeAndSortArray);
+
+		return excludeAndSortArray;
+	}
 
 	/**
 	 * Search for the Target in a Rotated Array
@@ -466,102 +489,15 @@ public class ArrayUtil
 		int rightIndex = arrayLength - 1;
 		int midIndex = arrayLength / 2;
 
-		int pivotIndex = PivotIndex (
-			numberArray,
-			0,
-			midIndex
-		);
+		int pivotIndex = PivotIndex (numberArray, 0, midIndex);
 
-		if (-1 == pivotIndex)
-		{
-			pivotIndex = PivotIndex (
-				numberArray,
-				midIndex + 1,
-				arrayLength - 1
-			);
+		if (-1 == pivotIndex) {
+			pivotIndex = PivotIndex (numberArray, midIndex + 1, arrayLength - 1);
 		}
 
-		return numberArray[rightIndex] < target ? -1 != SearchPivotIndex (
-			numberArray,
-			target,
-			0,
-			pivotIndex
-		) : -1 != SearchPivotIndex (
-			numberArray,
-			target,
-			pivotIndex + 1,
-			rightIndex
-		);
-	}
-
-	/**
-	 * Search for the Target in a Rotated Array
-	 * 
-	 * @param numberArray The Rotated Number Array
-	 * @param target The Target
-	 * 
-	 * @return TRUE - The Rotated Index
-	 */
-
-	public static final int SearchRotatedArray2 (
-		final int[] numberArray,
-		final int target)
-	{
-		int arrayLength = numberArray.length;
-		int rightIndex = arrayLength - 1;
-		int midIndex = arrayLength / 2;
-
-		int pivotIndex = PivotIndex (
-			numberArray,
-			0,
-			midIndex
-		);
-
-		if (-1 == pivotIndex)
-		{
-			pivotIndex = PivotIndex (
-				numberArray,
-				midIndex + 1,
-				arrayLength - 1
-			);
-		}
-
-		return numberArray[rightIndex] < target ? SearchPivotIndex (
-			numberArray,
-			target,
-			0,
-			pivotIndex
-		) : SearchPivotIndex (
-			numberArray,
-			target,
-			pivotIndex + 1,
-			rightIndex
-		);
-	}
-
-	private static final int[] excludeAndSort (
-		final int[] numberArray,
-		final int excludeIndex)
-	{
-		int excludeAndSortIndex = 0;
-		int excludeAndSortArraySize = numberArray.length - 1;
-		int[] excludeAndSortArray = new int[excludeAndSortArraySize];
-
-		for (int numberArrayIndex = 0;
-			numberArrayIndex < numberArray.length;
-			++numberArrayIndex)
-		{
-			if (numberArrayIndex != excludeIndex)
-			{
-				excludeAndSortArray[excludeAndSortIndex++] = numberArray[numberArrayIndex];
-			}
-		}
-
-		Arrays.sort (
-			excludeAndSortArray
-		);
-
-		return excludeAndSortArray;
+		return numberArray[rightIndex] < target ?
+			-1 != SearchPivotIndex (numberArray, target, 0, pivotIndex) :
+			-1 != SearchPivotIndex (numberArray, target, pivotIndex + 1, rightIndex);
 	}
 
 	/**
@@ -575,17 +511,10 @@ public class ArrayUtil
 	public static final Map<String, int[]> ThreeSum (
 		final int[] numberArray)
 	{
-		Map<String, int[]> tripletMap =
-			new HashMap<String, int[]>();
+		Map<String, int[]> tripletMap = new HashMap<String, int[]>();
 
-		for (int numberArrayIndex = 0;
-			numberArrayIndex < numberArray.length;
-			++numberArrayIndex)
-		{
-			int[] excludeAndSortArray = excludeAndSort (
-				numberArray,
-				numberArrayIndex
-			);
+		for (int numberArrayIndex = 0; numberArrayIndex < numberArray.length; ++numberArrayIndex) {
+			int[] excludeAndSortArray = ExcludeAndSort2 (numberArray, numberArrayIndex);
 
 			for (int excludeAndSortArrayIndex = 0;
 				excludeAndSortArrayIndex < excludeAndSortArray.length;
@@ -595,26 +524,20 @@ public class ArrayUtil
 				int target = numberArray[numberArrayIndex] + excludeAndSortArray[excludeAndSortArrayIndex];
 
 				while (tripletIndex < excludeAndSortArray.length && 
-					target + excludeAndSortArray[tripletIndex] <= 0
-				)
+					target + excludeAndSortArray[tripletIndex] <= 0)
 				{
-					if (0 == target + excludeAndSortArray[tripletIndex])
-					{
-						int[] keyElementArray = new int[]
-						{
+					if (0 == target + excludeAndSortArray[tripletIndex]) {
+						int[] keyElementArray = new int[] {
 							numberArray[numberArrayIndex],
 							excludeAndSortArray[excludeAndSortArrayIndex],
 							excludeAndSortArray[tripletIndex]
 						};
 
-						Arrays.sort (
-							keyElementArray
-						);
+						Arrays.sort (keyElementArray);
 
 						tripletMap.put (
 							keyElementArray[0] + "@" + keyElementArray[1] + "@" + keyElementArray[2] + "@",
-							new int[]
-							{
+							new int[] {
 								numberArray[numberArrayIndex],
 								excludeAndSortArray[excludeAndSortArrayIndex],
 								excludeAndSortArray[tripletIndex]
@@ -643,17 +566,10 @@ public class ArrayUtil
 	public static final int CircularArrayLoop (
 		final int[] numberArray)
 	{
-		for (int arrayIndex = 0;
-			arrayIndex < numberArray.length;
-			++arrayIndex)
-		{
-			int circleLength = CircularArrayLoopLength (
-				numberArray,
-				arrayIndex
-			);
+		for (int arrayIndex = 0; arrayIndex < numberArray.length; ++arrayIndex) {
+			int circleLength = CircularArrayLoopLength (numberArray, arrayIndex);
 
-			if (-1 != circleLength)
-			{
+			if (-1 != circleLength) {
 				return circleLength;
 			}
 		}
@@ -666,7 +582,7 @@ public class ArrayUtil
 	 *  verticalCuts where horizontalCuts[i] is the distance from the top of the rectangular cake to the ith
 	 *  horizontal cut and similarly, verticalCuts[j] is the distance from the left of the rectangular cake
 	 *  to the jth vertical cut. Return the maximum area of a piece of cake after you cut at each horizontal
-	 *  and vertical position  provided in the arrays horizontalCuts and verticalCuts.
+	 *  and vertical position provided in the arrays horizontalCuts and verticalCuts.
 	 * 
 	 * @param h Cake Height
 	 * @param w Cake Width
@@ -690,46 +606,30 @@ public class ArrayUtil
 		verticalCutArray[verticalCutCount] = w;
 		int maxArea = 0;
 
-		for (int horizontalCutIndex = 0;
-			horizontalCutIndex < horizontalCutCount;
-			++horizontalCutIndex)
-		{
+		for (int horizontalCutIndex = 0; horizontalCutIndex < horizontalCutCount; ++horizontalCutIndex) {
 			horizontalCutArray[horizontalCutIndex] = horizontalCuts[horizontalCutIndex];
 		}
 
-		Arrays.sort (
-			horizontalCutArray
-		);
+		Arrays.sort (horizontalCutArray);
 
-		for (int verticalCutIndex = 0;
-			verticalCutIndex < verticalCutCount;
-			++verticalCutIndex)
-		{
+		for (int verticalCutIndex = 0; verticalCutIndex < verticalCutCount; ++verticalCutIndex) {
 			verticalCutArray[verticalCutIndex] = verticalCuts[verticalCutIndex];
 		}
 
-		Arrays.sort (
-			verticalCutArray
-		);
+		Arrays.sort (verticalCutArray);
 
-		for (int verticalCutIndex = 0;
-			verticalCutIndex <= verticalCutCount;
-			++verticalCutIndex)
-		{
+		for (int verticalCutIndex = 0; verticalCutIndex <= verticalCutCount; ++verticalCutIndex) {
 			int width = verticalCutArray[verticalCutIndex] - (
 				0 == verticalCutIndex ? 0 : verticalCutArray[verticalCutIndex - 1]
 			);
 
-			for (int horizontalCutIndex = 0;
-				horizontalCutIndex <= horizontalCutCount;
-				++horizontalCutIndex)
+			for (int horizontalCutIndex = 0; horizontalCutIndex <= horizontalCutCount; ++horizontalCutIndex)
 			{
 				int sliceArea = width * (horizontalCutArray[horizontalCutIndex] - (
 					0 == horizontalCutIndex ? 0 : horizontalCutArray[horizontalCutIndex - 1]
 				));
 
-				if (maxArea < sliceArea)
-				{
+				if (maxArea < sliceArea) {
 					maxArea = sliceArea;
 				}
 			}
@@ -759,8 +659,7 @@ public class ArrayUtil
 	public static final Collection<String> InvalidTransactions (
 		final String[] transactionArray)
 	{
-		Map<String, String> invalidTransactionMap =
-			new HashMap<String, String>();
+		Map<String, String> invalidTransactionMap = new HashMap<String, String>();
 
 		boolean first = true;
 		int prevTransactionTime = -1;
@@ -768,50 +667,27 @@ public class ArrayUtil
 		String prevTransactionCity = "";
 		String prevTransactionName = "";
 
-		for (String transaction : transactionArray)
-		{
-			String[] transactionDetailArray = transaction.split (
-				","
-			);
+		for (String transaction : transactionArray) {
+			String[] transactionDetailArray = transaction.split (",");
 
 			String transactionCity = transactionDetailArray[3];
 			String transactionName = transactionDetailArray[0];
 
-			int transactionTime = Integer.parseInt (
-				transactionDetailArray[1]
-			);
+			int transactionTime = Integer.parseInt (transactionDetailArray[1]);
 
-			int transactionAmount = Integer.parseInt (
-				transactionDetailArray[2]
-			);
+			int transactionAmount = Integer.parseInt (transactionDetailArray[2]);
 
-			if (!first)
-			{
-				boolean sequenceViolation = transactionTime - prevTransactionTime <= 60 &&
-					transactionName.equalsIgnoreCase (
-						prevTransactionName
-					) && !transactionCity.equalsIgnoreCase (
-						prevTransactionCity
-					);
+			if (!first) {
+				boolean sequenceViolation = 60 >= transactionTime - prevTransactionTime &&
+					transactionName.equalsIgnoreCase (prevTransactionName) &&
+					!transactionCity.equalsIgnoreCase (prevTransactionCity);
 
-				if (sequenceViolation)
-				{
-					invalidTransactionMap.put (
-						prevTransaction,
-						prevTransaction
-					);
+				if (sequenceViolation) {
+					invalidTransactionMap.put (prevTransaction, prevTransaction);
 
-					invalidTransactionMap.put (
-						transaction,
-						transaction
-					);
-				}
-				else if (transactionAmount > 1000)
-				{
-					invalidTransactionMap.put (
-						transaction,
-						transaction
-					);
+					invalidTransactionMap.put (transaction, transaction);
+				} else if (1000 < transactionAmount) {
+					invalidTransactionMap.put (transaction, transaction);
 				}
 			}
 
