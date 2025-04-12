@@ -530,6 +530,140 @@ public class ArrayUtil
 		return true;
 	}
 
+	private static final int FourSeaterCount (
+		final int[] row)
+	{
+		int left = 1;
+		int right = 1;
+		int center = 1;
+
+		if (1 == row[1] || 1 == row[2]) {
+			left = 0;
+		}
+
+		if (1 == row[3] || 1 == row[4]) {
+			left = 0;
+			center = 0;
+		}
+
+		if (1 == row[5] || 1 == row[6]) {
+			right = 0;
+			center = 0;
+		}
+
+		if (1 == row[7] || 1 == row[8]) {
+			right = 0;
+		}
+
+		if (1 == left && 1 == right) {
+			center = 0;
+		}
+
+		return left + center + right;
+	}
+
+	private static final boolean ConditionalStep (
+		final int x,
+		final int y,
+		final int wordCharIndex,
+		final char[][] board,
+		final char[] wordCharArray,
+		final List<int[]> traversalList,
+		final Set<Integer> visitedLocationSet)
+	{
+		if (x >= 0 &&
+			x < board.length &&
+			y >= 0 &&
+			y < board[0].length &&
+			wordCharIndex < wordCharArray.length)
+		{
+			int nextLocation = x * board.length + y;
+
+			if (wordCharArray[wordCharIndex] == board[x][y] && !visitedLocationSet.contains (nextLocation)) {
+				traversalList.add (new int[] {x, y, wordCharIndex});
+
+				visitedLocationSet.add (nextLocation);
+			}
+		}
+
+		return true;
+	}
+
+	private static final boolean WordExists (
+		final int startX,
+		final int startY,
+		final char[][] board,
+		final char[] wordCharArray)
+	{
+		int wordLastIndex = wordCharArray.length - 1;
+
+		List<int[]> traversalList = new ArrayList<int[]>();
+
+		Set<Integer> visitedLocationSet = new HashSet<Integer>();
+
+		traversalList.add (new int[] {startX, startY, 0});
+
+		visitedLocationSet.add (startX * board.length + startY);
+
+		while (!traversalList.isEmpty()) {
+			int[] traversalItem = traversalList.remove (0);
+
+			int x = traversalItem[0];
+			int y = traversalItem[1];
+			int wordCharIndex = traversalItem[2];
+
+			if (wordCharArray[wordCharIndex] != board[x][y]) {
+				continue;
+			}
+
+			if (wordCharIndex == wordLastIndex) {
+				return true;
+			}
+
+			ConditionalStep (
+				x - 1,
+				y,
+				wordCharIndex + 1,
+				board,
+				wordCharArray,
+				traversalList,
+				visitedLocationSet
+			);
+
+			ConditionalStep (
+				x + 1,
+				y,
+				wordCharIndex + 1,
+				board,
+				wordCharArray,
+				traversalList,
+				visitedLocationSet
+			);
+
+			ConditionalStep (
+				x,
+				y - 1,
+				wordCharIndex + 1,
+				board,
+				wordCharArray,
+				traversalList,
+				visitedLocationSet
+			);
+
+			ConditionalStep (
+				x,
+				y + 1,
+				wordCharIndex + 1,
+				board,
+				wordCharArray,
+				traversalList,
+				visitedLocationSet
+			);
+		}
+
+		return false;
+	}
+
 	/**
 	 * Search for the Target in a Rotated Array
 	 * 
@@ -1120,27 +1254,15 @@ public class ArrayUtil
 
 		List<int[]> locationList = new ArrayList<int[]>();
 
-		locationList.add (
-			new int[]
-			{
-				0,
-				0
-			}
-		);
+		locationList.add (new int[] {0, 0});
 
-		while (!locationList.isEmpty())
-		{
-			int[] location = locationList.remove (
-				0
-			);
+		while (!locationList.isEmpty()) {
+			int[] location = locationList.remove (0);
 
 			int locationX = location[0];
 			int locationY = location[1];
 
-			if (locationX == width - 1 &&
-				locationY == height - 1
-			)
-			{
+			if (locationX == width - 1 && locationY == height - 1) {
 				++uniquePathsWithObstacles;
 				continue;
 			}
@@ -1148,30 +1270,12 @@ public class ArrayUtil
 			int down = locationY + 1;
 			int right = locationX + 1;
 
-			if (right < width &&
-				1 != obstacleGrid[right][locationY]
-			)
-			{
-				locationList.add (
-					new int[]
-					{
-						right,
-						locationY
-					}
-				);
+			if (right < width && 1 != obstacleGrid[right][locationY]) {
+				locationList.add (new int[] {right, locationY});
 			}
 
-			if (down < height &&
-				1 != obstacleGrid[locationX][down]
-			)
-			{
-				locationList.add (
-					new int[]
-					{
-						locationX,
-						down
-					}
-				);
+			if (down < height && 1 != obstacleGrid[locationX][down]) {
+				locationList.add (new int[] {locationX, down});
 			}
 		}
 
@@ -1191,30 +1295,22 @@ public class ArrayUtil
 	 *  initial string s is never modified by any query.)
 	 *  
 	 * @param s Input String
-	 * @param queries Array of Queries
+	 * @param queryGrid Array of Queries
 	 * 
 	 * @return List of Query Results
 	 */
 
 	public static final List<Boolean> CanMakePalindromeQueries (
 		final String s,
-		final int[][] queries)
+		final int[][] queryGrid)
 	{
-		List<Boolean> queryArray = new ArrayList<Boolean>();
+		List<Boolean> queryResultArray = new ArrayList<Boolean>();
 
-		for (int[] query : queries)
-		{
-			queryArray.add (
-				CanMakePalindrome (
-					s,
-					query[0],
-					query[1],
-					query[2]
-				)
-			);
+		for (int[] query : queryGrid) {
+			queryResultArray.add (CanMakePalindrome (s, query[0], query[1], query[2]));
 		}
 
-		return queryArray;
+		return queryResultArray;
 	}
 
 	/**
@@ -1226,60 +1322,29 @@ public class ArrayUtil
 	 * @return All pairs of integers in the array which have difference equal to the number d.
 	 */
 
-	public static final List<int[]> ArrayPairList (int[] numberArray, int x) {
-		if (null == numberArray || 0 == numberArray.length) return null;
+	public static final List<int[]> ArrayPairList (
+		final int[] numberArray,
+		final int x)
+	{
+		if (null == numberArray || 0 == numberArray.length) {
+			return null;
+		}
 
 		List<int[]> arrayPairList = new ArrayList<int[]>();
 
 		HashSet<Integer> numberSet = new HashSet<Integer>();
 
 		for (int number : numberArray) {
-			if (numberSet.contains (number - x))
+			if (numberSet.contains (number - x)) {
 				arrayPairList.add (new int[] {number, number - x});
-			else if (numberSet.contains (number + x))
+			} else if (numberSet.contains (number + x)) {
 				arrayPairList.add (new int[] {number, number + x});
+			}
 
 			numberSet.add (number);
 		}
 
 		return arrayPairList;
-	}
-
-	private static final int FourSeaterCount (
-		final int[] row)
-	{
-		int left = 1;
-		int right = 1;
-		int center = 1;
-
-		if (1 == row[1] || 1 == row[2])
-		{
-			left = 0;
-		}
-
-		if (1 == row[3] || 1 == row[4])
-		{
-			left = 0;
-			center = 0;
-		}
-
-		if (1 == row[5] || 1 == row[6])
-		{
-			right = 0;
-			center = 0;
-		}
-
-		if (1 == row[7] || 1 == row[8])
-		{
-			right = 0;
-		}
-
-		if (1 == left && 1 == right)
-		{
-			center = 0;
-		}
-
-		return left + center + right;
 	}
 
 	/**
@@ -1296,40 +1361,30 @@ public class ArrayUtil
 	 *  have two people on each side.
 	 *  
 	 * @param n Number of Rows
-	 * @param reservedSeats Locations of Reserved Seats
+	 * @param reservedSeatGrid Locations of Reserved Seats
 	 * 
 	 * @return Maximum number of four-person groups.
 	 */
 
 	public static final int MaximumNumberOfFamilies (
 		final int n,
-		final int[][] reservedSeats)
+		final int[][] reservedSeatGrid)
 	{
 		int maximumNumberOfFamilies = 0;
 		int[][] seatGrid = new int[n][10];
 
-		for (int i = 0;
-			i < n;
-			++i)
-		{
-			for (int j = 0;
-				j < 10;
-				++j)
-			{
+		for (int i = 0; i < n; ++i) {
+			for (int j = 0; j < 10; ++j) {
 				seatGrid[i][j] = 0;
 			}
 		}
 
-		for (int[] reservedSeat : reservedSeats)
-		{
+		for (int[] reservedSeat : reservedSeatGrid) {
 			seatGrid[reservedSeat[0] - 1][reservedSeat[1] - 1] = 1;
 		}
 
-		for (int[] seatRow : seatGrid)
-		{
-			maximumNumberOfFamilies = maximumNumberOfFamilies + FourSeaterCount (
-				seatRow
-			);
+		for (int[] seatRow : seatGrid) {
+			maximumNumberOfFamilies = maximumNumberOfFamilies + FourSeaterCount (seatRow);
 		}
 
 		return maximumNumberOfFamilies;
@@ -1356,174 +1411,26 @@ public class ArrayUtil
 
 		int lastIndex = numberArray.length;
 
-		traversalList.add (
-			0
-		);
+		traversalList.add (0);
 
-		visitedSet.add (
-			0
-		);
+		visitedSet.add (0);
 
-		while (!traversalList.isEmpty())
-		{
-			int index = traversalList.remove (
-				0
-			);
+		while (!traversalList.isEmpty()) {
+			int index = traversalList.remove (0);
 
-			if (index == lastIndex)
-			{
+			if (index == lastIndex) {
 				return true;
 			}
 
-			for (int jump = 0;
-				jump <= numberArray[index];
-				++jump)
-			{
+			for (int jump = 0; jump <= numberArray[index]; ++jump) {
 				int nextLocation = index + jump;
 
-				if (!visitedSet.contains (
-					nextLocation
-				))
-				{
-					traversalList.add (
-						nextLocation
-					);
+				if (!visitedSet.contains (nextLocation)) {
+					traversalList.add (nextLocation);
 
-					visitedSet.add (
-						nextLocation
-					);
+					visitedSet.add (nextLocation);
 				}
 			}
-		}
-
-		return false;
-	}
-
-	private static final boolean ConditionalStep (
-		final int x,
-		final int y,
-		final int wordCharIndex,
-		final char[][] board,
-		final char[] wordCharArray,
-		final List<int[]> traversalList,
-		final Set<Integer> visitedLocationSet)
-	{
-		if (x >= 0 &&
-			x < board.length &&
-			y >= 0 &&
-			y < board[0].length &&
-			wordCharIndex < wordCharArray.length)
-		{
-			int nextLocation = x * board.length + y;
-
-			if (wordCharArray[wordCharIndex] == board[x][y] &&
-				!visitedLocationSet.contains (
-					nextLocation
-				)
-			)
-			{
-				traversalList.add (
-					new int[]
-					{
-						x,
-						y,
-						wordCharIndex
-					}
-				);
-
-				visitedLocationSet.add (
-					nextLocation
-				);
-			}
-		}
-
-		return true;
-	}
-
-	private static final boolean WordExists (
-		final int startX,
-		final int startY,
-		final char[][] board,
-		final char[] wordCharArray)
-	{
-		int wordLastIndex = wordCharArray.length - 1;
-
-		List<int[]> traversalList = new ArrayList<int[]>();
-
-		Set<Integer> visitedLocationSet = new HashSet<Integer>();
-
-		traversalList.add (
-			new int[]
-			{
-				startX,
-				startY,
-				0
-			}
-		);
-
-		visitedLocationSet.add (
-			startX * board.length + startY
-		);
-
-		while (!traversalList.isEmpty())
-		{
-			int[] traversalItem = traversalList.remove (
-				0
-			);
-
-			int x = traversalItem[0];
-			int y = traversalItem[1];
-			int wordCharIndex = traversalItem[2];
-
-			if (wordCharArray[wordCharIndex] != board[x][y])
-			{
-				continue;
-			}
-
-			if (wordCharIndex == wordLastIndex)
-			{
-				return true;
-			}
-
-			ConditionalStep (
-				x - 1,
-				y,
-				wordCharIndex + 1,
-				board,
-				wordCharArray,
-				traversalList,
-				visitedLocationSet
-			);
-
-			ConditionalStep (
-				x + 1,
-				y,
-				wordCharIndex + 1,
-				board,
-				wordCharArray,
-				traversalList,
-				visitedLocationSet
-			);
-
-			ConditionalStep (
-				x,
-				y - 1,
-				wordCharIndex + 1,
-				board,
-				wordCharArray,
-				traversalList,
-				visitedLocationSet
-			);
-
-			ConditionalStep (
-				x,
-				y + 1,
-				wordCharIndex + 1,
-				board,
-				wordCharArray,
-				traversalList,
-				visitedLocationSet
-			);
 		}
 
 		return false;
