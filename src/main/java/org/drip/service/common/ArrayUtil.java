@@ -664,6 +664,61 @@ public class ArrayUtil
 		return false;
 	}
 
+	private static final int KthHighestOrderStatistic (
+		final int[] numberArray,
+		final int k)
+	{
+		PriorityQueue<Integer> heap = new PriorityQueue<Integer>();
+
+		int arrayCount = numberArray.length;
+
+		for (int i = 0; i < arrayCount; ++i) {
+			if (i < k) {
+				heap.offer (numberArray[i]);
+			} else {
+				if (numberArray[i] > heap.peek()) {
+					heap.poll();
+
+					heap.offer (numberArray[i]);
+				}
+			}
+		}
+
+		return heap.peek();
+	}
+
+	private static final boolean GeneratePathCombinations (
+		final List<List<Integer>> pathIndexList,
+		final int currentIndex,
+		final int[] numberArray)
+	{
+		if (currentIndex == numberArray.length) {
+			return true;
+		}
+
+		List<List<Integer>> currentPathIndexList = new ArrayList<List<Integer>>();
+
+		List<Integer> currentIndexPath = new ArrayList<Integer>();
+
+		currentIndexPath.add (numberArray[currentIndex]);
+
+		currentPathIndexList.add (currentIndexPath);
+
+		for (List<Integer> pathIndex : pathIndexList) {
+			List<Integer> currentPath = new ArrayList<Integer>();
+
+			currentPath.addAll (pathIndex);
+
+			currentPath.add (numberArray[currentIndex]);
+
+			currentPathIndexList.add (pathIndex);
+		}
+
+		pathIndexList.addAll (currentPathIndexList);
+
+		return GeneratePathCombinations (pathIndexList, currentIndex + 1, numberArray);
+	}
+
 	/**
 	 * Search for the Target in a Rotated Array
 	 * 
@@ -1803,52 +1858,40 @@ public class ArrayUtil
 		final int[] numberArray,
 		final int k)
 	{
-		if (null == numberArray)
-		{
+		if (null == numberArray) {
 			return false;
 		}
 
 		int arrayLength = numberArray.length;
 
-		if (1 >= arrayLength)
-		{
+		if (1 >= arrayLength) {
 			return false;
 		}
 
-		HashMap<Integer, Integer> remainerSizeMap =
-			new HashMap<Integer, Integer>();
+		HashMap<Integer, Integer> remainerSizeMap = new HashMap<Integer, Integer>();
 
 		int sum = numberArray[0];
 
-		for (int i = 1;
-			i < arrayLength;
-			++i)
-		{
+		for (int i = 1; i < arrayLength; ++i) {
 			sum = sum + numberArray[i];
 			int currentRemain = sum % k;
 
-			if (0 == currentRemain ||
-				remainerSizeMap.containsKey (
-					k - currentRemain
-				) && i - 1 >= remainerSizeMap.get (
-					k - currentRemain
-				)
-			)
+			if (0 == currentRemain ||  (
+				remainerSizeMap.containsKey (k - currentRemain) &&
+				i - 1 >= remainerSizeMap.get (k - currentRemain)
+			))
 			{
 				return true;
 			}
 
-			remainerSizeMap.put (
-				currentRemain,
-				i + 1
-			);
+			remainerSizeMap.put (currentRemain, i + 1);
 		}
 
 		return false;
 	}
 
 	/**
-	 * Given an integer array arr and an integer k, modify the array by repeating it k times.
+	 * Given an integer array numberArray and an integer k, modify the array by repeating it k times.
 	 * 
 	 * For example, if the array is [1, 2] and k = 3 then the modified array will be [1, 2, 1, 2, 1, 2].
 	 * 
@@ -1865,15 +1908,13 @@ public class ArrayUtil
 		final int[] numberArray,
 		final int k)
 	{
-		if (null == numberArray)
-		{
+		if (null == numberArray) {
 			return 0;
 		}
 
 		int arrayLength = numberArray.length;
 
-		if (0 == arrayLength)
-		{
+		if (0 == arrayLength) {
 			return 0;
 		}
 
@@ -1883,10 +1924,7 @@ public class ArrayUtil
 		int[] indexInclusiveLeftMinArray = new int[arrayLength];
 		indexInclusiveLeftMaxArray[0] = numberArray[0];
 
-		for (int i = 1;
-			i < arrayLength;
-			++i)
-		{
+		for (int i = 1; i < arrayLength; ++i) {
 			int sum = indexInclusiveLeftMaxArray[i - 1] + numberArray[i];
 			indexInclusiveLeftMaxArray[i] = sum > numberArray[i] ? sum : numberArray[i];
 			indexInclusiveLeftMinArray[i] = sum < numberArray[i] ? sum : numberArray[i];
@@ -1898,8 +1936,7 @@ public class ArrayUtil
 
 		int singleMax = indexInclusiveLeftMax - indexInclusiveLeftMin;
 
-		if (1 == k)
-		{
+		if (1 == k) {
 			return singleMax;
 		}
 
@@ -1909,10 +1946,7 @@ public class ArrayUtil
 		int indexInclusiveRightMax = numberArray[arrayLength - 1] > 0 ? numberArray[arrayLength - 1] : 0;
 		int indexInclusiveRightMin = numberArray[arrayLength - 1] < 0 ? numberArray[arrayLength - 1] : 0;
 
-		for (int i = arrayLength - 2;
-			i >= 0;
-			--i)
-		{
+		for (int i = arrayLength - 2; i >= 0; --i) {
 			int sum = indexInclusiveLeftMaxArray[i + 1] + numberArray[i];
 			indexInclusiveRightMaxArray[i] = sum > numberArray[i] ? sum : numberArray[i];
 			indexInclusiveRightMinArray[i] = sum < numberArray[i] ? sum : numberArray[i];
@@ -1924,40 +1958,6 @@ public class ArrayUtil
 
 		int spanMax = indexInclusiveLeftMax + indexInclusiveRightMax;
 		return k * singleMax > spanMax ? k * singleMax : spanMax;
-	}
-
-	private static final int KthHighestOrderStatistic (
-		final int[] numberArray,
-		final int k)
-	{
-		PriorityQueue<Integer> heap = new PriorityQueue<Integer>();
-
-		int arrayCount = numberArray.length;
-
-		for (int i = 0;
-			i < arrayCount;
-			++i)
-		{
-			if (i < k)
-			{
-				heap.offer(
-					numberArray[i]
-				);
-			}
-			else
-			{
-				if (numberArray[i] > heap.peek())
-				{
-					heap.poll();
-
-					heap.offer(
-						numberArray[i]
-					);
-				}
-			}
-		}
-
-		return heap.peek();
 	}
 
 	/**
@@ -1972,8 +1972,7 @@ public class ArrayUtil
 	public static final boolean WiggleSort (
 		final int[] numberArray)
 	{
-		if (null == numberArray)
-		{
+		if (null == numberArray) {
 			return true;
 		}
 
@@ -1982,36 +1981,23 @@ public class ArrayUtil
 		int evenLocation = 0 == arrayLength % 2 ? arrayLength - 2 : arrayLength - 1;
 		Integer[] wiggleArray = 2 >= arrayLength ? null : new Integer[arrayLength];
 
-		if (null == wiggleArray)
-		{
+		if (null == wiggleArray) {
 			return true;
 		}
 
-		int median = KthHighestOrderStatistic (
-			numberArray,
-			(arrayLength + 1) / 2
-		);
+		int median = KthHighestOrderStatistic (numberArray, (arrayLength + 1) / 2);
 
-		for (int i = 0;
-			i < arrayLength;
-			++i)
-		{
-			if (numberArray[i] > median)
-			{
+		for (int i = 0; i < arrayLength; ++i) {
+			if (numberArray[i] > median) {
 				wiggleArray[oddLocation] = numberArray[i];
 				oddLocation += 2;
-			}
-			else if (numberArray[i] < median)
-			{
+			} else if (numberArray[i] < median) {
 				wiggleArray[evenLocation] = numberArray[i];
 				evenLocation -= 2;
 			}
 		}
 
-		for (int i = 0;
-			i < arrayLength;
-			++i)
-		{
+		for (int i = 0; i < arrayLength; ++i) {
 			numberArray[i] = null == wiggleArray[i] ? median : wiggleArray[i];
 		}
 
@@ -2031,51 +2017,26 @@ public class ArrayUtil
 		final int[] numberArray,
 		final int target)
 	{
-		int targetSumCount = 0;
-
 		List<int[]> indexAndResultList = new ArrayList<int[]>();
 
-		indexAndResultList.add (
-			new int[]
-			{
-				-1,
-				0
-			}
-		);
+		indexAndResultList.add (new int[] {-1, 0});
 
-		while (!indexAndResultList.isEmpty())
-		{
-			int[] indexAndResult = indexAndResultList.remove (
-				0
-			);
+		int targetSumCount = 0;
+
+		while (!indexAndResultList.isEmpty()) {
+			int[] indexAndResult = indexAndResultList.remove (0);
 
 			int nextIndex = indexAndResult[0] + 1;
 			int result = indexAndResult[1];
 
-			if (nextIndex == numberArray.length)
-			{
-				if (result == target)
-				{
+			if (nextIndex == numberArray.length) {
+				if (result == target) {
 					++targetSumCount;
 				}
-			}
-			else
-			{
-				indexAndResultList.add (
-					new int[]
-					{
-						nextIndex,
-						result + numberArray[nextIndex]
-					}
-				);
+			} else {
+				indexAndResultList.add (new int[] {nextIndex, result + numberArray[nextIndex]});
 
-				indexAndResultList.add (
-					new int[]
-					{
-						nextIndex,
-						result - numberArray[nextIndex]
-					}
-				);
+				indexAndResultList.add (new int[] {nextIndex, result - numberArray[nextIndex]});
 			}
 		}
 
@@ -2097,77 +2058,19 @@ public class ArrayUtil
 		int count = 0 ;
 		int prevNumber = numberArray[0];
 
-		while (i < numberArray.length)
-		{
-			while (i < numberArray.length &&
-				prevNumber == numberArray[i]
-			)
-			{
+		while (i < numberArray.length) {
+			while (i < numberArray.length &&prevNumber == numberArray[i]) {
 				++i;
 			}
 
-			count++;
+			++count;
 
-			if (i < numberArray.length)
-			{
+			if (i < numberArray.length) {
 				prevNumber = numberArray[i];
 			}
 		}
 
 		return count;
-	}
-
-	private static final boolean GeneratePathCombinations (
-		final List<List<Integer>> pathIndexList,
-		final int currentIndex,
-		final int[] numberArray)
-	{
-		int arrayLength = numberArray.length;
-
-		if (currentIndex == arrayLength)
-		{
-			return true;
-		}
-
-		List<List<Integer>> currentPathIndexList =
-			new ArrayList<List<Integer>>();
-
-		List<Integer> currentIndexPath = new ArrayList<Integer>();
-
-		currentIndexPath.add (
-			numberArray[currentIndex]
-		);
-
-		currentPathIndexList.add (
-			currentIndexPath
-		);
-
-		for (List<Integer> pathIndex : pathIndexList)
-		{
-			List<Integer> currentPath = new ArrayList<Integer>();
-
-			currentPath.addAll (
-				pathIndex
-			);
-
-			currentPath.add (
-				numberArray[currentIndex]
-			);
-
-			currentPathIndexList.add (
-				currentPath
-			);
-		}
-
-		pathIndexList.addAll (
-			currentPathIndexList
-		);
-
-		return GeneratePathCombinations (
-			pathIndexList,
-			currentIndex + 1,
-			numberArray
-		);
 	}
 
 	/**
@@ -2183,32 +2086,21 @@ public class ArrayUtil
 		final int[] numberArray,
 		final int target)
 	{
-		List<List<Integer>> pathIndexList =
-			new ArrayList<List<Integer>>();
+		List<List<Integer>> pathIndexList = new ArrayList<List<Integer>>();
 
-		GeneratePathCombinations (
-			pathIndexList,
-			0,
-			numberArray
-		);
+		GeneratePathCombinations (pathIndexList, 0, numberArray);
 
-		Set<List<Integer>> validPathIndexSet =
-			new HashSet<List<Integer>>();
+		Set<List<Integer>> validPathIndexSet = new HashSet<List<Integer>>();
 
-		for (List<Integer> pathIndexSequence : pathIndexList)
-		{
+		for (List<Integer> pathIndexSequence : pathIndexList) {
 			int sum = 0;
 
-			for (int pathIndexValue : pathIndexSequence)
-			{
+			for (int pathIndexValue : pathIndexSequence) {
 				sum = sum + pathIndexValue;
 			}
 
-			if (sum == target)
-			{
-				validPathIndexSet.add (
-					pathIndexSequence
-				);
+			if (sum == target) {
+				validPathIndexSet.add (pathIndexSequence);
 			}
 		}
 
