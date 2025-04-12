@@ -719,6 +719,99 @@ public class ArrayUtil
 		return GeneratePathCombinations (pathIndexList, currentIndex + 1, numberArray);
 	}
 
+	private static final int[] FirstAndLastPosition (
+		final int leftIndex,
+		final int rightIndex,
+		final int[] numberArray,
+		final int target)
+	{
+		int arrayLength = numberArray.length;
+		int midIndex = (leftIndex + rightIndex) / 2;
+
+		if (rightIndex == leftIndex || rightIndex == leftIndex + 1) {
+			if (numberArray[leftIndex] != target && numberArray[rightIndex] != target) {
+				return new int[] {-1, -1};
+			}
+		}
+
+		if (numberArray[midIndex] == target) {
+			int leftLocation = midIndex;
+			int rightLocation = midIndex;
+
+			while (leftLocation >= 0 && numberArray[leftLocation] == target) {
+				--leftLocation;
+			}
+
+			while (rightLocation < arrayLength && numberArray[rightLocation] == target) {
+				++rightLocation;
+			}
+
+			return new int[] {
+				numberArray[leftLocation] == target ? leftLocation : leftLocation + 1,
+				numberArray[rightLocation] == target ? rightLocation : rightLocation - 1
+			};
+		}
+		else if (target < numberArray[midIndex]) {
+			return FirstAndLastPosition (leftIndex, midIndex, numberArray, target);
+		}
+
+		return FirstAndLastPosition (midIndex, rightIndex, numberArray, target);
+	}
+
+	private static final boolean MarkIslands (
+		final int xStart,
+		final int yStart,
+		final int[][] islandMarkerGrid,
+		final int[][] locationGrid)
+	{
+		int rowCount = locationGrid.length;
+		int columnCount = locationGrid[0].length;
+
+		List<int[]> locationList = new ArrayList<int[]>();
+
+		locationList.add (new int[] {xStart, yStart});
+
+		while (!locationList.isEmpty()) {
+			int[] location = locationList.remove (0);
+
+			int x = location[0];
+			int y = location[1];
+			int xNext = x + 1;
+			int yNext = y + 1;
+			islandMarkerGrid[x][y] = 1;
+
+			if (xNext < rowCount && 0 != locationGrid[xNext][y]) {
+				locationList.add (new int[] {xNext, y});
+			}
+
+			if (yNext < columnCount && 0 != locationGrid[x][yNext]) {
+				locationList.add (new int[] {x, yNext});
+			}
+		}
+
+		return true;
+	}
+
+	private static final int RoundLotUnits (
+		final int lotSize,
+		final int unitSize)
+	{
+		return lotSize / unitSize + (0 == lotSize % unitSize ? 0 : 1);
+	}
+
+	private static final int TimeConsumed (
+		final int[] lotSizeArray,
+		final int rate)
+	{
+		int timeConsumed = 0;
+
+		for (int index = 0; index < lotSizeArray.length; ++index) {
+			timeConsumed = timeConsumed + RoundLotUnits (lotSizeArray[index], rate);
+		}
+
+		return timeConsumed;
+	}
+
 	/**
 	 * Search for the Target in a Rotated Array
 	 * 
@@ -2107,66 +2200,6 @@ public class ArrayUtil
 		return validPathIndexSet;
 	}
 
-	private static final int[] FirstAndLastPosition (
-		final int leftIndex,
-		final int rightIndex,
-		final int[] numberArray,
-		final int target)
-	{
-		int arrayLength = numberArray.length;
-		int midIndex = (leftIndex + rightIndex) / 2;
-
-		if (rightIndex == leftIndex || rightIndex == leftIndex + 1)
-		{
-			if (numberArray[leftIndex] != target && numberArray[rightIndex] != target)
-			{
-				return new int[]
-				{
-					-1,
-					-1
-				};
-			}
-		}
-
-		if (numberArray[midIndex] == target)
-		{
-			int leftLocation = midIndex;
-			int rightLocation = midIndex;
-
-			while (leftLocation >= 0 && numberArray[leftLocation] == target)
-			{
-				--leftLocation;
-			}
-
-			while (rightLocation < arrayLength && numberArray[rightLocation] == target)
-			{
-				++rightLocation;
-			}
-
-			return new int[]
-			{
-				numberArray[leftLocation] == target ? leftLocation : leftLocation + 1,
-				numberArray[rightLocation] == target ? rightLocation : rightLocation - 1
-			};
-		}
-		else if (target < numberArray[midIndex])
-		{
-			return FirstAndLastPosition (
-				leftIndex,
-				midIndex,
-				numberArray,
-				target
-			);
-		}
-
-		return FirstAndLastPosition (
-			midIndex,
-			rightIndex,
-			numberArray,
-			target
-		);
-	}
-
 	/**
 	 * Find the First and the Last Locations of the Target in the Array
 	 * 
@@ -2180,23 +2213,8 @@ public class ArrayUtil
 		final int[] numberArray,
 		final int target)
 	{
-		int arrayLength = numberArray.length;
-
-		if (target < numberArray[0] || target > numberArray[arrayLength - 1])
-		{
-			return new int[]
-			{
-				-1,
-				-1
-			};
-		}
-
-		return FirstAndLastPosition (
-			0,
-			arrayLength - 1,
-			numberArray,
-			target
-		);
+		return target < numberArray[0] || target > numberArray[numberArray.length - 1] ?
+			new int[] {-1, -1} : FirstAndLastPosition (0, numberArray.length - 1, numberArray, target);
 	}
 
 	/**
@@ -2215,66 +2233,20 @@ public class ArrayUtil
 		int[] leftProductExcludingSelf = new int[arrayLength];
 		int[] rightProductExcludingSelf = new int[arrayLength];
 
-		for (int i = 0;
-			i < arrayLength;
-			++i)
-		{
+		for (int i = 0; i < arrayLength; ++i) {
 			leftProductExcludingSelf[i] = 0 == i ? 1 : leftProductExcludingSelf[i - 1] * numberArray[i - 1];
 		}
 
-		for (int i = arrayLength - 1;
-			i >= 0;
-			--i)
-		{
+		for (int i = arrayLength - 1; i >= 0; --i) {
 			rightProductExcludingSelf[i] = i == arrayLength - 1 ? 1 :
 				numberArray[i + 1] * rightProductExcludingSelf[i + 1];
 		}
 
-		for (int i = 0;
-			i < arrayLength;
-			++i)
-		{
+		for (int i = 0; i < arrayLength; ++i) {
 			productOfArrayExceptSelf[i] = leftProductExcludingSelf[i] * rightProductExcludingSelf[i];
 		}
 
 		return productOfArrayExceptSelf;
-	}
-
-	private static final boolean MarkIslands (
-		final int xStart,
-		final int yStart,
-		final int[][] islandMark,
-		final int[][] grid)
-	{
-		int rowCount = grid.length;
-		int columnCount = grid[0].length;
-
-		List<int[]> locationList = new ArrayList<int[]>();
-
-		locationList.add(new int[] {xStart, yStart});
-
-		while (!locationList.isEmpty())
-		{
-			int[] location = locationList.remove (0);
-
-			int x = location[0];
-			int y = location[1];
-			islandMark[x][y] = 1;
-			int xNext = x + 1;
-			int yNext = y + 1;
-
-			if (xNext < rowCount && 0 != grid[xNext][y])
-			{
-				locationList.add(new int[] {xNext, y});
-			}
-
-			if (yNext < columnCount && 0 != grid[x][yNext])
-			{
-				locationList.add(new int[] {x, yNext});
-			}
-		}
-
-		return true;
 	}
 
 	/**
@@ -2295,38 +2267,27 @@ public class ArrayUtil
 		int x = 0;
 		int y = 0;
 
-		for (int rowIndex = 0; rowIndex < rowCount; ++rowIndex)
-		{
-			for (int columnIndex = 0; columnIndex < columnCount; ++columnIndex)
-			{
+		for (int rowIndex = 0; rowIndex < rowCount; ++rowIndex) {
+			for (int columnIndex = 0; columnIndex < columnCount; ++columnIndex) {
 				islandMark[rowIndex][columnIndex] = 1 - grid[rowIndex][columnIndex];
 			}
 		}
 
-		while (x < columnCount && y < rowCount)
-		{
-			while (y < columnCount && 1 == islandMark[x][y])
-			{
-				x++;
+		while (x < columnCount && y < rowCount) {
+			while (y < columnCount && 1 == islandMark[x][y]) {
+				++x;
 
-				if (rowCount == x)
-				{
+				if (rowCount == x) {
 					x = 0;
-					y++;
+					++y;
 				}
 			}
 
-			if (y == columnCount)
-			{
+			if (y == columnCount) {
 				break;
 			}
 
-			MarkIslands (
-				x,
-				y,
-				islandMark,
-				grid
-			);
+			MarkIslands (x, y, islandMark, grid);
 
 			++islandCount;
 		}
@@ -2341,72 +2302,34 @@ public class ArrayUtil
 	 * 
 	 * @return Array of Sorted Pancake Flips
 	 */
+
 	public static final int[] PancakeFlipSort (
-			
 		final int[] numberArray)
 	{
 		int arrayLength = numberArray.length;
 		int endIndex = arrayLength - 1;
 
-		while (endIndex >= 0)
-		{
+		while (0 <= endIndex) {
 			int maxIndex = 0;
 			int maxValue = numberArray[0];
 
-			for (int index = 0;
-				index <= endIndex;
-				++index)
-			{
-				if (numberArray[index] > maxValue)
-				{
+			for (int index = 0; index <= endIndex; ++index) {
+				if (numberArray[index] > maxValue) {
 					maxValue = numberArray[index];
 					maxIndex = index;
 				}
 			}
 
-			if (0 != maxIndex)
-			{
-				FlipSequence (
-					numberArray,
-					maxIndex
-				);
+			if (0 != maxIndex) {
+				FlipSequence (numberArray, maxIndex);
 			}
 
-			FlipSequence (
-				numberArray,
-				endIndex
-			);
+			FlipSequence (numberArray, endIndex);
 
 			--endIndex;
 		}
 
 		return numberArray;
-	}
-
-	private static final int RoundLotUnits (
-		final int lotSize,
-		final int unitSize)
-	{
-		return lotSize / unitSize + (0 == lotSize % unitSize ? 0 : 1);
-	}
-
-	private static final int TimeConsumed (
-		final int[] lotSizeArray,
-		final int rate)
-	{
-		int timeConsumed = 0;
-
-		for (int index = 0;
-			index < lotSizeArray.length;
-			++index)
-		{
-			timeConsumed = timeConsumed + RoundLotUnits (
-				lotSizeArray[index],
-				rate
-			);
-		}
-
-		return timeConsumed;
 	}
 
 	/**
@@ -2425,31 +2348,20 @@ public class ArrayUtil
 		int totalSize = 0;
 		int lotCount = lotSizeArray.length;
 
-		for (int lotIndex = 0;
-			lotIndex < lotCount;
-			++lotIndex)
-		{
+		for (int lotIndex = 0; lotIndex < lotCount; ++lotIndex) {
 			totalSize = totalSize + lotSizeArray[lotIndex];
 		}
 
 		int consumptionRate = totalSize / totalTime;
 
-		if (0 == consumptionRate)
-		{
+		if (0 == consumptionRate) {
 			return -1;
 		}
 
-		int timeConsumed = TimeConsumed (
-			lotSizeArray,
-			consumptionRate
-		);
+		int timeConsumed = TimeConsumed (lotSizeArray, consumptionRate);
 
-		while (timeConsumed > totalTime)
-		{
-			timeConsumed = TimeConsumed (
-				lotSizeArray,
-				++consumptionRate
-			);
+		while (timeConsumed > totalTime) {
+			timeConsumed = TimeConsumed (lotSizeArray, ++consumptionRate);
 		}
 
 		return consumptionRate;
@@ -2466,17 +2378,11 @@ public class ArrayUtil
 	public static final Collection<int[]> CollapseOverlappingRanges (
 		final List<int[]> rangeList)
 	{
-		TreeMap<Integer, int[]> rangeMap =
-			new TreeMap<Integer, int[]>();
+		TreeMap<Integer, int[]> rangeMap = new TreeMap<Integer, int[]>();
 
-		for (int[] range : rangeList)
-		{
-			if (rangeMap.isEmpty())
-			{
-				rangeMap.put (
-					range[0],
-					range
-				);
+		for (int[] range : rangeList) {
+			if (rangeMap.isEmpty()) {
+				rangeMap.put (range[0], range);
 
 				continue;
 			}
@@ -2484,57 +2390,32 @@ public class ArrayUtil
 			int newRangeEnd = range[1];
 			int newRangeStart = range[0];
 
-			Integer floorKey = rangeMap.floorKey (
-				newRangeStart
-			);
+			Integer floorKey = rangeMap.floorKey (newRangeStart);
 
 			floorKey = null != floorKey ? floorKey : rangeMap.firstKey();
 
-			Map<Integer, int[]> tailRangeMap = rangeMap.tailMap (
-				floorKey
-			);
+			Map<Integer, int[]> tailRangeMap = rangeMap.tailMap (newRangeStart);
 
 			List<Integer> rangeTrimList = new ArrayList<Integer>();
 
-			if (null != tailRangeMap && 0 != tailRangeMap.size())
-			{
-				for (Map.Entry<Integer, int[]> tailRangeEntry : tailRangeMap.entrySet())
-				{
+			if (null != tailRangeMap && 0 != tailRangeMap.size()) {
+				for (Map.Entry<Integer, int[]> tailRangeEntry : tailRangeMap.entrySet()) {
 					int[] tailRange = tailRangeEntry.getValue();
 
-					if (DoRangesOverlap (
-							range,
-							tailRange
-						) || DoRangesOverlap (
-							tailRange,
-							range
-						))
-					{
+					if (DoRangesOverlap (range, tailRange) || DoRangesOverlap (tailRange, range)) {
 						newRangeEnd = newRangeEnd > tailRange[1] ? newRangeEnd : tailRange[1];
 						newRangeStart = newRangeStart < tailRange[0] ? newRangeStart : tailRange[0];
 
-						rangeTrimList.add (
-							tailRange[0]
-						);
+						rangeTrimList.add (tailRange[0]);
 					}
 				}
 			}
 
-			for (int rangeStart : rangeTrimList)
-			{
-				rangeMap.remove (
-					rangeStart
-				);
+			for (int rangeStart : rangeTrimList) {
+				rangeMap.remove (rangeStart);
 			}
 
-			rangeMap.put (
-				newRangeStart,
-				new int[]
-				{
-					newRangeStart,
-					newRangeEnd
-				}
-			);
+			rangeMap.put (newRangeStart, new int[] {newRangeStart, newRangeEnd});
 		}
 
 		return rangeMap.values();
