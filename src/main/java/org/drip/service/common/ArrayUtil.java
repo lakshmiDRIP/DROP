@@ -3,18 +3,24 @@ package org.drip.service.common;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.PriorityQueue;
 import java.util.Set;
 import java.util.Stack;
+import java.util.TreeMap;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -85,16 +91,22 @@ import java.util.Stack;
  */
 
 /**
- * <i>ArrayUtil</i> implements Generic Array Utility Functions used in DROP modules.
- *  
- * <br><br>
- *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md">Numerical Analysis Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/README.md">Environment, Product/Definition Containers, and Scenario/State Manipulation APIs</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/common">Assorted Data Structures Support Utilities</a></li>
- *  </ul>
- * <br><br>
+ * <i>ArrayUtil</i> implements Generic Array Utility Functions used in DROP modules. It provides the
+ * 	following Functions:
+ * 
+ * <ul>
+ * 		<li>Affix the Headers on the JSON Request</li>
+ * 		<li>Affix the Headers on the JSON Response</li>
+ * </ul>
+ *
+ * <br>
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationSupportLibrary.md">Computation Support</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/README.md">Environment, Product/Definition Containers, and Scenario/State Manipulation APIs</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/common/README.md">Assorted Data Structures Support Utilities</a></td></tr>
+ *  </table>
+ * <br>
  * 
  * @author Lakshmi Krishnamurthy
  */
@@ -107,21 +119,16 @@ public class ArrayUtil
 		int leftIndex,
 		int rightIndex)
 	{
-		while (numberArray[leftIndex] > numberArray[rightIndex])
-		{
+		while (numberArray[leftIndex] > numberArray[rightIndex]) {
 			int midIndex = (leftIndex + rightIndex) / 2;
 
-			if (numberArray[midIndex] > numberArray[midIndex + 1])
-			{
+			if (numberArray[midIndex] > numberArray[midIndex + 1]) {
 				return midIndex;
 			}
 
-			if (numberArray[leftIndex] > numberArray[midIndex])
-			{
+			if (numberArray[leftIndex] > numberArray[midIndex]) {
 				rightIndex = midIndex;
-			}
-			else
-			{
+			} else {
 				leftIndex = midIndex;
 			}
 		}
@@ -137,19 +144,14 @@ public class ArrayUtil
 	{
 		int midIndex = (leftIndex + rightIndex) / 2;
 
-		while (leftIndex < rightIndex + 1)
-		{
-			if (numberArray[midIndex] == target)
-			{
+		while (leftIndex < rightIndex + 1) {
+			if (numberArray[midIndex] == target) {
 				return midIndex;
 			}
 
-			if (numberArray[midIndex] < target)
-			{
+			if (numberArray[midIndex] < target) {
 				leftIndex = midIndex;
-			}
-			else
-			{
+			} else {
 				rightIndex = midIndex;
 			}
 		}
@@ -163,30 +165,23 @@ public class ArrayUtil
 	{
 		int index = startIndex;
 		int arraySize = numberArray.length;
-		boolean forward = numberArray[index] > 0 ? true : false;
+		boolean forward = 0 < numberArray[index];
 
-		java.util.Set<java.lang.Integer> indexSet = new java.util.HashSet<java.lang.Integer>();
+		Set<Integer> indexSet = new HashSet<Integer>();
 
-		while (arraySize > indexSet.size())
-		{
-			if (indexSet.contains (
-				index
-			))
-			{
+		while (arraySize > indexSet.size()) {
+			if (indexSet.contains (index)) {
 				return indexSet.size();
 			}
 
-			if (forward != numberArray[index] > 0)
-			{
+			if (forward != 0 < numberArray[index]) {
 				return -1;
 			}
 
-			indexSet.add (
-				index
-			);
+			indexSet.add (index);
 
 			index = index + numberArray[index];
-			index = index < 0 ? index + arraySize : index - arraySize;
+			index = 0 > index ? index + arraySize : index - arraySize;
 		}
 
 		return -1;
@@ -199,12 +194,8 @@ public class ArrayUtil
 	{
 		int count = 0;
 
-		for (int left = 0;
-			left <= numberArray.length - windowSize;
-			++left)
-		{
-			if (index >= left && index <= left + windowSize - 1)
-			{
+		for (int left = 0; left <= numberArray.length - windowSize; ++left) {
+			if (index >= left && index <= left + windowSize - 1) {
 				++count;
 			}
 		}
@@ -213,32 +204,20 @@ public class ArrayUtil
 	}
 
 	private static final boolean CanMakePalindrome (
-		final java.lang.String s,
+		final String s,
 		final int left,
 		final int right,
 		final int k)
 	{
-		java.util.Set<java.lang.Character> charSet = new java.util.HashSet<java.lang.Character>();
-
 		char[] charArray = s.toCharArray();
 
-		for (int charIndex = left;
-			charIndex <= right;
-			++charIndex)
-		{
-			if (charSet.contains (
-				charArray[charIndex]
-			))
-			{
-				charSet.remove (
-					charArray[charIndex]
-				);
-			}
-			else
-			{
-				charSet.add (
-					charArray[charIndex]
-				);
+		Set<Character> charSet = new HashSet<Character>();
+
+		for (int charIndex = left; charIndex <= right; ++charIndex) {
+			if (charSet.contains (charArray[charIndex])) {
+				charSet.remove (charArray[charIndex]);
+			} else {
+				charSet.add (charArray[charIndex]);
 			}
 		}
 
@@ -251,10 +230,8 @@ public class ArrayUtil
 		int startIndex,
 		int endIndex)
 	{
-		while (startIndex <= endIndex)
-		{
-			if (a[startIndex++] != b[endIndex--])
-			{
+		while (startIndex <= endIndex) {
+			if (a[startIndex++] != b[endIndex--]) {
 				return false;
 			}
 		}
@@ -268,8 +245,7 @@ public class ArrayUtil
 	{
 		int startIndex = 0;
 
-		while (startIndex < endIndex)
-		{
+		while (startIndex < endIndex) {
 			int temp = numberArray[startIndex];
 			numberArray[startIndex] = numberArray[endIndex];
 			numberArray[endIndex] = temp;
@@ -289,36 +265,23 @@ public class ArrayUtil
 	}
 
 	private static final int ApplyOperation (
-		final java.lang.String leftNumber,
-		final java.lang.String operation,
-		final java.lang.String rightNumber)
+		final String leftNumber,
+		final String operation,
+		final String rightNumber)
 	{
-		int left = org.drip.service.common.StringUtil.DecimalNumberFromString (
-			leftNumber
-		);
+		int left = StringUtil.DecimalNumberFromString (leftNumber);
 
-		int right = org.drip.service.common.StringUtil.DecimalNumberFromString (
-			rightNumber
-		);
+		int right = StringUtil.DecimalNumberFromString (rightNumber);
 
-		if ("/".equalsIgnoreCase (
-			operation
-		))
-		{
+		if ("/".equalsIgnoreCase (operation)) {
 			return left / right;
 		}
 
-		if ("*".equalsIgnoreCase (
-			operation
-		))
-		{
+		if ("*".equalsIgnoreCase (operation)) {
 			return left * right;
 		}
 
-		if ("-".equalsIgnoreCase (
-			operation
-		))
-		{
+		if ("-".equalsIgnoreCase (operation)) {
 			return left - right;
 		}
 
@@ -326,48 +289,28 @@ public class ArrayUtil
 	}
 
 	private static final boolean CollapseOperation (
-		final java.util.List<java.lang.String> elementList,
-		final java.lang.String operation)
+		final List<String> elementList,
+		final String operation)
 	{
 		int elementCount = elementList.size();
 
-		for (int elementIndex = elementCount - 1;
-			elementIndex >= 0;
-			--elementIndex)
-		{
-			if (operation.equalsIgnoreCase (
-				elementList.get (
-					elementIndex
-				))
-			)
-			{
-				if (0 == elementIndex || elementIndex == elementCount - 1)
-				{
+		for (int elementIndex = elementCount - 1; 0 <= elementIndex; --elementIndex) {
+			if (operation.equalsIgnoreCase (elementList.get (elementIndex))) {
+				if (0 == elementIndex || elementIndex == elementCount - 1) {
 					return false;
 				}
 
 				int result = ApplyOperation (
-					elementList.get (
-						elementIndex - 1
-					),
+					elementList.get (elementIndex - 1),
 					operation,
-					elementList.get (
-						elementIndex + 1
-					)
+					elementList.get (elementIndex + 1)
 				);
 
-				elementList.remove (
-					elementIndex + 1
-				);
+				elementList.remove (elementIndex + 1);
 
-				elementList.remove (
-					elementIndex
-				);
+				elementList.remove (elementIndex);
 
-				elementList.set (
-					elementIndex - 1,
-					"" + result
-				);
+				elementList.set (elementIndex - 1, "" + result);
 			}
 		}
 
@@ -380,24 +323,27 @@ public class ArrayUtil
 		final int rightIndex,
 		final int number)
 	{
-		if (leftIndex == rightIndex) return number == numberArray[leftIndex] ? leftIndex : -1;
+		if (leftIndex == rightIndex) {
+			return number == numberArray[leftIndex] ? leftIndex : -1;
+		}
 
 		int midIndex = (leftIndex + rightIndex) / 2;
 
-		if (number == numberArray[midIndex]) return midIndex;
+		if (number == numberArray[midIndex]) {
+			return midIndex;
+		}
 
 		return number < numberArray[midIndex] ? LocateIndex (numberArray, leftIndex - 1, midIndex, number) :
 			LocateIndex (numberArray, midIndex + 1, rightIndex, number);
 	}
 
-    private static final java.util.TreeMap<java.lang.Integer, int[]> DisaggregateSkyscrapers (
+    private static final TreeMap<Integer, int[]> DisaggregateSkyscrapers (
     	final int currentLeft,
     	final int[] currentRightHeight,
     	final int newLeft,
     	final int[] newRightHeight)
     {
-    	java.util.TreeMap<java.lang.Integer, int[]> disaggregationMap = new
-    		java.util.TreeMap<java.lang.Integer, int[]>();
+    	TreeMap<Integer, int[]> disaggregationMap = new TreeMap<Integer, int[]>();
 
     	if (currentRightHeight[0] <= newLeft) {
         	disaggregationMap.put (currentLeft, currentRightHeight);
@@ -443,11 +389,15 @@ public class ArrayUtil
 	    	fourth = currentRightHeight[0];
     	}
 
-    	if (first < second) disaggregationMap.put (first, new int[] {second, height12});
+    	if (first < second) {
+    		disaggregationMap.put (first, new int[] {second, height12});
+    	}
 
     	disaggregationMap.put (second, new int[] {third, height23});
 
-    	if (third < fourth) disaggregationMap.put (third, new int[] {fourth, height34});
+    	if (third < fourth) {
+    		disaggregationMap.put (third, new int[] {fourth, height34});
+    	}
 
     	return disaggregationMap;
     }
@@ -455,10 +405,10 @@ public class ArrayUtil
     private static final List<int[]> NondecreasingSequenceList (
     	final int[] numberArray)
     {
-    	List<int[]> nondecreasingSequenceList = new ArrayList<int[]>();
-
     	int leftIndex = 0;
     	int rightIndex = 0;
+
+    	List<int[]> nondecreasingSequenceList = new ArrayList<int[]>();
 
     	for (int i = 1; i < numberArray.length; ++i) {
     		if (numberArray[i] >= numberArray[i - 1])
@@ -466,8 +416,8 @@ public class ArrayUtil
     		else {
     			nondecreasingSequenceList.add (new int[] {leftIndex, rightIndex});
 
-    			leftIndex = i;
     			rightIndex = i;
+    			leftIndex = i;
     		}
     	}
 
@@ -607,7 +557,7 @@ public class ArrayUtil
 			}
 		}
 
-		java.util.Arrays.sort (
+		Arrays.sort (
 			excludeAndSortArray
 		);
 
@@ -622,11 +572,11 @@ public class ArrayUtil
 	 * @return The List of Unique Triplets
 	 */
 
-	public static final java.util.Map<java.lang.String, int[]> ThreeSum (
+	public static final Map<String, int[]> ThreeSum (
 		final int[] numberArray)
 	{
-		java.util.Map<java.lang.String, int[]> tripletMap =
-			new java.util.HashMap<java.lang.String, int[]>();
+		Map<String, int[]> tripletMap =
+			new HashMap<String, int[]>();
 
 		for (int numberArrayIndex = 0;
 			numberArrayIndex < numberArray.length;
@@ -657,7 +607,7 @@ public class ArrayUtil
 							excludeAndSortArray[tripletIndex]
 						};
 
-						java.util.Arrays.sort (
+						Arrays.sort (
 							keyElementArray
 						);
 
@@ -747,7 +697,7 @@ public class ArrayUtil
 			horizontalCutArray[horizontalCutIndex] = horizontalCuts[horizontalCutIndex];
 		}
 
-		java.util.Arrays.sort (
+		Arrays.sort (
 			horizontalCutArray
 		);
 
@@ -758,7 +708,7 @@ public class ArrayUtil
 			verticalCutArray[verticalCutIndex] = verticalCuts[verticalCutIndex];
 		}
 
-		java.util.Arrays.sort (
+		Arrays.sort (
 			verticalCutArray
 		);
 
@@ -806,32 +756,32 @@ public class ArrayUtil
 	 * @return Array of Invalid Transactions
 	 */
 
-	public static final java.util.Collection<java.lang.String> InvalidTransactions (
-		final java.lang.String[] transactionArray)
+	public static final Collection<String> InvalidTransactions (
+		final String[] transactionArray)
 	{
-		java.util.Map<java.lang.String, java.lang.String> invalidTransactionMap =
-			new java.util.HashMap<java.lang.String, java.lang.String>();
+		Map<String, String> invalidTransactionMap =
+			new HashMap<String, String>();
 
 		boolean first = true;
 		int prevTransactionTime = -1;
-		java.lang.String prevTransaction = "";
-		java.lang.String prevTransactionCity = "";
-		java.lang.String prevTransactionName = "";
+		String prevTransaction = "";
+		String prevTransactionCity = "";
+		String prevTransactionName = "";
 
-		for (java.lang.String transaction : transactionArray)
+		for (String transaction : transactionArray)
 		{
-			java.lang.String[] transactionDetailArray = transaction.split (
+			String[] transactionDetailArray = transaction.split (
 				","
 			);
 
-			java.lang.String transactionCity = transactionDetailArray[3];
-			java.lang.String transactionName = transactionDetailArray[0];
+			String transactionCity = transactionDetailArray[3];
+			String transactionName = transactionDetailArray[0];
 
-			int transactionTime = java.lang.Integer.parseInt (
+			int transactionTime = Integer.parseInt (
 				transactionDetailArray[1]
 			);
 
-			int transactionAmount = java.lang.Integer.parseInt (
+			int transactionAmount = Integer.parseInt (
 				transactionDetailArray[2]
 			);
 
@@ -894,10 +844,10 @@ public class ArrayUtil
 		for (int i = 1; i < numberArray.length; ++i) {
 			int temp = max;
 
-			max = java.lang.Math.max (max * numberArray[i], java.lang.Math.max (min * numberArray[i],
+			max = Math.max (max * numberArray[i], Math.max (min * numberArray[i],
 				numberArray[i]));
 
-			min = java.lang.Math.min (temp * numberArray[i], java.lang.Math.min (min * numberArray[i],
+			min = Math.min (temp * numberArray[i], Math.min (min * numberArray[i],
 				numberArray[i]));
 
 			if (max > result) result = max;
@@ -923,7 +873,7 @@ public class ArrayUtil
 		}
 
 		int minIndex = -1;
-		int minValue = java.lang.Integer.MAX_VALUE;
+		int minValue = Integer.MAX_VALUE;
 
 		for (int index = 0;
 			index < numberArray.length;
@@ -1025,7 +975,7 @@ public class ArrayUtil
 			}
 		}
 
-		java.util.Arrays.sort (
+		Arrays.sort (
 			excludedAndSortedArray
 		);
 
@@ -1043,12 +993,12 @@ public class ArrayUtil
 	 * @return Collection of Unique Quadruplets
 	 */
 
-	public static final java.util.Collection<java.util.List<java.lang.Integer>> FourSum (
+	public static final Collection<List<Integer>> FourSum (
 		final int[] numberArray,
 		final int target)
 	{
-		java.util.Map<java.lang.String, java.util.List<java.lang.Integer>> fourSumListMap =
-			new java.util.HashMap<java.lang.String, java.util.List<java.lang.Integer>>();
+		Map<String, List<Integer>> fourSumListMap =
+			new HashMap<String, List<Integer>>();
 
 		for (int exclusionIndex = 0;
 			exclusionIndex < numberArray.length;
@@ -1084,12 +1034,12 @@ public class ArrayUtil
 							fourSumComponentArray[2] = excludedAndSortedArray[threeSumIndex];
 							fourSumComponentArray[3] = excludedAndSortedArray[fourSumIndex];
 
-							java.util.Arrays.sort (
+							Arrays.sort (
 								fourSumComponentArray
 							);
 
-							java.util.List<java.lang.Integer> fourSumList =
-								new java.util.ArrayList<java.lang.Integer>();
+							List<Integer> fourSumList =
+								new ArrayList<Integer>();
 
 							fourSumList.add (
 								numberArray[exclusionIndex]
@@ -1138,7 +1088,7 @@ public class ArrayUtil
 	{
 		int endIndex = 0;
 		int startIndex = 0;
-		int maxSum = java.lang.Integer.MIN_VALUE;
+		int maxSum = Integer.MIN_VALUE;
 
 		while (endIndex < numberArray.length)
 		{
@@ -1180,7 +1130,7 @@ public class ArrayUtil
 	{
 		int endIndex = 0;
 		int startIndex = 0;
-		int minSum = java.lang.Integer.MAX_VALUE;
+		int minSum = Integer.MAX_VALUE;
 
 		while (endIndex < numberArray.length)
 		{
@@ -1229,7 +1179,7 @@ public class ArrayUtil
 		int sum = 0;
 		boolean allNegative = true;
 		boolean allPositive = true;
-		int max = java.lang.Integer.MIN_VALUE;
+		int max = Integer.MIN_VALUE;
 
 		for (int index = 0;
 			index < numberArray.length;
@@ -1268,7 +1218,7 @@ public class ArrayUtil
 			)
 		);
 
-		return java.lang.Math.max (
+		return Math.max (
 			MaximumSubarraySum (
 				numberArray
 			),
@@ -1279,7 +1229,7 @@ public class ArrayUtil
 	}
 
 	private static final boolean SpiralMatrixTopBottom (
-		final java.util.List<java.lang.Integer> elementList,
+		final List<Integer> elementList,
 		final int[][] matrix,
 		final int top,
 		final int bottom,
@@ -1302,7 +1252,7 @@ public class ArrayUtil
 	}
 
 	private static final boolean SpiralMatrixLeftRight (
-		final java.util.List<java.lang.Integer> elementList,
+		final List<Integer> elementList,
 		final int[][] matrix,
 		final int left,
 		final int right,
@@ -1333,10 +1283,10 @@ public class ArrayUtil
 	 * @return Elements of the matrix in spiral order.
 	 */
 
-	public static final java.util.List<java.lang.Integer> SpiralMatrixOrder (
+	public static final List<Integer> SpiralMatrixOrder (
 		final int[][] matrix)
 	{
-		java.util.List<java.lang.Integer> elementList = new java.util.ArrayList<java.lang.Integer>();
+		List<Integer> elementList = new ArrayList<Integer>();
 
 		int top = 0;
 		int row = -1;
@@ -1383,7 +1333,7 @@ public class ArrayUtil
 		int height = obstacleGrid.length;
 		int width = obstacleGrid[0].length;
 
-		java.util.List<int[]> locationList = new java.util.ArrayList<int[]>();
+		List<int[]> locationList = new ArrayList<int[]>();
 
 		locationList.add (
 			new int[]
@@ -1461,11 +1411,11 @@ public class ArrayUtil
 	 * @return List of Query Results
 	 */
 
-	public static final java.util.List<java.lang.Boolean> CanMakePalindromeQueries (
-		final java.lang.String s,
+	public static final List<Boolean> CanMakePalindromeQueries (
+		final String s,
 		final int[][] queries)
 	{
-		java.util.List<java.lang.Boolean> queryArray = new java.util.ArrayList<java.lang.Boolean>();
+		List<Boolean> queryArray = new ArrayList<Boolean>();
 
 		for (int[] query : queries)
 		{
@@ -1491,12 +1441,12 @@ public class ArrayUtil
 	 * @return All pairs of integers in the array which have difference equal to the number d.
 	 */
 
-	public static final java.util.List<int[]> ArrayPairList (int[] numberArray, int x) {
+	public static final List<int[]> ArrayPairList (int[] numberArray, int x) {
 		if (null == numberArray || 0 == numberArray.length) return null;
 
-		java.util.List<int[]> arrayPairList = new java.util.ArrayList<int[]>();
+		List<int[]> arrayPairList = new ArrayList<int[]>();
 
-		java.util.HashSet<java.lang.Integer> numberSet = new java.util.HashSet<java.lang.Integer>();
+		HashSet<Integer> numberSet = new HashSet<Integer>();
 
 		for (int number : numberArray) {
 			if (numberSet.contains (number - x))
@@ -1615,9 +1565,9 @@ public class ArrayUtil
 	public static final boolean CanJumpToLastIndex (
 		final int[] numberArray)
 	{
-		java.util.List<java.lang.Integer> traversalList = new java.util.ArrayList<java.lang.Integer>();
+		List<Integer> traversalList = new ArrayList<Integer>();
 
-		java.util.Set<java.lang.Integer> visitedSet = new java.util.HashSet<java.lang.Integer>();
+		Set<Integer> visitedSet = new HashSet<Integer>();
 
 		int lastIndex = numberArray.length;
 
@@ -1670,8 +1620,8 @@ public class ArrayUtil
 		final int wordCharIndex,
 		final char[][] board,
 		final char[] wordCharArray,
-		final java.util.List<int[]> traversalList,
-		final java.util.Set<java.lang.Integer> visitedLocationSet)
+		final List<int[]> traversalList,
+		final Set<Integer> visitedLocationSet)
 	{
 		if (x >= 0 &&
 			x < board.length &&
@@ -1713,9 +1663,9 @@ public class ArrayUtil
 	{
 		int wordLastIndex = wordCharArray.length - 1;
 
-		java.util.List<int[]> traversalList = new java.util.ArrayList<int[]>();
+		List<int[]> traversalList = new ArrayList<int[]>();
 
-		java.util.Set<java.lang.Integer> visitedLocationSet = new java.util.HashSet<java.lang.Integer>();
+		Set<Integer> visitedLocationSet = new HashSet<Integer>();
 
 		traversalList.add (
 			new int[]
@@ -1808,7 +1758,7 @@ public class ArrayUtil
 
 	public static final boolean WordExistsInBoard (
 		final char[][] board,
-		final java.lang.String word)
+		final String word)
 	{
 		char[] wordCharArray = word.toCharArray();
 
@@ -1923,7 +1873,7 @@ public class ArrayUtil
 		int[] book = new int[personCount];
 		int[] signatureArray = new int[personCount];
 
-		java.util.Set<java.lang.Integer> bookNotAtOwner = new java.util.HashSet<java.lang.Integer>();
+		Set<Integer> bookNotAtOwner = new HashSet<Integer>();
 
 		for (int person = 0;
 			person < personCount;
@@ -2054,8 +2004,8 @@ public class ArrayUtil
 		final int[][] pointGrid,
 		final int k)
 	{
-		java.util.TreeMap<java.lang.Double, int[]> orderedPointMap =
-			new java.util.TreeMap<java.lang.Double, int[]>();
+		TreeMap<Double, int[]> orderedPointMap =
+			new TreeMap<Double, int[]>();
 
 		for (int pointIndex = 0;
 			pointIndex < pointGrid.length;
@@ -2074,7 +2024,7 @@ public class ArrayUtil
 		int i = 0;
 		int[][] kClosestPoints = new int[k][2];
 
-		java.util.Set<java.lang.Double> distanceSet = orderedPointMap.keySet();
+		Set<Double> distanceSet = orderedPointMap.keySet();
 
 		for (double distance : distanceSet)
 		{
@@ -2234,7 +2184,7 @@ public class ArrayUtil
 
 			while (compareIndex <= upperIndex)
 			{
-				if (compareIndex != index && java.lang.Math.abs (
+				if (compareIndex != index && Math.abs (
 						numberArray[index] - numberArray[compareIndex]
 					) <= t
 				)
@@ -2276,8 +2226,8 @@ public class ArrayUtil
 			return false;
 		}
 
-		java.util.HashMap<java.lang.Integer, java.lang.Integer> remainerSizeMap =
-			new java.util.HashMap<java.lang.Integer, java.lang.Integer>();
+		HashMap<Integer, Integer> remainerSizeMap =
+			new HashMap<Integer, Integer>();
 
 		int sum = numberArray[0];
 
@@ -2391,7 +2341,7 @@ public class ArrayUtil
 		final int[] numberArray,
 		final int k)
 	{
-		java.util.PriorityQueue<java.lang.Integer> heap = new java.util.PriorityQueue<java.lang.Integer>();
+		PriorityQueue<Integer> heap = new PriorityQueue<Integer>();
 
 		int arrayCount = numberArray.length;
 
@@ -2441,7 +2391,7 @@ public class ArrayUtil
 		int oddLocation = 1;
 		int arrayLength = numberArray.length;
 		int evenLocation = 0 == arrayLength % 2 ? arrayLength - 2 : arrayLength - 1;
-		java.lang.Integer[] wiggleArray = 2 >= arrayLength ? null : new java.lang.Integer[arrayLength];
+		Integer[] wiggleArray = 2 >= arrayLength ? null : new Integer[arrayLength];
 
 		if (null == wiggleArray)
 		{
@@ -2494,7 +2444,7 @@ public class ArrayUtil
 	{
 		int targetSumCount = 0;
 
-		java.util.List<int[]> indexAndResultList = new java.util.ArrayList<int[]>();
+		List<int[]> indexAndResultList = new ArrayList<int[]>();
 
 		indexAndResultList.add (
 			new int[]
@@ -2579,7 +2529,7 @@ public class ArrayUtil
 	}
 
 	private static final boolean GeneratePathCombinations (
-		final java.util.List<java.util.List<java.lang.Integer>> pathIndexList,
+		final List<List<Integer>> pathIndexList,
 		final int currentIndex,
 		final int[] numberArray)
 	{
@@ -2590,10 +2540,10 @@ public class ArrayUtil
 			return true;
 		}
 
-		java.util.List<java.util.List<java.lang.Integer>> currentPathIndexList =
-			new java.util.ArrayList<java.util.List<java.lang.Integer>>();
+		List<List<Integer>> currentPathIndexList =
+			new ArrayList<List<Integer>>();
 
-		java.util.List<java.lang.Integer> currentIndexPath = new java.util.ArrayList<java.lang.Integer>();
+		List<Integer> currentIndexPath = new ArrayList<Integer>();
 
 		currentIndexPath.add (
 			numberArray[currentIndex]
@@ -2603,9 +2553,9 @@ public class ArrayUtil
 			currentIndexPath
 		);
 
-		for (java.util.List<java.lang.Integer> pathIndex : pathIndexList)
+		for (List<Integer> pathIndex : pathIndexList)
 		{
-			java.util.List<java.lang.Integer> currentPath = new java.util.ArrayList<java.lang.Integer>();
+			List<Integer> currentPath = new ArrayList<Integer>();
 
 			currentPath.addAll (
 				pathIndex
@@ -2640,12 +2590,12 @@ public class ArrayUtil
 	 * @return The Set of the Location Paths that meet the specified Target
 	 */
 
-	public static final java.util.Set<java.util.List<java.lang.Integer>> GeneratePathCombinations (
+	public static final Set<List<Integer>> GeneratePathCombinations (
 		final int[] numberArray,
 		final int target)
 	{
-		java.util.List<java.util.List<java.lang.Integer>> pathIndexList =
-			new java.util.ArrayList<java.util.List<java.lang.Integer>>();
+		List<List<Integer>> pathIndexList =
+			new ArrayList<List<Integer>>();
 
 		GeneratePathCombinations (
 			pathIndexList,
@@ -2653,10 +2603,10 @@ public class ArrayUtil
 			numberArray
 		);
 
-		java.util.Set<java.util.List<java.lang.Integer>> validPathIndexSet =
-			new java.util.HashSet<java.util.List<java.lang.Integer>>();
+		Set<List<Integer>> validPathIndexSet =
+			new HashSet<List<Integer>>();
 
-		for (java.util.List<java.lang.Integer> pathIndexSequence : pathIndexList)
+		for (List<Integer> pathIndexSequence : pathIndexList)
 		{
 			int sum = 0;
 
@@ -2818,7 +2768,7 @@ public class ArrayUtil
 		int rowCount = grid.length;
 		int columnCount = grid[0].length;
 
-		java.util.List<int[]> locationList = new java.util.ArrayList<int[]>();
+		List<int[]> locationList = new ArrayList<int[]>();
 
 		locationList.add(new int[] {xStart, yStart});
 
@@ -3032,11 +2982,11 @@ public class ArrayUtil
 	 * @return Collection of the Collapsed Ranges
 	 */
 
-	public static final java.util.Collection<int[]> CollapseOverlappingRanges (
-		final java.util.List<int[]> rangeList)
+	public static final Collection<int[]> CollapseOverlappingRanges (
+		final List<int[]> rangeList)
 	{
-		java.util.TreeMap<java.lang.Integer, int[]> rangeMap =
-			new java.util.TreeMap<java.lang.Integer, int[]>();
+		TreeMap<Integer, int[]> rangeMap =
+			new TreeMap<Integer, int[]>();
 
 		for (int[] range : rangeList)
 		{
@@ -3053,21 +3003,21 @@ public class ArrayUtil
 			int newRangeEnd = range[1];
 			int newRangeStart = range[0];
 
-			java.lang.Integer floorKey = rangeMap.floorKey (
+			Integer floorKey = rangeMap.floorKey (
 				newRangeStart
 			);
 
 			floorKey = null != floorKey ? floorKey : rangeMap.firstKey();
 
-			java.util.Map<java.lang.Integer, int[]> tailRangeMap = rangeMap.tailMap (
+			Map<Integer, int[]> tailRangeMap = rangeMap.tailMap (
 				floorKey
 			);
 
-			java.util.List<java.lang.Integer> rangeTrimList = new java.util.ArrayList<java.lang.Integer>();
+			List<Integer> rangeTrimList = new ArrayList<Integer>();
 
 			if (null != tailRangeMap && 0 != tailRangeMap.size())
 			{
-				for (java.util.Map.Entry<java.lang.Integer, int[]> tailRangeEntry : tailRangeMap.entrySet())
+				for (Map.Entry<Integer, int[]> tailRangeEntry : tailRangeMap.entrySet())
 				{
 					int[] tailRange = tailRangeEntry.getValue();
 
@@ -3110,8 +3060,8 @@ public class ArrayUtil
 	}
 
 	private static final boolean UploadCounterRangeMaps (
-		final java.util.TreeMap<java.lang.Integer, java.lang.Integer> sliceCounterMap,
-		final java.util.TreeMap<java.lang.Integer, int[]> sliceRangeMap,
+		final TreeMap<Integer, Integer> sliceCounterMap,
+		final TreeMap<Integer, int[]> sliceRangeMap,
 		final int[] range,
 		final int rangeCount)
 	{
@@ -3134,8 +3084,8 @@ public class ArrayUtil
 	}
 
 	private static final int[] ProcessRange (
-		final java.util.TreeMap<java.lang.Integer, java.lang.Integer> sliceCounterMap,
-		final java.util.TreeMap<java.lang.Integer, int[]> sliceRangeMap,
+		final TreeMap<Integer, Integer> sliceCounterMap,
+		final TreeMap<Integer, int[]> sliceRangeMap,
 		final int[] inputRange,
 		final int[] mapRange,
 		final int mapRangeCount)
@@ -3308,14 +3258,14 @@ public class ArrayUtil
 	 * @return Counter Map of the Overlapping Slice Ranges
 	 */
 
-	public static final java.util.TreeMap<java.lang.Integer, java.lang.Integer> SliceOverlappingRanges (
-		final java.util.List<int[]> rangeList)
+	public static final TreeMap<Integer, Integer> SliceOverlappingRanges (
+		final List<int[]> rangeList)
 	{
-		java.util.TreeMap<java.lang.Integer, java.lang.Integer> rangeCounterMap =
-			new java.util.TreeMap<java.lang.Integer, java.lang.Integer>();
+		TreeMap<Integer, Integer> rangeCounterMap =
+			new TreeMap<Integer, Integer>();
 
-		java.util.TreeMap<java.lang.Integer, int[]> rangeMap =
-			new java.util.TreeMap<java.lang.Integer, int[]>();
+		TreeMap<Integer, int[]> rangeMap =
+			new TreeMap<Integer, int[]>();
 
 		for (int[] range : rangeList)
 		{
@@ -3335,15 +3285,15 @@ public class ArrayUtil
 			{
 				int[] residualRange = range;
 
-				java.util.TreeMap<java.lang.Integer, java.lang.Integer> sliceCounterMap =
-					new java.util.TreeMap<java.lang.Integer, java.lang.Integer>();
+				TreeMap<Integer, Integer> sliceCounterMap =
+					new TreeMap<Integer, Integer>();
 
-				java.util.TreeMap<java.lang.Integer, int[]> sliceRangeMap =
-					new java.util.TreeMap<java.lang.Integer, int[]>();
+				TreeMap<Integer, int[]> sliceRangeMap =
+					new TreeMap<Integer, int[]>();
 
-				java.util.HashSet<java.lang.Integer> trimList = new java.util.HashSet<java.lang.Integer>();
+				HashSet<Integer> trimList = new HashSet<Integer>();
 
-				for (java.util.Map.Entry<java.lang.Integer, java.lang.Integer> rangeCounterMapEntry :
+				for (Map.Entry<Integer, Integer> rangeCounterMapEntry :
 					rangeCounterMap.entrySet())
 				{
 					int mapRangeLeft = rangeCounterMapEntry.getKey();
@@ -3430,7 +3380,7 @@ public class ArrayUtil
 			return -1;
 		}
 
-		java.util.Arrays.sort (
+		Arrays.sort (
 			heightArray
 		);
 
@@ -3466,7 +3416,7 @@ public class ArrayUtil
 		{
 			int priorIndex = index - 1 < 0 ? heightCount - 1 : index - 1;
 
-			int currentAwkwardness = java.lang.Math.abs (
+			int currentAwkwardness = Math.abs (
 				unawkwardHeightArray[index] - unawkwardHeightArray[priorIndex]
 			);
 
@@ -3491,18 +3441,18 @@ public class ArrayUtil
 	 * @return List of the Target Approach Paths
 	 */
 
-	public static final java.util.List<java.lang.String> TargetApproachPathList (
+	public static final List<String> TargetApproachPathList (
 		final int[] numberArray,
 		final int target)
 	{
-		java.util.List<java.lang.String> targetApproachPathList =
-			new java.util.ArrayList<java.lang.String>();
+		List<String> targetApproachPathList =
+			new ArrayList<String>();
 
-		java.util.List<java.lang.Integer> indexQueue = new java.util.ArrayList<java.lang.Integer>();
+		List<Integer> indexQueue = new ArrayList<Integer>();
 
-		java.util.List<java.lang.Integer> sumQueue = new java.util.ArrayList<java.lang.Integer>();
+		List<Integer> sumQueue = new ArrayList<Integer>();
 
-		java.util.List<java.lang.String> pathQueue = new java.util.ArrayList<java.lang.String>();
+		List<String> pathQueue = new ArrayList<String>();
 
 		int arrayCount = numberArray.length;
 
@@ -3530,7 +3480,7 @@ public class ArrayUtil
 				queueTailIndex
 			);
 
-			java.lang.String path = pathQueue.remove (
+			String path = pathQueue.remove (
 				queueTailIndex
 			);
 
@@ -3588,16 +3538,16 @@ public class ArrayUtil
 	 * 
 	 * @return result of the BODMAS Evaluation
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public static final int BODMAS (
-		final java.lang.String s)
-		throws java.lang.Exception
+		final String s)
+		throws Exception
 	{
 		if (null == s || s.isEmpty())
 		{
-			throw new java.lang.Exception (
+			throw new Exception (
 				"ArrayUtil::BODMAS => Invalid Inputs"
 			);
 		}
@@ -3607,7 +3557,7 @@ public class ArrayUtil
 		int prevIndex = 0;
 		int stringLength = charArray.length;
 
-		java.util.List<java.lang.String> elementList = new java.util.ArrayList<java.lang.String>();
+		List<String> elementList = new ArrayList<String>();
 
 		for (int index = 0;
 			index < stringLength;
@@ -3647,7 +3597,7 @@ public class ArrayUtil
 			"/"
 		))
 		{
-			throw new java.lang.Exception (
+			throw new Exception (
 				"ArrayUtil::BODMAS => Cannot compute"
 			);
 		}
@@ -3657,7 +3607,7 @@ public class ArrayUtil
 			"*"
 		))
 		{
-			throw new java.lang.Exception (
+			throw new Exception (
 				"ArrayUtil::BODMAS => Cannot compute"
 			);
 		}
@@ -3667,7 +3617,7 @@ public class ArrayUtil
 			"-"
 		))
 		{
-			throw new java.lang.Exception (
+			throw new Exception (
 				"ArrayUtil::BODMAS => Cannot compute"
 			);
 		}
@@ -3677,14 +3627,14 @@ public class ArrayUtil
 			"+"
 		))
 		{
-			throw new java.lang.Exception (
+			throw new Exception (
 				"ArrayUtil::BODMAS => Cannot compute"
 			);
 		}
 
 		if (1 != elementList.size())
 		{
-			throw new java.lang.Exception (
+			throw new Exception (
 				"ArrayUtil::BODMAS => Cannot compute"
 			);
 		}
@@ -3706,16 +3656,16 @@ public class ArrayUtil
 	 * @return List of the Expression Possibilities
 	 */
 
-	public static final java.util.List<java.lang.String> ExpressionOperatorPathList (
+	public static final List<String> ExpressionOperatorPathList (
 		final int[] numberArray,
 		final int target)
 	{
-		java.util.List<java.lang.String> expressionOperatorPathList =
-			new java.util.ArrayList<java.lang.String>();
+		List<String> expressionOperatorPathList =
+			new ArrayList<String>();
 
-		java.util.List<java.lang.Integer> indexQueue = new java.util.ArrayList<java.lang.Integer>();
+		List<Integer> indexQueue = new ArrayList<Integer>();
 
-		java.util.List<java.lang.String> pathQueue = new java.util.ArrayList<java.lang.String>();
+		List<String> pathQueue = new ArrayList<String>();
 
 		int arrayCount = numberArray.length;
 
@@ -3735,13 +3685,13 @@ public class ArrayUtil
 				queueTailIndex
 			);
 
-			java.lang.String path = pathQueue.remove (
+			String path = pathQueue.remove (
 				queueTailIndex
 			);
 
 			if (index == arrayCount - 1)
 			{
-				java.lang.String bodmasExpression = path + "+" + numberArray[index];
+				String bodmasExpression = path + "+" + numberArray[index];
 
 				try
 				{
@@ -3781,7 +3731,7 @@ public class ArrayUtil
 						);
 					}
 				}
-				catch (java.lang.Exception e)
+				catch (Exception e)
 				{
 					e.printStackTrace();
 
@@ -3839,11 +3789,11 @@ public class ArrayUtil
 	 * @return List of the Merged Intervals
 	 */
 
-	public static final java.util.List<int[]> InsertIntoNonOverlappingIntervals (
+	public static final List<int[]> InsertIntoNonOverlappingIntervals (
 		final int[][] intervals,
 		final int[] newInterval)
 	{
-		java.util.List<int[]> insertedIntervalList = new java.util.ArrayList<int[]>();
+		List<int[]> insertedIntervalList = new ArrayList<int[]>();
 
 		int[] currentInterval = newInterval;
 
@@ -3935,11 +3885,11 @@ public class ArrayUtil
 	 * @return Th Sparse Matrix Representation
 	 */
 
-	public static final java.util.Map<java.lang.String, java.lang.Integer> SparseMatrixRepresentation (
+	public static final Map<String, Integer> SparseMatrixRepresentation (
 		final int[][] matrix)
 	{
-		java.util.Map<java.lang.String, java.lang.Integer> sparseMatrixRepresentation = new
-			java.util.HashMap<java.lang.String, java.lang.Integer>();
+		Map<String, Integer> sparseMatrixRepresentation = new
+			HashMap<String, Integer>();
 
 		for (int i = 0; i < matrix.length; ++i) {
 			for (int j = 0; j < matrix[0].length; ++j) {
@@ -3963,16 +3913,16 @@ public class ArrayUtil
 	{
 		int dotProduct = 0;
 
-		java.util.Map<java.lang.String, java.lang.Integer> sparseMatrixRepresentation =
+		Map<String, Integer> sparseMatrixRepresentation =
 			SparseMatrixRepresentation (matrix);
 
-		java.util.Set<java.lang.String> locationSet = new java.util.HashSet<java.lang.String>();
+		Set<String> locationSet = new HashSet<String>();
 
 		locationSet.addAll (sparseMatrixRepresentation.keySet());
 
-		for (java.lang.String location : locationSet) {
+		for (String location : locationSet) {
 			if (sparseMatrixRepresentation.containsKey (location)) {
-				java.lang.String[] rowCol = location.split ("_");
+				String[] rowCol = location.split ("_");
 
 				if (sparseMatrixRepresentation.containsKey (rowCol[1] + "_" + rowCol[0])) {
 					dotProduct += sparseMatrixRepresentation.get (location) *
@@ -4042,9 +3992,9 @@ public class ArrayUtil
 		final int n,
 		final int k)
 	{
-		java.util.Set<java.lang.Integer> mineLocationSet = new java.util.HashSet<java.lang.Integer>();
+		Set<Integer> mineLocationSet = new HashSet<Integer>();
 
-		while (k > mineLocationSet.size()) mineLocationSet.add ((int)(java.lang.Math.random() * m * n));
+		while (k > mineLocationSet.size()) mineLocationSet.add ((int)(Math.random() * m * n));
 
 		int mineIndex = 0;
 		int[][] mineLocations = new int[k][2];
@@ -4111,18 +4061,18 @@ public class ArrayUtil
 	 * @return Elements of the matrix in anti-diagonal order.
 	 */
 
-	public static final java.util.List<java.util.List<java.lang.Integer>> EnumerateDiagonalOrder (
+	public static final List<List<Integer>> EnumerateDiagonalOrder (
 		final int[][] matrix)
 	{
-		java.util.List<java.util.List<java.lang.Integer>> diagonalOrder = new
-			java.util.ArrayList<java.util.List<java.lang.Integer>>();
+		List<List<Integer>> diagonalOrder = new
+			ArrayList<List<Integer>>();
 
 		for (int colIndex = 0; colIndex < matrix.length + matrix[0].length - 1; ++colIndex) {
 			int scanCol = colIndex;
 			int scanRow = 0;
 
-			java.util.List<java.lang.Integer> diagonalOrderRow = new
-				java.util.ArrayList<java.lang.Integer>();
+			List<Integer> diagonalOrderRow = new
+				ArrayList<Integer>();
 
 			while (scanCol >= 0 && scanRow <= colIndex) {
 				if (scanCol < matrix[0].length && scanRow < matrix.length)
@@ -4152,14 +4102,14 @@ public class ArrayUtil
     	final int k)
     {
     	int[] maximumSlidingWindowArray = new int[numberArray.length - k + 1];
-    	maximumSlidingWindowArray[0] = java.lang.Integer.MIN_VALUE;
+    	maximumSlidingWindowArray[0] = Integer.MIN_VALUE;
 
     	for (int j = 0; j < k; ++j)
     		maximumSlidingWindowArray[0] = maximumSlidingWindowArray[0] > numberArray[j] ?
     			maximumSlidingWindowArray[0] : numberArray[j];
 
     	for (int i = 1; i <= numberArray.length - k; ++i) {
-        	maximumSlidingWindowArray[i] = java.lang.Integer.MIN_VALUE;
+        	maximumSlidingWindowArray[i] = Integer.MIN_VALUE;
 
         	for (int j = i; j < i + k; ++j)
         	{
@@ -4182,11 +4132,11 @@ public class ArrayUtil
     public static final boolean SetMatrixZeroes (
     	final int[][] matrix)
     {
-    	java.util.Set<int[]> zeroLocationSet = new java.util.HashSet<int[]>();
+    	Set<int[]> zeroLocationSet = new HashSet<int[]>();
 
-    	java.util.Set<java.lang.Integer> processedRowSet = new java.util.HashSet<java.lang.Integer>();
+    	Set<Integer> processedRowSet = new HashSet<Integer>();
 
-    	java.util.Set<java.lang.Integer> processedColumnSet = new java.util.HashSet<java.lang.Integer>();
+    	Set<Integer> processedColumnSet = new HashSet<Integer>();
 
     	for (int i = 0; i < matrix.length; ++i) {
         	for (int j = 0; j < matrix[0].length; ++j)
@@ -4231,8 +4181,8 @@ public class ArrayUtil
     public static final boolean IncreasingTripletSubsequenceExists (
     	final int[] numberArray)
     {
-    	int minimum = java.lang.Integer.MAX_VALUE;
-    	int nextMininum = java.lang.Integer.MAX_VALUE;
+    	int minimum = Integer.MAX_VALUE;
+    	int nextMininum = Integer.MAX_VALUE;
 
     	for (int number : numberArray) {
     		if (number > nextMininum && nextMininum > minimum) return true;
@@ -4266,7 +4216,7 @@ public class ArrayUtil
     {
     	int fourSumCount = 0;
 
-    	java.util.HashSet<java.lang.Integer> arrayABHashSet = new java.util.HashSet<java.lang.Integer>();
+    	HashSet<Integer> arrayABHashSet = new HashSet<Integer>();
 
     	for (int numberA : numberArrayA) {
     		for (int numberB : numberArrayB)
@@ -4297,7 +4247,7 @@ public class ArrayUtil
     {
     	int[] leftMaxHeightIndex = new int[heightArray.length];
     	int[] rightMaxHeightIndex = new int[heightArray.length];
-    	int maximumAreaUnderContainer = java.lang.Integer.MIN_VALUE;
+    	int maximumAreaUnderContainer = Integer.MIN_VALUE;
     	rightMaxHeightIndex[heightArray.length - 1] = heightArray.length - 1;
     	leftMaxHeightIndex[0] = 0;
     	int rightIndex = 0;
@@ -4312,13 +4262,13 @@ public class ArrayUtil
     			rightMaxHeightIndex[i + 1] : i + 1;
 
     	for (int i = 0; i < heightArray.length; ++i) {
-    		int areaThroughLevel = (rightMaxHeightIndex[i] - leftMaxHeightIndex[i]) * java.lang.Math.min
+    		int areaThroughLevel = (rightMaxHeightIndex[i] - leftMaxHeightIndex[i]) * Math.min
     			(heightArray[leftMaxHeightIndex[i]], heightArray[rightMaxHeightIndex[i]]);
 
-    		int areaLeftOfLevel = (i - leftMaxHeightIndex[i]) * java.lang.Math.min
+    		int areaLeftOfLevel = (i - leftMaxHeightIndex[i]) * Math.min
     			(heightArray[leftMaxHeightIndex[i]], heightArray[i]);
 
-    		int areaRightOfLevel = (rightMaxHeightIndex[i] - i) * java.lang.Math.min (heightArray[i],
+    		int areaRightOfLevel = (rightMaxHeightIndex[i] - i) * Math.min (heightArray[i],
     			heightArray[rightMaxHeightIndex[i]]);
 
     		if (maximumAreaUnderContainer < areaThroughLevel) {
@@ -4420,7 +4370,7 @@ public class ArrayUtil
     			segmentRightArray[i] ? rightPeakIndexArray[i + 1] : i;
 
     	for (int i = 0; i < segmentHeightArray.length; ++i) {
-    		int wallHeight = java.lang.Math.min (segmentLeftArray[leftPeakIndexArray[i]],
+    		int wallHeight = Math.min (segmentLeftArray[leftPeakIndexArray[i]],
     			segmentRightArray[rightPeakIndexArray[i]]);
 
     		rainWaterCatchmentArea = rainWaterCatchmentArea + (wallHeight < segmentHeightArray[i] ? 0 :
@@ -4445,8 +4395,8 @@ public class ArrayUtil
     {
     	int[] queue = new int[heightOrderArray.length];
 
-    	java.util.TreeMap<java.lang.Integer, java.util.List<java.lang.Integer>> heightOrderMap = new
-    		java.util.TreeMap<java.lang.Integer, java.util.List<java.lang.Integer>>();
+    	TreeMap<Integer, List<Integer>> heightOrderMap = new
+    		TreeMap<Integer, List<Integer>>();
 
     	for (int i = 0; i < heightOrderArray.length; ++i) {
     		queue[i] = -1;
@@ -4454,7 +4404,7 @@ public class ArrayUtil
     		if (heightOrderMap.containsKey (heightOrderArray[i][0]))
     			heightOrderMap.get (heightOrderArray[i][0]).add (heightOrderArray[i][1]);
     		else {
-    			java.util.List<java.lang.Integer> orderList = new java.util.ArrayList<java.lang.Integer>();
+    			List<Integer> orderList = new ArrayList<Integer>();
 
     			orderList.add (heightOrderArray[i][1]);
 
@@ -4462,7 +4412,7 @@ public class ArrayUtil
     		}
     	}
 
-    	java.util.Set<java.lang.Integer> heightSet = heightOrderMap.keySet();
+    	Set<Integer> heightSet = heightOrderMap.keySet();
 
     	for (int height : heightSet) {
     		for (int order : heightOrderMap.get (height)) {
@@ -4643,7 +4593,7 @@ public class ArrayUtil
     public static final int LargestRectangleInHistogram (
     	final int[] heightArray)
     {
-    	int maxArea = java.lang.Integer.MIN_VALUE;
+    	int maxArea = Integer.MIN_VALUE;
     	int[] shortestRightIndex = new int[heightArray.length];
     	int[] adjacentTallerRightIndex = new int[heightArray.length];
     	shortestRightIndex[heightArray.length - 1] = heightArray.length - 1;
@@ -4691,23 +4641,23 @@ public class ArrayUtil
      * @return The Skyline Map
      */
 
-    public static final java.util.TreeMap<java.lang.Integer, int[]> GenerateSkyline (
-    	final java.util.TreeMap<java.lang.Integer, int[]> skscraperMap)
+    public static final TreeMap<Integer, int[]> GenerateSkyline (
+    	final TreeMap<Integer, int[]> skscraperMap)
     {
-    	java.util.TreeMap<java.lang.Integer, int[]> skylineMap = new
-    		java.util.TreeMap<java.lang.Integer, int[]>();
+    	TreeMap<Integer, int[]> skylineMap = new
+    		TreeMap<Integer, int[]>();
 
-    	for (java.util.Map.Entry<java.lang.Integer, int[]> skyscraperEntry : skscraperMap.entrySet()) {
+    	for (Map.Entry<Integer, int[]> skyscraperEntry : skscraperMap.entrySet()) {
     		if (skylineMap.isEmpty()) {
     			skylineMap.put (skyscraperEntry.getKey(), skyscraperEntry.getValue());
 
     			continue;
     		}
 
-        	java.util.TreeMap<java.lang.Integer, int[]> disaggregationMap = new
-        		java.util.TreeMap<java.lang.Integer, int[]>();
+        	TreeMap<Integer, int[]> disaggregationMap = new
+        		TreeMap<Integer, int[]>();
 
-        	for (java.util.Map.Entry<java.lang.Integer, int[]> skyLineEntry : skylineMap.entrySet()) {
+        	for (Map.Entry<Integer, int[]> skyLineEntry : skylineMap.entrySet()) {
         		disaggregationMap.putAll (DisaggregateSkyscrapers (skyLineEntry.getKey(),
         			skyLineEntry.getValue(), skyscraperEntry.getKey(),skyscraperEntry.getValue()));
         	}
@@ -4719,7 +4669,7 @@ public class ArrayUtil
     }
 
     private static final int BurstCandidateIndex (
-    	final java.util.List<java.lang.Integer> integerList)
+    	final List<Integer> integerList)
     {
     	if (1 == integerList.size()) return 0;
 
@@ -4797,7 +4747,7 @@ public class ArrayUtil
     public static final int StrategicBalloonBurstSum (
     	final int[] balloonCoinArray)
     {
-    	java.util.List<java.lang.Integer> balloonCoinList = new java.util.ArrayList<java.lang.Integer>();
+    	List<Integer> balloonCoinList = new ArrayList<Integer>();
 
     	for (int balloonCoin : balloonCoinArray)
     		balloonCoinList.add (balloonCoin);
@@ -4851,7 +4801,7 @@ public class ArrayUtil
     	if (left == right) return numberArray[left];
 
     	int pivotIndex = Partition (numberArray, left, right,
-    		left + ((int) java.lang.Math.random() * (right - left + 1)));
+    		left + ((int) Math.random() * (right - left + 1)));
 
     	if (k == pivotIndex) return numberArray[k];
 
@@ -5016,7 +4966,7 @@ public class ArrayUtil
     {
     	int index = segmentLength;
 
-    	java.util.PriorityQueue<Integer> diskSpaceQueue = new java.util.PriorityQueue<Integer>();
+    	PriorityQueue<Integer> diskSpaceQueue = new PriorityQueue<Integer>();
 
     	for (int i = 0; i < segmentLength; ++i)
     		diskSpaceQueue.offer (diskSpaceArray[i]);
@@ -5038,13 +4988,13 @@ public class ArrayUtil
     }
 
     private static final boolean Infect (
-    	final java.util.HashSet<String> uninfectedCellSet,
+    	final HashSet<String> uninfectedCellSet,
     	final int rowSize,
     	final int columnSize)
     {
     	if (uninfectedCellSet.isEmpty()) return true;
 
-    	java.util.HashSet<String> infectedCellSet = new java.util.HashSet<String>();
+    	HashSet<String> infectedCellSet = new HashSet<String>();
 
     	for (String uninfectedCell : uninfectedCellSet) {
     		String[] x_y = uninfectedCell.split ("_");
@@ -5104,7 +5054,7 @@ public class ArrayUtil
     {
     	int dayCount = 0;
 
-    	java.util.HashSet<String> uninfectedCellSet = new java.util.HashSet<String>();
+    	HashSet<String> uninfectedCellSet = new HashSet<String>();
 
     	for (int i = 0; i < infectionMatrix.length; ++i) {
         	for (int j = 0; j < infectionMatrix[i].length; ++j) {
@@ -5163,7 +5113,7 @@ public class ArrayUtil
      * @return List of [fore, back] pairs
      */
 
-    public static final java.util.List<int[]> OptimizeMemoryUsage (
+    public static final List<int[]> OptimizeMemoryUsage (
     	final int[] foregroundTasks,
     	final int[] backgroundTasks,
     	final int k)
@@ -5173,14 +5123,14 @@ public class ArrayUtil
     	int[] shorterTaskSequence = foregroundTasks.length < backgroundTasks.length ? foregroundTasks :
     		backgroundTasks;
 
-    	java.util.TreeMap<Integer, java.util.List<Integer>> shorterTaskIndexMap = new
-    		java.util.TreeMap<Integer, java.util.List<Integer>>();
+    	TreeMap<Integer, List<Integer>> shorterTaskIndexMap = new
+    		TreeMap<Integer, List<Integer>>();
 
     	for (int i = 0; i < shorterTaskSequence.length; ++i) {
     		if (shorterTaskIndexMap.containsKey (shorterTaskSequence[i]))
     			shorterTaskIndexMap.get (shorterTaskSequence[i]).add (i);
     		else {
-    			java.util.List<Integer> indexList = new java.util.ArrayList<Integer>();
+    			List<Integer> indexList = new ArrayList<Integer>();
 
     			indexList.add (i);
 
@@ -5188,9 +5138,9 @@ public class ArrayUtil
     		}
     	}
 
-    	int closestMemoryGap = java.lang.Integer.MAX_VALUE;
+    	int closestMemoryGap = Integer.MAX_VALUE;
 
-    	java.util.List<int[]> closestIndexPairList = new java.util.ArrayList<int[]>();
+    	List<int[]> closestIndexPairList = new ArrayList<int[]>();
 
     	for (int i = 0; i < longerTaskSequence.length; ++i) {
     		Integer shorterKey = shorterTaskIndexMap.floorKey (k - longerTaskSequence[i]);
@@ -5249,20 +5199,20 @@ public class ArrayUtil
     {
     	int xSize = matrix.length;
     	int ySize = matrix[0].length;
-    	int maxPathScore = java.lang.Integer.MIN_VALUE;
+    	int maxPathScore = Integer.MIN_VALUE;
 
-    	java.util.List<int[]> locationStack = new java.util.ArrayList<int[]>();
+    	List<int[]> locationStack = new ArrayList<int[]>();
 
-    	java.util.List<Integer> pathMinimumStack = new java.util.ArrayList<Integer>();
+    	List<Integer> pathMinimumStack = new ArrayList<Integer>();
 
-    	java.util.List<java.util.HashSet<String>> visitedVertexSetStack = new
-    		java.util.ArrayList<java.util.HashSet<String>>();
+    	List<HashSet<String>> visitedVertexSetStack = new
+    		ArrayList<HashSet<String>>();
 
     	locationStack.add (new int[] {0, 0});
 
-    	pathMinimumStack.add (java.lang.Integer.MAX_VALUE);
+    	pathMinimumStack.add (Integer.MAX_VALUE);
 
-    	java.util.HashSet<String> initialVisitedVertex = new java.util.HashSet<String>();
+    	HashSet<String> initialVisitedVertex = new HashSet<String>();
 
     	initialVisitedVertex.add ("0_0");
 
@@ -5278,7 +5228,7 @@ public class ArrayUtil
     		int pathMinimum = matrix[location[0]][location[1]] < prevPathMinimum ?
     			matrix[location[0]][location[1]] : prevPathMinimum;
 
-    		java.util.HashSet<String> visitedVertexSet = visitedVertexSetStack.remove (tailIndex);
+    		HashSet<String> visitedVertexSet = visitedVertexSetStack.remove (tailIndex);
 
     		visitedVertexSet.add (location[0] + "_" + location[1]);
 
@@ -5348,7 +5298,7 @@ public class ArrayUtil
 
     public static final int DiscountedSale (
     	final int[] priceArray,
-    	final java.util.List<Integer> nonDiscountedItems)
+    	final List<Integer> nonDiscountedItems)
     {
     	int totalCost = 0;
 
