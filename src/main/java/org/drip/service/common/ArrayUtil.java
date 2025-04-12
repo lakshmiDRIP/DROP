@@ -453,7 +453,7 @@ public class ArrayUtil
     	return true;
     }
 
-	private static final int[] ExcludeAndSort2 (
+	private static final int[] ExcludeAndSort (
 		final int[] numberArray,
 		final int excludeIndex)
 	{
@@ -470,6 +470,64 @@ public class ArrayUtil
 		Arrays.sort (excludeAndSortArray);
 
 		return excludeAndSortArray;
+	}
+
+	private static final boolean SpiralMatrixTopBottom (
+		final List<Integer> elementList,
+		final int[][] matrix,
+		final int top,
+		final int bottom,
+		final int col,
+		final boolean reverse)
+	{
+		if (top > bottom) {
+			return true;
+		}
+
+		if (!reverse) {
+			int row = top;
+
+			while (row <= bottom) {
+				elementList.add (matrix[row++][col]);
+			}
+		} else {
+			int row = bottom;
+
+			while (row >= top) {
+				elementList.add (matrix[row--][col]);
+			}
+		}
+
+		return true;
+	}
+
+	private static final boolean SpiralMatrixLeftRight (
+		final List<Integer> elementList,
+		final int[][] matrix,
+		final int left,
+		final int right,
+		final int row,
+		final boolean reverse)
+	{
+		if (right < left) {
+			return true;
+		}
+
+		if (!reverse) {
+			int col = left;
+
+			while (col <= right) {
+				elementList.add (matrix[row][col++]);
+			}
+		} else {
+			int col = right;
+
+			while (col >= left) {
+				elementList.add (matrix[row][col--]);
+			}
+		}
+
+		return true;
 	}
 
 	/**
@@ -514,7 +572,7 @@ public class ArrayUtil
 		Map<String, int[]> tripletMap = new HashMap<String, int[]>();
 
 		for (int numberArrayIndex = 0; numberArrayIndex < numberArray.length; ++numberArrayIndex) {
-			int[] excludeAndSortArray = ExcludeAndSort2 (numberArray, numberArrayIndex);
+			int[] excludeAndSortArray = ExcludeAndSort (numberArray, numberArrayIndex);
 
 			for (int excludeAndSortArrayIndex = 0;
 				excludeAndSortArrayIndex < excludeAndSortArray.length;
@@ -720,13 +778,13 @@ public class ArrayUtil
 		for (int i = 1; i < numberArray.length; ++i) {
 			int temp = max;
 
-			max = Math.max (max * numberArray[i], Math.max (min * numberArray[i],
-				numberArray[i]));
+			max = Math.max (max * numberArray[i], Math.max (min * numberArray[i], numberArray[i]));
 
-			min = Math.min (temp * numberArray[i], Math.min (min * numberArray[i],
-				numberArray[i]));
+			min = Math.min (temp * numberArray[i], Math.min (min * numberArray[i], numberArray[i]));
 
-			if (max > result) result = max;
+			if (max > result) {
+				result = max;
+			}
 		}
 
 		return result;
@@ -740,34 +798,25 @@ public class ArrayUtil
 	 * @return Sum of min(B)
 	 */
 
-	public static final int SubarrayMinimum (
+	public static final int SubarrayMinimumSum (
 		final int[] numberArray)
 	{
-		if (1 == numberArray.length)
-		{
+		if (1 == numberArray.length) {
 			return numberArray[0];
 		}
 
 		int minIndex = -1;
+		int minValueInstanceCount = 0;
 		int minValue = Integer.MAX_VALUE;
 
-		for (int index = 0;
-			index < numberArray.length;
-			++index)
-		{
-			if (minValue > numberArray[index])
-			{
+		for (int index = 0; index < numberArray.length; ++index) {
+			if (minValue > numberArray[index]) {
 				minIndex = index;
 				minValue = numberArray[index];
 			}
 		}
 
-		int minValueInstanceCount = 0;
-
-		for (int index = 0;
-			index < numberArray.length;
-			++index)
-		{
+		for (int index = 0; index < numberArray.length; ++index) {
 			minValueInstanceCount = minValueInstanceCount + SlidingWindowCount (
 				numberArray,
 				minIndex,
@@ -775,87 +824,39 @@ public class ArrayUtil
 			);
 		}
 
-		if (minIndex == 0)
-		{
+		if (0 == minIndex) {
 			int[] numberSubarray = new int[numberArray.length - 1];
 
-			for (int index = 1;
-				index < numberArray.length;
-				++index)
-			{
+			for (int index = 1; index < numberArray.length; ++index) {
 				numberSubarray[index - 1] = numberArray[index];
 			}
 
-			return minValueInstanceCount * minValue + SubarrayMinimum (
-				numberSubarray
-			);
+			return minValueInstanceCount * minValue + SubarrayMinimumSum (numberSubarray);
 		}
 
-		if (minIndex == numberArray.length - 1)
-		{
+		if (minIndex == numberArray.length - 1) {
 			int[] numberSubarray = new int[numberArray.length - 1];
 
-			for (int index = 0;
-				index < numberArray.length - 1;
-				++index)
-			{
+			for (int index = 0; index < numberArray.length - 1; ++index) {
 				numberSubarray[index] = numberArray[index];
 			}
 
-			return minValueInstanceCount * minValue + SubarrayMinimum (
-				numberSubarray
-			);
+			return minValueInstanceCount * minValue + SubarrayMinimumSum (numberSubarray);
 		}
 
 		int[] leftSubarray = new int[minIndex];
 		int[] rightSubarray = new int[numberArray.length - minIndex - 1];
 
-		for (int index = 0;
-			index < numberArray.length;
-			++index)
-		{
-			if (minIndex > index)
-			{
+		for (int index = 0; index < numberArray.length; ++index) {
+			if (minIndex > index) {
 				leftSubarray[index] = numberArray[index];
-			}
-			else if (minIndex < index)
-			{
+			} else if (minIndex < index) {
 				rightSubarray[index - minIndex - 1] = numberArray[index];
 			}
 		}
 
-		return minValueInstanceCount * minValue + SubarrayMinimum (
-			leftSubarray
-		) + SubarrayMinimum (
-			rightSubarray
-		);
-	}
-
-	private static final int[] ExcludeAndSort (
-		final int[] numberArray,
-		final int exclusionIndex)
-	{
-		int[] excludedAndSortedArray = new int[numberArray.length - 1];
-
-		for (int index = 0;
-			index < numberArray.length;
-			++index)
-		{
-			if (index < exclusionIndex)
-			{
-				excludedAndSortedArray[index] = numberArray[index];
-			}
-			else if (index > exclusionIndex)
-			{
-				excludedAndSortedArray[index - 1] = numberArray[index];
-			}
-		}
-
-		Arrays.sort (
-			excludedAndSortedArray
-		);
-
-		return excludedAndSortedArray;
+		return minValueInstanceCount * minValue + SubarrayMinimumSum (leftSubarray) +
+			SubarrayMinimumSum (rightSubarray);
 	}
 
 	/**
@@ -873,17 +874,10 @@ public class ArrayUtil
 		final int[] numberArray,
 		final int target)
 	{
-		Map<String, List<Integer>> fourSumListMap =
-			new HashMap<String, List<Integer>>();
+		Map<String, List<Integer>> fourSumListMap = new HashMap<String, List<Integer>>();
 
-		for (int exclusionIndex = 0;
-			exclusionIndex < numberArray.length;
-			++exclusionIndex)
-		{
-			int[] excludedAndSortedArray = ExcludeAndSort (
-				numberArray,
-				exclusionIndex
-			);
+		for (int exclusionIndex = 0; exclusionIndex < numberArray.length; ++exclusionIndex) {
+			int[] excludedAndSortedArray = ExcludeAndSort (numberArray, exclusionIndex);
 
 			for (int excludedAndSortedArrayIndex = 0;
 				excludedAndSortedArrayIndex < excludedAndSortedArray.length;
@@ -895,43 +889,30 @@ public class ArrayUtil
 				{
 					int fourSumIndex = excludedAndSortedArray.length - 1;
 
-					while (fourSumIndex > threeSumIndex)
-					{
+					while (fourSumIndex > threeSumIndex) {
 						int sum = numberArray[exclusionIndex] +
 							excludedAndSortedArray[excludedAndSortedArrayIndex] +
 							excludedAndSortedArray[threeSumIndex] +
 							excludedAndSortedArray[fourSumIndex];
 
-						if (target == sum)
-						{
+						if (target == sum) {
 							int[] fourSumComponentArray = new int[4];
 							fourSumComponentArray[0] = numberArray[exclusionIndex];
 							fourSumComponentArray[1] = excludedAndSortedArray[excludedAndSortedArrayIndex];
 							fourSumComponentArray[2] = excludedAndSortedArray[threeSumIndex];
 							fourSumComponentArray[3] = excludedAndSortedArray[fourSumIndex];
 
-							Arrays.sort (
-								fourSumComponentArray
-							);
+							Arrays.sort (fourSumComponentArray);
 
-							List<Integer> fourSumList =
-								new ArrayList<Integer>();
+							List<Integer> fourSumList = new ArrayList<Integer>();
 
-							fourSumList.add (
-								numberArray[exclusionIndex]
-							);
+							fourSumList.add (numberArray[exclusionIndex]);
 
-							fourSumList.add (
-								excludedAndSortedArray[excludedAndSortedArrayIndex]
-							);
+							fourSumList.add (excludedAndSortedArray[excludedAndSortedArrayIndex]);
 
-							fourSumList.add (
-								excludedAndSortedArray[threeSumIndex]
-							);
+							fourSumList.add (excludedAndSortedArray[threeSumIndex]);
 
-							fourSumList.add (
-								excludedAndSortedArray[fourSumIndex]
-							);
+							fourSumList.add (excludedAndSortedArray[fourSumIndex]);
 
 							fourSumListMap.put (
 								fourSumComponentArray[0] + "#" +
@@ -966,28 +947,22 @@ public class ArrayUtil
 		int startIndex = 0;
 		int maxSum = Integer.MIN_VALUE;
 
-		while (endIndex < numberArray.length)
-		{
+		while (endIndex < numberArray.length) {
 			int currentSum = 0;
 
-			while (endIndex < numberArray.length &&
-				0 <= numberArray[endIndex])
-			{
+			while (endIndex < numberArray.length && 0 <= numberArray[endIndex]) {
 				currentSum = currentSum + numberArray[endIndex++];
 			}
 
-			while (startIndex <= endIndex &&
-				0 >= numberArray[startIndex])
-			{
+			while (startIndex <= endIndex && 0 >= numberArray[startIndex]) {
 				currentSum = currentSum - numberArray[startIndex++];
 			}
 
-			if (currentSum > maxSum)
-			{
+			if (currentSum > maxSum) {
 				maxSum = currentSum;
 			}
 
-			endIndex++;
+			++endIndex;
 		}
 
 		return maxSum;
@@ -1008,24 +983,18 @@ public class ArrayUtil
 		int startIndex = 0;
 		int minSum = Integer.MAX_VALUE;
 
-		while (endIndex < numberArray.length)
-		{
+		while (endIndex < numberArray.length) {
 			int currentSum = 0;
 
-			while (endIndex < numberArray.length &&
-				0 >= numberArray[endIndex])
-			{
+			while (endIndex < numberArray.length && 0 >= numberArray[endIndex]) {
 				currentSum = currentSum + numberArray[endIndex++];
 			}
 
-			while (startIndex <= endIndex &&
-				0 >= numberArray[startIndex])
-			{
+			while (startIndex <= endIndex && 0 >= numberArray[startIndex]) {
 				currentSum = currentSum - numberArray[startIndex++];
 			}
 
-			if (currentSum < minSum)
-			{
+			if (currentSum < minSum) {
 				minSum = currentSum;
 			}
 
@@ -1057,97 +1026,29 @@ public class ArrayUtil
 		boolean allPositive = true;
 		int max = Integer.MIN_VALUE;
 
-		for (int index = 0;
-			index < numberArray.length;
-			++index)
-		{
-			if (0 > numberArray[index])
-			{
+		for (int index = 0; index < numberArray.length; ++index) {
+			if (0 > numberArray[index]) {
 				allPositive = false;
-			}
-			else if (0 < numberArray[index])
-			{
+			} else if (0 < numberArray[index]) {
 				allNegative = false;
 			}
 
 			sum = sum + numberArray[index];
 
-			if (max < numberArray[index])
-			{
+			if (max < numberArray[index]) {
 				max = numberArray[index];
 			}
 		}
 
-		if (allPositive)
-		{
+		if (allPositive) {
 			return sum;
 		}
 
-		if (allNegative)
-		{
+		if (allNegative) {
 			return max;
 		}
 
-		System.out.println (
-			MinimumSubarraySum (
-				numberArray
-			)
-		);
-
-		return Math.max (
-			MaximumSubarraySum (
-				numberArray
-			),
-			sum - MinimumSubarraySum (
-				numberArray
-			)
-		);
-	}
-
-	private static final boolean SpiralMatrixTopBottom (
-		final List<Integer> elementList,
-		final int[][] matrix,
-		final int top,
-		final int bottom,
-		final int col,
-		final boolean reverse)
-	{
-		if (top > bottom) return true;
-
-		if (!reverse) {
-			int row = top;
-
-			while (row <= bottom) elementList.add (matrix[row++][col]);
-		} else {
-			int row = bottom;
-
-			while (row >= top) elementList.add (matrix[row--][col]);
-		}
-
-		return true;
-	}
-
-	private static final boolean SpiralMatrixLeftRight (
-		final List<Integer> elementList,
-		final int[][] matrix,
-		final int left,
-		final int right,
-		final int row,
-		final boolean reverse)
-	{
-		if (right < left) return true;
-
-		if (!reverse) {
-			int col = left;
-
-			while (col <= right) elementList.add (matrix[row][col++]);
-		} else {
-			int col = right;
-
-			while (col >= left) elementList.add (matrix[row][col--]);
-		}
-
-		return true;
+		return Math.max (MaximumSubarraySum (numberArray), sum - MinimumSubarraySum (numberArray));
 	}
 
 	/**
@@ -1174,19 +1075,27 @@ public class ArrayUtil
 		while (true) {
 			SpiralMatrixLeftRight (elementList, matrix, ++left, right, ++row, false);
 
-			if (left > right) break;
+			if (left > right) {
+				break;
+			}
 
 			SpiralMatrixTopBottom (elementList, matrix, ++top, bottom, --col, false);
 
-			if (top > bottom) break;
+			if (top > bottom) {
+				break;
+			}
 
 			SpiralMatrixLeftRight (elementList, matrix, left, --right, matrix.length - 1 - row, true);
 
-			if (left > right) break;
+			if (left > right) {
+				break;
+			}
 
 			SpiralMatrixTopBottom (elementList, matrix, top, --bottom, matrix[0].length - 1 - col, true);
 
-			if (top > bottom) break;
+			if (top > bottom) {
+				break;
+			}
 		}
 
 		return elementList;
