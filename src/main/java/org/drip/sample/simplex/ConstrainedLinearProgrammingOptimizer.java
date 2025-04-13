@@ -164,7 +164,7 @@ public class ConstrainedLinearProgrammingOptimizer
 			StandardConstraint.LT (new LinearExpression (constraintCoefficient2), constraintRHS2)
 		);
 
-		PivotRun pivotRun = standardFormBuilder.build().processTableau (false);
+		PivotRun pivotRun = standardFormBuilder.build (false).multiPhaseOptimize();
 
 		System.out.println (
 			"\t| Relative Cost Coefficients: " + NumberUtil.ArrayRow (

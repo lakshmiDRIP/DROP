@@ -286,10 +286,13 @@ public class StandardFormBuilder
 	/**
 	 * Construct an Instance of Simplex <i>CanonicalForm</i> from the EQ/LT/GT Constraints and the Objective
 	 * 
+	 * @param diagnosticsOn Diagnostics On Flag
+	 * 
 	 * @return <i>CanonicalForm</i> Instance
 	 */
 
-	public StandardForm build()
+	public StandardForm build (
+		final boolean diagnosticsOn)
 	{
 		int i = 0;
 
@@ -316,7 +319,8 @@ public class StandardFormBuilder
 		try {
 			return new StandardForm (
 				_objectiveFunction,
-				new StandardPolytope (_unrestrictedVariableCount, standardConstraintArray)
+				new StandardPolytope (_unrestrictedVariableCount, standardConstraintArray),
+				diagnosticsOn
 			);
 		} catch (Exception e) {
 			e.printStackTrace();

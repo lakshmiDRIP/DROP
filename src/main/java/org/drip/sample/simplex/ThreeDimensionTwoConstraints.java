@@ -179,13 +179,13 @@ public class ThreeDimensionTwoConstraints
 			StandardConstraint.LT (new LinearExpression (constraintCoefficient2), constraintRHS2)
 		);
 
-		StandardForm standardForm = standardFormBuilder.build();
+		StandardForm standardForm = standardFormBuilder.build(false);
 
 		NumberUtil.PrintMatrix ("\t| Full Tableau", standardForm.tableau(), 2, 0);
 
 		System.out.println ("\t|-------------------------------------------------------|");
 
-		PivotRun pivotRun = standardForm.processTableau (false);
+		PivotRun pivotRun = standardForm.multiPhaseOptimize();
 
 		System.out.println ("\t| Finite Optimum Reached => " + pivotRun.finiteOptimumReached());
 

@@ -148,7 +148,7 @@ public class StandardFormAnalyzer
 
 		System.out.println (standardFormBuilder);
 
-		StandardForm standardForm = standardFormBuilder.build();
+		StandardForm standardForm = standardFormBuilder.build (true);
 
 		System.out.println ("\t-------------------------");
 
@@ -172,7 +172,7 @@ public class StandardFormAnalyzer
 
 		System.out.println ("\t-------------------------");
 
-		System.out.println ("\t" + standardForm.processTableau (true));
+		System.out.println ("\t" + standardForm.multiPhaseOptimize());
 
 		System.out.println ("\t-------------------------");
 

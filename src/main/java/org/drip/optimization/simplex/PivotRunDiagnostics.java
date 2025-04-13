@@ -120,12 +120,15 @@ public class PivotRunDiagnostics
 	private Map<Integer, ColumnPivotingDiagnostics> _columnPivotingMap = null;
 
 	/**
-	 * Empty <i>PivotRunDiagnostics</i> Constructor
+	 * <i>PivotRunDiagnostics</i> Constructor
+	 * 
+	 * @param basicFeasibleSolution Basic Feasible Solution
 	 */
 
-	public PivotRunDiagnostics()
+	public PivotRunDiagnostics (
+		final double[] basicFeasibleSolution)
 	{
-		super();
+		super (basicFeasibleSolution);
 
 		_columnPivotingMap = new HashMap<Integer, ColumnPivotingDiagnostics>();
 	}

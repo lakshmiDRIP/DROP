@@ -119,16 +119,28 @@ import org.drip.service.common.FormatUtil;
 public class PivotRun
 {
 	private boolean _finiteOptimumReached = false;
+	private double[] _basicFeasibleSolution = null;
 	private double[] _relativeCostCoefficientArray = null;
 	private double _optimumValue = Double.NEGATIVE_INFINITY;
 	private Map<Integer, Integer> _tableauColumnToRowMap = null;
 
 	/**
-	 * Empty <i>PivotRun</i> Constructor
+	 * <i>PivotRun</i> Constructor
+	 * 
+	 * @param basicFeasibleSolution Basic Feasible Solution
 	 */
 
-	public PivotRun()
+	public PivotRun (
+		final double[] basicFeasibleSolution)
 	{
+		if (null != basicFeasibleSolution) {
+			_basicFeasibleSolution = new double[basicFeasibleSolution.length];
+
+			for (int i = 0; i < basicFeasibleSolution.length; ++i) {
+				_basicFeasibleSolution[i] = basicFeasibleSolution[i];
+			}
+		}
+
 		_tableauColumnToRowMap = new HashMap<Integer, Integer>();
 	}
 
@@ -174,6 +186,28 @@ public class PivotRun
 	public double[] relativeCostCoefficientArray()
 	{
 		return _relativeCostCoefficientArray;
+	}
+
+	/**
+	 * Retrieve the Basic Feasible Solution
+	 * 
+	 * @return Basic Feasible Solution
+	 */
+
+	public double[] basicFeasibleSolution()
+	{
+		return _basicFeasibleSolution;
+	}
+
+	/**
+	 * Indicate if Phase 1 succeeded
+	 * 
+	 * @return TRUE - Phase 1 succeeded
+	 */
+
+	public boolean phase1Succeeded()
+	{
+		return null != _basicFeasibleSolution;
 	}
 
 	/**
@@ -265,7 +299,9 @@ public class PivotRun
 
 	@Override public String toString()
 	{
-		return "Pivot Run - Tableau Column to Row Map: " + _tableauColumnToRowMap +
+		return "Pivot Run - Basic Feasible Solution =>" +
+			NumberUtil.ArrayRow (_basicFeasibleSolution, 4, 3, false) + "; " +
+			"; Tableau Column to Row Map: " + _tableauColumnToRowMap +
 			"; Optimum Value =>" + FormatUtil.FormatDouble (_optimumValue, 4, 3, 1.) +
 			"; Finite Optimum Reached => " + _finiteOptimumReached +
 			"; Objective Function Relative Coefficients =>" +

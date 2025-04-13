@@ -114,14 +114,10 @@ public interface DantzigSolver
 {
 
 	/**
-	 * Construct the Optimal Solution to the Simplex
+	 * Construct the Optimal Pivot Run Solution to the Simplex using a Multi-phase Optimizer
 	 * 
-	 * @param canonicalForm Canonical Form of the Simplex Problem
-	 * 
-	 * @return The Optimal Solution
+	 * @return The Optimal Pivot Run Solution
 	 */
 
-	public abstract LinearExpression optimize (
-		final StandardForm canonicalForm
-	);
+	public abstract PivotRun multiPhaseOptimize();
 }

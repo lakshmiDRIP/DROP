@@ -113,7 +113,9 @@ import java.util.Collection;
  */
 
 public class StandardForm
+	implements DantzigSolver
 {
+	private boolean _diagnosticsOn = false;
 	private LinearExpression _objectiveFunction = null;
 	private StandardPolytope _constraintPolytope = null;
 
@@ -243,13 +245,15 @@ public class StandardForm
 	 * 
 	 * @param objectiveFunction Objective Function
 	 * @param constraintPolytope Constraint Polytope
+	 * @param diagnosticsOn Diagnostics On Flag
 	 * 
 	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public StandardForm (
 		final LinearExpression objectiveFunction,
-		final StandardPolytope constraintPolytope)
+		final StandardPolytope constraintPolytope,
+		final boolean diagnosticsOn)
 		throws Exception
 	{
 		if (null == (_objectiveFunction = objectiveFunction) ||
@@ -257,6 +261,8 @@ public class StandardForm
 		{
 			throw new Exception ("StandardForm Constructor => Invalid Inputs");
 		}
+
+		_diagnosticsOn = diagnosticsOn;
 	}
 
 	/**
@@ -279,6 +285,17 @@ public class StandardForm
 	public StandardPolytope constraintPolytope()
 	{
 		return _constraintPolytope;
+	}
+
+	/**
+	 * Retrieve the Diagnostics Setting
+	 * 
+	 * @return The Diagnostics Setting
+	 */
+
+	public boolean diagnosticsOn()
+	{
+		return _diagnosticsOn;
 	}
 
 	/**
@@ -399,41 +416,6 @@ public class StandardForm
 	}
 
 	/**
-	 * Process the Simplex Tableau to locate the Optimal Solution
-	 * 
-	 * @param diagnosticsOn TRUE - Pivot Run Diagnostics Turned On
-	 * 
-	 * @return The Resulting Pivot Run
-	 */
-
-	public PivotRun processTableau (
-		final boolean diagnosticsOn)
-	{
-		PivotRun pivotRun = diagnosticsOn ? new PivotRunDiagnostics() : new PivotRun();
-
-		int pivotColumnIndex = basicVariableCount();
-
-		double[][] tableau = tableau();
-
-		while (1 <= pivotColumnIndex) {
-			if (0. > tableau[0][pivotColumnIndex]) {
-				--pivotColumnIndex;
-				continue;
-			}
-
-			if (!processEnteringVariable (pivotColumnIndex, pivotRun, tableau) ||
-				pivotRun.finiteOptimumReached())
-			{
-				break;
-			}
-
-			--pivotColumnIndex;
-		}
-
-		return pivotRun.setRelativeCostCoefficientArray (tableau[0]) ? pivotRun : null;
-	}
-
-	/**
 	 * Compute the Basic Feasible Solution
 	 * 
 	 * @return Basic Feasible Solution
@@ -465,6 +447,71 @@ public class StandardForm
 		}
 
 		return basicFeasibleSolutionArray;
+	}
+
+	/**
+	 * Perform the Phase 1 Simplex Run
+	 * 
+	 * @param diagnosticsOn TRUE - Pivot Run Diagnostics Turned On
+	 * 
+	 * @return The Phase 1 Pivot Run
+	 */
+
+	public PivotRun phase1 (
+		final boolean diagnosticsOn)
+	{
+		return diagnosticsOn ?
+			new PivotRunDiagnostics (basicFeasibleSolution()) : new PivotRun (basicFeasibleSolution());
+	}
+
+	/**
+	 * Perform the Phase 2 Simplex Run - Process the Simplex Tableau to locate the Optimal Solution
+	 * 
+	 * @param pivotRun The Pivot Run Instance
+	 * 
+	 * @return TRUE - Phase 2 succeeded
+	 */
+
+	public boolean phase2 (
+		final PivotRun pivotRun)
+	{
+		int pivotColumnIndex = basicVariableCount();
+
+		double[][] tableau = tableau();
+
+		while (1 <= pivotColumnIndex) {
+			if (0. > tableau[0][pivotColumnIndex]) {
+				--pivotColumnIndex;
+				continue;
+			}
+
+			if (!processEnteringVariable (pivotColumnIndex, pivotRun, tableau) ||
+				pivotRun.finiteOptimumReached())
+			{
+				break;
+			}
+
+			--pivotColumnIndex;
+		}
+
+		return pivotRun.setRelativeCostCoefficientArray (tableau[0]);
+	}
+
+	/**
+	 * Construct the Optimal Pivot Run Solution to the Simplex using a Multi-phase Optimizer
+	 * 
+	 * @return The Optimal Pivot Run Solution
+	 */
+
+	@Override public PivotRun multiPhaseOptimize()
+	{
+		PivotRun pivotRun = phase1 (_diagnosticsOn);
+
+		if (!pivotRun.phase1Succeeded()) {
+			return pivotRun;
+		}
+
+		return phase2 (pivotRun) ? pivotRun : null;
 	}
 
 	/**
