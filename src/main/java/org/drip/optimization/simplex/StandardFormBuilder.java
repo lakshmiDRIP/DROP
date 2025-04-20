@@ -187,7 +187,8 @@ public class StandardFormBuilder
 		throws Exception
 	{
 		if (null == (_objectiveFunction = objectiveFunction) ||
-			0 > (_unrestrictedVariableCount = unrestrictedVariableCount)) {
+			0 > (_unrestrictedVariableCount = unrestrictedVariableCount))
+		{
 			throw new Exception ("StandardFormBuilder Constructor => Invalid Inputs");
 		}
 
