@@ -116,7 +116,7 @@ public class StandardForm
 	implements DantzigSolver
 {
 	private boolean _diagnosticsOn = false;
-	private LinearExpression _objectiveFunction = null;
+	private ObjectiveFunction _objectiveFunction = null;
 	private StandardPolytope _constraintPolytope = null;
 
 	private MinimumRatioRun minimumRatioTest (
@@ -251,7 +251,7 @@ public class StandardForm
 	 */
 
 	public StandardForm (
-		final LinearExpression objectiveFunction,
+		final ObjectiveFunction objectiveFunction,
 		final StandardPolytope constraintPolytope,
 		final boolean diagnosticsOn)
 		throws Exception
@@ -271,7 +271,7 @@ public class StandardForm
 	 * @return The Simplex Objective Function
 	 */
 
-	public LinearExpression objectiveFunction()
+	public ObjectiveFunction objectiveFunction()
 	{
 		return _objectiveFunction;
 	}
@@ -361,7 +361,11 @@ public class StandardForm
 
 	public double[] tableauC()
 	{
-		double[] objectiveCoefficientArray = _objectiveFunction.coefficientArray();
+		if (!_objectiveFunction.standardize()) {
+			return null;
+		}
+
+		double[] objectiveCoefficientArray = _objectiveFunction.linearExpression().coefficientArray();
 
 		double[] tableauC = new double[objectiveCoefficientArray.length];
 

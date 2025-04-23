@@ -191,6 +191,21 @@ public class LinearExpression extends RdToR1
 	}
 
 	/**
+	 * Negate the Coefficients of the Expression
+	 * 
+	 * @return TRUE - Coefficients of the Expression Negated
+	 */
+
+	public boolean negate()
+	{
+		for (int coefficientIndex = 0; coefficientIndex < _coefficientArray.length; ++coefficientIndex) {
+			_coefficientArray[coefficientIndex] *= -1.;
+		}
+
+		return true;
+	}
+
+	/**
 	 * Convert the Linear Expression into a String
 	 * 
 	 * @return The Linear Expression into a String

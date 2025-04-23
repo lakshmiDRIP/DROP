@@ -115,7 +115,7 @@ import java.util.List;
 
 public class StandardFormBuilder
 {
-	private LinearExpression _objectiveFunction = null;
+	private ObjectiveFunction _objectiveFunction = null;
 	private int _unrestrictedVariableCount = Integer.MIN_VALUE;
 	private List<StandardConstraint> _eqStandardConstraintList = null;
 	private List<StandardConstraint> _gtStandardConstraintList = null;
@@ -183,7 +183,7 @@ public class StandardFormBuilder
 
 	public StandardFormBuilder (
 		final int unrestrictedVariableCount,
-		final LinearExpression objectiveFunction)
+		final ObjectiveFunction objectiveFunction)
 		throws Exception
 	{
 		if (null == (_objectiveFunction = objectiveFunction) ||
@@ -205,7 +205,7 @@ public class StandardFormBuilder
 	 * @return Objective Function
 	 */
 
-	public LinearExpression objectiveFunction()
+	public ObjectiveFunction objectiveFunction()
 	{
 		return _objectiveFunction;
 	}

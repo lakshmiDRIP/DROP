@@ -6,6 +6,7 @@ import org.drip.optimization.simplex.StandardConstraint;
 import org.drip.optimization.simplex.StandardForm;
 import org.drip.optimization.simplex.StandardFormBuilder;
 import org.drip.optimization.simplex.LinearExpression;
+import org.drip.optimization.simplex.ObjectiveFunction;
 import org.drip.service.env.EnvManager;
 
 /*
@@ -127,7 +128,7 @@ public class StandardFormAnalyzer
 	{
 		EnvManager.InitEnv ("");
 
-		double[] objectiveCoefficient = new double[] {-2., -3., -4.};
+		double[] objectiveCoefficientArray = new double[] {-2., -3., -4.};
 		double[] constraintCoefficient1 = new double[] {3., 2., 1.};
 		double[] constraintCoefficient2 = new double[] {2., 5., 3.};
 		double constraintRHS1 = 10.;
@@ -135,7 +136,7 @@ public class StandardFormAnalyzer
 
 		StandardFormBuilder standardFormBuilder = new StandardFormBuilder (
 			0,
-			new LinearExpression (objectiveCoefficient)
+			ObjectiveFunction.StandardMinimization (new LinearExpression (objectiveCoefficientArray))
 		);
 
 		standardFormBuilder.addStandardConstraint (

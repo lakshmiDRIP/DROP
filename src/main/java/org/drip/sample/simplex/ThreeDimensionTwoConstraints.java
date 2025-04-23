@@ -4,6 +4,7 @@ package org.drip.sample.simplex;
 import org.drip.measure.crng.RdRandomSequence;
 import org.drip.numerical.common.NumberUtil;
 import org.drip.optimization.simplex.LinearExpression;
+import org.drip.optimization.simplex.ObjectiveFunction;
 import org.drip.optimization.simplex.PivotRun;
 import org.drip.optimization.simplex.StandardConstraint;
 import org.drip.optimization.simplex.StandardForm;
@@ -168,7 +169,7 @@ public class ThreeDimensionTwoConstraints
 
 		StandardFormBuilder standardFormBuilder = new StandardFormBuilder (
 			0,
-			new LinearExpression (objectiveCoefficientArray)
+			ObjectiveFunction.StandardMinimization (new LinearExpression (objectiveCoefficientArray))
 		);
 
 		standardFormBuilder.addStandardConstraint (

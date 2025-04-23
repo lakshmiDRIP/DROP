@@ -6,9 +6,7 @@ package org.drip.optimization.lp;
  */
 
 /*!
- * Copyright (C) 2022 Lakshmi Krishnamurthy
- * Copyright (C) 2021 Lakshmi Krishnamurthy
- * Copyright (C) 2020 Lakshmi Krishnamurthy
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
  * 
  *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
  *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
@@ -76,109 +74,43 @@ package org.drip.optimization.lp;
  */
 
 /**
- * <i>LinearEquality</i> holds the Coefficients and the RHS of a Linear Equation. The References are:
+ * <i>LinearExpressionSpec</i> implements the Linear Variable Specification in an LP. The References are:
  * 
  * <br><br>
- *  <ul>
+ * 	<ul>
  *  	<li>
- * 			Nering, E. D., and A. W. Tucker (1993): <i>Linear Programs and Related Problems</i> <b>Academic
- * 				Press</b>
+ * 			Dadush, D., and S. Huiberts (2020): A Friendly Smoothed Analysis of the Simplex Method <i>SIAM
+ * 				Journal on Computing</i> <b>49 (5)</b> 449-499
  *  	</li>
- *  	<li>
- * 			Murty, K. G. (1983): <i>Linear Programming</i> <b>John Wiley and Sons</b> New York
- *  	</li>
- *  	<li>
- * 			Padberg, M. W. (1999): <i>Linear Optimization and Extensions 2<sup>nd</sup> Edition</i>
- * 				<b>Springer-Verlag</b>
- *  	</li>
- *  	<li>
- * 			van der Bei, R. J. (2008): Linear Programming: Foundations and Extensions 3<sup>rd</sup> Edition
- * 				<i>International Series in Operations Research and Management Science</i> <b>114
- * 				Springer-Verlag</b>
- *  	</li>
- *  	<li>
- * 			Wikipedia (2020): Simplex Algorithm https://en.wikipedia.org/wiki/Simplex_algorithm
- *  	</li>
- *  </ul>
+ * 		<li>
+ * 			Dantzig, G. B., and M. N. Thapa (1997): <i>Linear Programming 1: Introduction</i>
+ * 				<b>Springer-Verlag</b> New York NY
+ * 		</li>
+ * 		<li>
+ * 			Murty, K. G. (1983): <i>Linear Programming</i> <b>John Wiley and Sons</b> New York NY
+ * 		</li>
+ * 		<li>
+ * 			Oliver, M. (2020): <i>Practical Guide to the Simplex Method of Linear Programming</i>
+ * 				https://mids.ku.de/oliver/teaching/iub/spring2007/cps102/handouts/linear-programming.pdf
+ * 		</li>
+ * 		<li>
+ * 			Padberg, M. (1999): <i> Linear Optimization and Extensions 2<sup>nd</sup> Edition</i>
+ * 				<b>Springer-Verlag</b> New York NY
+ * 		</li>
+ * 	</ul>
  *
  *	<br><br>
  *  <ul>
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md">Numerical Optimizer Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/optimization/README.md">Necessary, Sufficient, and Regularity Checks for Gradient Descent and LP/MILP/MINLP Schemes</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/optimization/lp/README.md">LP Objectives, Constraints, and Optimizers</a></li>
+ *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/optimization/README.md">Necessary, Sufficient, and Regularity Checks for Gradient Descent in a Constrained Optimization Setup</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/optimization/lp">Linear Programming Structures and Formulation</a></li>
  *  </ul>
- *
+ * 
  * @author Lakshmi Krishnamurthy
  */
 
-public class LinearEquality
+public class LinearExpressionSpec
 {
-	private double _rhs = java.lang.Double.NaN;
-	private org.drip.optimization.lp.SyntheticVariable _syntheticVariable = null;
-	private java.util.Map<java.lang.String, java.lang.Double> _variableCoefficientMap = null;
 
-	/**
-	 * LinearEquality Constructor
-	 * 
-	 * @param variableCoefficientMap The Variable Coefficient Map
-	 * @param rhs The RHS
-	 * @param syntheticVariable The Synthetic Variable
-	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
-	 */
-
-	public LinearEquality (
-		final java.util.Map<java.lang.String, java.lang.Double> variableCoefficientMap,
-		final double rhs,
-		final org.drip.optimization.lp.SyntheticVariable syntheticVariable)
-		throws java.lang.Exception
-	{
-		if (null == (_variableCoefficientMap = variableCoefficientMap) ||
-			0 == _variableCoefficientMap.size() ||
-			!org.drip.numerical.common.NumberUtil.IsValid (
-				_rhs = rhs
-			)
-		)
-		{
-			throw new java.lang.Exception (
-				"LinearEquality Constructor => Invalid Inputs"
-			);
-		}
-
-		_syntheticVariable = syntheticVariable;
-	}
-
-	/**
-	 * Retrieve the Variable Coefficient Map
-	 * 
-	 * @return The Variable Coefficient Map
-	 */
-
-	public java.util.Map<java.lang.String, java.lang.Double> variableCoefficientMap()
-	{
-		return _variableCoefficientMap;
-	}
-
-	/**
-	 * Retrieve the RHS
-	 * 
-	 * @return The RHS
-	 */
-
-	public double rhs()
-	{
-		return _rhs;
-	}
-
-	/**
-	 * Retrieve the Synthetic Variable
-	 * 
-	 * @return The Synthetic Variable
-	 */
-
-	public org.drip.optimization.lp.SyntheticVariable syntheticVariable()
-	{
-		return _syntheticVariable;
-	}
 }

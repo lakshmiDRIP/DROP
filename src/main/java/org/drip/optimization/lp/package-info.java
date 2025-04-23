@@ -1,6 +1,6 @@
 
 /**
- * LP Objectives, Constraints, and Optimizers
+ * Linear Programming Structures and Formulation
  *
  * @author Lakshmi Krishnamurthy
  */

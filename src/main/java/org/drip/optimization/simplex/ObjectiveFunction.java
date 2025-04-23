@@ -117,10 +117,30 @@ public class ObjectiveFunction
 	private LinearExpression _linearExpression = null;
 
 	/**
+	 * Construct a Standard Minimization Form of the Objective Function
+	 * 
+	 * @param linearExpression Objective Function Linear Expression
+	 * 
+	 * @return Standard Minimization Form of the Objective Function
+	 */
+
+	public static final ObjectiveFunction StandardMinimization (
+		final LinearExpression linearExpression)
+	{
+		try {
+			return new ObjectiveFunction (false, linearExpression);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
 	 * <i>ObjectiveFunction</i> Constructor
 	 * 
 	 * @param maximize TRUE - Set to Maximize
-	 * @param linearExpression - Objective Function Linear Expression
+	 * @param linearExpression Objective Function Linear Expression
 	 * 
 	 * @throws Exception Thrown if the Linear Expression is Invalid
 	 */
@@ -157,5 +177,20 @@ public class ObjectiveFunction
 	public LinearExpression linearExpression()
 	{
 		return _linearExpression;
+	}
+
+	/**
+	 * Convert the Maximization Problem to a Minimization, if needed, by flipping the Coefficient signs
+	 * 
+	 * @return TRUE - Maximization Converted to Minimization
+	 */
+
+	public boolean standardize()
+	{
+		if (_maximize) {
+			return _maximize = !_linearExpression.negate();
+		}
+
+		return true;
 	}
 }
