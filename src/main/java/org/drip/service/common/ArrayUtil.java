@@ -812,6 +812,127 @@ public class ArrayUtil
 		return timeConsumed;
 	}
 
+	private static final boolean UploadCounterRangeMaps (
+		final TreeMap<Integer, Integer> sliceCounterMap,
+		final TreeMap<Integer, int[]> sliceRangeMap,
+		final int[] range,
+		final int rangeCount)
+	{
+		if (range[0] >= range[1]) {
+			return false;
+		}
+
+		sliceCounterMap.put (range[0], rangeCount);
+
+		sliceRangeMap.put (range[0], range);
+
+		return true;
+	}
+
+	private static final int[] ProcessRange (
+		final TreeMap<Integer, Integer> sliceCounterMap,
+		final TreeMap<Integer, int[]> sliceRangeMap,
+		final int[] inputRange,
+		final int[] mapRange,
+		final int mapRangeCount)
+	{
+		if (inputRange[1] < mapRange[0] || inputRange[0] > mapRange[1]) {
+			UploadCounterRangeMaps (sliceCounterMap, sliceRangeMap, inputRange, 1);
+
+			UploadCounterRangeMaps (sliceCounterMap, sliceRangeMap, mapRange, mapRangeCount);
+
+			return null;
+		}
+
+		if (inputRange[0] >= mapRange[0] && inputRange[1] <= mapRange[1]) {
+			UploadCounterRangeMaps (
+				sliceCounterMap,
+				sliceRangeMap,
+				new int[] {mapRange[0], inputRange[0]},
+				mapRangeCount
+			);
+
+			UploadCounterRangeMaps (
+				sliceCounterMap,
+				sliceRangeMap,
+				new int[] {inputRange[0], inputRange[1]},
+				mapRangeCount + 1
+			);
+
+			UploadCounterRangeMaps (
+				sliceCounterMap,
+				sliceRangeMap,
+				new int[] {inputRange[1], mapRange[1]},
+				mapRangeCount
+			);
+
+			return null;
+		}
+
+		if (inputRange[0] <= mapRange[0] && inputRange[1] >= mapRange[1]) {
+			UploadCounterRangeMaps (
+				sliceCounterMap,
+				sliceRangeMap,
+				new int[] {inputRange[0], mapRange[0]},
+				1
+			);
+
+			UploadCounterRangeMaps (
+				sliceCounterMap,
+				sliceRangeMap,
+				new int[] {mapRange[0], mapRange[1]},
+				mapRangeCount + 1
+			);
+
+			return new int[] {mapRange[1], inputRange[1]};
+		}
+
+		if (inputRange[0] <= mapRange[0] && inputRange[1] <= mapRange[1]) {
+			UploadCounterRangeMaps (
+				sliceCounterMap,
+				sliceRangeMap,
+				new int[] {inputRange[0], mapRange[0]},
+				1
+			);
+
+			UploadCounterRangeMaps (
+				sliceCounterMap,
+				sliceRangeMap,
+				new int[] {mapRange[0], inputRange[1]},
+				mapRangeCount + 1
+			);
+
+			UploadCounterRangeMaps (
+				sliceCounterMap,
+				sliceRangeMap,
+				new int[] {inputRange[0], mapRange[1]},
+				mapRangeCount
+			);
+
+			return null;
+		}
+
+		if (inputRange[0] >= mapRange[0] && inputRange[1] >= mapRange[1]) {
+			UploadCounterRangeMaps (
+				sliceCounterMap,
+				sliceRangeMap,
+				new int[] {mapRange[0], inputRange[0]},
+				mapRangeCount
+			);
+
+			UploadCounterRangeMaps (
+				sliceCounterMap,
+				sliceRangeMap,
+				new int[] {inputRange[0], mapRange[1]},
+				mapRangeCount + 1
+			);
+
+			return new int[] {mapRange[1], inputRange[1]};
+		}
+
+		return null;
+	}
+
 	/**
 	 * Search for the Target in a Rotated Array
 	 * 
@@ -2421,201 +2542,6 @@ public class ArrayUtil
 		return rangeMap.values();
 	}
 
-	/*
-	 * Done to this
-	 */
-
-	private static final boolean UploadCounterRangeMaps (
-		final TreeMap<Integer, Integer> sliceCounterMap,
-		final TreeMap<Integer, int[]> sliceRangeMap,
-		final int[] range,
-		final int rangeCount)
-	{
-		if (range[0] >= range[1])
-		{
-			return false;
-		}
-
-		sliceCounterMap.put (
-			range[0],
-			rangeCount
-		);
-
-		sliceRangeMap.put (
-			range[0],
-			range
-		);
-
-		return true;
-	}
-
-	private static final int[] ProcessRange (
-		final TreeMap<Integer, Integer> sliceCounterMap,
-		final TreeMap<Integer, int[]> sliceRangeMap,
-		final int[] inputRange,
-		final int[] mapRange,
-		final int mapRangeCount)
-	{
-		if (inputRange[1] < mapRange[0] || inputRange[0] > mapRange[1])
-		{
-			UploadCounterRangeMaps (
-				sliceCounterMap,
-				sliceRangeMap,
-				inputRange,
-				1
-			);
-
-			UploadCounterRangeMaps (
-				sliceCounterMap,
-				sliceRangeMap,
-				mapRange,
-				mapRangeCount
-			);
-
-			return null;
-		}
-
-		if (inputRange[0] >= mapRange[0] && inputRange[1] <= mapRange[1])
-		{
-			UploadCounterRangeMaps (
-				sliceCounterMap,
-				sliceRangeMap,
-				new int[]
-				{
-					mapRange[0],
-					inputRange[0]
-				},
-				mapRangeCount
-			);
-
-			UploadCounterRangeMaps (
-				sliceCounterMap,
-				sliceRangeMap,
-				new int[]
-				{
-					inputRange[0],
-					inputRange[1]
-				},
-				mapRangeCount + 1
-			);
-
-			UploadCounterRangeMaps (
-				sliceCounterMap,
-				sliceRangeMap,
-				new int[]
-				{
-					inputRange[1],
-					mapRange[1]
-				},
-				mapRangeCount
-			);
-
-			return null;
-		}
-
-		if (inputRange[0] <= mapRange[0] && inputRange[1] >= mapRange[1])
-		{
-			UploadCounterRangeMaps (
-				sliceCounterMap,
-				sliceRangeMap,
-				new int[]
-				{
-					inputRange[0],
-					mapRange[0]
-				},
-				1
-			);
-
-			UploadCounterRangeMaps (
-				sliceCounterMap,
-				sliceRangeMap,
-				new int[]
-				{
-					mapRange[0],
-					mapRange[1]
-				},
-				mapRangeCount + 1
-			);
-
-			return new int[]
-			{
-				mapRange[1],
-				inputRange[1]
-			};
-		}
-
-		if (inputRange[0] <= mapRange[0] && inputRange[1] <= mapRange[1])
-		{
-			UploadCounterRangeMaps (
-				sliceCounterMap,
-				sliceRangeMap,
-				new int[]
-				{
-					inputRange[0],
-					mapRange[0]
-				},
-				1
-			);
-
-			UploadCounterRangeMaps (
-				sliceCounterMap,
-				sliceRangeMap,
-				new int[]
-				{
-					mapRange[0],
-					inputRange[1]
-				},
-				mapRangeCount + 1
-			);
-
-			UploadCounterRangeMaps (
-				sliceCounterMap,
-				sliceRangeMap,
-				new int[]
-				{
-					inputRange[0],
-					mapRange[1]
-				},
-				mapRangeCount
-			);
-
-			return null;
-		}
-
-		if (inputRange[0] >= mapRange[0] && inputRange[1] >= mapRange[1])
-		{
-			UploadCounterRangeMaps (
-				sliceCounterMap,
-				sliceRangeMap,
-				new int[]
-				{
-					mapRange[0],
-					inputRange[0]
-				},
-				mapRangeCount
-			);
-
-			UploadCounterRangeMaps (
-				sliceCounterMap,
-				sliceRangeMap,
-				new int[]
-				{
-					inputRange[0],
-					mapRange[1]
-				},
-				mapRangeCount + 1
-			);
-
-			return new int[]
-			{
-				mapRange[1],
-				inputRange[1]
-			};
-		}
-
-		return null;
-	}
-
 	/**
 	 * Generate a Counter Map of the Overlapping Slice Ranges
 	 * 
@@ -2627,45 +2553,28 @@ public class ArrayUtil
 	public static final TreeMap<Integer, Integer> SliceOverlappingRanges (
 		final List<int[]> rangeList)
 	{
-		TreeMap<Integer, Integer> rangeCounterMap =
-			new TreeMap<Integer, Integer>();
+		TreeMap<Integer, Integer> rangeCounterMap = new TreeMap<Integer, Integer>();
 
-		TreeMap<Integer, int[]> rangeMap =
-			new TreeMap<Integer, int[]>();
+		TreeMap<Integer, int[]> rangeMap = new TreeMap<Integer, int[]>();
 
-		for (int[] range : rangeList)
-		{
-			if (rangeMap.isEmpty())
-			{
-				rangeMap.put (
-					range[0],
-					range
-				);
+		for (int[] range : rangeList) {
+			if (rangeMap.isEmpty()) {
+				rangeMap.put (range[0], range);
 
-				rangeCounterMap.put (
-					range[0],
-					1
-				);
-			}
-			else
-			{
+				rangeCounterMap.put (range[0], 1);
+			} else {
 				int[] residualRange = range;
 
-				TreeMap<Integer, Integer> sliceCounterMap =
-					new TreeMap<Integer, Integer>();
+				TreeMap<Integer, Integer> sliceCounterMap = new TreeMap<Integer, Integer>();
 
-				TreeMap<Integer, int[]> sliceRangeMap =
-					new TreeMap<Integer, int[]>();
+				TreeMap<Integer, int[]> sliceRangeMap = new TreeMap<Integer, int[]>();
 
 				HashSet<Integer> trimList = new HashSet<Integer>();
 
-				for (Map.Entry<Integer, Integer> rangeCounterMapEntry :
-					rangeCounterMap.entrySet())
-				{
+				for (Map.Entry<Integer, Integer> rangeCounterMapEntry : rangeCounterMap.entrySet()) {
 					int mapRangeLeft = rangeCounterMapEntry.getKey();
 
-					if (null == residualRange)
-					{
+					if (null == residualRange) {
 						break;
 					}
 
@@ -2673,47 +2582,27 @@ public class ArrayUtil
 						sliceCounterMap,
 						sliceRangeMap,
 						residualRange,
-						rangeMap.get (
-							mapRangeLeft
-						),
+						rangeMap.get (mapRangeLeft),
 						rangeCounterMapEntry.getValue()
 					);
 
-					trimList.add (
-						mapRangeLeft
-					);
+					trimList.add (mapRangeLeft);
 				}
 
-				for (int trimRangeLeft : trimList)
-				{
-					rangeMap.remove (
-						trimRangeLeft
-					);
+				for (int trimRangeLeft : trimList) {
+					rangeMap.remove (trimRangeLeft);
 
-					rangeCounterMap.remove (
-						trimRangeLeft
-					);
+					rangeCounterMap.remove (trimRangeLeft);
 				}
 
-				rangeMap.putAll (
-					sliceRangeMap
-				);
+				rangeMap.putAll (sliceRangeMap);
 
-				rangeCounterMap.putAll (
-					sliceCounterMap
-				);
+				rangeCounterMap.putAll (sliceCounterMap);
 
-				if (null != residualRange)
-				{
-					rangeMap.put (
-						residualRange[0],
-						residualRange
-					);
+				if (null != residualRange) {
+					rangeMap.put (residualRange[0], residualRange);
 
-					rangeCounterMap.put (
-						residualRange[0],
-						1
-					);
+					rangeCounterMap.put (residualRange[0], 1);
 				}
 			}
 		}
@@ -2741,19 +2630,15 @@ public class ArrayUtil
 	public static final int MinimumOverallAwkwardness (
 		final int[] heightArray)
 	{
-		if (null == heightArray)
-		{
+		if (null == heightArray) {
 			return -1;
 		}
 
-		Arrays.sort (
-			heightArray
-		);
+		Arrays.sort (heightArray);
 
 		int heightCount = heightArray.length;
 
-		if (1 >= heightCount)
-		{
+		if (1 >= heightCount) {
 			return -1;
 		}
 
@@ -2763,31 +2648,25 @@ public class ArrayUtil
 		int unawkwardHeightIndex = 0;
 		int awkwardness = 0;
 
-		while (heightIndex >= 0)
-		{
+		while (heightIndex >= 0) {
 			unawkwardHeightArray[assignmentFlip ? heightCount - 1 - unawkwardHeightIndex :
 				unawkwardHeightIndex] = heightArray[heightIndex];
 
-			if (!(assignmentFlip = !assignmentFlip))
-			{
+			if (!(assignmentFlip = !assignmentFlip)) {
 				++unawkwardHeightIndex;
 			}
 
 			--heightIndex;
 		}
 
-		for (int index = 0;
-			index < heightCount;
-			++index)
-		{
+		for (int index = 0; index < heightCount; ++index) {
 			int priorIndex = index - 1 < 0 ? heightCount - 1 : index - 1;
 
 			int currentAwkwardness = Math.abs (
 				unawkwardHeightArray[index] - unawkwardHeightArray[priorIndex]
 			);
 
-			if (currentAwkwardness > awkwardness)
-			{
+			if (currentAwkwardness > awkwardness) {
 				awkwardness = currentAwkwardness;
 			}
 		}
@@ -2811,8 +2690,7 @@ public class ArrayUtil
 		final int[] numberArray,
 		final int target)
 	{
-		List<String> targetApproachPathList =
-			new ArrayList<String>();
+		List<String> targetApproachPathList = new ArrayList<String>();
 
 		List<Integer> indexQueue = new ArrayList<Integer>();
 
@@ -2822,76 +2700,44 @@ public class ArrayUtil
 
 		int arrayCount = numberArray.length;
 
-		indexQueue.add (
-			0
-		);
+		pathQueue.add ("");
 
-		sumQueue.add (
-			0
-		);
+		indexQueue.add (0);
 
-		pathQueue.add (
-			""
-		);
+		sumQueue.add (0);
 
-		while (!indexQueue.isEmpty())
-		{
+		while (!indexQueue.isEmpty()) {
 			int queueTailIndex = indexQueue.size() - 1;
 
-			int index = indexQueue.remove (
-				queueTailIndex
-			);
+			int index = indexQueue.remove (queueTailIndex);
 
-			int sum = sumQueue.remove (
-				queueTailIndex
-			);
+			String path = pathQueue.remove (queueTailIndex);
 
-			String path = pathQueue.remove (
-				queueTailIndex
-			);
+			int sum = sumQueue.remove (queueTailIndex);
 
-			if (index == arrayCount - 1)
-			{
-				if (target == sum + numberArray[index])
-				{
-					targetApproachPathList.add (
-						path + "+" + numberArray[index]
-					);
+			if (index == arrayCount - 1) {
+				if (target == sum + numberArray[index]) {
+					targetApproachPathList.add (path + "+" + numberArray[index]);
 				}
 
-				if (target == sum - numberArray[index])
-				{
-					targetApproachPathList.add (
-						path + "-" + numberArray[index]
-					);
+				if (target == sum - numberArray[index]) {
+					targetApproachPathList.add (path + "-" + numberArray[index]);
 				}
 
 				continue;
 			}
 
-			indexQueue.add (
-				index + 1
-			);
+			indexQueue.add (index + 1);
 
-			sumQueue.add (
-				sum - numberArray[index]
-			);
+			sumQueue.add (sum - numberArray[index]);
 
-			pathQueue.add (
-				path + "-" + numberArray[index]
-			);
+			pathQueue.add (path + "-" + numberArray[index]);
 
-			indexQueue.add (
-				index + 1
-			);
+			indexQueue.add (index + 1);
 
-			sumQueue.add (
-				sum + numberArray[index]
-			);
+			sumQueue.add (sum + numberArray[index]);
 
-			pathQueue.add (
-				path + "+" + numberArray[index]
-			);
+			pathQueue.add (path + "+" + numberArray[index]);
 		}
 
 		return targetApproachPathList;
@@ -2911,11 +2757,8 @@ public class ArrayUtil
 		final String s)
 		throws Exception
 	{
-		if (null == s || s.isEmpty())
-		{
-			throw new Exception (
-				"ArrayUtil::BODMAS => Invalid Inputs"
-			);
+		if (null == s || s.isEmpty()) {
+			throw new Exception ("ArrayUtil::BODMAS => Invalid Inputs");
 		}
 
 		char[] charArray = s.toCharArray();
@@ -2925,91 +2768,43 @@ public class ArrayUtil
 
 		List<String> elementList = new ArrayList<String>();
 
-		for (int index = 0;
-			index < stringLength;
-			++index)
-		{
+		for (int index = 0; index < stringLength; ++index) {
 			char c = charArray[index];
 
-			if (c == '+' || c == '-' || c == '*' || c == '/')
-			{
-				elementList.add (
-					s.substring (
-						prevIndex,
-						index
-					)
-				);
+			if (c == '+' || c == '-' || c == '*' || c == '/') {
+				elementList.add (s.substring (prevIndex, index));
 
-				elementList.add (
-					"" + c
-				);
+				elementList.add ("" + c);
 
 				prevIndex = index + 1;
 			}
 		}
 
-		if (prevIndex < stringLength)
-		{
-			elementList.add (
-				s.substring (
-					prevIndex,
-					stringLength
-				)
-			);
+		if (prevIndex < stringLength) {
+			elementList.add (s.substring (prevIndex, stringLength));
 		}
 
-		if (!CollapseOperation (
-			elementList,
-			"/"
-		))
-		{
-			throw new Exception (
-				"ArrayUtil::BODMAS => Cannot compute"
-			);
+		if (!CollapseOperation (elementList, "/")) {
+			throw new Exception ("ArrayUtil::BODMAS => Cannot compute");
 		}
 
-		if (!CollapseOperation (
-			elementList,
-			"*"
-		))
-		{
-			throw new Exception (
-				"ArrayUtil::BODMAS => Cannot compute"
-			);
+		if (!CollapseOperation (elementList, "*")) {
+			throw new Exception ("ArrayUtil::BODMAS => Cannot compute");
 		}
 
-		if (!CollapseOperation (
-			elementList,
-			"-"
-		))
-		{
-			throw new Exception (
-				"ArrayUtil::BODMAS => Cannot compute"
-			);
+		if (!CollapseOperation (elementList, "-")) {
+			throw new Exception ("ArrayUtil::BODMAS => Cannot compute");
 		}
 
-		if (!CollapseOperation (
-			elementList,
-			"+"
-		))
-		{
-			throw new Exception (
-				"ArrayUtil::BODMAS => Cannot compute"
-			);
+		if (!CollapseOperation (elementList, "+")) {
+			throw new Exception ("ArrayUtil::BODMAS => Cannot compute");
 		}
 
-		if (1 != elementList.size())
-		{
-			throw new Exception (
-				"ArrayUtil::BODMAS => Cannot compute"
-			);
+		if (1 != elementList.size()) {
+			throw new Exception ("ArrayUtil::BODMAS => Cannot compute");
 		}
 
-		return org.drip.service.common.StringUtil.DecimalNumberFromString (
-			elementList.get (
-				0
-			)
-		);
+		return StringUtil.DecimalNumberFromString (elementList.get (0));
 	}
 
 	/**

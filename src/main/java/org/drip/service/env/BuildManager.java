@@ -117,8 +117,8 @@ public class BuildManager
 		if (null != _buildRecordArray) return true;
 
 		try {
-			_buildRecordArray = new BuildRecord[]
-			{
+			_buildRecordArray = new BuildRecord[] {
+				new BuildRecord ("6.69.0", "15.0.1+9-18", "Fri Apr 25 21:41:06 EST 2025"),
 				new BuildRecord ("6.68.0", "15.0.1+9-18", "Sat Apr 19 14:12:18 EST 2025"),
 				new BuildRecord ("6.67.0", "15.0.1+9-18", "Sun Apr 13 18:14:20 EST 2025"),
 				new BuildRecord ("6.66.0", "15.0.1+9-18", "Sat Apr 12 12:29:17 EST 2025"),
