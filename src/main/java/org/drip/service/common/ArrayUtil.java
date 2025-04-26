@@ -1146,6 +1146,69 @@ public class ArrayUtil
     	return false;
     }
 
+    private static final boolean Infect (
+    	final HashSet<String> uninfectedCellSet,
+    	final int rowSize,
+    	final int columnSize)
+    {
+    	if (uninfectedCellSet.isEmpty()) {
+    		return true;
+    	}
+
+    	HashSet<String> infectedCellSet = new HashSet<String>();
+
+    	for (String uninfectedCell : uninfectedCellSet) {
+    		String[] x_y = uninfectedCell.split ("_");
+
+    		int y = Integer.parseInt (x_y[1]);
+
+    		int x = Integer.parseInt (x_y[0]);
+
+    		int right = x + 1;
+    		int below = y + 1;
+    		int above = y - 1;
+    		int left = x - 1;
+
+    		if (0 <= left) {
+    			String cell = left + "_" + y;
+
+    			if (!uninfectedCellSet.contains (cell)) {
+    				infectedCellSet.add (uninfectedCell);
+    			}
+    		}
+
+    		if (right < rowSize) {
+    			String cell = right + "_" + y;
+
+    			if (!uninfectedCellSet.contains (cell)) {
+    				infectedCellSet.add (uninfectedCell);
+    			}
+    		}
+
+    		if (above >= 0) {
+    			String cell = x + "_" + above;
+
+    			if (!uninfectedCellSet.contains (cell)) {
+    				infectedCellSet.add (uninfectedCell);
+    			}
+    		}
+
+    		if (below < columnSize) {
+    			String cell = x + "_" + below;
+
+    			if (!uninfectedCellSet.contains (cell)) {
+    				infectedCellSet.add (uninfectedCell);
+    			}
+    		}
+    	}
+
+    	for (String infectedCell : infectedCellSet) {
+    		uninfectedCellSet.remove (infectedCell);
+    	}
+
+    	return false;
+    }
+
 	/**
 	 * Search for the Target in a Rotated Array
 	 * 
@@ -4194,58 +4257,6 @@ public class ArrayUtil
     	return maximumAvailableDiskSpace;
     }
 
-    private static final boolean Infect (
-    	final HashSet<String> uninfectedCellSet,
-    	final int rowSize,
-    	final int columnSize)
-    {
-    	if (uninfectedCellSet.isEmpty()) return true;
-
-    	HashSet<String> infectedCellSet = new HashSet<String>();
-
-    	for (String uninfectedCell : uninfectedCellSet) {
-    		String[] x_y = uninfectedCell.split ("_");
-
-    		int x = Integer.parseInt (x_y[0]);
-
-    		int y = Integer.parseInt (x_y[1]);
-
-    		int left = x - 1;
-    		int right = x + 1;
-    		int above = y - 1;
-    		int below = y + 1;
-
-    		if (left >= 0) {
-    			String cell = left + "_" + y;
-
-    			if (!uninfectedCellSet.contains (cell)) infectedCellSet.add (uninfectedCell);
-    		}
-
-    		if (right < rowSize) {
-    			String cell = right + "_" + y;
-
-    			if (!uninfectedCellSet.contains (cell)) infectedCellSet.add (uninfectedCell);
-    		}
-
-    		if (above >= 0) {
-    			String cell = x + "_" + above;
-
-    			if (!uninfectedCellSet.contains (cell)) infectedCellSet.add (uninfectedCell);
-    		}
-
-    		if (below < columnSize) {
-    			String cell = x + "_" + below;
-
-    			if (!uninfectedCellSet.contains (cell)) infectedCellSet.add (uninfectedCell);
-    		}
-    	}
-
-    	for (String infectedCell : infectedCellSet)
-    		uninfectedCellSet.remove (infectedCell);
-
-    	return false;
-    }
-
     /**
      * Given a 2D grid, each cell is either a zombie or a human. Zombies can turn adjacent
      *  (up/down/left/right) human beings into zombies every day. Find out how many days does it take to
@@ -4265,13 +4276,19 @@ public class ArrayUtil
 
     	for (int i = 0; i < infectionMatrix.length; ++i) {
         	for (int j = 0; j < infectionMatrix[i].length; ++j) {
-        		if (0 == infectionMatrix[i][j]) uninfectedCellSet.add (i + "_" + j);
+        		if (0 == infectionMatrix[i][j]) {
+        			uninfectedCellSet.add (i + "_" + j);
+        		}
         	}
     	}
 
-    	if (infectionMatrix.length * infectionMatrix[0].length == uninfectedCellSet.size()) return -1;
+    	if (infectionMatrix.length * infectionMatrix[0].length == uninfectedCellSet.size()) {
+    		return -1;
+    	}
 
-    	while (!Infect (uninfectedCellSet, infectionMatrix.length, infectionMatrix[0].length)) ++dayCount;
+    	while (!Infect (uninfectedCellSet, infectionMatrix.length, infectionMatrix[0].length)) {
+    		++dayCount;
+    	}
 
     	return dayCount;
     }
@@ -4292,16 +4309,21 @@ public class ArrayUtil
     	int[] sumFromRightArray = new int[numberArray.length];
     	sumFromRightArray[numberArray.length - 1] = numberArray[numberArray.length - 1];
 
-    	for (int i = numberArray.length - 2; i >= 0; --i)
+    	for (int i = numberArray.length - 2; i >= 0; --i) {
     		sumFromRightArray[i] = sumFromRightArray[i + 1] + numberArray[i];
+    	}
 
     	for (int i = 0; i < numberArray.length - 2; ++i) {
     		sumFromLeft = sumFromLeft + numberArray[i];
 
-    		if (2 * sumFromLeft != sumFromRightArray[i + 1]) continue;
+    		if (2 * sumFromLeft != sumFromRightArray[i + 1]) {
+    			continue;
+    		}
 
     		for (int j = i + 2; j < numberArray.length; ++j) {
-    			if (2 * sumFromRightArray[j] == sumFromRightArray[i + 1]) return true;
+    			if (2 * sumFromRightArray[j] == sumFromRightArray[i + 1]) {
+    				return true;
+    			}
     		}
     	}
 
@@ -4313,30 +4335,29 @@ public class ArrayUtil
      *  computer needs to do. Write an algorithm to find a pair of tasks from each array to maximize the
      *  memory usage. Notice the tasks could be done without origin order.
      * 
-     * @param foregroundTasks Array of Foreground Tasks
-     * @param backgroundTasks Array of Background Tasks
+     * @param foregroundTaskArray Array of Foreground Tasks
+     * @param backgroundTaskArray Array of Background Tasks
      * @param k Memory Limit
      * 
      * @return List of [fore, back] pairs
      */
 
     public static final List<int[]> OptimizeMemoryUsage (
-    	final int[] foregroundTasks,
-    	final int[] backgroundTasks,
+    	final int[] foregroundTaskArray,
+    	final int[] backgroundTaskArray,
     	final int k)
     {
-    	int[] longerTaskSequence = foregroundTasks.length > backgroundTasks.length ? foregroundTasks :
-    		backgroundTasks;
-    	int[] shorterTaskSequence = foregroundTasks.length < backgroundTasks.length ? foregroundTasks :
-    		backgroundTasks;
+    	int[] longerTaskSequence = foregroundTaskArray.length > backgroundTaskArray.length ?
+			foregroundTaskArray : backgroundTaskArray;
+    	int[] shorterTaskSequence = foregroundTaskArray.length < backgroundTaskArray.length ?
+			foregroundTaskArray : backgroundTaskArray;
 
-    	TreeMap<Integer, List<Integer>> shorterTaskIndexMap = new
-    		TreeMap<Integer, List<Integer>>();
+    	TreeMap<Integer, List<Integer>> shorterTaskIndexMap = new TreeMap<Integer, List<Integer>>();
 
     	for (int i = 0; i < shorterTaskSequence.length; ++i) {
-    		if (shorterTaskIndexMap.containsKey (shorterTaskSequence[i]))
+    		if (shorterTaskIndexMap.containsKey (shorterTaskSequence[i])) {
     			shorterTaskIndexMap.get (shorterTaskSequence[i]).add (i);
-    		else {
+    		} else {
     			List<Integer> indexList = new ArrayList<Integer>();
 
     			indexList.add (i);
@@ -4352,18 +4373,22 @@ public class ArrayUtil
     	for (int i = 0; i < longerTaskSequence.length; ++i) {
     		Integer shorterKey = shorterTaskIndexMap.floorKey (k - longerTaskSequence[i]);
 
-    		if (null == shorterKey) continue;
+    		if (null == shorterKey) {
+    			continue;
+    		}
 
     		if (k - shorterKey - longerTaskSequence[i] < closestMemoryGap) {
     			closestMemoryGap = k - shorterKey - longerTaskSequence[i];
 
     			closestIndexPairList.clear();
 
-    			for (int shorterTaskIndex : shorterTaskIndexMap.get (shorterKey))
+    			for (int shorterTaskIndex : shorterTaskIndexMap.get (shorterKey)) {
     				closestIndexPairList.add (new int[] {i, shorterTaskIndex});
+    			}
     		} else if (k - shorterKey - longerTaskSequence[i] == closestMemoryGap) {
-    			for (int shorterTaskIndex : shorterTaskIndexMap.get (shorterKey))
+    			for (int shorterTaskIndex : shorterTaskIndexMap.get (shorterKey)) {
     				closestIndexPairList.add (new int[] {i, shorterTaskIndex});
+    			}
     		}
     	}
 
@@ -4374,8 +4399,9 @@ public class ArrayUtil
     			closestIndexPairList.clear();
 
 				closestIndexPairList.add (new int[] {i, -1});
-    		} else if (Math.abs (k - longerTaskSequence[i]) == closestMemoryGap)
+    		} else if (Math.abs (k - longerTaskSequence[i]) == closestMemoryGap) {
 				closestIndexPairList.add (new int[] {i, -1});
+    		}
     	}
 
     	for (int i = 0; i < shorterTaskSequence.length; ++i) {
@@ -4385,8 +4411,9 @@ public class ArrayUtil
     			closestIndexPairList.clear();
 
 				closestIndexPairList.add (new int[] {-1, i});
-    		} else if (Math.abs (k - shorterTaskSequence[i]) == closestMemoryGap)
+    		} else if (Math.abs (k - shorterTaskSequence[i]) == closestMemoryGap) {
 				closestIndexPairList.add (new int[] {-1, i});
+    		}
     	}
 
     	return closestIndexPairList;
@@ -4406,56 +4433,57 @@ public class ArrayUtil
     {
     	int xSize = matrix.length;
     	int ySize = matrix[0].length;
-    	int maxPathScore = Integer.MIN_VALUE;
+    	int maximumPathScore = Integer.MIN_VALUE;
 
     	List<int[]> locationStack = new ArrayList<int[]>();
 
     	List<Integer> pathMinimumStack = new ArrayList<Integer>();
 
-    	List<HashSet<String>> visitedVertexSetStack = new
-    		ArrayList<HashSet<String>>();
-
-    	locationStack.add (new int[] {0, 0});
-
-    	pathMinimumStack.add (Integer.MAX_VALUE);
+    	List<HashSet<String>> visitedVertexSetStack = new ArrayList<HashSet<String>>();
 
     	HashSet<String> initialVisitedVertex = new HashSet<String>();
 
-    	initialVisitedVertex.add ("0_0");
-
     	visitedVertexSetStack.add (initialVisitedVertex);
+
+    	pathMinimumStack.add (Integer.MAX_VALUE);
+
+    	locationStack.add (new int[] {0, 0});
+
+    	initialVisitedVertex.add ("0_0");
 
     	while (!locationStack.isEmpty()) {
     		int tailIndex = locationStack.size() - 1;
 
     		int[] location = locationStack.remove (tailIndex);
 
-    		int prevPathMinimum = pathMinimumStack.remove (tailIndex);
+    		int previousPathMinimum = pathMinimumStack.remove (tailIndex);
 
-    		int pathMinimum = matrix[location[0]][location[1]] < prevPathMinimum ?
-    			matrix[location[0]][location[1]] : prevPathMinimum;
+    		int pathMinimum = matrix[location[0]][location[1]] < previousPathMinimum ?
+    			matrix[location[0]][location[1]] : previousPathMinimum;
 
     		HashSet<String> visitedVertexSet = visitedVertexSetStack.remove (tailIndex);
 
     		visitedVertexSet.add (location[0] + "_" + location[1]);
 
     		if (location[0] == xSize - 1 && location[1] == ySize - 1) {
-    			if (maxPathScore < pathMinimum) maxPathScore = pathMinimum;
+    			if (maximumPathScore < pathMinimum) {
+    				maximumPathScore = pathMinimum;
+    			}
 
     			continue;
     		}
 
     		int left = location[0] - 1;
-    		int right = location[0] + 1;
     		int above = location[1] - 1;
     		int below = location[1] + 1;
+    		int right = location[0] + 1;
 
-    		if (left >= 0 && !visitedVertexSet.contains (left + "_" + location[1])) {
-    	    	locationStack.add (new int[] {left, location[1]});
-
+    		if (0 <= left && !visitedVertexSet.contains (left + "_" + location[1])) {
     	    	pathMinimumStack.add (pathMinimum);
 
     	    	visitedVertexSetStack.add (visitedVertexSet);
+
+    	    	locationStack.add (new int[] {left, location[1]});
     		}
 
     		if (right < xSize && !visitedVertexSet.contains (right + "_" + location[1])) {
@@ -4466,7 +4494,7 @@ public class ArrayUtil
     	    	visitedVertexSetStack.add (visitedVertexSet);
     		}
 
-    		if (above >= 0 && !visitedVertexSet.contains (location[0] + "_" + above)) {
+    		if (0 <= above && !visitedVertexSet.contains (location[0] + "_" + above)) {
     	    	locationStack.add (new int[] {location[0], above});
 
     	    	pathMinimumStack.add (pathMinimum);
@@ -4483,7 +4511,7 @@ public class ArrayUtil
     		}
     	}
 
-    	return maxPathScore;
+    	return maximumPathScore;
     }
 
     /**
@@ -4494,7 +4522,7 @@ public class ArrayUtil
      * 
      * Print total cost of all items.
      * 
-     * Also print the list of integers representing the indexes of the non- discounted items in ascending
+     * Also print the list of integers representing the indexes of the non-discounted items in ascending
      *  index order.
      * 
      * @param priceArray Array of Item Prices
@@ -4523,7 +4551,9 @@ public class ArrayUtil
 
     		totalCost = totalCost + priceArray[i] - discount;
 
-    		if (0 == discount) nonDiscountedItems.add (i);
+    		if (0 == discount) {
+    			nonDiscountedItems.add (i);
+    		}
     	}
 
     	return totalCost;
