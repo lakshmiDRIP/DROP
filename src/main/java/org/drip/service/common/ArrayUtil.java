@@ -944,6 +944,75 @@ public class ArrayUtil
 		return true;
 	}
 
+    private static final int MedianOfSortedArray (
+    	final int[] sortedArray)
+    {
+    	int n = sortedArray.length;
+    	return 1 == n % 2 ? sortedArray[n / 2] : (sortedArray[n / 2] + sortedArray[n / 2 - 1]) / 2;
+    }
+
+    private static final int LocateMedian2In1 (
+    	final int[] sortedArray1,
+    	final int median2,
+    	final int leftIndex,
+    	final int rightIndex)
+    {
+    	if (sortedArray1[leftIndex] == median2) {
+    		return leftIndex;
+    	}
+
+    	if (sortedArray1[rightIndex] == median2) {
+    		return rightIndex;
+    	}
+
+    	if (leftIndex + 1 == rightIndex &&
+			sortedArray1[leftIndex] < median2 &&
+			sortedArray1[rightIndex] > median2)
+    	{
+    		return leftIndex;
+    	}
+
+    	int midIndex = (leftIndex + rightIndex) / 2;
+
+    	return sortedArray1[midIndex] > median2 ? LocateMedian2In1 (
+			sortedArray1,
+			median2,
+			leftIndex,
+    		midIndex
+		) : LocateMedian2In1 (
+			sortedArray1,
+			median2,
+			midIndex,
+			rightIndex
+		);
+    }
+
+    private static final int MinimumRowIndex (
+    	final int[][] matrix,
+    	final int[] columnIndex)
+    {
+    	int startRowIndex = 0;
+    	int minimumColumnIndex = columnIndex[0];
+
+    	while (minimumColumnIndex >= matrix[startRowIndex].length && startRowIndex < matrix.length) {
+    		minimumColumnIndex = columnIndex[++startRowIndex];
+    	}
+
+    	int minimumRowIndex = startRowIndex;
+    	int minimum = matrix[startRowIndex][columnIndex[startRowIndex]];
+
+    	for (int i = startRowIndex; i < matrix.length; ++i) {
+    		if (columnIndex[i] < matrix[i].length) {
+	    		if (minimum > matrix[i][columnIndex[i]]) {
+	    			minimumRowIndex = i;
+	    			minimum = matrix[i][columnIndex[i]];
+	    		}
+    		}
+    	}
+
+    	return minimumRowIndex;
+    }
+
 	/**
 	 * Search for the Target in a Rotated Array
 	 * 
@@ -3497,17 +3566,21 @@ public class ArrayUtil
     		segmentRightArray[i] = segmentHeightArray.length - 1 == i ? 0 : segmentHeightArray[i + 1];
     	}
 
-    	for (int i = 1; i < segmentHeightArray.length; ++i)
+    	for (int i = 1; i < segmentHeightArray.length; ++i) {
     		leftPeakIndexArray[i] = segmentLeftArray[leftPeakIndexArray[i - 1]] >= segmentLeftArray[i] ?
     			leftPeakIndexArray[i - 1] : i;
+    	}
 
-    	for (int i = segmentHeightArray.length - 2; i >= 0; --i)
+    	for (int i = segmentHeightArray.length - 2; i >= 0; --i) {
     		rightPeakIndexArray[i] = segmentRightArray[rightPeakIndexArray[i + 1]] >=
     			segmentRightArray[i] ? rightPeakIndexArray[i + 1] : i;
+    	}
 
     	for (int i = 0; i < segmentHeightArray.length; ++i) {
-    		int wallHeight = Math.min (segmentLeftArray[leftPeakIndexArray[i]],
-    			segmentRightArray[rightPeakIndexArray[i]]);
+    		int wallHeight = Math.min (
+				segmentLeftArray[leftPeakIndexArray[i]],
+    			segmentRightArray[rightPeakIndexArray[i]]
+			);
 
     		rainWaterCatchmentArea = rainWaterCatchmentArea + (wallHeight < segmentHeightArray[i] ? 0 :
     			wallHeight - segmentHeightArray[i]);
@@ -3531,8 +3604,7 @@ public class ArrayUtil
     {
     	int[] queue = new int[heightOrderArray.length];
 
-    	TreeMap<Integer, List<Integer>> heightOrderMap = new
-    		TreeMap<Integer, List<Integer>>();
+    	TreeMap<Integer, List<Integer>> heightOrderMap = new TreeMap<Integer, List<Integer>>();
 
     	for (int i = 0; i < heightOrderArray.length; ++i) {
     		queue[i] = -1;
@@ -3556,9 +3628,9 @@ public class ArrayUtil
     			int queueIndex = 0;
 
     			while (queueIndex < heightOrderArray.length) {
-    				if (queue[queueIndex] >= height)
+    				if (queue[queueIndex] >= height) {
     					++index;
-    				else if (-1 == queue[queueIndex]) {
+    				} else if (-1 == queue[queueIndex]) {
     					if (++index == order + 1) {
     						queue[queueIndex] = height;
     						break;
@@ -3573,36 +3645,9 @@ public class ArrayUtil
     	return queue;
     }
 
-    private static final int MedianOfSortedArray (
-    	final int[] sortedArray)
-    {
-    	int n = sortedArray.length;
-    	return 1 == n % 2 ? sortedArray[n / 2] : (sortedArray[n / 2] + sortedArray[n / 2 - 1]) / 2;
-    }
-
-    private static final int LocateMedian2In1 (
-    	final int[] sortedArray1,
-    	final int median2,
-    	final int leftIndex,
-    	final int rightIndex)
-    {
-    	if (sortedArray1[leftIndex] == median2) return leftIndex;
-
-    	if (sortedArray1[rightIndex] == median2) return rightIndex;
-
-    	if (leftIndex + 1 == rightIndex && sortedArray1[leftIndex] < median2 &&
-    		sortedArray1[rightIndex] > median2)
-    		return leftIndex;
-
-    	int midIndex = (leftIndex + rightIndex) / 2;
-
-    	return sortedArray1[midIndex] > median2 ? LocateMedian2In1 (sortedArray1, median2, leftIndex,
-    		midIndex) : LocateMedian2In1 (sortedArray1, median2, midIndex, rightIndex);
-    }
-
     /**
      * There are two sorted arrays of size m and n respectively. Find the median of the two sorted arrays.
-     *  The overall run time complexity should be O(log (m+n)).
+     *  The overall run time complexity should be <code>O(log (m+n))</code>
      * 
      * Assume arrays cannot be both empty.
      * 
@@ -3623,18 +3668,25 @@ public class ArrayUtil
 
     	int median2 = MedianOfSortedArray (sortedArray2);
 
-    	if (median1 == median2) return median1;
+    	if (median1 == median2) {
+    		return median1;
+    	}
 
     	if (sortedArray1[m - 1] <= median2) {
-    		if (n < m) return sortedArray2[(n - m) / 2 - 1];
+    		if (n < m) {
+    			return sortedArray2[(n - m) / 2 - 1];
+    		}
 
-    		if (m < n) return sortedArray1[(m + n) / 2];
+    		if (m < n) {
+    			return sortedArray1[(m + n) / 2];
+    		}
 
     		return ((double) (sortedArray1[m - 1] + sortedArray2[0])) / 2.;
     	}
 
-    	if (sortedArray2[n - 1] < median1)
+    	if (sortedArray2[n - 1] < median1) {
     		return m > n ? sortedArray1[(m - n) / 2 - 1] : sortedArray2[(n + m) / 2];
+    	}
 
     	int array1Location = LocateMedian2In1 (sortedArray1, median2, 0, m - 1);
 
@@ -3657,31 +3709,6 @@ public class ArrayUtil
 
     	return 1 == elementsToLeft % 2 ? sortedArray1[elementsToLeft / 2] : (sortedArray1[elementsToLeft / 2]
     		+ sortedArray1[elementsToLeft / 2 - 1]) / 2;
-    }
-
-    private static final int MinimumRowIndex (
-    	final int[][] matrix,
-    	final int[] columnIndex)
-    {
-    	int startRowIndex = 0;
-    	int minimumColumnIndex = columnIndex[0];
-
-    	while (minimumColumnIndex >= matrix[startRowIndex].length)
-    		minimumColumnIndex = columnIndex [++startRowIndex];
-
-    	int minimumRowIndex = startRowIndex;
-    	int minimum = matrix[startRowIndex][columnIndex[startRowIndex]];
-
-    	for (int i = startRowIndex; i < matrix.length; ++i) {
-    		if (columnIndex[i] < matrix[i].length) {
-	    		if (minimum > matrix[i][columnIndex[i]]) {
-	    			minimumRowIndex = i;
-	    			minimum = matrix[i][columnIndex[i]];
-	    		}
-    		}
-    	}
-
-    	return minimumRowIndex;
     }
 
     /**
@@ -3735,53 +3762,60 @@ public class ArrayUtil
     	shortestRightIndex[heightArray.length - 1] = heightArray.length - 1;
     	adjacentTallerRightIndex[heightArray.length - 1] = heightArray.length - 1;
 
-    	for (int i = heightArray.length - 2; i >= 0; --i)
+    	for (int i = heightArray.length - 2; i >= 0; --i) {
     		shortestRightIndex[i] = heightArray[i] < heightArray[shortestRightIndex[i + 1]] ? i :
     			shortestRightIndex[i + 1];
+    	}
 
     	for (int i = heightArray.length - 2; i >= 0; --i) {
     		int j = i;
 
     		while (j < heightArray.length - 1) {
-    			if (heightArray[j + 1] < heightArray[i]) break;
+    			if (heightArray[j + 1] < heightArray[i]) {
+    				break;
+    			}
 
     			++j;
     		}
 
 			adjacentTallerRightIndex[i] = j;
 
-			if (j == heightArray.length - 1)
+			if (j == heightArray.length - 1) {
 				adjacentTallerRightIndex[i] = heightArray[j] >= heightArray[i] ? j : j - 1;
+			}
     	}
 
     	for (int i = 0; i < heightArray.length; ++i) {
     		int widestArea = heightArray[shortestRightIndex[i]] * (heightArray.length - i);
 
-    		if (maxArea < widestArea) maxArea = widestArea;
+    		if (maxArea < widestArea) {
+    			maxArea = widestArea;
+    		}
 
     		int adjacentArea = heightArray[i] * (adjacentTallerRightIndex[i] - i + 1);
 
-    		if (maxArea < adjacentArea) maxArea = adjacentArea;
+    		if (maxArea < adjacentArea) {
+    			maxArea = adjacentArea;
+    		}
     	}
 
     	return maxArea;
     }
 
     /**
-     * A city skyline is the outer contour of the silhouette formed by all the buildings in that city when
+     * A city sky-line is the outer contour of the silhouette formed by all the buildings in that city when
      *  viewed from a distance. <b>Given the locations and height of all the buildings</b> as shown on a
-     *  cityscape photo, <b>output the skyline</b> formed by these buildings collectively.
+     *  city-scape photo, <b>output the sky-line</b> formed by these buildings collectively.
      * 
-     * @param skscraperMap Cityscape represented as a Map of Skyscapers
+     * @param skscraperMap City-scape represented as a Map of Skyscapers
      * 
-     * @return The Skyline Map
+     * @return The Sky-line Map
      */
 
     public static final TreeMap<Integer, int[]> GenerateSkyline (
     	final TreeMap<Integer, int[]> skscraperMap)
     {
-    	TreeMap<Integer, int[]> skylineMap = new
-    		TreeMap<Integer, int[]>();
+    	TreeMap<Integer, int[]> skylineMap = new TreeMap<Integer, int[]>();
 
     	for (Map.Entry<Integer, int[]> skyscraperEntry : skscraperMap.entrySet()) {
     		if (skylineMap.isEmpty()) {
@@ -3790,12 +3824,17 @@ public class ArrayUtil
     			continue;
     		}
 
-        	TreeMap<Integer, int[]> disaggregationMap = new
-        		TreeMap<Integer, int[]>();
+        	TreeMap<Integer, int[]> disaggregationMap = new TreeMap<Integer, int[]>();
 
         	for (Map.Entry<Integer, int[]> skyLineEntry : skylineMap.entrySet()) {
-        		disaggregationMap.putAll (DisaggregateSkyscrapers (skyLineEntry.getKey(),
-        			skyLineEntry.getValue(), skyscraperEntry.getKey(),skyscraperEntry.getValue()));
+        		disaggregationMap.putAll (
+    				DisaggregateSkyscrapers (
+	    				skyLineEntry.getKey(),
+	        			skyLineEntry.getValue(),
+	        			skyscraperEntry.getKey(),
+	        			skyscraperEntry.getValue()
+        			)
+				);
         	}
 
         	skylineMap = disaggregationMap;
