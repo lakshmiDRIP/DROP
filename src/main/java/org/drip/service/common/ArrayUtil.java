@@ -933,6 +933,17 @@ public class ArrayUtil
 		return null;
 	}
 
+	private static final boolean SwapElements (
+		final int[] numberArray,
+		final int index1,
+		final int index2)
+	{
+		int number = numberArray[index1];
+		numberArray[index1] = numberArray[index2];
+		numberArray[index2] = number;
+		return true;
+	}
+
 	/**
 	 * Search for the Target in a Rotated Array
 	 * 
@@ -2821,8 +2832,7 @@ public class ArrayUtil
 		final int[] numberArray,
 		final int target)
 	{
-		List<String> expressionOperatorPathList =
-			new ArrayList<String>();
+		List<String> expressionOperatorPathList = new ArrayList<String>();
 
 		List<Integer> indexQueue = new ArrayList<Integer>();
 
@@ -2830,70 +2840,37 @@ public class ArrayUtil
 
 		int arrayCount = numberArray.length;
 
-		indexQueue.add (
-			1
-		);
+		indexQueue.add (1);
 
-		pathQueue.add (
-			"" + numberArray[0]
-		);
+		pathQueue.add ("" + numberArray[0]);
 
-		while (!indexQueue.isEmpty())
-		{
+		while (!indexQueue.isEmpty()) {
 			int queueTailIndex = indexQueue.size() - 1;
 
-			int index = indexQueue.remove (
-				queueTailIndex
-			);
+			int index = indexQueue.remove (queueTailIndex);
 
-			String path = pathQueue.remove (
-				queueTailIndex
-			);
+			String path = pathQueue.remove (queueTailIndex);
 
-			if (index == arrayCount - 1)
-			{
+			if (index == arrayCount - 1) {
 				String bodmasExpression = path + "+" + numberArray[index];
 
-				try
-				{
-					if (target == BODMAS (
-						bodmasExpression
-					))
-					{
-						expressionOperatorPathList.add (
-							bodmasExpression
-						);
+				try {
+					if (target == BODMAS (bodmasExpression)) {
+						expressionOperatorPathList.add (bodmasExpression);
 					}
 
-					if (target == BODMAS (
-						bodmasExpression = path + "-" + numberArray[index]
-					))
-					{
-						expressionOperatorPathList.add (
-							bodmasExpression
-						);
+					if (target == BODMAS (bodmasExpression = path + "-" + numberArray[index])) {
+						expressionOperatorPathList.add (bodmasExpression);
 					}
 
-					if (target == BODMAS (
-						bodmasExpression = path + "*" + numberArray[index]
-					))
-					{
-						expressionOperatorPathList.add (
-							bodmasExpression
-						);
+					if (target == BODMAS (bodmasExpression = path + "*" + numberArray[index])) {
+						expressionOperatorPathList.add (bodmasExpression);
 					}
 
-					if (target == BODMAS (
-						bodmasExpression = path + "" + numberArray[index]
-					))
-					{
-						expressionOperatorPathList.add (
-							bodmasExpression
-						);
+					if (target == BODMAS (bodmasExpression = path + "" + numberArray[index])) {
+						expressionOperatorPathList.add (bodmasExpression);
 					}
-				}
-				catch (Exception e)
-				{
+				} catch (Exception e) {
 					e.printStackTrace();
 
 					return null;
@@ -2902,37 +2879,21 @@ public class ArrayUtil
 				continue;
 			}
 
-			indexQueue.add (
-				index + 1
-			);
+			indexQueue.add (index + 1);
 
-			pathQueue.add (
-				path + "-" + numberArray[index]
-			);
+			pathQueue.add (path + "-" + numberArray[index]);
 
-			indexQueue.add (
-				index + 1
-			);
+			indexQueue.add (index + 1);
 
-			pathQueue.add (
-				path + "+" + numberArray[index]
-			);
+			pathQueue.add (path + "+" + numberArray[index]);
 
-			indexQueue.add (
-				index + 1
-			);
+			indexQueue.add (index + 1);
 
-			pathQueue.add (
-				path + "*" + numberArray[index]
-			);
+			pathQueue.add (path + "*" + numberArray[index]);
 
-			indexQueue.add (
-				index + 1
-			);
+			indexQueue.add (index + 1);
 
-			pathQueue.add (
-				path + "" + numberArray[index]
-			);
+			pathQueue.add (path + "" + numberArray[index]);
 		}
 
 		return expressionOperatorPathList;
@@ -2944,68 +2905,42 @@ public class ArrayUtil
 	 * 
 	 * Assume that the intervals were initially sorted according to their start times.
 	 * 
-	 * @param intervals Array of the Sorted Intervals
+	 * @param intervalArray Array of the Sorted Intervals
 	 * @param newInterval The New Interval
 	 * 
 	 * @return List of the Merged Intervals
 	 */
 
 	public static final List<int[]> InsertIntoNonOverlappingIntervals (
-		final int[][] intervals,
+		final int[][] intervalArray,
 		final int[] newInterval)
 	{
 		List<int[]> insertedIntervalList = new ArrayList<int[]>();
 
 		int[] currentInterval = newInterval;
 
-		for (int[] oldInterval : intervals)
-		{
-			if (DoRangesOverlap (
-				oldInterval,
-				currentInterval
-			))
-			{
+		for (int[] oldInterval : intervalArray) {
+			if (DoRangesOverlap (oldInterval, currentInterval)) {
 				currentInterval[0] = currentInterval[0] < oldInterval[0] ? currentInterval[0] :
 					oldInterval[0];
 				currentInterval[1] = currentInterval[1] > oldInterval[1] ? currentInterval[1] :
 					oldInterval[1];
-			}
-			else if (oldInterval[1] < currentInterval[0])
-			{
-				insertedIntervalList.add (
-					oldInterval
-				);
-			}
-			else if (currentInterval[1] < oldInterval[0])
-			{
-				insertedIntervalList.add (
-					currentInterval
-				);
+			} else if (oldInterval[1] < currentInterval[0]) {
+				insertedIntervalList.add (oldInterval);
+			} else if (currentInterval[1] < oldInterval[0]) {
+				insertedIntervalList.add (currentInterval);
 
 				currentInterval = oldInterval;
 			}
 		}
 
-		insertedIntervalList.add (
-			currentInterval
-		);
+		insertedIntervalList.add (currentInterval);
 
 		return insertedIntervalList;
 	}
 
-	private static final boolean SwapElements (
-		final int[] numberArray,
-		final int index1,
-		final int index2)
-	{
-		int number = numberArray[index1];
-		numberArray[index1] = numberArray[index2];
-		numberArray[index2] = number;
-		return true;
-	}
-
 	/**
-	 * Given an array with n objects colored red, white or blue, sort them in-place so that objects of the
+	 * Given an array with n objects colored red, white, or blue, sort them in-place so that objects of the
 	 * 	same color are adjacent, with the colors in the order red, white and blue.
 	 * 
 	 * Here, use the integers 0, 1, and 2 to represent the color red, white, and blue respectively.
@@ -3015,24 +2950,32 @@ public class ArrayUtil
 	 * @param numberArray The Number Array
 	 */
 
-	public static final void SortColor (int[] numberArray)
+	public static final void SortColor (
+		int[] numberArray)
 	{
-		int twoIndex = numberArray.length - 1;
 		int zeroIndex = 0;
+		int twoIndex = numberArray.length - 1;
 
-		while (zeroIndex < numberArray.length && 0 == numberArray[zeroIndex]) ++zeroIndex;
+		while (zeroIndex < numberArray.length && 0 == numberArray[zeroIndex]) {
+			++zeroIndex;
+		}
 
-		while (0 <= twoIndex && 2 == numberArray[twoIndex]) --twoIndex;
+		while (0 <= twoIndex && 2 == numberArray[twoIndex]) {
+			--twoIndex;
+		}
 
-		if (numberArray.length == zeroIndex || -1 == twoIndex) return;
+		if (numberArray.length == zeroIndex || -1 == twoIndex) {
+			return;
+		}
 
 		int index = zeroIndex;
 
 		while (index <= twoIndex) {
-			if (0 == numberArray[index])
+			if (0 == numberArray[index]) {
 				SwapElements (numberArray, index, zeroIndex++);
-			else if (2 == numberArray[index])
+			} else if (2 == numberArray[index]) {
 				SwapElements (numberArray, index, twoIndex--);
+			}
 
 			++index;
 		}
@@ -3043,18 +2986,19 @@ public class ArrayUtil
 	 * 
 	 * @param matrix The Sparse Matrix
 	 * 
-	 * @return Th Sparse Matrix Representation
+	 * @return The Sparse Matrix Representation
 	 */
 
 	public static final Map<String, Integer> SparseMatrixRepresentation (
 		final int[][] matrix)
 	{
-		Map<String, Integer> sparseMatrixRepresentation = new
-			HashMap<String, Integer>();
+		Map<String, Integer> sparseMatrixRepresentation = new HashMap<String, Integer>();
 
 		for (int i = 0; i < matrix.length; ++i) {
 			for (int j = 0; j < matrix[0].length; ++j) {
-				if (0 != matrix[i][j]) sparseMatrixRepresentation.put (i + "_" + j, matrix[i][j]);
+				if (0 != matrix[i][j]) {
+					sparseMatrixRepresentation.put (i + "_" + j, matrix[i][j]);
+				}
 			}
 		}
 
@@ -3074,10 +3018,9 @@ public class ArrayUtil
 	{
 		int dotProduct = 0;
 
-		Map<String, Integer> sparseMatrixRepresentation =
-			SparseMatrixRepresentation (matrix);
-
 		Set<String> locationSet = new HashSet<String>();
+
+		Map<String, Integer> sparseMatrixRepresentation = SparseMatrixRepresentation (matrix);
 
 		locationSet.addAll (sparseMatrixRepresentation.keySet());
 
@@ -3119,20 +3062,28 @@ public class ArrayUtil
 	{
 		int index = LocateIndex (numberArray, 0, numberArray.length - 1, target);
 
-		if (-1 == index) return new int[] {-1, -1};
+		if (-1 == index) {
+			return new int[] {-1, -1};
+		}
 
 		int leftLocationIndex = index;
 		int rightLocationIndex = index;
 
-		while (leftLocationIndex >= 0 && target == numberArray[leftLocationIndex]) --leftLocationIndex;
+		while (leftLocationIndex >= 0 && target == numberArray[leftLocationIndex]) {
+			--leftLocationIndex;
+		}
 
-		while (rightLocationIndex < numberArray.length && target == numberArray[rightLocationIndex])
+		while (rightLocationIndex < numberArray.length && target == numberArray[rightLocationIndex]) {
 			++rightLocationIndex;
+		}
 
-		if (-1 == leftLocationIndex || target != numberArray[leftLocationIndex]) ++leftLocationIndex;
+		if (-1 == leftLocationIndex || target != numberArray[leftLocationIndex]) {
+			++leftLocationIndex;
+		}
 
-		if (numberArray.length == rightLocationIndex || target != numberArray[rightLocationIndex])
+		if (numberArray.length == rightLocationIndex || target != numberArray[rightLocationIndex]) {
 			--rightLocationIndex;
+		}
 
 		return new int[] {leftLocationIndex, rightLocationIndex};
 	}
@@ -3155,7 +3106,9 @@ public class ArrayUtil
 	{
 		Set<Integer> mineLocationSet = new HashSet<Integer>();
 
-		while (k > mineLocationSet.size()) mineLocationSet.add ((int)(Math.random() * m * n));
+		while (k > mineLocationSet.size()) {
+			mineLocationSet.add ((int)(Math.random() * m * n));
+		}
 
 		int mineIndex = 0;
 		int[][] mineLocations = new int[k][2];
