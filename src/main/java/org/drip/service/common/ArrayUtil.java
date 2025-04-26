@@ -3142,8 +3142,9 @@ public class ArrayUtil
 				int scanRow = 0;
 
 				while (scanCol >= 0 && scanRow <= colIndex) {
-					if (scanCol < matrix[0].length && scanRow < matrix.length)
+					if (scanCol < matrix[0].length && scanRow < matrix.length) {
 						diagonalFlipFlop[index++] = matrix[scanRow][scanCol];
+					}
 
 					++scanRow;
 					--scanCol;
@@ -3153,8 +3154,9 @@ public class ArrayUtil
 				int scanRow = colIndex;
 
 				while (scanCol <= colIndex && scanRow >= 0) {
-					if (scanCol < matrix[0].length && scanRow < matrix.length)
+					if (scanCol < matrix[0].length && scanRow < matrix.length) {
 						diagonalFlipFlop[index++] = matrix[scanRow][scanCol];
+					}
 
 					--scanRow;
 					++scanCol;
@@ -3178,19 +3180,18 @@ public class ArrayUtil
 	public static final List<List<Integer>> EnumerateDiagonalOrder (
 		final int[][] matrix)
 	{
-		List<List<Integer>> diagonalOrder = new
-			ArrayList<List<Integer>>();
+		List<List<Integer>> diagonalOrder = new ArrayList<List<Integer>>();
 
 		for (int colIndex = 0; colIndex < matrix.length + matrix[0].length - 1; ++colIndex) {
 			int scanCol = colIndex;
 			int scanRow = 0;
 
-			List<Integer> diagonalOrderRow = new
-				ArrayList<Integer>();
+			List<Integer> diagonalOrderRow = new ArrayList<Integer>();
 
 			while (scanCol >= 0 && scanRow <= colIndex) {
-				if (scanCol < matrix[0].length && scanRow < matrix.length)
+				if (scanCol < matrix[0].length && scanRow < matrix.length) {
 					diagonalOrderRow.add (matrix[scanRow][scanCol]);
+				}
 
 				++scanRow;
 				--scanCol;
@@ -3218,15 +3219,15 @@ public class ArrayUtil
     	int[] maximumSlidingWindowArray = new int[numberArray.length - k + 1];
     	maximumSlidingWindowArray[0] = Integer.MIN_VALUE;
 
-    	for (int j = 0; j < k; ++j)
+    	for (int j = 0; j < k; ++j) {
     		maximumSlidingWindowArray[0] = maximumSlidingWindowArray[0] > numberArray[j] ?
     			maximumSlidingWindowArray[0] : numberArray[j];
+    	}
 
     	for (int i = 1; i <= numberArray.length - k; ++i) {
         	maximumSlidingWindowArray[i] = Integer.MIN_VALUE;
 
-        	for (int j = i; j < i + k; ++j)
-        	{
+        	for (int j = i; j < i + k; ++j) {
         		maximumSlidingWindowArray[i] = maximumSlidingWindowArray[i] > numberArray[j] ?
         			maximumSlidingWindowArray[i] : numberArray[j];
         	}
@@ -3253,21 +3254,26 @@ public class ArrayUtil
     	Set<Integer> processedColumnSet = new HashSet<Integer>();
 
     	for (int i = 0; i < matrix.length; ++i) {
-        	for (int j = 0; j < matrix[0].length; ++j)
-        		if (0 == matrix[i][j]) zeroLocationSet.add(new int[] {i, j});
+        	for (int j = 0; j < matrix[0].length; ++j) {
+        		if (0 == matrix[i][j]) {
+        			zeroLocationSet.add (new int[] {i, j});
+        		}
+        	}
     	}
 
     	for (int[] location : zeroLocationSet) {
     		if (!processedRowSet.contains (location[0])) {
-	        	for (int j = 0; j < matrix[0].length; ++j)
+	        	for (int j = 0; j < matrix[0].length; ++j) {
 	        		matrix[location[0]][j] = 0;
+	        	}
 
 	        	processedRowSet.add (location[0]);
     		}
 
     		if (!processedColumnSet.contains (location[1])) {
-	        	for (int i = 0; i < matrix.length; ++i)
+	        	for (int i = 0; i < matrix.length; ++i) {
 	        		matrix[i][location[1]] = 0;
+	        	}
 
 	        	processedColumnSet.add (location[1]);
     		}
@@ -3299,12 +3305,15 @@ public class ArrayUtil
     	int nextMininum = Integer.MAX_VALUE;
 
     	for (int number : numberArray) {
-    		if (number > nextMininum && nextMininum > minimum) return true;
+    		if (number > nextMininum && nextMininum > minimum) {
+    			return true;
+    		}
 
-    		if (number <= minimum)
+    		if (number <= minimum) {
     			minimum = number;
-    		else if (number <= nextMininum)
+    		} else if (number <= nextMininum) {
     			nextMininum = number;
+    		}
     	}
 
     	return false;
@@ -3333,13 +3342,17 @@ public class ArrayUtil
     	HashSet<Integer> arrayABHashSet = new HashSet<Integer>();
 
     	for (int numberA : numberArrayA) {
-    		for (int numberB : numberArrayB)
+    		for (int numberB : numberArrayB) {
         		arrayABHashSet.add (-1 * (numberA + numberB));
+    		}
     	}
 
     	for (int numberC : numberArrayC) {
-    		for (int numberD : numberArrayD)
-        		if (arrayABHashSet.contains (numberC + numberD)) ++fourSumCount;
+    		for (int numberD : numberArrayD) {
+        		if (arrayABHashSet.contains (numberC + numberD)) {
+        			++fourSumCount;
+        		}
+    		}
     	}
 
     	return fourSumCount;
@@ -3361,19 +3374,21 @@ public class ArrayUtil
     {
     	int[] leftMaxHeightIndex = new int[heightArray.length];
     	int[] rightMaxHeightIndex = new int[heightArray.length];
-    	int maximumAreaUnderContainer = Integer.MIN_VALUE;
     	rightMaxHeightIndex[heightArray.length - 1] = heightArray.length - 1;
+    	int maximumAreaUnderContainer = Integer.MIN_VALUE;
     	leftMaxHeightIndex[0] = 0;
     	int rightIndex = 0;
     	int leftIndex = 0;
 
-    	for (int i = 1; i < heightArray.length; ++i)
+    	for (int i = 1; i < heightArray.length; ++i) {
     		leftMaxHeightIndex[i] = heightArray[leftMaxHeightIndex[i - 1]] >= heightArray[i - 1] ?
     			leftMaxHeightIndex[i - 1] : i - 1;
+    	}
 
-    	for (int i = heightArray.length - 2; i >= 0; --i)
+    	for (int i = heightArray.length - 2; i >= 0; --i) {
     		rightMaxHeightIndex[i] = heightArray[rightMaxHeightIndex[i + 1]] >= heightArray[i + 1] ?
     			rightMaxHeightIndex[i + 1] : i + 1;
+    	}
 
     	for (int i = 0; i < heightArray.length; ++i) {
     		int areaThroughLevel = (rightMaxHeightIndex[i] - leftMaxHeightIndex[i]) * Math.min
@@ -3415,19 +3430,24 @@ public class ArrayUtil
      * @return Smallest Missing Positive Integer
      */
 
-    public static final int FirstMisingPositiveInteger (
+    public static final int FirstMissingPositiveInteger (
     	final int[] numberArray)
     {
     	for (int i = 0; i < numberArray.length; ++i) {
-    		if (numberArray[i] >= 1 && numberArray[i] <= numberArray.length && numberArray[i] != i + 1)
+    		if (numberArray[i] >= 1 && numberArray[i] <= numberArray.length && numberArray[i] != i + 1) {
     			SwapElements (numberArray, i, numberArray[i] - 1);
+    		}
 
-    		if (numberArray[i] >= 1 && numberArray[i] <= numberArray.length && numberArray[i] != i + 1)
+    		if (numberArray[i] >= 1 && numberArray[i] <= numberArray.length && numberArray[i] != i + 1) {
     			SwapElements (numberArray, i, numberArray[i] - 1);
+    		}
     	}
 
-    	for (int i = 0; i < numberArray.length; ++i)
-    		if (numberArray[i] != i + 1) return i + 1;
+    	for (int i = 0; i < numberArray.length; ++i) {
+    		if (numberArray[i] != i + 1) {
+    			return i + 1;
+    		}
+    	}
 
     	return numberArray.length + 1;
     }
@@ -3446,7 +3466,9 @@ public class ArrayUtil
     {
     	int sum = 0;
 
-    	for (int i : numberArray) sum += i;
+    	for (int i : numberArray) {
+    		sum += i;
+    	}
 
     	return sum - (numberArray.length - 1) * numberArray.length / 2;
     }
