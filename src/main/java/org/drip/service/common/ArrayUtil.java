@@ -13,6 +13,8 @@ import java.util.Set;
 import java.util.Stack;
 import java.util.TreeMap;
 
+import org.drip.graph.heap.BinomialTreePriorityQueue;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
@@ -1011,6 +1013,137 @@ public class ArrayUtil
     	}
 
     	return minimumRowIndex;
+    }
+
+    private static final int BurstCandidateIndex (
+    	final List<Integer> integerList)
+    {
+    	int listSize = integerList.size();
+
+    	if (1 >= listSize) {
+    		return 0;
+    	}
+
+    	int maximum = integerList.get (0);
+
+    	int minimum = maximum;
+    	int maxIndex = 0;
+    	int minIndex = 0;
+
+    	for (int i = 1; i < integerList.size(); ++i) {
+    		int intValue = integerList.get (i);
+
+    		if (intValue < minimum) {
+    			minimum = intValue;
+    			minIndex = i;
+    		}
+
+    		if (intValue > maximum) {
+    			maximum = intValue;
+    			maxIndex = i;
+    		}
+    	}
+
+    	if (2 == listSize || (0 != minIndex && listSize - 1 != minIndex)) {
+    		return minIndex;
+    	}
+
+    	if (0 == minIndex) {
+        	int burstCandidateIndex = 1;
+
+        	while (burstCandidateIndex == maxIndex) {
+        		++burstCandidateIndex;
+        	}
+
+        	minimum = integerList.get (burstCandidateIndex);
+
+        	for (int i = burstCandidateIndex; i < listSize; ++i) {
+        		int intValue = integerList.get (i);
+
+	    		if (i != maxIndex && intValue < minimum) {
+	    			minimum = intValue;
+	    			burstCandidateIndex = i;
+	    		}
+    		}
+
+        	return burstCandidateIndex;
+    	}
+
+    	int burstCandidateIndex = listSize - 2;
+
+    	while (burstCandidateIndex == maxIndex) {
+    		--burstCandidateIndex;
+    	}
+
+    	minimum = integerList.get (burstCandidateIndex);
+
+    	for (int i = burstCandidateIndex; i >= 0; --i) {
+    		int intValue = integerList.get (i);
+
+    		if (i != maxIndex && intValue < minimum) {
+    			minimum = intValue;
+    			burstCandidateIndex = i;
+    		}
+		}
+
+    	return burstCandidateIndex;
+    }
+
+    private static final int Partition (
+    	final int[] numberArray,
+    	final int left,
+    	final int right,
+    	final int pivotIndex)
+    {
+    	int pivotValue = numberArray[pivotIndex];
+
+    	SwapElements (numberArray, pivotIndex, right);
+
+    	int partitionIndex = left;
+
+    	for (int index = left; index < right; ++index)
+    		if (numberArray[index] < pivotValue) {
+    			SwapElements (numberArray, partitionIndex++, index);
+    		}
+
+    	SwapElements (numberArray, partitionIndex, right);
+
+    	return partitionIndex;
+    }
+
+    private static final int Select (
+    	final int[] numberArray,
+    	final int left,
+    	final int right,
+    	final int k)
+    {
+    	if (left == right) {
+    		return numberArray[left];
+    	}
+
+    	int pivotIndex = Partition (
+			numberArray,
+			left,
+			right,
+			left + ((int) Math.random() * (right - left + 1))
+		);
+
+    	return k == pivotIndex ? numberArray[k] : k < pivotIndex ?
+			Select (numberArray, left, pivotIndex - 1, k) :
+    		Select (numberArray, pivotIndex + 1, right, k);
+    }
+
+    private static final boolean IsJumpForbidden (
+    	final int[] forbiddenLocationArray,
+    	final int location)
+    {
+    	for (int forbiddenLocation : forbiddenLocationArray) {
+    		if (forbiddenLocation == location) {
+    			return true;
+    		}
+    	}
+
+    	return false;
     }
 
 	/**
@@ -3843,69 +3976,6 @@ public class ArrayUtil
     	return skylineMap;
     }
 
-    private static final int BurstCandidateIndex (
-    	final List<Integer> integerList)
-    {
-    	if (1 == integerList.size()) return 0;
-
-    	int maximum = integerList.get (0);
-
-    	int maxIndex = 0;
-    	int minIndex = 0;
-    	int minimum = maximum;
-
-    	for (int i = 1; i < integerList.size(); ++i) {
-    		if (integerList.get (i) < minimum) {
-    			minimum = integerList.get (i);
-
-    			minIndex = i;
-    		}
-
-    		if (integerList.get (i) > maximum) {
-    			maximum = integerList.get (i);
-
-    			maxIndex = i;
-    		}
-    	}
-
-    	if (2 == integerList.size() || (0 != minIndex && integerList.size() - 1 != minIndex))
-    		return minIndex;
-
-    	if (0 == minIndex) {
-        	int burstCandidateIndex = 1;
-
-        	while (burstCandidateIndex == maxIndex) ++burstCandidateIndex;
-
-        	minimum = integerList.get (burstCandidateIndex);
-
-        	for (int i = burstCandidateIndex; i < integerList.size(); ++i) {
-	    		if (i != maxIndex && integerList.get (i) < minimum) {
-	    			minimum = integerList.get (i);
-	
-	    			burstCandidateIndex = i;
-	    		}
-    		}
-
-        	return burstCandidateIndex;
-    	}
-
-    	int burstCandidateIndex = integerList.size() - 2;
-
-    	while (burstCandidateIndex == maxIndex) --burstCandidateIndex;
-
-    	minimum = integerList.get (burstCandidateIndex);
-
-    	for (int i = burstCandidateIndex; i >= 0; --i) {
-    		if (i != maxIndex && integerList.get (i) < minimum) {
-    			minimum = integerList.get (i);
-
-    			burstCandidateIndex = i;
-    		}
-		}
-
-    	return burstCandidateIndex;
-    }
-
     /**
      * Given an array of balloons, each balloon is painted with a number on it represented by array. You are
      *  asked to burst all the balloons. If the you burst balloon i you will get nums[left] * nums[i] *
@@ -3922,22 +3992,26 @@ public class ArrayUtil
     public static final int StrategicBalloonBurstSum (
     	final int[] balloonCoinArray)
     {
+    	int sum = 0;
+
     	List<Integer> balloonCoinList = new ArrayList<Integer>();
 
-    	for (int balloonCoin : balloonCoinArray)
+    	for (int balloonCoin : balloonCoinArray) {
     		balloonCoinList.add (balloonCoin);
-
-    	int sum = 0;
+    	}
 
     	while (!balloonCoinList.isEmpty()) {
     		int burstCandidateIndex = BurstCandidateIndex (balloonCoinList);
 
     		int product = balloonCoinList.get (burstCandidateIndex);
 
-    		if (burstCandidateIndex > 0) product = product * balloonCoinList.get (burstCandidateIndex - 1);
+    		if (0 < burstCandidateIndex) {
+    			product = product * balloonCoinList.get (burstCandidateIndex - 1);
+    		}
 
-    		if (burstCandidateIndex < balloonCoinList.size() - 1)
+    		if (burstCandidateIndex < balloonCoinList.size() - 1) {
     			product = product * balloonCoinList.get (burstCandidateIndex + 1);
+    		}
 
     		sum += product;
 
@@ -3945,43 +4019,6 @@ public class ArrayUtil
     	}
 
     	return sum;
-    }
-
-    private static final int Partition (
-    	final int[] numberArray,
-    	final int left,
-    	final int right,
-    	final int pivotIndex)
-    {
-    	int pivotValue = numberArray[pivotIndex];
-
-    	SwapElements (numberArray, pivotIndex, right);
-
-    	int partitionIndex = left;
-
-    	for (int index = left; index < right; ++index)
-    		if (numberArray[index] < pivotValue) SwapElements (numberArray, partitionIndex++, index);
-
-    	SwapElements (numberArray, partitionIndex, right);
-
-    	return partitionIndex;
-    }
-
-    private static final int Select (
-    	final int[] numberArray,
-    	final int left,
-    	final int right,
-    	final int k)
-    {
-    	if (left == right) return numberArray[left];
-
-    	int pivotIndex = Partition (numberArray, left, right,
-    		left + ((int) Math.random() * (right - left + 1)));
-
-    	if (k == pivotIndex) return numberArray[k];
-
-    	return k < pivotIndex ? Select (numberArray, left, pivotIndex - 1, k) :
-    		Select (numberArray, pivotIndex + 1, right, k);
     }
 
     /**
@@ -3997,10 +4034,9 @@ public class ArrayUtil
     {
     	int arrayLength = numberArray.length;
 
-    	if (1 == arrayLength % 2) return Select (numberArray, 0, arrayLength - 1, arrayLength / 2);
-
-    	return 0.5 * (Select (numberArray, 0, arrayLength - 1, arrayLength / 2 - 1) +
-    		Select (numberArray, 0, arrayLength - 1, arrayLength / 2));
+    	return 1 == arrayLength % 2 ? Select (numberArray, 0, arrayLength - 1, arrayLength / 2) :
+    		0.5 * (Select (numberArray, 0, arrayLength - 1, arrayLength / 2 - 1) +
+				Select (numberArray, 0, arrayLength - 1, arrayLength / 2));
     }
 
     /**
@@ -4029,17 +4065,6 @@ public class ArrayUtil
     	return true;
     }
 
-    private static final boolean IsJumpForbidden (
-    	final int[] forbiddenLocationArray,
-    	final int location)
-    {
-    	for (int forbiddenLocation : forbiddenLocationArray) {
-    		if (forbiddenLocation == location) return true;
-    	}
-
-    	return false;
-    }
-
     /**
      * Tom plays a game in which he throws a baseball at various blocks marked with a symbol. Each block
      * 	comes with a symbol which can be an integer, ‘X’, ‘+’, or ‘Z’. Given a list of strings represent
@@ -4058,14 +4083,16 @@ public class ArrayUtil
     	int prevPrevScore = -1;
 
     	for (String scoreEvent : scoreEventArray) {
-    		if ("X".equalsIgnoreCase (scoreEvent))
+    		if ("X".equalsIgnoreCase (scoreEvent)) {
     			prevScore += prevScore;
-    		else if ("+".equalsIgnoreCase (scoreEvent))
+    		} else if ("+".equalsIgnoreCase (scoreEvent)) {
     			score += (prevScore + prevPrevScore);
-    		else if ("Z".equalsIgnoreCase (scoreEvent))
+    		} else if ("Z".equalsIgnoreCase (scoreEvent)) {
     			prevScore = 0;
-    		else {
-	    		if (-1 != prevScore) prevPrevScore = prevScore;
+    		} else {
+	    		if (-1 != prevScore) {
+	    			prevPrevScore = prevScore;
+	    		}
 
 	    		score = score + (prevScore = StringUtil.DecimalNumberFromString (scoreEvent));
     		}
@@ -4098,16 +4125,19 @@ public class ArrayUtil
     	int count = 0;
     	int profit = 0;
 
-    	org.drip.graph.heap.BinomialTreePriorityQueue<Integer, Integer> inventoryHeap = new
-    		org.drip.graph.heap.BinomialTreePriorityQueue<Integer, Integer> (false);
+    	BinomialTreePriorityQueue<Integer, Integer> inventoryHeap =
+			new BinomialTreePriorityQueue<Integer, Integer> (false);
 
-    	for (int inventory : inventoryArray)
+    	for (int inventory : inventoryArray) {
     		inventoryHeap.insert (inventory, inventory);
+    	}
 
     	while (!inventoryHeap.isEmpty() && count < orderCount) {
     		int itemProfit = inventoryHeap.extractExtremum().key();
 
-    		if (itemProfit >= 1) inventoryHeap.insert (itemProfit - 1, itemProfit - 1);
+    		if (1 <= itemProfit) {
+    			inventoryHeap.insert (itemProfit - 1, itemProfit - 1);
+    		}
 
     		profit = profit + itemProfit;
     		++count;
@@ -4143,8 +4173,9 @@ public class ArrayUtil
 
     	PriorityQueue<Integer> diskSpaceQueue = new PriorityQueue<Integer>();
 
-    	for (int i = 0; i < segmentLength; ++i)
+    	for (int i = 0; i < segmentLength; ++i) {
     		diskSpaceQueue.offer (diskSpaceArray[i]);
+    	}
 
     	int maximumAvailableDiskSpace = diskSpaceQueue.peek();
 
@@ -4153,8 +4184,9 @@ public class ArrayUtil
 
         	int minimumSegmentDiskSpace = diskSpaceQueue.peek();
 
-        	if (maximumAvailableDiskSpace < minimumSegmentDiskSpace)
+        	if (maximumAvailableDiskSpace < minimumSegmentDiskSpace) {
         		maximumAvailableDiskSpace = minimumSegmentDiskSpace;
+        	}
 
         	++index;
     	}
