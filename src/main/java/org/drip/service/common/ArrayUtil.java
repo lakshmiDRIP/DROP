@@ -98,7 +98,129 @@ import org.drip.graph.heap.BinomialTreePriorityQueue;
  * 
  * <ul>
  * 		<li>Affix the Headers on the JSON Request</li>
- * 		<li>Affix the Headers on the JSON Response</li>
+ * 		<li>Search for the Target in a Rotated Array</li>
+ * 		<li>Given an array of n integers, find all unique triplets in the array which gives the sum of zero</li>
+ * 		<li>Determine if there is a loop (or a cycle) in numberArray. A cycle must start and end at the same index and the cycle's length gt 1. Furthermore, movements in a cycle must all follow a single direction. In other words, a cycle must not consist of both forward and backward movements.</li>
+ * 		<li>Given a rectangular cake with height <code>h</code> and width <code>w</code>, and two arrays of integers <code>horizontalCuts</code> and <code>verticalCuts</code> where <code>horizontalCuts[i]</code> is the distance from the top of the rectangular cake to the i<sup>th</sup> horizontal cut and similarly, <code>verticalCuts[j]</code> is the distance from the left of the rectangular cake to the j<sup>th</sup> vertical cut. Return the maximum area of a piece of cake after you cut at each horizontal and vertical position provided in the arrays <code>horizontalCuts</code> and <code>verticalCuts</code>.</li>
+ * 		<li>A transaction is possibly invalid if:
+ * 		<ul>
+ * 			<li>the amount exceeds $1000, or;</li>
+ * 			<li>it occurs within (and including) 60 minutes of another transaction with the same name in a different city</li>
+ * 		</ul>
+ * 			<br>Each transaction string transactions[i] consists of comma separated values representing the name, time (in minutes), amount, and city of the transaction.
+ * 			<br>Given a list of transactions, return a list of transactions that are possibly invalid.  You may return the answer in any order</li>
+ * 		<li>Given an integer array, find the contiguous sub-array within an array (containing at least one number) which has the largest product</li>
+ * 		<li>Given an array of integers, find the sum of <code>min(B)</code>, where <code>B</code> ranges over every (contiguous) sub-array</li>
+ * 		<li>Given an array of <code>n integers and an integer target, are there elements <code>a</code>, <code>b</code>, <code>c</code>, and <code>d</code> in the array such that <code>a + b + c + d = target</code>? Find all unique quadruplets in the array which gives the sum of target</li>
+ * 		<li>Compute the Maximum Sum of any Sub-array</li>
+ * 		<li>Compute the Minimum Sum of any Sub-array</li>
+ * 		<li>Given a circular array <code>C</code> of integers represented by <code>A</code>, find the maximum possible sum of a non-empty sub-array of <code>C</code>. Here, a circular array means the end of the array connects to the beginning of the array.
+ *			<br>(Formally, <code>C[i] = A[i]</code> when <code>0</code> <code>lte i lt A.length</code>, and <code>C[i+A.length] = C[i]</code> when <code>i gte 0</code>)
+ * 			<br>Also, a sub-array may only include each element of the fixed buffer <code>A</code> at most once. (Formally, for a sub-array <code>C[i], C[i+1], ..., C[j]</code>, there does not exist <code>i lte k1</code>, <code>k2 gte j</code> with <code>k1 % A.length = k2 % A.length</code>)</li>
+ * 		<li>Given a matrix of <code>m x n</code> elements (<code>m</code> rows, <code>n</code> columns), return all elements of the matrix in spiral order</li>
+ * 		<li>A robot is located at the top-left corner of a <code>m x n</code> grid. The robot can only move either down or right at any point in time. The robot is trying to reach the bottom-right corner of the grid. Now consider if some obstacles are added to the grids. How many unique paths would there be?</li>
+ * 		<li>Given a string <code>s</code>, we make queries on substrings of <code>s</code>. For each query <code>queries[i] = [left, right, k]</code>, we may rearrange the substring <code>s[left], ..., s[right]</code>, and then choose up to k</code> of them to replace with any lower-case English letter. If the substring is possible to be a palindrome string after the operations above, the result of the query is true. Otherwise, the result is false.
+ * 			<br>Return an array <code>answer[]</code>, where <code>answer[i]</code> is the result of the i-th query <code>queries[i]</code>.
+ * 			<br>Note that: Each letter is counted individually for replacement so if for example <code>s[left..right] = "aaa"</code>, and <code>k = 2</code>, we can only replace two of the letters. (Also, note that the initial string <code>s</code> is never modified by any query.)
+ * 			<br>Find all pairs of integers in the array which have difference equal to the number <code>d</code>.</li>
+ * 		<li>A cinema has n rows of seats, numbered from 1 to n and there are ten seats in each row, labeled from 1 to 10.
+ * 			<br>Given the array reservedSeats containing the numbers of seats already reserved, for example, <code>reservedSeats[i] = [3,8]</code> means the seat located in row 3 and labeled with 8 is already reserved.
+ * 			<br>Return the maximum number of four-person groups you can assign on the cinema seats. A four-person group occupies four adjacent seats in one single row. Seats across an aisle (such as [3,3] and [3,4]) are not considered to be adjacent, but there is an exceptional case on which an aisle split a four-person group, in that case, the aisle split a four-person group in the middle, which means to have two people on each side.
+ * 			<br>Each element in the array represents your maximum jump length at that position.
+ * 			<br>Determine if you are able to reach the last index.</li>
+ * 		<li>Given an array of non-negative integers, you are initially positioned at the first index of the array</li>
+ * 		<li>You must compute a list of <code>n</code> integers output, whose <code>i</code><sup>th</sup> element is equal to the number of signatures that will be present in student <code>i</code>'s year-book once they receive it back</li>
+ * 		<li>Given a 2D board and a word, find if the word exists in the grid. The word can be constructed from letters of sequentially adjacent cell, where "adjacent" cells are those horizontally or vertically neighboring. The same letter cell may not be used more than once</li>
+ * 		<li>Check if Reverse match is Possible</li>
+ * 		<li>There are n</code> students, numbered from 1 to <code>n</code>, each with their own year-book. They would like to pass their year-books around and get them signed by other students.
+ * 			<br>You are given a list of n integers <code>arr[1..n]</code>, which is guaranteed to be a permutation of <code>1..n</code> (in other words, it includes the integers from 1 to <code>n</code> exactly once each, in some order). The meaning of this list is described below.
+ * 			<br>Initially, each student is holding their own year-book. The students will then repeat the following two steps each minute: Each student <code>i</code> will first sign the year-book that they're currently holding (which may either belong to themselves or to another student), and then they'll pass it to student <code>arr[i]</code>. It is possible that <code>arr[i] = i</code> for any given <code>i</code>, in which case student <code>i</code> will pass their year-book back to themselves. Once a student has received their own year-book back, they will hold on to it and no longer participate in the passing process.
+ * 			<br>It is guaranteed that, for any possible valid input, each student will eventually receive their own year-book back and will never end up holding more than one year-book at a time.
+ * 			<br>You must compute a list of <code>n</code> integers output, whose <code>i</code><sup>th</sup> element is equal to the number of signatures that will be present in student <code>i</code>'s year-book once they receive it back.</li>
+ * 		<li>You are given an array a of <code>N</code> integers. For each index <code>i</code>, you are required to determine the number of contiguous sub-arrays that fulfills the following conditions:
+ * 			<br>The value at index i</code> must be the maximum element in the contiguous sub-arrays, and:
+ * 			<br>These contiguous sub-arrays must either start from or end on index i</code></li>
+ * 		<li>Extract the K-Closest Points</li>
+ * 		<li>Merge the Array of Sorted Arrays into a Single Array</li>
+ * 		<li>Given a circular array (the next element of the last element is the first element of the array), print the Next Greater Number for every element. The Next Greater Number of a number <code>x</code> is the first greater number to its traversing-order next in the array, which means you could search circularly to find its next greater number. If it doesn't exist, output <code>-1</code> for this number</li>
+ * 		<li>Given an array of integers, find out whether there are two distinct indices <code>i</code> and <code>j</code> in the array such that the absolute difference between two numbers in it is at most <code>t</code> and the absolute difference between <code>i</code> and <code>j</code> is at most <code>k</code></li>
+ * 		<li>Given a list of non-negative numbers and a target integer <code>k</code>, check if the array has a continuous sub-array of size at least 2 that sums up to a multiple of <code>k</code>, that is, sums up to <code>n*k</code> where <code>n</code> is also an integer</li>
+ * 		<li>Given an integer array <code>numberArray</code> and an integer <code>k</code>, modify the array by repeating it <code>k</code> times. For example, if the array is <code>[1, 2]</code> and <code>k = 3</code> then the modified array will be <code>[1, 2, 1, 2, 1, 2]</code>. Return the maximum sub-array sum in the modified array. Note that the length of the sub-array can be <code>0</code> and its sum in that case is <code>0</code></li>
+ * 		<li>Given an unsorted array numberArray</code>, reorder it such that <code>numberArray[0] le numberArray[1] ge numberArray[2] le numberArray[3]....</code></li>
+ * 		<li>Count the Number of Ways to reach the Target</li>
+ * 		<li>Count the Unique Elements in the Sorted Array</li>
+ * 		<li>Generate the Set of the Location Paths that meet the specified Target</li>
+ * 		<li>Find the First and the Last Locations of the Target in the Array</li>
+ * 		<li>Compute the Array of Product of Array Except Self</li>
+ * 		<li>Count the Number of Islands in the Grid</li>
+ * 		<li>Implement the Pancake Flip Sort</li>
+ * 		<li>Calculate the Minimum Consumption Rate of the Array of Lot Sizes within the Total Time</li>
+ * 		<li>Collapse any Overlapping Ranges inside the Specified List</li>
+ * 		<li>Generate a Counter Map of the Overlapping Slice Ranges</li>
+ * 		<li>There are <code>n</code> guests attending a dinner party, numbered from 1 to <code>n</code>. The <code>i</code><sup>th</sup> guest has a height of <code>heightArray[i]</code> inches. The guests will sit down at a circular table which has <code>n</code> seats, numbered from 1 to <code>n</code> in clockwise order around the table. As the host, you will choose how to arrange the guests, one per seat. Note that there are <code>n!</code> possible permutations of seat assignments. Once the guests have sat down, the awkwardness between a pair of guests sitting in adjacent seats is defined as the absolute difference between their two heights. Note that, because the table is circular, seats 1 and <code>n</code> are considered to be adjacent to one another, and that there are therefore <code>n</code> pairs of adjacent guests. The overall awkwardness of the seating arrangement is then defined as the maximum awkwardness of any pair of adjacent guests. Determine the minimum possible overall awkwardness of any seating arrangement</li>
+ * 		<li>Given a list of integers and a target. There are 2 symbols <code>+</code> and <code>-</code>. For each integer, choose one from <code>+</code> and <code>-</code> as its new symbol. Find out the ways to assign symbols to make sum of integers equal to target</li>
+ * 		<li>Execute a BODMAS Evaluation of the Expression</li>
+ * 		<li>Given a string that contains only digits <code>0-9</code> and a target value, return all possibilities to add binary operators (not unary) <code>+</code>, <code>-</code>, or <code>*</code> between the digits so they evaluate to the target value</li>
+ * 		<li>Given a set of <i>non-overlapping</i> intervals, insert a new interval into the intervals (merge if necessary). Assume that the intervals were initially sorted according to their start times</li>
+ * 		<li>Given an array with n objects colored red, white, or blue, sort them in-place so that objects of the same color are adjacent, with the colors in the order red, white and blue. Here, use the integers 0, 1, and 2 to represent the color red, white, and blue respectively. Note: You are not supposed to use the library's sort function for this problem</li>
+ * 		<li>Construct a Sparse Matrix Representation</li>
+ * 		<li>Compute the Dot Product of the Sparse Matrix</li>
+ * 		<li>Given an array of integers sorted in ascending order, find the starting and ending position of a given target value. The algorithm's runtime complexity must be in the order of <i>O(log n)</i>. If the target is not found in the array, return <code>[-1, -1]</code></li>
+ * 		<li>Given a <code>m-by-n</code> grid, generate <code>k</code> mines on this grid randomly. Each cell should have equal probability of <code>k / (m * n)</code> of being chosen</li>
+ * 		<li>Given a matrix, return all elements of the matrix in diagonal flip-flop order</li>
+ * 		<li>Given a matrix, return all elements of the matrix in anti-diagonal order</li>
+ * 		<li>Build the Array of Maximum Sliding Window of Size k</li>
+ * 		<li>Given a <code>m x n</code> matrix, if an element is 0, set its entire row and column to 0. Do it in-place</li>
+ * 		<li>Given an unsorted array return whether an increasing subsequence of length 3 exists or not in the array. Formally, the function should return true if there exists <i>i, j, k</i> such that <i>arr[i] lt arr[j] lt arr[k]</i> given <i>0 le i lt j lt le ≤ n-1</i> else return false. <b>Note</b>: Your algorithm should run in <code>O(n)</code> time complexity and <code>O(1)</code> space complexity</li>
+ * 		<li>Given four lists <code>A, B, C, D</code> of integer values, compute how many tuples (i, j, k, l)</code> there are such that <code>A[i] + B[j] + C[k] + D[l]</code> is zero</li>
+ * 		<li>Given non-negative integers <code>a<sub>1</sub></code>, a<sub>2</sub>, ..., a<sub>n</sub></code>, where each represents a point at coordinate <code>(i, a<sub>i</sub>)</code>. <code>n</code> vertical lines are drawn such that the two end-points of line <code>i</code> is at <code>(i, a<sub>i</sub>)</code> and <code>(i, 0)</code>. Find two lines, which together with x-axis forms a container, such that the container contains the most water</li>
+ * 		<li>Given an unsorted integer array, find the smallest missing positive integer</li>
+ * 		<li>Given an array containing <code>n + 1</code> integers where each integer is between 1 and <code>n</code> (inclusive), assuming there is only one duplicate number, find the duplicate one</li>
+ * 		<li>Implement the Rain-water Catchment Area given the array of Heights</li>
+ * 		<li>A Random list of people standing in a queue. Each person is described by a pair of integers <code>(h, k)</code>, where <code>h</code> is the height of the person and <code>k</code> is the number of people in front of this person who have a height greater than or equal to <code>h</code>. Reconstruct the queue</li>
+ * 		<li>There are two sorted arrays of size <code>m</code> and <code>n</code> respectively. Find the median of the two sorted arrays. The overall run time complexity should be <code>O(log (m+n))</code>. Assume arrays cannot be both empty</li>
+ * 		<li>Given a <code>n x n</code> matrix where each of the rows and columns are sorted in ascending order, find the k<sup>th</sup> smallest element in the matrix. Note that it is the k<sup>th</sup> smallest element in the sorted order, not the k<sup>th</sup> distinct element</li>
+ * 		<li>Given non-negative integers representing the histogram bar height where the width of each bar is 1, find the area of largest rectangle in the histogram</li>
+ * 		<li>A city sky-line is the outer contour of the silhouette formed by all the buildings in that city when viewed from a distance. <b>Given the locations and height of all the buildings</b> as shown on a city-scape photo, <b>output the sky-line</b> formed by these buildings collectively</li>
+ * 		<li>Given an array of balloons, each balloon is painted with a number on it represented by array. You are asked to burst all the balloons. If the you burst balloon <code>i</code> you will get <code>nums[left] * nums[i] * nums[right]</code> coins. Here left and right are adjacent indices of i</code>. After the burst, the left and right then becomes adjacent. Find the maximum coins you can collect by bursting the balloons wisely</li>
+ * 		<li>Evaluate the Array Median</li>
+ * 		<li>Implement the Wiggle Sort Version 2</li>
+ * 		<li>Tom plays a game in which he throws a baseball at various blocks marked with a symbol. Each block comes with a symbol which can be an integer, ‘X’, ‘+’, or ‘Z’. Given a list of strings represent blocks, return the final score</li>
+ * 		<li>A company has several suppliers for its products. For each of the products, the stock is represented by a list of a number of items for each supplier. As items are purchased, the supplier raises the price by 1 per item purchased. Let's assume Amazon's profit on any single item is the same as the number of items the supplier has left. For example, if a supplier has 4 items, company's profit on the first item sold is 4, then 3, then 2 and the profit of the last one is 1. Given a list where each value in the list is the number of the item at a given supplier and also given the number of items to be ordered, write an algorithm to find the highest profit that can be generated for the given product</li>
+ * 		<li>Company A is performing an analysis on the computers at one of its offices. The computers are spaced along a single row. The analysis is performed in the following way:
+ * 			<br>Choose a contiguous segment of a certain number of computers, starting from the beginning of the row. Analyze the available hard disk space on each of the computers. Determine the minimum available disk space within this segment. After performing these steps for the first segment, it is then repeated for the next segment, continuing this procedure until the end of the row (i.e. if the segment size is 4, computers 1 to 4 would be analyzed, then 2 to 5, etc.)
+ * 			<br>Given this analysis procedure, write an algorithm to find the maximum available disk space among all the minima that are found during the analysis</li>
+ * 		<li>Given a 2D grid, each cell is either a zombie or a human. Zombies can turn adjacent (up/down/left/right) human beings into zombies every day. Find out how many days does it take to infect all humans?</li>
+ * 		<li>Given an array containing only positive integers, return if you can pick two integers from the array which cuts the array into three pieces such that the sum of elements in all pieces is equal</li>
+ * 		<li>Give a computer with total k memory space, and an array of foreground tasks and background tasks the computer needs to do. Write an algorithm to find a pair of tasks from each array to maximize the memory usage. Notice the tasks could be done without origin order</li>
+ * 		<li>Given a two 2D matrix, find the max score of a path from the upper left cell to bottom right cell that doesn't visit any of the cells twice. The score of a path is the minimum value in that path</li>
+ * 		<li>A shopkeeper has a sale to complete and has arranged the items being sold in a list. Starting from the left, the shop keeper rings up each item at its full price less the price of the first lower or equally priced item to its right. If there is no item to the right that costs less than or equal to the current item's price the current item is sold at full price. Print total cost of all items. Also, print the list of integers representing the indexes of the non-discounted items in ascending index order</li>
+ * 		<li>Given an integer array and an integer, return the length of the shortest non-empty sub-array with a sum of at least sum. If there is no such sub-array, return -1. <code>A</code> sub-array is a contiguous part of an array</li>
+ * 		<li>Count the Number of Ways to Separate the Number</li>
+ * 		<li>Check if the Array can be split so that the Two Sides add to the same</li>
+ * 		<li>Given an array of points where <code>points[i] = [x<sub>i</sub>, y<sub>i</sub>]</code> represents a point on the <b>X-Y</b> plane, return the maximum number of points that lie on the same straight line</li>
+ * 		<li>Given an array of integers, your task is to check if it could become non-decreasing by modifying <b>at most one element</b>. We define an array is non-decreasing if <code>nums[i] le nums[i + 1]</code> holds for every <code>i</code> (<b>0-based</b>) such that <code>(0 le i le n - 2)</code></li>
+ * 		<li>You are given an integer array of <code>2 * n</code> integers. You need to partition it into <b>two</b> arrays of length <code>n</code> to <b>minimize the absolute difference</b> of the <b>sums</b> of the arrays. To partition the array, put each element into <b>one</b> of the two arrays. Return the <b>minimum</b> possible absolute difference</li>
+ * 		<li>Indicate the Destination is Reachable</li>
+ * 		<li>Given an integer array <code>numberArray</code> and an integer <code>k</code>, modify the array by repeating it <code>k</code> times. For example, if <code>arr = [1, 2]</code> and <code>k = 3</code> then the modified array will be <code>[1, 2, 1, 2, 1, 2]</code>. Return the maximum sub-array sum in the modified array. Note that the length of the sub-array can be 0 and its sum in that case is 0. As the answer can be very large, return the answer <code><b>modulo</b> 10<sup>9</sup> + 7</code></li>
+ * 		<li>A certain bug's home is on the x-axis at position <code>x</code>. Help them get there from position 0.
+ * 			<br>The bug jumps according to the following rules:
+ * 		<ul>
+ *  		<li>It can jump exactly a positions <b>forward</b> (to the right)</li>
+ *  		<li>It can jump exactly b positions <b>backward</b> (to the left)</li>
+ *  		<li>It cannot jump backward twice in a row</li>
+ *  		<li>It cannot jump to any forbidden positions</li>
+ *  		<li>The bug may jump forward beyond its home, but it cannot jump to positions numbered with negative integers</li>
+ * 		</ul>
+ * 			<br>Given an array of integers <code>forbidden</code>, where <code>forbidden[i]</code> means that the bug cannot jump to the position <code>forbidden[i]</code>, and integers <code>a</code>, <code>b</code>, and <code>x</code>, return the minimum number of jumps needed for the bug to reach its home. If there is no possible sequence of jumps that lands the bug on position <code>x</code>, return -1</li>
+ * 		<li>Given an integer <code>n</code>, return the smallest <b>prime palindrome</b> greater than or equal to <code>n</code>.
+ * 			<br>An integer is <b>prime</b> if it has exactly two divisors: 1 and itself. Note that 1 is not a prime number.
+ *  		<br>For example, 2, 3, 5, 7, 11, and 13 are all primes.
+ * 			<br>An integer is a <b>palindrome</b> if it reads the same from left to right as it does from right to left.
+ *  		<br>For example, 101 and 12321 are palindromes.
+ * 			<br>The test cases are generated so that the answer always exists and is in the range <code>[2, 2 * 10<sup>8</sup>]</code></li>
+ * 		<li>Given an integer array and an integer <code>k</code>, return true if the array has a continuous sub-array of size at least two whose elements sum up to a multiple of <code>k</code>, or false otherwise.
+ * 			<br>An integer <code>x</code> is a multiple of <code>k</code> if there exists an integer <code>n</code> such that <code>x = n * k</code>. 0 is always a multiple of <code>k</code></li>
  * </ul>
  *
  * <br>
@@ -1272,34 +1394,6 @@ public class ArrayUtil
     	return true;
     }
 
-	/**
-	 * Search for the Target in a Rotated Array
-	 * 
-	 * @param numberArray The Rotated Number Array
-	 * @param target The Target
-	 * 
-	 * @return TRUE - The Number exists
-	 */
-
-	public static final boolean SearchRotatedArray (
-		final int[] numberArray,
-		final int target)
-	{
-		int arrayLength = numberArray.length;
-		int rightIndex = arrayLength - 1;
-		int midIndex = arrayLength / 2;
-
-		int pivotIndex = PivotIndex (numberArray, 0, midIndex);
-
-		if (-1 == pivotIndex) {
-			pivotIndex = PivotIndex (numberArray, midIndex + 1, arrayLength - 1);
-		}
-
-		return numberArray[rightIndex] < target ?
-			-1 != SearchPivotIndex (numberArray, target, 0, pivotIndex) :
-			-1 != SearchPivotIndex (numberArray, target, pivotIndex + 1, rightIndex);
-	}
-
     private static final void SumCountList (
 		final List<double[]> sumCountList,
 		final List<Double> numberList,
@@ -1357,6 +1451,34 @@ public class ArrayUtil
 
     	return false;
     }
+
+	/**
+	 * Search for the Target in a Rotated Array
+	 * 
+	 * @param numberArray The Rotated Number Array
+	 * @param target The Target
+	 * 
+	 * @return TRUE - The Number exists
+	 */
+
+	public static final boolean SearchRotatedArray (
+		final int[] numberArray,
+		final int target)
+	{
+		int arrayLength = numberArray.length;
+		int rightIndex = arrayLength - 1;
+		int midIndex = arrayLength / 2;
+
+		int pivotIndex = PivotIndex (numberArray, 0, midIndex);
+
+		if (-1 == pivotIndex) {
+			pivotIndex = PivotIndex (numberArray, midIndex + 1, arrayLength - 1);
+		}
+
+		return numberArray[rightIndex] < target ?
+			-1 != SearchPivotIndex (numberArray, target, 0, pivotIndex) :
+			-1 != SearchPivotIndex (numberArray, target, pivotIndex + 1, rightIndex);
+	}
 
 	/**
 	 * Given an array of n integers, find all unique triplets in the array which gives the sum of zero.
@@ -2059,10 +2181,6 @@ public class ArrayUtil
 	/**
 	 * Given an array of non-negative integers, you are initially positioned at the first index of the array.
 	 * 
-	 * Each element in the array represents your maximum jump length at that position.
-	 * 
-	 * Determine if you are able to reach the last index.
-	 * 
 	 * @param numberArray Array of non-negative Integers
 	 * 
 	 * @return TRUE - The Last Index can be reached.
@@ -2103,10 +2221,9 @@ public class ArrayUtil
 	}
 
 	/**
-	 * Given a 2D board and a word, find if the word exists in the grid.
-	 * 
-	 * The word can be constructed from letters of sequentially adjacent cell, where "adjacent" cells are
-	 *  those horizontally or vertically neighboring. The same letter cell may not be used more than once.
+	 * Given a 2D board and a word, find if the word exists in the grid. The word can be constructed from
+	 * 	letters of sequentially adjacent cell, where "adjacent" cells are those horizontally or vertically
+	 * 	neighboring. The same letter cell may not be used more than once.
 	 *  
 	 * @param boardGrid The Board Grid
 	 * @param word The Word
@@ -2189,9 +2306,6 @@ public class ArrayUtil
 	 * It is guaranteed that, for any possible valid input, each student will eventually receive their own
 	 *  year-book back and will never end up holding more than one year-book at a time.
 	 * 
-	 * You must compute a list of n integers output, whose ith element is equal to the number of signatures
-	 * 	that will be present in student i's year-book once they receive it back.
-
 	 * @param studentArray The Starting Array
 	 * 
 	 * @return The Signature Count Array
@@ -2256,8 +2370,7 @@ public class ArrayUtil
 
 		for (int i = 0; i < arrayLength; ++i) {
 			for (int j = 0; j < i; ++j) {
-				if (array[i] > array[j])
-				{
+				if (array[i] > array[j]) {
 					peakEncountered[j] = true;
 				} else if (!peakEncountered[j]) {
 					++subArrayCount[j];
@@ -2389,8 +2502,7 @@ public class ArrayUtil
 		int arrayLength = numberArray.length;
 		int[] nextGreaterElementArray = new int[arrayLength];
 
-		for (int i = 0; i < arrayLength; ++i)
-		{
+		for (int i = 0; i < arrayLength; ++i) {
 			int index = i + 1 == arrayLength ? 0 : i + 1;
 			int nextGreaterNumber = numberArray[i];
 
@@ -2502,12 +2614,10 @@ public class ArrayUtil
 	}
 
 	/**
-	 * Given an integer array numberArray and an integer k, modify the array by repeating it k times.
-	 * 
-	 * For example, if the array is [1, 2] and k = 3 then the modified array will be [1, 2, 1, 2, 1, 2].
-	 * 
-	 * Return the maximum sub-array sum in the modified array. Note that the length of the sub-array can be 0
-	 *  and its sum in that case is 0.
+	 * Given an integer array numberArray and an integer k, modify the array by repeating it k times. For
+	 * 	example, if the array is [1, 2] and k = 3 then the modified array will be [1, 2, 1, 2, 1, 2]. Return
+	 * 	the maximum sub-array sum in the modified array. Note that the length of the sub-array can be 0 and
+	 * 	its sum in that case is 0.
 	 * 
 	 * @param numberArray The Number Array
 	 * @param k The Repeat Count
@@ -3073,9 +3183,8 @@ public class ArrayUtil
 
 	/**
 	 * Given a list of integers and a target. There are 2 symbols + and -. For each integer, choose one from
-	 *  + and - as its new symbol.
-	 *  
-	 * Find out the ways to assign symbols to make sum of integers equal to target.
+	 *  + and - as its new symbol. Find out the ways to assign symbols to make sum of integers equal to
+	 *  target.
 	 * 
 	 * @param numberArray The Number Array
 	 * @param target The Sum Target
@@ -3287,9 +3396,7 @@ public class ArrayUtil
 
 	/**
 	 * Given a set of <i>non-overlapping</i> intervals, insert a new interval into the intervals (merge if
-	 * 	necessary).
-	 * 
-	 * Assume that the intervals were initially sorted according to their start times.
+	 * 	necessary). Assume that the intervals were initially sorted according to their start times.
 	 * 
 	 * @param intervalArray Array of the Sorted Intervals
 	 * @param newInterval The New Interval
@@ -3327,11 +3434,9 @@ public class ArrayUtil
 
 	/**
 	 * Given an array with n objects colored red, white, or blue, sort them in-place so that objects of the
-	 * 	same color are adjacent, with the colors in the order red, white and blue.
-	 * 
-	 * Here, use the integers 0, 1, and 2 to represent the color red, white, and blue respectively.
-	 * 
-	 * Note: You are not suppose to use the library's sort function for this problem.
+	 * 	same color are adjacent, with the colors in the order red, white and blue. Here, use the integers 0,
+	 * 	1, and 2 to represent the color red, white, and blue respectively. Note: You are not suppose to use
+	 * 	the library's sort function for this problem.
 	 * 
 	 * @param numberArray The Number Array
 	 */
@@ -3430,11 +3535,8 @@ public class ArrayUtil
 
 	/**
 	 * Given an array of integers sorted in ascending order, find the starting and ending position of a given
-	 *  target value.
-	 *  
-	 * The algorithm's runtime complexity must be in the order of <i>O(log n)</i>.
-	 * 
-	 * If the target is not found in the array, return [-1, -1].
+	 *  target value. The algorithm's runtime complexity must be in the order of <i>O(log n)</i>. If the
+	 *  target is not found in the array, return [-1, -1].
 	 * 
 	 * @param numberArray The Sorted Number Array
 	 * @param target The Target Number
@@ -3670,14 +3772,9 @@ public class ArrayUtil
 
     /**
      * Given an unsorted array return whether an increasing subsequence of length 3 exists or not in the
-     * 	array.
-     * 
-     * Formally the function should:
-     * 
-     * 	Return true if there exists <i>i, j, k</i> such that <i>arr[i] lt arr[j] lt arr[k]</i> given <i>0 le
-     * 		i lt j lt le ≤ n-1</i> else return false.
-     * 
-     * <b>Note</b>: Your algorithm should run in O(n) time complexity and O(1) space complexity.
+     * 	array. Formally, the function should return true if there exists <i>i, j, k</i> such that
+     * 	<i>arr[i] lt arr[j] lt arr[k]</i> given <i>0 le i lt j lt le ≤ n-1</i> else return false.
+     * 	<b>Note</b>: Your algorithm should run in O(n) time complexity and O(1) space complexity.
      * 
      * @param numberArray The Number Array
      * 
@@ -3964,9 +4061,8 @@ public class ArrayUtil
 
     /**
      * There are two sorted arrays of size m and n respectively. Find the median of the two sorted arrays.
-     *  The overall run time complexity should be <code>O(log (m+n))</code>
-     * 
-     * Assume arrays cannot be both empty.
+     *  The overall run time complexity should be <code>O(log (m+n))</code>. Assume arrays cannot be both
+     *  empty.
      * 
      * @param sortedArray1 Sorted Array #1
      * @param sortedArray2 Sorted Array #2
@@ -4030,10 +4126,8 @@ public class ArrayUtil
 
     /**
      * Given a n x n matrix where each of the rows and columns are sorted in ascending order, find the
-     *  k<sup>th</sup> smallest element in the matrix.
-     *  
-     * Note that it is the k<sup>th</sup> smallest element in the sorted order, not the k<sup>th</sup>
-     *  distinct element.
+     *  k<sup>th</sup> smallest element in the matrix. Note that it is the k<sup>th</sup> smallest element in
+     *  the sorted order, not the k<sup>th</sup> distinct element.
      * 
      * @param matrix The Matrix
      * @param k k<sup>th</sup> Element
@@ -4164,9 +4258,7 @@ public class ArrayUtil
      * Given an array of balloons, each balloon is painted with a number on it represented by array. You are
      *  asked to burst all the balloons. If the you burst balloon i you will get nums[left] * nums[i] *
      *  nums[right] coins. Here left and right are adjacent indices of i. After the burst, the left and right
-     *  then becomes adjacent.
-     *  
-     * Find the maximum coins you can collect by bursting the balloons wisely.
+     *  then becomes adjacent. Find the maximum coins you can collect by bursting the balloons wisely.
      * 
      * @param balloonCoinArray Balloon Coin Array
      * 
@@ -4290,11 +4382,10 @@ public class ArrayUtil
      *  by a list of a number of items for each supplier. As items are purchased, the supplier raises the
      *  price by 1 per item purchased. Let's assume Amazon's profit on any single item is the same as the
      *  number of items the supplier has left. For example, if a supplier has 4 items, company's profit on
-     *  the first item sold is 4, then 3, then 2 and the profit of the last one is 1.
-     *  
-     * Given a list where each value in the list is the number of the item at a given supplier and also given
-     *  the number of items to be ordered, write an algorithm to find the highest profit that can be
-     *  generated for the given product.
+     *  the first item sold is 4, then 3, then 2 and the profit of the last one is 1. Given a list where each
+     *  value in the list is the number of the item at a given supplier and also given the number of items to
+     *  be ordered, write an algorithm to find the highest profit that can be generated for the given
+     *  product.
      * 
      * @param inventoryArray The Number of Suppliers
      * @param orderCount The Order Count
@@ -4639,12 +4730,9 @@ public class ArrayUtil
      * A shopkeeper has a sale to complete and has arranged the items being sold in a list. Starting from the
      *  left, the shop keeper rings up each item at its full price less the price of the first lower or
      *  equally priced item to its right. If there is no item to the right that costs less than or equal to
-     *  the current item's price the current item is sold at full price.
-     * 
-     * Print total cost of all items.
-     * 
-     * Also print the list of integers representing the indexes of the non-discounted items in ascending
-     *  index order.
+     *  the current item's price the current item is sold at full price. Print total cost of all items. Also,
+     *  print the list of integers representing the indexes of the non-discounted items in ascending index
+     *  order.
      * 
      * @param priceArray Array of Item Prices
      * @param nonDiscountedItems List of Non-discounted Items
@@ -4682,9 +4770,8 @@ public class ArrayUtil
 
     /**
      * Given an integer array and an integer, return the length of the shortest non-empty sub-array with a
-     * 	sum of at least sum. If there is no such subarray, return -1.
-     *  
-     * A sub-array is a contiguous part of an array.
+     * 	sum of at least sum. If there is no such subarray, return -1. A sub-array is a contiguous part of an
+     * 	array.
      * 
      * @param numberArray Array of Numbers
      * @param sum The Target Sum
@@ -4860,10 +4947,8 @@ public class ArrayUtil
 
     /**
      * Given an array of integers, your task is to check if it could become non-decreasing by modifying <b>at
-     *  most one element</b>.
-     *  
-     * We define an array is non-decreasing if nums[i] le nums[i + 1] holds for every i (<b>0-based</b>) such
-     *  that (0 le i le n - 2).
+     *  most one element</b>. We define an array is non-decreasing if nums[i] le nums[i + 1] holds for every
+     *  i (<b>0-based</b>) such that (0 le i le n - 2).
      * 
      * @param numberArray Number Array
      * 
@@ -4900,9 +4985,8 @@ public class ArrayUtil
     /**
      * You are given an integer array of 2 * n integers. You need to partition it into <b>two</b> arrays of
      *  length n to <b>minimize the absolute difference</b> of the <b>sums</b> of the arrays. To partition
-     *  the array, put each element into <b>one</b> of the two arrays.
-     *  
-     * Return the <b>minimum</b> possible absolute difference.
+     *  the array, put each element into <b>one</b> of the two arrays. Return the <b>minimum</b> possible
+     *  absolute difference.
      * 
      * @param numberArray The Number Array
      * 
@@ -4960,13 +5044,16 @@ public class ArrayUtil
     	while (!locationStack.isEmpty()) {
     		int location = locationStack.pop();
 
-    		if (s.length() - 1 == location) return true;
+    		if (s.length() - 1 == location) {
+    			return true;
+    		}
 
     		visitedLocationSet.add (location);
 
     		for (int i = location + minJump; i <= location + maxJump; ++i) {
-    			if (i < s.length() && !visitedLocationSet.contains (i) && '0' == s.charAt (i))
+    			if (i < s.length() && !visitedLocationSet.contains (i) && '0' == s.charAt (i)) {
     				locationStack.add (i);
+    			}
     		}
     	}
 
@@ -4975,12 +5062,10 @@ public class ArrayUtil
 
     /**
      * Given an integer array numberArray and an integer k, modify the array by repeating it k times. For
-     *  example, if arr = [1, 2] and k = 3 then the modified array will be [1, 2, 1, 2, 1, 2].
-     *  
-     * Return the maximum sub-array sum in the modified array. Note that the length of the sub-array can be 0
-     *  and its sum in that case is 0.
-     *  
-     * As the answer can be very large, return the answer <b>modulo</b> 10<sup>9</sup> + 7.
+     *  example, if arr = [1, 2] and k = 3 then the modified array will be [1, 2, 1, 2, 1, 2]. Return the
+     *  maximum sub-array sum in the modified array. Note that the length of the sub-array can be 0 and its
+     *  sum in that case is 0. As the answer can be very large, return the answer <b>modulo</b>
+     *  10<sup>9</sup> + 7.
      * 
      * @param numberArray Number Array
      * @param k K
@@ -5000,7 +5085,9 @@ public class ArrayUtil
     		int newCurrentSum = currentMaxSum + numberArray[rawIndex % numberArray.length];
     		currentMaxSum = newCurrentSum > 0 ? newCurrentSum : 0;
 
-    		if (bestMaxSum < currentMaxSum) bestMaxSum = currentMaxSum;
+    		if (bestMaxSum < currentMaxSum) {
+    			bestMaxSum = currentMaxSum;
+    		}
 
     		++rawIndex;
     	}
@@ -5061,7 +5148,9 @@ public class ArrayUtil
     		int location = locationStack.pop();
 
     		if (target == location) {
-    			if (minimumJumpCount > jumpCount) minimumJumpCount = jumpCount;
+    			if (minimumJumpCount > jumpCount) {
+    				minimumJumpCount = jumpCount;
+    			}
 
     			break;
     		}
@@ -5074,7 +5163,8 @@ public class ArrayUtil
     		int rightLocation = location + a;
 
     		if (!IsJumpForbidden (forbiddenLocationArray, rightLocation) &&
-    			!visitedLocationSet.contains (rightLocation)) {
+    			!visitedLocationSet.contains (rightLocation))
+    		{
     			locationStack.push (rightLocation);
 
     			jumpDirectionStack.push (false);
@@ -5082,8 +5172,11 @@ public class ArrayUtil
     			jumpCountStack.push (jumpCount + 1);
     		}
 
-    		if (leftLocation >= 0 && !previousJumpBack && !IsJumpForbidden (forbiddenLocationArray, leftLocation) &&
-    			!visitedLocationSet.contains (leftLocation)) {
+    		if (0 <= leftLocation &&
+				!previousJumpBack &&
+				!IsJumpForbidden (forbiddenLocationArray, leftLocation) &&
+    			!visitedLocationSet.contains (leftLocation))
+    		{
     			locationStack.push (leftLocation);
 
     			jumpDirectionStack.push (true);
@@ -5125,8 +5218,9 @@ public class ArrayUtil
 
     	int nextNumber = number + 1;
 
-    	while (!IsPrime (primeSet, nextNumber))
+    	while (!IsPrime (primeSet, nextNumber)) {
     		++nextNumber;
+    	}
 
     	return nextNumber;
     }
@@ -5158,32 +5252,17 @@ public class ArrayUtil
     		sum = sum + numberArray[i];
     		int remainder = sum % k;
 
-    		if (remainderSet.contains (remainder)) return true;
+    		if (remainderSet.contains (remainder)) {
+    			return true;
+    		}
 
-    		if (0 != i) remainderSet.add (previousRemainder);
+    		if (0 != i) {
+    			remainderSet.add (previousRemainder);
+    		}
 
     		previousRemainder = remainder;
     	}
 
     	return remainderSet.contains (0);
     }
-
-    /**
-     * Entry Point
-     * 
-     * @param argumentArray Argument Array
-     * 
-     * @throws Exception Thrown if Exception Encountered
-     */
-
-    public static final void main (
-		final String[] argumentArray)
-		throws Exception
-	{
-    	System.out.println (ContinuousSubarraySumMod (new int[] {23, 2, 4, 6, 7}, 6));
-
-    	System.out.println (ContinuousSubarraySumMod (new int[] {23, 2, 6, 4, 7}, 6));
-
-    	System.out.println (ContinuousSubarraySumMod (new int[] {23, 2, 6, 4, 7}, 13));
-	}
 }
