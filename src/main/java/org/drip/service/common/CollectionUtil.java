@@ -1,12 +1,20 @@
 
 package org.drip.service.common;
 
+import java.util.List;
+import java.util.Map;
+import java.util.TreeSet;
+
+import org.drip.analytics.support.CaseInsensitiveTreeMap;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -85,8 +93,8 @@ package org.drip.service.common;
  */
 
 /**
- * <i>CollectionUtil</i> implements generic utility functions used in DROP modules. Some of the functions it
- * exposes are:
+ * <i>CollectionUtil</i> implements generic utility functions used in DROP modules. It provides the
+ *	following Functions:
  * 
  * <br><br>
  *  <ul>
@@ -110,45 +118,47 @@ package org.drip.service.common;
  *  	</li>
  *  </ul>
  * 
- * <br><br>
- *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md">Numerical Analysis Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/README.md">Environment, Product/Definition Containers, and Scenario/State Manipulation APIs</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/common">Assorted Data Structures Support Utilities</a></li>
- *  </ul>
- * <br><br>
+ * <br>
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationSupportLibrary.md">Computation Support</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/README.md">Environment, Product/Definition Containers, and Scenario/State Manipulation APIs</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/common/README.md">Assorted Data Structures Support Utilities</a></td></tr>
+ *  </table>
+ * <br>
  * 
  * @author Lakshmi Krishnamurthy
  */
 
-public class CollectionUtil {
+public class CollectionUtil
+{
 
 	/**
 	 * Prefix the keys in the input map, and return them in a new map
 	 * 
-	 * @param mapIn Input map
-	 * @param strPrefix The prefix
+	 * @param inputMap Input map
+	 * @param prefix The prefix
 	 * 
 	 * @return Map containing the prefixed entries
 	 */
 
-	public static final org.drip.analytics.support.CaseInsensitiveTreeMap<java.lang.Double> PrefixKeys (
-		final org.drip.analytics.support.CaseInsensitiveTreeMap<java.lang.Double> mapIn,
-		final java.lang.String strPrefix)
+	public static final CaseInsensitiveTreeMap<Double> PrefixKeys (
+		final CaseInsensitiveTreeMap<Double> inputMap,
+		final String prefix)
 	{
-		if (null == mapIn || null == mapIn.entrySet() || null == strPrefix || strPrefix.isEmpty())
+		if (null == inputMap || null == inputMap.entrySet() || null == prefix || prefix.isEmpty()) {
 			return null;
-
-		org.drip.analytics.support.CaseInsensitiveTreeMap<java.lang.Double> mapOut = new
-			org.drip.analytics.support.CaseInsensitiveTreeMap<java.lang.Double>();
-
-		for (java.util.Map.Entry<java.lang.String, java.lang.Double> me : mapIn.entrySet()) {
-			if (null != me.getKey() && !me.getKey().isEmpty())
-				mapOut.put (strPrefix + me.getKey(), me.getValue());
 		}
 
-		return mapOut;
+		CaseInsensitiveTreeMap<Double> outputMap = new CaseInsensitiveTreeMap<Double>();
+
+		for (Map.Entry<String, Double> inputMapEntry : inputMap.entrySet()) {
+			if (null != inputMapEntry.getKey() && !inputMapEntry.getKey().isEmpty()) {
+				outputMap.put (prefix + inputMapEntry.getKey(), inputMapEntry.getValue());
+			}
+		}
+
+		return outputMap;
 	}
 
 	/**
@@ -160,9 +170,9 @@ public class CollectionUtil {
 	 * @return The merged map
 	 */
 
-	public static final org.drip.analytics.support.CaseInsensitiveTreeMap<java.lang.Double> MergeMaps (
-		final org.drip.analytics.support.CaseInsensitiveTreeMap<java.lang.Double> map1,
-		final org.drip.analytics.support.CaseInsensitiveTreeMap<java.lang.Double> map2)
+	public static final CaseInsensitiveTreeMap<Double> MergeMaps (
+		final CaseInsensitiveTreeMap<Double> map1,
+		final CaseInsensitiveTreeMap<Double> map2)
 	{
 		if (null == map1 && null == map2) return null;
 
@@ -170,13 +180,13 @@ public class CollectionUtil {
 
 		if (null != map1 && null == map2) return map1;
 
-		org.drip.analytics.support.CaseInsensitiveTreeMap<java.lang.Double> mapOut = new
-			org.drip.analytics.support.CaseInsensitiveTreeMap<java.lang.Double>();
+		CaseInsensitiveTreeMap<Double> mapOut = new
+			CaseInsensitiveTreeMap<Double>();
 
-		for (java.util.Map.Entry<java.lang.String, java.lang.Double> me : map1.entrySet())
+		for (Map.Entry<String, Double> me : map1.entrySet())
 			mapOut.put (me.getKey(), me.getValue());
 
-		for (java.util.Map.Entry<java.lang.String, java.lang.Double> me : map2.entrySet())
+		for (Map.Entry<String, Double> me : map2.entrySet())
 			mapOut.put (me.getKey(), me.getValue());
 
 		return mapOut;
@@ -192,14 +202,14 @@ public class CollectionUtil {
 	 */
 
 	public static final boolean MergeWithMain (
-		final org.drip.analytics.support.CaseInsensitiveTreeMap<java.lang.Double> mapMain,
-		final org.drip.analytics.support.CaseInsensitiveTreeMap<java.lang.Double> mapToAdd)
+		final CaseInsensitiveTreeMap<Double> mapMain,
+		final CaseInsensitiveTreeMap<Double> mapToAdd)
 	{
 		if (null == mapMain || null == mapMain.entrySet() || null == mapToAdd || null ==
 			mapToAdd.entrySet())
 			return false;
 
-		for (java.util.Map.Entry<java.lang.String, java.lang.Double> me : mapToAdd.entrySet())
+		for (Map.Entry<String, Double> me : mapToAdd.entrySet())
 			mapMain.put (me.getKey(), me.getValue());
 
 		return true;
@@ -215,10 +225,10 @@ public class CollectionUtil {
 	 * @return Flattened map string
 	 */
 
-	public static final java.lang.String TwoDSDMapToFlatString (
-		final org.drip.analytics.support.CaseInsensitiveTreeMap<java.lang.Double> map2DSD,
-		final java.lang.String strKVDelimiter,
-		final java.lang.String strRecordDelimiter)
+	public static final String TwoDSDMapToFlatString (
+		final CaseInsensitiveTreeMap<Double> map2DSD,
+		final String strKVDelimiter,
+		final String strRecordDelimiter)
 	{
 		if (null == map2DSD || 0 == map2DSD.size() || null == map2DSD.entrySet() || null == strKVDelimiter ||
 			strKVDelimiter.isEmpty() || null == strRecordDelimiter || strRecordDelimiter.isEmpty())
@@ -226,9 +236,9 @@ public class CollectionUtil {
 
 		boolean bFirstEntry = true;
 
-		java.lang.StringBuffer sb = new java.lang.StringBuffer();
+		StringBuffer sb = new StringBuffer();
 
-		for (java.util.Map.Entry<java.lang.String, java.lang.Double> me : map2DSD.entrySet()) {
+		for (Map.Entry<String, Double> me : map2DSD.entrySet()) {
 			if (null == me || null == me.getKey() || me.getKey().isEmpty()) continue;
 
 			if (bFirstEntry)
@@ -253,13 +263,13 @@ public class CollectionUtil {
 	 * @return Flattened String
 	 */
 
-	public static final java.lang.String ThreeDSDMapToFlatString (
+	public static final String ThreeDSDMapToFlatString (
 		final
-			org.drip.analytics.support.CaseInsensitiveTreeMap<org.drip.analytics.support.CaseInsensitiveTreeMap<java.lang.Double>>
+			CaseInsensitiveTreeMap<CaseInsensitiveTreeMap<Double>>
 				map3DSD,
-		final java.lang.String strMultiLevelKeyDelimiter,
-		final java.lang.String strKVDelimiter,
-		final java.lang.String strRecordDelimiter)
+		final String strMultiLevelKeyDelimiter,
+		final String strKVDelimiter,
+		final String strRecordDelimiter)
 	{
 		if (null == map3DSD || 0 == map3DSD.size() || null == map3DSD.entrySet() || null ==
 			strMultiLevelKeyDelimiter || strMultiLevelKeyDelimiter.isEmpty() || null == strKVDelimiter ||
@@ -268,13 +278,13 @@ public class CollectionUtil {
 
 		boolean bFirstEntry = true;
 
-		java.lang.StringBuffer sb = new java.lang.StringBuffer();
+		StringBuffer sb = new StringBuffer();
 
-		for (java.util.Map.Entry<java.lang.String,
-			org.drip.analytics.support.CaseInsensitiveTreeMap<java.lang.Double>> meOut : map3DSD.entrySet()) {
+		for (Map.Entry<String,
+			CaseInsensitiveTreeMap<Double>> meOut : map3DSD.entrySet()) {
 			if (null == meOut || null == meOut.getValue() || null == meOut.getValue().entrySet()) continue;
 
-			for (java.util.Map.Entry<java.lang.String, java.lang.Double> meIn : meOut.getValue().entrySet())
+			for (Map.Entry<String, Double> meIn : meOut.getValue().entrySet())
 			{
 				if (null == meIn || null == meIn.getKey() || meIn.getKey().isEmpty()) continue;
 
@@ -302,13 +312,13 @@ public class CollectionUtil {
 	 * @return Flattened String
 	 */
 
-	public static final java.lang.String FourDSDMapToFlatString (
+	public static final String FourDSDMapToFlatString (
 		final
-			org.drip.analytics.support.CaseInsensitiveTreeMap<org.drip.analytics.support.CaseInsensitiveTreeMap<org.drip.analytics.support.CaseInsensitiveTreeMap<java.lang.Double>>>
+			CaseInsensitiveTreeMap<CaseInsensitiveTreeMap<CaseInsensitiveTreeMap<Double>>>
 				map4DSD,
-		final java.lang.String strMultiLevelKeyDelimiter,
-		final java.lang.String strKVDelimiter,
-		final java.lang.String strRecordDelimiter)
+		final String strMultiLevelKeyDelimiter,
+		final String strKVDelimiter,
+		final String strRecordDelimiter)
 	{
 		if (null == map4DSD || 0 == map4DSD.size() || null == map4DSD.entrySet() || null ==
 			strMultiLevelKeyDelimiter || strMultiLevelKeyDelimiter.isEmpty() || null == strKVDelimiter ||
@@ -317,22 +327,22 @@ public class CollectionUtil {
 
 		boolean bFirstEntry = true;
 
-		java.lang.StringBuffer sb = new java.lang.StringBuffer();
+		StringBuffer sb = new StringBuffer();
 
-		for (java.util.Map.Entry<java.lang.String,org.drip.analytics.support.CaseInsensitiveTreeMap<org.drip.analytics.support.CaseInsensitiveTreeMap<java.lang.Double>>>
+		for (Map.Entry<String,CaseInsensitiveTreeMap<CaseInsensitiveTreeMap<Double>>>
 			meOut : map4DSD.entrySet()) {
 			if (null == meOut || null == meOut.getValue() || null == meOut.getValue().entrySet() || null ==
 				meOut.getKey() || meOut.getKey().isEmpty())
 				continue;
 
-			for (java.util.Map.Entry<java.lang.String,
-				org.drip.analytics.support.CaseInsensitiveTreeMap<java.lang.Double>> meIn :
+			for (Map.Entry<String,
+				CaseInsensitiveTreeMap<Double>> meIn :
 					meOut.getValue().entrySet()) {
 				if (null == meIn || null == meIn.getValue() || null == meIn.getValue().entrySet() || null ==
 					meIn.getKey() || meIn.getKey().isEmpty())
 					continue;
 
-				for (java.util.Map.Entry<java.lang.String, java.lang.Double> me : meIn.getValue().entrySet())
+				for (Map.Entry<String, Double> me : meIn.getValue().entrySet())
 				{
 					if (null == me || null == me.getKey() || me.getKey().isEmpty()) continue;
 
@@ -362,33 +372,33 @@ public class CollectionUtil {
 	 * @return [String, double] map
 	 */
 
-	public static final org.drip.analytics.support.CaseInsensitiveTreeMap<java.lang.Double>
+	public static final CaseInsensitiveTreeMap<Double>
 		FlatStringTo2DSDMap (
-			final java.lang.String str2DMap,
-			final java.lang.String strKVDelimiter,
-			final java.lang.String strRecordDelimiter,
+			final String str2DMap,
+			final String strKVDelimiter,
+			final String strRecordDelimiter,
 			final boolean bSkipNullValue,
-			final java.lang.String strNULLString)
+			final String strNULLString)
 	{
 		if (null == str2DMap || str2DMap.isEmpty() || null == strNULLString || strNULLString.isEmpty() ||
 			strNULLString.equalsIgnoreCase (str2DMap) || null == strKVDelimiter || strKVDelimiter.isEmpty()
 				|| null == strRecordDelimiter || strRecordDelimiter.isEmpty())
 			return null;
 
-		java.lang.String[] astrRecord = org.drip.service.common.StringUtil.Split (str2DMap,
+		String[] astrRecord = org.drip.service.common.StringUtil.Split (str2DMap,
 			strRecordDelimiter);
 
 		if (null == astrRecord || 0 == astrRecord.length) return null;
 
-		org.drip.analytics.support.CaseInsensitiveTreeMap<java.lang.Double> map2D = new
-			org.drip.analytics.support.CaseInsensitiveTreeMap<java.lang.Double>();
+		CaseInsensitiveTreeMap<Double> map2D = new
+			CaseInsensitiveTreeMap<Double>();
 
 		for (int i = 0; i < astrRecord.length; ++i) {
 			if (null == astrRecord[i] || astrRecord[i].isEmpty() || strNULLString.equalsIgnoreCase
 				(astrRecord[i]))
 				continue;
 
-			java.lang.String[] astrKVPair = org.drip.service.common.StringUtil.Split (astrRecord[i],
+			String[] astrKVPair = org.drip.service.common.StringUtil.Split (astrRecord[i],
 				strKVDelimiter);
 			
 			if (null == astrKVPair || 2 != astrKVPair.length || null == astrKVPair[0] ||
@@ -397,7 +407,7 @@ public class CollectionUtil {
 						(astrKVPair[1]))))
 				continue;
 
-			map2D.put (astrKVPair[0], java.lang.Double.parseDouble (astrKVPair[1]));
+			map2D.put (astrKVPair[0], Double.parseDouble (astrKVPair[1]));
 		}
 
 		if (0 == map2D.size()) return null;
@@ -419,32 +429,32 @@ public class CollectionUtil {
 	 */
 
 	public static final
-		org.drip.analytics.support.CaseInsensitiveTreeMap<org.drip.analytics.support.CaseInsensitiveTreeMap<java.lang.Double>>
+		CaseInsensitiveTreeMap<CaseInsensitiveTreeMap<Double>>
 			FlatStringTo3DSDMap (
-				final java.lang.String str3DMap,
-				final java.lang.String strMultiLevelKeyDelimiter,
-				final java.lang.String strKVDelimiter,
-				final java.lang.String strRecordDelimiter,
+				final String str3DMap,
+				final String strMultiLevelKeyDelimiter,
+				final String strKVDelimiter,
+				final String strRecordDelimiter,
 				final boolean bSkipNullValue,
-				final java.lang.String strNULLString)
+				final String strNULLString)
 	{
 		if (null == str3DMap || str3DMap.isEmpty() || null == strNULLString || strNULLString.isEmpty() ||
 			strNULLString.equalsIgnoreCase (str3DMap) || null == strKVDelimiter || strKVDelimiter.isEmpty()
 				|| null == strRecordDelimiter || strRecordDelimiter.isEmpty())
 			return null;
 
-		java.lang.String[] astrRecord = org.drip.service.common.StringUtil.Split (str3DMap, strRecordDelimiter);
+		String[] astrRecord = org.drip.service.common.StringUtil.Split (str3DMap, strRecordDelimiter);
 
 		if (null == astrRecord || 0 == astrRecord.length) return null;
 
-		org.drip.analytics.support.CaseInsensitiveTreeMap<org.drip.analytics.support.CaseInsensitiveTreeMap<java.lang.Double>>
+		CaseInsensitiveTreeMap<CaseInsensitiveTreeMap<Double>>
 			map3D = new
-				org.drip.analytics.support.CaseInsensitiveTreeMap<org.drip.analytics.support.CaseInsensitiveTreeMap<java.lang.Double>>();
+				CaseInsensitiveTreeMap<CaseInsensitiveTreeMap<Double>>();
 
 		for (int i = 0; i < astrRecord.length; ++i) {
 			if (null == astrRecord[i] || astrRecord[i].isEmpty()) continue;
 
-			java.lang.String[] astrKVPair = org.drip.service.common.StringUtil.Split (astrRecord[i], strKVDelimiter);
+			String[] astrKVPair = org.drip.service.common.StringUtil.Split (astrRecord[i], strKVDelimiter);
 			
 			if (null == astrKVPair || 2 != astrKVPair.length || null == astrKVPair[0] ||
 				astrKVPair[0].isEmpty() || strNULLString.equalsIgnoreCase (astrKVPair[0]) || (bSkipNullValue
@@ -452,7 +462,7 @@ public class CollectionUtil {
 						(astrKVPair[1]))))
 				continue;
 
-			java.lang.String[] astrKeySet = org.drip.service.common.StringUtil.Split (astrKVPair[0],
+			String[] astrKeySet = org.drip.service.common.StringUtil.Split (astrKVPair[0],
 				strMultiLevelKeyDelimiter);
 			
 			if (null == astrKeySet || 2 != astrKeySet.length || null == astrKeySet[0] ||
@@ -461,13 +471,13 @@ public class CollectionUtil {
 						(astrKeySet[1]))
 				continue;
 
-			org.drip.analytics.support.CaseInsensitiveTreeMap<java.lang.Double> map2D = map3D.get
+			CaseInsensitiveTreeMap<Double> map2D = map3D.get
 				(astrKeySet[0]);
 
 			if (null == map2D)
-				map2D = new org.drip.analytics.support.CaseInsensitiveTreeMap<java.lang.Double>();
+				map2D = new CaseInsensitiveTreeMap<Double>();
 
-			map2D.put (astrKeySet[1], java.lang.Double.parseDouble (astrKVPair[1]));
+			map2D.put (astrKeySet[1], Double.parseDouble (astrKVPair[1]));
 
 			map3D.put (astrKeySet[0], map2D);
 		}
@@ -491,34 +501,34 @@ public class CollectionUtil {
 	 */
 
 	public static final
-		org.drip.analytics.support.CaseInsensitiveTreeMap<org.drip.analytics.support.CaseInsensitiveTreeMap<org.drip.analytics.support.CaseInsensitiveTreeMap<java.lang.Double>>>
+		CaseInsensitiveTreeMap<CaseInsensitiveTreeMap<CaseInsensitiveTreeMap<Double>>>
 			FlatStringTo4DSDMap (
-				final java.lang.String str4DMap,
-				final java.lang.String strMultiLevelKeyDelimiter,
-				final java.lang.String strKVDelimiter,
-				final java.lang.String strRecordDelimiter,
+				final String str4DMap,
+				final String strMultiLevelKeyDelimiter,
+				final String strKVDelimiter,
+				final String strRecordDelimiter,
 				final boolean bSkipNullValue,
-				final java.lang.String strNULLString)
+				final String strNULLString)
 	{
 		if (null == str4DMap || str4DMap.isEmpty() || null == strNULLString || strNULLString.isEmpty() ||
 			strNULLString.equalsIgnoreCase (str4DMap) || null == strKVDelimiter || strKVDelimiter.isEmpty()
 				|| null == strRecordDelimiter || strRecordDelimiter.isEmpty())
 			return null;
 
-		java.lang.String[] astrRecord = org.drip.service.common.StringUtil.Split (str4DMap, strRecordDelimiter);
+		String[] astrRecord = org.drip.service.common.StringUtil.Split (str4DMap, strRecordDelimiter);
 
 		if (null == astrRecord || 0 == astrRecord.length) return null;
 
-		org.drip.analytics.support.CaseInsensitiveTreeMap<org.drip.analytics.support.CaseInsensitiveTreeMap<org.drip.analytics.support.CaseInsensitiveTreeMap<java.lang.Double>>>
+		CaseInsensitiveTreeMap<CaseInsensitiveTreeMap<CaseInsensitiveTreeMap<Double>>>
 			map4D = new
-				org.drip.analytics.support.CaseInsensitiveTreeMap<org.drip.analytics.support.CaseInsensitiveTreeMap<org.drip.analytics.support.CaseInsensitiveTreeMap<java.lang.Double>>>();
+				CaseInsensitiveTreeMap<CaseInsensitiveTreeMap<CaseInsensitiveTreeMap<Double>>>();
 
 		for (int i = 0; i < astrRecord.length; ++i) {
 			if (null == astrRecord[i] || astrRecord[i].isEmpty() || strNULLString.equalsIgnoreCase
 				(astrRecord[i]))
 				continue;
 
-			java.lang.String[] astrKVPairOut = org.drip.service.common.StringUtil.Split (astrRecord[i],
+			String[] astrKVPairOut = org.drip.service.common.StringUtil.Split (astrRecord[i],
 				strKVDelimiter);
 			
 			if (null == astrKVPairOut || 2 != astrKVPairOut.length || null == astrKVPairOut[0] ||
@@ -527,7 +537,7 @@ public class CollectionUtil {
 						strNULLString.equalsIgnoreCase (astrKVPairOut[1]))))
 				continue;
 
-			java.lang.String[] astrKeySet = org.drip.service.common.StringUtil.Split (astrKVPairOut[0],
+			String[] astrKeySet = org.drip.service.common.StringUtil.Split (astrKVPairOut[0],
 				strMultiLevelKeyDelimiter);
 			
 			if (null == astrKeySet || 3 != astrKeySet.length || null == astrKeySet[0] ||
@@ -537,20 +547,20 @@ public class CollectionUtil {
 							strNULLString.equalsIgnoreCase (astrKeySet[2]))
 				continue;
 
-			org.drip.analytics.support.CaseInsensitiveTreeMap<org.drip.analytics.support.CaseInsensitiveTreeMap<java.lang.Double>>
+			CaseInsensitiveTreeMap<CaseInsensitiveTreeMap<Double>>
 				map3D = map4D.get (astrKeySet[0]);
 
 			if (null == map3D)
 				map3D = new
-					org.drip.analytics.support.CaseInsensitiveTreeMap<org.drip.analytics.support.CaseInsensitiveTreeMap<java.lang.Double>>();
+					CaseInsensitiveTreeMap<CaseInsensitiveTreeMap<Double>>();
 
-			org.drip.analytics.support.CaseInsensitiveTreeMap<java.lang.Double> map2D = map3D.get
+			CaseInsensitiveTreeMap<Double> map2D = map3D.get
 				(astrKeySet[1]);
 
 			if (null == map2D)
-				map2D = new org.drip.analytics.support.CaseInsensitiveTreeMap<java.lang.Double>();
+				map2D = new CaseInsensitiveTreeMap<Double>();
 
-			map2D.put (astrKeySet[2], java.lang.Double.parseDouble (astrKVPairOut[1]));
+			map2D.put (astrKeySet[2], Double.parseDouble (astrKVPairOut[1]));
 
 			map3D.put (astrKeySet[1], map2D);
 
@@ -594,7 +604,7 @@ public class CollectionUtil {
 	 */
 
 	public static final org.drip.numerical.differentiation.WengertJacobian AppendWengert (
-		final java.util.List<org.drip.numerical.differentiation.WengertJacobian> lsWJ)
+		final List<org.drip.numerical.differentiation.WengertJacobian> lsWJ)
 	{
 		if (null == lsWJ || 0 == lsWJ.size()) return null;
 
@@ -607,7 +617,7 @@ public class CollectionUtil {
 
 		try {
 			wjCombined = new org.drip.numerical.differentiation.WengertJacobian (1, iNumQuote);
-		} catch (java.lang.Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 
 			return null;
@@ -623,7 +633,7 @@ public class CollectionUtil {
 					if (!wjCombined.accumulatePartialFirstDerivative (0, iQuoteCursor++, wj.firstDerivative
 						(0, i)))
 						return null;
-				} catch (java.lang.Exception e) {
+				} catch (Exception e) {
 					e.printStackTrace();
 
 					return null;
@@ -653,7 +663,7 @@ public class CollectionUtil {
 	{
 		if (0 == t) return true;
 
-		java.util.TreeSet<Integer> slidingWindowSet = new java.util.TreeSet<Integer>();
+		TreeSet<Integer> slidingWindowSet = new TreeSet<Integer>();
 
 		for (int i = 0; i < numberArray.length; ++i) {
 			Integer floor = slidingWindowSet.floor (numberArray[i]);
