@@ -413,9 +413,9 @@ public class ArrayUtil
     	List<int[]> nondecreasingSequenceList = new ArrayList<int[]>();
 
     	for (int i = 1; i < numberArray.length; ++i) {
-    		if (numberArray[i] >= numberArray[i - 1])
+    		if (numberArray[i] >= numberArray[i - 1]) {
     			++rightIndex;
-    		else {
+    		} else {
     			nondecreasingSequenceList.add (new int[] {leftIndex, rightIndex});
 
     			rightIndex = i;
@@ -1209,6 +1209,69 @@ public class ArrayUtil
     	return false;
     }
 
+    private static final int NumberFromDigitArray (
+		final int[] numberArray,
+		final int startIndex,
+		final int endIndex)
+    {
+    	int number = 0;
+
+    	for (int index = startIndex; index <= endIndex; ++index) {
+    		number = 10 * number + numberArray[index];
+    	}
+
+    	return number;
+    }
+
+    private static final int CountWaysToSeparate (
+		final int[] numberArray,
+		final int currentIndex,
+		final int previousNumber)
+    {
+    	int countWaysToSeparate = 1;
+
+    	if (currentIndex >= numberArray.length) {
+    		return 0;
+    	}
+
+    	if (currentIndex == numberArray.length - 1) {
+    		return numberArray[currentIndex] >= previousNumber ? 1 : 0;
+    	}
+
+    	for (int index = currentIndex; index < numberArray.length; ++index) {
+    		int nextCandidateNumber = NumberFromDigitArray (numberArray, index + 1, numberArray.length - 1);
+
+    		if (previousNumber > nextCandidateNumber) {
+    			continue;
+    		}
+
+    		countWaysToSeparate = countWaysToSeparate + CountWaysToSeparate (
+				numberArray,
+				index + 1,
+				nextCandidateNumber
+			);
+    	}
+
+    	return countWaysToSeparate;
+    }
+
+    private static final boolean PartitionAroundMean (
+		double[] numberArray,
+		final List<Double> numberLeftOfAverage,
+		final List<Double> numberRightOfAverage,
+		final double average)
+    {
+    	for (double number : numberArray) {
+    		if (number < average) {
+    			numberLeftOfAverage.add (number);
+    		} else if (number > average) {
+    			numberRightOfAverage.add (number);
+    		}
+    	}
+
+    	return true;
+    }
+
 	/**
 	 * Search for the Target in a Rotated Array
 	 * 
@@ -1236,6 +1299,64 @@ public class ArrayUtil
 			-1 != SearchPivotIndex (numberArray, target, 0, pivotIndex) :
 			-1 != SearchPivotIndex (numberArray, target, pivotIndex + 1, rightIndex);
 	}
+
+    private static final void SumCountList (
+		final List<double[]> sumCountList,
+		final List<Double> numberList,
+		final int startIndex)
+    {
+    	int numberListSize = numberList.size();
+
+    	if (startIndex >= numberListSize) {
+    		return;
+    	}
+
+    	double count = 1.;
+
+    	double sum = numberList.get (startIndex);
+
+    	sumCountList.add (new double[] {sum, count});
+
+    	for (int i = startIndex + 1; i < numberListSize; ++i) {
+    		sumCountList.add (new double[] {sum += numberList.get (i), count = count + 1});
+    	}
+
+    	SumCountList (sumCountList, numberList, startIndex + 1);
+    }
+
+    private static final boolean IsSplittable (
+    	final List<double[]> leftSumCountList,
+    	final List<double[]> rightSumCountList,
+    	final double average)
+    {
+    	int leftSumCountSize = leftSumCountList.size();
+
+    	int rightSumCountSize = rightSumCountList.size();
+
+    	for (int i = 0; i < leftSumCountSize; ++i) {
+    		double[] leftSumCount = leftSumCountList.get (i);
+
+    		double leftCount = leftSumCount[1];
+    		double leftSum = leftSumCount[0];
+
+    		for (int j = 0; j < rightSumCountSize; ++j) {
+    			if (leftSumCountSize - 1 == i && rightSumCountSize - 1 == j) {
+    				break;
+    			}
+
+        		double[] rightSumCount = rightSumCountList.get (i);
+
+        		double rightCount = rightSumCount[1];
+        		double rightSum = rightSumCount[0];
+
+        		if (leftSum + rightSum == average * (leftCount + rightCount)) {
+        			return true;
+        		}
+        	}
+    	}
+
+    	return false;
+    }
 
 	/**
 	 * Given an array of n integers, find all unique triplets in the array which gives the sum of zero.
@@ -4560,15 +4681,15 @@ public class ArrayUtil
     }
 
     /**
-     * Given an integer array and an integer, return the length of the shortest non-empty subarray with a sum
-     *  of at least sum. If there is no such subarray, return -1.
+     * Given an integer array and an integer, return the length of the shortest non-empty sub-array with a
+     * 	sum of at least sum. If there is no such subarray, return -1.
      *  
-     * A subarray is a contiguous part of an array.
+     * A sub-array is a contiguous part of an array.
      * 
      * @param numberArray Array of Numbers
      * @param sum The Target Sum
      * 
-     * @return Size of the Shortest Subarray
+     * @return Size of the Shortest Sub-array
      */
 
     public static final int ShortestSubarrayAtLeastSum (
@@ -4583,17 +4704,22 @@ public class ArrayUtil
     	while (rightIndex < numberArray.length) {
     		currentSum = currentSum + numberArray[rightIndex];
 
-    		if (currentSum < sum)
+    		if (currentSum < sum) {
     			++rightIndex;
-    		else {
-    			while (leftIndex < rightIndex && currentSum >= sum) 
+    		} else {
+    			while (leftIndex < rightIndex && currentSum >= sum) {
     				currentSum = currentSum - numberArray[leftIndex++];
+    			}
 
-    			if (currentSum < sum) --leftIndex;
+    			if (currentSum < sum) {
+    				--leftIndex;
+    			}
 
     			int currentLength = rightIndex - leftIndex + 1;
 
-    			if (currentLength < shortestLength) shortestLength = currentLength;
+    			if (currentLength < shortestLength) {
+    				shortestLength = currentLength;
+    			}
 
     			leftIndex = ++rightIndex;
     			currentSum = 0;
@@ -4601,36 +4727,6 @@ public class ArrayUtil
     	}
 
     	return Integer.MAX_VALUE == shortestLength ? -1 : shortestLength;
-    }
-
-    private static final int NumberFromDigitArray (int[] numberArray, int startIndex, int endIndex)
-    {
-    	int number = 0;
-
-    	for (int index = startIndex; index <= endIndex; ++index)
-    		number = 10 * number + numberArray[index];
-
-    	return number;
-    }
-
-    private static final int CountWaysToSeparate (int[] numberArray, int currentIndex, int previousNumber)
-    {
-    	int countWaysToSeparate = 1;
-
-    	if (currentIndex >= numberArray.length) return 0;
-
-    	if (currentIndex == numberArray.length - 1)
-    		return numberArray[currentIndex] >= previousNumber ? 1 : 0;
-
-    	for (int index = currentIndex; index < numberArray.length; ++index) {
-    		int nextCandidateNumber = NumberFromDigitArray (numberArray, index + 1, numberArray.length - 1);
-
-    		if (previousNumber > nextCandidateNumber) continue;
-
-    		countWaysToSeparate = countWaysToSeparate + CountWaysToSeparate (numberArray, index + 1, nextCandidateNumber);
-    	}
-
-    	return countWaysToSeparate;
     }
 
     /**
@@ -4641,9 +4737,12 @@ public class ArrayUtil
      * @return Number of Ways to Separate the Number
      */
 
-    public static final int CountWaysToSeparate (final String numberStr)
+    public static final int CountWaysToSeparate (
+		final String numberStr)
     {
-    	if (null == numberStr || numberStr.isEmpty()) return 0;
+    	if (null == numberStr || numberStr.isEmpty()) {
+    		return 0;
+    	}
 
     	int[] digitArray = new int[numberStr.length()];
 
@@ -4657,72 +4756,6 @@ public class ArrayUtil
     	return 1 + CountWaysToSeparate (digitArray, 1, digitArray[0]);
     }
 
-    private static final boolean PartitionAroundMean (
-		double[] numberArray,
-		List<Double> numberLeftOfAverage,
-		List<Double> numberRightOfAverage,
-		final double average)
-    {
-    	for (double number : numberArray)
-    	{
-    		if (number < average)
-    			numberLeftOfAverage.add(number);
-    		else if (number > average)
-    			numberRightOfAverage.add(number);
-    	}
-
-    	return true;
-    }
-
-    private static final void SumCountList (
-		final List<double[]> sumCountList,
-		final List<Double> numberList,
-		final int startIndex)
-    {
-    	if (startIndex >= numberList.size()) return;
-
-    	double count = 1.;
-
-    	double sum = numberList.get(startIndex);
-
-    	sumCountList.add (new double[] {sum, count});
-
-    	for (int i = startIndex + 1; i < numberList.size(); ++i)
-    	{
-    		sum = sum + numberList.get(i);
-
-    		sumCountList.add (new double[] {sum, count = count + 1});
-    	}
-
-    	SumCountList (sumCountList, numberList, startIndex + 1);
-    }
-
-    private static final boolean IsSplittable (
-    	final List<double[]> leftSumCountList,
-    	final List<double[]> rightSumCountList,
-    	final double average)
-    {
-    	for (int i = 0; i < leftSumCountList.size(); ++i)
-    	{
-    		double leftSum = leftSumCountList.get(i)[0];
-
-    		double leftCount = leftSumCountList.get(i)[1];
-
-    		for (int j = 0; j < rightSumCountList.size(); ++j)
-        	{
-    			if (leftSumCountList.size() - 1 == i && rightSumCountList.size() - 1 == j) break;
-
-    			double rightSum = rightSumCountList.get(i)[0];
-
-        		double rightCount = rightSumCountList.get(i)[1];
-
-        		if (leftSum + rightSum == average * (leftCount + rightCount)) return true;
-        	}
-    	}
-
-    	return false;
-    }
-
     /**
      * Check if the Array can be split so that the Two Sides add to the same
      * 
@@ -4731,19 +4764,18 @@ public class ArrayUtil
      * @return TRUE - The Array can be split so that the Two Sides add to the same
      */
 
-    public static final boolean SplitIntoSameAverage (double[] numberArray)
+    public static final boolean SplitIntoSameAverage (
+		final double[] numberArray)
     {
     	double average = 0.;
 
-    	for (int i = 0; i < numberArray.length; ++i)
-    	{
+    	for (int i = 0; i < numberArray.length; ++i) {
     		average = average + numberArray[i];
     	}
 
     	average = average / numberArray.length;
 
-    	for (int i = 0; i < numberArray.length; ++i)
-    	{
+    	for (int i = 0; i < numberArray.length; ++i) {
     		if (average == numberArray[i]) return true;
     	}
 
@@ -4751,8 +4783,9 @@ public class ArrayUtil
 
 		List<Double> listRightOfAverage = new ArrayList<Double>();
 
-		if (!PartitionAroundMean (numberArray, listLeftOfAverage, listRightOfAverage, average))
+		if (!PartitionAroundMean (numberArray, listLeftOfAverage, listRightOfAverage, average)) {
 			return false;
+		}
 
 		List<double[]> leftSumCountList = new ArrayList<double[]>();
 
@@ -4787,32 +4820,39 @@ public class ArrayUtil
     		String point1 = points[i][0] + "_" + points[i][1];
 
     		for (int j = 0; j < numPoints; ++j) {
-        		if (i == j) continue;
+        		if (i == j) {
+        			continue;
+        		}
 
-        		if (points[i][0] == points[j][0])
+        		if (points[i][0] == points[j][0]) {
         			m = points[i][1] > points[j][1] ? Double.POSITIVE_INFINITY : Double.NEGATIVE_INFINITY;
-        		else
+        		} else {
         			m = (points[i][1] - points[j][1]) / (points[i][0] - points[j][0]);
+        		}
 
         		String point2 = points[j][0] + "_" + points[j][1];
         		double c = points[i][1] - m * points[i][0];
         		String key = m + "_" + c;
 
-        		Set<String> pointSet = linePointSetMap.containsKey(key) ?
-        			linePointSetMap.get(key) : new HashSet<String>();
+        		Set<String> pointSet = linePointSetMap.containsKey (key) ?
+    				linePointSetMap.get (key) : new HashSet<String>();
 
         		pointSet.add (point1);
 
         		pointSet.add (point2);
 
-        		if (!linePointSetMap.containsKey(key)) linePointSetMap.put(key, pointSet);
+        		if (!linePointSetMap.containsKey(key)) {
+        			linePointSetMap.put (key, pointSet);
+        		}
     		}
     	}
 
     	for (Set<String> pointSet : linePointSetMap.values()) {
     		int pointSetCount = pointSet.size();
 
-    		if (pointSetCount > maximumPointsCount) maximumPointsCount = pointSetCount;
+    		if (pointSetCount > maximumPointsCount) {
+    			maximumPointsCount = pointSetCount;
+    		}
     	}
 
     	return maximumPointsCount;
@@ -4837,15 +4877,21 @@ public class ArrayUtil
 
     	int sequenceListSize = nondecreasingSequenceList.size();
 
-    	if (1 == sequenceListSize) return true;
+    	if (1 == sequenceListSize) {
+    		return true;
+    	}
 
-    	if (2 < sequenceListSize) return false;
+    	if (2 < sequenceListSize) {
+    		return false;
+    	}
 
     	int[] leftRange = nondecreasingSequenceList.get (0);
 
     	int[] rightRange = nondecreasingSequenceList.get (1);
 
-    	if (leftRange[0] == leftRange[1] || rightRange[0] == rightRange[1]) return true;
+    	if (leftRange[0] == leftRange[1] || rightRange[0] == rightRange[1]) {
+    		return true;
+    	}
 
     	return numberArray[leftRange[1] - 1] <= numberArray[rightRange[0]] ||
     		numberArray[leftRange[1]] <= numberArray[rightRange[0] + 1];
