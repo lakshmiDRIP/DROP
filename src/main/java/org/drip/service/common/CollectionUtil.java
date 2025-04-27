@@ -3,6 +3,7 @@ package org.drip.service.common;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.TreeSet;
 
 import org.drip.analytics.support.CaseInsensitiveTreeMap;
@@ -174,22 +175,29 @@ public class CollectionUtil
 		final CaseInsensitiveTreeMap<Double> map1,
 		final CaseInsensitiveTreeMap<Double> map2)
 	{
-		if (null == map1 && null == map2) return null;
+		if (null == map1 && null == map2) {
+			return null;
+		}
 
-		if (null == map1 && null != map2) return map2;
+		if (null == map1 && null != map2) {
+			return map2;
+		}
 
-		if (null != map1 && null == map2) return map1;
+		if (null != map1 && null == map2) {
+			return map1;
+		}
 
-		CaseInsensitiveTreeMap<Double> mapOut = new
-			CaseInsensitiveTreeMap<Double>();
+		CaseInsensitiveTreeMap<Double> outputMap = new CaseInsensitiveTreeMap<Double>();
 
-		for (Map.Entry<String, Double> me : map1.entrySet())
-			mapOut.put (me.getKey(), me.getValue());
+		for (Map.Entry<String, Double> map1Entry : map1.entrySet()) {
+			outputMap.put (map1Entry.getKey(), map1Entry.getValue());
+		}
 
-		for (Map.Entry<String, Double> me : map2.entrySet())
-			mapOut.put (me.getKey(), me.getValue());
+		for (Map.Entry<String, Double> map2Entry : map2.entrySet()) {
+			outputMap.put (map2Entry.getKey(), map2Entry.getValue());
+		}
 
-		return mapOut;
+		return outputMap;
 	}
 
 	/**
@@ -205,12 +213,14 @@ public class CollectionUtil
 		final CaseInsensitiveTreeMap<Double> mapMain,
 		final CaseInsensitiveTreeMap<Double> mapToAdd)
 	{
-		if (null == mapMain || null == mapMain.entrySet() || null == mapToAdd || null ==
-			mapToAdd.entrySet())
+		if (null == mapMain || null == mapMain.entrySet() || null == mapToAdd || null == mapToAdd.entrySet())
+		{
 			return false;
+		}
 
-		for (Map.Entry<String, Double> me : mapToAdd.entrySet())
-			mapMain.put (me.getKey(), me.getValue());
+		for (Map.Entry<String, Double> mapEntry : mapToAdd.entrySet()) {
+			mapMain.put (mapEntry.getKey(), mapEntry.getValue());
+		}
 
 		return true;
 	}
@@ -218,83 +228,123 @@ public class CollectionUtil
 	/**
 	 * Flatten an input 2D string/double map into a delimited string array
 	 * 
-	 * @param map2DSD 2D String/Double map
-	 * @param strKVDelimiter Element delimiter
-	 * @param strRecordDelimiter Record delimiter
+	 * @param doubleValueMap 2D String/Double map
+	 * @param keyValueDelimiter Element delimiter
+	 * @param recordDelimiter Record delimiter
 	 * 
 	 * @return Flattened map string
 	 */
 
 	public static final String TwoDSDMapToFlatString (
-		final CaseInsensitiveTreeMap<Double> map2DSD,
-		final String strKVDelimiter,
-		final String strRecordDelimiter)
+		final CaseInsensitiveTreeMap<Double> doubleValueMap,
+		final String keyValueDelimiter,
+		final String recordDelimiter)
 	{
-		if (null == map2DSD || 0 == map2DSD.size() || null == map2DSD.entrySet() || null == strKVDelimiter ||
-			strKVDelimiter.isEmpty() || null == strRecordDelimiter || strRecordDelimiter.isEmpty())
+		if (null == doubleValueMap || 0 == doubleValueMap.size() || null == doubleValueMap.entrySet() ||
+			null == keyValueDelimiter || keyValueDelimiter.isEmpty() || null == recordDelimiter ||
+			recordDelimiter.isEmpty())
+		{
 			return "";
+		}
 
 		boolean bFirstEntry = true;
 
-		StringBuffer sb = new StringBuffer();
+		StringBuffer stringBuffer = new StringBuffer();
 
-		for (Map.Entry<String, Double> me : map2DSD.entrySet()) {
-			if (null == me || null == me.getKey() || me.getKey().isEmpty()) continue;
+		for (Map.Entry<String, Double> doubleValueMapEntry : doubleValueMap.entrySet()) {
+			if (null == doubleValueMapEntry ||
+				null == doubleValueMapEntry.getKey() ||
+				doubleValueMapEntry.getKey().isEmpty())
+			{
+				continue;
+			}
 
-			if (bFirstEntry)
+			if (bFirstEntry) {
 				bFirstEntry = false;
-			else
-				sb.append (strRecordDelimiter);
+			} else {
+				stringBuffer.append (recordDelimiter);
+			}
 
-			sb.append (me.getKey() + strKVDelimiter + me.getValue());
+			stringBuffer.append (
+				doubleValueMapEntry.getKey() + keyValueDelimiter + doubleValueMapEntry.getValue()
+			);
 		}
 
-		return sb.toString();
+		return stringBuffer.toString();
 	}
 
 	/**
 	 * Flatten a 3D SSD map structure onto a string array
 	 * 
-	 * @param map3DSD 3D SSD map
-	 * @param strMultiLevelKeyDelimiter Multi Level KeyDelimiter
-	 * @param strKVDelimiter Key-Value Delimiter
-	 * @param strRecordDelimiter Record Delimiter
+	 * @param doubleValuedDoubleMap 3D SSD map
+	 * @param multiLevelKeyDelimiter Multi Level KeyDelimiter
+	 * @param keyValueDelimiter Key-Value Delimiter
+	 * @param recordDelimiter Record Delimiter
 	 * 
 	 * @return Flattened String
 	 */
 
 	public static final String ThreeDSDMapToFlatString (
-		final
-			CaseInsensitiveTreeMap<CaseInsensitiveTreeMap<Double>>
-				map3DSD,
-		final String strMultiLevelKeyDelimiter,
-		final String strKVDelimiter,
-		final String strRecordDelimiter)
+		final CaseInsensitiveTreeMap<CaseInsensitiveTreeMap<Double>> doubleValuedDoubleMap,
+		final String multiLevelKeyDelimiter,
+		final String keyValueDelimiter,
+		final String recordDelimiter)
 	{
-		if (null == map3DSD || 0 == map3DSD.size() || null == map3DSD.entrySet() || null ==
-			strMultiLevelKeyDelimiter || strMultiLevelKeyDelimiter.isEmpty() || null == strKVDelimiter ||
-				strKVDelimiter.isEmpty() || null == strRecordDelimiter || strRecordDelimiter.isEmpty())
+		if (null == doubleValuedDoubleMap || 0 == doubleValuedDoubleMap.size() ||
+			null == doubleValuedDoubleMap.entrySet() ||
+			null == multiLevelKeyDelimiter || multiLevelKeyDelimiter.isEmpty() ||
+			null == keyValueDelimiter || keyValueDelimiter.isEmpty() ||
+			null == recordDelimiter || recordDelimiter.isEmpty())
+		{
 			return null;
+		}
 
-		boolean bFirstEntry = true;
+		boolean firstEntry = true;
 
 		StringBuffer sb = new StringBuffer();
 
-		for (Map.Entry<String,
-			CaseInsensitiveTreeMap<Double>> meOut : map3DSD.entrySet()) {
-			if (null == meOut || null == meOut.getValue() || null == meOut.getValue().entrySet()) continue;
+		for (Map.Entry<String, CaseInsensitiveTreeMap<Double>> outerMapEntry :
+			doubleValuedDoubleMap.entrySet())
+		{
+			if (null == outerMapEntry) {
+				continue;
+			}
 
-			for (Map.Entry<String, Double> meIn : meOut.getValue().entrySet())
-			{
-				if (null == meIn || null == meIn.getKey() || meIn.getKey().isEmpty()) continue;
+			CaseInsensitiveTreeMap<Double> innerMap = outerMapEntry.getValue();
 
-				if (bFirstEntry)
-					bFirstEntry = false;
-				else
-					sb.append (strRecordDelimiter);
+			if (null == innerMap) {
+				continue;
+			}
 
-				sb.append (meOut.getKey() + strMultiLevelKeyDelimiter + meIn.getKey() + strKVDelimiter +
-					meIn.getValue());
+			Set<Map.Entry<String, Double>> innerMapEntrySet = innerMap.entrySet();
+
+			if (null == innerMapEntrySet) {
+				continue;
+			}
+
+			for (Map.Entry<String, Double> innerMapEntry : innerMapEntrySet) {
+				if (null == innerMapEntry) {
+					continue;
+				}
+
+				String innerMapKey = innerMapEntry.getKey();
+
+				Double innerMapValue = innerMapEntry.getValue();
+
+				if (null == innerMapKey || innerMapKey.isEmpty() || null == innerMapValue) {
+					continue;
+				}
+
+				if (firstEntry) {
+					firstEntry = false;
+				} else {
+					sb.append (recordDelimiter);
+				}
+
+				sb.append (
+					outerMapEntry.getKey() + multiLevelKeyDelimiter + innerMapKey + keyValueDelimiter +
+						innerMapValue
+				);
 			}
 		}
 
@@ -302,117 +352,172 @@ public class CollectionUtil
 	}
 
 	/**
-	 * Flatten a 4D SSSD map structure onto a string array
+	 * Flatten a 4D SSSD Multi-map structure onto a string array
 	 * 
-	 * @param map4DSD 4D SSSD map
-	 * @param strMultiLevelKeyDelimiter Multi Level KeyDelimiter
-	 * @param strKVDelimiter Key-Value Delimiter
-	 * @param strRecordDelimiter Record Delimiter
+	 * @param multiMap 4D SSSD map
+	 * @param multiLevelKeyDelimiter Multi-Level Key Delimiter
+	 * @param keyValueDelimiter Key-Value Delimiter
+	 * @param recordDelimiter Record Delimiter
 	 * 
 	 * @return Flattened String
 	 */
 
 	public static final String FourDSDMapToFlatString (
-		final
-			CaseInsensitiveTreeMap<CaseInsensitiveTreeMap<CaseInsensitiveTreeMap<Double>>>
-				map4DSD,
-		final String strMultiLevelKeyDelimiter,
-		final String strKVDelimiter,
-		final String strRecordDelimiter)
+		final CaseInsensitiveTreeMap<CaseInsensitiveTreeMap<CaseInsensitiveTreeMap<Double>>> multiMap,
+		final String multiLevelKeyDelimiter,
+		final String keyValueDelimiter,
+		final String recordDelimiter)
 	{
-		if (null == map4DSD || 0 == map4DSD.size() || null == map4DSD.entrySet() || null ==
-			strMultiLevelKeyDelimiter || strMultiLevelKeyDelimiter.isEmpty() || null == strKVDelimiter ||
-				strKVDelimiter.isEmpty() || null == strRecordDelimiter || strRecordDelimiter.isEmpty())
+		if (null == multiMap || 0 == multiMap.size() ||
+			null == multiLevelKeyDelimiter || multiLevelKeyDelimiter.isEmpty() ||
+			null == keyValueDelimiter || keyValueDelimiter.isEmpty() ||
+			null == recordDelimiter || recordDelimiter.isEmpty())
+		{
 			return null;
+		}
 
-		boolean bFirstEntry = true;
+		boolean firstEntry = true;
 
-		StringBuffer sb = new StringBuffer();
+		StringBuffer stringBuffer = new StringBuffer();
 
-		for (Map.Entry<String,CaseInsensitiveTreeMap<CaseInsensitiveTreeMap<Double>>>
-			meOut : map4DSD.entrySet()) {
-			if (null == meOut || null == meOut.getValue() || null == meOut.getValue().entrySet() || null ==
-				meOut.getKey() || meOut.getKey().isEmpty())
+		for (Map.Entry<String,CaseInsensitiveTreeMap<CaseInsensitiveTreeMap<Double>>> outerMapEntry :
+			multiMap.entrySet())
+		{
+			if (null == outerMapEntry) {
 				continue;
+			}
 
-			for (Map.Entry<String,
-				CaseInsensitiveTreeMap<Double>> meIn :
-					meOut.getValue().entrySet()) {
-				if (null == meIn || null == meIn.getValue() || null == meIn.getValue().entrySet() || null ==
-					meIn.getKey() || meIn.getKey().isEmpty())
+			String outerMapKey = outerMapEntry.getKey();
+
+			if (null == outerMapKey || outerMapKey.isEmpty()) {
+				continue;
+			}
+
+			CaseInsensitiveTreeMap<CaseInsensitiveTreeMap<Double>> middleMap = outerMapEntry.getValue();
+
+			if (null == middleMap) {
+				continue;
+			}
+
+			Set<Map.Entry<String, CaseInsensitiveTreeMap<Double>>> middleMapEntrySet = middleMap.entrySet();
+
+			if (null == middleMapEntrySet) {
+				continue;
+			}
+
+			for (Map.Entry<String, CaseInsensitiveTreeMap<Double>> middleMapEntry : middleMapEntrySet) {
+				if (null == middleMapEntry) {
 					continue;
+				}
 
-				for (Map.Entry<String, Double> me : meIn.getValue().entrySet())
-				{
-					if (null == me || null == me.getKey() || me.getKey().isEmpty()) continue;
+				String middleMapKey = middleMapEntry.getKey();
 
-					if (bFirstEntry)
-						bFirstEntry = false;
-					else
-						sb.append (strRecordDelimiter);
+				if (null == middleMapKey || middleMapKey.isEmpty()) {
+					continue;
+				}
 
-					sb.append (meOut.getKey() + strMultiLevelKeyDelimiter + meIn.getKey() +
-						strMultiLevelKeyDelimiter + me.getKey() + strKVDelimiter + me.getValue());
+				CaseInsensitiveTreeMap<Double> innerMap = middleMapEntry.getValue();
+
+				if (null == innerMap || null == innerMap.entrySet()) {
+					continue;
+				}
+
+				Set<Map.Entry<String, Double>> innerMapEntrySet = innerMap.entrySet();
+
+				if (null == innerMapEntrySet) {
+					continue;
+				}
+
+				for (Map.Entry<String, Double> innerMapEntry : innerMapEntrySet) {
+					if (null == innerMapEntry) {
+						continue;
+					}
+
+					String innerKey = innerMapEntry.getKey();
+
+					if (null == innerKey || innerKey.isEmpty()) {
+						continue;
+					}
+
+					if (firstEntry) {
+						firstEntry = false;
+					} else {
+						stringBuffer.append (recordDelimiter);
+					}
+
+					stringBuffer.append (
+						outerMapKey + multiLevelKeyDelimiter + middleMapKey + multiLevelKeyDelimiter +
+							innerKey + keyValueDelimiter + innerMapEntry.getValue()
+					);
 				}
 			}
 		}
 
-		return sb.toString();
+		return stringBuffer.toString();
 	}
 
 	/**
 	 * Turn a flattened 2D (string, double) string sequence into its corresponding map
 	 * 
-	 * @param str2DMap Flattened 2D array input
-	 * @param strKVDelimiter Key-Value delimiter string
-	 * @param strRecordDelimiter Record delimiter string
-	 * @param bSkipNullValue Indicates whether NULL Values are to be skipped
-	 * @param strNULLString NULL string
+	 * @param twoDMap Flattened 2D array input
+	 * @param keyValueDelimiter Key-Value delimiter string
+	 * @param recordDelimiter Record delimiter string
+	 * @param skipNULLValue Indicates whether NULL Values are to be skipped
+	 * @param nullString NULL string
 	 * 
 	 * @return [String, double] map
 	 */
 
-	public static final CaseInsensitiveTreeMap<Double>
-		FlatStringTo2DSDMap (
-			final String str2DMap,
-			final String strKVDelimiter,
-			final String strRecordDelimiter,
-			final boolean bSkipNullValue,
-			final String strNULLString)
+	public static final CaseInsensitiveTreeMap<Double> FlatStringTo2DSDMap (
+		final String twoDMap,
+		final String keyValueDelimiter,
+		final String recordDelimiter,
+		final boolean skipNULLValue,
+		final String nullString)
 	{
-		if (null == str2DMap || str2DMap.isEmpty() || null == strNULLString || strNULLString.isEmpty() ||
-			strNULLString.equalsIgnoreCase (str2DMap) || null == strKVDelimiter || strKVDelimiter.isEmpty()
-				|| null == strRecordDelimiter || strRecordDelimiter.isEmpty())
+		if (null == twoDMap || twoDMap.isEmpty() ||
+			null == nullString || nullString.isEmpty() || nullString.equalsIgnoreCase (twoDMap) ||
+			null == keyValueDelimiter || keyValueDelimiter.isEmpty() ||
+			null == recordDelimiter || recordDelimiter.isEmpty())
+		{
 			return null;
-
-		String[] astrRecord = org.drip.service.common.StringUtil.Split (str2DMap,
-			strRecordDelimiter);
-
-		if (null == astrRecord || 0 == astrRecord.length) return null;
-
-		CaseInsensitiveTreeMap<Double> map2D = new
-			CaseInsensitiveTreeMap<Double>();
-
-		for (int i = 0; i < astrRecord.length; ++i) {
-			if (null == astrRecord[i] || astrRecord[i].isEmpty() || strNULLString.equalsIgnoreCase
-				(astrRecord[i]))
-				continue;
-
-			String[] astrKVPair = org.drip.service.common.StringUtil.Split (astrRecord[i],
-				strKVDelimiter);
-			
-			if (null == astrKVPair || 2 != astrKVPair.length || null == astrKVPair[0] ||
-				astrKVPair[0].isEmpty() || strNULLString.equalsIgnoreCase (astrKVPair[0]) || (bSkipNullValue
-					&& (null == astrKVPair[1] || astrKVPair[1].isEmpty() || strNULLString.equalsIgnoreCase
-						(astrKVPair[1]))))
-				continue;
-
-			map2D.put (astrKVPair[0], Double.parseDouble (astrKVPair[1]));
 		}
 
-		if (0 == map2D.size()) return null;
+		String[] recordArray = StringUtil.Split (twoDMap, recordDelimiter);
 
-		return map2D;
+		if (null == recordArray || 0 == recordArray.length) {
+			return null;
+		}
+
+		CaseInsensitiveTreeMap<Double> twoDTreeMap = new CaseInsensitiveTreeMap<Double>();
+
+		for (int i = 0; i < recordArray.length; ++i) {
+			if (null == recordArray[i] ||
+				recordArray[i].isEmpty() ||
+				nullString.equalsIgnoreCase (recordArray[i]))
+			{
+				continue;
+			}
+
+			String[] keyValuePairArray = StringUtil.Split (recordArray[i], keyValueDelimiter);
+			
+			if (null == keyValuePairArray || 2 != keyValuePairArray.length ||
+				null == keyValuePairArray[0] || keyValuePairArray[0].isEmpty() ||
+				nullString.equalsIgnoreCase (keyValuePairArray[0]) || (
+					skipNULLValue && (
+						null == keyValuePairArray[1] || keyValuePairArray[1].isEmpty() ||
+							nullString.equalsIgnoreCase (keyValuePairArray[1])
+					)
+				)
+			)
+			{
+				continue;
+			}
+
+			twoDTreeMap.put (keyValuePairArray[0], Double.parseDouble (keyValuePairArray[1]));
+		}
+
+		return 0 == twoDTreeMap.size() ? null : twoDTreeMap;
 	}
 
 	/**
@@ -443,7 +548,7 @@ public class CollectionUtil
 				|| null == strRecordDelimiter || strRecordDelimiter.isEmpty())
 			return null;
 
-		String[] astrRecord = org.drip.service.common.StringUtil.Split (str3DMap, strRecordDelimiter);
+		String[] astrRecord = StringUtil.Split (str3DMap, strRecordDelimiter);
 
 		if (null == astrRecord || 0 == astrRecord.length) return null;
 
@@ -454,7 +559,7 @@ public class CollectionUtil
 		for (int i = 0; i < astrRecord.length; ++i) {
 			if (null == astrRecord[i] || astrRecord[i].isEmpty()) continue;
 
-			String[] astrKVPair = org.drip.service.common.StringUtil.Split (astrRecord[i], strKVDelimiter);
+			String[] astrKVPair = StringUtil.Split (astrRecord[i], strKVDelimiter);
 			
 			if (null == astrKVPair || 2 != astrKVPair.length || null == astrKVPair[0] ||
 				astrKVPair[0].isEmpty() || strNULLString.equalsIgnoreCase (astrKVPair[0]) || (bSkipNullValue
@@ -462,7 +567,7 @@ public class CollectionUtil
 						(astrKVPair[1]))))
 				continue;
 
-			String[] astrKeySet = org.drip.service.common.StringUtil.Split (astrKVPair[0],
+			String[] astrKeySet = StringUtil.Split (astrKVPair[0],
 				strMultiLevelKeyDelimiter);
 			
 			if (null == astrKeySet || 2 != astrKeySet.length || null == astrKeySet[0] ||
@@ -515,7 +620,7 @@ public class CollectionUtil
 				|| null == strRecordDelimiter || strRecordDelimiter.isEmpty())
 			return null;
 
-		String[] astrRecord = org.drip.service.common.StringUtil.Split (str4DMap, strRecordDelimiter);
+		String[] astrRecord = StringUtil.Split (str4DMap, strRecordDelimiter);
 
 		if (null == astrRecord || 0 == astrRecord.length) return null;
 
@@ -528,7 +633,7 @@ public class CollectionUtil
 				(astrRecord[i]))
 				continue;
 
-			String[] astrKVPairOut = org.drip.service.common.StringUtil.Split (astrRecord[i],
+			String[] astrKVPairOut = StringUtil.Split (astrRecord[i],
 				strKVDelimiter);
 			
 			if (null == astrKVPairOut || 2 != astrKVPairOut.length || null == astrKVPairOut[0] ||
@@ -537,7 +642,7 @@ public class CollectionUtil
 						strNULLString.equalsIgnoreCase (astrKVPairOut[1]))))
 				continue;
 
-			String[] astrKeySet = org.drip.service.common.StringUtil.Split (astrKVPairOut[0],
+			String[] astrKeySet = StringUtil.Split (astrKVPairOut[0],
 				strMultiLevelKeyDelimiter);
 			
 			if (null == astrKeySet || 3 != astrKeySet.length || null == astrKeySet[0] ||
