@@ -7,6 +7,8 @@ import java.util.Set;
 import java.util.TreeSet;
 
 import org.drip.analytics.support.CaseInsensitiveTreeMap;
+import org.drip.numerical.common.NumberUtil;
+import org.drip.numerical.differentiation.WengertJacobian;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -97,26 +99,20 @@ import org.drip.analytics.support.CaseInsensitiveTreeMap;
  * <i>CollectionUtil</i> implements generic utility functions used in DROP modules. It provides the
  *	following Functions:
  * 
- * <br><br>
+ * <br>
  *  <ul>
- *  	<li>
- *  		Map Merging Functionality
- *  	</li>
- *  	<li>
- *  		Map Key Functionality - key-value flatteners, key prefixers
- *  	</li>
- *  	<li>
- *  		Decompose/transform List/Set/Array Contents
- *  	</li>
- *  	<li>
- *  		Multi-Dimensional Map Manipulator Routines
- *  	</li>
- *  	<li>
- *  		Construct n-derivatives array from Slope
- *  	</li>
- *  	<li>
- *  		Collate Wengerts to a bigger Wengert
- *  	</li>
+ * 		<li>>Prefix the keys in the input map, and return them in a new map</li>
+ * 		<li>>Merge two maps</li>
+ * 		<li>>Merge the secondary map onto the main map</li>
+ * 		<li>>Flatten an input 2D string/double map into a delimited string array</li>
+ * 		<li>>Flatten a 3D SSD map structure onto a string array</li>
+ * 		<li>>Flatten a 4D SSSD Multi-map structure onto a string array</li>
+ * 		<li>>Turn a flattened 2D (string, double) string sequence into its corresponding map</li>
+ * 		<li>>Turn a flattened 3D (string, string, double) string sequence into its corresponding map</li>
+ * 		<li>>Turn a flattened 4D (string, string, string, double) string sequence into its corresponding map</li>
+ * 		<li>>Populate an array of derivatives using the input slope (and setting the other to zero)</li>
+ * 		<li>>Append the Wengert Jacobians inside the list onto one single composite</li>
+ * 		<li>>Given an integer array numberArray and two integers <code>k</code> and <code>t</code>, return true if there are <b>two distinct indices</b> <code>i</code> and <code>j</code> in the array such that <code>abs(numberArray[i] - numberArray[j]) .le. t</code> and <code>abs(i - j) .le. k</code></li>
  *  </ul>
  * 
  * <br>
@@ -523,221 +519,262 @@ public class CollectionUtil
 	/**
 	 * Turn a flattened 3D (string, string, double) string sequence into its corresponding map
 	 * 
-	 * @param str3DMap Flattened 3D array input
-	 * @param strMultiLevelKeyDelimiter Multi-level key delimiter string
-	 * @param strKVDelimiter Key-Value delimiter string
-	 * @param strRecordDelimiter Record delimiter string
-	 * @param bSkipNullValue Indicates whether NULL Values are to be skipped
-	 * @param strNULLString NULL string
+	 * @param threeDMap Flattened 3D array input
+	 * @param multiLevelKeyDelimiter Multi-level key delimiter string
+	 * @param keyValueDelimiter Key-Value delimiter string
+	 * @param recordDelimiter Record delimiter string
+	 * @param skipNULLValue Indicates whether NULL Values are to be skipped
+	 * @param nullString NULL string
 	 * 
 	 * @return [String, [String, double]] map
 	 */
 
-	public static final
-		CaseInsensitiveTreeMap<CaseInsensitiveTreeMap<Double>>
-			FlatStringTo3DSDMap (
-				final String str3DMap,
-				final String strMultiLevelKeyDelimiter,
-				final String strKVDelimiter,
-				final String strRecordDelimiter,
-				final boolean bSkipNullValue,
-				final String strNULLString)
+	public static final CaseInsensitiveTreeMap<CaseInsensitiveTreeMap<Double>> FlatStringTo3DSDMap (
+		final String threeDMap,
+		final String multiLevelKeyDelimiter,
+		final String keyValueDelimiter,
+		final String recordDelimiter,
+		final boolean skipNULLValue,
+		final String nullString)
 	{
-		if (null == str3DMap || str3DMap.isEmpty() || null == strNULLString || strNULLString.isEmpty() ||
-			strNULLString.equalsIgnoreCase (str3DMap) || null == strKVDelimiter || strKVDelimiter.isEmpty()
-				|| null == strRecordDelimiter || strRecordDelimiter.isEmpty())
+		if (null == threeDMap || threeDMap.isEmpty() || nullString.equalsIgnoreCase (threeDMap) ||
+			null == nullString || nullString.isEmpty() ||
+			null == keyValueDelimiter || keyValueDelimiter.isEmpty() ||
+			null == recordDelimiter || recordDelimiter.isEmpty())
+		{
 			return null;
-
-		String[] astrRecord = StringUtil.Split (str3DMap, strRecordDelimiter);
-
-		if (null == astrRecord || 0 == astrRecord.length) return null;
-
-		CaseInsensitiveTreeMap<CaseInsensitiveTreeMap<Double>>
-			map3D = new
-				CaseInsensitiveTreeMap<CaseInsensitiveTreeMap<Double>>();
-
-		for (int i = 0; i < astrRecord.length; ++i) {
-			if (null == astrRecord[i] || astrRecord[i].isEmpty()) continue;
-
-			String[] astrKVPair = StringUtil.Split (astrRecord[i], strKVDelimiter);
-			
-			if (null == astrKVPair || 2 != astrKVPair.length || null == astrKVPair[0] ||
-				astrKVPair[0].isEmpty() || strNULLString.equalsIgnoreCase (astrKVPair[0]) || (bSkipNullValue
-					&& (null == astrKVPair[1] || astrKVPair[1].isEmpty() || strNULLString.equalsIgnoreCase
-						(astrKVPair[1]))))
-				continue;
-
-			String[] astrKeySet = StringUtil.Split (astrKVPair[0],
-				strMultiLevelKeyDelimiter);
-			
-			if (null == astrKeySet || 2 != astrKeySet.length || null == astrKeySet[0] ||
-				astrKeySet[0].isEmpty() || strNULLString.equalsIgnoreCase (astrKeySet[0]) || null ==
-					astrKeySet[1] || astrKeySet[1].isEmpty() || strNULLString.equalsIgnoreCase
-						(astrKeySet[1]))
-				continue;
-
-			CaseInsensitiveTreeMap<Double> map2D = map3D.get
-				(astrKeySet[0]);
-
-			if (null == map2D)
-				map2D = new CaseInsensitiveTreeMap<Double>();
-
-			map2D.put (astrKeySet[1], Double.parseDouble (astrKVPair[1]));
-
-			map3D.put (astrKeySet[0], map2D);
 		}
 
-		if (0 == map3D.size()) return null;
+		String[] recordArray = StringUtil.Split (threeDMap, recordDelimiter);
 
-		return map3D;
+		if (null == recordArray || 0 == recordArray.length) {
+			return null;
+		}
+
+		CaseInsensitiveTreeMap<CaseInsensitiveTreeMap<Double>> threeDTreeMap =
+			new CaseInsensitiveTreeMap<CaseInsensitiveTreeMap<Double>>();
+
+		for (int i = 0; i < recordArray.length; ++i) {
+			if (null == recordArray[i] || recordArray[i].isEmpty()) {
+				continue;
+			}
+
+			String[] keyValuePairArray = StringUtil.Split (recordArray[i], keyValueDelimiter);
+			
+			if (null == keyValuePairArray || 2 != keyValuePairArray.length ||
+				null == keyValuePairArray[0] || keyValuePairArray[0].isEmpty() ||
+				nullString.equalsIgnoreCase (keyValuePairArray[0]) || (
+					skipNULLValue && (
+						null == keyValuePairArray[1] ||
+						keyValuePairArray[1].isEmpty() ||
+						nullString.equalsIgnoreCase (keyValuePairArray[1])
+					)
+				)
+			)
+			{
+				continue;
+			}
+
+			String[] keySetArray = StringUtil.Split (keyValuePairArray[0], multiLevelKeyDelimiter);
+			
+			if (null == keySetArray || 2 != keySetArray.length ||
+				null == keySetArray[0] || keySetArray[0].isEmpty() ||
+					nullString.equalsIgnoreCase (keySetArray[0]) ||
+				null == keySetArray[1] || keySetArray[1].isEmpty() ||
+					nullString.equalsIgnoreCase (keySetArray[1]
+				)
+			)
+			{
+				continue;
+			}
+
+			CaseInsensitiveTreeMap<Double> twoDTreeMap = threeDTreeMap.get (keySetArray[0]);
+
+			if (null == twoDTreeMap) {
+				twoDTreeMap = new CaseInsensitiveTreeMap<Double>();
+			}
+
+			twoDTreeMap.put (keySetArray[1], Double.parseDouble (keyValuePairArray[1]));
+
+			threeDTreeMap.put (keySetArray[0], twoDTreeMap);
+		}
+
+		return 0 == threeDTreeMap.size() ? null : threeDTreeMap;
 	}
 
 	/**
 	 * Turn a flattened 4D (string, string, string, double) string sequence into its corresponding map
 	 * 
-	 * @param str4DMap Flattened 4D array input
-	 * @param strMultiLevelKeyDelimiter Multi-level key delimiter string
-	 * @param strKVDelimiter Key-Value delimiter string
-	 * @param strRecordDelimiter Record delimiter string
-	 * @param bSkipNullValue Indicates whether NULL Values are to be skipped
-	 * @param strNULLString NULL string
+	 * @param fourDMap Flattened 4D array input
+	 * @param multiLevelKeyDelimiter Multi-level key delimiter string
+	 * @param keyValueDelimiter Key-Value delimiter string
+	 * @param recordDelimiter Record delimiter string
+	 * @param skipNullValue Indicates whether NULL Values are to be skipped
+	 * @param nullString NULL string
 	 * 
 	 * @return [String, [String, [String, double]]] map
 	 */
 
-	public static final
-		CaseInsensitiveTreeMap<CaseInsensitiveTreeMap<CaseInsensitiveTreeMap<Double>>>
-			FlatStringTo4DSDMap (
-				final String str4DMap,
-				final String strMultiLevelKeyDelimiter,
-				final String strKVDelimiter,
-				final String strRecordDelimiter,
-				final boolean bSkipNullValue,
-				final String strNULLString)
+	public static final CaseInsensitiveTreeMap<CaseInsensitiveTreeMap<CaseInsensitiveTreeMap<Double>>>
+		FlatStringTo4DSDMap (
+			final String fourDMap,
+			final String multiLevelKeyDelimiter,
+			final String keyValueDelimiter,
+			final String recordDelimiter,
+			final boolean skipNullValue,
+			final String nullString)
 	{
-		if (null == str4DMap || str4DMap.isEmpty() || null == strNULLString || strNULLString.isEmpty() ||
-			strNULLString.equalsIgnoreCase (str4DMap) || null == strKVDelimiter || strKVDelimiter.isEmpty()
-				|| null == strRecordDelimiter || strRecordDelimiter.isEmpty())
+		if (null == fourDMap || fourDMap.isEmpty() || nullString.equalsIgnoreCase (fourDMap) ||
+			null == nullString || nullString.isEmpty() ||
+			null == keyValueDelimiter || keyValueDelimiter.isEmpty() ||
+			null == recordDelimiter || recordDelimiter.isEmpty())
+		{
 			return null;
-
-		String[] astrRecord = StringUtil.Split (str4DMap, strRecordDelimiter);
-
-		if (null == astrRecord || 0 == astrRecord.length) return null;
-
-		CaseInsensitiveTreeMap<CaseInsensitiveTreeMap<CaseInsensitiveTreeMap<Double>>>
-			map4D = new
-				CaseInsensitiveTreeMap<CaseInsensitiveTreeMap<CaseInsensitiveTreeMap<Double>>>();
-
-		for (int i = 0; i < astrRecord.length; ++i) {
-			if (null == astrRecord[i] || astrRecord[i].isEmpty() || strNULLString.equalsIgnoreCase
-				(astrRecord[i]))
-				continue;
-
-			String[] astrKVPairOut = StringUtil.Split (astrRecord[i],
-				strKVDelimiter);
-			
-			if (null == astrKVPairOut || 2 != astrKVPairOut.length || null == astrKVPairOut[0] ||
-				astrKVPairOut[0].isEmpty() || strNULLString.equalsIgnoreCase (astrKVPairOut[0]) ||
-					(bSkipNullValue && (null == astrKVPairOut[1] || astrKVPairOut[1].isEmpty() ||
-						strNULLString.equalsIgnoreCase (astrKVPairOut[1]))))
-				continue;
-
-			String[] astrKeySet = StringUtil.Split (astrKVPairOut[0],
-				strMultiLevelKeyDelimiter);
-			
-			if (null == astrKeySet || 3 != astrKeySet.length || null == astrKeySet[0] ||
-				astrKeySet[0].isEmpty() || strNULLString.equalsIgnoreCase (astrKeySet[0]) || null ==
-					astrKeySet[1] || astrKeySet[1].isEmpty() || strNULLString.equalsIgnoreCase
-						(astrKeySet[1]) || null == astrKeySet[2] || astrKeySet[2].isEmpty() ||
-							strNULLString.equalsIgnoreCase (astrKeySet[2]))
-				continue;
-
-			CaseInsensitiveTreeMap<CaseInsensitiveTreeMap<Double>>
-				map3D = map4D.get (astrKeySet[0]);
-
-			if (null == map3D)
-				map3D = new
-					CaseInsensitiveTreeMap<CaseInsensitiveTreeMap<Double>>();
-
-			CaseInsensitiveTreeMap<Double> map2D = map3D.get
-				(astrKeySet[1]);
-
-			if (null == map2D)
-				map2D = new CaseInsensitiveTreeMap<Double>();
-
-			map2D.put (astrKeySet[2], Double.parseDouble (astrKVPairOut[1]));
-
-			map3D.put (astrKeySet[1], map2D);
-
-			map4D.put (astrKeySet[0], map3D);
 		}
 
-		if (0 == map4D.size()) return null;
+		String[] recordArray = StringUtil.Split (fourDMap, recordDelimiter);
 
-		return map4D;
+		if (null == recordArray || 0 == recordArray.length) {
+			return null;
+		}
+
+		CaseInsensitiveTreeMap<CaseInsensitiveTreeMap<CaseInsensitiveTreeMap<Double>>> fourDTreeMap =
+			new CaseInsensitiveTreeMap<CaseInsensitiveTreeMap<CaseInsensitiveTreeMap<Double>>>();
+
+		for (int i = 0; i < recordArray.length; ++i) {
+			if (null == recordArray[i] || recordArray[i].isEmpty() ||
+				nullString.equalsIgnoreCase (recordArray[i]))
+			{
+				continue;
+			}
+
+			String[] outputKeyValuePairArray = StringUtil.Split (recordArray[i], keyValueDelimiter);
+			
+			if (null == outputKeyValuePairArray || 2 != outputKeyValuePairArray.length ||
+				null == outputKeyValuePairArray[0] || outputKeyValuePairArray[0].isEmpty() ||
+				nullString.equalsIgnoreCase (outputKeyValuePairArray[0]) || (
+					skipNullValue && (
+						null == outputKeyValuePairArray[1] ||
+						outputKeyValuePairArray[1].isEmpty() ||
+						nullString.equalsIgnoreCase (outputKeyValuePairArray[1])
+					)
+				)
+			)
+			{
+				continue;
+			}
+
+			String[] keySetArray = StringUtil.Split (outputKeyValuePairArray[0], multiLevelKeyDelimiter);
+			
+			if (null == keySetArray || 3 != keySetArray.length ||
+				null == keySetArray[0] || keySetArray[0].isEmpty() ||
+					nullString.equalsIgnoreCase (keySetArray[0]) ||
+				null == keySetArray[1] || keySetArray[1].isEmpty() ||
+					nullString.equalsIgnoreCase (keySetArray[1]) ||
+				null == keySetArray[2] || keySetArray[2].isEmpty() ||
+					nullString.equalsIgnoreCase (keySetArray[2])
+			)
+			{
+				continue;
+			}
+
+			CaseInsensitiveTreeMap<CaseInsensitiveTreeMap<Double>> threeDTreeMap =
+				fourDTreeMap.get (keySetArray[0]);
+
+			if (null == threeDTreeMap) {
+				threeDTreeMap = new CaseInsensitiveTreeMap<CaseInsensitiveTreeMap<Double>>();
+			}
+
+			CaseInsensitiveTreeMap<Double> twoDTreeMap = threeDTreeMap.get (keySetArray[1]);
+
+			if (null == twoDTreeMap) {
+				twoDTreeMap = new CaseInsensitiveTreeMap<Double>();
+			}
+
+			twoDTreeMap.put (keySetArray[2], Double.parseDouble (outputKeyValuePairArray[1]));
+
+			threeDTreeMap.put (keySetArray[1], twoDTreeMap);
+
+			fourDTreeMap.put (keySetArray[0], threeDTreeMap);
+		}
+
+		return 0 == fourDTreeMap.size() ? null : fourDTreeMap;
 	}
 
 	/**
 	 * Populate an array of derivatives using the input slope (and setting the other to zero)
 	 * 
-	 * @param iNumDerivs Number of Derivatives to be populated
-	 * @param dblSlope Slope
+	 * @param derivativeCount Number of Derivatives to be populated
+	 * @param slope Slope
 	 * 
 	 * @return Array of derivatives
 	 */
 
 	public static final double[] DerivArrayFromSlope (
-		final int iNumDerivs,
-		final double dblSlope)
+		final int derivativeCount,
+		final double slope)
 	{
-		if (0 >= iNumDerivs || !org.drip.numerical.common.NumberUtil.IsValid (dblSlope)) return null;
+		if (0 >= derivativeCount || !NumberUtil.IsValid (slope)) {
+			return null;
+		}
 
-		double[] adblDeriv = new double[iNumDerivs];
+		double[] derivativeArray = new double[derivativeCount];
 
-		for (int i = 0; i < iNumDerivs; ++i)
-			adblDeriv[i] = (0 == i) ? dblSlope : 0.;
+		for (int i = 0; i < derivativeCount; ++i) {
+			derivativeArray[i] = 0 == i ? slope : 0.;
+		}
 
-		return adblDeriv;
+		return derivativeArray;
 	}
 
 	/**
 	 * Append the Wengert Jacobians inside the list onto one single composite
 	 * 
-	 * @param lsWJ List of Wengert Jacobians
+	 * @param wengertJacobianList List of Wengert Jacobians
 	 * 
 	 * @return The Composite Wengert Jacobian
 	 */
 
-	public static final org.drip.numerical.differentiation.WengertJacobian AppendWengert (
-		final List<org.drip.numerical.differentiation.WengertJacobian> lsWJ)
+	public static final WengertJacobian AppendWengert (
+		final List<WengertJacobian> wengertJacobianList)
 	{
-		if (null == lsWJ || 0 == lsWJ.size()) return null;
+		if (null == wengertJacobianList || 0 == wengertJacobianList.size()) {
+			return null;
+		}
 
-		int iNumQuote = 0;
-		int iQuoteCursor = 0;
-		org.drip.numerical.differentiation.WengertJacobian wjCombined = null;
+		int quoteCount = 0;
+		int quoteCursor = 0;
+		WengertJacobian combinedWengertJacobian = null;
 
-		for (org.drip.numerical.differentiation.WengertJacobian wj : lsWJ)
-			if (null != wj) iNumQuote += wj.numParameters();
+		for (WengertJacobian wengertJacobian : wengertJacobianList) {
+			if (null != wengertJacobian) {
+				quoteCount += wengertJacobian.numParameters();
+			}
+		}
 
 		try {
-			wjCombined = new org.drip.numerical.differentiation.WengertJacobian (1, iNumQuote);
+			combinedWengertJacobian = new WengertJacobian (1, quoteCount);
 		} catch (Exception e) {
 			e.printStackTrace();
 
 			return null;
 		}
 
-		for (org.drip.numerical.differentiation.WengertJacobian wj : lsWJ) {
-			if (null == wj) continue;
+		for (WengertJacobian wengertJacobian : wengertJacobianList) {
+			if (null == wengertJacobian) {
+				continue;
+			}
 
-			int iNumParams = wj.numParameters();
-
-			for (int i = 0; i < iNumParams; ++i) {
+			for (int i = 0; i < wengertJacobian.numParameters(); ++i) {
 				try {
-					if (!wjCombined.accumulatePartialFirstDerivative (0, iQuoteCursor++, wj.firstDerivative
-						(0, i)))
+					if (!combinedWengertJacobian.accumulatePartialFirstDerivative (
+						0,
+						quoteCursor++,
+						wengertJacobian.firstDerivative (0, i)
+					))
+					{
 						return null;
+					}
 				} catch (Exception e) {
 					e.printStackTrace();
 
@@ -746,7 +783,7 @@ public class CollectionUtil
 			}
 		}
 
-		return wjCombined;
+		return combinedWengertJacobian;
 	}
 
 	/**
@@ -766,7 +803,9 @@ public class CollectionUtil
 		final int k,
 		final int t)
 	{
-		if (0 == t) return true;
+		if (0 == t) {
+			return true;
+		}
 
 		TreeSet<Integer> slidingWindowSet = new TreeSet<Integer>();
 
@@ -775,34 +814,21 @@ public class CollectionUtil
 
 			Integer ceiling = slidingWindowSet.ceiling (numberArray[i]);
 
-			if (null != floor && numberArray[i] - floor <= t) return true;
+			if (null != floor && numberArray[i] - floor <= t) {
+				return true;
+			}
 
-			if (null != ceiling && ceiling - numberArray[i] <= t) return true;
+			if (null != ceiling && ceiling - numberArray[i] <= t) {
+				return true;
+			}
 
 			slidingWindowSet.add (numberArray[i]);
 
-			if (k < slidingWindowSet.size()) slidingWindowSet.remove (numberArray[i - k]);
+			if (k < slidingWindowSet.size()) {
+				slidingWindowSet.remove (numberArray[i - k]);
+			}
 		}
 
 		return false;
-	}
-
-	/**
-	 * Entry Point
-	 * 
-	 * @param argumentArray Argument Array
-	 * 
-	 * @throws Exception Thrown if an Exception is encountered
-	 */
-
-	public static final void main (
-		final String[] argumentArray)
-		throws Exception
-	{
-		System.out.println (ContainsNearbyAlmostDuplicate (new int[] {1, 2, 3, 1}, 3, 0));
-
-		System.out.println (ContainsNearbyAlmostDuplicate (new int[] {1, 0, 1, 1}, 1, 2));
-
-		System.out.println (ContainsNearbyAlmostDuplicate (new int[] {1, 5, 9, 1, 5, 9}, 2, 3));
 	}
 }
