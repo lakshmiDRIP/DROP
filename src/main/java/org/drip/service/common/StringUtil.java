@@ -2226,42 +2226,27 @@ public class StringUtil
 
 		int matchingPairCount = 0;
 
-		List<Integer> mismatchedIndexList =
-			new ArrayList<Integer>();
+		List<Integer> mismatchedIndexList = new ArrayList<Integer>();
 
-		for (int i = 0; i < length; ++i)
-		{
-			if (s.charAt (
-					i
-				) == t.charAt (
-					i
-				)
-			)
-			{
+		for (int i = 0; i < length; ++i) {
+			if (s.charAt (i) == t.charAt (i)) {
 				++matchingPairCount;
-			}
-			else
-			{
-				mismatchedIndexList.add (
-					i
-				);
+			} else {
+				mismatchedIndexList.add (i);
 			}
 		}
 
 		int mismatchedIndexListSize = mismatchedIndexList.size();
 
-		if (0 == mismatchedIndexListSize || 1 == mismatchedIndexListSize)
-		{
+		if (0 == mismatchedIndexListSize || 1 == mismatchedIndexListSize) {
 			return length - 2;
 		}
 
 		boolean singleMatch = false;
 		boolean doubleMatch = false;
 
-		for (int i = 0; i < mismatchedIndexListSize; ++i)
-		{
-			if (doubleMatch)
-			{
+		for (int i = 0; i < mismatchedIndexListSize; ++i) {
+			if (doubleMatch) {
 				break;
 			}
 
@@ -2271,32 +2256,25 @@ public class StringUtil
 
 			char sI = s.charAt (indexI);
 
-			for (int j = i + 1; j < mismatchedIndexListSize; ++j)
-			{
+			for (int j = i + 1; j < mismatchedIndexListSize; ++j) {
 				int indexJ = mismatchedIndexList.get (j);
 
 				char tJ = t.charAt (indexJ);
 
 				char sJ = s.charAt (indexJ);
 
-				if (sI == tJ && tI == sJ)
-				{
+				if (sI == tJ && tI == sJ) {
 					doubleMatch = true;
 					break;
-				}
-				else if (sI == tJ || tI == sJ)
-				{
+				} else if (sI == tJ || tI == sJ) {
 					singleMatch = true;
 				}
 			}
 		}
 
-		if (doubleMatch)
-		{
+		if (doubleMatch) {
 			matchingPairCount = matchingPairCount + 2;
-		}
-		else if (singleMatch)
-		{
+		} else if (singleMatch) {
 			matchingPairCount = matchingPairCount + 1;
 		}
 
@@ -2316,22 +2294,25 @@ public class StringUtil
 		final String s,
 		final String t)
 	{
-		if (null == s || s.isEmpty() || null == t || t.isEmpty() || s.length() < t.length()) return "";
+		if (null == s || s.isEmpty() || null == t || t.isEmpty()) {
+			return "";
+		}
 
 		int sLength = s.length();
 
 		int tLength = t.length();
 
-		if (sLength < tLength) return "";
+		if (sLength < tLength) {
+			return "";
+		}
 
-		Map<Character, Integer> tCharacterCountMap =
-			new HashMap<Character, Integer>();
+		Map<Character, Integer> tCharacterCountMap = new HashMap<Character, Integer>();
 
 		for (char c : t.toCharArray()) {
-			if (tCharacterCountMap.containsKey (c))
-				tCharacterCountMap.put (c, tCharacterCountMap.get (c) + 1);
-			else
-				tCharacterCountMap.put (c, 1);
+			tCharacterCountMap.put (
+				c,
+				tCharacterCountMap.containsKey (c) ? tCharacterCountMap.get (c) + 1 : 1
+			);
 		}
 
 		int leftIndex = 0;
@@ -2347,7 +2328,9 @@ public class StringUtil
 
 				tCharacterCountMap.put (rightChar, rightSideCharacterCount - 1);
 
-				if (rightSideCharacterCount > 0) ++matchCharCount;
+				if (0 < rightSideCharacterCount) {
+					++matchCharCount;
+				}
 
 				while (matchCharCount == tLength) {
 					if (rightIndex - leftIndex + 1 < minLen) {
@@ -2362,7 +2345,9 @@ public class StringUtil
 
 						tCharacterCountMap.put (rightChar, leftSideCharacterCount + 1);
 
-						if (leftSideCharacterCount <= 0) --matchCharCount;
+						if (leftSideCharacterCount <= 0) {
+							--matchCharCount;
+						}
 					}
 
 					++leftChar;
@@ -2391,20 +2376,13 @@ public class StringUtil
 		int rightIndex = stringLength - 1;
 		int leftIndex = 0;
 
-		while (leftIndex <= rightIndex)
-		{
-			if (charArray[leftIndex] != charArray[rightIndex])
-			{
-				if (charArray[leftIndex + 1] == charArray[rightIndex])
-				{
+		while (leftIndex <= rightIndex) {
+			if (charArray[leftIndex] != charArray[rightIndex]) {
+				if (charArray[leftIndex + 1] == charArray[rightIndex]) {
 					++leftIndex;
-				}
-				else if (charArray[leftIndex] == charArray[rightIndex - 1])
-				{
+				} else if (charArray[leftIndex] == charArray[rightIndex - 1]) {
 					--rightIndex;
-				}
-				else
-				{
+				} else {
 					return false;
 				}
 			}
@@ -2429,39 +2407,27 @@ public class StringUtil
 	public static final int ClosestPalindromicInteger (
 		final int i)
 	{
-		List<Integer> integerToDigitList = IntegerToDigitList (
-			i
-		);
+		List<Integer> integerToDigitList = IntegerToDigitList (i);
 
-		int palindromeInteger = DigitListToInteger (
-			SwapIntoPalindrome (
-					integerToDigitList
-				)
-			);
+		int palindromeInteger = DigitListToInteger (SwapIntoPalindrome (integerToDigitList));
 
 		int difference = i - palindromeInteger;
 		int absoluteDifference = difference < 0 ? -1 * difference : difference;
 		int rightNumber = i + absoluteDifference;
 		int leftNumber = i - absoluteDifference;
 
-		while (leftNumber < rightNumber)
-		{
-			if (IsPalindrome (leftNumber))
-			{
+		while (leftNumber < rightNumber) {
+			if (IsPalindrome (leftNumber)) {
 				int currentDifference = leftNumber - i;
 
-				if (absoluteDifference > -1 * currentDifference)
-				{
+				if (absoluteDifference > -1 * currentDifference) {
 					difference = currentDifference;
 					absoluteDifference = -1 * currentDifference;
 				}
-			}
-			else if (IsPalindrome (rightNumber))
-			{
+			} else if (IsPalindrome (rightNumber)) {
 				int currentDifference = rightNumber - i;
 
-				if (absoluteDifference > currentDifference)
-				{
+				if (absoluteDifference > currentDifference) {
 					difference = currentDifference;
 					absoluteDifference = currentDifference;
 				}
@@ -2485,18 +2451,12 @@ public class StringUtil
 	public static final String NestedArrayDepthSum (
 		final String expression)
 	{
-		return NestedArrayDepthSum (
-			expression.substring (
-				1,
-				expression.length() - 1
-			),
-			1
-		);
+		return NestedArrayDepthSum (expression.substring (1, expression.length() - 1), 1);
 	}
 
 	/**
-	 * An encoded string is given.  To find and write the decoded string to a tape, the encoded string is
-	 * 	read one character at a time and the following steps are taken:
+	 * An encoded string is given. To find and write the decoded string to a tape, the encoded string is read
+	 * 	one character at a time and the following steps are taken:
 	 * 
 	 * If the character read is a letter, that letter is written onto the tape.
 	 * 
@@ -2524,92 +2484,53 @@ public class StringUtil
 
 		int charIndex = 0;
 		int startWordIndex = 0;
-		String prevWord = "";
+		String previousWord = "";
 		int stringLength = charArray.length;
 
-		while (true)
-		{
-			while (charIndex < stringLength &&
-				!Character.isDigit (
-					charArray[charIndex]
-				)
-			)
-			{
+		while (true) {
+			while (charIndex < stringLength && !Character.isDigit (charArray[charIndex])) {
 				++charIndex;
 			}
 
-			wordList.add (
-				s.substring (
-					startWordIndex,
-					charIndex
-				)
-			);
+			wordList.add (s.substring (startWordIndex, charIndex));
 
-			if (charIndex == stringLength)
-			{
+			if (charIndex == stringLength) {
 				break;
 			}
 
 			int numberStartIndex = charIndex;
 			startWordIndex = charIndex + 1;
 
-			while (charIndex < stringLength &&
-				Character.isDigit (
-					charArray[charIndex]
-				)
-			)
-			{
+			while (charIndex < stringLength && Character.isDigit (charArray[charIndex])) {
 				++charIndex;
 			}
 
-			indexList.add (
-				DecimalNumberFromString (
-					s.substring (
-						numberStartIndex,
-						charIndex
-					)
-				)
-			);
+			indexList.add (DecimalNumberFromString (s.substring (numberStartIndex, charIndex)));
 
-			if (charIndex == stringLength)
-			{
+			if (charIndex == stringLength) {
 				break;
 			}
 		}
 
-		if (indexList.isEmpty() && k > stringLength)
-		{
+		if (indexList.isEmpty() && k > stringLength) {
 			return "";
 		}
 
-		for (int i = 0;
-			i < indexList.size();
-			++i)
-		{
-			String currentWord = prevWord + wordList.get (
-				i
-			);
+		for (int i = 0; i < indexList.size(); ++i) {
+			String currentWord = previousWord + wordList.get (i);
 
-			int repeatCount = indexList.get (
-				i
-			);
+			int repeatCount = indexList.get (i);
 
 			int currentWordLength = currentWord.length();
 
-			if (currentWordLength * repeatCount > k)
-			{
-				return "" + currentWord.charAt (
-					(k - 1) % currentWordLength
-				);
+			if (currentWordLength * repeatCount > k) {
+				return "" + currentWord.charAt ((k - 1) % currentWordLength);
 			}
 
-			prevWord = "";
+			previousWord = "";
 
-			for (int j = 0;
-				j < repeatCount;
-				++j)
-			{
-				prevWord = prevWord + currentWord;
+			for (int j = 0; j < repeatCount; ++j) {
+				previousWord = previousWord + currentWord;
 			}
 		}
 
