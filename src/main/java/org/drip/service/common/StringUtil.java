@@ -996,6 +996,61 @@ public class StringUtil
 		return int2IntMap;
 	}
 
+	private static final String[] ZeroToTwentyTable()
+	{
+		String[] zeroToTwentyTable = new String[20];
+		zeroToTwentyTable[0] = "Zero";
+		zeroToTwentyTable[1] = "One";
+		zeroToTwentyTable[2] = "Two";
+		zeroToTwentyTable[3] = "Three";
+		zeroToTwentyTable[4] = "Four";
+		zeroToTwentyTable[5] = "Five";
+		zeroToTwentyTable[6] = "Six";
+		zeroToTwentyTable[7] = "Seven";
+		zeroToTwentyTable[8] = "Eight";
+		zeroToTwentyTable[9] = "None";
+		zeroToTwentyTable[10] = "Ten";
+		zeroToTwentyTable[11] = "Eleven";
+		zeroToTwentyTable[12] = "Twelve";
+		zeroToTwentyTable[13] = "Thirteen";
+		zeroToTwentyTable[14] = "Fourteen";
+		zeroToTwentyTable[15] = "Fifteen";
+		zeroToTwentyTable[16] = "Sixteen";
+		zeroToTwentyTable[17] = "Seventeen";
+		zeroToTwentyTable[18] = "Eighteen";
+		zeroToTwentyTable[19] = "Nineteen";
+		return zeroToTwentyTable;
+	}
+
+	private static final String[] TensPlaceTable()
+	{
+		String[] tensPlaceTable = new String[10];
+		tensPlaceTable[2] = "Twenty";
+		tensPlaceTable[3] = "Thirty";
+		tensPlaceTable[4] = "Forty";
+		tensPlaceTable[5] = "Fifty";
+		tensPlaceTable[6] = "Sixty";
+		tensPlaceTable[7] = "Seventy";
+		tensPlaceTable[8] = "Eighty";
+		tensPlaceTable[9] = "No=inety";
+		return tensPlaceTable;
+	}
+
+	private static final String TwoDigitNumber (
+		final int i)
+	{
+		String[] zeroToTwentyTable = ZeroToTwentyTable();
+
+		if (20 > i) {
+			return zeroToTwentyTable[i];
+		}
+
+		String twoDigitNumber = TensPlaceTable()[i / 10];
+
+		int rightDigit = i % 10;
+		return 0 == rightDigit ? twoDigitNumber : twoDigitNumber + " " + zeroToTwentyTable[rightDigit];
+	}
+
 	/**
 	 * Convert the String to a Number
 	 * 
@@ -2549,8 +2604,7 @@ public class StringUtil
 	public static final String LongestPalindromeSubstring (
 		final String s)
 	{
-		if (null == s || s.isEmpty())
-		{
+		if (null == s || s.isEmpty()) {
 			return "";
 		}
 
@@ -2560,89 +2614,53 @@ public class StringUtil
 		int rightPalindromeIndex = -1;
 		int leftPalindromeIndex = -1;
 
-		HashMap<Character, List<Integer>> charLocationMap =
-			new HashMap<Character, List<Integer>>();
+		HashMap<Character, List<Integer>> charLocationMap = new HashMap<Character, List<Integer>>();
 
-		for (int index = 0;
-			index < stringLength;
-			++index)
-		{
+		for (int index = 0; index < stringLength; ++index) {
 			char c = charArray[index];
 
-			if (charLocationMap.containsKey (
-				c
-			))
-			{
-				charLocationMap.get (
-					c
-				).add (
-					index
-				);
-			}
-			else
-			{
-				List<Integer> locationList =
-					new ArrayList<Integer>();
+			if (charLocationMap.containsKey (c)) {
+				charLocationMap.get (c).add (index);
+			} else {
+				List<Integer> locationList = new ArrayList<Integer>();
 
-				locationList.add (
-					index
-				);
+				locationList.add (index);
 
-				charLocationMap.put (
-					c,
-					locationList
-				);
+				charLocationMap.put (c, locationList);
 			}
 		}
 
 		Set<Character> charKeySet = charLocationMap.keySet();
 
-		for (Character c : charKeySet)
-		{
-			List<Integer> locationList = charLocationMap.get (
-				c
-			);
+		for (Character c : charKeySet) {
+			List<Integer> locationList = charLocationMap.get (c);
 
 			int locationListSize = locationList.size();
 
-			for (int i = 0;
-				i < locationListSize;
-				++i)
-			{
-				for (int j = locationListSize - 1;
-					j > i;
-					--j)
-				{
-					int leftIndexStart = locationList.get (
-						i
-					);
+			for (int i = 0; i < locationListSize; ++i) {
+				for (int j = locationListSize - 1; j > i; --j) {
+					int leftIndexStart = locationList.get (i);
 
-					int rightIndexStart = locationList.get (
-						j
-					);
+					int rightIndexStart = locationList.get (j);
 
 					boolean isPalindrome = true;
 					int leftIndex = leftIndexStart;
 					int rightIndex = rightIndexStart;
 
 					if ((leftPalindromeIndex < leftIndex && rightPalindromeIndex > leftIndex) ||
-						(leftPalindromeIndex < rightIndex && rightPalindromeIndex > rightIndex)
-					)
+						(leftPalindromeIndex < rightIndex && rightPalindromeIndex > rightIndex))
 					{
 						continue;
 					}
 
-					while (leftIndex < rightIndex)
-					{
-						if (charArray[leftIndex++] != charArray[rightIndex--])
-						{
+					while (leftIndex < rightIndex) {
+						if (charArray[leftIndex++] != charArray[rightIndex--]) {
 							isPalindrome = false;
 							break;
 						}
 					}
 
-					if (isPalindrome)
-					{
+					if (isPalindrome) {
 						leftPalindromeIndex = leftIndexStart;
 						rightPalindromeIndex = rightIndexStart;
 					}
@@ -2650,10 +2668,7 @@ public class StringUtil
 			}
 		}
 
-		return -1 == leftPalindromeIndex ? "" : s.substring (
-			leftPalindromeIndex,
-			rightPalindromeIndex + 1
-		);
+		return -1 == leftPalindromeIndex ? "" : s.substring (leftPalindromeIndex, rightPalindromeIndex + 1);
 	}
 
 	/**
@@ -2667,8 +2682,7 @@ public class StringUtil
 	public static final String LongestNonRepeatingSubstring (
 		final String s)
 	{
-		if (null == s || s.isEmpty())
-		{
+		if (null == s || s.isEmpty()) {
 			return "";
 		}
 
@@ -2680,106 +2694,64 @@ public class StringUtil
 		int stringLength = charArray.length;
 		int nonRepeatingIndexFromLeft = stringLength;
 
-		HashMap<Character, List<Integer>> charLocationMap =
-			new HashMap<Character, List<Integer>>();
+		HashMap<Character, List<Integer>> charLocationMap = new HashMap<Character, List<Integer>>();
 
-		for (int index = 0;
-			index < stringLength;
-			++index)
-		{
+		for (int index = 0; index < stringLength; ++index) {
 			char c = charArray[index];
 
-			if (charLocationMap.containsKey (
-				c
-			))
-			{
-				charLocationMap.get (
-					c
-				).add (
-					index
-				);
-			}
-			else
-			{
-				List<Integer> locationList =
-					new ArrayList<Integer>();
+			if (charLocationMap.containsKey (c)) {
+				charLocationMap.get (c).add (index);
+			} else {
+				List<Integer> locationList = new ArrayList<Integer>();
 
-				locationList.add (
-					index
-				);
+				locationList.add (index);
 
-				charLocationMap.put (
-					c,
-					locationList
-				);
+				charLocationMap.put (c, locationList);
 			}
 		}
 
 		Set<Character> charKeySet = charLocationMap.keySet();
 
-		for (Character c : charKeySet)
-		{
-			List<Integer> locationList = charLocationMap.get (
-				c
-			);
+		for (Character c : charKeySet) {
+			List<Integer> locationList = charLocationMap.get (c);
 
 			int locationListSize = locationList.size();
 
-			if (locationListSize < 2)
-			{
+			if (2 > locationListSize) {
 				continue;
 			}
 
-			int leftLocationIndex = locationList.get (
-				1
-			);
+			int leftLocationIndex = locationList.get (1);
 
-			int rightLocationIndex = locationList.get (
-				locationListSize - 2
-			);
+			int rightLocationIndex = locationList.get (locationListSize - 2);
 
-			if (nonRepeatingIndexFromLeft > leftLocationIndex)
-			{
+			if (nonRepeatingIndexFromLeft > leftLocationIndex) {
 				nonRepeatingIndexFromLeft = leftLocationIndex;
 			}
 
-			if (nonRepeatingIndexFromRight < rightLocationIndex)
-			{
+			if (nonRepeatingIndexFromRight < rightLocationIndex) {
 				nonRepeatingIndexFromRight = rightLocationIndex;
 			}
 
-			for (int i = 1;
-				i < locationListSize;
-				++i)
-			{
-				int leftIndex = locationList.get (
-					i - 1
-				);
+			for (int i = 1; i < locationListSize; ++i) {
+				int leftIndex = locationList.get (i - 1);
 
-				int rightIndex = locationList.get (
-					i
-				);
+				int rightIndex = locationList.get (i);
 
-				if (-1 == endNonRepeatingIndex)
-				{
+				if (-1 == endNonRepeatingIndex) {
 					endNonRepeatingIndex = rightIndex;
 					beginNonRepeatingIndex = leftIndex;
 				}
 				else if (
 					(leftIndex > beginNonRepeatingIndex && leftIndex < endNonRepeatingIndex) ||
-					(rightIndex > beginNonRepeatingIndex && rightIndex < endNonRepeatingIndex)
-				)
+						(rightIndex > beginNonRepeatingIndex && rightIndex < endNonRepeatingIndex))
 				{
-					if (rightIndex - leftIndex < endNonRepeatingIndex - beginNonRepeatingIndex)
-					{
+					if (rightIndex - leftIndex < endNonRepeatingIndex - beginNonRepeatingIndex) {
 						endNonRepeatingIndex = rightIndex;
 						beginNonRepeatingIndex = leftIndex;
 					}
-				}
-				else
-				{
-					if (rightIndex - leftIndex > endNonRepeatingIndex - beginNonRepeatingIndex)
-					{
+				} else {
+					if (rightIndex - leftIndex > endNonRepeatingIndex - beginNonRepeatingIndex) {
 						endNonRepeatingIndex = rightIndex;
 						beginNonRepeatingIndex = leftIndex;
 					}
@@ -2787,90 +2759,23 @@ public class StringUtil
 			}
 		}
 
-		if (-1 == endNonRepeatingIndex)
-		{
-			return nonRepeatingIndexFromLeft > stringLength - nonRepeatingIndexFromRight ? s.substring (
-				0,
-				nonRepeatingIndexFromLeft
-			) :  s.substring (
-				nonRepeatingIndexFromRight + 1,
-				stringLength - nonRepeatingIndexFromRight - 1
-			);
+		if (-1 == endNonRepeatingIndex) {
+			return nonRepeatingIndexFromLeft > stringLength - nonRepeatingIndexFromRight ?
+				s.substring (0, nonRepeatingIndexFromLeft) :
+				s.substring (nonRepeatingIndexFromRight + 1, stringLength - nonRepeatingIndexFromRight - 1);
 		}
 
 		int substringLeftIndex = beginNonRepeatingIndex;
 		int substringRightIndex = endNonRepeatingIndex;
 
-		if (endNonRepeatingIndex - beginNonRepeatingIndex < nonRepeatingIndexFromLeft)
-		{
+		if (endNonRepeatingIndex - beginNonRepeatingIndex < nonRepeatingIndexFromLeft) {
 			substringLeftIndex = 0;
 			substringRightIndex = nonRepeatingIndexFromLeft;
 		}
 
 		return substringRightIndex - substringLeftIndex > stringLength - nonRepeatingIndexFromRight - 1 ?
-			s.substring (
-				substringLeftIndex,
-				substringRightIndex
-			) :  s.substring (
-				nonRepeatingIndexFromRight + 1,
-				stringLength
-			);
-	}
-
-	private static final String[] ZeroToTwentyTable()
-	{
-		String[] zeroToTwentyTable = new String[20];
-		zeroToTwentyTable[0] = "Zero";
-		zeroToTwentyTable[1] = "One";
-		zeroToTwentyTable[2] = "Two";
-		zeroToTwentyTable[3] = "Three";
-		zeroToTwentyTable[4] = "Four";
-		zeroToTwentyTable[5] = "Five";
-		zeroToTwentyTable[6] = "Six";
-		zeroToTwentyTable[7] = "Seven";
-		zeroToTwentyTable[8] = "Eight";
-		zeroToTwentyTable[9] = "None";
-		zeroToTwentyTable[10] = "Ten";
-		zeroToTwentyTable[11] = "Eleven";
-		zeroToTwentyTable[12] = "Twelve";
-		zeroToTwentyTable[13] = "Thirteen";
-		zeroToTwentyTable[14] = "Fourteen";
-		zeroToTwentyTable[15] = "Fifteen";
-		zeroToTwentyTable[16] = "Sixteen";
-		zeroToTwentyTable[17] = "Seventeen";
-		zeroToTwentyTable[18] = "Eighteen";
-		zeroToTwentyTable[19] = "Nineteen";
-		return zeroToTwentyTable;
-	}
-
-	private static final String[] TensPlaceTable()
-	{
-		String[] tensPlaceTable = new String[10];
-		tensPlaceTable[2] = "Twenty";
-		tensPlaceTable[3] = "Thirty";
-		tensPlaceTable[4] = "Forty";
-		tensPlaceTable[5] = "Fifty";
-		tensPlaceTable[6] = "Sixty";
-		tensPlaceTable[7] = "Seventy";
-		tensPlaceTable[8] = "Eighty";
-		tensPlaceTable[9] = "No=inety";
-		return tensPlaceTable;
-	}
-
-	private static final String TwoDigitNumber (
-		final int i)
-	{
-		String[] zeroToTwentyTable = ZeroToTwentyTable();
-
-		if (i < 20)
-		{
-			return zeroToTwentyTable[i];
-		}
-
-		String twoDigitNumber = TensPlaceTable()[i / 10];
-
-		int rightDigit = i % 10;
-		return 0 == rightDigit ? twoDigitNumber : twoDigitNumber + " " + zeroToTwentyTable[rightDigit];
+			s.substring (substringLeftIndex, substringRightIndex) :
+			s.substring (nonRepeatingIndexFromRight + 1, stringLength);
 	}
 
 	/**
@@ -2884,11 +2789,8 @@ public class StringUtil
 	public static final String ThreeDigitNumber (
 		final int i)
 	{
-		return i < 100 ? TwoDigitNumber (
-			i
-		) : ZeroToTwentyTable()[i / 100] + " Hundred and " + TwoDigitNumber (
-			i % 100
-		);
+		return 100 > i ? TwoDigitNumber (i) : ZeroToTwentyTable()[i / 100] + " Hundred and " +
+			TwoDigitNumber (i % 100);
 	}
 
 	/**
@@ -2911,64 +2813,40 @@ public class StringUtil
 		char[] charArrayOut = new char[stringLength];
 		int oddRightIndexLocation = 0 == stringLength % 2 ? stringLength - 1 : stringLength - 2;
 
-		TreeMap<Character, Integer> charCountMap =
-			new TreeMap<Character, Integer>();
+		TreeMap<Character, Integer> charCountMap = new TreeMap<Character, Integer>();
 
-		for (char c : charArrayIn)
-		{
-			if (charCountMap.containsKey (
-				c
-			))
-			{
-				charCountMap.put(c, charCountMap.get(c) + 1);
-			}
-			else
-			{
-				charCountMap.put(c, 1);
-			}
+		for (char c : charArrayIn) {
+			charCountMap.put (c, charCountMap.containsKey (c) ? charCountMap.get(c) + 1 : 1);
 		}
 
-		while (!charCountMap.isEmpty())
-		{
+		while (!charCountMap.isEmpty()) {
 			Map.Entry<Character, Integer> entry = charCountMap.firstEntry();
 
 			char c = entry.getKey();
 
 			int count = entry.getValue();
 
-			if (count > (1 + stringLength) / 2)
-			{
+			if (count > (1 + stringLength) / 2) {
 				return "";
 			}
 
-			charCountMap.remove (
-				c
-			);
+			charCountMap.remove (c);
 
-			if (!oddLocation)
-			{
-				for (;
-					evenIndexLocation < stringLength;
-					evenIndexLocation = evenIndexLocation + 2)
-				{
+			if (!oddLocation) {
+				for (; evenIndexLocation < stringLength; evenIndexLocation = evenIndexLocation + 2) {
 					charArrayOut[evenIndexLocation] = c;
 					--count;
 				}
 
-				while (0 != count)
-				{
+				while (0 != count) {
 					charArrayOut[oddRightIndexLocation] = c;
 					oddRightIndexLocation = oddRightIndexLocation - 2;
 					--count;
 				}
 
 				oddLocation = !oddLocation;
-			}
-			else
-			{
-				for (;
-					oddLeftIndexLocation < stringLength;
-					oddLeftIndexLocation = oddLeftIndexLocation + 2)
+			} else {
+				for (; oddLeftIndexLocation < stringLength; oddLeftIndexLocation = oddLeftIndexLocation + 2)
 				{
 					charArrayOut[oddLeftIndexLocation] = c;
 					--count;
@@ -2978,9 +2856,7 @@ public class StringUtil
 			}
 		}
 
-		return new String (
-			charArrayOut
-		);
+		return new String (charArrayOut);
 	}
 
 	/**
@@ -3002,38 +2878,24 @@ public class StringUtil
 
 		int stringLength = charArray.length;
 
-		for (int index = 0;
-			index < stringLength;
-			++index)
-		{
+		for (int index = 0; index < stringLength; ++index) {
 			char c = charArray[index];
 
-			if ('(' == c)
-			{
-				leftBracketIndexList.add (
-					index
-				);
-			}
-			else if (')' == c)
-			{
-				rightBracketIndexList.add (
-					index
-				);
+			if ('(' == c) {
+				leftBracketIndexList.add (index);
+			} else if (')' == c) {
+				rightBracketIndexList.add (index);
 			}
 		}
 
-		if (leftBracketIndexList.isEmpty() && rightBracketIndexList.isEmpty())
-		{
+		if (leftBracketIndexList.isEmpty() && rightBracketIndexList.isEmpty()) {
 			return s;
 		}
 
 		Set<Integer> indexRemovalList = new HashSet<Integer>();
 
-		while (!leftBracketIndexList.isEmpty() && !rightBracketIndexList.isEmpty())
-		{
-			int rightMostLeftBracketIndex = leftBracketIndexList.get (
-				leftBracketIndexList.size() - 1
-			);
+		while (!leftBracketIndexList.isEmpty() && !rightBracketIndexList.isEmpty()) {
+			int rightMostLeftBracketIndex = leftBracketIndexList.get (leftBracketIndexList.size() - 1);
 
 			int pairingRightIndex = -1;
 			int pairingRightBracketIndexListCursor = -1;
@@ -3042,62 +2904,38 @@ public class StringUtil
 				rightBracketIndexListCursor < rightBracketIndexList.size();
 				++rightBracketIndexListCursor)
 			{
-				int rightIndex = rightBracketIndexList.get (
-					rightBracketIndexListCursor
-				);
+				int rightIndex = rightBracketIndexList.get (rightBracketIndexListCursor);
 
-				if (rightIndex > rightMostLeftBracketIndex)
-				{
+				if (rightIndex > rightMostLeftBracketIndex) {
 					pairingRightIndex = rightIndex;
 					pairingRightBracketIndexListCursor = rightBracketIndexListCursor;
 				}
 			}
 
-			if (-1 == pairingRightIndex)
-			{
-				indexRemovalList.add (
-					rightMostLeftBracketIndex
-				);
+			if (-1 == pairingRightIndex) {
+				indexRemovalList.add (rightMostLeftBracketIndex);
 
 				leftBracketIndexList.remove (
 					leftBracketIndexList.size() - 1
 				);
-			}
-			else
-			{
-				leftBracketIndexList.remove (
-					leftBracketIndexList.size() - 1
-				);
+			} else {
+				leftBracketIndexList.remove (leftBracketIndexList.size() - 1);
 
-				rightBracketIndexList.remove (
-					pairingRightBracketIndexListCursor
-				);
+				rightBracketIndexList.remove (pairingRightBracketIndexListCursor);
 			}
 		}
 
 		if (!leftBracketIndexList.isEmpty())
 		{
-			indexRemovalList.addAll (
-				leftBracketIndexList
-			);
-		}
-		else if (!rightBracketIndexList.isEmpty())
-		{
-			indexRemovalList.addAll (
-				rightBracketIndexList
-			);
+			indexRemovalList.addAll (leftBracketIndexList);
+		} else if (!rightBracketIndexList.isEmpty()) {
+			indexRemovalList.addAll (rightBracketIndexList);
 		}
 
 		String output = "";
 
-		for (int index = 0;
-			index < stringLength;
-			++index)
-		{
-			if (!indexRemovalList.contains (
-				index
-			))
-			{
+		for (int index = 0; index < stringLength; ++index) {
+			if (!indexRemovalList.contains (index)) {
 				output = output + charArray[index];
 			}
 		}
