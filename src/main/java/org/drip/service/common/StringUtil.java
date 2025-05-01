@@ -765,12 +765,12 @@ public class StringUtil
     	char specialChar = '0';
 
     	while (index < charArray.length) {
-    		if ('*' == charArray[index] || '?' == charArray[index])
+    		if ('*' == charArray[index] || '?' == charArray[index]) {
     			specialChar = charArray[index];
-    		else {
-    			if ('0' == specialChar)
+    		} else {
+    			if ('0' == specialChar) {
     				patternList.add ("" + charArray[index]);
-    			else if ('*' == specialChar || '?' == specialChar) {
+    			} else if ('*' == specialChar || '?' == specialChar) {
     				patternList.add ("" + specialChar + charArray[index]);
 
     				specialChar = '0';
@@ -780,8 +780,9 @@ public class StringUtil
     		++index;
     	}
 
-		if ('*' == charArray[charArray.length - 1] || '?' == charArray[charArray.length - 1])
+		if ('*' == charArray[charArray.length - 1] || '?' == charArray[charArray.length - 1]) {
 			patternList.add ("" + charArray[charArray.length - 1]);
+		}
 
     	return patternList;
     }
@@ -818,28 +819,36 @@ public class StringUtil
     /**
 	 * Look for a match of the field in the input array
 	 * 
-	 * @param strFieldToMatch Field To Match
-	 * @param astrMatchSet Array of fields to compare with
-	 * @param bCaseMatch TRUE - Match case
+	 * @param fieldToMatch Field To Match
+	 * @param matchFieldSet Array of fields to compare with
+	 * @param caseMatch TRUE - Match case
 	 * 
 	 * @return TRUE - Match found according to the criteria specified
 	 */
 
 	public static final boolean MatchInStringArray (
-		final String strFieldToMatch,
-		final String[] astrMatchSet,
-		final boolean bCaseMatch)
+		final String fieldToMatch,
+		final String[] matchFieldSet,
+		final boolean caseMatch)
 	{
-		if (null == strFieldToMatch || strFieldToMatch.isEmpty() || null == astrMatchSet || 0 ==
-			astrMatchSet.length)
+		if (null == fieldToMatch || fieldToMatch.isEmpty() ||
+			null == matchFieldSet || 0 == matchFieldSet.length)
+		{
 			return false;
+		}
 
-		for (String strMatchSetEntry : astrMatchSet) {
-			if (null == strMatchSetEntry || strMatchSetEntry.isEmpty()) continue;
+		for (String matchSetEntry : matchFieldSet) {
+			if (null == matchSetEntry || matchSetEntry.isEmpty()) {
+				continue;
+			}
 
-			if (strMatchSetEntry.equals (strFieldToMatch)) return true;
+			if (matchSetEntry.equals (fieldToMatch)) {
+				return true;
+			}
 
-			if (!bCaseMatch && strMatchSetEntry.equalsIgnoreCase (strFieldToMatch)) return true;
+			if (!caseMatch && matchSetEntry.equalsIgnoreCase (fieldToMatch)) {
+				return true;
+			}
 		}
 
 		return false;
@@ -848,24 +857,28 @@ public class StringUtil
 	/**
 	 * Look for a match of the field in the field set to an entry in the input array
 	 * 
-	 * @param astrFieldToMatch Field Array To Match
-	 * @param astrMatchSet Array of fields to compare with
-	 * @param bCaseMatch TRUE - Match case
+	 * @param fieldArrayToMatch Field Array To Match
+	 * @param matchFieldArray Array of fields to compare with
+	 * @param caseMatch TRUE - Match case
 	 * 
 	 * @return TRUE - Match found according to the criteria specified
 	 */
 
 	public static final boolean MatchInStringArray (
-		final String[] astrFieldToMatch,
-		final String[] astrMatchSet,
-		final boolean bCaseMatch)
+		final String[] fieldArrayToMatch,
+		final String[] matchFieldArray,
+		final boolean caseMatch)
 	{
-		if (null == astrFieldToMatch || 0 == astrFieldToMatch.length || null == astrMatchSet || 0 ==
-			astrMatchSet.length)
+		if (null == fieldArrayToMatch || 0 == fieldArrayToMatch.length ||
+			null == matchFieldArray || 0 == matchFieldArray.length)
+		{
 			return false;
+		}
 
-		for (String strFieldToMatch : astrFieldToMatch) {
-			if (MatchInStringArray (strFieldToMatch, astrMatchSet, bCaseMatch)) return true;
+		for (String fieldToMatch : fieldArrayToMatch) {
+			if (MatchInStringArray (fieldToMatch, matchFieldArray, caseMatch)) {
+				return true;
+			}
 		}
 
 		return false;
@@ -874,43 +887,42 @@ public class StringUtil
 	/**
 	 * Format the given string parameter into an argument
 	 * 
-	 * @param strArg String Argument
+	 * @param argument String Argument
 	 * 
 	 * @return Parameter from the Argument
 	 */
 
 	public static final String MakeStringArg (
-		final String strArg)
+		final String argument)
 	{
-		if (null == strArg) return "null";
-
-		if (strArg.isEmpty()) return "\"\"";
-
-		return "\"" + strArg.trim() + "\"";
+		return null == argument ? "null" : argument.isEmpty() ? "\"\"" : "\"" + argument.trim() + "\"";
 	}
 
 	/**
 	 * Check the Input String to Check for NULL - and return it
 	 * 
-	 * @param strIn Input String
-	 * @param bEmptyToNULL TRUE if Empty String needs to be converted to NULL
+	 * @param input Input String
+	 * @param emptyToNULL TRUE if Empty String needs to be converted to NULL
 	 * 
 	 * @return The Processed String
 	 */
 
 	public static final String ProcessInputForNULL (
-		final String strIn,
-		final boolean bEmptyToNULL)
+		final String input,
+		final boolean emptyToNULL)
 	{
-		if (null == strIn) return null;
+		if (null == input) {
+			return null;
+		}
 
-		if (strIn.isEmpty()) return bEmptyToNULL ? null : "";
+		if (input.isEmpty()) {
+			return emptyToNULL ? null : "";
+		}
 
-		if ("null".equalsIgnoreCase (strIn.trim())) return null;
+		String trimmedInput = input.trim();
 
-		if (strIn.trim().toUpperCase().startsWith ("NO")) return null;
-
-		return strIn;
+		return "null".equalsIgnoreCase (trimmedInput) || trimmedInput.toUpperCase().startsWith ("NO") ?
+			null : input;
 	}
 
 	/**
@@ -926,67 +938,41 @@ public class StringUtil
 		final String inputPhrase,
 		final String delimiter)
 	{
-		if (null == inputPhrase || inputPhrase.isEmpty() ||
-			null == delimiter || delimiter.isEmpty()
-		)
-		{
+		if (null == inputPhrase || inputPhrase.isEmpty() || null == delimiter || delimiter.isEmpty()) {
 			return null;
 		}
 
-		if (-1 == inputPhrase.indexOf (
-			delimiter,
-			0
-		))
-		{
-			return new String[]
-			{
-				inputPhrase
-			};
+		if (-1 == inputPhrase.indexOf (delimiter, 0)) {
+			return new String[] {inputPhrase};
 		}
 
 		int delimiterIndex = -1;
 
 		List<Integer> delimiterIndexList = new ArrayList<Integer>();
 
-		while (-1 != (delimiterIndex = inputPhrase.indexOf (
-			delimiter,
-			delimiterIndex + 1
-		)))
-		{
-			delimiterIndexList.add (
-				delimiterIndex
-			);
+		while (-1 != (delimiterIndex = inputPhrase.indexOf (delimiter, delimiterIndex + 1))) {
+			delimiterIndexList.add (delimiterIndex);
 		}
 
 		int fieldCount = delimiterIndexList.size();
 
-		if (0 == fieldCount)
-		{
+		if (0 == fieldCount) {
 			return null;
 		}
 
 		int beginIndex = 0;
 		String[] fieldArray = new String[fieldCount + 1];
 
-		for (int fieldIndex = 0;
-			fieldIndex < fieldCount;
-			++fieldIndex)
-		{
+		for (int fieldIndex = 0; fieldIndex < fieldCount; ++fieldIndex) {
 			int endIndex = delimiterIndexList.get (fieldIndex);
 
-			fieldArray[fieldIndex] = beginIndex >= endIndex ? "" : inputPhrase.substring (
-				beginIndex,
-				endIndex
-			);
+			fieldArray[fieldIndex] = beginIndex >= endIndex ?
+				"" : inputPhrase.substring (beginIndex, endIndex);
 
-			beginIndex = delimiterIndexList.get (
-				fieldIndex
-			) + 1;
+			beginIndex = delimiterIndexList.get (fieldIndex) + 1;
 		}
 
-		fieldArray[fieldCount] = inputPhrase.substring (
-			beginIndex
-		);
+		fieldArray[fieldCount] = inputPhrase.substring (beginIndex);
 
 		return fieldArray;
 	}
@@ -994,17 +980,19 @@ public class StringUtil
 	/**
 	 * Check if the string represents an unitary boolean
 	 * 
-	 * @param strUnitaryBoolean String input
+	 * @param unitaryBoolean String input
 	 * 
 	 * @return TRUE - Unitary Boolean
 	 */
 
 	public static final boolean ParseFromUnitaryString (
-		final String strUnitaryBoolean)
+		final String unitaryBoolean)
 	{
-		if (null == strUnitaryBoolean || strUnitaryBoolean.isEmpty() || !"1".equalsIgnoreCase
-			(strUnitaryBoolean.trim()))
+		if (null == unitaryBoolean || unitaryBoolean.isEmpty() ||
+			!"1".equalsIgnoreCase (unitaryBoolean.trim()))
+		{
 			return false;
+		}
 
 		return true;
 	}
@@ -1012,61 +1000,74 @@ public class StringUtil
 	/**
 	 * Make an array of Integers from a string tokenizer
 	 * 
-	 * @param st Tokenizer containing delimited doubles
+	 * @param stringTokenizer Tokenizer containing delimited doubles
 	 *  
 	 * @return Double array
 	 */
 
 	public static final int[] MakeIntegerArrayFromStringTokenizer (
-		final StringTokenizer st)
+		final StringTokenizer stringTokenizer)
 	{
-		if (null == st) return null;
+		if (null == stringTokenizer) {
+			return null;
+		}
 
-		List<Integer> li = new ArrayList<Integer>();
+		List<Integer> integerList = new ArrayList<Integer>();
 
-		while (st.hasMoreTokens())
-			li.add (Integer.parseInt (st.nextToken()));
+		while (stringTokenizer.hasMoreTokens()) {
+			integerList.add (Integer.parseInt (stringTokenizer.nextToken()));
+		}
 
-		if (0 == li.size()) return null;
+		if (0 == integerList.size()) {
+			return null;
+		}
 
-		int[] ai = new int[li.size()];
+		int[] integerArray = new int[integerList.size()];
 
 		int i = 0;
 
-		for (int iValue : li)
-			ai[i++] = iValue;
+		for (int value : integerList) {
+			integerArray[i++] = value;
+		}
 
-		return ai;
+		return integerArray;
 	}
 
 	/**
 	 * Make an array of double from a string tokenizer
 	 * 
-	 * @param stdbl Tokenizer containing delimited doubles
+	 * @param stringTokenizer Tokenizer containing delimited doubles
 	 *  
 	 * @return Double array
 	 */
 
 	public static final double[] MakeDoubleArrayFromStringTokenizer (
-		final StringTokenizer stdbl)
+		final StringTokenizer stringTokenizer)
 	{
-		if (null == stdbl) return null;
+		if (null == stringTokenizer) {
+			return null;
+		}
 
-		List<Double> lsdbl = new ArrayList<Double>();
+		List<Double> doubleList = new ArrayList<Double>();
 
-		while (stdbl.hasMoreTokens())
-			lsdbl.add (Double.parseDouble (stdbl.nextToken()));
+		while (stringTokenizer.hasMoreTokens()) {
+			doubleList.add (Double.parseDouble (stringTokenizer.nextToken()));
+		}
 
-		if (0 == lsdbl.size()) return null;
+		int doubleListSize = doubleList.size();
 
-		double[] adbl = new double[lsdbl.size()];
+		if (0 == doubleListSize) {
+			return null;
+		}
 
 		int i = 0;
+		double[] doubleArray = new double[doubleListSize];
 
-		for (double dbl : lsdbl)
-			adbl[i++] = dbl;
+		for (double value : doubleList) {
+			doubleArray[i++] = value;
+		}
 
-		return adbl;
+		return doubleArray;
 	}
 
 	/**
@@ -1083,42 +1084,54 @@ public class StringUtil
 	/**
 	 * Split the string array into pairs of key-value doubles and returns them
 	 * 
-	 * @param lsdblKey [out] List of Keys
-	 * @param lsdblValue [out] List of Values
-	 * @param strArray [in] String containing KV records
-	 * @param strRecordDelim [in] Record Delimiter
-	 * @param strKVDelim [in] Key-Value Delimiter
+	 * @param keyList [out] List of Keys
+	 * @param valueList [out] List of Values
+	 * @param keyValueArray [in] String containing KV records
+	 * @param recordDeliminator [in] Record Delimiter
+	 * @param keyValueDeliminator [in] Key-Value Delimiter
 	 * 
 	 * @return True if parsing is successful
 	 */
 
 	public static final boolean KeyValueListFromStringArray (
-		final List<Double> lsdblKey,
-		final List<Double> lsdblValue,
-		final String strArray,
-		final String strRecordDelim,
-		final String strKVDelim)
+		final List<Double> keyList,
+		final List<Double> valueList,
+		final String keyValueArray,
+		final String recordDeliminator,
+		final String keyValueDeliminator)
 	{
-		if (null == strArray || strArray.isEmpty() || null == strRecordDelim || strRecordDelim.isEmpty() ||
-			null == strKVDelim || strKVDelim.isEmpty() || null == lsdblKey || null == lsdblValue)
+		if (null == keyValueArray || keyValueArray.isEmpty() ||
+			null == recordDeliminator || recordDeliminator.isEmpty() ||
+			null == keyValueDeliminator || keyValueDeliminator.isEmpty() ||
+			null == keyList ||
+			null == valueList)
+		{
 			return false;
+		}
 
-		String[] astr = Split (strArray, strRecordDelim);
+		String[] recordArray = Split (keyValueArray, recordDeliminator);
 
-		if (null == astr || 0 == astr.length) return false;
+		if (null == recordArray || 0 == recordArray.length) {
+			return false;
+		}
 
-		for (int i = 0; i < astr.length; ++i) {
-			if (null == astr[i] || astr[i].isEmpty()) return false;
-
-			String[] astrRecord = Split (astr[i], strKVDelim);
-
-			if (null == astrRecord || 2 != astrRecord.length || null == astrRecord[0] ||
-				astrRecord[0].isEmpty() || null == astrRecord[1] || astrRecord[1].isEmpty())
+		for (int i = 0; i < recordArray.length; ++i) {
+			if (null == recordArray[i] || recordArray[i].isEmpty()) {
 				return false;
+			}
 
-			lsdblKey.add (Double.parseDouble (astrRecord[0]));
+			String[] keyValuePair = Split (recordArray[i], keyValueDeliminator);
 
-			lsdblValue.add (Double.parseDouble (astrRecord[1]));
+			if (null == keyValuePair || 2 != keyValuePair.length ||
+				null == keyValuePair[0] || keyValuePair[0].isEmpty() ||
+				null == keyValuePair[1] || keyValuePair[1].isEmpty())
+			{
+				return false;
+			}
+
+			keyList.add (Double.parseDouble (keyValuePair[0]));
+
+			valueList.add (Double.parseDouble (keyValuePair[1]));
 		}
 
 		return true;
