@@ -1541,7 +1541,9 @@ public class StringUtil
 		for (int i = 1; i < charArray.length; ++i) {
 			int[] range = CenteredPalindome (charArray, i);
 
-			if (maxRange[1] - maxRange[0] < range[1] - range[0]) maxRange = range;
+			if (maxRange[1] - maxRange[0] < range[1] - range[0]) {
+				maxRange = range;
+			}
 		}
 
 		return s.substring (maxRange[0], maxRange[1] + 1);
@@ -1564,25 +1566,17 @@ public class StringUtil
 		int beginIndex = 0;
 		int lengthOfLongestNonRepeatingSubstring = 0;
 
-		Map<Character, Integer> charMap =
-			new HashMap<Character, Integer>();
+		Map<Character, Integer> charMap = new HashMap<Character, Integer>();
 
-		while (index < charArray.length)
-		{
-			if (charMap.containsKey (
-				charArray[index]
-			))
-			{
+		while (index < charArray.length) {
+			if (charMap.containsKey (charArray[index])) {
 				int lengthOfNonRepeatingSubstring = index - beginIndex;
 
-				if (lengthOfLongestNonRepeatingSubstring < lengthOfNonRepeatingSubstring)
-				{
+				if (lengthOfLongestNonRepeatingSubstring < lengthOfNonRepeatingSubstring) {
 					lengthOfLongestNonRepeatingSubstring = lengthOfNonRepeatingSubstring;
 				}
 
-				beginIndex = charMap.get (
-					charArray[index]
-				) + 1;
+				beginIndex = charMap.get (charArray[index]) + 1;
 
 				charMap.clear();
 
@@ -1595,13 +1589,8 @@ public class StringUtil
 						currentNonRepeatingSubstringIndex + beginIndex
 					);
 				}
-			}
-			else
-			{
-				charMap.put (
-					charArray[index],
-					index
-				);
+			} else {
+				charMap.put (charArray[index], index);
 			}
 
 			++index;
@@ -1609,8 +1598,7 @@ public class StringUtil
 
 		int lengthOfNonRepeatingSubstring = charArray.length - beginIndex;
 
-		if (lengthOfLongestNonRepeatingSubstring < lengthOfNonRepeatingSubstring)
-		{
+		if (lengthOfLongestNonRepeatingSubstring < lengthOfNonRepeatingSubstring) {
 			lengthOfLongestNonRepeatingSubstring = lengthOfNonRepeatingSubstring;
 		}
 
@@ -1645,36 +1633,26 @@ public class StringUtil
 		int wildCardCount = 0;
 		int wildCardIndex = 0;
 
-		for (char c : charArray)
-		{
-			if (c == ')')
-			{
+		for (char c : charArray) {
+			if (')' == c) {
 				++rightParenthesisCount;
-			}
-			else if (c == '(')
-			{
+			} else if ('(' == c) {
 				++leftParenthesisCount;
-			}
-			else if (c == '*')
-			{
+			} else if ('*' == c) {
 				++wildCardCount;
 			}
 		}
 
-		while (rightParenthesisCount > 0 && leftParenthesisCount > 0 && rightBracketIndex >= 0)
-		{
-			while (charArray[rightBracketIndex] != ')')
-			{
+		while (0 < rightParenthesisCount && 0 < leftParenthesisCount && 0 <= rightBracketIndex) {
+			while (')' != charArray[rightBracketIndex]) {
 				--rightBracketIndex;
 			}
 
-			leftBracketIndex = rightBracketIndex - 1 < leftBracketIndex ? rightBracketIndex - 1 :
-				leftBracketIndex;
+			leftBracketIndex = rightBracketIndex - 1 < leftBracketIndex ?
+				rightBracketIndex - 1 : leftBracketIndex;
 
-			while (leftBracketIndex >= 0)
-			{
-				if (charArray[leftBracketIndex] == '(')
-				{
+			while (0 <= leftBracketIndex) {
+				if ('(' == charArray[leftBracketIndex]) {
 					--rightParenthesisCount;
 					--leftParenthesisCount;
 					break;
@@ -1686,17 +1664,13 @@ public class StringUtil
 			--rightBracketIndex;
 		}
 
-		while (rightParenthesisCount > 0 && wildCardCount > 0 && rightBracketIndex > 0)
-		{
-			while (charArray[rightBracketIndex] != ')')
-			{
+		while (0 < rightParenthesisCount && 0 < wildCardCount && 0 < rightBracketIndex) {
+			while (')' != charArray[rightBracketIndex]) {
 				--rightBracketIndex;
 			}
 
-			while (wildCardIndex < rightBracketIndex)
-			{
-				if (charArray[wildCardIndex] == '*')
-				{
+			while (wildCardIndex < rightBracketIndex) {
+				if ('*' == charArray[wildCardIndex]) {
 					--rightParenthesisCount;
 					--wildCardCount;
 					break;
@@ -1708,39 +1682,34 @@ public class StringUtil
 			--rightBracketIndex;
 		}
 
-		if (rightParenthesisCount > 0)
-		{
+		if (0 < rightParenthesisCount) {
 			return false;
 		}
 
-		if (leftParenthesisCount == 0)
-		{
+		if (0 == leftParenthesisCount) {
 			return true;
 		}
 
 		int leftBracketIndexUpperBound = leftBracketIndex - 1;
 
-		while (charArray[leftBracketIndexUpperBound] != '(')
-		{
+		while ('(' != charArray[leftBracketIndexUpperBound]) {
 			--leftBracketIndexUpperBound;
 		}
 
 		leftBracketIndex = 0;
 
-		while (leftParenthesisCount > 0 && wildCardCount > 0 &&
+		while (0 < leftParenthesisCount &&
+			0 < wildCardCount &&
 			leftBracketIndex <= leftBracketIndexUpperBound)
 		{
-			while (charArray[leftBracketIndex] != '(')
-			{
+			while ('(' != charArray[leftBracketIndex]) {
 				++leftBracketIndex;
 			}
 
 			wildCardIndex = leftBracketIndex + 1;
 
-			while (wildCardIndex < charArray.length)
-			{
-				if (charArray[wildCardIndex] == '*')
-				{
+			while (wildCardIndex < charArray.length) {
+				if ('*' == charArray[wildCardIndex]) {
 					--leftParenthesisCount;
 					--wildCardCount;
 					break;
@@ -1770,56 +1739,35 @@ public class StringUtil
 	{
 		List<Integer> integerList = new ArrayList<Integer>();
 
-		while (n != 0)
-		{
-			integerList.add (
-				0,
-				n % 10
-			);
+		while (0 != n) {
+			integerList.add (0, n % 10 );
 
 			n = n / 10;
 		}
 
 		int integerListSize = integerList.size();
 
-		if (1 == integerListSize)
-		{
+		if (1 == integerListSize) {
 			return -1;
 		}
 
-		int rightInteger = integerList.get (
-			integerListSize - 1
-		);
+		int rightInteger = integerList.get (integerListSize - 1);
 
 		int leftIndex = integerListSize - 2;
 
-		while (leftIndex >= 0)
-		{
-			int leftInteger = integerList.get (
-				leftIndex
-			);
+		while (0 <= leftIndex) {
+			int leftInteger = integerList.get (leftIndex);
 
-			if (leftInteger < rightInteger)
-			{
+			if (leftInteger < rightInteger) {
 				int number = 0;
 
-				for (int index = 0;
-					index < integerListSize;
-					++index)
-				{
-					if (index == leftIndex)
-					{
+				for (int index = 0; index < integerListSize; ++index) {
+					if (index == leftIndex) {
 						number = number * 10 + rightInteger;
-					}
-					else if (index == leftIndex + 1)
-					{
+					} else if (index == leftIndex + 1) {
 						number = number * 10 + leftInteger;
-					}
-					else
-					{
-						number = number * 10 + integerList.get (
-							index
-						);
+					} else {
+						number = number * 10 + integerList.get (index);
 					}
 				}
 
@@ -1852,71 +1800,39 @@ public class StringUtil
 	public static final String SimplifyPath (
 		String path)
 	{
-		while (path.startsWith (
-			"/"
-		))
-		{
-			path = path.substring (
-				1
-			);
+		while (path.startsWith ("/")) {
+			path = path.substring (1);
 		}
 
-		while (path.endsWith (
-			"/"
-		))
-		{
-			path = path.substring (
-				0,
-				path.length() - 1
-			);
+		while (path.endsWith ("/")) {
+			path = path.substring (0, path.length() - 1);
 		}
-
-		String[] folders = Split (
-			path,
-			"/"
-		);
 
 		List<String> folderList = new ArrayList<String>();
 
-		for (String folder : folders)
-		{
-			if (null == folder || folder.isEmpty())
-			{
+		for (String folder : Split (path, "/")) {
+			if (null == folder || folder.isEmpty()) {
 				continue;
 			}
 
-			if (folder.equals (
-				".."
-			))
-			{
+			if (folder.equals ("..")) {
 				int folderListIndex = folderList.size() - 1;
 
-				if (0 <= folderListIndex)
-				{
-					folderList.remove (
-						folderListIndex
-					);
+				if (0 <= folderListIndex) {
+					folderList.remove (folderListIndex);
 				}
-			}
-			else if (!folder.equals (
-				"."
-			))
-			{
-				folderList.add (
-					folder
-				);
+			} else if (!folder.equals (".")) {
+				folderList.add (folder);
 			}
 		}
 
-		if (folderList.isEmpty())
-		{
+		if (folderList.isEmpty()) {
 			return "/";
 		}
 
 		String simplifiedPath = "";
 
-		for (String folder : folderList)
-		{
+		for (String folder : folderList) {
 			simplifiedPath = simplifiedPath + "/" + folder;
 		}
 
