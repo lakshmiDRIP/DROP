@@ -1051,6 +1051,80 @@ public class StringUtil
 		return 0 == rightDigit ? twoDigitNumber : twoDigitNumber + " " + zeroToTwentyTable[rightDigit];
 	}
 
+	private static final Set<String> PermutationSet (
+		final Set<String> permutationSet,
+		final Set<Integer> exclusionIndexSet,
+		final String s)
+	{
+		char[] charArray = s.toCharArray();
+
+		int stringLength = charArray.length;
+
+		if (exclusionIndexSet.size() == stringLength - 1) {
+			int exclusionIndex = -1;
+
+			for (int i = 0; i < stringLength; ++i) {
+				if (!exclusionIndexSet.contains (i)) {
+					exclusionIndex = i;
+					break;
+				}
+			}
+
+			Set<String> currentPermutationSet = new HashSet<String>();
+
+			for (String permutation : permutationSet) {
+				currentPermutationSet.add (permutation + charArray[exclusionIndex]);
+			}
+
+			return currentPermutationSet;
+		}
+
+		Set<Integer> inclusionIndexSet = new HashSet<Integer>();
+
+		for (int i = 0; i < stringLength; ++i) {
+			if (!exclusionIndexSet.contains (i)) {
+				inclusionIndexSet.add (i);
+			}
+		}
+
+		Set<String> currentPermutationSet = new HashSet<String>();
+
+		for (int index : inclusionIndexSet) {
+			Set<Integer> tempExclusionIndexSet = new HashSet<Integer>();
+
+			tempExclusionIndexSet.addAll (exclusionIndexSet);
+
+			tempExclusionIndexSet.add (index);
+
+			Set<String> tempPermutationSet = new HashSet<String>();
+
+			if (permutationSet.isEmpty()) {
+				tempPermutationSet.add ("" + charArray[index]);
+			} else {
+				for (String permutation : permutationSet) {
+					tempPermutationSet.add (permutation + charArray[index]);
+				}
+			}
+
+			currentPermutationSet.addAll (PermutationSet (tempPermutationSet, tempExclusionIndexSet, s));
+		}
+
+		return currentPermutationSet;
+	}
+
+	private static final int SumOfDigits (
+		int n)
+	{
+		int sum = 0;
+
+		while (0 != n) {
+			sum = sum + (n % 10);
+			n = n / 10;
+		}
+
+		return sum;
+	}
+
 	/**
 	 * Convert the String to a Number
 	 * 
@@ -2925,8 +2999,7 @@ public class StringUtil
 			}
 		}
 
-		if (!leftBracketIndexList.isEmpty())
-		{
+		if (!leftBracketIndexList.isEmpty()) {
 			indexRemovalList.addAll (leftBracketIndexList);
 		} else if (!rightBracketIndexList.isEmpty()) {
 			indexRemovalList.addAll (rightBracketIndexList);
@@ -2943,88 +3016,6 @@ public class StringUtil
 		return output;
 	}
 
-	private static final Set<String> PermutationSet (
-		final Set<String> permutationSet,
-		final Set<Integer> exclusionIndexSet,
-		final String s)
-	{
-		char[] charArray = s.toCharArray();
-
-		int stringLength = charArray.length;
-
-		if (exclusionIndexSet.size() == stringLength - 1)
-		{
-			int exclusionIndex = -1;
-
-			for (int i = 0; i < stringLength; ++i)
-			{
-				if (!exclusionIndexSet.contains(i))
-				{
-					exclusionIndex = i;
-					break;
-				}
-			}
-
-			Set<String> currentPermutationSet =
-				new HashSet<String>();
-
-			for (String permutation : permutationSet)
-			{
-				currentPermutationSet.add(permutation + charArray[exclusionIndex]);
-			}
-
-			return currentPermutationSet;
-		}
-
-		Set<Integer> inclusionIndexSet = new HashSet<Integer>();
-
-		for (int i = 0; i < stringLength; ++i)
-		{
-			if (!exclusionIndexSet.contains(i))
-			{
-				inclusionIndexSet.add (i);
-			}
-		}
-
-		Set<String> currentPermutationSet =
-			new HashSet<String>();
-
-		for (int index : inclusionIndexSet)
-		{
-			Set<Integer> tempExclusionIndexSet =
-				new HashSet<Integer>();
-
-			tempExclusionIndexSet.addAll (exclusionIndexSet);
-
-			tempExclusionIndexSet.add (index);
-
-			Set<String> tempPermutationSet =
-				new HashSet<String>();
-
-			if (permutationSet.isEmpty())
-			{
-				tempPermutationSet.add ("" + charArray[index]);
-			}
-			else
-			{
-				for (String permutation : permutationSet)
-				{
-					tempPermutationSet.add (permutation + charArray[index]);
-				}
-			}
-
-			currentPermutationSet.addAll (
-				PermutationSet (
-					tempPermutationSet,
-					tempExclusionIndexSet,
-					s
-				)
-			);
-		}
-
-		return currentPermutationSet;
-	}
-
 	/**
 	 * Generate the Set of all Permutation Sub-strings
 	 * 
@@ -3036,15 +3027,7 @@ public class StringUtil
 	public static final Set<String> PermutationSet (
 		final String s)
 	{
-		Set<String> permutationSet = new HashSet<String>();
-
-		Set<Integer> exclusionIndexSet = new HashSet<Integer>();
-
-		return PermutationSet (
-			permutationSet,
-			exclusionIndexSet,
-			s
-		);
+		return PermutationSet (new HashSet<String>(), new HashSet<Integer>(), s);
 	}
 
 	/**
@@ -3064,10 +3047,8 @@ public class StringUtil
 
 		int s1Size = s1.length();
 
-		for (int i = 0; i < s2.length() - s1Size; ++i)
-		{
-			if (s1PermutationSet.contains (s2.substring(i, i + s1Size)))
-			{
+		for (int i = 0; i < s2.length() - s1Size; ++i) {
+			if (s1PermutationSet.contains (s2.substring (i, i + s1Size))) {
 				return true;
 			}
 		}
@@ -3086,133 +3067,99 @@ public class StringUtil
 	public static final List<List<String>> MergeAccountList (
 		final List<List<String>> accounts)
 	{
-		Map<String, Integer> emailIndexMap =
-			new HashMap<String, Integer>();
+		Map<String, Integer> emailIndexMap = new HashMap<String, Integer>();
 
-		for (int index = 0;
-			index < accounts.size();
-			++index)
-		{
-			List<String> accountDetail = accounts.get(index);
+		for (int index = 0; index < accounts.size(); ++index) {
+			List<String> accountDetail = accounts.get (index);
 
 			int matchingAccountIndex = -1;
 			String matchingEmail = "";
 
-			for (int listIndex = 1; listIndex < accountDetail.size(); ++listIndex)
-			{
-				String email = accountDetail.get(listIndex);
+			for (int listIndex = 1; listIndex < accountDetail.size(); ++listIndex) {
+				String email = accountDetail.get (listIndex);
 
-				if (emailIndexMap.containsKey(email))
-				{
-					matchingAccountIndex = emailIndexMap.get(email);
+				if (emailIndexMap.containsKey (email)) {
+					matchingAccountIndex = emailIndexMap.get (email);
 
 					matchingEmail = email;
 					break;
 				}
 			}
 
-			if (-1 == matchingAccountIndex)
-			{
-				for (int listIndex = 1; listIndex < accountDetail.size(); ++listIndex)
-				{
-					emailIndexMap.put(accountDetail.get(listIndex), index);
+			if (-1 == matchingAccountIndex) {
+				for (int listIndex = 1; listIndex < accountDetail.size(); ++listIndex) {
+					emailIndexMap.put (accountDetail.get (listIndex), index);
 				}
-			}
-			else
-			{
-				List<String> matchingAccountDetail = accounts.get(matchingAccountIndex);
+			} else {
+				List<String> matchingAccountDetail = accounts.get (matchingAccountIndex);
 
-				for (int listIndex = 1; listIndex < accountDetail.size(); ++listIndex)
-				{
-					String email = accountDetail.get(listIndex);
+				for (int listIndex = 1; listIndex < accountDetail.size(); ++listIndex) {
+					String email = accountDetail.get (listIndex);
 
-					emailIndexMap.put(email, matchingAccountIndex);
+					emailIndexMap.put (email, matchingAccountIndex);
 
-					if (!matchingEmail.equals(email)) matchingAccountDetail.add(email);
+					if (!matchingEmail.equals (email)) {
+						matchingAccountDetail.add (email);
+					}
 				}
 
-				accounts.set(index, null);
+				accounts.set (index, null);
 			}
 		}
 
-		List<List<String>> mergedAccountList =
-			new ArrayList<List<String>>();
+		List<List<String>> mergedAccountList = new ArrayList<List<String>>();
 
-		for (int index = 0;
-			index < accounts.size();
-			++index)
-		{
+		for (int index = 0; index < accounts.size(); ++index) {
 			List<String> accountDetail = accounts.get(index);
 
-			if (null != accountDetail) mergedAccountList.add(accountDetail);
+			if (null != accountDetail) {
+				mergedAccountList.add(accountDetail);
+			}
 		}
 
 		return mergedAccountList;
 	}
 
-	private static final int SumOfDigits (int n)
-	{
-		int sum = 0;
-
-		while (n != 0)
-		{
-			sum = sum + (n % 10);
-			n = n / 10;
-		}
-
-		return sum;
-	}
-
 	/**
 	 * Compute the Sum of the Integers
 	 * 
-	 * @param A Input Array
+	 * @param array Input Array
 	 * 
 	 * @return Sum of the Integers
 	 */
 
-	public static final int solution(int[] A)
+	public static final int Solution (
+		final int[] array)
     {
-    	HashMap<Integer, List<Integer>> integerSumListMap =
-    		new HashMap<Integer, List<Integer>>();
+    	HashMap<Integer, List<Integer>> integerSumListMap = new HashMap<Integer, List<Integer>>();
 
     	int max = Integer.MIN_VALUE;
 
-    	for (int i : A)
-    	{
+    	for (int i : array) {
     		int digitSum = SumOfDigits (i);
 
-    		if (integerSumListMap.containsKey (digitSum))
-    		{
-    			integerSumListMap.get(digitSum).add(i);
-    		}
-    		else
-    		{
+    		if (integerSumListMap.containsKey (digitSum)) {
+    			integerSumListMap.get (digitSum).add (i);
+    		} else {
     			List<Integer> integerList  = new ArrayList<Integer>();
 
-    			integerList.add(i);
+    			integerList.add (i);
 
-    			integerSumListMap.put(digitSum, integerList);
+    			integerSumListMap.put (digitSum, integerList);
     		}
     	}
 
-    	for (Map.Entry<Integer, List<Integer>> integerSumListEntry :
-    		integerSumListMap.entrySet())
-    	{
+    	for (Map.Entry<Integer, List<Integer>> integerSumListEntry : integerSumListMap.entrySet()) {
     		List<Integer> integerList = integerSumListEntry.getValue();
 
     		int listSize = integerList.size();
 
-    		if (1 != listSize)
-    		{
-    			for (int i = 0; i < listSize; ++i)
-    			{
-        			for (int j = 0; j < i; ++j)
-        			{
-        				int sum = integerList.get(i) + integerList.get(j);
+    		if (1 != listSize) {
+    			for (int i = 0; i < listSize; ++i) {
+        			for (int j = 0; j < i; ++j) {
+        				int sum = integerList.get (i) + integerList.get (j);
 
-        				if (sum > max)
-        				{
+        				if (sum > max) {
         					max = sum;
         				}
         			}
@@ -3234,64 +3181,40 @@ public class StringUtil
     public static final boolean ValidateParenthesis (
     	final String input)
     {
-    	if (null == input || input.isEmpty())
-    	{
+    	if (null == input || input.isEmpty()) {
     		return false;
     	}
 
     	List<Character> charList = new ArrayList<Character>();
 
-    	for (char c : input.toCharArray())
-    	{
-    		if ('(' == c || '{' == c || '[' == c)
-    		{
-    			charList.add (
-    				c
-    			);
-    		}
-    		else if (')' == c || '}' == c || ']' == c)
-    		{
-    			if (0 == charList.size())
-    			{
+    	for (char c : input.toCharArray()) {
+    		if ('(' == c || '{' == c || '[' == c) {
+    			charList.add (c);
+    		} else if (')' == c || '}' == c || ']' == c) {
+    			if (0 == charList.size()) {
     				return false;
     			}
 
-    			char prevChar = charList.get (
-    				charList.size() - 1
-    			);
+    			char previousChar = charList.get (charList.size() - 1);
 
-    			if (')' == c)
-				{
-    				if (prevChar != '(')
-    				{
+    			if (')' == c) {
+    				if ('(' != previousChar) {
     					return false;
     				}
 
-    				charList.remove (
-	    				charList.size() - 1
-	    			);
-				}
-    			else if (']' == c)
-				{
-    				if (prevChar != '[')
-    				{
+    				charList.remove (charList.size() - 1);
+				} else if (']' == c) {
+    				if ('[' != previousChar) {
     					return false;
     				}
 
-    				charList.remove (
-	    				charList.size() - 1
-	    			);
-				}
-    			else if ('}' == c)
-				{
-    				if (prevChar != '{')
-    				{
+    				charList.remove (charList.size() - 1);
+				} else if ('}' == c) {
+    				if ('{' != previousChar) {
     					return false;
     				}
 
-    				charList.remove (
-	    				charList.size() - 1
-	    			);
+    				charList.remove (charList.size() - 1);
 				}
     		}
     	}
@@ -3318,46 +3241,29 @@ public class StringUtil
     	int currentLeft = 0;
     	int stringLength = charArray.length;
 
-    	Map<Character, Integer> charLocationMap =
-    		new HashMap<Character, Integer>();
+    	Map<Character, Integer> charLocationMap = new HashMap<Character, Integer>();
 
-    	while (index < stringLength)
-    	{
+    	while (index < stringLength) {
     		char c = charArray[index];
 
-    		if (charLocationMap.containsKey (
-    			c
-    		))
-    		{
-    			if (index - currentLeft > bestRight - bestLeft)
-    			{
+    		if (charLocationMap.containsKey (c)) {
+    			if (index - currentLeft > bestRight - bestLeft) {
     				bestRight = index;
     				bestLeft = currentLeft;
     			}
 
-    			currentLeft = charLocationMap.get (
-    				c
-    			) + 1;
+    			currentLeft = charLocationMap.get (c) + 1;
     		}
 
-    		charLocationMap.put (
-    			c,
-    			index
-    		);
-
-    		++index;
+    		charLocationMap.put (c, index++);
     	}
 
-		if (index - currentLeft > bestRight - bestLeft)
-		{
+		if (index - currentLeft > bestRight - bestLeft) {
 			bestRight = index;
 			bestLeft = currentLeft;
 		}
 
-    	return s.substring (
-    		bestLeft,
-    		bestRight
-    	);
+    	return s.substring (bestLeft, bestRight);
     }
 
     /**
