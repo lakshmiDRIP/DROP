@@ -787,6 +787,215 @@ public class StringUtil
     	return patternList;
     }
 
+	private static final Map<Character, Integer> UpperChar2IntMap()
+	{
+		Map<Character, Integer> upperChar2IntMap = new HashMap<Character, Integer>();
+
+		upperChar2IntMap.put ('A', 0);
+
+		upperChar2IntMap.put ('B', 1);
+
+		upperChar2IntMap.put ('C', 2);
+
+		upperChar2IntMap.put ('D', 3);
+
+		upperChar2IntMap.put ('E', 4);
+
+		upperChar2IntMap.put ('F', 5);
+
+		upperChar2IntMap.put ('G', 6);
+
+		upperChar2IntMap.put ('H', 7);
+
+		upperChar2IntMap.put ('I', 8);
+
+		upperChar2IntMap.put ('J', 9);
+
+		upperChar2IntMap.put ('K', 10);
+
+		upperChar2IntMap.put ('L', 11);
+
+		upperChar2IntMap.put ('M', 12);
+
+		upperChar2IntMap.put ('N', 13);
+
+		upperChar2IntMap.put ('O', 14);
+
+		upperChar2IntMap.put ('P', 15);
+
+		upperChar2IntMap.put ('Q', 16);
+
+		upperChar2IntMap.put ('R', 17);
+
+		upperChar2IntMap.put ('S', 18);
+
+		upperChar2IntMap.put ('T', 19);
+
+		upperChar2IntMap.put ('U', 20);
+
+		upperChar2IntMap.put ('V', 21);
+
+		upperChar2IntMap.put ('W', 22);
+
+		upperChar2IntMap.put ('X', 23);
+
+		upperChar2IntMap.put ('Y', 24);
+
+		upperChar2IntMap.put ('Z', 25);
+
+		return upperChar2IntMap;
+	}
+
+	private static final Map<Character, Integer> LowerChar2IntMap()
+	{
+		Map<Character, Integer> lowerChar2IntMap = new HashMap<Character, Integer>();
+
+		lowerChar2IntMap.put ('a', 0);
+
+		lowerChar2IntMap.put ('b', 1);
+
+		lowerChar2IntMap.put ('c', 2);
+
+		lowerChar2IntMap.put ('d', 3);
+
+		lowerChar2IntMap.put ('e', 4);
+
+		lowerChar2IntMap.put ('f', 5);
+
+		lowerChar2IntMap.put ('g', 6);
+
+		lowerChar2IntMap.put ('h', 7);
+
+		lowerChar2IntMap.put ('i', 8);
+
+		lowerChar2IntMap.put ('j', 9);
+
+		lowerChar2IntMap.put ('k', 10);
+
+		lowerChar2IntMap.put ('l', 11);
+
+		lowerChar2IntMap.put ('m', 12);
+
+		lowerChar2IntMap.put ('n', 13);
+
+		lowerChar2IntMap.put ('o', 14);
+
+		lowerChar2IntMap.put ('p', 15);
+
+		lowerChar2IntMap.put ('q', 16);
+
+		lowerChar2IntMap.put ('r', 17);
+
+		lowerChar2IntMap.put ('s', 18);
+
+		lowerChar2IntMap.put ('t', 19);
+
+		lowerChar2IntMap.put ('u', 20);
+
+		lowerChar2IntMap.put ('v', 21);
+
+		lowerChar2IntMap.put ('w', 22);
+
+		lowerChar2IntMap.put ('x', 23);
+
+		lowerChar2IntMap.put ('y', 24);
+
+		lowerChar2IntMap.put ('z', 25);
+
+		return lowerChar2IntMap;
+	}
+
+	private static final char[] Int2UpperCharArray()
+	{
+		char[] int2UpperCharArray = new char[26];
+		int2UpperCharArray[0] = 'A';
+		int2UpperCharArray[1] = 'B';
+		int2UpperCharArray[2] = 'C';
+		int2UpperCharArray[3] = 'D';
+		int2UpperCharArray[4] = 'E';
+		int2UpperCharArray[5] = 'F';
+		int2UpperCharArray[6] = 'G';
+		int2UpperCharArray[7] = 'H';
+		int2UpperCharArray[8] = 'I';
+		int2UpperCharArray[9] = 'J';
+		int2UpperCharArray[10] = 'K';
+		int2UpperCharArray[11] = 'L';
+		int2UpperCharArray[12] = 'M';
+		int2UpperCharArray[13] = 'N';
+		int2UpperCharArray[14] = 'O';
+		int2UpperCharArray[15] = 'P';
+		int2UpperCharArray[16] = 'Q';
+		int2UpperCharArray[17] = 'R';
+		int2UpperCharArray[18] = 'S';
+		int2UpperCharArray[19] = 'T';
+		int2UpperCharArray[20] = 'U';
+		int2UpperCharArray[21] = 'V';
+		int2UpperCharArray[22] = 'W';
+		int2UpperCharArray[23] = 'X';
+		int2UpperCharArray[24] = 'Y';
+		int2UpperCharArray[25] = 'Z';
+		return int2UpperCharArray;
+	}
+
+	private static final char[] Int2LowerCharArray()
+	{
+		char[] int2LowerCharArray = new char[26];
+		int2LowerCharArray[0] = 'a';
+		int2LowerCharArray[1] = 'b';
+		int2LowerCharArray[2] = 'c';
+		int2LowerCharArray[3] = 'd';
+		int2LowerCharArray[4] = 'e';
+		int2LowerCharArray[5] = 'f';
+		int2LowerCharArray[6] = 'g';
+		int2LowerCharArray[7] = 'h';
+		int2LowerCharArray[8] = 'i';
+		int2LowerCharArray[9] = 'j';
+		int2LowerCharArray[10] = 'k';
+		int2LowerCharArray[11] = 'l';
+		int2LowerCharArray[12] = 'm';
+		int2LowerCharArray[13] = 'n';
+		int2LowerCharArray[14] = 'o';
+		int2LowerCharArray[15] = 'p';
+		int2LowerCharArray[16] = 'q';
+		int2LowerCharArray[17] = 'r';
+		int2LowerCharArray[18] = 's';
+		int2LowerCharArray[19] = 't';
+		int2LowerCharArray[20] = 'u';
+		int2LowerCharArray[21] = 'v';
+		int2LowerCharArray[22] = 'w';
+		int2LowerCharArray[23] = 'x';
+		int2LowerCharArray[24] = 'y';
+		int2LowerCharArray[25] = 'z';
+		return int2LowerCharArray;
+	}
+
+	private static final Map<Character, Integer> Int2IntMap()
+	{
+		Map<Character, Integer> int2IntMap = new HashMap<Character, Integer>();
+
+		int2IntMap.put ('0', 0);
+
+		int2IntMap.put ('1', 1);
+
+		int2IntMap.put ('2', 2);
+
+		int2IntMap.put ('3', 3);
+
+		int2IntMap.put ('4', 4);
+
+		int2IntMap.put ('5', 5);
+
+		int2IntMap.put ('6', 6);
+
+		int2IntMap.put ('7', 7);
+
+		int2IntMap.put ('8', 8);
+
+		int2IntMap.put ('9', 9);
+
+		return int2IntMap;
+	}
+
 	/**
 	 * Convert the String to a Number
 	 * 
@@ -1862,42 +2071,29 @@ public class StringUtil
 
 		int stringLength = charArray.length;
 		int charCount = stringLength / 4;
-		int qCount = 0;
 		int wCount = 0;
-		int eCount = 0;
+		int qCount = 0;
 		int rCount = 0;
+		int eCount = 0;
 
-		for (int charIndex = 0;
-			charIndex < stringLength;
-			++charIndex)
-		{
-			if ('Q' == charArray[charIndex])
-			{
+		for (int charIndex = 0; charIndex < stringLength; ++charIndex) {
+			if ('Q' == charArray[charIndex]) {
 				++qCount;
-			}
-			else if ('W' == charArray[charIndex])
-			{
+			} else if ('W' == charArray[charIndex]) {
 				++wCount;
-			}
-			else if ('E' == charArray[charIndex])
-			{
+			} else if ('E' == charArray[charIndex]) {
 				++eCount;
-			}
-			else if ('R' == charArray[charIndex])
-			{
+			} else if ('R' == charArray[charIndex]) {
 				++rCount;
 			}
 		}
 
-		return (Math.abs (
-			qCount - charCount
-		) + Math.abs (
-			wCount - charCount
-		) + Math.abs (
-			eCount - charCount
-		) + Math.abs (
-			rCount - charCount
-		)) / 2;
+		return (
+			Math.abs (qCount - charCount) +
+			Math.abs (wCount - charCount) +
+			Math.abs (eCount - charCount) +
+			Math.abs (rCount - charCount)
+		) / 2;
 	}
 
 	/**
@@ -1905,23 +2101,19 @@ public class StringUtil
 	 * Given two non-negative integers represented as strings, return their product, also represented as a
 	 *  string.
 	 * 
-	 * @param num1 First Number
-	 * @param num2 Second Number
+	 * @param number1 First Number
+	 * @param number2 Second Number
 	 * 
 	 * @return The Product
 	 */
 
 	public static final String MultiplyNumbers (
-		final String num1,
-		final String num2)
+		final String number1,
+		final String number2)
 	{
-		List<Integer> numberList1 = StringToNumber (
-			num1
-		);
+		List<Integer> numberList1 = StringToNumber (number1);
 
-		List<Integer> numberList2 = StringToNumber (
-			num2
-		);
+		List<Integer> numberList2 = StringToNumber (number2);
 
 		int scale1 = 1;
 		int multiplication = 0;
@@ -1930,23 +2122,13 @@ public class StringUtil
 
 		int number2Length = numberList2.size();
 
-		for (int index1 = number1Length - 1;
-			index1 >= 0;
-			--index1)
-		{
+		for (int index1 = number1Length - 1; index1 >= 0; --index1) {
 			int scale2 = 1;
 
-			int digit1 = numberList1.get (
-				index1
-			);
+			int digit1 = numberList1.get (index1);
 
-			for (int index2 = number2Length - 1;
-				index2 >= 0;
-				--index2)
-			{
-				int digit2 = numberList2.get (
-					index2
-				);
+			for (int index2 = number2Length - 1; 0 <= index2; --index2) {
+				int digit2 = numberList2.get (index2);
 
 				multiplication = multiplication + digit1 * scale1 * digit2 * scale2;
 				scale2 = scale2 * 10;
@@ -1956,404 +2138,6 @@ public class StringUtil
 		}
 
 		return "" + multiplication;
-	}
-
-	private static final Map<Character, Integer> UpperChar2IntMap()
-	{
-		Map<Character, Integer> upperChar2IntMap =
-			new HashMap<Character, Integer>();
-
-		upperChar2IntMap.put (
-			'A',
-			0
-		);
-
-		upperChar2IntMap.put (
-			'B',
-			1
-		);
-
-		upperChar2IntMap.put (
-			'C',
-			2
-		);
-
-		upperChar2IntMap.put (
-			'D',
-			3
-		);
-
-		upperChar2IntMap.put (
-			'E',
-			4
-		);
-
-		upperChar2IntMap.put (
-			'F',
-			5
-		);
-
-		upperChar2IntMap.put (
-			'G',
-			6
-		);
-
-		upperChar2IntMap.put (
-			'H',
-			7
-		);
-
-		upperChar2IntMap.put (
-			'I',
-			8
-		);
-
-		upperChar2IntMap.put (
-			'J',
-			9
-		);
-
-		upperChar2IntMap.put (
-			'K',
-			10
-		);
-
-		upperChar2IntMap.put (
-			'L',
-			11
-		);
-
-		upperChar2IntMap.put (
-			'M',
-			12
-		);
-
-		upperChar2IntMap.put (
-			'N',
-			13
-		);
-
-		upperChar2IntMap.put (
-			'O',
-			14
-		);
-
-		upperChar2IntMap.put (
-			'P',
-			15
-		);
-
-		upperChar2IntMap.put (
-			'Q',
-			16
-		);
-
-		upperChar2IntMap.put (
-			'R',
-			17
-		);
-
-		upperChar2IntMap.put (
-			'S',
-			18
-		);
-
-		upperChar2IntMap.put (
-			'T',
-			19
-		);
-
-		upperChar2IntMap.put (
-			'U',
-			20
-		);
-
-		upperChar2IntMap.put (
-			'V',
-			21
-		);
-
-		upperChar2IntMap.put (
-			'W',
-			22
-		);
-
-		upperChar2IntMap.put (
-			'X',
-			23
-		);
-
-		upperChar2IntMap.put (
-			'Y',
-			24
-		);
-
-		upperChar2IntMap.put (
-			'Z',
-			25
-		);
-
-		return upperChar2IntMap;
-	}
-
-	private static final Map<Character, Integer> LowerChar2IntMap()
-	{
-		Map<Character, Integer> lowerChar2IntMap =
-			new HashMap<Character, Integer>();
-
-		lowerChar2IntMap.put (
-			'a',
-			0
-		);
-
-		lowerChar2IntMap.put (
-			'b',
-			1
-		);
-
-		lowerChar2IntMap.put (
-			'c',
-			2
-		);
-
-		lowerChar2IntMap.put (
-			'd',
-			3
-		);
-
-		lowerChar2IntMap.put (
-			'e',
-			4
-		);
-
-		lowerChar2IntMap.put (
-			'f',
-			5
-		);
-
-		lowerChar2IntMap.put (
-			'g',
-			6
-		);
-
-		lowerChar2IntMap.put (
-			'h',
-			7
-		);
-
-		lowerChar2IntMap.put (
-			'i',
-			8
-		);
-
-		lowerChar2IntMap.put (
-			'j',
-			9
-		);
-
-		lowerChar2IntMap.put (
-			'k',
-			10
-		);
-
-		lowerChar2IntMap.put (
-			'l',
-			11
-		);
-
-		lowerChar2IntMap.put (
-			'm',
-			12
-		);
-
-		lowerChar2IntMap.put (
-			'n',
-			13
-		);
-
-		lowerChar2IntMap.put (
-			'o',
-			14
-		);
-
-		lowerChar2IntMap.put (
-			'p',
-			15
-		);
-
-		lowerChar2IntMap.put (
-			'q',
-			16
-		);
-
-		lowerChar2IntMap.put (
-			'r',
-			17
-		);
-
-		lowerChar2IntMap.put (
-			's',
-			18
-		);
-
-		lowerChar2IntMap.put (
-			't',
-			19
-		);
-
-		lowerChar2IntMap.put (
-			'u',
-			20
-		);
-
-		lowerChar2IntMap.put (
-			'v',
-			21
-		);
-
-		lowerChar2IntMap.put (
-			'w',
-			22
-		);
-
-		lowerChar2IntMap.put (
-			'x',
-			23
-		);
-
-		lowerChar2IntMap.put (
-			'y',
-			24
-		);
-
-		lowerChar2IntMap.put (
-			'z',
-			25
-		);
-
-		return lowerChar2IntMap;
-	}
-
-	private static final char[] Int2UpperCharArray()
-	{
-		char[] int2UpperCharArray = new char[26];
-		int2UpperCharArray[0] = 'A';
-		int2UpperCharArray[1] = 'B';
-		int2UpperCharArray[2] = 'C';
-		int2UpperCharArray[3] = 'D';
-		int2UpperCharArray[4] = 'E';
-		int2UpperCharArray[5] = 'F';
-		int2UpperCharArray[6] = 'G';
-		int2UpperCharArray[7] = 'H';
-		int2UpperCharArray[8] = 'I';
-		int2UpperCharArray[9] = 'J';
-		int2UpperCharArray[10] = 'K';
-		int2UpperCharArray[11] = 'L';
-		int2UpperCharArray[12] = 'M';
-		int2UpperCharArray[13] = 'N';
-		int2UpperCharArray[14] = 'O';
-		int2UpperCharArray[15] = 'P';
-		int2UpperCharArray[16] = 'Q';
-		int2UpperCharArray[17] = 'R';
-		int2UpperCharArray[18] = 'S';
-		int2UpperCharArray[19] = 'T';
-		int2UpperCharArray[20] = 'U';
-		int2UpperCharArray[21] = 'V';
-		int2UpperCharArray[22] = 'W';
-		int2UpperCharArray[23] = 'X';
-		int2UpperCharArray[24] = 'Y';
-		int2UpperCharArray[25] = 'Z';
-		return int2UpperCharArray;
-	}
-
-	private static final char[] Int2LowerCharArray()
-	{
-		char[] int2LowerCharArray = new char[26];
-		int2LowerCharArray[0] = 'a';
-		int2LowerCharArray[1] = 'b';
-		int2LowerCharArray[2] = 'c';
-		int2LowerCharArray[3] = 'd';
-		int2LowerCharArray[4] = 'e';
-		int2LowerCharArray[5] = 'f';
-		int2LowerCharArray[6] = 'g';
-		int2LowerCharArray[7] = 'h';
-		int2LowerCharArray[8] = 'i';
-		int2LowerCharArray[9] = 'j';
-		int2LowerCharArray[10] = 'k';
-		int2LowerCharArray[11] = 'l';
-		int2LowerCharArray[12] = 'm';
-		int2LowerCharArray[13] = 'n';
-		int2LowerCharArray[14] = 'o';
-		int2LowerCharArray[15] = 'p';
-		int2LowerCharArray[16] = 'q';
-		int2LowerCharArray[17] = 'r';
-		int2LowerCharArray[18] = 's';
-		int2LowerCharArray[19] = 't';
-		int2LowerCharArray[20] = 'u';
-		int2LowerCharArray[21] = 'v';
-		int2LowerCharArray[22] = 'w';
-		int2LowerCharArray[23] = 'x';
-		int2LowerCharArray[24] = 'y';
-		int2LowerCharArray[25] = 'z';
-		return int2LowerCharArray;
-	}
-
-	private static final Map<Character, Integer> Int2IntMap()
-	{
-		Map<Character, Integer> int2IntMap =
-			new HashMap<Character, Integer>();
-
-		int2IntMap.put (
-			'0',
-			0
-		);
-
-		int2IntMap.put (
-			'1',
-			1
-		);
-
-		int2IntMap.put (
-			'2',
-			2
-		);
-
-		int2IntMap.put (
-			'3',
-			3
-		);
-
-		int2IntMap.put (
-			'4',
-			4
-		);
-
-		int2IntMap.put (
-			'5',
-			5
-		);
-
-		int2IntMap.put (
-			'6',
-			6
-		);
-
-		int2IntMap.put (
-			'7',
-			7
-		);
-
-		int2IntMap.put (
-			'8',
-			8
-		);
-
-		int2IntMap.put (
-			'9',
-			9
-		);
-
-		return int2IntMap;
 	}
 
 	/**
@@ -2390,59 +2174,34 @@ public class StringUtil
 
 		Map<Character, Integer> upperChar2IntMap = UpperChar2IntMap();
 
-		for (int i = 0; i < in.length(); ++i)
-		{
-			char c = in.charAt (
-				i
-			);
+		for (int i = 0; i < in.length(); ++i) {
+			char c = in.charAt (i);
 
-			if (int2IntMap.containsKey (
-				c
-			))
-			{
-				int value = int2IntMap.get (
-					c
-				) + rotationFactor;
+			if (int2IntMap.containsKey (c)) {
+				int value = int2IntMap.get (c) + rotationFactor;
 
-				while (value >= 10)
-				{
+				while (10 <= value) {
 					value = value - 10;
 				}
 
 				out = out + value;
-			}
-			else if (lowerChar2IntMap.containsKey (
-				c
-			))
-			{
-				int value = lowerChar2IntMap.get (
-					c
-				) + rotationFactor;
+			} else if (lowerChar2IntMap.containsKey (c)) {
+				int value = lowerChar2IntMap.get (c) + rotationFactor;
 
-				while (value >= 26)
-				{
+				while (26 <= value) {
 					value = value - 26;
 				}
 
 				out = out + int2LowerCharArray[value];
-			}
-			else if (upperChar2IntMap.containsKey (
-				c
-			))
-			{
-				int value = upperChar2IntMap.get (
-					c
-				) + rotationFactor;
+			} else if (upperChar2IntMap.containsKey (c)) {
+				int value = upperChar2IntMap.get (c) + rotationFactor;
 
-				while (value >= 26)
-				{
+				while (26 <= value) {
 					value = value - 26;
 				}
 
 				out = out + int2UpperCharArray[value];
-			}
-			else
-			{
+			} else {
 				out = out + c;
 			}
 		}
