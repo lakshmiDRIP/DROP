@@ -1140,29 +1140,36 @@ public class StringUtil
 	/**
 	 * Create a list of integers from a delimited string
 	 * 
-	 * @param lsi [Output] List of Integers
-	 * @param strList Delimited String input
-	 * @param strDelim Delimiter
+	 * @param integerList [Output] List of Integers
+	 * @param inputList Delimited String input
+	 * @param delimiter Delimiter
 	 * 
 	 * @return True if successful
 	 */
 
 	public static final boolean IntegerListFromString (
-		final List<Integer> lsi,
-		final String strList,
-		final String strDelim)
+		final List<Integer> integerList,
+		final String inputList,
+		final String delimiter)
 	{
-		if (null == lsi || null == strList || strList.isEmpty() || null == strDelim || strDelim.isEmpty())
+		if (null == integerList || null == inputList || inputList.isEmpty() ||
+			null == delimiter || delimiter.isEmpty())
+		{
 			return false;
+		}
 
-		String[] astr = Split (strList, strDelim);
+		String[] inputArray = Split (inputList, delimiter);
 
-		if (null == astr || 0 == astr.length) return false;
+		if (null == inputArray || 0 == inputArray.length) {
+			return false;
+		}
 
-		for (int i = 0; i < astr.length; ++i) {
-			if (null == astr[i] || astr[i].isEmpty()) continue;
+		for (int i = 0; i < inputArray.length; ++i) {
+			if (null == inputArray[i] || inputArray[i].isEmpty()) {
+				continue;
+			}
 
-			lsi.add (Integer.parseInt (astr[i]));
+			integerList.add (Integer.parseInt (inputArray[i]));
 		}
 
 		return true;
@@ -1171,29 +1178,37 @@ public class StringUtil
 	/**
 	 * Create a list of booleans from a delimited string
 	 * 
-	 * @param lsb [Output] List of Booleans
-	 * @param strList Delimited String input
-	 * @param strDelim Delimiter
+	 * @param booleanList [Output] List of Booleans
+	 * @param inputList Delimited String input
+	 * @param delimiter Delimiter
 	 * 
 	 * @return True if successful
 	 */
 
 	public static final boolean BooleanListFromString (
-		final List<Boolean> lsb,
-		final String strList,
-		final String strDelim)
+		final List<Boolean> booleanList,
+		final String inputList,
+		final String delimiter)
 	{
-		if (null == lsb || null == strList || strList.isEmpty() || null == strDelim || strDelim.isEmpty())
+		if (null == booleanList ||
+			null == inputList || inputList.isEmpty() ||
+			null == delimiter || delimiter.isEmpty())
+		{
 			return false;
+		}
 
-		String[] astr = Split (strList, strDelim);
+		String[] inputArray = Split (inputList, delimiter);
 
-		if (null == astr || 0 == astr.length) return false;
+		if (null == inputArray || 0 == inputArray.length) {
+			return false;
+		}
 
-		for (int i = 0; i < astr.length; ++i) {
-			if (null == astr[i] || astr[i].isEmpty()) continue;
+		for (int i = 0; i < inputArray.length; ++i) {
+			if (null == inputArray[i] || inputArray[i].isEmpty()) {
+				continue;
+			}
 
-			lsb.add (Boolean.parseBoolean (astr[i]));
+			booleanList.add (Boolean.parseBoolean (inputArray[i]));
 		}
 
 		return true;
@@ -1202,75 +1217,84 @@ public class StringUtil
 	/**
 	 * Convert the String Array to a Record Delimited String
 	 * 
-	 * @param astr Input String Array
-	 * @param strRecordDelimiter The String Record Delimiter
-	 * @param strNULL NULL String Indicator
+	 * @param inputArray Input String Array
+	 * @param recordDelimiter The String Record Delimiter
+	 * @param nullString NULL String Indicator
 	 * 
 	 * @return The Record Delimited String Array
 	 */
 
 	public static final String StringArrayToString (
-		final String[] astr,
-		final String strRecordDelimiter,
-		final String strNULL)
+		final String[] inputArray,
+		final String recordDelimiter,
+		final String nullString)
 	{
-		if (null == astr || null == strRecordDelimiter || strRecordDelimiter.isEmpty() || null == strNULL ||
-			strNULL.isEmpty())
+		if (null == inputArray ||
+			null == recordDelimiter || recordDelimiter.isEmpty() ||
+			null == nullString || nullString.isEmpty())
+		{
 			return null;
-
-		int iNumStr = astr.length;
-
-		if (0 == iNumStr) return null;
-
-		StringBuffer sb = new StringBuffer();
-
-		for (int i = 0; i < iNumStr; ++i) {
-			String str = astr[i];
-
-			if (0 != i) sb.append (strRecordDelimiter);
-
-			sb.append (null == str || str.isEmpty() ? strNULL : str);
 		}
 
-		return sb.toString();
+		if (0 == inputArray.length) {
+			return null;
+		}
+
+		StringBuffer stringBuffer = new StringBuffer();
+
+		for (int i = 0; i < inputArray.length; ++i) {
+			String input = inputArray[i];
+
+			if (0 != i) {
+				stringBuffer.append (recordDelimiter);
+			}
+
+			stringBuffer.append (null == input || input.isEmpty() ? nullString : input);
+		}
+
+		return stringBuffer.toString();
 	}
 
 	/**
 	 * Indicate if the Input String is Empty
 	 * 
-	 * @param str The Input String
+	 * @param input The Input String
 	 * 
 	 * @return TRUE - The Input String is Empty
 	 */
 
 	public static final boolean IsEmpty (
-		final String str)
+		final String input)
 	{
-		return null == str || str.isEmpty();
+		return null == input || input.isEmpty();
 	}
 
 	/**
 	 * Indicate it the pair of Strings Match each other in Value
 	 * 
-	 * @param strLeft The Left String
-	 * @param strRight The Right String
+	 * @param left The Left String
+	 * @param right The Right String
 	 * 
 	 * @return TRUE - The Strings Match
 	 */
 
 	public static final boolean StringMatch (
-		final String strLeft,
-		final String strRight)
+		final String left,
+		final String right)
 	{
-		boolean bIsLeftEmpty = IsEmpty (strLeft);
+		boolean isLeftEmpty = IsEmpty (left);
 
-		boolean bIsRightEmpty = IsEmpty (strRight);
+		boolean isRightEmpty = IsEmpty (right);
 
-		if (bIsLeftEmpty && bIsRightEmpty) return true;
+		if (isLeftEmpty && isRightEmpty) {
+			return true;
+		}
 
-		if ((bIsLeftEmpty && !bIsRightEmpty) || (!bIsLeftEmpty && bIsRightEmpty)) return false;
+		if ((isLeftEmpty && !isRightEmpty) || (!isLeftEmpty && isRightEmpty)) {
+			return false;
+		}
 
-		return strLeft.equalsIgnoreCase (strRight);
+		return left.equalsIgnoreCase (right);
 	}
 
 	/**
@@ -1308,63 +1332,45 @@ public class StringUtil
 		char[] charArray = s.toCharArray();
 
 		int stringLength = charArray.length;
-		int valuePrev = 0;
-		int value = 0;
+		int previousValue = 0;
+		int currentValue = 0;
 		int index = 0;
 		int sign = 1;
 
 		List<Integer> integerList = new ArrayList<Integer>();
 
-		while (index < stringLength &&
-			' ' == charArray[index])
-		{
+		while (index < stringLength && ' ' == charArray[index]) {
 			++index;
 		}
 
-		if (index < stringLength &&
-			'-' == charArray[index])
-		{
+		if (index < stringLength && '-' == charArray[index]) {
 			sign = -1;
 			++index;
 		}
 
-		while (index < stringLength)
-		{
-			int integerValue = DecimalIntegerDigit (
-				charArray[index]
-			);
+		while (index < stringLength) {
+			int integerValue = DecimalIntegerDigit (charArray[index]);
 
-			if (-1 == integerValue)
-			{
+			if (-1 == integerValue) {
 				break;
 			}
 
-			integerList.add (
-				integerValue
-			);
+			integerList.add (integerValue);
 
 			++index;
 		}
 
-		int listSize = integerList.size();
+		for (int i = 0; i < integerList.size(); ++i) {
+			currentValue = 10 * currentValue + integerList.get (i);
 
-		for (int i = 0;
-			i < listSize;
-			++i)
-		{
-			value = 10 * value + integerList.get (
-				i
-			);
-
-			if (value < valuePrev)
-			{
+			if (currentValue < previousValue) {
 				return Integer.MIN_VALUE;
 			}
 
-			valuePrev = value;
+			previousValue = currentValue;
 		}
 
-		return value * sign;
+		return currentValue * sign;
 	}
 
 	/**
@@ -1378,26 +1384,19 @@ public class StringUtil
 	public static final String ReverseWords (
 		final String s)
 	{
-		String[] wordArray = s.split (
-			" "
-		);
+		String[] wordArray = s.split (" ");
 
 		boolean firstWord = true;
 		String reverseString = "";
 
-		for (int wordIndex = wordArray.length - 1;
-			wordIndex >= 0;
-			--wordIndex)
-		{
+		for (int wordIndex = wordArray.length - 1; 0 <= wordIndex; --wordIndex) {
 			String gap = " ";
 
-			if (firstWord)
-			{
+			if (firstWord) {
 				gap = "";
 			}
 
-			if (null != wordArray[wordIndex] && !wordArray[wordIndex].isBlank())
-			{
+			if (null != wordArray[wordIndex] && !wordArray[wordIndex].isBlank()) {
 				reverseString = reverseString + gap + wordArray[wordIndex];
 				firstWord = false;
 			}
@@ -1438,22 +1437,13 @@ public class StringUtil
 	public static final String ValidIPAddressType (
 		final String s)
 	{
-		if (ValidIPv4 (
-			s
-		))
-		{
-			return "IPv4";
-		}
-
-		return ValidIPv6 (
-			s
-		) ? "IPv6" : "Neither";
+		return ValidIPv4 (s) ? "IPv4" : ValidIPv6 (s) ? "IPv6" : "Neither";
 	}
 
 	/**
 	 * Compare two version numbers version1 and version2.
 	 * 
-	 * If version1 gt version2 return 1; if version1 lt version2 return -1;otherwise return 0.
+	 * If version1 gt version2 return 1; if version1 lt version2 return -1; otherwise return 0.
 	 * 
 	 * You may assume that the version strings are non-empty and contain only digits and the . character.
 	 * 
@@ -1476,37 +1466,25 @@ public class StringUtil
 		final String version1,
 		final String version2)
 	{
-		String[] subVersion1 = Split (
-			version1,
-			"."
-		);
+		String[] subVersion2ComponentArray = Split (version2, ".");
 
-		String[] subVersion2 = Split (
-			version2,
-			"."
-		);
+		String[] subVersion1ComponentArray = Split (version1, ".");
 
-		int subVersion1Index = 0;
 		int subVersion2Index = 0;
+		int subVersion1Index = 0;
 
-		while (subVersion1Index < subVersion1.length &&
-			subVersion2Index < subVersion2.length)
+		while (subVersion1Index < subVersion1ComponentArray.length &&
+			subVersion2Index < subVersion2ComponentArray.length)
 		{
-			int subVersion1Number = DecimalNumberFromString (
-				subVersion1[subVersion1Index]
-			);
+			int subVersion1Number = DecimalNumberFromString (subVersion1ComponentArray[subVersion1Index]);
 
-			int subVersion2Number = DecimalNumberFromString (
-				subVersion2[subVersion1Index]
-			);
+			int subVersion2Number = DecimalNumberFromString (subVersion2ComponentArray[subVersion1Index]);
 
-			if (subVersion1Number > subVersion2Number)
-			{
+			if (subVersion1Number > subVersion2Number) {
 				return 1;
 			}
 
-			if (subVersion1Number < subVersion2Number)
-			{
+			if (subVersion1Number < subVersion2Number) {
 				return -1;
 			}
 
@@ -1514,37 +1492,27 @@ public class StringUtil
 			++subVersion2Index;
 		}
 
-		if (subVersion1.length == subVersion2.length)
-		{
+		if (subVersion1ComponentArray.length == subVersion2ComponentArray.length) {
 			return 0;
 		}
 
-		if (subVersion1.length > subVersion2.length)
-		{
-			while (subVersion1Index < subVersion1.length)
-			{
-				int subVersion1Number = DecimalNumberFromString (
-					subVersion1[subVersion1Index]
-				);
+		if (subVersion1ComponentArray.length > subVersion2ComponentArray.length) {
+			while (subVersion1Index < subVersion1ComponentArray.length) {
+				int subVersion1Number =
+					DecimalNumberFromString (subVersion1ComponentArray[subVersion1Index]);
 
-				if (0 != subVersion1Number)
-				{
+				if (0 != subVersion1Number) {
 					return 1;
 				}
 
 				++subVersion1Index;
 			}
-		}
-		else
-		{
-			while (subVersion2Index < subVersion2.length)
-			{
-				int subVersion2Number = DecimalNumberFromString (
-					subVersion2[subVersion1Index]
-				);
+		} else {
+			while (subVersion2Index < subVersion2ComponentArray.length) {
+				int subVersion2Number =
+					DecimalNumberFromString (subVersion2ComponentArray[subVersion1Index]);
 
-				if (0 != subVersion2Number)
-				{
+				if (0 != subVersion2Number) {
 					return -1;
 				}
 
