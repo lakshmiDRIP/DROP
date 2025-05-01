@@ -2,18 +2,25 @@
 package org.drip.service.common;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.Stack;
+import java.util.StringTokenizer;
+import java.util.TreeMap;
+import java.util.UUID;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -95,34 +102,28 @@ import java.util.Stack;
  * <i>StringUtil</i> implements string utility functions. It exports the following functions:
  * 
  *  <ul>
- *  	<li>
- * 			Decompose + Transform string arrays into appropriate target type set/array/list, and vice versa
- *  	</li>
- *  	<li>
- * 			General-purpose String processor functions, such as GUID generator, splitter, type converter and
- * 				input checker
- *  	</li>
  *  </ul>
  * 
- * <br><br>
- *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md">Numerical Analysis Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/README.md">Environment, Product/Definition Containers, and Scenario/State Manipulation APIs</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/common">Assorted Data Structures Support Utilities</a></li>
- *  </ul>
- * <br><br>
+ * <br>
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationSupportLibrary.md">Computation Support</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/README.md">Environment, Product/Definition Containers, and Scenario/State Manipulation APIs</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/common/README.md">Assorted Data Structures Support Utilities</a></td></tr>
+ *  </table>
+ * <br>
  * 
  * @author Lakshmi Krishnamurthy
  */
 
-public class StringUtil {
+public class StringUtil
+{
 
 	/**
 	 * Null serialized string
 	 */
 
-	public static final java.lang.String NULL_SER_STRING = "<<null>>";
+	public static final String NULL_SER_STRING = "<<null>>";
 
 	/**
 	 * Serialization Version - ALWAYS prepend this on all derived classes
@@ -133,53 +134,43 @@ public class StringUtil {
 	private static final int DecimalIntegerDigit (
 		final char c)
 	{
-		if ('0' == c)
-		{
+		if ('0' == c) {
 			return 0;
 		}
 
-		if ('1' == c)
-		{
+		if ('1' == c) {
 			return 1;
 		}
 
-		if ('2' == c)
-		{
+		if ('2' == c) {
 			return 2;
 		}
 
-		if ('3' == c)
-		{
+		if ('3' == c) {
 			return 3;
 		}
 
-		if ('4' == c)
-		{
+		if ('4' == c) {
 			return 4;
 		}
 
-		if ('5' == c)
-		{
+		if ('5' == c) {
 			return 5;
 		}
 
-		if ('6' == c)
-		{
+		if ('6' == c) {
 			return 6;
 		}
 
-		if ('7' == c)
-		{
+		if ('7' == c) {
 			return 7;
 		}
 
-		if ('8' == c)
-		{
+		if ('8' == c) {
 			return 8;
 		}
 
-		if ('9' == c)
-		{
+		if ('9' == c) {
 			return 9;
 		}
 
@@ -189,126 +180,75 @@ public class StringUtil {
 	private static final int HexadecimalIntegerDigit (
 		final char c)
 	{
-		if ('0' == c)
-		{
+		if ('0' == c) {
 			return 0;
 		}
 
-		if ('1' == c)
-		{
+		if ('1' == c) {
 			return 1;
 		}
 
-		if ('2' == c)
-		{
+		if ('2' == c) {
 			return 2;
 		}
 
-		if ('3' == c)
-		{
+		if ('3' == c) {
 			return 3;
 		}
 
-		if ('4' == c)
-		{
+		if ('4' == c) {
 			return 4;
 		}
 
-		if ('5' == c)
-		{
+		if ('5' == c) {
 			return 5;
 		}
 
-		if ('6' == c)
-		{
+		if ('6' == c) {
 			return 6;
 		}
 
-		if ('7' == c)
-		{
+		if ('7' == c) {
 			return 7;
 		}
 
-		if ('8' == c)
-		{
+		if ('8' == c) {
 			return 8;
 		}
 
-		if ('9' == c)
-		{
+		if ('9' == c) {
 			return 9;
 		}
 
-		if ('a' == c)
-		{
+		if ('a' == c) {
 			return 10;
 		}
 
-		if ('b' == c)
-		{
+		if ('b' == c) {
 			return 11;
 		}
 
-		if ('c' == c)
-		{
+		if ('c' == c) {
 			return 12;
 		}
 
-		if ('d' == c)
-		{
+		if ('d' == c) {
 			return 13;
 		}
 
-		if ('e' == c)
-		{
+		if ('e' == c) {
 			return 14;
 		}
 
-		if ('f' == c)
-		{
+		if ('f' == c) {
 			return 15;
 		}
 
 		return -1;
 	}
 
-	/**
-	 * Convert the String to a Number
-	 * 
-	 * @param s Input String
-	 * 
-	 * @return The Number
-	 */
-
-	public static final int DecimalNumberFromString (
-		final java.lang.String s)
-	{
-		char[] charArray = s.toCharArray();
-
-		int size = charArray.length;
-		int numberFromString = 0;
-
-		for (int charIndex = 0;
-			charIndex < size;
-			++charIndex)
-		{
-			int decimal = DecimalIntegerDigit (
-				charArray[charIndex]
-			);
-
-			if (-1 == decimal)
-			{
-				return -1;
-			}
-
-			numberFromString = 10 * numberFromString + decimal;
-		}
-
-		return numberFromString;
-	}
-
 	private static final int HexadecimalNumberFromString (
-		final java.lang.String s)
+		final String s)
 	{
 		char[] charArray = s.toCharArray();
 
@@ -335,28 +275,18 @@ public class StringUtil {
 	}
 
 	private static final boolean ValidIPv4 (
-		final java.lang.String address)
+		final String address)
 	{
-		java.lang.String[] subnetAddress = Split (
-			address.toLowerCase(),
-			"."
-		);
+		String[] subnetAddress = Split (address.toLowerCase(), ".");
 
-		if (null == subnetAddress || 4 != subnetAddress.length)
-		{
+		if (null == subnetAddress || 4 != subnetAddress.length) {
 			return false;
 		}
 
-		for (int i = 0;
-			i < 3;
-			++i)
-		{
-			int numberFromString = DecimalNumberFromString (
-				subnetAddress[i]
-			);
+		for (int i = 0; i < 3; ++i) {
+			int numberFromString = DecimalNumberFromString (subnetAddress[i]);
 
-			if (0 > numberFromString || 256 <= numberFromString)
-			{
+			if (0 > numberFromString || 256 <= numberFromString) {
 				return false;
 			}
 		}
@@ -365,28 +295,18 @@ public class StringUtil {
 	}
 
 	private static final boolean ValidIPv6 (
-		final java.lang.String address)
+		final String address)
 	{
-		java.lang.String[] subnetAddress = Split (
-			address.toLowerCase(),
-			":"
-		);
+		String[] subnetAddress = Split (address.toLowerCase(), ":");
 
-		if (null == subnetAddress || 8 != subnetAddress.length)
-		{
+		if (null == subnetAddress || 8 != subnetAddress.length) {
 			return false;
 		}
 
-		for (int i = 0;
-			i < 8;
-			++i)
-		{
-			int numberFromString = HexadecimalNumberFromString (
-				subnetAddress[i]
-			);
+		for (int i = 0; i < 8; ++i) {
+			int numberFromString = HexadecimalNumberFromString (subnetAddress[i]);
 
-			if (0 > numberFromString || 65536 <= numberFromString)
-			{
+			if (0 > numberFromString || 65536 <= numberFromString) {
 				return false;
 			}
 		}
@@ -400,43 +320,25 @@ public class StringUtil {
 		return (int) c - (int) '0';
 	}
 
-	private static final java.util.List<java.lang.Integer> StringToNumber (
-		final java.lang.String s)
+	private static final List<Integer> StringToNumber (
+		final String s)
 	{
-		java.util.List<java.lang.Integer> numberList = new java.util.ArrayList<java.lang.Integer>();
+		List<Integer> numberList = new ArrayList<Integer>();
 
-		for (int i = 0;
-			i < s.length();
-			++i)
-		{
-			numberList.add (
-				CharToDigit (
-					s.charAt (
-						i
-					)
-				)
-			);
+		for (int i = 0; i < s.length(); ++i) {
+			numberList.add (CharToDigit (s.charAt (i)));
 		}
 
 		return numberList;
 	}
 
 	private static final boolean IsPalindrome (
-		final java.util.List<java.lang.Integer> digitList)
+		final List<Integer> digitList)
 	{
 		int listLength = digitList.size();
 
-		for (int listIndex = 0;
-			listIndex < listLength;
-			++listIndex)
-		{
-			if (digitList.get (
-					listIndex
-				) != digitList.get (
-					listLength - listIndex - 1
-				)
-			)
-			{
+		for (int listIndex = 0; listIndex < listLength; ++listIndex) {
+			if (digitList.get (listIndex) != digitList.get (listLength - listIndex - 1)) {
 				return false;
 			}
 		}
@@ -447,20 +349,13 @@ public class StringUtil {
 	private static final boolean IsPalindrome (
 		final int i)
 	{
-		return IsPalindrome (
-			IntegerToDigitList (
-				i
-			)
-		);
+		return IsPalindrome (IntegerToDigitList (i));
 	}
 
-	private static final java.util.List<java.lang.Integer> SwapIntoPalindrome (
-		final java.util.List<java.lang.Integer> digitList)
+	private static final List<Integer> SwapIntoPalindrome (
+		final List<Integer> digitList)
 	{
-		if (IsPalindrome (
-			digitList
-		))
-		{
+		if (IsPalindrome (digitList)) {
 			return digitList;
 		}
 
@@ -469,24 +364,13 @@ public class StringUtil {
 		int digitIndexLeft = 0;
 		int digitIndexRight = digitCount - 1;
 
-		while (digitIndexLeft < digitIndexRight)
-		{
-			int leftDigit = digitList.get (
-				digitIndexLeft
-			);
+		while (digitIndexLeft < digitIndexRight) {
+			int leftDigit = digitList.get (digitIndexLeft);
 
-			if (leftDigit != digitList.get (
-				digitIndexRight
-			))
-			{
-				digitList.remove (
-					digitIndexRight
-				);
+			if (leftDigit != digitList.get (digitIndexLeft)) {
+				digitList.remove (digitIndexRight);
 
-				digitList.add (
-					digitIndexRight,
-					leftDigit
-				);
+				digitList.add (digitIndexRight, leftDigit);
 			}
 
 			++digitIndexLeft;
@@ -496,19 +380,15 @@ public class StringUtil {
 		return digitList;
 	}
 
-	private static final java.util.List<java.lang.Integer> IntegerToDigitList (
+	private static final List<Integer> IntegerToDigitList (
 		int i)
 	{
-		java.util.List<java.lang.Integer> integerToDigitList = new java.util.ArrayList<java.lang.Integer>();
+		List<Integer> integerToDigitList = new ArrayList<Integer>();
 
-		while (i != 0)
-		{
+		while (0 != i) {
 			int digit = i % 10;
 
-			integerToDigitList.add (
-				0,
-				digit
-			);
+			integerToDigitList.add (0, digit);
 
 			i = i / 10;
 		}
@@ -517,40 +397,34 @@ public class StringUtil {
 	}
 
 	private static final int DigitListToInteger (
-		final java.util.List<java.lang.Integer> integerToDigitList)
+		final List<Integer> integerToDigitList)
 	{
 		int integer = 0;
 
-		for (int digit : integerToDigitList)
-		{
+		for (int digit : integerToDigitList) {
 			integer = 10 * integer + digit;
 		}
 
 		return integer;
 	}
 
-	private static final java.lang.String EvaluateSubSum (
+	private static final String EvaluateSubSum (
 		final int level,
-		final java.lang.String s)
+		final String s)
 	{
 		int subSum = 0;
 
-		java.lang.String[] numberString = s.split (
-			","
-		);
+		String[] numberString = s.split (",");
 
-		for (java.lang.String number : numberString)
-		{
-			subSum = subSum + DecimalNumberFromString (
-				number
-			);
+		for (String number : numberString) {
+			subSum = subSum + DecimalNumberFromString (number);
 		}
 
 		return "" + (level * subSum);
 	}
 
-	private static final java.lang.String NestedArrayDepthSum (
-		final java.lang.String expression,
+	private static final String NestedArrayDepthSum (
+		final String expression,
 		final int level)
 	{
 		char[] charArray = expression.toCharArray();
@@ -560,10 +434,8 @@ public class StringUtil {
 		int leftBracketIndex = -1;
 		int index = 0;
 
-		while (index < expressionLength)
-		{
-			if (charArray[index] == '[')
-			{
+		while (index < expressionLength) {
+			if (charArray[index] == '[') {
 				leftBracketIndex = index;
 				break;
 			}
@@ -571,47 +443,21 @@ public class StringUtil {
 			++index;
 		}
 
-		while (index < expressionLength)
-		{
-			if (charArray[index] == ']')
-			{
+		while (index < expressionLength) {
+			if (charArray[index] == ']') {
 				rightBracketIndex = index;
 			}
 
 			++index;
 		}
 
-		if (-1 == leftBracketIndex &&
-			-1 == rightBracketIndex
-		)
-		{
-			return EvaluateSubSum (
-				level,
-				expression
-			);
-		}
-
-		java.lang.String leftSubstring = expression.substring (
-			0,
-			leftBracketIndex
-		);
-
-		java.lang.String rightSubstring = expression.substring (
-			rightBracketIndex + 1,
-			expressionLength
-		);
-
-		java.lang.String evaluation = NestedArrayDepthSum (
-			expression.substring (
-				leftBracketIndex + 1,
-				rightBracketIndex
-			),
-			level + 1
-		);
-
 		return EvaluateSubSum (
 			level,
-			leftSubstring + evaluation + rightSubstring
+			-1 == leftBracketIndex && -1 == rightBracketIndex ? expression :
+				expression.substring (0, leftBracketIndex) + NestedArrayDepthSum (
+					expression.substring (leftBracketIndex + 1, rightBracketIndex),
+					level + 1
+				) + expression.substring (rightBracketIndex + 1, expressionLength)
 		);
 	}
 
@@ -624,23 +470,33 @@ public class StringUtil {
 		int leftIndex = left;
 		int rightIndex = right;
 
-		while (leftIndex >= 0 && rightIndex < charArray.length && charArray[leftIndex] == charArray[rightIndex]) {
+		while (0 <= leftIndex &&
+			rightIndex < charArray.length &&
+			charArray[leftIndex] == charArray[rightIndex])
+		{
 			left = leftIndex--;
 			right = rightIndex++;
 		}
 
 		int[] range = new int[] {left, right};
 
-		if (mid == charArray.length - 1) return range;
+		if (mid == charArray.length - 1) {
+			return range;
+		}
 
 		left = mid;
 		right = mid + 1;
 		leftIndex = left;
 		rightIndex = right;
 
-		if (charArray[leftIndex] != charArray[rightIndex]) return range;
+		if (charArray[leftIndex] != charArray[rightIndex]) {
+			return range;
+		}
 
-		while (leftIndex >= 0 && rightIndex < charArray.length && charArray[leftIndex] == charArray[rightIndex]) {
+		while (0 <= leftIndex &&
+			rightIndex < charArray.length &&
+			charArray[leftIndex] == charArray[rightIndex])
+		{
 			left = leftIndex--;
 			right = rightIndex++;
 		}
@@ -658,16 +514,36 @@ public class StringUtil {
     private static final boolean IsConsonant (
     	final char c)
     {
-    	return 'b' == c || 'c' == c || 'd' == c || 'y' == c || 'f' == c || 'g' == c || 'h' == c || 'j' == c
-    		|| 'k' == c || 'l' == c || 'm' == c || 'n' == c || 'p' == c || 'q' == c || 'r' == c || 's' == c
-    		|| 't' == c || 'v' == c || 'w' == c || 'x' == c || 'z' == c;
+    	return 'b' == c ||
+			'c' == c ||
+			'd' == c ||
+			'y' == c ||
+			'f' == c ||
+			'g' == c ||
+			'h' == c ||
+			'j' == c ||
+			'k' == c ||
+			'l' == c ||
+			'm' == c ||
+			'n' == c ||
+			'p' == c ||
+			'q' == c ||
+			'r' == c ||
+			's' == c ||
+			't' == c ||
+			'v' == c ||
+			'w' == c ||
+			'x' == c ||
+			'z' == c;
     }
 
     private static final boolean DecrementCharCount (
     	final int[] charCountArray,
     	final char c)
     {
-    	if (0 == charCountArray[(int) c]) return false;
+    	if (0 == charCountArray[(int) c]) {
+    		return false;
+    	}
 
     	--charCountArray[(int) c];
     	return true;
@@ -680,9 +556,7 @@ public class StringUtil {
     	int b = charCountArray[(int) 'b'];
     	int c = charCountArray[(int) 'c'];
 
-    	if (a >= b && a >= c) return 'a';
-
-    	return b >= c ? 'b' : 'c';
+    	return a >= b && a >= c ? 'a' : b >= c ? 'b' : 'c';
     }
 
     private static final char CharWithSmallestCount (
@@ -692,9 +566,7 @@ public class StringUtil {
     	int b = charCountArray[(int) 'b'];
     	int c = charCountArray[(int) 'c'];
 
-    	if (a <= b && a <= c) return 'a';
-
-    	return b <= c ? 'b' : 'c';
+    	return a <= b && a <= c ? 'a' : b <= c ? 'b' : 'c';
     }
 
     private static final char CharWithMediumCount (
@@ -704,9 +576,13 @@ public class StringUtil {
 
     	char charWithSmallestCount = CharWithSmallestCount (charCountArray);
 
-    	if ('a' != charWithLargestCount && 'a' != charWithSmallestCount) return 'a';
+    	if ('a' != charWithLargestCount && 'a' != charWithSmallestCount) {
+    		return 'a';
+    	}
 
-    	if ('b' != charWithLargestCount && 'b' != charWithSmallestCount) return 'b';
+    	if ('b' != charWithLargestCount && 'b' != charWithSmallestCount) {
+    		return 'b';
+    	}
 
     	return 'c';
     }
@@ -716,11 +592,17 @@ public class StringUtil {
     {
     	int zeroCount = 0;
 
-    	if (0 == charCountArray[(int) 'a']) ++zeroCount;
+    	if (0 == charCountArray[(int) 'a']) {
+    		++zeroCount;
+    	}
 
-    	if (0 == charCountArray[(int) 'b']) ++zeroCount;
+    	if (0 == charCountArray[(int) 'b']) {
+    		++zeroCount;
+    	}
 
-    	if (0 == charCountArray[(int) 'c']) ++zeroCount;
+    	if (0 == charCountArray[(int) 'c']) {
+    		++zeroCount;
+    	}
 
     	return 2 <= zeroCount;
     }
@@ -728,13 +610,38 @@ public class StringUtil {
     private static final boolean EmptyCharCountArray (
     	final int[] charCountArray)
     {
-    	return 0 == charCountArray[(int) 'a'] && 0 == charCountArray[(int) 'b'] &&
+    	return 0 == charCountArray[(int) 'a'] &&
+			0 == charCountArray[(int) 'b'] &&
     		0 == charCountArray[(int) 'c'];
     }
 
     private static final char[] CHAR_ARRAY = {
-    	'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't',
-    		'u', 'v', 'w', 'x', 'y', 'z'
+    	'a',
+    	'b',
+    	'c',
+    	'd',
+    	'e',
+    	'f',
+    	'g',
+    	'h',
+    	'i',
+    	'j',
+    	'k',
+    	'l',
+    	'm',
+    	'n',
+    	'o',
+    	'p',
+    	'q',
+    	'r',
+    	's',
+    	't',
+    	'u',
+    	'v',
+    	'w',
+    	'x',
+    	'y',
+    	'z'
     };
 
     private static final String ReplaceIndexCharacter (
@@ -746,8 +653,9 @@ public class StringUtil {
 
     	char[] replacedCharArray = new char[stringLength];
 
-    	for (int i = 0; i < stringLength; ++i)
+    	for (int i = 0; i < stringLength; ++i) {
     		replacedCharArray[i] = i == index ? c : original.charAt (i);
+    	}
 
     	return new String (replacedCharArray);
     }
@@ -783,7 +691,9 @@ public class StringUtil {
     		if (currentWord.equalsIgnoreCase (endWord)) {
     			if (null == shortestWordTransformationSequence ||
     				currentTransformationSequence.size() < shortestWordTransformationSequence.size())
+    			{
         			shortestWordTransformationSequence = currentTransformationSequence;
+    			}
 
     			break;
     		}
@@ -797,9 +707,8 @@ public class StringUtil {
     				if (!visitedWordSet.contains (newWord) && wordSet.contains (newWord)) {
     					wordStack.push (newWord);
 
-    					List<String> newTransformationSequence = new ArrayList<String> (
-    						currentTransformationSequence
-    					);
+    					List<String> newTransformationSequence =
+							new ArrayList<String> (currentTransformationSequence);
 
     					newTransformationSequence.add (newWord);
 
@@ -839,7 +748,9 @@ public class StringUtil {
     	List<Integer> locationIndexList = new ArrayList<Integer>();
 
     	for (int i = startIndex; i < charArray.length; ++i) {
-    		if (c == charArray[i]) locationIndexList.add (i);
+    		if (c == charArray[i]) {
+    			locationIndexList.add (i);
+    		}
     	}
 
     	return locationIndexList;
@@ -875,6 +786,35 @@ public class StringUtil {
     	return patternList;
     }
 
+	/**
+	 * Convert the String to a Number
+	 * 
+	 * @param s Input String
+	 * 
+	 * @return The Number
+	 */
+
+	public static final int DecimalNumberFromString (
+		final String s)
+	{
+		char[] charArray = s.toCharArray();
+
+		int size = charArray.length;
+		int numberFromString = 0;
+
+		for (int charIndex = 0; charIndex < size; ++charIndex) {
+			int decimal = DecimalIntegerDigit (charArray[charIndex]);
+
+			if (-1 == decimal) {
+				return -1;
+			}
+
+			numberFromString = 10 * numberFromString + decimal;
+		}
+
+		return numberFromString;
+	}
+
     /**
 	 * Look for a match of the field in the input array
 	 * 
@@ -886,15 +826,15 @@ public class StringUtil {
 	 */
 
 	public static final boolean MatchInStringArray (
-		final java.lang.String strFieldToMatch,
-		final java.lang.String[] astrMatchSet,
+		final String strFieldToMatch,
+		final String[] astrMatchSet,
 		final boolean bCaseMatch)
 	{
 		if (null == strFieldToMatch || strFieldToMatch.isEmpty() || null == astrMatchSet || 0 ==
 			astrMatchSet.length)
 			return false;
 
-		for (java.lang.String strMatchSetEntry : astrMatchSet) {
+		for (String strMatchSetEntry : astrMatchSet) {
 			if (null == strMatchSetEntry || strMatchSetEntry.isEmpty()) continue;
 
 			if (strMatchSetEntry.equals (strFieldToMatch)) return true;
@@ -916,15 +856,15 @@ public class StringUtil {
 	 */
 
 	public static final boolean MatchInStringArray (
-		final java.lang.String[] astrFieldToMatch,
-		final java.lang.String[] astrMatchSet,
+		final String[] astrFieldToMatch,
+		final String[] astrMatchSet,
 		final boolean bCaseMatch)
 	{
 		if (null == astrFieldToMatch || 0 == astrFieldToMatch.length || null == astrMatchSet || 0 ==
 			astrMatchSet.length)
 			return false;
 
-		for (java.lang.String strFieldToMatch : astrFieldToMatch) {
+		for (String strFieldToMatch : astrFieldToMatch) {
 			if (MatchInStringArray (strFieldToMatch, astrMatchSet, bCaseMatch)) return true;
 		}
 
@@ -939,8 +879,8 @@ public class StringUtil {
 	 * @return Parameter from the Argument
 	 */
 
-	public static final java.lang.String MakeStringArg (
-		final java.lang.String strArg)
+	public static final String MakeStringArg (
+		final String strArg)
 	{
 		if (null == strArg) return "null";
 
@@ -958,8 +898,8 @@ public class StringUtil {
 	 * @return The Processed String
 	 */
 
-	public static final java.lang.String ProcessInputForNULL (
-		final java.lang.String strIn,
+	public static final String ProcessInputForNULL (
+		final String strIn,
 		final boolean bEmptyToNULL)
 	{
 		if (null == strIn) return null;
@@ -982,9 +922,9 @@ public class StringUtil {
 	 * @return Array of Sub-Strings
 	 */
 
-	public static final java.lang.String[] Split (
-		final java.lang.String inputPhrase,
-		final java.lang.String delimiter)
+	public static final String[] Split (
+		final String inputPhrase,
+		final String delimiter)
 	{
 		if (null == inputPhrase || inputPhrase.isEmpty() ||
 			null == delimiter || delimiter.isEmpty()
@@ -998,7 +938,7 @@ public class StringUtil {
 			0
 		))
 		{
-			return new java.lang.String[]
+			return new String[]
 			{
 				inputPhrase
 			};
@@ -1006,7 +946,7 @@ public class StringUtil {
 
 		int delimiterIndex = -1;
 
-		java.util.List<java.lang.Integer> delimiterIndexList = new java.util.ArrayList<java.lang.Integer>();
+		List<Integer> delimiterIndexList = new ArrayList<Integer>();
 
 		while (-1 != (delimiterIndex = inputPhrase.indexOf (
 			delimiter,
@@ -1026,7 +966,7 @@ public class StringUtil {
 		}
 
 		int beginIndex = 0;
-		java.lang.String[] fieldArray = new java.lang.String[fieldCount + 1];
+		String[] fieldArray = new String[fieldCount + 1];
 
 		for (int fieldIndex = 0;
 			fieldIndex < fieldCount;
@@ -1060,7 +1000,7 @@ public class StringUtil {
 	 */
 
 	public static final boolean ParseFromUnitaryString (
-		final java.lang.String strUnitaryBoolean)
+		final String strUnitaryBoolean)
 	{
 		if (null == strUnitaryBoolean || strUnitaryBoolean.isEmpty() || !"1".equalsIgnoreCase
 			(strUnitaryBoolean.trim()))
@@ -1078,14 +1018,14 @@ public class StringUtil {
 	 */
 
 	public static final int[] MakeIntegerArrayFromStringTokenizer (
-		final java.util.StringTokenizer st)
+		final StringTokenizer st)
 	{
 		if (null == st) return null;
 
-		java.util.List<java.lang.Integer> li = new java.util.ArrayList<java.lang.Integer>();
+		List<Integer> li = new ArrayList<Integer>();
 
 		while (st.hasMoreTokens())
-			li.add (java.lang.Integer.parseInt (st.nextToken()));
+			li.add (Integer.parseInt (st.nextToken()));
 
 		if (0 == li.size()) return null;
 
@@ -1108,14 +1048,14 @@ public class StringUtil {
 	 */
 
 	public static final double[] MakeDoubleArrayFromStringTokenizer (
-		final java.util.StringTokenizer stdbl)
+		final StringTokenizer stdbl)
 	{
 		if (null == stdbl) return null;
 
-		java.util.List<java.lang.Double> lsdbl = new java.util.ArrayList<java.lang.Double>();
+		List<Double> lsdbl = new ArrayList<Double>();
 
 		while (stdbl.hasMoreTokens())
-			lsdbl.add (java.lang.Double.parseDouble (stdbl.nextToken()));
+			lsdbl.add (Double.parseDouble (stdbl.nextToken()));
 
 		if (0 == lsdbl.size()) return null;
 
@@ -1135,9 +1075,9 @@ public class StringUtil {
 	 * @return String representing the GUID
 	 */
 
-	public static final java.lang.String GUID()
+	public static final String GUID()
 	{
-	    return java.util.UUID.randomUUID().toString();
+	    return UUID.randomUUID().toString();
 	}
 
 	/**
@@ -1153,32 +1093,32 @@ public class StringUtil {
 	 */
 
 	public static final boolean KeyValueListFromStringArray (
-		final java.util.List<java.lang.Double> lsdblKey,
-		final java.util.List<java.lang.Double> lsdblValue,
-		final java.lang.String strArray,
-		final java.lang.String strRecordDelim,
-		final java.lang.String strKVDelim)
+		final List<Double> lsdblKey,
+		final List<Double> lsdblValue,
+		final String strArray,
+		final String strRecordDelim,
+		final String strKVDelim)
 	{
 		if (null == strArray || strArray.isEmpty() || null == strRecordDelim || strRecordDelim.isEmpty() ||
 			null == strKVDelim || strKVDelim.isEmpty() || null == lsdblKey || null == lsdblValue)
 			return false;
 
-		java.lang.String[] astr = Split (strArray, strRecordDelim);
+		String[] astr = Split (strArray, strRecordDelim);
 
 		if (null == astr || 0 == astr.length) return false;
 
 		for (int i = 0; i < astr.length; ++i) {
 			if (null == astr[i] || astr[i].isEmpty()) return false;
 
-			java.lang.String[] astrRecord = Split (astr[i], strKVDelim);
+			String[] astrRecord = Split (astr[i], strKVDelim);
 
 			if (null == astrRecord || 2 != astrRecord.length || null == astrRecord[0] ||
 				astrRecord[0].isEmpty() || null == astrRecord[1] || astrRecord[1].isEmpty())
 				return false;
 
-			lsdblKey.add (java.lang.Double.parseDouble (astrRecord[0]));
+			lsdblKey.add (Double.parseDouble (astrRecord[0]));
 
-			lsdblValue.add (java.lang.Double.parseDouble (astrRecord[1]));
+			lsdblValue.add (Double.parseDouble (astrRecord[1]));
 		}
 
 		return true;
@@ -1195,21 +1135,21 @@ public class StringUtil {
 	 */
 
 	public static final boolean IntegerListFromString (
-		final java.util.List<java.lang.Integer> lsi,
-		final java.lang.String strList,
-		final java.lang.String strDelim)
+		final List<Integer> lsi,
+		final String strList,
+		final String strDelim)
 	{
 		if (null == lsi || null == strList || strList.isEmpty() || null == strDelim || strDelim.isEmpty())
 			return false;
 
-		java.lang.String[] astr = Split (strList, strDelim);
+		String[] astr = Split (strList, strDelim);
 
 		if (null == astr || 0 == astr.length) return false;
 
 		for (int i = 0; i < astr.length; ++i) {
 			if (null == astr[i] || astr[i].isEmpty()) continue;
 
-			lsi.add (java.lang.Integer.parseInt (astr[i]));
+			lsi.add (Integer.parseInt (astr[i]));
 		}
 
 		return true;
@@ -1226,21 +1166,21 @@ public class StringUtil {
 	 */
 
 	public static final boolean BooleanListFromString (
-		final java.util.List<java.lang.Boolean> lsb,
-		final java.lang.String strList,
-		final java.lang.String strDelim)
+		final List<Boolean> lsb,
+		final String strList,
+		final String strDelim)
 	{
 		if (null == lsb || null == strList || strList.isEmpty() || null == strDelim || strDelim.isEmpty())
 			return false;
 
-		java.lang.String[] astr = Split (strList, strDelim);
+		String[] astr = Split (strList, strDelim);
 
 		if (null == astr || 0 == astr.length) return false;
 
 		for (int i = 0; i < astr.length; ++i) {
 			if (null == astr[i] || astr[i].isEmpty()) continue;
 
-			lsb.add (java.lang.Boolean.parseBoolean (astr[i]));
+			lsb.add (Boolean.parseBoolean (astr[i]));
 		}
 
 		return true;
@@ -1256,10 +1196,10 @@ public class StringUtil {
 	 * @return The Record Delimited String Array
 	 */
 
-	public static final java.lang.String StringArrayToString (
-		final java.lang.String[] astr,
-		final java.lang.String strRecordDelimiter,
-		final java.lang.String strNULL)
+	public static final String StringArrayToString (
+		final String[] astr,
+		final String strRecordDelimiter,
+		final String strNULL)
 	{
 		if (null == astr || null == strRecordDelimiter || strRecordDelimiter.isEmpty() || null == strNULL ||
 			strNULL.isEmpty())
@@ -1269,10 +1209,10 @@ public class StringUtil {
 
 		if (0 == iNumStr) return null;
 
-		java.lang.StringBuffer sb = new java.lang.StringBuffer();
+		StringBuffer sb = new StringBuffer();
 
 		for (int i = 0; i < iNumStr; ++i) {
-			java.lang.String str = astr[i];
+			String str = astr[i];
 
 			if (0 != i) sb.append (strRecordDelimiter);
 
@@ -1291,7 +1231,7 @@ public class StringUtil {
 	 */
 
 	public static final boolean IsEmpty (
-		final java.lang.String str)
+		final String str)
 	{
 		return null == str || str.isEmpty();
 	}
@@ -1306,8 +1246,8 @@ public class StringUtil {
 	 */
 
 	public static final boolean StringMatch (
-		final java.lang.String strLeft,
-		final java.lang.String strRight)
+		final String strLeft,
+		final String strRight)
 	{
 		boolean bIsLeftEmpty = IsEmpty (strLeft);
 
@@ -1350,7 +1290,7 @@ public class StringUtil {
 	 */
 
 	public static final int AToI (
-		final java.lang.String s)
+		final String s)
 	{
 		char[] charArray = s.toCharArray();
 
@@ -1360,7 +1300,7 @@ public class StringUtil {
 		int index = 0;
 		int sign = 1;
 
-		java.util.List<java.lang.Integer> integerList = new java.util.ArrayList<java.lang.Integer>();
+		List<Integer> integerList = new ArrayList<Integer>();
 
 		while (index < stringLength &&
 			' ' == charArray[index])
@@ -1405,7 +1345,7 @@ public class StringUtil {
 
 			if (value < valuePrev)
 			{
-				return java.lang.Integer.MIN_VALUE;
+				return Integer.MIN_VALUE;
 			}
 
 			valuePrev = value;
@@ -1422,21 +1362,21 @@ public class StringUtil {
 	 * @return String with Words Reversed
 	 */
 
-	public static final java.lang.String ReverseWords (
-		final java.lang.String s)
+	public static final String ReverseWords (
+		final String s)
 	{
-		java.lang.String[] wordArray = s.split (
+		String[] wordArray = s.split (
 			" "
 		);
 
 		boolean firstWord = true;
-		java.lang.String reverseString = "";
+		String reverseString = "";
 
 		for (int wordIndex = wordArray.length - 1;
 			wordIndex >= 0;
 			--wordIndex)
 		{
-			java.lang.String gap = " ";
+			String gap = " ";
 
 			if (firstWord)
 			{
@@ -1482,8 +1422,8 @@ public class StringUtil {
 	 * @return IP Address Type
 	 */
 
-	public static final java.lang.String ValidIPAddressType (
-		final java.lang.String s)
+	public static final String ValidIPAddressType (
+		final String s)
 	{
 		if (ValidIPv4 (
 			s
@@ -1520,15 +1460,15 @@ public class StringUtil {
 	 */
 
 	public static final int VersionCompare (
-		final java.lang.String version1,
-		final java.lang.String version2)
+		final String version1,
+		final String version2)
 	{
-		java.lang.String[] subVersion1 = Split (
+		String[] subVersion1 = Split (
 			version1,
 			"."
 		);
 
-		java.lang.String[] subVersion2 = Split (
+		String[] subVersion2 = Split (
 			version2,
 			"."
 		);
@@ -1610,8 +1550,8 @@ public class StringUtil {
 	 * @return The Longest Palindromic substring
 	 */
 
-	public static final java.lang.String LongestPalindromicSubstring (
-		final java.lang.String s)
+	public static final String LongestPalindromicSubstring (
+		final String s)
 	{
 		char[] charArray = s.toCharArray();
 
@@ -1635,7 +1575,7 @@ public class StringUtil {
 	 */
 
 	public static final int LengthOfLongestNonRepeatingSubstring (
-		final java.lang.String s)
+		final String s)
 	{
 		char[] charArray = s.toCharArray();
 
@@ -1643,8 +1583,8 @@ public class StringUtil {
 		int beginIndex = 0;
 		int lengthOfLongestNonRepeatingSubstring = 0;
 
-		java.util.Map<java.lang.Character, java.lang.Integer> charMap =
-			new java.util.HashMap<java.lang.Character, java.lang.Integer>();
+		Map<Character, Integer> charMap =
+			new HashMap<Character, Integer>();
 
 		while (index < charArray.length)
 		{
@@ -1713,7 +1653,7 @@ public class StringUtil {
 	 */
 
 	public static final boolean ValidateParenthesisString (
-		final java.lang.String s)
+		final String s)
 	{
 		char[] charArray = s.toCharArray();
 
@@ -1847,7 +1787,7 @@ public class StringUtil {
 	public static final int NextGreaterInteger (
 		int n)
 	{
-		java.util.List<java.lang.Integer> integerList = new java.util.ArrayList<java.lang.Integer>();
+		List<Integer> integerList = new ArrayList<Integer>();
 
 		while (n != 0)
 		{
@@ -1928,8 +1868,8 @@ public class StringUtil {
 	 * @return Simplified Path
 	 */
 
-	public static final java.lang.String SimplifyPath (
-		java.lang.String path)
+	public static final String SimplifyPath (
+		String path)
 	{
 		while (path.startsWith (
 			"/"
@@ -1950,14 +1890,14 @@ public class StringUtil {
 			);
 		}
 
-		java.lang.String[] folders = Split (
+		String[] folders = Split (
 			path,
 			"/"
 		);
 
-		java.util.List<java.lang.String> folderList = new java.util.ArrayList<java.lang.String>();
+		List<String> folderList = new ArrayList<String>();
 
-		for (java.lang.String folder : folders)
+		for (String folder : folders)
 		{
 			if (null == folder || folder.isEmpty())
 			{
@@ -1992,9 +1932,9 @@ public class StringUtil {
 			return "/";
 		}
 
-		java.lang.String simplifiedPath = "";
+		String simplifiedPath = "";
 
-		for (java.lang.String folder : folderList)
+		for (String folder : folderList)
 		{
 			simplifiedPath = simplifiedPath + "/" + folder;
 		}
@@ -2019,7 +1959,7 @@ public class StringUtil {
 	 */
 
 	public static final int BalanceString (
-		final java.lang.String s)
+		final String s)
 	{
 		char[] charArray = s.toCharArray();
 
@@ -2052,13 +1992,13 @@ public class StringUtil {
 			}
 		}
 
-		return (java.lang.Math.abs (
+		return (Math.abs (
 			qCount - charCount
-		) + java.lang.Math.abs (
+		) + Math.abs (
 			wCount - charCount
-		) + java.lang.Math.abs (
+		) + Math.abs (
 			eCount - charCount
-		) + java.lang.Math.abs (
+		) + Math.abs (
 			rCount - charCount
 		)) / 2;
 	}
@@ -2074,15 +2014,15 @@ public class StringUtil {
 	 * @return The Product
 	 */
 
-	public static final java.lang.String MultiplyNumbers (
-		final java.lang.String num1,
-		final java.lang.String num2)
+	public static final String MultiplyNumbers (
+		final String num1,
+		final String num2)
 	{
-		java.util.List<java.lang.Integer> numberList1 = StringToNumber (
+		List<Integer> numberList1 = StringToNumber (
 			num1
 		);
 
-		java.util.List<java.lang.Integer> numberList2 = StringToNumber (
+		List<Integer> numberList2 = StringToNumber (
 			num2
 		);
 
@@ -2121,10 +2061,10 @@ public class StringUtil {
 		return "" + multiplication;
 	}
 
-	private static final java.util.Map<java.lang.Character, java.lang.Integer> UpperChar2IntMap()
+	private static final Map<Character, Integer> UpperChar2IntMap()
 	{
-		java.util.Map<java.lang.Character, java.lang.Integer> upperChar2IntMap =
-			new java.util.HashMap<java.lang.Character, java.lang.Integer>();
+		Map<Character, Integer> upperChar2IntMap =
+			new HashMap<Character, Integer>();
 
 		upperChar2IntMap.put (
 			'A',
@@ -2259,10 +2199,10 @@ public class StringUtil {
 		return upperChar2IntMap;
 	}
 
-	private static final java.util.Map<java.lang.Character, java.lang.Integer> LowerChar2IntMap()
+	private static final Map<Character, Integer> LowerChar2IntMap()
 	{
-		java.util.Map<java.lang.Character, java.lang.Integer> lowerChar2IntMap =
-			new java.util.HashMap<java.lang.Character, java.lang.Integer>();
+		Map<Character, Integer> lowerChar2IntMap =
+			new HashMap<Character, Integer>();
 
 		lowerChar2IntMap.put (
 			'a',
@@ -2461,10 +2401,10 @@ public class StringUtil {
 		return int2LowerCharArray;
 	}
 
-	private static final java.util.Map<java.lang.Character, java.lang.Integer> Int2IntMap()
+	private static final Map<Character, Integer> Int2IntMap()
 	{
-		java.util.Map<java.lang.Character, java.lang.Integer> int2IntMap =
-			new java.util.HashMap<java.lang.Character, java.lang.Integer>();
+		Map<Character, Integer> int2IntMap =
+			new HashMap<Character, Integer>();
 
 		int2IntMap.put (
 			'0',
@@ -2537,21 +2477,21 @@ public class StringUtil {
 	 * @return The Encrypted String
 	 */
 
-	public static final java.lang.String RotationalCipher (
-		final java.lang.String in,
+	public static final String RotationalCipher (
+		final String in,
 		final int rotationFactor)
 	{
-		java.lang.String out = "";
+		String out = "";
 
 		char[] int2LowerCharArray = Int2LowerCharArray();
 
 		char[] int2UpperCharArray = Int2UpperCharArray();
 
-		java.util.Map<java.lang.Character, java.lang.Integer> int2IntMap = Int2IntMap();
+		Map<Character, Integer> int2IntMap = Int2IntMap();
 
-		java.util.Map<java.lang.Character, java.lang.Integer> lowerChar2IntMap = LowerChar2IntMap();
+		Map<Character, Integer> lowerChar2IntMap = LowerChar2IntMap();
 
-		java.util.Map<java.lang.Character, java.lang.Integer> upperChar2IntMap = UpperChar2IntMap();
+		Map<Character, Integer> upperChar2IntMap = UpperChar2IntMap();
 
 		for (int i = 0; i < in.length(); ++i)
 		{
@@ -2623,15 +2563,15 @@ public class StringUtil {
 	 */
 
 	public static final int MatchingPairCount (
-		final java.lang.String s,
-		final java.lang.String t)
+		final String s,
+		final String t)
 	{
 		int length = s.length();
 
 		int matchingPairCount = 0;
 
-		java.util.List<java.lang.Integer> mismatchedIndexList =
-			new java.util.ArrayList<java.lang.Integer>();
+		List<Integer> mismatchedIndexList =
+			new ArrayList<Integer>();
 
 		for (int i = 0; i < length; ++i)
 		{
@@ -2716,9 +2656,9 @@ public class StringUtil {
 	 * @return The Minimum Window String represented by t inside s
 	 */
 
-	public static final java.lang.String MinimumWindowSubstring (
-		final java.lang.String s,
-		final java.lang.String t)
+	public static final String MinimumWindowSubstring (
+		final String s,
+		final String t)
 	{
 		if (null == s || s.isEmpty() || null == t || t.isEmpty() || s.length() < t.length()) return "";
 
@@ -2728,8 +2668,8 @@ public class StringUtil {
 
 		if (sLength < tLength) return "";
 
-		java.util.Map<java.lang.Character, java.lang.Integer> tCharacterCountMap =
-			new java.util.HashMap<java.lang.Character, java.lang.Integer>();
+		Map<Character, Integer> tCharacterCountMap =
+			new HashMap<Character, Integer>();
 
 		for (char c : t.toCharArray()) {
 			if (tCharacterCountMap.containsKey (c))
@@ -2787,7 +2727,7 @@ public class StringUtil {
 	 */
 
 	public static final boolean IsValidPalindrome (
-		final java.lang.String s)
+		final String s)
 	{
 		char[] charArray = s.toCharArray();
 
@@ -2833,7 +2773,7 @@ public class StringUtil {
 	public static final int ClosestPalindromicInteger (
 		final int i)
 	{
-		java.util.List<java.lang.Integer> integerToDigitList = IntegerToDigitList (
+		List<Integer> integerToDigitList = IntegerToDigitList (
 			i
 		);
 
@@ -2886,8 +2826,8 @@ public class StringUtil {
 	 * @return Value of the Nested Array Sum
 	 */
 
-	public static final java.lang.String NestedArrayDepthSum (
-		final java.lang.String expression)
+	public static final String NestedArrayDepthSum (
+		final String expression)
 	{
 		return NestedArrayDepthSum (
 			expression.substring (
@@ -2916,25 +2856,25 @@ public class StringUtil {
 	 * @return k<sup>th</sup> letter (1 indexed) in the decoded string.
 	 */
 
-	public static final java.lang.String DecodeStringAtIndex (
-		final java.lang.String s,
+	public static final String DecodeStringAtIndex (
+		final String s,
 		final int k)
 	{
-		java.util.List<java.lang.Integer> indexList = new java.util.ArrayList<java.lang.Integer>();
+		List<Integer> indexList = new ArrayList<Integer>();
 
-		java.util.List<java.lang.String> wordList = new java.util.ArrayList<java.lang.String>();
+		List<String> wordList = new ArrayList<String>();
 
 		char[] charArray = s.toCharArray();
 
 		int charIndex = 0;
 		int startWordIndex = 0;
-		java.lang.String prevWord = "";
+		String prevWord = "";
 		int stringLength = charArray.length;
 
 		while (true)
 		{
 			while (charIndex < stringLength &&
-				!java.lang.Character.isDigit (
+				!Character.isDigit (
 					charArray[charIndex]
 				)
 			)
@@ -2958,7 +2898,7 @@ public class StringUtil {
 			startWordIndex = charIndex + 1;
 
 			while (charIndex < stringLength &&
-				java.lang.Character.isDigit (
+				Character.isDigit (
 					charArray[charIndex]
 				)
 			)
@@ -2990,7 +2930,7 @@ public class StringUtil {
 			i < indexList.size();
 			++i)
 		{
-			java.lang.String currentWord = prevWord + wordList.get (
+			String currentWord = prevWord + wordList.get (
 				i
 			);
 
@@ -3029,8 +2969,8 @@ public class StringUtil {
 	 * @return The Longest Palindrome Sub-string
 	 */
 
-	public static final java.lang.String LongestPalindromeSubstring (
-		final java.lang.String s)
+	public static final String LongestPalindromeSubstring (
+		final String s)
 	{
 		if (null == s || s.isEmpty())
 		{
@@ -3043,8 +2983,8 @@ public class StringUtil {
 		int rightPalindromeIndex = -1;
 		int leftPalindromeIndex = -1;
 
-		java.util.HashMap<java.lang.Character, java.util.List<java.lang.Integer>> charLocationMap =
-			new java.util.HashMap<java.lang.Character, java.util.List<java.lang.Integer>>();
+		HashMap<Character, List<Integer>> charLocationMap =
+			new HashMap<Character, List<Integer>>();
 
 		for (int index = 0;
 			index < stringLength;
@@ -3064,8 +3004,8 @@ public class StringUtil {
 			}
 			else
 			{
-				java.util.List<java.lang.Integer> locationList =
-					new java.util.ArrayList<java.lang.Integer>();
+				List<Integer> locationList =
+					new ArrayList<Integer>();
 
 				locationList.add (
 					index
@@ -3078,11 +3018,11 @@ public class StringUtil {
 			}
 		}
 
-		java.util.Set<java.lang.Character> charKeySet = charLocationMap.keySet();
+		Set<Character> charKeySet = charLocationMap.keySet();
 
-		for (java.lang.Character c : charKeySet)
+		for (Character c : charKeySet)
 		{
-			java.util.List<java.lang.Integer> locationList = charLocationMap.get (
+			List<Integer> locationList = charLocationMap.get (
 				c
 			);
 
@@ -3147,8 +3087,8 @@ public class StringUtil {
 	 * @return The Longest Non-repeating Sub-string
 	 */
 
-	public static final java.lang.String LongestNonRepeatingSubstring (
-		final java.lang.String s)
+	public static final String LongestNonRepeatingSubstring (
+		final String s)
 	{
 		if (null == s || s.isEmpty())
 		{
@@ -3163,8 +3103,8 @@ public class StringUtil {
 		int stringLength = charArray.length;
 		int nonRepeatingIndexFromLeft = stringLength;
 
-		java.util.HashMap<java.lang.Character, java.util.List<java.lang.Integer>> charLocationMap =
-			new java.util.HashMap<java.lang.Character, java.util.List<java.lang.Integer>>();
+		HashMap<Character, List<Integer>> charLocationMap =
+			new HashMap<Character, List<Integer>>();
 
 		for (int index = 0;
 			index < stringLength;
@@ -3184,8 +3124,8 @@ public class StringUtil {
 			}
 			else
 			{
-				java.util.List<java.lang.Integer> locationList =
-					new java.util.ArrayList<java.lang.Integer>();
+				List<Integer> locationList =
+					new ArrayList<Integer>();
 
 				locationList.add (
 					index
@@ -3198,11 +3138,11 @@ public class StringUtil {
 			}
 		}
 
-		java.util.Set<java.lang.Character> charKeySet = charLocationMap.keySet();
+		Set<Character> charKeySet = charLocationMap.keySet();
 
-		for (java.lang.Character c : charKeySet)
+		for (Character c : charKeySet)
 		{
-			java.util.List<java.lang.Integer> locationList = charLocationMap.get (
+			List<Integer> locationList = charLocationMap.get (
 				c
 			);
 
@@ -3300,9 +3240,9 @@ public class StringUtil {
 			);
 	}
 
-	private static final java.lang.String[] ZeroToTwentyTable()
+	private static final String[] ZeroToTwentyTable()
 	{
-		java.lang.String[] zeroToTwentyTable = new java.lang.String[20];
+		String[] zeroToTwentyTable = new String[20];
 		zeroToTwentyTable[0] = "Zero";
 		zeroToTwentyTable[1] = "One";
 		zeroToTwentyTable[2] = "Two";
@@ -3326,9 +3266,9 @@ public class StringUtil {
 		return zeroToTwentyTable;
 	}
 
-	private static final java.lang.String[] TensPlaceTable()
+	private static final String[] TensPlaceTable()
 	{
-		java.lang.String[] tensPlaceTable = new java.lang.String[10];
+		String[] tensPlaceTable = new String[10];
 		tensPlaceTable[2] = "Twenty";
 		tensPlaceTable[3] = "Thirty";
 		tensPlaceTable[4] = "Forty";
@@ -3340,17 +3280,17 @@ public class StringUtil {
 		return tensPlaceTable;
 	}
 
-	private static final java.lang.String TwoDigitNumber (
+	private static final String TwoDigitNumber (
 		final int i)
 	{
-		java.lang.String[] zeroToTwentyTable = ZeroToTwentyTable();
+		String[] zeroToTwentyTable = ZeroToTwentyTable();
 
 		if (i < 20)
 		{
 			return zeroToTwentyTable[i];
 		}
 
-		java.lang.String twoDigitNumber = TensPlaceTable()[i / 10];
+		String twoDigitNumber = TensPlaceTable()[i / 10];
 
 		int rightDigit = i % 10;
 		return 0 == rightDigit ? twoDigitNumber : twoDigitNumber + " " + zeroToTwentyTable[rightDigit];
@@ -3364,7 +3304,7 @@ public class StringUtil {
 	 * @return The Converted String
 	 */
 
-	public static final java.lang.String ThreeDigitNumber (
+	public static final String ThreeDigitNumber (
 		final int i)
 	{
 		return i < 100 ? TwoDigitNumber (
@@ -3382,8 +3322,8 @@ public class StringUtil {
 	 * @return The Reorganized String
 	 */
 
-	public static final java.lang.String ReorganizeString (
-		final java.lang.String in)
+	public static final String ReorganizeString (
+		final String in)
 	{
 		char[] charArrayIn = in.toCharArray();
 
@@ -3394,8 +3334,8 @@ public class StringUtil {
 		char[] charArrayOut = new char[stringLength];
 		int oddRightIndexLocation = 0 == stringLength % 2 ? stringLength - 1 : stringLength - 2;
 
-		java.util.TreeMap<java.lang.Character, java.lang.Integer> charCountMap =
-			new java.util.TreeMap<java.lang.Character, java.lang.Integer>();
+		TreeMap<Character, Integer> charCountMap =
+			new TreeMap<Character, Integer>();
 
 		for (char c : charArrayIn)
 		{
@@ -3413,7 +3353,7 @@ public class StringUtil {
 
 		while (!charCountMap.isEmpty())
 		{
-			java.util.Map.Entry<java.lang.Character, java.lang.Integer> entry = charCountMap.firstEntry();
+			Map.Entry<Character, Integer> entry = charCountMap.firstEntry();
 
 			char c = entry.getKey();
 
@@ -3461,7 +3401,7 @@ public class StringUtil {
 			}
 		}
 
-		return new java.lang.String (
+		return new String (
 			charArrayOut
 		);
 	}
@@ -3474,12 +3414,12 @@ public class StringUtil {
 	 * @return The Trimmed out String
 	 */
 
-	public static final java.lang.String RemoveMinimumValidParenthesis (
-		final java.lang.String s)
+	public static final String RemoveMinimumValidParenthesis (
+		final String s)
 	{
-		java.util.List<java.lang.Integer> leftBracketIndexList = new java.util.ArrayList<java.lang.Integer>();
+		List<Integer> leftBracketIndexList = new ArrayList<Integer>();
 
-		java.util.List<java.lang.Integer> rightBracketIndexList = new java.util.ArrayList<java.lang.Integer>();
+		List<Integer> rightBracketIndexList = new ArrayList<Integer>();
 
 		char[] charArray = s.toCharArray();
 
@@ -3510,7 +3450,7 @@ public class StringUtil {
 			return s;
 		}
 
-		java.util.Set<java.lang.Integer> indexRemovalList = new java.util.HashSet<java.lang.Integer>();
+		Set<Integer> indexRemovalList = new HashSet<Integer>();
 
 		while (!leftBracketIndexList.isEmpty() && !rightBracketIndexList.isEmpty())
 		{
@@ -3571,7 +3511,7 @@ public class StringUtil {
 			);
 		}
 
-		java.lang.String output = "";
+		String output = "";
 
 		for (int index = 0;
 			index < stringLength;
@@ -3588,10 +3528,10 @@ public class StringUtil {
 		return output;
 	}
 
-	private static final java.util.Set<java.lang.String> PermutationSet (
-		final java.util.Set<java.lang.String> permutationSet,
-		final java.util.Set<java.lang.Integer> exclusionIndexSet,
-		final java.lang.String s)
+	private static final Set<String> PermutationSet (
+		final Set<String> permutationSet,
+		final Set<Integer> exclusionIndexSet,
+		final String s)
 	{
 		char[] charArray = s.toCharArray();
 
@@ -3610,10 +3550,10 @@ public class StringUtil {
 				}
 			}
 
-			java.util.Set<java.lang.String> currentPermutationSet =
-				new java.util.HashSet<java.lang.String>();
+			Set<String> currentPermutationSet =
+				new HashSet<String>();
 
-			for (java.lang.String permutation : permutationSet)
+			for (String permutation : permutationSet)
 			{
 				currentPermutationSet.add(permutation + charArray[exclusionIndex]);
 			}
@@ -3621,7 +3561,7 @@ public class StringUtil {
 			return currentPermutationSet;
 		}
 
-		java.util.Set<java.lang.Integer> inclusionIndexSet = new java.util.HashSet<java.lang.Integer>();
+		Set<Integer> inclusionIndexSet = new HashSet<Integer>();
 
 		for (int i = 0; i < stringLength; ++i)
 		{
@@ -3631,20 +3571,20 @@ public class StringUtil {
 			}
 		}
 
-		java.util.Set<java.lang.String> currentPermutationSet =
-			new java.util.HashSet<java.lang.String>();
+		Set<String> currentPermutationSet =
+			new HashSet<String>();
 
 		for (int index : inclusionIndexSet)
 		{
-			java.util.Set<java.lang.Integer> tempExclusionIndexSet =
-				new java.util.HashSet<java.lang.Integer>();
+			Set<Integer> tempExclusionIndexSet =
+				new HashSet<Integer>();
 
 			tempExclusionIndexSet.addAll (exclusionIndexSet);
 
 			tempExclusionIndexSet.add (index);
 
-			java.util.Set<java.lang.String> tempPermutationSet =
-				new java.util.HashSet<java.lang.String>();
+			Set<String> tempPermutationSet =
+				new HashSet<String>();
 
 			if (permutationSet.isEmpty())
 			{
@@ -3652,7 +3592,7 @@ public class StringUtil {
 			}
 			else
 			{
-				for (java.lang.String permutation : permutationSet)
+				for (String permutation : permutationSet)
 				{
 					tempPermutationSet.add (permutation + charArray[index]);
 				}
@@ -3678,12 +3618,12 @@ public class StringUtil {
 	 * @return Set of all Permutation Sub-strings
 	 */
 
-	public static final java.util.Set<java.lang.String> PermutationSet (
-		final java.lang.String s)
+	public static final Set<String> PermutationSet (
+		final String s)
 	{
-		java.util.Set<java.lang.String> permutationSet = new java.util.HashSet<java.lang.String>();
+		Set<String> permutationSet = new HashSet<String>();
 
-		java.util.Set<java.lang.Integer> exclusionIndexSet = new java.util.HashSet<java.lang.Integer>();
+		Set<Integer> exclusionIndexSet = new HashSet<Integer>();
 
 		return PermutationSet (
 			permutationSet,
@@ -3702,10 +3642,10 @@ public class StringUtil {
 	 */
 
 	public static final boolean IsPermutationPresent (
-		final java.lang.String s1,
-		final java.lang.String s2)
+		final String s1,
+		final String s2)
 	{
-		java.util.Set<java.lang.String> s1PermutationSet = PermutationSet (s1);
+		Set<String> s1PermutationSet = PermutationSet (s1);
 
 		int s1Size = s1.length();
 
@@ -3728,24 +3668,24 @@ public class StringUtil {
 	 * @return List of Merged Accounts
 	 */
 
-	public static final java.util.List<java.util.List<java.lang.String>> MergeAccountList (
-		final java.util.List<java.util.List<java.lang.String>> accounts)
+	public static final List<List<String>> MergeAccountList (
+		final List<List<String>> accounts)
 	{
-		java.util.Map<java.lang.String, java.lang.Integer> emailIndexMap =
-			new java.util.HashMap<java.lang.String, java.lang.Integer>();
+		Map<String, Integer> emailIndexMap =
+			new HashMap<String, Integer>();
 
 		for (int index = 0;
 			index < accounts.size();
 			++index)
 		{
-			java.util.List<java.lang.String> accountDetail = accounts.get(index);
+			List<String> accountDetail = accounts.get(index);
 
 			int matchingAccountIndex = -1;
-			java.lang.String matchingEmail = "";
+			String matchingEmail = "";
 
 			for (int listIndex = 1; listIndex < accountDetail.size(); ++listIndex)
 			{
-				java.lang.String email = accountDetail.get(listIndex);
+				String email = accountDetail.get(listIndex);
 
 				if (emailIndexMap.containsKey(email))
 				{
@@ -3765,11 +3705,11 @@ public class StringUtil {
 			}
 			else
 			{
-				java.util.List<java.lang.String> matchingAccountDetail = accounts.get(matchingAccountIndex);
+				List<String> matchingAccountDetail = accounts.get(matchingAccountIndex);
 
 				for (int listIndex = 1; listIndex < accountDetail.size(); ++listIndex)
 				{
-					java.lang.String email = accountDetail.get(listIndex);
+					String email = accountDetail.get(listIndex);
 
 					emailIndexMap.put(email, matchingAccountIndex);
 
@@ -3780,14 +3720,14 @@ public class StringUtil {
 			}
 		}
 
-		java.util.List<java.util.List<java.lang.String>> mergedAccountList =
-			new java.util.ArrayList<java.util.List<java.lang.String>>();
+		List<List<String>> mergedAccountList =
+			new ArrayList<List<String>>();
 
 		for (int index = 0;
 			index < accounts.size();
 			++index)
 		{
-			java.util.List<java.lang.String> accountDetail = accounts.get(index);
+			List<String> accountDetail = accounts.get(index);
 
 			if (null != accountDetail) mergedAccountList.add(accountDetail);
 		}
@@ -3818,10 +3758,10 @@ public class StringUtil {
 
 	public static final int solution(int[] A)
     {
-    	java.util.HashMap<java.lang.Integer, java.util.List<java.lang.Integer>> integerSumListMap =
-    		new java.util.HashMap<java.lang.Integer, java.util.List<java.lang.Integer>>();
+    	HashMap<Integer, List<Integer>> integerSumListMap =
+    		new HashMap<Integer, List<Integer>>();
 
-    	int max = java.lang.Integer.MIN_VALUE;
+    	int max = Integer.MIN_VALUE;
 
     	for (int i : A)
     	{
@@ -3833,7 +3773,7 @@ public class StringUtil {
     		}
     		else
     		{
-    			java.util.List<java.lang.Integer> integerList  = new java.util.ArrayList<java.lang.Integer>();
+    			List<Integer> integerList  = new ArrayList<Integer>();
 
     			integerList.add(i);
 
@@ -3841,10 +3781,10 @@ public class StringUtil {
     		}
     	}
 
-    	for (java.util.Map.Entry<java.lang.Integer, java.util.List<java.lang.Integer>> integerSumListEntry :
+    	for (Map.Entry<Integer, List<Integer>> integerSumListEntry :
     		integerSumListMap.entrySet())
     	{
-    		java.util.List<java.lang.Integer> integerList = integerSumListEntry.getValue();
+    		List<Integer> integerList = integerSumListEntry.getValue();
 
     		int listSize = integerList.size();
 
@@ -3865,7 +3805,7 @@ public class StringUtil {
     		}
     	}
 
-    	return java.lang.Integer.MIN_VALUE == max ? -1 : max;
+    	return Integer.MIN_VALUE == max ? -1 : max;
     }
 
     /**
@@ -3877,14 +3817,14 @@ public class StringUtil {
      */
 
     public static final boolean ValidateParenthesis (
-    	final java.lang.String input)
+    	final String input)
     {
     	if (null == input || input.isEmpty())
     	{
     		return false;
     	}
 
-    	java.util.List<java.lang.Character> charList = new java.util.ArrayList<java.lang.Character>();
+    	List<Character> charList = new ArrayList<Character>();
 
     	for (char c : input.toCharArray())
     	{
@@ -3952,8 +3892,8 @@ public class StringUtil {
      * @return The Longest Distinct Substring
      */
 
-    public static final java.lang.String LongestDistinctSubstring (
-    	final java.lang.String s)
+    public static final String LongestDistinctSubstring (
+    	final String s)
     {
     	char[] charArray = s.toCharArray();
 
@@ -3963,8 +3903,8 @@ public class StringUtil {
     	int currentLeft = 0;
     	int stringLength = charArray.length;
 
-    	java.util.Map<java.lang.Character, java.lang.Integer> charLocationMap =
-    		new java.util.HashMap<java.lang.Character, java.lang.Integer>();
+    	Map<Character, Integer> charLocationMap =
+    		new HashMap<Character, Integer>();
 
     	while (index < stringLength)
     	{
@@ -4020,14 +3960,14 @@ public class StringUtil {
      * @return The Valid Parenthesis
      */
 
-    public static final java.lang.String InvalidParenthesisMinimalRemove (
-    	final java.lang.String s)
+    public static final String InvalidParenthesisMinimalRemove (
+    	final String s)
     {
-    	java.util.List<java.lang.Integer> leftParenthesisLocationList =
-    		new java.util.ArrayList<java.lang.Integer>();
+    	List<Integer> leftParenthesisLocationList =
+    		new ArrayList<Integer>();
 
-    	java.util.List<java.lang.Integer> rightParenthesisLocationList =
-    		new java.util.ArrayList<java.lang.Integer>();
+    	List<Integer> rightParenthesisLocationList =
+    		new ArrayList<Integer>();
 
     	for (int i = 0; i < s.length(); ++i) {
     		char c = s.charAt (i);
@@ -4050,13 +3990,13 @@ public class StringUtil {
     		}
     	}
 
-    	java.util.Set<java.lang.Integer> trimLocationSet = new java.util.HashSet<java.lang.Integer>();
+    	Set<Integer> trimLocationSet = new HashSet<Integer>();
 
     	trimLocationSet.addAll (leftParenthesisLocationList);
 
     	trimLocationSet.addAll (rightParenthesisLocationList);
 
-    	java.lang.String validParenthesis = "";
+    	String validParenthesis = "";
 
     	for (int i = 0; i < s.length(); ++i) {
     		if (!trimLocationSet.contains(i)) validParenthesis += s.charAt (i);
@@ -4084,13 +4024,13 @@ public class StringUtil {
      */
 
     public static final int InvalidParenthesisMinimalAdd (
-    	final java.lang.String s)
+    	final String s)
     {
-    	java.util.List<java.lang.Integer> invalidLeftParenthesisList =
-    		new java.util.ArrayList<java.lang.Integer>();
+    	List<Integer> invalidLeftParenthesisList =
+    		new ArrayList<Integer>();
 
-    	java.util.List<java.lang.Integer> invalidRightParenthesisList =
-    		new java.util.ArrayList<java.lang.Integer>();
+    	List<Integer> invalidRightParenthesisList =
+    		new ArrayList<Integer>();
 
     	for (int i = 0; i < s.length(); ++i) {
     		char c = s.charAt (i);
@@ -4117,22 +4057,22 @@ public class StringUtil {
      * @return Broken Down Sequence of Words
      */
 
-    public static final java.util.List<java.lang.String> FrequencyBasedWordDecomposition (
-    	final java.util.Map<java.lang.String, java.lang.Integer> wordFrequencyMap,
-    	final java.lang.String s)
+    public static final List<String> FrequencyBasedWordDecomposition (
+    	final Map<String, Integer> wordFrequencyMap,
+    	final String s)
     {
-    	java.util.List<java.lang.String> frequencyBasedWordDecomposition = new
-    		java.util.ArrayList<java.lang.String>();
+    	List<String> frequencyBasedWordDecomposition = new
+    		ArrayList<String>();
 
-    	java.util.List<java.util.Map<java.lang.String, java.lang.Integer>> frequencyUsageMapQueue = new
-    		java.util.ArrayList<java.util.Map<java.lang.String, java.lang.Integer>>();
+    	List<Map<String, Integer>> frequencyUsageMapQueue = new
+    		ArrayList<Map<String, Integer>>();
 
-    	java.util.List<java.lang.String> decompositionQueue = new java.util.ArrayList<java.lang.String>();
+    	List<String> decompositionQueue = new ArrayList<String>();
 
-    	java.util.List<java.lang.Integer> indexQueue = new java.util.ArrayList<java.lang.Integer>();
+    	List<Integer> indexQueue = new ArrayList<Integer>();
 
-    	java.util.Map<java.lang.String, java.lang.Integer> frequencyUsageMapInitial =
-			new java.util.HashMap<java.lang.String, java.lang.Integer>();
+    	Map<String, Integer> frequencyUsageMapInitial =
+			new HashMap<String, Integer>();
 
     	frequencyUsageMapInitial.putAll (wordFrequencyMap);
 
@@ -4147,9 +4087,9 @@ public class StringUtil {
 
     		int stringIndex = indexQueue.remove (queueIndex);
 
-    		java.lang.String decomposedWord = decompositionQueue.remove (queueIndex);
+    		String decomposedWord = decompositionQueue.remove (queueIndex);
 
-    		java.util.Map<java.lang.String, java.lang.Integer> frequencyUsageMap =
+    		Map<String, Integer> frequencyUsageMap =
     			frequencyUsageMapQueue.remove (queueIndex);
 
     		if (stringIndex >= s.length()) {
@@ -4158,16 +4098,16 @@ public class StringUtil {
     			continue;
     		}
 
-    		java.lang.String sCurrent = s.substring (stringIndex);
+    		String sCurrent = s.substring (stringIndex);
 
-    		for (java.lang.String wordKey : frequencyUsageMap.keySet()) {
+    		for (String wordKey : frequencyUsageMap.keySet()) {
     			if (sCurrent.startsWith (wordKey) && 0 != frequencyUsageMap.get(wordKey)) {
     				indexQueue.add (stringIndex + wordKey.length());
 
     				decompositionQueue.add(decomposedWord + " " + wordKey);
 
-    		    	java.util.Map<java.lang.String, java.lang.Integer> frequencyUsageMapNext =
-    					new java.util.HashMap<java.lang.String, java.lang.Integer>();
+    		    	Map<String, Integer> frequencyUsageMapNext =
+    					new HashMap<String, Integer>();
 
     		    	frequencyUsageMapNext.putAll (frequencyUsageMap);
 
@@ -4182,10 +4122,10 @@ public class StringUtil {
     }
 
     private static final boolean CompareCharHashMaps (
-    	final java.util.HashMap<java.lang.Character, java.lang.Integer> charHashMap1,
-    	final java.util.HashMap<java.lang.Character, java.lang.Integer> charHashMap2)
+    	final HashMap<Character, Integer> charHashMap1,
+    	final HashMap<Character, Integer> charHashMap2)
     {
-    	java.util.Set<java.lang.Character> mergedCharKeySet = new java.util.HashSet<java.lang.Character>();
+    	Set<Character> mergedCharKeySet = new HashSet<Character>();
 
     	mergedCharKeySet.addAll (charHashMap1.keySet());
 
@@ -4200,11 +4140,11 @@ public class StringUtil {
     	return true;
     }
 
-    private static final java.util.HashMap<java.lang.Character, java.lang.Integer> CharHashMap (
-    	final java.lang.String s)
+    private static final HashMap<Character, Integer> CharHashMap (
+    	final String s)
     {
-    	java.util.HashMap<java.lang.Character, java.lang.Integer> charHashMap = new
-    		java.util.HashMap<java.lang.Character, java.lang.Integer>();
+    	HashMap<Character, Integer> charHashMap = new
+    		HashMap<Character, Integer>();
 
     	for (char c : s.toCharArray()) {
     		if (charHashMap.containsKey (c))
@@ -4224,18 +4164,18 @@ public class StringUtil {
      * @return The Anagram Group List
      */
 
-    public static final java.util.List<java.util.List<java.lang.String>> GroupAnagrams2 (
-    	final java.lang.String[] wordArray)
+    public static final List<List<String>> GroupAnagrams2 (
+    	final String[] wordArray)
     {
-    	java.util.List<java.util.HashMap<java.lang.Character, java.lang.Integer>> charHashMapList = new
-    		java.util.ArrayList<java.util.HashMap<java.lang.Character, java.lang.Integer>>();
+    	List<HashMap<Character, Integer>> charHashMapList = new
+    		ArrayList<HashMap<Character, Integer>>();
 
-    	java.util.List<java.util.List<java.lang.String>> anagramListList = new
-    		java.util.ArrayList<java.util.List<java.lang.String>>();
+    	List<List<String>> anagramListList = new
+    		ArrayList<List<String>>();
 
     	charHashMapList.add (CharHashMap (wordArray[0]));
 
-    	java.util.List<java.lang.String> anagramList = new java.util.ArrayList<java.lang.String>();
+    	List<String> anagramList = new ArrayList<String>();
 
     	anagramList.add (wordArray[0]);
 
@@ -4244,7 +4184,7 @@ public class StringUtil {
     	for (int i = 1; i < wordArray.length; ++i) {
         	int anagramIndex = -1;
 
-    		java.util.HashMap<java.lang.Character, java.lang.Integer> charHashMap = CharHashMap
+    		HashMap<Character, Integer> charHashMap = CharHashMap
     			(wordArray[i]);
 
     		for (int j = 0; j < charHashMapList.size(); ++j) {
@@ -4259,8 +4199,8 @@ public class StringUtil {
         	} else {
             	charHashMapList.add (charHashMap);
 
-            	java.util.List<java.lang.String> newAnagramList = new
-            		java.util.ArrayList<java.lang.String>();
+            	List<String> newAnagramList = new
+            		ArrayList<String>();
 
             	newAnagramList.add (wordArray[i]);
 
@@ -4279,23 +4219,23 @@ public class StringUtil {
      * @return The Anagram Group List
      */
 
-    public static final java.util.List<java.util.List<java.lang.String>> GroupAnagrams (
-    	final java.lang.String[] wordArray)
+    public static final List<List<String>> GroupAnagrams (
+    	final String[] wordArray)
     {
-    	java.util.HashMap<java.lang.String, java.util.List<java.lang.String>> anagramListMap = new
-    		java.util.HashMap<java.lang.String, java.util.List<java.lang.String>>();
+    	HashMap<String, List<String>> anagramListMap = new
+    		HashMap<String, List<String>>();
 
     	for (int i = 0; i < wordArray.length; ++i) {
     		char[] charArray = wordArray[i].toCharArray();
 
-    		java.util.Arrays.sort (charArray);
+    		Arrays.sort (charArray);
 
-    		java.lang.String anagram = new java.lang.String (charArray);
+    		String anagram = new String (charArray);
 
     		if (anagramListMap.containsKey (anagram))
     			anagramListMap.get (anagram).add (wordArray[i]);
     		else {
-    			java.util.List<java.lang.String> anagramList = new java.util.ArrayList<java.lang.String>();
+    			List<String> anagramList = new ArrayList<String>();
 
     			anagramList.add (wordArray[i]);
 
@@ -4303,10 +4243,10 @@ public class StringUtil {
     		}
     	}
 
-    	java.util.List<java.util.List<java.lang.String>> anagramList = new
-    		java.util.ArrayList<java.util.List<java.lang.String>>();
+    	List<List<String>> anagramList = new
+    		ArrayList<List<String>>();
 
-    	for (java.util.Map.Entry<java.lang.String, java.util.List<java.lang.String>> anagramListEntry :
+    	for (Map.Entry<String, List<String>> anagramListEntry :
     		anagramListMap.entrySet())
     		anagramList.add(anagramListEntry.getValue());
 
@@ -4335,16 +4275,16 @@ public class StringUtil {
      * @return Array of the Nearest Cities
      */
 
-    public static final java.lang.String[] NearestCities (
-    	final java.lang.String[] cities,
+    public static final String[] NearestCities (
+    	final String[] cities,
     	final int[] xCoordinateArray,
     	final int[] yCoordinateArray,
-    	final java.lang.String[] queryCities)
+    	final String[] queryCities)
     {
-    	java.lang.String[] nearestCities = new java.lang.String[queryCities.length];
+    	String[] nearestCities = new String[queryCities.length];
 
-    	java.util.HashMap<java.lang.String, java.lang.Integer> cityIndexMap =
-    		new java.util.HashMap<java.lang.String, java.lang.Integer>();
+    	HashMap<String, Integer> cityIndexMap =
+    		new HashMap<String, Integer>();
 
     	for (int j = 0; j < cities.length; ++j)
     		cityIndexMap.put (cities[j], j);
@@ -4394,16 +4334,16 @@ public class StringUtil {
      * @return The Sequence List of Unique Primes
      */
 
-    public static final java.util.List<java.util.List<String>> SplitIntoUniquePrimes (
+    public static final List<List<String>> SplitIntoUniquePrimes (
     	final String number)
     {
     	int numberLength = number.length();
 
-		java.util.List<java.util.List<String>> primeSequenceList = new
-			java.util.ArrayList<java.util.List<String>>();
+		List<List<String>> primeSequenceList = new
+			ArrayList<List<String>>();
 
 		if (IsPrime (number)) {
-			java.util.List<String> primeList = new java.util.ArrayList<String>();
+			List<String> primeList = new ArrayList<String>();
 
 			primeList.add (number);
 
@@ -4417,11 +4357,11 @@ public class StringUtil {
 
     		if (!IsPrime (leftSubstring)) continue;
 
-    		java.util.List<java.util.List<String>> uniquePrimesSequenceList = SplitIntoUniquePrimes
+    		List<List<String>> uniquePrimesSequenceList = SplitIntoUniquePrimes
     			(number.substring (i, numberLength));
 
     		if (!uniquePrimesSequenceList.isEmpty()) {
-    			for (java.util.List<String> uniquePrimesList : uniquePrimesSequenceList)
+    			for (List<String> uniquePrimesList : uniquePrimesSequenceList)
     				uniquePrimesList.add (0, leftSubstring);
     		}
 
@@ -4440,10 +4380,10 @@ public class StringUtil {
      * @return List of Same Character Partitions
      */
 
-    public static final java.util.List<String> CollectSameCharacters (
+    public static final List<String> CollectSameCharacters (
     	final String s)
     {
-    	java.util.HashMap<Character, int[]> charRangeMap = new java.util.HashMap<Character, int[]>();
+    	HashMap<Character, int[]> charRangeMap = new HashMap<Character, int[]>();
 
     	for (int i = 0; i < s.length(); ++i) {
     		char c = s.charAt (i);
@@ -4457,14 +4397,14 @@ public class StringUtil {
     		}
     	}
 
-    	java.util.TreeMap<Integer, int[]> sortedRangeMap = new java.util.TreeMap<Integer, int[]>();
+    	TreeMap<Integer, int[]> sortedRangeMap = new TreeMap<Integer, int[]>();
 
     	for (int[] range : charRangeMap.values())
     		sortedRangeMap.put (range[0], range);
 
     	int[] prevRange = null;
 
-    	java.util.TreeMap<Integer, int[]> nonOverlappingRangeMap = new java.util.TreeMap<Integer, int[]>();
+    	TreeMap<Integer, int[]> nonOverlappingRangeMap = new TreeMap<Integer, int[]>();
 
     	for (int rangeLeft : sortedRangeMap.keySet()) {
     		int[] currentRange = sortedRangeMap.get (rangeLeft);
@@ -4482,7 +4422,7 @@ public class StringUtil {
     				currentRange[1] > prevRange[1] ? currentRange[1] : prevRange[1]});
     	}
 
-    	java.util.List<String> partitionList = new java.util.ArrayList<String>();
+    	List<String> partitionList = new ArrayList<String>();
 
     	for (int rangeLeft : nonOverlappingRangeMap.keySet())
     		partitionList.add (s.substring (rangeLeft, nonOverlappingRangeMap.get (rangeLeft)[1] + 1));
@@ -4505,7 +4445,7 @@ public class StringUtil {
     public static final String LongestVowel (
     	final String s)
     {
-    	java.util.List<Integer> consonantLocationList = new java.util.ArrayList<Integer>();
+    	List<Integer> consonantLocationList = new ArrayList<Integer>();
 
     	for (int i = 0; i < s.length(); ++i) {
     		if (IsConsonant (s.charAt (i))) consonantLocationList.add (i);
@@ -4526,7 +4466,7 @@ public class StringUtil {
     	String longestVowel = "";
     	int optimalLeftStringEndIndex = -1;
     	int optimalRightStringStartIndex = -1;
-    	int minimalSnippedStringSize = java.lang.Integer.MAX_VALUE;
+    	int minimalSnippedStringSize = Integer.MAX_VALUE;
 
     	int firstConsonantIndex = consonantLocationList.get (0);
 
@@ -4632,11 +4572,11 @@ public class StringUtil {
      * @return The Conditional Word List
      */
 
-    public static final java.util.List<String> ConditionalWordList (
+    public static final List<String> ConditionalWordList (
     	final String s)
     {
-    	java.util.HashMap<Character, java.util.ArrayList<Integer>> charIndexListMap = new
-    		java.util.HashMap<Character, java.util.ArrayList<Integer>>();
+    	HashMap<Character, ArrayList<Integer>> charIndexListMap = new
+    		HashMap<Character, ArrayList<Integer>>();
 
     	char[] charArray = s.toCharArray();
 
@@ -4646,7 +4586,7 @@ public class StringUtil {
     		if (charIndexListMap.containsKey (c))
     			charIndexListMap.get (c).add (i);
     		else {
-    			java.util.ArrayList<Integer> charIndexList = new java.util.ArrayList<Integer>();
+    			ArrayList<Integer> charIndexList = new ArrayList<Integer>();
 
     			charIndexList.add (i);
 
@@ -4654,7 +4594,7 @@ public class StringUtil {
     		}
     	}
 
-    	for (java.util.ArrayList<Integer> charIndexList : charIndexListMap.values()) {
+    	for (ArrayList<Integer> charIndexList : charIndexListMap.values()) {
     		boolean discontinuousCharLocation = false;
 
     		int prevIndex = charIndexList.get (0);
@@ -4693,7 +4633,7 @@ public class StringUtil {
 
     	String[] conditionalWordArray = sModified.split ("_");
 
-    	java.util.List<String> conditionalWordList = new java.util.ArrayList<String>();
+    	List<String> conditionalWordList = new ArrayList<String>();
 
     	for (String conditionalWord : conditionalWordArray)
     		conditionalWordList.add (conditionalWord);
