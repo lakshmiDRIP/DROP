@@ -102,8 +102,175 @@ import org.drip.numerical.common.PrimeUtil;
 
 /**
  * <i>StringUtil</i> implements string utility functions. It exports the following functions:
- * 
  *  <ul>
+ * 		<li><i>PasswordSynposys</i> Inner Class</li>
+ * 		<ul>
+ * 			<li><i>PasswordSynposys</i> Constructor</li>
+ * 		</ul>
+ * 		<li>Null serialized string</li>
+ * 		<li>Serialization Version - ALWAYS prepend this on all derived classes</li>
+ * 		<li>Convert the String to a Number</li>
+ * 		<li>Look for a match of the field in the input array</li>
+ * 		<li>Look for a match of the field in the field set to an entry in the input array</li>
+ * 		<li>Format the given string parameter into an argument</li>
+ * 		<li>Check the Input String to Check for NULL - and return it</li>
+ * 		<li>Parse and Split the Input Phrase into a String Array using the specified Delimiter</li>
+ * 		<li>Check if the string represents an unitary boolean</li>
+ * 		<li>Make an array of Integers from a string tokenizer</li>
+ * 		<li>Make an array of double from a string tokenizer</li>
+ * 		<li>Generate a GUID string</li>
+ * 		<li>Split the string array into pairs of key-value doubles and returns them</li>
+ * 		<li>Create a list of integers from a delimited string</li>
+ * 		<li>Create a list of booleans from a delimited string</li>
+ * 		<li>Convert the String Array to a Record Delimited String</li>
+ * 		<li>Indicate if the Input String is Empty</li>
+ * 		<li>Indicate it the pair of Strings Match each other in Value</li>
+ * 		<li>Implement atoi which converts a string to an integer</li>
+ * 			<br>The function first discards as many whitespace characters as necessary until the first non-whitespace character is found. Then, starting from this character, takes an optional initial plus or minus sign followed by as many numerical digits as possible, and interprets them as a numerical value.
+ * 			<br>The string can contain additional characters after those that form the integral number, which are ignored and have no effect on the behavior of this function.
+ * 			<br>If the first sequence of non-whitespace characters in s is not a valid integral number, or if no such sequence exists because either s is empty or it contains only whitespace characters, no conversion is performed.
+ * 			<br>If no valid conversion could be performed, a zero value is returned.
+ * 			<br>Note: Only the space character ' ' is considered as whitespace character.
+ * 			<br>Assume we are dealing with an environment which could only store integers within the 32-bit signed integer range: <code>[-10^231, 10^231 − 1]</code>. If the numerical value is out of the range of representable values, <code>INT_MAX (-10^231)</code> or <code>INT_MIN (10^231 - 1)</code> is returned
+ * 		</li>
+ * 		<li>Given an input string, reverse the string word by word</li>
+ * 		<li>Function to check whether an input string is a valid IPv4 address or IPv6 address or neither.
+ * 			<br>IPv4 addresses are canonically represented in dot-decimal notation, which consists of four decimal numbers, each ranging from 0 to 255, separated by dots ("."), e.g.,172.16.254.1;
+ * 			<br>Besides, leading zeros in the IPv4 is invalid. For example, the address 172.16.254.01 is invalid.
+ * 			<br>IPv6 addresses are represented as eight groups of four hexadecimal digits, each group representing 16 bits. The groups are separated by colons (":"). For example, the address 2001:0db8:85a3:0000:0000:8a2e:0370:7334 is a valid one. Also, we could omit some leading zeros among four hexadecimal digits and some low-case characters in the address to upper-case ones, so 2001:db8:85a3:0:0:8A2E:0370:7334 is also a valid IPv6 address(Omit leading zeros and using upper cases).
+ * 			<br>However, we don't replace a consecutive group of zero value with a single empty group using two consecutive colons (::) to pursue simplicity. For example, 2001:0db8:85a3::8A2E:0370:7334 is an invalid IPv6 address.
+ * 			<br>Besides, extra leading zeros in the IPv6 is also invalid. For example, the address 02001:0db8:85a3:0000:0000:8a2e:0370:7334 is invalid.
+ * 			<br>Note: You may assume there is no extra space or special characters in the input string
+ * 		</li>
+ * 		<li>Compare two version numbers version1 and version2.
+ * 			<br>If version1 gt version2 return 1; if version1 lt version2 return -1; otherwise return 0.
+ * 			<br>You may assume that the version strings are non-empty and contain only digits and the . character.
+ * 			<br>The . character does not represent a decimal point and is used to separate number sequences.
+ * 			<br>For instance, 2.5 is not "two and a half" or "half way to version three", it is the fifth second-level revision of the second first-level revision.
+ * 			<br>You may assume the default revision number for each level of a version number to be 0. For example, version number 3.4 has a revision number of 3 and 4 for its first and second level revision number. Its third and fourth level revision number are both 0.
+ * 		</li>
+ * 		<li>Given a string, find the longest palindromic substring</li>
+ * 		<li>Find the length of the <b>longest substring</b> without repeating characters</li>
+ * 		<li>Given a string containing only three types of characters: '(', ')' and '*', write a function to check whether this string is valid. We define the validity of a string by these rules:
+ * 			<br>Any left parenthesis '(' must have a corresponding right parenthesis ')'.
+ * 			<br>Any right parenthesis ')' must have a corresponding left parenthesis '('.
+ * 			<br>Left parenthesis '(' must go before the corresponding right parenthesis ')'.
+ * 			<br>'*' could be treated as a single right parenthesis ')' or a single left parenthesis '(' or an empty string.
+ * 			<br>An empty string is also valid.
+ * 		</li>
+ * 		<li>Given a positive 32-bit integer, you need to find the smallest 32-bit integer which has exactly the same digits existing in the integer and is greater in value. If no such positive 32-bit integer exists, you need to return -1</li>
+ * 		<li>Given an absolute path for a file (Unix-style), simplify it. Or in other words, convert it to the canonical path.
+ * 			<br>In a UNIX-style file system, a period . refers to the current directory. Furthermore, a double period .. moves the directory up a level.
+ * 			<br>Note that the returned canonical path must always begin with a slash /, and there must be only a single slash / between two directory names. The last directory name (if it exists) must not end with a trailing /. Also, the canonical path must be the shortest string representing the absolute path.
+ * 		</li>
+ * 		<li>Given a string containing only 4 kinds of characters 'Q', 'W', 'E' and 'R'.
+ * 			<br>A string is said to be balanced if each of its characters appears n/4 times where n is the length of the string.
+ * 			<br>Return the minimum length of the substring that can be replaced with any other string of the same length to make the original string balanced.
+ * 			<br>Return 0 if the string is already balanced.
+ * 		</li>
+ * 		<li>Given two non-negative integers represented as strings, return their product, also represented as a string</li>
+ * 		<li>One simple way to encrypt a string is to "rotate" every alphanumeric character by a certain amount.
+ * 			<br>Rotating a character means replacing it with another character that is a certain number of steps away in normal alphabetic or numerical order.
+ * 			<br>For example, if the string "Zebra-493?" is rotated 3 places, the resulting string is "Cheud-726?". Every alphabetic character is replaced with the character 3 letters higher (wrapping around from Z to A), and every numeric character replaced with the character 3 digits higher (wrapping around from 9 to 0). Note that the non-alphanumeric characters remain unchanged.
+ * 			<br>Given a string and a rotation factor, return an encrypted string.
+ * 		</li>
+ * 		<li>Count the Number of Matching Pairs of t in s</li>
+ * 		<li>Retrieve the Minimum Window represented by t inside s</li>
+ * 		<li>Given a non-empty string, you may delete at most one character. Judge whether you can make it a palindrome</li>
+ * 		<li>Given an integer n, find the closest integer (not including itself), which is a palindrome. The 'closest' is defined as absolute difference minimized between two integers</li>
+ * 		<li>Given Nested Array calculate the Depth Sum</li>
+ * 		<li>An encoded string is given. To find and write the decoded string to a tape, the encoded string is read one character at a time and the following steps are taken:
+ * 			<br>If the character read is a letter, that letter is written onto the tape.
+ * 			<br>If the character read is a digit (say <code>d</code>), the entire current tape is repeatedly written <code>d-1</code> more times in total.
+ * 			<br>Now for some encoded string, and an index <code>K</code>, find and return the k<sup>th</sup> letter (1 indexed) in the decoded string.
+ * 		</li>
+ * 		<li>Given a string, find the longest palindromic substring in it. You may assume that the maximum length of the string is 1000</li>
+ * 		<li>Given a string, find the length of the longest substring without repeating characters</li>
+ * 		<li>Convert the Number to String</li>
+ * 		<li>Reorganize the given String</li>
+ * 		<li>Trim out the Minimal Valid Parenthesis</li>
+ * 		<li>Generate the Set of all Permutation Sub-strings</li>
+ * 		<li>Is Permutation s2 Present in s1?</li>
+ * 		<li>Generate a List of Merged Accounts</li>
+ * 		<li>Compute the Sum of the Integers</li>
+ * 		<li>Indicate if the Input String is composed of Valid Parenthesis Sequence</li>
+ * 		<li>Generate the Longest Distinct Substring</li>
+ * 		<li>Given a string of '(' , ')' and lowercase English characters, remove the minimum number of parentheses ( '(' or ')', in any positions so that the resulting parentheses string is valid and return any valid string. Formally, a parentheses string is valid if and only if:</li>
+ * 		<ul>
+ * 			<li>It is the empty string, contains only lowercase characters, or</li>
+ * 			<li>It can be written as AB (A concatenated with B), where A and B are valid strings, or</li>
+ * 			<li>It can be written as (A), where A is a valid string.</li>
+ * 		</ul>
+ * 		<li>Given a string of '(' and ')' parentheses, add the minimum number of parentheses ( '(' or ')', and in any positions) so that the resulting parentheses string is valid. Formally, a parentheses string is valid if and only if:</li>
+ * 		<ul>
+ * 			<li>It is the empty string, or</li>
+ * 			<li>It can be written as AB (A concatenated with B), where A and B are valid strings, or</li>
+ * 			<li>It can be written as (A), where A is a valid string.</li>
+ * 		</ul>
+ * 			<br>Given a parentheses string, return the minimum number of parentheses one must add to make the resulting string valid.
+ * 		</li>
+ * 		<li>Break the given string into words, provided by a given hash-map of frequency of word as word : frequency</li>
+ * 		<li>Given an array of words, group anagrams together</li>
+ * 		<li>Given an array of words, group anagrams together</li>
+ * 		<li>Company A has Fulfillment Centers in multiple cities within a large geographic region. The cities are arranged on a graph that has been divided up like an ordinary Cartesian plane. Each city is located at an integral <code>(x, y)</code> coordinate intersection. City names and locations are given in the form of three arrays: <code>c, x, and y</code>, which are aligned by the index to provide the city name <code>c[i]</code>, and its coordinates, <code>(x[i], y[i])</code>.
+ * 			<br>Write an algorithm to determine the name of the nearest city that shares either an <code>x</code> or a <code>y</code> coordinate with the queried city. If no other cities share an <code>x</code> or <code>y</code> coordinate, return NONE. If two cities have the same distance to the queried city, <code>q[i]</code>, consider the one with an alphabetically smaller name (i.e. <code>'ab' lt 'aba' lt 'abb'</code>) as the closest choice.
+ * 			<br>The distance is denoted on a Euclidean plane: the difference in <code>x</code> plus the difference in <code>y</code>.
+ * 		</li>
+ * 		<li>A company's operations team needs an algorithm that can break out a list of products for a given order. The products in the order are listed as a string and the order items are represented as prime numbers. Given a string consisting of digits [0-9], count the number of ways the given string can be split into prime numbers, which represent unique items in the order. The digits must remain in the order given and the entire string must be used.
+ * 			<br>Write an algorithm to find the number of ways the given string can be split into unique prime numbers using the entire string.
+ * 		</li>
+ * 		<li>Given a string <code>s</code> of lower-case letters, partition <code>s</code> into as many as parts so that one letter only appear in one part. Return the partitions as a list</li>
+ * 		<li>Given a string of lower characters, remove at most two substrings of any length from the given string such that the remaining string contains vowels ('a','e','i','o','u') only.
+ * 			<br>Your aim is to maximize the length of the remaining string. Output the length of remaining string after removal of at most two substrings.
+ * 		</li>
+ * 		<li>Given <code>a</code>, <code>b</code>, <code>c</code>, find any string of maximum length that can be created such that no 3 consecutive characters are same. There can be at max <code>a</code> 'a', <code>b</code> 'b' and <code>c</code> 'c'.</li>
+ * 		<li>Given a string s of lower-case letters, find as many sub-strings as possible that meet the following criteria:
+ *  		<li>no overlap among strings</li>
+ *  		<li>one letter can only exist in one string. For every letter <code>c</code> in the sub-string, all instances of <code>c</code> must also be in the sub-string</li>
+ *  		<li>find as many sub-strings as possible</li>
+ *  		<li>if there are two solutions with the same number of sub-strings, return the one with the smaller total length.</li>
+ * 			<br>Return sub-strings as a list.
+ * 		</li>
+ * 		<li>Compute the Maximum Palindrome Product Length</li>
+ * 		<li>Generate the List of Word Concatenation Start</li>
+ * 		<li>Find the Minimum of Steps to Make the Password Valid</li>
+ * 		<li>A <b>valid number</b> can be split up into these components (in order):
+ * 		<ul>
+ *  		<li>A <b>decimal number</b> or an <b>integer</b></li>
+ *  		<li>(Optional) An 'e' or 'E', followed by an <b>integer</b></li>
+ * 		</ul>
+ * 		<br><li>A <b>decimal number</b> can be split up into these components (in order):</li>
+ * 		<ul>
+ *  		<li>(Optional) A sign character (either '+' or '-').</li>
+ *  		<li>One of the following formats:</li>
+ * 			<ul>
+ *   			<li>One or more digits, followed by a dot '.'.</li>
+ *   			<li>One or more digits, followed by a dot '.', followed by one or more digits.</li>
+ *   			<li>A dot '.', followed by one or more digits.</li>
+ * 			</ul>
+ * 		</ul>
+ * 		<br><li>An <b>integer</b> can be split up into these components (in order):</li>
+ * 		<ul>
+ *  		<li>(Optional) A sign character (either '+' or '-').</li>
+ *  		<li>One or more digits.</li>
+ * 		</ul>
+ * 		<br>For example, all the following are valid numbers: <code>["2", "0089", "-0.1", "+3.14", "4.", "-.9", "2e10", "-90E3", "3e+7", "+6e-1", "53.5e93", "-123.456e789"]</code>, while the following are not valid numbers: <code>["abc", "1a", "1e", "e3", "99e2.5", "--6", "-+3", "95a54e53"]</code>.
+ * 		<br>Given a string <code>s</code>, return true if <code>s</code> is a <b>valid number</b>.
+ * 		</li>
+ * 		<li>A transformation sequence from word <code>beginWord</code> to word <code>endWord</code> using a dictionary wordList is a sequence of words beginWord -> s<sub>1</sub> -> s<sub>2</sub> -> ... -> s<sub>k</sub> such that:
+ * 			<br>Every adjacent pair of words differs by a single letter.
+ * 			<br>Every s<sub>i</sub> for 1 leq i leq k</code> is in <code>wordList</code>. Note that <code>beginWord</code> does not need to be in wordList.
+ * 			<br><center>s<sub>k</sub> == endWord</center>
+ * 			<br>Given two words, <code>beginWord</code> and <code>endWord</code>, and a dictionary <code>wordList</code>, return all the <b>shortest transformation sequences</b> from beginWord to endWord, or an empty list if no such sequence exists.
+ * 			<br>Each sequence should be returned as a list of the words [<code>beginWord</code>, s<sub>1</sub>, s<sub>2</sub>, ..., s<sub>k</sub>].
+ * 		</li>
+ * 		<li>Given an input string, reverse the order of the words.
+ *			<br>A word is defined as a sequence of non-space characters. The words in the input will be separated by at least one space.
+ * 			<br>Return a string of the words in reverse order concatenated by a single space.
+ * 			<br>Note that the input may contain leading or trailing spaces or multiple spaces between two words. The returned string should only have a single space separating the words. Do not include any extra spaces.
+ * 		</li>
+ * 		<li>Validate the Wild-card Pattern Match</li>
+ * 		<li>Convert the Boolean Flag to String</li>
  *  </ul>
  * 
  * <br>
@@ -121,7 +288,11 @@ import org.drip.numerical.common.PrimeUtil;
 public class StringUtil
 {
 
-    static class PasswordSynposys
+	/**
+	 * <i>PasswordSynposys</i> Inner Class
+	 */
+
+	static class PasswordSynposys
     {
     	private int _charShortfall = 0;
     	private boolean _containsDigit = false;
@@ -1434,6 +1605,30 @@ public class StringUtil
     	}
 
     	return contiguousWordsLocationList;
+    }
+
+    private static final boolean IsNumber (
+		String numberString)
+    {
+    	if (null == numberString || numberString.isEmpty()) {
+    		return false;
+    	}
+
+    	char leadingChar = numberString.charAt (0);
+
+    	if ('+' == leadingChar || '-' == leadingChar) {
+    		numberString = numberString.substring (1);
+    	}
+
+    	for (int i = 0; i < numberString.length(); ++i) {
+    		char currentChar = numberString.charAt (i);
+
+    		if (!Character.isDigit (currentChar) && '.' != currentChar) {
+    			return false;
+    		}
+    	}
+
+    	return !".".equals (numberString);
     }
 
 	/**
@@ -2835,9 +3030,8 @@ public class StringUtil
 	}
 
 	/**
-	 * Given an integer n, find the closest integer (not including itself), which is a palindrome.
-	 * 
-	 * The 'closest' is defined as absolute difference minimized between two integers.
+	 * Given an integer n, find the closest integer (not including itself), which is a palindrome. The
+	 * 	'closest' is defined as absolute difference minimized between two integers.
 	 * 
 	 * @param i The Integer
 	 * 
@@ -4324,43 +4518,36 @@ public class StringUtil
      * @return The Minimum of Steps to Make the Password Valid
      */
 
-    public static final int PasswordChangeSteps (String password)
+    public static final int PasswordChangeSteps (
+		final String password)
     {
     	PasswordSynposys passwordSynposys = IsPasswordStrong (password);
 
-    	if (0 < passwordSynposys._charShortfall) return passwordSynposys._charShortfall;
+    	if (0 < passwordSynposys._charShortfall) {
+    		return passwordSynposys._charShortfall;
+    	}
 
 		int repeatsToModify = 0;
 		int containmentChanges = 0;
 
-		for (int[] range : passwordSynposys._invalidRange)
+		for (int[] range : passwordSynposys._invalidRange) {
     		repeatsToModify += (range[1] - range[0] + 1) / 3;
+		}
 
-		if (!passwordSynposys._containsDigit) ++containmentChanges;
+		if (!passwordSynposys._containsDigit) {
+			++containmentChanges;
+		}
 
-		if (!passwordSynposys._containsLower) ++containmentChanges;
+		if (!passwordSynposys._containsLower) {
+			++containmentChanges;
+		}
 
-		if (!passwordSynposys._containsUpper) ++containmentChanges;
+		if (!passwordSynposys._containsUpper) {
+			++containmentChanges;
+		}
 
-		return (repeatsToModify > containmentChanges ? repeatsToModify : containmentChanges) - passwordSynposys._charShortfall;
-    }
-
-    private static final boolean IsNumber (
-		String numberString)
-    {
-    	if (null == numberString || numberString.isEmpty()) return false;
-
-    	char leadingChar = numberString.charAt (0);
-
-    	if ('+' == leadingChar || '-' == leadingChar) numberString = numberString.substring (1);
-
-    	for (int i = 0; i < numberString.length(); ++i) {
-    		char currentChar = numberString.charAt (i);
-
-    		if (!Character.isDigit(currentChar) && currentChar != '.') return false;
-    	}
-
-    	return !".".equals (numberString);
+		return (repeatsToModify > containmentChanges ? repeatsToModify : containmentChanges) -
+			passwordSynposys._charShortfall;
     }
 
     /**
@@ -4398,7 +4585,9 @@ public class StringUtil
     {
     	String sLower = s.toLowerCase();
 
-    	if (!sLower.contains ("e")) return IsNumber (sLower);
+    	if (!sLower.contains ("e")) {
+    		return IsNumber (sLower);
+    	}
 
     	String[] numberArray = sLower.split ("e");
 
@@ -4460,8 +4649,9 @@ public class StringUtil
     	int rightIndex = 0;
 
     	while (rightIndex < reversedCharArray.length) {
-    		while (rightIndex < reversedCharArray.length && ' ' != reversedCharArray[rightIndex])
+    		while (rightIndex < reversedCharArray.length && ' ' != reversedCharArray[rightIndex]) {
     			++rightIndex;
+    		}
 
     		int leftWordIndex = leftIndex;
     		int rightWordIndex = rightIndex - 1;
@@ -4474,8 +4664,9 @@ public class StringUtil
         		++leftWordIndex;
         	}
 
-    		while (rightIndex < reversedCharArray.length && ' ' == reversedCharArray[rightIndex])
+    		while (rightIndex < reversedCharArray.length && ' ' == reversedCharArray[rightIndex]) {
     			++rightIndex;
+    		}
 
     		leftIndex = rightIndex;
     	}
@@ -4507,9 +4698,13 @@ public class StringUtil
     	final String s,
     	final String p)
     {
-    	if ("?".equalsIgnoreCase (p)) return 1 == s.length();
+    	if ("?".equalsIgnoreCase (p)) {
+    		return 1 == s.length();
+    	}
 
-    	if ("*".equalsIgnoreCase (p)) return true;
+    	if ("*".equalsIgnoreCase (p)) {
+    		return true;
+    	}
 
     	List<String> patternList = PatternList (p.toCharArray());
 
@@ -4531,7 +4726,9 @@ public class StringUtil
     		int locationIndex = locationIndexStack.pop();
 
     		if (patternIndex >= patternList.size()) {
-    			if (locationIndex <= lastIndex) return false;
+    			if (locationIndex <= lastIndex) {
+    				return false;
+    			}
     		}
 
     		if (locationIndex > lastIndex) return false;
@@ -4540,14 +4737,19 @@ public class StringUtil
 
     		if (1 == patternCharArray.length) {
     			if ('?' == patternCharArray[0]) {
-    				if (lastIndex != locationIndex) return false;
+    				if (lastIndex != locationIndex) {
+    					return false;
+    				}
     			} else if ('*' != patternCharArray[0]) {
-    				if (patternCharArray[0] != s.charAt (locationIndex)) return false;
+    				if (patternCharArray[0] != s.charAt (locationIndex)) {
+    					return false;
+    				}
     			}
     		} else {
     			if ('?' == patternCharArray[0]) {
-    				if (locationIndex >= lastIndex || s.charAt (locationIndex + 1) != patternCharArray[1])
+    				if (locationIndex >= lastIndex || s.charAt (locationIndex + 1) != patternCharArray[1]) {
     					return false;
+    				}
 
     				patternIndexStack.push (patternIndex + 1);
 
@@ -4584,16 +4786,4 @@ public class StringUtil
     {
     	return flag ? "true " : "false";
     }
-
-    /**
-     * Entry Point
-     * 
-     * @param argumentArray Argument Array
-     */
-
-    public static final void main (
-		final String[] argumentArray)
-	{
-    	System.out.println (PatternList ("*".toCharArray()));
-	}
 }

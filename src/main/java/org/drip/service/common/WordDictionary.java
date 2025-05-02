@@ -1,11 +1,19 @@
 
 package org.drip.service.common;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -76,96 +84,79 @@ package org.drip.service.common;
  */
 
 /**
- * <i>WordDictionary</i> is a data structure that supports the following two operations: addWord and search.
+ * <i>WordDictionary</i> is a data structure that supports the following two operations: <code>addWord</code>
+ * 	and <code>search</code>. Search can search a literal word or a regular expression string containing only
+ * 	letters a-z or .. A . means it can represent any one letter. It exposes the following Functions:
+ * 	<br>
+ * 	<ul>
  * 
- * Search can search a literal word or a regular expression string containing only letters a-z or .. A .
- * 	means it can represent any one letter.
+ * 	</ul>
  * 
- * <br><br>
- *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md">Numerical Analysis Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/README.md">Environment, Product/Definition Containers, and Scenario/State Manipulation APIs</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/common">Assorted Data Structures Support Utilities</a></li>
- *  </ul>
- * <br><br>
+ * <br>
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationSupportLibrary.md">Computation Support</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/README.md">Environment, Product/Definition Containers, and Scenario/State Manipulation APIs</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/common/README.md">Assorted Data Structures Support Utilities</a></td></tr>
+ *  </table>
+ * <br>
  * 
  * @author Lakshmi Krishnamurthy
  */
 
 public class WordDictionary
 {
-	private java.util.Set<java.lang.String> _wordSet = new java.util.HashSet<java.lang.String>();
+	private Set<String> _wordSet = new HashSet<String>();
 
-	private java.util.Set<java.lang.String> wordsBeginWith (
-		final java.lang.String prefix)
+	private Set<String> wordsBeginWith (
+		final String prefix)
 	{
-		java.util.Set<java.lang.String> wordsBeginWithSet = new java.util.HashSet<java.lang.String>();
+		Set<String> wordsBeginWithSet = new HashSet<String>();
 
-		if (null == prefix || prefix.isEmpty())
-		{
+		if (null == prefix || prefix.isEmpty()) {
 			return wordsBeginWithSet;
 		}
 
-		for (java.lang.String word : _wordSet)
-		{
-			if (word.startsWith (
-				prefix
-			))
-			{
-				wordsBeginWithSet.add (
-					word
-				);
+		for (String word : _wordSet) {
+			if (word.startsWith (prefix)) {
+				wordsBeginWithSet.add (word);
 			}
 		}
 
 		return wordsBeginWithSet;
 	}
 
-	private java.util.Set<java.lang.String> wordsEndWith (
-		final java.lang.String suffix)
+	private Set<String> wordsEndWith (
+		final String suffix)
 	{
-		java.util.Set<java.lang.String> wordsEndWithSet = new java.util.HashSet<java.lang.String>();
+		Set<String> wordsEndWithSet = new HashSet<String>();
 
-		if (null == suffix || suffix.isEmpty())
-		{
+		if (null == suffix || suffix.isEmpty()) {
 			return wordsEndWithSet;
 		}
 
-		for (java.lang.String word : _wordSet)
-		{
-			if (word.endsWith (
-				suffix
-			))
-			{
-				wordsEndWithSet.add (
-					word
-				);
+		for (String word : _wordSet) {
+			if (word.endsWith (suffix)) {
+				wordsEndWithSet.add (word);
 			}
 		}
 
 		return wordsEndWithSet;
 	}
 
-	private java.util.Set<java.lang.String> wordsBeginAndEndWith (
-		final java.lang.String prefix,
-		final java.lang.String suffix)
+	private Set<String> wordsBeginAndEndWith (
+		final String prefix,
+		final String suffix)
 	{
-		java.util.Set<java.lang.String> wordsBeginEndWithSet = wordsBeginWith (
-			prefix
-		);
+		Set<String> wordsBeginEndWithSet = wordsBeginWith (prefix);
 
-		wordsBeginEndWithSet.addAll (
-			wordsEndWith (
-				suffix
-			)
-		);
+		wordsBeginEndWithSet.addAll (wordsEndWith (suffix));
 
 		return wordsBeginEndWithSet;
 	}
 
 	/**
-	 * WordDictionary Constructor
+	 * <i>WordDictionary</i> Constructor
 	 */
 
 	public WordDictionary()
@@ -178,7 +169,7 @@ public class WordDictionary
 	 * @return The Set of Words
 	 */
 
-	public java.util.Set<java.lang.String> wordSet()
+	public Set<String> wordSet()
 	{
 		return _wordSet;
 	}
@@ -192,16 +183,13 @@ public class WordDictionary
 	 */
 
 	public boolean addWord (
-		final java.lang.String word)
+		final String word)
 	{
-		if (null == word || word.isEmpty())
-		{
+		if (null == word || word.isEmpty()) {
 			return false;
 		}
 
-		_wordSet.add (
-			word
-		);
+		_wordSet.add (word);
 
 		return true;
 	}
@@ -216,10 +204,9 @@ public class WordDictionary
 	 */
 
 	public boolean search (
-		final java.lang.String word)
+		final String word)
 	{
-		if (null == word || word.isEmpty())
-		{
+		if (null == word || word.isEmpty()) {
 			return false;
 		}
 
@@ -229,34 +216,25 @@ public class WordDictionary
 		boolean wildCardStart = '.' == charArray[0];
 		boolean wildCardFinish = '.' == charArray[wordLength - 1];
 
-		if (!wildCardStart && !wildCardFinish)
-		{
-			return _wordSet.contains (
-				word
-			);
+		if (!wildCardStart && !wildCardFinish) {
+			return _wordSet.contains (word);
 		}
 
-		if (wildCardStart && wildCardFinish)
-		{
+		if (wildCardStart && wildCardFinish) {
 			int leftIndex = 0;
 			int rightIndex = wordLength - 1;
 
-			while ('.' == leftIndex && leftIndex < wordLength)
-			{
+			while ('.' == leftIndex && leftIndex < wordLength) {
 				++leftIndex;
 			}
 
-			while ('.' == rightIndex && rightIndex >= 0)
-			{
+			while ('.' == rightIndex && 0 <= rightIndex) {
 				--rightIndex;
 			}
 
-			if (leftIndex <= rightIndex)
-			{
-				for (java.lang.String dictionaryWord : _wordSet)
-				{
-					if (dictionaryWord.length() == wordLength)
-					{
+			if (leftIndex <= rightIndex) {
+				for (String dictionaryWord : _wordSet) {
+					if (dictionaryWord.length() == wordLength) {
 						return true;
 					}
 				}
@@ -264,25 +242,17 @@ public class WordDictionary
 				return false;
 			}
 
-			java.util.Set<java.lang.String> wordsStartAndFinishWith = wordsBeginAndEndWith (
-				word.substring (
-					0,
-					rightIndex - 1
-				),
-				word.substring (
-					leftIndex + 1
-				)
+			Set<String> wordsStartAndFinishWith = wordsBeginAndEndWith (
+				word.substring (0, rightIndex - 1),
+				word.substring (leftIndex + 1)
 			);
 
-			if (0 == wordsStartAndFinishWith.size())
-			{
+			if (0 == wordsStartAndFinishWith.size()) {
 				return false;
 			}
 
-			for (java.lang.String wildCardWord : wordsStartAndFinishWith)
-			{
-				if (wildCardWord.length() == wordLength)
-				{
+			for (String wildCardWord : wordsStartAndFinishWith) {
+				if (wildCardWord.length() == wordLength) {
 					return true;
 				}
 			}
@@ -290,30 +260,21 @@ public class WordDictionary
 			return false;
 		}
 
-		if (wildCardStart)
-		{
+		if (wildCardStart) {
 			int leftIndex = 0;
 
-			while ('.' == leftIndex && leftIndex < wordLength)
-			{
+			while ('.' == leftIndex && leftIndex < wordLength) {
 				++leftIndex;
 			}
 
-			java.util.Set<java.lang.String> wordsFinishWith = wordsEndWith (
-				word.substring (
-					leftIndex + 1
-				)
-			);
+			Set<String> wordsFinishWith = wordsEndWith (word.substring (leftIndex + 1));
 
-			if (0 == wordsFinishWith.size())
-			{
+			if (0 == wordsFinishWith.size()) {
 				return false;
 			}
 
-			for (java.lang.String wildCardWord : wordsFinishWith)
-			{
-				if (wildCardWord.length() == wordLength)
-				{
+			for (String wildCardWord : wordsFinishWith) {
+				if (wildCardWord.length() == wordLength) {
 					return true;
 				}
 			}
@@ -321,31 +282,21 @@ public class WordDictionary
 			return false;
 		}
 
-		if (wildCardFinish)
-		{
+		if (wildCardFinish) {
 			int rightIndex = wordLength - 1;
 
-			while ('.' == rightIndex && rightIndex >= 0)
-			{
+			while ('.' == rightIndex && 0 <= rightIndex) {
 				--rightIndex;
 			}
 
-			java.util.Set<java.lang.String> wordsStartWith = wordsBeginWith (
-				word.substring (
-					0,
-					rightIndex - 1
-				)
-			);
+			Set<String> wordsStartWith = wordsBeginWith (word.substring (0, rightIndex - 1));
 
-			if (0 == wordsStartWith.size())
-			{
+			if (0 == wordsStartWith.size()) {
 				return false;
 			}
 
-			for (java.lang.String wildCardWord : wordsStartWith)
-			{
-				if (wildCardWord.length() == wordLength)
-				{
+			for (String wildCardWord : wordsStartWith) {
+				if (wildCardWord.length() == wordLength) {
 					return true;
 				}
 			}
@@ -372,27 +323,27 @@ public class WordDictionary
 	 * @return List of all Possible Sentences
 	 */
 
-	public java.util.List<java.lang.String> wordBreakSentenceList (
-		final java.lang.String s)
+	public List<String> wordBreakSentenceList (
+		final String s)
 	{
-		java.util.List<java.lang.String> wordBreakSentenceList = new java.util.ArrayList<java.lang.String>();
+		List<String> wordBreakSentenceList = new ArrayList<String>();
 
-		java.util.List<java.lang.Integer> sIndexQueue = new java.util.ArrayList<java.lang.Integer>();
+		List<String> sentenceQueue = new ArrayList<String>();
 
-		java.util.List<java.lang.String> sentenceQueue = new java.util.ArrayList<java.lang.String>();
+		List<Integer> indexQueue = new ArrayList<Integer>();
 
 		int wordLength = s.length();
 
-		sIndexQueue.add (0);
-
 		sentenceQueue.add ("");
 
-		while (!sIndexQueue.isEmpty()) {
-			int tailIndex = sIndexQueue.size() - 1;
+		indexQueue.add (0);
 
-			int beginIndex = sIndexQueue.remove (tailIndex);
+		while (!indexQueue.isEmpty()) {
+			int tailIndex = indexQueue.size() - 1;
 
-			java.lang.String sentence = sentenceQueue.remove (tailIndex);
+			int beginIndex = indexQueue.remove (tailIndex);
+
+			String sentence = sentenceQueue.remove (tailIndex);
 
 			if (beginIndex >= wordLength - 1) {
 				wordBreakSentenceList.add (sentence);
@@ -401,10 +352,10 @@ public class WordDictionary
 			}
 
 			for (int endIndex = beginIndex + 1; endIndex <= wordLength; ++endIndex) {
-				java.lang.String nextWord = s.substring (beginIndex, endIndex);
+				String nextWord = s.substring (beginIndex, endIndex);
 
 				if (_wordSet.contains (nextWord)) {
-					sIndexQueue.add (endIndex);
+					indexQueue.add (endIndex);
 
 					sentenceQueue.add (sentence + " " + nextWord);
 				}
@@ -412,75 +363,5 @@ public class WordDictionary
 		}
 
 		return wordBreakSentenceList;
-	}
-
-	/**
-	 * Entry Point
-	 * 
-	 * @param argumentArray Argument Array
-	 */
-
-	public static final void main (
-		final String[] argumentArray)
-	{
-		WordDictionary wordDictionary = new WordDictionary();
-
-		wordDictionary.addWord (
-			"cat"
-		);
-
-		wordDictionary.addWord (
-			"cats"
-		);
-
-		wordDictionary.addWord (
-			"and"
-		);
-
-		wordDictionary.addWord (
-			"sand"
-		);
-
-		wordDictionary.addWord (
-			"dog"
-		);
-
-		System.out.println (
-			wordDictionary.wordBreakSentenceList (
-				"catsanddog"
-			)
-		);
-
-		wordDictionary.addWord (
-			"apple"
-		);
-
-		wordDictionary.addWord (
-			"pen"
-		);
-
-		wordDictionary.addWord (
-			"applepen"
-		);
-
-		wordDictionary.addWord (
-			"pine"
-		);
-
-		wordDictionary.addWord (
-			"pineapple"
-		);
-
-		System.out.println (
-			wordDictionary.wordBreakSentenceList (
-				"pineapplepenapple"
-			)
-		);
-
-		System.out.println (
-			wordDictionary.wordBreakSentenceList (
-				"catsandog"
-			)
-		);
 	}
 }
