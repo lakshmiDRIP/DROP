@@ -1125,6 +1125,40 @@ public class StringUtil
 		return sum;
 	}
 
+    private static final boolean CompareCharHashMaps (
+    	final HashMap<Character, Integer> charHashMap1,
+    	final HashMap<Character, Integer> charHashMap2)
+    {
+    	Set<Character> mergedCharKeySet = new HashSet<Character>();
+
+    	mergedCharKeySet.addAll (charHashMap1.keySet());
+
+    	mergedCharKeySet.addAll (charHashMap2.keySet());
+
+    	for (char charKey : mergedCharKeySet) {
+    		if (!charHashMap1.containsKey (charKey) ||
+				!charHashMap1.containsKey (charKey) ||
+    			charHashMap1.get (charKey) != charHashMap2.get (charKey))
+    		{
+    			return false;
+    		}
+    	}
+
+    	return true;
+    }
+
+    private static final HashMap<Character, Integer> CharHashMap (
+    	final String s)
+    {
+    	HashMap<Character, Integer> charHashMap = new HashMap<Character, Integer>();
+
+    	for (char c : s.toCharArray()) {
+			charHashMap.put (c, charHashMap.containsKey (c) ? charHashMap.get (c) + 1 : 1);
+    	}
+
+    	return charHashMap;
+    }
+
 	/**
 	 * Convert the String to a Number
 	 * 
@@ -3268,8 +3302,8 @@ public class StringUtil
 
     /**
      * Given a string of '(' , ')' and lowercase English characters, remove the minimum number of parentheses
-     *  ( '(' or ')', in any positions ) so that the resulting parentheses string is valid and return any
-     *  valid string.
+     *  ( '(' or ')', in any positions so that the resulting parentheses string is valid and return any valid
+     *  string.
      *  
      * Formally, a parentheses string is valid if and only if:
      *   It is the empty string, contains only lowercase characters, or
@@ -3284,19 +3318,18 @@ public class StringUtil
     public static final String InvalidParenthesisMinimalRemove (
     	final String s)
     {
-    	List<Integer> leftParenthesisLocationList =
-    		new ArrayList<Integer>();
+    	List<Integer> leftParenthesisLocationList = new ArrayList<Integer>();
 
-    	List<Integer> rightParenthesisLocationList =
-    		new ArrayList<Integer>();
+    	List<Integer> rightParenthesisLocationList = new ArrayList<Integer>();
 
     	for (int i = 0; i < s.length(); ++i) {
     		char c = s.charAt (i);
 
-    		if (c == '(')
+    		if ('(' == c) {
     			leftParenthesisLocationList.add (i);
-    		else if (c == ')')
+    		} else if (')' == c) {
     			rightParenthesisLocationList.add (i);
+    		}
     	}
 
     	for (int i = leftParenthesisLocationList.size() - 1; i >= 0; --i) {
@@ -3328,7 +3361,7 @@ public class StringUtil
 
     /**
      * Given a string of '(' and ')' parentheses, add the minimum number of parentheses ( '(' or ')', and in
-     *  any positions ) so that the resulting parentheses string is valid.
+     *  any positions) so that the resulting parentheses string is valid.
      *  
      * Formally, a parentheses string is valid if and only if:
      * 
@@ -3347,22 +3380,21 @@ public class StringUtil
     public static final int InvalidParenthesisMinimalAdd (
     	final String s)
     {
-    	List<Integer> invalidLeftParenthesisList =
-    		new ArrayList<Integer>();
+    	List<Integer> invalidLeftParenthesisList = new ArrayList<Integer>();
 
-    	List<Integer> invalidRightParenthesisList =
-    		new ArrayList<Integer>();
+    	List<Integer> invalidRightParenthesisList = new ArrayList<Integer>();
 
     	for (int i = 0; i < s.length(); ++i) {
     		char c = s.charAt (i);
 
-    		if (c == '(')
+    		if ('(' == c) {
     			invalidLeftParenthesisList.add (i);
-    		else if (c == ')') {
-    			if (invalidLeftParenthesisList.isEmpty())
+    		} else if (')' == c) {
+    			if (invalidLeftParenthesisList.isEmpty()) {
     				invalidRightParenthesisList.add (i);
-    			else
+    			} else {
     				invalidLeftParenthesisList.remove (invalidLeftParenthesisList.size() - 1);
+    			}
     		}
     	}
 
@@ -3382,18 +3414,15 @@ public class StringUtil
     	final Map<String, Integer> wordFrequencyMap,
     	final String s)
     {
-    	List<String> frequencyBasedWordDecomposition = new
-    		ArrayList<String>();
+    	List<String> frequencyBasedWordDecomposition = new ArrayList<String>();
 
-    	List<Map<String, Integer>> frequencyUsageMapQueue = new
-    		ArrayList<Map<String, Integer>>();
+    	List<Map<String, Integer>> frequencyUsageMapQueue = new ArrayList<Map<String, Integer>>();
 
     	List<String> decompositionQueue = new ArrayList<String>();
 
     	List<Integer> indexQueue = new ArrayList<Integer>();
 
-    	Map<String, Integer> frequencyUsageMapInitial =
-			new HashMap<String, Integer>();
+    	Map<String, Integer> frequencyUsageMapInitial = new HashMap<String, Integer>();
 
     	frequencyUsageMapInitial.putAll (wordFrequencyMap);
 
@@ -3422,13 +3451,12 @@ public class StringUtil
     		String sCurrent = s.substring (stringIndex);
 
     		for (String wordKey : frequencyUsageMap.keySet()) {
-    			if (sCurrent.startsWith (wordKey) && 0 != frequencyUsageMap.get(wordKey)) {
+    			if (sCurrent.startsWith (wordKey) && 0 != frequencyUsageMap.get (wordKey)) {
     				indexQueue.add (stringIndex + wordKey.length());
 
     				decompositionQueue.add(decomposedWord + " " + wordKey);
 
-    		    	Map<String, Integer> frequencyUsageMapNext =
-    					new HashMap<String, Integer>();
+    		    	Map<String, Integer> frequencyUsageMapNext = new HashMap<String, Integer>();
 
     		    	frequencyUsageMapNext.putAll (frequencyUsageMap);
 
@@ -3442,41 +3470,6 @@ public class StringUtil
     	return frequencyBasedWordDecomposition;
     }
 
-    private static final boolean CompareCharHashMaps (
-    	final HashMap<Character, Integer> charHashMap1,
-    	final HashMap<Character, Integer> charHashMap2)
-    {
-    	Set<Character> mergedCharKeySet = new HashSet<Character>();
-
-    	mergedCharKeySet.addAll (charHashMap1.keySet());
-
-    	mergedCharKeySet.addAll (charHashMap2.keySet());
-
-    	for (char charKey : mergedCharKeySet) {
-    		if (!charHashMap1.containsKey (charKey) || !charHashMap1.containsKey (charKey) ||
-    			charHashMap1.get (charKey) != charHashMap2.get (charKey))
-    			return false;
-    	}
-
-    	return true;
-    }
-
-    private static final HashMap<Character, Integer> CharHashMap (
-    	final String s)
-    {
-    	HashMap<Character, Integer> charHashMap = new
-    		HashMap<Character, Integer>();
-
-    	for (char c : s.toCharArray()) {
-    		if (charHashMap.containsKey (c))
-    			charHashMap.put (c, charHashMap.get (c) + 1);
-    		else
-    			charHashMap.put (c, 1);
-    	}
-
-    	return charHashMap;
-    }
-
     /**
      * Given an array of words, group anagrams together.
      * 
@@ -3488,11 +3481,9 @@ public class StringUtil
     public static final List<List<String>> GroupAnagrams2 (
     	final String[] wordArray)
     {
-    	List<HashMap<Character, Integer>> charHashMapList = new
-    		ArrayList<HashMap<Character, Integer>>();
+    	List<HashMap<Character, Integer>> charHashMapList = new ArrayList<HashMap<Character, Integer>>();
 
-    	List<List<String>> anagramListList = new
-    		ArrayList<List<String>>();
+    	List<List<String>> anagramListList = new ArrayList<List<String>>();
 
     	charHashMapList.add (CharHashMap (wordArray[0]));
 
@@ -3505,8 +3496,7 @@ public class StringUtil
     	for (int i = 1; i < wordArray.length; ++i) {
         	int anagramIndex = -1;
 
-    		HashMap<Character, Integer> charHashMap = CharHashMap
-    			(wordArray[i]);
+    		HashMap<Character, Integer> charHashMap = CharHashMap (wordArray[i]);
 
     		for (int j = 0; j < charHashMapList.size(); ++j) {
     			if (CompareCharHashMaps (charHashMap, charHashMapList.get (j))) {
@@ -3520,8 +3510,7 @@ public class StringUtil
         	} else {
             	charHashMapList.add (charHashMap);
 
-            	List<String> newAnagramList = new
-            		ArrayList<String>();
+            	List<String> newAnagramList = new ArrayList<String>();
 
             	newAnagramList.add (wordArray[i]);
 
@@ -3543,8 +3532,7 @@ public class StringUtil
     public static final List<List<String>> GroupAnagrams (
     	final String[] wordArray)
     {
-    	HashMap<String, List<String>> anagramListMap = new
-    		HashMap<String, List<String>>();
+    	HashMap<String, List<String>> anagramListMap = new HashMap<String, List<String>>();
 
     	for (int i = 0; i < wordArray.length; ++i) {
     		char[] charArray = wordArray[i].toCharArray();
@@ -3564,12 +3552,11 @@ public class StringUtil
     		}
     	}
 
-    	List<List<String>> anagramList = new
-    		ArrayList<List<String>>();
+    	List<List<String>> anagramList = new ArrayList<List<String>>();
 
-    	for (Map.Entry<String, List<String>> anagramListEntry :
-    		anagramListMap.entrySet())
-    		anagramList.add(anagramListEntry.getValue());
+    	for (Map.Entry<String, List<String>> anagramListEntry : anagramListMap.entrySet()) {
+    		anagramList.add (anagramListEntry.getValue());
+    	}
 
     	return anagramList;
     }
@@ -3582,54 +3569,59 @@ public class StringUtil
      *  coordinates, (x[i], y[i]).
      *  
      *  Write an algorithm to determine the name of the nearest city that shares either an x or a y
-     *   coordinate with the queried city. If no other cities share an xory coordinate, return NONE. If two
+     *   coordinate with the queried city. If no other cities share an x or y coordinate, return NONE. If two
      *   cities have the same distance to the queried city, q[i], consider the one with an alphabetically
      *   smaller name (i.e. 'ab' lt 'aba' lt 'abb') as the closest choice.
      *   
      * The distance is denoted on a Euclidean plane: the difference in x plus the difference in y.
      * 
-     * @param cities Array of Cities
+     * @param cityArray Array of Cities
      * @param xCoordinateArray Array of City X Coordinates
      * @param yCoordinateArray Array of City Y Coordinates
-     * @param queryCities Cities to be Queried
+     * @param queryCityArray Cities to be Queried
      * 
      * @return Array of the Nearest Cities
      */
 
     public static final String[] NearestCities (
-    	final String[] cities,
+    	final String[] cityArray,
     	final int[] xCoordinateArray,
     	final int[] yCoordinateArray,
-    	final String[] queryCities)
+    	final String[] queryCityArray)
     {
-    	String[] nearestCities = new String[queryCities.length];
+    	String[] nearestCityArray = new String[queryCityArray.length];
 
-    	HashMap<String, Integer> cityIndexMap =
-    		new HashMap<String, Integer>();
+    	HashMap<String, Integer> cityIndexMap = new HashMap<String, Integer>();
 
-    	for (int j = 0; j < cities.length; ++j)
-    		cityIndexMap.put (cities[j], j);
+    	for (int j = 0; j < cityArray.length; ++j) {
+    		cityIndexMap.put (cityArray[j], j);
+    	}
 
-    	for (int i = 0; i < queryCities.length; ++i) {
-    		nearestCities[i] = "NONE";
+    	for (int i = 0; i < queryCityArray.length; ++i) {
+    		nearestCityArray[i] = "NONE";
 
-    		int queryCityIndex = cityIndexMap.get (queryCities[i]);
+    		int queryCityIndex = cityIndexMap.get (queryCityArray[i]);
 
-        	for (int j = 0; j < cities.length;++j) {
-        		if (i == j) continue;
+        	for (int j = 0; j < cityArray.length;++j) {
+        		if (i == j) {
+        			continue;
+        		}
 
         		if (xCoordinateArray[j] == xCoordinateArray[queryCityIndex] ||
-        			yCoordinateArray[j] == yCoordinateArray[queryCityIndex]) {
-        			if ("NONE".equalsIgnoreCase (nearestCities[i]))
-        				nearestCities[i] = cities[j];
-        			else {
-        				if (1 == nearestCities[i].compareTo (cities[j])) nearestCities[i] = cities[j];
+        			yCoordinateArray[j] == yCoordinateArray[queryCityIndex])
+        		{
+        			if ("NONE".equalsIgnoreCase (nearestCityArray[i])) {
+        				nearestCityArray[i] = cityArray[j];
+        			} else {
+        				if (1 == nearestCityArray[i].compareTo (cityArray[j])) {
+        					nearestCityArray[i] = cityArray[j];
+        				}
         			}
         		}
         	}
     	}
 
-    	return nearestCities;
+    	return nearestCityArray;
     }
 
     private static final boolean IsPrime (
