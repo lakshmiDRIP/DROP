@@ -13,6 +13,8 @@ import java.util.StringTokenizer;
 import java.util.TreeMap;
 import java.util.UUID;
 
+import org.drip.numerical.common.PrimeUtil;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
@@ -1157,6 +1159,14 @@ public class StringUtil
     	}
 
     	return charHashMap;
+    }
+
+    private static final boolean IsPrime (
+    	final String number)
+    {
+    	int decimalNumber = DecimalNumberFromString (number);
+
+    	return -1 != decimalNumber && PrimeUtil.IsPrime (decimalNumber);
     }
 
 	/**
@@ -3624,14 +3634,6 @@ public class StringUtil
     	return nearestCityArray;
     }
 
-    private static final boolean IsPrime (
-    	final String number)
-    {
-    	int decimalNumber = DecimalNumberFromString (number);
-
-    	return -1 != decimalNumber && org.drip.numerical.common.PrimeUtil.IsPrime (decimalNumber);
-    }
-
     /**
      * A company's operations team needs an algorithm that can break out a list of products for a given
      * 	order. The products in the order are listed as a string and the order items are represented as prime
@@ -3652,8 +3654,7 @@ public class StringUtil
     {
     	int numberLength = number.length();
 
-		List<List<String>> primeSequenceList = new
-			ArrayList<List<String>>();
+		List<List<String>> primeSequenceList = new ArrayList<List<String>>();
 
 		if (IsPrime (number)) {
 			List<String> primeList = new ArrayList<String>();
@@ -3663,19 +3664,24 @@ public class StringUtil
 			primeSequenceList.add (primeList);
 		}
 
-    	if (1 == numberLength) return primeSequenceList;
+    	if (1 == numberLength) {
+    		return primeSequenceList;
+    	}
 
     	for (int i = 1; i < numberLength; ++i) {
     		String leftSubstring = number.substring (0, i);
 
-    		if (!IsPrime (leftSubstring)) continue;
+    		if (!IsPrime (leftSubstring)) {
+    			continue;
+    		}
 
-    		List<List<String>> uniquePrimesSequenceList = SplitIntoUniquePrimes
-    			(number.substring (i, numberLength));
+    		List<List<String>> uniquePrimesSequenceList =
+				SplitIntoUniquePrimes (number.substring (i, numberLength));
 
     		if (!uniquePrimesSequenceList.isEmpty()) {
-    			for (List<String> uniquePrimesList : uniquePrimesSequenceList)
+    			for (List<String> uniquePrimesList : uniquePrimesSequenceList) {
     				uniquePrimesList.add (0, leftSubstring);
+    			}
     		}
 
     		primeSequenceList.addAll (uniquePrimesSequenceList);
@@ -3701,9 +3707,9 @@ public class StringUtil
     	for (int i = 0; i < s.length(); ++i) {
     		char c = s.charAt (i);
 
-    		if (!charRangeMap.containsKey (c))
+    		if (!charRangeMap.containsKey (c)) {
     			charRangeMap.put (c, new int[] {i, i});
-    		else {
+    		} else {
     			int[] range = charRangeMap.get (c);
 
     			range[1] = i;
@@ -3712,40 +3718,48 @@ public class StringUtil
 
     	TreeMap<Integer, int[]> sortedRangeMap = new TreeMap<Integer, int[]>();
 
-    	for (int[] range : charRangeMap.values())
+    	for (int[] range : charRangeMap.values()) {
     		sortedRangeMap.put (range[0], range);
+    	}
 
-    	int[] prevRange = null;
+    	int[] previousRange = null;
 
     	TreeMap<Integer, int[]> nonOverlappingRangeMap = new TreeMap<Integer, int[]>();
 
     	for (int rangeLeft : sortedRangeMap.keySet()) {
     		int[] currentRange = sortedRangeMap.get (rangeLeft);
 
-    		if (null == prevRange) {
-    			nonOverlappingRangeMap.put (rangeLeft, prevRange = currentRange);
+    		if (null == previousRange) {
+    			nonOverlappingRangeMap.put (rangeLeft, previousRange = currentRange);
 
     			continue;
     		}
 
-    		if (!RangesOverlap (prevRange, currentRange))
-    			nonOverlappingRangeMap.put (rangeLeft, prevRange = currentRange);
-    		else
-    			nonOverlappingRangeMap.put (prevRange[0], prevRange = new int[] {prevRange[0],
-    				currentRange[1] > prevRange[1] ? currentRange[1] : prevRange[1]});
+    		if (!RangesOverlap (previousRange, currentRange)) {
+    			nonOverlappingRangeMap.put (rangeLeft, previousRange = currentRange);
+    		} else {
+    			nonOverlappingRangeMap.put (
+					previousRange[0],
+					previousRange = new int[] {
+						previousRange[0],
+						currentRange[1] > previousRange[1] ? currentRange[1] : previousRange[1]
+					}
+				);
+    		}
     	}
 
     	List<String> partitionList = new ArrayList<String>();
 
-    	for (int rangeLeft : nonOverlappingRangeMap.keySet())
+    	for (int rangeLeft : nonOverlappingRangeMap.keySet()) {
     		partitionList.add (s.substring (rangeLeft, nonOverlappingRangeMap.get (rangeLeft)[1] + 1));
+    	}
 
     	return partitionList;
     }
 
     /**
      * Given a string of lower characters, remove at most two substrings of any length from the given string
-     *  such that the remaining string contains vowels('a','e','i','o','u') only.
+     *  such that the remaining string contains vowels ('a','e','i','o','u') only.
      *  
      * Your aim is to maximize the length of the remaining string. Output the length of remaining string
      * 	after removal of at most two substrings.
@@ -3761,7 +3775,9 @@ public class StringUtil
     	List<Integer> consonantLocationList = new ArrayList<Integer>();
 
     	for (int i = 0; i < s.length(); ++i) {
-    		if (IsConsonant (s.charAt (i))) consonantLocationList.add (i);
+    		if (IsConsonant (s.charAt (i))) {
+    			consonantLocationList.add (i);
+    		}
     	}
 
     	int consonantCount = consonantLocationList.size();
@@ -3770,7 +3786,9 @@ public class StringUtil
     		String longestVowel = "";
 
         	for (int i = 0; i < s.length(); ++i) {
-        		if (!consonantLocationList.contains (i)) longestVowel = longestVowel + s.charAt (i);
+        		if (!consonantLocationList.contains (i)) {
+        			longestVowel = longestVowel + s.charAt (i);
+        		}
         	}
 
         	return longestVowel;
@@ -3785,8 +3803,10 @@ public class StringUtil
 
     	int lastConsonantIndex = consonantLocationList.get (consonantCount - 1);
 
-    	for (int leftStringEndLocation = 0; leftStringEndLocation < consonantCount - 1;
-    		++leftStringEndLocation) {
+    	for (int leftStringEndLocation = 0;
+			leftStringEndLocation < consonantCount - 1;
+    		++leftStringEndLocation)
+    	{
     		int leftStringEndIndex = consonantLocationList.get (leftStringEndLocation);
 
 			int rightStringStartIndex = consonantLocationList.get (leftStringEndLocation + 1);
@@ -3808,13 +3828,16 @@ public class StringUtil
     		}
     	}
 
-    	if (0 != firstConsonantIndex) longestVowel = longestVowel + s.substring (0, firstConsonantIndex);
+    	if (0 != firstConsonantIndex) {
+    		longestVowel = longestVowel + s.substring (0, firstConsonantIndex);
+    	}
 
-		longestVowel = longestVowel + s.substring (optimalLeftStringEndIndex + 1,
-			optimalRightStringStartIndex);
+		longestVowel = longestVowel +
+			s.substring (optimalLeftStringEndIndex + 1, optimalRightStringStartIndex);
 
-    	if (s.length() - 1 != lastConsonantIndex)
+    	if (s.length() - 1 != lastConsonantIndex) {
     		longestVowel = longestVowel + s.substring (lastConsonantIndex + 1);
+    	}
 
     	return longestVowel;
     }
@@ -3854,7 +3877,9 @@ public class StringUtil
     		ch = CharWithLargestCount (charCountArray);
 
     		if (constrainedWord.substring (constrainedWord.length() - 2).equalsIgnoreCase ("" + ch + ch)) {
-    			if (SingleCharacterArray (charCountArray)) break;
+    			if (SingleCharacterArray (charCountArray)) {
+    				break;
+    			}
 
     			ch = CharWithMediumCount (charCountArray);
     		}
@@ -3888,17 +3913,16 @@ public class StringUtil
     public static final List<String> ConditionalWordList (
     	final String s)
     {
-    	HashMap<Character, ArrayList<Integer>> charIndexListMap = new
-    		HashMap<Character, ArrayList<Integer>>();
+    	HashMap<Character, ArrayList<Integer>> charIndexListMap = new HashMap<Character, ArrayList<Integer>>();
 
     	char[] charArray = s.toCharArray();
 
     	for (int i = 0; i < s.length(); ++i) {
     		char c = charArray[i];
 
-    		if (charIndexListMap.containsKey (c))
+    		if (charIndexListMap.containsKey (c)) {
     			charIndexListMap.get (c).add (i);
-    		else {
+    		} else {
     			ArrayList<Integer> charIndexList = new ArrayList<Integer>();
 
     			charIndexList.add (i);
@@ -3910,46 +3934,51 @@ public class StringUtil
     	for (ArrayList<Integer> charIndexList : charIndexListMap.values()) {
     		boolean discontinuousCharLocation = false;
 
-    		int prevIndex = charIndexList.get (0);
+    		int previousIndex = charIndexList.get (0);
 
     		for (int i = 1; i < charIndexList.size(); ++i) {
     			int currentIndex = charIndexList.get (i);
 
-    			if (currentIndex != prevIndex + 1) {
+    			if (currentIndex != previousIndex + 1) {
     				discontinuousCharLocation = true;
     				break;
     			}
 
-    			prevIndex = currentIndex;
+    			previousIndex = currentIndex;
     		}
 
     		if (discontinuousCharLocation) {
-    			for (int charIndex : charIndexList)
+    			for (int charIndex : charIndexList) {
     				charArray[charIndex] = '_';
+    			}
     		}
     	}
 
-    	char prevChar = charArray[0];
-    	String sModified = "" + prevChar;
+    	char previousChar = charArray[0];
+    	String sModified = "" + previousChar;
 
     	for (int i = 1; i < charArray.length; ++i) {
-			sModified = sModified + (prevChar == charArray[i] || prevChar == '_' || charArray[i] == '_' ? ""
-				: "_") + charArray[i];
-    		prevChar = charArray[i];
+			sModified = sModified + (
+				previousChar == charArray[i] || '_' == previousChar || '_' == charArray[i] ? "" : "_"
+			) + charArray[i];
+			previousChar = charArray[i];
     	}
 
-    	while (sModified.startsWith ("_"))
+    	while (sModified.startsWith ("_")) {
     		sModified = sModified.substring (1);
+    	}
 
-    	while (sModified.endsWith ("_"))
+    	while (sModified.endsWith ("_")) {
     		sModified = sModified.substring (0, sModified.length() - 1);
+    	}
 
     	String[] conditionalWordArray = sModified.split ("_");
 
     	List<String> conditionalWordList = new ArrayList<String>();
 
-    	for (String conditionalWord : conditionalWordArray)
+    	for (String conditionalWord : conditionalWordArray) {
     		conditionalWordList.add (conditionalWord);
+    	}
 
     	return conditionalWordList;
     }
