@@ -121,6 +121,99 @@ import org.drip.numerical.common.PrimeUtil;
 public class StringUtil
 {
 
+    static class PasswordSynposys
+    {
+    	private int _charShortfall = 0;
+    	private boolean _containsDigit = false;
+    	private boolean _containsLower = false;
+    	private boolean _containsUpper = false;
+    	private List<int[]> _invalidRange = null;
+
+    	/**
+    	 * <i>PasswordSynposys</i> Constructor
+    	 * 
+    	 * @param charShortfall Character Shortfall
+    	 * @param containsDigit TRUE - Contains Digit
+    	 * @param containsLower TRUE - Contains Lower Case
+    	 * @param containsUpper TRUE - Contains Upper Case
+    	 * @param invalidRange List of Invalid Ranges
+    	 */
+
+    	PasswordSynposys (
+			final int charShortfall,
+			final boolean containsDigit,
+			final boolean containsLower,
+			final boolean containsUpper,
+			final List<int[]> invalidRange)
+    	{
+    		_charShortfall = charShortfall;
+    		_containsDigit = containsDigit;
+    		_containsLower = containsLower;
+    		_containsUpper = containsUpper;
+    		_invalidRange = invalidRange;
+    	}
+    }
+
+    private static final PasswordSynposys IsPasswordStrong (
+    	final String password)
+    {
+    	char charState = '0';
+    	int charShortfall = 0;
+    	int repeatCharCount = 0;
+    	boolean containsDigit = false;
+    	boolean containsLower = false;
+    	boolean containsUpper = false;
+
+    	int passwordLength = password.length();
+
+    	if (20 < passwordLength) {
+    		charShortfall = 20 - passwordLength;
+    	} else if (6 > passwordLength) {
+    		charShortfall = 6 - passwordLength;
+    	}
+
+    	List<int[]> invalidRange = new ArrayList<int[]>();
+
+    	for (int i = 0; i < passwordLength; ++i) {
+    		char ch = password.charAt (i);
+
+    		if (Character.isDigit (ch)) {
+    			containsDigit = true;
+    		}
+
+    		if (Character.isLowerCase (ch)) {
+    			containsLower = true;
+    		}
+
+    		if (Character.isUpperCase (ch)) {
+    			containsUpper = true;
+    		}
+
+    		if (0 == i) {
+    			charState = ch;
+    		} else {
+    			if (ch == charState) {
+    				++repeatCharCount;
+    			} else {
+    				if (3 <= repeatCharCount) {
+    					invalidRange.add (new int[] {i - repeatCharCount + 1, i});
+    				}
+
+    				charState = ch;
+        			repeatCharCount = 1;
+    			}
+    		}
+    	}
+
+    	return new PasswordSynposys (
+			charShortfall,
+			containsDigit,
+			containsLower,
+			containsUpper,
+			invalidRange
+		);
+    }
+
 	/**
 	 * Null serialized string
 	 */
@@ -1167,6 +1260,180 @@ public class StringUtil
     	int decimalNumber = DecimalNumberFromString (number);
 
     	return -1 != decimalNumber && PrimeUtil.IsPrime (decimalNumber);
+    }
+
+    private static final boolean IsPalindrome (
+    	final String s,
+    	final int start,
+    	final int end)
+    {
+    	int left = start;
+    	int right = end;
+
+    	while (left < right) {
+    		if (s.charAt (left) != s.charAt (right)) {
+    			return false;
+			}
+
+    		++left;
+    		--right;
+    	}
+
+    	return true;
+    }
+
+    private static final Map<Character, List<Integer>> CharacterLocationListMap (
+		final String s)
+    {
+    	Map<Character, List<Integer>> characterLocationListMap = new HashMap<Character, List<Integer>>();
+
+    	for (int i = 0; i < s.length(); ++i) {
+    		char ch = s.charAt (i);
+
+    		if (characterLocationListMap.containsKey (ch)) {
+    			List<Integer> characterLocationList = characterLocationListMap.get (ch);
+
+    			int lastLocation = characterLocationList.get (characterLocationList.size() - 1);
+
+    			if (0 == (i - lastLocation) % 2) {
+    				characterLocationList.add (i);
+				}
+    		} else {
+    			List<Integer> locationList = new ArrayList<Integer>();
+
+    			locationList.add (i);
+
+    			characterLocationListMap.put (ch, locationList);
+    		}
+    	}
+
+    	return characterLocationListMap;
+    }
+
+    private static final boolean Overlap (
+		final int[] firstRange,
+		final int[] secondRange)
+    {
+    	if (firstRange[0] >= secondRange[0] && firstRange[0] <= secondRange[1]) {
+    		return true;
+		}
+
+    	return secondRange[0] >= firstRange[0] && secondRange[0] <= firstRange[1];
+    }
+
+    private static final int MaximumNonOverlappingProduct (
+		final List<int[]> palindromeLocationList)
+    {
+    	if (null == palindromeLocationList || 1 >= palindromeLocationList.size()) {
+    		return -1;
+		}
+
+    	int maximumNonOverlappingProduct = -1;
+
+    	for (int i = 0; i < palindromeLocationList.size(); ++i) {
+    		int[] leftPalindromeLocation = palindromeLocationList.get (i);
+
+    		for (int j = 0; j < i; ++j) {
+        		int[] rightPalindromeLocation = palindromeLocationList.get (j);
+
+        		if (!Overlap (leftPalindromeLocation, rightPalindromeLocation)) {
+        			int currentProduct = (leftPalindromeLocation[1] - leftPalindromeLocation[0] + 1) *
+    					(rightPalindromeLocation[1] - rightPalindromeLocation[0] + 1);
+
+        			if (currentProduct > maximumNonOverlappingProduct) {
+        				maximumNonOverlappingProduct = currentProduct;
+    				}
+        		}
+        	}
+    	}
+
+    	return maximumNonOverlappingProduct;
+    }
+
+    private static final List<Integer> SubstringStartLocation (
+		final String full,
+		final String sub)
+    {
+    	List<Integer> substringStartLocationList = new ArrayList<Integer>();
+
+    	int startIndex = full.indexOf (sub, 0);
+
+    	while (startIndex < full.length() && -1 != startIndex) {
+    		substringStartLocationList.add (startIndex);
+
+    		startIndex = full.indexOf (sub, startIndex + sub.length());
+    	}
+
+    	return substringStartLocationList;
+    }
+
+    private static final List<Integer> StartLocationList (
+		final String full,
+		final Set<String> subSet)
+    {
+    	List<Integer> startLocationList = new ArrayList<Integer>();
+
+    	for (String sub : subSet) {
+    		List<Integer> substringStartLocationList = SubstringStartLocation (full, sub);
+
+    		if (!substringStartLocationList.isEmpty()) {
+	    		startLocationList.addAll (substringStartLocationList);
+    		}
+    	}
+
+    	return startLocationList;
+    }
+
+    private static final List<Integer> ContiguousWordsLocationList (
+		final String full,
+		final Set<String> subset,
+		final int startIndex)
+    {
+    	List<Integer> contiguousWordsLocationList = new ArrayList<Integer>();
+
+    	List<Integer> currentLocationStack = new ArrayList<Integer>();
+
+    	currentLocationStack.add (startIndex);
+
+    	List<Set<String>> processedSubsetStack = new ArrayList<Set<String>>();
+
+    	processedSubsetStack.add (new HashSet<String> (subset));
+
+    	while (!currentLocationStack.isEmpty()) {
+    		int stackIndex = currentLocationStack.size() - 1;
+ 
+    		int currentLocation = currentLocationStack.get (stackIndex);
+
+    		currentLocationStack.remove (stackIndex);
+
+    		String currentFull = full.substring (currentLocation);
+
+    		Set<String> currentSubset = processedSubsetStack.get (stackIndex);
+
+    		Set<String> nextSubset = new HashSet<String> (currentSubset);
+
+    		processedSubsetStack.remove (stackIndex);
+
+    		for (String currentSub : currentSubset) {
+    			if (currentFull.startsWith (currentSub)) {
+    				nextSubset.remove (currentSub);
+
+    				if (nextSubset.isEmpty()) {
+    					contiguousWordsLocationList.add (startIndex);
+    				} else {
+    					int nextLocation = currentLocation + currentSub.length();
+
+    					if (nextLocation < full.length()) {
+    						currentLocationStack.add (nextLocation);
+
+	    					processedSubsetStack.add (nextSubset);
+    					}
+    				}
+    			}
+    		}
+    	}
+
+    	return contiguousWordsLocationList;
     }
 
 	/**
@@ -3983,111 +4250,10 @@ public class StringUtil
     	return conditionalWordList;
     }
 
-    private static final boolean IsPalindrome (
-    	final String s,
-    	final int start,
-    	final int end)
-    {
-    	int left = start;
-    	int right = end;
-
-    	while (left < right)
-    	{
-    		if (s.charAt (left) != s.charAt(right))
-			{
-    			return false;
-			}
-
-    		++left;
-    		--right;
-    	}
-
-    	return true;
-    }
-
-    private static final Map<Character, List<Integer>> CharacterLocationListMap (
-		final String s)
-    {
-    	Map<Character, List<Integer>> characterLocationListMap = new HashMap<Character, List<Integer>>();
-
-    	for (int i = 0; i < s.length(); ++i)
-    	{
-    		char ch = s.charAt (i);
-
-    		if (characterLocationListMap.containsKey (ch))
-    		{
-    			int lastLocation = characterLocationListMap.get (ch).get (
-					characterLocationListMap.get (ch).size() - 1
-				);
-
-    			if (0 == (i - lastLocation) % 2)
-				{
-    				characterLocationListMap.get (ch).add (i);
-				}
-    		}
-    		else
-    		{
-    			List<Integer> locationList = new ArrayList<Integer>();
-
-    			locationList.add(i);
-
-    			characterLocationListMap.put (ch, locationList);
-    		}
-    	}
-
-    	return characterLocationListMap;
-    }
-
-    private static final boolean Overlap (
-		final int[] firstRange,
-		final int[] secondRange)
-    {
-    	if (firstRange[0] >= secondRange[0] && firstRange[0] <= secondRange[1])
-		{
-    		return true;
-		}
-
-    	return secondRange[0] >= firstRange[0] && secondRange[0] <= firstRange[1];
-    }
-
-    private static final int MaximumNonOverlappingProduct (
-		final List<int[]> palindromeLocationList)
-    {
-    	if (null == palindromeLocationList || 1 >= palindromeLocationList.size())
-		{
-    		return -1;
-		}
-
-    	int maximumNonOverlappingProduct = -1;
-
-    	for (int i = 0; i < palindromeLocationList.size(); ++i)
-    	{
-    		int[] leftPalindromeLocation = palindromeLocationList.get(i);
-
-    		for (int j = 0; j < i; ++j)
-    		{
-        		int[] rightPalindromeLocation = palindromeLocationList.get(j);
-
-        		if (!Overlap (leftPalindromeLocation, rightPalindromeLocation))
-        		{
-        			int currentProduct = (leftPalindromeLocation[1] - leftPalindromeLocation[0] + 1) *
-    					(rightPalindromeLocation[1] - rightPalindromeLocation[0] + 1);
-
-        			if (currentProduct > maximumNonOverlappingProduct)
-    				{
-        				maximumNonOverlappingProduct = currentProduct;
-    				}
-        		}
-        	}
-    	}
-
-    	return maximumNonOverlappingProduct;
-    }
-
     /**
      * Compute the Maximum Palindrome Product Length
      * 
-     * @param s Inout String
+     * @param s Input String
      * 
      * @return Maximum Palindrome Product Length
      */
@@ -4099,18 +4265,18 @@ public class StringUtil
 
     	List<int[]> palindromeLocationList = new ArrayList<int[]>();
 
-    	for (char ch : characterLocationListMap.keySet())
-    	{
-    		List<Integer> characterLocationList = characterLocationListMap.get(ch);
+    	for (char ch : characterLocationListMap.keySet()) {
+    		List<Integer> characterLocationList = characterLocationListMap.get (ch);
 
-    		if (2 > characterLocationList.size()) continue;
+    		int characterLocationListSize = characterLocationList.size();
 
-    		for (int i = 0; i < characterLocationList.size(); ++i)
-    		{
-        		for (int j = i + 1; j < characterLocationList.size(); ++j)
-        		{
-        			if (IsPalindrome (s, characterLocationList.get (i), characterLocationList.get (j)))
-        			{
+    		if (2 > characterLocationListSize) {
+    			continue;
+    		}
+
+    		for (int i = 0; i < characterLocationListSize; ++i) {
+        		for (int j = i + 1; j < characterLocationListSize; ++j) {
+        			if (IsPalindrome (s, characterLocationList.get (i), characterLocationList.get (j))) {
         				palindromeLocationList.add (
     						new int[] {characterLocationList.get (i), characterLocationList.get (j)}
 						);
@@ -4122,92 +4288,6 @@ public class StringUtil
     	return MaximumNonOverlappingProduct (palindromeLocationList);
     }
 
-    private static final List<Integer> SubstringStartLocation (String full, String sub)
-    {
-    	List<Integer> substringStartLocationList = new ArrayList<Integer>();
-
-    	int startIndex = full.indexOf(sub, 0);
-
-    	while (startIndex < full.length() && -1 != startIndex)
-    	{
-    		substringStartLocationList.add (startIndex);
-
-    		startIndex = full.indexOf(sub, startIndex + sub.length());
-    	}
-
-    	return substringStartLocationList;
-    }
-
-    private static final List<Integer> StartLocationList (String full, Set<String> subSet)
-    {
-    	List<Integer> startLocationList = new ArrayList<Integer>();
-
-    	for (String sub : subSet)
-    	{
-    		List<Integer> substringStartLocationList = SubstringStartLocation (full, sub);
-
-    		if (substringStartLocationList.isEmpty()) return new ArrayList<Integer>();
-
-    		startLocationList.addAll(substringStartLocationList);
-    	}
-
-    	return startLocationList;
-    }
-
-    private static final List<Integer> ContiguousWordsLocationList (
-		String full,
-		Set<String> subset,
-		int startIndex)
-    {
-    	List<Integer> contiguousWordsLocationList = new ArrayList<Integer>();
-
-    	List<Integer> currentLocationStack = new ArrayList<Integer>();
-
-    	currentLocationStack.add(startIndex);
-
-    	List<Set<String>> processedSubsetStack = new ArrayList<Set<String>>();
-
-    	processedSubsetStack.add(new HashSet<String> (subset));
-
-    	while (!currentLocationStack.isEmpty())
-    	{
-    		int stackIndex = currentLocationStack.size() - 1;
- 
-    		int currentLocation = currentLocationStack.get(stackIndex);
-
-    		currentLocationStack.remove(stackIndex);
-
-    		String currentFull = full.substring(currentLocation);
-
-    		Set<String> currentSubset = processedSubsetStack.get(stackIndex);
-
-    		Set<String> nextSubset = new HashSet<String> (currentSubset);
-
-    		processedSubsetStack.remove(stackIndex);
-
-    		for (String currentSub : currentSubset) {
-    			if (currentFull.startsWith (currentSub)) {
-    				nextSubset.remove(currentSub);
-
-    				if (nextSubset.isEmpty())
-    					contiguousWordsLocationList.add(startIndex);
-    				else {
-    					int nextLocation = currentLocation + currentSub.length();
-
-    					if (nextLocation < full.length())
-    					{
-    						currentLocationStack.add(nextLocation);
-
-	    					processedSubsetStack.add(nextSubset);
-    					}
-    				}
-    			}
-    		}
-    	}
-
-    	return contiguousWordsLocationList;
-    }
-
     /**
      * Generate the List of Word Concatenation Start
      * 
@@ -4217,92 +4297,23 @@ public class StringUtil
      * @return The List of Word Concatenation Start
      */
 
-    public static final List<Integer> WordConcatenationStartList (String full, Set<String> subset)
+    public static final List<Integer> WordConcatenationStartList (
+		final String full,
+		final Set<String> subset)
     {
     	List<Integer> wordConcatenationStartList = new ArrayList<Integer>();
 
     	List<Integer> startLocationList = StartLocationList (full, subset);
 
-    	if (startLocationList.isEmpty()) return wordConcatenationStartList;
+    	if (startLocationList.isEmpty()) {
+    		return wordConcatenationStartList;
+    	}
 
-    	for (int startIndex : startLocationList)
+    	for (int startIndex : startLocationList) {
 	    	wordConcatenationStartList.addAll (ContiguousWordsLocationList (full, subset, startIndex));
+    	}
 
 	    return wordConcatenationStartList;
-    }
-
-    static class PasswordSynposys
-    {
-    	int charShortfall = 0;
-    	boolean containsDigit = false;
-    	boolean containsLower = false;
-    	boolean containsUpper = false;
-    	List<int[]> invalidRange = null;
-
-    	PasswordSynposys (
-			int charShortfall,
-			boolean containsDigit,
-			boolean containsLower,
-			boolean containsUpper,
-			List<int[]> invalidRange)
-    	{
-    		this.charShortfall = charShortfall;
-    		this.containsDigit = containsDigit;
-    		this.containsLower = containsLower;
-    		this.containsUpper = containsUpper;
-    		this.invalidRange = invalidRange;
-    	}
-    }
-
-    private static final PasswordSynposys IsPasswordStrong (
-    	final String password)
-    {
-    	char charState = '0';
-    	int charShortfall = 0;
-    	int repeatCharCount = 0;
-    	boolean containsDigit = false;
-    	boolean containsLower = false;
-    	boolean containsUpper = false;
-
-    	int passwordLength = password.length();
-
-    	if (20 < passwordLength)
-    		charShortfall = 20 - passwordLength;
-    	else if (6 > passwordLength)
-    		charShortfall = 6 - passwordLength;
-
-    	List<int[]> invalidRange = new ArrayList<int[]>();
-
-    	for (int i = 0; i < passwordLength; ++i) {
-    		char ch = password.charAt (i);
-
-    		if (Character.isDigit (ch)) containsDigit = true;
-
-    		if (Character.isLowerCase (ch)) containsLower = true;
-
-    		if (Character.isUpperCase (ch)) containsUpper = true;
-
-    		if (0 == i)
-    			charState = ch;
-    		else {
-    			if (ch == charState)
-    				++repeatCharCount;
-    			else {
-    				if (3 <= repeatCharCount) invalidRange.add (new int[] {i - repeatCharCount + 1, i});
-
-    				charState = ch;
-        			repeatCharCount = 1;
-    			}
-    		}
-    	}
-
-    	return new PasswordSynposys (
-			charShortfall,
-			containsDigit,
-			containsLower,
-			containsUpper,
-			invalidRange
-		);
     }
 
     /**
@@ -4317,21 +4328,21 @@ public class StringUtil
     {
     	PasswordSynposys passwordSynposys = IsPasswordStrong (password);
 
-    	if (0 < passwordSynposys.charShortfall) return passwordSynposys.charShortfall;
+    	if (0 < passwordSynposys._charShortfall) return passwordSynposys._charShortfall;
 
 		int repeatsToModify = 0;
 		int containmentChanges = 0;
 
-		for (int[] range : passwordSynposys.invalidRange)
+		for (int[] range : passwordSynposys._invalidRange)
     		repeatsToModify += (range[1] - range[0] + 1) / 3;
 
-		if (!passwordSynposys.containsDigit) ++containmentChanges;
+		if (!passwordSynposys._containsDigit) ++containmentChanges;
 
-		if (!passwordSynposys.containsLower) ++containmentChanges;
+		if (!passwordSynposys._containsLower) ++containmentChanges;
 
-		if (!passwordSynposys.containsUpper) ++containmentChanges;
+		if (!passwordSynposys._containsUpper) ++containmentChanges;
 
-		return (repeatsToModify > containmentChanges ? repeatsToModify : containmentChanges) - passwordSynposys.charShortfall;
+		return (repeatsToModify > containmentChanges ? repeatsToModify : containmentChanges) - passwordSynposys._charShortfall;
     }
 
     private static final boolean IsNumber (
