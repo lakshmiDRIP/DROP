@@ -1,11 +1,19 @@
 
 package org.drip.service.common;
 
+import java.util.ArrayDeque;
+import java.util.ArrayList;
+import java.util.Deque;
+import java.util.List;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -76,16 +84,18 @@ package org.drip.service.common;
  */
 
 /**
- * <i>TreeUtil</i> implements Tree Utility Functions.
+ * <i>TreeUtil</i> implements Tree Utility Functions. It implements the following Functions:
+ * <ul>
+ * </ul>
  * 
- * <br><br>
- *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md">Numerical Analysis Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/README.md">Environment, Product/Definition Containers, and Scenario/State Manipulation APIs</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/common">Assorted Data Structures Support Utilities</a></li>
- *  </ul>
- * <br><br>
+ * <br>
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationSupportLibrary.md">Computation Support</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/README.md">Environment, Product/Definition Containers, and Scenario/State Manipulation APIs</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/common/README.md">Assorted Data Structures Support Utilities</a></td></tr>
+ *  </table>
+ * <br>
  * 
  * @author Lakshmi Krishnamurthy
  */
@@ -101,10 +111,10 @@ public class TreeUtil
 	{
 		private TreeNode _left = null;
 		private TreeNode _right = null;
-		private double _value = java.lang.Double.NaN;
+		private double _value = Double.NaN;
 
 		/**
-		 * TreeNode Constructor
+		 * <i>TreeNode</i> Constructor
 		 * 
 		 * @param value Node Value
 		 * @param left Left Node
@@ -165,25 +175,21 @@ public class TreeUtil
 		private int _diameter = 0;
 
 		/**
-		 * DiameterHeightPair Constructor
+		 * <i>DiameterHeightPair</i> Constructor
 		 * 
 		 * @param height Height
 		 * @param diameter Diameter
 		 * 
-		 * @throws java.lang.Exception Thrown if Inputs are Invalid
+		 * @throws Exception Thrown if Inputs are Invalid
 		 */
 
 		public DiameterHeightPair (
 			final int height,
 			final int diameter)
-			throws java.lang.Exception
+			throws Exception
 		{
-			if (-1 > (_height = height) ||
-				0 > (_diameter = diameter))
-			{
-				throw new java.lang.Exception (
-					"DiameterHeightPair Constructor => Invalid Inputs"
-				);
+			if (-1 > (_height = height) || 0 > (_diameter = diameter)) {
+				throw new Exception ("DiameterHeightPair Constructor => Invalid Inputs");
 			}
 		}
 
@@ -213,59 +219,43 @@ public class TreeUtil
 	/**
 	 * Retrieve the Right-side View of the Tree
 	 * 
-	 * @param root Root of the Trtee
+	 * @param root Root of the Tree
 	 * 
 	 * @return The Right-side View of the Tree
 	 */
 
-	public static final java.util.List<java.lang.Double> RightSideView (
+	public static final List<Double> RightSideView (
 		final TreeNode root)
 	{
-		java.util.List<java.lang.Double> rightNodeList = new java.util.ArrayList<java.lang.Double>();
+		List<Double> rightNodeList = new ArrayList<Double>();
 
-		if (null == root)
-		{
+		if (null == root) {
 			return rightNodeList;
 		}
 
-		java.util.Deque<TreeNode> nodeQueue = new java.util.ArrayDeque<TreeNode>();
+		Deque<TreeNode> nodeQueue = new ArrayDeque<TreeNode>();
 
-		nodeQueue.add (
-			root
-		);
+		nodeQueue.add (root);
 
-		while (!nodeQueue.isEmpty())
-		{
+		while (!nodeQueue.isEmpty()) {
 			int queueSize = nodeQueue.size();
 
-			for (int i = 0;
-				i < queueSize;
-				++i)
-			{
+			for (int i = 0; i < queueSize; ++i) {
 				TreeNode currentNode = nodeQueue.poll();
 
-				if (i == queueSize - 1)
-				{
-					rightNodeList.add (
-						currentNode.value()
-					);
+				if (i == queueSize - 1) {
+					rightNodeList.add (currentNode.value());
 
-					TreeNode left = currentNode.left();
+					TreeNode leftNode = currentNode.left();
 
-					if (null != left)
-					{
-						nodeQueue.add (
-							left
-						);
+					if (null != leftNode) {
+						nodeQueue.add (leftNode);
 					}
 
-					TreeNode right = currentNode.right();
+					TreeNode rightNode = currentNode.right();
 
-					if (null != right)
-					{
-						nodeQueue.add (
-							right
-						);
+					if (null != rightNode) {
+						nodeQueue.add (rightNode);
 					}
 				}
 			}
@@ -275,58 +265,43 @@ public class TreeUtil
 	}
 
 	/**
-	 * Generate the DiameterHeightPair Instance from the Root
+	 * Generate the <i>DiameterHeightPair</i> Instance from the Root
 	 * 
-	 * @param root The Root Node
+	 * @param rootNode The Root Node
 	 * 
-	 * @return The DiameterHeightPair Instance from the Root
+	 * @return The <i>DiameterHeightPair</i> Instance from the Root
 	 */
 
 	public static final DiameterHeightPair TreeDiameter (
-		final TreeNode root)
+		final TreeNode rootNode)
 	{
-		if (null == root)
-		{
-			try
-			{
-				return new DiameterHeightPair (
-					-1,
-					0
-				);
-			}
-			catch (java.lang.Exception e)
-			{
+		if (null == rootNode) {
+			try {
+				return new DiameterHeightPair (-1, 0);
+			} catch (Exception e) {
 				e.printStackTrace();
 			}
 
 			return null;
 		}
 
-		DiameterHeightPair leftPair = TreeDiameter (
-			root.left()
-		);
+		DiameterHeightPair rightDiameterHeightPair = TreeDiameter (rootNode.right());
 
-		DiameterHeightPair rightPair = TreeDiameter (
-			root.right()
-		);
+		DiameterHeightPair leftDiameterHeightPair = TreeDiameter (rootNode.left());
 
-		try
-		{
+		int rightHeight = rightDiameterHeightPair.height();
+
+		int leftHeight = leftDiameterHeightPair.height();
+
+		try {
 			return new DiameterHeightPair (
-				java.lang.Math.max (
-					leftPair.height(), rightPair.height()
-				) + 1,
-				java.lang.Math.max (
-					java.lang.Math.max (
-						leftPair.diameter(),
-						rightPair.diameter()
-					),
-					leftPair.height() + rightPair.height() + 2
+				Math.max (leftHeight, rightHeight) + 1,
+				Math.max (
+					Math.max (leftDiameterHeightPair.diameter(), rightDiameterHeightPair.diameter()),
+					leftHeight + rightHeight + 2
 				)
 			);
-		}
-		catch (java.lang.Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -346,32 +321,24 @@ public class TreeUtil
 	public static final int MinimumEditsForAverage (
 		final TreeNode node)
 	{
-		if (null == node)
-		{
+		if (null == node) {
 			return 0;
 		}
 
-		TreeNode left = node.left();
+		TreeNode leftNode = node.left();
 
-		TreeNode right = node.right();
+		TreeNode rightNode = node.right();
 
-		if (null == left && null == right)
-		{
+		if (null == leftNode && null == rightNode) {
 			return 0;
 		}
 
-		int editCount = MinimumEditsForAverage (
-			left
-		) + MinimumEditsForAverage (
-			right
-		);
+		int editCount = MinimumEditsForAverage (leftNode) + MinimumEditsForAverage (rightNode);
 
-		if (null == left)
-		{
-			double rightValue = right._value;
+		if (null == leftNode) {
+			double rightValue = rightNode._value;
 
-			if (node._value != rightValue)
-			{
+			if (node._value != rightValue) {
 				node._value = rightValue;
 				return editCount + 1;
 			}
@@ -379,12 +346,10 @@ public class TreeUtil
 			return editCount;
 		}
 
-		if (null == right)
-		{
-			double leftValue = left._value;
+		if (null == rightNode) {
+			double leftValue = leftNode._value;
 
-			if (node._value != leftValue)
-			{
+			if (node._value != leftValue) {
 				node._value = leftValue;
 				return editCount + 1;
 			}
@@ -392,10 +357,9 @@ public class TreeUtil
 			return editCount;
 		}
 
-		double averageValue = (right._value + left._value) / 2;
+		double averageValue = 0.5 * (rightNode._value + leftNode._value);
 
-		if (node._value != averageValue)
-		{
+		if (node._value != averageValue) {
 			node._value = averageValue;
 			return editCount + 1;
 		}

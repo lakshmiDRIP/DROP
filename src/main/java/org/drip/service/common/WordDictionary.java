@@ -89,7 +89,14 @@ import java.util.Set;
  * 	letters a-z or .. A . means it can represent any one letter. It exposes the following Functions:
  * 	<br>
  * 	<ul>
- * 
+ * 		<li><i>WordDictionary</i> Constructor</li>
+ * 		<li>Retrieve the Set of Words</li>
+ * 		<li>Add a Word to the Set</li>
+ * 		<li>Return if the word is in the data structure. A word could contain the dot character '.' to represent any one letter</li>
+ * 		<li>Given a <b>non-empty</b> string and a dictionary containing a list of <b>non-empty</b> words, add spaces in the string to construct a sentence where each word is a valid dictionary word. Return all such possible sentences.
+ * 			<br><b>Note</b>: The same word in the dictionary may be reused multiple times in the segmentation.
+ * 			<br>You may assume the dictionary does not contain duplicate words
+ * 		</li>
  * 	</ul>
  * 
  * <br>
@@ -312,9 +319,7 @@ public class WordDictionary
 	 * 	spaces in the string to construct a sentence where each word is a valid dictionary word. Return all
 	 * 	such possible sentences.
 	 * 
-	 * <b>Note</b>:
-	 * 
-	 * 	The same word in the dictionary may be reused multiple times in the segmentation.
+	 * <b>Note</b>: The same word in the dictionary may be reused multiple times in the segmentation.
 	 * 
 	 * 	You may assume the dictionary does not contain duplicate words.
 	 * 
