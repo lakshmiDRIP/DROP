@@ -86,6 +86,32 @@ import java.util.List;
 /**
  * <i>TreeUtil</i> implements Tree Utility Functions. It implements the following Functions:
  * <ul>
+ * 		<li><i>TreeNode</i> implements Linked Tree Node</li>
+ * 		<ul>
+ * 			<li><i>TreeNode</i> Constructor</li>
+ * 			<li>Retrieve the Tree Node Value</li>
+ * 			<li>Retrieve the Left Tree Node</li>
+ * 			<li>Retrieve the Right Tree Node</li>
+ * 		</ul>
+ * 		<li><i>DiameterHeightPair</i> implements Diameter Height Duo</li>
+ * 		<ul>
+ * 			<li><i>DiameterHeightPair</i> Constructor</li>
+ * 			<li>Retrieve the Height</li>
+ * 			<li>Retrieve the Diameter</li>
+ * 		</ul>
+ * 		<li>Retrieve the Right-side View of the Tree</li>
+ * 		<li>Generate the <i>DiameterHeightPair</i> Instance from the Root
+ * 		<li>Given a binary tree, return the minimum number of edits to make the value of each node equal to the average of its direct children's. Note that you can only update the value of each tree node, and changing the tree structure is not allowed</li>
+ * 		<li>Given the root of a binary tree, determine if it is a valid binary search tree (BST)</li>
+ * 		<ul>
+ * 			<li>A <b>valid BST</b> is defined as follows:</li>
+ * 			<ul>
+ *  			<li>The left subtree of a node contains only nodes with keys <b>less than</b> the node's key</li>
+ *  			<li>The right subtree of a node contains only nodes with keys <b>greater than</b> the node's key</li>
+ *  			<li>Both the left and right subtrees must also be binary search trees</li>
+ * 			</ul>
+ * 		</ul>
+ *  	</li>
  * </ul>
  * 
  * <br>
@@ -166,7 +192,7 @@ public class TreeUtil
 	}
 
 	/**
-	 * <i>DiameterHeightPair</i> implements Diameter Height Duo.
+	 * <i>DiameterHeightPair</i> implements Diameter Height Duo
 	 */
 
 	public static class DiameterHeightPair
@@ -384,13 +410,21 @@ public class TreeUtil
 	public static final boolean ValidateIsStrictBST (
 		final TreeNode node)
 	{
-		if (null == node) return true;
+		if (null == node) {
+			return true;
+		}
 
-		if (null != node._left && node._left._value >= node._value) return false;
+		if (null != node._left && node._left._value >= node._value) {
+			return false;
+		}
 
-		if (!ValidateIsStrictBST (node._left)) return false;
+		if (!ValidateIsStrictBST (node._left)) {
+			return false;
+		}
 
-		if (null != node._right && node._right._value <= node._value) return false;
+		if (null != node._right && node._right._value <= node._value) {
+			return false;
+		}
 
 		return ValidateIsStrictBST (node._left);
 	}

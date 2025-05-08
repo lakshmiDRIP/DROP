@@ -1,11 +1,22 @@
 
 package org.drip.service.common;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeMap;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -76,16 +87,16 @@ package org.drip.service.common;
  */
 
 /**
- * <i>RecursionUtil</i> implements Recursion Utility Functions.
+ * <i>RecursionUtil</i> implements Recursion Utility Functions. It implements the following Functions:
  * 
- * <br><br>
- *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md">Numerical Analysis Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/README.md">Environment, Product/Definition Containers, and Scenario/State Manipulation APIs</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/common">Assorted Data Structures Support Utilities</a></li>
- *  </ul>
- * <br><br>
+ * <br>
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationSupportLibrary.md">Computation Support</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/README.md">Environment, Product/Definition Containers, and Scenario/State Manipulation APIs</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/common/README.md">Assorted Data Structures Support Utilities</a></td></tr>
+ *  </table>
+ * <br>
  * 
  * @author Lakshmi Krishnamurthy
  */
@@ -93,34 +104,23 @@ package org.drip.service.common;
 public class RecursionUtil
 {
 
-	private static final java.lang.String NthRow (
+	private static final String NthRow (
 		final int n)
 	{
-		if (1 == n)
-		{
+		if (1 == n) {
 			return "0";
 		}
 
-		java.lang.String nthRow = "";
+		String nthRow = "";
 
-		java.lang.String prevRow = NthRow (
-			n - 1
-		);
+		String prevRow = NthRow (n - 1);
 
-		for (int i = 0;
-			i < prevRow.length();
-			++i)
-		{
-			char c = prevRow.charAt (
-				i
-			);
+		for (int i = 0; i < prevRow.length(); ++i) {
+			char c = prevRow.charAt (i);
 
-			if ('0' == c)
-			{
+			if ('0' == c) {
 				nthRow = nthRow + "01";
-			}
-			else if ('1' == c)
-			{
+			} else if ('1' == c) {
 				nthRow = nthRow + "10";
 			}
 		}
@@ -129,179 +129,93 @@ public class RecursionUtil
 	}
 
 	private static final boolean SubString (
-		java.util.List<java.lang.String> subSequenceList,
+		List<String> subSequenceList,
 		final char[] charArray,
 		final int currentIndex)
 	{
-		if (currentIndex == charArray.length)
-		{
+		if (currentIndex == charArray.length) {
 			return true;
 		}
 
-		java.util.List<java.lang.String> subSequenceListCurrent =
-			new java.util.ArrayList<java.lang.String>();
+		List<String> subSequenceListCurrent = new ArrayList<String>();
 
-		for (java.lang.String sequence : subSequenceList)
-		{
-			subSequenceListCurrent.add (
-				sequence + charArray[currentIndex]
-			);
+		for (String sequence : subSequenceList) {
+			subSequenceListCurrent.add (sequence + charArray[currentIndex]);
 		}
 
-		subSequenceList.addAll (
-			subSequenceListCurrent
-		);
+		subSequenceList.addAll (subSequenceListCurrent);
 
-		subSequenceList.add (
-			"" + charArray[currentIndex]
-		);
+		subSequenceList.add ("" + charArray[currentIndex]);
 
-		return SubString (
-			subSequenceList,
-			charArray,
-			currentIndex + 1
-		);
+		return SubString (subSequenceList, charArray, currentIndex + 1);
 	}
 
 	private static final char[] PhoneCharArray (
 		final int digit)
 	{
-		if (0 == digit ||
-			1 == digit
-		)
-		{
-			return new char[]
-			{
-			};
+		if (0 == digit || 1 == digit) {
+			return new char[] {};
 		}
 
-		if (2 == digit)
-		{
-			return new char[]
-			{
-				'A',
-				'B',
-				'C',
-			};
+		if (2 == digit) {
+			return new char[] {'A', 'B', 'C',};
 		}
 
-		if (3 == digit)
-		{
-			return new char[]
-			{
-				'D',
-				'E',
-				'F',
-			};
+		if (3 == digit) {
+			return new char[] {'D', 'E', 'F',};
 		}
 
-		if (4 == digit)
-		{
-			return new char[]
-			{
-				'G',
-				'H',
-				'I',
-			};
+		if (4 == digit) {
+			return new char[] {'G', 'H', 'I',};
 		}
 
-		if (5 == digit)
-		{
-			return new char[]
-			{
-				'J',
-				'K',
-				'L',
-			};
+		if (5 == digit) {
+			return new char[] {'J', 'K', 'L',};
 		}
 
-		if (6 == digit)
-		{
-			return new char[]
-			{
-				'M',
-				'N',
-				'O',
-			};
+		if (6 == digit) {
+			return new char[] {'M', 'N', 'O',};
 		}
 
-		if (7 == digit)
-		{
-			return new char[]
-			{
-				'P',
-				'Q',
-				'R',
-				'S',
-			};
+		if (7 == digit) {
+			return new char[] {'P', 'Q', 'R', 'S',};
 		}
 
-		if (8 == digit)
-		{
-			return new char[]
-			{
-				'T',
-				'U',
-				'V',
-			};
+		if (8 == digit) {
+			return new char[] {'T', 'U', 'V',};
 		}
 
-		return new char[]
-		{
-			'W',
-			'X',
-			'Y',
-			'Z',
-		};
+		return new char[] {'W', 'X', 'Y', 'Z',};
 	}
 
 	private static final boolean PhoneCharList (
-		java.util.List<java.lang.String> phoneCharList,
+		List<String> phoneCharList,
 		final int[] digitArray,
 		final int currentIndex)
 	{
-		if (currentIndex == digitArray.length)
-		{
+		if (currentIndex == digitArray.length) {
 			return true;
 		}
 
-		java.util.List<java.lang.String> phoneCharCurrentList = new java.util.ArrayList<java.lang.String>();
+		List<String> phoneCharCurrentList = new ArrayList<String>();
 
-		for (char c : PhoneCharArray (
-			digitArray[currentIndex]
-		))
-		{
-			if (phoneCharList.isEmpty())
-			{
-				phoneCharCurrentList.add (
-					"" + c
-				);
-			}
-			else
-			{
-				for (java.lang.String phoneString : phoneCharList)
-				{
-					phoneCharCurrentList.add (
-						phoneString + c
-					);
+		for (char c : PhoneCharArray (digitArray[currentIndex])) {
+			if (phoneCharList.isEmpty()) {
+				phoneCharCurrentList.add ("" + c);
+			} else {
+				for (String phoneString : phoneCharList) {
+					phoneCharCurrentList.add (phoneString + c);
 				}
 			}
 		}
 
-		if (!phoneCharCurrentList.isEmpty())
-		{
+		if (!phoneCharCurrentList.isEmpty()) {
 			phoneCharList.clear();
 
-			phoneCharList.addAll (
-				phoneCharCurrentList
-			);
+			phoneCharList.addAll (phoneCharCurrentList);
 		}
 
-		return PhoneCharList (
-			phoneCharList,
-			digitArray,
-			currentIndex + 1
-		);
+		return PhoneCharList (phoneCharList, digitArray, currentIndex + 1);
 	}
 
 	/**
@@ -317,16 +231,12 @@ public class RecursionUtil
 	 */
 
 	public static final int KthGrammar (
-		int n,
-		int k)
+		final int n,
+		final int k)
 	{
-		java.lang.String nthRow = NthRow (
-			n
-		);
+		String nthRow = NthRow (n);
 
-		return nthRow.length() < k ? -1 : nthRow.charAt (
-			k - 1
-		) - '0';
+		return nthRow.length() < k ? -1 : nthRow.charAt (k - 1) - '0';
 	}
 
 	/**
@@ -337,16 +247,12 @@ public class RecursionUtil
 	 * @return The Set of Sub-sequence Strings
 	 */
 
-	public static final java.util.List<java.lang.String> SubSequenceList (
-		final java.lang.String s)
+	public static final List<String> SubSequenceList (
+		final String s)
 	{
-		java.util.List<java.lang.String> subSequenceList = new java.util.ArrayList<java.lang.String>();
+		List<String> subSequenceList = new ArrayList<String>();
 
-		SubString (
-			subSequenceList,
-			s.toCharArray(),
-			0
-		);
+		SubString (subSequenceList, s.toCharArray(), 0);
 
 		return subSequenceList;
 	}
@@ -369,18 +275,18 @@ public class RecursionUtil
 	 */
 
 	public static final int LongestUncommonSubsequenceLength (
-		final java.lang.String[] stringArray)
+		final String[] stringArray)
 	{
-		java.util.Map<java.lang.String, java.lang.Integer> sequenceMap =
-			new java.util.HashMap<java.lang.String, java.lang.Integer>();
+		Map<String, Integer> sequenceMap =
+			new HashMap<String, Integer>();
 
-		for (java.lang.String string : stringArray)
+		for (String string : stringArray)
 		{
-			java.util.List<java.lang.String> subSequenceList = SubSequenceList (
+			List<String> subSequenceList = SubSequenceList (
 				string
 			);
 
-			for (java.lang.String sequence : subSequenceList)
+			for (String sequence : subSequenceList)
 			{
 				if (!sequenceMap.containsKey (
 					sequence
@@ -403,22 +309,22 @@ public class RecursionUtil
 			}
 		}
 
-		java.util.TreeMap<java.lang.Integer, java.util.List<java.lang.String>> sequenceCountMap =
-			new java.util.TreeMap<java.lang.Integer, java.util.List<java.lang.String>>();
+		TreeMap<Integer, List<String>> sequenceCountMap =
+			new TreeMap<Integer, List<String>>();
 
-		for (java.util.Map.Entry<java.lang.String, java.lang.Integer> sequenceMapEntry :
+		for (Map.Entry<String, Integer> sequenceMapEntry :
 			sequenceMap.entrySet())
 		{
 			int count = sequenceMapEntry.getValue();
 
-			java.lang.String sequence = sequenceMapEntry.getKey();
+			String sequence = sequenceMapEntry.getKey();
 
 			if (!sequenceCountMap.containsKey (
 				count
 			))
 			{
-				java.util.List<java.lang.String> countList =
-					new java.util.ArrayList<java.lang.String>();
+				List<String> countList =
+					new ArrayList<String>();
 
 				countList.add (
 					sequence
@@ -441,7 +347,7 @@ public class RecursionUtil
 
 		int longestLength = 0;
 
-		for (java.lang.String s : sequenceCountMap.firstEntry().getValue())
+		for (String s : sequenceCountMap.firstEntry().getValue())
 		{
 			int length = s.length();
 
@@ -456,7 +362,7 @@ public class RecursionUtil
 
 	private static final int NumberSequenceSum (
 		final int[] numberArray,
-		final java.util.Set<java.lang.Integer> numberIndexSequence)
+		final Set<Integer> numberIndexSequence)
 	{
 		int sum = 0;
 
@@ -470,14 +376,14 @@ public class RecursionUtil
 
 	private static final boolean RemoveFulfilledIndex (
 		final boolean[] fulfilledArray,
-		final java.util.List<java.util.Set<java.lang.Integer>> numberIndexSequenceList,
-		final java.util.List<java.lang.Integer> removalIndexList)
+		final List<Set<Integer>> numberIndexSequenceList,
+		final List<Integer> removalIndexList)
 	{
 		for (int removalIndex : removalIndexList)
 		{
 			fulfilledArray[removalIndex] = true;
 
-			for (java.util.Set<java.lang.Integer> numberIndexSequence : numberIndexSequenceList)
+			for (Set<Integer> numberIndexSequence : numberIndexSequenceList)
 			{
 				for (int numberIndex : numberIndexSequence)
 				{
@@ -496,7 +402,7 @@ public class RecursionUtil
 
 	private static final boolean CanPartitionKSubsets (
 		final boolean[] fulfilledArray,
-		final java.util.List<java.util.Set<java.lang.Integer>> numberIndexSequenceList,
+		final List<Set<Integer>> numberIndexSequenceList,
 		int remainingPartitionCount,
 		final int currentIndex,
 		final int[] numberArray,
@@ -533,7 +439,7 @@ public class RecursionUtil
 		}
 		else
 		{
-			for (java.util.Set<java.lang.Integer> numberIndexSequence : numberIndexSequenceList)
+			for (Set<Integer> numberIndexSequence : numberIndexSequenceList)
 			{
 				int numberSequenceSum = NumberSequenceSum (
 					numberArray,
@@ -542,8 +448,8 @@ public class RecursionUtil
 
 				if (target == currentNumber + numberSequenceSum)
 				{
-					java.util.List<java.lang.Integer> removalIndexList =
-						new java.util.ArrayList<java.lang.Integer>();
+					List<Integer> removalIndexList =
+						new ArrayList<Integer>();
 
 					removalIndexList.addAll (
 						numberIndexSequence
@@ -567,7 +473,7 @@ public class RecursionUtil
 				listIndex < numberIndexSequenceList.size();
 				++listIndex)
 			{
-				java.util.Set<java.lang.Integer> numberIndexSequence = numberIndexSequenceList.get (
+				Set<Integer> numberIndexSequence = numberIndexSequenceList.get (
 					listIndex
 				);
 
@@ -582,13 +488,13 @@ public class RecursionUtil
 
 		if (!fulfilledArray[currentIndex])
 		{
-			java.util.List<java.util.Set<java.lang.Integer>> numberIndexSequenceCurrentList =
-				new java.util.ArrayList<java.util.Set<java.lang.Integer>>();
+			List<Set<Integer>> numberIndexSequenceCurrentList =
+				new ArrayList<Set<Integer>>();
 
-				for (java.util.Set<java.lang.Integer> numberIndexSequence : numberIndexSequenceList)
+				for (Set<Integer> numberIndexSequence : numberIndexSequenceList)
 				{
-					java.util.Set<java.lang.Integer> numberIndexSequenceCurrent =
-						new java.util.HashSet<java.lang.Integer>();
+					Set<Integer> numberIndexSequenceCurrent =
+						new HashSet<Integer>();
 
 					numberIndexSequenceCurrent.addAll (
 						numberIndexSequence
@@ -607,8 +513,8 @@ public class RecursionUtil
 				numberIndexSequenceCurrentList
 			);
 
-			java.util.Set<java.lang.Integer> currentIndexSequence =
-				new java.util.HashSet<java.lang.Integer>();
+			Set<Integer> currentIndexSequence =
+				new HashSet<Integer>();
 
 			currentIndexSequence.add (
 				currentIndex
@@ -637,10 +543,10 @@ public class RecursionUtil
 	 * @return Words corresponding to the Specified Digits
 	 */
 
-	public static final java.util.List<java.lang.String> PhoneCharList (
+	public static final List<String> PhoneCharList (
 		final int[] phoneNumber)
 	{
-		java.util.List<java.lang.String> phoneCharList = new java.util.ArrayList<java.lang.String>();
+		List<String> phoneCharList = new ArrayList<String>();
 
 		PhoneCharList (
 			phoneCharList,
@@ -669,8 +575,8 @@ public class RecursionUtil
 		int arrayCount = numberArray.length;
 		boolean[] fulfilledArray = new boolean[arrayCount];
 
-		java.util.List<java.util.Set<java.lang.Integer>> numberIndexSequenceList =
-			new java.util.ArrayList<java.util.Set<java.lang.Integer>>();
+		List<Set<Integer>> numberIndexSequenceList =
+			new ArrayList<Set<Integer>>();
 
 		for (int arrayIndex = 0;
 			arrayIndex < arrayCount;
@@ -698,10 +604,10 @@ public class RecursionUtil
 	 * @return The Set of n Parenthesis
 	 */
 
-	public static final java.util.Set<java.lang.String> GenerateParenthesis (
+	public static final Set<String> GenerateParenthesis (
 		final int n)
 	{
-		java.util.Set<java.lang.String> parenthesisSet = new java.util.HashSet<java.lang.String>();
+		Set<String> parenthesisSet = new HashSet<String>();
 
 		if (1 == n)
 		{
@@ -716,8 +622,8 @@ public class RecursionUtil
 			outerIndex < n;
 			++outerIndex)
 		{
-			java.lang.String levelLeftParenthesis = "";
-			java.lang.String levelRightParenthesis = "";
+			String levelLeftParenthesis = "";
+			String levelRightParenthesis = "";
 
 			for (int levelIndex = 1;
 				levelIndex <= outerIndex;
@@ -728,11 +634,11 @@ public class RecursionUtil
 				levelRightParenthesis = levelRightParenthesis + ")";
 			}
 
-			java.util.Set<java.lang.String> innerParenthesisSet = GenerateParenthesis (
+			Set<String> innerParenthesisSet = GenerateParenthesis (
 				n - outerIndex
 			);
 
-			for (java.lang.String innerParenthesis : innerParenthesisSet)
+			for (String innerParenthesis : innerParenthesisSet)
 			{
 				parenthesisSet.add (
 					levelLeftParenthesis + innerParenthesis + levelRightParenthesis
@@ -745,17 +651,17 @@ public class RecursionUtil
 			++leftLevel
 		)
 		{
-			java.util.Set<java.lang.String> leftParenthesisList = GenerateParenthesis (
+			Set<String> leftParenthesisList = GenerateParenthesis (
 				leftLevel
 			);
 
-			java.util.Set<java.lang.String> rightParenthesisList = GenerateParenthesis (
+			Set<String> rightParenthesisList = GenerateParenthesis (
 				n - leftLevel
 			);
 
-			for (java.lang.String leftParenthesis : leftParenthesisList)
+			for (String leftParenthesis : leftParenthesisList)
 			{
-				for (java.lang.String rightParenthesis : rightParenthesisList)
+				for (String rightParenthesis : rightParenthesisList)
 				{
 					parenthesisSet.add (
 						leftParenthesis + rightParenthesis
@@ -778,11 +684,11 @@ public class RecursionUtil
 	public static final int ShortestPathSize (
 		final int[][] maze)
 	{
-		java.util.Set<java.lang.String> visitedLocationSet = new java.util.HashSet<java.lang.String>();
+		Set<String> visitedLocationSet = new HashSet<String>();
 
-		java.util.List<int[]> navigationList = new java.util.ArrayList<int[]>();
+		List<int[]> navigationList = new ArrayList<int[]>();
 
-		int minPathSize = java.lang.Integer.MAX_VALUE;
+		int minPathSize = Integer.MAX_VALUE;
 
 		navigationList.add(new int[] {0, 0, 0});
 
@@ -841,16 +747,16 @@ public class RecursionUtil
 	 * @return IP Address in the String
 	 */
 
-	public static final java.util.List<java.lang.String> RestoreIPAddresses (
-		final java.lang.String s)
+	public static final List<String> RestoreIPAddresses (
+		final String s)
 	{
-		java.util.List<java.lang.String> ipAddressList = new java.util.ArrayList<java.lang.String>();
+		List<String> ipAddressList = new ArrayList<String>();
 
-		java.util.List<java.util.List<java.lang.Integer>> ipSubnetQueue =
-			new java.util.ArrayList<java.util.List<java.lang.Integer>>();
+		List<List<Integer>> ipSubnetQueue =
+			new ArrayList<List<Integer>>();
 
-		java.util.List<java.lang.Integer> ipSubnetQueueStartEntry =
-			new java.util.ArrayList<java.lang.Integer>();
+		List<Integer> ipSubnetQueueStartEntry =
+			new ArrayList<Integer>();
 
 		ipSubnetQueueStartEntry.add(0);
 
@@ -858,7 +764,7 @@ public class RecursionUtil
 
 		while (!ipSubnetQueue.isEmpty())
 		{
-			java.util.List<java.lang.Integer> ipSubnetQueueEntry = ipSubnetQueue.remove(0);
+			List<Integer> ipSubnetQueueEntry = ipSubnetQueue.remove(0);
 
 			int currentIndex = ipSubnetQueueEntry.get(0);
 
@@ -888,8 +794,8 @@ public class RecursionUtil
 					break;
 				}
 
-				java.util.List<java.lang.Integer> ipSubnetQueueNextEntry =
-					new java.util.ArrayList<java.lang.Integer>();
+				List<Integer> ipSubnetQueueNextEntry =
+					new ArrayList<Integer>();
 
 				ipSubnetQueueNextEntry.add(endIndex + 1);
 
@@ -953,15 +859,15 @@ public class RecursionUtil
 	 */
 
 	public static final int WordLadderLength (
-		final java.lang.String beginWord,
-		final java.lang.String endWord,
-		final java.util.Set<java.lang.String> wordSet)
+		final String beginWord,
+		final String endWord,
+		final Set<String> wordSet)
 	{
-		java.util.List<java.lang.String> wordProcessQueue = new java.util.ArrayList<java.lang.String>();
+		List<String> wordProcessQueue = new ArrayList<String>();
 
-		java.util.Set<java.lang.String> visitedWordSet = new java.util.HashSet<java.lang.String>();
+		Set<String> visitedWordSet = new HashSet<String>();
 
-		int length = java.lang.Integer.MAX_VALUE;
+		int length = Integer.MAX_VALUE;
 
 		char[] alphabetArray = AlphabetArray();
 
@@ -971,7 +877,7 @@ public class RecursionUtil
 
 		while (!wordProcessQueue.isEmpty())
 		{
-			java.lang.String wordProcessQueueEntry = wordProcessQueue.remove (0);
+			String wordProcessQueueEntry = wordProcessQueue.remove (0);
 
 			int entrySize = wordProcessQueueEntry.length();
 
@@ -979,7 +885,7 @@ public class RecursionUtil
 				wordProcessQueueEntry.substring(wordLength + 1, entrySize)
 			);
 
-			java.lang.String word = wordProcessQueueEntry.substring (0, wordLength);
+			String word = wordProcessQueueEntry.substring (0, wordLength);
 
 			visitedWordSet.add(word);
 
@@ -1009,7 +915,7 @@ public class RecursionUtil
 				{
 					nextWordCharArray[charIndex] = c;
 
-					java.lang.String newWord = new java.lang.String (nextWordCharArray);
+					String newWord = new String (nextWordCharArray);
 
 					if (wordSet.contains (newWord) && !visitedWordSet.contains(newWord))
 					{
@@ -1022,15 +928,15 @@ public class RecursionUtil
 		return length;
 	}
 
-	private static final java.util.List<java.lang.Integer> SmallestPerfectSquareSet (
-		final java.util.HashMap<java.lang.Integer, java.util.List<java.lang.Integer>> memoizeMap,
+	private static final List<Integer> SmallestPerfectSquareSet (
+		final HashMap<Integer, List<Integer>> memoizeMap,
 		final int number)
 	{
 		// if (memoizeMap.containsKey (number)) return memoizeMap.get (number);
 
-		java.util.List<java.lang.Integer> squaresList = new java.util.ArrayList<java.lang.Integer>();
+		List<Integer> squaresList = new ArrayList<Integer>();
 
-		double sqrt = java.lang.Math.sqrt (number);
+		double sqrt = Math.sqrt (number);
 
 		if (0. == (sqrt - (int) sqrt)) {
 			squaresList.add ((int) sqrt);
@@ -1044,7 +950,7 @@ public class RecursionUtil
 			(memoizeMap, number - 1));
 
 		for (int i = 2; i <= (int) sqrt; ++i) {
-			java.util.List<java.lang.Integer> squaresSubList = SmallestPerfectSquareSet (memoizeMap, i * i);
+			List<Integer> squaresSubList = SmallestPerfectSquareSet (memoizeMap, i * i);
 
 			squaresSubList.addAll (SmallestPerfectSquareSet (memoizeMap, number - i * i));
 
@@ -1064,19 +970,19 @@ public class RecursionUtil
 	 * @return The List of Smallest Perfect Squares that add to the given Number
 	 */
 
-	public static final java.util.List<java.lang.Integer> SmallestPerfectSquareSet (
+	public static final List<Integer> SmallestPerfectSquareSet (
 		final int number)
 	{
-		java.util.HashMap<java.lang.Integer, java.util.List<java.lang.Integer>> memoizeMap = new
-			java.util.HashMap<java.lang.Integer, java.util.List<java.lang.Integer>>();
+		HashMap<Integer, List<Integer>> memoizeMap = new
+			HashMap<Integer, List<Integer>>();
 
-		java.util.List<java.lang.Integer> squaresList = new java.util.ArrayList<java.lang.Integer>();
+		List<Integer> squaresList = new ArrayList<Integer>();
 
 		squaresList.add (1);
 
 		memoizeMap.put (1, squaresList);
 
-		java.util.List<java.lang.Integer> smallestPerfectSquareSet = SmallestPerfectSquareSet (memoizeMap, number);
+		List<Integer> smallestPerfectSquareSet = SmallestPerfectSquareSet (memoizeMap, number);
 
 		return smallestPerfectSquareSet;
 	}
