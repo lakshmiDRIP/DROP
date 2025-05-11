@@ -11,7 +11,7 @@ Asset Allocation Analytics Library implements Optimal Portfolio Construction and
 
  |        Document         | Link |
  |-------------------------|------|
- | Technical Specification | [*Latest*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/AssetAllocationAnalytics/AssetAllocationAnalytics_v6.48.pdf) [*Previous*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/AssetAllocationAnalytics) |
+ | Technical Specification | [*Latest*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/AssetAllocationAnalytics/AssetAllocationAnalytics_v6.75.pdf) [*Previous*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/AssetAllocationAnalytics) |
  | User Guide              |  |
  | API                     | [*Javadoc*](https://lakshmidrip.github.io/DROP/Javadoc/index.html)|
 
@@ -202,6 +202,11 @@ Asset Allocation Analytics Library implements Optimal Portfolio Construction and
 	* Minimum Trade Percent
 	* Targets
 	* Trade Filter
+ * Muni Cash Raise Enhancement
+	* Rebalancer Target - Maximize Book Yield
+	* Rebalancer Constraints
+	* Priority Sells
+	* Workflow
 
 
 ## DROP Specifications
