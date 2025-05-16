@@ -218,6 +218,122 @@ public class RecursionUtil
 		return PhoneCharList (phoneCharList, digitArray, currentIndex + 1);
 	}
 
+	private static final int NumberSequenceSum (
+		final int[] numberArray,
+		final Set<Integer> numberIndexSequence)
+	{
+		int sum = 0;
+
+		for (int numberIndex : numberIndexSequence) {
+			sum = sum + numberArray[numberIndex];
+		}
+
+		return sum;
+	}
+
+	private static final boolean RemoveFulfilledIndex (
+		final boolean[] fulfilledArray,
+		final List<Set<Integer>> numberIndexSequenceList,
+		final List<Integer> removalIndexList)
+	{
+		for (int removalIndex : removalIndexList) {
+			fulfilledArray[removalIndex] = true;
+
+			for (Set<Integer> numberIndexSequence : numberIndexSequenceList) {
+				for (int numberIndex : numberIndexSequence) {
+					if (removalIndex == numberIndex) {
+						numberIndexSequence.remove (numberIndex);
+					}
+				}
+			}
+		}
+
+		return true;
+	}
+
+	private static final boolean CanPartitionKSubsets (
+		final boolean[] fulfilledArray,
+		final List<Set<Integer>> numberIndexSequenceList,
+		int remainingPartitionCount,
+		final int currentIndex,
+		final int[] numberArray,
+		final int target)
+	{
+		int arrayLength = numberArray.length;
+
+		if (currentIndex == arrayLength) {
+			if (0 != remainingPartitionCount) {
+				return false;
+			}
+
+			for (int index = 0; index < arrayLength; ++index) {
+				if (!fulfilledArray[index]) {
+					return false;
+				}
+			}
+
+			return true;
+		}
+
+		if (numberArray[currentIndex] == target) {
+			fulfilledArray[currentIndex] = true;
+			--remainingPartitionCount;
+		} else {
+			for (Set<Integer> numberIndexSequence : numberIndexSequenceList) {
+				int numberSequenceSum = NumberSequenceSum (numberArray, numberIndexSequence);
+
+				if (target == numberArray[currentIndex] + numberSequenceSum) {
+					List<Integer> removalIndexList = new ArrayList<Integer>();
+
+					removalIndexList.addAll (numberIndexSequence);
+
+					removalIndexList.add (currentIndex);
+
+					RemoveFulfilledIndex (fulfilledArray, numberIndexSequenceList, removalIndexList);
+
+					--remainingPartitionCount;
+				}
+			}
+
+			for (int listIndex = 0; listIndex < numberIndexSequenceList.size(); ++listIndex) {
+				if (0 == numberIndexSequenceList.get (listIndex).size()) {
+					numberIndexSequenceList.remove (listIndex);
+				}
+			}
+		}
+
+		if (!fulfilledArray[currentIndex]) {
+			List<Set<Integer>> numberIndexSequenceCurrentList = new ArrayList<Set<Integer>>();
+
+			for (Set<Integer> numberIndexSequence : numberIndexSequenceList) {
+				Set<Integer> numberIndexSequenceCurrent = new HashSet<Integer>();
+
+				numberIndexSequenceCurrent.addAll (numberIndexSequence);
+
+				numberIndexSequenceCurrent.add (currentIndex);
+
+				numberIndexSequenceCurrentList.add (numberIndexSequenceCurrent);
+			}
+
+			numberIndexSequenceList.addAll (numberIndexSequenceCurrentList);
+
+			Set<Integer> currentIndexSequence = new HashSet<Integer>();
+
+			currentIndexSequence.add (currentIndex);
+
+			numberIndexSequenceList.add (currentIndexSequence);
+		}
+
+		return CanPartitionKSubsets (
+			fulfilledArray,
+			numberIndexSequenceList,
+			remainingPartitionCount,
+			currentIndex + 1,
+			numberArray,
+			target
+		);
+	}
+
 	/**
 	 * On the first row, we write a 0. Now in every subsequent row, we look at the previous row and replace
 	 *  each occurrence of 0 with 01, and each occurrence of 1 with 10.
@@ -277,82 +393,43 @@ public class RecursionUtil
 	public static final int LongestUncommonSubsequenceLength (
 		final String[] stringArray)
 	{
-		Map<String, Integer> sequenceMap =
-			new HashMap<String, Integer>();
+		Map<String, Integer> sequenceMap = new HashMap<String, Integer>();
 
-		for (String string : stringArray)
-		{
-			List<String> subSequenceList = SubSequenceList (
-				string
-			);
+		for (String string : stringArray) {
+			List<String> subSequenceList = SubSequenceList (string);
 
-			for (String sequence : subSequenceList)
-			{
-				if (!sequenceMap.containsKey (
-					sequence
-				))
-				{
-					sequenceMap.put (
-						sequence,
-						1
-					);
-				}
-				else
-				{
-					sequenceMap.put (
-						sequence,
-						sequenceMap.get (
-							sequence
-						) + 1
-					);
-				}
+			for (String sequence : subSequenceList) {
+				sequenceMap.put (
+					sequence,
+					sequenceMap.containsKey (sequence) ? sequenceMap.get (sequence) + 1 : 1
+				);
 			}
 		}
 
-		TreeMap<Integer, List<String>> sequenceCountMap =
-			new TreeMap<Integer, List<String>>();
+		TreeMap<Integer, List<String>> sequenceCountMap = new TreeMap<Integer, List<String>>();
 
-		for (Map.Entry<String, Integer> sequenceMapEntry :
-			sequenceMap.entrySet())
-		{
+		for (Map.Entry<String, Integer> sequenceMapEntry : sequenceMap.entrySet()) {
 			int count = sequenceMapEntry.getValue();
 
 			String sequence = sequenceMapEntry.getKey();
 
-			if (!sequenceCountMap.containsKey (
-				count
-			))
-			{
-				List<String> countList =
-					new ArrayList<String>();
+			if (!sequenceCountMap.containsKey (count)) {
+				List<String> countList = new ArrayList<String>();
 
-				countList.add (
-					sequence
-				);
+				countList.add (sequence);
 
-				sequenceCountMap.put (
-					count,
-					countList
-				);
-			}
-			else
-			{
-				sequenceCountMap.get (
-					count
-				).add (
-					sequence
-				);
+				sequenceCountMap.put (count, countList);
+			} else {
+				sequenceCountMap.get (count).add (sequence);
 			}
 		}
 
 		int longestLength = 0;
 
-		for (String s : sequenceCountMap.firstEntry().getValue())
-		{
+		for (String s : sequenceCountMap.firstEntry().getValue()) {
 			int length = s.length();
 
-			if (length > longestLength)
-			{
+			if (length > longestLength) {
 				longestLength = length;
 			}
 		}
@@ -360,199 +437,20 @@ public class RecursionUtil
 		return longestLength;
 	}
 
-	private static final int NumberSequenceSum (
-		final int[] numberArray,
-		final Set<Integer> numberIndexSequence)
-	{
-		int sum = 0;
-
-		for (int numberIndex : numberIndexSequence)
-		{
-			sum = sum + numberArray[numberIndex];
-		}
-
-		return sum;
-	}
-
-	private static final boolean RemoveFulfilledIndex (
-		final boolean[] fulfilledArray,
-		final List<Set<Integer>> numberIndexSequenceList,
-		final List<Integer> removalIndexList)
-	{
-		for (int removalIndex : removalIndexList)
-		{
-			fulfilledArray[removalIndex] = true;
-
-			for (Set<Integer> numberIndexSequence : numberIndexSequenceList)
-			{
-				for (int numberIndex : numberIndexSequence)
-				{
-					if (removalIndex == numberIndex)
-					{
-						numberIndexSequence.remove (
-							numberIndex
-						);
-					}
-				}
-			}
-		}
-
-		return true;
-	}
-
-	private static final boolean CanPartitionKSubsets (
-		final boolean[] fulfilledArray,
-		final List<Set<Integer>> numberIndexSequenceList,
-		int remainingPartitionCount,
-		final int currentIndex,
-		final int[] numberArray,
-		final int target)
-	{
-		int arrayLength = numberArray.length;
-
-		if (currentIndex == arrayLength)
-		{
-			if (0 != remainingPartitionCount)
-			{
-				return false;
-			}
-
-			for (int index = 0;
-				index < arrayLength;
-				++index)
-			{
-				if (!fulfilledArray[index])
-				{
-					return false;
-				}
-			}
-
-			return true;
-		}
-
-		int currentNumber = numberArray[currentIndex];
-
-		if (currentNumber == target)
-		{
-			fulfilledArray[currentIndex] = true;
-			--remainingPartitionCount;
-		}
-		else
-		{
-			for (Set<Integer> numberIndexSequence : numberIndexSequenceList)
-			{
-				int numberSequenceSum = NumberSequenceSum (
-					numberArray,
-					numberIndexSequence
-				);
-
-				if (target == currentNumber + numberSequenceSum)
-				{
-					List<Integer> removalIndexList =
-						new ArrayList<Integer>();
-
-					removalIndexList.addAll (
-						numberIndexSequence
-					);
-
-					removalIndexList.add (
-						currentIndex
-					);
-
-					RemoveFulfilledIndex (
-						fulfilledArray,
-						numberIndexSequenceList,
-						removalIndexList
-					);
-
-					--remainingPartitionCount;
-				}
-			}
-
-			for (int listIndex = 0;
-				listIndex < numberIndexSequenceList.size();
-				++listIndex)
-			{
-				Set<Integer> numberIndexSequence = numberIndexSequenceList.get (
-					listIndex
-				);
-
-				if (0 == numberIndexSequence.size())
-				{
-					numberIndexSequenceList.remove (
-						listIndex
-					);
-				}
-			}
-		}
-
-		if (!fulfilledArray[currentIndex])
-		{
-			List<Set<Integer>> numberIndexSequenceCurrentList =
-				new ArrayList<Set<Integer>>();
-
-				for (Set<Integer> numberIndexSequence : numberIndexSequenceList)
-				{
-					Set<Integer> numberIndexSequenceCurrent =
-						new HashSet<Integer>();
-
-					numberIndexSequenceCurrent.addAll (
-						numberIndexSequence
-					);
-
-					numberIndexSequenceCurrent.add (
-						currentIndex
-					);
-
-					numberIndexSequenceCurrentList.add (
-						numberIndexSequenceCurrent
-					);
-				}
-
-			numberIndexSequenceList.addAll (
-				numberIndexSequenceCurrentList
-			);
-
-			Set<Integer> currentIndexSequence =
-				new HashSet<Integer>();
-
-			currentIndexSequence.add (
-				currentIndex
-			);
-
-			numberIndexSequenceList.add (
-				currentIndexSequence
-			);
-		}
-
-		return CanPartitionKSubsets (
-			fulfilledArray,
-			numberIndexSequenceList,
-			remainingPartitionCount,
-			currentIndex + 1,
-			numberArray,
-			target
-		);
-	}
-
 	/**
 	 * Generate all the Words corresponding to the Specified Digits
 	 * 
-	 * @param phoneNumber The Digits of Phone Number
+	 * @param phoneNumberArray The Digits of Phone Number
 	 * 
 	 * @return Words corresponding to the Specified Digits
 	 */
 
 	public static final List<String> PhoneCharList (
-		final int[] phoneNumber)
+		final int[] phoneNumberArray)
 	{
 		List<String> phoneCharList = new ArrayList<String>();
 
-		PhoneCharList (
-			phoneCharList,
-			phoneNumber,
-			0
-		);
+		PhoneCharList (phoneCharList, phoneNumberArray, 0);
 
 		return phoneCharList;
 	}
@@ -575,13 +473,9 @@ public class RecursionUtil
 		int arrayCount = numberArray.length;
 		boolean[] fulfilledArray = new boolean[arrayCount];
 
-		List<Set<Integer>> numberIndexSequenceList =
-			new ArrayList<Set<Integer>>();
+		List<Set<Integer>> numberIndexSequenceList = new ArrayList<Set<Integer>>();
 
-		for (int arrayIndex = 0;
-			arrayIndex < arrayCount;
-			++arrayIndex)
-		{
+		for (int arrayIndex = 0; arrayIndex < arrayCount; ++arrayIndex) {
 			fulfilledArray[arrayIndex] = false;
 			sum = sum + numberArray[arrayIndex];
 		}
@@ -609,63 +503,36 @@ public class RecursionUtil
 	{
 		Set<String> parenthesisSet = new HashSet<String>();
 
-		if (1 == n)
-		{
-			parenthesisSet.add (
-				"()"
-			);
+		if (1 == n) {
+			parenthesisSet.add ("()");
 
 			return parenthesisSet;
 		}
 
-		for (int outerIndex = 1;
-			outerIndex < n;
-			++outerIndex)
-		{
+		for (int outerIndex = 1; outerIndex < n; ++outerIndex) {
 			String levelLeftParenthesis = "";
 			String levelRightParenthesis = "";
 
-			for (int levelIndex = 1;
-				levelIndex <= outerIndex;
-				++levelIndex
-			)
-			{
+			for (int levelIndex = 1; levelIndex <= outerIndex; ++levelIndex) {
 				levelLeftParenthesis = levelLeftParenthesis + "(";
 				levelRightParenthesis = levelRightParenthesis + ")";
 			}
 
-			Set<String> innerParenthesisSet = GenerateParenthesis (
-				n - outerIndex
-			);
+			Set<String> innerParenthesisSet = GenerateParenthesis (n - outerIndex);
 
-			for (String innerParenthesis : innerParenthesisSet)
-			{
-				parenthesisSet.add (
-					levelLeftParenthesis + innerParenthesis + levelRightParenthesis
-				);
+			for (String innerParenthesis : innerParenthesisSet) {
+				parenthesisSet.add (levelLeftParenthesis + innerParenthesis + levelRightParenthesis);
 			}
 		}
 
-		for (int leftLevel = 1;
-			leftLevel < n;
-			++leftLevel
-		)
-		{
-			Set<String> leftParenthesisList = GenerateParenthesis (
-				leftLevel
-			);
+		for (int leftLevel = 1; leftLevel < n; ++leftLevel) {
+			Set<String> leftParenthesisList = GenerateParenthesis (leftLevel);
 
-			Set<String> rightParenthesisList = GenerateParenthesis (
-				n - leftLevel
-			);
+			Set<String> rightParenthesisList = GenerateParenthesis (n - leftLevel);
 
-			for (String leftParenthesis : leftParenthesisList)
-			{
-				for (String rightParenthesis : rightParenthesisList)
-				{
-					parenthesisSet.add (
-						leftParenthesis + rightParenthesis
-					);
+			for (String leftParenthesis : leftParenthesisList) {
+				for (String rightParenthesis : rightParenthesisList) {
+					parenthesisSet.add (leftParenthesis + rightParenthesis);
 				}
 			}
 		}
@@ -688,24 +555,21 @@ public class RecursionUtil
 
 		List<int[]> navigationList = new ArrayList<int[]>();
 
+		navigationList.add (new int[] {0, 0, 0});
+
 		int minPathSize = Integer.MAX_VALUE;
-
-		navigationList.add(new int[] {0, 0, 0});
-
 		int yCount = maze[0].length;
 		int xCount = maze.length;
 
-		while (!navigationList.isEmpty())
-		{
-			int[] locationPathCount = navigationList.remove(0);
+		while (!navigationList.isEmpty()) {
+			int[] locationPathCount = navigationList.remove (0);
 
 			int x = locationPathCount[0];
 			int y = locationPathCount[1];
 
-			visitedLocationSet.add(x + "_" + y);
+			visitedLocationSet.add (x + "_" + y);
 
-			if (x == xCount - 1 && y == yCount - 1)
-			{
+			if (x == xCount - 1 && y == yCount - 1) {
 				minPathSize = minPathSize < locationPathCount[2] ? minPathSize : locationPathCount[2];
 				continue;
 			}
@@ -715,24 +579,20 @@ public class RecursionUtil
 			int yLeft = y - 1;
 			int yRight = y + 1;
 
-			if (xDown >= 0 && 0 != maze[xDown][y] && !visitedLocationSet.contains(xDown + "_" + y))
-			{
-				navigationList.add(new int[] {xDown, y, locationPathCount[2] + 1});
+			if (xDown >= 0 && 0 != maze[xDown][y] && !visitedLocationSet.contains (xDown + "_" + y)) {
+				navigationList.add (new int[] {xDown, y, locationPathCount[2] + 1});
 			}
 
-			if (xUp < xCount && 0 != maze[xUp][y] && !visitedLocationSet.contains(xUp + "_" + y))
-			{
-				navigationList.add(new int[] {xUp, y, locationPathCount[2] + 1});
+			if (xUp < xCount && 0 != maze[xUp][y] && !visitedLocationSet.contains (xUp + "_" + y)) {
+				navigationList.add (new int[] {xUp, y, locationPathCount[2] + 1});
 			}
 
-			if (yLeft >= 0 && 0 != maze[x][yLeft] && !visitedLocationSet.contains(x + "_" + yLeft))
-			{
-				navigationList.add(new int[] {x, yLeft, locationPathCount[2] + 1});
+			if (yLeft >= 0 && 0 != maze[x][yLeft] && !visitedLocationSet.contains (x + "_" + yLeft)) {
+				navigationList.add (new int[] {x, yLeft, locationPathCount[2] + 1});
 			}
 
-			if (yRight < yCount && 0 != maze[x][yRight] && !visitedLocationSet.contains(x + "_" + yRight))
-			{
-				navigationList.add(new int[] {x, yRight, locationPathCount[2] + 1});
+			if (yRight < yCount && 0 != maze[x][yRight] && !visitedLocationSet.contains (x + "_" + yRight)) {
+				navigationList.add (new int[] {x, yRight, locationPathCount[2] + 1});
 			}
 		}
 
