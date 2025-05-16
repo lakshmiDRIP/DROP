@@ -1,11 +1,23 @@
 
 package org.drip.service.common;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeMap;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -76,22 +88,35 @@ package org.drip.service.common;
  */
 
 /**
- * <i>MapUtil</i> implements Utility Functions based on Maps.
- * 
- * <br><br>
- *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md">Numerical Analysis Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/README.md">Environment, Product/Definition Containers, and Scenario/State Manipulation APIs</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/common">Assorted Data Structures Support Utilities</a></li>
- *  </ul>
- * <br><br>
+ * <i>MapUtil</i> implements Utility Functions based on Maps. It implements the following Functions:
+ * <br>
+ *
+ * <br>
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationSupportLibrary.md">Computation Support</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/README.md">Environment, Product/Definition Containers, and Scenario/State Manipulation APIs</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/common/README.md">Assorted Data Structures Support Utilities</a></td></tr>
+ *  </table>
  * 
  * @author Lakshmi Krishnamurthy
  */
 
 public class MapUtil
 {
+
+	private static final boolean ElementsOverlap (
+		final Set<String> set1,
+		final Set<String> set2)
+	{
+		for (String element1 : set1) {
+			if (set2.contains (element1)) {
+				return true;
+			}
+		}
+
+		return false;
+	}
 
 	/**
 	 * Given two integers representing the numerator and denominator of a fraction, return the fraction in
@@ -105,72 +130,50 @@ public class MapUtil
 	 * @return The Fraction in String Format
 	 */
 
-	public static final java.lang.String FractionToDecimal (
+	public static final String FractionToDecimal (
 		int numerator,
 		int denominator)
 	{
-		java.util.Map<java.lang.Integer, java.lang.Integer> repeatingFractionMap =
-			new java.util.HashMap<java.lang.Integer, java.lang.Integer>();
+		Map<Integer, Integer> repeatingFractionMap = new HashMap<Integer, Integer>();
 
 		int index = 0;
 		int remainer = numerator % denominator;
-		java.lang.String fractionToDecimal = "" + (numerator / denominator);
+		String fractionToDecimal = "" + (numerator / denominator);
 
-		if (remainer == 0)
-		{
+		if (0 == remainer) {
 			return fractionToDecimal;
 		}
 
 		fractionToDecimal = fractionToDecimal + ".";
 
-		while (remainer != 0 &&
-			!repeatingFractionMap.containsKey (
-				remainer
-			)
-		)
-		{
+		while (0 != remainer && !repeatingFractionMap.containsKey (remainer)) {
 			int remainerTimes10 = remainer * 10;
 			int quotient = remainerTimes10 / denominator;
 
-			repeatingFractionMap.put (
-				remainer,
-				remainerTimes10 / denominator
-			);
+			repeatingFractionMap.put (remainer, remainerTimes10 / denominator);
 
 			remainer = remainerTimes10 % denominator;
 			fractionToDecimal = fractionToDecimal + quotient;
 		}
 
-		if (0 == remainer)
-		{
+		if (0 == remainer) {
 			return fractionToDecimal;
 		}
 
-		int remainerQuotient = repeatingFractionMap.get (
-			remainer
-		);
+		int remainerQuotient = repeatingFractionMap.get (remainer);
 
 		int fractionToDecimalLength = fractionToDecimal.length();
 
-		while (index < fractionToDecimalLength)
-		{
-			if (((int) fractionToDecimal.charAt (
-				index
-			) - '0') == remainerQuotient)
-			{
+		while (index < fractionToDecimalLength) {
+			if (((int) fractionToDecimal.charAt (index) - '0') == remainerQuotient) {
 				break;
 			}
 
-			index++;
+			++index;
 		}
 
-		return fractionToDecimal.substring (
-			0,
-			index
-		) + "(" + fractionToDecimal.substring (
-			index,
-			fractionToDecimalLength
-		) + ")";
+		return fractionToDecimal.substring (0, index) + "(" +
+			fractionToDecimal.substring (index, fractionToDecimalLength) + ")";
 	}
 
 	/**
@@ -188,74 +191,53 @@ public class MapUtil
 	{
 		int leastIntervalTaskScheduler = 0;
 
-		java.util.HashMap<java.lang.Character, java.lang.Integer> taskCountMap =
-			new java.util.HashMap<java.lang.Character, java.lang.Integer>();
+		HashMap<Character, Integer> taskCountMap = new HashMap<Character, Integer>();
 
-		java.util.HashMap<java.lang.Character, java.lang.Integer> taskCoolDownMap =
-			new java.util.HashMap<java.lang.Character, java.lang.Integer>();
+		HashMap<Character, Integer> taskCoolDownMap = new HashMap<Character, Integer>();
 
-		for (char c : taskArray)
-		{
-			if (taskCountMap.containsKey(c))
-			{
-				taskCountMap.put(c, taskCountMap.get(c) + 1);
-			}
-			else
-			{
-				taskCountMap.put(c, 1);
-			}
+		for (char c : taskArray) {
+			taskCountMap.put (c, taskCountMap.containsKey (c) ? taskCountMap.get (c) + 1 : 1);
 
-			taskCoolDownMap.put(c, 0);
+			taskCoolDownMap.put (c, 0);
 		}
 
-		java.util.TreeMap<java.lang.Integer, java.util.List<java.lang.Character>> taskFrequencyMap =
-			new java.util.TreeMap<java.lang.Integer, java.util.List<java.lang.Character>>();
+		TreeMap<Integer, List<Character>> taskFrequencyMap = new TreeMap<Integer, List<Character>>();
 
-		for (java.util.HashMap.Entry<java.lang.Character, java.lang.Integer> taskCountMapEntry :
-			taskCountMap.entrySet())
-		{
+		for (HashMap.Entry<Character, Integer> taskCountMapEntry : taskCountMap.entrySet()) {
 			int freq = taskCountMapEntry.getValue();
 
 			char task = taskCountMapEntry.getKey();
 
-			if (!taskFrequencyMap.containsKey(freq))
-			{
-				java.util.List<java.lang.Character> freqList = new java.util.ArrayList<java.lang.Character>();
+			if (!taskFrequencyMap.containsKey (freq)) {
+				List<Character> freqList = new ArrayList<Character>();
 
-				freqList.add(task);
+				freqList.add (task);
 
-				taskFrequencyMap.put(freq, freqList);
-			}
-			else
-			{
-				taskFrequencyMap.get(freq).add(task);
+				taskFrequencyMap.put (freq, freqList);
+			} else {
+				taskFrequencyMap.get (freq).add (task);
 			}
 		}
 
-		while (!taskFrequencyMap.isEmpty())
-		{
-			java.util.Set<java.lang.Integer> freqSet = taskFrequencyMap.descendingKeySet();
+		while (!taskFrequencyMap.isEmpty()) {
+			Set<Integer> freqSet = taskFrequencyMap.descendingKeySet();
 
-			int pickIndex = -1;
-			int freqPicked = -1;
-			char taskPicked = ' ';
 			++leastIntervalTaskScheduler;
+			char taskPicked = ' ';
+			int freqPicked = -1;
+			int pickIndex = -1;
 
-			for (int freq : freqSet)
-			{
+			for (int freq : freqSet) {
 				pickIndex = 0;
 
-				if (-1 != freqPicked)
-				{
+				if (-1 != freqPicked) {
 					break;
 				}
 
-				java.util.List<java.lang.Character> freqList = taskFrequencyMap.get(freq);
+				List<Character> freqList = taskFrequencyMap.get (freq);
 
-				for (char task : freqList)
-				{
-					if (0 == taskCoolDownMap.get(task))
-					{
+				for (char task : freqList) {
+					if (0 == taskCoolDownMap.get (task)) {
 						taskPicked = task;
 						freqPicked = freq;
 						break;
@@ -265,73 +247,44 @@ public class MapUtil
 				}
 			}
 
-			if (' ' != taskPicked)
-			{
-				java.util.List<java.lang.Character> taskList = taskFrequencyMap.get(freqPicked);
+			if (' ' != taskPicked) {
+				List<Character> taskList = taskFrequencyMap.get (freqPicked);
 
-				taskList.remove(pickIndex);
+				taskList.remove (pickIndex);
 
-				if (taskList.isEmpty())
-				{
-					taskFrequencyMap.remove(freqPicked);
+				if (taskList.isEmpty()) {
+					taskFrequencyMap.remove (freqPicked);
 				}
 
 				freqPicked = freqPicked - 1;
 
-				if (freqPicked > 0)
-				{
-					if (taskFrequencyMap.containsKey(freqPicked))
-					{
-						taskFrequencyMap.get(freqPicked).add(taskPicked);
-					}
-					else
-					{
-						java.util.List<java.lang.Character> freqPickedList =
-							new java.util.ArrayList<java.lang.Character>();
+				if (0 < freqPicked) {
+					if (taskFrequencyMap.containsKey (freqPicked)) {
+						taskFrequencyMap.get (freqPicked).add (taskPicked);
+					} else {
+						List<Character> freqPickedList = new ArrayList<Character>();
 
-						freqPickedList.add(taskPicked);
+						freqPickedList.add (taskPicked);
 
-						taskFrequencyMap.put(freqPicked, freqPickedList);
+						taskFrequencyMap.put (freqPicked, freqPickedList);
 					}
 				}
 			}
 
-			for (java.util.Map.Entry<java.lang.Character, java.lang.Integer> taskCoolDownEntry :
-				taskCoolDownMap.entrySet())
-			{
+			for (Map.Entry<Character, Integer> taskCoolDownEntry : taskCoolDownMap.entrySet()) {
 				char c = taskCoolDownEntry.getKey();
 
 				int coolDown = taskCoolDownEntry.getValue();
 
-				if (c == taskPicked)
-				{
-					taskCoolDownMap.put(c, coolOffInterval);
-				}
-				else if (coolDown > 0)
-				{
-					taskCoolDownMap.put(c, coolDown - 1);
+				if (c == taskPicked) {
+					taskCoolDownMap.put (c, coolOffInterval);
+				} else if (0 < coolDown) {
+					taskCoolDownMap.put (c, coolDown - 1);
 				}
 			}
 		}
 
 		return leastIntervalTaskScheduler;
-	}
-
-	private static final boolean ElementsOverlap (
-		final java.util.Set<java.lang.String> set1,
-		final java.util.Set<java.lang.String> set2)
-	{
-		for (java.lang.String element1 : set1)
-		{
-			if (set2.contains (
-				element1
-			))
-			{
-				return true;
-			}
-		}
-
-		return false;
 	}
 
 	/**
@@ -344,32 +297,32 @@ public class MapUtil
 	 * @return Minimum Set of Groups
 	 */
 
-	public static final java.util.Collection<java.util.Set<java.lang.String>>
+	public static final Collection<Set<String>>
 		MinimumSetOfGroups (
-			final java.util.Map<java.lang.String, java.util.Set<java.lang.String>> personInterestSetMap)
+			final Map<String, Set<String>> personInterestSetMap)
 	{
-		java.util.Map<java.lang.Integer, java.util.Set<java.lang.String>> groupMembershipMap =
-			new java.util.HashMap<java.lang.Integer, java.util.Set<java.lang.String>>();
+		Map<Integer, Set<String>> groupMembershipMap =
+			new HashMap<Integer, Set<String>>();
 
-		java.util.Map<java.lang.Integer, java.util.Set<java.lang.String>> groupInterestMap =
-			new java.util.HashMap<java.lang.Integer, java.util.Set<java.lang.String>>();
+		Map<Integer, Set<String>> groupInterestMap =
+			new HashMap<Integer, Set<String>>();
 
-		java.util.TreeMap<java.lang.Integer, java.util.Set<java.lang.Integer>> groupCountMap =
-			new java.util.TreeMap<java.lang.Integer, java.util.Set<java.lang.Integer>>();
+		TreeMap<Integer, Set<Integer>> groupCountMap =
+			new TreeMap<Integer, Set<Integer>>();
 
 		int groupIndex = 0;
 		int nonOverlappingGroupIndex = -1;
 
-		for (java.util.Map.Entry<java.lang.String, java.util.Set<java.lang.String>> personInterestSetEntry :
+		for (Map.Entry<String, Set<String>> personInterestSetEntry :
 			personInterestSetMap.entrySet())
 		{
-			java.lang.String person = personInterestSetEntry.getKey();
+			String person = personInterestSetEntry.getKey();
 
-			java.util.Set<java.lang.String> personInterestSet = personInterestSetEntry.getValue();
+			Set<String> personInterestSet = personInterestSetEntry.getValue();
 
 			if (groupCountMap.isEmpty())
 			{
-				java.util.Set<java.lang.Integer> groupIndexSet = new java.util.HashSet<java.lang.Integer>();
+				Set<Integer> groupIndexSet = new HashSet<Integer>();
 
 				groupIndexSet.add (
 					groupIndex
@@ -385,7 +338,7 @@ public class MapUtil
 					personInterestSet
 				);
 
-				java.util.Set<java.lang.String> personSet = new java.util.HashSet<java.lang.String>();
+				Set<String> personSet = new HashSet<String>();
 
 				personSet.add (
 					person
@@ -400,7 +353,7 @@ public class MapUtil
 				continue;
 			}
 
-			java.util.Set<java.lang.Integer> groupCountKeySet = groupCountMap.descendingKeySet();
+			Set<Integer> groupCountKeySet = groupCountMap.descendingKeySet();
 
 			for (int groupCount : groupCountKeySet)
 			{
@@ -409,7 +362,7 @@ public class MapUtil
 					break;
 				}
 
-				java.util.Set<java.lang.Integer> groupIndexSet = groupCountMap.get (
+				Set<Integer> groupIndexSet = groupCountMap.get (
 					groupCount
 				);
 
@@ -429,7 +382,7 @@ public class MapUtil
 
 			if (-1 != nonOverlappingGroupIndex)
 			{
-				java.util.Set<java.lang.String> groupInterestSet = groupInterestMap.get (
+				Set<String> groupInterestSet = groupInterestMap.get (
 					nonOverlappingGroupIndex
 				);
 
@@ -465,8 +418,8 @@ public class MapUtil
 				}
 				else
 				{
-					java.util.Set<java.lang.Integer> groupCountSet =
-						new java.util.HashSet<java.lang.Integer>();
+					Set<Integer> groupCountSet =
+						new HashSet<Integer>();
 
 					groupCountSet.add (
 						nonOverlappingGroupIndex
@@ -480,7 +433,7 @@ public class MapUtil
 			}
 			else
 			{
-				java.util.Set<java.lang.String> groupInterestSet = new java.util.HashSet<java.lang.String>();
+				Set<String> groupInterestSet = new HashSet<String>();
 
 				groupInterestSet.addAll (
 					personInterestSet
@@ -491,8 +444,8 @@ public class MapUtil
 					groupInterestSet
 				);
 
-				java.util.Set<java.lang.String> groupMembershipSet =
-					new java.util.HashSet<java.lang.String>();
+				Set<String> groupMembershipSet =
+					new HashSet<String>();
 
 				groupMembershipSet.add (
 					person
@@ -517,8 +470,8 @@ public class MapUtil
 				}
 				else
 				{
-					java.util.Set<java.lang.Integer> groupCountSet =
-						new java.util.HashSet<java.lang.Integer>();
+					Set<Integer> groupCountSet =
+						new HashSet<Integer>();
 
 					groupCountSet.add (
 						groupIndex
@@ -549,10 +502,10 @@ public class MapUtil
 		final String[] argumentArray)
 		throws Exception
 	{
-		java.util.Map<java.lang.String, java.util.Set<java.lang.String>> personInterestSetMap =
-			new java.util.HashMap<java.lang.String, java.util.Set<java.lang.String>>();
+		Map<String, Set<String>> personInterestSetMap =
+			new HashMap<String, Set<String>>();
 
-		java.util.Set<java.lang.String> aInterestSet = new java.util.HashSet<java.lang.String>();
+		Set<String> aInterestSet = new HashSet<String>();
 
 		aInterestSet.add (
 			"lit"
@@ -562,13 +515,13 @@ public class MapUtil
 			"math"
 		);
 
-		java.util.Set<java.lang.String> bInterestSet = new java.util.HashSet<java.lang.String>();
+		Set<String> bInterestSet = new HashSet<String>();
 
 		bInterestSet.add (
 			"math"
 		);
 
-		java.util.Set<java.lang.String> cInterestSet = new java.util.HashSet<java.lang.String>();
+		Set<String> cInterestSet = new HashSet<String>();
 
 		cInterestSet.add (
 			"sci"

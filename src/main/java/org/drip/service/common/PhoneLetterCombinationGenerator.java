@@ -89,6 +89,15 @@ import java.util.Set;
  * <i>PhoneLetterCombinationGenerator</i> generates the Phone Letter Combinations. It implements the
  * 	following Functions:
  * <br>
+ * <ul>
+ * 		<li>Generate the Standard <i>PhoneLetterCombinationGenerator</i></li>
+ * 		<li><i>PhoneLetterCombinationGenerator</i> Constructor</li>
+ * 		<li>Retrieve the Digit to Character Array Map</li>
+ * 		<li>Generate the Set of Candidate Characters from the specified Digit and its Count</li>
+ * 		<li>Generate all the Candidate Sequence Sets, given the Phone Number</li>
+ * </ul>
+ *
+ * <br>
  *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
  *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
  *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationSupportLibrary.md">Computation Support</a></td></tr>
@@ -143,7 +152,7 @@ public class PhoneLetterCombinationGenerator
 	}
 
 	/**
-	 * PhoneLetterCombinationGenerator Constructor
+	 * <i>PhoneLetterCombinationGenerator</i> Constructor
 	 * 
 	 * @param digitCharacterMap The Digit To Character Array Map
 	 * 
@@ -225,17 +234,17 @@ public class PhoneLetterCombinationGenerator
 	public Set<String> sequenceSet (
 		final String number)
 	{
-		Set<String> sequenceSet = new HashSet<String>();
-
 		char[] digitArray = number.toCharArray();
+
+		Set<String> sequenceSet = new HashSet<String>();
 
 		List<Integer> numberIndexQueue = new ArrayList<Integer>();
 
 		List<String> numberCombinationQueue = new ArrayList<String>();
 
-		numberIndexQueue.add (0);
-
 		numberCombinationQueue.add ("");
+
+		numberIndexQueue.add (0);
 
 		while (!numberIndexQueue.isEmpty()) {
 			int tailIndex = numberIndexQueue.size() - 1;
@@ -264,22 +273,5 @@ public class PhoneLetterCombinationGenerator
 		}
 
 		return sequenceSet;
-	}
-
-	/**
-	 * Entry Point
-	 * 
-	 * @param argumentArray Input Arguments
-	 */
-
-	public static final void main (
-		final String[] argumentArray)
-	{
-		PhoneLetterCombinationGenerator phoneLetterCombinationGenerator =
-			PhoneLetterCombinationGenerator.Standard();
-
-		System.out.println (phoneLetterCombinationGenerator.sequenceSet ("112"));
-
-		System.out.println (phoneLetterCombinationGenerator.sequenceSet ("1112"));
 	}
 }
