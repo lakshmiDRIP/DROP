@@ -88,6 +88,24 @@ import java.util.TreeMap;
 
 /**
  * <i>RecursionUtil</i> implements Recursion Utility Functions. It implements the following Functions:
+ * <br>
+ * <ul>
+ * 		<li>On the first row, we write a 0. Now in every subsequent row, we look at the previous row and replace each occurrence of 0 with 01, and each occurrence of 1 with 10. Given row <code>N</code> and index <code>K</code>, return the K<sup>th</sup> indexed symbol in row <code>N</code>. (The values of <code>K</code> are 1-indexed.)</li>
+ * 		<li>Generate the Set of Sub-sequence Strings</li>
+ * 		<li>Given a list of strings, you need to find the longest uncommon subsequence among them. The longest uncommon subsequence is defined as the longest subsequence of one of these strings and this subsequence should not be any subsequence of the other strings.
+ *  	<ul>
+ * 			<li>A subsequence is a sequence that can be derived from one sequence by deleting some characters without changing the order of the remaining elements. Trivially, any string is a subsequence of itself and an empty string is a subsequence of any string.</li>
+ * 			<li>The input will be a list of strings, and the output needs to be the length of the longest uncommon subsequence. If the longest uncommon subsequence doesn't exist, return -1</li>
+ *  	</ul>
+ *  	</li>
+ * 		<li>Generate all the Words corresponding to the Specified Digits</li>
+ * 		<li>Given an array of integers and a positive integer <code>k</code>, find whether it's possible to divide this array into <code>k</code> non-empty subsets whose sums are all equal</li>
+ * 		<li>Generate the Set of <code>n</code> Parenthesis</li>
+ * 		<li>Calculate the Size of the Shortest Path through the Maze</li>
+ * 		<li>Restore the IP Address in the String</li>
+ * 		<li>Calculate the smallest Number of changes needed to make the begin word to the end using the Words in the Dictionary</li>
+ * 		<li>Generate the List of Smallest Perfect Squares that add to the given Number</li>
+ * </ul>
  * 
  * <br>
  *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
@@ -334,11 +352,78 @@ public class RecursionUtil
 		);
 	}
 
+	private static final char[] AlphabetArray()
+	{
+		char[] alphabetArray = new char[26];
+		alphabetArray[0] = 'a';
+		alphabetArray[1] = 'b';
+		alphabetArray[2] = 'c';
+		alphabetArray[3] = 'd';
+		alphabetArray[4] = 'e';
+		alphabetArray[5] = 'f';
+		alphabetArray[6] = 'g';
+		alphabetArray[7] = 'h';
+		alphabetArray[8] = 'i';
+		alphabetArray[9] = 'j';
+		alphabetArray[10] = 'k';
+		alphabetArray[11] = 'l';
+		alphabetArray[12] = 'm';
+		alphabetArray[13] = 'n';
+		alphabetArray[14] = 'o';
+		alphabetArray[15] = 'p';
+		alphabetArray[16] = 'q';
+		alphabetArray[17] = 'r';
+		alphabetArray[18] = 's';
+		alphabetArray[19] = 't';
+		alphabetArray[20] = 'u';
+		alphabetArray[21] = 'v';
+		alphabetArray[22] = 'w';
+		alphabetArray[23] = 'x';
+		alphabetArray[24] = 'y';
+		alphabetArray[25] = 'z';
+		return alphabetArray;
+	}
+
+	private static final List<Integer> SmallestPerfectSquareSet (
+		final HashMap<Integer, List<Integer>> memoizeMap,
+		final int number)
+	{
+		// if (memoizeMap.containsKey (number)) return memoizeMap.get (number);
+
+		List<Integer> squaresList = new ArrayList<Integer>();
+
+		double sqrt = Math.sqrt (number);
+
+		if (0. == (sqrt - (int) sqrt)) {
+			squaresList.add ((int) sqrt);
+
+			memoizeMap.put (number, squaresList);
+
+			return squaresList;
+		}
+
+		(squaresList = SmallestPerfectSquareSet (memoizeMap, 1)).addAll (SmallestPerfectSquareSet
+			(memoizeMap, number - 1));
+
+		for (int i = 2; i <= (int) sqrt; ++i) {
+			List<Integer> squaresSubList = SmallestPerfectSquareSet (memoizeMap, i * i);
+
+			squaresSubList.addAll (SmallestPerfectSquareSet (memoizeMap, number - i * i));
+
+			if (squaresSubList.size() <= squaresList.size()) {
+				squaresList = squaresSubList;
+			}
+		}
+
+		memoizeMap.put (number, squaresList);
+
+		return squaresList;
+	}
+
 	/**
 	 * On the first row, we write a 0. Now in every subsequent row, we look at the previous row and replace
-	 *  each occurrence of 0 with 01, and each occurrence of 1 with 10.
-	 *  
-	 * Given row N and index K, return the K-th indexed symbol in row N. (The values of K are 1-indexed.)
+	 *  each occurrence of 0 with 01, and each occurrence of 1 with 10. Given row N and index K, return the
+	 *  K-th indexed symbol in row N. (The values of K are 1-indexed.)
 	 * 
 	 * @param n N
 	 * @param k K
@@ -610,33 +695,28 @@ public class RecursionUtil
 	public static final List<String> RestoreIPAddresses (
 		final String s)
 	{
+		List<List<Integer>> ipSubnetQueue = new ArrayList<List<Integer>>();
+
+		List<Integer> ipSubnetQueueStartEntry = new ArrayList<Integer>();
+
 		List<String> ipAddressList = new ArrayList<String>();
 
-		List<List<Integer>> ipSubnetQueue =
-			new ArrayList<List<Integer>>();
+		ipSubnetQueueStartEntry.add (0);
 
-		List<Integer> ipSubnetQueueStartEntry =
-			new ArrayList<Integer>();
+		ipSubnetQueue.add (ipSubnetQueueStartEntry);
 
-		ipSubnetQueueStartEntry.add(0);
+		while (!ipSubnetQueue.isEmpty()) {
+			List<Integer> ipSubnetQueueEntry = ipSubnetQueue.remove (0);
 
-		ipSubnetQueue.add(ipSubnetQueueStartEntry);
-
-		while (!ipSubnetQueue.isEmpty())
-		{
-			List<Integer> ipSubnetQueueEntry = ipSubnetQueue.remove(0);
-
-			int currentIndex = ipSubnetQueueEntry.get(0);
+			int currentIndex = ipSubnetQueueEntry.get (0);
 
 			int listSize = ipSubnetQueueEntry.size();
 
-			if (5 == listSize)
-			{
-				if (currentIndex == s.length())
-				{
+			if (5 == listSize) {
+				if (currentIndex == s.length()) {
 					ipAddressList.add (
-						ipSubnetQueueEntry.get(1) + "." + ipSubnetQueueEntry.get(2) +
-						"." + ipSubnetQueueEntry.get(3) + "." + ipSubnetQueueEntry.get(4)
+						ipSubnetQueueEntry.get (1) + "." + ipSubnetQueueEntry.get (2) + "." +
+							ipSubnetQueueEntry.get (3) + "." + ipSubnetQueueEntry.get (4)
 					);
 				}
 
@@ -645,66 +725,30 @@ public class RecursionUtil
 
 			int endIndex = currentIndex;
 
-			while (endIndex < s.length())
-			{
-				int value = StringUtil.DecimalNumberFromString (s.substring(currentIndex, endIndex + 1));
+			while (endIndex < s.length()) {
+				int value = StringUtil.DecimalNumberFromString (s.substring (currentIndex, endIndex + 1));
 
-				if (value > 255)
-				{
+				if (255 < value) {
 					break;
 				}
 
-				List<Integer> ipSubnetQueueNextEntry =
-					new ArrayList<Integer>();
+				List<Integer> ipSubnetQueueNextEntry = new ArrayList<Integer>();
 
 				ipSubnetQueueNextEntry.add(endIndex + 1);
 
-				for (int i = 1; i < listSize; ++i)
-				{
-					ipSubnetQueueNextEntry.add(ipSubnetQueueEntry.get(i));
+				for (int i = 1; i < listSize; ++i) {
+					ipSubnetQueueNextEntry.add (ipSubnetQueueEntry.get (i));
 				}
 
-				ipSubnetQueueNextEntry.add(value);
+				ipSubnetQueueNextEntry.add (value);
 
-				ipSubnetQueue.add(ipSubnetQueueNextEntry);
+				ipSubnetQueue.add (ipSubnetQueueNextEntry);
 
 				++endIndex;
 			}
 		}
 
 		return ipAddressList;
-	}
-
-	private static final char[] AlphabetArray()
-	{
-		char[] alphabetArray = new char[26];
-		alphabetArray[0] = 'a';
-		alphabetArray[1] = 'b';
-		alphabetArray[2] = 'c';
-		alphabetArray[3] = 'd';
-		alphabetArray[4] = 'e';
-		alphabetArray[5] = 'f';
-		alphabetArray[6] = 'g';
-		alphabetArray[7] = 'h';
-		alphabetArray[8] = 'i';
-		alphabetArray[9] = 'j';
-		alphabetArray[10] = 'k';
-		alphabetArray[11] = 'l';
-		alphabetArray[12] = 'm';
-		alphabetArray[13] = 'n';
-		alphabetArray[14] = 'o';
-		alphabetArray[15] = 'p';
-		alphabetArray[16] = 'q';
-		alphabetArray[17] = 'r';
-		alphabetArray[18] = 's';
-		alphabetArray[19] = 't';
-		alphabetArray[20] = 'u';
-		alphabetArray[21] = 'v';
-		alphabetArray[22] = 'w';
-		alphabetArray[23] = 'x';
-		alphabetArray[24] = 'y';
-		alphabetArray[25] = 'z';
-		return alphabetArray;
 	}
 
 	/**
@@ -727,32 +771,29 @@ public class RecursionUtil
 
 		Set<String> visitedWordSet = new HashSet<String>();
 
-		int length = Integer.MAX_VALUE;
-
 		char[] alphabetArray = AlphabetArray();
 
-		wordProcessQueue.add(beginWord + "0");
+		wordProcessQueue.add (beginWord + "0");
 
 		int wordLength = beginWord.length();
 
-		while (!wordProcessQueue.isEmpty())
-		{
+		int length = Integer.MAX_VALUE;
+
+		while (!wordProcessQueue.isEmpty()) {
 			String wordProcessQueueEntry = wordProcessQueue.remove (0);
 
 			int entrySize = wordProcessQueueEntry.length();
 
 			int count = StringUtil.DecimalNumberFromString (
-				wordProcessQueueEntry.substring(wordLength + 1, entrySize)
+				wordProcessQueueEntry.substring (wordLength + 1, entrySize)
 			);
 
 			String word = wordProcessQueueEntry.substring (0, wordLength);
 
-			visitedWordSet.add(word);
+			visitedWordSet.add (word);
 
-			if (word.equals(endWord))
-			{
-				if (length > count + 1)
-				{
+			if (word.equals(endWord)) {
+				if (length > count + 1) {
 					length = count + 1;
 				}
 
@@ -761,65 +802,27 @@ public class RecursionUtil
 
 			char[] wordCharArray = word.toCharArray();
 
-			for (int charIndex = 0; charIndex < wordCharArray.length; ++charIndex)
-			{
+			for (int charIndex = 0; charIndex < wordCharArray.length; ++charIndex) {
 				char[] nextWordCharArray = new char[wordCharArray.length];
 
-				for (int newCharIndex = 0; newCharIndex < wordCharArray.length; ++newCharIndex)
-				{
+				for (int newCharIndex = 0; newCharIndex < wordCharArray.length; ++newCharIndex) {
 					nextWordCharArray[newCharIndex] =
 						newCharIndex == charIndex ? ' ' : wordCharArray[newCharIndex];
 				}
 
-				for (char c : alphabetArray)
-				{
+				for (char c : alphabetArray) {
 					nextWordCharArray[charIndex] = c;
 
 					String newWord = new String (nextWordCharArray);
 
-					if (wordSet.contains (newWord) && !visitedWordSet.contains(newWord))
-					{
-						wordProcessQueue.add(newWord + (count + 1));
+					if (wordSet.contains (newWord) && !visitedWordSet.contains (newWord)) {
+						wordProcessQueue.add (newWord + (count + 1));
 					}
 				}
 			}
 		}
 
 		return length;
-	}
-
-	private static final List<Integer> SmallestPerfectSquareSet (
-		final HashMap<Integer, List<Integer>> memoizeMap,
-		final int number)
-	{
-		// if (memoizeMap.containsKey (number)) return memoizeMap.get (number);
-
-		List<Integer> squaresList = new ArrayList<Integer>();
-
-		double sqrt = Math.sqrt (number);
-
-		if (0. == (sqrt - (int) sqrt)) {
-			squaresList.add ((int) sqrt);
-
-			memoizeMap.put (number, squaresList);
-
-			return squaresList;
-		}
-
-		(squaresList = SmallestPerfectSquareSet (memoizeMap, 1)).addAll (SmallestPerfectSquareSet
-			(memoizeMap, number - 1));
-
-		for (int i = 2; i <= (int) sqrt; ++i) {
-			List<Integer> squaresSubList = SmallestPerfectSquareSet (memoizeMap, i * i);
-
-			squaresSubList.addAll (SmallestPerfectSquareSet (memoizeMap, number - i * i));
-
-			if (squaresSubList.size() <= squaresList.size()) squaresList = squaresSubList;
-		}
-
-		memoizeMap.put (number, squaresList);
-
-		return squaresList;
 	}
 
 	/**
@@ -833,8 +836,7 @@ public class RecursionUtil
 	public static final List<Integer> SmallestPerfectSquareSet (
 		final int number)
 	{
-		HashMap<Integer, List<Integer>> memoizeMap = new
-			HashMap<Integer, List<Integer>>();
+		HashMap<Integer, List<Integer>> memoizeMap = new HashMap<Integer, List<Integer>>();
 
 		List<Integer> squaresList = new ArrayList<Integer>();
 
@@ -845,20 +847,5 @@ public class RecursionUtil
 		List<Integer> smallestPerfectSquareSet = SmallestPerfectSquareSet (memoizeMap, number);
 
 		return smallestPerfectSquareSet;
-	}
-
-	/**
-	 * Entry Point
-	 * 
-	 * @param argumentArray Array of Arguments
-	 * 
-	 * @throws Exception The Exception encountered
-	 */
-
-	public static final void main (
-		final String[] argumentArray)
-		throws Exception
-	{
-		System.out.println (SmallestPerfectSquareSet (12));
 	}
 }
