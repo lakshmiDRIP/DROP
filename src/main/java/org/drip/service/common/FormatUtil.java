@@ -1,11 +1,16 @@
 
 package org.drip.service.common;
 
+import java.text.DecimalFormat;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -85,21 +90,26 @@ package org.drip.service.common;
 
 /**
  * <i>FormatUtil</i> implements formatting utility functions. Currently it just exports functions to pad and
- * 	format.
+ * 	format. It implements the following Functions:
+ * <ul>
+ * 		<li>Pre-pad a single digit integer with zeros</li>
+ * 		<li>Format the double input by multiplying, and then adding left and right adjustments</li>
+ * 		<li>Format the double input by multiplying, and then adding left and right adjustments with leading Space</li>
+ * </ul>
  * 
- * <br><br>
- *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md">Numerical Analysis Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/README.md">Environment, Product/Definition Containers, and Scenario/State Manipulation APIs</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/common">Assorted Data Structures Support Utilities</a></li>
- *  </ul>
- * <br><br>
+ * <br>
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationSupportLibrary.md">Computation Support</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/README.md">Environment, Product/Definition Containers, and Scenario/State Manipulation APIs</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/common/README.md">Assorted Data Structures Support Utilities</a></td></tr>
+ *  </table>
  * 
  * @author Lakshmi Krishnamurthy
  */
 
-public class FormatUtil {
+public class FormatUtil
+{
 
 	/**
 	 * Pre-pad a single digit integer with zeros
@@ -109,70 +119,78 @@ public class FormatUtil {
 	 * @return String representing the padded output
 	 */
 
-	public static final java.lang.String PrePad (
+	public static final String PrePad (
 		final int i)
 	{
-		if (i > 9) return "" + i;
-
-		return "0" + i;
+		return 9 < i ? "" + i : "0" + i;
 	}
 
 	/**
 	 * Format the double input by multiplying, and then adding left and right adjustments
 	 * 
-	 * @param dblValue Double representing the input
-	 * @param iNumLeft Integer representing the number of left justifying zeros
-	 * @param iNumRight Integer representing the number of right justifying zeros
-	 * @param dblMultiplier Double representing the multiplier
-	 * @param bLeadingSpaceForPositive TRUE - A Leading Space will be emitted for Adjusted Positive Numbers.
-	 * 		For Adjusted Negatives this will be the '-' sign.
+	 * @param doubleValue Double representing the input
+	 * @param leftJustificationZeroes Integer representing the number of left justifying zeros
+	 * @param rightJustificationZeroes Integer representing the number of right justifying zeros
+	 * @param multiplier Double representing the multiplier
+	 * @param leadingSpaceForPositive TRUE - A Leading Space will be emitted for Adjusted Positive Numbers.
+	 * 	For Adjusted Negatives this will be the '-' sign.
 	 * 
 	 * @return String representing the formatted input
 	 */
 
-	public static final java.lang.String FormatDouble (
-		final double dblValue,
-		final int iNumLeft,
-		final int iNumRight,
-		final double dblMultiplier,
-		final boolean bLeadingSpaceForPositive)
+	public static final String FormatDouble (
+		final double doubleValue,
+		final int leftJustificationZeroes,
+		final int rightJustificationZeroes,
+		final double multiplier,
+		final boolean leadingSpaceForPositive)
 	{
-		java.lang.String strFormat = "#";
-		java.lang.String strLeading = "";
-		double dblAdjustedValue = dblMultiplier * dblValue;
+		String formatString = "#";
+		String leadingString = "";
+		double adjustedValue = multiplier * doubleValue;
 
-		if (0 <= dblAdjustedValue && bLeadingSpaceForPositive) strLeading = " ";
-
-		for (int i = 0; i < iNumLeft; ++i)
-			strFormat += "0";
-
-		if (0 != iNumRight) {
-			strFormat += ".";
-
-			for (int i = 0; i < iNumRight; ++i)
-				strFormat += "0";
+		if (0 <= adjustedValue && leadingSpaceForPositive) {
+			leadingString = " ";
 		}
 
-		return strLeading + new java.text.DecimalFormat (strFormat).format (dblAdjustedValue);
+		for (int i = 0; i < leftJustificationZeroes; ++i) {
+			formatString += "0";
+		}
+
+		if (0 != rightJustificationZeroes) {
+			formatString += ".";
+
+			for (int i = 0; i < rightJustificationZeroes; ++i) {
+				formatString += "0";
+			}
+		}
+
+		return leadingString + new DecimalFormat (formatString).format (adjustedValue);
 	}
 
 	/**
 	 * Format the double input by multiplying, and then adding left and right adjustments
 	 * 
-	 * @param dblValue Double representing the input
-	 * @param iNumLeft Integer representing the number of left justifying zeros
-	 * @param iNumRight Integer representing the number of right justifying zeros
-	 * @param dblMultiplier Double representing the multiplier
+	 * @param doubleValue Double representing the input
+	 * @param leftJustificationZeroes Integer representing the number of left justifying zeros
+	 * @param rightJustificationZeroes Integer representing the number of right justifying zeros
+	 * @param multiplier Double representing the multiplier
 	 * 
 	 * @return String representing the formatted input
 	 */
 
-	public static final java.lang.String FormatDouble (
-		final double dblValue,
-		final int iNumLeft,
-		final int iNumRight,
-		final double dblMultiplier)
+	public static final String FormatDouble (
+		final double doubleValue,
+		final int leftJustificationZeroes,
+		final int rightJustificationZeroes,
+		final double multiplier)
 	{
-		return FormatDouble (dblValue, iNumLeft, iNumRight, dblMultiplier, true);
+		return FormatDouble (
+			doubleValue,
+			leftJustificationZeroes,
+			rightJustificationZeroes,
+			multiplier,
+			true
+		);
 	}
 }

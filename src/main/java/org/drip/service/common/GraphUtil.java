@@ -89,6 +89,17 @@ import java.util.TreeMap;
 /**
  * <i>GraphUtil</i> implements Graph Utility Functions. It implements the following Functions:
  * <br>
+ * <ul>
+ * 		<li>Check if the Graph is Bipartite</li>
+ * 		<li>Decode all possible Combinations of the Number</li>
+ * 		<li>Establish the Separate Components connecting the Items</li>
+ * 		<li>Given an undirected graph, find out all the vertices when removed will make the graph disconnected. Initially the graph is connected</li>
+ * 		<li>There are <code>N</code> cities numbered from 1 to <code>N</code></li>
+ * 		<ul>
+ * 			<li>You are given connections, where each <code>connections[i] = [city1, city2, cost]</code> represents the cost to connect <code>city1</code> and <code>city2</code> together. (A connection is bidirectional: connecting <code>city1</code> and <code>city2</code> is the same as connecting <code>city2</code> and <code>city1</code>)</li>
+ * 			<li>Return the minimum cost so that for every pair of cities, there exists a path of connections (possibly of length 1) that connects those two cities together. The cost is the sum of the connection costs used. If the task is impossible, return -1</li>
+ * 		</ul>
+ * </ul>
  * 
  * <br>
  *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
@@ -455,11 +466,12 @@ public class GraphUtil
 	}
 
 	/**
-	 * There are N cities numbered from 1 to N.
+	 * There are <code>N</code> cities numbered from 1 to <code>N</code>.
 	 * 
-	 * You are given connections, where each connections[i] = [city1, city2, cost] represents the cost to
-	 *  connect city1 and city2 together. (A connection is bidirectional: connecting city1 and city2 is the
-	 *   same as connecting city2 and city1.)
+	 * You are given connections, where each <code>connections[i] = [city1, city2, cost]</code> represents
+	 *  the cost to connect <code>city1</code> and <code>city2</code> together. (A connection is
+	 *  bidirectional: connecting <code>city1</code> and <code>city2</code> is the same as connecting
+	 *  <code>city2</code> and <code>city1</code>)
 	 * 
 	 * Return the minimum cost so that for every pair of cities, there exists a path of connections (possibly
 	 *  of length 1) that connects those two cities together. The cost is the sum of the connection costs
@@ -597,19 +609,5 @@ public class GraphUtil
 		}
 
 		return cost;
-	}
-
-	/**
-	 * Entry Point
-	 * 
-	 * @param argumentArray The Argument Array
-	 */
-
-	public static final void main (
-		final String[] argumentArray)
-	{
-		System.out.println (MSPCost (new int[][] {{1, 2, 5}, {1, 3, 6}, {2, 3, 1}}));
-
-		System.out.println (MSPCost (new int[][] {{1, 2, 3}, {3, 4, 4}}));
 	}
 }
