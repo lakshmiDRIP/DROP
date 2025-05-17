@@ -1,6 +1,19 @@
 
 package org.drip.service.assetallocation;
 
+import org.drip.measure.bayesian.R1MultivariateConvolutionMetrics;
+import org.drip.measure.continuous.MultivariateMeta;
+import org.drip.measure.continuous.R1Multivariate;
+import org.drip.measure.gaussian.R1MultivariateNormal;
+import org.drip.portfolioconstruction.allocator.ForwardReverseHoldingsAllocation;
+import org.drip.portfolioconstruction.asset.Portfolio;
+import org.drip.portfolioconstruction.bayesian.BlackLittermanCombinationEngine;
+import org.drip.portfolioconstruction.bayesian.BlackLittermanCustomConfidenceOutput;
+import org.drip.portfolioconstruction.bayesian.PriorControlSpecification;
+import org.drip.portfolioconstruction.bayesian.ProjectionSpecification;
+import org.drip.service.jsonparser.Converter;
+import org.drip.service.representation.JSONObject;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
@@ -85,6 +98,9 @@ package org.drip.service.assetallocation;
 /**
  * <i>BlackLittermanProcessor</i> Sets Up and Executes a JSON Based In/Out Processing Service for the Black
  * 	Litterman Bayesian View Incorporation/Parameter Estimation. It provides the following Functions:
+ * <ul>
+ * 		<li>JSON Based in/out Bayesian Co-variance/Returns Estimation Thunker</li>
+ * </ul>
  *
  * <br>
  *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
@@ -108,121 +124,129 @@ public class BlackLittermanProcessor
 	 * @return JSON Bayesian Co-variance/Returns Estimation Response
 	 */
 
-	@SuppressWarnings ("unchecked") public static final org.drip.service.representation.JSONObject Estimate (
-		final org.drip.service.representation.JSONObject jsonParameter)
+	@SuppressWarnings ("unchecked") public static final JSONObject Estimate (
+		final JSONObject jsonParameter)
 	{
-		java.lang.String[] astrAssetID = org.drip.service.jsonparser.Converter.StringArrayEntry (jsonParameter,
-			"AssetSet");
+		String[] assetId = Converter.StringArrayEntry (jsonParameter, "AssetSet");
 
-		double[][] aadblAssetSpaceViewProjection = org.drip.service.jsonparser.Converter.DualDoubleArrayEntry
-			(jsonParameter, "AssetSpaceViewProjection");
+		double[][] assetSpaceViewProjectionMatrix = Converter.DualDoubleArrayEntry (
+			jsonParameter,
+			"AssetSpaceViewProjection"
+		);
 
-		double dblTau = java.lang.Double.NaN;
-		double dblRiskAversion = java.lang.Double.NaN;
-		double dblRiskFreeRate = java.lang.Double.NaN;
-		org.drip.measure.gaussian.R1MultivariateNormal viewDistribution = null;
-		org.drip.portfolioconstruction.bayesian.BlackLittermanCombinationEngine blce = null;
-		int iNumView = null == aadblAssetSpaceViewProjection ? 0 : aadblAssetSpaceViewProjection.length;
-		java.lang.String[] astrProjectionName = 0 == iNumView? null : new java.lang.String[iNumView];
+		double tau = Double.NaN;
+		double riskAversion = Double.NaN;
+		double riskFreeRate = Double.NaN;
+		R1MultivariateNormal viewDistribution = null;
+		BlackLittermanCombinationEngine blackLittermanCombinationEngine = null;
+		int viewCount = null == assetSpaceViewProjectionMatrix ? 0 : assetSpaceViewProjectionMatrix.length;
+		String[] projectionNameArray = 0 == viewCount ? null : new String[viewCount];
 
-		double[] adblAssetEquilibriumWeight = org.drip.service.jsonparser.Converter.DoubleArrayEntry (jsonParameter,
-			"AssetEquilibriumWeight");
+		double[] projectionExpectedExcessReturnsArray = Converter.DoubleArrayEntry (
+			jsonParameter,
+			"ProjectionExpectedExcessReturns"
+		);
 
-		double[][] aadblAssetExcessReturnsCovariance = org.drip.service.jsonparser.Converter.DualDoubleArrayEntry
-			(jsonParameter, "AssetExcessReturnsCovariance");
-
-		double[] adblProjectionExpectedExcessReturns = org.drip.service.jsonparser.Converter.DoubleArrayEntry
-			(jsonParameter, "ProjectionExpectedExcessReturns");
-
-		double[][] aadblProjectionExcessReturnsCovariance =
-			org.drip.service.jsonparser.Converter.DualDoubleArrayEntry (jsonParameter,
-				"ProjectionExcessReturnsCovariance");
-
-		for (int i = 0; i < iNumView ; ++i)
-			astrProjectionName[i] = "PROJECTION #" + i;
+		for (int i = 0; i < viewCount ; ++i) {
+			projectionNameArray[i] = "PROJECTION #" + i;
+		}
 
 		try {
-			dblTau = org.drip.service.jsonparser.Converter.DoubleEntry (jsonParameter, "Tau");
+			tau = Converter.DoubleEntry (jsonParameter, "Tau");
 
-			dblRiskAversion = org.drip.service.jsonparser.Converter.DoubleEntry (jsonParameter, "Delta");
+			riskAversion = Converter.DoubleEntry (jsonParameter, "Delta");
 
-			dblRiskFreeRate = org.drip.service.jsonparser.Converter.DoubleEntry (jsonParameter, "RiskFreeRate");
+			riskFreeRate = Converter.DoubleEntry (jsonParameter, "RiskFreeRate");
 
-			viewDistribution = org.drip.measure.gaussian.R1MultivariateNormal.Standard (new
-				org.drip.measure.continuous.MultivariateMeta (astrProjectionName),
-					adblProjectionExpectedExcessReturns, aadblProjectionExcessReturnsCovariance);
+			viewDistribution = R1MultivariateNormal.Standard (
+				new MultivariateMeta (projectionNameArray),
+				projectionExpectedExcessReturnsArray,
+				Converter.DualDoubleArrayEntry (jsonParameter, "ProjectionExcessReturnsCovariance")
+			);
 
-			blce = new org.drip.portfolioconstruction.bayesian.BlackLittermanCombinationEngine
-				(org.drip.portfolioconstruction.allocator.ForwardReverseHoldingsAllocation.Reverse
-					(org.drip.portfolioconstruction.asset.Portfolio.Standard (astrAssetID,
-						adblAssetEquilibriumWeight), aadblAssetExcessReturnsCovariance, dblRiskAversion), new
-							org.drip.portfolioconstruction.bayesian.PriorControlSpecification (false,
-								dblRiskFreeRate, dblTau), new
-									org.drip.portfolioconstruction.bayesian.ProjectionSpecification
-										(viewDistribution, aadblAssetSpaceViewProjection));
-		} catch (java.lang.Exception e) {
+			blackLittermanCombinationEngine = new BlackLittermanCombinationEngine (
+				ForwardReverseHoldingsAllocation.Reverse (
+					Portfolio.Standard (
+						assetId,
+						Converter.DoubleArrayEntry (jsonParameter, "AssetEquilibriumWeight")
+					),
+					Converter.DualDoubleArrayEntry (jsonParameter, "AssetExcessReturnsCovariance"),
+					riskAversion
+				),
+				new PriorControlSpecification (false, riskFreeRate, tau),
+				new ProjectionSpecification (viewDistribution, assetSpaceViewProjectionMatrix)
+			);
+		} catch (Exception e) {
 			e.printStackTrace();
 
 			return null;
 		}
 
-		org.drip.portfolioconstruction.bayesian.BlackLittermanCustomConfidenceOutput blo = blce.customConfidenceRun();
+		BlackLittermanCustomConfidenceOutput blackLittermanCustomConfidenceOutput =
+			blackLittermanCombinationEngine.customConfidenceRun();
 
-		if (null == blo) return null;
-
-		org.drip.measure.bayesian.R1MultivariateConvolutionMetrics jpm = blo.jointPosteriorMetrics();
-
-		org.drip.measure.continuous.R1Multivariate r1mPrior = jpm.prior();
-
-		org.drip.measure.continuous.R1Multivariate r1mJoint = jpm.joint();
-
-		org.drip.measure.continuous.R1Multivariate r1mPosterior = jpm.posterior();
-
-		if (null == r1mPrior || !(r1mPrior instanceof org.drip.measure.gaussian.R1MultivariateNormal) || null
-			== r1mJoint || !(r1mJoint instanceof org.drip.measure.gaussian.R1MultivariateNormal) || null ==
-				r1mPosterior || !(r1mPosterior instanceof org.drip.measure.gaussian.R1MultivariateNormal))
+		if (null == blackLittermanCustomConfidenceOutput) {
 			return null;
+		}
 
-		org.drip.measure.gaussian.R1MultivariateNormal r1mnPrior =
-			(org.drip.measure.gaussian.R1MultivariateNormal) r1mPrior;
-		org.drip.measure.gaussian.R1MultivariateNormal r1mnJoint =
-			(org.drip.measure.gaussian.R1MultivariateNormal) r1mJoint;
-		org.drip.measure.gaussian.R1MultivariateNormal r1mnPosterior =
-			(org.drip.measure.gaussian.R1MultivariateNormal) r1mPosterior;
+		R1MultivariateConvolutionMetrics jointPosteriorConvolutionMetrics =
+			blackLittermanCustomConfidenceOutput.jointPosteriorMetrics();
 
-		org.drip.service.representation.JSONObject jsonResponse = new org.drip.service.representation.JSONObject();
+		R1Multivariate priorMultivariate = jointPosteriorConvolutionMetrics.prior();
 
-		jsonResponse.put ("Tau", dblTau);
+		R1Multivariate posteriorMultivariate = jointPosteriorConvolutionMetrics.posterior();
 
-		jsonResponse.put ("Delta", dblRiskAversion);
+		R1Multivariate jointPosteriorMultivariate = jointPosteriorConvolutionMetrics.joint();
 
-		jsonResponse.put ("RiskFreeRate", dblRiskFreeRate);
+		if (null == priorMultivariate || !(priorMultivariate instanceof R1MultivariateNormal) ||
+			null == jointPosteriorMultivariate ||
+				!(jointPosteriorMultivariate instanceof R1MultivariateNormal) ||
+			null == posteriorMultivariate || !(posteriorMultivariate instanceof R1MultivariateNormal))
+		{
+			return null;
+		}
 
-		jsonResponse.put ("ScopingSet", org.drip.service.jsonparser.Converter.Array (astrAssetID));
+		R1MultivariateNormal priorMultivariateNormal = (R1MultivariateNormal) priorMultivariate;
 
-		jsonResponse.put ("ScopingExpectedExcessReturns", org.drip.service.jsonparser.Converter.Array
-			(r1mnPrior.mean()));
+		JSONObject jsonResponse = new JSONObject();
 
-		jsonResponse.put ("ScopingExcessReturnsCovariance", org.drip.service.jsonparser.Converter.Array
-			(r1mnPrior.covariance().covarianceMatrix()));
+		jsonResponse.put ("Tau", tau);
 
-		jsonResponse.put ("ProjectionExpectedExcessReturns", org.drip.service.jsonparser.Converter.Array
-			(adblProjectionExpectedExcessReturns));
+		jsonResponse.put ("Delta", riskAversion);
 
-		jsonResponse.put ("ViewScopingProjectionLoading", org.drip.service.jsonparser.Converter.Array
-			(aadblAssetSpaceViewProjection));
+		jsonResponse.put ("RiskFreeRate", riskFreeRate);
 
-		jsonResponse.put ("JointExcessReturnsCovariance", org.drip.service.jsonparser.Converter.Array
-			(r1mnJoint.covariance().covarianceMatrix()));
+		jsonResponse.put ("ScopingSet", Converter.Array (assetId));
 
-		jsonResponse.put ("PosteriorExcessReturnsCovariance", org.drip.service.jsonparser.Converter.Array
-			(r1mnPosterior.covariance().covarianceMatrix()));
+		jsonResponse.put ("ScopingExpectedExcessReturns", Converter.Array (priorMultivariateNormal.mean()));
 
-		jsonResponse.put ("PriorExpectedExcessReturn", org.drip.service.jsonparser.Converter.Array
-			(r1mPrior.mean()));
+		jsonResponse.put (
+			"ScopingExcessReturnsCovariance",
+			Converter.Array (priorMultivariateNormal.covariance().covarianceMatrix())
+		);
 
-		jsonResponse.put ("PosteriorExpectedExcessReturn", org.drip.service.jsonparser.Converter.Array
-			(r1mPosterior.mean()));
+		jsonResponse.put (
+			"ProjectionExpectedExcessReturns",
+			Converter.Array (projectionExpectedExcessReturnsArray)
+		);
+
+		jsonResponse.put ("ViewScopingProjectionLoading", Converter.Array (assetSpaceViewProjectionMatrix));
+
+		jsonResponse.put (
+			"JointExcessReturnsCovariance",
+			Converter.Array (
+				((R1MultivariateNormal) jointPosteriorMultivariate).covariance().covarianceMatrix()
+			)
+		);
+
+		jsonResponse.put (
+			"PosteriorExcessReturnsCovariance",
+			Converter.Array (((R1MultivariateNormal) posteriorMultivariate).covariance().covarianceMatrix())
+		);
+
+		jsonResponse.put ("PriorExpectedExcessReturn", Converter.Array (priorMultivariate.mean()));
+
+		jsonResponse.put ("PosteriorExpectedExcessReturn", Converter.Array (posteriorMultivariate.mean()));
 
 		return jsonResponse;
 	}

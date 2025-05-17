@@ -1,11 +1,27 @@
 
 package org.drip.service.assetallocation;
 
+import org.drip.function.rdtor1descent.LineStepEvolutionControl;
+import org.drip.measure.statistics.MultivariateMoments;
+import org.drip.portfolioconstruction.allocator.BoundedHoldingsAllocationControl;
+import org.drip.portfolioconstruction.allocator.ConstrainedMeanVarianceOptimizer;
+import org.drip.portfolioconstruction.allocator.CustomRiskUtilitySettings;
+import org.drip.portfolioconstruction.allocator.EqualityConstraintSettings;
+import org.drip.portfolioconstruction.allocator.HoldingsAllocation;
+import org.drip.portfolioconstruction.asset.AssetComponent;
+import org.drip.portfolioconstruction.asset.Portfolio;
+import org.drip.portfolioconstruction.params.AssetUniverseStatisticalProperties;
+import org.drip.service.jsonparser.Converter;
+import org.drip.service.representation.JSONObject;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -81,20 +97,21 @@ package org.drip.service.assetallocation;
 
 /**
  * <i>PortfolioConstructionProcessor</i> Sets Up and Executes a JSON Based In/Out Processing Service for
- * 	Constrained and Unconstrained Portfolio Construction.
+ * 	Constrained and Unconstrained Portfolio Construction. It provides the following Functions:
  *
- *	<br><br>
- *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationSupportLibrary.md">Computation Support</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/README.md">Environment, Product/Definition Containers, and Scenario/State Manipulation APIs</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/assetallocation">JSON Based In/Out Service</a></li>
- *  </ul>
+ * <br>
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationSupportLibrary.md">Computation Support</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/README.md">Environment, Product/Definition Containers, and Scenario/State Manipulation APIs</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/assetallocation/README.md">JSON Based In/Out Service</a></td></tr>
+ *  </table>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class PortfolioConstructionProcessor {
+public class PortfolioConstructionProcessor
+{
 
 	/**
 	 * JSON Based in/out Budget Constrained Mean Variance Allocation Thunker
@@ -104,105 +121,143 @@ public class PortfolioConstructionProcessor {
 	 * @return JSON Budget Constrained Mean Variance Allocation Response
 	 */
 
-	@SuppressWarnings ("unchecked") public static final org.drip.service.representation.JSONObject
-		BudgetConstrainedAllocator (
-			final org.drip.service.representation.JSONObject jsonParameter)
+	@SuppressWarnings ("unchecked") public static final JSONObject BudgetConstrainedAllocator (
+		final JSONObject jsonParameter)
 	{
-		java.lang.String[] astrAssetID = org.drip.service.jsonparser.Converter.StringArrayEntry (jsonParameter,
-			"AssetSet");
+		String[] assetIdArray = Converter.StringArrayEntry (jsonParameter, "AssetSet");
 
-		org.drip.portfolioconstruction.allocator.BoundedHoldingsAllocationControl pdp = null;
-		int iNumAsset = null == astrAssetID ? 0 : astrAssetID.length;
-		double[] adblAssetLowerBound = new double[iNumAsset];
-		double[] adblAssetUpperBound = new double[iNumAsset];
+		BoundedHoldingsAllocationControl boundedHoldingsAllocationControl = null;
+		int assetCount = null == assetIdArray ? 0 : assetIdArray.length;
+		double[] assetUpperBoundArray = new double[assetCount];
+		double[] assetLowerBoundArray = new double[assetCount];
 
-		if (0 == iNumAsset) return null;
+		if (0 == assetCount) {
+			return null;
+		}
 
-		double[] adblAssetExpectedReturns = org.drip.service.jsonparser.Converter.DoubleArrayEntry (jsonParameter,
-			"AssetExpectedReturns");
+		double[] assetExpectedReturnsArray = Converter.DoubleArrayEntry (
+			jsonParameter,
+			"AssetExpectedReturns"
+		);
 
-		double[][] aadblAssetReturnsCovariance = org.drip.service.jsonparser.Converter.DualDoubleArrayEntry
-			(jsonParameter, "AssetReturnsCovariance");
+		double[][] assetReturnsCovarianceMatrix = Converter.DualDoubleArrayEntry (
+			jsonParameter,
+			"AssetReturnsCovariance"
+		);
 
-		for (int i = 0; i < iNumAsset; ++i) {
+		for (int assetIndex = 0; assetIndex < assetCount; ++assetIndex) {
 			try {
-				adblAssetLowerBound[i] = org.drip.service.jsonparser.Converter.DoubleEntry (jsonParameter,
-					astrAssetID[i] + "::LowerBound");
+				assetLowerBoundArray[assetIndex] = Converter.DoubleEntry (
+					jsonParameter,
+					assetIdArray[assetIndex] + "::LowerBound"
+				);
 
-				adblAssetUpperBound[i] = org.drip.service.jsonparser.Converter.DoubleEntry (jsonParameter,
-					astrAssetID[i] + "::UpperBound");
-			} catch (java.lang.Exception e) {
+				assetUpperBoundArray[assetIndex] = Converter.DoubleEntry (
+					jsonParameter,
+					assetIdArray[assetIndex] + "::UpperBound"
+				);
+			} catch (Exception e) {
 				e.printStackTrace();
 
 				return null;
 			}
 		}
 
-		org.drip.portfolioconstruction.params.AssetUniverseStatisticalProperties ausp =
-			org.drip.portfolioconstruction.params.AssetUniverseStatisticalProperties.FromMultivariateMetrics
-				(org.drip.measure.statistics.MultivariateMoments.Standard (astrAssetID,
-					adblAssetExpectedReturns, aadblAssetReturnsCovariance));
+		AssetUniverseStatisticalProperties assetUniverseStatisticalProperties =
+			AssetUniverseStatisticalProperties.FromMultivariateMetrics (
+				MultivariateMoments.Standard (
+					assetIdArray,
+					assetExpectedReturnsArray,
+					assetReturnsCovarianceMatrix
+				)
+			);
 
-		if (null == ausp) return null;
-
-		org.drip.portfolioconstruction.allocator.ConstrainedMeanVarianceOptimizer cmva = new
-			org.drip.portfolioconstruction.allocator.ConstrainedMeanVarianceOptimizer (null,
-				org.drip.function.rdtor1descent.LineStepEvolutionControl.NocedalWrightStrongWolfe (false));
+		if (null == assetUniverseStatisticalProperties) {
+			return null;
+		}
 
 		try {
-			pdp = new org.drip.portfolioconstruction.allocator.BoundedHoldingsAllocationControl
-				(astrAssetID, new org.drip.portfolioconstruction.allocator.CustomRiskUtilitySettings (1.,
-					0.), new org.drip.portfolioconstruction.allocator.EqualityConstraintSettings
-						(org.drip.portfolioconstruction.allocator.EqualityConstraintSettings.FULLY_INVESTED_CONSTRAINT,
-						java.lang.Double.NaN));
-		} catch (java.lang.Exception e) {
+			boundedHoldingsAllocationControl = new BoundedHoldingsAllocationControl (
+				assetIdArray,
+				new CustomRiskUtilitySettings (1., 0.),
+				new EqualityConstraintSettings (
+					EqualityConstraintSettings.FULLY_INVESTED_CONSTRAINT,
+					Double.NaN
+				)
+			);
+		} catch (Exception e) {
 			e.printStackTrace();
 
 			return null;
 		}
 
-		for (int i = 0; i < astrAssetID.length; ++i) {
-			if (!pdp.addBound (astrAssetID[i], adblAssetLowerBound[i], adblAssetUpperBound[i])) return null;
+		for (int assetIndex = 0; assetIndex < assetIdArray.length; ++assetIndex) {
+			if (!boundedHoldingsAllocationControl.addBound (
+				assetIdArray[assetIndex],
+				assetLowerBoundArray[assetIndex],
+				assetUpperBoundArray[assetIndex]
+			))
+			{
+				return null;
+			}
 		}
 
-		org.drip.portfolioconstruction.allocator.HoldingsAllocation oo = cmva.allocate (pdp, ausp);
+		HoldingsAllocation holdingsAllocation = new ConstrainedMeanVarianceOptimizer (
+			null,
+			LineStepEvolutionControl.NocedalWrightStrongWolfe (false)
+		).allocate (
+			boundedHoldingsAllocationControl,
+			assetUniverseStatisticalProperties
+		);
 
-		if (null == oo) return null;
-
-		org.drip.portfolioconstruction.asset.Portfolio pf = oo.optimalPortfolio();
-
-		org.drip.portfolioconstruction.asset.AssetComponent[] aAC = pf.assetComponentArray();
-
-		if (null == aAC || aAC.length != iNumAsset) return null;
-
-		org.drip.service.representation.JSONObject jsonResponse = new org.drip.service.representation.JSONObject();
-
-		jsonResponse.put ("AssetSet", org.drip.service.jsonparser.Converter.Array (astrAssetID));
-
-		jsonResponse.put ("AssetExpectedReturns", org.drip.service.jsonparser.Converter.Array
-			(adblAssetExpectedReturns));
-
-		jsonResponse.put ("AssetReturnsCovariance", org.drip.service.jsonparser.Converter.Array
-			(aadblAssetReturnsCovariance));
-
-		for (int i = 0; i < adblAssetExpectedReturns.length; ++i) {
-			jsonResponse.put (astrAssetID[i] + "::LowerBound", adblAssetLowerBound[i]);
-
-			jsonResponse.put (astrAssetID[i] + "::UpperBound", adblAssetUpperBound[i]);
+		if (null == holdingsAllocation) {
+			return null;
 		}
 
-		for (int i = 0; i < astrAssetID.length; ++i)
-			jsonResponse.put (aAC[i].id() + "::WEIGHT", aAC[i].amount());
+		Portfolio portfolio = holdingsAllocation.optimalPortfolio();
 
-		jsonResponse.put ("PortfolioNotional", pf.notional());
+		AssetComponent[] assetComponentArray = portfolio.assetComponentArray();
+
+		if (null == assetComponentArray || assetComponentArray.length != assetCount) {
+			return null;
+		}
+
+		JSONObject jsonResponse = new JSONObject();
+
+		jsonResponse.put ("AssetSet", Converter.Array (assetIdArray));
+
+		jsonResponse.put ("AssetExpectedReturns", Converter.Array (assetExpectedReturnsArray));
+
+		jsonResponse.put ("AssetReturnsCovariance", Converter.Array (assetReturnsCovarianceMatrix));
+
+		for (int assetIndex = 0; assetIndex < assetExpectedReturnsArray.length; ++assetIndex) {
+			jsonResponse.put (assetIdArray[assetIndex] + "::LowerBound", assetLowerBoundArray[assetIndex]);
+
+			jsonResponse.put (assetIdArray[assetIndex] + "::UpperBound", assetUpperBoundArray[assetIndex]);
+		}
+
+		for (int assetIndex = 0; assetIndex < assetIdArray.length; ++assetIndex) {
+			jsonResponse.put (
+				assetComponentArray[assetIndex].id() + "::WEIGHT",
+				assetComponentArray[assetIndex].amount()
+			);
+		}
+
+		jsonResponse.put ("PortfolioNotional", portfolio.notional());
 
 		try {
-			jsonResponse.put ("PortfolioExpectedReturn", pf.expectedReturn (ausp));
+			jsonResponse.put (
+				"PortfolioExpectedReturn",
+				portfolio.expectedReturn (assetUniverseStatisticalProperties)
+			);
 
-			jsonResponse.put ("PortfolioStandardDeviation", java.lang.Math.sqrt (pf.variance (ausp)));
+			jsonResponse.put (
+				"PortfolioStandardDeviation",
+				Math.sqrt (portfolio.variance (assetUniverseStatisticalProperties))
+			);
 
 			return jsonResponse;
-		} catch (java.lang.Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -217,110 +272,144 @@ public class PortfolioConstructionProcessor {
 	 * @return JSON Returns Constrained Mean Variance Allocation Response
 	 */
 
-	@SuppressWarnings ("unchecked") public static final org.drip.service.representation.JSONObject
-		ReturnsConstrainedAllocator (
-			final org.drip.service.representation.JSONObject jsonParameter)
+	@SuppressWarnings ("unchecked") public static final JSONObject ReturnsConstrainedAllocator (
+		final JSONObject jsonParameter)
 	{
-    	java.lang.String[] astrAssetID = org.drip.service.jsonparser.Converter.StringArrayEntry (jsonParameter,
-			"AssetSet");
+    	String[] assetIdArray = Converter.StringArrayEntry (jsonParameter, "AssetSet");
 
-		org.drip.portfolioconstruction.allocator.BoundedHoldingsAllocationControl pdp = null;
-		int iNumAsset = null == astrAssetID ? 0 : astrAssetID.length;
-		double dblPortfolioDesignReturn = java.lang.Double.NaN;
-		double[] adblAssetLowerBound = new double[iNumAsset];
-		double[] adblAssetUpperBound = new double[iNumAsset];
+		BoundedHoldingsAllocationControl boundedHoldingsAllocationControl = null;
+		int assetCount = null == assetIdArray ? 0 : assetIdArray.length;
+		double[] assetUpperBoundArray = new double[assetCount];
+		double[] assetLowerBoundArray = new double[assetCount];
+		double portfolioDesignReturn = Double.NaN;
 
-		if (0 == iNumAsset) return null;
+		if (0 == assetCount) {
+			return null;
+		}
 
-		double[] adblAssetReturnsMean = org.drip.service.jsonparser.Converter.DoubleArrayEntry (jsonParameter,
-			"AssetReturnsMean");
+		double[] assetReturnsMeanArray = Converter.DoubleArrayEntry (jsonParameter, "AssetReturnsMean");
 
-		double[][] aadblAssetReturnsCovariance = org.drip.service.jsonparser.Converter.DualDoubleArrayEntry
-			(jsonParameter, "AssetReturnsCovariance");
+		double[][] assetReturnsCovarianceMatrix =
+			Converter.DualDoubleArrayEntry (jsonParameter, "AssetReturnsCovariance");
 
 		try {
-			dblPortfolioDesignReturn = org.drip.service.jsonparser.Converter.DoubleEntry (jsonParameter,
-				"PortfolioDesignReturn");
+			portfolioDesignReturn = Converter.DoubleEntry (jsonParameter, "PortfolioDesignReturn");
 
-			for (int i = 0; i < iNumAsset; ++i) {
-				adblAssetLowerBound[i] = org.drip.service.jsonparser.Converter.DoubleEntry (jsonParameter,
-					astrAssetID[i] + "::LowerBound");
+			for (int assetIndex = 0; assetIndex < assetCount; ++assetIndex) {
+				assetLowerBoundArray[assetIndex] = Converter.DoubleEntry (
+					jsonParameter,
+					assetIdArray[assetIndex] + "::LowerBound"
+				);
 
-				adblAssetUpperBound[i] = org.drip.service.jsonparser.Converter.DoubleEntry (jsonParameter,
-					astrAssetID[i] + "::UpperBound");
+				assetUpperBoundArray[assetIndex] = Converter.DoubleEntry (
+					jsonParameter,
+					assetIdArray[assetIndex] + "::UpperBound"
+				);
 			}
-		} catch (java.lang.Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 
 			return null;
 		}
 
-		org.drip.portfolioconstruction.params.AssetUniverseStatisticalProperties ausp =
-			org.drip.portfolioconstruction.params.AssetUniverseStatisticalProperties.FromMultivariateMetrics
-				(org.drip.measure.statistics.MultivariateMoments.Standard (astrAssetID,
-					adblAssetReturnsMean, aadblAssetReturnsCovariance));
+		AssetUniverseStatisticalProperties assetUniverseStatisticalProperties =
+			AssetUniverseStatisticalProperties.FromMultivariateMetrics (
+				MultivariateMoments.Standard (
+					assetIdArray,
+					assetReturnsMeanArray,
+					assetReturnsCovarianceMatrix
+				)
+			);
 
-		if (null == ausp) return null;
-
-		org.drip.portfolioconstruction.allocator.ConstrainedMeanVarianceOptimizer cmva = new
-			org.drip.portfolioconstruction.allocator.ConstrainedMeanVarianceOptimizer (null, null);
+		if (null == assetUniverseStatisticalProperties) {
+			return null;
+		}
 
 		try {
-			pdp = new org.drip.portfolioconstruction.allocator.BoundedHoldingsAllocationControl
-				(astrAssetID, new org.drip.portfolioconstruction.allocator.CustomRiskUtilitySettings (1.,
-					0.), new org.drip.portfolioconstruction.allocator.EqualityConstraintSettings
-						(org.drip.portfolioconstruction.allocator.EqualityConstraintSettings.FULLY_INVESTED_CONSTRAINT
-						| org.drip.portfolioconstruction.allocator.EqualityConstraintSettings.RETURNS_CONSTRAINT,
-						dblPortfolioDesignReturn));
-		} catch (java.lang.Exception e) {
+			boundedHoldingsAllocationControl = new BoundedHoldingsAllocationControl (
+				assetIdArray,
+				new CustomRiskUtilitySettings (1., 0.),
+				new EqualityConstraintSettings (
+					EqualityConstraintSettings.FULLY_INVESTED_CONSTRAINT |
+						EqualityConstraintSettings.RETURNS_CONSTRAINT,
+					portfolioDesignReturn
+				)
+			);
+		} catch (Exception e) {
 			e.printStackTrace();
 
 			return null;
 		}
 
-		for (int i = 0; i < astrAssetID.length; ++i) {
-			if (!pdp.addBound (astrAssetID[i], adblAssetLowerBound[i], adblAssetUpperBound[i])) return null;
+		for (int assetIndex = 0; assetIndex < assetIdArray.length; ++assetIndex) {
+			if (!boundedHoldingsAllocationControl.addBound (
+				assetIdArray[assetIndex],
+				assetLowerBoundArray[assetIndex],
+				assetUpperBoundArray[assetIndex]
+			))
+			{
+				return null;
+			}
 		}
 
-		org.drip.portfolioconstruction.allocator.HoldingsAllocation oo = cmva.allocate (pdp, ausp);
+		HoldingsAllocation holdingsAllocation = new ConstrainedMeanVarianceOptimizer (
+			null,
+			null
+		).allocate (
+			boundedHoldingsAllocationControl,
+			assetUniverseStatisticalProperties
+		);
 
-		if (null == oo) return null;
-
-		org.drip.portfolioconstruction.asset.Portfolio pf = oo.optimalPortfolio();
-
-		org.drip.portfolioconstruction.asset.AssetComponent[] aAC = pf.assetComponentArray();
-
-		if (null == aAC || aAC.length != iNumAsset) return null;
-
-		org.drip.service.representation.JSONObject jsonResponse = new org.drip.service.representation.JSONObject();
-
-		jsonResponse.put ("AssetSet", org.drip.service.jsonparser.Converter.Array (astrAssetID));
-
-		jsonResponse.put ("AssetReturnsMean", org.drip.service.jsonparser.Converter.Array (adblAssetReturnsMean));
-
-		jsonResponse.put ("AssetReturnsCovariance", org.drip.service.jsonparser.Converter.Array
-			(aadblAssetReturnsCovariance));
-
-		for (int i = 0; i < adblAssetReturnsMean.length; ++i) {
-			jsonResponse.put (astrAssetID[i] + "::LowerBound", adblAssetLowerBound[i]);
-
-			jsonResponse.put (astrAssetID[i] + "::UpperBound", adblAssetUpperBound[i]);
+		if (null == holdingsAllocation) {
+			return null;
 		}
 
-		for (int i = 0; i < astrAssetID.length; ++i)
-			jsonResponse.put (aAC[i].id() + "::WEIGHT", aAC[i].amount());
+		Portfolio portfolio = holdingsAllocation.optimalPortfolio();
 
-		jsonResponse.put ("PortfolioNotional", pf.notional());
+		AssetComponent[] assetComponentArray = portfolio.assetComponentArray();
+
+		if (null == assetComponentArray || assetComponentArray.length != assetCount) {
+			return null;
+		}
+
+		JSONObject jsonResponse = new JSONObject();
+
+		jsonResponse.put ("AssetSet", Converter.Array (assetIdArray));
+
+		jsonResponse.put ("AssetReturnsMean", Converter.Array (assetReturnsMeanArray));
+
+		jsonResponse.put ("AssetReturnsCovariance", Converter.Array (assetReturnsCovarianceMatrix));
+
+		for (int assetIndex = 0; assetIndex < assetReturnsMeanArray.length; ++assetIndex) {
+			jsonResponse.put (assetIdArray[assetIndex] + "::LowerBound", assetLowerBoundArray[assetIndex]);
+
+			jsonResponse.put (assetIdArray[assetIndex] + "::UpperBound", assetUpperBoundArray[assetIndex]);
+		}
+
+		for (int assetIndex = 0; assetIndex < assetIdArray.length; ++assetIndex) {
+			jsonResponse.put (
+				assetComponentArray[assetIndex].id() + "::WEIGHT",
+				assetComponentArray[assetIndex].amount()
+			);
+		}
+
+		jsonResponse.put ("PortfolioNotional", portfolio.notional());
 
 		try {
-			jsonResponse.put ("PortfolioDesignReturn", dblPortfolioDesignReturn);
+			jsonResponse.put ("PortfolioDesignReturn", portfolioDesignReturn);
 
-			jsonResponse.put ("PortfolioExpectedReturn", pf.expectedReturn (ausp));
+			jsonResponse.put (
+				"PortfolioExpectedReturn",
+				portfolio.expectedReturn (assetUniverseStatisticalProperties)
+			);
 
-			jsonResponse.put ("PortfolioStandardDeviation", java.lang.Math.sqrt (pf.variance (ausp)));
+			jsonResponse.put (
+				"PortfolioStandardDeviation",
+				Math.sqrt (portfolio.variance (assetUniverseStatisticalProperties))
+			);
 
 			return jsonResponse;
-		} catch (java.lang.Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
