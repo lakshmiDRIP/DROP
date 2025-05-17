@@ -90,6 +90,11 @@ import java.util.TreeMap;
 /**
  * <i>MapUtil</i> implements Utility Functions based on Maps. It implements the following Functions:
  * <br>
+ * <ul>
+ * 		<li>Given two integers representing the numerator and denominator of a fraction, return the fraction in string format. If the fractional part is repeating, enclose the repeating part in parentheses</li>
+ * 		<li>Identify the Least Interval Task Scheduler</li>
+ * 		<li>There are <code>N</code> people. We have information about interests of each person. The task is to find minimum set of groups that these people can be placed into so there are no any 2 persons who share the same interests in one particular group. Each person can have infinitely large number of interests</li>
+ * </ul>
  *
  * <br>
  *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
@@ -120,9 +125,7 @@ public class MapUtil
 
 	/**
 	 * Given two integers representing the numerator and denominator of a fraction, return the fraction in
-	 *  string format.
-	 *  
-	 * If the fractional part is repeating, enclose the repeating part in parentheses.
+	 *  string format. If the fractional part is repeating, enclose the repeating part in parentheses.
 	 * 
 	 * @param numerator Numerator
 	 * @param denominator Denominator
@@ -297,57 +300,37 @@ public class MapUtil
 	 * @return Minimum Set of Groups
 	 */
 
-	public static final Collection<Set<String>>
-		MinimumSetOfGroups (
-			final Map<String, Set<String>> personInterestSetMap)
+	public static final Collection<Set<String>> MinimumSetOfGroups (
+		final Map<String, Set<String>> personInterestSetMap)
 	{
-		Map<Integer, Set<String>> groupMembershipMap =
-			new HashMap<Integer, Set<String>>();
+		Map<Integer, Set<String>> groupMembershipMap = new HashMap<Integer, Set<String>>();
 
-		Map<Integer, Set<String>> groupInterestMap =
-			new HashMap<Integer, Set<String>>();
+		Map<Integer, Set<String>> groupInterestMap = new HashMap<Integer, Set<String>>();
 
-		TreeMap<Integer, Set<Integer>> groupCountMap =
-			new TreeMap<Integer, Set<Integer>>();
+		TreeMap<Integer, Set<Integer>> groupCountMap = new TreeMap<Integer, Set<Integer>>();
 
 		int groupIndex = 0;
 		int nonOverlappingGroupIndex = -1;
 
-		for (Map.Entry<String, Set<String>> personInterestSetEntry :
-			personInterestSetMap.entrySet())
-		{
+		for (Map.Entry<String, Set<String>> personInterestSetEntry : personInterestSetMap.entrySet()) {
 			String person = personInterestSetEntry.getKey();
 
 			Set<String> personInterestSet = personInterestSetEntry.getValue();
 
-			if (groupCountMap.isEmpty())
-			{
+			if (groupCountMap.isEmpty()) {
 				Set<Integer> groupIndexSet = new HashSet<Integer>();
 
-				groupIndexSet.add (
-					groupIndex
-				);
+				groupIndexSet.add (groupIndex);
 
-				groupCountMap.put (
-					personInterestSet.size(),
-					groupIndexSet
-				);
+				groupCountMap.put (personInterestSet.size(), groupIndexSet);
 
-				groupInterestMap.put (
-					groupIndex,
-					personInterestSet
-				);
+				groupInterestMap.put (groupIndex, personInterestSet);
 
 				Set<String> personSet = new HashSet<String>();
 
-				personSet.add (
-					person
-				);
+				personSet.add (person);
 
-				groupMembershipMap.put (
-					groupIndex,
-					personSet
-				);
+				groupMembershipMap.put (groupIndex, personSet);
 
 				++groupIndex;
 				continue;
@@ -355,132 +338,65 @@ public class MapUtil
 
 			Set<Integer> groupCountKeySet = groupCountMap.descendingKeySet();
 
-			for (int groupCount : groupCountKeySet)
-			{
-				if (-1 != nonOverlappingGroupIndex)
-				{
+			for (int groupCount : groupCountKeySet) {
+				if (-1 != nonOverlappingGroupIndex) {
 					break;
 				}
 
-				Set<Integer> groupIndexSet = groupCountMap.get (
-					groupCount
-				);
+				Set<Integer> groupIndexSet = groupCountMap.get (groupCount);
 
-				for (int groupID : groupIndexSet)
-				{
-					if (!ElementsOverlap (
-						personInterestSet,
-						groupInterestMap.get (
-							groupID
-						)
-					))
-					{
+				for (int groupID : groupIndexSet) {
+					if (!ElementsOverlap (personInterestSet, groupInterestMap.get (groupID))) {
 						nonOverlappingGroupIndex = groupID;
 					}
 				}
 			}
 
-			if (-1 != nonOverlappingGroupIndex)
-			{
-				Set<String> groupInterestSet = groupInterestMap.get (
-					nonOverlappingGroupIndex
-				);
+			if (-1 != nonOverlappingGroupIndex) {
+				Set<String> groupInterestSet = groupInterestMap.get (nonOverlappingGroupIndex);
 
 				int oldGroupInterestSize = groupInterestSet.size();
 
-				groupInterestSet.addAll (
-					personInterestSet
-				);
+				groupInterestSet.addAll (personInterestSet);
 
 				int newGroupInterestSize = groupInterestSet.size();
 
-				groupMembershipMap.get (
-					nonOverlappingGroupIndex
-				).add (
-					person
-				);
+				groupMembershipMap.get (nonOverlappingGroupIndex).add (person);
 
-				groupCountMap.get (
-					oldGroupInterestSize
-				).remove (
-					nonOverlappingGroupIndex
-				);
+				groupCountMap.get (oldGroupInterestSize).remove (nonOverlappingGroupIndex);
 
-				if (groupCountMap.containsKey (
-					newGroupInterestSize
-				))
-				{
-					groupCountMap.get (
-						newGroupInterestSize
-					).add (
-						nonOverlappingGroupIndex
-					);
+				if (groupCountMap.containsKey (newGroupInterestSize)) {
+					groupCountMap.get (newGroupInterestSize).add (nonOverlappingGroupIndex);
+				} else {
+					Set<Integer> groupCountSet = new HashSet<Integer>();
+
+					groupCountSet.add (nonOverlappingGroupIndex);
+
+					groupCountMap.put (newGroupInterestSize, groupCountSet);
 				}
-				else
-				{
-					Set<Integer> groupCountSet =
-						new HashSet<Integer>();
-
-					groupCountSet.add (
-						nonOverlappingGroupIndex
-					);
-
-					groupCountMap.put (
-						newGroupInterestSize,
-						groupCountSet
-					);
-				}
-			}
-			else
-			{
+			} else {
 				Set<String> groupInterestSet = new HashSet<String>();
 
-				groupInterestSet.addAll (
-					personInterestSet
-				);
+				groupInterestSet.addAll (personInterestSet);
 
-				groupInterestMap.put (
-					groupIndex,
-					groupInterestSet
-				);
+				groupInterestMap.put (groupIndex, groupInterestSet);
 
-				Set<String> groupMembershipSet =
-					new HashSet<String>();
+				Set<String> groupMembershipSet = new HashSet<String>();
 
-				groupMembershipSet.add (
-					person
-				);
+				groupMembershipSet.add (person);
 
-				groupMembershipMap.put (
-					groupIndex,
-					groupMembershipSet
-				);
+				groupMembershipMap.put (groupIndex, groupMembershipSet);
 
 				int groupInterestSize = groupInterestSet.size();
 
-				if (groupCountMap.containsKey (
-					groupInterestSize
-				))
-				{
-					groupCountMap.get (
-						groupInterestSize
-					).add (
-						groupIndex
-					);
-				}
-				else
-				{
-					Set<Integer> groupCountSet =
-						new HashSet<Integer>();
+				if (groupCountMap.containsKey (groupInterestSize)) {
+					groupCountMap.get (groupInterestSize).add (groupIndex);
+				} else {
+					Set<Integer> groupCountSet = new HashSet<Integer>();
 
-					groupCountSet.add (
-						groupIndex
-					);
+					groupCountSet.add (groupIndex);
 
-					groupCountMap.put (
-						groupInterestSize,
-						groupCountSet
-					);
+					groupCountMap.put (groupInterestSize, groupCountSet);
 				}
 
 				++groupIndex;
@@ -488,64 +404,5 @@ public class MapUtil
 		}
 
 		return groupMembershipMap.values();
-	}
-
-	/**
-	 * Entry Point
-	 * 
-	 * @param argumentArray The Argument Array
-	 * 
-	 * @throws Exception The Exception Encountered
-	 */
-
-	public static final void main (
-		final String[] argumentArray)
-		throws Exception
-	{
-		Map<String, Set<String>> personInterestSetMap =
-			new HashMap<String, Set<String>>();
-
-		Set<String> aInterestSet = new HashSet<String>();
-
-		aInterestSet.add (
-			"lit"
-		);
-
-		aInterestSet.add (
-			"math"
-		);
-
-		Set<String> bInterestSet = new HashSet<String>();
-
-		bInterestSet.add (
-			"math"
-		);
-
-		Set<String> cInterestSet = new HashSet<String>();
-
-		cInterestSet.add (
-			"sci"
-		);
-
-		personInterestSetMap.put (
-			"a",
-			aInterestSet
-		);
-
-		personInterestSetMap.put (
-			"b",
-			bInterestSet
-		);
-
-		personInterestSetMap.put (
-			"c",
-			cInterestSet
-		);
-
-		System.out.println (
-			MinimumSetOfGroups (
-				personInterestSetMap
-			)
-		);
 	}
 }

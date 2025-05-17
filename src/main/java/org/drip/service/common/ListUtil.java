@@ -1,11 +1,22 @@
 
 package org.drip.service.common;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.PriorityQueue;
+import java.util.TreeMap;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -76,16 +87,19 @@ package org.drip.service.common;
  */
 
 /**
- * <i>ListUtil</i> implements Generic List Utility Functions used in DROP modules.
- *  
- * <br><br>
- *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md">Numerical Analysis Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/README.md">Environment, Product/Definition Containers, and Scenario/State Manipulation APIs</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/common">Assorted Data Structures Support Utilities</a></li>
- *  </ul>
- * <br><br>
+ * <i>ListUtil</i> implements Generic List Utility Functions used in DROP modules. It implements the
+ * 	following Functions:
+ * <br>
+ * <ul>
+ * </ul>
+ *
+ * <br>
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationSupportLibrary.md">Computation Support</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/README.md">Environment, Product/Definition Containers, and Scenario/State Manipulation APIs</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/common/README.md">Assorted Data Structures Support Utilities</a></td></tr>
+ *  </table>
  * 
  * @author Lakshmi Krishnamurthy
  */
@@ -103,7 +117,7 @@ public class ListUtil<V>
 		private ListNode<V> _next = null;
 
 		/**
-		 * ListNode Constructor
+		 * <i>ListNode</i> Constructor
 		 * 
 		 * @param value Node Value
 		 * @param next Next Node
@@ -184,8 +198,7 @@ public class ListUtil<V>
 		final ListNode<V> head,
 		final int k)
 	{
-		if (null == head || 0 >= k)
-		{
+		if (null == head || 0 >= k) {
 			return null;
 		}
 
@@ -195,10 +208,8 @@ public class ListUtil<V>
 
 		ListNode<V> nextNode = head.next();
 
-		while (++rotationCount < k)
-		{
-			if (null == nextNode)
-			{
+		while (++rotationCount < k) {
+			if (null == nextNode) {
 				return null;
 			}
 
@@ -208,10 +219,7 @@ public class ListUtil<V>
 			nextNode = nextNode.next();
 		}
 
-		if (!prevNode.setNext (
-			null
-		))
-		{
+		if (!prevNode.setNext (null)) {
 			return null;
 		}
 
@@ -219,23 +227,19 @@ public class ListUtil<V>
 
 		nextNode = currentNode.next();
 
-		while (null != nextNode)
-		{
+		while (null != nextNode) {
 			currentNode = nextNode;
 
 			nextNode = nextNode.next();
 		}
 
-		return currentNode.setNext (
-			head
-		) ? rotatedHead : null;
+		return currentNode.setNext (head) ? rotatedHead : null;
 	}
 
 	/**
 	 * Given a singly linked list, group all odd nodes together followed by the even nodes. Please note here
-	 *  we are talking about the node number and not the value in the nodes.
-	 *  
-	 * You should try to do it in place. The program should run in O(1) space complexity and O(nodes) time
+	 *  we are talking about the node number and not the value in the nodes. You should try to do it in
+	 *  place. The program should run in O(1) space complexity and O(nodes) time
 	 *  complexity.
 	 *  
 	 * @param <V> Value Type
@@ -294,7 +298,7 @@ public class ListUtil<V>
 		ListNode<V> node1 = headNode1;
 		ListNode<V> node2 = headNode2;
 
-		java.util.HashSet<ListNode<V>> nodeHashSet = new java.util.HashSet<ListNode<V>>();
+		HashSet<ListNode<V>> nodeHashSet = new HashSet<ListNode<V>>();
 
 		while (null != node1) {
 			if (nodeHashSet.contains (node1)) return node1;
@@ -424,18 +428,18 @@ public class ListUtil<V>
 		int time = arrivalTimeArray[0];
 		int[] turnstilePassingTimeArray = new int[arrivalTimeArray.length];
 
-		java.util.TreeMap<Integer, java.util.List<Integer>> exitListMap =
-			new java.util.TreeMap<Integer, java.util.List<Integer>>();
+		TreeMap<Integer, List<Integer>> exitListMap =
+			new TreeMap<Integer, List<Integer>>();
 
-		java.util.TreeMap<Integer, java.util.List<Integer>> entryListMap =
-			new java.util.TreeMap<Integer, java.util.List<Integer>>();
+		TreeMap<Integer, List<Integer>> entryListMap =
+			new TreeMap<Integer, List<Integer>>();
 
 		for (int i = 0; i < arrivalTimeArray.length; ++i) {
 			if (0 == directionArray[i]) {
 				if (entryListMap.containsKey (arrivalTimeArray[i]))
 					entryListMap.get (arrivalTimeArray[i]).add (i);
 				else {
-					java.util.List<Integer> entryIndexList = new java.util.ArrayList<Integer>();
+					List<Integer> entryIndexList = new ArrayList<Integer>();
 
 					entryIndexList.add (i);
 
@@ -445,7 +449,7 @@ public class ListUtil<V>
 				if (exitListMap.containsKey (arrivalTimeArray[i]))
 					exitListMap.get (arrivalTimeArray[i]).add (i);
 				else {
-					java.util.List<Integer> exitIndexList = new java.util.ArrayList<Integer>();
+					List<Integer> exitIndexList = new ArrayList<Integer>();
 
 					exitIndexList.add (i);
 
@@ -458,12 +462,12 @@ public class ListUtil<V>
 			if (-1 == prevDirection || 1 == prevDirection) {
 				boolean exitListNotEmpty = 0 != exitListMap.size();
 
-				java.util.Map.Entry<Integer, java.util.List<Integer>> firstElement = exitListNotEmpty ?
+				Map.Entry<Integer, List<Integer>> firstElement = exitListNotEmpty ?
 					exitListMap.firstEntry() : entryListMap.firstEntry();
 
 				int key = firstElement.getKey();
 
-				java.util.List<Integer> firstIndexList = firstElement.getValue();
+				List<Integer> firstIndexList = firstElement.getValue();
 
 				int index = firstIndexList.get (0);
 
@@ -481,12 +485,12 @@ public class ListUtil<V>
 			} else if (0 == prevDirection) {
 				boolean entryListNotEmpty = 0 != entryListMap.size();
 
-				java.util.Map.Entry<Integer, java.util.List<Integer>> firstElement = entryListNotEmpty ?
+				Map.Entry<Integer, List<Integer>> firstElement = entryListNotEmpty ?
 					entryListMap.firstEntry() : exitListMap.firstEntry();
 
 				int key = firstElement.getKey();
 
-				java.util.List<Integer> firstIndexList = firstElement.getValue();
+				List<Integer> firstIndexList = firstElement.getValue();
 
 				int index = firstIndexList.get (0);
 
@@ -528,12 +532,12 @@ public class ListUtil<V>
 	 * @return List of Nearest Office Coordinates
 	 */
 
-	public static final java.util.List<int[]> NearestOffices (
-		final java.util.List<int[]> officeLocationList,
+	public static final List<int[]> NearestOffices (
+		final List<int[]> officeLocationList,
 		final int k)
 	{
-		java.util.HashMap<Double, java.util.ArrayList<int[]>> officeDistanceMap =
-			new java.util.HashMap<Double, java.util.ArrayList<int[]>>();
+		HashMap<Double, ArrayList<int[]>> officeDistanceMap =
+			new HashMap<Double, ArrayList<int[]>>();
 
 		for (int[] officeLocation : officeLocationList) {
 			double distance = Math.sqrt (officeLocation[0] * officeLocation[0] + officeLocation[1] *
@@ -542,7 +546,7 @@ public class ListUtil<V>
 			if (officeDistanceMap.containsKey (distance))
 				officeDistanceMap.get (distance).add (officeLocation);
 			else {
-				java.util.ArrayList<int[]> officeList = new java.util.ArrayList<int[]>();
+				ArrayList<int[]> officeList = new ArrayList<int[]>();
 
 				officeList.add (officeLocation);
 
@@ -550,8 +554,8 @@ public class ListUtil<V>
 			}
 		}
 
-		java.util.PriorityQueue<Double> nearestOfficeHeap = new
-			java.util.PriorityQueue<Double>((x, y) -> Double.compare (y, x));
+		PriorityQueue<Double> nearestOfficeHeap = new
+			PriorityQueue<Double>((x, y) -> Double.compare (y, x));
 
 		for (double distance : officeDistanceMap.keySet()) {
 			if (k < nearestOfficeHeap.size()) {
@@ -561,13 +565,13 @@ public class ListUtil<V>
 			nearestOfficeHeap.offer (distance);
 		}
 
-		java.util.List<int[]> nearestOfficesList = new java.util.ArrayList<int[]>();
+		List<int[]> nearestOfficesList = new ArrayList<int[]>();
 
 		int i = 0;
 		boolean set = false;
 
 		while (!nearestOfficeHeap.isEmpty()) {
-			java.util.ArrayList<int[]> officeList = officeDistanceMap.get (nearestOfficeHeap.poll());
+			ArrayList<int[]> officeList = officeDistanceMap.get (nearestOfficeHeap.poll());
 
 			for (int[] officeLocation : officeList) {
 				if (set)
@@ -597,7 +601,7 @@ public class ListUtil<V>
 		final java.lang.String[] argumentArray)
 		throws java.lang.Exception
 	{
-		java.util.ArrayList<int[]> officeLocationList = new java.util.ArrayList<int[]>();
+		ArrayList<int[]> officeLocationList = new ArrayList<int[]>();
 
 		officeLocationList.add (new int[] {-16,  5});
 
