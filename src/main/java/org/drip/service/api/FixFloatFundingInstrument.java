@@ -1,11 +1,17 @@
 
 package org.drip.service.api;
 
+import org.drip.analytics.date.JulianDate;
+import org.drip.state.discount.DiscountCurve;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -81,27 +87,29 @@ package org.drip.service.api;
 
 /**
  * <i>FixFloatFundingInstrument</i> contains the Fix Float Instrument Inputs for the Funding Curve
- * Construction Purposes.
- * 
- * <br><br>
- *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationSupportLibrary.md">Computation Support</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/README.md">Environment, Product/Definition Containers, and Scenario/State Manipulation APIs</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/api/README.md">Horizon Roll Attribution Service API</a></li>
- *  </ul>
- * <br><br>
+ * 	Construction Purposes. It provides the following Functions:
+ * 	<ul>
+ * 	</ul>
+ *
+ * <br>
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationSupportLibrary.md">Computation Support</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/README.md">Environment, Product/Definition Containers, and Scenario/State Manipulation APIs</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/api/README.md">Horizon Roll Attribution Service API</a></td></tr>
+ *  </table>
  * 
  * @author Lakshmi Krishnamurthy
  */
 
-public class FixFloatFundingInstrument {
-	private int _iLatentStateType = -1;
+public class FixFloatFundingInstrument
+{
+	private int _latentStateType = -1;
 	private double[] _adblQuote = null;
-	private java.lang.String _strCurrency = "";
-	private java.lang.String[] _astrMaturityTenor = null;
-	private org.drip.state.discount.DiscountCurve _dc = null;
-	private org.drip.analytics.date.JulianDate _dtSpot = null;
+	private String _strCurrency = "";
+	private String[] _astrMaturityTenor = null;
+	private DiscountCurve _dc = null;
+	private JulianDate _dtSpot = null;
 
 	/**
 	 * FixFloatFundingInstrument Constructor
@@ -112,22 +120,22 @@ public class FixFloatFundingInstrument {
 	 * @param adblQuote Array of Quotes
 	 * @param iLatentStateType Latent State Type
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public FixFloatFundingInstrument (
-		final org.drip.analytics.date.JulianDate dtSpot,
-		final java.lang.String strCurrency,
-		final java.lang.String[] astrMaturityTenor,
+		final JulianDate dtSpot,
+		final String strCurrency,
+		final String[] astrMaturityTenor,
 		final double[] adblQuote,
 		final int iLatentStateType)
-		throws java.lang.Exception
+		throws Exception
 	{
 		if (null == (_dc = org.drip.service.template.LatentMarketStateBuilder.FundingCurve (_dtSpot = dtSpot,
 			_strCurrency = strCurrency, null, null, "ForwardRate", null, "ForwardRate", _astrMaturityTenor =
-				astrMaturityTenor, _adblQuote = adblQuote, "SwapRate", _iLatentStateType =
+				astrMaturityTenor, _adblQuote = adblQuote, "SwapRate", _latentStateType =
 					iLatentStateType)))
-			throw new java.lang.Exception ("FixFloatFundingInstrument Constructor => Invalid Inputs");
+			throw new Exception ("FixFloatFundingInstrument Constructor => Invalid Inputs");
 	}
 
 	/**
@@ -136,7 +144,7 @@ public class FixFloatFundingInstrument {
 	 * @return The Spot Date
 	 */
 
-	public org.drip.analytics.date.JulianDate spotDate()
+	public JulianDate spotDate()
 	{
 		return _dtSpot;
 	}
@@ -147,7 +155,7 @@ public class FixFloatFundingInstrument {
 	 * @return The Currency
 	 */
 
-	public java.lang.String currency()
+	public String currency()
 	{
 		return _strCurrency;
 	}
@@ -160,7 +168,7 @@ public class FixFloatFundingInstrument {
 
 	public int latentStateType()
 	{
-		return _iLatentStateType;
+		return _latentStateType;
 	}
 
 	/**
@@ -169,7 +177,7 @@ public class FixFloatFundingInstrument {
 	 * @return Array of Maturity Tenors
 	 */
 
-	public java.lang.String[] maturityTenors()
+	public String[] maturityTenors()
 	{
 		return _astrMaturityTenor;
 	}
@@ -191,7 +199,7 @@ public class FixFloatFundingInstrument {
 	 * @return The Funding State Instance
 	 */
 
-	public org.drip.state.discount.DiscountCurve fundingState()
+	public DiscountCurve fundingState()
 	{
 		return _dc;
 	}

@@ -92,6 +92,16 @@ import org.drip.analytics.date.JulianDate;
 /**
  * <i>DiscountCurveInputInstrument</i> contains the input instruments and their quotes. It provides the
  * 	following Functions:
+ * 	<ul>
+ * 		<li><i>DiscountCurveInputInstrument</i> constructor</li>
+ * 		<li>Retrieve the Curve Epoch Date</li>
+ * 		<li>Retrieve the Array of Cash Quotes</li>
+ * 		<li>Retrieve the Array of Cash Tenors</li>
+ * 		<li>Retrieve the Array of Future Quotes</li>
+ * 		<li>Retrieve the Array of Future Tenors</li>
+ * 		<li>Retrieve the Array of Swap Quotes</li>
+ * 		<li>Retrieve the Array of Swap Tenors</li>
+ * 	</ul>
  *
  * <br>
  *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
@@ -109,53 +119,60 @@ public class DiscountCurveInputInstrument
 	private JulianDate _epochDate = null;
 	private List<Double> _cashQuoteList = null;
 	private List<String> _cashTenorList = null;
-	private List<Double> _lsSwapQuote = null;
-	private List<String> _lsSwapTenor = null;
-	private List<Double> _lsFutureQuote = null;
-	private List<String> _lsFutureTenor = null;
+	private List<Double> _swapQuoteList = null;
+	private List<String> _swapTenorList = null;
+	private List<Double> _futuresQuoteList = null;
+	private List<String> _futuresTenorList = null;
 
 	/**
-	 * DiscountCurveInputInstrument constructor
+	 * <i>DiscountCurveInputInstrument</i> Constructor
 	 * 
-	 * @param dt Curve Epoch Date
-	 * @param lsCashTenor List of Cash Tenors
-	 * @param lsCashQuote List of Cash Quotes
-	 * @param lsFutureTenor List of Future Tenors
-	 * @param lsFutureQuote List of Future Quotes
-	 * @param lsSwapTenor List of Swap Tenors
-	 * @param lsSwapQuote List of Swap Quotes
+	 * @param epochDate Curve Epoch Date
+	 * @param cashTenorList List of Cash Tenors
+	 * @param cashQuoteList List of Cash Quotes
+	 * @param futuresTenorList List of Future Tenors
+	 * @param futuresQuoteList List of Future Quotes
+	 * @param swapTenorList List of Swap Tenors
+	 * @param swapQuoteList List of Swap Quotes
 	 * 
 	 * @throws Exception Thrown if Inputs are invalid
 	 */
 
 	public DiscountCurveInputInstrument (
-		final JulianDate dt,
-		final List<String> lsCashTenor,
-		final List<Double> lsCashQuote,
-		final List<String> lsFutureTenor,
-		final List<Double> lsFutureQuote,
-		final List<String> lsSwapTenor,
-		final List<Double> lsSwapQuote)
+		final JulianDate epochDate,
+		final List<String> cashTenorList,
+		final List<Double> cashQuoteList,
+		final List<String> futuresTenorList,
+		final List<Double> futuresQuoteList,
+		final List<String> swapTenorList,
+		final List<Double> swapQuoteList)
 		throws Exception
 	{
-		if (null == (_epochDate = dt))
+		if (null == (_epochDate = epochDate)) {
+			throw new Exception ("DiscountCurveInputInstrument Constructor: Invalid Inputs");
+		}
+
+		int cashQuoteCount = null == (_cashQuoteList = cashQuoteList) ? 0 : _cashQuoteList.size();
+
+		int cashTenorCount = null == (_cashTenorList = cashTenorList) ? 0 : _cashTenorList.size();
+
+		int swapQuoteCount = null == (_swapQuoteList = swapQuoteList) ? 0 : _swapQuoteList.size();
+
+		int swapTenorCount = null == (_swapTenorList = swapTenorList) ? 0 : _swapTenorList.size();
+
+		int futuresQuoteCount = null == (_futuresQuoteList = futuresQuoteList) ?
+			0 : _futuresQuoteList.size();
+
+		int futuresTenorCount = null == (_futuresTenorList = futuresTenorList) ?
+			0 : _futuresTenorList.size();
+
+		if (cashQuoteCount != cashTenorCount ||
+			futuresQuoteCount != futuresTenorCount ||
+			swapQuoteCount != swapTenorCount ||
+			(0 == cashTenorCount && 0 == futuresTenorCount && 0 == swapTenorCount))
+		{
 			throw new Exception ("DiscountCurveInputInstrument ctr: Invalid Inputs");
-
-		int iNumCashQuote = null == (_cashQuoteList = lsCashQuote) ? 0 : _cashQuoteList.size();
-
-		int iNumCashTenor = null == (_cashTenorList = lsCashTenor) ? 0 : _cashTenorList.size();
-
-		int iNumFutureQuote = null == (_lsFutureQuote = lsFutureQuote) ? 0 : _lsFutureQuote.size();
-
-		int iNumFutureTenor = null == (_lsFutureTenor = lsFutureTenor) ? 0 : _lsFutureTenor.size();
-
-		int iNumSwapQuote = null == (_lsSwapQuote = lsSwapQuote) ? 0 : _lsSwapQuote.size();
-
-		int iNumSwapTenor = null == (_lsSwapTenor = lsSwapTenor) ? 0 : _lsSwapTenor.size();
-
-		if (iNumCashQuote != iNumCashTenor || iNumFutureQuote != iNumFutureTenor || iNumSwapQuote !=
-			iNumSwapTenor || (0 == iNumCashTenor && 0 == iNumFutureTenor && 0 == iNumSwapTenor))
-			throw new Exception ("DiscountCurveInputInstrument ctr: Invalid Inputs");
+		}
 	}
 
 	/**
@@ -177,19 +194,24 @@ public class DiscountCurveInputInstrument
 
 	public double[] cashQuote()
 	{
-		if (null == _cashQuoteList) return null;
+		if (null == _cashQuoteList) {
+			return null;
+		}
 
-		int iNumQuote = _cashQuoteList.size();
+		int quoteCount = _cashQuoteList.size();
 
-		if (0 == iNumQuote) return null;
+		if (0 == quoteCount) {
+			return null;
+		}
 
 		int i = 0;
-		double[] adblQuote = new double[iNumQuote];
+		double[] quoteArray = new double[quoteCount];
 
-		for (double dblQuote : _cashQuoteList)
-			adblQuote[i++] = dblQuote;
+		for (double quote : _cashQuoteList) {
+			quoteArray[i++] = quote;
+		}
 
-		return adblQuote;
+		return quoteArray;
 	}
 
 	/**
@@ -200,19 +222,22 @@ public class DiscountCurveInputInstrument
 
 	public String[] cashTenor()
 	{
-		if (null == _cashTenorList) return null;
+		if (null == _cashTenorList) {
+			return null;
+		}
 
-		int iNumTenor = _cashTenorList.size();
+		int tenorCount = _cashTenorList.size();
 
-		if (0 == iNumTenor) return null;
+		if (0 == tenorCount) return null;
 
 		int i = 0;
-		String[] astrTenor = new String[iNumTenor];
+		String[] tenorArray = new String[tenorCount];
 
-		for (String strTenor : _cashTenorList)
-			astrTenor[i++] = strTenor;
+		for (String tenor : _cashTenorList) {
+			tenorArray[i++] = tenor;
+		}
 
-		return astrTenor;
+		return tenorArray;
 	}
 
 	/**
@@ -223,19 +248,24 @@ public class DiscountCurveInputInstrument
 
 	public double[] futureQuote()
 	{
-		if (null == _lsFutureQuote) return null;
+		if (null == _futuresQuoteList) {
+			return null;
+		}
 
-		int iNumQuote = _lsFutureQuote.size();
+		int quoteCount = _futuresQuoteList.size();
 
-		if (0 == iNumQuote) return null;
+		if (0 == quoteCount) {
+			return null;
+		}
 
 		int i = 0;
-		double[] adblQuote = new double[iNumQuote];
+		double[] quoteArray = new double[quoteCount];
 
-		for (double dblQuote : _lsFutureQuote)
-			adblQuote[i++] = dblQuote;
+		for (double quote : _futuresQuoteList) {
+			quoteArray[i++] = quote;
+		}
 
-		return adblQuote;
+		return quoteArray;
 	}
 
 	/**
@@ -246,19 +276,24 @@ public class DiscountCurveInputInstrument
 
 	public String[] futureTenor()
 	{
-		if (null == _lsFutureTenor) return null;
+		if (null == _futuresTenorList) {
+			return null;
+		}
 
-		int iNumTenor = _lsFutureTenor.size();
+		int tenorCount = _futuresTenorList.size();
 
-		if (0 == iNumTenor) return null;
+		if (0 == tenorCount) {
+			return null;
+		}
 
 		int i = 0;
-		String[] astrTenor = new String[iNumTenor];
+		String[] tenorArray = new String[tenorCount];
 
-		for (String strTenor : _lsFutureTenor)
-			astrTenor[i++] = strTenor;
+		for (String tenor : _futuresTenorList) {
+			tenorArray[i++] = tenor;
+		}
 
-		return astrTenor;
+		return tenorArray;
 	}
 
 	/**
@@ -269,19 +304,24 @@ public class DiscountCurveInputInstrument
 
 	public double[] swapQuote()
 	{
-		if (null == _lsSwapQuote) return null;
+		if (null == _swapQuoteList) {
+			return null;
+		}
 
-		int iNumQuote = _lsSwapQuote.size();
+		int quoteCount = _swapQuoteList.size();
 
-		if (0 == iNumQuote) return null;
+		if (0 == quoteCount) {
+			return null;
+		}
 
 		int i = 0;
-		double[] adblQuote = new double[iNumQuote];
+		double[] quoteArray = new double[quoteCount];
 
-		for (double dblQuote : _lsSwapQuote)
-			adblQuote[i++] = dblQuote;
+		for (double quote : _swapQuoteList) {
+			quoteArray[i++] = quote;
+		}
 
-		return adblQuote;
+		return quoteArray;
 	}
 
 	/**
@@ -292,18 +332,23 @@ public class DiscountCurveInputInstrument
 
 	public String[] swapTenor()
 	{
-		if (null == _lsSwapTenor) return null;
+		if (null == _swapTenorList) {
+			return null;
+		}
 
-		int iNumTenor = _lsSwapTenor.size();
+		int tenorCount = _swapTenorList.size();
 
-		if (0 == iNumTenor) return null;
+		if (0 == tenorCount) {
+			return null;
+		}
 
 		int i = 0;
-		String[] astrTenor = new String[iNumTenor];
+		String[] tenorArray = new String[tenorCount];
 
-		for (String strTenor : _lsSwapTenor)
-			astrTenor[i++] = strTenor;
+		for (String tenor : _swapTenorList) {
+			tenorArray[i++] = tenor;
+		}
 
-		return astrTenor;
+		return tenorArray;
 	}
 }
