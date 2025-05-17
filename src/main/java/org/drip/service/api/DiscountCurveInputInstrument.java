@@ -1,11 +1,18 @@
 
 package org.drip.service.api;
 
+import java.util.List;
+
+import org.drip.analytics.date.JulianDate;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -83,28 +90,29 @@ package org.drip.service.api;
  */
 
 /**
- * <i>DiscountCurveInputInstrument</i> contains the input instruments and their quotes.
- * 
- * <br><br>
- *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationSupportLibrary.md">Computation Support</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/README.md">Environment, Product/Definition Containers, and Scenario/State Manipulation APIs</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/api/README.md">Horizon Roll Attribution Service API</a></li>
- *  </ul>
- * <br><br>
+ * <i>DiscountCurveInputInstrument</i> contains the input instruments and their quotes. It provides the
+ * 	following Functions:
+ *
+ * <br>
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationSupportLibrary.md">Computation Support</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/README.md">Environment, Product/Definition Containers, and Scenario/State Manipulation APIs</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/api/README.md">Horizon Roll Attribution Service API</a></td></tr>
+ *  </table>
  * 
  * @author Lakshmi Krishnamurthy
  */
 
-public class DiscountCurveInputInstrument {
-	private org.drip.analytics.date.JulianDate _dt = null;
-	private java.util.List<java.lang.Double> _lsCashQuote = null;
-	private java.util.List<java.lang.String> _lsCashTenor = null;
-	private java.util.List<java.lang.Double> _lsSwapQuote = null;
-	private java.util.List<java.lang.String> _lsSwapTenor = null;
-	private java.util.List<java.lang.Double> _lsFutureQuote = null;
-	private java.util.List<java.lang.String> _lsFutureTenor = null;
+public class DiscountCurveInputInstrument
+{
+	private JulianDate _epochDate = null;
+	private List<Double> _cashQuoteList = null;
+	private List<String> _cashTenorList = null;
+	private List<Double> _lsSwapQuote = null;
+	private List<String> _lsSwapTenor = null;
+	private List<Double> _lsFutureQuote = null;
+	private List<String> _lsFutureTenor = null;
 
 	/**
 	 * DiscountCurveInputInstrument constructor
@@ -117,25 +125,25 @@ public class DiscountCurveInputInstrument {
 	 * @param lsSwapTenor List of Swap Tenors
 	 * @param lsSwapQuote List of Swap Quotes
 	 * 
-	 * @throws java.lang.Exception Thrown if Inputs are invalid
+	 * @throws Exception Thrown if Inputs are invalid
 	 */
 
 	public DiscountCurveInputInstrument (
-		final org.drip.analytics.date.JulianDate dt,
-		final java.util.List<java.lang.String> lsCashTenor,
-		final java.util.List<java.lang.Double> lsCashQuote,
-		final java.util.List<java.lang.String> lsFutureTenor,
-		final java.util.List<java.lang.Double> lsFutureQuote,
-		final java.util.List<java.lang.String> lsSwapTenor,
-		final java.util.List<java.lang.Double> lsSwapQuote)
-		throws java.lang.Exception
+		final JulianDate dt,
+		final List<String> lsCashTenor,
+		final List<Double> lsCashQuote,
+		final List<String> lsFutureTenor,
+		final List<Double> lsFutureQuote,
+		final List<String> lsSwapTenor,
+		final List<Double> lsSwapQuote)
+		throws Exception
 	{
-		if (null == (_dt = dt))
-			throw new java.lang.Exception ("DiscountCurveInputInstrument ctr: Invalid Inputs");
+		if (null == (_epochDate = dt))
+			throw new Exception ("DiscountCurveInputInstrument ctr: Invalid Inputs");
 
-		int iNumCashQuote = null == (_lsCashQuote = lsCashQuote) ? 0 : _lsCashQuote.size();
+		int iNumCashQuote = null == (_cashQuoteList = lsCashQuote) ? 0 : _cashQuoteList.size();
 
-		int iNumCashTenor = null == (_lsCashTenor = lsCashTenor) ? 0 : _lsCashTenor.size();
+		int iNumCashTenor = null == (_cashTenorList = lsCashTenor) ? 0 : _cashTenorList.size();
 
 		int iNumFutureQuote = null == (_lsFutureQuote = lsFutureQuote) ? 0 : _lsFutureQuote.size();
 
@@ -147,7 +155,7 @@ public class DiscountCurveInputInstrument {
 
 		if (iNumCashQuote != iNumCashTenor || iNumFutureQuote != iNumFutureTenor || iNumSwapQuote !=
 			iNumSwapTenor || (0 == iNumCashTenor && 0 == iNumFutureTenor && 0 == iNumSwapTenor))
-			throw new java.lang.Exception ("DiscountCurveInputInstrument ctr: Invalid Inputs");
+			throw new Exception ("DiscountCurveInputInstrument ctr: Invalid Inputs");
 	}
 
 	/**
@@ -156,9 +164,9 @@ public class DiscountCurveInputInstrument {
 	 * @return The Curve Epoch Date
 	 */
 
-	public org.drip.analytics.date.JulianDate date()
+	public JulianDate date()
 	{
-		return _dt;
+		return _epochDate;
 	}
 
 	/**
@@ -169,16 +177,16 @@ public class DiscountCurveInputInstrument {
 
 	public double[] cashQuote()
 	{
-		if (null == _lsCashQuote) return null;
+		if (null == _cashQuoteList) return null;
 
-		int iNumQuote = _lsCashQuote.size();
+		int iNumQuote = _cashQuoteList.size();
 
 		if (0 == iNumQuote) return null;
 
 		int i = 0;
 		double[] adblQuote = new double[iNumQuote];
 
-		for (double dblQuote : _lsCashQuote)
+		for (double dblQuote : _cashQuoteList)
 			adblQuote[i++] = dblQuote;
 
 		return adblQuote;
@@ -190,18 +198,18 @@ public class DiscountCurveInputInstrument {
 	 * @return The Array of Cash Tenors
 	 */
 
-	public java.lang.String[] cashTenor()
+	public String[] cashTenor()
 	{
-		if (null == _lsCashTenor) return null;
+		if (null == _cashTenorList) return null;
 
-		int iNumTenor = _lsCashTenor.size();
+		int iNumTenor = _cashTenorList.size();
 
 		if (0 == iNumTenor) return null;
 
 		int i = 0;
-		java.lang.String[] astrTenor = new java.lang.String[iNumTenor];
+		String[] astrTenor = new String[iNumTenor];
 
-		for (java.lang.String strTenor : _lsCashTenor)
+		for (String strTenor : _cashTenorList)
 			astrTenor[i++] = strTenor;
 
 		return astrTenor;
@@ -236,7 +244,7 @@ public class DiscountCurveInputInstrument {
 	 * @return The Array of Future Tenors
 	 */
 
-	public java.lang.String[] futureTenor()
+	public String[] futureTenor()
 	{
 		if (null == _lsFutureTenor) return null;
 
@@ -245,9 +253,9 @@ public class DiscountCurveInputInstrument {
 		if (0 == iNumTenor) return null;
 
 		int i = 0;
-		java.lang.String[] astrTenor = new java.lang.String[iNumTenor];
+		String[] astrTenor = new String[iNumTenor];
 
-		for (java.lang.String strTenor : _lsFutureTenor)
+		for (String strTenor : _lsFutureTenor)
 			astrTenor[i++] = strTenor;
 
 		return astrTenor;
@@ -282,7 +290,7 @@ public class DiscountCurveInputInstrument {
 	 * @return The Array of Swap Tenors
 	 */
 
-	public java.lang.String[] swapTenor()
+	public String[] swapTenor()
 	{
 		if (null == _lsSwapTenor) return null;
 
@@ -291,9 +299,9 @@ public class DiscountCurveInputInstrument {
 		if (0 == iNumTenor) return null;
 
 		int i = 0;
-		java.lang.String[] astrTenor = new java.lang.String[iNumTenor];
+		String[] astrTenor = new String[iNumTenor];
 
-		for (java.lang.String strTenor : _lsSwapTenor)
+		for (String strTenor : _lsSwapTenor)
 			astrTenor[i++] = strTenor;
 
 		return astrTenor;

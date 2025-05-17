@@ -1,11 +1,16 @@
 
 package org.drip.service.api;
 
+import org.drip.numerical.common.NumberUtil;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -83,41 +88,48 @@ package org.drip.service.api;
  */
 
 /**
- * <i>CDXCOB</i> contains the Name and the COB Price for a given CDX.
- * 
- * <br><br>
- *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationSupportLibrary.md">Computation Support</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/README.md">Environment, Product/Definition Containers, and Scenario/State Manipulation APIs</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/api/README.md">Horizon Roll Attribution Service API</a></li>
- *  </ul>
- * <br><br>
+ * <i>CDXCOB</i> contains the Name and the COB Price for a given CDX. It provides the following Functions:
+ * <ul>
+ * 		<li><i>CDXCOB</i> constructor</li>
+ * 		<li>CDX Name</li>
+ * 		<li>COB Price</li>
+ * 		<li>Display the CDX COB Content</li>
+ * </ul>
+ *
+ * <br>
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationSupportLibrary.md">Computation Support</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/README.md">Environment, Product/Definition Containers, and Scenario/State Manipulation APIs</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/api/README.md">Horizon Roll Attribution Service API</a></td></tr>
+ *  </table>
  * 
  * @author Lakshmi Krishnamurthy
  */
 
-public class CDXCOB {
-	private java.lang.String _strCDXName = "";
-	private double _dblPrice = java.lang.Double.NaN;
+public class CDXCOB
+{
+	private String _indexName = "";
+	private double _price = Double.NaN;
 
 	/**
-	 * CDXCOB constructor
+	 * <i>CDXCOB</i> constructor
 	 * 
-	 * @param strCDXName The CDX Name
-	 * @param dblPrice The COB Price
+	 * @param indexName The CDX Index Name
+	 * @param price The COB Price
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are invalid
+	 * @throws Exception Thrown if the Inputs are invalid
 	 */
 
 	public CDXCOB (
-		final java.lang.String strCDXName,
-		final double dblPrice)
-		throws java.lang.Exception
+		final String indexName,
+		final double price)
+		throws Exception
 	{
-		if (null == (_strCDXName = strCDXName) || _strCDXName.isEmpty() ||
-			!org.drip.numerical.common.NumberUtil.IsValid (_dblPrice = dblPrice))
-			throw new java.lang.Exception ("CDXCOB ctr: Invalid Inputs");
+		if (null == (_indexName = indexName) || _indexName.isEmpty() || !NumberUtil.IsValid (_price = price))
+		{
+			throw new Exception ("CDXCOB ctr: Invalid Inputs");
+		}
 	}
 
 	/**
@@ -126,9 +138,9 @@ public class CDXCOB {
 	 * @return The CDX Name
 	 */
 
-	public java.lang.String name()
+	public String name()
 	{
-		return _strCDXName;
+		return _indexName;
 	}
 
 	/**
@@ -139,17 +151,17 @@ public class CDXCOB {
 
 	public double price()
 	{
-		return _dblPrice;
+		return _price;
 	}
 
 	/**
-	 * Display the CDXCOB Content
+	 * Display the CDX COB Content
 	 * 
-	 * @return The CDXCOB Content
+	 * @return The CDX COB Content
 	 */
 
-	public java.lang.String display()
+	public String display()
 	{
-		return _strCDXName + " => " + _dblPrice;
+		return _indexName + " => " + _price;
 	}
 }

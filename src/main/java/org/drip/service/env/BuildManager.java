@@ -114,10 +114,13 @@ public class BuildManager
 
 	public static final boolean Init()
 	{
-		if (null != _buildRecordArray) return true;
+		if (null != _buildRecordArray) {
+			return true;
+		}
 
 		try {
 			_buildRecordArray = new BuildRecord[] {
+				new BuildRecord ("6.77.0", "15.0.1+9-18", "Sat May 17 16:38:41 EST 2025"),
 				new BuildRecord ("6.76.0", "15.0.1+9-18", "Fri May 16 21:27:58 EST 2025"),
 				new BuildRecord ("6.75.0", "15.0.1+9-18", "Sun May 11 03:33:41 EST 2025"),
 				new BuildRecord ("6.74.0", "15.0.1+9-18", "Thu May 02 19:26:50 EST 2025"),

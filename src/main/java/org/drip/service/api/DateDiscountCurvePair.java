@@ -1,11 +1,19 @@
 
 package org.drip.service.api;
 
+import java.util.List;
+
+import org.drip.analytics.date.JulianDate;
+import org.drip.state.discount.MergedDiscountForwardCurve;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -84,44 +92,53 @@ package org.drip.service.api;
 
 /**
  * <i>DateDiscountCurvePair</i> contains the COB/Discount Curve Pair, and the corresponding computed outputs.
- * 
- * <br><br>
- *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationSupportLibrary.md">Computation Support</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/README.md">Environment, Product/Definition Containers, and Scenario/State Manipulation APIs</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/api/README.md">Horizon Roll Attribution Service API</a></li>
- *  </ul>
- * <br><br>
+ * 	It provides the following Functions:
+ * <ul>
+ * 		<li><i>DateDiscountCurvePair</i> Constructor</li>
+ * 		<li>Retrieve the COB Date</li>
+ * 		<li>Retrieve the COB Discount Curve</li>
+ * 		<li>Retrieve the Output Dump</li>
+ * </ul>
+ *
+ * <br>
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationSupportLibrary.md">Computation Support</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/README.md">Environment, Product/Definition Containers, and Scenario/State Manipulation APIs</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/api/README.md">Horizon Roll Attribution Service API</a></td></tr>
+ *  </table>
  * 
  * @author Lakshmi Krishnamurthy
  */
 
-public class DateDiscountCurvePair {
-	private org.drip.analytics.date.JulianDate _dt = null;
-	private org.drip.state.discount.MergedDiscountForwardCurve _dc = null;
-	private java.util.List<java.lang.String> _lsstrDump = null;
+public class DateDiscountCurvePair
+{
+	private JulianDate _cob = null;
+	private List<String> _outputList = null;
+	private MergedDiscountForwardCurve _cobDiscountCurve = null;
 
 	/**
-	 * DateDiscountCurvePair constructor
+	 * <i>DateDiscountCurvePair</i> constructor
 	 * 
-	 * @param dt The COB
-	 * @param dc The COB Discount Curve
-	 * @param lsstrDump List of Output String Dump
+	 * @param cob The COB
+	 * @param cobDiscountCurve The COB Discount Curve
+	 * @param outputList List of Output String Dump
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are invalid
+	 * @throws Exception Thrown if the Inputs are invalid
 	 */
 
 	public DateDiscountCurvePair (
-		final org.drip.analytics.date.JulianDate dt,
-		final org.drip.state.discount.MergedDiscountForwardCurve dc,
-		final java.util.List<java.lang.String> lsstrDump)
-		throws java.lang.Exception
+		final JulianDate cob,
+		final MergedDiscountForwardCurve cobDiscountCurve,
+		final List<String> outputList)
+		throws Exception
 	{
-		if (null == (_dt = dt)) throw new java.lang.Exception ("DateDiscountCurvePair ctr: Invalid Inputs");
+		if (null == (_cob = cob)) {
+			throw new Exception ("DateDiscountCurvePair Constructor: Invalid Inputs");
+		}
 
-		_dc = dc;
-		_lsstrDump = lsstrDump;
+		_cobDiscountCurve = cobDiscountCurve;
+		_outputList = outputList;
 	}
 
 	/**
@@ -130,20 +147,20 @@ public class DateDiscountCurvePair {
 	 * @return The COB
 	 */
 
-	public org.drip.analytics.date.JulianDate date()
+	public JulianDate date()
 	{
-		return _dt;
+		return _cob;
 	}
 
 	/**
-	 * Retrieve the Discount Curve
+	 * Retrieve the COB Discount Curve
 	 * 
-	 * @return The Discount Curve
+	 * @return The COB Discount Curve
 	 */
 
-	public org.drip.state.discount.MergedDiscountForwardCurve dc()
+	public MergedDiscountForwardCurve dc()
 	{
-		return _dc;
+		return _cobDiscountCurve;
 	}
 
 	/**
@@ -152,8 +169,8 @@ public class DateDiscountCurvePair {
 	 * @return The Output Dump
 	 */
 
-	public java.util.List<java.lang.String> output()
+	public List<String> output()
 	{
-		return _lsstrDump;
+		return _outputList;
 	}
 }

@@ -98,6 +98,10 @@ import org.drip.service.representation.JSONObject;
 /**
  * <i>PortfolioConstructionProcessor</i> Sets Up and Executes a JSON Based In/Out Processing Service for
  * 	Constrained and Unconstrained Portfolio Construction. It provides the following Functions:
+ * <ul>
+ * 		<li>JSON Based in/out Budget Constrained Mean Variance Allocation Thunker</li>
+ * 		<li>JSON Based in/out Returns Constrained Mean Variance Allocation Thunker</li>
+ * </ul>
  *
  * <br>
  *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
