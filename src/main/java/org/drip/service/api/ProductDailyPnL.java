@@ -121,31 +121,33 @@ package org.drip.service.api;
 
 public class ProductDailyPnL
 {
+	private double _dv01 = Double.NaN;
 	private int _oneDayFixedAccrualDays = 0;
-	private int _i1DFloatingAccrualDays = 0;
-	private double _dblDV01 = Double.NaN;
-	private double _dbl1DCarryPnL = Double.NaN;
-	private double _dbl1MCarryPnL = Double.NaN;
-	private double _dbl3MCarryPnL = Double.NaN;
-	private double _dbl1DFixedDCF = Double.NaN;
-	private double _dbl1MFixedDCF = Double.NaN;
-	private double _dbl3MFixedDCF = Double.NaN;
-	private double _dbl1DCleanPnL = Double.NaN;
-	private double _dbl1DDirtyPnL = Double.NaN;
-	private double _dbl1DTotalPnL = Double.NaN;
-	private double _dbl1DTimeRollPnL = Double.NaN;
-	private double _dbl1DFloatingDCF = Double.NaN;
-	private double _dbl1MFloatingDCF = Double.NaN;
-	private double _dbl3MFloatingDCF = Double.NaN;
-	private double _dblCleanFixedDV01 = Double.NaN;
-	private double _dblCleanFloatDV01 = Double.NaN;
-	private double _dblDV01WithFixing = Double.NaN;
-	private double _dbl1DCurveShiftPnL = Double.NaN;
-	private double _dblPeriodFixedRate = Double.NaN;
-	private double _dblBaselineSwapRate = Double.NaN;
-	private double _dbl1DTimeRollSwapRate = Double.NaN;
-	private double _dbl1DCleanPnLWithFixing = Double.NaN;
-	private double _dbl1DDirtyPnLWithFixing = Double.NaN;
+	private int _oneDayFloatingAccrualDays = 0;
+	private double _oneDayCarryPnL = Double.NaN;
+	private double _oneDayCleanPnL = Double.NaN;
+	private double _oneDayDirtyPnL = Double.NaN;
+	private double _oneDayTotalPnL = Double.NaN;
+	private double _oneMonthCarryPnL = Double.NaN;
+	private double _oneDayTimeRollPnL = Double.NaN;
+	private double _threeMonthCarryPnL = Double.NaN;
+	private double _oneDayFixedDayCountFraction = Double.NaN;
+	private double _oneMonthFixedDayCountFraction = Double.NaN;
+	private double _oneDayFloatingDayCountFraction = Double.NaN;
+	private double _threeMonthFixedDayCountFraction = Double.NaN;
+	private double _oneMonthFloatingDayCountFraction = Double.NaN;
+	private double _threeMonthFloatingDayCountFraction = Double.NaN;
+
+	private double _cleanFixedDV01 = Double.NaN;
+	private double _cleanFloatDV01 = Double.NaN;
+	private double _dV01WithFixing = Double.NaN;
+	private double _periodFixedRate = Double.NaN;
+	private double _baselineSwapRate = Double.NaN;
+	private double _oneDayCurveShiftPnL = Double.NaN;
+	private double _oneDayTimeRollSwapRate = Double.NaN;
+	private double _oneDayCleanPnLWithFixing = Double.NaN;
+	private double _oneDayDirtyPnLWithFixing = Double.NaN;
+
 	private double _dbl1DTotalPnLWithFixing = Double.NaN;
 	private double _dbl1DCurveShiftSwapRate = Double.NaN;
 	private double _dblPeriodFloatingRateUsed = Double.NaN;
@@ -263,16 +265,16 @@ public class ProductDailyPnL
 		final double dbl3MFloatingDCF)
 		throws Exception
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (_dbl1DTotalPnL = dbl1DTotalPnL) ||
-			!org.drip.numerical.common.NumberUtil.IsValid (_dbl1DCleanPnL = dbl1DCleanPnL) ||
-				!org.drip.numerical.common.NumberUtil.IsValid (_dbl1DDirtyPnL = dbl1DDirtyPnL) ||
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_oneDayTotalPnL = dbl1DTotalPnL) ||
+			!org.drip.numerical.common.NumberUtil.IsValid (_oneDayCleanPnL = dbl1DCleanPnL) ||
+				!org.drip.numerical.common.NumberUtil.IsValid (_oneDayDirtyPnL = dbl1DDirtyPnL) ||
 					!org.drip.numerical.common.NumberUtil.IsValid (_dbl1DTotalPnLWithFixing =
 						dbl1DTotalPnLWithFixing) || !org.drip.numerical.common.NumberUtil.IsValid
-							(_dbl1DCleanPnLWithFixing = dbl1DCleanPnLWithFixing) ||
+							(_oneDayCleanPnLWithFixing = dbl1DCleanPnLWithFixing) ||
 								!org.drip.numerical.common.NumberUtil.IsValid (_dbl1DDirtyPnLWithFixing =
 									dbl1DDirtyPnLWithFixing) || !org.drip.numerical.common.NumberUtil.IsValid
-										(_dbl1DCarryPnL = dbl1DCarryPnL) ||
-											!org.drip.numerical.common.NumberUtil.IsValid (_dbl1DTimeRollPnL =
+										(_oneDayCarryPnL = dbl1DCarryPnL) ||
+											!org.drip.numerical.common.NumberUtil.IsValid (_oneDayTimeRollPnL =
 												dbl1DTimeRollPnL) ||
 													!org.drip.numerical.common.NumberUtil.IsValid
 														(_dbl1DMaturityRollDownSwapRatePnL =
@@ -284,26 +286,26 @@ public class ProductDailyPnL
 				dbl1DMaturityRollUpFairPremiumPnL) || !org.drip.numerical.common.NumberUtil.IsValid
 					(_dbl1DMaturityRollUpFairPremiumWithFixingPnL =
 						dbl1DMaturityRollUpFairPremiumWithFixingPnL) ||
-							!org.drip.numerical.common.NumberUtil.IsValid (_dbl1DCurveShiftPnL =
+							!org.drip.numerical.common.NumberUtil.IsValid (_oneDayCurveShiftPnL =
 								dbl1DCurveShiftPnL) || !org.drip.numerical.common.NumberUtil.IsValid
-									(_dbl1MCarryPnL = dbl1MCarryPnL) ||
+									(_oneMonthCarryPnL = dbl1MCarryPnL) ||
 										!org.drip.numerical.common.NumberUtil.IsValid
 											(_dbl1MMaturityRollDownSwapRatePnL =
 												dbl1MMaturityRollDownSwapRatePnL) ||
-													!org.drip.numerical.common.NumberUtil.IsValid (_dbl3MCarryPnL
+													!org.drip.numerical.common.NumberUtil.IsValid (_threeMonthCarryPnL
 														= dbl3MCarryPnL) ||
 															!org.drip.numerical.common.NumberUtil.IsValid
 																(_dbl3MMaturityRollDownSwapRatePnL =
 																	dbl3MMaturityRollDownSwapRatePnL) ||
 																		!org.drip.numerical.common.NumberUtil.IsValid
-			(_dblDV01 = dblDV01) || !org.drip.numerical.common.NumberUtil.IsValid (_dblDV01WithFixing =
-				dblDV01WithFixing) || !org.drip.numerical.common.NumberUtil.IsValid (_dblCleanFixedDV01 =
-					dblCleanFixedDV01) || !org.drip.numerical.common.NumberUtil.IsValid (_dblCleanFloatDV01 =
+			(_dv01 = dblDV01) || !org.drip.numerical.common.NumberUtil.IsValid (_dV01WithFixing =
+				dblDV01WithFixing) || !org.drip.numerical.common.NumberUtil.IsValid (_cleanFixedDV01 =
+					dblCleanFixedDV01) || !org.drip.numerical.common.NumberUtil.IsValid (_cleanFloatDV01 =
 						dblCleanFloatDV01) || !org.drip.numerical.common.NumberUtil.IsValid
 							(_dblCleanFloatDV01WithFixing = dblCleanFloatDV01WithFixing) ||
-								!org.drip.numerical.common.NumberUtil.IsValid (_dblBaselineSwapRate =
+								!org.drip.numerical.common.NumberUtil.IsValid (_baselineSwapRate =
 									dblBaselineSwapRate) || !org.drip.numerical.common.NumberUtil.IsValid
-										(_dbl1DTimeRollSwapRate = dbl1DTimeRollSwapRate) ||
+										(_oneDayTimeRollSwapRate = dbl1DTimeRollSwapRate) ||
 											!org.drip.numerical.common.NumberUtil.IsValid
 												(_dbl1DMaturityRollDownSwapRate =
 													dbl1DMaturityRollDownSwapRate) ||
@@ -320,7 +322,7 @@ public class ProductDailyPnL
 							= dbl1DMaturityRollUpFairPremiumWithFixing) ||
 								!org.drip.numerical.common.NumberUtil.IsValid (_dbl1DCurveShiftSwapRate =
 									dbl1DCurveShiftSwapRate) || !org.drip.numerical.common.NumberUtil.IsValid
-										(_dblPeriodFixedRate = dblPeriodFixedRate) ||
+										(_periodFixedRate = dblPeriodFixedRate) ||
 											!org.drip.numerical.common.NumberUtil.IsValid
 												(_dblPeriodCurveFloatingRate = dblPeriodCurveFloatingRate) ||
 													!org.drip.numerical.common.NumberUtil.IsValid
@@ -330,16 +332,16 @@ public class ProductDailyPnL
 																	(_dblPeriodFloatingRateUsed =
 																		dblPeriodFloatingRateUsed) ||
 																			!org.drip.numerical.common.NumberUtil.IsValid
-			(_dbl1DFixedDCF = dbl1DFixedDCF) || !org.drip.numerical.common.NumberUtil.IsValid (_dbl1DFloatingDCF
-				= dbl1DFloatingDCF) || !org.drip.numerical.common.NumberUtil.IsValid (_dbl1MFixedDCF =
-					dbl1MFixedDCF) || !org.drip.numerical.common.NumberUtil.IsValid (_dbl1MFloatingDCF =
-						dbl1MFloatingDCF) || !org.drip.numerical.common.NumberUtil.IsValid (_dbl3MFixedDCF =
-							dbl3MFixedDCF) || !org.drip.numerical.common.NumberUtil.IsValid (_dbl3MFloatingDCF =
+			(_oneDayFixedDayCountFraction = dbl1DFixedDCF) || !org.drip.numerical.common.NumberUtil.IsValid (_oneDayFloatingDayCountFraction
+				= dbl1DFloatingDCF) || !org.drip.numerical.common.NumberUtil.IsValid (_oneMonthFixedDayCountFraction =
+					dbl1MFixedDCF) || !org.drip.numerical.common.NumberUtil.IsValid (_oneMonthFloatingDayCountFraction =
+						dbl1MFloatingDCF) || !org.drip.numerical.common.NumberUtil.IsValid (_threeMonthFixedDayCountFraction =
+							dbl3MFixedDCF) || !org.drip.numerical.common.NumberUtil.IsValid (_threeMonthFloatingDayCountFraction =
 								dbl3MFloatingDCF))
 			throw new Exception ("ProductDailyPnL ctr: Invalid Inputs!");
 
 		_oneDayFixedAccrualDays = i1DFixedAccrualDays;
-		_i1DFloatingAccrualDays = i1DFloatingAccrualDays;
+		_oneDayFloatingAccrualDays = i1DFloatingAccrualDays;
 	}
 
 	/**
@@ -350,7 +352,7 @@ public class ProductDailyPnL
 
 	public double clean1DPnL()
 	{
-		return _dbl1DCleanPnL;
+		return _oneDayCleanPnL;
 	}
 
 	/**
@@ -361,7 +363,7 @@ public class ProductDailyPnL
 
 	public double dirty1DPnL()
 	{
-		return _dbl1DDirtyPnL;
+		return _oneDayDirtyPnL;
 	}
 
 	/**
@@ -372,7 +374,7 @@ public class ProductDailyPnL
 
 	public double total1DPnL()
 	{
-		return _dbl1DTotalPnL;
+		return _oneDayTotalPnL;
 	}
 
 	/**
@@ -383,7 +385,7 @@ public class ProductDailyPnL
 
 	public double clean1DPnLWithFixing()
 	{
-		return _dbl1DCleanPnLWithFixing;
+		return _oneDayCleanPnLWithFixing;
 	}
 
 	/**
@@ -416,7 +418,7 @@ public class ProductDailyPnL
 
 	public double carry1DPnL()
 	{
-		return _dbl1DCarryPnL;
+		return _oneDayCarryPnL;
 	}
 
 	/**
@@ -427,7 +429,7 @@ public class ProductDailyPnL
 
 	public double timeRoll1DPnL()
 	{
-		return _dbl1DTimeRollPnL;
+		return _oneDayTimeRollPnL;
 	}
 
 	/**
@@ -482,7 +484,7 @@ public class ProductDailyPnL
 
 	public double curveShift1DPnL()
 	{
-		return _dbl1DCurveShiftPnL;
+		return _oneDayCurveShiftPnL;
 	}
 
 	/**
@@ -493,7 +495,7 @@ public class ProductDailyPnL
 
 	public double carry1MPnL()
 	{
-		return _dbl1MCarryPnL;
+		return _oneMonthCarryPnL;
 	}
 
 	/**
@@ -515,7 +517,7 @@ public class ProductDailyPnL
 
 	public double carry3MPnL()
 	{
-		return _dbl3MCarryPnL;
+		return _threeMonthCarryPnL;
 	}
 
 	/**
@@ -537,7 +539,7 @@ public class ProductDailyPnL
 
 	public double DV01()
 	{
-		return _dblDV01;
+		return _dv01;
 	}
 
 	/**
@@ -548,7 +550,7 @@ public class ProductDailyPnL
 
 	public double DV01WithFixing()
 	{
-		return _dblDV01WithFixing;
+		return _dV01WithFixing;
 	}
 
 	/**
@@ -559,7 +561,7 @@ public class ProductDailyPnL
 
 	public double cleanFixedDV01()
 	{
-		return _dblCleanFixedDV01;
+		return _cleanFixedDV01;
 	}
 
 	/**
@@ -570,7 +572,7 @@ public class ProductDailyPnL
 
 	public double cleanFloatDV01()
 	{
-		return _dblCleanFloatDV01;
+		return _cleanFloatDV01;
 	}
 
 	/**
@@ -592,7 +594,7 @@ public class ProductDailyPnL
 
 	public double baselineSwapRate()
 	{
-		return _dblBaselineSwapRate;
+		return _baselineSwapRate;
 	}
 
 	/**
@@ -603,7 +605,7 @@ public class ProductDailyPnL
 
 	public double timeRollSwapRate1D()
 	{
-		return _dbl1DTimeRollSwapRate;
+		return _oneDayTimeRollSwapRate;
 	}
 
 	/**
@@ -691,7 +693,7 @@ public class ProductDailyPnL
 
 	public double periodFixedRate()
 	{
-		return _dblPeriodFixedRate;
+		return _periodFixedRate;
 	}
 
 	/**
@@ -746,7 +748,7 @@ public class ProductDailyPnL
 
 	public int floating1DAccrualDays()
 	{
-		return _i1DFloatingAccrualDays;
+		return _oneDayFloatingAccrualDays;
 	}
 
 	/**
@@ -757,7 +759,7 @@ public class ProductDailyPnL
 
 	public double fixed1DDCF()
 	{
-		return _dbl1DFixedDCF;
+		return _oneDayFixedDayCountFraction;
 	}
 
 	/**
@@ -768,7 +770,7 @@ public class ProductDailyPnL
 
 	public double floating1DDCF()
 	{
-		return _dbl1DFloatingDCF;
+		return _oneDayFloatingDayCountFraction;
 	}
 
 	/**
@@ -779,7 +781,7 @@ public class ProductDailyPnL
 
 	public double fixed1MDCF()
 	{
-		return _dbl1MFixedDCF;
+		return _oneMonthFixedDayCountFraction;
 	}
 
 	/**
@@ -790,7 +792,7 @@ public class ProductDailyPnL
 
 	public double floating1MDCF()
 	{
-		return _dbl1MFloatingDCF;
+		return _oneMonthFloatingDayCountFraction;
 	}
 
 	/**
@@ -801,7 +803,7 @@ public class ProductDailyPnL
 
 	public double fixed3MDCF()
 	{
-		return _dbl3MFixedDCF;
+		return _threeMonthFixedDayCountFraction;
 	}
 
 	/**
@@ -812,7 +814,7 @@ public class ProductDailyPnL
 
 	public double floating3MDCF()
 	{
-		return _dbl3MFloatingDCF;
+		return _threeMonthFloatingDayCountFraction;
 	}
 
 	/**
@@ -825,21 +827,21 @@ public class ProductDailyPnL
 	{
 		java.util.List<Double> lsPnLMetric = new java.util.ArrayList<Double>();
 
-		lsPnLMetric.add (_dbl1DTotalPnL);
+		lsPnLMetric.add (_oneDayTotalPnL);
 
-		lsPnLMetric.add (_dbl1DCleanPnL);
+		lsPnLMetric.add (_oneDayCleanPnL);
 
-		lsPnLMetric.add (_dbl1DDirtyPnL);
+		lsPnLMetric.add (_oneDayDirtyPnL);
 
 		lsPnLMetric.add (_dbl1DTotalPnLWithFixing);
 
-		lsPnLMetric.add (_dbl1DCleanPnLWithFixing);
+		lsPnLMetric.add (_oneDayCleanPnLWithFixing);
 
 		lsPnLMetric.add (_dbl1DDirtyPnLWithFixing);
 
-		lsPnLMetric.add (_dbl1DCarryPnL);
+		lsPnLMetric.add (_oneDayCarryPnL);
 
-		lsPnLMetric.add (_dbl1DTimeRollPnL);
+		lsPnLMetric.add (_oneDayTimeRollPnL);
 
 		lsPnLMetric.add (_dbl1DMaturityRollDownSwapRatePnL);
 
@@ -849,29 +851,29 @@ public class ProductDailyPnL
 
 		lsPnLMetric.add (_dbl1DMaturityRollUpFairPremiumWithFixingPnL);
 
-		lsPnLMetric.add (_dbl1DCurveShiftPnL);
+		lsPnLMetric.add (_oneDayCurveShiftPnL);
 
-		lsPnLMetric.add (_dbl1MCarryPnL);
+		lsPnLMetric.add (_oneMonthCarryPnL);
 
 		lsPnLMetric.add (_dbl1MMaturityRollDownSwapRatePnL);
 
-		lsPnLMetric.add (_dbl3MCarryPnL);
+		lsPnLMetric.add (_threeMonthCarryPnL);
 
 		lsPnLMetric.add (_dbl3MMaturityRollDownSwapRatePnL);
 
-		lsPnLMetric.add (_dblDV01);
+		lsPnLMetric.add (_dv01);
 
-		lsPnLMetric.add (_dblDV01WithFixing);
+		lsPnLMetric.add (_dV01WithFixing);
 
-		lsPnLMetric.add (_dblCleanFixedDV01);
+		lsPnLMetric.add (_cleanFixedDV01);
 
-		lsPnLMetric.add (_dblCleanFloatDV01);
+		lsPnLMetric.add (_cleanFloatDV01);
 
 		lsPnLMetric.add (_dblCleanFloatDV01WithFixing);
 
-		lsPnLMetric.add (_dblBaselineSwapRate);
+		lsPnLMetric.add (_baselineSwapRate);
 
-		lsPnLMetric.add (_dbl1DTimeRollSwapRate);
+		lsPnLMetric.add (_oneDayTimeRollSwapRate);
 
 		lsPnLMetric.add (_dbl1DMaturityRollDownSwapRate);
 
@@ -887,7 +889,7 @@ public class ProductDailyPnL
 
 		lsPnLMetric.add (_dbl1DCurveShiftSwapRate);
 
-		lsPnLMetric.add (_dblPeriodFixedRate);
+		lsPnLMetric.add (_periodFixedRate);
 
 		lsPnLMetric.add (_dblPeriodCurveFloatingRate);
 
@@ -897,19 +899,19 @@ public class ProductDailyPnL
 
 		lsPnLMetric.add ((double) _oneDayFixedAccrualDays);
 
-		lsPnLMetric.add ((double) _i1DFloatingAccrualDays);
+		lsPnLMetric.add ((double) _oneDayFloatingAccrualDays);
 
-		lsPnLMetric.add (_dbl1DFixedDCF);
+		lsPnLMetric.add (_oneDayFixedDayCountFraction);
 
-		lsPnLMetric.add (_dbl1DFloatingDCF);
+		lsPnLMetric.add (_oneDayFloatingDayCountFraction);
 
-		lsPnLMetric.add (_dbl1MFixedDCF);
+		lsPnLMetric.add (_oneMonthFixedDayCountFraction);
 
-		lsPnLMetric.add (_dbl1MFloatingDCF);
+		lsPnLMetric.add (_oneMonthFloatingDayCountFraction);
 
-		lsPnLMetric.add (_dbl3MFixedDCF);
+		lsPnLMetric.add (_threeMonthFixedDayCountFraction);
 
-		lsPnLMetric.add (_dbl3MFloatingDCF);
+		lsPnLMetric.add (_threeMonthFloatingDayCountFraction);
 
 		int i = 0;
 
