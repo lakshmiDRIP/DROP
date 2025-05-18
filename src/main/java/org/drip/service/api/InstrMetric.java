@@ -6,6 +6,9 @@ package org.drip.service.api;
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -83,40 +86,48 @@ package org.drip.service.api;
  */
 
 /**
- * <i>InstrMetric</i> contains the fields that hold the result of the PnL metric calculations.
- * 
- * <br><br>
- *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationSupportLibrary.md">Computation Support</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/README.md">Environment, Product/Definition Containers, and Scenario/State Manipulation APIs</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/api/README.md">Horizon Roll Attribution Service API</a></li>
- *  </ul>
- * <br><br>
+ * <i>InstrMetric</i> contains the fields that hold the result of the PnL metric calculations. It provides
+ * 	the following Functions:
+ * 	<ul>
+ * 		<li><i>InstrMetric</i> Constructor</li>
+ * 		<li>Retrieve the Forward Metric</li>
+ * 		<li>Retrieve the PnL Metric</li>
+ * 		<li>Reduce the PnL/forward metrics to an array</li>
+ * 	</ul>
+ *
+ * <br>
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationSupportLibrary.md">Computation Support</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/README.md">Environment, Product/Definition Containers, and Scenario/State Manipulation APIs</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/api/README.md">Horizon Roll Attribution Service API</a></td></tr>
+ *  </table>
  * 
  * @author Lakshmi Krishnamurthy
  */
 
-public class InstrMetric {
-	private org.drip.service.api.ForwardRates _fwdMetric = null;
-	private org.drip.service.api.ProductDailyPnL _pnlMetric = null;
+public class InstrMetric
+{
+	private ForwardRates _forwardRates = null;
+	private ProductDailyPnL _productDailyPnL = null;
 
 	/**
-	 * InstrMetric constructor
+	 * <i>InstrMetric</i> constructor
 	 * 
-	 * @param fwdMetric The Forward Rates Metric
-	 * @param pnlMetric The Daily Carry/Roll PnL Metric
+	 * @param forwardRates The Forward Rates Metric
+	 * @param productDailyPnL The Daily Carry/Roll PnL Metric
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public InstrMetric (
-		final org.drip.service.api.ForwardRates fwdMetric,
-		final org.drip.service.api.ProductDailyPnL pnlMetric)
-		throws java.lang.Exception
+		final ForwardRates forwardRates,
+		final ProductDailyPnL productDailyPnL)
+		throws Exception
 	{
-		if (null == (_fwdMetric = fwdMetric) || null == (_pnlMetric = pnlMetric))
-			throw new java.lang.Exception ("InstrMetric ctr: Invalid Inputs");
+		if (null == (_forwardRates = forwardRates) || null == (_productDailyPnL = productDailyPnL)) {
+			throw new Exception ("InstrMetric Constructor: Invalid Inputs");
+		}
 	}
 
 	/**
@@ -125,9 +136,9 @@ public class InstrMetric {
 	 * @return The Forward Metric
 	 */
 
-	public org.drip.service.api.ForwardRates fwdMetric()
+	public ForwardRates fwdMetric()
 	{
-		return _fwdMetric;
+		return _forwardRates;
 	}
 
 	/**
@@ -136,9 +147,9 @@ public class InstrMetric {
 	 * @return The PnL Metric
 	 */
 
-	public org.drip.service.api.ProductDailyPnL pnlMetric()
+	public ProductDailyPnL pnlMetric()
 	{
-		return _pnlMetric;
+		return _productDailyPnL;
 	}
 
 	/**
@@ -149,37 +160,39 @@ public class InstrMetric {
 
 	public double[] toArray()
 	{
-		double[] adblPnLMetric = _pnlMetric.toArray();
+		double[] forwardRatesArray = _forwardRates.toArray();
 
-		double[] adblFwdMetric = _fwdMetric.toArray();
+		double[] pnLMetricArray = _productDailyPnL.toArray();
 
 		int i = 0;
-		double[] adblInstrMetric = new double[adblFwdMetric.length + adblPnLMetric.length];
+		double[] instrMetricArray = new double[forwardRatesArray.length + pnLMetricArray.length];
 
-		for (double dbl : adblPnLMetric)
-			adblInstrMetric[i++] = dbl;
-
-		for (double dbl : adblFwdMetric)
-			adblInstrMetric[i++] = dbl;
-
-		return adblInstrMetric;
-	}
-
-	@Override public java.lang.String toString()
-	{
-		java.lang.StringBuffer sb = new java.lang.StringBuffer();
-
-		boolean bStart = true;
-
-		for (double dbl : toArray()) {
-			if (bStart)
-				bStart = false;
-			else
-				sb.append (",");
-
-			sb.append (dbl);
+		for (double pnLMetric : pnLMetricArray) {
+			instrMetricArray[i++] = pnLMetric;
 		}
 
-		return sb.toString();
+		for (double forwardRates : forwardRatesArray)
+			instrMetricArray[i++] = forwardRates;
+
+		return instrMetricArray;
+	}
+
+	@Override public String toString()
+	{
+		StringBuffer stringBuffer = new StringBuffer();
+
+		boolean firstMetric = true;
+
+		for (double metric : toArray()) {
+			if (firstMetric) {
+				firstMetric = false;
+			} else {
+				stringBuffer.append (",");
+			}
+
+			stringBuffer.append (metric);
+		}
+
+		return stringBuffer.toString();
 	}
 }

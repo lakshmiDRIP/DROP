@@ -1,11 +1,19 @@
 
 package org.drip.service.api;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.drip.numerical.common.NumberUtil;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -83,25 +91,30 @@ package org.drip.service.api;
  */
 
 /**
- * <i>ForwardRates</i> contains the array of the forward rates.
- * 
- * <br><br>
- *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationSupportLibrary.md">Computation Support</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/README.md">Environment, Product/Definition Containers, and Scenario/State Manipulation APIs</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/api/README.md">Horizon Roll Attribution Service API</a></li>
- *  </ul>
- * <br><br>
+ * <i>ForwardRates</i> contains the array of the forward rates. It provides the following Functions:
+ * 	<ul>
+ * 		<li>Empty <i>ForwardRates</i> constructor</li>
+ * 		<li>Add a Forward Rate to the List</li>
+ * 		<li>Convert the List of Forwards to an Array</li>
+ * 	</ul>
+ *
+ * <br>
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationSupportLibrary.md">Computation Support</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/README.md">Environment, Product/Definition Containers, and Scenario/State Manipulation APIs</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/api/README.md">Horizon Roll Attribution Service API</a></td></tr>
+ *  </table>
  * 
  * @author Lakshmi Krishnamurthy
  */
 
-public class ForwardRates {
-	private java.util.List<java.lang.Double> _lsForward = new java.util.ArrayList<java.lang.Double>();
+public class ForwardRates
+{
+	private List<Double> _rateList = new ArrayList<Double>();
 
 	/**
-	 * Empty ForwardRates constructor
+	 * Empty <i>ForwardRates</i> constructor
 	 */
 
 	public ForwardRates()
@@ -111,17 +124,19 @@ public class ForwardRates {
 	/**
 	 * Add a Forward Rate to the List
 	 * 
-	 * @param dblForward The Forward Rate to be added
+	 * @param rate The Forward Rate to be added
 	 * 
 	 * @return TRUE - Successfully added
 	 */
 
 	public boolean addForward (
-		final double dblForward)
+		final double rate)
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (dblForward)) return false;
+		if (!NumberUtil.IsValid (rate)) {
+			return false;
+		}
 
-		_lsForward.add (dblForward);
+		_rateList.add (rate);
 
 		return true;
 	}
@@ -134,33 +149,38 @@ public class ForwardRates {
 
 	public double[] toArray()
 	{
-		if (0 == _lsForward.size()) return null;
+		int rateListSize = _rateList.size();
 
-		int i = 0;
-
-		double[] adblForward = new double[_lsForward.size()];
-
-		for (double dbl : _lsForward)
-			adblForward[i++] = dbl;
-
-		return adblForward;
-	}
-
-	@Override public java.lang.String toString()
-	{
-		java.lang.StringBuffer sb = new java.lang.StringBuffer();
-
-		boolean bStart = true;
-
-		for (double dbl : toArray()) {
-			if (bStart)
-				bStart = false;
-			else
-				sb.append (",");
-
-			sb.append (dbl);
+		if (0 == rateListSize) {
+			return null;
 		}
 
-		return sb.toString();
+		int i = 0;
+		double[] rateArray = new double[rateListSize];
+
+		for (double rate : _rateList) {
+			rateArray[i++] = rate;
+		}
+
+		return rateArray;
+	}
+
+	@Override public String toString()
+	{
+		StringBuffer stringBuffer = new StringBuffer();
+
+		boolean firstRate = true;
+
+		for (double rate : toArray()) {
+			if (firstRate) {
+				firstRate = false;
+			} else {
+				stringBuffer.append (",");
+			}	
+
+			stringBuffer.append (rate);
+		}
+
+		return stringBuffer.toString();
 	}
 }

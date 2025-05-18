@@ -2,6 +2,7 @@
 package org.drip.service.api;
 
 import org.drip.analytics.date.JulianDate;
+import org.drip.service.template.LatentMarketStateBuilder;
 import org.drip.state.discount.DiscountCurve;
 
 /*
@@ -89,6 +90,13 @@ import org.drip.state.discount.DiscountCurve;
  * <i>FixFloatFundingInstrument</i> contains the Fix Float Instrument Inputs for the Funding Curve
  * 	Construction Purposes. It provides the following Functions:
  * 	<ul>
+ * 		<li><i>FixFloatFundingInstrument</i Constructor</li>
+ * 		<li>Retrieve the Spot Date</li>
+ * 		<li>Retrieve the Currency</li>
+ * 		<li>Retrieve the Latent State Type</li>
+ * 		<li>Retrieve the Array of the Maturity Tenors</li>
+ * 		<li>Retrieve the Array of Quotes</li>
+ * 		<li>Retrieve the Funding State</li>
  * 	</ul>
  *
  * <br>
@@ -104,38 +112,51 @@ import org.drip.state.discount.DiscountCurve;
 
 public class FixFloatFundingInstrument
 {
+	private String _currency = "";
 	private int _latentStateType = -1;
-	private double[] _adblQuote = null;
-	private String _strCurrency = "";
-	private String[] _astrMaturityTenor = null;
-	private DiscountCurve _dc = null;
-	private JulianDate _dtSpot = null;
+	private double[] _quoteArray = null;
+	private JulianDate _spotDate = null;
+	private DiscountCurve _discountCurve = null;
+	private String[] _maturityTenorArray = null;
 
 	/**
-	 * FixFloatFundingInstrument Constructor
+	 * <i>FixFloatFundingInstrument</i Constructor
 	 * 
-	 * @param dtSpot Spot Date
-	 * @param strCurrency Currency
-	 * @param astrMaturityTenor Array of the Maturity Tenors
-	 * @param adblQuote Array of Quotes
-	 * @param iLatentStateType Latent State Type
+	 * @param spotDate Spot Date
+	 * @param currency Currency
+	 * @param maturityTenorArray Array of the Maturity Tenors
+	 * @param quoteArray Array of Quotes
+	 * @param latentStateType Latent State Type
 	 * 
 	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public FixFloatFundingInstrument (
-		final JulianDate dtSpot,
-		final String strCurrency,
-		final String[] astrMaturityTenor,
-		final double[] adblQuote,
-		final int iLatentStateType)
+		final JulianDate spotDate,
+		final String currency,
+		final String[] maturityTenorArray,
+		final double[] quoteArray,
+		final int latentStateType)
 		throws Exception
 	{
-		if (null == (_dc = org.drip.service.template.LatentMarketStateBuilder.FundingCurve (_dtSpot = dtSpot,
-			_strCurrency = strCurrency, null, null, "ForwardRate", null, "ForwardRate", _astrMaturityTenor =
-				astrMaturityTenor, _adblQuote = adblQuote, "SwapRate", _latentStateType =
-					iLatentStateType)))
+		if (null == (
+			_discountCurve = LatentMarketStateBuilder.FundingCurve (
+				_spotDate = spotDate,
+				_currency = currency,
+				null,
+				null,
+				"ForwardRate",
+				null,
+				"ForwardRate",
+				_maturityTenorArray = maturityTenorArray,
+				_quoteArray = quoteArray,
+				"SwapRate",
+				_latentStateType = latentStateType
+			)
+		))
+		{
 			throw new Exception ("FixFloatFundingInstrument Constructor => Invalid Inputs");
+		}
 	}
 
 	/**
@@ -146,7 +167,7 @@ public class FixFloatFundingInstrument
 
 	public JulianDate spotDate()
 	{
-		return _dtSpot;
+		return _spotDate;
 	}
 
 	/**
@@ -157,7 +178,7 @@ public class FixFloatFundingInstrument
 
 	public String currency()
 	{
-		return _strCurrency;
+		return _currency;
 	}
 
 	/**
@@ -179,7 +200,7 @@ public class FixFloatFundingInstrument
 
 	public String[] maturityTenors()
 	{
-		return _astrMaturityTenor;
+		return _maturityTenorArray;
 	}
 
 	/**
@@ -190,7 +211,7 @@ public class FixFloatFundingInstrument
 
 	public double[] quotes()
 	{
-		return _adblQuote;
+		return _quoteArray;
 	}
 
 	/**
@@ -201,6 +222,6 @@ public class FixFloatFundingInstrument
 
 	public DiscountCurve fundingState()
 	{
-		return _dc;
+		return _discountCurve;
 	}
 }

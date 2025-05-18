@@ -6,6 +6,9 @@ package org.drip.service.api;
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -100,63 +103,67 @@ package org.drip.service.api;
  * 			Current DV01
  *  	</li>
  *  </ul>
+ *  It provides the following Functions:
+ * 	<ul>
  * 
- * <br><br>
- *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationSupportLibrary.md">Computation Support</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/README.md">Environment, Product/Definition Containers, and Scenario/State Manipulation APIs</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/api/README.md">Horizon Roll Attribution Service API</a></li>
- *  </ul>
- * <br><br>
+ * 	</ul>
+ *
+ * <br>
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationSupportLibrary.md">Computation Support</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/README.md">Environment, Product/Definition Containers, and Scenario/State Manipulation APIs</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/service/api/README.md">Horizon Roll Attribution Service API</a></td></tr>
+ *  </table>
  * 
  * @author Lakshmi Krishnamurthy
  */
 
-public class ProductDailyPnL {
-	private int _i1DFixedAccrualDays = 0;
+public class ProductDailyPnL
+{
+	private int _oneDayFixedAccrualDays = 0;
 	private int _i1DFloatingAccrualDays = 0;
-	private double _dblDV01 = java.lang.Double.NaN;
-	private double _dbl1DCarryPnL = java.lang.Double.NaN;
-	private double _dbl1MCarryPnL = java.lang.Double.NaN;
-	private double _dbl3MCarryPnL = java.lang.Double.NaN;
-	private double _dbl1DFixedDCF = java.lang.Double.NaN;
-	private double _dbl1MFixedDCF = java.lang.Double.NaN;
-	private double _dbl3MFixedDCF = java.lang.Double.NaN;
-	private double _dbl1DCleanPnL = java.lang.Double.NaN;
-	private double _dbl1DDirtyPnL = java.lang.Double.NaN;
-	private double _dbl1DTotalPnL = java.lang.Double.NaN;
-	private double _dbl1DTimeRollPnL = java.lang.Double.NaN;
-	private double _dbl1DFloatingDCF = java.lang.Double.NaN;
-	private double _dbl1MFloatingDCF = java.lang.Double.NaN;
-	private double _dbl3MFloatingDCF = java.lang.Double.NaN;
-	private double _dblCleanFixedDV01 = java.lang.Double.NaN;
-	private double _dblCleanFloatDV01 = java.lang.Double.NaN;
-	private double _dblDV01WithFixing = java.lang.Double.NaN;
-	private double _dbl1DCurveShiftPnL = java.lang.Double.NaN;
-	private double _dblPeriodFixedRate = java.lang.Double.NaN;
-	private double _dblBaselineSwapRate = java.lang.Double.NaN;
-	private double _dbl1DTimeRollSwapRate = java.lang.Double.NaN;
-	private double _dbl1DCleanPnLWithFixing = java.lang.Double.NaN;
-	private double _dbl1DDirtyPnLWithFixing = java.lang.Double.NaN;
-	private double _dbl1DTotalPnLWithFixing = java.lang.Double.NaN;
-	private double _dbl1DCurveShiftSwapRate = java.lang.Double.NaN;
-	private double _dblPeriodFloatingRateUsed = java.lang.Double.NaN;
-	private double _dblPeriodCurveFloatingRate = java.lang.Double.NaN;
-	private double _dbl1DMaturityRollUpSwapRate = java.lang.Double.NaN;
-	private double _dblCleanFloatDV01WithFixing = java.lang.Double.NaN;
-	private double _dblPeriodProductFloatingRate = java.lang.Double.NaN;
-	private double _dbl1DMaturityRollDownSwapRate = java.lang.Double.NaN;
-	private double _dbl1MMaturityRollDownSwapRate = java.lang.Double.NaN;
-	private double _dbl3MMaturityRollDownSwapRate = java.lang.Double.NaN;
-	private double _dbl1DMaturityRollUpSwapRatePnL = java.lang.Double.NaN;
-	private double _dbl1DMaturityRollUpFairPremium = java.lang.Double.NaN;
-	private double _dbl1DMaturityRollDownSwapRatePnL = java.lang.Double.NaN;
-	private double _dbl1MMaturityRollDownSwapRatePnL = java.lang.Double.NaN;
-	private double _dbl3MMaturityRollDownSwapRatePnL = java.lang.Double.NaN;
-	private double _dbl1DMaturityRollUpFairPremiumPnL = java.lang.Double.NaN;
-	private double _dbl1DMaturityRollUpFairPremiumWithFixing = java.lang.Double.NaN;
-	private double _dbl1DMaturityRollUpFairPremiumWithFixingPnL = java.lang.Double.NaN;
+	private double _dblDV01 = Double.NaN;
+	private double _dbl1DCarryPnL = Double.NaN;
+	private double _dbl1MCarryPnL = Double.NaN;
+	private double _dbl3MCarryPnL = Double.NaN;
+	private double _dbl1DFixedDCF = Double.NaN;
+	private double _dbl1MFixedDCF = Double.NaN;
+	private double _dbl3MFixedDCF = Double.NaN;
+	private double _dbl1DCleanPnL = Double.NaN;
+	private double _dbl1DDirtyPnL = Double.NaN;
+	private double _dbl1DTotalPnL = Double.NaN;
+	private double _dbl1DTimeRollPnL = Double.NaN;
+	private double _dbl1DFloatingDCF = Double.NaN;
+	private double _dbl1MFloatingDCF = Double.NaN;
+	private double _dbl3MFloatingDCF = Double.NaN;
+	private double _dblCleanFixedDV01 = Double.NaN;
+	private double _dblCleanFloatDV01 = Double.NaN;
+	private double _dblDV01WithFixing = Double.NaN;
+	private double _dbl1DCurveShiftPnL = Double.NaN;
+	private double _dblPeriodFixedRate = Double.NaN;
+	private double _dblBaselineSwapRate = Double.NaN;
+	private double _dbl1DTimeRollSwapRate = Double.NaN;
+	private double _dbl1DCleanPnLWithFixing = Double.NaN;
+	private double _dbl1DDirtyPnLWithFixing = Double.NaN;
+	private double _dbl1DTotalPnLWithFixing = Double.NaN;
+	private double _dbl1DCurveShiftSwapRate = Double.NaN;
+	private double _dblPeriodFloatingRateUsed = Double.NaN;
+	private double _dblPeriodCurveFloatingRate = Double.NaN;
+	private double _dbl1DMaturityRollUpSwapRate = Double.NaN;
+	private double _dblCleanFloatDV01WithFixing = Double.NaN;
+	private double _dblPeriodProductFloatingRate = Double.NaN;
+	private double _dbl1DMaturityRollDownSwapRate = Double.NaN;
+	private double _dbl1MMaturityRollDownSwapRate = Double.NaN;
+	private double _dbl3MMaturityRollDownSwapRate = Double.NaN;
+	private double _dbl1DMaturityRollUpSwapRatePnL = Double.NaN;
+	private double _dbl1DMaturityRollUpFairPremium = Double.NaN;
+	private double _dbl1DMaturityRollDownSwapRatePnL = Double.NaN;
+	private double _dbl1MMaturityRollDownSwapRatePnL = Double.NaN;
+	private double _dbl3MMaturityRollDownSwapRatePnL = Double.NaN;
+	private double _dbl1DMaturityRollUpFairPremiumPnL = Double.NaN;
+	private double _dbl1DMaturityRollUpFairPremiumWithFixing = Double.NaN;
+	private double _dbl1DMaturityRollUpFairPremiumWithFixingPnL = Double.NaN;
 
 	/**
 	 * ProductDailyPnL constructor
@@ -207,7 +214,7 @@ public class ProductDailyPnL {
 	 * @param dbl3MFixedDCF 3M Fixed Coupon DCF
 	 * @param dbl3MFloatingDCF 3M Floating Coupon DCF
 	 * 
-	 * @throws java.lang.Exception Thrown if inputs are invalid
+	 * @throws Exception Thrown if inputs are invalid
 	 */
 
 	public ProductDailyPnL (
@@ -254,7 +261,7 @@ public class ProductDailyPnL {
 		final double dbl1MFloatingDCF,
 		final double dbl3MFixedDCF,
 		final double dbl3MFloatingDCF)
-		throws java.lang.Exception
+		throws Exception
 	{
 		if (!org.drip.numerical.common.NumberUtil.IsValid (_dbl1DTotalPnL = dbl1DTotalPnL) ||
 			!org.drip.numerical.common.NumberUtil.IsValid (_dbl1DCleanPnL = dbl1DCleanPnL) ||
@@ -329,9 +336,9 @@ public class ProductDailyPnL {
 						dbl1MFloatingDCF) || !org.drip.numerical.common.NumberUtil.IsValid (_dbl3MFixedDCF =
 							dbl3MFixedDCF) || !org.drip.numerical.common.NumberUtil.IsValid (_dbl3MFloatingDCF =
 								dbl3MFloatingDCF))
-			throw new java.lang.Exception ("ProductDailyPnL ctr: Invalid Inputs!");
+			throw new Exception ("ProductDailyPnL ctr: Invalid Inputs!");
 
-		_i1DFixedAccrualDays = i1DFixedAccrualDays;
+		_oneDayFixedAccrualDays = i1DFixedAccrualDays;
 		_i1DFloatingAccrualDays = i1DFloatingAccrualDays;
 	}
 
@@ -728,7 +735,7 @@ public class ProductDailyPnL {
 
 	public int fixed1DAccrualDays()
 	{
-		return _i1DFixedAccrualDays;
+		return _oneDayFixedAccrualDays;
 	}
 
 	/**
@@ -816,7 +823,7 @@ public class ProductDailyPnL {
 
 	public double[] toArray()
 	{
-		java.util.List<java.lang.Double> lsPnLMetric = new java.util.ArrayList<java.lang.Double>();
+		java.util.List<Double> lsPnLMetric = new java.util.ArrayList<Double>();
 
 		lsPnLMetric.add (_dbl1DTotalPnL);
 
@@ -888,7 +895,7 @@ public class ProductDailyPnL {
 
 		lsPnLMetric.add (_dblPeriodFloatingRateUsed);
 
-		lsPnLMetric.add ((double) _i1DFixedAccrualDays);
+		lsPnLMetric.add ((double) _oneDayFixedAccrualDays);
 
 		lsPnLMetric.add ((double) _i1DFloatingAccrualDays);
 
@@ -914,9 +921,9 @@ public class ProductDailyPnL {
 		return adblSPCA;
 	}
 
-	@Override public java.lang.String toString()
+	@Override public String toString()
 	{
-		java.lang.StringBuffer sb = new java.lang.StringBuffer();
+		StringBuffer sb = new StringBuffer();
 
 		boolean bStart = true;
 
