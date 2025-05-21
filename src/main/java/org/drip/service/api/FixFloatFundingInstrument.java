@@ -90,7 +90,7 @@ import org.drip.state.discount.DiscountCurve;
  * <i>FixFloatFundingInstrument</i> contains the Fix Float Instrument Inputs for the Funding Curve
  * 	Construction Purposes. It provides the following Functions:
  * 	<ul>
- * 		<li><i>FixFloatFundingInstrument</i Constructor</li>
+ * 		<li><i>FixFloatFundingInstrument</i> Constructor</li>
  * 		<li>Retrieve the Spot Date</li>
  * 		<li>Retrieve the Currency</li>
  * 		<li>Retrieve the Latent State Type</li>
@@ -120,7 +120,7 @@ public class FixFloatFundingInstrument
 	private String[] _maturityTenorArray = null;
 
 	/**
-	 * <i>FixFloatFundingInstrument</i Constructor
+	 * <i>FixFloatFundingInstrument</i> Constructor
 	 * 
 	 * @param spotDate Spot Date
 	 * @param currency Currency

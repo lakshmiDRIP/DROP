@@ -1,6 +1,9 @@
 
 package org.drip.service.api;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.drip.numerical.common.NumberUtil;
 
 /*
@@ -88,26 +91,53 @@ import org.drip.numerical.common.NumberUtil;
  */
 
 /**
- * <i>ProductDailyPnL</i> contains the following daily measures computed:
- * 
- * <br><br>
- *  <ul>
- *  	<li>
- * 			1D Carry, Roll Down, Curve Shift, and Full Return PnL
- *  	</li>
- *  	<li>
- * 			3D Carry and Roll Down PnL
- *  	</li>
- *  	<li>
- * 			3M Carry and Roll Down PnL
- *  	</li>
- *  	<li>
- * 			Current DV01
- *  	</li>
- *  </ul>
- *  It provides the following Functions:
+ * <i>ProductDailyPnL</i> contains the daily measures computed. It provides the following Functions:
  * 	<ul>
- * 
+ * 		<li><i>ProductDailyPnL</i> constructor</li>
+ * 		<li>Retrieve the 1D Clean PnL</li>
+ * 		<li>Retrieve the 1D Dirty PnL</li>
+ * 		<li>Retrieve the 1D Total PnL</li>
+ * 		<li>Retrieve the 1D Clean PnL With Fixing</li>
+ * 		<li>Retrieve the 1D Dirty PnL With Fixing</li>
+ * 		<li>Retrieve the 1D Total PnL With Fixing</li>
+ * 		<li>Retrieve the 1D Carry PnL</li>
+ * 		<li>Retrieve the 1D Time Roll PnL</li>
+ * 		<li>Retrieve the 1D Maturity Roll Down Swap Rate PnL</li>
+ * 		<li>Retrieve the 1D Maturity Roll Up Swap Rate PnL</li>
+ * 		<li>Retrieve the 1D Maturity Roll Up Fair Premium PnL</li>
+ * 		<li>Retrieve the 1D Maturity Roll Up Fair Premium With Fixing PnL</li>
+ * 		<li>Retrieve the 1D Curve Shift PnL</li>
+ * 		<li>Retrieve the 1M Carry PnL</li>
+ * 		<li>Retrieve the 1M Maturity Roll Down Swap Rate PnL</li>
+ * 		<li>Retrieve the 3M Carry PnL</li>
+ * 		<li>Retrieve the 3M Maturity Roll Down Swap Rate PnL</li>
+ * 		<li>Retrieve the DV01</li>
+ * 		<li>Retrieve the DV01 With Fixing</li>
+ * 		<li>Retrieve the Clean Fixed DV01</li>
+ * 		<li>Retrieve the Clean Float DV01</li>
+ * 		<li>Retrieve the Clean Float DV01 With Fixing</li>
+ * 		<li>Retrieve the Baseline Swap Rate</li>
+ * 		<li>Retrieve the 1D Time Roll Swap Rate</li>
+ * 		<li>Retrieve the 1D Maturity Roll Down Swap Rate</li>
+ * 		<li>Retrieve the 1M Maturity Roll Down Swap Rate</li>
+ * 		<li>Retrieve the 3M Maturity Roll Down Swap Rate</li>
+ * 		<li>Retrieve the 1D Maturity Roll Up Swap Rate</li>
+ * 		<li>Retrieve the 1D Maturity Roll Up Fair Premium</li>
+ * 		<li>Retrieve the 1D Maturity Roll Up Fair Premium With Fixing</li>
+ * 		<li>Retrieve the 1D Curve Shift Swap Rate</li>
+ * 		<li>Retrieve the Period Fixed Rate</li>
+ * 		<li>Retrieve the Period Curve Floating Rate</li>
+ * 		<li>Retrieve the Period Product Floating Rate</li>
+ * 		<li>Retrieve the Period Floating Rate Used</li>
+ * 		<li>Retrieve the 1D Fixed Accrual Period</li>
+ * 		<li>Retrieve the 1D Floating Accrual Period</li>
+ * 		<li>Retrieve the Period 1D Fixed DCF</li>
+ * 		<li>Retrieve the Period 1D Floating DCF</li>
+ * 		<li>Retrieve the Period 1M Fixed DCF</li>
+ * 		<li>Retrieve the Period 1M Floating DCF</li>
+ * 		<li>Retrieve the Period 3M Fixed DCF</li>
+ * 		<li>Retrieve the Period 3M Floating DCF</li>
+ * 		<li>Retrieve the Array of Metrics</li>
  * 	</ul>
  *
  * <br>
@@ -803,119 +833,121 @@ public class ProductDailyPnL
 
 	public double[] toArray()
 	{
-		java.util.List<Double> lsPnLMetric = new java.util.ArrayList<Double>();
+		List<Double> pnlMetricList = new ArrayList<Double>();
 
-		lsPnLMetric.add (_oneDayTotalPnL);
+		pnlMetricList.add (_oneDayTotalPnL);
 
-		lsPnLMetric.add (_oneDayCleanPnL);
+		pnlMetricList.add (_oneDayCleanPnL);
 
-		lsPnLMetric.add (_oneDayDirtyPnL);
+		pnlMetricList.add (_oneDayDirtyPnL);
 
-		lsPnLMetric.add (_oneDayTotalPnLWithFixing);
+		pnlMetricList.add (_oneDayTotalPnLWithFixing);
 
-		lsPnLMetric.add (_oneDayCleanPnLWithFixing);
+		pnlMetricList.add (_oneDayCleanPnLWithFixing);
 
-		lsPnLMetric.add (_oneDayDirtyPnLWithFixing);
+		pnlMetricList.add (_oneDayDirtyPnLWithFixing);
 
-		lsPnLMetric.add (_oneDayCarryPnL);
+		pnlMetricList.add (_oneDayCarryPnL);
 
-		lsPnLMetric.add (_oneDayTimeRollPnL);
+		pnlMetricList.add (_oneDayTimeRollPnL);
 
-		lsPnLMetric.add (_oneDayMaturityRollDownSwapRatePnL);
+		pnlMetricList.add (_oneDayMaturityRollDownSwapRatePnL);
 
-		lsPnLMetric.add (_oneDayMaturityRollUpSwapRatePnL);
+		pnlMetricList.add (_oneDayMaturityRollUpSwapRatePnL);
 
-		lsPnLMetric.add (_oneDayMaturityRollUpFairPremiumPnL);
+		pnlMetricList.add (_oneDayMaturityRollUpFairPremiumPnL);
 
-		lsPnLMetric.add (_oneDayMaturityRollUpFairPremiumWithFixingPnL);
+		pnlMetricList.add (_oneDayMaturityRollUpFairPremiumWithFixingPnL);
 
-		lsPnLMetric.add (_oneDayCurveShiftPnL);
+		pnlMetricList.add (_oneDayCurveShiftPnL);
 
-		lsPnLMetric.add (_oneMonthCarryPnL);
+		pnlMetricList.add (_oneMonthCarryPnL);
 
-		lsPnLMetric.add (_oneMonthMaturityRollDownSwapRatePnL);
+		pnlMetricList.add (_oneMonthMaturityRollDownSwapRatePnL);
 
-		lsPnLMetric.add (_threeMonthCarryPnL);
+		pnlMetricList.add (_threeMonthCarryPnL);
 
-		lsPnLMetric.add (_threeMonthMaturityRollDownSwapRatePnL);
+		pnlMetricList.add (_threeMonthMaturityRollDownSwapRatePnL);
 
-		lsPnLMetric.add (_dv01);
+		pnlMetricList.add (_dv01);
 
-		lsPnLMetric.add (_dV01WithFixing);
+		pnlMetricList.add (_dV01WithFixing);
 
-		lsPnLMetric.add (_cleanFixedDV01);
+		pnlMetricList.add (_cleanFixedDV01);
 
-		lsPnLMetric.add (_cleanFloatDV01);
+		pnlMetricList.add (_cleanFloatDV01);
 
-		lsPnLMetric.add (_cleanFloatDV01WithFixing);
+		pnlMetricList.add (_cleanFloatDV01WithFixing);
 
-		lsPnLMetric.add (_baselineSwapRate);
+		pnlMetricList.add (_baselineSwapRate);
 
-		lsPnLMetric.add (_oneDayTimeRollSwapRate);
+		pnlMetricList.add (_oneDayTimeRollSwapRate);
 
-		lsPnLMetric.add (_oneDayMaturityRollDownSwapRate);
+		pnlMetricList.add (_oneDayMaturityRollDownSwapRate);
 
-		lsPnLMetric.add (_oneMonthMaturityRollDownSwapRate);
+		pnlMetricList.add (_oneMonthMaturityRollDownSwapRate);
 
-		lsPnLMetric.add (_threeMonthMaturityRollDownSwapRate);
+		pnlMetricList.add (_threeMonthMaturityRollDownSwapRate);
 
-		lsPnLMetric.add (_oneDayMaturityRollUpSwapRate);
+		pnlMetricList.add (_oneDayMaturityRollUpSwapRate);
 
-		lsPnLMetric.add (_oneDayMaturityRollUpFairPremium);
+		pnlMetricList.add (_oneDayMaturityRollUpFairPremium);
 
-		lsPnLMetric.add (_oneDayMaturityRollUpFairPremiumWithFixing);
+		pnlMetricList.add (_oneDayMaturityRollUpFairPremiumWithFixing);
 
-		lsPnLMetric.add (_oneDayCurveShiftSwapRate);
+		pnlMetricList.add (_oneDayCurveShiftSwapRate);
 
-		lsPnLMetric.add (_periodFixedRate);
+		pnlMetricList.add (_periodFixedRate);
 
-		lsPnLMetric.add (_periodCurveFloatingRate);
+		pnlMetricList.add (_periodCurveFloatingRate);
 
-		lsPnLMetric.add (_periodProductFloatingRate);
+		pnlMetricList.add (_periodProductFloatingRate);
 
-		lsPnLMetric.add (_periodFloatingRateUsed);
+		pnlMetricList.add (_periodFloatingRateUsed);
 
-		lsPnLMetric.add ((double) _oneDayFixedAccrualDays);
+		pnlMetricList.add ((double) _oneDayFixedAccrualDays);
 
-		lsPnLMetric.add ((double) _oneDayFloatingAccrualDays);
+		pnlMetricList.add ((double) _oneDayFloatingAccrualDays);
 
-		lsPnLMetric.add (_oneDayFixedDayCountFraction);
+		pnlMetricList.add (_oneDayFixedDayCountFraction);
 
-		lsPnLMetric.add (_oneDayFloatingDayCountFraction);
+		pnlMetricList.add (_oneDayFloatingDayCountFraction);
 
-		lsPnLMetric.add (_oneMonthFixedDayCountFraction);
+		pnlMetricList.add (_oneMonthFixedDayCountFraction);
 
-		lsPnLMetric.add (_oneMonthFloatingDayCountFraction);
+		pnlMetricList.add (_oneMonthFloatingDayCountFraction);
 
-		lsPnLMetric.add (_threeMonthFixedDayCountFraction);
+		pnlMetricList.add (_threeMonthFixedDayCountFraction);
 
-		lsPnLMetric.add (_threeMonthFloatingDayCountFraction);
+		pnlMetricList.add (_threeMonthFloatingDayCountFraction);
 
 		int i = 0;
 
-		double[] adblSPCA = new double[lsPnLMetric.size()];
+		double[] pnlMetricArray = new double[pnlMetricList.size()];
 
-		for (double dbl : lsPnLMetric)
-			adblSPCA[i++] = dbl;
+		for (double pnlMetric : pnlMetricList) {
+			pnlMetricArray[i++] = pnlMetric;
+		}
 
-		return adblSPCA;
+		return pnlMetricArray;
 	}
 
 	@Override public String toString()
 	{
-		StringBuffer sb = new StringBuffer();
+		StringBuffer stringBuffer = new StringBuffer();
 
-		boolean bStart = true;
+		boolean firstMetric = true;
 
-		for (double dbl : toArray()) {
-			if (bStart)
-				bStart = false;
-			else
-				sb.append (",");
+		for (double metric : toArray()) {
+			if (firstMetric) {
+				firstMetric = false;
+			} else {
+				stringBuffer.append (",");
+			}
 
-			sb.append (dbl);
+			stringBuffer.append (metric);
 		}
 
-		return sb.toString();
+		return stringBuffer.toString();
 	}
 }

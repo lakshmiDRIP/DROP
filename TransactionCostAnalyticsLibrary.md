@@ -11,7 +11,7 @@ Transaction Cost Analytics Library contains the Functionality to estimate single
 
  |        Document         | Link |
  |-------------------------|------|
- | Technical Specification | [*Latest*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/TransactionCostAnalytics/TransactionCostAnalytics_v6.06.pdf) [*Previous*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/TransactionCostAnalytics) |
+ | Technical Specification | [*Latest*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/TransactionCostAnalytics/TransactionCostAnalytics_v6.77.pdf) [*Previous*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/TransactionCostAnalytics) |
  | User Guide              |  |
  | API                     | [*Javadoc*](https://lakshmidrip.github.io/DROP/Javadoc/index.html)|
 
@@ -93,6 +93,10 @@ Transaction Cost Analytics Library contains the Functionality to estimate single
 	* Phase-based Conditional Action
 	* Additional Considerations
 	* Continuous Trading Scenario Overview
+ * Seven Execution Algorithms
+	* Instruction
+	* Why are Algorithmic Strategies Used
+	* References
  * Execution Cost and Transaction Trajectories
 	* Motivation and Practice Overview
 	* Post Trade Reporting
