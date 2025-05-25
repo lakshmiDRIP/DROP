@@ -1,5 +1,5 @@
 
-package org.drip.oms.benchmark;
+package org.drip.oms.transaction;
 
 import java.util.Date;
 
@@ -11,8 +11,6 @@ import org.drip.numerical.common.NumberUtil;
 
 /*!
  * Copyright (C) 2025 Lakshmi Krishnamurthy
- * Copyright (C) 2024 Lakshmi Krishnamurthy
- * Copyright (C) 2023 Lakshmi Krishnamurthy
  * 
  *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
  *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
@@ -80,8 +78,7 @@ import org.drip.numerical.common.NumberUtil;
  */
 
 /**
- * <i>VWAP</i> implements the Volume-Weighted Average Price VWAP that carries the Metrics associated with
- * 	Trades in a Session. The References are:
+ * <i>Trade</i> maintains Details of a single Trade. The References are:
  *  
  * 	<br><br>
  *  <ul>
@@ -94,11 +91,11 @@ import org.drip.numerical.common.NumberUtil;
  * 				Finance</i> <b>17 (1)</b> 21-39
  * 		</li>
  * 		<li>
- * 			Vassilis, P. (2005a): A Realistic Model of Market Liquidity and Depth <i>Journal of Futures
- * 				Markets</i> <b>25 (5)</b> 443-464
+ * 			Jacob, B. (2024): <i>7 Execution Algorithms You Should Know About….</i>
+ * 				https://www.linkedin.com/pulse/7-execution-algorithms-you-should-know-benjamin-jacob-vl7pf/
  * 		</li>
  * 		<li>
- * 			Vassilis, P. (2005b): Slow and Fast Markets <i>Journal of Economics and Business</i> <b>57
+ * 			Vassilis, P. (2005): Slow and Fast Markets <i>Journal of Economics and Business</i> <b>57
  * 				(6)</b> 576-593
  * 		</li>
  * 		<li>
@@ -112,31 +109,36 @@ import org.drip.numerical.common.NumberUtil;
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/TransactionCostAnalyticsLibrary.md">Transaction Cost Analytics</a></li>
  *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/oms/README.md">R<sup>d</sup> Order Specification, Handling, and Management</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/oms/benchmark/README.md">Benchmark/Tie/Peg Price Thresholds</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/oms/transaction/README.md">Order Specification and Session Metrics</a></li>
  *  </ul>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class VWAP
+public class Trade
 {
-	private Date _sessionEnd = null;
-	private Date _sessionStart = null;
-	private double _transactionVolume = Double.NaN;
-	private double _transactionMarketValue = Double.NaN;
+	private Date _time = null;
+	private String _ticker = "";
+	private double _size = Double.NaN;
+	private double _price = Double.NaN;
 
 	/**
-	 * Construct a Standard Instance of VWAP
+	 * Construct a Standard <i>Trade</i> Instance
 	 * 
-	 * @return Standard VWAP Instance
+	 * @param ticker Ticker
+	 * @param price Price
+	 * @param size Size
+	 * 
+	 * @return Standard <i>Trade</i> Instance
 	 */
 
-	public VWAP Standard()
+	public static final Trade Standard (
+		final String ticker,
+		final double price,
+		final double size)
 	{
-		Date sessionStart = new Date();
-
 		try {
-			return new VWAP (sessionStart, sessionStart);
+			return new Trade (ticker, price, size, new Date());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -145,113 +147,73 @@ public class VWAP
 	}
 
 	/**
-	 * <i>VWAP</i> Constructor
+	 * <i>Trade</i> Constructor
 	 * 
-	 * @param sessionStart Session Start
-	 * @param sessionEnd Session End
+	 * @param ticker Ticker
+	 * @param price Price
+	 * @param size Size
+	 * @param time Time
 	 * 
-	 * @throws Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if <i>Trade</i> cannot be constructed
 	 */
 
-	public VWAP (
-		final Date sessionStart,
-		final Date sessionEnd)
+	public Trade (
+		final String ticker,
+		final double price,
+		final double size,
+		final Date time)
 		throws Exception
 	{
-		if (null == (_sessionStart = sessionStart)) {
-			throw new Exception ("VWAP Construtor => Invalid Input");
+		if (null == (_ticker = ticker) || _ticker.isEmpty() ||
+			!NumberUtil.IsValid (_price = price) ||
+			!NumberUtil.IsValid (_size = size) ||
+			null == (_time = time))
+		{
+			throw new Exception ("Trade Constructor => Invalid Inputs");
 		}
-
-		_sessionEnd = sessionEnd;
 	}
 
 	/**
-	 * Retrieve the Start of the Session
+	 * Retrieve the Trade Ticker
 	 * 
-	 * @return Start of the Session
+	 * @return Trade Ticker
 	 */
 
-	public Date sessionStart()
+	public String ticker()
 	{
-		return _sessionStart;
+		return _ticker;
 	}
 
 	/**
-	 * Retrieve the End of the Session
+	 * Retrieve the Trade Price
 	 * 
-	 * @return End of the Session
+	 * @return Trade Price
 	 */
 
-	public Date sessionEnd()
+	public double price()
 	{
-		return _sessionEnd;
+		return _price;
 	}
 
 	/**
-	 * Retrieve the Session Transaction Volume
+	 * Retrieve the Trade Size
 	 * 
-	 * @return The Session Transaction Volume
+	 * @return Trade Size
 	 */
 
-	public double transactionVolume()
+	public double size()
 	{
-		return _transactionVolume;
+		return _size;
 	}
 
 	/**
-	 * Retrieve the Session Transaction Market Value
+	 * Retrieve the Trade Time
 	 * 
-	 * @return The Session Transaction Market Value
+	 * @return Trade Time
 	 */
 
-	public double transactionMarketValue()
+	public Date time()
 	{
-		return _transactionMarketValue;
-	}
-
-	/**
-	 * Add a Trade to the Session
-	 * 
-	 * @param size Size
-	 * @param price Price
-	 * 
-	 * @return TRUE - The Trade has been successfully added
-	 */
-
-	public boolean addTrade (
-		final double size,
-		final double price)
-	{
-		if (!NumberUtil.IsValid (size) || !NumberUtil.IsValid (price)) {
-			return false;
-		}
-
-		_transactionMarketValue += price * size;
-		_transactionVolume += size;
-		return true;
-	}
-
-	/**
-	 * Finish the VWAP Session
-	 * 
-	 * @return TRUE - The Session is Finished
-	 */
-
-	public boolean finish()
-	{
-		_sessionEnd = new Date();
-
-		return true;
-	}
-
-	/**
-	 * Retrieve the Session VWAP Average
-	 * 
-	 * @return The Session VWAP Average
-	 */
-
-	public double sessionAverage()
-	{
-		return 0. == _transactionVolume ? Double.NaN : _transactionMarketValue / _transactionVolume;
+		return _time;
 	}
 }

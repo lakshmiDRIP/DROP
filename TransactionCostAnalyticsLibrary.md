@@ -4,7 +4,12 @@
 
 <p align="center"><img src="https://github.com/lakshmiDRIP/DROP/blob/master/DRIP_Logo.gif?raw=true" width="100"></p>
 
-Transaction Cost Analytics Library contains the Functionality to estimate single Trade/Portfolio Execution Cost, and corresponding Optimal Trajectories.
+Transaction Cost Analytics Library contains the Functionality to:
+	* Centralized Limit Order Book Manager
+	* Standardized Execution Scheduling Strategies
+	* Estimate single Trade/Portfolio Execution Cost
+	* Construct Optimal Trajectories
+	* Order Management and Routing
 
 
 ## Documentation

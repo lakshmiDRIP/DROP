@@ -5265,4 +5265,31 @@ public class ArrayUtil
 
     	return remainderSet.contains (0);
     }
+
+    public static final void main (
+		final String[] argumentArray)
+    	throws Exception
+	{
+    	int[] numberArray = new int[]{};
+
+    	Map<Integer, List<Integer>> vertexEdgeListMap = new HashMap<Integer, List<Integer>>();
+
+    	vertexEdgeListMap.put (numberArray.length - 1, null);
+
+    	for (int i = numberArray.length - 2; i >= 0; ++i) {
+        	for (int j = i + 1; j < numberArray.length; ++j) {
+        		if (numberArray[i] < numberArray[j]) {
+        			if (vertexEdgeListMap.containsKey (numberArray[i])) {
+        				vertexEdgeListMap.get (numberArray[i]).add (numberArray[j]);
+        			} else {
+        				List<Integer> edgeList = new ArrayList<Integer>();
+
+        				edgeList.add (numberArray[j]);
+
+        				vertexEdgeListMap.put (numberArray.length - 1, edgeList);
+        			}
+        		}
+        	}
+    	}
+	}
 }
