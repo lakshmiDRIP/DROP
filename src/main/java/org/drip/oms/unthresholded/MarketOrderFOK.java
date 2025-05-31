@@ -4,7 +4,6 @@ package org.drip.oms.unthresholded;
 import java.util.Date;
 
 import org.drip.oms.transaction.Side;
-import org.drip.oms.transaction.DisplaySettings;
 import org.drip.oms.transaction.OrderFillWholeSettings;
 import org.drip.oms.transaction.OrderIssuer;
 import org.drip.oms.transaction.TimeInForce;
@@ -131,7 +130,6 @@ public class MarketOrderFOK extends MarketOrder
 	 * @param side Order Side
 	 * @param size Order Size
 	 * @param timeInForce Time-in-Force Settings
-	 * @param displaySettings Order Display Settings
 	 * 
 	 * @return Instance of Buy Fill-Or-Kill (FOK) Market Order
 	 */
@@ -141,8 +139,7 @@ public class MarketOrderFOK extends MarketOrder
 		final String ticker,
 		final Side side,
 		final double size,
-		final TimeInForce timeInForce,
-		final DisplaySettings displaySettings)
+		final TimeInForce timeInForce)
 	{
 		try
 		{
@@ -153,8 +150,7 @@ public class MarketOrderFOK extends MarketOrder
 				new Date(),
 				side,
 				size,
-				timeInForce,
-				displaySettings
+				timeInForce
 			);
 		}
 		catch (Exception e)
@@ -172,7 +168,6 @@ public class MarketOrderFOK extends MarketOrder
 	 * @param ticker Security Identifier/Ticker
 	 * @param size Order Size
 	 * @param timeInForce Time-in-Force Settings
-	 * @param displaySettings Order Display Settings
 	 * 
 	 * @return Standard Instance of Buy Fill-Or-Kill (FOK) Market Order
 	 */
@@ -181,16 +176,14 @@ public class MarketOrderFOK extends MarketOrder
 		final OrderIssuer issuer,
 		final String ticker,
 		final double size,
-		final TimeInForce timeInForce,
-		final DisplaySettings displaySettings)
+		final TimeInForce timeInForce)
 	{
 		return Standard (
 			issuer,
 			ticker,
 			Side.Buy(),
 			size,
-			timeInForce,
-			displaySettings
+			timeInForce
 		);
 	}
 
@@ -201,7 +194,6 @@ public class MarketOrderFOK extends MarketOrder
 	 * @param ticker Security Identifier/Ticker
 	 * @param size Order Size
 	 * @param timeInForce Time-in-Force Settings
-	 * @param displaySettings Order Display Settings
 	 * 
 	 * @return Standard Instance of Sell Fill-Or-Kill (FOK) Market Order
 	 */
@@ -210,16 +202,14 @@ public class MarketOrderFOK extends MarketOrder
 		final OrderIssuer issuer,
 		final String ticker,
 		final double size,
-		final TimeInForce timeInForce,
-		final DisplaySettings displaySettings)
+		final TimeInForce timeInForce)
 	{
 		return Standard (
 			issuer,
 			ticker,
 			Side.Sell(),
 			size,
-			timeInForce,
-			displaySettings
+			timeInForce
 		);
 	}
 
@@ -233,7 +223,6 @@ public class MarketOrderFOK extends MarketOrder
 	 * @param side Order Side
 	 * @param size Order Size
 	 * @param timeInForce Time-in-Force Settings
-	 * @param displaySettings Order Display Settings
 	 * 
 	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
@@ -245,8 +234,7 @@ public class MarketOrderFOK extends MarketOrder
 		final Date creationTime,
 		final Side side,
 		final double size,
-		final TimeInForce timeInForce,
-		final DisplaySettings displaySettings)
+		final TimeInForce timeInForce)
 		throws Exception
 	{
 		super (
@@ -257,8 +245,7 @@ public class MarketOrderFOK extends MarketOrder
 			side,
 			size,
 			timeInForce,
-			OrderFillWholeSettings.FillOrKill(),
-			displaySettings
+			OrderFillWholeSettings.FillOrKill()
 		);
 	}
 }

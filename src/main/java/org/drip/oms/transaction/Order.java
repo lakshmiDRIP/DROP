@@ -4,6 +4,7 @@ package org.drip.oms.transaction;
 import java.util.Date;
 
 import org.drip.numerical.common.NumberUtil;
+import org.drip.oms.exchange.TradesWindow;
 import org.drip.oms.fill.OrderFulfillment;
 
 /*
@@ -116,7 +117,7 @@ import org.drip.oms.fill.OrderFulfillment;
  * @author Lakshmi Krishnamurthy
  */
 
-public abstract class Order
+public class Order
 {
 	private String _id = "";
 	private Side _side = null;
@@ -129,8 +130,55 @@ public abstract class Order
 	private int _type = Integer.MIN_VALUE;
 	private int _state = Integer.MIN_VALUE;
 	private TimeInForce _timeInForce = null;
-	private DisplaySettings _displaySettings = null;
 	private OrderFillWholeSettings _fillWholeSettings = null;
+
+	/**
+	 * Construct a POV Participation Rate Order
+	 * 
+	 * @param issuer Order Issuer
+	 * @param ticker Security Identifier/Ticker
+	 * @param id Order ID
+	 * @param type Order Type
+	 * @param creationTime Creation Time
+	 * @param side Order Side
+	 * @param timeInForce Time-in-Force Settings
+	 * @param fillWholeSettings Order Fill-Whole Settings
+	 * @param participationRate POV Participation Rate
+	 * @param tradesWindow Trades Window
+	 * 
+	 * @return POV Participation Rate Order
+	 */
+
+	public static final Order FromPOV (
+		final OrderIssuer issuer,
+		final String ticker,
+		final String id,
+		final int type,
+		final Date creationTime,
+		final Side side,
+		final TimeInForce timeInForce,
+		final OrderFillWholeSettings fillWholeSettings,
+		final double participationRate,
+		final TradesWindow tradesWindow)
+	{
+		try {
+			return null == tradesWindow ? null : new org.drip.oms.transaction.Order (
+				issuer,
+				ticker,
+				id,
+				type,
+				creationTime,
+				side,
+				participationRate * tradesWindow.sessionTradeVolume(),
+				timeInForce,
+				fillWholeSettings
+			);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return null;
+	}
 
 	/**
 	 * Order Constructor
@@ -144,7 +192,6 @@ public abstract class Order
 	 * @param size Order Size
 	 * @param timeInForce Time-in-Force Settings
 	 * @param fillWholeSettings Order Fill-Whole Settings
-	 * @param displaySettings Order Display Settings
 	 * 
 	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
@@ -158,8 +205,7 @@ public abstract class Order
 		final Side side,
 		final double size,
 		final TimeInForce timeInForce,
-		final OrderFillWholeSettings fillWholeSettings,
-		final DisplaySettings displaySettings)
+		final OrderFillWholeSettings fillWholeSettings)
 		throws Exception
 	{
 		if (null == (_issuer = issuer) ||
@@ -180,7 +226,6 @@ public abstract class Order
 		_type = type;
 		_timeInForce = timeInForce;
 		_updateTime = creationTime;
-		_displaySettings = displaySettings;
 		_fillWholeSettings = fillWholeSettings;
 		_state = OrderState.OPEN + OrderState.UNFILLED;
 
@@ -322,35 +367,29 @@ public abstract class Order
 	}
 
 	/**
-	 * Retrieve the Order Display Settings
-	 * 
-	 * @return The Order Display Settings
-	 */
-
-	public DisplaySettings displaySettings()
-	{
-		return _displaySettings;
-	}
-
-	/**
-	 * Indicate if the Order is Conditional
+	 * Indicate if the Order is Conditional. Default is Non-Conditional
 	 * 
 	 * @return TRUE - Order is Conditional
 	 */
 
-	public abstract boolean isConditional();
+	public boolean isConditional()
+	{
+		return false;
+	}
 
 	/**
-	 * Generate a Child Order of the same Type
+	 * Generate a Child Order of the same Type. Default implementation is to not generate Child Orders.
 	 * 
 	 * @param filledSize Filled Size
 	 * 
 	 * @return Child Order of the same Type
 	 */
 
-	public abstract Order generateChildOrder (
-		final double filledSize
-	);
+	public Order generateChildOrder (
+		final double filledSize)
+	{
+		return null;
+	}
 
 	/**
 	 * Retrieve the Fill-or-Kill Flag
@@ -496,17 +535,5 @@ public abstract class Order
 		_completionTime = new Date();
 
 		return true;
-	}
-
-	/**
-	 * Retrieve the Order Display Amount
-	 * 
-	 * @return Order Display Amount
-	 */
-
-	public double displayAmount()
-	{
-		return null == _displaySettings || _displaySettings.hide() ? 0. :
-			_size * _displaySettings.icebergBelowTheSurfaceRatio();
 	}
 }

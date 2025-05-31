@@ -5,7 +5,6 @@ import java.util.Date;
 
 import org.drip.oms.transaction.Side;
 import org.drip.oms.benchmark.PegScheme;
-import org.drip.oms.transaction.DisplaySettings;
 import org.drip.oms.transaction.Order;
 import org.drip.oms.transaction.OrderFillWholeSettings;
 import org.drip.oms.transaction.OrderIssuer;
@@ -150,7 +149,6 @@ public class LimitOrder
 		final double size,
 		final TimeInForce timeInForce,
 		final OrderFillWholeSettings fillWholeSettings,
-		final DisplaySettings displaySettings,
 		final PegScheme pegScheme)
 	{
 		try
@@ -164,7 +162,6 @@ public class LimitOrder
 				size,
 				timeInForce,
 				fillWholeSettings,
-				displaySettings,
 				pegScheme
 			);
 		}
@@ -196,7 +193,6 @@ public class LimitOrder
 		final double size,
 		final TimeInForce timeInForce,
 		final OrderFillWholeSettings fillWholeSettings,
-		final DisplaySettings displaySettings,
 		final PegScheme pegScheme)
 	{
 		try
@@ -210,7 +206,6 @@ public class LimitOrder
 				size,
 				timeInForce,
 				fillWholeSettings,
-				displaySettings,
 				pegScheme
 			);
 		}
@@ -230,7 +225,6 @@ public class LimitOrder
 	 * @param size Order Size
 	 * @param timeInForce Time-in-Force Settings
 	 * @param fillWholeSettings Order Fill-Whole Settings
-	 * @param displaySettings Order Display Settings
 	 * @param pegScheme Peg Price Generation Scheme
 	 * 
 	 * @return Instance of Sell Limit Order
@@ -242,7 +236,6 @@ public class LimitOrder
 		final double size,
 		final TimeInForce timeInForce,
 		final OrderFillWholeSettings fillWholeSettings,
-		final DisplaySettings displaySettings,
 		final PegScheme pegScheme)
 	{
 		try
@@ -256,7 +249,6 @@ public class LimitOrder
 				size,
 				timeInForce,
 				fillWholeSettings,
-				displaySettings,
 				pegScheme
 			);
 		}
@@ -279,7 +271,6 @@ public class LimitOrder
 	 * @param size Order Size
 	 * @param timeInForce Time-in-Force Settings
 	 * @param fillWholeSettings Order Fill-Whole Settings
-	 * @param displaySettings Order Display Settings
 	 * @param pegScheme Peg Price Generation Scheme
 	 * 
 	 * @throws Exception Thrown if the Inputs are Invalid
@@ -294,7 +285,6 @@ public class LimitOrder
 		final double size,
 		final TimeInForce timeInForce,
 		final OrderFillWholeSettings fillWholeSettings,
-		final DisplaySettings displaySettings,
 		final PegScheme pegScheme)
 		throws Exception
 	{
@@ -307,8 +297,7 @@ public class LimitOrder
 			side,
 			size,
 			timeInForce,
-			fillWholeSettings,
-			displaySettings
+			fillWholeSettings
 		);
 
 		if (null == (_pegScheme = pegScheme))
@@ -348,7 +337,6 @@ public class LimitOrder
 				size() - filledSize,
 				null,
 				null,
-				displaySettings(),
 				_pegScheme
 			);
 		} catch (Exception e) {

@@ -4,7 +4,6 @@ package org.drip.oms.unthresholded;
 import java.util.Date;
 
 import org.drip.oms.transaction.Side;
-import org.drip.oms.transaction.DisplaySettings;
 import org.drip.oms.transaction.Order;
 import org.drip.oms.transaction.OrderFillWholeSettings;
 import org.drip.oms.transaction.OrderIssuer;
@@ -135,7 +134,6 @@ public class MarketOrder
 	 * @param size Order Size
 	 * @param timeInForce Time-in-Force Settings
 	 * @param fillWholeSettings Order Fill-Whole Settings
-	 * @param displaySettings Order Display Settings
 	 * 
 	 * @return Standard Instance of Market Order
 	 */
@@ -146,8 +144,7 @@ public class MarketOrder
 		final Side side,
 		final double size,
 		final TimeInForce timeInForce,
-		final OrderFillWholeSettings fillWholeSettings,
-		final DisplaySettings displaySettings)
+		final OrderFillWholeSettings fillWholeSettings)
 	{
 		try
 		{
@@ -159,8 +156,7 @@ public class MarketOrder
 				side,
 				size,
 				timeInForce,
-				fillWholeSettings,
-				displaySettings
+				fillWholeSettings
 			);
 		}
 		catch (Exception e)
@@ -179,7 +175,6 @@ public class MarketOrder
 	 * @param size Order Size
 	 * @param timeInForce Time-in-Force Settings
 	 * @param fillWholeSettings Order Fill-Whole Settings
-	 * @param displaySettings Order Display Settings
 	 * 
 	 * @return Standard Instance of Buy Market Order
 	 */
@@ -189,8 +184,7 @@ public class MarketOrder
 		final String ticker,
 		final double size,
 		final TimeInForce timeInForce,
-		final OrderFillWholeSettings fillWholeSettings,
-		final DisplaySettings displaySettings)
+		final OrderFillWholeSettings fillWholeSettings)
 	{
 		return Standard (
 			issuer,
@@ -198,8 +192,7 @@ public class MarketOrder
 			Side.Buy(),
 			size,
 			timeInForce,
-			fillWholeSettings,
-			displaySettings
+			fillWholeSettings
 		);
 	}
 
@@ -211,7 +204,6 @@ public class MarketOrder
 	 * @param size Order Size
 	 * @param timeInForce Time-in-Force Settings
 	 * @param fillWholeSettings Order Fill-Whole Settings
-	 * @param displaySettings Order Display Settings
 	 * 
 	 * @return Standard Instance of Sell Market Order
 	 */
@@ -221,8 +213,7 @@ public class MarketOrder
 		final String ticker,
 		final double size,
 		final TimeInForce timeInForce,
-		final OrderFillWholeSettings fillWholeSettings,
-		final DisplaySettings displaySettings)
+		final OrderFillWholeSettings fillWholeSettings)
 	{
 		return Standard (
 			issuer,
@@ -230,8 +221,7 @@ public class MarketOrder
 			Side.Sell(),
 			size,
 			timeInForce,
-			fillWholeSettings,
-			displaySettings
+			fillWholeSettings
 		);
 	}
 
@@ -246,7 +236,6 @@ public class MarketOrder
 	 * @param size Order Size
 	 * @param timeInForce Time-in-Force Settings
 	 * @param fillWholeSettings Order Fill-Whole Settings
-	 * @param displaySettings Order Display Settings
 	 * 
 	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
@@ -259,8 +248,7 @@ public class MarketOrder
 		final Side side,
 		final double size,
 		final TimeInForce timeInForce,
-		final OrderFillWholeSettings fillWholeSettings,
-		final DisplaySettings displaySettings)
+		final OrderFillWholeSettings fillWholeSettings)
 		throws Exception
 	{
 		super (
@@ -272,8 +260,7 @@ public class MarketOrder
 			side,
 			size,
 			timeInForce,
-			fillWholeSettings,
-			displaySettings
+			fillWholeSettings
 		);
 	}
 
@@ -294,8 +281,7 @@ public class MarketOrder
 				side(),
 				size() - filledSize,
 				null,
-				null,
-				displaySettings()
+				null
 			);
 		} catch (Exception e) {
 			e.printStackTrace();

@@ -5,7 +5,6 @@ import java.util.Date;
 
 import org.drip.oms.transaction.Side;
 import org.drip.oms.benchmark.PegScheme;
-import org.drip.oms.transaction.DisplaySettings;
 import org.drip.oms.transaction.OrderFillWholeSettings;
 import org.drip.oms.transaction.OrderIssuer;
 import org.drip.oms.transaction.TimeInForce;
@@ -133,7 +132,6 @@ public class LimitOrderDTC
 	 * @param side Order Side
 	 * @param size Order Size
 	 * @param fillWholeSettings Order Fill-Whole Settings
-	 * @param displaySettings Order Display Settings
 	 * @param pegScheme Peg Price Generation Scheme
 	 * 
 	 * @return Standard Instance of Day-Till-Close (DTC) Limit Order
@@ -145,7 +143,6 @@ public class LimitOrderDTC
 		final Side side,
 		final double size,
 		final OrderFillWholeSettings fillWholeSettings,
-		final DisplaySettings displaySettings,
 		final PegScheme pegScheme)
 	{
 		try
@@ -158,7 +155,6 @@ public class LimitOrderDTC
 				side,
 				size,
 				fillWholeSettings,
-				displaySettings,
 				pegScheme
 			);
 		}
@@ -177,7 +173,6 @@ public class LimitOrderDTC
 	 * @param ticker Security Identifier/Ticker
 	 * @param size Order Size
 	 * @param fillWholeSettings Order Fill-Whole Settings
-	 * @param displaySettings Order Display Settings
 	 * @param pegScheme Peg Price Generation Scheme
 	 * 
 	 * @return Standard Instance of Buy Day-Till-Close (DTC) Limit Order
@@ -188,7 +183,6 @@ public class LimitOrderDTC
 		final String ticker,
 		final double size,
 		final OrderFillWholeSettings fillWholeSettings,
-		final DisplaySettings displaySettings,
 		final PegScheme pegScheme)
 	{
 		try
@@ -201,7 +195,6 @@ public class LimitOrderDTC
 				Side.Buy(),
 				size,
 				fillWholeSettings,
-				displaySettings,
 				pegScheme
 			);
 		}
@@ -220,7 +213,6 @@ public class LimitOrderDTC
 	 * @param ticker Security Identifier/Ticker
 	 * @param size Order Size
 	 * @param fillWholeSettings Order Fill-Whole Settings
-	 * @param displaySettings Order Display Settings
 	 * @param pegScheme Peg Price Generation Scheme
 	 * 
 	 * @return Standard Instance of Sell Day-Till-Close (DTC) Limit Order
@@ -231,7 +223,6 @@ public class LimitOrderDTC
 		final String ticker,
 		final double size,
 		final OrderFillWholeSettings fillWholeSettings,
-		final DisplaySettings displaySettings,
 		final PegScheme pegScheme)
 	{
 		try
@@ -244,7 +235,6 @@ public class LimitOrderDTC
 				Side.Sell(),
 				size,
 				fillWholeSettings,
-				displaySettings,
 				pegScheme
 			);
 		}
@@ -266,7 +256,6 @@ public class LimitOrderDTC
 	 * @param side Order Side
 	 * @param size Order Size
 	 * @param fillWholeSettings Order Fill-Whole Settings
-	 * @param displaySettings Order Display Settings
 	 * @param pegScheme Peg Price Generation Scheme
 	 * 
 	 * @throws Exception Thrown if the Inputs are Invalid
@@ -280,7 +269,6 @@ public class LimitOrderDTC
 		final Side side,
 		final double size,
 		final OrderFillWholeSettings fillWholeSettings,
-		final DisplaySettings displaySettings,
 		final PegScheme pegScheme)
 		throws Exception
 	{
@@ -293,7 +281,6 @@ public class LimitOrderDTC
 			size,
 			TimeInForce.CreateDayTillCanceled(),
 			fillWholeSettings,
-			displaySettings,
 			pegScheme
 		);
 	}

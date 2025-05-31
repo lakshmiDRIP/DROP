@@ -1,14 +1,17 @@
 
-package org.drip.oms.transaction;
+package org.drip.oms.exchange;
 
-import org.drip.numerical.common.NumberUtil;
+import java.util.Date;
+import java.util.List;
+
+import org.drip.oms.transaction.Trade;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
- * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
  * 
  *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
  *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
@@ -76,7 +79,7 @@ import org.drip.numerical.common.NumberUtil;
  */
 
 /**
- * <i>DisplaySettings</i> contains the Details of Order Display. The References are:
+ * <i>TradesWindow</i> implements Metrics associated with Trades in a Session. The References are:
  *  
  * 	<br><br>
  *  <ul>
@@ -85,19 +88,20 @@ import org.drip.numerical.common.NumberUtil;
  * 				NYSE <i>Journal of Finance</i> <b>43 (1)</b> 97-112
  * 		</li>
  * 		<li>
- * 			Vassilis, P. (2005a): A Realistic Model of Market Liquidity and Depth <i>Journal of Futures
- * 				Markets</i> <b>25 (5)</b> 443-464
+ * 			Cont, R., and A. Kukanov (2017): Optimal Order Placement in Limit Order Markets <i>Quantitative
+ * 				Finance</i> <b>17 (1)</b> 21-39
  * 		</li>
  * 		<li>
- * 			Vassilis, P. (2005b): Slow and Fast Markets <i>Journal of Economics and Business</i> <b>57
+ * 			Jacob, B. (2024): <i>7 Execution Algorithms You Should Know About….</i>
+ * 				https://www.linkedin.com/pulse/7-execution-algorithms-you-should-know-benjamin-jacob-vl7pf/
+ * 		</li>
+ * 		<li>
+ * 			Vassilis, P. (2005): Slow and Fast Markets <i>Journal of Economics and Business</i> <b>57
  * 				(6)</b> 576-593
  * 		</li>
  * 		<li>
  * 			Weiss, D. (2006): <i>After the Trade is Made: Processing Securities Transactions</i> <b>Portfolio
  * 				Publishing</b> London UK
- * 		</li>
- * 		<li>
- * 			Wikipedia (2023): Order (Exchange) https://en.wikipedia.org/wiki/Order_(exchange)
  * 		</li>
  *  </ul>
  *
@@ -106,58 +110,159 @@ import org.drip.numerical.common.NumberUtil;
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/TransactionCostAnalyticsLibrary.md">Transaction Cost Analytics</a></li>
  *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/oms/README.md">R<sup>d</sup> Order Specification, Handling, and Management</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/oms/transaction/README.md">Order Specification and Session Metrics</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/oms/exchange/README.md">Implementation of Venue Order Handling</a></li>
  *  </ul>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class DisplaySettings
+public class TradesWindow
 {
-	private boolean _hide = false;
-	private double _icebergBelowTheSurfaceRatio = Double.NaN;
+	private Date _sessionEnd = null;
+	private Date _sessionStart = null;
+	private List<Trade> _sessionTradeList = null;
 
 	/**
-	 * <i>DisplaySettings</i> Constructor
+	 * Retrieve the Start of the Session
 	 * 
-	 * @param hide FALSE - The Order is to be Displayed
-	 * @param icebergBelowTheSurfaceRatio Below the Surface Iceberg Display Ratio
-	 * 
-	 * @throws Exception Thrown if the Inputs are Invalid
+	 * @return Start of the Session
 	 */
 
-	public DisplaySettings (
-		final boolean hide,
-		final double icebergBelowTheSurfaceRatio)
-		throws Exception
+	public Date sessionStart()
 	{
-		if (!NumberUtil.IsValid (_icebergBelowTheSurfaceRatio = icebergBelowTheSurfaceRatio) ||
-			0. > _icebergBelowTheSurfaceRatio || 1. < _icebergBelowTheSurfaceRatio) {
-			throw new Exception ("DisplaySettings Constructor => Invalid Inputs");
+		return _sessionStart;
+	}
+
+	/**
+	 * Retrieve the End of the Session
+	 * 
+	 * @return End of the Session
+	 */
+
+	public Date sessionEnd()
+	{
+		return _sessionEnd;
+	}
+
+	/**
+	 * Retrieve the List of Session Trades
+	 * 
+	 * @return List of Session Trades
+	 */
+
+	public List<Trade> sessionTradeList()
+	{
+		return _sessionTradeList;
+	}
+
+	/**
+	 * Retrieve the Session Trade Volume
+	 * 
+	 * @return The Session Trade Volume
+	 */
+
+	public double sessionTradeVolume()
+	{
+		double sessionTradeVolume = 0.;
+
+		for (Trade trade : _sessionTradeList) {
+			sessionTradeVolume += trade.size();
 		}
 
-		_hide = hide;
+		return sessionTradeVolume;
 	}
 
 	/**
-	 * Indicate if the Order is to be Displayed
+	 * Retrieve the Session Transaction Market Value
 	 * 
-	 * @return FALSE - The Order is to be Displayed
+	 * @return The Session Transaction Market Value
 	 */
 
-	public boolean hide()
+	public double sessionTradeMarketValue()
 	{
-		return _hide;
+		double sessionTradeMarketValue = 0.;
+
+		for (Trade trade : _sessionTradeList) {
+			sessionTradeMarketValue += trade.marketValue();
+		}
+
+		return sessionTradeMarketValue;
 	}
 
 	/**
-	 * Retrieve the Below the Surface Iceberg Display Ratio
+	 * Add a Trade to the Session
 	 * 
-	 * @return The Below the Surface Iceberg Display Ratio
+	 * @param trade Trade
+	 * 
+	 * @return TRUE - The Trade has been successfully added
 	 */
 
-	public double icebergBelowTheSurfaceRatio()
+	public boolean addTrade (
+		final Trade trade)
 	{
-		return _icebergBelowTheSurfaceRatio;
+		if (null == trade) {
+			return false;
+		}
+
+		_sessionTradeList.add (trade);
+
+		return true;
+	}
+
+	/**
+	 * Finish the Session
+	 * 
+	 * @return TRUE - The Session is Finished
+	 */
+
+	public boolean sessionFinish()
+	{
+		_sessionEnd = new Date();
+
+		return true;
+	}
+
+	/**
+	 * Retrieve the Session VWAP Average
+	 * 
+	 * @return The Session VWAP Average
+	 */
+
+	public double vwap()
+	{
+		double sessionTradeVolume = sessionTradeVolume();
+
+		return 0. == sessionTradeVolume ? Double.NaN : sessionTradeMarketValue() / sessionTradeVolume;
+	}
+
+	/**
+	 * Retrieve the Session TWAP Average
+	 * 
+	 * @return The Session TWAP Average
+	 */
+
+	public double twap()
+	{
+		int tradeCount = _sessionTradeList.size();
+
+		if (0 == tradeCount) {
+			return Double.NaN;
+		}
+
+		long cumulativeTime = 0L;
+		double timeWeightedPrice = 0.;
+
+		for (int tradeIndex = 1; tradeIndex < tradeCount; ++tradeIndex) {
+			Trade trade = _sessionTradeList.get (tradeIndex);
+
+			long timeDelta =
+				trade.time().getTime() - _sessionTradeList.get (tradeIndex - 1).time().getTime();
+
+			timeWeightedPrice += trade.price() * timeDelta;
+
+			cumulativeTime += timeDelta;
+		}
+
+		return timeWeightedPrice / cumulativeTime;
 	}
 }

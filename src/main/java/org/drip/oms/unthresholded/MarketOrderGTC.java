@@ -4,7 +4,6 @@ package org.drip.oms.unthresholded;
 import java.util.Date;
 
 import org.drip.oms.transaction.Side;
-import org.drip.oms.transaction.DisplaySettings;
 import org.drip.oms.transaction.OrderFillWholeSettings;
 import org.drip.oms.transaction.OrderIssuer;
 import org.drip.oms.transaction.TimeInForce;
@@ -133,7 +132,6 @@ public class MarketOrderGTC
 	 * @param size Order Size
 	 * @param durationDays Order Duration Tenor in Days
 	 * @param fillWholeSettings Order Fill-Whole Settings
-	 * @param displaySettings Order Display Settings
 	 * 
 	 * @return Standard Instance of Good-Till-Close (GTC) Market Order
 	 */
@@ -144,8 +142,7 @@ public class MarketOrderGTC
 		final Side side,
 		final double size,
 		final int durationDays,
-		final OrderFillWholeSettings fillWholeSettings,
-		final DisplaySettings displaySettings)
+		final OrderFillWholeSettings fillWholeSettings)
 	{
 		try
 		{
@@ -157,8 +154,7 @@ public class MarketOrderGTC
 				side,
 				size,
 				durationDays,
-				fillWholeSettings,
-				displaySettings
+				fillWholeSettings
 			);
 		}
 		catch (Exception e)
@@ -177,7 +173,6 @@ public class MarketOrderGTC
 	 * @param size Order Size
 	 * @param durationDays Order Duration Tenor in Days
 	 * @param fillWholeSettings Order Fill-Whole Settings
-	 * @param displaySettings Order Display Settings
 	 * 
 	 * @return Standard Instance of Buy Good-Till-Close (GTC) Market Order
 	 */
@@ -187,8 +182,7 @@ public class MarketOrderGTC
 		final String ticker,
 		final double size,
 		final int durationDays,
-		final OrderFillWholeSettings fillWholeSettings,
-		final DisplaySettings displaySettings)
+		final OrderFillWholeSettings fillWholeSettings)
 	{
 		try
 		{
@@ -200,8 +194,7 @@ public class MarketOrderGTC
 				Side.Buy(),
 				size,
 				durationDays,
-				fillWholeSettings,
-				displaySettings
+				fillWholeSettings
 			);
 		}
 		catch (Exception e)
@@ -220,7 +213,6 @@ public class MarketOrderGTC
 	 * @param size Order Size
 	 * @param durationDays Order Duration Tenor in Days
 	 * @param fillWholeSettings Order Fill-Whole Settings
-	 * @param displaySettings Order Display Settings
 	 * 
 	 * @return Standard Instance of Sell Good-Till-Close (GTC) Market Order
 	 */
@@ -230,8 +222,7 @@ public class MarketOrderGTC
 		final String ticker,
 		final double size,
 		final int durationDays,
-		final OrderFillWholeSettings fillWholeSettings,
-		final DisplaySettings displaySettings)
+		final OrderFillWholeSettings fillWholeSettings)
 	{
 		try
 		{
@@ -243,8 +234,7 @@ public class MarketOrderGTC
 				Side.Sell(),
 				size,
 				durationDays,
-				fillWholeSettings,
-				displaySettings
+				fillWholeSettings
 			);
 		}
 		catch (Exception e)
@@ -266,7 +256,6 @@ public class MarketOrderGTC
 	 * @param size Order Size
 	 * @param durationDays Order Duration Tenor in Days
 	 * @param fillWholeSettings Order Fill-Whole Settings
-	 * @param displaySettings Order Display Settings
 	 * 
 	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
@@ -279,8 +268,7 @@ public class MarketOrderGTC
 		final Side side,
 		final double size,
 		final int durationDays,
-		final OrderFillWholeSettings fillWholeSettings,
-		final DisplaySettings displaySettings)
+		final OrderFillWholeSettings fillWholeSettings)
 		throws Exception
 	{
 		super (
@@ -293,8 +281,7 @@ public class MarketOrderGTC
 			TimeInForce.CreateGoodTillCanceled (
 				durationDays
 			),
-			fillWholeSettings,
-			displaySettings
+			fillWholeSettings
 		);
 	}
 }

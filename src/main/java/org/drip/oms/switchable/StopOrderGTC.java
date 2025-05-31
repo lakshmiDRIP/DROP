@@ -3,7 +3,6 @@ package org.drip.oms.switchable;
 
 import java.util.Date;
 
-import org.drip.oms.transaction.DisplaySettings;
 import org.drip.oms.transaction.OrderFillWholeSettings;
 import org.drip.oms.transaction.OrderIssuer;
 import org.drip.oms.transaction.Side;
@@ -133,7 +132,6 @@ public class StopOrderGTC
 	 * @param size Order Size
 	 * @param durationDays Duration Days
 	 * @param fillWholeSettings Order Fill-Whole Settings
-	 * @param displaySettings Order Display Settings
 	 * @param switchPrice Switch-to-Market Price
 	 * 
 	 * @return Standard Instance of Good-Till-Close (GTC) Stop Order
@@ -146,7 +144,6 @@ public class StopOrderGTC
 		final double size,
 		final int durationDays,
 		final OrderFillWholeSettings fillWholeSettings,
-		final DisplaySettings displaySettings,
 		final double switchPrice)
 	{
 		try
@@ -160,7 +157,6 @@ public class StopOrderGTC
 				size,
 				durationDays,
 				fillWholeSettings,
-				displaySettings,
 				switchPrice
 			);
 		}
@@ -180,7 +176,6 @@ public class StopOrderGTC
 	 * @param size Order Size
 	 * @param durationDays Duration Days
 	 * @param fillWholeSettings Order Fill-Whole Settings
-	 * @param displaySettings Order Display Settings
 	 * @param switchPrice Switch-to-Market Price
 	 * 
 	 * @return Standard Instance of Buy Good-Till-Close (GTC) Stop Order
@@ -192,7 +187,6 @@ public class StopOrderGTC
 		final double size,
 		final int durationDays,
 		final OrderFillWholeSettings fillWholeSettings,
-		final DisplaySettings displaySettings,
 		final double switchPrice)
 	{
 		try
@@ -206,7 +200,6 @@ public class StopOrderGTC
 				size,
 				durationDays,
 				fillWholeSettings,
-				displaySettings,
 				switchPrice
 			);
 		}
@@ -226,7 +219,6 @@ public class StopOrderGTC
 	 * @param size Order Size
 	 * @param durationDays Duration Days
 	 * @param fillWholeSettings Order Fill-Whole Settings
-	 * @param displaySettings Order Display Settings
 	 * @param switchPrice Switch-to-Market Price
 	 * 
 	 * @return Standard Instance of Sell Good-Till-Close (GTC) Stop Order
@@ -238,7 +230,6 @@ public class StopOrderGTC
 		final double size,
 		final int durationDays,
 		final OrderFillWholeSettings fillWholeSettings,
-		final DisplaySettings displaySettings,
 		final double switchPrice)
 	{
 		try
@@ -252,7 +243,6 @@ public class StopOrderGTC
 				size,
 				durationDays,
 				fillWholeSettings,
-				displaySettings,
 				switchPrice
 			);
 		}
@@ -275,7 +265,6 @@ public class StopOrderGTC
 	 * @param size Order Size
 	 * @param durationDays Duration Days
 	 * @param fillWholeSettings Order Fill-Whole Settings
-	 * @param displaySettings Order Display Settings
 	 * @param switchPrice Switch-to-Market Price
 	 * 
 	 * @throws Exception Thrown if the Inputs are Invalid
@@ -290,7 +279,6 @@ public class StopOrderGTC
 		final double size,
 		final int durationDays,
 		final OrderFillWholeSettings fillWholeSettings,
-		final DisplaySettings displaySettings,
 		final double switchPrice)
 		throws Exception
 	{
@@ -305,7 +293,6 @@ public class StopOrderGTC
 				durationDays
 			),
 			fillWholeSettings,
-			displaySettings,
 			switchPrice
 		);
 	}

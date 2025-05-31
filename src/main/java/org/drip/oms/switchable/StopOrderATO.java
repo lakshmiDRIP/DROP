@@ -3,7 +3,6 @@ package org.drip.oms.switchable;
 
 import java.util.Date;
 
-import org.drip.oms.transaction.DisplaySettings;
 import org.drip.oms.transaction.OrderFillWholeSettings;
 import org.drip.oms.transaction.OrderIssuer;
 import org.drip.oms.transaction.Side;
@@ -132,7 +131,6 @@ public class StopOrderATO
 	 * @param side Order Side
 	 * @param size Order Size
 	 * @param fillWholeSettings Order Fill-Whole Settings
-	 * @param displaySettings Order Display Settings
 	 * @param switchPrice Switch-to-Market Price
 	 * 
 	 * @return Standard Instance of At-The-Open (ATO) Stop Order
@@ -144,7 +142,6 @@ public class StopOrderATO
 		final Side side,
 		final double size,
 		final OrderFillWholeSettings fillWholeSettings,
-		final DisplaySettings displaySettings,
 		final double switchPrice)
 	{
 		try
@@ -157,7 +154,6 @@ public class StopOrderATO
 				side,
 				size,
 				fillWholeSettings,
-				displaySettings,
 				switchPrice
 			);
 		}
@@ -176,7 +172,6 @@ public class StopOrderATO
 	 * @param ticker Security Identifier/Ticker
 	 * @param size Order Size
 	 * @param fillWholeSettings Order Fill-Whole Settings
-	 * @param displaySettings Order Display Settings
 	 * @param switchPrice Switch-to-Market Price
 	 * 
 	 * @return Standard Instance of Buy At-The-Open (ATO) Stop Order
@@ -187,7 +182,6 @@ public class StopOrderATO
 		final String ticker,
 		final double size,
 		final OrderFillWholeSettings fillWholeSettings,
-		final DisplaySettings displaySettings,
 		final double switchPrice)
 	{
 		try
@@ -200,7 +194,6 @@ public class StopOrderATO
 				Side.Buy(),
 				size,
 				fillWholeSettings,
-				displaySettings,
 				switchPrice
 			);
 		}
@@ -219,7 +212,6 @@ public class StopOrderATO
 	 * @param ticker Security Identifier/Ticker
 	 * @param size Order Size
 	 * @param fillWholeSettings Order Fill-Whole Settings
-	 * @param displaySettings Order Display Settings
 	 * @param switchPrice Switch-to-Market Price
 	 * 
 	 * @return Standard Instance of Sell At-The-Open (ATO) Stop Order
@@ -230,7 +222,6 @@ public class StopOrderATO
 		final String ticker,
 		final double size,
 		final OrderFillWholeSettings fillWholeSettings,
-		final DisplaySettings displaySettings,
 		final double switchPrice)
 	{
 		try
@@ -243,7 +234,6 @@ public class StopOrderATO
 				Side.Sell(),
 				size,
 				fillWholeSettings,
-				displaySettings,
 				switchPrice
 			);
 		}
@@ -265,7 +255,6 @@ public class StopOrderATO
 	 * @param side Order Side
 	 * @param size Order Size
 	 * @param fillWholeSettings Order Fill-Whole Settings
-	 * @param displaySettings Order Display Settings
 	 * @param switchPrice Switch-to-Market Price
 	 * 
 	 * @throws Exception Thrown if the Inputs are Invalid
@@ -279,7 +268,6 @@ public class StopOrderATO
 		final Side side,
 		final double size,
 		final OrderFillWholeSettings fillWholeSettings,
-		final DisplaySettings displaySettings,
 		final double switchPrice)
 		throws Exception
 	{
@@ -292,7 +280,6 @@ public class StopOrderATO
 			size,
 			TimeInForce.CreateMarketOpen(),
 			fillWholeSettings,
-			displaySettings,
 			switchPrice
 		);
 	}

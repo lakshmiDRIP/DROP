@@ -4,7 +4,6 @@ package org.drip.oms.unthresholded;
 import java.util.Date;
 
 import org.drip.oms.transaction.Side;
-import org.drip.oms.transaction.DisplaySettings;
 import org.drip.oms.transaction.OrderFillWholeSettings;
 import org.drip.oms.transaction.OrderIssuer;
 import org.drip.oms.transaction.TimeInForce;
@@ -132,7 +131,6 @@ public class MarketOrderATC
 	 * @param side Order Side
 	 * @param size Order Size
 	 * @param fillWholeSettings Order Fill-Whole Settings
-	 * @param displaySettings Order Display Settings
 	 * 
 	 * @return Standard Instance of At-The-Close (ATC) Market Order
 	 */
@@ -142,8 +140,7 @@ public class MarketOrderATC
 		final String ticker,
 		final Side side,
 		final double size,
-		final OrderFillWholeSettings fillWholeSettings,
-		final DisplaySettings displaySettings)
+		final OrderFillWholeSettings fillWholeSettings)
 	{
 		try
 		{
@@ -154,8 +151,7 @@ public class MarketOrderATC
 				new Date(),
 				side,
 				size,
-				fillWholeSettings,
-				displaySettings
+				fillWholeSettings
 			);
 		}
 		catch (Exception e)
@@ -173,7 +169,6 @@ public class MarketOrderATC
 	 * @param ticker Security Identifier/Ticker
 	 * @param size Order Size
 	 * @param fillWholeSettings Order Fill-Whole Settings
-	 * @param displaySettings Order Display Settings
 	 * 
 	 * @return Standard Instance of Buy At-The-Close (ATC) Market Order
 	 */
@@ -182,8 +177,7 @@ public class MarketOrderATC
 		final OrderIssuer issuer,
 		final String ticker,
 		final double size,
-		final OrderFillWholeSettings fillWholeSettings,
-		final DisplaySettings displaySettings)
+		final OrderFillWholeSettings fillWholeSettings)
 	{
 		try
 		{
@@ -194,8 +188,7 @@ public class MarketOrderATC
 				new Date(),
 				Side.Buy(),
 				size,
-				fillWholeSettings,
-				displaySettings
+				fillWholeSettings
 			);
 		}
 		catch (Exception e)
@@ -213,7 +206,6 @@ public class MarketOrderATC
 	 * @param ticker Security Identifier/Ticker
 	 * @param size Order Size
 	 * @param fillWholeSettings Order Fill-Whole Settings
-	 * @param displaySettings Order Display Settings
 	 * 
 	 * @return Standard Instance of Sell At-The-Close (ATC) Market Order
 	 */
@@ -222,8 +214,7 @@ public class MarketOrderATC
 		final OrderIssuer issuer,
 		final String ticker,
 		final double size,
-		final OrderFillWholeSettings fillWholeSettings,
-		final DisplaySettings displaySettings)
+		final OrderFillWholeSettings fillWholeSettings)
 	{
 		try
 		{
@@ -234,8 +225,7 @@ public class MarketOrderATC
 				new Date(),
 				Side.Sell(),
 				size,
-				fillWholeSettings,
-				displaySettings
+				fillWholeSettings
 			);
 		}
 		catch (Exception e)
@@ -256,7 +246,6 @@ public class MarketOrderATC
 	 * @param side Order Side
 	 * @param size Order Size
 	 * @param fillWholeSettings Order Fill-Whole Settings
-	 * @param displaySettings Order Display Settings
 	 * 
 	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
@@ -268,8 +257,7 @@ public class MarketOrderATC
 		final Date creationTime,
 		final Side side,
 		final double size,
-		final OrderFillWholeSettings fillWholeSettings,
-		final DisplaySettings displaySettings)
+		final OrderFillWholeSettings fillWholeSettings)
 		throws Exception
 	{
 		super (
@@ -280,8 +268,7 @@ public class MarketOrderATC
 			side,
 			size,
 			TimeInForce.CreateMarketClose(),
-			fillWholeSettings,
-			displaySettings
+			fillWholeSettings
 		);
 	}
 }
