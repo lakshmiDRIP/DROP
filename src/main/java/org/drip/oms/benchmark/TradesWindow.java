@@ -2,6 +2,9 @@
 package org.drip.oms.benchmark;
 
 import java.util.Date;
+import java.util.List;
+
+import org.drip.oms.transaction.Trade;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -76,8 +79,7 @@ import java.util.Date;
  */
 
 /**
- * <i>WeightedAveragePricer</i> implements the Weighted Average Price WAP that carries the Metrics associated
- * 	with Trades in a Session. The References are:
+ * <i>TradesWindow</i> implements Metrics associated with Trades in a Session. The References are:
  *  
  * 	<br><br>
  *  <ul>
@@ -114,10 +116,11 @@ import java.util.Date;
  * @author Lakshmi Krishnamurthy
  */
 
-public class WeightedAveragePricer
+public class TradesWindow
 {
 	private Date _sessionEnd = null;
 	private Date _sessionStart = null;
+	private List<Trade> _sessionTradeList = null;
 
 	/**
 	 * Retrieve the Start of the Session
@@ -139,5 +142,127 @@ public class WeightedAveragePricer
 	public Date sessionEnd()
 	{
 		return _sessionEnd;
+	}
+
+	/**
+	 * Retrieve the List of Session Trades
+	 * 
+	 * @return List of Session Trades
+	 */
+
+	public List<Trade> sessionTradeList()
+	{
+		return _sessionTradeList;
+	}
+
+	/**
+	 * Retrieve the Session Trade Volume
+	 * 
+	 * @return The Session Trade Volume
+	 */
+
+	public double sessionTradeVolume()
+	{
+		double sessionTradeVolume = 0.;
+
+		for (Trade trade : _sessionTradeList) {
+			sessionTradeVolume += trade.size();
+		}
+
+		return sessionTradeVolume;
+	}
+
+	/**
+	 * Retrieve the Session Transaction Market Value
+	 * 
+	 * @return The Session Transaction Market Value
+	 */
+
+	public double transactionMarketValue()
+	{
+		double transactionMarketValue = 0.;
+
+		for (Trade trade : _sessionTradeList) {
+			transactionMarketValue += trade.marketValue();
+		}
+
+		return transactionMarketValue;
+	}
+
+	/**
+	 * Add a Trade to the Session
+	 * 
+	 * @param trade Trade
+	 * 
+	 * @return TRUE - The Trade has been successfully added
+	 */
+
+	public boolean addTrade (
+		final Trade trade)
+	{
+		if (null == trade) {
+			return false;
+		}
+
+		_sessionTradeList.add (trade);
+
+		return true;
+	}
+
+	/**
+	 * Finish the Session
+	 * 
+	 * @return TRUE - The Session is Finished
+	 */
+
+	public boolean finish()
+	{
+		_sessionEnd = new Date();
+
+		return true;
+	}
+
+	/**
+	 * Retrieve the Session VWAP Average
+	 * 
+	 * @return The Session VWAP Average
+	 */
+
+	public double vwap()
+	{
+		double sessionTradeVolume = sessionTradeVolume();
+
+		return 0. == sessionTradeVolume ? Double.NaN : transactionMarketValue() / sessionTradeVolume;
+	}
+
+	/**
+	 * Retrieve the Session TWAP Average
+	 * 
+	 * @return The Session TWAP Average
+	 */
+
+	public double twap()
+	{
+		int tradeCount = _sessionTradeList.size();
+
+		if (0 == tradeCount) {
+			return Double.NaN;
+		}
+
+		long cumulativeTime = 0L;
+		double timeWeightedPrice = 0.;
+
+		for (int tradeIndex = 1; tradeIndex < tradeCount; ++tradeIndex) {
+			Trade trade = _sessionTradeList.get (tradeIndex);
+
+			long timeDelta =
+				trade.time().getTime() - _sessionTradeList.get (tradeIndex - 1).time().getTime();
+
+			timeWeightedPrice += trade.price() * timeDelta;
+
+			cumulativeTime += timeDelta;
+		}
+
+		return timeWeightedPrice / cumulativeTime;
 	}
 }

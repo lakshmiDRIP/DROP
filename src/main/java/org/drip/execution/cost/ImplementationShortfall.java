@@ -1,9 +1,8 @@
 
-package org.drip.oms.benchmark;
-
-import java.util.Date;
+package org.drip.execution.cost;
 
 import org.drip.numerical.common.NumberUtil;
+import org.drip.oms.transaction.Trade;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -11,8 +10,6 @@ import org.drip.numerical.common.NumberUtil;
 
 /*!
  * Copyright (C) 2025 Lakshmi Krishnamurthy
- * Copyright (C) 2024 Lakshmi Krishnamurthy
- * Copyright (C) 2023 Lakshmi Krishnamurthy
  * 
  *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
  *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
@@ -80,8 +77,8 @@ import org.drip.numerical.common.NumberUtil;
  */
 
 /**
- * <i>VWAP</i> implements the Volume-Weighted Average Price VWAP that carries the Metrics associated with
- * 	Trades in a Session. The References are:
+ * <i>ImplementationShortfall</i> implements the Implementation Shortfall/Slippage associated with a Trade.
+ *  The References are:
  *  
  * 	<br><br>
  *  <ul>
@@ -94,11 +91,11 @@ import org.drip.numerical.common.NumberUtil;
  * 				Finance</i> <b>17 (1)</b> 21-39
  * 		</li>
  * 		<li>
- * 			Vassilis, P. (2005a): A Realistic Model of Market Liquidity and Depth <i>Journal of Futures
- * 				Markets</i> <b>25 (5)</b> 443-464
+ * 			Jacob, B. (2024): <i>7 Execution Algorithms You Should Know About….</i>
+ * 				https://www.linkedin.com/pulse/7-execution-algorithms-you-should-know-benjamin-jacob-vl7pf/
  * 		</li>
  * 		<li>
- * 			Vassilis, P. (2005b): Slow and Fast Markets <i>Journal of Economics and Business</i> <b>57
+ * 			Vassilis, P. (2005): Slow and Fast Markets <i>Journal of Economics and Business</i> <b>57
  * 				(6)</b> 576-593
  * 		</li>
  * 		<li>
@@ -118,140 +115,77 @@ import org.drip.numerical.common.NumberUtil;
  * @author Lakshmi Krishnamurthy
  */
 
-public class VWAP
+public class ImplementationShortfall
 {
-	private Date _sessionEnd = null;
-	private Date _sessionStart = null;
-	private double _transactionVolume = Double.NaN;
-	private double _transactionMarketValue = Double.NaN;
+	private Trade _trade = null;
+	private double _decisionPrice = Double.NaN;
+	private double _explicitCosts = Double.NaN;
 
 	/**
-	 * Construct a Standard Instance of VWAP
+	 * <i>ImplementationShortfall</i> Constructor
 	 * 
-	 * @return Standard VWAP Instance
-	 */
-
-	public VWAP Standard()
-	{
-		Date sessionStart = new Date();
-
-		try {
-			return new VWAP (sessionStart, sessionStart);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-		return null;
-	}
-
-	/**
-	 * <i>VWAP</i> Constructor
-	 * 
-	 * @param sessionStart Session Start
-	 * @param sessionEnd Session End
+	 * @param trade <i>Trade</i> Instance
+	 * @param decisionPrice Decision Price
+	 * @param explicitCosts Explicit Costs
 	 * 
 	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
-	public VWAP (
-		final Date sessionStart,
-		final Date sessionEnd)
+	public ImplementationShortfall (
+		final Trade trade,
+		final double decisionPrice,
+		final double explicitCosts)
 		throws Exception
 	{
-		if (null == (_sessionStart = sessionStart)) {
-			throw new Exception ("VWAP Construtor => Invalid Input");
+		if (null == (_trade = trade) ||
+			!NumberUtil.IsValid (_decisionPrice = decisionPrice) ||
+			!NumberUtil.IsValid (_explicitCosts = explicitCosts))
+		{
+			throw new Exception ("ImplementationShortfall Constructor => Invalid Inputs");
 		}
-
-		_sessionEnd = sessionEnd;
 	}
 
 	/**
-	 * Retrieve the Start of the Session
+	 * Retrieve the <i>Trade</i> Instance
 	 * 
-	 * @return Start of the Session
+	 * @return <i>Trade</i> Instance
 	 */
 
-	public Date sessionStart()
+	public Trade trade()
 	{
-		return _sessionStart;
+		return _trade;
 	}
 
 	/**
-	 * Retrieve the End of the Session
+	 * Retrieve the Decision Price
 	 * 
-	 * @return End of the Session
+	 * @return Decision Price
 	 */
 
-	public Date sessionEnd()
+	public double decisionPrice()
 	{
-		return _sessionEnd;
+		return _decisionPrice;
 	}
 
 	/**
-	 * Retrieve the Session Transaction Volume
+	 * Retrieve the Explicit Costs
 	 * 
-	 * @return The Session Transaction Volume
+	 * @return Explicit Costs
 	 */
 
-	public double transactionVolume()
+	public double explicitCosts()
 	{
-		return _transactionVolume;
+		return _explicitCosts;
 	}
 
 	/**
-	 * Retrieve the Session Transaction Market Value
+	 * Calculate the IS Slippage
 	 * 
-	 * @return The Session Transaction Market Value
+	 * @return IS Slippage
 	 */
 
-	public double transactionMarketValue()
+	public double slippage()
 	{
-		return _transactionMarketValue;
-	}
-
-	/**
-	 * Add a Trade to the Session
-	 * 
-	 * @param size Size
-	 * @param price Price
-	 * 
-	 * @return TRUE - The Trade has been successfully added
-	 */
-
-	public boolean addTrade (
-		final double size,
-		final double price)
-	{
-		if (!NumberUtil.IsValid (size) || !NumberUtil.IsValid (price)) {
-			return false;
-		}
-
-		_transactionMarketValue += price * size;
-		_transactionVolume += size;
-		return true;
-	}
-
-	/**
-	 * Finish the VWAP Session
-	 * 
-	 * @return TRUE - The Session is Finished
-	 */
-
-	public boolean finish()
-	{
-		_sessionEnd = new Date();
-
-		return true;
-	}
-
-	/**
-	 * Retrieve the Session VWAP Average
-	 * 
-	 * @return The Session VWAP Average
-	 */
-
-	public double sessionAverage()
-	{
-		return 0. == _transactionVolume ? Double.NaN : _transactionMarketValue / _transactionVolume;
+		return Math.abs (_trade.price() - _decisionPrice) * _trade.size()  + _explicitCosts;
 	}
 }

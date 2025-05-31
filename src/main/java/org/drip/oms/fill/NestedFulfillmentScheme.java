@@ -124,23 +124,13 @@ public class NestedFulfillmentScheme
 	private boolean fillOrKill (
 		final OrderExecutionProvider orderExecutionProvider)
 	{
-		if (!orderExecutionProvider.isOrderMarketable (
-				_orderNode
-			)
-		)
-		{
-			_orderNode.setState (
-				OrderState.CANCELED
-			);
+		if (!orderExecutionProvider.isOrderMarketable (_orderNode)) {
+			_orderNode.setState (OrderState.CANCELED);
 
 			return false;
 		}
 
-		return null == _orderNode.fulfill (
-			orderExecutionProvider.attemptFill (
-				_orderNode
-			)
-		);
+		return null == _orderNode.fulfill (orderExecutionProvider.attemptFill (_orderNode));
 	}
 
 	private boolean allOrNone (
@@ -151,72 +141,40 @@ public class NestedFulfillmentScheme
 		int fulfillTryLimit = _orderNode.fillWholeSettings().fulfillTryLimit();
 
 		while (fulfillTryLimit - 1 > fulfillTryCount &&
-				!orderExecutionProvider.isOrderMarketable (
-				_orderNode
-			)
-		)
+			!orderExecutionProvider.isOrderMarketable (_orderNode))
 		{
-			_orderNode.fulfill (
-				orderExecutionProvider.attemptFill (
-					_orderNode
-				)
-			);
+			_orderNode.fulfill (orderExecutionProvider.attemptFill (_orderNode));
 
 			++fulfillTryCount;
 		}
 
-		if (!orderExecutionProvider.isOrderMarketable (
-				_orderNode
-			)
-		)
-		{
-			_orderNode.setState (
-				OrderState.CANCELED
-			);
+		if (!orderExecutionProvider.isOrderMarketable (_orderNode)) {
+			_orderNode.setState (OrderState.CANCELED);
 
 			return false;
 		}
 
-		return null == _orderNode.fulfill (
-			orderExecutionProvider.attemptFill (
-				_orderNode
-			)
-		);
+		return null == _orderNode.fulfill (orderExecutionProvider.attemptFill (_orderNode));
 	}
 
 	private boolean fillWithChildOrders (
 		final OrderExecutionProvider orderExecutionProvider)
 	{
-		Order childOrder = _orderNode.fulfill (
-			orderExecutionProvider.attemptFill (
-				_orderNode
-			)
-		);
+		Order childOrder = _orderNode.fulfill (orderExecutionProvider.attemptFill (_orderNode));
 
-		if (null == childOrder)
-		{
-			return null == _parent ? true : _parent.node().setState (
-				_orderNode.state()
-			);
+		if (null == childOrder) {
+			return null == _parent ? true : _parent.node().setState (_orderNode.state());
 		}
 
-		try
-		{
-			_child = new NestedFulfillmentScheme (
-				childOrder,
-				this
-			);
-		}
-		catch (Exception e)
-		{
+		try {
+			_child = new NestedFulfillmentScheme (childOrder, this);
+		} catch (Exception e) {
 			e.printStackTrace();
 
 			return false;
 		}
 
-		return _child.fillWithChildOrders (
-			orderExecutionProvider
-		);
+		return _child.fillWithChildOrders (orderExecutionProvider);
 	}
 
 	/**
@@ -233,11 +191,8 @@ public class NestedFulfillmentScheme
 		final NestedFulfillmentScheme parent)
 		throws Exception
 	{
-		if (null == (_orderNode = orderNode))
-		{
-			throw new Exception (
-				"NestedFulfillmentScheme Constructor => Invalid Inputs"
-			);
+		if (null == (_orderNode = orderNode)) {
+			throw new Exception ("NestedFulfillmentScheme Constructor => Invalid Inputs");
 		}
 
 		_parent = parent;
@@ -287,27 +242,18 @@ public class NestedFulfillmentScheme
 	public boolean fill (
 		final OrderExecutionProvider orderExecutionProvider)
 	{
-		if (null == orderExecutionProvider)
-		{
+		if (null == orderExecutionProvider) {
 			return false;
 		}
 
-		if (_orderNode.fillOrKill())
-		{
-			return fillOrKill (
-				orderExecutionProvider
-			);
+		if (_orderNode.fillOrKill()) {
+			return fillOrKill (orderExecutionProvider);
 		}
 
-		if (_orderNode.allOrNone())
-		{
-			return allOrNone (
-				orderExecutionProvider
-			);
+		if (_orderNode.allOrNone()) {
+			return allOrNone (orderExecutionProvider);
 		}
 
-		return fillWithChildOrders (
-			orderExecutionProvider
-		);
+		return fillWithChildOrders (orderExecutionProvider);
 	}
 }

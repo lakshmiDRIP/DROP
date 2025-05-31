@@ -4,6 +4,8 @@ package org.drip.oms.transaction;
 import java.util.Date;
 
 import org.drip.numerical.common.NumberUtil;
+import org.drip.oms.exchange.Venue;
+import org.drip.service.common.StringUtil;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -117,7 +119,10 @@ import org.drip.numerical.common.NumberUtil;
 
 public class Trade
 {
+	private String _id = "";
 	private Date _time = null;
+	private Side _side = null;
+	private Venue _venue = null;
 	private String _ticker = "";
 	private double _size = Double.NaN;
 	private double _price = Double.NaN;
@@ -128,6 +133,7 @@ public class Trade
 	 * @param ticker Ticker
 	 * @param price Price
 	 * @param size Size
+	 * @param side Side
 	 * 
 	 * @return Standard <i>Trade</i> Instance
 	 */
@@ -135,10 +141,11 @@ public class Trade
 	public static final Trade Standard (
 		final String ticker,
 		final double price,
-		final double size)
+		final double size,
+		final Side side)
 	{
 		try {
-			return new Trade (ticker, price, size, new Date());
+			return new Trade (ticker, StringUtil.GUID(), price, size, side, new Date());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -150,8 +157,10 @@ public class Trade
 	 * <i>Trade</i> Constructor
 	 * 
 	 * @param ticker Ticker
+	 * @param id Trade ID
 	 * @param price Price
 	 * @param size Size
+	 * @param side Side
 	 * @param time Time
 	 * 
 	 * @throws Exception Thrown if <i>Trade</i> cannot be constructed
@@ -159,14 +168,18 @@ public class Trade
 
 	public Trade (
 		final String ticker,
+		final String id,
 		final double price,
 		final double size,
+		final Side side,
 		final Date time)
 		throws Exception
 	{
 		if (null == (_ticker = ticker) || _ticker.isEmpty() ||
+			null == (_id = id) || _id.isEmpty() ||
 			!NumberUtil.IsValid (_price = price) ||
 			!NumberUtil.IsValid (_size = size) ||
+			null == (_side = side) ||
 			null == (_time = time))
 		{
 			throw new Exception ("Trade Constructor => Invalid Inputs");
@@ -182,6 +195,17 @@ public class Trade
 	public String ticker()
 	{
 		return _ticker;
+	}
+
+	/**
+	 * Retrieve the Trade ID
+	 * 
+	 * @return The Trade ID
+	 */
+
+	public String id()
+	{
+		return _id;
 	}
 
 	/**
@@ -207,6 +231,17 @@ public class Trade
 	}
 
 	/**
+	 * Retrieve the Trade Side
+	 * 
+	 * @return Trade Side
+	 */
+
+	public Side side()
+	{
+		return _side;
+	}
+
+	/**
 	 * Retrieve the Trade Time
 	 * 
 	 * @return Trade Time
@@ -215,5 +250,27 @@ public class Trade
 	public Date time()
 	{
 		return _time;
+	}
+
+	/**
+	 * Retrieve the Trade Venue
+	 * 
+	 * @return Trade Venue
+	 */
+
+	public Venue venue()
+	{
+		return _venue;
+	}
+
+	/**
+	 * Retrieve the Trade MV
+	 * 
+	 * @return Trade MV
+	 */
+
+	public double marketValue()
+	{
+		return _size * _price;
 	}
 }
