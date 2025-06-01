@@ -136,7 +136,6 @@ public class LimitOrder
 	 * @param size Order Size
 	 * @param timeInForce Time-in-Force Settings
 	 * @param fillWholeSettings Order Fill-Whole Settings
-	 * @param displaySettings Order Display Settings
 	 * @param pegScheme Peg Price Generation Scheme
 	 * 
 	 * @return Standard Instance of Limit Order
@@ -181,7 +180,6 @@ public class LimitOrder
 	 * @param size Order Size
 	 * @param timeInForce Time-in-Force Settings
 	 * @param fillWholeSettings Order Fill-Whole Settings
-	 * @param displaySettings Order Display Settings
 	 * @param pegScheme Peg Price Generation Scheme
 	 * 
 	 * @return Instance of Buy Limit Order
