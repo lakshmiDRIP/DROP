@@ -16,7 +16,7 @@ Transaction Cost Analytics Library contains the Functionality to:
 
  |        Document         | Link |
  |-------------------------|------|
- | Technical Specification | [*Latest*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/TransactionCostAnalytics/TransactionCostAnalytics_v6.77.pdf) [*Previous*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/TransactionCostAnalytics) |
+ | Technical Specification | [*Latest*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/TransactionCostAnalytics/TransactionCostAnalytics_v6.85.pdf) [*Previous*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/TransactionCostAnalytics) |
  | User Guide              |  |
  | API                     | [*Javadoc*](https://lakshmidrip.github.io/DROP/Javadoc/index.html)|
 
@@ -238,6 +238,30 @@ Transaction Cost Analytics Library contains the Functionality to:
 	* Space Discretization
 	* Almgren (2009, 2012) Sample Solutions
 	* References
+ * Liquidity Seeker Trading Strategy
+	* Introduction
+	* The Algo Engine
+	* The Trading Strategies (Algos)
+	* Trading Logic Components
+		* Algo
+		* Scheduler
+		* Worker
+		* Routers
+	* Life-cycle of an Order
+		* Order Arrival
+		* Wakeup Logic
+		* Interval Logic
+		* Order Amendment
+	* Trading Objectives / Design Process
+		* Low Level
+		* High Level
+		* Elegance and Simplicity
+	* References
+ * A Volume-Weighted Average Approach
+	* Introduction
+	* Defining the Prediction Problem
+	* Predicting Cumulative Relative Volume with Real-time Data
+	* Extension to Partial Trading Days
  * Systemic Market Making SKU
 	* Symbology
 	* Glossary
