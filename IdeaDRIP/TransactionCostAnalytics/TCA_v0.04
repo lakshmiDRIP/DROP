@@ -1,0 +1,192 @@
+
+ --------------------------
+ #1 - Auction On-demand
+ --------------------------
+ --------------------------
+ 1.1) Auction Order Size
+ 1.2) BBO
+	- European BBO
+	- National BBO
+	- Primary (Dealer) BBO
+ 1.3) Trading at or within BBO
+ 1.4) Features:
+	- Maximize Traded Volume
+	- Custom Priorities
+		- Order book Level Broker Priority
+		- Time
+		- Size
+	- Different Auction Order Types
+ 1.4) Safety Features:
+	- Uncross - Random Min and Max Times
+	- Speed Bumps on Cancels TBD
+	- Speed Bumps on Order Modifications
+	- Minimum Execution Size - Opposite Order must exceed MES
+	- Limit Guard Price Protection
+	- EBBO/NBBO Collar
+ --------------------------
+ #2 - Execution Algorithms
+ --------------------------
+ --------------------------
+ 2.1) VWAP - Background Volume Histogram, VWAP Window, Price Histogram
+ 2.2) TWAP - TWAP Window, Price Histogram
+ 2.3) Implementation Shortfall:
+	- (EP - DP) x Q + EC
+	- EP: Execution Price
+	- DP: Decision Price
+	- Q: Quantity
+	- EC: Explicit Costs, made from Broker Charges and Commission
+	- (EP - DP) x Q = Also called slippage
+ 2.4) Participation of Volume - Total Market Volume, Participation Rate
+ 2.5) Iceberg - Splits large ones into small and hides the rest
+ 2.6) SOR - All the above across multiple venues
+ 2.7) SMRT - SOR + Algo-based Order Placement
+ 2.8) Order Scheduling - Timw Window Delay for Order Placement
+ --------------------------
+ #3 - Trading Strategy Algo Framework
+ --------------------------
+ --------------------------
+ 3.1) Broad Institutional Trading Platform Components
+	- Algo Engine
+	- FIX Translator
+	- Order Validator
+	- Risk Management
+	- Monitoring
+	- Market Data Consumer
+	- Post-trade Processor
+ 3.2) Algo Engine
+	- Purpose: Takes the client’s high-level instruction, and decides how and when to slice out child orders
+		based on the current state of the market and the pre-loaded quantitative models
+	- Core Functional Components
+		- Algo Model Data Interface
+		- Order Validation Engine
+		- Child Order Slicing Interface
+		- OMS Venue Interface
+		- Market Data Interfacer
+		- Security Master Static Data Interface
+		- Algo Output Safety Bounds Checker
+		- Risk Check Interface
+		- Strategy Implementer (e.g., VWAP, DROP LIQUIDITY SEEKER)
+		- Timer Service Interface
+ 3.3) The Trading Strategies (Algos)
+	- VWAP - Strategy trades in line with the market volume based on a dynamic volume prediction model
+	- DROP LIQUIDITY SEEKER - Hybrid liquidity seeker/impact minimization algo that balances the speed of
+		execution with avoiding undue market impact as per its equivalent model, with an opportunistic
+		component searching for block liquidity in parallel
+	- Safety Customizations - Order must a) complete, b) exclude auctions
+ 3.4) Trading Logic Components
+	- Algo, Scheduler, Order Task, Order Router
+	- Algo:
+		- Top layer that manages all upstream interactions with the user, e.g., handling new orders and
+			amendments, and it creates and manages the Scheduler and the Order Task
+		- Responsible for slicing child shares to the opening and the closing auctions
+	- Scheduler:
+		- Paces the order over the duration using the various quantitative models and the trading logic
+		- Pre-trade Scheduler: Suggests the total number of shares to trade over the duration of the order.
+		- Impact Minimization Scheduler: Pace at which the Algo should trade at any given time. This is used
+			for DROP LIQUIDITY SEEKER orders
+		- VWAP Scheduler: Predicts the amount of volume throughout the day and at the auctions based on what
+			has happened historically and intra-day so far
+	- Order Task and Order Router:
+		- Order Task: Manages and deploys three layers of intra-day trading tactics, i.e., routers, and
+			shuffles between them as dictated by the Algo
+		- Order Router: Router can also stitch together multiple sub-routers, for example a serial mid-point
+			all-or-none router + a spread crossing order to the IEX router
+		- POST – Passively adding liquidity
+			- Starts with a 2:1 split-post on the near-side between IEX D-Limit and the primary exchange
+			- Proportionately reshuffles between two legs based on where it gets filled, and re-pegs to the
+				inside roughly every 30-60 seconds if the stock drifts away
+		- TAKE – immediately removing liquidity
+			- First serially pings a handful of dark-pools using all-or-none IOCs, and if that fails, it
+				crosses the spread to remove liquidity using the IEX router
+		- OPPO – opportunistically seeking block liquidity
+			- Searches for block liquidity by split-posting mid-point orders across several dark pools and
+				exchanges using a high minimum quantity, generally in the thousands of shares. This may be
+				supplemented with other order types such as conditionals
+ 3.5) Order Lifecyle:
+	- Order Arrival:
+		- Receipt of a valid order, Algo subscribes to market data and then creates the Scheduler
+		- For a VWAP order, the Algo creates VWAP scheduler; for a DROP LIQUIDITY SEEKER order, it creates an
+			Impact Minimization Scheduler
+		- Then, the Algo registers with the Algo Engine for various wakeup callbacks; at the start time,
+			shortly before auction cutoff times, at the cleanup time, i.e., shortly before the end, and at
+			the end time
+	- Order Wakeups:
+		- Upon a Pre-auction Wakeup, the Algo slices shares to the primary auction
+		- At the Start Time, the Algo creates the worker and begins the first interval – the Interval logic
+		- Upon the Cleanup wakeup, the Algo tells the Worker to complete any remaining scheduled shares
+		- Upon the End Time Wakeup, the Algo cancels any outstanding orders and then provides an out to the
+			user
+	- Order Intervals:
+		- Life of an order as a series of distinct 5-10 “intervals”
+		- Scheduler Input #1 - Interval Length
+			- Length of the interval is used to request a wakeup at the end
+			- Interval length depend on other factors too like the time of the day – intervals are stretched
+				longer in the morning when spreads are wider, and compressed as the day progresses
+			- Additionally, smaller orders have longer intervals and vice versa. All interval durations are
+				randomized
+		- Scheduler Input #2 - Number of Shares Scheduled
+			- VWAP Scheduler uses the dynamic volume prediction model to predict what percentage of the day’s
+				volume will have traded by the end of the current interval
+			- Impact Minimization Scheduler gets this value by running a dynamic programming cycle of the
+				impact minimization model
+			- Algo then uses this information to tell the Order Task to complete any shares outstanding from
+				previous interval and start working a new interval quantity
+			- Additionally, the Algo requests “catch up” wakeups throughout the interval where it checks if
+				the Order Task is falling behind, and if so, tells it to cross the spread to keep up pace
+			- Throughout the life of a DROP LIQUIDITY SEEKER order, the Algo tells the Order Task to search
+				for block liquidity at the mid-point with all remaining unscheduled shares using an
+				Opportunistic router
+	- Order Amendment:
+		- Upon receipt of a client replace request, the Algo generally cancels or amends the Order Task to
+			comply with the new instructions
+		- Algo also creates a new Scheduler to use from this point forward
+ 3.6) Trading Objectives/Design Process
+	- Low Level:
+		- Objective #1 - Avoiding Adverse Selection
+			- Prop Firm Perspective - When the market transitions to a new price level, there is a flood of
+				trading activity where the fastest proprietary firms race to pick off the resting orders at
+				the old price level and establish queue position at the new price level – these are two
+				similar but different strategies
+			- Sell-side Perspective - As a sell-side firm, it is not plausible to effectively compete in
+				these races, so the only viable way to prevent adverse selection is to utilize built-in
+				protections available in trading venues, such as IEX D-Peg and D-Limit, and NASDAQ MELO
+		- Objective #2 - Removing Liquidity
+			- Algo starts off by using the IEX Router when crossing the spread
+			- Dark pools are checked using the all-or-none mid-point order prior to crossing the spread
+	- High Level:
+		- Objective: Optimize Factors that determine how the Algo should spread out trading throughout the
+			day
+		- Factor #1: How does one measure success at a high level? Using Distilled Impact
+		- Factor #2: How much volume does one expect to trade during the life of the order? Volume Prediction
+			Model
+		- Factor #3: How much should the Algo be willing to trade during the life of the order? Pre-trade
+			Model
+		- Factor #4: How should one pace the trading activity throughout the life of the order? Impact
+			Minimization Model
+ --------------------------
+ #4 - Volume-Weighted Average Approach
+ --------------------------
+ --------------------------
+ 4.1) General Hstorical Market Symbol Cumulative Volume to Time t vs. Realized Symbol Volume at Time t
+	- Of course, and their VWAP
+ 4.2) Problem Formulation
+	- Daily Time Interval (09:30 to 16:00) divv'ied into delta t = 10 minute intervals
+	- Opening Auction Volume is up to 09:30
+	- Closing Auction Volume is after 16:00 (say 16:10)
+	- Historical Time-wise Average Volume V_hist and Traded Percentage X_hist (based on rolling delta d = 20 day average)
+	- Historical Time-wise 20 day ADV
+	- Realized Time-wise Average Volume V_realized and Traded Percentage X_realized
+	- Decision to catch up or wait or do nothing
+		- If catch up, how much
+		- It wait, how long
+		- Do nothing - if the catch up market impact is too high
+	- Volume Prediction mismatch Metric
+		- |Historical(t) - Realized(t)| Integrand
+ 4.3) Estimation of Predicted Volume Fraction R(t)
+	- ADV Normalized Trading Volume A(t) = V(t)/ADV
+	- Observations Grouped by V_hist(t) and A(t)
+	- Predicted Volume Fraction R(t) is the average of X_hist(t) across a single grouping of V_hist(t) and A(t)
+ 4.4) Partial Trading Days
+	- Need estimates for volume fraction start and volume fraction end times
+	- Smooth, monotonic interpolation
+ --------------------------
