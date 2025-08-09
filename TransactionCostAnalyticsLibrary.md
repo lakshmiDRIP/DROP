@@ -16,7 +16,7 @@ Transaction Cost Analytics Library contains the Functionality to:
 
  |        Document         | Link |
  |-------------------------|------|
- | Technical Specification | [*Latest*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/TransactionCostAnalytics/TransactionCostAnalytics_v6.85.pdf) [*Previous*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/TransactionCostAnalytics) |
+ | Technical Specification | [*Latest*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/TransactionCostAnalytics/TransactionCostAnalytics_v6.97.pdf) [*Previous*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/TransactionCostAnalytics) |
  | User Guide              |  |
  | API                     | [*Javadoc*](https://lakshmidrip.github.io/DROP/Javadoc/index.html)|
 
@@ -67,6 +67,46 @@ Transaction Cost Analytics Library contains the Functionality to:
 	* Types of TIF Orders
 	* Example of Time-in-Force
 	* Reference
+ * Order State Change Matrices
+	* Introduction
+	* Scenario Order State Change Matrices
+	* D1 Filled Order
+	* D2 – Part-Filled Day Order, Done for Day
+	* D3 – Cancel Request Issued for a Zero-filled Order
+	* D4 – Cancel Request Issued for a Part-filled Order – Executions occur when Cancel Request is Active
+	* D5 – Cancel Request issued for an Order that becomes Filled before Cancel Request can be Accepted
+	* D6 – Zero-filled Order, Cancel/Replace Request issued to increase Order Quantity
+	* D7 – Part-filled Order, followed by Cancel/Replace Request to increase Order Quantity, Execution occurs while Order is Pending Replace
+	* D8 – Filled Order Followed by Cancel/Replace to increase Order Quantity
+	* D9 – Cancel/Replace Request – Not for Quantity Change – is rejected as a Fill has Occurred
+	* D10 – Cancel/Replace Request Sent while Execution is being Reported. The Requested Order Quantity exceeds the Cumulative Quantity. The Order is replaced then Filled
+	* D11 – Cancel/Replace Request Sent while Order Execution is being Reported. The Requested Order Quantity equals the Cumulative Quantity. The Order Quantity is Amended to the Cumulative Quantity
+	* D12 – Cancel/Replace Request Sent while Order Execution is being Reported. The Requested Order Quantity is below the Cumulative Quantity. The Order Quantity is Amended to the Cumulative Quantity
+	* D13 – One Cancel/Replace Request is Issued which is Accepted. Another One is Issued which is also Accepted
+	* D14 – One Cancel/Replace Request is issued which is Rejected before Order becomes Pending Replace. Then Another is issued which is Accepted
+	* D15 – One Cancel/Replace Request is Issued which is Rejected after it is in Pending Replace. Then Another One is Issued which is Accepted
+	* D16 – One Cancel/Replace Request is Issued Followed immediately by Another. Broker Processes Sequentially
+	* D17 – One Cancel/Replace Request is issued followed immediately by Another. Broker rejects the Second as Order is Pending Replace
+	* D18 – Telephoned Order
+	* D19 – Unsolicited Cancel of a Part-timed Order
+	* D20 – Unsolicited Replacement of a Part-filled Order
+	* D21 – Unsolicited Reduction of Order Quantity by Sell-side. For example, the US ECNs Communication NASDAQ SelectNet Declines
+	* D22 – Order Rejected due to Duplicate ClOrdID
+	* D23 – Order Rejected because Order has already been Verbally Submitted
+	* D24 – Order Status Request Rejected for Unknown Order
+	* D25 – Transmitting a CMS-style “Nothing Done” in Response to a Status Request
+	* D26 - Order sent, immediately followed by a status request. Subsequent Status requests sent during Life of Order
+	* D27 – GTC Order Partially Filled, Restated/Renewed and Partially Filled the Following Day
+	* D28 – GTC Order with a Partial Fill, a 2:1 Stock Split, then a Partial Fill and Fill the Following Day
+	* D29 – GTC Order Partially Filled, Restated/Renewed, and Canceled the Following Day
+	* D30 – GTC Order Partially Filled, Restated/Renewed Followed by Replace Request to increase Quantity
+	* D31 – Possible Resend Order
+	* D32 – Fill or Kill Order cannot be Filled
+	* D33 – Immediate-Or-Cancel Order that cannot be immediately Hit
+	* D34 – Filled Order, Followed by Correction and Cancelation of Executions
+	* D35 – A Canceled Order Followed by a Busted Execution and a new Execution
+	* D36 – GTC Order Partially Filled, Restated/Renewed, and Partially Filled the Next Day, with Corrections of Quantities on both Executions
+	* D37 – Transmitting a Guarantee of Execution Prior to Execution
  * Indifference Price
 	* Overview
 	* Mathematics
