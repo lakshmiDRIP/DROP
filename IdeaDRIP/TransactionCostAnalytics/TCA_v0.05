@@ -247,7 +247,7 @@
  5.9) Buy-side Response - Partial Fill Received from Venue
 	- Response => {Message Type = Execution; Request ID = XXXX; Exec Type = Partial Fill; Exec Trans Type = New; Last Shares; Comments}
 	- Order => {Status: Partially Filled; Type; Quantity = Incoming; Cumulative Quantity += Last Shares; Leaves Quantity -= Last Shares; Last Shares}
- 5.10) Buy-side Response - Full Execution Received from Venue
+ 5.10) Buy-side Response - Full Fill Received from Venue
 	- Response => {Message Type = Execution; Request ID = XXXX; Exec Type = Fill; Exec Trans Type = New; Last Shares; Comments}
 	- Order => {Status: Filled; Quantity = Incoming; Type; Cumulative Quantity = Quantity; Leaves Quantity = 0; Last Shares}
  5.11) Buy-side Response - Done for the Day
@@ -279,10 +279,55 @@
  5.20) Buy-side Response - Cancel Request Order rejected due to a Full Fill
 	- Response => {Message Type = Filled; Request ID = YYYY; Exec Type = <<blank>>; Exec Trans Type = <<blank>>; Last Shares = 0; Comments: Cancel request rejected – CxlRejectReason = 0 (too late to cancel)}
 	- Order => {Status: Partially Filled; Type; Quantity = Incoming; Cumulative Quantity; Leaves Quantity; Last Shares}
+ 5.21) Buy-side Request - Replace Request
+	- Request {Type: New; Parent Request ID = XXXX; Request ID = YYYY; Quantity = IncomingYYYY}
+	- Order {Status: Unassigned; Type; Quantity = IncomingYYYY; Cumulative Quantity = 0; Leaves Quantity = 0; Last Shares = 0}
+ 5.22) Buy-side Response - Pending Replace Sent to the Venue
+	- Response => {Message Type = Execution; Request ID = YYYY; Exec Type = Pending Replace; Exec Trans Type = New; Last Shares; Comments}
+	- Order => {Status: Pending Replace; Type; Quantity = Incoming; Cumulative Quantity; Leaves Quantity; Last Shares}
+ 5.23) Buy-side Response - Replace Received from the Venue
+	- Response => {Message Type = Execution; Request ID = YYYY; Exec Type = Replace; Exec Trans Type = New; Last Shares; Comments}
+	- Order => {Status: Replaced; Type; Quantity = IncomingYYYY; Cumulative Quantity; Leaves Quantity; Last Shares}
+ 5.24) Buy-side Response - Replace Request Order rejected by Sell-side due on a Partial Fill by Trader/Exchange
+	- Response => {Message Type = Cancel Reject; Request ID = YYYY; Exec Type = <<blank>>; Exec Trans Type = <<blank>>; Last Shares = 0; Comments}
+	- Order => {Status: Partially Filled; Type; Quantity = Incoming; Cumulative Quantity = 0; Leaves Quantity = 0; Last Shares = 0}
+ 5.25) Buy-side Response - Partial Fill Received from Venue on a Pending Replace
+	- Response => {Message Type = Execution; Request ID = XXXX; Exec Type = Partial Fill; Exec Trans Type = New; Last Shares; Comments}
+	- Order => {Status: Pending Replace; Type; Quantity = Incoming; Cumulative Quantity += Last Shares; Leaves Quantity -= Last Shares; Last Shares}
+ 5.26) Buy-side Response - Replace Received from the Venue on a Partially Filled Order
+	- Response => {Message Type = Execution; Request ID = YYYY; Exec Type = Replace; Exec Trans Type = New; Last Shares; Comments}
+	- Order => {Status: Partially Filled; Type; Quantity = IncomingYYYY; Cumulative Quantity; Leaves Quantity; Last Shares}
+ 5.27) Buy-side Response - Replace Request Order rejected by Sell-side due to Complete Fill
+	- Response => {Message Type = Cancel Reject; Request ID = YYYY; Exec Type = <<blank>>; Exec Trans Type = <<blank>>; Last Shares = 0; Comments}
+	- Order => {Status: Filled; Type; Quantity = Incoming; Cumulative Quantity = 0; Leaves Quantity = 0; Last Shares = 0}
+ 5.28) Buy-side Request - Replace Request not for Quantity Change
+	- Request {Type: New; Parent Request ID = XXXX; Request ID = YYYY; Quantity = IncomingYYYY}
+	- Order {Status: Unassigned; Type; Quantity = Incoming; Cumulative Quantity = 0; Leaves Quantity = 0; Last Shares = 0}
+ 5.29) Buy-side Response - Full Fill Received from Venue on an Order Pending Replace
+	- Response => {Message Type = Execution; Request ID = XXXX; Exec Type = Replace; Exec Trans Type = New; Last Shares; Comments}
+	- Order => {Status: Filled; Quantity = Incoming; Type; Cumulative Quantity = Quantity; Leaves Quantity = 0; Last Shares}
+ 5.30) Buy-side Response - Pending Replace and a Partial Fill Received from Venue
+	- Response => {Message Type = Execution; Request ID = XXXX; Exec Type = Replace; Exec Trans Type = New; Last Shares; Comments}
+	- Order => {Status: Partially Fill; Type; Quantity = Incoming; Cumulative Quantity += Last Shares; Leaves Quantity -= Last Shares; Last Shares}
+ 5.31) Buy-side Response - Pending Replace Rejected because Broker does not support Order Replace when Order is Pending Replace
+	- Response => {Message Type = Cancel Reject; Request ID = YYYY; Exec Type = <<blank>>; Exec Trans Type = <<blank>>; Last Shares = 0; Comments}
+	- Order => {Status: Filled; Type; Quantity = Incoming; Cumulative Quantity = 0; Leaves Quantity = 0; Last Shares = 0}
 
- 5.21) D1 => 5.5 -> 5.6; 5.7 -> 5.8; 5.9 (as many times as needed within a day); 5.10
- 5.22) D2 => 5.5 -> 5.6; 5.7 -> 5.8; 5.9 (as many times as needed within a day); 5.11
- 5.23) D3 => 5.5 -> 5.6; 5.7; 5.12 -> 5.13; 5.14 -> 5.15; 5.16
- 5.24) D4 => 5.5 -> 5.6; 5.7 -> 5.9 -> 5.12/5.9 (Concurrent); 5.17; 5.14 -> 5.18 -> 5.17; 5.16
- 5.25) D5 => 5.5 -> 5.6; 5.7 -> 5.9 -> 5.12/5.9 (Concurrent); 5.17; 5.14 -> 5.19 -> 5.20
+ 5.32) D1 => 5.5 -> 5.6; 5.7 -> 5.8; 5.9 (as many times as needed within a day) -> 5.10
+ 5.33) D2 => 5.5 -> 5.6; 5.7 -> 5.8; 5.9 (as many times as needed within a day) -> 5.11
+ 5.34) D3 => 5.5 -> 5.6; 5.7 -> 5.12 -> 5.13; 5.14 -> 5.15; 5.16
+ 5.35) D4 => 5.5 -> 5.6; 5.7 -> 5.9 -> 5.12/5.9 (Concurrent) -> 5.17; 5.14 -> 5.18 -> 5.17; 5.16
+ 5.36) D5 => 5.5 -> 5.6; 5.7 -> 5.9 -> 5.12/5.9 (Concurrent) -> 5.17; 5.14 -> 5.19 -> 5.20
+ 5.37) D6 => 5.5 -> 5.6; 5.7 -> 5.21 -> 5.13; 5.22 -> 5.15; 5.23 -> 5.9 (as many times as needed within a day)
+ 5.38) D7 => 5.5 -> 5.6; 5.7 -> 5.9 -> 5.21 -> 5.24; 5.22 -> 5.25 -> 5.24; 5.23 -> 5.10
+ 5.39) D8 => 5.5 -> 5.6; 5.7 -> 5.9 -> 5.21 -> 5.27; 5.22 -> 5.25 -> 5.9
+ 5.40) D9 => 5.5 -> 5.6; 5.7 -> 5.9 -> 5.28/5.10 (Concurrent) -> 5.20
+ 5.41) D10 => 5.5 -> 5.6; 5.7 -> 5.9 -> 5.12/5.9 (Concurrent) -> 5.13; 5.22 -> 5.25 -> 5.24; 5.25 -> 5.9
+ 5.42) D11 => 5.5 -> 5.6; 5.7 -> 5.21/5.9 (Concurrent) -> 5.29
+ 5.43) D12 => 5.5 -> 5.6; 5.7 -> 5.21/5.9 (Concurrent) -> 5.29
+ 5.44) D13 => 5.5 -> 5.6; 5.7 -> 5.9 -> 5.21 -> 5.22 -> 5.25 -> 5.9 -> 5.21 -> 5.22 -> 5.25 -> 5.10
+ 5.45) D14 => 5.5 -> 5.6; 5.7 -> 5.9 -> 5.21 -> 5.24; 5.9 (as many times as needed within a day) -> 5.21 -> 5.22 -> 5.30 -> 5.9
+ 5.46) D15 => 5.5 -> 5.6; 5.7 -> 5.9 -> 5.21 -> 5.22 -> 5.25 -> 5.24; 5.9 -> 5.21 -> 5.22 -> 5.30 -> 5.9
+ 5.47) D16 => 5.5 -> 5.7 -> 5.9 -> 5.21 -> 5.21 -> 5.22 -> 5.30 -> 5.22 -> 5.30 -> 5.10
+ 5.48) D17 => 5.5 -> 5.7 -> 5.9 -> 5.21 -> 5.21 -> 5.22 -> 5.30 -> 5.9
  --------------------------
