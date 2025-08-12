@@ -213,14 +213,9 @@ public class Order
 			null == (_id = id) || _id.isEmpty() ||
 			null == (_creationTime = creationTime) ||
 			null == (_side = side) ||
-			!NumberUtil.IsValid (
-				_size = size
-			)
-		)
+			!NumberUtil.IsValid (_size = size))
 		{
-			throw new Exception (
-				"Order Constructor => Invalid Inputs"
-			);
+			throw new Exception ("Order Constructor => Invalid Inputs");
 		}
 
 		_type = type;
@@ -229,9 +224,7 @@ public class Order
 		_fillWholeSettings = fillWholeSettings;
 		_state = OrderState.OPEN + OrderState.UNFILLED;
 
-		_size = Math.abs (
-			_size
-		);
+		_size = Math.abs (_size);
 	}
 
 	/**

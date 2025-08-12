@@ -312,22 +312,53 @@
  5.31) Buy-side Response - Pending Replace Rejected because Broker does not support Order Replace when Order is Pending Replace
 	- Response => {Message Type = Cancel Reject; Request ID = YYYY; Exec Type = <<blank>>; Exec Trans Type = <<blank>>; Last Shares = 0; Comments}
 	- Order => {Status: Filled; Type; Quantity = Incoming; Cumulative Quantity = 0; Leaves Quantity = 0; Last Shares = 0}
+ 5.32) Buy-side Request - New Telephoned Order, ClOrdID generated
+	- Request {Type: New; Request ID = XXXX; Quantity = Incoming}
+	- Order {Status: Unassigned; Type; Quantity = Incoming; Cumulative Quantity = 0; Leaves Quantity = 0; Last Shares = 0}
+ 5.33) Buy-side Response - Unsolicited Broker Cancel of a Part-filled Order due to a Verbal Cancel
+	- Response => {Message Type = Execution; Request ID = XXXX; Exec Type = Canceled; Exec Trans Type = New; Last Shares; Comments}
+	- Order => {Status: Canceled; Type; Quantity = Incoming; Cumulative Quantit; Leaves Quantity; Last Shares}
+ 5.34) Buy-side Response - Verbal Restatement of Order
+	- Response => {Message Type = Execution; Request ID = YYYY; Exec Type = Restated; Exec Trans Type = New; Last Shares; Comments}
+	- Order => {Status: New; Type; Quantity = Incoming; Cumulative Quantity; Leaves Quantity; Last Shares}
+ 5.35) Buy-side Response - Verbal Restatement of a Part-Filled Order
+	- Response => {Message Type = Execution; Request ID = YYYY; Exec Type = Restated; Exec Trans Type = New; Last Shares; Comments}
+	- Order => {Status: Partially Filled; Type; Quantity = Incoming; Cumulative Quantity; Leaves Quantity; Last Shares}
+ 5.36) Buy-side Response - Unsolicited Restatement of Order due to Partial Deline from Venue
+	- Response => {Message Type = Execution; Request ID = YYYY; Exec Type = Restated; Exec Trans Type = New; Last Shares; Comments}
+	- Order => {Status: New; Type; Quantity = Incoming; Cumulative Quantity; Leaves Quantity; Last Shares}
+ 5.37) Buy-side Response - Duplicate Order Rejected on a Partial Fill
+	- Response => {Message Type = Execution; Request ID = YYYY; Exec Type = Rejected; Exec Trans Type = New; Last Shares = 0; Comments}
+	- Order => {Status: Partially Filled; Type; Quantity = Incoming; Cumulative Quantity; Leaves Quantity; Last Shares}
+ 5.38) Buy-side Response - Order rejected because the order has already been verbally submitted
+	- Response => {Message Type = Execution; Request ID = YYYY; Exec Type = Rejected; Exec Trans Type = New; Last Shares = 0; Comments}
+	- Order => {Status: Rejected; Type; Quantity = Incoming; Cumulative Quantity; Leaves Quantity; Last Shares}
 
- 5.32) D1 => 5.5 -> 5.6; 5.7 -> 5.8; 5.9 (as many times as needed within a day) -> 5.10
- 5.33) D2 => 5.5 -> 5.6; 5.7 -> 5.8; 5.9 (as many times as needed within a day) -> 5.11
- 5.34) D3 => 5.5 -> 5.6; 5.7 -> 5.12 -> 5.13; 5.14 -> 5.15; 5.16
- 5.35) D4 => 5.5 -> 5.6; 5.7 -> 5.9 -> 5.12/5.9 (Concurrent) -> 5.17; 5.14 -> 5.18 -> 5.17; 5.16
- 5.36) D5 => 5.5 -> 5.6; 5.7 -> 5.9 -> 5.12/5.9 (Concurrent) -> 5.17; 5.14 -> 5.19 -> 5.20
- 5.37) D6 => 5.5 -> 5.6; 5.7 -> 5.21 -> 5.13; 5.22 -> 5.15; 5.23 -> 5.9 (as many times as needed within a day)
- 5.38) D7 => 5.5 -> 5.6; 5.7 -> 5.9 -> 5.21 -> 5.24; 5.22 -> 5.25 -> 5.24; 5.23 -> 5.10
- 5.39) D8 => 5.5 -> 5.6; 5.7 -> 5.9 -> 5.21 -> 5.27; 5.22 -> 5.25 -> 5.9
- 5.40) D9 => 5.5 -> 5.6; 5.7 -> 5.9 -> 5.28/5.10 (Concurrent) -> 5.20
- 5.41) D10 => 5.5 -> 5.6; 5.7 -> 5.9 -> 5.12/5.9 (Concurrent) -> 5.13; 5.22 -> 5.25 -> 5.24; 5.25 -> 5.9
- 5.42) D11 => 5.5 -> 5.6; 5.7 -> 5.21/5.9 (Concurrent) -> 5.29
- 5.43) D12 => 5.5 -> 5.6; 5.7 -> 5.21/5.9 (Concurrent) -> 5.29
- 5.44) D13 => 5.5 -> 5.6; 5.7 -> 5.9 -> 5.21 -> 5.22 -> 5.25 -> 5.9 -> 5.21 -> 5.22 -> 5.25 -> 5.10
- 5.45) D14 => 5.5 -> 5.6; 5.7 -> 5.9 -> 5.21 -> 5.24; 5.9 (as many times as needed within a day) -> 5.21 -> 5.22 -> 5.30 -> 5.9
- 5.46) D15 => 5.5 -> 5.6; 5.7 -> 5.9 -> 5.21 -> 5.22 -> 5.25 -> 5.24; 5.9 -> 5.21 -> 5.22 -> 5.30 -> 5.9
- 5.47) D16 => 5.5 -> 5.7 -> 5.9 -> 5.21 -> 5.21 -> 5.22 -> 5.30 -> 5.22 -> 5.30 -> 5.10
- 5.48) D17 => 5.5 -> 5.7 -> 5.9 -> 5.21 -> 5.21 -> 5.22 -> 5.30 -> 5.9
+ 5.39) D1 => 5.5 -> 5.6; 5.7 -> 5.8; 5.9 (as many times as needed within a day) -> 5.10
+ 5.40) D2 => 5.5 -> 5.6; 5.7 -> 5.8; 5.9 (as many times as needed within a day) -> 5.11
+ 5.41) D3 => 5.5 -> 5.6; 5.7 -> 5.12 -> 5.13; 5.14 -> 5.15; 5.16
+ 5.42) D4 => 5.5 -> 5.6; 5.7 -> 5.9 -> 5.12/5.9 (Concurrent) -> 5.17; 5.14 -> 5.18 -> 5.17; 5.16
+ 5.43) D5 => 5.5 -> 5.6; 5.7 -> 5.9 -> 5.12/5.9 (Concurrent) -> 5.17; 5.14 -> 5.19 -> 5.20
+ 5.44) D6 => 5.5 -> 5.6; 5.7 -> 5.21 -> 5.13; 5.22 -> 5.15; 5.23 -> 5.9 (as many times as needed within a day)
+ 5.45) D7 => 5.5 -> 5.6; 5.7 -> 5.9 -> 5.21 -> 5.24; 5.22 -> 5.25 -> 5.24; 5.23 -> 5.10
+ 5.46) D8 => 5.5 -> 5.6; 5.7 -> 5.9 -> 5.21 -> 5.27; 5.22 -> 5.25 -> 5.9
+ 5.47) D9 => 5.5 -> 5.6; 5.7 -> 5.9 -> 5.28/5.10 (Concurrent) -> 5.20
+ 5.48) D10 => 5.5 -> 5.6; 5.7 -> 5.9 -> 5.12/5.9 (Concurrent) -> 5.13; 5.22 -> 5.25 -> 5.24; 5.25 -> 5.9
+ 5.49) D11 => 5.5 -> 5.6; 5.7 -> 5.21/5.9 (Concurrent) -> 5.29
+ 5.50) D12 => 5.5 -> 5.6; 5.7 -> 5.21/5.9 (Concurrent) -> 5.29
+ 5.51) D13 => 5.5 -> 5.6; 5.7 -> 5.9 -> 5.21 -> 5.22 -> 5.25 -> 5.9 -> 5.21 -> 5.22 -> 5.25 -> 5.10
+ 5.52) D14 => 5.5 -> 5.6; 5.7 -> 5.9 -> 5.21 -> 5.24; 5.9 (as many times as needed within a day) -> 5.21 -> 5.22 -> 5.30 -> 5.9
+ 5.53) D15 => 5.5 -> 5.6; 5.7 -> 5.9 -> 5.21 -> 5.22 -> 5.25 -> 5.24; 5.9 -> 5.21 -> 5.22 -> 5.30 -> 5.9
+ 5.54) D16 => 5.5 -> 5.7 -> 5.9 -> 5.21 -> 5.21 -> 5.22 -> 5.30 -> 5.22 -> 5.30 -> 5.10
+ 5.55) D17 => 5.5 -> 5.7 -> 5.9 -> 5.21 -> 5.21 -> 5.22 -> 5.30 -> 5.9
+ 5.56) D18 => 5.32 -> 5.7 -> 5.9 (as many times as needed within a day) -> 5.10
+ 5.57) D19 => 5.5 -> 5.6; 5.7 -> 5.9 (as many times as needed within a day) -> 5.34
+ 5.58) D20 => 5.5 -> 5.6; 5.7 -> 5.34 -> 5.9 -> 5.35
+ 5.59) D21 => 5.5 -> 5.6; 5.7 -> 5.36 -> 5.10
+ 5.60) D22 => 5.5 -> 5.7 -> 5.9 (as many times as needed within a day) -> 5.5 -> 5.37
+ 5.61) D21 => 5.5 -> 5.38
+ 5.62) Detection of Order Duplication:
+	- "PossDup" Flag in the Request Header
+	- Check against side/quantity
+	- Transaction Time, i.e., Order/Request Creation Time, for Staleness Check
  --------------------------
