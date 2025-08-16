@@ -381,7 +381,7 @@ public class StopOrder
 				parentID(),
 				new Date(),
 				side(),
-				size(),
+				quantityTracker().current(),
 				null,
 				null
 			);
@@ -395,11 +395,5 @@ public class StopOrder
 	@Override public boolean isConditional()
 	{
 		return true;
-	}
-
-	@Override public Order generateChildOrder (
-		final double filledSize)
-	{
-		return null;
 	}
 }

@@ -333,27 +333,4 @@ public class LimitOrder
 	{
 		return true;
 	}
-
-	@Override public Order generateChildOrder (
-		final double filledSize)
-	{
-		try {
-			return new LimitOrder (
-				issuer(),
-				ticker(),
-				StringUtil.GUID(),
-				parentID(),
-				new Date(),
-				side(),
-				size() - filledSize,
-				null,
-				null,
-				_pegScheme
-			);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-		return null;
-	}
 }

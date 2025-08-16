@@ -1,15 +1,14 @@
 
-package org.drip.oms.fill;
+package org.drip.oms.transaction;
 
-import org.drip.oms.transaction.Order;
-import org.drip.oms.transaction.OrderState;
+import org.drip.numerical.common.NumberUtil;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
- * Copyright (C) 2023 Lakshmi Krishnamurthy
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
  * 
  *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
  *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
@@ -77,8 +76,7 @@ import org.drip.oms.transaction.OrderState;
  */
 
 /**
- * <i>NestedFulfillmentScheme</i> implements an Order Fulfillment Scheme by generating Nested Child Orders.
- *  The References are:
+ * <i>OrderQuantityTracker</i> tracks the Components of an Order Quantity. The References are:
  *  
  * 	<br><br>
  *  <ul>
@@ -109,151 +107,144 @@ import org.drip.oms.transaction.OrderState;
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/TransactionCostAnalyticsLibrary.md">Transaction Cost Analytics</a></li>
  *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/oms/README.md">R<sup>d</sup> Order Specification, Handling, and Management</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/oms/fill/README.md">Order Fulfillment Scheme Implementations/Results</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/oms/transaction/README.md">Order Specification and Session Metrics</a></li>
  *  </ul>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class NestedFulfillmentScheme
+public class OrderQuantityTracker
 {
-	private Order _orderNode = null;
-	private NestedFulfillmentScheme _child = null;
-	private NestedFulfillmentScheme _parent = null;
-
-	private boolean fillOrKill (
-		final OrderExecutionProvider orderExecutionProvider)
-	{
-		if (!orderExecutionProvider.isOrderMarketable (_orderNode)) {
-			_orderNode.setState (OrderState.CANCELED);
-
-			return false;
-		}
-
-		return null == _orderNode.fulfill (orderExecutionProvider.attemptFill (_orderNode));
-	}
-
-	private boolean allOrNone (
-		final OrderExecutionProvider orderExecutionProvider)
-	{
-		int fulfillTryCount = 0;
-
-		int fulfillTryLimit = _orderNode.fillWholeSettings().fulfillTryLimit();
-
-		while (fulfillTryLimit - 1 > fulfillTryCount &&
-			!orderExecutionProvider.isOrderMarketable (_orderNode))
-		{
-			_orderNode.fulfill (orderExecutionProvider.attemptFill (_orderNode));
-
-			++fulfillTryCount;
-		}
-
-		if (!orderExecutionProvider.isOrderMarketable (_orderNode)) {
-			_orderNode.setState (OrderState.CANCELED);
-
-			return false;
-		}
-
-		return null == _orderNode.fulfill (orderExecutionProvider.attemptFill (_orderNode));
-	}
-
-	private boolean fillWithChildOrders (
-		final OrderExecutionProvider orderExecutionProvider)
-	{
-		Order childOrder = _orderNode.fulfill (orderExecutionProvider.attemptFill (_orderNode));
-
-		if (null == childOrder) {
-			return null == _parent ? true : _parent.node().setState (_orderNode.state());
-		}
-
-		try {
-			_child = new NestedFulfillmentScheme (childOrder, this);
-		} catch (Exception e) {
-			e.printStackTrace();
-
-			return false;
-		}
-
-		return _child.fillWithChildOrders (orderExecutionProvider);
-	}
+	private double _leaves = Double.NaN;
+	private double _current = Double.NaN;
+	private double _original = Double.NaN;
+	private double _cumulative = Double.NaN;
+	private double _lastShares = Double.NaN;
 
 	/**
-	 * NestedFulfillmentScheme Constructor
+	 * <i>OrderQuantityTracker</i> Constructor
 	 * 
-	 * @param orderNode Order Node
-	 * @param parent Parent
+	 * @param original Original Order Quantity
 	 * 
-	 * @throws Exception Thrown if Inputs are Invalid
+	 * @throws Exception Thrown if the Order Quantity is Invalid
 	 */
 
-	public NestedFulfillmentScheme (
-		final Order orderNode,
-		final NestedFulfillmentScheme parent)
+	public OrderQuantityTracker (
+		final double original)
 		throws Exception
 	{
-		if (null == (_orderNode = orderNode)) {
-			throw new Exception ("NestedFulfillmentScheme Constructor => Invalid Inputs");
+		if (!NumberUtil.IsValid (_original = original)) {
+			throw new Exception ("OrderQuantityTracker Constructor => Invalid Inputs");
 		}
 
-		_parent = parent;
+		_current = _original;
+		_leaves = _original;
+		_lastShares = 0.;
+		_cumulative = 0.;
 	}
 
 	/**
-	 * Retrieve the Order Node
+	 * Retrieve the Original Order Quantity
 	 * 
-	 * @return The Order Node
+	 * @return Original Order Quantity
 	 */
 
-	public Order node()
+	public double original()
 	{
-		return _orderNode;
+		return _original;
 	}
 
 	/**
-	 * Retrieve the Parent Order
+	 * Retrieve the Current Order Quantity
 	 * 
-	 * @return The Parent Order
+	 * @return Current Order Quantity
 	 */
 
-	public NestedFulfillmentScheme parent()
+	public double current()
 	{
-		return _parent;
+		return _current;
 	}
 
 	/**
-	 * Retrieve the Child Order
+	 * Retrieve the Cumulatively Executed Order Quantity
 	 * 
-	 * @return The Child Order
+	 * @return Cumulatively Executed Order Quantity
 	 */
 
-	public NestedFulfillmentScheme child()
+	public double cumulative()
 	{
-		return _child;
+		return _cumulative;
 	}
 
 	/**
-	 * Fill the Order Using Child Orders
+	 * Retrieve the Order Leaves Quantity
 	 * 
-	 * @param orderExecutionProvider The Order Execution Provider
-	 * 
-	 * @return TRUE - The Order successfully Filled
+	 * @return Order Leaves Quantity
 	 */
 
-	public boolean fill (
-		final OrderExecutionProvider orderExecutionProvider)
+	public double leaves()
 	{
-		if (null == orderExecutionProvider) {
+		return _leaves;
+	}
+
+	/**
+	 * Retrieve the Last Executed Shares Count
+	 * 
+	 * @return Last Executed Shares Count
+	 */
+
+	public double lastShares()
+	{
+		return _lastShares;
+	}
+
+	/**
+	 * Update the Current Order Quantity
+	 * 
+	 * @param current Current Order Quantity
+	 * 
+	 * @return TRUE - Current Order Quantity successfully Updated
+	 */
+
+	public boolean updateCurrent (
+		final double current)
+	{
+		if (!NumberUtil.IsValid (current)) {
 			return false;
 		}
 
-		if (_orderNode.fillOrKill()) {
-			return fillOrKill (orderExecutionProvider);
+		_leaves -= _original - (_current = current);
+		return true;
+	}
+
+	/**
+	 * Update the Last Executed Shares Count
+	 * 
+	 * @param lastShares Last Executed Shares Count
+	 * 
+	 * @return TRUE - Last Executed Shares Count successfully Updated
+	 */
+
+	public boolean updateLastShares (
+		final double lastShares)
+	{
+		if (!NumberUtil.IsValid (lastShares)) {
+			return false;
 		}
 
-		if (_orderNode.allOrNone()) {
-			return allOrNone (orderExecutionProvider);
-		}
+		_cumulative += (_lastShares = lastShares);
+		_leaves -= lastShares;
+		return true;
+	}
 
-		return fillWithChildOrders (orderExecutionProvider);
+	/**
+	 * Indicate if the Order has been Filled
+	 * 
+	 * @return TRUE - Order has been Filled
+	 */
+
+	public boolean filled()
+	{
+		return 0. >= _leaves;
 	}
 }

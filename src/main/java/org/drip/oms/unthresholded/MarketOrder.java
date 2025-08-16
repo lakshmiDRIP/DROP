@@ -280,26 +280,4 @@ public class MarketOrder
 	{
 		return false;
 	}
-
-	@Override public Order generateChildOrder (
-		final double filledSize)
-	{
-		try {
-			return new MarketOrder (
-				issuer(),
-				ticker(),
-				StringUtil.GUID(),
-				id(),
-				new Date(),
-				side(),
-				size() - filledSize,
-				null,
-				null
-			);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-		return null;
-	}
 }

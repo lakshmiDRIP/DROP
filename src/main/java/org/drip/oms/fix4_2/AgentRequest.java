@@ -78,7 +78,7 @@ import org.drip.oms.transaction.Order;
  */
 
 /**
- * <i>FIXOrder</i> holds the Details of a FIX 4.2 Order. The References are:
+ * <i>AgentRequest</i> implements the Request into a FIX Agent. The References are:
  *  
  * 	<br><br>
  *  <ul>
@@ -115,98 +115,66 @@ import org.drip.oms.transaction.Order;
  * @author Lakshmi Krishnamurthy
  */
 
-public class FIXOrder
+public class AgentRequest
 {
+	private String _id = null;
 	private Order _order = null;
-	private Date _creationRequestTime = null;
-	private int _orderStatus = Integer.MIN_VALUE;
-	private int _precedenceOrdinal = Integer.MIN_VALUE;
+	private String _parentID = null;
+	private Date _arrivalTime = null;
+	private int _type = Integer.MIN_VALUE;
 
 	/**
-	 * <i>FIXOrder</i> Constructor
+	 * Retrieve the Request Arrival Time
 	 * 
-	 * @param order Underlying Order
-	 * @param creationRequestTime Creation Request Time
-	 * 
-	 * @throws Exception Thrown if the Inputs are Invalid
+	 * @return Request Arrival Time
 	 */
 
-	public FIXOrder (
-		final Order order,
-		final Date creationRequestTime)
-		throws Exception
+	public Date arrivalTime()
 	{
-		if (null == (_order = order) || null == (_creationRequestTime = creationRequestTime)) {
-			throw new Exception ("FIXOrder Constructor => Invalid Inputs");
-		}
-
-		_orderStatus = OrderStatus.PENDING_NEW;
-		_precedenceOrdinal = OrderPrecedence.PENDING_NEW_ORDINAL;
+		return _arrivalTime;
 	}
 
 	/**
-	 * Retrieve the Underlying Order
+	 * Retrieve the Request ID
 	 * 
-	 * @return Underlying Order
+	 * @return Request ID
+	 */
+
+	public String id()
+	{
+		return _id;
+	}
+
+	/**
+	 * Retrieve the Parent Request ID
+	 * 
+	 * @return Parent Request ID
+	 */
+
+	public String parentID()
+	{
+		return _parentID;
+	}
+
+	/**
+	 * Retrieve the Request Type
+	 * 
+	 * @return Request Type
+	 */
+
+	public int type()
+	{
+		return _type;
+	}
+
+	/**
+	 * Retrieve the Order in the Request
+	 * 
+	 * @return Order in the Request
 	 */
 
 	public Order order()
 	{
 		return _order;
-	}
-
-	/**
-	 * Retrieve the Precedence Ordinal
-	 * 
-	 * @return The Precedence Ordinal
-	 */
-
-	public int precedenceOrdinal()
-	{
-		return _precedenceOrdinal;
-	}
-
-	/**
-	 * Retrieve the Order Status
-	 * 
-	 * @return The Order Status
-	 */
-
-	public int orderStatus()
-	{
-		return _orderStatus;
-	}
-
-	/**
-	 * Retrieve the Order Creation Request Time
-	 * 
-	 * @return The Order Creation Request Time
-	 */
-
-	public Date creationRequestTime()
-	{
-		return _creationRequestTime;
-	}
-
-	/**
-	 * Retrieve the FIX <code>ClOrdID</code>
-	 * 
-	 * @return FIX <code>ClOrdID</code>
-	 */
-
-	public String clOrdID()
-	{
-		return _order.id();
-	}
-
-	/**
-	 * Retrieve the FIX <code>OrigClOrdID</code>
-	 * 
-	 * @return FIX <code>OrigClOrdID</code>
-	 */
-
-	public String oridClOrdID()
-	{
-		return _order.parentID();
 	}
 }

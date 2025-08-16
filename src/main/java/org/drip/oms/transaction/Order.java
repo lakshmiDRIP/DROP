@@ -125,12 +125,12 @@ public class Order
 	private String _parentID = "";
 	private Date _updateTime = null;
 	private Date _creationTime = null;
-	private double _size = Double.NaN;
 	private OrderIssuer _issuer = null;
 	private Date _completionTime = null;
 	private int _type = Integer.MIN_VALUE;
 	private int _state = Integer.MIN_VALUE;
 	private TimeInForce _timeInForce = null;
+	private OrderQuantityTracker _quantityTracker = null;
 	private OrderFillWholeSettings _fillWholeSettings = null;
 
 	/**
@@ -218,8 +218,7 @@ public class Order
 			null == (_ticker = ticker) || _ticker.isEmpty() ||
 			null == (_id = id) || _id.isEmpty() ||
 			null == (_creationTime = creationTime) ||
-			null == (_side = side) ||
-			!NumberUtil.IsValid (_size = size))
+			null == (_side = side))
 		{
 			throw new Exception ("Order Constructor => Invalid Inputs");
 		}
@@ -231,7 +230,7 @@ public class Order
 		_fillWholeSettings = fillWholeSettings;
 		_state = OrderState.OPEN + OrderState.UNFILLED;
 
-		_size = Math.abs (_size);
+		_quantityTracker = new OrderQuantityTracker (Math.abs (size));
 	}
 
 	/**
@@ -367,14 +366,14 @@ public class Order
 	}
 
 	/**
-	 * Retrieve the Order Size
+	 * Retrieve the Order Quantity Tracker
 	 * 
-	 * @return The Order Size
+	 * @return The Order Quantity Tracker
 	 */
 
-	public double size()
+	public OrderQuantityTracker quantityTracker()
 	{
-		return _size;
+		return _quantityTracker;
 	}
 
 	/**
@@ -386,20 +385,6 @@ public class Order
 	public boolean isConditional()
 	{
 		return false;
-	}
-
-	/**
-	 * Generate a Child Order of the same Type. Default implementation is to not generate Child Orders.
-	 * 
-	 * @param filledSize Filled Size
-	 * 
-	 * @return Child Order of the same Type
-	 */
-
-	public Order generateChildOrder (
-		final double filledSize)
-	{
-		return null;
 	}
 
 	/**
@@ -464,8 +449,7 @@ public class Order
 
 		_updateTime = new Date();
 
-		_size = orderSize;
-		return true;
+		return _quantityTracker.updateCurrent (orderSize);
 	}
 
 	/**
@@ -473,47 +457,34 @@ public class Order
 	 * 
 	 * @param orderFulfillment Order Fulfillment
 	 * 
-	 * @return Child Order, if any
+	 * @return TRUE - The Order Full/Partial Fill has been successfully handled
 	 */
 
-	public Order fulfill (
+	public boolean fulfill (
 		final OrderFulfillment orderFulfillment)
 	{
 		if (null == orderFulfillment)
 		{
 			_state = OrderState.CANCELED;
-			return null;
+			return false;
 		}
 
 		double filledSize = orderFulfillment.executedSize();
 
 		_updateTime = new Date();
 
-		if (filledSize < _size)
-		{
-			int currentState = _state;
+		if (!_quantityTracker.updateLastShares (filledSize)) {
+			return false;
+		}
+
+		if (filledSize < _quantityTracker.current()) {
 			_state = OrderState.PARTIALLY_FILLED;
-
-			try
-			{
-				return generateChildOrder (
-					filledSize
-				);
-			}
-			catch (Exception e)
-			{
-				_state = currentState;
-
-				e.printStackTrace();
-
-				return null;
-			}
 		}
 
 		_completionTime = new Date();
 
 		_state = OrderState.FILLED;
-		return null;
+		return true;
 	}
 
 	/**
