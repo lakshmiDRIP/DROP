@@ -4,6 +4,7 @@ package org.drip.oms.fix4_2;
 import java.util.Date;
 
 import org.drip.oms.transaction.Order;
+import org.drip.service.common.StringUtil;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -122,6 +123,57 @@ public class AgentRequest
 	private String _parentID = null;
 	private Date _arrivalTime = null;
 	private int _type = Integer.MIN_VALUE;
+
+	/**
+	 * Construct a Standard Instance of Agent Request from the Order
+	 * 
+	 * @param order Order Instance
+	 * 
+	 * @return Standard Instance of Agent Request
+	 */
+
+	public static final AgentRequest Standard (
+		final Order order)
+	{
+		try {
+			return new AgentRequest (new Date(), StringUtil.GUID(), null, AgentRequestType.NEW, order);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
+	 * <i>AgentRequest</i> Constructor
+	 * 
+	 * @param arrivalTime Arrival Time
+	 * @param id Request ID
+	 * @param parentID Parent Request ID
+	 * @param type Request Type
+	 * @param order Request Order
+	 * 
+	 * @throws Exception Thrown if the Inputs are Invalid
+	 */
+
+	public AgentRequest (
+		final Date arrivalTime,
+		final String id,
+		final String parentID,
+		final int type,
+		final Order order)
+		throws Exception
+	{
+		if (null == (_arrivalTime = arrivalTime) ||
+			null == (_id = id) || _id.isEmpty() ||
+			null == (_order = order))
+		{
+			throw new Exception ("AgentRequest Constructor => Invalid Inputs");
+		}
+
+		_type = type;
+		_parentID = parentID;
+	}
 
 	/**
 	 * Retrieve the Request Arrival Time
