@@ -127,6 +127,7 @@ public class MarketOrderFOK extends MarketOrder
 	 * 
 	 * @param issuer Order Issuer
 	 * @param ticker Security Identifier/Ticker
+	 * @param parentID Parent Order ID
 	 * @param side Order Side
 	 * @param size Order Size
 	 * @param timeInForce Time-in-Force Settings
@@ -137,6 +138,7 @@ public class MarketOrderFOK extends MarketOrder
 	public static final MarketOrderFOK Standard (
 		final OrderIssuer issuer,
 		final String ticker,
+		final String parentID,
 		final Side side,
 		final double size,
 		final TimeInForce timeInForce)
@@ -147,6 +149,7 @@ public class MarketOrderFOK extends MarketOrder
 				issuer,
 				ticker,
 				StringUtil.GUID(),
+				parentID,
 				new Date(),
 				side,
 				size,
@@ -166,6 +169,7 @@ public class MarketOrderFOK extends MarketOrder
 	 * 
 	 * @param issuer Order Issuer
 	 * @param ticker Security Identifier/Ticker
+	 * @param parentID Parent Order ID
 	 * @param size Order Size
 	 * @param timeInForce Time-in-Force Settings
 	 * 
@@ -175,12 +179,14 @@ public class MarketOrderFOK extends MarketOrder
 	public static final MarketOrderFOK StandardBuy (
 		final OrderIssuer issuer,
 		final String ticker,
+		final String parentID,
 		final double size,
 		final TimeInForce timeInForce)
 	{
 		return Standard (
 			issuer,
 			ticker,
+			parentID,
 			Side.Buy(),
 			size,
 			timeInForce
@@ -192,6 +198,7 @@ public class MarketOrderFOK extends MarketOrder
 	 * 
 	 * @param issuer Order Issuer
 	 * @param ticker Security Identifier/Ticker
+	 * @param parentID Parent Order ID
 	 * @param size Order Size
 	 * @param timeInForce Time-in-Force Settings
 	 * 
@@ -201,12 +208,14 @@ public class MarketOrderFOK extends MarketOrder
 	public static final MarketOrderFOK StandardSell (
 		final OrderIssuer issuer,
 		final String ticker,
+		final String parentID,
 		final double size,
 		final TimeInForce timeInForce)
 	{
 		return Standard (
 			issuer,
 			ticker,
+			parentID,
 			Side.Sell(),
 			size,
 			timeInForce
@@ -219,6 +228,7 @@ public class MarketOrderFOK extends MarketOrder
 	 * @param issuer Order Issuer
 	 * @param ticker Security Identifier/Ticker
 	 * @param id Order ID
+	 * @param parentID Parent Order ID
 	 * @param creationTime Creation Time
 	 * @param side Order Side
 	 * @param size Order Size
@@ -231,6 +241,7 @@ public class MarketOrderFOK extends MarketOrder
 		final OrderIssuer issuer,
 		final String ticker,
 		final String id,
+		final String parentID,
 		final Date creationTime,
 		final Side side,
 		final double size,
@@ -241,6 +252,7 @@ public class MarketOrderFOK extends MarketOrder
 			issuer,
 			ticker,
 			id,
+			parentID,
 			creationTime,
 			side,
 			size,

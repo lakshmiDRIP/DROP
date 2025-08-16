@@ -119,6 +119,7 @@ public class FIXOrder
 {
 	private Order _order = null;
 	private Date _creationRequestTime = null;
+	private int _orderStatus = Integer.MIN_VALUE;
 	private int _precedenceOrdinal = Integer.MIN_VALUE;
 
 	/**
@@ -139,6 +140,7 @@ public class FIXOrder
 			throw new Exception ("FIXOrder Constructor => Invalid Inputs");
 		}
 
+		_orderStatus = OrderStatus.PENDING_NEW;
 		_precedenceOrdinal = OrderPrecedence.PENDING_NEW_ORDINAL;
 	}
 
@@ -162,6 +164,17 @@ public class FIXOrder
 	public int precedenceOrdinal()
 	{
 		return _precedenceOrdinal;
+	}
+
+	/**
+	 * Retrieve the Order Status
+	 * 
+	 * @return The Order Status
+	 */
+
+	public int orderStatus()
+	{
+		return _orderStatus;
 	}
 
 	/**

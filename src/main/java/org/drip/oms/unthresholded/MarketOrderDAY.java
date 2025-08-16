@@ -128,6 +128,7 @@ public class MarketOrderDAY
 	 * 
 	 * @param issuer Order Issuer
 	 * @param ticker Security Identifier/Ticker
+	 * @param parentID Parent Order ID
 	 * @param side Order Side
 	 * @param size Order Size
 	 * @param fillWholeSettings Order Fill-Whole Settings
@@ -138,6 +139,7 @@ public class MarketOrderDAY
 	public static final MarketOrderDAY Standard (
 		final OrderIssuer issuer,
 		final String ticker,
+		final String parentID,
 		final Side side,
 		final double size,
 		final OrderFillWholeSettings fillWholeSettings)
@@ -148,6 +150,7 @@ public class MarketOrderDAY
 				issuer,
 				ticker,
 				StringUtil.GUID(),
+				parentID,
 				new Date(),
 				side,
 				size,
@@ -167,6 +170,7 @@ public class MarketOrderDAY
 	 * 
 	 * @param issuer Order Issuer
 	 * @param ticker Security Identifier/Ticker
+	 * @param parentID Parent Order ID
 	 * @param size Order Size
 	 * @param fillWholeSettings Order Fill-Whole Settings
 	 * 
@@ -176,6 +180,7 @@ public class MarketOrderDAY
 	public static final MarketOrderDAY StandardBuy (
 		final OrderIssuer issuer,
 		final String ticker,
+		final String parentID,
 		final double size,
 		final OrderFillWholeSettings fillWholeSettings)
 	{
@@ -185,6 +190,7 @@ public class MarketOrderDAY
 				issuer,
 				ticker,
 				StringUtil.GUID(),
+				parentID,
 				new Date(),
 				Side.Buy(),
 				size,
@@ -204,6 +210,7 @@ public class MarketOrderDAY
 	 * 
 	 * @param issuer Order Issuer
 	 * @param ticker Security Identifier/Ticker
+	 * @param parentID Parent Order ID
 	 * @param size Order Size
 	 * @param fillWholeSettings Order Fill-Whole Settings
 	 * 
@@ -213,6 +220,7 @@ public class MarketOrderDAY
 	public static final MarketOrderDAY StandardSell (
 		final OrderIssuer issuer,
 		final String ticker,
+		final String parentID,
 		final double size,
 		final OrderFillWholeSettings fillWholeSettings)
 	{
@@ -222,6 +230,7 @@ public class MarketOrderDAY
 				issuer,
 				ticker,
 				StringUtil.GUID(),
+				parentID,
 				new Date(),
 				Side.Sell(),
 				size,
@@ -242,6 +251,7 @@ public class MarketOrderDAY
 	 * @param issuer Order Issuer
 	 * @param ticker Security Identifier/Ticker
 	 * @param id Order ID
+	 * @param parentID Parent Order ID
 	 * @param creationTime Creation Time
 	 * @param side Order Side
 	 * @param size Order Size
@@ -254,6 +264,7 @@ public class MarketOrderDAY
 		final OrderIssuer issuer,
 		final String ticker,
 		final String id,
+		final String parentID,
 		final Date creationTime,
 		final Side side,
 		final double size,
@@ -264,6 +275,7 @@ public class MarketOrderDAY
 			issuer,
 			ticker,
 			id,
+			parentID,
 			creationTime,
 			side,
 			size,

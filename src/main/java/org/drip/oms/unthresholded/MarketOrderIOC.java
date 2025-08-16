@@ -128,6 +128,7 @@ public class MarketOrderIOC
 	 * 
 	 * @param issuer Order Issuer
 	 * @param ticker Security Identifier/Ticker
+	 * @param parentID Parent Order ID
 	 * @param side Order Side
 	 * @param size Order Size
 	 * @param fillWholeSettings Order Fill-Whole Settings
@@ -138,6 +139,7 @@ public class MarketOrderIOC
 	public static final MarketOrderIOC Standard (
 		final OrderIssuer issuer,
 		final String ticker,
+		final String parentID,
 		final Side side,
 		final double size,
 		final OrderFillWholeSettings fillWholeSettings)
@@ -147,6 +149,7 @@ public class MarketOrderIOC
 			return new MarketOrderIOC (
 				issuer,
 				ticker,
+				parentID,
 				StringUtil.GUID(),
 				new Date(),
 				side,
@@ -167,6 +170,7 @@ public class MarketOrderIOC
 	 * 
 	 * @param issuer Order Issuer
 	 * @param ticker Security Identifier/Ticker
+	 * @param parentID Parent Order ID
 	 * @param size Order Size
 	 * @param fillWholeSettings Order Fill-Whole Settings
 	 * 
@@ -176,6 +180,7 @@ public class MarketOrderIOC
 	public static final MarketOrderIOC StandardBuy (
 		final OrderIssuer issuer,
 		final String ticker,
+		final String parentID,
 		final double size,
 		final OrderFillWholeSettings fillWholeSettings)
 	{
@@ -185,6 +190,7 @@ public class MarketOrderIOC
 				issuer,
 				ticker,
 				StringUtil.GUID(),
+				parentID,
 				new Date(),
 				Side.Buy(),
 				size,
@@ -204,6 +210,7 @@ public class MarketOrderIOC
 	 * 
 	 * @param issuer Order Issuer
 	 * @param ticker Security Identifier/Ticker
+	 * @param parentID Parent Order ID
 	 * @param size Order Size
 	 * @param fillWholeSettings Order Fill-Whole Settings
 	 * 
@@ -213,6 +220,7 @@ public class MarketOrderIOC
 	public static final MarketOrderIOC StandardSell (
 		final OrderIssuer issuer,
 		final String ticker,
+		final String parentID,
 		final double size,
 		final OrderFillWholeSettings fillWholeSettings)
 	{
@@ -222,6 +230,7 @@ public class MarketOrderIOC
 				issuer,
 				ticker,
 				StringUtil.GUID(),
+				parentID,
 				new Date(),
 				Side.Sell(),
 				size,
@@ -242,6 +251,7 @@ public class MarketOrderIOC
 	 * @param issuer Order Issuer
 	 * @param ticker Security Identifier
 	 * @param id Order ID
+	 * @param parentID Parent Order ID
 	 * @param creationTime Creation Time
 	 * @param side Order Side
 	 * @param size Order Size
@@ -254,6 +264,7 @@ public class MarketOrderIOC
 		final OrderIssuer issuer,
 		final String ticker,
 		final String id,
+		final String parentID,
 		final Date creationTime,
 		final Side side,
 		final double size,
@@ -264,6 +275,7 @@ public class MarketOrderIOC
 			issuer,
 			ticker,
 			id,
+			parentID,
 			creationTime,
 			side,
 			size,

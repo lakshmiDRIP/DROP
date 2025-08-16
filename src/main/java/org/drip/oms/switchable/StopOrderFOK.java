@@ -128,6 +128,7 @@ public class StopOrderFOK
 	 * 
 	 * @param issuer Order Issuer
 	 * @param ticker Security Identifier/Ticker
+	 * @param parentID Parent Order ID
 	 * @param side Order Side
 	 * @param size Order Size
 	 * @param timeInForce Time-in-Force Settings
@@ -139,6 +140,7 @@ public class StopOrderFOK
 	public static final StopOrderFOK Standard (
 		final OrderIssuer issuer,
 		final String ticker,
+		final String parentID,
 		final Side side,
 		final double size,
 		final TimeInForce timeInForce,
@@ -150,6 +152,7 @@ public class StopOrderFOK
 				issuer,
 				ticker,
 				StringUtil.GUID(),
+				parentID,
 				new Date(),
 				side,
 				size,
@@ -170,6 +173,7 @@ public class StopOrderFOK
 	 * 
 	 * @param issuer Order Issuer
 	 * @param ticker Security Identifier/Ticker
+	 * @param parentID Parent Order ID
 	 * @param size Order Size
 	 * @param timeInForce Time-in-Force Settings
 	 * @param switchPrice Switch-to-Market Price
@@ -180,6 +184,7 @@ public class StopOrderFOK
 	public static final StopOrderFOK Buy (
 		final OrderIssuer issuer,
 		final String ticker,
+		final String parentID,
 		final double size,
 		final TimeInForce timeInForce,
 		final double switchPrice)
@@ -187,6 +192,7 @@ public class StopOrderFOK
 		return Standard (
 			issuer,
 			ticker,
+			parentID,
 			Side.Buy(),
 			size,
 			timeInForce,
@@ -199,6 +205,7 @@ public class StopOrderFOK
 	 * 
 	 * @param issuer Order Issuer
 	 * @param ticker Security Identifier/Ticker
+	 * @param parentID Parent Order ID
 	 * @param size Order Size
 	 * @param timeInForce Time-in-Force Settings
 	 * @param switchPrice Switch-to-Market Price
@@ -209,6 +216,7 @@ public class StopOrderFOK
 	public static final StopOrderFOK Sell (
 		final OrderIssuer issuer,
 		final String ticker,
+		final String parentID,
 		final double size,
 		final TimeInForce timeInForce,
 		final double switchPrice)
@@ -216,6 +224,7 @@ public class StopOrderFOK
 		return Standard (
 			issuer,
 			ticker,
+			parentID,
 			Side.Sell(),
 			size,
 			timeInForce,
@@ -229,6 +238,7 @@ public class StopOrderFOK
 	 * @param issuer Order Issuer
 	 * @param ticker Security Identifier/Ticker
 	 * @param id Order ID
+	 * @param parentID Parent Order ID
 	 * @param creationTime Creation Time
 	 * @param side Order Side
 	 * @param size Order Size
@@ -242,6 +252,7 @@ public class StopOrderFOK
 		final OrderIssuer issuer,
 		final String ticker,
 		final String id,
+		final String parentID,
 		final Date creationTime,
 		final Side side,
 		final double size,
@@ -253,6 +264,7 @@ public class StopOrderFOK
 			issuer,
 			ticker,
 			id,
+			parentID,
 			creationTime,
 			side,
 			size,

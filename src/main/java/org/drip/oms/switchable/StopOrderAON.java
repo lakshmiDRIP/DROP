@@ -128,6 +128,7 @@ public class StopOrderAON
 	 * 
 	 * @param issuer Order Issuer
 	 * @param ticker Security Identifier/Ticker
+	 * @param parentID Parent Order ID
 	 * @param side Order Side
 	 * @param size Order Size
 	 * @param timeInForce Time-in-Force Settings
@@ -140,6 +141,7 @@ public class StopOrderAON
 	public static final StopOrderAON Standard (
 		final OrderIssuer issuer,
 		final String ticker,
+		final String parentID,
 		final Side side,
 		final double size,
 		final TimeInForce timeInForce,
@@ -152,6 +154,7 @@ public class StopOrderAON
 				issuer,
 				ticker,
 				StringUtil.GUID(),
+				parentID,
 				new Date(),
 				side,
 				size,
@@ -173,6 +176,7 @@ public class StopOrderAON
 	 * 
 	 * @param issuer Order Issuer
 	 * @param ticker Security Identifier/Ticker
+	 * @param parentID Parent Order ID
 	 * @param size Order Size
 	 * @param timeInForce Time-in-Force Settings
 	 * @param fulfillTryLimit Fulfill Try Limit
@@ -184,6 +188,7 @@ public class StopOrderAON
 	public static final StopOrderAON Buy (
 		final OrderIssuer issuer,
 		final String ticker,
+		final String parentID,
 		final double size,
 		final TimeInForce timeInForce,
 		final int fulfillTryLimit,
@@ -195,6 +200,7 @@ public class StopOrderAON
 				issuer,
 				ticker,
 				StringUtil.GUID(),
+				parentID,
 				new Date(),
 				Side.Buy(),
 				size,
@@ -216,6 +222,7 @@ public class StopOrderAON
 	 * 
 	 * @param issuer Order Issuer
 	 * @param ticker Security Identifier/Ticker
+	 * @param parentID Parent Order ID
 	 * @param size Order Size
 	 * @param timeInForce Time-in-Force Settings
 	 * @param fulfillTryLimit Fulfill Try Limit
@@ -227,6 +234,7 @@ public class StopOrderAON
 	public static final StopOrderAON Sell (
 		final OrderIssuer issuer,
 		final String ticker,
+		final String parentID,
 		final double size,
 		final TimeInForce timeInForce,
 		final int fulfillTryLimit,
@@ -238,6 +246,7 @@ public class StopOrderAON
 				issuer,
 				ticker,
 				StringUtil.GUID(),
+				parentID,
 				new Date(),
 				Side.Sell(),
 				size,
@@ -260,6 +269,7 @@ public class StopOrderAON
 	 * @param issuer Order Issuer
 	 * @param ticker Security Identifier/Ticker
 	 * @param id Order ID
+	 * @param parentID Parent Order ID
 	 * @param creationTime Creation Time
 	 * @param side Order Side
 	 * @param size Order Size
@@ -274,6 +284,7 @@ public class StopOrderAON
 		final OrderIssuer issuer,
 		final String ticker,
 		final String id,
+		final String parentID,
 		final Date creationTime,
 		final Side side,
 		final double size,
@@ -286,6 +297,7 @@ public class StopOrderAON
 			issuer,
 			ticker,
 			id,
+			parentID,
 			creationTime,
 			side,
 			size,

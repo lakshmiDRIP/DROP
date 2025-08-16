@@ -129,6 +129,7 @@ public class LimitOrderGTC
 	 * 
 	 * @param issuer Order Issuer
 	 * @param ticker Security Identifier/Ticker
+	 * @param parentID Parent Order ID
 	 * @param side Order Side
 	 * @param size Order Size
 	 * @param durationDays Duration Days
@@ -141,6 +142,7 @@ public class LimitOrderGTC
 	public static final LimitOrderGTC Standard (
 		final OrderIssuer issuer,
 		final String ticker,
+		final String parentID,
 		final Side side,
 		final double size,
 		final int durationDays,
@@ -153,6 +155,7 @@ public class LimitOrderGTC
 				issuer,
 				ticker,
 				StringUtil.GUID(),
+				parentID,
 				new Date(),
 				side,
 				size,
@@ -174,6 +177,7 @@ public class LimitOrderGTC
 	 * 
 	 * @param issuer Order Issuer
 	 * @param ticker Security Identifier/Ticker
+	 * @param parentID Parent Order ID
 	 * @param size Order Size
 	 * @param durationDays Duration Days
 	 * @param fillWholeSettings Order Fill-Whole Settings
@@ -185,6 +189,7 @@ public class LimitOrderGTC
 	public static final LimitOrderGTC StandardBuy (
 		final OrderIssuer issuer,
 		final String ticker,
+		final String parentID,
 		final double size,
 		final int durationDays,
 		final OrderFillWholeSettings fillWholeSettings,
@@ -196,6 +201,7 @@ public class LimitOrderGTC
 				issuer,
 				ticker,
 				StringUtil.GUID(),
+				parentID,
 				new Date(),
 				Side.Buy(),
 				size,
@@ -217,6 +223,7 @@ public class LimitOrderGTC
 	 * 
 	 * @param issuer Order Issuer
 	 * @param ticker Security Identifier/Ticker
+	 * @param parentID Parent Order ID
 	 * @param size Order Size
 	 * @param durationDays Duration Days
 	 * @param fillWholeSettings Order Fill-Whole Settings
@@ -228,6 +235,7 @@ public class LimitOrderGTC
 	public static final LimitOrderGTC StandardSell (
 		final OrderIssuer issuer,
 		final String ticker,
+		final String parentID,
 		final double size,
 		final int durationDays,
 		final OrderFillWholeSettings fillWholeSettings,
@@ -239,6 +247,7 @@ public class LimitOrderGTC
 				issuer,
 				ticker,
 				StringUtil.GUID(),
+				parentID,
 				new Date(),
 				Side.Sell(),
 				size,
@@ -261,6 +270,7 @@ public class LimitOrderGTC
 	 * @param issuer Order Issuer
 	 * @param ticker Security Identifier/Ticker
 	 * @param id Order ID
+	 * @param parentID Parent Order ID
 	 * @param creationTime Creation Time
 	 * @param side Order Side
 	 * @param size Order Size
@@ -275,6 +285,7 @@ public class LimitOrderGTC
 		final OrderIssuer issuer,
 		final String ticker,
 		final String id,
+		final String parentID,
 		final Date creationTime,
 		final Side side,
 		final double size,
@@ -287,6 +298,7 @@ public class LimitOrderGTC
 			issuer,
 			ticker,
 			id,
+			parentID,
 			creationTime,
 			side,
 			size,

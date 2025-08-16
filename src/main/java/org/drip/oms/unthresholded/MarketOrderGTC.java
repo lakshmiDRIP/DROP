@@ -128,6 +128,7 @@ public class MarketOrderGTC
 	 * 
 	 * @param issuer Order Issuer
 	 * @param ticker Security Identifier/Ticker
+	 * @param parentID Parent Order ID
 	 * @param side Order Side
 	 * @param size Order Size
 	 * @param durationDays Order Duration Tenor in Days
@@ -139,6 +140,7 @@ public class MarketOrderGTC
 	public static final MarketOrderGTC Standard (
 		final OrderIssuer issuer,
 		final String ticker,
+		final String parentID,
 		final Side side,
 		final double size,
 		final int durationDays,
@@ -150,6 +152,7 @@ public class MarketOrderGTC
 				issuer,
 				ticker,
 				StringUtil.GUID(),
+				parentID,
 				new Date(),
 				side,
 				size,
@@ -170,6 +173,7 @@ public class MarketOrderGTC
 	 * 
 	 * @param issuer Order Issuer
 	 * @param ticker Security Identifier/Ticker
+	 * @param parentID Parent Order ID
 	 * @param size Order Size
 	 * @param durationDays Order Duration Tenor in Days
 	 * @param fillWholeSettings Order Fill-Whole Settings
@@ -180,6 +184,7 @@ public class MarketOrderGTC
 	public static final MarketOrderGTC StandardBuy (
 		final OrderIssuer issuer,
 		final String ticker,
+		final String parentID,
 		final double size,
 		final int durationDays,
 		final OrderFillWholeSettings fillWholeSettings)
@@ -190,6 +195,7 @@ public class MarketOrderGTC
 				issuer,
 				ticker,
 				StringUtil.GUID(),
+				parentID,
 				new Date(),
 				Side.Buy(),
 				size,
@@ -210,6 +216,7 @@ public class MarketOrderGTC
 	 * 
 	 * @param issuer Order Issuer
 	 * @param ticker Security Identifier/Ticker
+	 * @param parentID Parent Order ID
 	 * @param size Order Size
 	 * @param durationDays Order Duration Tenor in Days
 	 * @param fillWholeSettings Order Fill-Whole Settings
@@ -220,6 +227,7 @@ public class MarketOrderGTC
 	public static final MarketOrderGTC StandardSell (
 		final OrderIssuer issuer,
 		final String ticker,
+		final String parentID,
 		final double size,
 		final int durationDays,
 		final OrderFillWholeSettings fillWholeSettings)
@@ -230,6 +238,7 @@ public class MarketOrderGTC
 				issuer,
 				ticker,
 				StringUtil.GUID(),
+				parentID,
 				new Date(),
 				Side.Sell(),
 				size,
@@ -251,6 +260,7 @@ public class MarketOrderGTC
 	 * @param issuer Order Issuer
 	 * @param ticker Security Identifier/Ticker
 	 * @param id Order ID
+	 * @param parentID Parent Order ID
 	 * @param creationTime Creation Time
 	 * @param side Order Side
 	 * @param size Order Size
@@ -264,6 +274,7 @@ public class MarketOrderGTC
 		final OrderIssuer issuer,
 		final String ticker,
 		final String id,
+		final String parentID,
 		final Date creationTime,
 		final Side side,
 		final double size,
@@ -275,6 +286,7 @@ public class MarketOrderGTC
 			issuer,
 			ticker,
 			id,
+			parentID,
 			creationTime,
 			side,
 			size,

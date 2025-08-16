@@ -122,6 +122,7 @@ public class Order
 	private String _id = "";
 	private Side _side = null;
 	private String _ticker = "";
+	private String _parentID = "";
 	private Date _updateTime = null;
 	private Date _creationTime = null;
 	private double _size = Double.NaN;
@@ -138,6 +139,7 @@ public class Order
 	 * @param issuer Order Issuer
 	 * @param ticker Security Identifier/Ticker
 	 * @param id Order ID
+	 * @param parentID Parent Order ID
 	 * @param type Order Type
 	 * @param creationTime Creation Time
 	 * @param side Order Side
@@ -153,6 +155,7 @@ public class Order
 		final OrderIssuer issuer,
 		final String ticker,
 		final String id,
+		final String parentID,
 		final int type,
 		final Date creationTime,
 		final Side side,
@@ -166,6 +169,7 @@ public class Order
 				issuer,
 				ticker,
 				id,
+				parentID,
 				type,
 				creationTime,
 				side,
@@ -186,6 +190,7 @@ public class Order
 	 * @param issuer Order Issuer
 	 * @param ticker Security Identifier/Ticker
 	 * @param id Order ID
+	 * @param parentID Parent Order ID
 	 * @param type Order Type
 	 * @param creationTime Creation Time
 	 * @param side Order Side
@@ -200,6 +205,7 @@ public class Order
 		final OrderIssuer issuer,
 		final String ticker,
 		final String id,
+		final String parentID,
 		final int type,
 		final Date creationTime,
 		final Side side,
@@ -219,6 +225,7 @@ public class Order
 		}
 
 		_type = type;
+		_parentID = parentID;
 		_timeInForce = timeInForce;
 		_updateTime = creationTime;
 		_fillWholeSettings = fillWholeSettings;
@@ -247,6 +254,17 @@ public class Order
 	public String id()
 	{
 		return _id;
+	}
+
+	/**
+	 * Retrieve the Parent Order ID
+	 * 
+	 * @return The Parent Order ID
+	 */
+
+	public String parentID()
+	{
+		return _parentID;
 	}
 
 	/**
