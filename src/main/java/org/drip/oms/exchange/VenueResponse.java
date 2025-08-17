@@ -1,8 +1,6 @@
 
 package org.drip.oms.exchange;
 
-import org.drip.oms.transaction.Order;
-
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
@@ -76,7 +74,7 @@ import org.drip.oms.transaction.Order;
  */
 
 /**
- * <i>VenueRequest</i> contains the Order Processing Request into a Venue. The References are:
+ * <i>VenueResponse</i> contains the Order Processing Response coming out of a Venue. The References are:
  *  
  * 	<br><br>
  *  <ul>
@@ -113,104 +111,7 @@ import org.drip.oms.transaction.Order;
  * @author Lakshmi Krishnamurthy
  */
 
-public class VenueRequest
+public class VenueResponse
 {
-	private Order _order = null;
-	private String _clOrdID = "";
-	private String _origClOrdID = "";
-	private int _type = Integer.MIN_VALUE;
 
-	/**
-	 * Construct an Instance of <code>NEW</code> <i>VenueRequest</i> Type
-	 * 
-	 * @param clOrdID <i>clOrdID</i>
-	 * @param origClOrdID <i>origClOrdID</i>
-	 * @param order Request Order
-	 * 
-	 * @return Instance of <code>NEW</code> <i>VenueRequest</i> Type
-	 */
-
-	public static final VenueRequest NEW (
-		final String clOrdID,
-		final String origClOrdID,
-		final Order order)
-	{
-		try {
-			return new VenueRequest (clOrdID, origClOrdID, VenueRequestType.NEW, order);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-		return null;
-	}
-
-	/**
-	 * <i>VenueRequest</i> Constructor
-	 * 
-	 * @param clOrdID <i>clOrdID</i>
-	 * @param origClOrdID <i>origClOrdID</i>
-	 * @param type Request Type
-	 * @param order Request Order
-	 * 
-	 * @throws Exception Thrown if the Inputs are Invalid
-	 */
-
-	public VenueRequest (
-		final String clOrdID,
-		final String origClOrdID,
-		final int type,
-		final Order order)
-		throws Exception
-	{
-		if (null == (_clOrdID = clOrdID) || null == (_order = order)) {
-			throw new Exception ("VenueRequest Constructor => Invalid Inputs");
-		}
-
-		_type = type;
-		_origClOrdID = origClOrdID;
-	}
-
-	/**
-	 * Retrieve the <i>clOrdID</i>
-	 * 
-	 * @return <i>clOrdID</i>
-	 */
-
-	public String clOrdID()
-	{
-		return _clOrdID;
-	}
-
-	/**
-	 * Retrieve the <i>origClOrdID</i>
-	 * 
-	 * @return <i>origClOrdID</i>
-	 */
-
-	public String origClOrdID()
-	{
-		return _origClOrdID;
-	}
-
-	/**
-	 * Retrieve the Request Type
-	 * 
-	 * @return Request Type
-	 */
-
-	public int type()
-	{
-		return _type;
-	}
-
-	/**
-	 * Retrieve the Request Order
-	 * 
-	 * @return Request Order
-	 */
-
-	public Order order()
-	{
-		return _order;
-	}
 }
