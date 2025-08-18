@@ -135,6 +135,8 @@ Computation Support Library contains Cluster Support, Historical/Live Feed Proce
 	* Version Compatibility
 	* Performance
 	* References
+ * Knowledge Integration
+	* References
 
 
 ## DROP Specifications

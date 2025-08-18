@@ -1,6 +1,10 @@
 
 package org.drip.oms.exchange;
 
+import java.util.Date;
+
+import org.drip.oms.transaction.Order;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
@@ -113,5 +117,239 @@ package org.drip.oms.exchange;
 
 public class VenueResponse
 {
+	private Order _order = null;
+	private String _clOrdID = "";
+	private String _comment = "";
+	private String _origClOrdID = "";
+	private int _type = Integer.MIN_VALUE;
+	private Date _processingStartTime = null;
+	private Date _processingFinishTime = null;
 
+	/**
+	 * Construct an Instance of <code>NEW</code> <i>VenueResponse</i> Type
+	 * 
+	 * @param processingStartTime Start of the Venue Processing Time
+	 * @param processingFinishTime Finish of the Venue Processing Time
+	 * @param clOrdID <i>clOrdID</i>
+	 * @param origClOrdID <i>origClOrdID</i>
+	 * @param order Order
+	 * @param comment Processing Comments
+	 * 
+	 * @return Instance of <code>NEW</code> <i>VenueResponse</i> Type
+	 */
+
+	public static final VenueResponse NEW (
+		final Date processingStartTime,
+		final Date processingFinishTime,
+		final String clOrdID,
+		final String origClOrdID,
+		final Order order,
+		final String comment)
+	{
+		try {
+			return new VenueResponse (
+				processingStartTime,
+				processingFinishTime,
+				clOrdID,
+				origClOrdID,
+				VenueResponseType.NEW,
+				order,
+				comment
+			);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
+	 * Construct an Instance of <code>REJECTED</code> <i>VenueResponse</i> Type
+	 * 
+	 * @param processingStartTime Start of the Venue Processing Time
+	 * @param processingFinishTime Finish of the Venue Processing Time
+	 * @param clOrdID <i>clOrdID</i>
+	 * @param origClOrdID <i>origClOrdID</i>
+	 * @param order Order
+	 * @param comment Processing Comments
+	 * 
+	 * @return Instance of <code>REJECTED</code> <i>VenueResponse</i> Type
+	 */
+
+	public static final VenueResponse REJECTED (
+		final Date processingStartTime,
+		final Date processingFinishTime,
+		final String clOrdID,
+		final String origClOrdID,
+		final Order order,
+		final String comment)
+	{
+		try {
+			return new VenueResponse (
+				processingStartTime,
+				processingFinishTime,
+				clOrdID,
+				origClOrdID,
+				VenueResponseType.REJECTED,
+				order,
+				comment
+			);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
+	 * Construct an Instance of <code>EXECUTION</code> <i>VenueResponse</i> Type
+	 * 
+	 * @param processingStartTime Start of the Venue Processing Time
+	 * @param processingFinishTime Finish of the Venue Processing Time
+	 * @param clOrdID <i>clOrdID</i>
+	 * @param origClOrdID <i>origClOrdID</i>
+	 * @param order Order
+	 * @param comment Processing Comments
+	 * 
+	 * @return Instance of <code>EXECUTION</code> <i>VenueResponse</i> Type
+	 */
+
+	public static final VenueResponse EXECUTION (
+		final Date processingStartTime,
+		final Date processingFinishTime,
+		final String clOrdID,
+		final String origClOrdID,
+		final Order order,
+		final String comment)
+	{
+		try {
+			return new VenueResponse (
+				processingStartTime,
+				processingFinishTime,
+				clOrdID,
+				origClOrdID,
+				VenueResponseType.EXECUTION,
+				order,
+				comment
+			);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
+	 * <i>VenueResponse</i> Constructor
+	 * 
+	 * @param processingStartTime Start of the Venue Processing Time
+	 * @param processingFinishTime Finish of the Venue Processing Time
+	 * @param clOrdID <i>clOrdID</i>
+	 * @param origClOrdID <i>origClOrdID</i>
+	 * @param type Response Type
+	 * @param order Order
+	 * @param comment Processing Comments
+	 * 
+	 * @throws Exception Thrown if the Inputs are Invalid
+	 */
+
+	public VenueResponse (
+		final Date processingStartTime,
+		final Date processingFinishTime,
+		final String clOrdID,
+		final String origClOrdID,
+		final int type,
+		final Order order,
+		final String comment)
+		throws Exception
+	{
+		if (null == (_processingStartTime = processingStartTime) ||
+			null == (_processingFinishTime = processingFinishTime) ||
+			null == (_clOrdID = clOrdID) || _clOrdID.isEmpty() ||
+			null == (_order = order))
+		{
+			throw new Exception ("VenueResponse Constructor => Invalid Inputs");
+		}
+
+		_type = type;
+		_comment = comment;
+		_origClOrdID = origClOrdID;
+	}
+
+	/**
+	 * Retrieve the Start of the Venue Processing Time
+	 * 
+	 * @return Start of the Venue Processing Time
+	 */
+
+	public Date processingStartTime()
+	{
+		return _processingStartTime;
+	}
+
+	/**
+	 * Retrieve the Finish of the Venue Processing Time
+	 * 
+	 * @return Finish of the Venue Processing Time
+	 */
+
+	public Date processingFinishTime()
+	{
+		return _processingFinishTime;
+	}
+
+	/**
+	 * Retrieve the <i>clOrdID</i>
+	 * 
+	 * @return <i>clOrdID</i>
+	 */
+
+	public String clOrdID()
+	{
+		return _clOrdID;
+	}
+
+	/**
+	 * Retrieve the <i>origClOrdID</i>
+	 * 
+	 * @return <i>origClOrdID</i>
+	 */
+
+	public String origClOrdID()
+	{
+		return _origClOrdID;
+	}
+
+	/**
+	 * Retrieve the Response Type
+	 * 
+	 * @return Response Type
+	 */
+
+	public int type()
+	{
+		return _type;
+	}
+
+	/**
+	 * Retrieve the Response Order
+	 * 
+	 * @return Response Order
+	 */
+
+	public Order order()
+	{
+		return _order;
+	}
+
+	/**
+	 * Retrieve the Processing Comments
+	 * 
+	 * @return Processing Comments
+	 */
+
+	public String comment()
+	{
+		return _comment;
+	}
 }
