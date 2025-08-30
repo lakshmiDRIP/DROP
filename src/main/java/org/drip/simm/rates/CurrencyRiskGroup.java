@@ -108,6 +108,15 @@ package org.drip.simm.rates;
  *  			https://www.isda.org/a/oFiDE/isda-simm-v2.pdf
  *  	</li>
  *  </ul>
+ *  
+ *  It provides the following Functionality:
+ *
+ *  <ul>
+ * 		<li><i>CurrencyRiskGroup</i> Constructor</li>
+ * 		<li>Retrieve the Volatility Type</li>
+ * 		<li>Retrieve the Trade Frequency Type</li>
+ * 		<li>Retrieve the Component Currency Array</li>
+ *  </ul>
  *
  *  <br>
  *  <style>table, td, th {

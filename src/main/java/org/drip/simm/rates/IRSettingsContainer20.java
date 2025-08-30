@@ -16,6 +16,9 @@ import org.drip.simm.foundation.RiskGroupPrincipalCovariance;
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -89,7 +92,7 @@ import org.drip.simm.foundation.RiskGroupPrincipalCovariance;
 
 /**
  * <i>IRSettingsContainer20</i> holds the ISDA SIMM 2.0 Tenor Vertex Risk Weights/Correlations for Single IR
- * Curves, Cross Currencies, and Inflation. The References are:
+ * 	Curves, Cross Currencies, and Inflation. The References are:
  * 
  * <br><br>
  *  <ul>
@@ -116,15 +119,26 @@ import org.drip.simm.foundation.RiskGroupPrincipalCovariance;
  *  			https://www.isda.org/a/oFiDE/isda-simm-v2.pdf
  *  	</li>
  *  </ul>
- * 
- * <br><br>
+ *  
+ *  It provides the following Functionality:
+ *
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md">Portfolio Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/MarginAnalyticsLibrary.md">Initial and Variation Margin Analytics</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/README.md">Initial Margin Analytics based on ISDA SIMM and its Variants</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/rates/README.md">SIMM IR Risk Factor Settings</a></li>
+ * 		<li><i>CurrencyRiskGroup</i> Constructor</li>
  *  </ul>
- * <br><br>
+ *
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/StatisticalLearningLibrary.md">Statistical Learning Library</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/README.md">Initial Margin Analytics based on ISDA SIMM and its Variants</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/rates/README.md">SIMM IR Risk Factor Settings</a></td></tr>
+ *  </table>
  * 
  * @author Lakshmi Krishnamurthy
  */
@@ -140,60 +154,34 @@ public class IRSettingsContainer20
 	{
 		List<String> tenorList = new ArrayList<String>();
 
-		tenorList.add (
-			"2W"
-		);
+		tenorList.add ("2W");
 
-		tenorList.add (
-			"1M"
-		);
+		tenorList.add ("1M");
 
-		tenorList.add (
-			"3M"
-		);
+		tenorList.add ("3M");
 
-		tenorList.add (
-			"6M"
-		);
+		tenorList.add ("6M");
 
-		tenorList.add (
-			"1Y"
-		);
+		tenorList.add ("1Y");
 
-		tenorList.add (
-			"2Y"
-		);
+		tenorList.add ("2Y");
 
-		tenorList.add (
-			"3Y"
-		);
+		tenorList.add ("3Y");
 
-		tenorList.add (
-			"5Y"
-		);
+		tenorList.add ("5Y");
 
-		tenorList.add (
-			"10Y"
-		);
+		tenorList.add ("10Y");
 
-		tenorList.add (
-			"15Y"
-		);
+		tenorList.add ("15Y");
 
-		tenorList.add (
-			"20Y"
-		);
+		tenorList.add ("20Y");
 
-		tenorList.add (
-			"30Y"
-		);
+		tenorList.add ("30Y");
 
-		try
-		{
+		try {
 			s_SingleCurveTenorCorrelation = new LabelCorrelation (
 				tenorList,
-				new double[][]
-				{
+				new double[][] {
 					{1.00, 0.99, 0.79, 0.67, 0.53, 0.42, 0.37, 0.30, 0.22, 0.18, 0.16, 0.12},
 					{0.99, 1.00, 0.79, 0.67, 0.53, 0.42, 0.37, 0.30, 0.22, 0.18, 0.16, 0.12},
 					{0.79, 0.79, 1.00, 0.85, 0.69, 0.57, 0.50, 0.42, 0.32, 0.25, 0.23, 0.20},
@@ -210,9 +198,7 @@ public class IRSettingsContainer20
 			);
 
 			return true;
-		}
-		catch (Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -233,316 +219,135 @@ public class IRSettingsContainer20
 
 		Map<String, Double> zeroIRWeight = new HashMap<String, Double>();
 
+		Map<String, Double> tenorVegaRiskWeight = new HashMap<String, Double>();
+
 		Map<String, Double> tenorDeltaWeightLowVolatility = new HashMap<String, Double>();
 
 		Map<String, Double> tenorDeltaWeightHighVolatility = new HashMap<String, Double>();
 
 		Map<String, Double> tenorDeltaWeightRegularVolatility = new HashMap<String, Double>();
 
-		Map<String, Double> tenorVegaRiskWeight = new HashMap<String, Double>();
+		tenorVegaRiskWeight.put ("2W", IRSystemics20.VEGA_RISK_WEIGHT);
 
-		tenorVegaRiskWeight.put (
-			"2W",
-			IRSystemics20.VEGA_RISK_WEIGHT
-		);
+		tenorVegaRiskWeight.put ("1M", IRSystemics20.VEGA_RISK_WEIGHT);
 
-		tenorVegaRiskWeight.put (
-			"1M",
-			IRSystemics20.VEGA_RISK_WEIGHT
-		);
+		tenorVegaRiskWeight.put ("3M", IRSystemics20.VEGA_RISK_WEIGHT);
 
-		tenorVegaRiskWeight.put (
-			"3M",
-			IRSystemics20.VEGA_RISK_WEIGHT
-		);
+		tenorVegaRiskWeight.put ("6M", IRSystemics20.VEGA_RISK_WEIGHT);
 
-		tenorVegaRiskWeight.put (
-			"6M",
-			IRSystemics20.VEGA_RISK_WEIGHT
-		);
+		tenorVegaRiskWeight.put ("1Y", IRSystemics20.VEGA_RISK_WEIGHT);
 
-		tenorVegaRiskWeight.put (
-			"1Y",
-			IRSystemics20.VEGA_RISK_WEIGHT
-		);
+		tenorVegaRiskWeight.put ("2Y", IRSystemics20.VEGA_RISK_WEIGHT);
 
-		tenorVegaRiskWeight.put (
-			"2Y",
-			IRSystemics20.VEGA_RISK_WEIGHT
-		);
+		tenorVegaRiskWeight.put ("3Y", IRSystemics20.VEGA_RISK_WEIGHT);
 
-		tenorVegaRiskWeight.put (
-			"3Y",
-			IRSystemics20.VEGA_RISK_WEIGHT
-		);
+		tenorVegaRiskWeight.put ("5Y", IRSystemics20.VEGA_RISK_WEIGHT);
 
-		tenorVegaRiskWeight.put (
-			"5Y",
-			IRSystemics20.VEGA_RISK_WEIGHT
-		);
+		tenorVegaRiskWeight.put ("10Y", IRSystemics20.VEGA_RISK_WEIGHT);
 
-		tenorVegaRiskWeight.put (
-			"10Y",
-			IRSystemics20.VEGA_RISK_WEIGHT
-		);
+		tenorVegaRiskWeight.put ("15Y", IRSystemics20.VEGA_RISK_WEIGHT);
 
-		tenorVegaRiskWeight.put (
-			"15Y",
-			IRSystemics20.VEGA_RISK_WEIGHT
-		);
+		tenorVegaRiskWeight.put ("20Y", IRSystemics20.VEGA_RISK_WEIGHT);
 
-		tenorVegaRiskWeight.put (
-			"20Y",
-			IRSystemics20.VEGA_RISK_WEIGHT
-		);
+		tenorVegaRiskWeight.put ("30Y", IRSystemics20.VEGA_RISK_WEIGHT);
 
-		tenorVegaRiskWeight.put (
-			"30Y",
-			IRSystemics20.VEGA_RISK_WEIGHT
-		);
+		tenorDeltaWeightRegularVolatility.put ("2W", 113.);
 
-		tenorDeltaWeightRegularVolatility.put (
-			"2W",
-			113.
-		);
+		tenorDeltaWeightRegularVolatility.put ("1M", 113.);
 
-		tenorDeltaWeightRegularVolatility.put (
-			"1M",
-			113.
-		);
+		tenorDeltaWeightRegularVolatility.put ("3M", 98.);
 
-		tenorDeltaWeightRegularVolatility.put (
-			"3M",
-			98.
-		);
+		tenorDeltaWeightRegularVolatility.put ("6M", 69.);
 
-		tenorDeltaWeightRegularVolatility.put (
-			"6M",
-			69.
-		);
+		tenorDeltaWeightRegularVolatility.put ("1Y", 56.);
 
-		tenorDeltaWeightRegularVolatility.put (
-			"1Y",
-			56.
-		);
+		tenorDeltaWeightRegularVolatility.put ("2Y", 52.);
 
-		tenorDeltaWeightRegularVolatility.put (
-			"2Y",
-			52.
-		);
+		tenorDeltaWeightRegularVolatility.put ("3Y", 51.);
 
-		tenorDeltaWeightRegularVolatility.put (
-			"3Y",
-			51.
-		);
+		tenorDeltaWeightRegularVolatility.put ("5Y", 51.);
 
-		tenorDeltaWeightRegularVolatility.put (
-			"5Y",
-			51.
-		);
+		tenorDeltaWeightRegularVolatility.put ("10Y", 51.);
 
-		tenorDeltaWeightRegularVolatility.put (
-			"10Y",
-			51.
-		);
+		tenorDeltaWeightRegularVolatility.put ("15Y", 53.);
 
-		tenorDeltaWeightRegularVolatility.put (
-			"15Y",
-			53.
-		);
+		tenorDeltaWeightRegularVolatility.put ("20Y", 56.);
 
-		tenorDeltaWeightRegularVolatility.put (
-			"20Y",
-			56.
-		);
+		tenorDeltaWeightRegularVolatility.put ("30Y", 64.);
 
-		tenorDeltaWeightRegularVolatility.put (
-			"30Y",
-			64.
-		);
+		tenorDeltaWeightLowVolatility.put ("2W", 21.);
 
-		tenorDeltaWeightLowVolatility.put (
-			"2W",
-			21.
-		);
+		tenorDeltaWeightLowVolatility.put ("1M", 21.);
 
-		tenorDeltaWeightLowVolatility.put (
-			"1M",
-			21.
-		);
+		tenorDeltaWeightLowVolatility.put ("3M", 10.);
 
-		tenorDeltaWeightLowVolatility.put (
-			"3M",
-			10.
-		);
+		tenorDeltaWeightLowVolatility.put ("6M", 11.);
 
-		tenorDeltaWeightLowVolatility.put (
-			"6M",
-			11.
-		);
+		tenorDeltaWeightLowVolatility.put ("1Y", 15.);
 
-		tenorDeltaWeightLowVolatility.put (
-			"1Y",
-			15.
-		);
+		tenorDeltaWeightLowVolatility.put ("2Y", 20.);
 
-		tenorDeltaWeightLowVolatility.put (
-			"2Y",
-			20.
-		);
+		tenorDeltaWeightLowVolatility.put ("3Y", 22.);
 
-		tenorDeltaWeightLowVolatility.put (
-			"3Y",
-			22.
-		);
+		tenorDeltaWeightLowVolatility.put ("5Y", 21.);
 
-		tenorDeltaWeightLowVolatility.put (
-			"5Y",
-			21.
-		);
+		tenorDeltaWeightLowVolatility.put ("10Y", 19.);
 
-		tenorDeltaWeightLowVolatility.put (
-			"10Y",
-			19.
-		);
+		tenorDeltaWeightLowVolatility.put ("15Y", 20.);
 
-		tenorDeltaWeightLowVolatility.put (
-			"15Y",
-			20.
-		);
+		tenorDeltaWeightLowVolatility.put ("20Y", 23.);
 
-		tenorDeltaWeightLowVolatility.put (
-			"20Y",
-			23.
-		);
+		tenorDeltaWeightLowVolatility.put ("30Y", 27.);
 
-		tenorDeltaWeightLowVolatility.put (
-			"30Y",
-			27.
-		);
+		tenorDeltaWeightHighVolatility.put ("2W", 93.);
 
-		tenorDeltaWeightHighVolatility.put (
-			"2W",
-			93.
-		);
+		tenorDeltaWeightHighVolatility.put ("1M", 93.);
 
-		tenorDeltaWeightHighVolatility.put (
-			"1M",
-			93.
-		);
+		tenorDeltaWeightHighVolatility.put ("3M", 90.);
 
-		tenorDeltaWeightHighVolatility.put (
-			"3M",
-			90.
-		);
+		tenorDeltaWeightHighVolatility.put ("6M", 94.);
 
-		tenorDeltaWeightHighVolatility.put (
-			"6M",
-			94.
-		);
+		tenorDeltaWeightHighVolatility.put ("1Y", 97.);
 
-		tenorDeltaWeightHighVolatility.put (
-			"1Y",
-			97.
-		);
+		tenorDeltaWeightHighVolatility.put ("2Y", 103.);
 
-		tenorDeltaWeightHighVolatility.put (
-			"2Y",
-			103.
-		);
+		tenorDeltaWeightHighVolatility.put ("3Y", 101.);
 
-		tenorDeltaWeightHighVolatility.put (
-			"3Y",
-			101.
-		);
+		tenorDeltaWeightHighVolatility.put ("5Y", 103.);
 
-		tenorDeltaWeightHighVolatility.put (
-			"5Y",
-			103.
-		);
+		tenorDeltaWeightHighVolatility.put ("10Y", 102.);
 
-		tenorDeltaWeightHighVolatility.put (
-			"10Y",
-			102.
-		);
+		tenorDeltaWeightHighVolatility.put ("15Y", 101.);
 
-		tenorDeltaWeightHighVolatility.put (
-			"15Y",
-			101.
-		);
+		tenorDeltaWeightHighVolatility.put ("20Y", 102.);
 
-		tenorDeltaWeightHighVolatility.put (
-			"20Y",
-			102.
-		);
+		tenorDeltaWeightHighVolatility.put ("30Y", 101.);
 
-		tenorDeltaWeightHighVolatility.put (
-			"30Y",
-			101.
-		);
+		zeroIRWeight.put ("2W", 0.);
 
-		zeroIRWeight.put (
-			"2W",
-			0.
-		);
+		zeroIRWeight.put ("1M", 0.);
 
-		zeroIRWeight.put (
-			"1M",
-			0.
-		);
+		zeroIRWeight.put ("3M", 0.);
 
-		zeroIRWeight.put (
-			"3M",
-			0.
-		);
+		zeroIRWeight.put ("6M", 0.);
 
-		zeroIRWeight.put (
-			"6M",
-			0.
-		);
+		zeroIRWeight.put ("1Y", 0.);
 
-		zeroIRWeight.put (
-			"1Y",
-			0.
-		);
+		zeroIRWeight.put ("2Y", 0.);
 
-		zeroIRWeight.put (
-			"2Y",
-			0.
-		);
+		zeroIRWeight.put ("3Y", 0.);
 
-		zeroIRWeight.put (
-			"3Y",
-			0.
-		);
+		zeroIRWeight.put ("5Y", 0.);
 
-		zeroIRWeight.put (
-			"5Y",
-			0.
-		);
+		zeroIRWeight.put ("10Y", 0.);
 
-		zeroIRWeight.put (
-			"10Y",
-			0.
-		);
+		zeroIRWeight.put ("15Y", 0.);
 
-		zeroIRWeight.put (
-			"15Y",
-			0.
-		);
+		zeroIRWeight.put ("20Y", 0.);
 
-		zeroIRWeight.put (
-			"20Y",
-			0.
-		);
+		zeroIRWeight.put ("30Y", 0.);
 
-		zeroIRWeight.put (
-			"30Y",
-			0.
-		);
-
-		try
-		{
+		try {
 			regularVolatilityRiskWeight = new IRWeight (
 				IRSystemics.VOLATILITY_TYPE_REGULAR,
 				tenorDeltaWeightRegularVolatility,
@@ -566,93 +371,43 @@ public class IRSettingsContainer20
 				zeroIRWeight,
 				tenorVegaRiskWeight
 			);
-		}
-		catch (Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 
 			return false;
 		}
 
-		s_RiskWeightMap.put (
-			"AUD",
-			regularVolatilityRiskWeight
-		);
+		s_RiskWeightMap.put ("AUD", regularVolatilityRiskWeight);
 
-		s_RiskWeightMap.put (
-			"CAD",
-			regularVolatilityRiskWeight
-		);
+		s_RiskWeightMap.put ("CAD", regularVolatilityRiskWeight);
 
-		s_RiskWeightMap.put (
-			"CHF",
-			regularVolatilityRiskWeight
-		);
+		s_RiskWeightMap.put ("CHF", regularVolatilityRiskWeight);
 
-		s_RiskWeightMap.put (
-			"DKK",
-			regularVolatilityRiskWeight
-		);
+		s_RiskWeightMap.put ("DKK", regularVolatilityRiskWeight);
 
-		s_RiskWeightMap.put (
-			"EUR",
-			regularVolatilityRiskWeight
-		);
+		s_RiskWeightMap.put ("EUR", regularVolatilityRiskWeight);
 
-		s_RiskWeightMap.put (
-			"GBP",
-			regularVolatilityRiskWeight
-		);
+		s_RiskWeightMap.put ("GBP", regularVolatilityRiskWeight);
 
-		s_RiskWeightMap.put (
-			"HKD",
-			regularVolatilityRiskWeight
-		);
+		s_RiskWeightMap.put ("HKD", regularVolatilityRiskWeight);
 
-		s_RiskWeightMap.put (
-			"JPY",
-			lowVolatilityRiskWeight
-		);
+		s_RiskWeightMap.put ("JPY", lowVolatilityRiskWeight);
 
-		s_RiskWeightMap.put (
-			"KRW",
-			regularVolatilityRiskWeight
-		);
+		s_RiskWeightMap.put ("KRW", regularVolatilityRiskWeight);
 
-		s_RiskWeightMap.put (
-			"NOK",
-			regularVolatilityRiskWeight
-		);
+		s_RiskWeightMap.put ("NOK", regularVolatilityRiskWeight);
 
-		s_RiskWeightMap.put (
-			"OTHER",
-			highVolatilityRiskWeight
-		);
+		s_RiskWeightMap.put ("OTHER", highVolatilityRiskWeight);
 
-		s_RiskWeightMap.put (
-			"USD",
-			regularVolatilityRiskWeight
-		);
+		s_RiskWeightMap.put ("USD", regularVolatilityRiskWeight);
 
-		s_RiskWeightMap.put (
-			"SEK",
-			regularVolatilityRiskWeight
-		);
+		s_RiskWeightMap.put ("SEK", regularVolatilityRiskWeight);
 
-		s_RiskWeightMap.put (
-			"SGD",
-			regularVolatilityRiskWeight
-		);
+		s_RiskWeightMap.put ("SGD", regularVolatilityRiskWeight);
 
-		s_RiskWeightMap.put (
-			"TWD",
-			regularVolatilityRiskWeight
-		);
+		s_RiskWeightMap.put ("TWD", regularVolatilityRiskWeight);
 
-		s_RiskWeightMap.put (
-			"USD",
-			regularVolatilityRiskWeight
-		);
+		s_RiskWeightMap.put ("USD", regularVolatilityRiskWeight);
 
 		return TenorCorrelation();
 	}

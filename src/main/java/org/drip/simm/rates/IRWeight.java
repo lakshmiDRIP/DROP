@@ -10,6 +10,9 @@ import java.util.Set;
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -83,7 +86,7 @@ import java.util.Set;
 
 /**
  * <i>IRWeight</i> holds the ISDA SIMM Tenor Interest Rate Vertex Risk Weights for Currencies across all
- * Volatility Types. The References are:
+ * 	Volatility Types. The References are:
  * 
  * <br><br>
  *  <ul>
@@ -110,15 +113,30 @@ import java.util.Set;
  *  			https://www.isda.org/a/oFiDE/isda-simm-v2.pdf
  *  	</li>
  *  </ul>
- * 
- * <br><br>
+ *  
+ *  It provides the following Functionality:
+ *
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md">Portfolio Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/MarginAnalyticsLibrary.md">Initial and Variation Margin Analytics</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/README.md">Initial Margin Analytics based on ISDA SIMM and its Variants</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/rates/README.md">SIMM IR Risk Factor Settings</a></li>
+ * 		<li><i>IRWeight</i> Constructor</li>
+ * 		<li>Retrieve the Volatility Type</li>
+ * 		<li>Retrieve the Tenor Delta Weight Map</li>
+ * 		<li>Retrieve the Tenor Vega Weight Map</li>
+ * 		<li>Retrieve the Tenors</li>
  *  </ul>
- * <br><br>
+ *
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/StatisticalLearningLibrary.md">Statistical Learning Library</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/README.md">Initial Margin Analytics based on ISDA SIMM and its Variants</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/rates/README.md">SIMM IR Risk Factor Settings</a></td></tr>
+ *  </table>
  * 
  * @author Lakshmi Krishnamurthy
  */
@@ -132,7 +150,7 @@ public class IRWeight
 	private Map<String, Double> _tenorDelta = new HashMap<String, Double>();
 
 	/**
-	 * IRWeight Constructor
+	 * <i>IRWeight</i> Constructor
 	 * 
 	 * @param volatilityType The Volatility Type
 	 * @param tenorDelta The Map of Tenor Delta Risk Weights
@@ -149,21 +167,15 @@ public class IRWeight
 	{
 		if (null == (_volatilityType = volatilityType) || _volatilityType.isEmpty() ||
 			null == (_tenorDelta = tenorDelta) ||
-			null == (_tenorVega = tenorVega)
-		)
+			null == (_tenorVega = tenorVega))
 		{
-			throw new Exception (
-				"IRWeight Constructor => Invalid Inputs"
-			);
+			throw new Exception ("IRWeight Constructor => Invalid Inputs");
 		}
 
 		int tenorCount = _tenorDelta.size();
 
-		if (0 == tenorCount || tenorCount != _tenorVega.size())
-		{
-			throw new Exception (
-				"IRWeight Constructor => Invalid Inputs"
-			);
+		if (0 == tenorCount || tenorCount != _tenorVega.size()) {
+			throw new Exception ("IRWeight Constructor => Invalid Inputs");
 		}
 	}
 
