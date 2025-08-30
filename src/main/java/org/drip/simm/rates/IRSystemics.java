@@ -6,6 +6,9 @@ package org.drip.simm.rates;
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -106,15 +109,38 @@ package org.drip.simm.rates;
  *  			https://www.isda.org/a/oFiDE/isda-simm-v2.pdf
  *  	</li>
  *  </ul>
- * 
- * <br><br>
+ *  
+ *  It provides the following Functionality:
+ *
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md">Portfolio Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/MarginAnalyticsLibrary.md">Initial and Variation Margin Analytics</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/README.md">Initial Margin Analytics based on ISDA SIMM and its Variants</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/rates/README.md">SIMM IR Risk Factor Settings</a></li>
+ * 		<li>Interest Rate Type - Regular Volatility</li>
+ * 		<li>Interest Rate Type - Low Volatility</li>
+ * 		<li>Interest Rate Type - High Volatility</li>
+ * 		<li>Interest Rate Type - NULL Volatility</li>
+ * 		<li>Interest Rate Type - Trade Frequency Type Well Traded</li>
+ * 		<li>Interest Rate Type - Trade Frequency Type Less Well Traded</li>
+ * 		<li>Sub Curve - OIS</li>
+ * 		<li>Sub Curve - LIBOR-1M</li>
+ * 		<li>Sub Curve - LIBOR-3M</li>
+ * 		<li>Sub Curve - LIBOR-6M</li>
+ * 		<li>Sub Curve - LIBOR-12M</li>
+ * 		<li>Sub Curve - PRIME</li>
+ * 		<li>Sub Curve - MUNICIPAL</li>
  *  </ul>
- * <br><br>
+ *
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/StatisticalLearningLibrary.md">Statistical Learning Library</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/README.md">Initial Margin Analytics based on ISDA SIMM and its Variants</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/rates/README.md">SIMM IR Risk Factor Settings</a></td></tr>
+ *  </table>
  * 
  * @author Lakshmi Krishnamurthy
  */
@@ -126,77 +152,77 @@ public class IRSystemics
 	 * Interest Rate Type - Regular Volatility
 	 */
 
-	public static final java.lang.String VOLATILITY_TYPE_REGULAR = "REGULAR";
+	public static final String VOLATILITY_TYPE_REGULAR = "REGULAR";
 
 	/**
 	 * Interest Rate Type - Low Volatility
 	 */
 
-	public static final java.lang.String VOLATILITY_TYPE_LOW = "LOW";
+	public static final String VOLATILITY_TYPE_LOW = "LOW";
 
 	/**
 	 * Interest Rate Type - High Volatility
 	 */
 
-	public static final java.lang.String VOLATILITY_TYPE_HIGH = "HIGH";
+	public static final String VOLATILITY_TYPE_HIGH = "HIGH";
 
 	/**
 	 * Interest Rate Type - NULL Volatility
 	 */
 
-	public static final java.lang.String VOLATILITY_TYPE_NULL = "NULL";
+	public static final String VOLATILITY_TYPE_NULL = "NULL";
 
 	/**
 	 * Interest Rate Type - Trade Frequency Type Well Traded
 	 */
 
-	public static final java.lang.String TRADE_FREQUENCY_WELL_TRADED = "WELL_TRADED";
+	public static final String TRADE_FREQUENCY_WELL_TRADED = "WELL_TRADED";
 
 	/**
 	 * Interest Rate Type - Trade Frequency Type Less Well Traded
 	 */
 
-	public static final java.lang.String TRADE_FREQUENCY_LESS_WELL_TRADED = "LESS_WELL_TRADED";
+	public static final String TRADE_FREQUENCY_LESS_WELL_TRADED = "LESS_WELL_TRADED";
 
 	/**
-	 * Sub Curve OIS
+	 * Sub Curve - OIS
 	 */
 
-	public static final java.lang.String SUB_CURVE_OIS = "OIS";
+	public static final String SUB_CURVE_OIS = "OIS";
 
 	/**
-	 * Sub Curve LIBOR-1M
+	 * Sub Curve - LIBOR-1M
 	 */
 
-	public static final java.lang.String SUB_CURVE_LIBOR_1M = "LIBOR_1M";
+	public static final String SUB_CURVE_LIBOR_1M = "LIBOR_1M";
 
 	/**
-	 * Sub Curve LIBOR-3M
+	 * Sub Curve - LIBOR-3M
 	 */
 
-	public static final java.lang.String SUB_CURVE_LIBOR_3M = "LIBOR_3M";
+	public static final String SUB_CURVE_LIBOR_3M = "LIBOR_3M";
 
 	/**
-	 * Sub Curve LIBOR-6M
+	 * Sub Curve - LIBOR-6M
 	 */
 
-	public static final java.lang.String SUB_CURVE_LIBOR_6M = "LIBOR_6M";
+	public static final String SUB_CURVE_LIBOR_6M = "LIBOR_6M";
 
 	/**
 	 * Sub Curve - LIBOR-12M
 	 */
 
-	public static final java.lang.String SUB_CURVE_LIBOR_12M = "LIBOR_12M";
+	public static final String SUB_CURVE_LIBOR_12M = "LIBOR_12M";
 
 	/**
 	 * Sub Curve - PRIME
 	 */
 
-	public static final java.lang.String SUB_CURVE_PRIME = "PRIME";
+	public static final String SUB_CURVE_PRIME = "PRIME";
 
 	/**
 	 * Sub Curve - MUNICIPAL
 	 */
 
-	public static final java.lang.String SUB_CURVE_MUNICIPAL = "MUNICIPAL";
+	public static final String SUB_CURVE_MUNICIPAL = "MUNICIPAL";
 }
