@@ -126,7 +126,7 @@ public class IRThresholdContainer24
 {
 	private static final Map<String, Integer> s_CurrencyThresholdMap = new HashMap<String, Integer>();
 
-	private static final Map<Integer, IRThreshold> s_ThresholdMap = new TreeMap<Integer, IRThreshold>();
+	private static final Map<Integer, IRConcentrationThreshold> s_ThresholdMap = new TreeMap<Integer, IRConcentrationThreshold>();
 
 	private static final boolean SetupCurrencyMap()
 	{
@@ -220,7 +220,7 @@ public class IRThresholdContainer24
 		{
 			s_ThresholdMap.put (
 				1,
-				new IRThreshold (
+				new IRConcentrationThreshold (
 					new CurrencyRiskGroup (
 						IRSystemics.VOLATILITY_TYPE_HIGH,
 						IRSystemics.TRADE_FREQUENCY_LESS_WELL_TRADED,
@@ -238,7 +238,7 @@ public class IRThresholdContainer24
 
 			s_ThresholdMap.put (
 				2,
-				new IRThreshold (
+				new IRConcentrationThreshold (
 					new CurrencyRiskGroup (
 						IRSystemics.VOLATILITY_TYPE_REGULAR,
 						IRSystemics.TRADE_FREQUENCY_WELL_TRADED,
@@ -258,7 +258,7 @@ public class IRThresholdContainer24
 
 			s_ThresholdMap.put (
 				3,
-				new IRThreshold (
+				new IRConcentrationThreshold (
 					new CurrencyRiskGroup (
 						IRSystemics.VOLATILITY_TYPE_REGULAR,
 						IRSystemics.TRADE_FREQUENCY_LESS_WELL_TRADED,
@@ -286,7 +286,7 @@ public class IRThresholdContainer24
 
 			s_ThresholdMap.put (
 				4,
-				new IRThreshold (
+				new IRConcentrationThreshold (
 					new CurrencyRiskGroup (
 						IRSystemics.VOLATILITY_TYPE_LOW,
 						IRSystemics.TRADE_FREQUENCY_WELL_TRADED,
@@ -374,7 +374,7 @@ public class IRThresholdContainer24
 	 * @return The Interest Rate Threshold
 	 */
 
-	public static final IRThreshold Threshold (
+	public static final IRConcentrationThreshold Threshold (
 		final String currency)
 	{
 		return ContainsThreshold (
@@ -396,7 +396,7 @@ public class IRThresholdContainer24
 	 * @return The Interest Rate Threshold
 	 */
 
-	public static final IRThreshold Threshold (
+	public static final IRConcentrationThreshold Threshold (
 		final int groupNumber)
 	{
 		return ContainsThreshold (
@@ -423,7 +423,7 @@ public class IRThresholdContainer24
 	 * @return The Interest Rate Threshold Map
 	 */
 
-	public static final Map<Integer, IRThreshold> ThresholdMap()
+	public static final Map<Integer, IRConcentrationThreshold> ThresholdMap()
 	{
 		return s_ThresholdMap;
 	}

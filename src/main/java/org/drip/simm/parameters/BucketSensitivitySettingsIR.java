@@ -12,8 +12,8 @@ import org.drip.simm.rates.IRSystemics;
 import org.drip.simm.rates.IRSystemics20;
 import org.drip.simm.rates.IRSystemics21;
 import org.drip.simm.rates.IRSystemics24;
-import org.drip.simm.rates.IRThreshold;
-import org.drip.simm.rates.IRThresholdContainer20;
+import org.drip.simm.rates.IRConcentrationThreshold;
+import org.drip.simm.rates.IRConcentrationThresholdContainer20;
 import org.drip.simm.rates.IRThresholdContainer21;
 import org.drip.simm.rates.IRThresholdContainer24;
 import org.drip.simm.rates.IRWeight;
@@ -181,7 +181,7 @@ public class BucketSensitivitySettingsIR
 	public static final BucketSensitivitySettingsIR ISDA_DELTA_20 (
 		final String currency)
 	{
-		IRThreshold irThreshold = IRThresholdContainer20.Threshold (currency);
+		IRConcentrationThreshold irThreshold = IRConcentrationThresholdContainer20.Threshold (currency);
 
 		IRWeight oisRiskWeight = IRSettingsContainer20.RiskWeight (currency, IRSystemics.SUB_CURVE_OIS);
 
@@ -253,7 +253,7 @@ public class BucketSensitivitySettingsIR
 	public static final BucketSensitivitySettingsIR ISDA_DELTA_21 (
 		final String currency)
 	{
-		IRThreshold irThreshold = IRThresholdContainer21.Threshold (currency);
+		IRConcentrationThreshold irThreshold = IRThresholdContainer21.Threshold (currency);
 
 		IRWeight oisRiskWeight = IRSettingsContainer21.RiskWeight (currency, IRSystemics.SUB_CURVE_OIS);
 
@@ -325,7 +325,7 @@ public class BucketSensitivitySettingsIR
 	public static final BucketSensitivitySettingsIR ISDA_DELTA_24 (
 		final String currency)
 	{
-		IRThreshold irThreshold = IRThresholdContainer24.Threshold (currency);
+		IRConcentrationThreshold irThreshold = IRThresholdContainer24.Threshold (currency);
 
 		IRWeight oisRiskWeight = IRSettingsContainer24.RiskWeight (currency, IRSystemics.SUB_CURVE_OIS);
 

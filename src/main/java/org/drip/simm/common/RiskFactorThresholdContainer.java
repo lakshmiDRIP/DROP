@@ -13,7 +13,7 @@ import org.drip.simm.equity.EQRiskThresholdContainer24;
 import org.drip.simm.fx.FXRiskThresholdContainer20;
 import org.drip.simm.fx.FXRiskThresholdContainer21;
 import org.drip.simm.fx.FXRiskThresholdContainer24;
-import org.drip.simm.rates.IRThresholdContainer20;
+import org.drip.simm.rates.IRConcentrationThresholdContainer20;
 import org.drip.simm.rates.IRThresholdContainer21;
 import org.drip.simm.rates.IRThresholdContainer24;
 
@@ -159,7 +159,7 @@ public class RiskFactorThresholdContainer
 
 	public static final boolean Init()
 	{
-		if (!IRThresholdContainer20.Init()) {
+		if (!IRConcentrationThresholdContainer20.Init()) {
 			return false;
 		}
 

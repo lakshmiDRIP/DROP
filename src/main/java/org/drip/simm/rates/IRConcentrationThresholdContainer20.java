@@ -13,6 +13,9 @@ import org.drip.simm.common.DeltaVegaThreshold;
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -85,8 +88,8 @@ import org.drip.simm.common.DeltaVegaThreshold;
  */
 
 /**
- * <i>IRThresholdContainer20</i> holds the ISDA SIMM 2.0 Interest Rate Thresholds - the Currency Risk Groups,
- * and the Delta/Vega Limits defined for the Concentration Thresholds. The References are:
+ * <i>IRConcentrationThresholdContainer20</i> holds the ISDA SIMM 2.0 Interest Rate Thresholds - the Currency
+ * 	Risk Groups, and the Delta/Vega Limits defined for the Concentration Thresholds. The References are:
  * 
  * <br><br>
  *  <ul>
@@ -113,24 +116,35 @@ import org.drip.simm.common.DeltaVegaThreshold;
  *  			https://www.isda.org/a/oFiDE/isda-simm-v2.pdf
  *  	</li>
  *  </ul>
- * 
- * <br><br>
+ *  
+ *  It provides the following Functionality:
+ *
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md">Portfolio Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/MarginAnalyticsLibrary.md">Initial and Variation Margin Analytics</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/README.md">Initial Margin Analytics based on ISDA SIMM and its Variants</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/rates/README.md">SIMM IR Risk Factor Settings</a></li>
+ * 		<li><i>IRConcentrationThreshold</i> Constructor</li>
  *  </ul>
- * <br><br>
+ *
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/StatisticalLearningLibrary.md">Statistical Learning Library</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/README.md">Initial Margin Analytics based on ISDA SIMM and its Variants</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/rates/README.md">SIMM IR Risk Factor Settings</a></td></tr>
+ *  </table>
  * 
  * @author Lakshmi Krishnamurthy
  */
 
-public class IRThresholdContainer20
+public class IRConcentrationThresholdContainer20
 {
 	private static final Map<String, Integer> s_CurrencyThresholdMap = new HashMap<String, Integer>();
 
-	private static final Map<Integer, IRThreshold> s_ThresholdMap = new TreeMap<Integer, IRThreshold>();
+	private static final Map<Integer, IRConcentrationThreshold> s_ThresholdMap = new TreeMap<Integer, IRConcentrationThreshold>();
 
 	private static final boolean SetupCurrencyMap()
 	{
@@ -224,7 +238,7 @@ public class IRThresholdContainer20
 		{
 			s_ThresholdMap.put (
 				1,
-				new IRThreshold (
+				new IRConcentrationThreshold (
 					new CurrencyRiskGroup (
 						IRSystemics.VOLATILITY_TYPE_HIGH,
 						IRSystemics.TRADE_FREQUENCY_LESS_WELL_TRADED,
@@ -242,7 +256,7 @@ public class IRThresholdContainer20
 
 			s_ThresholdMap.put (
 				2,
-				new IRThreshold (
+				new IRConcentrationThreshold (
 					new CurrencyRiskGroup (
 						IRSystemics.VOLATILITY_TYPE_REGULAR,
 						IRSystemics.TRADE_FREQUENCY_WELL_TRADED,
@@ -262,7 +276,7 @@ public class IRThresholdContainer20
 
 			s_ThresholdMap.put (
 				3,
-				new IRThreshold (
+				new IRConcentrationThreshold (
 					new CurrencyRiskGroup (
 						IRSystemics.VOLATILITY_TYPE_REGULAR,
 						IRSystemics.TRADE_FREQUENCY_LESS_WELL_TRADED,
@@ -290,7 +304,7 @@ public class IRThresholdContainer20
 
 			s_ThresholdMap.put (
 				4,
-				new IRThreshold (
+				new IRConcentrationThreshold (
 					new CurrencyRiskGroup (
 						IRSystemics.VOLATILITY_TYPE_LOW,
 						IRSystemics.TRADE_FREQUENCY_WELL_TRADED,
@@ -378,7 +392,7 @@ public class IRThresholdContainer20
 	 * @return The Interest Rate Threshold
 	 */
 
-	public static final IRThreshold Threshold (
+	public static final IRConcentrationThreshold Threshold (
 		final String currency)
 	{
 		return ContainsThreshold (
@@ -400,7 +414,7 @@ public class IRThresholdContainer20
 	 * @return The Interest Rate Threshold
 	 */
 
-	public static final IRThreshold Threshold (
+	public static final IRConcentrationThreshold Threshold (
 		final int groupNumber)
 	{
 		return ContainsThreshold (
@@ -427,7 +441,7 @@ public class IRThresholdContainer20
 	 * @return The Interest Rate Threshold Map
 	 */
 
-	public static final Map<Integer, IRThreshold> ThresholdMap()
+	public static final Map<Integer, IRConcentrationThreshold> ThresholdMap()
 	{
 		return s_ThresholdMap;
 	}

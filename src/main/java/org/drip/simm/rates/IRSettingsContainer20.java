@@ -647,9 +647,9 @@ public class IRSettingsContainer20
 			return null;
 		}
 
-		IRThreshold irThreshold1 = IRThresholdContainer20.Threshold (currency1);
+		IRConcentrationThreshold irThreshold1 = IRConcentrationThresholdContainer20.Threshold (currency1);
 
-		IRThreshold irThreshold2 = IRThresholdContainer20.Threshold (currency2);
+		IRConcentrationThreshold irThreshold2 = IRConcentrationThresholdContainer20.Threshold (currency2);
 
 		return null == irThreshold1 || null == irThreshold2 ?
 			null : RiskGroupPrincipalCovariance.Standard (

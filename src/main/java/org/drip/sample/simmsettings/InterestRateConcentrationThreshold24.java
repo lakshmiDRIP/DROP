@@ -5,7 +5,7 @@ import java.util.Set;
 
 import org.drip.service.env.EnvManager;
 import org.drip.simm.rates.CurrencyRiskGroup;
-import org.drip.simm.rates.IRThreshold;
+import org.drip.simm.rates.IRConcentrationThreshold;
 import org.drip.simm.rates.IRThresholdContainer24;
 
 /*
@@ -156,7 +156,7 @@ public class InterestRateConcentrationThreshold24
 
 		for (int bucketNumber : bucketSet)
 		{
-			IRThreshold interestRateThreshold = IRThresholdContainer24.Threshold (bucketNumber);
+			IRConcentrationThreshold interestRateThreshold = IRThresholdContainer24.Threshold (bucketNumber);
 
 			CurrencyRiskGroup currencyRiskGroup = interestRateThreshold.currencyRiskGroup();
 

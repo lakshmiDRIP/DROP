@@ -13,8 +13,8 @@ import org.drip.simm.rates.IRSystemics;
 import org.drip.simm.rates.IRSystemics20;
 import org.drip.simm.rates.IRSystemics21;
 import org.drip.simm.rates.IRSystemics24;
-import org.drip.simm.rates.IRThreshold;
-import org.drip.simm.rates.IRThresholdContainer20;
+import org.drip.simm.rates.IRConcentrationThreshold;
+import org.drip.simm.rates.IRConcentrationThresholdContainer20;
 import org.drip.simm.rates.IRThresholdContainer21;
 import org.drip.simm.rates.IRThresholdContainer24;
 import org.drip.simm.rates.IRWeight;
@@ -170,7 +170,7 @@ public class BucketVegaSettingsIR
 	public static BucketVegaSettingsIR ISDA_20 (
 		final String currency)
 	{
-		IRThreshold irThreshold = IRThresholdContainer20.Threshold (
+		IRConcentrationThreshold irThreshold = IRConcentrationThresholdContainer20.Threshold (
 			currency
 		);
 
@@ -268,7 +268,7 @@ public class BucketVegaSettingsIR
 	public static BucketVegaSettingsIR ISDA_21 (
 		final String currency)
 	{
-		IRThreshold irThreshold = IRThresholdContainer21.Threshold (
+		IRConcentrationThreshold irThreshold = IRThresholdContainer21.Threshold (
 			currency
 		);
 
@@ -366,7 +366,7 @@ public class BucketVegaSettingsIR
 	public static BucketVegaSettingsIR ISDA_24 (
 		final String currency)
 	{
-		IRThreshold irThreshold = IRThresholdContainer24.Threshold (
+		IRConcentrationThreshold irThreshold = IRThresholdContainer24.Threshold (
 			currency
 		);
 

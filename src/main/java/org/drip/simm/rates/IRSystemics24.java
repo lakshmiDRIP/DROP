@@ -6,6 +6,9 @@ package org.drip.simm.rates;
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * 
  *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
@@ -75,7 +78,7 @@ package org.drip.simm.rates;
 
 /**
  * <i>IRSystemics24</i> contains the Systemic Settings of the SIMM 2.4 Interest Rate Risk Factors. The
- * References are:
+ * 	References are:
  * 
  * <br><br>
  *  <ul>
@@ -102,15 +105,35 @@ package org.drip.simm.rates;
  *  			https://www.isda.org/a/CeggE/ISDA-SIMM-v2.4-PUBLIC.pdf
  *  	</li>
  *  </ul>
- * 
- * <br><br>
+ *  
+ *  It provides the following Functionality:
+ *
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md">Portfolio Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/MarginAnalyticsLibrary.md">Initial and Variation Margin Analytics</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/README.md">Initial Margin Analytics based on ISDA SIMM and its Variants</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/rates/README.md">SIMM IR Risk Factor Settings</a></li>
+ * 		<li>Same Currency Curve Inflation Rate Risk Weight</li>
+ * 		<li>Single Currency Single Curve Basis Swap Spread</li>
+ * 		<li>Interest Rate Historical Volatility Ratio</li>
+ * 		<li>Interest Rate Vega Risk Weight</li>
+ * 		<li>Single Currency Cross-Curve Correlation</li>
+ * 		<li>Single Currency Curve Inflation Correlation</li>
+ * 		<li>Single Currency Curve Volatility Inflation Volatility Correlation</li>
+ * 		<li>Single Currency Curve Basis Swap Spread Correlation</li>
+ * 		<li>Single Currency Basis Swap Spread Inflation Correlation</li>
+ * 		<li>Cross Currency Curve Correlation</li>
  *  </ul>
- * <br><br>
+ *
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/StatisticalLearningLibrary.md">Statistical Learning Library</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/README.md">Initial Margin Analytics based on ISDA SIMM and its Variants</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/rates/README.md">SIMM IR Risk Factor Settings</a></td></tr>
+ *  </table>
  * 
  * @author Lakshmi Krishnamurthy
  */
