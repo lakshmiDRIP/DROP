@@ -293,9 +293,7 @@ public class IRConcentrationThresholdContainer24
 	public static final boolean ContainsThreshold (
 		final int groupNumber)
 	{
-		return s_CurrencyGroupMap.containsKey (
-			groupNumber
-		);
+		return s_CurrencyGroupMap.containsKey (groupNumber);
 	}
 
 	/**
@@ -309,9 +307,7 @@ public class IRConcentrationThresholdContainer24
 	public static final boolean ContainsThreshold (
 		final String currency)
 	{
-		return s_CurrencyThresholdMap.containsKey (
-			currency
-		);
+		return s_CurrencyThresholdMap.containsKey (currency);
 	}
 
 	/**
@@ -325,15 +321,8 @@ public class IRConcentrationThresholdContainer24
 	public static final IRConcentrationThreshold Threshold (
 		final String currency)
 	{
-		return ContainsThreshold (
-			currency
-		) ? s_CurrencyGroupMap.get (
-			s_CurrencyThresholdMap.get (
-				currency
-			)
-		) : s_CurrencyGroupMap.get (
-			1
-		);
+		return ContainsThreshold (currency) ?
+			s_CurrencyGroupMap.get (s_CurrencyThresholdMap.get (currency)) : s_CurrencyGroupMap.get (1);
 	}
 
 	/**
@@ -347,11 +336,7 @@ public class IRConcentrationThresholdContainer24
 	public static final IRConcentrationThreshold Threshold (
 		final int groupNumber)
 	{
-		return ContainsThreshold (
-			groupNumber
-		) ? s_CurrencyGroupMap.get (
-			groupNumber
-		) : null;
+		return ContainsThreshold (groupNumber) ? s_CurrencyGroupMap.get (groupNumber) : null;
 	}
 
 	/**
@@ -366,9 +351,9 @@ public class IRConcentrationThresholdContainer24
 	}
 
 	/**
-	 * Retrieve the Interest Rate Threshold Map
+	 * Retrieve the Interest Rate Currency Group Threshold Threshold Map
 	 * 
-	 * @return The Interest Rate Threshold Map
+	 * @return The Interest Rate Currency Group Threshold Threshold Map
 	 */
 
 	public static final Map<Integer, IRConcentrationThreshold> ThresholdMap()
