@@ -513,9 +513,7 @@ public class IRSettingsContainer24
 
 	public static final Set<String> RegularVolatilityCurrencySet()
 	{
-		return VolatilityTypeCurrencySet (
-			IRSystemics.VOLATILITY_TYPE_REGULAR
-		);
+		return VolatilityTypeCurrencySet (IRSystemics.VOLATILITY_TYPE_REGULAR);
 	}
 
 	/**
@@ -526,9 +524,7 @@ public class IRSettingsContainer24
 
 	public static final Set<String> LowVolatilityCurrencySet()
 	{
-		return VolatilityTypeCurrencySet (
-			IRSystemics.VOLATILITY_TYPE_LOW
-		);
+		return VolatilityTypeCurrencySet (IRSystemics.VOLATILITY_TYPE_LOW);
 	}
 
 	/**
@@ -539,9 +535,7 @@ public class IRSettingsContainer24
 
 	public static final Set<String> HighVolatilityCurrencySet()
 	{
-		return VolatilityTypeCurrencySet (
-			IRSystemics.VOLATILITY_TYPE_HIGH
-		);
+		return VolatilityTypeCurrencySet (IRSystemics.VOLATILITY_TYPE_HIGH);
 	}
 
 	/**
@@ -555,10 +549,7 @@ public class IRSettingsContainer24
 	public static final boolean ContainsRiskWeight (
 		final String currency)
 	{
-		return null != currency && !currency.isEmpty() &&
-			s_RiskWeightMap.containsKey (
-				currency
-			);
+		return null != currency && !currency.isEmpty() && s_RiskWeightMap.containsKey (currency);
 	}
 
 	/**
@@ -574,12 +565,7 @@ public class IRSettingsContainer24
 		final String currency,
 		final String subCurve)
 	{
-		return SubCurveSupported (
-			currency,
-			subCurve
-		) && s_RiskWeightMap.containsKey (
-			currency
-		);
+		return SubCurveSupported (currency, subCurve) && s_RiskWeightMap.containsKey (currency);
 	}
 
 	/**
@@ -593,13 +579,8 @@ public class IRSettingsContainer24
 	public static final IRWeight RiskWeight (
 		final String currency)
 	{
-		return ContainsRiskWeight (
-			currency
-		) ? s_RiskWeightMap.get (
-			currency
-		) : s_RiskWeightMap.get (
-			"OTHER"
-		);
+		return ContainsRiskWeight (currency) ?
+			s_RiskWeightMap.get (currency) : s_RiskWeightMap.get ("OTHER");
 	}
 
 	/**
@@ -615,21 +596,8 @@ public class IRSettingsContainer24
 		final String currency,
 		final String subCurve)
 	{
-		if (!SubCurveSupported (
-			currency,
-			subCurve
-		))
-		{
-			return ZERO_RISK_WEIGHT;
-		}
-
-		return ContainsRiskWeight (
-			currency
-		) ? s_RiskWeightMap.get (
-			currency
-		) : s_RiskWeightMap.get (
-			"OTHER"
-		);
+		return !SubCurveSupported (currency, subCurve) ? ZERO_RISK_WEIGHT :
+			ContainsRiskWeight (currency) ? s_RiskWeightMap.get (currency) : s_RiskWeightMap.get ("OTHER");
 	}
 
 	/**
@@ -667,25 +635,20 @@ public class IRSettingsContainer24
 		final String currency1,
 		final String currency2)
 	{
-		if (null == currency1 || currency1.isEmpty() ||
-			null == currency2 || currency2.isEmpty())
-		{
+		if (null == currency1 || currency1.isEmpty() || null == currency2 || currency2.isEmpty()) {
 			return null;
 		}
 
-		IRConcentrationThreshold irThreshold1 = IRConcentrationThresholdContainer21.Threshold (
-			currency1
-		);
+		IRConcentrationThreshold irThreshold1 = IRConcentrationThresholdContainer21.Threshold (currency1);
 
-		IRConcentrationThreshold irThreshold2 = IRConcentrationThresholdContainer21.Threshold (
-			currency2
-		);
+		IRConcentrationThreshold irThreshold2 = IRConcentrationThresholdContainer21.Threshold (currency2);
 
-		return null == irThreshold1 || null == irThreshold2 ? null : RiskGroupPrincipalCovariance.Standard (
-			s_SingleCurveTenorCorrelation.matrix(),
-			irThreshold1.currencyRiskGroup().volatilityType().equalsIgnoreCase (
-				irThreshold2.currencyRiskGroup().volatilityType()
-			) ? 1. : IRSystemics24.SINGLE_CURRENCY_CROSS_CURVE_CORRELATION
-		);
+		return null == irThreshold1 || null == irThreshold2 ?
+			null : RiskGroupPrincipalCovariance.Standard (
+				s_SingleCurveTenorCorrelation.matrix(),
+				irThreshold1.currencyRiskGroup().volatilityType().equalsIgnoreCase (
+					irThreshold2.currencyRiskGroup().volatilityType()
+				) ? 1. : IRSystemics24.SINGLE_CURRENCY_CROSS_CURVE_CORRELATION
+			);
 	}
 }

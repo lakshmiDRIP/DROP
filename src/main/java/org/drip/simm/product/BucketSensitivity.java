@@ -14,6 +14,9 @@ import org.drip.simm.parameters.BucketSensitivitySettings;
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -113,15 +116,26 @@ import org.drip.simm.parameters.BucketSensitivitySettings;
  *  			https://www.isda.org/a/oFiDE/isda-simm-v2.pdf
  *  	</li>
  *  </ul>
- * 
- * <br><br>
+ *  
+ *  It provides the following Functionality:
+ *
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md">Portfolio Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/MarginAnalyticsLibrary.md">Initial and Variation Margin Analytics</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/README.md">Initial Margin Analytics based on ISDA SIMM and its Variants</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/product/README.md">ISDA SIMM Risk Factor Sensitivities</a></li>
+ * 		<li>Initialize the Interest Rate Weight Specification Container</li>
  *  </ul>
- * <br><br>
+ *
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/StatisticalLearningLibrary.md">Statistical Learning Library</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/README.md">Initial Margin Analytics based on ISDA SIMM and its Variants</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/product/README.md">ISDA SIMM Risk Factor Sensitivities</a></td></tr>
+ *  </table>
  * 
  * @author Lakshmi Krishnamurthy
  */
@@ -151,29 +165,19 @@ public class BucketSensitivity
 
 			double concentrationRiskFactor = Math.max (
 				1.,
-				Math.sqrt (
-					Math.abs (
-						riskFactorSensitivity
-					) * concentrationNormalizer
-				)
+				Math.sqrt (Math.abs (riskFactorSensitivity) * concentrationNormalizer)
 			);
 
 			double riskFactorSensitivityMargin = riskFactorSensitivity * bucketSensitivityRiskWeight *
 				concentrationRiskFactor;
 			cumulativeRiskFactorSensitivity = cumulativeRiskFactorSensitivity + riskFactorSensitivity;
 
-			try
-			{
+			try {
 				augmentedBucketSensitivityMap.put (
 					riskFactorSensitivityMapEntry.getKey(),
-					new RiskFactorAggregate (
-						riskFactorSensitivityMargin,
-						concentrationRiskFactor
-					)
+					new RiskFactorAggregate (riskFactorSensitivityMargin, concentrationRiskFactor)
 				);
-			}
-			catch (Exception e)
-			{
+			} catch (Exception e) {
 				e.printStackTrace();
 
 				return null;
@@ -181,8 +185,7 @@ public class BucketSensitivity
 		}
 
 		for (Map.Entry<String, RiskFactorAggregate> augmentedBucketSensitivityMapOuterEntry :
-			augmentedBucketSensitivityMap.entrySet()
-		)
+			augmentedBucketSensitivityMap.entrySet())
 		{
 			RiskFactorAggregate augmentedRiskFactorSensitivityOuter =
 				augmentedBucketSensitivityMapOuterEntry.getValue();
@@ -195,8 +198,7 @@ public class BucketSensitivity
 			String riskFactorKeyOuter = augmentedBucketSensitivityMapOuterEntry.getKey();
 
 			for (Map.Entry<String, RiskFactorAggregate> augmentedBucketSensitivityMapInnerEntry :
-				augmentedBucketSensitivityMap.entrySet()
-			)
+				augmentedBucketSensitivityMap.entrySet())
 			{
 				RiskFactorAggregate augmentedRiskFactorSensitivityInner =
 					augmentedBucketSensitivityMapInnerEntry.getValue();
@@ -223,16 +225,13 @@ public class BucketSensitivity
 			}
 		}
 
-		try
-		{
+		try {
 			return new BucketAggregate (
 				augmentedBucketSensitivityMap,
 				weightedAggregateSensitivityVariance,
 				cumulativeRiskFactorSensitivity
 			);
-		}
-		catch (Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -260,29 +259,19 @@ public class BucketSensitivity
 
 			double concentrationRiskFactor = Math.max (
 				1.,
-				Math.sqrt (
-					Math.abs (
-						riskFactorSensitivity
-					) * concentrationNormalizer
-				)
+				Math.sqrt (Math.abs (riskFactorSensitivity) * concentrationNormalizer)
 			);
 
 			double riskFactorSensitivityMargin = riskFactorSensitivity * bucketSensitivityRiskWeight *
 				concentrationRiskFactor;
 			cumulativeRiskFactorSensitivity = cumulativeRiskFactorSensitivity + riskFactorSensitivity;
 
-			try
-			{
+			try {
 				augmentedBucketSensitivityMap.put (
 					riskFactorSensitivityMapEntry.getKey(),
-					new RiskFactorAggregate (
-						riskFactorSensitivityMargin,
-						concentrationRiskFactor
-					)
+					new RiskFactorAggregate (riskFactorSensitivityMargin, concentrationRiskFactor)
 				);
-			}
-			catch (Exception e)
-			{
+			} catch (Exception e) {
 				e.printStackTrace();
 
 				return null;
@@ -290,8 +279,7 @@ public class BucketSensitivity
 		}
 
 		for (Map.Entry<String, RiskFactorAggregate> augmentedBucketSensitivityMapOuterEntry :
-			augmentedBucketSensitivityMap.entrySet()
-		)
+			augmentedBucketSensitivityMap.entrySet())
 		{
 			RiskFactorAggregate augmentedRiskFactorSensitivityOuter =
 				augmentedBucketSensitivityMapOuterEntry.getValue();
@@ -301,8 +289,7 @@ public class BucketSensitivity
 			String riskFactorKeyOuter = augmentedBucketSensitivityMapOuterEntry.getKey();
 
 			for (Map.Entry<String, RiskFactorAggregate> augmentedBucketSensitivityMapInnerEntry :
-				augmentedBucketSensitivityMap.entrySet()
-			)
+				augmentedBucketSensitivityMap.entrySet())
 			{
 				weightedAggregateSensitivityVariance = weightedAggregateSensitivityVariance +
 					riskFactorSensitivityOuter *
@@ -314,16 +301,13 @@ public class BucketSensitivity
 			}
 		}
 
-		try
-		{
+		try {
 			return new BucketAggregate (
 				augmentedBucketSensitivityMap,
 				weightedAggregateSensitivityVariance,
 				cumulativeRiskFactorSensitivity
 			);
-		}
-		catch (Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -331,7 +315,7 @@ public class BucketSensitivity
 	}
 
 	/**
-	 * BucketSensitivity Constructor
+	 * <i>BucketSensitivity</i> Constructor
 	 * 
 	 * @param riskFactorSensitivityMap The Map of Risk Factor Sensitivities
 	 * 
