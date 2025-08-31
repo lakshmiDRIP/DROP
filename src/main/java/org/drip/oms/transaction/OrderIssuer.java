@@ -130,6 +130,46 @@ public class OrderIssuer
 	private int _type = Integer.MIN_VALUE;
 
 	/**
+	 * Construct a Client <i>Order Issuer</i> given the Entity
+	 * 
+	 * @param entity Order Issuer Entity
+	 * 
+	 * @return Client <i>Order Issuer</i>
+	 */
+
+	public static final OrderIssuer CLIENT (
+		final String entity)
+	{
+		try {
+			return new OrderIssuer (entity, CLIENT);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
+	 * Construct a Dealer <i>Order Issuer</i> given the Entity
+	 * 
+	 * @param entity Order Issuer Entity
+	 * 
+	 * @return Dealer <i>Order Issuer</i>
+	 */
+
+	public static final OrderIssuer DEALER (
+		final String entity)
+	{
+		try {
+			return new OrderIssuer (entity, DEALER);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
 	 * OrderIssuer Constructor
 	 * 
 	 * @param entity Order Issuer Entity

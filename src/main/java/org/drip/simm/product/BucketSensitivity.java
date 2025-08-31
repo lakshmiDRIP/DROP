@@ -120,7 +120,9 @@ import org.drip.simm.parameters.BucketSensitivitySettings;
  *  It provides the following Functionality:
  *
  *  <ul>
- * 		<li>Initialize the Interest Rate Weight Specification Container</li>
+ * 		<li><i>BucketSensitivity</i> Constructor</li>
+ * 		<li>Retrieve the Map of Risk Factor Sensitivities</li>
+ * 		<li>Weight and Adjust the Input Sensitivities</li>
  *  </ul>
  *
  *  <br>
@@ -327,12 +329,9 @@ public class BucketSensitivity
 		throws Exception
 	{
 		if (null == (_riskFactorSensitivityMap = riskFactorSensitivityMap) ||
-			0 == _riskFactorSensitivityMap.size()
-		)
+			0 == _riskFactorSensitivityMap.size())
 		{
-			throw new Exception (
-				"BucketSensitivity Constructor => Invalid Inputs"
-			);
+			throw new Exception ("BucketSensitivity Constructor => Invalid Inputs");
 		}
 	}
 
@@ -358,15 +357,8 @@ public class BucketSensitivity
 	public BucketAggregate aggregate (
 		final BucketSensitivitySettings bucketSensitivitySettings)
 	{
-		if (null == bucketSensitivitySettings)
-		{
-			return null;
-		}
-
-		return bucketSensitivitySettings instanceof BucketCurvatureSettings ? curvatureAggregate (
-			bucketSensitivitySettings
-		) : linearAggregate (
-			bucketSensitivitySettings
-		);
+		return null == bucketSensitivitySettings ? null :
+			bucketSensitivitySettings instanceof BucketCurvatureSettings ?
+				curvatureAggregate (bucketSensitivitySettings) : linearAggregate (bucketSensitivitySettings);
 	}
 }

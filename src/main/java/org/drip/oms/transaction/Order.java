@@ -518,4 +518,40 @@ public class Order
 
 		return true;
 	}
+
+	/**
+	 * Set the Order as Rejected
+	 * 
+	 * @param orderState Order State
+	 * 
+	 * @return TRUE - The Order State successfully set to Rejected
+	 */
+
+	public boolean setRejected()
+	{
+		_updateTime = new Date();
+
+		_state = OrderState.REJECTED;
+		return true;
+	}
+
+	/**
+	 * Set the Order as Accepted
+	 * 
+	 * @param orderState Order State
+	 * 
+	 * @return TRUE - The Order State successfully set to Accepted
+	 */
+
+	public boolean setAccepted()
+	{
+		_updateTime = new Date();
+
+		if (!_quantityTracker.accepted()) {
+			return false;
+		}
+
+		_state = OrderState.OPEN;
+		return true;
+	}
 }

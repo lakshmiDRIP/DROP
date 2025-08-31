@@ -2,8 +2,7 @@
 package org.drip.oms.fix4_2;
 
 import java.util.Date;
-
-import org.drip.oms.transaction.Order;
+import java.util.Map;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -78,7 +77,7 @@ import org.drip.oms.transaction.Order;
  */
 
 /**
- * <i>AgentResponse</i> implements the Response out of a FIX Agent. The References are:
+ * <i>Agent</i> implements the FIX Agent Handler. The References are:
  *  
  * 	<br><br>
  *  <ul>
@@ -115,208 +114,87 @@ import org.drip.oms.transaction.Order;
  * @author Lakshmi Krishnamurthy
  */
 
-public class AgentResponse
+public class Agent
 {
-	private Order _order = null;
-	private String _comment = "";
-	private String _requestID = "";
-	private Date _processingStartTime = null;
-	private Date _processingUpdateTime = null;
-	private int _messageType = Integer.MIN_VALUE;
-	private int _executionType = Integer.MIN_VALUE;
-	private int _executionTransactionType = Integer.MIN_VALUE;
+	private DeskHandler _deskHandler = null;
+	private Map<String, AgentOrder> _fixOrderMap = null;
+
+	protected AgentResponse handleNEW (
+		final Date processingStartTime,
+		final AgentRequest agentRequest)
+	{
+		AgentOrder fixOrder = AgentOrder.FromAgentRequest (agentRequest);
+
+		if (null == fixOrder) {
+			return null;
+		}
+
+		_fixOrderMap.put (fixOrder.clOrdID(), fixOrder);
+
+		if (null != _deskHandler && !_deskHandler.process (agentRequest)) {
+			return fixOrder.reject() ?
+				AgentResponse.REJECTED (processingStartTime, fixOrder.order(), agentRequest.id()) : null;
+		}
+
+		return fixOrder.accept() ?
+			AgentResponse.ACCEPTED (processingStartTime, fixOrder.order(), agentRequest.id()) : null;
+	}
 
 	/**
-	 * Construct a REJECTED <i>AgentResponse</i> Instance
+	 * Construct a FIX <i>Agent</i> Instance
 	 * 
-	 * @param processingStartTime Processing Start Time
-	 * @param order Order Instance
-	 * @param requestID Request ID
-	 * 
-	 * @return REJECTED <i>AgentResponse</i> Instance
+	 * @param deskHandler Desk Handler
 	 */
 
-	public static final AgentResponse REJECTED (
-		final Date processingStartTime,
-		final Order order,
-		final String requestID)
+	public Agent (
+		final DeskHandler deskHandler)
 	{
-		try {
-			return new AgentResponse (
-				processingStartTime,
-				new Date(),
-				AgentResponseMessageType.EXECUTION,
-				order,
-				requestID,
-				AgentResponseExecutionType.REJECTED,
-				AgentResponseExecutionTransactionType.NEW,
-				"Rejected by Desk, i.e., Sales/Trader"
-			);
-		} catch (Exception e) {
-			e.printStackTrace();
+		_deskHandler = deskHandler;
+	}
+
+	/**
+	 * Retrieve the <i>DeskHandler</i> Instance
+	 * 
+	 * @return <i>DeskHandler</i> Instance
+	 */
+
+	public DeskHandler deskHandler()
+	{
+		return _deskHandler;
+	}
+
+	/**
+	 * Retrieve the FIX Order Map
+	 * 
+	 * @return FIX Order Map
+	 */
+
+	public Map<String, AgentOrder> fixOrderMap()
+	{
+		return _fixOrderMap;
+	}
+
+	/**
+	 * Handle the FIX Client Request
+	 * 
+	 * @param agentRequest Agent Request
+	 * 
+	 * @return Response to the Request
+	 */
+
+	public AgentResponse handleClientRequest (
+		final AgentRequest agentRequest)
+	{
+		Date processingStartTime = new Date();
+
+		if (null == agentRequest) {
+			return null;
+		}
+
+		if (AgentRequestType.NEW == agentRequest.type()) {
+			return handleNEW (processingStartTime, agentRequest);
 		}
 
 		return null;
-	}
-
-	/**
-	 * Construct an ACCEPTED <i>AgentResponse</i> Instance
-	 * 
-	 * @param processingStartTime Processing Start Time
-	 * @param order Order Instance
-	 * @param requestID Request ID
-	 * 
-	 * @return ACCEPTED <i>AgentResponse</i> Instance
-	 */
-
-	public static final AgentResponse ACCEPTED (
-		final Date processingStartTime,
-		final Order order,
-		final String requestID)
-	{
-		try {
-			return new AgentResponse (
-				processingStartTime,
-				new Date(),
-				AgentResponseMessageType.EXECUTION,
-				order,
-				requestID,
-				AgentResponseExecutionType.NEW,
-				AgentResponseExecutionTransactionType.NEW,
-				""
-			);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-		return null;
-	}
-
-	/**
-	 * <i>AgentResponse</i> Constructor
-	 * 
-	 * @param processingStartTime Processing Start Time
-	 * @param processingUpdateTime Processing Update Time
-	 * @param messageType Agent Response Message Type
-	 * @param order Order Instance
-	 * @param requestID Request ID
-	 * @param executionType Response Execution Type
-	 * @param executionTransactionType Response Execution Transaction Type
-	 * @param comment Comment
-	 * 
-	 * @throws Exception Thrown if the Inputs are Invalid
-	 */
-
-	public AgentResponse (
-		final Date processingStartTime,
-		final Date processingUpdateTime,
-		final int messageType,
-		final Order order,
-		final String requestID,
-		final int executionType,
-		final int executionTransactionType,
-		final String comment)
-		throws Exception
-	{
-		if (null == (_processingStartTime = processingStartTime) ||
-			null == (_processingUpdateTime = processingUpdateTime) ||
-			null == (_order = order) ||
-			null == (_requestID = requestID) || _requestID.isEmpty())
-		{
-			throw new Exception ("AgentResponse Constructor => Invalid Inputs");
-		}
-
-		_comment = comment;
-		_messageType = messageType;
-		_executionType = executionType;
-		_executionTransactionType = executionTransactionType;
-	}
-
-	/**
-	 * Retrieve the Agent Processing Start Time
-	 * 
-	 * @return Agent Processing Start Time
-	 */
-
-	public Date processingStartTime()
-	{
-		return _processingStartTime;
-	}
-
-	/**
-	 * Retrieve the Agent Processing Update Time
-	 * 
-	 * @return Agent Processing Update Time
-	 */
-
-	public Date processingUpdateTime()
-	{
-		return _processingUpdateTime;
-	}
-
-	/**
-	 * Retrieve the Response Message Type
-	 * 
-	 * @return Response Message Type
-	 */
-
-	public int messageType()
-	{
-		return _messageType;
-	}
-
-	/**
-	 * Retrieve the Order Instance
-	 * 
-	 * @return Order Instance
-	 */
-
-	public Order order()
-	{
-		return _order;
-	}
-
-	/**
-	 * Retrieve the Agent Request ID
-	 * 
-	 * @return Agent Request ID
-	 */
-
-	public String requestID()
-	{
-		return _requestID;
-	}
-
-	/**
-	 * Retrieve the Response Execution Type
-	 * 
-	 * @return Response Execution Type
-	 */
-
-	public int executionType()
-	{
-		return _executionType;
-	}
-
-	/**
-	 * Retrieve the Response Execution Transaction Type
-	 * 
-	 * @return Response Execution Transaction Type
-	 */
-
-	public int executionTransactionType()
-	{
-		return _executionTransactionType;
-	}
-
-	/**
-	 * Retrieve the Agent Request Comment
-	 * 
-	 * @return Agent Request Comment
-	 */
-
-	public String comment()
-	{
-		return _comment;
 	}
 }

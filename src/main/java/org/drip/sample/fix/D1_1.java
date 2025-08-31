@@ -1,12 +1,16 @@
 
-package org.drip.oms.transaction;
+package org.drip.sample.fix;
+
+import org.drip.oms.fix4_2.Agent;
+import org.drip.oms.fix4_2.DeskHandler;
+import org.drip.service.env.EnvManager;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
- * Copyright (C) 2023 Lakshmi Krishnamurthy
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
  * 
  *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
  *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
@@ -74,7 +78,7 @@ package org.drip.oms.transaction;
  */
 
 /**
- * <i>OrderState</i> holds the different States of an Order. The References are:
+ * <i>D1_1</i> illustrates Rejection in the D1 Order Scenario. The References are:
  *  
  * 	<br><br>
  *  <ul>
@@ -104,49 +108,34 @@ package org.drip.oms.transaction;
  *  <ul>
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/TransactionCostAnalyticsLibrary.md">Transaction Cost Analytics</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/oms/README.md">R<sup>d</sup> Order Specification, Handling, and Management</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/oms/transaction/README.md">Order Specification and Session Metrics</a></li>
+ *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/README.md">DROP API Construction and Usage</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/fix/README.md">FIX 4.2 Agent Order Handling</a></li>
  *  </ul>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class OrderState
+public class D1_1
 {
 
 	/**
-	 * OPEN
+	 * Entry Point
+	 * 
+	 * @param argumentArray Command Line Argument Array
+	 * 
+	 * @throws Exception Thrown on Error/Exception Situation
 	 */
 
-	public static final int OPEN = 1;
+	public static final void main (
+		final String[] argumentArray)
+		throws Exception
+	{
+		EnvManager.InitEnv ("");
 
-	/**
-	 * UNFILLED
-	 */
+		Agent agent = new Agent (new DeskHandler (false));
 
-	public static final int UNFILLED = 2;
+		System.out.println (agent);
 
-	/**
-	 * PARTIALLY FILLED
-	 */
-
-	public static final int PARTIALLY_FILLED = 4;
-
-	/**
-	 * FILLED
-	 */
-
-	public static final int FILLED = 8;
-
-	/**
-	 * CANCELED
-	 */
-
-	public static final int CANCELED = 16;
-
-	/**
-	 * REJECTED
-	 */
-
-	public static final int REJECTED = 32;
+		EnvManager.TerminateEnv();
+	}
 }

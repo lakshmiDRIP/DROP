@@ -78,7 +78,7 @@ import org.drip.oms.transaction.Order;
  */
 
 /**
- * <i>FIXOrder</i> holds the Details of a FIX 4.2 Order. The References are:
+ * <i>AgentOrder</i> holds the Details of a FIX 4.2 Agent Order. The References are:
  *  
  * 	<br><br>
  *  <ul>
@@ -115,7 +115,7 @@ import org.drip.oms.transaction.Order;
  * @author Lakshmi Krishnamurthy
  */
 
-public class FIXOrder
+public class AgentOrder
 {
 	private Order _order = null;
 	private Date _creationRequestTime = null;
@@ -123,7 +123,27 @@ public class FIXOrder
 	private int _precedenceOrdinal = Integer.MIN_VALUE;
 
 	/**
-	 * <i>FIXOrder</i> Constructor
+	 * Construct a <i>AgentOrder</i> Instance from the Agent Request
+	 * 
+	 * @param agentRequest Agent Request
+	 * 
+	 * @return <i>FIXOrder</i> Instance
+	 */
+
+	public static final AgentOrder FromAgentRequest (
+		final AgentRequest agentRequest)
+	{
+		try {
+			return null == agentRequest ? null : new AgentOrder (agentRequest.order(), new Date());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
+	 * <i>AgentOrder</i> Constructor
 	 * 
 	 * @param order Underlying Order
 	 * @param creationRequestTime Creation Request Time
@@ -131,13 +151,13 @@ public class FIXOrder
 	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
-	public FIXOrder (
+	public AgentOrder (
 		final Order order,
 		final Date creationRequestTime)
 		throws Exception
 	{
 		if (null == (_order = order) || null == (_creationRequestTime = creationRequestTime)) {
-			throw new Exception ("FIXOrder Constructor => Invalid Inputs");
+			throw new Exception ("AgentOrder Constructor => Invalid Inputs");
 		}
 
 		_orderStatus = OrderStatus.PENDING_NEW;
@@ -205,8 +225,34 @@ public class FIXOrder
 	 * @return FIX <code>OrigClOrdID</code>
 	 */
 
-	public String oridClOrdID()
+	public String origClOrdID()
 	{
 		return _order.parentID();
+	}
+
+	/**
+	 * Reject the FIX Order
+	 * 
+	 * @return TRUE - FIX Order successfully rejected
+	 */
+
+	public boolean reject()
+	{
+		_orderStatus = OrderStatus.REJECTED;
+
+		return _order.setRejected();
+	}
+
+	/**
+	 * Accept the FIX Order
+	 * 
+	 * @return TRUE - FIX Order successfully accepted
+	 */
+
+	public boolean accept()
+	{
+		_orderStatus = OrderStatus.NEW;
+
+		return _order.setAccepted();
 	}
 }

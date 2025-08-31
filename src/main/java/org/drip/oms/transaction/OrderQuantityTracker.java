@@ -138,9 +138,9 @@ public class OrderQuantityTracker
 		}
 
 		_current = _original;
-		_leaves = _original;
 		_lastShares = 0.;
 		_cumulative = 0.;
+		_leaves = 0.;
 	}
 
 	/**
@@ -246,5 +246,17 @@ public class OrderQuantityTracker
 	public boolean filled()
 	{
 		return 0. >= _leaves;
+	}
+
+	/**
+	 * Process Order Acceptance
+	 * 
+	 * @return TRUE - Order Acceptance successfully processed
+	 */
+
+	public boolean accepted()
+	{
+		_leaves = _current;
+		return true;
 	}
 }

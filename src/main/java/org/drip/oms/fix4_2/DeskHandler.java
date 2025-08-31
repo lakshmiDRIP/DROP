@@ -1,10 +1,6 @@
 
 package org.drip.oms.fix4_2;
 
-import java.util.Date;
-
-import org.drip.oms.transaction.Order;
-
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
@@ -78,7 +74,7 @@ import org.drip.oms.transaction.Order;
  */
 
 /**
- * <i>AgentResponse</i> implements the Response out of a FIX Agent. The References are:
+ * <i>DeskHandler</i> implements the Dealer Desk's Internal Order Processor. The References are:
  *  
  * 	<br><br>
  *  <ul>
@@ -115,208 +111,48 @@ import org.drip.oms.transaction.Order;
  * @author Lakshmi Krishnamurthy
  */
 
-public class AgentResponse
+public class DeskHandler
 {
-	private Order _order = null;
-	private String _comment = "";
-	private String _requestID = "";
-	private Date _processingStartTime = null;
-	private Date _processingUpdateTime = null;
-	private int _messageType = Integer.MIN_VALUE;
-	private int _executionType = Integer.MIN_VALUE;
-	private int _executionTransactionType = Integer.MIN_VALUE;
+	private boolean _allowNEW = true;
 
 	/**
-	 * Construct a REJECTED <i>AgentResponse</i> Instance
+	 * <i>DeskHandler</i> Constructor
 	 * 
-	 * @param processingStartTime Processing Start Time
-	 * @param order Order Instance
-	 * @param requestID Request ID
-	 * 
-	 * @return REJECTED <i>AgentResponse</i> Instance
+	 * @param allowNEW <code>allowNEW</code> Setting
 	 */
 
-	public static final AgentResponse REJECTED (
-		final Date processingStartTime,
-		final Order order,
-		final String requestID)
+	public DeskHandler (
+		final boolean allowNEW)
 	{
-		try {
-			return new AgentResponse (
-				processingStartTime,
-				new Date(),
-				AgentResponseMessageType.EXECUTION,
-				order,
-				requestID,
-				AgentResponseExecutionType.REJECTED,
-				AgentResponseExecutionTransactionType.NEW,
-				"Rejected by Desk, i.e., Sales/Trader"
-			);
-		} catch (Exception e) {
-			e.printStackTrace();
+		_allowNEW = allowNEW;
+	}
+
+	/**
+	 * Retrieve the <code>allowNEW</code> Setting
+	 * 
+	 * @return <code>allowNEW</code> Setting
+	 */
+
+	public boolean allowNEW()
+	{
+		return _allowNEW;
+	}
+
+	/**
+	 * Indicate if the Agent Request can be allowed
+	 * 
+	 * @param agentRequest Agent Request
+	 * 
+	 * @return TRUE - Agent Request can be allowed
+	 */
+
+	public boolean process (
+		final AgentRequest agentRequest)
+	{
+		if (null == agentRequest) {
+			return false;
 		}
 
-		return null;
-	}
-
-	/**
-	 * Construct an ACCEPTED <i>AgentResponse</i> Instance
-	 * 
-	 * @param processingStartTime Processing Start Time
-	 * @param order Order Instance
-	 * @param requestID Request ID
-	 * 
-	 * @return ACCEPTED <i>AgentResponse</i> Instance
-	 */
-
-	public static final AgentResponse ACCEPTED (
-		final Date processingStartTime,
-		final Order order,
-		final String requestID)
-	{
-		try {
-			return new AgentResponse (
-				processingStartTime,
-				new Date(),
-				AgentResponseMessageType.EXECUTION,
-				order,
-				requestID,
-				AgentResponseExecutionType.NEW,
-				AgentResponseExecutionTransactionType.NEW,
-				""
-			);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-		return null;
-	}
-
-	/**
-	 * <i>AgentResponse</i> Constructor
-	 * 
-	 * @param processingStartTime Processing Start Time
-	 * @param processingUpdateTime Processing Update Time
-	 * @param messageType Agent Response Message Type
-	 * @param order Order Instance
-	 * @param requestID Request ID
-	 * @param executionType Response Execution Type
-	 * @param executionTransactionType Response Execution Transaction Type
-	 * @param comment Comment
-	 * 
-	 * @throws Exception Thrown if the Inputs are Invalid
-	 */
-
-	public AgentResponse (
-		final Date processingStartTime,
-		final Date processingUpdateTime,
-		final int messageType,
-		final Order order,
-		final String requestID,
-		final int executionType,
-		final int executionTransactionType,
-		final String comment)
-		throws Exception
-	{
-		if (null == (_processingStartTime = processingStartTime) ||
-			null == (_processingUpdateTime = processingUpdateTime) ||
-			null == (_order = order) ||
-			null == (_requestID = requestID) || _requestID.isEmpty())
-		{
-			throw new Exception ("AgentResponse Constructor => Invalid Inputs");
-		}
-
-		_comment = comment;
-		_messageType = messageType;
-		_executionType = executionType;
-		_executionTransactionType = executionTransactionType;
-	}
-
-	/**
-	 * Retrieve the Agent Processing Start Time
-	 * 
-	 * @return Agent Processing Start Time
-	 */
-
-	public Date processingStartTime()
-	{
-		return _processingStartTime;
-	}
-
-	/**
-	 * Retrieve the Agent Processing Update Time
-	 * 
-	 * @return Agent Processing Update Time
-	 */
-
-	public Date processingUpdateTime()
-	{
-		return _processingUpdateTime;
-	}
-
-	/**
-	 * Retrieve the Response Message Type
-	 * 
-	 * @return Response Message Type
-	 */
-
-	public int messageType()
-	{
-		return _messageType;
-	}
-
-	/**
-	 * Retrieve the Order Instance
-	 * 
-	 * @return Order Instance
-	 */
-
-	public Order order()
-	{
-		return _order;
-	}
-
-	/**
-	 * Retrieve the Agent Request ID
-	 * 
-	 * @return Agent Request ID
-	 */
-
-	public String requestID()
-	{
-		return _requestID;
-	}
-
-	/**
-	 * Retrieve the Response Execution Type
-	 * 
-	 * @return Response Execution Type
-	 */
-
-	public int executionType()
-	{
-		return _executionType;
-	}
-
-	/**
-	 * Retrieve the Response Execution Transaction Type
-	 * 
-	 * @return Response Execution Transaction Type
-	 */
-
-	public int executionTransactionType()
-	{
-		return _executionTransactionType;
-	}
-
-	/**
-	 * Retrieve the Agent Request Comment
-	 * 
-	 * @return Agent Request Comment
-	 */
-
-	public String comment()
-	{
-		return _comment;
+		return _allowNEW;
 	}
 }
