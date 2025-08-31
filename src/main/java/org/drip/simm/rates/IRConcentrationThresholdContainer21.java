@@ -128,7 +128,7 @@ import org.drip.simm.common.DeltaVegaThreshold;
  * 		<li>Retrieve the Interest Rate Threshold denoted by the Currency</li>
  * 		<li>Retrieve the Interest Rate Threshold denoted by the Group Number</li>
  * 		<li>Retrieve the Currency Threshold Map</li>
- * 		<li>Retrieve the Interest Rate Currency Component Threshold Map</li>
+ * 		<li>Retrieve the Interest Rate Currency Group Threshold Map</li>
  *  </ul>
  *
  *  <br>
@@ -198,23 +198,16 @@ public class IRConcentrationThresholdContainer21
 
 	public static final boolean Init()
 	{
-		try
-		{
+		try {
 			s_CurrencyGroupMap.put (
 				1,
 				new IRConcentrationThreshold (
 					new CurrencyRiskGroup (
 						IRSystemics.VOLATILITY_TYPE_HIGH,
 						IRSystemics.TRADE_FREQUENCY_LESS_WELL_TRADED,
-						new String[]
-						{
-							"Other"
-						}
+						new String[] {"Other"}
 					),
-					new DeltaVegaThreshold (
-						12.,
-						120.
-					)
+					new DeltaVegaThreshold (12., 120.)
 				)
 			);
 
@@ -224,17 +217,9 @@ public class IRConcentrationThresholdContainer21
 					new CurrencyRiskGroup (
 						IRSystemics.VOLATILITY_TYPE_REGULAR,
 						IRSystemics.TRADE_FREQUENCY_WELL_TRADED,
-						new String[]
-						{
-							"USD",
-							"EUR",
-							"GBP"
-						}
+						new String[] {"USD", "EUR", "GBP"}
 					),
-					new DeltaVegaThreshold (
-						210.,
-						2200.
-					)
+					new DeltaVegaThreshold (210., 2200.)
 				)
 			);
 
@@ -244,8 +229,7 @@ public class IRConcentrationThresholdContainer21
 					new CurrencyRiskGroup (
 						IRSystemics.VOLATILITY_TYPE_REGULAR,
 						IRSystemics.TRADE_FREQUENCY_LESS_WELL_TRADED,
-						new String[]
-						{
+						new String[] {
 							"AUD",
 							"CAD",
 							"CHF",
@@ -259,10 +243,7 @@ public class IRConcentrationThresholdContainer21
 							"TWD"
 						}
 					),
-					new DeltaVegaThreshold (
-						27.,
-						190.
-					)
+					new DeltaVegaThreshold (27., 190.)
 				)
 			);
 
@@ -272,20 +253,12 @@ public class IRConcentrationThresholdContainer21
 					new CurrencyRiskGroup (
 						IRSystemics.VOLATILITY_TYPE_LOW,
 						IRSystemics.TRADE_FREQUENCY_WELL_TRADED,
-						new String[]
-						{
-							"JPY"
-						}
+						new String[] {"JPY"}
 					),
-					new DeltaVegaThreshold (
-						170.,
-						770.
-					)
+					new DeltaVegaThreshold (170., 770.)
 				)
 			);
-		}
-		catch (Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 
 			return false;
@@ -327,9 +300,7 @@ public class IRConcentrationThresholdContainer21
 	public static final boolean ContainsThreshold (
 		final int groupNumber)
 	{
-		return s_CurrencyGroupMap.containsKey (
-			groupNumber
-		);
+		return s_CurrencyGroupMap.containsKey (groupNumber);
 	}
 
 	/**
@@ -343,9 +314,7 @@ public class IRConcentrationThresholdContainer21
 	public static final boolean ContainsThreshold (
 		final String currency)
 	{
-		return s_CurrencyThresholdMap.containsKey (
-			currency
-		);
+		return s_CurrencyThresholdMap.containsKey (currency);
 	}
 
 	/**
@@ -359,15 +328,8 @@ public class IRConcentrationThresholdContainer21
 	public static final IRConcentrationThreshold Threshold (
 		final String currency)
 	{
-		return ContainsThreshold (
-			currency
-		) ? s_CurrencyGroupMap.get (
-			s_CurrencyThresholdMap.get (
-				currency
-			)
-		) : s_CurrencyGroupMap.get (
-			1
-		);
+		return ContainsThreshold (currency) ?
+			s_CurrencyGroupMap.get (s_CurrencyThresholdMap.get (currency)) : s_CurrencyGroupMap.get (1);
 	}
 
 	/**
@@ -381,11 +343,7 @@ public class IRConcentrationThresholdContainer21
 	public static final IRConcentrationThreshold Threshold (
 		final int groupNumber)
 	{
-		return ContainsThreshold (
-			groupNumber
-		) ? s_CurrencyGroupMap.get (
-			groupNumber
-		) : null;
+		return ContainsThreshold (groupNumber) ? s_CurrencyGroupMap.get (groupNumber) : null;
 	}
 
 	/**
@@ -400,9 +358,9 @@ public class IRConcentrationThresholdContainer21
 	}
 
 	/**
-	 * Retrieve the Interest Rate Threshold Map
+	 * Retrieve the Interest Rate Currency Group Threshold Map
 	 * 
-	 * @return The Interest Rate Threshold Map
+	 * @return The Interest Rate Currency Group Threshold Map
 	 */
 
 	public static final Map<Integer, IRConcentrationThreshold> ThresholdMap()

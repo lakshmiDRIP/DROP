@@ -15,7 +15,7 @@ import org.drip.simm.fx.FXRiskThresholdContainer21;
 import org.drip.simm.fx.FXRiskThresholdContainer24;
 import org.drip.simm.rates.IRConcentrationThresholdContainer20;
 import org.drip.simm.rates.IRConcentrationThresholdContainer21;
-import org.drip.simm.rates.IRThresholdContainer24;
+import org.drip.simm.rates.IRConcentrationThresholdContainer24;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -167,7 +167,7 @@ public class RiskFactorThresholdContainer
 			return false;
 		}
 
-		if (!IRThresholdContainer24.Init()) {
+		if (!IRConcentrationThresholdContainer24.Init()) {
 			return false;
 		}
 

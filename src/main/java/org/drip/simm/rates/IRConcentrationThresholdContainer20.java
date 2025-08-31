@@ -128,7 +128,7 @@ import org.drip.simm.common.DeltaVegaThreshold;
  * 		<li>Retrieve the Interest Rate Threshold denoted by the Currency</li>
  * 		<li>Retrieve the Interest Rate Threshold denoted by the Group Number</li>
  * 		<li>Retrieve the Currency Threshold Map</li>
- * 		<li>Retrieve the Interest Rate Currency Component Threshold Map</li>
+ * 		<li>Retrieve the Interest Rate Currency Group Threshold Map</li>
  *  </ul>
  *
  *  <br>
@@ -358,9 +358,9 @@ public class IRConcentrationThresholdContainer20
 	}
 
 	/**
-	 * Retrieve the Interest Rate Currency Component Threshold Map
+	 * Retrieve the Interest Rate Currency Group Threshold Map
 	 * 
-	 * @return The Interest Rate Currency Component Threshold Map
+	 * @return The Interest Rate Currency Group Threshold Map
 	 */
 
 	public static final Map<Integer, IRConcentrationThreshold> ThresholdMap()
