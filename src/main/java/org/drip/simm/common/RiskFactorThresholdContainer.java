@@ -14,7 +14,7 @@ import org.drip.simm.fx.FXRiskThresholdContainer20;
 import org.drip.simm.fx.FXRiskThresholdContainer21;
 import org.drip.simm.fx.FXRiskThresholdContainer24;
 import org.drip.simm.rates.IRConcentrationThresholdContainer20;
-import org.drip.simm.rates.IRThresholdContainer21;
+import org.drip.simm.rates.IRConcentrationThresholdContainer21;
 import org.drip.simm.rates.IRThresholdContainer24;
 
 /*
@@ -163,7 +163,7 @@ public class RiskFactorThresholdContainer
 			return false;
 		}
 
-		if (!IRThresholdContainer21.Init()) {
+		if (!IRConcentrationThresholdContainer21.Init()) {
 			return false;
 		}
 

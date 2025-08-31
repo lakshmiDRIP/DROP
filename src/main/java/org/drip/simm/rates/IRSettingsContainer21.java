@@ -705,11 +705,11 @@ public class IRSettingsContainer21
 			return null;
 		}
 
-		IRConcentrationThreshold irThreshold1 = IRThresholdContainer21.Threshold (
+		IRConcentrationThreshold irThreshold1 = IRConcentrationThresholdContainer21.Threshold (
 			currency1
 		);
 
-		IRConcentrationThreshold irThreshold2 = IRThresholdContainer21.Threshold (
+		IRConcentrationThreshold irThreshold2 = IRConcentrationThresholdContainer21.Threshold (
 			currency2
 		);
 

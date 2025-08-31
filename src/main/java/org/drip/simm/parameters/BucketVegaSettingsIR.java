@@ -15,7 +15,7 @@ import org.drip.simm.rates.IRSystemics21;
 import org.drip.simm.rates.IRSystemics24;
 import org.drip.simm.rates.IRConcentrationThreshold;
 import org.drip.simm.rates.IRConcentrationThresholdContainer20;
-import org.drip.simm.rates.IRThresholdContainer21;
+import org.drip.simm.rates.IRConcentrationThresholdContainer21;
 import org.drip.simm.rates.IRThresholdContainer24;
 import org.drip.simm.rates.IRWeight;
 
@@ -268,7 +268,7 @@ public class BucketVegaSettingsIR
 	public static BucketVegaSettingsIR ISDA_21 (
 		final String currency)
 	{
-		IRConcentrationThreshold irThreshold = IRThresholdContainer21.Threshold (
+		IRConcentrationThreshold irThreshold = IRConcentrationThresholdContainer21.Threshold (
 			currency
 		);
 

@@ -13,6 +13,9 @@ import org.drip.simm.common.DeltaVegaThreshold;
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -85,8 +88,8 @@ import org.drip.simm.common.DeltaVegaThreshold;
  */
 
 /**
- * <i>IRThresholdContainer21</i> holds the ISDA SIMM 2.1 Interest Rate Thresholds - the Currency Risk Groups,
- * and the Delta/Vega Limits defined for the Concentration Thresholds. The References are:
+ * <i>IRConcentrationThresholdContainer21</i> holds the ISDA SIMM 2.1 Interest Rate Thresholds - the Currency
+ * 	Risk Groups, and the Delta/Vega Limits defined for the Concentration Thresholds. The References are:
  * 
  * <br><br>
  *  <ul>
@@ -113,101 +116,76 @@ import org.drip.simm.common.DeltaVegaThreshold;
  *  			https://www.isda.org/a/oFiDE/isda-simm-v2.pdf
  *  	</li>
  *  </ul>
- * 
- * <br><br>
+ *  
+ *  It provides the following Functionality:
+ *
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md">Portfolio Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/MarginAnalyticsLibrary.md">Initial and Variation Margin Analytics</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/README.md">Initial Margin Analytics based on ISDA SIMM and its Variants</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/rates/README.md">SIMM IR Risk Factor Settings</a></li>
+ * 		<li>Initialize the Container</li>
+ * 		<li>Retrieve the Interest Rate Threshold Container Bucket Index Set</li>
+ * 		<li>Retrieve the Interest Rate Threshold Container Currency Set</li>
+ * 		<li>Indicate if the Entry denoted by the Number is available as an Interest Rate Threshold</li>
+ * 		<li>Indicate if the Currency is available as an Interest Rate Threshold</li>
+ * 		<li>Retrieve the Interest Rate Threshold denoted by the Currency</li>
+ * 		<li>Retrieve the Interest Rate Threshold denoted by the Group Number</li>
+ * 		<li>Retrieve the Currency Threshold Map</li>
+ * 		<li>Retrieve the Interest Rate Currency Component Threshold Map</li>
  *  </ul>
- * <br><br>
+ *
+ *  <br>
+ *  <style>table, td, th {
+ *  	padding: 1px; border: 2px solid #008000; border-radius: 8px; background-color: #dfff00;
+ *		text-align: center; color:  #0000ff;
+ *  }
+ *  </style>
+ *  
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/StatisticalLearningLibrary.md">Statistical Learning Library</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/README.md">Initial Margin Analytics based on ISDA SIMM and its Variants</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/simm/rates/README.md">SIMM IR Risk Factor Settings</a></td></tr>
+ *  </table>
  * 
  * @author Lakshmi Krishnamurthy
  */
 
-public class IRThresholdContainer21
+public class IRConcentrationThresholdContainer21
 {
 	private static final Map<String, Integer> s_CurrencyThresholdMap = new HashMap<String, Integer>();
 
-	private static final Map<Integer, IRConcentrationThreshold> s_ThresholdMap = new TreeMap<Integer, IRConcentrationThreshold>();
+	private static final Map<Integer, IRConcentrationThreshold> s_CurrencyGroupMap =
+		new TreeMap<Integer, IRConcentrationThreshold>();
 
 	private static final boolean SetupCurrencyMap()
 	{
-		s_CurrencyThresholdMap.put (
-			"USD",
-			2
-		);
+		s_CurrencyThresholdMap.put ("USD", 2);
 
-		s_CurrencyThresholdMap.put (
-			"EUR",
-			2
-		);
+		s_CurrencyThresholdMap.put ("EUR", 2);
 
-		s_CurrencyThresholdMap.put (
-			"GBP",
-			2
-		);
+		s_CurrencyThresholdMap.put ("GBP", 2);
 
-		s_CurrencyThresholdMap.put (
-			"AUD",
-			3
-		);
+		s_CurrencyThresholdMap.put ("AUD", 3);
 
-		s_CurrencyThresholdMap.put (
-			"CAD",
-			3
-		);
+		s_CurrencyThresholdMap.put ("CAD", 3);
 
-		s_CurrencyThresholdMap.put (
-			"CHF",
-			3
-		);
+		s_CurrencyThresholdMap.put ("CHF", 3);
 
-		s_CurrencyThresholdMap.put (
-			"DKK",
-			3
-		);
+		s_CurrencyThresholdMap.put ("DKK", 3);
 
-		s_CurrencyThresholdMap.put (
-			"HKD",
-			3
-		);
+		s_CurrencyThresholdMap.put ("HKD", 3);
 
-		s_CurrencyThresholdMap.put (
-			"KRW",
-			3
-		);
+		s_CurrencyThresholdMap.put ("KRW", 3);
 
-		s_CurrencyThresholdMap.put (
-			"NOK",
-			3
-		);
+		s_CurrencyThresholdMap.put ("NOK", 3);
 
-		s_CurrencyThresholdMap.put (
-			"NZD",
-			3
-		);
+		s_CurrencyThresholdMap.put ("NZD", 3);
 
-		s_CurrencyThresholdMap.put (
-			"SEK",
-			3
-		);
+		s_CurrencyThresholdMap.put ("SEK", 3);
 
-		s_CurrencyThresholdMap.put (
-			"SGD",
-			3
-		);
+		s_CurrencyThresholdMap.put ("SGD", 3);
 
-		s_CurrencyThresholdMap.put (
-			"TWD",
-			3
-		);
+		s_CurrencyThresholdMap.put ("TWD", 3);
 
-		s_CurrencyThresholdMap.put (
-			"JPY",
-			4
-		);
+		s_CurrencyThresholdMap.put ("JPY", 4);
 
 		return true;
 	}
@@ -222,7 +200,7 @@ public class IRThresholdContainer21
 	{
 		try
 		{
-			s_ThresholdMap.put (
+			s_CurrencyGroupMap.put (
 				1,
 				new IRConcentrationThreshold (
 					new CurrencyRiskGroup (
@@ -240,7 +218,7 @@ public class IRThresholdContainer21
 				)
 			);
 
-			s_ThresholdMap.put (
+			s_CurrencyGroupMap.put (
 				2,
 				new IRConcentrationThreshold (
 					new CurrencyRiskGroup (
@@ -260,7 +238,7 @@ public class IRThresholdContainer21
 				)
 			);
 
-			s_ThresholdMap.put (
+			s_CurrencyGroupMap.put (
 				3,
 				new IRConcentrationThreshold (
 					new CurrencyRiskGroup (
@@ -288,7 +266,7 @@ public class IRThresholdContainer21
 				)
 			);
 
-			s_ThresholdMap.put (
+			s_CurrencyGroupMap.put (
 				4,
 				new IRConcentrationThreshold (
 					new CurrencyRiskGroup (
@@ -324,7 +302,7 @@ public class IRThresholdContainer21
 
 	public static final Set<Integer> IndexSet()
 	{
-		return s_ThresholdMap.keySet();
+		return s_CurrencyGroupMap.keySet();
 	}
 
 	/**
@@ -349,7 +327,7 @@ public class IRThresholdContainer21
 	public static final boolean ContainsThreshold (
 		final int groupNumber)
 	{
-		return s_ThresholdMap.containsKey (
+		return s_CurrencyGroupMap.containsKey (
 			groupNumber
 		);
 	}
@@ -383,11 +361,11 @@ public class IRThresholdContainer21
 	{
 		return ContainsThreshold (
 			currency
-		) ? s_ThresholdMap.get (
+		) ? s_CurrencyGroupMap.get (
 			s_CurrencyThresholdMap.get (
 				currency
 			)
-		) : s_ThresholdMap.get (
+		) : s_CurrencyGroupMap.get (
 			1
 		);
 	}
@@ -405,7 +383,7 @@ public class IRThresholdContainer21
 	{
 		return ContainsThreshold (
 			groupNumber
-		) ? s_ThresholdMap.get (
+		) ? s_CurrencyGroupMap.get (
 			groupNumber
 		) : null;
 	}
@@ -429,6 +407,6 @@ public class IRThresholdContainer21
 
 	public static final Map<Integer, IRConcentrationThreshold> ThresholdMap()
 	{
-		return s_ThresholdMap;
+		return s_CurrencyGroupMap;
 	}
 }

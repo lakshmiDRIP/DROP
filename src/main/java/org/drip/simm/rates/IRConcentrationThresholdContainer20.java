@@ -120,7 +120,15 @@ import org.drip.simm.common.DeltaVegaThreshold;
  *  It provides the following Functionality:
  *
  *  <ul>
- * 		<li><i>IRConcentrationThreshold</i> Constructor</li>
+ * 		<li>Initialize the Container</li>
+ * 		<li>Retrieve the Interest Rate Threshold Container Bucket Index Set</li>
+ * 		<li>Retrieve the Interest Rate Threshold Container Currency Set</li>
+ * 		<li>Indicate if the Entry denoted by the Number is available as an Interest Rate Threshold</li>
+ * 		<li>Indicate if the Currency is available as an Interest Rate Threshold</li>
+ * 		<li>Retrieve the Interest Rate Threshold denoted by the Currency</li>
+ * 		<li>Retrieve the Interest Rate Threshold denoted by the Group Number</li>
+ * 		<li>Retrieve the Currency Threshold Map</li>
+ * 		<li>Retrieve the Interest Rate Currency Component Threshold Map</li>
  *  </ul>
  *
  *  <br>
@@ -142,86 +150,42 @@ import org.drip.simm.common.DeltaVegaThreshold;
 
 public class IRConcentrationThresholdContainer20
 {
-	private static final Map<String, Integer> s_CurrencyThresholdMap = new HashMap<String, Integer>();
+	private static final Map<String, Integer> s_CurrencyMap = new HashMap<String, Integer>();
 
-	private static final Map<Integer, IRConcentrationThreshold> s_ThresholdMap = new TreeMap<Integer, IRConcentrationThreshold>();
+	private static final Map<Integer, IRConcentrationThreshold> s_CurrencyGroupMap =
+		new TreeMap<Integer, IRConcentrationThreshold>();
 
 	private static final boolean SetupCurrencyMap()
 	{
-		s_CurrencyThresholdMap.put (
-			"USD",
-			2
-		);
+		s_CurrencyMap.put ("USD", 2);
 
-		s_CurrencyThresholdMap.put (
-			"EUR",
-			2
-		);
+		s_CurrencyMap.put ("EUR", 2);
 
-		s_CurrencyThresholdMap.put (
-			"GBP",
-			2
-		);
+		s_CurrencyMap.put ("GBP", 2);
 
-		s_CurrencyThresholdMap.put (
-			"AUD",
-			3
-		);
+		s_CurrencyMap.put ("AUD", 3);
 
-		s_CurrencyThresholdMap.put (
-			"CAD",
-			3
-		);
+		s_CurrencyMap.put ("CAD", 3);
 
-		s_CurrencyThresholdMap.put (
-			"CHF",
-			3
-		);
+		s_CurrencyMap.put ("CHF", 3);
 
-		s_CurrencyThresholdMap.put (
-			"DKK",
-			3
-		);
+		s_CurrencyMap.put ("DKK", 3);
 
-		s_CurrencyThresholdMap.put (
-			"HKD",
-			3
-		);
+		s_CurrencyMap.put ("HKD", 3);
 
-		s_CurrencyThresholdMap.put (
-			"KRW",
-			3
-		);
+		s_CurrencyMap.put ("KRW", 3);
 
-		s_CurrencyThresholdMap.put (
-			"NOK",
-			3
-		);
+		s_CurrencyMap.put ("NOK", 3);
 
-		s_CurrencyThresholdMap.put (
-			"NZD",
-			3
-		);
+		s_CurrencyMap.put ("NZD", 3);
 
-		s_CurrencyThresholdMap.put (
-			"SEK",
-			3
-		);
+		s_CurrencyMap.put ("SEK", 3);
 
-		s_CurrencyThresholdMap.put (
-			"SGD",
-			3
-		);
+		s_CurrencyMap.put ("SGD", 3);
 
-		s_CurrencyThresholdMap.put (
-			"TWD",
-			3
-		);
+		s_CurrencyMap.put ("TWD", 3);
 
-		s_CurrencyThresholdMap.put (
-			"JPY",
-			4
-		);
+		s_CurrencyMap.put ("JPY", 4);
 
 		return true;
 	}
@@ -234,54 +198,38 @@ public class IRConcentrationThresholdContainer20
 
 	public static final boolean Init()
 	{
-		try
-		{
-			s_ThresholdMap.put (
+		try {
+			s_CurrencyGroupMap.put (
 				1,
 				new IRConcentrationThreshold (
 					new CurrencyRiskGroup (
 						IRSystemics.VOLATILITY_TYPE_HIGH,
 						IRSystemics.TRADE_FREQUENCY_LESS_WELL_TRADED,
-						new String[]
-						{
-							"Other"
-						}
+						new String[] {"Other"}
 					),
-					new DeltaVegaThreshold (
-						8.,
-						110.
-					)
+					new DeltaVegaThreshold (8., 110.)
 				)
 			);
 
-			s_ThresholdMap.put (
+			s_CurrencyGroupMap.put (
 				2,
 				new IRConcentrationThreshold (
 					new CurrencyRiskGroup (
 						IRSystemics.VOLATILITY_TYPE_REGULAR,
 						IRSystemics.TRADE_FREQUENCY_WELL_TRADED,
-						new String[]
-						{
-							"USD",
-							"EUR",
-							"GBP"
-						}
+						new String[] {"USD", "EUR", "GBP"}
 					),
-					new DeltaVegaThreshold (
-						230.,
-						2700.
-					)
+					new DeltaVegaThreshold (230., 2700.)
 				)
 			);
 
-			s_ThresholdMap.put (
+			s_CurrencyGroupMap.put (
 				3,
 				new IRConcentrationThreshold (
 					new CurrencyRiskGroup (
 						IRSystemics.VOLATILITY_TYPE_REGULAR,
 						IRSystemics.TRADE_FREQUENCY_LESS_WELL_TRADED,
-						new String[]
-						{
+						new String[] {
 							"AUD",
 							"CAD",
 							"CHF",
@@ -295,33 +243,22 @@ public class IRConcentrationThresholdContainer20
 							"TWD"
 						}
 					),
-					new DeltaVegaThreshold (
-						28.,
-						150.
-					)
+					new DeltaVegaThreshold (28., 150.)
 				)
 			);
 
-			s_ThresholdMap.put (
+			s_CurrencyGroupMap.put (
 				4,
 				new IRConcentrationThreshold (
 					new CurrencyRiskGroup (
 						IRSystemics.VOLATILITY_TYPE_LOW,
 						IRSystemics.TRADE_FREQUENCY_WELL_TRADED,
-						new String[]
-						{
-							"JPY"
-						}
+						new String[] {"JPY"}
 					),
-					new DeltaVegaThreshold (
-						82.,
-						960.
-					)
+					new DeltaVegaThreshold (82., 960.)
 				)
 			);
-		}
-		catch (Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 
 			return false;
@@ -338,7 +275,7 @@ public class IRConcentrationThresholdContainer20
 
 	public static final Set<Integer> IndexSet()
 	{
-		return s_ThresholdMap.keySet();
+		return s_CurrencyGroupMap.keySet();
 	}
 
 	/**
@@ -349,7 +286,7 @@ public class IRConcentrationThresholdContainer20
 
 	public static final Set<String> CurrencySet()
 	{
-		return s_CurrencyThresholdMap.keySet();
+		return s_CurrencyMap.keySet();
 	}
 
 	/**
@@ -363,9 +300,7 @@ public class IRConcentrationThresholdContainer20
 	public static final boolean ContainsThreshold (
 		final int groupNumber)
 	{
-		return s_ThresholdMap.containsKey (
-			groupNumber
-		);
+		return s_CurrencyGroupMap.containsKey (groupNumber);
 	}
 
 	/**
@@ -379,9 +314,7 @@ public class IRConcentrationThresholdContainer20
 	public static final boolean ContainsThreshold (
 		final String currency)
 	{
-		return s_CurrencyThresholdMap.containsKey (
-			currency
-		);
+		return s_CurrencyMap.containsKey (currency);
 	}
 
 	/**
@@ -395,15 +328,8 @@ public class IRConcentrationThresholdContainer20
 	public static final IRConcentrationThreshold Threshold (
 		final String currency)
 	{
-		return ContainsThreshold (
-			currency
-		) ? s_ThresholdMap.get (
-			s_CurrencyThresholdMap.get (
-				currency
-			)
-		) : s_ThresholdMap.get (
-			1
-		);
+		return ContainsThreshold (currency) ?
+			s_CurrencyGroupMap.get (s_CurrencyMap.get (currency)) : s_CurrencyGroupMap.get (1);
 	}
 
 	/**
@@ -417,11 +343,7 @@ public class IRConcentrationThresholdContainer20
 	public static final IRConcentrationThreshold Threshold (
 		final int groupNumber)
 	{
-		return ContainsThreshold (
-			groupNumber
-		) ? s_ThresholdMap.get (
-			groupNumber
-		) : null;
+		return ContainsThreshold (groupNumber) ? s_CurrencyGroupMap.get (groupNumber) : null;
 	}
 
 	/**
@@ -432,17 +354,17 @@ public class IRConcentrationThresholdContainer20
 
 	public static final Map<String, Integer> CurrencyThresholdMap()
 	{
-		return s_CurrencyThresholdMap;
+		return s_CurrencyMap;
 	}
 
 	/**
-	 * Retrieve the Interest Rate Threshold Map
+	 * Retrieve the Interest Rate Currency Component Threshold Map
 	 * 
-	 * @return The Interest Rate Threshold Map
+	 * @return The Interest Rate Currency Component Threshold Map
 	 */
 
 	public static final Map<Integer, IRConcentrationThreshold> ThresholdMap()
 	{
-		return s_ThresholdMap;
+		return s_CurrencyGroupMap;
 	}
 }
