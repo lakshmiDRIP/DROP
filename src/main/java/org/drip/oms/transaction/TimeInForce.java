@@ -455,12 +455,13 @@ public class TimeInForce
 	public String toString (
 		final String pad)
 	{
-		return pad + "TimeInForce[" +
-			"Code =>" + _code +
-			"TIF Type =>" + _tifType +
+		return pad + "TimeInForce: [" +
+			"\n" + pad + "\t" +
+			"Code =>" + _code + "; " +
+			"TIF Type =>" + _tifType + "; " +
+			"Duration Days =>" + _durationDays + "; " +
 			"Setup Zoned Date Time =>" + _setupZonedDateTime +
-			"Duration Days =>" + _durationDays +
-		"]";
+			 "\n" + pad + "]";
 	}
 
 	/**

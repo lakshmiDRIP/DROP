@@ -235,9 +235,21 @@ public class OrderFillWholeSettings
 	public String toString (
 		final String pad)
 	{
-		return pad + "OrderFillWholeSettings[" +
-			"Fulfill Scheme =>" + _fulfillScheme +
+		return pad + "OrderFillWholeSettings: [" +
+			"\n" + pad + "\t" +
+			"Fulfill Scheme =>" + _fulfillScheme + "; " +
 			"Fulfill Try Limit =>" + _fulfillTryLimit +
-		"]";
+			 "\n" + pad + "]";
+	}
+
+	/**
+	 * Generate String version of the state without Padding
+	 * 
+	 * @return String version of the state without Padding
+	 */
+
+	@Override public String toString()
+	{
+		return toString ("");
 	}
 }

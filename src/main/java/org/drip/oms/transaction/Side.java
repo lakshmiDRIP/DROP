@@ -170,4 +170,32 @@ public class Side
 	{
 		return _buySell;
 	}
+
+	/**
+	 * Generate String version of the state with Padding applied
+	 * 
+	 * @param pad Padding
+	 * 
+	 * @return String version of the state with Padding applied
+	 */
+
+	public String toString (
+		final String pad)
+	{
+		return pad + "Side: [" +
+			"\n" + pad + "\t" +
+			"Buy/Sell =>" + _buySell +
+			 "\n" + pad + "]";
+	}
+
+	/**
+	 * Generate String version of the state without Padding
+	 * 
+	 * @return String version of the state without Padding
+	 */
+
+	@Override public String toString()
+	{
+		return toString ("");
+	}
 }

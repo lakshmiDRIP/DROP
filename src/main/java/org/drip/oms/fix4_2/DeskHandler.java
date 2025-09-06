@@ -155,4 +155,32 @@ public class DeskHandler
 
 		return _allowNEW;
 	}
+
+	/**
+	 * Generate String version of the state with Padding applied
+	 * 
+	 * @param pad Padding
+	 * 
+	 * @return String version of the state with Padding applied
+	 */
+
+	public String toString (
+		final String pad)
+	{
+		return pad + "Desk Handler: [" +
+			"\n" + pad + "\t" +
+			"Allow NEW =>" + _allowNEW +
+			 "\n" + pad + "]";
+	}
+
+	/**
+	 * Generate String version of the state without Padding
+	 * 
+	 * @return String version of the state without Padding
+	 */
+
+	@Override public String toString()
+	{
+		return toString ("");
+	}
 }

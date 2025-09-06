@@ -229,4 +229,36 @@ public class AgentRequest
 	{
 		return _order;
 	}
+
+	/**
+	 * Generate String version of the state with Padding applied
+	 * 
+	 * @param pad Padding
+	 * 
+	 * @return String version of the state with Padding applied
+	 */
+
+	public String toString (
+		final String pad)
+	{
+		return pad + "Agent Request: [" +
+			"\n" + pad + "\t" +
+			"Arrival Time => " + _arrivalTime + "; " +
+			"Request ID => " + _id + "; " +
+			"Parent ID => " + _parentID + "; " +
+			"Type => " + _type + "; " +
+			"Order => " + _order.toString (pad + "\t") +
+			 "\n" + pad + "]";
+	}
+
+	/**
+	 * Generate String version of the state without Padding
+	 * 
+	 * @return String version of the state without Padding
+	 */
+
+	@Override public String toString()
+	{
+		return toString ("");
+	}
 }

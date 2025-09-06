@@ -236,4 +236,33 @@ public class OrderIssuer
 	{
 		return DEALER == _type;
 	}
+
+	/**
+	 * Generate String version of the state with Padding applied
+	 * 
+	 * @param pad Padding
+	 * 
+	 * @return String version of the state with Padding applied
+	 */
+
+	public String toString (
+		final String pad)
+	{
+		return "\n" + pad + "OrderIssuer: [" +
+			"\n" + pad + "\t" +
+			"Entity =>" + _entity + "; " +
+			"Type =>" + _type +
+			 "\n" + pad + "]";
+	}
+
+	/**
+	 * Generate String version of the state without Padding
+	 * 
+	 * @return String version of the state without Padding
+	 */
+
+	@Override public String toString()
+	{
+		return toString ("");
+	}
 }

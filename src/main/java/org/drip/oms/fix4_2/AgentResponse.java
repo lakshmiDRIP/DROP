@@ -319,4 +319,39 @@ public class AgentResponse
 	{
 		return _comment;
 	}
+
+	/**
+	 * Generate String version of the state with Padding applied
+	 * 
+	 * @param pad Padding
+	 * 
+	 * @return String version of the state with Padding applied
+	 */
+
+	public String toString (
+		final String pad)
+	{
+		return pad + "Agent Response: [" +
+			"\n" + pad + "\t" +
+			"Processing Start Time =>" + _processingStartTime + "; " +
+			"processing Update Time =>" + _processingUpdateTime + "; " +
+			"Message Type =>" + _messageType + "; " +
+			"Type =>" + _requestID + "; " +
+			"Execution Type =>" + _executionType + "; " +
+			"Execution Transaction Type =>" + _executionTransactionType + "; " +
+			"Comment =>" + _comment + "; " +
+			"Order =>" + _order.toString (pad + pad) +
+			 "\n" + pad + "]";
+	}
+
+	/**
+	 * Generate String version of the state without Padding
+	 * 
+	 * @return String version of the state without Padding
+	 */
+
+	@Override public String toString()
+	{
+		return toString ("");
+	}
 }

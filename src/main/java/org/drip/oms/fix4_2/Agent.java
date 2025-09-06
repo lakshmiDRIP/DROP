@@ -201,4 +201,33 @@ public class Agent
 
 		return null;
 	}
+
+	/**
+	 * Generate String version of the state with Padding applied
+	 * 
+	 * @param pad Padding
+	 * 
+	 * @return String version of the state with Padding applied
+	 */
+
+	public String toString (
+		final String pad)
+	{
+		return pad + "Agent: [" +
+			"\n" + pad + "\t" +
+			"Fix Order Map =>" + _fixOrderMap + "; " +
+			"Desk Handler =>" + _deskHandler.toString (pad + pad) +
+			 "\n" + pad + "]";
+	}
+
+	/**
+	 * Generate String version of the state without Padding
+	 * 
+	 * @return String version of the state without Padding
+	 */
+
+	@Override public String toString()
+	{
+		return toString ("");
+	}
 }

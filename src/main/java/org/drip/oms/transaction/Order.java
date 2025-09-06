@@ -554,4 +554,47 @@ public class Order
 		_state = OrderState.OPEN;
 		return true;
 	}
+
+	/**
+	 * Generate String version of the state with Padding applied
+	 * 
+	 * @param pad Padding
+	 * 
+	 * @return String version of the state with Padding applied
+	 */
+
+	public String toString (
+		final String pad)
+	{
+		return "\n" + pad + "Order: [" +
+			"\n" + pad + "\t" +
+			"Ticker => " + _ticker + "; " +
+			"ID => " + _id + "; " +
+			"Parent ID => " + _parentID + "; " +
+			"Type => " + _type + "; " +
+			"State => " + _state + "; " +
+			"Creation Time => " + _creationTime + "; " +
+			"Update Time => " + _updateTime + "; " +
+			"Completion Time => " + _completionTime + "; " +
+			"Issuer => " + _issuer.toString (pad + pad) + "; " +
+			(null == _timeInForce ? "" : "Time In Force =>" + _timeInForce.toString (pad + pad)) +
+			(
+				null == _fillWholeSettings ?
+					"" : "Fill Whole Settings =>" + _fillWholeSettings.toString (pad + pad)
+			) +
+			"Side => " + _side.toString (pad + pad) +
+			"Quantity Tracker => " + _quantityTracker.toString (pad + pad) +
+			 "\n" + pad + "]";
+	}
+
+	/**
+	 * Generate String version of the state without Padding
+	 * 
+	 * @return String version of the state without Padding
+	 */
+
+	@Override public String toString()
+	{
+		return toString ("");
+	}
 }

@@ -272,13 +272,14 @@ public class OrderQuantityTracker
 	public String toString (
 		final String pad)
 	{
-		return pad + "OrderQuantityTracker[" +
-			"Original =>" + FormatUtil.FormatDouble (_original, 0, 0, 1.) +
-			"Current =>" + FormatUtil.FormatDouble (_current, 0, 0, 1.) +
-			"Cumulative =>" + FormatUtil.FormatDouble (_cumulative, 0, 0, 1.) +
-			"Leaves =>" + FormatUtil.FormatDouble (_leaves, 0, 0, 1.) +
+		return pad + "OrderQuantityTracker: [" +
+			"\n" + pad + "\t" +
+			"Original =>" + FormatUtil.FormatDouble (_original, 0, 0, 1.) + "; " +
+			"Current =>" + FormatUtil.FormatDouble (_current, 0, 0, 1.) + "; " +
+			"Cumulative =>" + FormatUtil.FormatDouble (_cumulative, 0, 0, 1.) + "; " +
+			"Leaves =>" + FormatUtil.FormatDouble (_leaves, 0, 0, 1.) + "; " +
 			"Last Shares =>" + FormatUtil.FormatDouble (_lastShares, 0, 0, 1.) +
-		"]";
+			 "\n" + pad + "]";
 	}
 
 	/**
