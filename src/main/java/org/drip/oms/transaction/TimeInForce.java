@@ -443,4 +443,34 @@ public class TimeInForce
 
 		return false;
 	}
+
+	/**
+	 * Generate String version of the state with Padding applied
+	 * 
+	 * @param pad Padding
+	 * 
+	 * @return String version of the state with Padding applied
+	 */
+
+	public String toString (
+		final String pad)
+	{
+		return pad + "TimeInForce[" +
+			"Code =>" + _code +
+			"TIF Type =>" + _tifType +
+			"Setup Zoned Date Time =>" + _setupZonedDateTime +
+			"Duration Days =>" + _durationDays +
+		"]";
+	}
+
+	/**
+	 * Generate String version of the state without Padding
+	 * 
+	 * @return String version of the state without Padding
+	 */
+
+	@Override public String toString()
+	{
+		return toString ("");
+	}
 }

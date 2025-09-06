@@ -223,4 +223,21 @@ public class OrderFillWholeSettings
 	{
 		return _fulfillTryLimit;
 	}
+
+	/**
+	 * Generate String version of the state with Padding applied
+	 * 
+	 * @param pad Padding
+	 * 
+	 * @return String version of the state with Padding applied
+	 */
+
+	public String toString (
+		final String pad)
+	{
+		return pad + "OrderFillWholeSettings[" +
+			"Fulfill Scheme =>" + _fulfillScheme +
+			"Fulfill Try Limit =>" + _fulfillTryLimit +
+		"]";
+	}
 }

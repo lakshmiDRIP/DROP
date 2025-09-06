@@ -2,6 +2,7 @@
 package org.drip.oms.transaction;
 
 import org.drip.numerical.common.NumberUtil;
+import org.drip.service.common.FormatUtil;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -258,5 +259,36 @@ public class OrderQuantityTracker
 	{
 		_leaves = _current;
 		return true;
+	}
+
+	/**
+	 * Generate String version of the state with Padding applied
+	 * 
+	 * @param pad Padding
+	 * 
+	 * @return String version of the state with Padding applied
+	 */
+
+	public String toString (
+		final String pad)
+	{
+		return pad + "OrderQuantityTracker[" +
+			"Original =>" + FormatUtil.FormatDouble (_original, 0, 0, 1.) +
+			"Current =>" + FormatUtil.FormatDouble (_current, 0, 0, 1.) +
+			"Cumulative =>" + FormatUtil.FormatDouble (_cumulative, 0, 0, 1.) +
+			"Leaves =>" + FormatUtil.FormatDouble (_leaves, 0, 0, 1.) +
+			"Last Shares =>" + FormatUtil.FormatDouble (_lastShares, 0, 0, 1.) +
+		"]";
+	}
+
+	/**
+	 * Generate String version of the state without Padding
+	 * 
+	 * @return String version of the state without Padding
+	 */
+
+	@Override public String toString()
+	{
+		return toString ("");
 	}
 }

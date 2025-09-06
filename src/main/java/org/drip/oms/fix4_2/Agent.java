@@ -4,6 +4,8 @@ package org.drip.oms.fix4_2;
 import java.util.Date;
 import java.util.Map;
 
+import org.drip.analytics.support.CaseInsensitiveHashMap;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
@@ -150,6 +152,8 @@ public class Agent
 		final DeskHandler deskHandler)
 	{
 		_deskHandler = deskHandler;
+
+		_fixOrderMap = new CaseInsensitiveHashMap<AgentOrder>();
 	}
 
 	/**

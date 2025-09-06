@@ -2,7 +2,11 @@
 package org.drip.sample.fix;
 
 import org.drip.oms.fix4_2.Agent;
+import org.drip.oms.fix4_2.AgentRequest;
 import org.drip.oms.fix4_2.DeskHandler;
+import org.drip.oms.transaction.OrderIssuer;
+import org.drip.oms.transaction.TimeInForce;
+import org.drip.oms.unthresholded.MarketOrder;
 import org.drip.service.env.EnvManager;
 
 /*
@@ -132,9 +136,26 @@ public class D1_1
 	{
 		EnvManager.InitEnv ("");
 
+		double size = 10000.;
+		String ticker = "AAPL";
+		String dealerEntity = "BARX";
+
+		AgentRequest agentRequest = AgentRequest.Standard (
+			MarketOrder.StandardBuy (
+				OrderIssuer.DEALER (dealerEntity),
+				ticker,
+				"",
+				size,
+				TimeInForce.CreateDay(),
+				null
+			)
+		);
+
+		System.out.println (agentRequest);
+
 		Agent agent = new Agent (new DeskHandler (false));
 
-		System.out.println (agent);
+		System.out.println (agent.handleClientRequest (agentRequest));
 
 		EnvManager.TerminateEnv();
 	}
