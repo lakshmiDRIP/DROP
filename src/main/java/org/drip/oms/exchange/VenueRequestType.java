@@ -119,4 +119,22 @@ public class VenueRequestType
 	 */
 
 	public static final int NEW = 1;
+
+	/**
+	 * String Form of Venue Request Type
+	 * 
+	 * @param venueRequestType Venue Request Type
+	 * 
+	 * @return String Form
+	 */
+
+	public static final String ToString (
+		final int venueRequestType)
+	{
+		if (NEW == venueRequestType) {
+			return "NEW";
+		}
+
+		return "UNKNOWN";
+	}
 }

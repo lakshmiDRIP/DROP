@@ -167,9 +167,9 @@ public class DeskHandler
 	public String toString (
 		final String pad)
 	{
-		return pad + "Desk Handler: [" +
+		return "\n" + pad + "Desk Handler: [" +
 			"\n" + pad + "\t" +
-			"Allow NEW =>" + _allowNEW +
+			"Allow NEW => " + _allowNEW +
 			 "\n" + pad + "]";
 	}
 

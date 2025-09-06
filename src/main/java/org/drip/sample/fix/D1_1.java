@@ -140,6 +140,10 @@ public class D1_1
 		String ticker = "AAPL";
 		String dealerEntity = "BARX";
 
+		Agent agent = new Agent (new DeskHandler (false));
+
+		System.out.println (agent);
+
 		AgentRequest agentRequest = AgentRequest.Standard (
 			MarketOrder.StandardBuy (
 				OrderIssuer.DEALER (dealerEntity),
@@ -152,8 +156,6 @@ public class D1_1
 		);
 
 		System.out.println (agentRequest);
-
-		Agent agent = new Agent (new DeskHandler (false));
 
 		System.out.println (agent.handleClientRequest (agentRequest));
 

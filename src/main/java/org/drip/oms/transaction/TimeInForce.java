@@ -308,6 +308,40 @@ public class TimeInForce
 	}
 
 	/**
+	 * String Form of Time-In-Force Type
+	 * 
+	 * @param tifType Time-In-Force Type
+	 * 
+	 * @return String Form
+	 */
+
+	public static final String ToString (
+		final int tifType)
+	{
+		if (TIF_DAY == tifType) {
+			return "TIF_DAY";
+		}
+
+		if (TIF_EXTENDED == tifType) {
+			return "TIF_EXTENDED";
+		}
+
+		if (TIF_IMMEDIATE == tifType) {
+			return "TIF_IMMEDIATE";
+		}
+
+		if (TIF_ON_MARKET_OPEN == tifType) {
+			return "TIF_ON_MARKET_OPEN";
+		}
+
+		if (TIF_ON_MARKET_CLOSE == tifType) {
+			return "TIF_ON_MARKET_CLOSE";
+		}
+
+		return "UNKNOWN";
+	}
+
+	/**
 	 * TimeInForce Constructor
 	 * 
 	 * @param code TIF Code
@@ -455,12 +489,12 @@ public class TimeInForce
 	public String toString (
 		final String pad)
 	{
-		return pad + "TimeInForce: [" +
+		return "\n" + pad + "TimeInForce: [" +
 			"\n" + pad + "\t" +
-			"Code =>" + _code + "; " +
-			"TIF Type =>" + _tifType + "; " +
-			"Duration Days =>" + _durationDays + "; " +
-			"Setup Zoned Date Time =>" + _setupZonedDateTime +
+			"Code => " + _code + "; " +
+			"TIF Type => " + ToString (_tifType) + "; " +
+			"Duration Days => " + _durationDays + "; " +
+			"Setup Zoned Date Time => " + _setupZonedDateTime +
 			 "\n" + pad + "]";
 	}
 

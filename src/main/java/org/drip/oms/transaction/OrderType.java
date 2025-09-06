@@ -130,5 +130,31 @@ public class OrderType
 	 * Stop Order
 	 */
 
-	public static final int STOP = 2;
+	public static final int STOP = 4;
+
+	/**
+	 * String Form of Order Type
+	 * 
+	 * @param orderType Order Type
+	 * 
+	 * @return String Form
+	 */
+
+	public static final String ToString (
+		final int orderType)
+	{
+		if (MARKET == orderType) {
+			return "MARKET";
+		}
+
+		if (LIMIT == orderType) {
+			return "LIMIT";
+		}
+
+		if (STOP == orderType) {
+			return "STOP";
+		}
+
+		return "UNKNOWN";
+	}
 }

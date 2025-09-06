@@ -119,4 +119,22 @@ public class AgentRequestType
 	 */
 
 	public static final int NEW = 1;
+
+	/**
+	 * String Form of Agent Request Type
+	 * 
+	 * @param agentRequestType Agent Request Type
+	 * 
+	 * @return String Form
+	 */
+
+	public static final String ToString (
+		final int agentRequestType)
+	{
+		if (NEW == agentRequestType) {
+			return "NEW";
+		}
+
+		return "UNKNOWN";
+	}
 }

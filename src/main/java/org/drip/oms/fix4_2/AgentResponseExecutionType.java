@@ -138,4 +138,34 @@ public class AgentResponseExecutionType
 	 */
 
 	public static final int FILL = 4;
+
+	/**
+	 * String Form of Agent Request Execution Type
+	 * 
+	 * @param agentRequestExecutionType Agent Request Execution Type
+	 * 
+	 * @return String Form
+	 */
+
+	public static final String ToString (
+		final int agentRequestExecutionType)
+	{
+		if (REJECTED == agentRequestExecutionType) {
+			return "REJECTED";
+		}
+
+		if (NEW == agentRequestExecutionType) {
+			return "NEW";
+		}
+
+		if (PARTIAL_FILL == agentRequestExecutionType) {
+			return "PARTIAL_FILL";
+		}
+
+		if (FILL == agentRequestExecutionType) {
+			return "FILL";
+		}
+
+		return "UNKNOWN";
+	}
 }

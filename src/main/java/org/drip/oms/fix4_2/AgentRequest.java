@@ -246,7 +246,7 @@ public class AgentRequest
 			"Arrival Time => " + _arrivalTime + "; " +
 			"Request ID => " + _id + "; " +
 			"Parent ID => " + _parentID + "; " +
-			"Type => " + _type + "; " +
+			"Type => " + AgentRequestType.ToString (_type) + "; " +
 			"Order => " + _order.toString (pad + "\t") +
 			 "\n" + pad + "]";
 	}

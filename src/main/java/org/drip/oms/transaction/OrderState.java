@@ -149,4 +149,42 @@ public class OrderState
 	 */
 
 	public static final int REJECTED = 32;
+
+	/**
+	 * String Form of Order State
+	 * 
+	 * @param orderState Order State
+	 * 
+	 * @return String Form
+	 */
+
+	public static final String ToString (
+		final int orderState)
+	{
+		if (OPEN == orderState) {
+			return "OPEN";
+		}
+
+		if (UNFILLED == orderState) {
+			return "UNFILLED";
+		}
+
+		if (PARTIALLY_FILLED == orderState) {
+			return "PARTIALLY_FILLED";
+		}
+
+		if (FILLED == orderState) {
+			return "FILLED";
+		}
+
+		if (CANCELED == orderState) {
+			return "CANCELED";
+		}
+
+		if (REJECTED == orderState) {
+			return "REJECTED";
+		}
+
+		return "UNKNOWN";
+	}
 }

@@ -182,9 +182,9 @@ public class Side
 	public String toString (
 		final String pad)
 	{
-		return pad + "Side: [" +
+		return "\n" + pad + "Side: [" +
 			"\n" + pad + "\t" +
-			"Buy/Sell =>" + _buySell +
+			"Buy/Sell => " + _buySell +
 			 "\n" + pad + "]";
 	}
 

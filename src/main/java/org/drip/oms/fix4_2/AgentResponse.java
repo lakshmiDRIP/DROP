@@ -331,16 +331,17 @@ public class AgentResponse
 	public String toString (
 		final String pad)
 	{
-		return pad + "Agent Response: [" +
+		return "\n" + pad + "Agent Response: [" +
 			"\n" + pad + "\t" +
-			"Processing Start Time =>" + _processingStartTime + "; " +
-			"processing Update Time =>" + _processingUpdateTime + "; " +
-			"Message Type =>" + _messageType + "; " +
-			"Type =>" + _requestID + "; " +
-			"Execution Type =>" + _executionType + "; " +
-			"Execution Transaction Type =>" + _executionTransactionType + "; " +
-			"Comment =>" + _comment + "; " +
-			"Order =>" + _order.toString (pad + pad) +
+			"Processing Start Time => " + _processingStartTime + "; " +
+			"processing Update Time => " + _processingUpdateTime + "; " +
+			"Message Type => " + AgentResponseMessageType.ToString (_messageType) + "; " +
+			"Type => " + _requestID + "; " +
+			"Execution Type => " + AgentResponseExecutionType.ToString (_executionType) + "; " +
+			"Execution Transaction Type => " +
+				AgentResponseExecutionTransactionType.ToString (_executionTransactionType) + "; " +
+			"Comment => " + _comment + "; " +
+			"Order => " + _order.toString (pad + "\t") +
 			 "\n" + pad + "]";
 	}
 

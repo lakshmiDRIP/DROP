@@ -225,10 +225,10 @@ public class Order
 
 		_type = type;
 		_parentID = parentID;
+		_state = OrderState.OPEN;
 		_timeInForce = timeInForce;
 		_updateTime = creationTime;
 		_fillWholeSettings = fillWholeSettings;
-		_state = OrderState.OPEN + OrderState.UNFILLED;
 
 		_quantityTracker = new OrderQuantityTracker (Math.abs (size));
 	}
@@ -571,19 +571,19 @@ public class Order
 			"Ticker => " + _ticker + "; " +
 			"ID => " + _id + "; " +
 			"Parent ID => " + _parentID + "; " +
-			"Type => " + _type + "; " +
-			"State => " + _state + "; " +
+			"Type => " + OrderType.ToString (_type) + "; " +
+			"State => " + OrderState.ToString (_state) + "; " +
 			"Creation Time => " + _creationTime + "; " +
 			"Update Time => " + _updateTime + "; " +
 			"Completion Time => " + _completionTime + "; " +
 			"Issuer => " + _issuer.toString (pad + pad) + "; " +
-			(null == _timeInForce ? "" : "Time In Force =>" + _timeInForce.toString (pad + pad)) +
+			(null == _timeInForce ? "" : "Time In Force =>" + _timeInForce.toString (pad + "\t") + "; ") +
 			(
 				null == _fillWholeSettings ?
-					"" : "Fill Whole Settings =>" + _fillWholeSettings.toString (pad + pad)
+					"" : "Fill Whole Settings =>" + _fillWholeSettings.toString (pad + "\t") + "; "
 			) +
-			"Side => " + _side.toString (pad + pad) +
-			"Quantity Tracker => " + _quantityTracker.toString (pad + pad) +
+			"Side => " + _side.toString (pad + pad) + "; " +
+			"Quantity Tracker => " + _quantityTracker.toString (pad + "\t") +
 			 "\n" + pad + "]";
 	}
 

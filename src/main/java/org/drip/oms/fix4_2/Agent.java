@@ -121,7 +121,7 @@ public class Agent
 	private DeskHandler _deskHandler = null;
 	private Map<String, AgentOrder> _fixOrderMap = null;
 
-	protected AgentResponse handleNEW (
+	protected AgentResponse clientNEW (
 		final Date processingStartTime,
 		final AgentRequest agentRequest)
 	{
@@ -196,7 +196,7 @@ public class Agent
 		}
 
 		if (AgentRequestType.NEW == agentRequest.type()) {
-			return handleNEW (processingStartTime, agentRequest);
+			return clientNEW (processingStartTime, agentRequest);
 		}
 
 		return null;
@@ -213,10 +213,10 @@ public class Agent
 	public String toString (
 		final String pad)
 	{
-		return pad + "Agent: [" +
+		return "\n" + pad + "Agent: [" +
 			"\n" + pad + "\t" +
-			"Fix Order Map =>" + _fixOrderMap + "; " +
-			"Desk Handler =>" + _deskHandler.toString (pad + pad) +
+			"Fix Order Map => " + _fixOrderMap + "; " +
+			"Desk Handler => " + _deskHandler.toString (pad + "\t") +
 			 "\n" + pad + "]";
 	}
 

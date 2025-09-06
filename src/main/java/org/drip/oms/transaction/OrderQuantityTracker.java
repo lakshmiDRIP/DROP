@@ -272,7 +272,7 @@ public class OrderQuantityTracker
 	public String toString (
 		final String pad)
 	{
-		return pad + "OrderQuantityTracker: [" +
+		return "\n" + pad + "OrderQuantityTracker: [" +
 			"\n" + pad + "\t" +
 			"Original =>" + FormatUtil.FormatDouble (_original, 0, 0, 1.) + "; " +
 			"Current =>" + FormatUtil.FormatDouble (_current, 0, 0, 1.) + "; " +

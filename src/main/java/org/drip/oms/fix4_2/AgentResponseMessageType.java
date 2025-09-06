@@ -120,4 +120,22 @@ public class AgentResponseMessageType
 	 */
 
 	public static final int EXECUTION = 1;
+
+	/**
+	 * String Form of Agent Request Message Type
+	 * 
+	 * @param agentRequestMessageType Agent Request Message Type
+	 * 
+	 * @return String Form
+	 */
+
+	public static final String ToString (
+		final int agentRequestMessageType)
+	{
+		if (EXECUTION == agentRequestMessageType) {
+			return "EXECUTION";
+		}
+
+		return "UNKNOWN";
+	}
 }

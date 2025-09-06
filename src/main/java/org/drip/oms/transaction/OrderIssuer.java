@@ -170,6 +170,28 @@ public class OrderIssuer
 	}
 
 	/**
+	 * String Form of Order Issuer Type
+	 * 
+	 * @param orderIssuerType Order Issuer Type
+	 * 
+	 * @return String Form
+	 */
+
+	public static final String ToString (
+		final int orderIssuerType)
+	{
+		if (DEALER == orderIssuerType) {
+			return "DEALER";
+		}
+
+		if (CLIENT == orderIssuerType) {
+			return "CLIENT";
+		}
+
+		return "UNKNOWN";
+	}
+
+	/**
 	 * OrderIssuer Constructor
 	 * 
 	 * @param entity Order Issuer Entity
@@ -250,8 +272,8 @@ public class OrderIssuer
 	{
 		return "\n" + pad + "OrderIssuer: [" +
 			"\n" + pad + "\t" +
-			"Entity =>" + _entity + "; " +
-			"Type =>" + _type +
+			"Entity => " + _entity + "; " +
+			"Type => " + ToString (_type) +
 			 "\n" + pad + "]";
 	}
 

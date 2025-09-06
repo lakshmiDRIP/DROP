@@ -120,4 +120,22 @@ public class AgentResponseExecutionTransactionType
 	 */
 
 	public static final int NEW = 1;
+
+	/**
+	 * String Form of Agent Request Execution Transaction Type
+	 * 
+	 * @param agentRequestExecutionTransactionType Agent Request Execution Transaction Type
+	 * 
+	 * @return String Form
+	 */
+
+	public static final String ToString (
+		final int agentRequestExecutionTransactionType)
+	{
+		if (NEW == agentRequestExecutionTransactionType) {
+			return "NEW";
+		}
+
+		return "UNKNOWN";
+	}
 }
