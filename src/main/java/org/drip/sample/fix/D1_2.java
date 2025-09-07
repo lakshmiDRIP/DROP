@@ -147,7 +147,7 @@ public class D1_2
 		String localIdentifier = "LIQNET";
 
 		Agent agent = new Agent (
-			new VenueHandler (new Venue (new VenueSettings (localIdentifier, jurisdiction, null))),
+			new VenueHandler (new Venue (new VenueSettings (localIdentifier, jurisdiction, null)), false),
 			new DeskHandler (true)
 		);
 

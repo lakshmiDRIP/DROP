@@ -1,7 +1,9 @@
 
 package org.drip.oms.exchange;
 
-import org.drip.oms.transaction.Order;
+import org.drip.oms.transaction.OrderBlock;
+import org.drip.oms.transaction.OrderType;
+import org.drip.oms.transaction.Side;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -115,17 +117,23 @@ import org.drip.oms.transaction.Order;
 
 public class VenueRequest
 {
-	private Order _order = null;
+	private Side _side = null;
+	private String _ticker = "";
 	private String _clOrdID = "";
 	private String _origClOrdID = "";
 	private int _type = Integer.MIN_VALUE;
+	private OrderBlock _orderBlock = null;
+	private int _orderType = Integer.MIN_VALUE;
 
 	/**
 	 * Construct an Instance of <code>NEW</code> <i>VenueRequest</i> Type
 	 * 
 	 * @param clOrdID <i>clOrdID</i>
 	 * @param origClOrdID <i>origClOrdID</i>
-	 * @param order Request Order
+	 * @param ticker Request Ticker
+	 * @param orderBlock Request Order Block
+	 * @param side Order Side
+	 * @param orderType Request Order Type
 	 * 
 	 * @return Instance of <code>NEW</code> <i>VenueRequest</i> Type
 	 */
@@ -133,10 +141,21 @@ public class VenueRequest
 	public static final VenueRequest NEW (
 		final String clOrdID,
 		final String origClOrdID,
-		final Order order)
+		final String ticker,
+		final OrderBlock orderBlock,
+		final Side side,
+		final int orderType)
 	{
 		try {
-			return new VenueRequest (clOrdID, origClOrdID, VenueRequestType.NEW, order);
+			return new VenueRequest (
+				clOrdID,
+				origClOrdID,
+				ticker,
+				VenueRequestType.NEW,
+				orderBlock,
+				side,
+				orderType
+			);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -149,8 +168,11 @@ public class VenueRequest
 	 * 
 	 * @param clOrdID <i>clOrdID</i>
 	 * @param origClOrdID <i>origClOrdID</i>
+	 * @param ticker Request Ticker
 	 * @param type Request Type
-	 * @param order Request Order
+	 * @param orderBlock Request Order Block
+	 * @param side Order Side
+	 * @param orderType Request Order Type
 	 * 
 	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
@@ -158,15 +180,23 @@ public class VenueRequest
 	public VenueRequest (
 		final String clOrdID,
 		final String origClOrdID,
+		final String ticker,
 		final int type,
-		final Order order)
+		final OrderBlock orderBlock,
+		final Side side,
+		final int orderType)
 		throws Exception
 	{
-		if (null == (_clOrdID = clOrdID) || _clOrdID.isEmpty() || null == (_order = order)) {
+		if (null == (_clOrdID = clOrdID) || _clOrdID.isEmpty() ||
+			null == (_ticker = ticker) || _ticker.isEmpty() ||
+			null == (_side = side) ||
+			null == (_orderBlock = orderBlock))
+		{
 			throw new Exception ("VenueRequest Constructor => Invalid Inputs");
 		}
 
 		_type = type;
+		_orderType = orderType;
 		_origClOrdID = origClOrdID;
 	}
 
@@ -193,6 +223,17 @@ public class VenueRequest
 	}
 
 	/**
+	 * Retrieve the Request Ticker
+	 * 
+	 * @return Request Ticker
+	 */
+
+	public String ticker()
+	{
+		return _ticker;
+	}
+
+	/**
 	 * Retrieve the Request Type
 	 * 
 	 * @return Request Type
@@ -204,14 +245,36 @@ public class VenueRequest
 	}
 
 	/**
-	 * Retrieve the Request Order
+	 * Retrieve the Request Order Block
 	 * 
-	 * @return Request Order
+	 * @return Request Order Block
 	 */
 
-	public Order order()
+	public OrderBlock orderBlock()
 	{
-		return _order;
+		return _orderBlock;
+	}
+
+	/**
+	 * Retrieve the Request Order Side
+	 * 
+	 * @return Request Order Side
+	 */
+
+	public Side side()
+	{
+		return _side;
+	}
+
+	/**
+	 * Retrieve the Request Order Type
+	 * 
+	 * @return Request Order Type
+	 */
+
+	public int orderType()
+	{
+		return _orderType;
 	}
 
 	/**
@@ -229,8 +292,11 @@ public class VenueRequest
 			"\n" + pad + "\t" +
 			"clOrdID => " + _clOrdID + "; " +
 			"origClOrdID => " + _origClOrdID + "; " +
-			"type => " + VenueRequestType.ToString (_type) + "; " +
-			"Order => " + _order.toString (pad + "\t") +
+			"Ticker => " + _ticker + "; " +
+			"Type => " + VenueRequestType.ToString (_type) + "; " +
+			"Order Type => " + OrderType.ToString (_orderType) + "; " +
+			"Order Block => " + _orderBlock.toString (pad + "\t") + "; " +
+			"Side => " + _side.toString (pad + "\t") +
 			 "\n" + pad + "]";
 	}
 

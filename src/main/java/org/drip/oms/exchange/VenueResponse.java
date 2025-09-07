@@ -3,7 +3,7 @@ package org.drip.oms.exchange;
 
 import java.util.Date;
 
-import org.drip.oms.transaction.Order;
+import org.drip.oms.transaction.OrderBlock;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -117,11 +117,11 @@ import org.drip.oms.transaction.Order;
 
 public class VenueResponse
 {
-	private Order _order = null;
 	private String _clOrdID = "";
 	private String _comment = "";
 	private String _origClOrdID = "";
 	private int _type = Integer.MIN_VALUE;
+	private OrderBlock _orderBlock = null;
 	private Date _processingStartTime = null;
 	private Date _processingFinishTime = null;
 
@@ -132,7 +132,7 @@ public class VenueResponse
 	 * @param processingFinishTime Finish of the Venue Processing Time
 	 * @param clOrdID <i>clOrdID</i>
 	 * @param origClOrdID <i>origClOrdID</i>
-	 * @param order Order
+	 * @param orderBlock Order Block
 	 * @param comment Processing Comments
 	 * 
 	 * @return Instance of <code>NEW</code> <i>VenueResponse</i> Type
@@ -143,7 +143,7 @@ public class VenueResponse
 		final Date processingFinishTime,
 		final String clOrdID,
 		final String origClOrdID,
-		final Order order,
+		final OrderBlock orderBlock,
 		final String comment)
 	{
 		try {
@@ -153,7 +153,7 @@ public class VenueResponse
 				clOrdID,
 				origClOrdID,
 				VenueResponseType.NEW,
-				order,
+				orderBlock,
 				comment
 			);
 		} catch (Exception e) {
@@ -170,8 +170,7 @@ public class VenueResponse
 	 * @param processingFinishTime Finish of the Venue Processing Time
 	 * @param clOrdID <i>clOrdID</i>
 	 * @param origClOrdID <i>origClOrdID</i>
-	 * @param order Order
-	 * @param comment Processing Comments
+	 * @param orderBlock Order Block
 	 * 
 	 * @return Instance of <code>REJECTED</code> <i>VenueResponse</i> Type
 	 */
@@ -181,8 +180,7 @@ public class VenueResponse
 		final Date processingFinishTime,
 		final String clOrdID,
 		final String origClOrdID,
-		final Order order,
-		final String comment)
+		final OrderBlock orderBlock)
 	{
 		try {
 			return new VenueResponse (
@@ -191,8 +189,8 @@ public class VenueResponse
 				clOrdID,
 				origClOrdID,
 				VenueResponseType.REJECTED,
-				order,
-				comment
+				orderBlock,
+				"Rejected by Trader/Exchange"
 			);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -208,7 +206,7 @@ public class VenueResponse
 	 * @param processingFinishTime Finish of the Venue Processing Time
 	 * @param clOrdID <i>clOrdID</i>
 	 * @param origClOrdID <i>origClOrdID</i>
-	 * @param order Order
+	 * @param orderBlock Order Block
 	 * @param comment Processing Comments
 	 * 
 	 * @return Instance of <code>EXECUTION</code> <i>VenueResponse</i> Type
@@ -219,7 +217,7 @@ public class VenueResponse
 		final Date processingFinishTime,
 		final String clOrdID,
 		final String origClOrdID,
-		final Order order,
+		final OrderBlock orderBlock,
 		final String comment)
 	{
 		try {
@@ -229,7 +227,7 @@ public class VenueResponse
 				clOrdID,
 				origClOrdID,
 				VenueResponseType.EXECUTION,
-				order,
+				orderBlock,
 				comment
 			);
 		} catch (Exception e) {
@@ -247,7 +245,7 @@ public class VenueResponse
 	 * @param clOrdID <i>clOrdID</i>
 	 * @param origClOrdID <i>origClOrdID</i>
 	 * @param type Response Type
-	 * @param order Order
+	 * @param orderBlock Order Block
 	 * @param comment Processing Comments
 	 * 
 	 * @throws Exception Thrown if the Inputs are Invalid
@@ -259,14 +257,14 @@ public class VenueResponse
 		final String clOrdID,
 		final String origClOrdID,
 		final int type,
-		final Order order,
+		final OrderBlock orderBlock,
 		final String comment)
 		throws Exception
 	{
 		if (null == (_processingStartTime = processingStartTime) ||
 			null == (_processingFinishTime = processingFinishTime) ||
 			null == (_clOrdID = clOrdID) || _clOrdID.isEmpty() ||
-			null == (_order = order))
+			null == (_orderBlock = orderBlock))
 		{
 			throw new Exception ("VenueResponse Constructor => Invalid Inputs");
 		}
@@ -332,14 +330,14 @@ public class VenueResponse
 	}
 
 	/**
-	 * Retrieve the Response Order
+	 * Retrieve the Response Order Block
 	 * 
-	 * @return Response Order
+	 * @return Response Order Block
 	 */
 
-	public Order order()
+	public OrderBlock orderBlock()
 	{
-		return _order;
+		return _orderBlock;
 	}
 
 	/**
@@ -372,7 +370,7 @@ public class VenueResponse
 			"origClOrdID => " + _origClOrdID + "; " +
 			"Type => " + VenueResponseType.ToString (_type) + "; " +
 			"Comment => " + _comment + "; " +
-			"Order => " + _order.toString (pad + "\t") +
+			"Order Block => " + _orderBlock.toString (pad + "\t") +
 			 "\n" + pad + "]";
 	}
 

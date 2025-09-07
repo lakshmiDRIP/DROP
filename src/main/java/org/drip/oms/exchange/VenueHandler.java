@@ -1,6 +1,12 @@
 
 package org.drip.oms.exchange;
 
+import java.util.Date;
+
+import org.drip.oms.transaction.OrderBlock;
+import org.drip.oms.transaction.OrderType;
+import org.drip.oms.transaction.Side;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
@@ -114,22 +120,75 @@ package org.drip.oms.exchange;
 public class VenueHandler
 {
 	private Venue _venue = null;
+	private boolean _allowNEW = true;
+
+	private VenueResponse handleMarketNewBuyInternal (
+		final Date processingStartTime,
+		final VenueRequest venueRequest)
+	{
+		String ticker = venueRequest.ticker();
+
+		OrderBlock orderBlock = venueRequest.orderBlock();
+
+		if (!_venue.sweepAskMarketOrderBlock (ticker, orderBlock, false)) {
+			if (!_venue.postBidMarketOrderBlock (ticker, orderBlock)) {
+				return null;
+			}
+		}
+
+		return VenueResponse.NEW (
+			processingStartTime,
+			new Date(),
+			venueRequest.clOrdID(),
+			venueRequest.origClOrdID(),
+			orderBlock,
+			""
+		);
+	}
+
+	private VenueResponse handleMarketNewSellInternal (
+		final Date processingStartTime,
+		final VenueRequest venueRequest)
+	{
+		String ticker = venueRequest.ticker();
+
+		OrderBlock orderBlock = venueRequest.orderBlock();
+
+		if (!_venue.sweepBidMarketOrderBlock (ticker, orderBlock, false)) {
+			if (!_venue.postAskMarketOrderBlock (ticker, orderBlock)) {
+				return null;
+			}
+		}
+
+		return VenueResponse.NEW (
+			processingStartTime,
+			new Date(),
+			venueRequest.clOrdID(),
+			venueRequest.origClOrdID(),
+			orderBlock,
+			""
+		);
+	}
 
 	/**
 	 * <i>VenueHandler</i> Constructor
 	 * 
 	 * @param venue Underlying Venue
+	 * @param allowNEW <code>allowNEW</code> Setting
 	 * 
 	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public VenueHandler (
-		final Venue venue)
+		final Venue venue,
+		final boolean allowNEW)
 		throws Exception
 	{
 		if (null == (_venue = venue)) {
 			throw new Exception ("VenueHandler => Invalid Inputs");
 		}
+
+		_allowNEW = allowNEW;
 	}
 
 	/**
@@ -141,6 +200,92 @@ public class VenueHandler
 	public Venue venue()
 	{
 		return _venue;
+	}
+
+	/**
+	 * Retrieve the <code>allowNEW</code> Setting
+	 * 
+	 * @return <code>allowNEW</code> Setting
+	 */
+
+	public boolean allowNEW()
+	{
+		return _allowNEW;
+	}
+
+	/**
+	 * Process the Market New Buy Request
+	 * 
+	 * @param venueRequest Venue Request
+	 * 
+	 * @return The Market New Buy Response
+	 */
+
+	public VenueResponse handleMarketNewBuy (
+		final VenueRequest venueRequest)
+	{
+		return null == venueRequest ? null : handleMarketNewBuyInternal (new Date(), venueRequest);
+	}
+
+	/**
+	 * Process the Market New Sell Request
+	 * 
+	 * @param venueRequest Venue Request
+	 * 
+	 * @return The Market New Sell Response
+	 */
+
+	public VenueResponse handleMarketNewSell (
+		final VenueRequest venueRequest)
+	{
+		return null == venueRequest ? null : handleMarketNewSellInternal (new Date(), venueRequest);
+	}
+
+	/**
+	 * Process the Venue Request
+	 * 
+	 * @param venueRequest Venue Request
+	 * 
+	 * @return The processed Response
+	 */
+
+	public VenueResponse process (
+		final VenueRequest venueRequest)
+	{
+		Date processingStartTime = new Date();
+
+		if (null == venueRequest) {
+			return null;
+		}
+
+		int orderType = venueRequest.orderType();
+
+		if (OrderType.MARKET == orderType) {
+			if (VenueRequestType.NEW == venueRequest.type()) {
+				if (!_allowNEW) {
+					return VenueResponse.REJECTED (
+						processingStartTime,
+						new Date(),
+						venueRequest.clOrdID(),
+						venueRequest.origClOrdID(),
+						venueRequest.orderBlock()
+					);
+				}
+
+				char buySell = venueRequest.side().buySell();
+
+				return Side.BUY == buySell ?
+					handleMarketNewBuyInternal (processingStartTime, venueRequest) :
+					handleMarketNewSellInternal (processingStartTime, venueRequest);
+			}
+		}
+
+		if (OrderType.LIMIT == orderType) {
+			if (VenueRequestType.NEW == venueRequest.type()) {
+			}
+		}
+
+		return null;
 	}
 
 	/**
@@ -156,6 +301,7 @@ public class VenueHandler
 	{
 		return "\n" + pad + "Venue Handler: [" +
 			"\n" + pad + "\t" +
+			"Allow NEW => " + _allowNEW + "; " +
 			"Venue => " + _venue.toString (pad + "\t") +
 			 "\n" + pad + "]";
 	}

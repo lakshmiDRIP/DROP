@@ -127,13 +127,13 @@ public class AgentResponse
 	private int _executionTransactionType = Integer.MIN_VALUE;
 
 	/**
-	 * Construct a REJECTED <i>AgentResponse</i> Instance
+	 * Construct an Internal REJECTED <i>AgentResponse</i> Instance
 	 * 
 	 * @param processingStartTime Processing Start Time
 	 * @param order Order Instance
 	 * @param requestID Request ID
 	 * 
-	 * @return REJECTED <i>AgentResponse</i> Instance
+	 * @return Internal REJECTED <i>AgentResponse</i> Instance
 	 */
 
 	public static final AgentResponse REJECTED (
@@ -151,6 +151,41 @@ public class AgentResponse
 				AgentResponseExecutionType.REJECTED,
 				AgentResponseExecutionTransactionType.NEW,
 				"Rejected by Desk, i.e., Sales/Trader"
+			);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
+	 * Construct a Venue REJECTED <i>AgentResponse</i> Instance
+	 * 
+	 * @param processingStartTime Processing Start Time
+	 * @param order Order Instance
+	 * @param requestID Request ID
+	 * @param comment Comment
+	 * 
+	 * @return Venue REJECTED <i>AgentResponse</i> Instance
+	 */
+
+	public static final AgentResponse REJECTED (
+		final Date processingStartTime,
+		final Order order,
+		final String requestID,
+		final String comment)
+	{
+		try {
+			return new AgentResponse (
+				processingStartTime,
+				new Date(),
+				AgentResponseMessageType.EXECUTION,
+				order,
+				requestID,
+				AgentResponseExecutionType.REJECTED,
+				AgentResponseExecutionTransactionType.NEW,
+				comment
 			);
 		} catch (Exception e) {
 			e.printStackTrace();

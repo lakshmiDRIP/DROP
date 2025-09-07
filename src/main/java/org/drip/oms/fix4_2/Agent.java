@@ -6,6 +6,12 @@ import java.util.Map;
 
 import org.drip.analytics.support.CaseInsensitiveHashMap;
 import org.drip.oms.exchange.VenueHandler;
+import org.drip.oms.exchange.VenueRequest;
+import org.drip.oms.exchange.VenueResponse;
+import org.drip.oms.exchange.VenueResponseType;
+import org.drip.oms.transaction.Order;
+import org.drip.oms.transaction.OrderBlock;
+import org.drip.oms.transaction.OrderType;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -123,7 +129,7 @@ public class Agent
 	private VenueHandler _venueHandler = null;
 	private Map<String, AgentOrder> _fixOrderMap = null;
 
-	protected AgentResponse clientNEW (
+	protected AgentResponse marketNew (
 		final Date processingStartTime,
 		final AgentRequest agentRequest)
 	{
@@ -133,15 +139,43 @@ public class Agent
 			return null;
 		}
 
-		_fixOrderMap.put (fixOrder.clOrdID(), fixOrder);
+		Order order = fixOrder.order();
+
+		String clOrdID = fixOrder.clOrdID();
+
+		_fixOrderMap.put (clOrdID, fixOrder);
 
 		if (null != _deskHandler && !_deskHandler.process (agentRequest)) {
 			return fixOrder.reject() ?
-				AgentResponse.REJECTED (processingStartTime, fixOrder.order(), agentRequest.id()) : null;
+				AgentResponse.REJECTED (processingStartTime, order, agentRequest.id()) : null;
 		}
 
-		return fixOrder.accept() ?
-			AgentResponse.ACCEPTED (processingStartTime, fixOrder.order(), agentRequest.id()) : null;
+		VenueResponse venueResponse = _venueHandler.process (
+			VenueRequest.NEW (
+				clOrdID,
+				fixOrder.origClOrdID(),
+				order.ticker(),
+				OrderBlock.Now (order.quantityTracker().original()),
+				order.side(),
+				order.type()
+			)
+		);
+
+		if (null == venueResponse) {
+			return null;
+		}
+
+		if (VenueResponseType.REJECTED == venueResponse.type()) {
+			return AgentResponse.REJECTED (
+				processingStartTime,
+				order,
+				agentRequest.id(),
+				venueResponse.comment()
+			);
+		}
+
+		return VenueResponseType.NEW == venueResponse.type() ?
+			AgentResponse.ACCEPTED (processingStartTime, order, agentRequest.id()) : null;
 	}
 
 	/**
@@ -215,8 +249,17 @@ public class Agent
 			return null;
 		}
 
-		if (AgentRequestType.NEW == agentRequest.type()) {
-			return clientNEW (processingStartTime, agentRequest);
+		int orderType = agentRequest.order().type();
+
+		if (OrderType.MARKET == orderType) {
+			if (AgentRequestType.NEW == agentRequest.type()) {
+				return marketNew (processingStartTime, agentRequest);
+			}
+		}
+
+		if (OrderType.LIMIT == orderType) {
+			if (AgentRequestType.NEW == agentRequest.type()) {
+			}
 		}
 
 		return null;
