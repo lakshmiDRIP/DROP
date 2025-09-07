@@ -2,6 +2,7 @@
 package org.drip.sample.fix;
 
 import org.drip.oms.exchange.Venue;
+import org.drip.oms.exchange.VenueHandler;
 import org.drip.oms.exchange.VenueSettings;
 import org.drip.oms.fix4_2.Agent;
 import org.drip.oms.fix4_2.AgentRequest;
@@ -145,7 +146,7 @@ public class D1_1
 		String localIdentifier = "LIQNET";
 
 		Agent agent = new Agent (
-			new Venue (new VenueSettings (localIdentifier, jurisdiction, null)),
+			new VenueHandler (new Venue (new VenueSettings (localIdentifier, jurisdiction, null))),
 			new DeskHandler (false)
 		);
 

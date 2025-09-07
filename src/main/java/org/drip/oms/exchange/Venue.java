@@ -229,7 +229,9 @@ public class Venue
 		final double size)
 		throws Exception
 	{
-		return _settings.pricingRebateFunction().makerFee (
+		PricingRebateFunction pricingRebateFunction = _settings.pricingRebateFunction();
+
+		return null == pricingRebateFunction ? 0. : pricingRebateFunction.makerFee (
 			ticker,
 			price,
 			size
@@ -254,7 +256,9 @@ public class Venue
 		final double size)
 		throws Exception
 	{
-		return _settings.pricingRebateFunction().makerFee (
+		PricingRebateFunction pricingRebateFunction = _settings.pricingRebateFunction();
+
+		return null == pricingRebateFunction ? 0. : pricingRebateFunction.makerFee (
 			ticker,
 			price,
 			size
@@ -262,20 +266,20 @@ public class Venue
 	}
 
 	/**
-	 * Post a Block to the Venue Bid Book for the Ticker
+	 * Post a Block to the Venue Bid Limit Order Book for the Ticker
 	 * 
 	 * @param ticker The Ticker
-	 * @param postedBlock The Posted Block
+	 * @param postedLimitOrderBlock The Posted Limit Order Block
 	 * 
-	 * @return TRUE - The Block posted to the Venue Bid Book for the Ticker
+	 * @return TRUE - The Block posted to the Venue Bid Limit Order Book for the Ticker
 	 */
 
-	public boolean postBidBlock (
+	public boolean postBidLimitOrderBlock (
 		final String ticker,
-		final LimitOrderBlock postedBlock)
+		final LimitOrderBlock postedLimitOrderBlock)
 	{
 		if (null == ticker || ticker.isEmpty() ||
-			null == postedBlock
+			null == postedLimitOrderBlock
 		)
 		{
 			return false;
@@ -294,25 +298,49 @@ public class Venue
 		return _bidTickerLimitOrderBookMap.get (
 			ticker
 		).aggregatePostedBlock (
-			postedBlock
+			postedLimitOrderBlock
 		);
 	}
 
 	/**
-	 * Post a Block to the Venue Ask Book for the Ticker
+	 * Post a Block to the Venue Bid Market Order Book for the Ticker
 	 * 
 	 * @param ticker The Ticker
-	 * @param postedBlock The Posted Block
+	 * @param postedMarketOrderBlock The Posted Bid Market Order Block
 	 * 
-	 * @return TRUE - The Block posted to the Venue Ask Book for the Ticker
+	 * @return TRUE - The Block posted to the Venue Bid Market Order Book for the Ticker
 	 */
 
-	public boolean postAskBlock (
+	public boolean postBidMarketOrderBlock (
 		final String ticker,
-		final LimitOrderBlock postedBlock)
+		final OrderBlock postedMarketOrderBlock)
+	{
+		if (null == ticker || ticker.isEmpty() || null == postedMarketOrderBlock) {
+			return false;
+		}
+
+		if (!_bidTickerMarketOrderBookMap.containsKey (ticker)) {
+			_bidTickerMarketOrderBookMap.put (ticker, OrderBlock.Now (0.));
+		}
+
+		return _bidTickerMarketOrderBookMap.get (ticker).augmentSize (postedMarketOrderBlock.size());
+	}
+
+	/**
+	 * Post a Block to the Venue Ask Limit Order Book for the Ticker
+	 * 
+	 * @param ticker The Ticker
+	 * @param postedLimitOrderBlock The Posted Limit Order Block
+	 * 
+	 * @return TRUE - The Block posted to the Venue Ask Limit Order Book for the Ticker
+	 */
+
+	public boolean postAskLimitOrderBlock (
+		final String ticker,
+		final LimitOrderBlock postedLimitOrderBlock)
 	{
 		if (null == ticker || ticker.isEmpty() ||
-			null == postedBlock
+			null == postedLimitOrderBlock
 		)
 		{
 			return false;
@@ -331,73 +359,139 @@ public class Venue
 		return _askTickerLimitOrderBookMap.get (
 			ticker
 		).aggregatePostedBlock (
-			postedBlock
+			postedLimitOrderBlock
 		);
 	}
 
 	/**
-	 * Sweep a Block to the Venue Bid Book for the Ticker
+	 * Post a Block to the Venue Ask Market Order Book for the Ticker
 	 * 
 	 * @param ticker The Ticker
-	 * @param sweptBlock The Swept Block
-	 * @param allowPartialSweep TRUE - Partial Sweep is allowed
+	 * @param postedMarketOrderBlock The Posted Ask Market Order Block
 	 * 
-	 * @return TRUE - The Block Swept to the Venue Bid Book for the Ticker
+	 * @return TRUE - The Block posted to the Venue Ask Market Order Book for the Ticker
 	 */
 
-	public boolean sweepBidBlock (
+	public boolean postAskMarketOrderBlock (
 		final String ticker,
-		final LimitOrderBlock sweptBlock,
+		final OrderBlock postedMarketOrderBlock)
+	{
+		if (null == ticker || ticker.isEmpty() || null == postedMarketOrderBlock) {
+			return false;
+		}
+
+		if (!_askTickerMarketOrderBookMap.containsKey (ticker)) {
+			_askTickerMarketOrderBookMap.put (ticker, OrderBlock.Now (0.));
+		}
+
+		return _askTickerMarketOrderBookMap.get (ticker).augmentSize (postedMarketOrderBlock.size());
+	}
+
+	/**
+	 * Sweep a Block to the Venue Bid Limit Order Book for the Ticker
+	 * 
+	 * @param ticker The Ticker
+	 * @param sweptLimitOrderBlock The Swept Limit Order Block
+	 * @param allowPartialSweep TRUE - Partial Sweep is allowed
+	 * 
+	 * @return TRUE - The Block Swept to the Venue Bid Limit Order Book for the Ticker
+	 */
+
+	public boolean sweepBidLimitOrderBlock (
+		final String ticker,
+		final LimitOrderBlock sweptLimitOrderBlock,
 		final boolean allowPartialSweep)
 	{
 		return null != ticker && !ticker.isEmpty() &&
-			null != sweptBlock &&
+			null != sweptLimitOrderBlock &&
 			_bidTickerLimitOrderBookMap.containsKey (
 				ticker
 			) && _bidTickerLimitOrderBookMap.get (
 				ticker
 			).disaggregateSweptBlock (
-				sweptBlock,
+				sweptLimitOrderBlock,
 				allowPartialSweep
 			);
 	}
 
 	/**
-	 * Sweep a Block to the Venue Ask Book for the Ticker
+	 * Sweep a Block to the Venue Bid Market Order Book for the Ticker
 	 * 
 	 * @param ticker The Ticker
-	 * @param sweptBlock The Swept Block
+	 * @param sweptMarketOrderBlock The Swept Market Order Block
 	 * @param allowPartialSweep TRUE - Partial Sweep is allowed
 	 * 
-	 * @return TRUE - The Block Swept to the Venue Ask Book for the Ticker
+	 * @return TRUE - The Block Swept to the Venue Bid Market Order Book for the Ticker
+	 */
+
+	public boolean sweepBidMarketOrderBlock (
+		final String ticker,
+		final OrderBlock sweptMarketOrderBlock,
+		final boolean allowPartialSweep)
+	{
+		return null != ticker && !ticker.isEmpty() &&
+			null != sweptMarketOrderBlock &&
+			_bidTickerMarketOrderBookMap.containsKey (ticker) &&
+			_bidTickerMarketOrderBookMap.get (ticker).augmentSize (-1. * sweptMarketOrderBlock.size());
+	}
+
+	/**
+	 * Sweep a Block to the Venue Ask Limit Order Book for the Ticker
+	 * 
+	 * @param ticker The Ticker
+	 * @param sweptLimitOrderBlock The Swept Limit Order Block
+	 * @param allowPartialSweep TRUE - Partial Sweep is allowed
+	 * 
+	 * @return TRUE - The Block Swept to the Venue Ask Limit Order Book for the Ticker
 	 */
 
 	public boolean sweepAskBlock (
 		final String ticker,
-		final LimitOrderBlock sweptBlock,
+		final LimitOrderBlock sweptLimitOrderBlock,
 		final boolean allowPartialSweep)
 	{
 		return null != ticker && !ticker.isEmpty() &&
-			null != sweptBlock &&
+			null != sweptLimitOrderBlock &&
 			_askTickerLimitOrderBookMap.containsKey (
 				ticker
 			) && _askTickerLimitOrderBookMap.get (
 				ticker
 			).disaggregateSweptBlock (
-				sweptBlock,
+				sweptLimitOrderBlock,
 				allowPartialSweep
 			);
 	}
 
 	/**
-	 * Retrieve the Top-of-the-Bid-Book for the specified Ticker
+	 * Sweep a Block to the Venue Ask Market Order Book for the Ticker
+	 * 
+	 * @param ticker The Ticker
+	 * @param sweptMarketOrderBlock The Swept Market Order Block
+	 * @param allowPartialSweep TRUE - Partial Sweep is allowed
+	 * 
+	 * @return TRUE - The Block Swept to the Venue Ask Market Order Book for the Ticker
+	 */
+
+	public boolean sweepAskMarketOrderBlock (
+		final String ticker,
+		final OrderBlock sweptMarketOrderBlock,
+		final boolean allowPartialSweep)
+	{
+		return null != ticker && !ticker.isEmpty() &&
+			null != sweptMarketOrderBlock &&
+			_askTickerMarketOrderBookMap.containsKey (ticker) &&
+			_askTickerMarketOrderBookMap.get (ticker).augmentSize (-1. * sweptMarketOrderBlock.size());
+	}
+
+	/**
+	 * Retrieve the Top-of-the-Bid Limit Order Book for the specified Ticker
 	 * 
 	 * @param ticker Ticker
 	 * 
-	 * @return The Top-of-the-Bid-Book
+	 * @return The Top-of-the-Bid Limit Order Book
 	 */
 
-	public LimitOrderBlock topOfTheBidBook (
+	public LimitOrderBlock topOfTheBidLimitOrderBook (
 		final String ticker)
 	{
 		return null != ticker && !ticker.isEmpty() && _bidTickerLimitOrderBookMap.containsKey (
@@ -410,14 +504,29 @@ public class Venue
 	}
 
 	/**
-	 * Retrieve the Top-of-the-Ask-Book for the specified Ticker
+	 * Retrieve the Bid Market Order Book for the specified Ticker
 	 * 
 	 * @param ticker Ticker
 	 * 
-	 * @return The Top-of-the-Ask-Book
+	 * @return The Bid Market Order Book
 	 */
 
-	public LimitOrderBlock topOfTheAskBook (
+	public OrderBlock bidMarketOrderBook (
+		final String ticker)
+	{
+		return null != ticker && !ticker.isEmpty() && _bidTickerMarketOrderBookMap.containsKey (ticker) ?
+			_bidTickerMarketOrderBookMap.get (ticker) : null;
+	}
+
+	/**
+	 * Retrieve the Top-of-the-Ask Limit Order Book for the specified Ticker
+	 * 
+	 * @param ticker Ticker
+	 * 
+	 * @return The Top-of-the-Ask Limit Order Book
+	 */
+
+	public LimitOrderBlock topOfTheAskLimitOrderBook (
 		final String ticker)
 	{
 		return null != ticker && !ticker.isEmpty() && _askTickerLimitOrderBookMap.containsKey (
@@ -427,6 +536,21 @@ public class Venue
 		).topOfTheBook (
 			false
 		) : null;
+	}
+
+	/**
+	 * Retrieve the Ask Market Order Book for the specified Ticker
+	 * 
+	 * @param ticker Ticker
+	 * 
+	 * @return The Ask Market Order Book
+	 */
+
+	public OrderBlock askMarketOrderBook (
+		final String ticker)
+	{
+		return null != ticker && !ticker.isEmpty() && _askTickerMarketOrderBookMap.containsKey (ticker) ?
+			_askTickerMarketOrderBookMap.get (ticker) : null;
 	}
 
 	/**
@@ -440,14 +564,14 @@ public class Venue
 	public MontageL1Entry bidMontageL1Entry (
 		final String ticker)
 	{
-		LimitOrderBlock topOfTheBidBook = topOfTheBidBook (
+		LimitOrderBlock topOfTheBidLimitOrderBook = topOfTheBidLimitOrderBook (
 			ticker
 		);
 
 		try {
-			return null == topOfTheBidBook ? null : new MontageL1Entry (
+			return null == topOfTheBidLimitOrderBook ? null : new MontageL1Entry (
 				settings().code(),
-				topOfTheBidBook
+				topOfTheBidLimitOrderBook
 			);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -467,14 +591,14 @@ public class Venue
 	public MontageL1Entry askMontageL1Entry (
 		final String ticker)
 	{
-		LimitOrderBlock topOfTheAskBook = topOfTheAskBook (
+		LimitOrderBlock topOfTheAskLimitOrderBook = topOfTheAskLimitOrderBook (
 			ticker
 		);
 
 		try {
-			return null == topOfTheAskBook ? null : new MontageL1Entry (
+			return null == topOfTheAskLimitOrderBook ? null : new MontageL1Entry (
 				settings().code(),
-				topOfTheAskBook
+				topOfTheAskLimitOrderBook
 			);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -495,6 +619,17 @@ public class Venue
 	}
 
 	/**
+	 * Retrieve the Bid Market Order Ticker Set
+	 * 
+	 * @return The Bid Market Order Ticker Set
+	 */
+
+	public Set<String> bidMarketOrderTickerSet()
+	{
+		return _bidTickerMarketOrderBookMap.keySet();
+	}
+
+	/**
 	 * Retrieve the Ask Limit Order Ticker Set
 	 * 
 	 * @return The Ask Limit Order Ticker Set
@@ -503,6 +638,17 @@ public class Venue
 	public Set<String> askLimitOrderTickerSet()
 	{
 		return _askTickerLimitOrderBookMap.keySet();
+	}
+
+	/**
+	 * Retrieve the Ask Market Order Ticker Set
+	 * 
+	 * @return The Ask Market Order Ticker Set
+	 */
+
+	public Set<String> askMarketOrderTickerSet()
+	{
+		return _askTickerMarketOrderBookMap.keySet();
 	}
 
 	/**
@@ -520,7 +666,9 @@ public class Venue
 			"\n" + pad + "\t" +
 			"Settings => " + _settings.toString (pad + "\t") + "; " +
 			"Bid Ticker Limit Order Book Map => " + _bidTickerLimitOrderBookMap + "; " +
+			"Bid Ticker Market Order Book Map => " + _bidTickerMarketOrderBookMap + "; " +
 			"Ask Ticker Limit Order Book Map => " + _askTickerLimitOrderBookMap +
+			"Ask Ticker Market Order Book Map => " + _askTickerMarketOrderBookMap +
 			 "\n" + pad + "]";
 	}
 

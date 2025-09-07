@@ -1,10 +1,5 @@
 
-package org.drip.oms.transaction;
-
-import java.time.ZonedDateTime;
-
-import org.drip.numerical.common.NumberUtil;
-import org.drip.service.common.FormatUtil;
+package org.drip.oms.exchange;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -79,7 +74,7 @@ import org.drip.service.common.FormatUtil;
  */
 
 /**
- * <i>OrderBlock</i> maintains an Entry Block inside an Order Book. The References are:
+ * <i>VenueHandler</i> implements Handling Agent corresponding to a Suite of Venues. The References are:
  *  
  * 	<br><br>
  *  <ul>
@@ -110,133 +105,42 @@ import org.drip.service.common.FormatUtil;
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/TransactionCostAnalyticsLibrary.md">Transaction Cost Analytics</a></li>
  *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/oms/README.md">R<sup>d</sup> Order Specification, Handling, and Management</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/oms/transaction/README.md">Order Specification and Session Metrics</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/oms/exchange/README.md">Implementation of Venue Order Handling</a></li>
  *  </ul>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class OrderBlock
-	implements Cloneable
+public class VenueHandler
 {
-	private double _size = Double.NaN;
-	private ZonedDateTime _lastUpdateTime = null;
+	private Venue _venue = null;
 
 	/**
-	 * Construct a Fresh Instance of the <i>OrderBlock</i>
+	 * <i>VenueHandler</i> Constructor
 	 * 
-	 * @param size L2 Size
-	 * 
-	 * @return Fresh Instance of the <i>OrderBlock</i>
-	 */
-
-	public static OrderBlock Now (
-		final double size)
-	{
-		try {
-			return new OrderBlock (ZonedDateTime.now(), size);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-		return null;
-	}
-
-	/**
-	 * <i>OrderBlock</i> Constructor
-	 * 
-	 * @param lastUpdateTime Last Update Time
-	 * @param size Order Size
+	 * @param venue Underlying Venue
 	 * 
 	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
-	public OrderBlock (
-		final ZonedDateTime lastUpdateTime,
-		final double size)
+	public VenueHandler (
+		final Venue venue)
 		throws Exception
 	{
-		if (null == (_lastUpdateTime = lastUpdateTime) || !NumberUtil.IsValid (_size = size)) {
-			throw new Exception ("OrderBlock Constructor => Invalid Inputs");
+		if (null == (_venue = venue)) {
+			throw new Exception ("VenueHandler => Invalid Inputs");
 		}
 	}
 
 	/**
-	 * Retrieve the Last Update Time
+	 * Retrieve the Underlying Venue
 	 * 
-	 * @return The Last Update Time
+	 * @return Underlying Venue
 	 */
 
-	public ZonedDateTime lastUpdateTime()
+	public Venue venue()
 	{
-		return _lastUpdateTime;
-	}
-
-	/**
-	 * Retrieve the Size
-	 * 
-	 * @return The Size
-	 */
-
-	public double size()
-	{
-		return _size;
-	}
-
-	/**
-	 * Up/Down Size using the Augmented Size
-	 * 
-	 * @param augmentedSize Augmented Size
-	 * 
-	 * @return TRUE - The Augmented Size successfully applied
-	 */
-
-	public boolean augmentSize (
-		final double augmentedSize)
-	{
-		if (!NumberUtil.IsValid (augmentedSize)) {
-			return false;
-		}
-
-		double updatedSize = _size + augmentedSize;
-
-		if (0. > updatedSize) {
-			return false;
-		}
-
-		_size = updatedSize;
-
-		return resetLastUpdateTime();
-	}
-
-	/**
-	 * Reset the Last Update Time
-	 * 
-	 * @return TRUE - The Last Update Time successfully Reset
-	 */
-
-	public boolean resetLastUpdateTime()
-	{
-		_lastUpdateTime = ZonedDateTime.now();
-
-		return true;
-	}
-
-	/**
-	 * Clone this Instance
-	 * 
-	 * @return Follows <code>Object.clone</code> Semantics
-	 */
-
-	@Override public OrderBlock clone()
-	{
-		try {
-			return new OrderBlock (ZonedDateTime.now(), _size);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-		return null;
+		return _venue;
 	}
 
 	/**
@@ -250,10 +154,9 @@ public class OrderBlock
 	public String toString (
 		final String pad)
 	{
-		return "\n" + pad + "Order Block: [" +
+		return "\n" + pad + "Venue Handler: [" +
 			"\n" + pad + "\t" +
-			"Last Update Time => " + _lastUpdateTime + "; " +
-			"Size => " + FormatUtil.FormatDouble (_size, 0, 0, 1.) +
+			"Venue => " + _venue.toString (pad + "\t") +
 			 "\n" + pad + "]";
 	}
 
