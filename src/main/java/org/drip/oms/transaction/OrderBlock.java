@@ -1,20 +1,17 @@
 
-package org.drip.oms.depth;
+package org.drip.oms.transaction;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.time.ZonedDateTime;
 
-import org.drip.oms.exchange.Venue;
+import org.drip.numerical.common.NumberUtil;
+import org.drip.service.common.FormatUtil;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
- * Copyright (C) 2023 Lakshmi Krishnamurthy
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
  * 
  *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
  *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
@@ -82,8 +79,7 @@ import org.drip.oms.exchange.Venue;
  */
 
 /**
- * <i>CrossVenueMontageProcessor</i> compiles and processes cross-Venue Montage Functionality. The References
- *  are:
+ * <i>OrderBlock</i> maintains an Entry Block inside an Order Book. The References are:
  *  
  * 	<br><br>
  *  <ul>
@@ -114,171 +110,154 @@ import org.drip.oms.exchange.Venue;
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/TransactionCostAnalyticsLibrary.md">Transaction Cost Analytics</a></li>
  *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/oms/README.md">R<sup>d</sup> Order Specification, Handling, and Management</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/oms/depth/README.md">L1, L2, L3 Deep Books</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/oms/transaction/README.md">Order Specification and Session Metrics</a></li>
  *  </ul>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class CrossVenueMontageProcessor
+public class OrderBlock
+	implements Cloneable
 {
-	private Set<String> _askTickerSet = null;
-	private Set<String> _bidTickerSet = null;
-	private Map<String, Venue> _l1Container = null;
+	private double _size = Double.NaN;
+	private ZonedDateTime _lastUpdateTime = null;
 
 	/**
-	 * Empty CrossVenueMontageProcessor Constructor
-	 */
-
-	public CrossVenueMontageProcessor (
-		final List<Venue> venueList)
-		throws Exception
-	{
-		if (null == venueList || 0 == venueList.size())
-		{
-			throw new Exception (
-				"CrossVenueMontageProcessor Contructor => Invalid Inputs"
-			);
-		}
-
-		_l1Container = new HashMap<String, Venue>();
-
-		_bidTickerSet = new HashSet<String>();
-
-		_askTickerSet = new HashSet<String>();
-
-		for (Venue venue : venueList)
-		{
-			_l1Container.put (
-				venue.settings().code(),
-				venue
-			);
-
-			_bidTickerSet.addAll (
-				venue.bidLimitOrderTickerSet()
-			);
-
-			_askTickerSet.addAll (
-				venue.askLimitOrderTickerSet()
-			);
-		}
-	}
-
-	/**
-	 * Retrieve the Venue L1 Container
+	 * Construct a Fresh Instance of the <i>OrderBlock</i>
 	 * 
-	 * @return The Venue L1 Container
-	 */
-
-	public Map<String, Venue> l1Container()
-	{
-		return _l1Container;
-	}
-
-	/**
-	 * Retrieve the Bid Ticker Set
+	 * @param size L2 Size
 	 * 
-	 * @return The Bid Ticker Set
+	 * @return Fresh Instance of the <i>OrderBlock</i>
 	 */
 
-	public Set<String> bidTickerSet()
+	public static OrderBlock Now (
+		final double size)
 	{
-		return _bidTickerSet;
-	}
-
-	/**
-	 * Retrieve the Ask Ticker Set
-	 * 
-	 * @return The Ask Ticker Set
-	 */
-
-	public Set<String> askTickerSet()
-	{
-		return _askTickerSet;
-	}
-
-	private boolean updateL1MontageManagerMap (
-		final Venue venue,
-		final Set<String> tickerSet,
-		final Set<String> venueMontageTickerSet,
-		final Map<String, MontageL1Manager> l1MontageManagerMap,
-		final boolean bid)
-	{
-		for (String venueMontageTicker : venueMontageTickerSet) {
-			MontageL1Entry montageL1Entry = bid ? venue.bidMontageL1Entry (
-				venueMontageTicker
-			) : venue.askMontageL1Entry (
-				venueMontageTicker
-			);
-
-			if (null == montageL1Entry) {
-				continue;
-			}
-
-			if (!tickerSet.contains (
-				venueMontageTicker
-			))
-			{
-				MontageL1Manager montageL1Manager = new MontageL1Manager();
-
-				if (bid) {
-					montageL1Manager.addBidEntry (
-						montageL1Entry
-					);
-				} else {
-					montageL1Manager.addAskEntry (
-						montageL1Entry
-					);
-				}
-
-				l1MontageManagerMap.put (
-					venueMontageTicker,
-					montageL1Manager
-				);
-			} else {
-				l1MontageManagerMap.get (
-					venueMontageTicker
-				).addBidEntry (
-					montageL1Entry
-				);
-			}
-		}
-
-		return true;
-	}
-
-	public CrossVenueMontageDigest munge()
-	{
-		Map<String, MontageL1Manager> tickerMontageL1ManagerMap = new HashMap<String, MontageL1Manager>();
-
-		for (Map.Entry<String, Venue> l1ContainerMapEntry : _l1Container.entrySet()) {
-			Venue venue = l1ContainerMapEntry.getValue();
-
-			updateL1MontageManagerMap (
-				venue,
-				_bidTickerSet,
-				venue.bidLimitOrderTickerSet(),
-				tickerMontageL1ManagerMap,
-				true
-			);
-
-			updateL1MontageManagerMap (
-				venue,
-				_askTickerSet,
-				venue.askLimitOrderTickerSet(),
-				tickerMontageL1ManagerMap,
-				false
-			);
-		};
-
 		try {
-			return new CrossVenueMontageDigest (
-				tickerMontageL1ManagerMap
-			);
+			return new OrderBlock (ZonedDateTime.now(), size);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
 		return null;
+	}
+
+	/**
+	 * <i>OrderBlock</i> Constructor
+	 * 
+	 * @param lastUpdateTime Last Update Time
+	 * @param size Order Size
+	 * 
+	 * @throws Exception Thrown if the Inputs are Invalid
+	 */
+
+	public OrderBlock (
+		final ZonedDateTime lastUpdateTime,
+		final double size)
+		throws Exception
+	{
+		if (null == (_lastUpdateTime = lastUpdateTime) || !NumberUtil.IsValid (_size = size)) {
+			throw new Exception ("OrderBlock Constructor => Invalid Inputs");
+		}
+	}
+
+	/**
+	 * Retrieve the Last Update Time
+	 * 
+	 * @return The Last Update Time
+	 */
+
+	public ZonedDateTime lastUpdateTime()
+	{
+		return _lastUpdateTime;
+	}
+
+	/**
+	 * Retrieve the Size
+	 * 
+	 * @return The Size
+	 */
+
+	public double size()
+	{
+		return _size;
+	}
+
+	/**
+	 * Up/Down Size using the Augmented Size
+	 * 
+	 * @param augmentedSize Augmented Size
+	 * 
+	 * @return TRUE - The Augmented Size successfully applied
+	 */
+
+	public boolean augmentSize (
+		final double augmentedSize)
+	{
+		if (!NumberUtil.IsValid (augmentedSize)) {
+			return false;
+		}
+
+		_size += augmentedSize;
+		return true;
+	}
+
+	/**
+	 * Reset the Last Update Time
+	 * 
+	 * @return TRUE - The Last Update Time successfully Reset
+	 */
+
+	public boolean resetLastUpdateTime()
+	{
+		_lastUpdateTime = ZonedDateTime.now();
+
+		return true;
+	}
+
+	/**
+	 * Clone this Instance
+	 * 
+	 * @return Follows <code>Object.clone</code> Semantics
+	 */
+
+	@Override public OrderBlock clone()
+	{
+		try {
+			return new OrderBlock (ZonedDateTime.now(), _size);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
+	 * Generate String version of the state with Padding applied
+	 * 
+	 * @param pad Padding
+	 * 
+	 * @return String version of the state with Padding applied
+	 */
+
+	public String toString (
+		final String pad)
+	{
+		return "\n" + pad + "Order Block: [" +
+			"\n" + pad + "\t" +
+			"Last Update Time => " + _lastUpdateTime + "; " +
+			"Size => " + FormatUtil.FormatDouble (_size, 0, 0, 1.) +
+			 "\n" + pad + "]";
+	}
+
+	/**
+	 * Generate String version of the state without Padding
+	 * 
+	 * @return String version of the state without Padding
+	 */
+
+	@Override public String toString()
+	{
+		return toString ("");
 	}
 }

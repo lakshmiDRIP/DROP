@@ -8,6 +8,7 @@ import java.util.Set;
 import org.drip.oms.depth.MontageL1Entry;
 import org.drip.oms.depth.PriceBook;
 import org.drip.oms.transaction.LimitOrderBlock;
+import org.drip.oms.transaction.OrderBlock;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -122,8 +123,10 @@ import org.drip.oms.transaction.LimitOrderBlock;
 public class Venue
 {
 	private VenueSettings _settings = null;
-	private Map<String, PriceBook> _askTickerPriceBookMap = null;
-	private Map<String, PriceBook> _bidTickerPriceBookMap = null;
+	private Map<String, PriceBook> _askTickerLimitOrderBookMap = null;
+	private Map<String, PriceBook> _bidTickerLimitOrderBookMap = null;
+	private Map<String, OrderBlock> _askTickerMarketOrderBookMap = null;
+	private Map<String, OrderBlock> _bidTickerMarketOrderBookMap = null;
 
 	/**
 	 * Venue Constructor
@@ -144,9 +147,13 @@ public class Venue
 			);
 		}
 
-		_askTickerPriceBookMap = new HashMap<String, PriceBook>();
+		_askTickerLimitOrderBookMap = new HashMap<String, PriceBook>();
 
-		_bidTickerPriceBookMap = new HashMap<String, PriceBook>();
+		_bidTickerLimitOrderBookMap = new HashMap<String, PriceBook>();
+
+		_askTickerMarketOrderBookMap = new HashMap<String, OrderBlock>();
+
+		_bidTickerMarketOrderBookMap = new HashMap<String, OrderBlock>();
 	}
 
 	/**
@@ -161,25 +168,47 @@ public class Venue
 	}
 
 	/**
-	 * Retrieve the Bid Price Book per Ticker
+	 * Retrieve the Bid Price Limit Order Book per Ticker
 	 * 
-	 * @return Bid Price Book per Ticker
+	 * @return Bid Price Limit Order Book per Ticker
 	 */
 
-	public Map<String, PriceBook> bidTickerPriceBookMap()
+	public Map<String, PriceBook> bidTickerLimitOrderBookMap()
 	{
-		return _bidTickerPriceBookMap;
+		return _bidTickerLimitOrderBookMap;
 	}
 
 	/**
-	 * Retrieve the Ask Price Book per Ticker
+	 * Retrieve the Ask Price Limit Order Book per Ticker
 	 * 
-	 * @return Ask Price Book per Ticker
+	 * @return Ask Price Limit Order Book per Ticker
 	 */
 
-	public Map<String, PriceBook> askTickerPriceBookMap()
+	public Map<String, PriceBook> askTickerLimitOrderBookMap()
 	{
-		return _askTickerPriceBookMap;
+		return _askTickerLimitOrderBookMap;
+	}
+
+	/**
+	 * Retrieve the Bid Price Market Order Book per Ticker
+	 * 
+	 * @return Bid Price Market Order Book per Ticker
+	 */
+
+	public Map<String, OrderBlock> bidTickerMarketOrderBookMap()
+	{
+		return _bidTickerMarketOrderBookMap;
+	}
+
+	/**
+	 * Retrieve the Ask Price Market Order Book per Ticker
+	 * 
+	 * @return Ask Price Market Order Book per Ticker
+	 */
+
+	public Map<String, OrderBlock> askTickerMarketOrderBookMap()
+	{
+		return _askTickerMarketOrderBookMap;
 	}
 
 	/**
@@ -252,17 +281,17 @@ public class Venue
 			return false;
 		}
 
-		if (!_bidTickerPriceBookMap.containsKey (
+		if (!_bidTickerLimitOrderBookMap.containsKey (
 			ticker
 		))
 		{
-			_bidTickerPriceBookMap.put (
+			_bidTickerLimitOrderBookMap.put (
 				ticker,
 				new PriceBook()
 			);
 		}
 
-		return _bidTickerPriceBookMap.get (
+		return _bidTickerLimitOrderBookMap.get (
 			ticker
 		).aggregatePostedBlock (
 			postedBlock
@@ -289,17 +318,17 @@ public class Venue
 			return false;
 		}
 
-		if (!_askTickerPriceBookMap.containsKey (
+		if (!_askTickerLimitOrderBookMap.containsKey (
 			ticker
 		))
 		{
-			_askTickerPriceBookMap.put (
+			_askTickerLimitOrderBookMap.put (
 				ticker,
 				new PriceBook()
 			);
 		}
 
-		return _askTickerPriceBookMap.get (
+		return _askTickerLimitOrderBookMap.get (
 			ticker
 		).aggregatePostedBlock (
 			postedBlock
@@ -323,9 +352,9 @@ public class Venue
 	{
 		return null != ticker && !ticker.isEmpty() &&
 			null != sweptBlock &&
-			_bidTickerPriceBookMap.containsKey (
+			_bidTickerLimitOrderBookMap.containsKey (
 				ticker
-			) && _bidTickerPriceBookMap.get (
+			) && _bidTickerLimitOrderBookMap.get (
 				ticker
 			).disaggregateSweptBlock (
 				sweptBlock,
@@ -350,9 +379,9 @@ public class Venue
 	{
 		return null != ticker && !ticker.isEmpty() &&
 			null != sweptBlock &&
-			_askTickerPriceBookMap.containsKey (
+			_askTickerLimitOrderBookMap.containsKey (
 				ticker
-			) && _askTickerPriceBookMap.get (
+			) && _askTickerLimitOrderBookMap.get (
 				ticker
 			).disaggregateSweptBlock (
 				sweptBlock,
@@ -371,9 +400,9 @@ public class Venue
 	public LimitOrderBlock topOfTheBidBook (
 		final String ticker)
 	{
-		return null != ticker && !ticker.isEmpty() && _bidTickerPriceBookMap.containsKey (
+		return null != ticker && !ticker.isEmpty() && _bidTickerLimitOrderBookMap.containsKey (
 			ticker
-		) ? _bidTickerPriceBookMap.get (
+		) ? _bidTickerLimitOrderBookMap.get (
 			ticker
 		).topOfTheBook (
 			true
@@ -391,9 +420,9 @@ public class Venue
 	public LimitOrderBlock topOfTheAskBook (
 		final String ticker)
 	{
-		return null != ticker && !ticker.isEmpty() && _askTickerPriceBookMap.containsKey (
+		return null != ticker && !ticker.isEmpty() && _askTickerLimitOrderBookMap.containsKey (
 			ticker
-		) ? _askTickerPriceBookMap.get (
+		) ? _askTickerLimitOrderBookMap.get (
 			ticker
 		).topOfTheBook (
 			false
@@ -455,25 +484,25 @@ public class Venue
 	}
 
 	/**
-	 * Retrieve the Bid Ticker Set
+	 * Retrieve the Bid Limit Order Ticker Set
 	 * 
-	 * @return The Bid Ticker Set
+	 * @return The Bid Limit Order Ticker Set
 	 */
 
-	public Set<String> bidTickerSet()
+	public Set<String> bidLimitOrderTickerSet()
 	{
-		return _bidTickerPriceBookMap.keySet();
+		return _bidTickerLimitOrderBookMap.keySet();
 	}
 
 	/**
-	 * Retrieve the Ask Ticker Set
+	 * Retrieve the Ask Limit Order Ticker Set
 	 * 
-	 * @return The Ask Ticker Set
+	 * @return The Ask Limit Order Ticker Set
 	 */
 
-	public Set<String> askTickerSet()
+	public Set<String> askLimitOrderTickerSet()
 	{
-		return _askTickerPriceBookMap.keySet();
+		return _askTickerLimitOrderBookMap.keySet();
 	}
 
 	/**
@@ -490,8 +519,8 @@ public class Venue
 		return "\n" + pad + "Agent: [" +
 			"\n" + pad + "\t" +
 			"Settings => " + _settings.toString (pad + "\t") + "; " +
-			"Bid Ticker Price Book Map => " + _bidTickerPriceBookMap + "; " +
-			"Ask Ticker Price Book Map => " + _askTickerPriceBookMap +
+			"Bid Ticker Limit Order Book Map => " + _bidTickerLimitOrderBookMap + "; " +
+			"Ask Ticker Limit Order Book Map => " + _askTickerLimitOrderBookMap +
 			 "\n" + pad + "]";
 	}
 

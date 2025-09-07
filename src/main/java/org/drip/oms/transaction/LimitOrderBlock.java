@@ -80,7 +80,7 @@ import org.drip.service.common.FormatUtil;
  */
 
 /**
- * <i>LimitOrderBlock</i> maintains an Limit Entry Block inside an Order Book. The References are:
+ * <i>LimitOrderBlock</i> maintains a Limit Entry Block inside an Order Book. The References are:
  *  
  * 	<br><br>
  *  <ul>
@@ -118,11 +118,10 @@ import org.drip.service.common.FormatUtil;
  */
 
 public class LimitOrderBlock
+	extends OrderBlock
 	implements Comparator<LimitOrderBlock>, Cloneable
 {
-	private double _size = Double.NaN;
 	private double _price = Double.NaN;
-	private ZonedDateTime _lastUpdateTime = null;
 
 	/**
 	 * Construct a Fresh Instance of the <i>LimitOrderBlock</i>
@@ -133,7 +132,7 @@ public class LimitOrderBlock
 	 * @return Fresh Instance of the <i>LimitOrderBlock</i>
 	 */
 
-	public static final LimitOrderBlock Now (
+	public static LimitOrderBlock Now (
 		final double price,
 		final double size)
 	{
@@ -169,29 +168,11 @@ public class LimitOrderBlock
 		final double size)
 		throws Exception
 	{
-		if (null == (_lastUpdateTime = lastUpdateTime) ||
-			!NumberUtil.IsValid (
-				_price = price
-			) || !NumberUtil.IsValid (
-				_size = size
-			)
-		)
-		{
-			throw new Exception (
-				"LimitOrderBlock Constructor => Invalid Inputs"
-			);
+		super (lastUpdateTime, size);
+
+		if (!NumberUtil.IsValid (_price = price)) {
+			throw new Exception ("LimitOrderBlock Constructor => Invalid Inputs");
 		}
-	}
-
-	/**
-	 * Retrieve the Last Update Time
-	 * 
-	 * @return The Last Update Time
-	 */
-
-	public ZonedDateTime lastUpdateTime()
-	{
-		return _lastUpdateTime;
 	}
 
 	/**
@@ -206,85 +187,44 @@ public class LimitOrderBlock
 	}
 
 	/**
-	 * Retrieve the Size
+	 * Compare Two Limit Order Block Instances
 	 * 
-	 * @return The Size
+	 * @param limitOrderBlock1 First Limit Order Block
+	 * @param limitOrderBlock2 Second Limit Order Block
+	 * 
+	 * @return Follows <code>Comparable.compare</code> Semantics
 	 */
-
-	public double size()
-	{
-		return _size;
-	}
-
-	/**
-	 * Up/Down Size using the Augmented Size
-	 * 
-	 * @param augmentedSize Augmented Size
-	 * 
-	 * @return TRUE - The Augmented Size successfully applied
-	 */
-
-	public boolean augmentSize (
-		final double augmentedSize)
-	{
-		if (!NumberUtil.IsValid (
-			augmentedSize
-		))
-		{
-			return false;
-		}
-
-		_size += augmentedSize;
-		return true;
-	}
-
-	/**
-	 * Reset the Last Update Time
-	 * 
-	 * @return TRUE - The Last Update Time successfully Reset
-	 */
-
-	public boolean resetLastUpdateTime()
-	{
-		_lastUpdateTime = ZonedDateTime.now();
-
-		return true;
-	}
 
 	@Override public int compare (
 		final LimitOrderBlock l2Block1,
 		final LimitOrderBlock l2Block2)
 	{
-		if (null == l2Block1 && null == l2Block2)
-		{
+		if (null == l2Block1 && null == l2Block2) {
 			return 0;
 		}
 
-		if (null == l2Block1 && null != l2Block2)
-		{
+		if (null == l2Block1 && null != l2Block2) {
 			return -1;
 		}
 
-		if (null != l2Block1 && null == l2Block2)
-		{
+		if (null != l2Block1 && null == l2Block2) {
 			return 1;
 		}
 
-		return l2Block1._price == l2Block2._price ? 0 : l2Block1._price < l2Block2._price ? -1 : 1;
+		return l2Block1._price < l2Block2._price ? -1 : 1;
 	}
+
+	/**
+	 * Clone this Instance
+	 * 
+	 * @return Follows <code>Object.clone</code> Semantics
+	 */
 
 	@Override public LimitOrderBlock clone()
 	{
-		try
-		{
-			return new LimitOrderBlock (
-				ZonedDateTime.now(),
-				_price,
-				_size
-			);
-		}
-		catch (Exception e)
-		{
+		try {
+			return new LimitOrderBlock (ZonedDateTime.now(), _price, size());
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -304,9 +244,8 @@ public class LimitOrderBlock
 	{
 		return "\n" + pad + "Limit Order Block: [" +
 			"\n" + pad + "\t" +
-			"Last Update Time => " + _lastUpdateTime + "; " +
 			"Price => " + FormatUtil.FormatDouble (_price, 0, 0, 1.) + "; " +
-			"Size => " + FormatUtil.FormatDouble (_size, 0, 0, 1.) +
+			"Size => " + super.toString (pad + "\t") +
 			 "\n" + pad + "]";
 	}
 
