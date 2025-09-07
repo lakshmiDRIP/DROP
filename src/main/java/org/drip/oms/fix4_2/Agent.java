@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.Map;
 
 import org.drip.analytics.support.CaseInsensitiveHashMap;
+import org.drip.oms.exchange.Venue;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -118,6 +119,7 @@ import org.drip.analytics.support.CaseInsensitiveHashMap;
 
 public class Agent
 {
+	private Venue _venue = null;
 	private DeskHandler _deskHandler = null;
 	private Map<String, AgentOrder> _fixOrderMap = null;
 
@@ -145,15 +147,33 @@ public class Agent
 	/**
 	 * Construct a FIX <i>Agent</i> Instance
 	 * 
+	 * @param venue Venue
 	 * @param deskHandler Desk Handler
 	 */
 
 	public Agent (
+		final Venue venue,
 		final DeskHandler deskHandler)
+		throws Exception
 	{
+		if (null == (_venue = venue)) {
+			throw new Exception ("Agent Constructor => Invalid Inputs");
+		}
+
 		_deskHandler = deskHandler;
 
 		_fixOrderMap = new CaseInsensitiveHashMap<AgentOrder>();
+	}
+
+	/**
+	 * Retrieve the Venue Instance
+	 * 
+	 * @return Venue Instance
+	 */
+
+	public Venue venue()
+	{
+		return _venue;
 	}
 
 	/**
@@ -215,8 +235,9 @@ public class Agent
 	{
 		return "\n" + pad + "Agent: [" +
 			"\n" + pad + "\t" +
-			"Fix Order Map => " + _fixOrderMap + "; " +
-			"Desk Handler => " + _deskHandler.toString (pad + "\t") +
+			"Venue => " + _venue.toString (pad + "\t") + "; " +
+			"Desk Handler => " + _deskHandler.toString (pad + "\t") + "; " +
+			"Fix Order Map => " + _fixOrderMap +
 			 "\n" + pad + "]";
 	}
 

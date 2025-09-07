@@ -3,7 +3,7 @@ package org.drip.oms.depth;
 
 import java.util.TreeMap;
 
-import org.drip.oms.transaction.OrderBlock;
+import org.drip.oms.transaction.LimitOrderBlock;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -117,7 +117,7 @@ import org.drip.oms.transaction.OrderBlock;
 
 public class PriceBook
 {
-	private TreeMap<Double, OrderBlock> _aggregatedPostedBlockMap = null;
+	private TreeMap<Double, LimitOrderBlock> _aggregatedPostedBlockMap = null;
 
 	/**
 	 * PriceBook Constructor
@@ -125,7 +125,7 @@ public class PriceBook
 
 	public PriceBook()
 	{
-		_aggregatedPostedBlockMap = new TreeMap<Double, OrderBlock>();
+		_aggregatedPostedBlockMap = new TreeMap<Double, LimitOrderBlock>();
 	}
 
 	/**
@@ -134,7 +134,7 @@ public class PriceBook
 	 * @return The Aggregated Posted Block Price Map
 	 */
 
-	public TreeMap<Double, OrderBlock> aggregatedPostedBlockMap()
+	public TreeMap<Double, LimitOrderBlock> aggregatedPostedBlockMap()
 	{
 		return _aggregatedPostedBlockMap;
 	}
@@ -148,7 +148,7 @@ public class PriceBook
 	 */
 
 	public boolean aggregatePostedBlock (
-		final OrderBlock postedBlock)
+		final LimitOrderBlock postedBlock)
 	{
 		if (null == postedBlock)
 		{
@@ -188,7 +188,7 @@ public class PriceBook
 	 */
 
 	public boolean disaggregateSweptBlock (
-		final OrderBlock sweptBlock,
+		final LimitOrderBlock sweptBlock,
 		final boolean allowPartialSweep)
 	{
 		if (null == sweptBlock)
@@ -207,7 +207,7 @@ public class PriceBook
 
 		double sweptBlockSize = sweptBlock.size();
 
-		OrderBlock postedBlock = _aggregatedPostedBlockMap.get (
+		LimitOrderBlock postedBlock = _aggregatedPostedBlockMap.get (
 			price
 		);
 
@@ -239,11 +239,39 @@ public class PriceBook
 	 * @return The Top-of-the-Book
 	 */
 
-	public OrderBlock topOfTheBook (
+	public LimitOrderBlock topOfTheBook (
 		final boolean bid)
 	{
 		return _aggregatedPostedBlockMap.isEmpty() ? null : bid ?
 			_aggregatedPostedBlockMap.lastEntry().getValue() :
 			_aggregatedPostedBlockMap.firstEntry().getValue();
+	}
+
+	/**
+	 * Generate String version of the state with Padding applied
+	 * 
+	 * @param pad Padding
+	 * 
+	 * @return String version of the state with Padding applied
+	 */
+
+	public String toString (
+		final String pad)
+	{
+		return "\n" + pad + "Order Block: [" +
+			"\n" + pad + "\t" +
+			"Aggregated Posted Block Map => " + _aggregatedPostedBlockMap +
+			 "\n" + pad + "]";
+	}
+
+	/**
+	 * Generate String version of the state without Padding
+	 * 
+	 * @return String version of the state without Padding
+	 */
+
+	@Override public String toString()
+	{
+		return toString ("");
 	}
 }

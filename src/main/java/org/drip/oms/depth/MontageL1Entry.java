@@ -1,7 +1,7 @@
 
 package org.drip.oms.depth;
 
-import org.drip.oms.transaction.OrderBlock;
+import org.drip.oms.transaction.LimitOrderBlock;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -116,7 +116,7 @@ import org.drip.oms.transaction.OrderBlock;
 public class MontageL1Entry
 {
 	private String _venueCode = "";
-	private OrderBlock _topOfTheBook = null;
+	private LimitOrderBlock _topOfTheBook = null;
 
 	/**
 	 * MontageL1Entry Constructor
@@ -129,7 +129,7 @@ public class MontageL1Entry
 
 	public MontageL1Entry (
 		final String venueCode,
-		final OrderBlock topOfTheBook)
+		final LimitOrderBlock topOfTheBook)
 		throws Exception
 	{
 		if (null == (_venueCode = venueCode) || _venueCode.isEmpty())
@@ -159,7 +159,7 @@ public class MontageL1Entry
 	 * @return Bid Top-of-the-Book
 	 */
 
-	public OrderBlock topOfTheBook()
+	public LimitOrderBlock topOfTheBook()
 	{
 		return _topOfTheBook;
 	}

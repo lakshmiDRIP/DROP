@@ -4,8 +4,8 @@ package org.drip.oms.switchable;
 import java.util.Date;
 
 import org.drip.numerical.common.NumberUtil;
+import org.drip.oms.depth.CrossVenueMontageDigest;
 import org.drip.oms.depth.MontageL1Manager;
-import org.drip.oms.exchange.CrossVenueMontageDigest;
 import org.drip.oms.transaction.Order;
 import org.drip.oms.transaction.OrderFillWholeSettings;
 import org.drip.oms.transaction.OrderIssuer;

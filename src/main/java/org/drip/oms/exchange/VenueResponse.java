@@ -352,4 +352,38 @@ public class VenueResponse
 	{
 		return _comment;
 	}
+
+	/**
+	 * Generate String version of the state with Padding applied
+	 * 
+	 * @param pad Padding
+	 * 
+	 * @return String version of the state with Padding applied
+	 */
+
+	public String toString (
+		final String pad)
+	{
+		return "\n" + pad + "Venue Response: [" +
+			"\n" + pad + "\t" +
+			"Procesing Start Time => " + _processingStartTime + "; " +
+			"Procesing Finish Time => " + _processingFinishTime + "; " +
+			"clOrdID => " + _clOrdID + "; " +
+			"origClOrdID => " + _origClOrdID + "; " +
+			"Type => " + VenueResponseType.ToString (_type) + "; " +
+			"Comment => " + _comment + "; " +
+			"Order => " + _order.toString (pad + "\t") +
+			 "\n" + pad + "]";
+	}
+
+	/**
+	 * Generate String version of the state without Padding
+	 * 
+	 * @return String version of the state without Padding
+	 */
+
+	@Override public String toString()
+	{
+		return toString ("");
+	}
 }

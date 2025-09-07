@@ -1,17 +1,22 @@
 
-package org.drip.oms.transaction;
+package org.drip.sample.fix;
 
-import java.time.ZonedDateTime;
-import java.util.Comparator;
-
-import org.drip.numerical.common.NumberUtil;
+import org.drip.oms.exchange.Venue;
+import org.drip.oms.exchange.VenueSettings;
+import org.drip.oms.fix4_2.Agent;
+import org.drip.oms.fix4_2.AgentRequest;
+import org.drip.oms.fix4_2.DeskHandler;
+import org.drip.oms.transaction.OrderIssuer;
+import org.drip.oms.transaction.TimeInForce;
+import org.drip.oms.unthresholded.MarketOrder;
+import org.drip.service.env.EnvManager;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
- * Copyright (C) 2023 Lakshmi Krishnamurthy
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
  * 
  *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
  *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
@@ -79,17 +84,22 @@ import org.drip.numerical.common.NumberUtil;
  */
 
 /**
- * <i>OrderBlock</i> maintains an L2 Entry Block inside an Order Book. The References are:
+ * <i>D1_2</i> illustrates Acceptance, Partial Fill, and Completion in the D1 Order Scenario. The References
+ * 	are:
  *  
  * 	<br><br>
  *  <ul>
  * 		<li>
- * 			Chen, J. (2021): Time in Force: Definition, Types, and Examples
- * 				https://www.investopedia.com/terms/t/timeinforce.asp
+ * 			Berkowitz, S. A., D. E. Logue, and E. A. J. Noser (1988): The Total Cost of Transactions on the
+ * 				NYSE <i>Journal of Finance</i> <b>43 (1)</b> 97-112
  * 		</li>
  * 		<li>
  * 			Cont, R., and A. Kukanov (2017): Optimal Order Placement in Limit Order Markets <i>Quantitative
  * 				Finance</i> <b>17 (1)</b> 21-39
+ * 		</li>
+ * 		<li>
+ * 			Vassilis, P. (2005a): A Realistic Model of Market Liquidity and Depth <i>Journal of Futures
+ * 				Markets</i> <b>25 (5)</b> 443-464
  * 		</li>
  * 		<li>
  * 			Vassilis, P. (2005b): Slow and Fast Markets <i>Journal of Economics and Business</i> <b>57
@@ -99,194 +109,64 @@ import org.drip.numerical.common.NumberUtil;
  * 			Weiss, D. (2006): <i>After the Trade is Made: Processing Securities Transactions</i> <b>Portfolio
  * 				Publishing</b> London UK
  * 		</li>
- * 		<li>
- * 			Wikipedia (2023): Central Limit Order Book
- * 				https://en.wikipedia.org/wiki/Central_limit_order_book
- * 		</li>
  *  </ul>
  *
  *	<br><br>
  *  <ul>
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/TransactionCostAnalyticsLibrary.md">Transaction Cost Analytics</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/oms/README.md">R<sup>d</sup> Order Specification, Handling, and Management</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/oms/transaction/README.md">Order Specification and Session Metrics</a></li>
+ *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/README.md">DROP API Construction and Usage</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/fix/README.md">FIX 4.2 Agent Order Handling</a></li>
  *  </ul>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class OrderBlock
-	implements Comparator<OrderBlock>, Cloneable
+public class D1_2
 {
-	private double _size = Double.NaN;
-	private double _price = Double.NaN;
-	private ZonedDateTime _lastUpdateTime = null;
 
 	/**
-	 * Construct a Fresh Instance of the L2 <i>OrderBlock</i>
+	 * Entry Point
 	 * 
-	 * @param price L2 Price
-	 * @param size L2 Size
+	 * @param argumentArray Command Line Argument Array
 	 * 
-	 * @return Fresh Instance of the L2 <i>OrderBlock</i>
+	 * @throws Exception Thrown on Error/Exception Situation
 	 */
 
-	public static final OrderBlock Now (
-		final double price,
-		final double size)
-	{
-		try
-		{
-			return new OrderBlock (
-				ZonedDateTime.now(),
-				price,
-				size
-			);
-		}
-		catch (Exception e)
-		{
-			e.printStackTrace();
-		}
-
-		return null;
-	}
-
-	/**
-	 * <i>OrderBlock</i> Constructor
-	 * 
-	 * @param lastUpdateTime Last Update Time
-	 * @param price L2 Price
-	 * @param size L2 Size
-	 * 
-	 * @throws Exception Thrown if the Inputs are Invalid
-	 */
-
-	public OrderBlock (
-		final ZonedDateTime lastUpdateTime,
-		final double price,
-		final double size)
+	public static final void main (
+		final String[] argumentArray)
 		throws Exception
 	{
-		if (null == (_lastUpdateTime = lastUpdateTime) ||
-			!NumberUtil.IsValid (
-				_price = price
-			) || !NumberUtil.IsValid (
-				_size = size
+		EnvManager.InitEnv ("");
+
+		double size = 10000.;
+		String ticker = "AAPL";
+		String jurisdiction = "US";
+		String dealerEntity = "BARX";
+		String localIdentifier = "LIQNET";
+
+		Agent agent = new Agent (
+			new Venue (new VenueSettings (localIdentifier, jurisdiction, null)),
+			new DeskHandler (true)
+		);
+
+		System.out.println (agent);
+
+		AgentRequest agentRequest = AgentRequest.Standard (
+			MarketOrder.StandardBuy (
+				OrderIssuer.DEALER (dealerEntity),
+				ticker,
+				"",
+				size,
+				TimeInForce.CreateDay(),
+				null
 			)
-		)
-		{
-			throw new Exception (
-				"OrderBlock Constructor => Invalid Inputs"
-			);
-		}
-	}
+		);
 
-	/**
-	 * Retrieve the Last Update Time
-	 * 
-	 * @return The Last Update Time
-	 */
+		System.out.println (agentRequest);
 
-	public ZonedDateTime lastUpdateTime()
-	{
-		return _lastUpdateTime;
-	}
+		System.out.println (agent.handleClientRequest (agentRequest));
 
-	/**
-	 * Retrieve the Price
-	 * 
-	 * @return The Price
-	 */
-
-	public double price()
-	{
-		return _price;
-	}
-
-	/**
-	 * Retrieve the Size
-	 * 
-	 * @return The Size
-	 */
-
-	public double size()
-	{
-		return _size;
-	}
-
-	/**
-	 * Up/Down Size using the Augmented Size
-	 * 
-	 * @param augmentedSize Augmented Size
-	 * 
-	 * @return TRUE - The Augmented Size successfully applied
-	 */
-
-	public boolean augmentSize (
-		final double augmentedSize)
-	{
-		if (!NumberUtil.IsValid (
-			augmentedSize
-		))
-		{
-			return false;
-		}
-
-		_size += augmentedSize;
-		return true;
-	}
-
-	/**
-	 * Reset the Last Update Time
-	 * 
-	 * @return TRUE - The Last Update Time successfully Reset
-	 */
-
-	public boolean resetLastUpdateTime()
-	{
-		_lastUpdateTime = ZonedDateTime.now();
-
-		return true;
-	}
-
-	@Override public int compare (
-		final OrderBlock l2Block1,
-		final OrderBlock l2Block2)
-	{
-		if (null == l2Block1 && null == l2Block2)
-		{
-			return 0;
-		}
-
-		if (null == l2Block1 && null != l2Block2)
-		{
-			return -1;
-		}
-
-		if (null != l2Block1 && null == l2Block2)
-		{
-			return 1;
-		}
-
-		return l2Block1._price == l2Block2._price ? 0 : l2Block1._price < l2Block2._price ? -1 : 1;
-	}
-
-	@Override public OrderBlock clone()
-	{
-		try
-		{
-			return new OrderBlock (
-				ZonedDateTime.now(),
-				_price,
-				_size
-			);
-		}
-		catch (Exception e)
-		{
-			e.printStackTrace();
-		}
-
-		return null;
+		EnvManager.TerminateEnv();
 	}
 }

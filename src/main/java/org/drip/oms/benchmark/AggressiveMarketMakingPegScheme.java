@@ -2,9 +2,9 @@
 package org.drip.oms.benchmark;
 
 import org.drip.numerical.common.NumberUtil;
+import org.drip.oms.depth.CrossVenueMontageDigest;
 import org.drip.oms.depth.MontageL1Manager;
-import org.drip.oms.exchange.CrossVenueMontageDigest;
-import org.drip.oms.transaction.OrderBlock;
+import org.drip.oms.transaction.LimitOrderBlock;
 import org.drip.oms.transaction.Side;
 import org.drip.state.identifier.EntityEquityLabel;
 
@@ -236,7 +236,7 @@ public class AggressiveMarketMakingPegScheme
 
 		char buySell = side().buySell();
 
-		OrderBlock bidNBBOBlock = montageL1Manager.bidNBBOBlock();
+		LimitOrderBlock bidNBBOBlock = montageL1Manager.bidNBBOBlock();
 
 		if (null == bidNBBOBlock)
 		{
@@ -245,7 +245,7 @@ public class AggressiveMarketMakingPegScheme
 			);
 		}
 
-		OrderBlock askNBBOBlock = montageL1Manager.askNBBOBlock();
+		LimitOrderBlock askNBBOBlock = montageL1Manager.askNBBOBlock();
 
 		if (null == askNBBOBlock)
 		{

@@ -7,7 +7,7 @@ import java.util.Set;
 
 import org.drip.oms.depth.MontageL1Entry;
 import org.drip.oms.depth.PriceBook;
-import org.drip.oms.transaction.OrderBlock;
+import org.drip.oms.transaction.LimitOrderBlock;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -243,7 +243,7 @@ public class Venue
 
 	public boolean postBidBlock (
 		final String ticker,
-		final OrderBlock postedBlock)
+		final LimitOrderBlock postedBlock)
 	{
 		if (null == ticker || ticker.isEmpty() ||
 			null == postedBlock
@@ -280,7 +280,7 @@ public class Venue
 
 	public boolean postAskBlock (
 		final String ticker,
-		final OrderBlock postedBlock)
+		final LimitOrderBlock postedBlock)
 	{
 		if (null == ticker || ticker.isEmpty() ||
 			null == postedBlock
@@ -318,7 +318,7 @@ public class Venue
 
 	public boolean sweepBidBlock (
 		final String ticker,
-		final OrderBlock sweptBlock,
+		final LimitOrderBlock sweptBlock,
 		final boolean allowPartialSweep)
 	{
 		return null != ticker && !ticker.isEmpty() &&
@@ -345,7 +345,7 @@ public class Venue
 
 	public boolean sweepAskBlock (
 		final String ticker,
-		final OrderBlock sweptBlock,
+		final LimitOrderBlock sweptBlock,
 		final boolean allowPartialSweep)
 	{
 		return null != ticker && !ticker.isEmpty() &&
@@ -368,7 +368,7 @@ public class Venue
 	 * @return The Top-of-the-Bid-Book
 	 */
 
-	public OrderBlock topOfTheBidBook (
+	public LimitOrderBlock topOfTheBidBook (
 		final String ticker)
 	{
 		return null != ticker && !ticker.isEmpty() && _bidTickerPriceBookMap.containsKey (
@@ -388,7 +388,7 @@ public class Venue
 	 * @return The Top-of-the-Ask-Book
 	 */
 
-	public OrderBlock topOfTheAskBook (
+	public LimitOrderBlock topOfTheAskBook (
 		final String ticker)
 	{
 		return null != ticker && !ticker.isEmpty() && _askTickerPriceBookMap.containsKey (
@@ -411,7 +411,7 @@ public class Venue
 	public MontageL1Entry bidMontageL1Entry (
 		final String ticker)
 	{
-		OrderBlock topOfTheBidBook = topOfTheBidBook (
+		LimitOrderBlock topOfTheBidBook = topOfTheBidBook (
 			ticker
 		);
 
@@ -438,7 +438,7 @@ public class Venue
 	public MontageL1Entry askMontageL1Entry (
 		final String ticker)
 	{
-		OrderBlock topOfTheAskBook = topOfTheAskBook (
+		LimitOrderBlock topOfTheAskBook = topOfTheAskBook (
 			ticker
 		);
 
@@ -474,5 +474,35 @@ public class Venue
 	public Set<String> askTickerSet()
 	{
 		return _askTickerPriceBookMap.keySet();
+	}
+
+	/**
+	 * Generate String version of the state with Padding applied
+	 * 
+	 * @param pad Padding
+	 * 
+	 * @return String version of the state with Padding applied
+	 */
+
+	public String toString (
+		final String pad)
+	{
+		return "\n" + pad + "Agent: [" +
+			"\n" + pad + "\t" +
+			"Settings => " + _settings.toString (pad + "\t") + "; " +
+			"Bid Ticker Price Book Map => " + _bidTickerPriceBookMap + "; " +
+			"Ask Ticker Price Book Map => " + _askTickerPriceBookMap +
+			 "\n" + pad + "]";
+	}
+
+	/**
+	 * Generate String version of the state without Padding
+	 * 
+	 * @return String version of the state without Padding
+	 */
+
+	@Override public String toString()
+	{
+		return toString ("");
 	}
 }

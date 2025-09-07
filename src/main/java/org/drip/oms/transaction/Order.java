@@ -522,8 +522,6 @@ public class Order
 	/**
 	 * Set the Order as Rejected
 	 * 
-	 * @param orderState Order State
-	 * 
 	 * @return TRUE - The Order State successfully set to Rejected
 	 */
 
@@ -537,8 +535,6 @@ public class Order
 
 	/**
 	 * Set the Order as Accepted
-	 * 
-	 * @param orderState Order State
 	 * 
 	 * @return TRUE - The Order State successfully set to Accepted
 	 */

@@ -2,7 +2,7 @@
 package org.drip.oms.benchmark;
 
 import org.drip.numerical.common.NumberUtil;
-import org.drip.oms.exchange.CrossVenueMontageDigest;
+import org.drip.oms.depth.CrossVenueMontageDigest;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-

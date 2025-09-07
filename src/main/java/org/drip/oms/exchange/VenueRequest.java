@@ -213,4 +213,35 @@ public class VenueRequest
 	{
 		return _order;
 	}
+
+	/**
+	 * Generate String version of the state with Padding applied
+	 * 
+	 * @param pad Padding
+	 * 
+	 * @return String version of the state with Padding applied
+	 */
+
+	public String toString (
+		final String pad)
+	{
+		return "\n" + pad + "Venue Request: [" +
+			"\n" + pad + "\t" +
+			"clOrdID => " + _clOrdID + "; " +
+			"origClOrdID => " + _origClOrdID + "; " +
+			"type => " + VenueRequestType.ToString (_type) + "; " +
+			"Order => " + _order.toString (pad + "\t") +
+			 "\n" + pad + "]";
+	}
+
+	/**
+	 * Generate String version of the state without Padding
+	 * 
+	 * @return String version of the state without Padding
+	 */
+
+	@Override public String toString()
+	{
+		return toString ("");
+	}
 }

@@ -1,8 +1,8 @@
 
 package org.drip.oms.benchmark;
 
+import org.drip.oms.depth.CrossVenueMontageDigest;
 import org.drip.oms.depth.MontageL1Manager;
-import org.drip.oms.exchange.CrossVenueMontageDigest;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-

@@ -128,7 +128,7 @@ public interface PricingRebateFunction
 	 * @throws Exception Thrown if the Liquidity Maker Fee cannot be calculated
 	 */
 
-	abstract public double makerFee (
+	public abstract double makerFee (
 		final String ticker,
 		final double price,
 		final double size
@@ -147,7 +147,7 @@ public interface PricingRebateFunction
 	 * @throws Exception Thrown if the Liquidity Taker Fee cannot be calculated
 	 */
 
-	abstract public double takerFee (
+	public abstract double takerFee (
 		final String ticker,
 		final double price,
 		final double size

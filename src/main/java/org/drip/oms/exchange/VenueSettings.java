@@ -134,14 +134,14 @@ public class VenueSettings
 		throws Exception
 	{
 		if (null == (_localIdentifier = localIdentifier) || _localIdentifier.isEmpty() ||
-			null == (_jurisdiction = jurisdiction) || _jurisdiction.isEmpty() ||
-			null == (_pricingRebateFunction = pricingRebateFunction)
-		)
+			null == (_jurisdiction = jurisdiction) || _jurisdiction.isEmpty())
 		{
 			throw new Exception (
 				"VenueSettings Constructor => Invalid Inputs"
 			);
 		}
+
+		_pricingRebateFunction = pricingRebateFunction;
 	}
 
 	/**
@@ -186,5 +186,35 @@ public class VenueSettings
 	public String code()
 	{
 		return _localIdentifier + "::" + _jurisdiction;
+	}
+
+	/**
+	 * Generate String version of the state with Padding applied
+	 * 
+	 * @param pad Padding
+	 * 
+	 * @return String version of the state with Padding applied
+	 */
+
+	public String toString (
+		final String pad)
+	{
+		return "\n" + pad + "Venue Settings: [" +
+			"\n" + pad + "\t" +
+			"Jurisdiction => " + _jurisdiction + "; " +
+			"Local Identifier => " + _localIdentifier + "; " +
+			"Pricing Rebate Function => " + _pricingRebateFunction +
+			 "\n" + pad + "]";
+	}
+
+	/**
+	 * Generate String version of the state without Padding
+	 * 
+	 * @return String version of the state without Padding
+	 */
+
+	@Override public String toString()
+	{
+		return toString ("");
 	}
 }

@@ -132,4 +132,30 @@ public class VenueResponseType
 	 */
 
 	public static final int EXECUTION = 3;
+
+	/**
+	 * String Form of Venue Response Type
+	 * 
+	 * @param venueResponseType Venue Response Type
+	 * 
+	 * @return String Form
+	 */
+
+	public static final String ToString (
+		final int venueResponseType)
+	{
+		if (NEW == venueResponseType) {
+			return "NEW";
+		}
+
+		if (REJECTED == venueResponseType) {
+			return "REJECTED";
+		}
+
+		if (EXECUTION == venueResponseType) {
+			return "EXECUTION";
+		}
+
+		return "UNKNOWN";
+	}
 }

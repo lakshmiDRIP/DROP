@@ -1,10 +1,11 @@
 
-package org.drip.oms.exchange;
+package org.drip.oms.transaction;
 
-import java.util.Map;
-import java.util.Set;
+import java.time.ZonedDateTime;
+import java.util.Comparator;
 
-import org.drip.oms.depth.MontageL1Manager;
+import org.drip.numerical.common.NumberUtil;
+import org.drip.service.common.FormatUtil;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -79,7 +80,7 @@ import org.drip.oms.depth.MontageL1Manager;
  */
 
 /**
- * <i>CrossVenueMontageDigest</i> contains the Digest of cross-Venue Montage Calculation. The References are:
+ * <i>LimitOrderBlock</i> maintains an Limit Entry Block inside an Order Book. The References are:
  *  
  * 	<br><br>
  *  <ul>
@@ -110,89 +111,213 @@ import org.drip.oms.depth.MontageL1Manager;
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/TransactionCostAnalyticsLibrary.md">Transaction Cost Analytics</a></li>
  *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/oms/README.md">R<sup>d</sup> Order Specification, Handling, and Management</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/oms/exchange/README.md">Implementation of Venue Order Handling</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/oms/transaction/README.md">Order Specification and Session Metrics</a></li>
  *  </ul>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class CrossVenueMontageDigest
+public class LimitOrderBlock
+	implements Comparator<LimitOrderBlock>, Cloneable
 {
-	private Map<String, MontageL1Manager> _tickerL1ManagerMap = null;
+	private double _size = Double.NaN;
+	private double _price = Double.NaN;
+	private ZonedDateTime _lastUpdateTime = null;
 
 	/**
-	 * CrossVenueMontageDigest Constructor
+	 * Construct a Fresh Instance of the <i>LimitOrderBlock</i>
 	 * 
-	 * @param tickerL1ManagerMap Ticker to L1 Montage Manager Map
+	 * @param price L2 Price
+	 * @param size L2 Size
 	 * 
-	 * @throws Exception Thrown if Inputs are Invalid
+	 * @return Fresh Instance of the <i>LimitOrderBlock</i>
 	 */
 
-	public CrossVenueMontageDigest (
-		final Map<String, MontageL1Manager> tickerL1ManagerMap)
+	public static final LimitOrderBlock Now (
+		final double price,
+		final double size)
+	{
+		try
+		{
+			return new LimitOrderBlock (
+				ZonedDateTime.now(),
+				price,
+				size
+			);
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
+	 * <i>LimitOrderBlock</i> Constructor
+	 * 
+	 * @param lastUpdateTime Last Update Time
+	 * @param price L2 Price
+	 * @param size L2 Size
+	 * 
+	 * @throws Exception Thrown if the Inputs are Invalid
+	 */
+
+	public LimitOrderBlock (
+		final ZonedDateTime lastUpdateTime,
+		final double price,
+		final double size)
 		throws Exception
 	{
-		if (null == (_tickerL1ManagerMap = tickerL1ManagerMap))
+		if (null == (_lastUpdateTime = lastUpdateTime) ||
+			!NumberUtil.IsValid (
+				_price = price
+			) || !NumberUtil.IsValid (
+				_size = size
+			)
+		)
 		{
 			throw new Exception (
-				"CrossVenueMontageDigest Constructor => Invalid Inputs"
+				"LimitOrderBlock Constructor => Invalid Inputs"
 			);
 		}
 	}
 
 	/**
-	 * Retrieve the Ticker to L1 Montage Manager Map
+	 * Retrieve the Last Update Time
 	 * 
-	 * @return The Ticker to L1 Montage Manager Map
+	 * @return The Last Update Time
 	 */
 
-	public Map<String, MontageL1Manager> tickerL1ManagerMap()
+	public ZonedDateTime lastUpdateTime()
 	{
-		return _tickerL1ManagerMap;
+		return _lastUpdateTime;
 	}
 
 	/**
-	 * Retrieve the Set of Montage Tickers
+	 * Retrieve the Price
 	 * 
-	 * @return Set of Montage Tickers
+	 * @return The Price
 	 */
 
-	public Set<String> tickerSet()
+	public double price()
 	{
-		return _tickerL1ManagerMap.keySet();
+		return _price;
 	}
 
 	/**
-	 * Indicate if the Specified Ticker is available in the Montage
+	 * Retrieve the Size
 	 * 
-	 * @param ticker Ticker
-	 * 
-	 * @return TRUE - The Specified Ticker is available in the Montage
+	 * @return The Size
 	 */
 
-	public boolean containsTicker (
-		final String ticker)
+	public double size()
 	{
-		return null != ticker && !ticker.isEmpty() && _tickerL1ManagerMap.containsKey (
-			ticker
-		);
+		return _size;
 	}
 
 	/**
-	 * Retrieve the L1 Montage Manager Map for specified Ticker
+	 * Up/Down Size using the Augmented Size
 	 * 
-	 * @param ticker Ticker
+	 * @param augmentedSize Augmented Size
 	 * 
-	 * @return L1 Montage Manager Map for specified Ticker
+	 * @return TRUE - The Augmented Size successfully applied
 	 */
 
-	public MontageL1Manager retrieveTickerMontageL1Manager (
-		final String ticker)
+	public boolean augmentSize (
+		final double augmentedSize)
 	{
-		return containsTicker (
-			ticker
-		) ? _tickerL1ManagerMap.get (
-			ticker
-		) : null;
+		if (!NumberUtil.IsValid (
+			augmentedSize
+		))
+		{
+			return false;
+		}
+
+		_size += augmentedSize;
+		return true;
+	}
+
+	/**
+	 * Reset the Last Update Time
+	 * 
+	 * @return TRUE - The Last Update Time successfully Reset
+	 */
+
+	public boolean resetLastUpdateTime()
+	{
+		_lastUpdateTime = ZonedDateTime.now();
+
+		return true;
+	}
+
+	@Override public int compare (
+		final LimitOrderBlock l2Block1,
+		final LimitOrderBlock l2Block2)
+	{
+		if (null == l2Block1 && null == l2Block2)
+		{
+			return 0;
+		}
+
+		if (null == l2Block1 && null != l2Block2)
+		{
+			return -1;
+		}
+
+		if (null != l2Block1 && null == l2Block2)
+		{
+			return 1;
+		}
+
+		return l2Block1._price == l2Block2._price ? 0 : l2Block1._price < l2Block2._price ? -1 : 1;
+	}
+
+	@Override public LimitOrderBlock clone()
+	{
+		try
+		{
+			return new LimitOrderBlock (
+				ZonedDateTime.now(),
+				_price,
+				_size
+			);
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
+	 * Generate String version of the state with Padding applied
+	 * 
+	 * @param pad Padding
+	 * 
+	 * @return String version of the state with Padding applied
+	 */
+
+	public String toString (
+		final String pad)
+	{
+		return "\n" + pad + "Limit Order Block: [" +
+			"\n" + pad + "\t" +
+			"Last Update Time => " + _lastUpdateTime + "; " +
+			"Price => " + FormatUtil.FormatDouble (_price, 0, 0, 1.) + "; " +
+			"Size => " + FormatUtil.FormatDouble (_size, 0, 0, 1.) +
+			 "\n" + pad + "]";
+	}
+
+	/**
+	 * Generate String version of the state without Padding
+	 * 
+	 * @return String version of the state without Padding
+	 */
+
+	@Override public String toString()
+	{
+		return toString ("");
 	}
 }

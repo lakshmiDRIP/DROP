@@ -4,7 +4,7 @@ package org.drip.oms.depth;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.drip.oms.transaction.OrderBlock;
+import org.drip.oms.transaction.LimitOrderBlock;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -194,7 +194,7 @@ public class UBBOBlock
 			return false;
 		}
 
-		OrderBlock topOfTheBookBlock = montageL1Entry.topOfTheBook();
+		LimitOrderBlock topOfTheBookBlock = montageL1Entry.topOfTheBook();
 
 		_contributingVenueSet.add (
 			montageL1Entry.venueCode()

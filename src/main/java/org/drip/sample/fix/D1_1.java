@@ -1,6 +1,8 @@
 
 package org.drip.sample.fix;
 
+import org.drip.oms.exchange.Venue;
+import org.drip.oms.exchange.VenueSettings;
 import org.drip.oms.fix4_2.Agent;
 import org.drip.oms.fix4_2.AgentRequest;
 import org.drip.oms.fix4_2.DeskHandler;
@@ -138,9 +140,14 @@ public class D1_1
 
 		double size = 10000.;
 		String ticker = "AAPL";
+		String jurisdiction = "US";
 		String dealerEntity = "BARX";
+		String localIdentifier = "LIQNET";
 
-		Agent agent = new Agent (new DeskHandler (false));
+		Agent agent = new Agent (
+			new Venue (new VenueSettings (localIdentifier, jurisdiction, null)),
+			new DeskHandler (false)
+		);
 
 		System.out.println (agent);
 

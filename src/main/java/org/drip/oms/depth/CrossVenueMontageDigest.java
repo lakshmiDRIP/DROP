@@ -1,14 +1,8 @@
 
-package org.drip.oms.exchange;
+package org.drip.oms.depth;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
-import org.drip.oms.depth.MontageL1Entry;
-import org.drip.oms.depth.MontageL1Manager;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -83,8 +77,7 @@ import org.drip.oms.depth.MontageL1Manager;
  */
 
 /**
- * <i>CrossVenueMontageProcessor</i> compiles and processes cross-Venue Montage Functionality. The References
- *  are:
+ * <i>CrossVenueMontageDigest</i> contains the Digest of cross-Venue Montage Calculation. The References are:
  *  
  * 	<br><br>
  *  <ul>
@@ -115,171 +108,89 @@ import org.drip.oms.depth.MontageL1Manager;
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/TransactionCostAnalyticsLibrary.md">Transaction Cost Analytics</a></li>
  *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/oms/README.md">R<sup>d</sup> Order Specification, Handling, and Management</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/oms/exchange/README.md">Implementation of Venue Order Handling</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/oms/depth/README.md">L1, L2, L3 Deep Books</a></li>
  *  </ul>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class CrossVenueMontageProcessor
+public class CrossVenueMontageDigest
 {
-	private Set<String> _askTickerSet = null;
-	private Set<String> _bidTickerSet = null;
-	private Map<String, Venue> _l1Container = null;
+	private Map<String, MontageL1Manager> _tickerL1ManagerMap = null;
 
 	/**
-	 * Empty CrossVenueMontageProcessor Constructor
+	 * CrossVenueMontageDigest Constructor
+	 * 
+	 * @param tickerL1ManagerMap Ticker to L1 Montage Manager Map
+	 * 
+	 * @throws Exception Thrown if Inputs are Invalid
 	 */
 
-	public CrossVenueMontageProcessor (
-		final List<Venue> venueList)
+	public CrossVenueMontageDigest (
+		final Map<String, MontageL1Manager> tickerL1ManagerMap)
 		throws Exception
 	{
-		if (null == venueList || 0 == venueList.size())
+		if (null == (_tickerL1ManagerMap = tickerL1ManagerMap))
 		{
 			throw new Exception (
-				"CrossVenueMontageProcessor Contructor => Invalid Inputs"
-			);
-		}
-
-		_l1Container = new HashMap<String, Venue>();
-
-		_bidTickerSet = new HashSet<String>();
-
-		_askTickerSet = new HashSet<String>();
-
-		for (Venue venue : venueList)
-		{
-			_l1Container.put (
-				venue.settings().code(),
-				venue
-			);
-
-			_bidTickerSet.addAll (
-				venue.bidTickerSet()
-			);
-
-			_askTickerSet.addAll (
-				venue.askTickerSet()
+				"CrossVenueMontageDigest Constructor => Invalid Inputs"
 			);
 		}
 	}
 
 	/**
-	 * Retrieve the Venue L1 Container
+	 * Retrieve the Ticker to L1 Montage Manager Map
 	 * 
-	 * @return The Venue L1 Container
+	 * @return The Ticker to L1 Montage Manager Map
 	 */
 
-	public Map<String, Venue> l1Container()
+	public Map<String, MontageL1Manager> tickerL1ManagerMap()
 	{
-		return _l1Container;
+		return _tickerL1ManagerMap;
 	}
 
 	/**
-	 * Retrieve the Bid Ticker Set
+	 * Retrieve the Set of Montage Tickers
 	 * 
-	 * @return The Bid Ticker Set
+	 * @return Set of Montage Tickers
 	 */
 
-	public Set<String> bidTickerSet()
+	public Set<String> tickerSet()
 	{
-		return _bidTickerSet;
+		return _tickerL1ManagerMap.keySet();
 	}
 
 	/**
-	 * Retrieve the Ask Ticker Set
+	 * Indicate if the Specified Ticker is available in the Montage
 	 * 
-	 * @return The Ask Ticker Set
+	 * @param ticker Ticker
+	 * 
+	 * @return TRUE - The Specified Ticker is available in the Montage
 	 */
 
-	public Set<String> askTickerSet()
+	public boolean containsTicker (
+		final String ticker)
 	{
-		return _askTickerSet;
+		return null != ticker && !ticker.isEmpty() && _tickerL1ManagerMap.containsKey (
+			ticker
+		);
 	}
 
-	private boolean updateL1MontageManagerMap (
-		final Venue venue,
-		final Set<String> tickerSet,
-		final Set<String> venueMontageTickerSet,
-		final Map<String, MontageL1Manager> l1MontageManagerMap,
-		final boolean bid)
+	/**
+	 * Retrieve the L1 Montage Manager Map for specified Ticker
+	 * 
+	 * @param ticker Ticker
+	 * 
+	 * @return L1 Montage Manager Map for specified Ticker
+	 */
+
+	public MontageL1Manager retrieveTickerMontageL1Manager (
+		final String ticker)
 	{
-		for (String venueMontageTicker : venueMontageTickerSet) {
-			MontageL1Entry montageL1Entry = bid ? venue.bidMontageL1Entry (
-				venueMontageTicker
-			) : venue.askMontageL1Entry (
-				venueMontageTicker
-			);
-
-			if (null == montageL1Entry) {
-				continue;
-			}
-
-			if (!tickerSet.contains (
-				venueMontageTicker
-			))
-			{
-				MontageL1Manager montageL1Manager = new MontageL1Manager();
-
-				if (bid) {
-					montageL1Manager.addBidEntry (
-						montageL1Entry
-					);
-				} else {
-					montageL1Manager.addAskEntry (
-						montageL1Entry
-					);
-				}
-
-				l1MontageManagerMap.put (
-					venueMontageTicker,
-					montageL1Manager
-				);
-			} else {
-				l1MontageManagerMap.get (
-					venueMontageTicker
-				).addBidEntry (
-					montageL1Entry
-				);
-			}
-		}
-
-		return true;
-	}
-
-	public CrossVenueMontageDigest munge()
-	{
-		Map<String, MontageL1Manager> tickerMontageL1ManagerMap = new HashMap<String, MontageL1Manager>();
-
-		for (Map.Entry<String, Venue> l1ContainerMapEntry : _l1Container.entrySet()) {
-			Venue venue = l1ContainerMapEntry.getValue();
-
-			updateL1MontageManagerMap (
-				venue,
-				_bidTickerSet,
-				venue.bidTickerSet(),
-				tickerMontageL1ManagerMap,
-				true
-			);
-
-			updateL1MontageManagerMap (
-				venue,
-				_askTickerSet,
-				venue.askTickerSet(),
-				tickerMontageL1ManagerMap,
-				false
-			);
-		};
-
-		try {
-			return new CrossVenueMontageDigest (
-				tickerMontageL1ManagerMap
-			);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-		return null;
+		return containsTicker (
+			ticker
+		) ? _tickerL1ManagerMap.get (
+			ticker
+		) : null;
 	}
 }

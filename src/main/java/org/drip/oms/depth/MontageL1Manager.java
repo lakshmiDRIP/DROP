@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
-import org.drip.oms.transaction.OrderBlock;
+import org.drip.oms.transaction.LimitOrderBlock;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -374,7 +374,7 @@ public class MontageL1Manager
 	 * @return The NBBO Bid Block
 	 */
 
-	public OrderBlock bidNBBOBlock()
+	public LimitOrderBlock bidNBBOBlock()
 	{
 		return _orderedBidBook.isEmpty() ? null :
 			_orderedBidBook.lastEntry().getValue().leadingBlockList().get (
@@ -388,7 +388,7 @@ public class MontageL1Manager
 	 * @return The NBBO Ask Block
 	 */
 
-	public OrderBlock askNBBOBlock()
+	public LimitOrderBlock askNBBOBlock()
 	{
 		return _orderedAskBook.isEmpty() ? null :
 			_orderedAskBook.firstEntry().getValue().leadingBlockList().get (
@@ -407,7 +407,7 @@ public class MontageL1Manager
 	public double midPrice()
 		throws Exception
 	{
-		OrderBlock bidNBBOBlock = bidNBBOBlock();
+		LimitOrderBlock bidNBBOBlock = bidNBBOBlock();
 
 		if (null == bidNBBOBlock)
 		{
@@ -416,7 +416,7 @@ public class MontageL1Manager
 			);
 		}
 
-		OrderBlock askNBBOBlock = askNBBOBlock();
+		LimitOrderBlock askNBBOBlock = askNBBOBlock();
 
 		if (null == askNBBOBlock)
 		{

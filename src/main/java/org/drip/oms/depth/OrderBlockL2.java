@@ -3,7 +3,7 @@ package org.drip.oms.depth;
 
 import java.util.TreeMap;
 
-import org.drip.oms.transaction.OrderBlock;
+import org.drip.oms.transaction.LimitOrderBlock;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -118,7 +118,7 @@ import org.drip.oms.transaction.OrderBlock;
 public class OrderBlockL2
 {
 	private boolean _descending = false;
-	private TreeMap<Double, OrderBlock> _orderedBlockMap = null;
+	private TreeMap<Double, LimitOrderBlock> _orderedBlockMap = null;
 
 	/**
 	 * Construct a Bid <i>OrderBlockL2</i> Price Book
@@ -178,7 +178,7 @@ public class OrderBlockL2
 	{
 		_descending = descending;
 
-		_orderedBlockMap = new TreeMap<Double, OrderBlock>();
+		_orderedBlockMap = new TreeMap<Double, LimitOrderBlock>();
 	}
 
 	/**
@@ -187,7 +187,7 @@ public class OrderBlockL2
 	 * @return Ordered Block Map
 	 */
 
-	public TreeMap<Double, OrderBlock> orderedBlockMap()
+	public TreeMap<Double, LimitOrderBlock> orderedBlockMap()
 	{
 		return _orderedBlockMap;
 	}
@@ -212,7 +212,7 @@ public class OrderBlockL2
 	 */
 
 	public boolean addBlock (
-		final OrderBlock postedBlock)
+		final LimitOrderBlock postedBlock)
 	{
 		if (null == postedBlock)
 		{
@@ -252,7 +252,7 @@ public class OrderBlockL2
 	 * @return Top of the Book
 	 */
 
-	public OrderBlock topOfTheBook()
+	public LimitOrderBlock topOfTheBook()
 	{
 		return _orderedBlockMap.isEmpty() ? null : _descending ?
 			_orderedBlockMap.lastEntry().getValue() : _orderedBlockMap.firstEntry().getValue();
