@@ -453,6 +453,40 @@ public class Order
 	}
 
 	/**
+	 * Update the Order using the Executed Amount
+	 * 
+	 * @param lastShares Executed Size
+	 * 
+	 * @return TRUE - The Order Execution has been successfully handled
+	 */
+
+	public boolean execution (
+		final double lastShares)
+	{
+		if (!NumberUtil.IsValid (lastShares) || 0. >= lastShares) {
+			return false;
+		}
+
+		_updateTime = new Date();
+
+		if (!_quantityTracker.updateLastShares (lastShares)) {
+			return false;
+		}
+
+		double leavesQuantity = _quantityTracker.leaves();
+
+		if (0. >= leavesQuantity) {
+			_state = OrderState.FILLED;
+
+			_completionTime = new Date();
+		} else if (0. < leavesQuantity) {
+			_state = OrderState.PARTIALLY_FILLED;
+		}
+
+		return true;
+	}
+
+	/**
 	 * Fill an Order Partially/Fully
 	 * 
 	 * @param orderFulfillment Order Fulfillment

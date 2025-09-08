@@ -4,6 +4,7 @@ package org.drip.oms.fix4_2;
 import java.util.Date;
 
 import org.drip.oms.transaction.Order;
+import org.drip.oms.transaction.OrderState;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -116,6 +117,7 @@ import org.drip.oms.transaction.Order;
  */
 
 public class AgentOrder
+	implements AgentVenueListener
 {
 	private Order _order = null;
 	private Date _creationRequestTime = null;
@@ -254,5 +256,60 @@ public class AgentOrder
 		_orderStatus = OrderStatus.NEW;
 
 		return _order.setAccepted();
+	}
+
+	/**
+	 * Handle the Order Execution
+	 * 
+	 * @param lastShares Last Executed Shares Count
+	 * 
+	 * @return TRUE - Order Execution successfully handled
+	 */
+
+	@Override public boolean execution (
+		final double lastShares)
+	{
+		if (!_order.execution (lastShares)) {
+			return false;
+		}
+
+		if (OrderState.FILLED == _order.state()) {
+			_orderStatus = OrderStatus.FILLED;
+		} else if (OrderState.PARTIALLY_FILLED == _order.state()) {
+			_orderStatus = OrderStatus.PARTIALLY_FILLED;
+		}
+
+		return true;
+	}
+
+	/**
+	 * Generate String version of the state with Padding applied
+	 * 
+	 * @param pad Padding
+	 * 
+	 * @return String version of the state with Padding applied
+	 */
+
+	public String toString (
+		final String pad)
+	{
+		return "\n" + pad + "Agent Order: [" +
+			"\n" + pad + "\t" +
+			"Request Creation Time => " + _creationRequestTime + "; " +
+			"Order Status => " + OrderStatus.ToString (_orderStatus) + "; " +
+			"Precedence Ordinal => " + _precedenceOrdinal + "; " +
+			"Order => " + _order.toString (pad + "\t") +
+			 "\n" + pad + "]";
+	}
+
+	/**
+	 * Generate String version of the state without Padding
+	 * 
+	 * @return String version of the state without Padding
+	 */
+
+	@Override public String toString()
+	{
+		return toString ("");
 	}
 }

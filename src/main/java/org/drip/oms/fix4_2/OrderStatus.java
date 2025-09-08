@@ -179,4 +179,62 @@ public class OrderStatus
 	 */
 
 	public static final int STOPPED = 1024;
+
+	/**
+	 * String Form of Order Status
+	 * 
+	 * @param orderStatus Order Status
+	 * 
+	 * @return String Form
+	 */
+
+	public static final String ToString (
+		final int orderStatus)
+	{
+		if (NEW == orderStatus) {
+			return "NEW";
+		}
+
+		if (PENDING_NEW == orderStatus) {
+			return "PENDING_NEW";
+		}
+
+		if (PARTIALLY_FILLED == orderStatus) {
+			return "PARTIALLY_FILLED";
+		}
+
+		if (FILLED == orderStatus) {
+			return "FILLED";
+		}
+
+		if (DONE_FOR_DAY == orderStatus) {
+			return "DONE_FOR_DAY";
+		}
+
+		if (PENDING_CANCEL == orderStatus) {
+			return "PENDING_CANCEL";
+		}
+
+		if (PENDING_REPLACE == orderStatus) {
+			return "PENDING_REPLACE";
+		}
+
+		if (REPLACED == orderStatus) {
+			return "REPLACED";
+		}
+
+		if (CANCELED == orderStatus) {
+			return "CANCELED";
+		}
+
+		if (REJECTED == orderStatus) {
+			return "REJECTED";
+		}
+
+		if (STOPPED == orderStatus) {
+			return "STOPPED";
+		}
+
+		return "UNKNOWN";
+	}
 }

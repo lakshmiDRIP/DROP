@@ -166,15 +166,15 @@ public class Agent
 		}
 
 		if (VenueResponseType.REJECTED == venueResponse.type()) {
-			return AgentResponse.REJECTED (
+			return fixOrder.reject() ? AgentResponse.REJECTED (
 				processingStartTime,
 				order,
 				agentRequest.id(),
 				venueResponse.comment()
-			);
+			) : null;
 		}
 
-		return VenueResponseType.NEW == venueResponse.type() ?
+		return VenueResponseType.NEW == venueResponse.type() && fixOrder.accept() ?
 			AgentResponse.ACCEPTED (processingStartTime, order, agentRequest.id()) : null;
 	}
 
@@ -263,6 +263,24 @@ public class Agent
 		}
 
 		return null;
+	}
+
+	/**
+	 * Handle the Order Execution
+	 * 
+	 * @param clOrdID  FIX <code>ClOrdID</code>
+	 * @param lastShares Last Executed Shares Count
+	 * 
+	 * @return TRUE - Order Execution successfully handled
+	 */
+
+	public boolean execution (
+		final String clOrdID,
+		final double lastShares)
+	{
+		return null != clOrdID && !clOrdID.isEmpty() &&
+			_fixOrderMap.containsKey (clOrdID) &&
+			_fixOrderMap.get (clOrdID).execution (lastShares);
 	}
 
 	/**

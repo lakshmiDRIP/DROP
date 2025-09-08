@@ -1,5 +1,16 @@
 
-package org.drip.oms.fix4_2;
+package org.drip.sample.fix;
+
+import org.drip.oms.exchange.Venue;
+import org.drip.oms.exchange.VenueHandler;
+import org.drip.oms.exchange.VenueSettings;
+import org.drip.oms.fix4_2.Agent;
+import org.drip.oms.fix4_2.AgentRequest;
+import org.drip.oms.fix4_2.DeskHandler;
+import org.drip.oms.transaction.OrderIssuer;
+import org.drip.oms.transaction.TimeInForce;
+import org.drip.oms.unthresholded.MarketOrder;
+import org.drip.service.env.EnvManager;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -74,7 +85,8 @@ package org.drip.oms.fix4_2;
  */
 
 /**
- * <i>OrderPrecedence</i> holds the Precedence Ordinal of an Order Status. The References are:
+ * <i>D1_3</i> illustrates Acceptance, Partial Fill, and Completion in the D1 Order Scenario. The References
+ * 	are:
  *  
  * 	<br><br>
  *  <ul>
@@ -104,137 +116,82 @@ package org.drip.oms.fix4_2;
  *  <ul>
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/TransactionCostAnalyticsLibrary.md">Transaction Cost Analytics</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/oms/README.md">R<sup>d</sup> Order Specification, Handling, and Management</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/oms/fix4_2/README.md">Implementation of FIX 4.2 Constructs</a></li>
+ *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/README.md">DROP API Construction and Usage</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/fix/README.md">FIX 4.2 Agent Order Handling</a></li>
  *  </ul>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class OrderPrecedence
+public class D1_3
 {
 
 	/**
-	 * NEW ORDINAL
-	 */
-
-	public static final int NEW_ORDINAL = 2;
-
-	/**
-	 * PENDING NEW ORDINAL
-	 */
-
-	public static final int PENDING_NEW_ORDINAL = 2;
-
-	/**
-	 * PARTIALLY FILLED ORDINAL
-	 */
-
-	public static final int PARTIALLY_FILLED_ORDINAL = 4;
-
-	/**
-	 * FILLED ORDINAL
-	 */
-
-	public static final int FILLED_ORDINAL = 8;
-
-	/**
-	 * DONE FOR DAY ORDINAL
-	 */
-
-	public static final int DONE_FOR_DAY_ORDINAL = 10;
-
-	/**
-	 * PENDING CANCEL
-	 */
-
-	public static final int PENDING_CANCEL_ORDINAL = 12;
-
-	/**
-	 * PENDING REPLACE
-	 */
-
-	public static final int PENDING_REPLACE_ORDINAL = 11;
-
-	/**
-	 * REPLACED
-	 */
-
-	public static final int REPLACED_ORDINAL = 3;
-
-	/**
-	 * CANCELED
-	 */
-
-	public static final int CANCELED_ORDINAL = 5;
-
-	/**
-	 * REJECTED
-	 */
-
-	public static final int REJECTED_ORDINAL = 2;
-
-	/**
-	 * STOPPED
-	 */
-
-	public static final int STOPPED_ORDINAL = 7;
-
-	/**
-	 * String Form of Order Precedence
+	 * Entry Point
 	 * 
-	 * @param orderPrecedence Order Precedence
+	 * @param argumentArray Command Line Argument Array
 	 * 
-	 * @return String Form
+	 * @throws Exception Thrown on Error/Exception Situation
 	 */
 
-	public static final String ToString (
-		final int orderPrecedence)
+	public static final void main (
+		final String[] argumentArray)
+		throws Exception
 	{
-		if (NEW_ORDINAL == orderPrecedence) {
-			return "NEW_ORDINAL";
-		}
+		EnvManager.InitEnv ("");
 
-		if (PENDING_NEW_ORDINAL == orderPrecedence) {
-			return "PENDING_NEW_ORDINAL";
-		}
+		String ticker = "AAPL";
+		String jurisdiction = "US";
+		double originalSize = 10000.;
+		String dealerEntity = "BARX";
+		String localIdentifier = "LIQNET";
+		double firstExecutionSize = 2000.;
+		double thirdExecutionSize = 7000.;
+		double secondExecutionSize = 1000.;
 
-		if (PARTIALLY_FILLED_ORDINAL == orderPrecedence) {
-			return "PARTIALLY_FILLED_ORDINAL";
-		}
+		VenueHandler venueHandler = new VenueHandler (
+			new Venue (new VenueSettings (localIdentifier, jurisdiction, null)),
+			true
+		);
 
-		if (FILLED_ORDINAL == orderPrecedence) {
-			return "FILLED_ORDINAL";
-		}
+		Agent agent = new Agent (venueHandler, new DeskHandler (true));
 
-		if (DONE_FOR_DAY_ORDINAL == orderPrecedence) {
-			return "DONE_FOR_DAY_ORDINAL";
-		}
+		System.out.println (agent);
 
-		if (PENDING_CANCEL_ORDINAL == orderPrecedence) {
-			return "PENDING_CANCEL_ORDINAL";
-		}
+		AgentRequest newOrderAgentRequest = AgentRequest.Standard (
+			MarketOrder.StandardBuy (
+				OrderIssuer.DEALER (dealerEntity),
+				ticker,
+				"",
+				originalSize,
+				TimeInForce.CreateDay(),
+				null
+			)
+		);
 
-		if (PENDING_REPLACE_ORDINAL == orderPrecedence) {
-			return "PENDING_REPLACE_ORDINAL";
-		}
+		System.out.println (newOrderAgentRequest);
 
-		if (REPLACED_ORDINAL == orderPrecedence) {
-			return "REPLACED_ORDINAL";
-		}
+		System.out.println (agent.handleClientRequest (newOrderAgentRequest));
 
-		if (CANCELED_ORDINAL == orderPrecedence) {
-			return "CANCELED_ORDINAL";
-		}
+		System.out.println (venueHandler.venue());
 
-		if (REJECTED_ORDINAL == orderPrecedence) {
-			return "REJECTED_ORDINAL";
-		}
+		AgentRequest firstExecutionAgentRequest = AgentRequest.Standard (
+			MarketOrder.StandardSell (
+				OrderIssuer.DEALER (dealerEntity),
+				ticker,
+				"",
+				firstExecutionSize,
+				TimeInForce.CreateDay(),
+				null
+			)
+		);
 
-		if (STOPPED_ORDINAL == orderPrecedence) {
-			return "STOPPED_ORDINAL";
-		}
+		System.out.println (firstExecutionAgentRequest);
 
-		return "UNKNOWN";
+		System.out.println (agent.handleClientRequest (firstExecutionAgentRequest));
+
+		System.out.println (venueHandler.venue());
+
+		EnvManager.TerminateEnv();
 	}
 }

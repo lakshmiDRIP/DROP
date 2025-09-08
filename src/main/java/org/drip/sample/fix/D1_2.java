@@ -85,8 +85,7 @@ import org.drip.service.env.EnvManager;
  */
 
 /**
- * <i>D1_2</i> illustrates Acceptance, Partial Fill, and Completion in the D1 Order Scenario. The References
- * 	are:
+ * <i>D1_2</i> illustrates Exchange REJECTION in the D1 Order Scenario. The References are:
  *  
  * 	<br><br>
  *  <ul>
@@ -146,10 +145,12 @@ public class D1_2
 		String dealerEntity = "BARX";
 		String localIdentifier = "LIQNET";
 
-		Agent agent = new Agent (
-			new VenueHandler (new Venue (new VenueSettings (localIdentifier, jurisdiction, null)), false),
-			new DeskHandler (true)
+		VenueHandler venueHandler = new VenueHandler (
+			new Venue (new VenueSettings (localIdentifier, jurisdiction, null)),
+			false
 		);
+
+		Agent agent = new Agent (venueHandler, new DeskHandler (true));
 
 		System.out.println (agent);
 
@@ -167,6 +168,8 @@ public class D1_2
 		System.out.println (agentRequest);
 
 		System.out.println (agent.handleClientRequest (agentRequest));
+
+		System.out.println (venueHandler.venue());
 
 		EnvManager.TerminateEnv();
 	}

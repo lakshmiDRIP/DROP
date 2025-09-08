@@ -85,7 +85,7 @@ import org.drip.service.env.EnvManager;
  */
 
 /**
- * <i>D1_1</i> illustrates Rejection in the D1 Order Scenario. The References are:
+ * <i>D1_1</i> illustrates Desk Rejection in the D1 Order Scenario. The References are:
  *  
  * 	<br><br>
  *  <ul>

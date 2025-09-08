@@ -74,7 +74,8 @@ package org.drip.oms.fix4_2;
  */
 
 /**
- * <i>OrderPrecedence</i> holds the Precedence Ordinal of an Order Status. The References are:
+ * <i>AgentVenueListener</i> exposes the Stubs for Order Executions/Updates/Notifications. The References
+ * 	are:
  *  
  * 	<br><br>
  *  <ul>
@@ -111,130 +112,18 @@ package org.drip.oms.fix4_2;
  * @author Lakshmi Krishnamurthy
  */
 
-public class OrderPrecedence
+public interface AgentVenueListener
 {
 
 	/**
-	 * NEW ORDINAL
-	 */
-
-	public static final int NEW_ORDINAL = 2;
-
-	/**
-	 * PENDING NEW ORDINAL
-	 */
-
-	public static final int PENDING_NEW_ORDINAL = 2;
-
-	/**
-	 * PARTIALLY FILLED ORDINAL
-	 */
-
-	public static final int PARTIALLY_FILLED_ORDINAL = 4;
-
-	/**
-	 * FILLED ORDINAL
-	 */
-
-	public static final int FILLED_ORDINAL = 8;
-
-	/**
-	 * DONE FOR DAY ORDINAL
-	 */
-
-	public static final int DONE_FOR_DAY_ORDINAL = 10;
-
-	/**
-	 * PENDING CANCEL
-	 */
-
-	public static final int PENDING_CANCEL_ORDINAL = 12;
-
-	/**
-	 * PENDING REPLACE
-	 */
-
-	public static final int PENDING_REPLACE_ORDINAL = 11;
-
-	/**
-	 * REPLACED
-	 */
-
-	public static final int REPLACED_ORDINAL = 3;
-
-	/**
-	 * CANCELED
-	 */
-
-	public static final int CANCELED_ORDINAL = 5;
-
-	/**
-	 * REJECTED
-	 */
-
-	public static final int REJECTED_ORDINAL = 2;
-
-	/**
-	 * STOPPED
-	 */
-
-	public static final int STOPPED_ORDINAL = 7;
-
-	/**
-	 * String Form of Order Precedence
+	 * Handle the Order Execution
 	 * 
-	 * @param orderPrecedence Order Precedence
+	 * @param lastShares Last Executed Shares Count
 	 * 
-	 * @return String Form
+	 * @return TRUE - Order Execution successfully handled
 	 */
 
-	public static final String ToString (
-		final int orderPrecedence)
-	{
-		if (NEW_ORDINAL == orderPrecedence) {
-			return "NEW_ORDINAL";
-		}
-
-		if (PENDING_NEW_ORDINAL == orderPrecedence) {
-			return "PENDING_NEW_ORDINAL";
-		}
-
-		if (PARTIALLY_FILLED_ORDINAL == orderPrecedence) {
-			return "PARTIALLY_FILLED_ORDINAL";
-		}
-
-		if (FILLED_ORDINAL == orderPrecedence) {
-			return "FILLED_ORDINAL";
-		}
-
-		if (DONE_FOR_DAY_ORDINAL == orderPrecedence) {
-			return "DONE_FOR_DAY_ORDINAL";
-		}
-
-		if (PENDING_CANCEL_ORDINAL == orderPrecedence) {
-			return "PENDING_CANCEL_ORDINAL";
-		}
-
-		if (PENDING_REPLACE_ORDINAL == orderPrecedence) {
-			return "PENDING_REPLACE_ORDINAL";
-		}
-
-		if (REPLACED_ORDINAL == orderPrecedence) {
-			return "REPLACED_ORDINAL";
-		}
-
-		if (CANCELED_ORDINAL == orderPrecedence) {
-			return "CANCELED_ORDINAL";
-		}
-
-		if (REJECTED_ORDINAL == orderPrecedence) {
-			return "REJECTED_ORDINAL";
-		}
-
-		if (STOPPED_ORDINAL == orderPrecedence) {
-			return "STOPPED_ORDINAL";
-		}
-
-		return "UNKNOWN";
-	}
+	public abstract boolean execution (
+		final double lastShares
+	);
 }

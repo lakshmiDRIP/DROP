@@ -80,7 +80,7 @@ import org.drip.oms.transaction.Side;
  */
 
 /**
- * <i>VenueHandler</i> implements Handling Agent corresponding to a Suite of Venues. The References are:
+ * <i>VenueHandler</i> implements the Handling Agent corresponding to a Suite of Venues. The References are:
  *  
  * 	<br><br>
  *  <ul>

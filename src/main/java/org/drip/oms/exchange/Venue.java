@@ -662,12 +662,12 @@ public class Venue
 	public String toString (
 		final String pad)
 	{
-		return "\n" + pad + "Agent: [" +
+		return "\n" + pad + "Venue: [" +
 			"\n" + pad + "\t" +
 			"Settings => " + _settings.toString (pad + "\t") + "; " +
 			"Bid Ticker Limit Order Book Map => " + _bidTickerLimitOrderBookMap + "; " +
 			"Bid Ticker Market Order Book Map => " + _bidTickerMarketOrderBookMap + "; " +
-			"Ask Ticker Limit Order Book Map => " + _askTickerLimitOrderBookMap +
+			"Ask Ticker Limit Order Book Map => " + _askTickerLimitOrderBookMap + "; " +
 			"Ask Ticker Market Order Book Map => " + _askTickerMarketOrderBookMap +
 			 "\n" + pad + "]";
 	}
