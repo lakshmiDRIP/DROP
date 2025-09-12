@@ -189,8 +189,8 @@ public class LimitOrderBlock
 	/**
 	 * Compare Two Limit Order Block Instances
 	 * 
-	 * @param limitOrderBlock1 First Limit Order Block
-	 * @param limitOrderBlock2 Second Limit Order Block
+	 * @param l2Block1 First Limit Order Block
+	 * @param l2Block2 Second Limit Order Block
 	 * 
 	 * @return Follows <code>Comparable.compare</code> Semantics
 	 */
