@@ -107,6 +107,25 @@ Transaction Cost Analytics Library contains the Functionality to:
 	* D35 – A Canceled Order Followed by a Busted Execution and a new Execution
 	* D36 – GTC Order Partially Filled, Restated/Renewed, and Partially Filled the Next Day, with Corrections of Quantities on both Executions
 	* D37 – Transmitting a Guarantee of Execution Prior to Execution
+ * NAGAR - Algos and Smart Order Router
+	* Introduction
+	* Summary of the Algos Logic
+	* Algorithms and Routing Logic
+	* Ping Execution Mode
+	* Sweep Execution Mode
+	* Exchange Post Execution Mode
+	* Dark Post Execution Mode
+	* Venue Selection
+	* Accessible Venues
+	* Order Types Used
+	* Order Handling Scenarios to Consider
+	* Router Customization Options
+	* Directed Orders via PATH
+	* Exchange Market Data
+	* Non-exchange Market Data
+	* Performance Evaluation of Algos
+	* Information Leakage Prevention and Anti-gaming Protection
+	* Capital Commitment Features
  * Indifference Price
 	* Overview
 	* Mathematics
