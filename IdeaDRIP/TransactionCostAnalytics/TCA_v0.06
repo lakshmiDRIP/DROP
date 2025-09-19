@@ -428,5 +428,39 @@
 		- Pricing Structure - Inverted, Maker/Taker
 		- Supprt for Order Types/Features
 	- Venue Cost - Fees/Rebates
- 6.7) Accesiible Venues and Execution Modes
+ 6.7) Accessible Venues and Execution Modes
+ 6.8) Order Types and Execution Modes
+ 6.9) Order Handling Scenarios to Consider
+	- Short sell securities in price test are sent to primary exchange, unless overridden
+		- Market orders become limit orders with price 1 tick less aggressive than the market impact price
+		- Market Impact Price => More restrictive of either Limit Up/Down price and erroneous price
+	- Best price venue down - sent to default venue (e.g. BATS)
+	- Orders entered prior to open - automatically set for pre-open and continuous trading
+		- Continuous ends when symbol goes into closed state on the primary venue
+		- If symbol not open at primary by a set time, it is treated as continuous trading
+	- Orders with opening/closing TIF sent to primary
+	- Symbols halted for traging are routed to primary unless overridden
+	- Algorithmic venue selection failure - randomized ranking to select venues
+ 6.10) PATH Customization Options
+	- Cross Modes
+		- Disable specific venues/venue types
+		- Route based on exchange cost
+			- Ping disabled
+			- Sweeping on price first, then venue cost
+	- Ping Customization - Disable Ping
+	- Sweep Customization
+		- One price at a time
+		- Minimize odd lots by minimum execution size (e.g., 100 shares)
+	- Exchange Post Customization
+		- Specify aggregate shares posted across children
+		- Normal Posting venue specification
+	- Dark Post Customization
+		- Limit routing to selected displayed/non-displayed venues
+		- Minimum Execution Quantity
+		- Disable initial VIPANI dip in NAGAR
+ 6.11) Directed Orders via PATH
+	- PATH forwards limit orders without changes
+	- Market orders sent at marketable limit prices - above NBO/below NBB with an internal threshold
+ 6.12) Exchange Market Data
+	- EXEGY with SIP as a backup
  --------------------------
