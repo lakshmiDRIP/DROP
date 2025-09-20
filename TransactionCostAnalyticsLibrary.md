@@ -16,7 +16,7 @@ Transaction Cost Analytics Library contains the Functionality to:
 
  |        Document         | Link |
  |-------------------------|------|
- | Technical Specification | [*Latest*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/TransactionCostAnalytics/TransactionCostAnalytics_v7.04.pdf) [*Previous*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/TransactionCostAnalytics) |
+ | Technical Specification | [*Latest*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/TransactionCostAnalytics/TransactionCostAnalytics_v7.05.pdf) [*Previous*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/TransactionCostAnalytics) |
  | User Guide              |  |
  | API                     | [*Javadoc*](https://lakshmidrip.github.io/DROP/Javadoc/index.html)|
 
@@ -30,11 +30,6 @@ Transaction Cost Analytics Library contains the Functionality to:
 
 ## Coverage
 
- * Volume-weighted Average Price
-	* Overview
-	* Formula
-	* Using VWAP
-	* References
  * Order
 	* Overview
 	* Market Order
@@ -107,43 +102,11 @@ Transaction Cost Analytics Library contains the Functionality to:
 	* D35 – A Canceled Order Followed by a Busted Execution and a new Execution
 	* D36 – GTC Order Partially Filled, Restated/Renewed, and Partially Filled the Next Day, with Corrections of Quantities on both Executions
 	* D37 – Transmitting a Guarantee of Execution Prior to Execution
- * NAGAR - Algos and Smart Order Router
-	* Introduction
-	* Summary of the Algos Logic
-	* Algorithms and Routing Logic
-	* Ping Execution Mode
-	* Sweep Execution Mode
-	* Exchange Post Execution Mode
-	* Dark Post Execution Mode
-	* Venue Selection
-	* Accessible Venues
-	* Order Types Used
-	* Order Handling Scenarios to Consider
-	* Router Customization Options
-	* Directed Orders via PATH
-	* Exchange Market Data
-	* Non-exchange Market Data
-	* Performance Evaluation of Algos
-	* Information Leakage Prevention and Anti-gaming Protection
-	* Capital Commitment Features
- * Indifference Price
-	* Overview
-	* Mathematics
-	* Example
-	* Notes
-	* Reference
- * Inverted Price Venues
-	* Reference
- * Smart Order Routing
-	* Overview
-	* Benefits and Disadvantages of Smart Order Routing
-	* Brief Concept
-	* Algorithmic Trading and SOR
-	* Cross-Border Routing
-	* References
  * Central Limit Order Book
 	* Overview
 	* References
+ * Inverted Price Venues
+	* Reference
  * Auction On-Demand
 	* Efficient Trading with On-demand Auctions
 	* Highlights
@@ -152,14 +115,10 @@ Transaction Cost Analytics Library contains the Functionality to:
 	* Auction Overview
 	* Order Types
 	* References
- * Retail SOR Strategy Builder
-	* Retail SOR Wave Instructions
-	* Phase-based Conditional Action
-	* Additional Considerations
-	* Continuous Trading Scenario Overview
- * Seven Execution Algorithms
-	* Instruction
-	* Why are Algorithmic Strategies Used
+ * Volume-weighted Average Price
+	* Overview
+	* Formula
+	* Using VWAP
 	* References
  * Execution Cost and Transaction Trajectories
 	* Motivation and Practice Overview
@@ -296,6 +255,47 @@ Transaction Cost Analytics Library contains the Functionality to:
 	* Time Discretization
 	* Space Discretization
 	* Almgren (2009, 2012) Sample Solutions
+	* References
+ * Smart Order Routing
+	* Overview
+	* Benefits and Disadvantages of Smart Order Routing
+	* Brief Concept
+	* Algorithmic Trading and SOR
+	* Cross-Border Routing
+	* References
+ * NAGAR - Algos and Smart Order Router
+	* Introduction
+	* Summary of the Algos Logic
+	* Algorithms and Routing Logic
+	* Ping Execution Mode
+	* Sweep Execution Mode
+	* Exchange Post Execution Mode
+	* Dark Post Execution Mode
+	* Venue Selection
+	* Accessible Venues
+	* Order Types Used
+	* Order Handling Scenarios to Consider
+	* Router Customization Options
+	* Directed Orders via PATH
+	* Exchange Market Data
+	* Non-exchange Market Data
+	* Performance Evaluation of Algos
+	* Information Leakage Prevention and Anti-gaming Protection
+	* Capital Commitment Features
+ * Retail SOR Strategy Builder
+	* Retail SOR Wave Instructions
+	* Phase-based Conditional Action
+	* Additional Considerations
+	* Continuous Trading Scenario Overview
+ * Indifference Price
+	* Overview
+	* Mathematics
+	* Example
+	* Notes
+	* Reference
+ * Seven Execution Algorithms
+	* Instruction
+	* Why are Algorithmic Strategies Used
 	* References
  * Liquidity Seeker Trading Strategy
 	* Introduction
