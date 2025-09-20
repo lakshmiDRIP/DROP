@@ -355,39 +355,107 @@
 		- Boundary represents optimal E/V for a given lambda
  9.4) Risk/Reward Tradeoff
 	- Interpretation using a Utility Function, and VaR
+	- Utility Function Approach
+		- U = E + lambda . V is the Utility
+		- Aversion is U''/U'
+		- Trajectory are dynamically optimal - as can be explicitly seen in the relation between X_i+1 and X_i
+	- Liquidity Value-at-Risk LVaR
+		- Minimizes U_p = E + lambda_v . sqrt (V)
+			- p is the percentile of implementation shortfall
+			- lamda_v is number of standard deviations
+		- Uncertainty costs are linear, temporary impact is quadratic
+			- So optimal trajectories are linear for large enough portfolios
+		- Trajectories are not dynamically optimal as before
+ 9.5) Value of Information
+	- Drift
+		- Incorporation of drift into dynamics
+		- Expression for V does not change, modification to E
+		- New trajectory optimality condition
+		- Optimal level of security holding for a time-independent portfolio optimization
+		- Optimal trajectory and trade sizes
+			- Components of the Trajectory - zero drift part and a drift based correction
+		- Bounds on the Utility Gains due to Drift
+			- Practical parameters will indicate this is small
+	- Serial Correlation
+		- Full handling requires dynamic programming
+		- First order impact estimation for linear impact functions:
+			- Per-period impact cost of “smooth” strategy
+			- Per-period gain by adapting to correlations
+			- Per-period cost of adapted strategy
+			- Per-period Quadratic Optimization Problem
+				- Optimal Incremental Shares
+				- Maximum Per-period Gain
+		- First order impact estimation for non-linear impact functions:
+			- Impact cost of adapted strategy
+			- Optimal Gain
+			- Maximum Gain per Period
+		- Practical parameters will indicate this is small
+	- Parameter Shifts
+		- T* - time at which the event will occur
+		- Jump to one of the new set of parameter set with their corresponding probabilities
+		- Compartmentalize one trajectory path to T* (X*), and another one from T* to T
+		- X* may be determined by minimizing E* + lambda . V* where E* and V* are probability weighted parameter sets
+ 9.6) Multiple-Security Portfolios
+	- Trajectory and Trades are Component Vectors
+	- Trading Model
+		- Independent Random walks representing Security Level Idiosyncratics
+		- Volatility matrix C
+		- Permanent Impact G is a vector
+		- Temporary Impact H is a vector on bid-ask + h(.)
+		- E in terms of G and H
+		- V in terms of C, G, and H
+		- Breakdown G and H into symmetric and anti-symmetric parts
+		- Apply earlier analysis to uncover lambda based optimal trajectories
+	- Optimal Trajectories
+		- Trajectory Linearization Optimization Equations
+		- Lnearly Transform for the trajectory X, and the into A and B from C, G, and H produces a linear system with m.(N-1) variables
+	- Explicit Solution for the Diagonal Model
+		- No cross-security impact, so G and H are diagonal, C is not
+		- Anti-symmetric H is zero, diagonal H must be positive (conditions specified)
+		- B is zero, and A eigenized into U
+			- kappa is now the eigenvalue
+			- Trajectory y's are transformed by U, and trasnformed back into x_i after solving
+		- Consequence - trading may be non-monotonic if security prices are highly correlated
  --------------------------
  --------------------------
 
  --------------------------
- #10 - Smart Order Routing
+ #10 - Non-linear Impact and Trading-Enhanced Risk (COMPLETED)
  --------------------------
  10.1) Addresses problems of venue proliferation and liquidity fragmentation
  --------------------------
  --------------------------
 
  --------------------------
- #11 - Nagar – Algos and Smart Order Router
+ #11 - Smart Order Routing
+ --------------------------
+ 11.1) Addresses problems of venue proliferation and liquidity fragmentation
  --------------------------
  --------------------------
- 11.1) Algos - NAGAR; Venue - VIPANI; Router - PATH
- 11.2) Components - Scheduler, Order Placement, Router
+
+ --------------------------
+ #12 - Nagar – Algos and Smart Order Router
+ --------------------------
+ --------------------------
+ 12.1) Algos - NAGAR; Venue - VIPANI; Router - PATH
+ 12.2) Components - Scheduler, Order Placement, Router
 	- Order Placement invokes the Router using the Execution Modes
- 11.3) Execution Modes - Ping, Sweep, Exchange Post, Dark Post
+ 12.3) Execution Modes - Ping, Sweep, Exchange Post, Dark Post
 	- On Marketability - Follow Ping, Sweep, Exchange Post in that order
 	- Dark Post exclusive to the other modes
- 11.4) Ping Execution Mode
+ 12.4) Ping Execution Mode
 	- Locate Hidden Liquidity within bid-ask Spread
 	- Remove Displayed Liquidity at:
 		- Far-touch => NBO for buy, NBB for sell
 		- Near-touch or better => at/above NBB for buy, at/below NBO for sell
 	- Dynamic Ping - uses mid-point and limit IOC on a custom venue set (across Exchange/ATS/IOI Venues)
- 11.5) Sweep Execution Mode
+ 12.5) Sweep Execution Mode
 	- Take Liquidity at best displayed price/better
 	- Liquidity displayed at a Custom venue set (across Exchange/ATS/IOI Venues)
 	- Use ISO IOC orders
 	- Sweep multiple price levels simultaneously
 	- Limit price based on depth needed for order fill, overridden only by more conservative client limit price
- 11.6) Exchange Post Execution Mode
+ 12.6) Exchange Post Execution Mode
 	- Provide Liquidity for Unmarketable Orders
 	- Smart Exchange Post - uses probability of fill in conjunction with price impact on chosen venue
 		- May allocate to both displayed and non-displayed liquidity
@@ -401,7 +469,7 @@
 		- Market Conditions have Changed
 	- When locked/crossed, trigger Ping/Sweep to take liquidity
 	- Just before opening/closing, reallocate to primary exchange to ensure resting orders participate in auctions
- 11.7) Dark Post Execution Mode
+ 12.7) Dark Post Execution Mode
 	- Provide Hidden Liquidity for Unmarketable Orders
 	- Uses Smart Dark Post and Dynamic Dark Post
 	- Posts are typically mid-point DAY, overriden by passive or market-peg on client instructions
@@ -410,7 +478,7 @@
 		- Minimum Time Elapsed
 		- Market Conditions have Changed
 	- NAGAR posts internally to VIPANI for short time to allow for internal crossing
- 11.8) Real-time Venue Selection Criteria:
+ 12.8) Real-time Venue Selection Criteria:
 	- Available Price - Sorted best Price Venues when taking liquidity
 	- Historical Data - Based on a time window
 	- Market Analytics - Intra-day, symbol-specific information:
@@ -430,9 +498,9 @@
 		- Pricing Structure - Inverted, Maker/Taker
 		- Supprt for Order Types/Features
 	- Venue Cost - Fees/Rebates
- 11.9) Accessible Venues and Execution Modes
- 11.10) Order Types and Execution Modes
- 11.11) Order Handling Scenarios to Consider
+ 12.9) Accessible Venues and Execution Modes
+ 12.10) Order Types and Execution Modes
+ 12.11) Order Handling Scenarios to Consider
 	- Short sell securities in price test are sent to primary exchange, unless overridden
 		- Market orders become limit orders with price 1 tick less aggressive than the market impact price
 		- Market Impact Price => More restrictive of either Limit Up/Down price and erroneous price
@@ -443,7 +511,7 @@
 	- Orders with opening/closing TIF sent to primary
 	- Symbols halted for traging are routed to primary unless overridden
 	- Algorithmic venue selection failure - randomized ranking to select venues
- 11.12) PATH Customization Options
+ 12.12) PATH Customization Options
 	- Cross Modes
 		- Disable specific venues/venue types
 		- Route based on exchange cost
@@ -460,23 +528,23 @@
 		- Limit routing to selected displayed/non-displayed venues
 		- Minimum Execution Quantity
 		- Disable initial VIPANI dip in NAGAR
- 11.13) Directed Orders via PATH
+ 12.13) Directed Orders via PATH
 	- PATH forwards limit orders without changes
 	- Market orders sent at marketable limit prices - above NBO/below NBB with an internal threshold
- 11.14) Exchange Market Data
+ 12.14) Exchange Market Data
 	- EXEGY with SIP as a backup
- 11.15) Non-exchange Market Data
+ 12.15) Non-exchange Market Data
 	- IOI Venues
 		- IOI quantity in venue ranking logic
 		- Send IOC orders for sweep, which may not be honored
 	- ATS Venues
 		- Displayed quantity in venue ranking logic
 		- Send IOC orders for sweep, which may not be honored
- 11.16) Performance Evaluation of Algos
+ 12.16) Performance Evaluation of Algos
 	- Average Slippage from VWAP, TWAP, arrivl price
 	- Evaluated across market capitalization, spread duration, order sizes
 	- Order Outlier analysis
- 11.17) Information Leakage Anti-gaming Protection
+ 12.17) Information Leakage Anti-gaming Protection
 	- Symbol-specific Analytics
 		- Volume profile, average spread, quote depth, volatility estimate
 		- Dynamic Scheduling and Volume Forecasting
@@ -485,14 +553,14 @@
 			- Release time of passive/aggressive orders does not fillow a pre-defined progression
 		- Dynamic Limit Pricing for Hidden Non-displayed Orders
 			- Prevents Unfavorable executions due to to short term movements
- 11.18) Capital Commitment - Enabled for Child TWAP VWAP POV
+ 12.18) Capital Commitment - Enabled for Child TWAP VWAP POV
  --------------------------
 
  --------------------------
- #12 - Retail SOR Strategy Builder
+ #13 - Retail SOR Strategy Builder
  --------------------------
  --------------------------
- 12.1) Retail SOR Wave Instructions
+ 13.1) Retail SOR Wave Instructions
 	- Wave #1 - Send quantity to NAGAR with Sweep venue inclusion list (VIPANI).
 		- Order type Ping SEQUENTIAL mid-pegging, and time-in-force IOC
 	- Wave #2 - Remaining quantity to PATH with Sweep venue inclusion list that correspond to inverted venues.
@@ -502,9 +570,9 @@
 		- No ping
 	- Wave #4 - Remaining quantity to PATH with Sweep venue inclusion list (VIPANI) with IOI time-in-force of IOC
 	- Cancel any remaining Quantity to the User
- 12.2) Phase-based Conditional Action
+ 13.2) Phase-based Conditional Action
 	- Phases markers are: Continuous Start and Continuous End
- 12.3) Additional Considerations
+ 13.3) Additional Considerations
 	- Client DAY orders become IOC
 	- Amendments will cancel current wave and restart from #1
 	- Current wave is completed and leaves canceled
@@ -512,21 +580,21 @@
  --------------------------
 
  --------------------------
- #13 - Indifference price
+ #14 - Indifference price
  --------------------------
  --------------------------
- 13.1) Overview
+ 14.1) Overview
 	- Pricing Securities wrt a utility function
 	- Also called reservation price or private valuation
 	- Price at which the expected utility level is the same by exercising a transaction vs. not doing so (with optimal trading otherwise)
 	- Produces Pricing Range - bid/ask or good-deal bounds
- 13.2) Mathematics
+ 14.2) Mathematics
 	- V (x, k) - Supremum of the Terminal of the Expected Utility (u) value of
 		- A Portfolio consisting of an initial amount x + k units of an entity (stock, option, etc.)
 		- Supremum is taken over all self-financing portfolios
 	- Indifference bid price is the solution to V (x - vBid (k), k) = V (x, 0)
 	- Indifference bid price is the solution to V (x + vAsk (k), -k) = V (x, 0)
- 13.3) Approach
+ 14.3) Approach
 	- Assume portfolio of constituent securities whose weighted market value adds up to x + v
 	- Work out V(x + v, k) generically unoptimized across component weights
 	- Remember when k = 0, v = 0, compute the optimal value of V(x, k = 0).
