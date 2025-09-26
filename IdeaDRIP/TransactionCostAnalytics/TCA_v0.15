@@ -1,0 +1,984 @@
+
+ --------------------------
+ #1 - Exchange Order (COMPLETED)
+ --------------------------
+ 1.1) Market Order
+	- Immediate Execution at Current Prices - Lowest Commissions/Fees
+ 1.2) Limit Order
+	- Orders with least acceptable price - execution should be at a better price
+		- Execution Uncertainty, i.e., may not be "marketable"
+	- Buy Limit/Sell Limit Orders
+	- FOK - either filled completely on the first attempt or canceled outright
+	- AON - must be filled with the entire number of shares specified, or not at all. If not filled, posted on the order book
+ 1.3) Time-in-Force
+	- Closing Time: Equities - specified by exchange; FX - 5 PM EST except for NZD
+	- DAY/GFD: Order valid till close
+	- GTC: Order valid until Cancel - some brokers may limit it to, say, 90 days
+	- IOC: Immediate execution or cancel - allows for partial fill (unlike FOK)
+	- Single Price Open/Close Auctions - some exchanges also have before/after lunch auctions
+	- At the open/close - orders must be in 20 min or so prior
+	- MOC/MOO/LOC/LOO
+	- Reg NMS IOC orders can be re-routed on sweep
+ 1.4) Conditional - Executed when conditions are met (not just price, which is limit order)
+	- Conditional Stop Order:
+		- Execute once market price (mid?) reaches the stop level. Upon reaching that, order becomes market order, so no price certainty.
+		- Buy Stop and Sell Stop
+		- Execution price may be different from the stop limit
+		- Used in exchanges more than in OTC
+		- Stop Limit Order - Sets a limit price, so price certainty, less execution certainty.
+		- Trailing Stop Order - contains a stop parameter that creates a moving or trailing activation price
+			- E.g., 10% below current market price
+			- Trailing parameter base refresh frequency, i.e., determination of when is current
+		- Trailing Stop-Limit Order - Trailing Stop + a limit price
+	- Conditional Peg Orders
+		- Market Maker Behavior. Uses a "stepper" logic.
+		- Peg Best:
+			- Like a real market maker, the stepper:
+				- Uses the other side of the spread
+				- Always jumps over the competitors order to be the best one, the first in the line
+				- No-step over conditions are:
+					- Price limitation, no more jumping over, unless the price moves back to its area
+					- Step Value
+			- Peg Mid-price - Limit price is average of BBO National or local
+				- Popular in ATS and Dark pool, participants pay half of spread
+	- Market-if-touched - Market Order if market price "touches" specified level
+		- Buy/Sell variants
+	- One cancels other
+	- One sends other
+	- Tick-sensitive Orders - e.g., buy on downtick. Short sell orders are tick-sensitive
+	- At-the-opening: If not executable, cancel it
+ 1.5) Discretionary - Delayed by broker for a better price - augments other types - also referred as not-held
+ 1.6) Bracket - Market a Pair of two orders, e.g., lock profit and floor losses
+ 1.7) Quantity and display instructions - Display Instructions can be customized. Icebaer'g only diplay partially
+	- E.g., AON to display if there is a fill
+ 1.8) Electronic Markets Order Priority
+	- Market > Limit > ...
+	- Simplest Limit highest priority
+	- Conditional priority when met first-come
+	- Iceberg/Dark-Pool Undisplayed Liquidity Least Priority
+ --------------------------
+ --------------------------
+
+ --------------------------
+ #2 - Time-in-Force: Definition, Types, and Examples (COMPLETED)
+ --------------------------
+ 2.1) IOC, FOK, GTC, DAY, MOO, MOC, LOO, LOC
+ --------------------------
+ --------------------------
+
+ --------------------------
+ #3 - Order State Change Matrices
+ --------------------------
+ --------------------------
+ 3.1) Order State Fields:
+	- Precedence Ordinal
+	- Creation Request Time
+	- Creation Time
+	- Cl Ord ID
+	- Orig Cl Ord ID
+	- Order Type
+	- Status
+	- Original Order Quantity
+	- Current Order Quantity
+	- Cumulative Quantity
+	- Leaves Quantity
+	- Last Shares
+ 3.2) Order Processing Request Fields:
+	- Arrival Time
+	- Request ID
+	- Parent Request ID
+	- Request Type - New/
+	- Order
+ 3.3) Order Processing Response Fields:
+	- Processing Start Time
+	- Processing Update Time
+	- Message Type - Execution/
+	- Order
+	- Request ID
+	- Exec Type - Rejected/New/Partial Fill/Fill
+	- Exec Transaction Type - New
+	- Comment
+ 3.4) Venue Request Fields:
+	- Cl Ord ID
+	- Orig Cl Ord ID
+	- Venue Request Type - New
+	- Order
+ 3.5) Venue Response Fields:
+	- Processing Start Time
+	- Processing Finish Time
+	- Cl Ord ID
+	- Orig Cl Ord ID
+	- Venue Response Type - New/Rejected/Execution
+	- Order
+	- Comment
+ 3.6) Buy-side Request - New Order
+	- Request {Type: New; Request ID = XXXX; Quantity = Incoming}
+	- Order {Status: Unassigned; Type; Quantity = Incoming; Cumulative Quantity = 0; Leaves Quantity = 0; Last Shares = 0}
+ 3.7) Buy-side Response - Request Order rejected by Sell-side, i.e., Sales
+	- Response => {Message Type = Execution; Request ID = XXXX; Exec Type = Rejected; Exec Trans Type = New; Last Shares = 0; Comments}
+	- Order => {Status: Rejected; Type; Quantity = Incoming; Cumulative Quantity = 0; Leaves Quantity = 0; Last Shares = 0}
+ 3.8) Buy-side Response - Order just got sent to Venue
+	- Response => {Message Type = Execution; Request ID = XXXX; Exec Type = New; Exec Trans Type = New; Last Shares = 0}
+	- Order => {Status: New; Type; Quantity = Incoming; Cumulative Quantity = 0; Leaves Quantity = Incoming; Last Shares = 0}
+ 3.9) Buy-side Response - Order rejected by Sell-side, i.e, Trader/Exchange
+	- Response => {Message Type = Execution; Request ID = XXXX; Exec Type = Rejected; Exec Trans Type = New; Last Shares = 0; Comments}
+	- Order => {Status: Rejected; Type; Quantity = Incoming; Cumulative Quantity = 0; Leaves Quantity = 0; Last Shares = 0}
+ 3.10) Buy-side Response - Partial Fill Received from Venue
+	- Response => {Message Type = Execution; Request ID = XXXX; Exec Type = Partial Fill; Exec Trans Type = New; Last Shares; Comments}
+	- Order => {Status: Partially Filled; Type; Quantity = Incoming; Cumulative Quantity += Last Shares; Leaves Quantity -= Last Shares; Last Shares}
+ 3.11) Buy-side Response - Full Fill Received from Venue
+	- Response => {Message Type = Execution; Request ID = XXXX; Exec Type = Fill; Exec Trans Type = New; Last Shares; Comments}
+	- Order => {Status: Filled; Quantity = Incoming; Type; Cumulative Quantity = Quantity; Leaves Quantity = 0; Last Shares}
+ 3.12) Buy-side Response - Done for the Day
+	- Response => {Message Type = Execution; Request ID = XXXX; Exec Type = Done for Day; Exec Trans Type = New; Last Shares; Comments}
+	- Order => {Status: Done for Day; Type = Day; Quantity = Incoming; Cumulative Quantity = Quantity; Leaves Quantity = 0; Last Shares}
+ 3.13) Buy-side Request - Cancel Request
+	- Request {Type: New; Parent Request ID = XXXX; Request ID = YYYY; Quantity = Incoming}
+	- Order {Status: Unassigned; Type; Quantity = Incoming; Cumulative Quantity = 0; Leaves Quantity = 0; Last Shares = 0}
+ 3.14) Buy-side Response - Cancel Request Order rejected by Sell-side, i.e., Sales
+	- Response => {Message Type = Cancel Request; Request ID = YYYY; Exec Type = <<blank>>; Exec Trans Type = <<blank>>; Last Shares = 0; Comments}
+	- Order => {Status: Rejected; Type; Quantity = Incoming; Cumulative Quantity = 0; Leaves Quantity = 0; Last Shares = 0}
+ 3.15) Buy-side Response - Cancel Sent to the Venue
+	- Response => {Message Type = Execution; Request ID = YYYY; Exec Type = Pending Cancel; Exec Trans Type = New; Last Shares; Comments}
+	- Order => {Status: Pending Cancel; Type; Quantity = Incoming; Cumulative Quantity; Leaves Quantity; Last Shares}
+ 3.16) Buy-side Response - Cancel Request Order rejected by Sell-side, i.e., Trader/Exchange
+	- Response => {Message Type = Cancel Request; Request ID = YYYY; Exec Type = <<blank>>; Exec Trans Type = <<blank>>; Last Shares = 0; Comments}
+	- Order => {Status: Rejected; Type; Quantity = Incoming; Cumulative Quantity = 0; Leaves Quantity = 0; Last Shares = 0}
+ 3.17) Buy-side Response - Cancel Received from the Venue
+	- Response => {Message Type = Execution; Request ID = YYYY; Exec Type = Canceled; Exec Trans Type = New; Last Shares; Comments}
+	- Order => {Status: Canceled; Type; Quantity = Incoming; Cumulative Quantity; Leaves Quantity; Last Shares}
+ 3.18) Buy-side Response - Cancel Request Order rejected due to a Partial Fill
+	- Response => {Message Type = Cancel Reject; Request ID = YYYY; Exec Type = <<blank>>; Exec Trans Type = <<blank>>; Last Shares = 0; Comments}
+	- Order => {Status: Partially Filled; Type; Quantity = Incoming; Cumulative Quantity; Leaves Quantity; Last Shares}
+ 3.19) Buy-side Response - Partial Fill received from the Venue during Pending Cancel
+	- Response => {Message Type = Execution; Request ID = XXXX; Exec Type = Partial Fill; Exec Trans Type = New; Last Shares; Comments}
+	- Order => {Status: Partially Filled; Type; Quantity = Incoming; Cumulative Quantity += Last Shares; Leaves Quantity -= Last Shares; Last Shares}
+ 3.20) Buy-side Response - Full Fill received from the Venue during Pending Cancel
+	- Response => {Message Type = Execution; Request ID = XXXX; Exec Type = Pending Cancel; Type; Quantity = Incoming; Cumulative Quantity += Last Shares; Leaves Quantity -= Last Shares; Last Shares}
+ 3.21) Buy-side Response - Cancel Request Order rejected due to a Full Fill
+	- Response => {Message Type = Filled; Request ID = YYYY; Exec Type = <<blank>>; Exec Trans Type = <<blank>>; Last Shares = 0; Comments: Cancel request rejected – CxlRejectReason = 0 (too late to cancel)}
+	- Order => {Status: Partially Filled; Type; Quantity = Incoming; Cumulative Quantity; Leaves Quantity; Last Shares}
+ 3.22) Buy-side Request - Replace Request
+	- Request {Type: New; Parent Request ID = XXXX; Request ID = YYYY; Quantity = IncomingYYYY}
+	- Order {Status: Unassigned; Type; Quantity = IncomingYYYY; Cumulative Quantity = 0; Leaves Quantity = 0; Last Shares = 0}
+ 3.23) Buy-side Response - Pending Replace Sent to the Venue
+	- Response => {Message Type = Execution; Request ID = YYYY; Exec Type = Pending Replace; Exec Trans Type = New; Last Shares; Comments}
+	- Order => {Status: Pending Replace; Type; Quantity = Incoming; Cumulative Quantity; Leaves Quantity; Last Shares}
+ 3.24) Buy-side Response - Replace Received from the Venue
+	- Response => {Message Type = Execution; Request ID = YYYY; Exec Type = Replace; Exec Trans Type = New; Last Shares; Comments}
+	- Order => {Status: Replaced; Type; Quantity = IncomingYYYY; Cumulative Quantity; Leaves Quantity; Last Shares}
+ 3.25) Buy-side Response - Replace Request Order rejected by Sell-side due on a Partial Fill by Trader/Exchange
+	- Response => {Message Type = Cancel Reject; Request ID = YYYY; Exec Type = <<blank>>; Exec Trans Type = <<blank>>; Last Shares = 0; Comments}
+	- Order => {Status: Partially Filled; Type; Quantity = Incoming; Cumulative Quantity = 0; Leaves Quantity = 0; Last Shares = 0}
+ 3.26) Buy-side Response - Partial Fill Received from Venue on a Pending Replace
+	- Response => {Message Type = Execution; Request ID = XXXX; Exec Type = Partial Fill; Exec Trans Type = New; Last Shares; Comments}
+	- Order => {Status: Pending Replace; Type; Quantity = Incoming; Cumulative Quantity += Last Shares; Leaves Quantity -= Last Shares; Last Shares}
+ 3.27) Buy-side Response - Replace Received from the Venue on a Partially Filled Order
+	- Response => {Message Type = Execution; Request ID = YYYY; Exec Type = Replace; Exec Trans Type = New; Last Shares; Comments}
+	- Order => {Status: Partially Filled; Type; Quantity = IncomingYYYY; Cumulative Quantity; Leaves Quantity; Last Shares}
+ 3.28) Buy-side Response - Replace Request Order rejected by Sell-side due to Complete Fill
+	- Response => {Message Type = Cancel Reject; Request ID = YYYY; Exec Type = <<blank>>; Exec Trans Type = <<blank>>; Last Shares = 0; Comments}
+	- Order => {Status: Filled; Type; Quantity = Incoming; Cumulative Quantity = 0; Leaves Quantity = 0; Last Shares = 0}
+ 3.29) Buy-side Request - Replace Request not for Quantity Change
+	- Request {Type: New; Parent Request ID = XXXX; Request ID = YYYY; Quantity = IncomingYYYY}
+	- Order {Status: Unassigned; Type; Quantity = Incoming; Cumulative Quantity = 0; Leaves Quantity = 0; Last Shares = 0}
+ 3.30) Buy-side Response - Full Fill Received from Venue on an Order Pending Replace
+	- Response => {Message Type = Execution; Request ID = XXXX; Exec Type = Replace; Exec Trans Type = New; Last Shares; Comments}
+	- Order => {Status: Filled; Quantity = Incoming; Type; Cumulative Quantity = Quantity; Leaves Quantity = 0; Last Shares}
+ 3.31) Buy-side Response - Pending Replace and a Partial Fill Received from Venue
+	- Response => {Message Type = Execution; Request ID = XXXX; Exec Type = Replace; Exec Trans Type = New; Last Shares; Comments}
+	- Order => {Status: Partially Fill; Type; Quantity = Incoming; Cumulative Quantity += Last Shares; Leaves Quantity -= Last Shares; Last Shares}
+ 3.32) Buy-side Response - Pending Replace Rejected because Broker does not support Order Replace when Order is Pending Replace
+	- Response => {Message Type = Cancel Reject; Request ID = YYYY; Exec Type = <<blank>>; Exec Trans Type = <<blank>>; Last Shares = 0; Comments}
+	- Order => {Status: Filled; Type; Quantity = Incoming; Cumulative Quantity = 0; Leaves Quantity = 0; Last Shares = 0}
+ 3.33) Buy-side Request - New Telephoned Order, ClOrdID generated
+	- Request {Type: New; Request ID = XXXX; Quantity = Incoming}
+	- Order {Status: Unassigned; Type; Quantity = Incoming; Cumulative Quantity = 0; Leaves Quantity = 0; Last Shares = 0}
+ 3.34) Buy-side Response - Unsolicited Broker Cancel of a Part-filled Order due to a Verbal Cancel
+	- Response => {Message Type = Execution; Request ID = XXXX; Exec Type = Canceled; Exec Trans Type = New; Last Shares; Comments}
+	- Order => {Status: Canceled; Type; Quantity = Incoming; Cumulative Quantit; Leaves Quantity; Last Shares}
+ 3.35) Buy-side Response - Verbal Restatement of Order
+	- Response => {Message Type = Execution; Request ID = YYYY; Exec Type = Restated; Exec Trans Type = New; Last Shares; Comments}
+	- Order => {Status: New; Type; Quantity = Incoming; Cumulative Quantity; Leaves Quantity; Last Shares}
+ 3.36) Buy-side Response - Verbal Restatement of a Part-Filled Order
+	- Response => {Message Type = Execution; Request ID = YYYY; Exec Type = Restated; Exec Trans Type = New; Last Shares; Comments}
+	- Order => {Status: Partially Filled; Type; Quantity = Incoming; Cumulative Quantity; Leaves Quantity; Last Shares}
+ 3.37) Buy-side Response - Unsolicited Restatement of Order due to Partial Deline from Venue
+	- Response => {Message Type = Execution; Request ID = YYYY; Exec Type = Restated; Exec Trans Type = New; Last Shares; Comments}
+	- Order => {Status: New; Type; Quantity = Incoming; Cumulative Quantity; Leaves Quantity; Last Shares}
+ 3.38) Buy-side Response - Duplicate Order Rejected on a Partial Fill
+	- Response => {Message Type = Execution; Request ID = YYYY; Exec Type = Rejected; Exec Trans Type = New; Last Shares = 0; Comments}
+	- Order => {Status: Partially Filled; Type; Quantity = Incoming; Cumulative Quantity; Leaves Quantity; Last Shares}
+ 3.39) Buy-side Response - Order rejected because the order has already been verbally submitted
+	- Response => {Message Type = Execution; Request ID = YYYY; Exec Type = Rejected; Exec Trans Type = New; Last Shares = 0; Comments}
+	- Order => {Status: Rejected; Type; Quantity = Incoming; Cumulative Quantity; Leaves Quantity; Last Shares}
+
+ 3.40) D1 => 5.6 -> 5.7; 5.8 -> 5.9; 5.10 (as many times as needed within a day) -> 5.11
+ 3.41) D2 => 5.6 -> 5.7; 5.8 -> 5.9; 5.10 (as many times as needed within a day) -> 5.12
+ 3.42) D3 => 5.6 -> 5.7; 5.8 -> 5.13 -> 5.14; 5.15 -> 5.16; 5.17
+ 3.43) D4 => 5.6 -> 5.7; 5.8 -> 5.10 -> 5.13/5.10 (Concurrent) -> 5.18; 5.15 -> 5.19 -> 5.18; 5.17
+ 3.44) D5 => 5.6 -> 5.7; 5.8 -> 5.10 -> 5.13/5.10 (Concurrent) -> 5.18; 5.19 -> 5.20 -> 5.21
+ 3.45) D6 => 5.6 -> 5.7; 5.8 -> 5.22 -> 5.14; 5.23 -> 5.16; 5.24 -> 5.10 (as many times as needed within a day)
+ 3.46) D7 => 5.6 -> 5.7; 5.8 -> 5.10 -> 5.22 -> 5.25; 5.23 -> 5.26 -> 5.25; 5.24 -> 5.11
+ 3.47) D8 => 5.6 -> 5.7; 5.8 -> 5.10 -> 5.22 -> 5.28; 5.23 -> 5.26 -> 5.10
+ 3.48) D9 => 5.6 -> 5.7; 5.8 -> 5.10 -> 5.29/5.11 (Concurrent) -> 5.21
+ 3.49) D10 => 5.6 -> 5.7; 5.8 -> 5.10 -> 5.13/5.10 (Concurrent) -> 5.14; 5.23 -> 5.26 -> 5.25; 5.26 -> 5.10
+ 3.50) D11 => 5.6 -> 5.7; 5.8 -> 5.22/5.10 (Concurrent) -> 5.30
+ 3.51) D12 => 5.6 -> 5.7; 5.8 -> 5.22/5.10 (Concurrent) -> 5.30
+ 3.52) D13 => 5.6 -> 5.7; 5.8 -> 5.10 -> 5.22 -> 5.23 -> 5.26 -> 5.10 -> 5.22 -> 5.23 -> 5.26 -> 5.11
+ 3.53) D14 => 5.6 -> 5.7; 5.8 -> 5.10 -> 5.22 -> 5.25; 5.10 (as many times as needed within a day) -> 5.22 -> 5.23 -> 5.31 -> 5.10
+ 3.54) D15 => 5.6 -> 5.7; 5.8 -> 5.10 -> 5.22 -> 5.23 -> 5.26 -> 5.25; 5.10 -> 5.22 -> 5.23 -> 5.31 -> 5.10
+ 3.55) D16 => 5.6 -> 5.8 -> 5.10 -> 5.22 -> 5.22 -> 5.23 -> 5.31 -> 5.23 -> 5.31 -> 5.11
+ 3.56) D17 => 5.6 -> 5.8 -> 5.10 -> 5.22 -> 5.22 -> 5.23 -> 5.31 -> 5.10
+ 3.57) D18 => 5.33 -> 5.8 -> 5.10 (as many times as needed within a day) -> 5.11
+ 3.58) D19 => 5.6 -> 5.7; 5.8 -> 5.10 (as many times as needed within a day) -> 5.35
+ 3.59) D20 => 5.6 -> 5.7; 5.8 -> 5.35 -> 5.10 -> 5.36
+ 3.60) D21 => 5.6 -> 5.7; 5.8 -> 5.37 -> 5.11
+ 3.61) D22 => 5.6 -> 5.8 -> 5.10 (as many times as needed within a day) -> 5.6 -> 5.38
+ 3.62) D23 => 5.6 -> 5.39
+ 3.63) Detection of Order Duplication:
+	- "PossDup" Flag in the Request Header
+	- Check against side/quantity
+	- Transaction Time, i.e., Order/Request Creation Time, for Staleness Check
+ --------------------------
+
+ --------------------------
+ #4 - Central limit order book (COMPLETED)
+ --------------------------
+ --------------------------
+ 4.1) RFQ vs. Order Book
+ --------------------------
+
+ --------------------------
+ #5 - Inverted Price Venues (COMPLETED)
+ --------------------------
+ --------------------------
+ 5.1) Maker-Taker pays for Liquidity Post. Inverted pays for Liquidity Seek
+ --------------------------
+
+ --------------------------
+ #6 - Auction On-demand
+ --------------------------
+ --------------------------
+ 6.1) Auction Order Size
+ 6.2) BBO
+	- European BBO
+	- National BBO
+	- Primary (Dealer) BBO
+ 6.3) Trading at or within BBO
+ 6.4) Features:
+	- Maximize Traded Volume
+	- Custom Priorities
+		- Order book Level Broker Priority
+		- Time
+		- Size
+	- Different Auction Order Types
+ 6.5) Safety Features:
+	- Uncross - Random Min and Max Times
+	- Speed Bumps on Cancels TBD
+	- Speed Bumps on Order Modifications
+	- Minimum Execution Size - Opposite Order must exceed MES
+	- Limit Guard Price Protection
+	- EBBO/NBBO Collar
+ --------------------------
+
+ --------------------------
+ #7 - Volume-weighted average price (COMPLETED)
+ --------------------------
+ 7.1) Execution Price Benchmark - Part of Volume Participation Algorithms Execution Class
+ --------------------------
+ --------------------------
+
+ --------------------------
+ #8 - Execution Cost and Transaction Trajectories (COMPLETED)
+ --------------------------
+ 8.1) Arrival Price Benchmark vs Trajectory e.g., VWAP/TWAP benchmark
+ 8.2) Valuing Unfilled Orders - on closing price
+ --------------------------
+ --------------------------
+
+ --------------------------
+ #9 - Execution of Portfolio Transactions – Optimal Trajectory (COMPLETED)
+ --------------------------
+ 9.1) Definition of a Static Trading Strategy - Discrete/Continuous Execution Schedule
+ 9.2) Price Dynamics:
+	- Permanent Impact
+		- Impact Function is a function of amount traded in the period per unit time
+		- Price after Step-wise Permanent Impact
+		- Price change impacts the next step
+	- Temporary Impact
+		- Impact Function is a function of amount traded in the period per unit time
+		- Price after Step-wise Temporary Impact
+		- Price change DOES NOT impact the next step
+	- Capture and Cost Trajectories
+		- Capture - Revenue after executing all trades in the schedule
+		- Implementation Shortfall - Transaction cost, i.e., ex-post Difference between Initial Book Vaue and Capture
+			- Mean E and Variance V of Implementation Shortfall
+			- VaR measure => minimize (E + lambda . V)
+	- Linear Impact Functions
+		- Permanent Impact Function is linear in the amount traded in the period per unit time
+			- Price Estimation at t due to permanent impact
+			- Implementation Shortfall due to Permanent Impact
+			- Therefore permanent impact cost is incremental in the amount traded
+		- Temporary Impact Function composed of two additive terms:
+			- Term linear in the amount traded in the period per unit time
+			- Liquidity Term, viz on bid-ask + fees
+			- Therefore temporary impact cost is incremental in the amount traded
+		- Expected Shortfall is Linear in all impact coefficients
+			- Expected Shortfall is strictly convex on individual n's under certain conditions
+			- Expected Shortfall can be simplified further for buy/sell where all n's have same sign
+		- Least Impact
+			- Equally traded over the full period
+			- Expected Implementation Shortfall quadratic in X and (constant + inverse in T)
+			- Variance in Implementation Shortfall quadratic in X and linear in T
+		- Least Variance
+			- Traded fully in a single period
+			- Expected Implementation Shortfall quadratic in X and (constant + inverse in T)
+				- Therefore fast execution (small T) means high impact
+			- Variance is 0
+ 9.3) Efficient Frontier of Optimal Execution
+	- Definition:
+		- Trajectory has Lowest Variance for the same or lower Level of expected Transaction Costs
+		- Or: Variance V∗ ≥ 0, Trajectory that has minimum expected transaction costs
+		- Minimize (E + lambda . V) as a Constrained Optimization
+			- Lambda is Lagrange Multiplier
+			- Lambda is called "Risk Aversion"
+	- Explicit construction of optimal strategies
+		- Minimize Lagrangian wrt individual x_i's
+		- Tridiagonal linear difference equation on x for i-1, i, i+1
+		- When x0 = X and x_N = 0, explicit Hyperbolic form x_n and n_n
+		- Corresponding expressions for E and V
+		- Reduction to Least Impact/Least Variance Forms
+	- Half-life a Trade
+		- Comparison of Half-life against T and relation to Least Impact/Least Variance Trajectories
+	- Structure of the frontier
+		- Boundary represents optimal E/V for a given lambda
+ 9.4) Risk/Reward Tradeoff
+	- Interpretation using a Utility Function, and VaR
+	- Utility Function Approach
+		- U = E + lambda . V is the Utility
+		- Aversion is U''/U'
+		- Trajectory are dynamically optimal - as can be explicitly seen in the relation between X_i+1 and X_i
+	- Liquidity Value-at-Risk LVaR
+		- Minimizes U_p = E + lambda_v . sqrt (V)
+			- p is the percentile of implementation shortfall
+			- lamda_v is number of standard deviations
+		- Uncertainty costs are linear, temporary impact is quadratic
+			- So optimal trajectories are linear for large enough portfolios
+		- Trajectories are not dynamically optimal as before
+ 9.5) Value of Information
+	- Drift
+		- Incorporation of drift into dynamics
+		- Expression for V does not change, modification to E
+		- New trajectory optimality condition
+		- Optimal level of security holding for a time-independent portfolio optimization
+		- Optimal trajectory and trade sizes
+			- Components of the Trajectory - zero drift part and a drift based correction
+		- Bounds on the Utility Gains due to Drift
+			- Practical parameters will indicate this is small
+	- Serial Correlation
+		- Full handling requires dynamic programming
+		- First order impact estimation for linear impact functions:
+			- Per-period impact cost of “smooth” strategy
+			- Per-period gain by adapting to correlations
+			- Per-period cost of adapted strategy
+			- Per-period Quadratic Optimization Problem
+				- Optimal Incremental Shares
+				- Maximum Per-period Gain
+		- First order impact estimation for non-linear impact functions:
+			- Impact cost of adapted strategy
+			- Optimal Gain
+			- Maximum Gain per Period
+		- Practical parameters will indicate this is small
+	- Parameter Shifts
+		- T* - time at which the event will occur
+		- Jump to one of the new set of parameter set with their corresponding probabilities
+		- Compartmentalize one trajectory path to T* (X*), and another one from T* to T
+		- X* may be determined by minimizing E* + lambda . V* where E* and V* are probability weighted parameter sets
+ 9.6) Multiple-Security Portfolios
+	- Trajectory and Trades are Component Vectors
+	- Trading Model
+		- Independent Random walks representing Security Level Idiosyncratics
+		- Volatility matrix C
+		- Permanent Impact G is a vector
+		- Temporary Impact H is a vector on bid-ask + h(.)
+		- E in terms of G and H
+		- V in terms of C, G, and H
+		- Breakdown G and H into symmetric and anti-symmetric parts
+		- Apply earlier analysis to uncover lambda based optimal trajectories
+	- Optimal Trajectories
+		- Trajectory Linearization Optimization Equations
+		- Lnearly Transform for the trajectory X, and the into A and B from C, G, and H produces a linear system with m.(N-1) variables
+	- Explicit Solution for the Diagonal Model
+		- No cross-security impact, so G and H are diagonal, C is not
+		- Anti-symmetric H is zero, diagonal H must be positive (conditions specified)
+		- B is zero, and A eigenized into U
+			- kappa is now the eigenvalue
+			- Trajectory y's are transformed by U, and trasnformed back into x_i after solving
+		- Consequence - trading may be non-monotonic if security prices are highly correlated
+ --------------------------
+ --------------------------
+
+ --------------------------
+ #10 - Non-linear Impact and Trading-Enhanced Risk (COMPLETED)
+ --------------------------
+ 10.1) The Model:
+	- X to be fully liquidated by T
+	- x chosen to minimize a cost functional
+	- Lnear Permanent and non-linear temporary impacts
+	- Trading Enhanced Volatility depends on trade rate (n_k / t) and is stochastic to the same stock price factor
+	- Capture at each step can be split into:
+		- Initial portfolio value XS0
+		- Temporary impact component H
+		- Permanent Impact Component G
+		- Pure Volatility component sigma
+		- Trading Enhanced Volatility Component f
+	- Total E only depends on H and G (and the trajectory)
+	- Total V only depends on sigma and f (and the trajectory)
+	- Continuous Limit - t -> 0 and n gets replaced by v_k = n_k / t
+	- Continuous Mean and Variance are now time integrals over v(t)
+	- U = E + lambda . V as before, except all are continuous
+	- Calculations of Variations: minimize U over x(t), i.e., minimize over U the functional Integral F(x,v) dt
+		- F(x,v) = x.g + v.h + lambda.sigma^2.x^2 + lambda.f^2.v^2
+	- Apply pertubation stationarity to generate the Euler-Lagrange for F(x,v)
+		- F(x,v) + v dF(x,-v)/dv = constant
+	- Application of the Optimal Trajectory Determination to F(x,v) results in:
+		- P(v) - P(0) = x.(g(v) + vg'(v)) + lambda.sigma^2.x^2
+		- P(v) = v^2.d(h + lambda.v.f^2)/dv
+		- P(0) = 0
+	- Additional Assumptions: Permanent Impact is linear, time horizon is infinite
+	- Imposing Linear Function provides an integral form for P
+		- No Bid-ask spread dependence
+	- Impact of Extraneosuly Specified Liquidation Time on P
+ 10.2) Nonlinear Cost Functions
+	- Power Law Temporary Impact Functions
+		- Explicit form for P(.) in terms of the power law
+		- Almgren P(.) quadrature problem
+		- Explicit Form for Longest Optimal Trajectory as a function of Characteristic Time T*
+		- Explicit Form for T* - T* is the analog of half-life
+		- Intuition behind T*: It is the time that balances:
+			- The lambda weighted variance penalty
+			- Corresponding execution cost 
+		- Sub-linear and supra-linear impact exponent analysis
+		- Longest Optimal Time T* as a Function of impact exponent
+		- Self-similarity form, i.e., x(t)/X as a function of T* and impact exponent
+		- Small t, all trajectories are similar, tail of the trajectories is extended for small impact exponent strongly penalizing trading at slow rates
+ 10.3) Objective Function
+	- Closed Form for E and V as a function of k
+	- Closed Form for the Efficient Frontier
+	- Asymptotics for Lambda 0 and Infinity
+ 10.4) Trading-Enhanced Risk
+	- Linear Temporary and f = alpha + beta . v
+	- Closed Form for E, V, and therefore P(v, lambda)
+ 10.5) Constant Enhanced Risk:
+	- Case - beta = 0
+	- Closed form for T*
+	- Comparison with f(v)=0, k=1 Case
+	- Closed Form for E, V
+	- Asymptotics for Lambda 0 and infinity
+ 10.6) Linear Enhanced Risk:
+	- Case - beta not 0, alpha = 0
+	- Closed form for T*, X*
+	- Intuition behind X* - Trading Volatility matches the Linear Enhanced Volatility at this size
+	- Comparison with f(v)=0, k=1 Case
+	- Closed Form for E, V
+	- Asymptotics for Lambda 0 and infinity
+ --------------------------
+ --------------------------
+
+ --------------------------
+ #11 - Direct Estimation of Equity Market Impact (COMPLETED)
+ --------------------------
+ 11.1) Data
+	- Data Description and Filtering Rules
+		- 700K orders over 19 months
+		- Sizes, Times, and Prices of Executions (not orders)
+		- Only S&P constituents
+		- Exclude stocks that show > 12.5% daily volatility
+		- Exclude MOC/MOO
+		- Exclude transactions after close/before open
+		- Exclude "small" orders
+		- Results: 30K orders, 5 executions per order (548 is the max)
+	- Variables
+		- Pre- and Post- Market Prices on the Order
+		- Transaction Weighted Average (or Realized) Price on the Order
+		- Post- price (30 min after last execution) captures permanent impact
+		- Dimensionless Permanent Impact => I = (post - pre)/pre
+		- Dimensionless Realized Impact => J = (realized - pre)/pre
+		- Dimensionless Temporary Impact => J - fraction of I
+		- Calculations done in volume time τ - fraction of the average day’s volume that has executed up to t
+		- Clock time mapped to volume time
+		- “Dimensional” Parametric Explanatory Variables
+			- Cumulative execution to t
+			- Volume Duration of Active Trading
+			- Volume Duration of the Impact
+		- Trajectory Optimization - Time nodes given, corresponding optimal execution schedule computed
+		- Market Core Empirical Parametric Inputs - ADV and volatility (sigma)
+			- ADV => 10D moving average
+		- Order/execution size normalized by corresponding ADVs (even intra-day)
+ 11.1) Trajectory Cost Model
+	- Realized = Permanent + Temporary + Noise
+	- Permanent Impact I=T.g(X/T)+σ√(T_POST).ξ
+	- Temporary Impact J-I/2=h(X/T)+σ[√(T/12.(4-3 T/T_POST )).χ-(T_POST-T)/(2√(T_POST)).ξ]
+		- Error expression reflects the fluctuations on the middle part of the Brownian motion on [0,T] relative to the end point at T_POST
+ 11.2) Choice of functional form
+	- Permanant - g(v) = ±γ|v|^α
+		- α = 1
+	- Temporary - h(v) = ±η|v|^β
+		- 0 < β < 1
+	- Error residuals ξ and χ evaluated for normality
+ 11.3) Cross-Sectional Description
+	- Parameter Scaling
+		- Basis for the Normalizer Choice - X/(V.T)
+		- I=σTg(X/VT)+⟦noise⟧
+		- J-I/2=σh(X/VT)+⟦noise⟧
+		- Price moves expressed as a fraction of the “normal” daily motion of the price, as expressed by the volatility σ
+	- Model Determination
+		- Liquidity Factor L=[Θ/V]^δ
+		- Θ - Total number of shares outstanding
+		- Dimensionless quantity Θ/V is the inverse of the ‘turnover’
+		- Liquidity Regressor Candidates Eliminated - Bid-ask, Market Capitalization
+		- I/σ=γTsgn(X) |X/VT|^α [Θ/V]^δ+⟦noise⟧
+		- 1/σ [J-I/2]=ηsgn(X) |X/VT|^β+⟦noise⟧
+		- Coefficients:
+			- α=0.891±0.10
+			- δ=0.267±0.22
+			- β=0.600±0.038
+	- Determination of Coefficients
+		- γ = 0.314 ± 0.041 (t = 7.7)
+		- η = 0.142 ± 0.0062 (t = 23)
+		- I=γσ X/V [Θ/V]^(1/4)+⟦noise⟧
+		- J=I/2+ησsgn(X) |X/VT|^(3/5)+⟦noise⟧
+ --------------------------
+ --------------------------
+
+ --------------------------
+ #12 - Optimal Execution of Program Trades (COMPLETED)
+ --------------------------
+ 12.1) Introduction
+	- Information ratio of a trade - ratio of the annualized expected profit to the annualized standard deviation of the profit
+ 12.2) Efficient Frontier Pricing
+	- Principal trades, so use ex-ante risk-adjusted return
+	- Put-out-to-bid - check if information ratio hurdle rate meets the bid price
+ 12.3) Efficient Frontier Including Discount
+	- Bid as a discount of D dollars per share for a basket in the principal trade
+	- Total Expected Profit = DX-C_PERM-C_TEMP
+	- Power-law cost impact expressions for expected profit and variance on the profit
+	- T dependence for E and V
+ 12.4) Annualization
+	- Annualization of E, V, Temporary/Permanent Costs
+	- Efficient frontier in terms of annualized expectation and annualized variance collapses to a single point
+		- Consequence of the annualized variance being independent of the trading time
+	- Expression for Optimal Trading Time - maximizes E/T
+		- Optimal Trading Time Independent of the risk/reward preferences, depends only on D
+ 12.5) Definition of the Information Ratio
+	- Mathematical Definition of Information Ratio
+	- Information Ratio corresponding to optimal Trading Time
+ 12.6) Applications the Information Ratio
+	- Discount Implied Maximum Information Ratio
+	- Information Ratio Implied Minimum Discount
+	- Max Information Ratio vs. Temporary Impact Exponent
+ --------------------------
+ --------------------------
+
+ --------------------------
+ #13 - Bayesian Trading with a Daily Trend (COMPLETED)
+ --------------------------
+ 13.1) Price Model Using Bayesian Update
+	- Arithmetic Walk - Time is volume time relative to a historical profile
+	- Volatility comes from Activity of the “uninformed” traders
+	- Drift from the activity of other institutional traders
+	- α is Unknown constant throughout the day
+	- α~N(α ̅,ν^2)
+	- Sources of Randomness
+		- Continuous Brownian motion representing the uninformed traders
+		- Single drift coefficient representing the constant trading of the large traders
+	- Bayesian Inference
+		- Drift Estimate from Realized Price
+		- Distribution of S conditioned on α
+		- Unconditional Distribution of S
+		- Posterior conditional distribution of α conditioned on S
+		- Fully certain vs. fully uncertain estimates of α
+		- Time Asymptotics on α
+	- Trading and Price Impact
+		- Implementation shortfall C in terms of α
+ 13.2) Optimal Trading Strategies
+	- Risk Aversion Lambda set to zero, so focus is on trading cost reduction
+	- Positive Drift Assumption
+	- Hard Completion at T
+	- Forward Execution Cost Conditional on α
+	- α Estimate Conditional on S - α_* (t,S)
+	- Bayesian Estimate of Unrealized Cost - E[t,x(t),S,{x(t)}]=η∫_t^T▒〖v^2 (τ)dτ〗+α_* (t,S) ∫_t^T▒x(τ)dτ
+	- Strategy Objective - Minimizing Transaction Cost - ■(min@{x(τ)} ) E[t,x(t),S,{x(τ)}]
+	- α_* (t,S) assumed not to change during t≤τ≤T
+	- Dynamically Recomputed Unrealized Trajectory Cost
+	- Equivalence with Full Dynamic Optimization
+ 13.3) Optimal Trajectories by Calculus of Variations
+	- Trajectory Perturbation Fixed at the End-points x(τ)↦x(τ)+∆x(τ) => ∆x(t)=∆x(T)=0
+	- Corresponding Bayesian Cost Impact => ∆E[t,x(t),S,{x(t)}]=∫_t^T▒{-2ηx^'' (τ)+α_* (t,S)}[∆x(τ)]dτ
+	- Cost Optimized Trajectory - Admissibility Condition => ∆E[t,x(t),S,{x(τ)}]>0
+	- Sign Unconstrained Trajectories - Holdings ODE
+	- Sign Unconstrained Trajectory - The Holding Solution
+		- x(τ)=(T-τ)/(T-t) x(t)-α_*/4η (τ-t)(T-τ)
+			- First piece is proportional to x(t) - is the linear VWA) liquidation of the current position
+			- It is the optimal strategy to reduce the expected impact costs with no risk aversion
+			- Second piece - proprietary trading strategy superimposed on liquidation
+		- v(t,x)=├ -x^' (τ)┤|_(τ=T)=x(t)/(T-t)+α_*/4η (T-t)
+		- α_* that causes v(t,x) to become negative
+			- Bayesian Cost Impact expression is not valid anymore
+			- Trajectories crossing x = 0 are clipped to retain x >= 0 - makes it non-smooth
+			- Smoothing the trajectory at x = 0 - v = 0 as well
+		- Critical Drift α_C
+			- Below that trajectory is uncsontrained to T
+			- Above that trajectory is uncsontrained to T* < T
+			- Below that -α_C trajectory does not start until T* < T
+			- α_C determined by setting T* = T
+	- Optimality of the Adaptive Strategy
+		- Expression for Cost Gain - this is independent of X
+ 13.4) Stochastic Optimal Control Treatment
+ --------------------------
+ --------------------------
+
+ --------------------------
+ #14 - Smart Order Routing
+ --------------------------
+ 14.1) Addresses problems of venue proliferation and liquidity fragmentation
+ --------------------------
+ --------------------------
+
+ --------------------------
+ #15 - Nagar – Algos and Smart Order Router
+ --------------------------
+ --------------------------
+ 15.1) Algos - NAGAR; Venue - VIPANI; Router - PATH
+ 15.2) Components - Scheduler, Order Placement, Router
+	- Order Placement invokes the Router using the Execution Modes
+ 15.3) Execution Modes - Ping, Sweep, Exchange Post, Dark Post
+	- On Marketability - Follow Ping, Sweep, Exchange Post in that order
+	- Dark Post exclusive to the other modes
+ 15.4) Ping Execution Mode
+	- Locate Hidden Liquidity within bid-ask Spread
+	- Remove Displayed Liquidity at:
+		- Far-touch => NBO for buy, NBB for sell
+		- Near-touch or better => at/above NBB for buy, at/below NBO for sell
+	- Dynamic Ping - uses mid-point and limit IOC on a custom venue set (across Exchange/ATS/IOI Venues)
+ 15.5) Sweep Execution Mode
+	- Take Liquidity at best displayed price/better
+	- Liquidity displayed at a Custom venue set (across Exchange/ATS/IOI Venues)
+	- Use ISO IOC orders
+	- Sweep multiple price levels simultaneously
+	- Limit price based on depth needed for order fill, overridden only by more conservative client limit price
+ 15.6) Exchange Post Execution Mode
+	- Provide Liquidity for Unmarketable Orders
+	- Smart Exchange Post - uses probability of fill in conjunction with price impact on chosen venue
+		- May allocate to both displayed and non-displayed liquidity
+		- Same venue for both displayed and non-displayed liquidity - results in a single reserve order
+	- Dynamic Exchange Post - uses profiles based posting based on venue market share/allocation weights
+	- Always uses non-routable DAY limit displayed orders when posting
+		- If the non-routable post locks/crosses NBBO, exchange slides the displayed price to a valid increment
+	- Re-allocation among Venues when:
+		- Child order receives a full fill
+		- Minimum Time Elapsed
+		- Market Conditions have Changed
+	- When locked/crossed, trigger Ping/Sweep to take liquidity
+	- Just before opening/closing, reallocate to primary exchange to ensure resting orders participate in auctions
+ 15.7) Dark Post Execution Mode
+	- Provide Hidden Liquidity for Unmarketable Orders
+	- Uses Smart Dark Post and Dynamic Dark Post
+	- Posts are typically mid-point DAY, overriden by passive or market-peg on client instructions
+	- Re-allocation among Venues when:
+		- Child order receives a full fill
+		- Minimum Time Elapsed
+		- Market Conditions have Changed
+	- NAGAR posts internally to VIPANI for short time to allow for internal crossing
+ 15.8) Real-time Venue Selection Criteria:
+	- Available Price - Sorted best Price Venues when taking liquidity
+	- Historical Data - Based on a time window
+	- Market Analytics - Intra-day, symbol-specific information:
+		- Bid/Ask Imbalances
+		- Turnover Frequency
+		- Execution Price Information
+		- Execution Price Momentum
+	- Order Details - Size, Limit Price, Symbol, Order Type, Execution Instructions
+	- Order Feedback - Real-time Parent/Child Order Information:
+		- Open/Executed Child Orders
+		- Hidden/Displayed Liquidity
+		- Average Observed Price Execution
+	- Fair Price based off of Historical data, Market Analytics, Order Feedback
+	- Execution Probability - Probability of Fill at a given price level at a venue
+	- Venue Characteristics:
+		- Venue Type - Exchange/ATS etc.
+		- Pricing Structure - Inverted, Maker/Taker
+		- Supprt for Order Types/Features
+	- Venue Cost - Fees/Rebates
+ 15.9) Accessible Venues and Execution Modes
+ 15.10) Order Types and Execution Modes
+ 15.11) Order Handling Scenarios to Consider
+	- Short sell securities in price test are sent to primary exchange, unless overridden
+		- Market orders become limit orders with price 1 tick less aggressive than the market impact price
+		- Market Impact Price => More restrictive of either Limit Up/Down price and erroneous price
+	- Best price venue down - sent to default venue (e.g. BATS)
+	- Orders entered prior to open - automatically set for pre-open and continuous trading
+		- Continuous ends when symbol goes into closed state on the primary venue
+		- If symbol not open at primary by a set time, it is treated as continuous trading
+	- Orders with opening/closing TIF sent to primary
+	- Symbols halted for traging are routed to primary unless overridden
+	- Algorithmic venue selection failure - randomized ranking to select venues
+ 15.12) PATH Customization Options
+	- Cross Modes
+		- Disable specific venues/venue types
+		- Route based on exchange cost
+			- Ping disabled
+			- Sweeping on price first, then venue cost
+	- Ping Customization - Disable Ping
+	- Sweep Customization
+		- One price at a time
+		- Minimize odd lots by minimum execution size (e.g., 100 shares)
+	- Exchange Post Customization
+		- Specify aggregate shares posted across children
+		- Normal Posting venue specification
+	- Dark Post Customization
+		- Limit routing to selected displayed/non-displayed venues
+		- Minimum Execution Quantity
+		- Disable initial VIPANI dip in NAGAR
+ 15.13) Directed Orders via PATH
+	- PATH forwards limit orders without changes
+	- Market orders sent at marketable limit prices - above NBO/below NBB with an internal threshold
+ 15.14) Exchange Market Data
+	- EXEGY with SIP as a backup
+ 15.15) Non-exchange Market Data
+	- IOI Venues
+		- IOI quantity in venue ranking logic
+		- Send IOC orders for sweep, which may not be honored
+	- ATS Venues
+		- Displayed quantity in venue ranking logic
+		- Send IOC orders for sweep, which may not be honored
+ 15.16) Performance Evaluation of Algos
+	- Average Slippage from VWAP, TWAP, arrivl price
+	- Evaluated across market capitalization, spread duration, order sizes
+	- Order Outlier analysis
+ 15.17) Information Leakage Anti-gaming Protection
+	- Symbol-specific Analytics
+		- Volume profile, average spread, quote depth, volatility estimate
+		- Dynamic Scheduling and Volume Forecasting
+		- Chase Protection - Symbol-specific block exclusion for all participation tracking
+		- Non-deterministic Child Order Placement
+			- Release time of passive/aggressive orders does not fillow a pre-defined progression
+		- Dynamic Limit Pricing for Hidden Non-displayed Orders
+			- Prevents Unfavorable executions due to to short term movements
+ 15.18) Capital Commitment - Enabled for Child TWAP VWAP POV
+ --------------------------
+
+ --------------------------
+ #16 - Retail SOR Strategy Builder
+ --------------------------
+ --------------------------
+ 16.1) Retail SOR Wave Instructions
+	- Wave #1 - Send quantity to NAGAR with Sweep venue inclusion list (VIPANI).
+		- Order type Ping SEQUENTIAL mid-pegging, and time-in-force IOC
+	- Wave #2 - Remaining quantity to PATH with Sweep venue inclusion list that correspond to inverted venues.
+		- Inverted Venue List: XBOS, BATY, EDGA, XCIS
+		- Order type Ping SEQUENTIAL mid-pegging, and time-in-force IOC
+	- Wave #3 - Remaining quantity to PATH with Sweep venue inclusion list (VIPANI) with time-in-force of IOC
+		- No ping
+	- Wave #4 - Remaining quantity to PATH with Sweep venue inclusion list (VIPANI) with IOI time-in-force of IOC
+	- Cancel any remaining Quantity to the User
+ 16.2) Phase-based Conditional Action
+	- Phases markers are: Continuous Start and Continuous End
+ 16.3) Additional Considerations
+	- Client DAY orders become IOC
+	- Amendments will cancel current wave and restart from #1
+	- Current wave is completed and leaves canceled
+	- IPO not wave eligible
+ --------------------------
+
+ --------------------------
+ #17 - Indifference price
+ --------------------------
+ --------------------------
+ 17.1) Overview
+	- Pricing Securities wrt a utility function
+	- Also called reservation price or private valuation
+	- Price at which the expected utility level is the same by exercising a transaction vs. not doing so (with optimal trading otherwise)
+	- Produces Pricing Range - bid/ask or good-deal bounds
+ 17.2) Mathematics
+	- V (x, k) - Supremum of the Terminal of the Expected Utility (u) value of
+		- A Portfolio consisting of an initial amount x + k units of an entity (stock, option, etc.)
+		- Supremum is taken over all self-financing portfolios
+	- Indifference bid price is the solution to V (x - vBid (k), k) = V (x, 0)
+	- Indifference bid price is the solution to V (x + vAsk (k), -k) = V (x, 0)
+ 17.3) Approach
+	- Assume portfolio of constituent securities whose weighted market value adds up to x + v
+	- Work out V(x + v, k) generically unoptimized across component weights
+	- Remember when k = 0, v = 0, compute the optimal value of V(x, k = 0).
+		- This is the indifference terminal value.
+	- Now work out the optimal weights corresponding to V(x + v, k).
+	- You now have the optimal weights in terms of v. Remember V(x + v, k) = V(x, 0). So now solve for v to get v = v(k).
+ --------------------------
+
+ #2 - Execution Algorithms
+ --------------------------
+ --------------------------
+ 2.1) VWAP - Background Volume Histogram, VWAP Window, Price Histogram
+ 2.2) TWAP - TWAP Window, Price Histogram
+ 2.3) Implementation Shortfall:
+	- (EP - DP) x Q + EC
+	- EP: Execution Price
+	- DP: Decision Price
+	- Q: Quantity
+	- EC: Explicit Costs, made from Broker Charges and Commission
+	- (EP - DP) x Q = Also called slippage
+ 2.4) Participation of Volume - Total Market Volume, Participation Rate
+ 2.5) Iceberg - Splits large ones into small and hides the rest
+ 2.6) SOR - All the above across multiple venues
+ 2.7) SMRT - SOR + Algo-based Order Placement
+ 2.8) Order Scheduling - Timw Window Delay for Order Placement
+ --------------------------
+ #3 - Trading Strategy Algo Framework
+ --------------------------
+ --------------------------
+ 3.1) Broad Institutional Trading Platform Components
+	- Algo Engine
+	- FIX Translator
+	- Order Validator
+	- Risk Management
+	- Monitoring
+	- Market Data Consumer
+	- Post-trade Processor
+ 3.2) Algo Engine
+	- Purpose: Takes the client’s high-level instruction, and decides how and when to slice out child orders
+		based on the current state of the market and the pre-loaded quantitative models
+	- Core Functional Components
+		- Algo Model Data Interface
+		- Order Validation Engine
+		- Child Order Slicing Interface
+		- OMS Venue Interface
+		- Market Data Interfacer
+		- Security Master Static Data Interface
+		- Algo Output Safety Bounds Checker
+		- Risk Check Interface
+		- Strategy Implementer (e.g., VWAP, DROP LIQUIDITY SEEKER)
+		- Timer Service Interface
+ 3.3) The Trading Strategies (Algos)
+	- VWAP - Strategy trades in line with the market volume based on a dynamic volume prediction model
+	- DROP LIQUIDITY SEEKER - Hybrid liquidity seeker/impact minimization algo that balances the speed of
+		execution with avoiding undue market impact as per its equivalent model, with an opportunistic
+		component searching for block liquidity in parallel
+	- Safety Customizations - Order must a) complete, b) exclude auctions
+ 3.4) Trading Logic Components
+	- Algo, Scheduler, Order Task, Order Router
+	- Algo:
+		- Top layer that manages all upstream interactions with the user, e.g., handling new orders and
+			amendments, and it creates and manages the Scheduler and the Order Task
+		- Responsible for slicing child shares to the opening and the closing auctions
+	- Scheduler:
+		- Paces the order over the duration using the various quantitative models and the trading logic
+		- Pre-trade Scheduler: Suggests the total number of shares to trade over the duration of the order.
+		- Impact Minimization Scheduler: Pace at which the Algo should trade at any given time. This is used
+			for DROP LIQUIDITY SEEKER orders
+		- VWAP Scheduler: Predicts the amount of volume throughout the day and at the auctions based on what
+			has happened historically and intra-day so far
+	- Order Task and Order Router:
+		- Order Task: Manages and deploys three layers of intra-day trading tactics, i.e., routers, and
+			shuffles between them as dictated by the Algo
+		- Order Router: Router can also stitch together multiple sub-routers, for example a serial mid-point
+			all-or-none router + a spread crossing order to the IEX router
+		- POST – Passively adding liquidity
+			- Starts with a 2:1 split-post on the near-side between IEX D-Limit and the primary exchange
+			- Proportionately reshuffles between two legs based on where it gets filled, and re-pegs to the
+				inside roughly every 30-60 seconds if the stock drifts away
+		- TAKE – immediately removing liquidity
+			- First serially pings a handful of dark-pools using all-or-none IOCs, and if that fails, it
+				crosses the spread to remove liquidity using the IEX router
+		- OPPO – opportunistically seeking block liquidity
+			- Searches for block liquidity by split-posting mid-point orders across several dark pools and
+				exchanges using a high minimum quantity, generally in the thousands of shares. This may be
+				supplemented with other order types such as conditionals
+ 3.5) Order Lifecyle:
+	- Order Arrival:
+		- Receipt of a valid order, Algo subscribes to market data and then creates the Scheduler
+		- For a VWAP order, the Algo creates VWAP scheduler; for a DROP LIQUIDITY SEEKER order, it creates an
+			Impact Minimization Scheduler
+		- Then, the Algo registers with the Algo Engine for various wakeup callbacks; at the start time,
+			shortly before auction cutoff times, at the cleanup time, i.e., shortly before the end, and at
+			the end time
+	- Order Wakeups:
+		- Upon a Pre-auction Wakeup, the Algo slices shares to the primary auction
+		- At the Start Time, the Algo creates the worker and begins the first interval – the Interval logic
+		- Upon the Cleanup wakeup, the Algo tells the Worker to complete any remaining scheduled shares
+		- Upon the End Time Wakeup, the Algo cancels any outstanding orders and then provides an out to the
+			user
+	- Order Intervals:
+		- Life of an order as a series of distinct 5-10 “intervals”
+		- Scheduler Input #1 - Interval Length
+			- Length of the interval is used to request a wakeup at the end
+			- Interval length depend on other factors too like the time of the day – intervals are stretched
+				longer in the morning when spreads are wider, and compressed as the day progresses
+			- Additionally, smaller orders have longer intervals and vice versa. All interval durations are
+				randomized
+		- Scheduler Input #2 - Number of Shares Scheduled
+			- VWAP Scheduler uses the dynamic volume prediction model to predict what percentage of the day’s
+				volume will have traded by the end of the current interval
+			- Impact Minimization Scheduler gets this value by running a dynamic programming cycle of the
+				impact minimization model
+			- Algo then uses this information to tell the Order Task to complete any shares outstanding from
+				previous interval and start working a new interval quantity
+			- Additionally, the Algo requests “catch up” wakeups throughout the interval where it checks if
+				the Order Task is falling behind, and if so, tells it to cross the spread to keep up pace
+			- Throughout the life of a DROP LIQUIDITY SEEKER order, the Algo tells the Order Task to search
+				for block liquidity at the mid-point with all remaining unscheduled shares using an
+				Opportunistic router
+	- Order Amendment:
+		- Upon receipt of a client replace request, the Algo generally cancels or amends the Order Task to
+			comply with the new instructions
+		- Algo also creates a new Scheduler to use from this point forward
+ 3.6) Trading Objectives/Design Process
+	- Low Level:
+		- Objective #1 - Avoiding Adverse Selection
+			- Prop Firm Perspective - When the market transitions to a new price level, there is a flood of
+				trading activity where the fastest proprietary firms race to pick off the resting orders at
+				the old price level and establish queue position at the new price level – these are two
+				similar but different strategies
+			- Sell-side Perspective - As a sell-side firm, it is not plausible to effectively compete in
+				these races, so the only viable way to prevent adverse selection is to utilize built-in
+				protections available in trading venues, such as IEX D-Peg and D-Limit, and NASDAQ MELO
+		- Objective #2 - Removing Liquidity
+			- Algo starts off by using the IEX Router when crossing the spread
+			- Dark pools are checked using the all-or-none mid-point order prior to crossing the spread
+	- High Level:
+		- Objective: Optimize Factors that determine how the Algo should spread out trading throughout the
+			day
+		- Factor #1: How does one measure success at a high level? Using Distilled Impact
+		- Factor #2: How much volume does one expect to trade during the life of the order? Volume Prediction
+			Model
+		- Factor #3: How much should the Algo be willing to trade during the life of the order? Pre-trade
+			Model
+		- Factor #4: How should one pace the trading activity throughout the life of the order? Impact
+			Minimization Model
+ --------------------------
+ #4 - Volume-Weighted Average Approach
+ --------------------------
+ --------------------------
+ 4.1) General Hstorical Market Symbol Cumulative Volume to Time t vs. Realized Symbol Volume at Time t
+	- Of course, and their VWAP
+ 4.2) Problem Formulation
+	- Daily Time Interval (09:30 to 16:00) divv'ied into delta t = 10 minute intervals
+	- Opening Auction Volume is up to 09:30
+	- Closing Auction Volume is after 16:00 (say 16:10)
+	- Historical Time-wise Average Volume V_hist and Traded Percentage X_hist (based on rolling delta d = 20 day average)
+	- Historical Time-wise 20 day ADV
+	- Realized Time-wise Average Volume V_realized and Traded Percentage X_realized
+	- Decision to catch up or wait or do nothing
+		- If catch up, how much
+		- It wait, how long
+		- Do nothing - if the catch up market impact is too high
+	- Volume Prediction mismatch Metric
+		- |Historical(t) - Realized(t)| Integrand
+ 4.3) Estimation of Predicted Volume Fraction R(t)
+	- ADV Normalized Trading Volume A(t) = V(t)/ADV
+	- Observations Grouped by V_hist(t) and A(t)
+	- Predicted Volume Fraction R(t) is the average of X_hist(t) across a single grouping of V_hist(t) and A(t)
+ 4.4) Partial Trading Days
+	- Need estimates for volume fraction start and volume fraction end times
+	- Smooth, monotonic interpolation
+ --------------------------

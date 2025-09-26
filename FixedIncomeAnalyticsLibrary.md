@@ -11,7 +11,7 @@ Fixed Income Analytics Library contains the Valuation and Risk Functionality of 
 
  |        Document         | Link |
  |-------------------------|------|
- | Technical Specification | [*Latest*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/FixedIncome/FixedIncomeAnalytics_v7.01.pdf) [*Previous*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/FixedIncome) |
+ | Technical Specification | [*Latest*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/FixedIncome/FixedIncomeAnalytics_v7.09.pdf) [*Previous*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/FixedIncome) |
  | User Guide              |  |
  | API                     | [*Javadoc*](https://lakshmidrip.github.io/DROP/Javadoc/index.html)|
 
@@ -240,6 +240,13 @@ Fixed Income Analytics Library contains the Valuation and Risk Functionality of 
 	* Realtive Value Cross Metric Grid
 	* Basic Measures
 	* Some Trivial Closed Form Analytical Bond Math Results
+ * Municipal Rate Dynamics and Tax Adjustment
+ * Scaling of Yield Volatility in Pricing Callable Tax-exempt Municipal Bonds
+	* Background
+	* Yield Analysis and Calibration of Scaling Factor
+ * Conservative PIK Bond Modeling Strategy
+	* Assumptions and Strategy
+	* Mathematical Proof
  * Stochastic Calculus
 	* Single Factor Stochastic Calculus
 	* Multi-Factor Stochastic Calculus
