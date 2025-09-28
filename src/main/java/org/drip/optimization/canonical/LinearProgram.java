@@ -6,6 +6,9 @@ package org.drip.optimization.canonical;
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -76,10 +79,14 @@ package org.drip.optimization.canonical;
  */
 
 /**
- * <i>LinearProgram</i> holds the Objective and the Constraint Terms of an Linear Program. The References
- * 	are:
+ * <i>LinearProgram</i> holds the Objective and the Constraint Terms of an Linear Program. It provides the
+ * 	following Functions:
+ * 	<ul>
+ * 		<li><i>LPConstraint</i> Constructor</li>
+ * 	</ul>
  * 
- * <br><br>
+ * The References are:
+ * <br>
  *  <ul>
  *  	<li>
  * 			Burdet, C. A., and E. L. Johnson (1977): A Sub-additive Approach to Solve Linear Integer Programs
@@ -103,44 +110,38 @@ package org.drip.optimization.canonical;
  *  	</li>
  *  </ul>
  *
- *	<br><br>
- *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md">Numerical Optimizer Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/optimization/README.md">Necessary, Sufficient, and Regularity Checks for Gradient Descent and LP/MILP/MINLP Schemes</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/optimization/canonical/README.md">Linear Programming Framework Canonical Elements</a></li>
- *  </ul>
+ * <br>
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md">Numerical Optimizer Library</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/optimization/README.md">Necessary, Sufficient, and Regularity Checks for Gradient Descent and LP/MILP/MINLP Schemes</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/optimization/canonical/README.md">Linear Programming Framework Canonical Elements</a></td></tr>
+ *  </table>
  *
  * @author Lakshmi Krishnamurthy
  */
 
 public class LinearProgram
 {
-	private org.drip.optimization.canonical.LinearObjective _objective = null;
-	private org.drip.optimization.canonical.LinearConstraint _constraint = null;
+	private LinearObjective _objective = null;
+	private LinearConstraint _constraint = null;
 
 	/**
-	 * Construct an LP Instance of LinearProgram
+	 * Construct an LP Instance of <i>LinearProgram</i>
 	 * 
 	 * @param objective The Objective Term
 	 * @param lpConstraint The LP Constraint Term
 	 * 
-	 * @return LP Instance of LinearProgram
+	 * @return LP Instance of <i>LinearProgram</i>
 	 */
 
 	public static final LinearProgram LP (
-		final org.drip.optimization.canonical.LinearObjective objective,
-		final org.drip.optimization.canonical.LPConstraint lpConstraint)
+		final LinearObjective objective,
+		final LPConstraint lpConstraint)
 	{
-		try
-		{
-			return new LinearProgram (
-				objective,
-				lpConstraint
-			);
-		}
-		catch (java.lang.Exception e)
-		{
+		try {
+			return new LinearProgram (objective, lpConstraint);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 

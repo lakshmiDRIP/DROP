@@ -1,11 +1,16 @@
 
 package org.drip.optimization.canonical;
 
+import org.drip.numerical.common.NumberUtil;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -76,10 +81,19 @@ package org.drip.optimization.canonical;
  */
 
 /**
- * <i>LinearObjective</i> holds the Coefficients of the Linear Objective Term of LP/ILP c<sup>T</sup>x where
- * 	c is R<sup>n</sup> and x is Z<sub>+</sub><sup>n</sup>. The References are:
+ * <i>LinearObjective</i> holds the Coefficients of the Linear Objective Term of LP/ILP
+ * 	<code>c<sup>T</sup>x</code> where <code>c</code> is <code>R<sup>n</sup></code> and <code>x</code> is
+ * 	<code>Z<sub>+</sub><sup>n</sup></code>. It provides the following Functions:
+ * 	<ul>
+ * 		<li><i>LinearObjective</i> Constructor</li>
+ * 		<li>Retrieve the Objective Coefficient Array</li>
+ * 		<li>Retrieve the Variate Dimension</li>
+ * 		<li>Validate the Variate Input</li>
+ * 		<li>Evaluate the Objective Function at the specified Variate Array</li>
+ * 	</ul>
  * 
- * <br><br>
+ * The References are:
+ * 	<br>
  *  <ul>
  *  	<li>
  * 			Burdet, C. A., and E. L. Johnson (1977): A Sub-additive Approach to Solve Linear Integer Programs
@@ -103,73 +117,59 @@ package org.drip.optimization.canonical;
  *  	</li>
  *  </ul>
  *
- *	<br><br>
- *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md">Numerical Optimizer Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/optimization/README.md">Necessary, Sufficient, and Regularity Checks for Gradient Descent and LP/MILP/MINLP Schemes</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/optimization/canonical/README.md">Linear Programming Framework Canonical Elements</a></li>
- *  </ul>
+ * <br>
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md">Numerical Optimizer Library</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/optimization/README.md">Necessary, Sufficient, and Regularity Checks for Gradient Descent and LP/MILP/MINLP Schemes</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/optimization/canonical/README.md">Linear Programming Framework Canonical Elements</a></td></tr>
+ *  </table>
  *
  * @author Lakshmi Krishnamurthy
  */
 
 public class LinearObjective
 {
-	private double[] _c = null;
+	private double[] _coefficientArray = null;
 
 	/**
-	 * LinearObjective Constructor
+	 * <i>LinearObjective</i> Constructor
 	 * 
-	 * @param c The Objective Coefficient Array
+	 * @param coefficientArray The Objective Coefficient Array
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public LinearObjective (
-		final double[] c)
-		throws java.lang.Exception
+		final double[] coefficientArray)
+		throws Exception
 	{
-		if (null == (_c = c))
-		{
-			throw new java.lang.Exception (
-				"LinearObjective Constructor => Invalid Inputs"
-			);
+		if (null == (_coefficientArray = coefficientArray)) {
+			throw new Exception ("LinearObjective Constructor => Invalid Inputs");
 		}
 
-		int dimension = _c.length;
+		int dimension = _coefficientArray.length;
 
-		if (0 == dimension)
-		{
-			throw new java.lang.Exception (
-				"LinearObjective Constructor => Invalid Inputs"
-			);
+		if (0 == dimension) {
+			throw new Exception ("LinearObjective Constructor => Invalid Inputs");
 		}
 
-		for (int dimensionIndex = 0;
-			dimensionIndex < dimension;
-			++dimensionIndex)
-		{
-			if (!org.drip.numerical.common.NumberUtil.IsValid (
-				_c[dimensionIndex]
-			))
-			{
-				throw new java.lang.Exception (
-					"LinearObjective Constructor => Invalid Inputs"
-				);
+		for (int dimensionIndex = 0; dimensionIndex < dimension; ++dimensionIndex) {
+			if (!NumberUtil.IsValid (_coefficientArray[dimensionIndex])) {
+				throw new Exception ("LinearObjective Constructor => Invalid Inputs");
 			}
 		}
 	}
 
 	/**
-	 * Retrieve "c"
+	 * Retrieve the Objective Coefficient Array
 	 * 
-	 * @return c
+	 * @return The Objective Coefficient Array
 	 */
 
-	public double[] c()
+	public double[] coefficientArray()
 	{
-		return _c;
+		return _coefficientArray;
 	}
 
 	/**
@@ -180,7 +180,7 @@ public class LinearObjective
 
 	public int dimension()
 	{
-		return _c.length;
+		return _coefficientArray.length;
 	}
 
 	/**
@@ -194,24 +194,18 @@ public class LinearObjective
 	public boolean validate (
 		final int[] variateArray)
 	{
-		if (null == variateArray)
-		{
+		if (null == variateArray) {
 			return false;
 		}
 
-		int dimension = _c.length;
+		int dimension = _coefficientArray.length;
 
-		if (dimension != variateArray.length)
-		{
+		if (dimension != variateArray.length) {
 			return false;
 		}
 
-		for (int dimensionIndex = 0;
-			dimensionIndex < dimension;
-			++dimensionIndex)
-		{
-			if (0 >= variateArray[dimensionIndex])
-			{
+		for (int dimensionIndex = 0; dimensionIndex < dimension; ++dimensionIndex) {
+			if (0 >= variateArray[dimensionIndex]) {
 				return false;
 			}
 		}
@@ -226,30 +220,22 @@ public class LinearObjective
 	 * 
 	 * @return The Objective Function at the specified Variate Array
 	 * 
-	 * @throws java.lang.Exception Thrown if the Evaluation cannot be done
+	 * @throws Exception Thrown if the Evaluation cannot be done
 	 */
 
 	public double evaluate (
 		final int[] variateArray)
-		throws java.lang.Exception
+		throws Exception
 	{
-		if (!validate (
-			variateArray
-		))
-		{
-			throw new java.lang.Exception (
-				"LinearObjective::evaluate => Variate Array not Valid"
-			);
+		if (!validate (variateArray)) {
+			throw new java.lang.Exception ("LinearObjective::evaluate => Variate Array not Valid");
 		}
 
 		double value = 0.;
-		int dimension = _c.length;
+		int dimension = _coefficientArray.length;
 
-		for (int dimensionIndex = 0;
-			dimensionIndex < dimension;
-			++dimensionIndex)
-		{
-			value += _c[dimensionIndex] * variateArray[dimensionIndex];
+		for (int dimensionIndex = 0; dimensionIndex < dimension; ++dimensionIndex) {
+			value += _coefficientArray[dimensionIndex] * variateArray[dimensionIndex];
 		}
 
 		return value;

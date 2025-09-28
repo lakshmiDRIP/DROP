@@ -1,11 +1,16 @@
 
 package org.drip.optimization.canonical;
 
+import org.drip.numerical.common.NumberUtil;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -77,10 +82,20 @@ package org.drip.optimization.canonical;
 
 /**
  * <i>LPConstraint</i> holds the Constraint Matrix LHS and Constraint Array RHS for an Linear Program Ax lte
- * 	B, where A is R<sup>m x n</sup>, B is R<sup>m</sup>, and x is R<sub>+</sub><sup>n</sup>. The References
- * 	are:
+ * 	B, where A is R<sup>m x n</sup>, B is R<sup>m</sup>, and x is R<sub>+</sub><sup>n</sup>. It provides the
+ * 	following Functions:
+ * 	<ul>
+ * 		<li><i>LPConstraint</i> Constructor</li>
+ * 		<li>Retrieve "A" Grid</li>
+ * 		<li>Retrieve "b" Array</li>
+ * 		<li>Retrieve the Constraint Count</li>
+ * 		<li>Retrieve the Variate Dimension</li>
+ * 		<li>Validate the Variate Input</li>
+ * 		<li>Verify if the Variate Array satisfies the Constraint</li>
+ * 	</ul>
  * 
- * <br><br>
+ * The References are:
+ * <br>
  *  <ul>
  *  	<li>
  * 			Nering, E. D., and A. W. Tucker (1993): <i>Linear Programs and Related Problems</i> <b>Academic
@@ -103,91 +118,60 @@ package org.drip.optimization.canonical;
  *  	</li>
  *  </ul>
  *
- *	<br><br>
- *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md">Numerical Optimizer Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/optimization/README.md">Necessary, Sufficient, and Regularity Checks for Gradient Descent and LP/MILP/MINLP Schemes</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/optimization/canonical/README.md">Linear Programming Framework Canonical Elements</a></li>
- *  </ul>
+ * <br>
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md">Numerical Optimizer Library</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/optimization/README.md">Necessary, Sufficient, and Regularity Checks for Gradient Descent and LP/MILP/MINLP Schemes</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/optimization/canonical/README.md">Linear Programming Framework Canonical Elements</a></td></tr>
+ *  </table>
  *
  * @author Lakshmi Krishnamurthy
  */
 
 public class LPConstraint
-	implements org.drip.optimization.canonical.LinearConstraint
+	implements LinearConstraint
 {
 	private double[] _bArray = null;
 	private double[][] _aGrid = null;
 
 	/**
-	 * LPConstraint Constructor
+	 * <i>LPConstraint</i> Constructor
 	 * 
 	 * @param aGrid "A" Constraint Grid
 	 * @param bArray "b" Constraint Array
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public LPConstraint (
 		final double[][] aGrid,
 		final double[] bArray)
-		throws java.lang.Exception
+		throws Exception
 	{
-		if (null == (_aGrid = aGrid) ||
-			null == (_bArray = bArray) ||
-			!org.drip.numerical.common.NumberUtil.IsValid (
-				_bArray
-			)
-		)
-		{
-			throw new java.lang.Exception (
-				"LPConstraint Constructor => Invalid Inputs"
-			);
+		if (null == (_aGrid = aGrid) || null == (_bArray = bArray) || !NumberUtil.IsValid (_bArray)) {
+			throw new Exception ("LPConstraint Constructor => Invalid Inputs");
 		}
 
 		int dimension = -1;
 		int constraintCount = _bArray.length;
 
-		if (0 == constraintCount ||
-			_aGrid.length != constraintCount)
-		{
-			throw new java.lang.Exception (
-				"LPConstraint Constructor => Invalid Inputs"
-			);
+		if (0 == constraintCount || _aGrid.length != constraintCount) {
+			throw new Exception ("LPConstraint Constructor => Invalid Inputs");
 		}
 
-		for (int constraintIndex = 0;
-			constraintIndex < constraintCount;
-			++constraintIndex)
-		{
-			if (null == _aGrid[constraintIndex] ||
-				!org.drip.numerical.common.NumberUtil.IsValid (
-					_aGrid[constraintIndex]
-				)
-			)
-			{
-				throw new java.lang.Exception (
-					"LPConstraint Constructor => Invalid Inputs"
-				);
+		for (int constraintIndex = 0; constraintIndex < constraintCount; ++constraintIndex) {
+			if (null == _aGrid[constraintIndex] || !NumberUtil.IsValid (_aGrid[constraintIndex])) {
+				throw new java.lang.Exception ("LPConstraint Constructor => Invalid Inputs");
 			}
 
-			if (-1 == dimension)
-			{
-				if (0 == (dimension = _aGrid[constraintIndex].length))
-				{
-					throw new java.lang.Exception (
-						"LPConstraint Constructor => Invalid Inputs"
-					);
+			if (-1 == dimension) {
+				if (0 == (dimension = _aGrid[constraintIndex].length)) {
+					throw new Exception ("LPConstraint Constructor => Invalid Inputs");
 				}
-			}
-			else
-			{
-				if (dimension != _aGrid[constraintIndex].length)
-				{
-					throw new java.lang.Exception (
-						"LPConstraint Constructor => Invalid Inputs"
-					);
+			} else {
+				if (dimension != _aGrid[constraintIndex].length) {
+					throw new Exception ("LPConstraint Constructor => Invalid Inputs");
 				}
 			}
 		}
@@ -215,10 +199,22 @@ public class LPConstraint
 		return _bArray;
 	}
 
+	/**
+	 * Retrieve the Constraint Count
+	 * 
+	 * @return Constraint Count
+	 */
+
 	@Override public int constraintCount()
 	{
 		return _bArray.length;
 	}
+
+	/**
+	 * Retrieve the Variate Dimension
+	 * 
+	 * @return Variate Dimension
+	 */
 
 	@Override public int dimension()
 	{
@@ -236,28 +232,18 @@ public class LPConstraint
 	public boolean validate (
 		final double[] variateArray)
 	{
-		if (null == variateArray ||
-			!org.drip.numerical.common.NumberUtil.IsValid (
-				variateArray
-			)
-		)
-		{
+		if (null == variateArray || !NumberUtil.IsValid (variateArray)) {
 			return false;
 		}
 
 		int dimension = _aGrid[0].length;
 
-		if (dimension != variateArray.length)
-		{
+		if (dimension != variateArray.length) {
 			return false;
 		}
 
-		for (int dimensionIndex = 0;
-			dimensionIndex < dimension;
-			++dimensionIndex)
-		{
-			if (0 > variateArray[dimensionIndex])
-			{
+		for (int dimensionIndex = 0; dimensionIndex < dimension; ++dimensionIndex) {
+			if (0 > variateArray[dimensionIndex]) {
 				return false;
 			}
 		}
@@ -272,40 +258,28 @@ public class LPConstraint
 	 * 
 	 * @return TRUE - The Variate Array satisfies the Constraint
 	 * 
-	 * @throws java.lang.Exception Thrown if the Verification cannot be done
+	 * @throws Exception Thrown if the Verification cannot be done
 	 */
 
 	public boolean verify (
 		final double[] variateArray)
-		throws java.lang.Exception
+		throws Exception
 	{
-		if (!validate (
-			variateArray
-		))
-		{
-			throw new java.lang.Exception (
-				"LPConstraint::verify => Variate Array not Valid"
-			);
+		if (!validate (variateArray)) {
+			throw new Exception ("LPConstraint::verify => Variate Array not Valid");
 		}
 
 		int dimension = _aGrid[0].length;
 		int constraintCount = _bArray.length;
 
-		for (int constraintIndex = 0;
-			constraintIndex < constraintCount;
-			++constraintIndex)
-		{
+		for (int constraintIndex = 0; constraintIndex < constraintCount; ++constraintIndex) {
 			double constraintLHS = 0.;
 
-			for (int dimensionIndex = 0;
-				dimensionIndex < dimension;
-				++dimensionIndex)
-			{
+			for (int dimensionIndex = 0; dimensionIndex < dimension; ++dimensionIndex) {
 				constraintLHS += _aGrid[constraintIndex][dimensionIndex] * variateArray[dimensionIndex];
 			}
 
-			if (constraintLHS > _bArray[constraintIndex])
-			{
+			if (constraintLHS > _bArray[constraintIndex]) {
 				return false;
 			}
 		}
