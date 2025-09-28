@@ -82,7 +82,11 @@ package org.drip.optimization.canonical;
  * <i>LinearProgram</i> holds the Objective and the Constraint Terms of an Linear Program. It provides the
  * 	following Functions:
  * 	<ul>
- * 		<li><i>LPConstraint</i> Constructor</li>
+ * 		<li>Construct an LP Instance of <i>LinearProgram</i></li>
+ * 		<li>Construct an ILP Instance of <i>LinearProgram</i></li>
+ * 		<li><i>LinearProgram</i> Constructor</li>
+ * 		<li>Retrieve the Objective Term</li>
+ * 		<li>Retrieve the Constraint Term</li>
  * 	</ul>
  * 
  * The References are:
@@ -149,27 +153,21 @@ public class LinearProgram
 	}
 
 	/**
-	 * Construct an ILP Instance of LinearProgram
+	 * Construct an ILP Instance of <i>LinearProgram</i>
 	 * 
 	 * @param objective The Objective Term
 	 * @param ilpConstraint The ILP Constraint Term
 	 * 
-	 * @return ILP Instance of LinearProgram
+	 * @return ILP Instance of <i>LinearProgram</i>
 	 */
 
 	public static final LinearProgram ILP (
-		final org.drip.optimization.canonical.LinearObjective objective,
-		final org.drip.optimization.canonical.ILPConstraint ilpConstraint)
+		final LinearObjective objective,
+		final ILPConstraint ilpConstraint)
 	{
-		try
-		{
-			return new LinearProgram (
-				objective,
-				ilpConstraint
-			);
-		}
-		catch (java.lang.Exception e)
-		{
+		try {
+			return new LinearProgram (objective, ilpConstraint);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -177,27 +175,24 @@ public class LinearProgram
 	}
 
 	/**
-	 * LinearProgram Constructor
+	 * <i>LinearProgram</i> Constructor
 	 * 
 	 * @param objective The Objective Term
 	 * @param constraint The Constraint Term
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public LinearProgram (
-		final org.drip.optimization.canonical.LinearObjective objective,
-		final org.drip.optimization.canonical.LinearConstraint constraint)
-		throws java.lang.Exception
+		final LinearObjective objective,
+		final LinearConstraint constraint)
+		throws Exception
 	{
 		if (null == (_objective = objective) ||
 			null == (_constraint = constraint) ||
-			_objective.dimension() != _constraint.dimension()
-		)
+			_objective.dimension() != _constraint.dimension())
 		{
-			throw new java.lang.Exception (
-				"LinearProgram Constructor => Invalid Inputs"
-			);
+			throw new Exception ("LinearProgram Constructor => Invalid Inputs");
 		}
 	}
 
@@ -207,7 +202,7 @@ public class LinearProgram
 	 * @return The Objective Term
 	 */
 
-	public org.drip.optimization.canonical.LinearObjective objective()
+	public LinearObjective objective()
 	{
 		return _objective;
 	}
@@ -218,7 +213,7 @@ public class LinearProgram
 	 * @return The Constraint Term
 	 */
 
-	public org.drip.optimization.canonical.LinearConstraint constraint()
+	public LinearConstraint constraint()
 	{
 		return _constraint;
 	}

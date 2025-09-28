@@ -1,11 +1,16 @@
 
 package org.drip.optimization.constrained;
 
+import org.drip.numerical.common.NumberUtil;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -81,9 +86,21 @@ package org.drip.optimization.constrained;
 
 /**
  * <i>FritzJohnMultipliers</i> holds the Array of the Fritz John/KKT Multipliers for the Array of the
- * Equality and the Inequality Constraints, one per each Constraint. The References are:
- * 
- * <br><br>
+ * 	Equality and the Inequality Constraints, one per each Constraint. It provides the following Functions:
+ * 	<ul>
+ * 		<li>Construct a Standard KarushKuhnTucker (KKT) Instance of the Fritz John Multipliers</li>
+ * 		<li><i>FritzJohnMultipliers</i> Constructor</li>
+ * 		<li>Retrieve the Fritz John Objective Function Multiplier</li>
+ * 		<li>Retrieve the Array of the Equality Constraint Coefficients</li>
+ * 		<li>Retrieve the Array of the Inequality Constraint Coefficients</li>
+ * 		<li>Retrieve the Number of Equality Multiplier Coefficients</li>
+ * 		<li>Retrieve the Number of Inequality Multiplier Coefficients</li>
+ * 		<li>Retrieve the Number of Total KKT Multiplier Coefficients</li>
+ * 		<li>Indicate of the Multipliers constitute Valid Dual Feasibility</li>
+ * 	</ul>
+ *
+ * The References are:
+ * <br>
  * 	<ul>
  * 		<li>
  * 			Boyd, S., and L. van den Berghe (2009): <i>Convex Optimization</i> <b>Cambridge University
@@ -107,38 +124,43 @@ package org.drip.optimization.constrained;
  * 		</li>
  * 	</ul>
  *
- *	<br><br>
- *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md">Numerical Optimizer Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/optimization/README.md">Necessary, Sufficient, and Regularity Checks for Gradient Descent and LP/MILP/MINLP Schemes</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/optimization/constrained/README.md">KKT Fritz-John Constrained Optimizer</a></li>
- *  </ul>
+ * <br>
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md">Numerical Optimizer Library</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/optimization/README.md">Necessary, Sufficient, and Regularity Checks for Gradient Descent and LP/MILP/MINLP Schemes</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/optimization/constrained/README.md">KKT Fritz-John Constrained Optimizer</a></td></tr>
+ *  </table>
  * 
  * @author Lakshmi Krishnamurthy
  */
 
-public class FritzJohnMultipliers {
-	private double[] _adblEquality = null;
-	private double[] _adblInequality = null;
-	private double _dblObjectiveCoefficient = java.lang.Double.NaN;
+public class FritzJohnMultipliers
+{
+	private double _objectiveCoefficient = Double.NaN;
+	private double[] _equalityConstraintCoefficientArray = null;
+	private double[] _inequalityConstraintCoefficientArray = null;
 
 	/**
 	 * Construct a Standard KarushKuhnTucker (KKT) Instance of the Fritz John Multipliers
 	 * 
-	 * @param adblEquality Array of the Equality Constraint Coefficients
-	 * @param adblInequality Array of the Inequality Constraint Coefficients
+	 * @param equalityConstraintCoefficientArray Array of the Equality Constraint Coefficients
+	 * @param inequalityConstraintCoefficientArray Array of the Inequality Constraint Coefficients
 	 * 
 	 * @return The KKT Instance of Fritz John Multipliers
 	 */
 
 	public static final FritzJohnMultipliers KarushKuhnTucker (
-		final double[] adblEquality,
-		final double[] adblInequality)
+		final double[] equalityConstraintCoefficientArray,
+		final double[] inequalityConstraintCoefficientArray)
 	{
 		try {
-			return new FritzJohnMultipliers (1., adblEquality, adblInequality);
-		} catch (java.lang.Exception e) {
+			return new FritzJohnMultipliers (
+				1.,
+				equalityConstraintCoefficientArray,
+				inequalityConstraintCoefficientArray
+			);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -146,26 +168,27 @@ public class FritzJohnMultipliers {
 	}
 
 	/**
-	 * FritzJohnMultipliers Constructor
+	 * <i>FritzJohnMultipliers</i> Constructor
 	 * 
-	 * @param dblObjectiveCoefficient The Objective Function Coefficient
-	 * @param adblEquality Array of the Equality Constraint Coefficients
-	 * @param adblInequality Array of the Inequality Constraint Coefficients
+	 * @param objectiveCoefficient The Objective Function Coefficient
+	 * @param equalityConstraintCoefficientArray Array of the Equality Constraint Coefficients
+	 * @param inequalityConstraintCoefficientArray Array of the Inequality Constraint Coefficients
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public FritzJohnMultipliers (
-		final double dblObjectiveCoefficient,
-		final double[] adblEquality,
-		final double[] adblInequality)
-		throws java.lang.Exception
+		final double objectiveCoefficient,
+		final double[] equalityConstraintCoefficientArray,
+		final double[] inequalityConstraintCoefficientArray)
+		throws Exception
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblObjectiveCoefficient = dblObjectiveCoefficient))
-			throw new java.lang.Exception ("FritzJohnMultipliers Constructor => Invalid Inputs");
+		if (!NumberUtil.IsValid (_objectiveCoefficient = objectiveCoefficient)) {
+			throw new Exception ("FritzJohnMultipliers Constructor => Invalid Inputs");
+		}
 
-		_adblEquality = adblEquality;
-		_adblInequality = adblInequality;
+		_equalityConstraintCoefficientArray = equalityConstraintCoefficientArray;
+		_inequalityConstraintCoefficientArray = inequalityConstraintCoefficientArray;
 	}
 
 	/**
@@ -176,7 +199,7 @@ public class FritzJohnMultipliers {
 
 	public double objectiveCoefficient()
 	{
-		return _dblObjectiveCoefficient;
+		return _objectiveCoefficient;
 	}
 
 	/**
@@ -185,9 +208,9 @@ public class FritzJohnMultipliers {
 	 * @return The Array of the Equality Constraint Coefficients
 	 */
 
-	public double[] equalityConstraintCoefficient()
+	public double[] equalityConstraintCoefficientArray()
 	{
-		return _adblEquality;
+		return _equalityConstraintCoefficientArray;
 	}
 
 	/**
@@ -196,9 +219,9 @@ public class FritzJohnMultipliers {
 	 * @return The Array of the Inequality Constraint Coefficients
 	 */
 
-	public double[] inequalityConstraintCoefficient()
+	public double[] inequalityConstraintCoefficientArray()
 	{
-		return _adblInequality;
+		return _inequalityConstraintCoefficientArray;
 	}
 
 	/**
@@ -209,7 +232,7 @@ public class FritzJohnMultipliers {
 
 	public int numEqualityCoefficients()
 	{
-		return null == _adblEquality ? 0 : _adblEquality.length;
+		return null == _equalityConstraintCoefficientArray ? 0 : _equalityConstraintCoefficientArray.length;
 	}
 
 	/**
@@ -220,7 +243,8 @@ public class FritzJohnMultipliers {
 
 	public int numInequalityCoefficients()
 	{
-		return null == _adblInequality ? 0 : _adblInequality.length;
+		return null == _inequalityConstraintCoefficientArray ?
+			0 : _inequalityConstraintCoefficientArray.length;
 	}
 
 	/**
@@ -242,10 +266,13 @@ public class FritzJohnMultipliers {
 
 	public boolean dualFeasibilityCheck()
 	{
-		int iNumInequalityCoefficient = numInequalityCoefficients();
-
-		for (int i = 0; i < iNumInequalityCoefficient; ++i) {
-			if (0. > _adblInequality[i]) return false;
+		for (int inequalityCoefficient = 0;
+			inequalityCoefficient < numInequalityCoefficients();
+			++inequalityCoefficient)
+		{
+			if (0. > _inequalityConstraintCoefficientArray[inequalityCoefficient]) {
+				return false;
+			}
 		}
 
 		return true;

@@ -1,11 +1,20 @@
 
 package org.drip.optimization.constrained;
 
+import org.drip.optimization.necessary.ConditionQualifierComplementarySlackness;
+import org.drip.optimization.necessary.ConditionQualifierDualFeasibility;
+import org.drip.optimization.necessary.ConditionQualifierFONC;
+import org.drip.optimization.necessary.ConditionQualifierPrimalFeasibility;
+import org.drip.optimization.necessary.ConditionQualifierSOSC;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -81,10 +90,14 @@ package org.drip.optimization.constrained;
 
 /**
  * <i>NecessarySufficientConditions</i> holds the Results of the Verification of the Necessary and the
- * Sufficient Conditions at the specified (possibly) Optimal Variate and the corresponding Fritz John
- * Multiplier Suite. The References are:
+ * 	Sufficient Conditions at the specified (possibly) Optimal Variate and the corresponding Fritz John
+ * 	Multiplier Suite. It provides the following Functions:
+ * 	<ul>
+ * 		<li>Construct a Standard KarushKuhnTucker (KKT) Instance of the Fritz John Multipliers</li>
+ * 	</ul>
  * 
- * <br><br>
+ * The References are:
+ * <br>
  * 	<ul>
  * 		<li>
  * 			Boyd, S., and L. van den Berghe (2009): <i>Convex Optimization</i> <b>Cambridge University
@@ -108,31 +121,30 @@ package org.drip.optimization.constrained;
  * 		</li>
  * 	</ul>
  *
- *	<br><br>
- *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md">Numerical Optimizer Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/optimization/README.md">Necessary, Sufficient, and Regularity Checks for Gradient Descent and LP/MILP/MINLP Schemes</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/optimization/constrained/README.md">KKT Fritz-John Constrained Optimizer</a></li>
- *  </ul>
+ * <br>
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md">Numerical Optimizer Library</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/optimization/README.md">Necessary, Sufficient, and Regularity Checks for Gradient Descent and LP/MILP/MINLP Schemes</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/optimization/constrained/README.md">KKT Fritz-John Constrained Optimizer</a></td></tr>
+ *  </table>
  * 
  * @author Lakshmi Krishnamurthy
  */
 
-public class NecessarySufficientConditions {
-	private double[] _adblVariate = null;
-	private boolean _bCheckForMinima = false;
-	private org.drip.optimization.constrained.FritzJohnMultipliers _fjm = null;
-	private org.drip.optimization.necessary.ConditionQualifierFONC _cqFONC = null;
-	private org.drip.optimization.necessary.ConditionQualifierSOSC _cqSOSC = null;
-	private org.drip.optimization.necessary.ConditionQualifierDualFeasibility _cqDualFeasibility = null;
-	private org.drip.optimization.necessary.ConditionQualifierPrimalFeasibility _cqPrimalFeasibility =
-		null;
-	private org.drip.optimization.necessary.ConditionQualifierComplementarySlackness
-		_cqComplementarySlackness = null;
+public class NecessarySufficientConditions
+{
+	private boolean _checkForMinima = false;
+	private double[] _candidateVariateArray = null;
+	private FritzJohnMultipliers _fritzJohnMultipliers = null;
+	private ConditionQualifierFONC _foncConditionQualifier = null;
+	private ConditionQualifierSOSC _soscConditionQualifier = null;
+	private ConditionQualifierDualFeasibility _dualFeasibilityConditionQualifier = null;
+	private ConditionQualifierPrimalFeasibility _primalFeasibilityConditionQualifier = null;
+	private ConditionQualifierComplementarySlackness _complementarySlacknessConditionQualifier = null;
 
 	/**
-	 * Create a Standard Instance of NecessarySufficientConditions
+	 * Create a Standard Instance of <i>NecessarySufficientConditions</i>
 	 * 
 	 * @param adblVariate The Candidate Variate Array
 	 * @param fjm The Fritz John Multipliers
@@ -143,7 +155,7 @@ public class NecessarySufficientConditions {
 	 * @param bFONCValidity The FONC Validity
 	 * @param bSOSCValidity The SOSC Validity
 	 * 
-	 * @return The Standard NecessarySufficientConditions Instance
+	 * @return The Standard <i>NecessarySufficientConditions</i> Instance
 	 */
 
 	public static final NecessarySufficientConditions Standard (
@@ -176,39 +188,43 @@ public class NecessarySufficientConditions {
 	}
 
 	/**
-	 * NecessarySufficientConditions Constructor
+	 * <i>NecessarySufficientConditions</i> Constructor
 	 * 
-	 * @param adblVariate The Candidate Variate Array
-	 * @param fjm The Fritz John Multipliers
-	 * @param bCheckForMinima TRUE - Check For Minima
-	 * @param cqPrimalFeasibility The Primal Feasibility Necessary Condition
-	 * @param cqDualFeasibility The Dual Feasibility Necessary Condition
-	 * @param cqComplementarySlackness The Complementary Slackness Necessary Condition
-	 * @param cqFONC The First Order Necessary Condition
-	 * @param cqSOSC The Second Order Sufficiency Condition
+	 * @param candidateVariateArray The Candidate Variate Array
+	 * @param fritzJohnMultipliers The Fritz John Multipliers
+	 * @param checkForMinima TRUE - Check For Minima
+	 * @param primalFeasibilityConditionQualifier The Primal Feasibility Necessary Condition
+	 * @param dualFeasibilityConditionQualifier The Dual Feasibility Necessary Condition
+	 * @param complementarySlacknessConditionQualifier The Complementary Slackness Necessary Condition
+	 * @param foncConditionQualifier The First Order Necessary Condition
+	 * @param soscConditionQualifier The Second Order Sufficiency Condition
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public NecessarySufficientConditions (
-		final double[] adblVariate,
-		final org.drip.optimization.constrained.FritzJohnMultipliers fjm,
-		final boolean bCheckForMinima,
-		final org.drip.optimization.necessary.ConditionQualifierPrimalFeasibility cqPrimalFeasibility,
-		final org.drip.optimization.necessary.ConditionQualifierDualFeasibility cqDualFeasibility,
-		final org.drip.optimization.necessary.ConditionQualifierComplementarySlackness
-			cqComplementarySlackness,
-		final org.drip.optimization.necessary.ConditionQualifierFONC cqFONC,
-		final org.drip.optimization.necessary.ConditionQualifierSOSC cqSOSC)
-		throws java.lang.Exception
+		final double[] candidateVariateArray,
+		final FritzJohnMultipliers fritzJohnMultipliers,
+		final boolean checkForMinima,
+		final ConditionQualifierPrimalFeasibility primalFeasibilityConditionQualifier,
+		final ConditionQualifierDualFeasibility dualFeasibilityConditionQualifier,
+		final ConditionQualifierComplementarySlackness complementarySlacknessConditionQualifier,
+		final ConditionQualifierFONC foncConditionQualifier,
+		final ConditionQualifierSOSC soscConditionQualifier)
+		throws Exception
 	{
-		if (null == (_adblVariate = adblVariate) || 0 == _adblVariate.length || null == (_fjm = fjm) || null
-			== (_cqPrimalFeasibility = cqPrimalFeasibility) || null == (_cqDualFeasibility =
-				cqDualFeasibility) || null == (_cqComplementarySlackness = cqComplementarySlackness) || null
-					== (_cqFONC = cqFONC) || null == (_cqSOSC = cqSOSC))
-			throw new java.lang.Exception ("NecessarySufficientConditions Constructor => Invalid Inputs");
+		if (null == (_candidateVariateArray = candidateVariateArray) || 0 == _candidateVariateArray.length ||
+			null == (_fritzJohnMultipliers = fritzJohnMultipliers) ||
+			null == (_primalFeasibilityConditionQualifier = primalFeasibilityConditionQualifier) ||
+			null == (_dualFeasibilityConditionQualifier = dualFeasibilityConditionQualifier) ||
+			null == (_complementarySlacknessConditionQualifier = complementarySlacknessConditionQualifier) ||
+			null == (_foncConditionQualifier = foncConditionQualifier) ||
+			null == (_soscConditionQualifier = soscConditionQualifier))
+		{
+			throw new Exception ("NecessarySufficientConditions Constructor => Invalid Inputs");
+		}
 
-		_bCheckForMinima = bCheckForMinima;
+		_checkForMinima = checkForMinima;
 	}
 
 	/**
@@ -217,9 +233,9 @@ public class NecessarySufficientConditions {
 	 * @return The Candidate Variate Array
 	 */
 
-	public double[] variate()
+	public double[] candidateVariateArray()
 	{
-		return _adblVariate;
+		return _candidateVariateArray;
 	}
 
 	/**
@@ -228,9 +244,9 @@ public class NecessarySufficientConditions {
 	 * @return The Fritz John Mutipliers
 	 */
 
-	public org.drip.optimization.constrained.FritzJohnMultipliers fritzJohnMultipliers()
+	public FritzJohnMultipliers fritzJohnMultipliers()
 	{
-		return _fjm;
+		return _fritzJohnMultipliers;
 	}
 
 	/**
@@ -241,7 +257,7 @@ public class NecessarySufficientConditions {
 
 	public boolean checkFroMinima()
 	{
-		return _bCheckForMinima;
+		return _checkForMinima;
 	}
 
 	/**
@@ -250,9 +266,9 @@ public class NecessarySufficientConditions {
 	 * @return The Primal Feasibility Necessary Condition
 	 */
 
-	public org.drip.optimization.necessary.ConditionQualifierPrimalFeasibility primalFeasibility()
+	public ConditionQualifierPrimalFeasibility primalFeasibility()
 	{
-		return _cqPrimalFeasibility;
+		return _primalFeasibilityConditionQualifier;
 	}
 
 	/**
@@ -261,9 +277,9 @@ public class NecessarySufficientConditions {
 	 * @return The Dual Feasibility Necessary Condition
 	 */
 
-	public org.drip.optimization.necessary.ConditionQualifierDualFeasibility dualFeasibility()
+	public ConditionQualifierDualFeasibility dualFeasibility()
 	{
-		return _cqDualFeasibility;
+		return _dualFeasibilityConditionQualifier;
 	}
 
 	/**
@@ -272,10 +288,9 @@ public class NecessarySufficientConditions {
 	 * @return The Complementary Slackness Necessary Condition
 	 */
 
-	public org.drip.optimization.necessary.ConditionQualifierComplementarySlackness
-		complementarySlackness()
+	public ConditionQualifierComplementarySlackness complementarySlackness()
 	{
-		return _cqComplementarySlackness;
+		return _complementarySlacknessConditionQualifier;
 	}
 
 	/**
@@ -284,9 +299,9 @@ public class NecessarySufficientConditions {
 	 * @return The First Order Necessary Condition
 	 */
 
-	public org.drip.optimization.necessary.ConditionQualifierFONC fonc()
+	public ConditionQualifierFONC fonc()
 	{
-		return _cqFONC;
+		return _foncConditionQualifier;
 	}
 
 	/**
@@ -295,9 +310,9 @@ public class NecessarySufficientConditions {
 	 * @return The Second Order Sufficiency Condition
 	 */
 
-	public org.drip.optimization.necessary.ConditionQualifierSOSC sosc()
+	public ConditionQualifierSOSC sosc()
 	{
-		return _cqSOSC;
+		return _soscConditionQualifier;
 	}
 
 	/**
@@ -308,8 +323,8 @@ public class NecessarySufficientConditions {
 
 	public boolean valid()
 	{
-		return _cqPrimalFeasibility.valid() && _cqDualFeasibility.valid() &&
-			_cqComplementarySlackness.valid() && _cqFONC.valid() && _cqSOSC.valid();
+		return _primalFeasibilityConditionQualifier.valid() && _dualFeasibilityConditionQualifier.valid() &&
+			_complementarySlacknessConditionQualifier.valid() && _foncConditionQualifier.valid() && _soscConditionQualifier.valid();
 	}
 
 	/**
@@ -318,10 +333,10 @@ public class NecessarySufficientConditions {
 	 * @return The Array of Condition Orders
 	 */
 
-	public java.lang.String[] conditionOrder()
+	public String[] conditionOrder()
 	{
-		return new java.lang.String[] {"ZERO ORDER: " + _cqPrimalFeasibility.display() + " >> " +
-			_cqDualFeasibility.display() + " >> " + _cqComplementarySlackness.display(), "FIRST ORDER: " +
-				_cqFONC.display(), "SECOND ORDER: " + _cqSOSC.display()};
+		return new java.lang.String[] {"ZERO ORDER: " + _primalFeasibilityConditionQualifier.display() + " >> " +
+			_dualFeasibilityConditionQualifier.display() + " >> " + _complementarySlacknessConditionQualifier.display(), "FIRST ORDER: " +
+				_foncConditionQualifier.display(), "SECOND ORDER: " + _soscConditionQualifier.display()};
 	}
 }

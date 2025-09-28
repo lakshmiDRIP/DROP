@@ -318,7 +318,7 @@ public class OptimizationFramework {
 		int iNumInequalityConstraint = numInequalityConstraint();
 
 		double[] adblInequalityConstraintCoefficient = null == fjm ? null :
-			fjm.inequalityConstraintCoefficient();
+			fjm.inequalityConstraintCoefficientArray();
 
 		for (int i = 0; i < iNumInequalityConstraint; ++i) {
 			if (0. != _aRdToR1InequalityConstraint[i].evaluate (adblVariate) *
@@ -358,10 +358,10 @@ public class OptimizationFramework {
 		int iNumInequalityConstraint = numInequalityConstraint();
 
 		double[] adblEqualityConstraintCoefficient = null == fjm ? null :
-			fjm.equalityConstraintCoefficient();
+			fjm.equalityConstraintCoefficientArray();
 
 		double[] adblInequalityConstraintCoefficient = null == fjm ? null :
-			fjm.inequalityConstraintCoefficient();
+			fjm.inequalityConstraintCoefficientArray();
 
 		int iDimension = _rdToR1Objective.dimension();
 
@@ -424,10 +424,10 @@ public class OptimizationFramework {
 		int iNumInequalityConstraint = numInequalityConstraint();
 
 		double[] adblEqualityConstraintCoefficient = null == fjm ? null :
-			fjm.equalityConstraintCoefficient();
+			fjm.equalityConstraintCoefficientArray();
 
 		double[] adblInequalityConstraintCoefficient = null == fjm ? null :
-			fjm.inequalityConstraintCoefficient();
+			fjm.inequalityConstraintCoefficientArray();
 
 		int iDimension = _rdToR1Objective.dimension();
 
@@ -828,7 +828,7 @@ public class OptimizationFramework {
 		int iNumEqualityConstraint = numEqualityConstraint();
 
 		double[] adblEqualityConstraintCoefficient = null == fjm ? null :
-			fjm.equalityConstraintCoefficient();
+			fjm.equalityConstraintCoefficientArray();
 
 		for (int i = 0; i < iNumEqualityConstraint; ++i) {
 			if (0. != adblEqualityConstraintCoefficient[i] && 0. <= _aRdToR1EqualityConstraint[i].evaluate
@@ -839,7 +839,7 @@ public class OptimizationFramework {
 		int iNumInequalityConstraint = numInequalityConstraint();
 
 		double[] adblInequalityConstraintCoefficient = null == fjm ? null :
-			fjm.inequalityConstraintCoefficient();
+			fjm.inequalityConstraintCoefficientArray();
 
 		for (int i = 0; i < iNumInequalityConstraint; ++i) {
 			if (0. != adblInequalityConstraintCoefficient[i] && 0. <=
