@@ -93,7 +93,18 @@ import org.drip.optimization.necessary.ConditionQualifierSOSC;
  * 	Sufficient Conditions at the specified (possibly) Optimal Variate and the corresponding Fritz John
  * 	Multiplier Suite. It provides the following Functions:
  * 	<ul>
- * 		<li>Construct a Standard KarushKuhnTucker (KKT) Instance of the Fritz John Multipliers</li>
+ * 		<li>Create a Standard Instance of <i>NecessarySufficientConditions</i></li>
+ * 		<li><i>NecessarySufficientConditions</i> Constructor</li>
+ * 		<li>Retrieve the Candidate Variate Array</li>
+ * 		<li>Retrieve the Fritz John Mutipliers</li>
+ * 		<li>Retrieve if the Check corresponds to Local Minima</li>
+ * 		<li>Retrieve the Primal Feasibility Necessary Condition</li>
+ * 		<li>Retrieve the Dual Feasibility Necessary Condition</li>
+ * 		<li>Retrieve the Complementary Slackness Necessary Condition</li>
+ * 		<li>Retrieve the First Order Necessary Condition</li>
+ * 		<li>Retrieve the Second Order Sufficiency Condition</li>
+ * 		<li>Indicate the Necessary/Sufficient Validity across all the Condition Qualifiers</li>
+ * 		<li>Retrieve the Array of Condition Orders</li>
  * 	</ul>
  * 
  * The References are:
@@ -146,41 +157,41 @@ public class NecessarySufficientConditions
 	/**
 	 * Create a Standard Instance of <i>NecessarySufficientConditions</i>
 	 * 
-	 * @param adblVariate The Candidate Variate Array
-	 * @param fjm The Fritz John Multipliers
-	 * @param bCheckForMinima TRUE - Check For Minima
-	 * @param bPrimalFeasibilityValidity The Primal Feasibility Validity
-	 * @param bDualFeasibilityValidity The Dual Feasibility Validity
-	 * @param bComplementarySlacknessValidity The Complementary Slackness Validity
-	 * @param bFONCValidity The FONC Validity
-	 * @param bSOSCValidity The SOSC Validity
+	 * @param candidateVariateArray The Candidate Variate Array
+	 * @param fritzJohnMultipliers The Fritz John Multipliers
+	 * @param checkForMinima TRUE - Check For Minima
+	 * @param primalFeasibilityValidity The Primal Feasibility Validity Indicator
+	 * @param dualFeasibilityValidity The Dual Feasibility Validity Indicator
+	 * @param complementarySlacknessValidity The Complementary Slackness Validity Indicator
+	 * @param foncValidity The FONC Validity Indicator
+	 * @param soscValidity The SOSC Validity Indicator
 	 * 
 	 * @return The Standard <i>NecessarySufficientConditions</i> Instance
 	 */
 
 	public static final NecessarySufficientConditions Standard (
-		final double[] adblVariate,
-		final org.drip.optimization.constrained.FritzJohnMultipliers fjm,
-		final boolean bCheckForMinima,
-		final boolean bPrimalFeasibilityValidity,
-		final boolean bDualFeasibilityValidity,
-		final boolean bComplementarySlacknessValidity,
-		final boolean bFONCValidity,
-		final boolean bSOSCValidity)
+		final double[] candidateVariateArray,
+		final FritzJohnMultipliers fritzJohnMultipliers,
+		final boolean checkForMinima,
+		final boolean primalFeasibilityValidity,
+		final boolean dualFeasibilityValidity,
+		final boolean complementarySlacknessValidity,
+		final boolean foncValidity,
+		final boolean soscValidity)
 	{
 		try {
-			return new NecessarySufficientConditions (adblVariate, fjm, bCheckForMinima, new
-				org.drip.optimization.necessary.ConditionQualifierPrimalFeasibility
-					(bPrimalFeasibilityValidity), new
-						org.drip.optimization.necessary.ConditionQualifierDualFeasibility
-							(bDualFeasibilityValidity), new
-								org.drip.optimization.necessary.ConditionQualifierComplementarySlackness
-									(bComplementarySlacknessValidity), new
-										org.drip.optimization.necessary.ConditionQualifierFONC
-											(bFONCValidity), new
-												org.drip.optimization.necessary.ConditionQualifierSOSC
-													(bSOSCValidity));
-		} catch (java.lang.Exception e) {
+			return new NecessarySufficientConditions (
+				candidateVariateArray,
+				fritzJohnMultipliers,
+				checkForMinima,
+				new
+				ConditionQualifierPrimalFeasibility (primalFeasibilityValidity),
+				new ConditionQualifierDualFeasibility (dualFeasibilityValidity),
+				new ConditionQualifierComplementarySlackness (complementarySlacknessValidity),
+				new ConditionQualifierFONC (foncValidity),
+				new ConditionQualifierSOSC (soscValidity)
+			);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -255,7 +266,7 @@ public class NecessarySufficientConditions
 	 * @return TRUE - The Check corresponds to Local Minima
 	 */
 
-	public boolean checkFroMinima()
+	public boolean checkForMinima()
 	{
 		return _checkForMinima;
 	}
@@ -323,8 +334,11 @@ public class NecessarySufficientConditions
 
 	public boolean valid()
 	{
-		return _primalFeasibilityConditionQualifier.valid() && _dualFeasibilityConditionQualifier.valid() &&
-			_complementarySlacknessConditionQualifier.valid() && _foncConditionQualifier.valid() && _soscConditionQualifier.valid();
+		return _primalFeasibilityConditionQualifier.valid() &&
+			_dualFeasibilityConditionQualifier.valid() &&
+			_complementarySlacknessConditionQualifier.valid() &&
+			_foncConditionQualifier.valid() &&
+			_soscConditionQualifier.valid();
 	}
 
 	/**
@@ -335,8 +349,12 @@ public class NecessarySufficientConditions
 
 	public String[] conditionOrder()
 	{
-		return new java.lang.String[] {"ZERO ORDER: " + _primalFeasibilityConditionQualifier.display() + " >> " +
-			_dualFeasibilityConditionQualifier.display() + " >> " + _complementarySlacknessConditionQualifier.display(), "FIRST ORDER: " +
-				_foncConditionQualifier.display(), "SECOND ORDER: " + _soscConditionQualifier.display()};
+		return new String[] {
+			"ZERO ORDER: " + _primalFeasibilityConditionQualifier.display() + " >> " +
+				_dualFeasibilityConditionQualifier.display() + " >> " +
+				_complementarySlacknessConditionQualifier.display(),
+			"FIRST ORDER: " + _foncConditionQualifier.display(),
+			"SECOND ORDER: " + _soscConditionQualifier.display()
+		};
 	}
 }

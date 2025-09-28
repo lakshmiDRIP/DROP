@@ -1,11 +1,16 @@
 
 package org.drip.optimization.constrained;
 
+import org.drip.function.definition.RdToR1;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -80,10 +85,14 @@ package org.drip.optimization.constrained;
  */
 
 /**
- * <i>OptimizationFramework</i> holds the Non Linear Objective Function and the Collection of Equality and
- * the Inequality Constraints that correspond to the Optimization Setup. The References are:
+ * <i>OptimizerFramework</i> holds the Non Linear Objective Function and the Collection of Equality and the
+ * 	Inequality Constraints that correspond to the Optimization Setup. It provides the following Functions:
+ * 	<ul>
+ * 		<li>Create a Standard Instance of <i>NecessarySufficientConditions</i></li>
+ * 	</ul>
  * 
- * <br><br>
+ * The References are:
+ * 	<br>
  * 	<ul>
  * 		<li>
  * 			Boyd, S., and L. van den Berghe (2009): <i>Convex Optimization</i> <b>Cambridge University
@@ -107,95 +116,106 @@ package org.drip.optimization.constrained;
  * 		</li>
  * 	</ul>
  *
- *	<br><br>
- *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md">Numerical Optimizer Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/optimization/README.md">Necessary, Sufficient, and Regularity Checks for Gradient Descent and LP/MILP/MINLP Schemes</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/optimization/constrained/README.md">KKT Fritz-John Constrained Optimizer</a></li>
- *  </ul>
+ * <br>
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md">Numerical Optimizer Library</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/optimization/README.md">Necessary, Sufficient, and Regularity Checks for Gradient Descent and LP/MILP/MINLP Schemes</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/optimization/constrained/README.md">KKT Fritz-John Constrained Optimizer</a></td></tr>
+ *  </table>
  * 
  * @author Lakshmi Krishnamurthy
  */
 
-public class OptimizationFramework {
-	private org.drip.function.definition.RdToR1 _rdToR1Objective = null;
-	private org.drip.function.definition.RdToR1[] _aRdToR1EqualityConstraint = null;
-	private org.drip.function.definition.RdToR1[] _aRdToR1InequalityConstraint = null;
+public class OptimizerFramework
+{
+	private RdToR1 _objectiveFunction = null;
+	private RdToR1[] _equalityConstraintArray = null;
+	private RdToR1[] _inequalityConstraintArray = null;
 
 	/**
-	 * OptimizationFramework Constructor
+	 * <i>OptimizerFramework</i> Constructor
 	 * 
-	 * @param rdToR1Objective The R^d To R^1 Objective Function
-	 * @param aRdToR1EqualityConstraint The Array of R^d To R^1 Equality Constraint Functions
-	 * @param aRdToR1InequalityConstraint The Array of R^d To R^1 Inequality Constraint Functions
+	 * @param objectiveFunction R<sup>d</sup> To R<sup>1</sup> Objective Function
+	 * @param equalityConstraintArray Array of R<sup>d</sup> To R<sup>1</sup> Equality Constraint Functions
+	 * @param inequalityConstraintArray Array of R<sup>d</sup> To R<sup>1</sup> Inequality Constraint
+	 * 	Functions
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
-	public OptimizationFramework (
-		final org.drip.function.definition.RdToR1 rdToR1Objective,
-		final org.drip.function.definition.RdToR1[] aRdToR1EqualityConstraint,
-		final org.drip.function.definition.RdToR1[] aRdToR1InequalityConstraint)
-		throws java.lang.Exception
+	public OptimizerFramework (
+		final RdToR1 objectiveFunction,
+		final RdToR1[] equalityConstraintArray,
+		final RdToR1[] inequalityConstraintArray)
+		throws Exception
 	{
-		if (null == (_rdToR1Objective = rdToR1Objective))
-			throw new java.lang.Exception ("OptimizationFramework Constructor => Invalid Inputs");
+		if (null == (_objectiveFunction = objectiveFunction)) {
+			throw new Exception ("OptimizerFramework Constructor => Invalid Inputs");
+		}
 
-		int iObjectiveDimension = _rdToR1Objective.dimension();
+		int objectiveFunctionDimension = _objectiveFunction.dimension();
 
-		if (null != (_aRdToR1EqualityConstraint = aRdToR1EqualityConstraint)) {
-			int iNumEqualityConstraint = _aRdToR1EqualityConstraint.length;
-
-			for (int i = 0; i < iNumEqualityConstraint; ++i) {
-				if (null == _aRdToR1EqualityConstraint[i] || _aRdToR1EqualityConstraint[i].dimension() !=
-					iObjectiveDimension)
-					throw new java.lang.Exception ("OptimizationFramework Constructor => Invalid Inputs");
+		if (null != (_equalityConstraintArray = equalityConstraintArray)) {
+			for (int equalityConstraintIndex = 0;
+				equalityConstraintIndex < _equalityConstraintArray.length;
+				++equalityConstraintIndex)
+			{
+				if (null == _equalityConstraintArray[equalityConstraintIndex] ||
+					_equalityConstraintArray[equalityConstraintIndex].dimension() !=
+						objectiveFunctionDimension)
+				{
+					throw new Exception ("OptimizerFramework Constructor => Invalid Inputs");
+				}
 			}
 		}
 
-		if (null != (_aRdToR1InequalityConstraint = aRdToR1InequalityConstraint)) {
-			int iNumInequalityConstraint = _aRdToR1InequalityConstraint.length;
-
-			for (int i = 0; i < iNumInequalityConstraint; ++i) {
-				if (null == _aRdToR1InequalityConstraint[i] || _aRdToR1InequalityConstraint[i].dimension() !=
-					iObjectiveDimension)
-					throw new java.lang.Exception ("OptimizationFramework Constructor => Invalid Inputs");
+		if (null != (_inequalityConstraintArray = inequalityConstraintArray)) {
+			for (int inequalityConstraintIndex = 0;
+				inequalityConstraintIndex < _inequalityConstraintArray.length;
+				++inequalityConstraintIndex)
+			{
+				if (null == _inequalityConstraintArray[inequalityConstraintIndex] ||
+					_inequalityConstraintArray[inequalityConstraintIndex].dimension() !=
+						objectiveFunctionDimension)
+				{
+					throw new Exception ("OptimizerFramework Constructor => Invalid Inputs");
+				}
 			}
 		}
 	}
 
 	/**
-	 * Retrieve the R^d To R^1 Objective Function
+	 * Retrieve the R<sup>d</sup> To R<sup>1</sup> Objective Function
 	 * 
-	 * @return The R^d To R^1 Objective Function
+	 * @return The R<sup>d</sup> To R<sup>1</sup> Objective Function
 	 */
 
-	public org.drip.function.definition.RdToR1 objectiveFunction()
+	public RdToR1 objectiveFunction()
 	{
-		return _rdToR1Objective;
+		return _objectiveFunction;
 	}
 
 	/**
-	 * Retrieve the Array of R^d To R^1 Equality Constraint Functions
+	 * Retrieve the Array of R<sup>d</sup> To R<sup>1</sup> Equality Constraint Functions
 	 * 
-	 * @return The Array of R^d To R^1 Equality Constraint Functions
+	 * @return The Array of R<sup>d</sup> To R<sup>1</sup> Equality Constraint Functions
 	 */
 
-	public org.drip.function.definition.RdToR1[] equalityConstraint()
+	public RdToR1[] equalityConstraintArray()
 	{
-		return _aRdToR1EqualityConstraint;
+		return _equalityConstraintArray;
 	}
 
 	/**
-	 * Retrieve the Array of R^d To R^1 Inequality Constraint Functions
+	 * Retrieve the Array of R<sup>d</sup> To R<sup>1</sup> Inequality Constraint Functions
 	 * 
-	 * @return The Array of R^d To R^1 Inequality Constraint Functions
+	 * @return The Array of R<sup>d</sup> To R<sup>1</sup> Inequality Constraint Functions
 	 */
 
-	public org.drip.function.definition.RdToR1[] inequalityConstraint()
+	public RdToR1[] inequalityConstraintArray()
 	{
-		return _aRdToR1InequalityConstraint;
+		return _inequalityConstraintArray;
 	}
 
 	/**
@@ -206,7 +226,7 @@ public class OptimizationFramework {
 
 	public int numEqualityConstraint()
 	{
-		return null == _aRdToR1EqualityConstraint ? 0 : _aRdToR1EqualityConstraint.length;
+		return null == _equalityConstraintArray ? 0 : _equalityConstraintArray.length;
 	}
 
 	/**
@@ -217,7 +237,7 @@ public class OptimizationFramework {
 
 	public int numInequalityConstraint()
 	{
-		return null == _aRdToR1InequalityConstraint ? 0 : _aRdToR1InequalityConstraint.length;
+		return null == _inequalityConstraintArray ? 0 : _inequalityConstraintArray.length;
 	}
 
 	/**
@@ -285,11 +305,11 @@ public class OptimizationFramework {
 		int iNumInequalityConstraint = numInequalityConstraint();
 
 		for (int i = 0; i < iNumEqualityConstraint; ++i) {
-			if (0. != _aRdToR1EqualityConstraint[i].evaluate (adblVariate)) return false;
+			if (0. != _equalityConstraintArray[i].evaluate (adblVariate)) return false;
 		}
 
 		for (int i = 0; i < iNumInequalityConstraint; ++i) {
-			if (0. < _aRdToR1InequalityConstraint[i].evaluate (adblVariate)) return false;
+			if (0. < _inequalityConstraintArray[i].evaluate (adblVariate)) return false;
 		}
 
 		return true;
@@ -313,7 +333,7 @@ public class OptimizationFramework {
 	{
 		if (!isCompatible (fjm))
 			throw new java.lang.Exception
-				("OptimizationFramework::complementarySlacknessCheck => Invalid Inputs");
+				("OptimizerFramework::complementarySlacknessCheck => Invalid Inputs");
 
 		int iNumInequalityConstraint = numInequalityConstraint();
 
@@ -321,7 +341,7 @@ public class OptimizationFramework {
 			fjm.inequalityConstraintCoefficientArray();
 
 		for (int i = 0; i < iNumInequalityConstraint; ++i) {
-			if (0. != _aRdToR1InequalityConstraint[i].evaluate (adblVariate) *
+			if (0. != _inequalityConstraintArray[i].evaluate (adblVariate) *
 				adblInequalityConstraintCoefficient[i])
 				return false;
 		}
@@ -346,12 +366,12 @@ public class OptimizationFramework {
 		throws java.lang.Exception
 	{
 		if (!isCompatible (fjm))
-			throw new java.lang.Exception ("OptimizationFramework::isFONC => Invalid Inputs");
+			throw new java.lang.Exception ("OptimizerFramework::isFONC => Invalid Inputs");
 
-		double[] adblFONCJacobian = _rdToR1Objective.jacobian (adblVariate);
+		double[] adblFONCJacobian = _objectiveFunction.jacobian (adblVariate);
 
 		if (null == adblFONCJacobian)
-			throw new java.lang.Exception ("OptimizationFramework::isFONC => Cannot calculate Jacobian");
+			throw new java.lang.Exception ("OptimizerFramework::isFONC => Cannot calculate Jacobian");
 
 		int iNumEqualityConstraint = numEqualityConstraint();
 
@@ -363,13 +383,13 @@ public class OptimizationFramework {
 		double[] adblInequalityConstraintCoefficient = null == fjm ? null :
 			fjm.inequalityConstraintCoefficientArray();
 
-		int iDimension = _rdToR1Objective.dimension();
+		int iDimension = _objectiveFunction.dimension();
 
 		for (int i = 0; i < iNumEqualityConstraint; ++i) {
-			double[] adblJacobian = _aRdToR1EqualityConstraint[i].jacobian (adblVariate);
+			double[] adblJacobian = _equalityConstraintArray[i].jacobian (adblVariate);
 
 			if (null == adblJacobian)
-				throw new java.lang.Exception ("OptimizationFramework::isFONC => Cannot calculate Jacobian");
+				throw new java.lang.Exception ("OptimizerFramework::isFONC => Cannot calculate Jacobian");
 
 			for (int j = 0; j < iDimension; ++j)
 				adblFONCJacobian[j] = adblFONCJacobian[j] + adblEqualityConstraintCoefficient[j] *
@@ -377,10 +397,10 @@ public class OptimizationFramework {
 		}
 
 		for (int i = 0; i < iNumInequalityConstraint; ++i) {
-			double[] adblJacobian = _aRdToR1InequalityConstraint[i].jacobian (adblVariate);
+			double[] adblJacobian = _inequalityConstraintArray[i].jacobian (adblVariate);
 
 			if (null == adblJacobian)
-				throw new java.lang.Exception ("OptimizationFramework::isFONC => Cannot calculate Jacobian");
+				throw new java.lang.Exception ("OptimizerFramework::isFONC => Cannot calculate Jacobian");
 
 			for (int j = 0; j < iDimension; ++j)
 				adblFONCJacobian[j] = adblFONCJacobian[j] + adblInequalityConstraintCoefficient[j] *
@@ -414,10 +434,10 @@ public class OptimizationFramework {
 	{
 		if (!isFONC (fjm, adblVariate)) return false;
 
-		double[][] aadblSOSCHessian = _rdToR1Objective.hessian (adblVariate);
+		double[][] aadblSOSCHessian = _objectiveFunction.hessian (adblVariate);
 
 		if (null == aadblSOSCHessian)
-			throw new java.lang.Exception ("OptimizationFramework::isSOSC => Cannot calculate Jacobian");
+			throw new java.lang.Exception ("OptimizerFramework::isSOSC => Cannot calculate Jacobian");
 
 		int iNumEqualityConstraint = numEqualityConstraint();
 
@@ -429,13 +449,13 @@ public class OptimizationFramework {
 		double[] adblInequalityConstraintCoefficient = null == fjm ? null :
 			fjm.inequalityConstraintCoefficientArray();
 
-		int iDimension = _rdToR1Objective.dimension();
+		int iDimension = _objectiveFunction.dimension();
 
 		for (int i = 0; i < iNumEqualityConstraint; ++i) {
-			double[][] aadblHessian = _aRdToR1EqualityConstraint[i].hessian (adblVariate);
+			double[][] aadblHessian = _equalityConstraintArray[i].hessian (adblVariate);
 
 			if (null == aadblHessian)
-				throw new java.lang.Exception ("OptimizationFramework::isSOSC => Cannot calculate Jacobian");
+				throw new java.lang.Exception ("OptimizerFramework::isSOSC => Cannot calculate Jacobian");
 
 			for (int j = 0; j < iDimension; ++j) {
 				for (int k = 0; k < iDimension; ++k)
@@ -445,10 +465,10 @@ public class OptimizationFramework {
 		}
 
 		for (int i = 0; i < iNumInequalityConstraint; ++i) {
-			double[][] aadblHessian = _aRdToR1InequalityConstraint[i].hessian (adblVariate);
+			double[][] aadblHessian = _inequalityConstraintArray[i].hessian (adblVariate);
 
 			if (null == aadblHessian)
-				throw new java.lang.Exception ("OptimizationFramework::isSOSC => Cannot calculate Jacobian");
+				throw new java.lang.Exception ("OptimizerFramework::isSOSC => Cannot calculate Jacobian");
 
 			for (int j = 0; j < iDimension; ++j) {
 				for (int k = 0; k < iDimension; ++k)
@@ -509,12 +529,12 @@ public class OptimizationFramework {
 			java.util.ArrayList<org.drip.function.definition.RdToR1>();
 
 		for (int i = 0; i < iNumEqualityConstraint; ++i)
-			lsActiveConstraint.add (_aRdToR1EqualityConstraint[i]);
+			lsActiveConstraint.add (_equalityConstraintArray[i]);
 
 		for (int i = 0; i < iNumInequalityConstraint; ++i) {
 			try {
-				if (0. == _aRdToR1InequalityConstraint[i].evaluate (adblVariate))
-					lsActiveConstraint.add (_aRdToR1InequalityConstraint[i]);
+				if (0. == _inequalityConstraintArray[i].evaluate (adblVariate))
+					lsActiveConstraint.add (_inequalityConstraintArray[i]);
 			} catch (java.lang.Exception e) {
 				e.printStackTrace();
 
@@ -553,26 +573,26 @@ public class OptimizationFramework {
 
 		java.util.List<double[]> lsJacobian = new java.util.ArrayList<double[]>();
 
-		double[] adblJacobian = _rdToR1Objective.jacobian (adblVariate);
+		double[] adblJacobian = _objectiveFunction.jacobian (adblVariate);
 
 		if (null == adblJacobian)
-			throw new java.lang.Exception ("OptimizationFramework::activeConstraintRank => Cannot Compute");
+			throw new java.lang.Exception ("OptimizerFramework::activeConstraintRank => Cannot Compute");
 
 		lsJacobian.add (adblJacobian);
 
 		for (int i = 0; i < iNumEqualityConstraint; ++i) {
-			if (null == (adblJacobian = _aRdToR1EqualityConstraint[i].jacobian (adblVariate)))
+			if (null == (adblJacobian = _equalityConstraintArray[i].jacobian (adblVariate)))
 				throw new java.lang.Exception
-					("OptimizationFramework::activeConstraintRank => Cannot Compute");
+					("OptimizerFramework::activeConstraintRank => Cannot Compute");
 
 			lsJacobian.add (adblJacobian);
 		}
 
 		for (int i = 0; i < iNumInequalityConstraint; ++i) {
-			if (0. == _aRdToR1InequalityConstraint[i].evaluate (adblVariate)) {
-				if (null == (adblJacobian = _aRdToR1InequalityConstraint[i].jacobian (adblVariate)))
+			if (0. == _inequalityConstraintArray[i].evaluate (adblVariate)) {
+				if (null == (adblJacobian = _inequalityConstraintArray[i].jacobian (adblVariate)))
 					throw new java.lang.Exception
-						("OptimizationFramework::activeConstraintRank => Cannot Compute");
+						("OptimizerFramework::activeConstraintRank => Cannot Compute");
 
 				lsJacobian.add (adblJacobian);
 			}
@@ -631,14 +651,14 @@ public class OptimizationFramework {
 		double[][] aadblJacobian = new double[iNumConstraint][];
 
 		for (int i = 0; i < iNumEqualityConstraint; ++i) {
-			if (null == (aadblJacobian[i] = _aRdToR1EqualityConstraint[i].jacobian (adblVariate)))
+			if (null == (aadblJacobian[i] = _equalityConstraintArray[i].jacobian (adblVariate)))
 				return false;
 		}
 
 		for (int i = iNumEqualityConstraint; i < iNumConstraint; ++i) {
 			aadblJacobian[i] = null;
 			org.drip.function.definition.RdToR1 rdToR1InequalityConstraint =
-				_aRdToR1InequalityConstraint[i - iNumEqualityConstraint];
+				_inequalityConstraintArray[i - iNumEqualityConstraint];
 
 			if (0. == rdToR1InequalityConstraint.evaluate (adblVariate)) {
 				if (null == (aadblJacobian[i] = rdToR1InequalityConstraint.jacobian (adblVariate)))
@@ -679,8 +699,8 @@ public class OptimizationFramework {
 		final double[] adblVariate)
 	{
 		double[] adblVariateIncrement = org.drip.numerical.linearalgebra.R1MatrixUtil.Product
-			(org.drip.numerical.linearalgebra.R1MatrixUtil.InvertUsingGaussianElimination (_rdToR1Objective.hessian
-				(adblVariate)), _rdToR1Objective.jacobian (adblVariate));
+			(org.drip.numerical.linearalgebra.R1MatrixUtil.InvertUsingGaussianElimination (_objectiveFunction.hessian
+				(adblVariate)), _objectiveFunction.jacobian (adblVariate));
 
 		if (null == adblVariateIncrement) return null;
 
@@ -709,12 +729,12 @@ public class OptimizationFramework {
 		int iNumInequalityConstraint = numInequalityConstraint();
 
 		for (int i = 0; i < iNumEqualityConstraint; ++i) {
-			if (!(_aRdToR1EqualityConstraint[i] instanceof org.drip.function.rdtor1.AffineMultivariate))
+			if (!(_equalityConstraintArray[i] instanceof org.drip.function.rdtor1.AffineMultivariate))
 				return false;
 		}
 
 		for (int i = 0; i < iNumInequalityConstraint; ++i) {
-			if (!(_aRdToR1InequalityConstraint[i] instanceof org.drip.function.rdtor1.AffineMultivariate))
+			if (!(_inequalityConstraintArray[i] instanceof org.drip.function.rdtor1.AffineMultivariate))
 				return false;
 		}
 
@@ -774,7 +794,7 @@ public class OptimizationFramework {
 		double[][] aadblAlongAwayVariatePair = alongAwayVariate (adblVariate);
 
 		if (null == aadblAlongAwayVariatePair)
-			throw new java.lang.Exception ("OptimizationFramework::isCRCQ => Cannot generate along/away");
+			throw new java.lang.Exception ("OptimizerFramework::isCRCQ => Cannot generate along/away");
 
 		return iRank == activeConstraintRank (aadblAlongAwayVariatePair[0]) && iRank == activeConstraintRank
 			(aadblAlongAwayVariatePair[1]);
@@ -799,7 +819,7 @@ public class OptimizationFramework {
 		double[][] aadblAlongAwayVariatePair = alongAwayVariate (adblVariate);
 
 		if (null == aadblAlongAwayVariatePair)
-			throw new java.lang.Exception ("OptimizationFramework::isCPLDCQ => Cannot generate along/away");
+			throw new java.lang.Exception ("OptimizerFramework::isCPLDCQ => Cannot generate along/away");
 
 		return isMFCQ (aadblAlongAwayVariatePair[0]) && isMFCQ (aadblAlongAwayVariatePair[1]);
 	}
@@ -821,7 +841,7 @@ public class OptimizationFramework {
 		throws java.lang.Exception
 	{
 		if (!isCompatible (fjm))
-			throw new java.lang.Exception ("OptimizationFramework::isQNCQ => Invalid Inputs");
+			throw new java.lang.Exception ("OptimizerFramework::isQNCQ => Invalid Inputs");
 
 		if (!isMFCQ (adblVariate)) return false;
 
@@ -831,7 +851,7 @@ public class OptimizationFramework {
 			fjm.equalityConstraintCoefficientArray();
 
 		for (int i = 0; i < iNumEqualityConstraint; ++i) {
-			if (0. != adblEqualityConstraintCoefficient[i] && 0. <= _aRdToR1EqualityConstraint[i].evaluate
+			if (0. != adblEqualityConstraintCoefficient[i] && 0. <= _equalityConstraintArray[i].evaluate
 				(adblVariate) * adblEqualityConstraintCoefficient[i])
 				return false;
 		}
@@ -843,7 +863,7 @@ public class OptimizationFramework {
 
 		for (int i = 0; i < iNumInequalityConstraint; ++i) {
 			if (0. != adblInequalityConstraintCoefficient[i] && 0. <=
-				_aRdToR1InequalityConstraint[i].evaluate (adblVariate) *
+				_inequalityConstraintArray[i].evaluate (adblVariate) *
 					adblInequalityConstraintCoefficient[i])
 				return false;
 		}
@@ -865,18 +885,18 @@ public class OptimizationFramework {
 		final double[] adblVariate)
 		throws java.lang.Exception
 	{
-		if (!(_rdToR1Objective instanceof org.drip.function.rdtor1.ConvexMultivariate)) return false;
+		if (!(_objectiveFunction instanceof org.drip.function.rdtor1.ConvexMultivariate)) return false;
 
 		int iNumEqualityConstraint = numEqualityConstraint();
 
 		int iNumInequalityConstraint = numInequalityConstraint();
 
 		for (int i = 0; i < iNumEqualityConstraint; ++i) {
-			if (0. != _aRdToR1EqualityConstraint[i].evaluate (adblVariate)) return false;
+			if (0. != _equalityConstraintArray[i].evaluate (adblVariate)) return false;
 		}
 
 		for (int i = 0; i < iNumInequalityConstraint; ++i) {
-			if (0. <= _aRdToR1InequalityConstraint[i].evaluate (adblVariate)) return false;
+			if (0. <= _inequalityConstraintArray[i].evaluate (adblVariate)) return false;
 		}
 
 		return true;

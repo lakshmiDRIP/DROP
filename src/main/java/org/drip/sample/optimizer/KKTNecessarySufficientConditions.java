@@ -381,7 +381,7 @@ public class KKTNecessarySufficientConditions
 			).constraintMultiplierArray()
 		);
 
-		OptimizationFramework optimizationFramework = new OptimizationFramework (
+		OptimizerFramework optimizationFramework = new OptimizerFramework (
 			objectiveFunction,
 			null,
 			ConstraintFunctionArray (
