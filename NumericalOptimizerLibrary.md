@@ -11,7 +11,7 @@ Numerical Optimizer Library contains the supporting Functionality for Numerical 
 
  |        Document         | Link |
  |-------------------------|------|
- | Technical Specification | [*Latest*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/NumericalOptimizer/NumericalOptimizer_v7.10.pdf) [*Previous*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/NumericalOptimizer) |
+ | Technical Specification | [*Latest*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/NumericalOptimizer/NumericalOptimizer_v7.11.pdf) [*Previous*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/NumericalOptimizer) |
  | User Guide              |  |
  | API                     | [*Javadoc*](https://lakshmidrip.github.io/DROP/Javadoc/index.html)|
 
@@ -114,6 +114,15 @@ Numerical Optimizer Library contains the supporting Functionality for Numerical 
 	* Discrete-time Optimal Control
 	* Examples
 		* Finite Time
+	* References
+ * Hamilton–Jacobi–Bellman Equation
+	* Introduction
+	* Optimal Control Problems
+	* The Partial Differential Equation
+	* Deriving the Equation
+	* Solving the Equation
+	* Extension to Stochastic Problems
+		* Application to LQG-Control
 	* References
 
 
