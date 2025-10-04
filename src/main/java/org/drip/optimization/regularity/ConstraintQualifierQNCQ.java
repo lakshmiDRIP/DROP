@@ -6,6 +6,9 @@ package org.drip.optimization.regularity;
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -80,9 +83,14 @@ package org.drip.optimization.regularity;
  */
 
 /**
- * <i>ConstraintQualifierQNCQ</i> holds the Quasi Normal Constraint Qualifier (QNCQ). The References are:
+ * <i>ConstraintQualifierQNCQ</i> holds the Quasi Normal Constraint Qualifier (QNCQ). It provides the
+ * 	following Functions:
+ * 	<ul>
+ * 		<li><i>ConstraintQualifierQNCQ</i> Constructor</li>
+ * 	</ul>
  * 
- * <br><br>
+ * The References are:
+ * <br>
  * 	<ul>
  * 		<li>
  * 			Boyd, S., and L. van den Berghe (2009): <i>Convex Optimization</i> <b>Cambridge University
@@ -106,7 +114,7 @@ package org.drip.optimization.regularity;
  * 		</li>
  * 	</ul>
  *
- *	<br><br>
+ * <br>
  *  <ul>
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md">Numerical Optimizer Library</a></li>
@@ -117,20 +125,22 @@ package org.drip.optimization.regularity;
  * @author Lakshmi Krishnamurthy
  */
 
-public class ConstraintQualifierQNCQ extends org.drip.optimization.regularity.ConstraintQualifier {
+public class ConstraintQualifierQNCQ
+	extends ConstraintQualifier
+{
 
 	/**
-	 * ConstraintQualifierQNCQ Constructor
+	 * <i>ConstraintQualifierQNCQ</i> Constructor
 	 * 
-	 * @param bValid Constraint Qualifier Validity
+	 * @param valid Constraint Qualifier Validity
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public ConstraintQualifierQNCQ (
-		final boolean bValid)
-		throws java.lang.Exception
+		final boolean valid)
+		throws Exception
 	{
-		super ("CNCQ", "QUASI NORMAL CONSTRAINT QUALIFICATION", bValid);
+		super ("QNCQ", "QUASI NORMAL CONSTRAINT QUALIFICATION", valid);
 	}
 }

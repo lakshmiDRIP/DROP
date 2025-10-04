@@ -6,6 +6,9 @@ package org.drip.optimization.regularity;
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -80,9 +83,14 @@ package org.drip.optimization.regularity;
  */
 
 /**
- * <i>ConstraintQualifierSCCQ</i> holds the Slater Condition Constraint Qualifier (SCCQ). The References are:
+ * <i>ConstraintQualifierSCCQ</i> holds the Slater Condition Constraint Qualifier (SCCQ). It provides the
+ * 	following Functions:
+ * 	<ul>
+ * 		<li><i>ConstraintQualifierSCCQ</i> Constructor</li>
+ * 	</ul>
  * 
- * <br><br>
+ * The References are:
+ * <br>
  * 	<ul>
  * 		<li>
  * 			Boyd, S., and L. van den Berghe (2009): <i>Convex Optimization</i> <b>Cambridge University
@@ -106,7 +114,7 @@ package org.drip.optimization.regularity;
  * 		</li>
  * 	</ul>
  *
- *	<br><br>
+ * <br>
  *  <ul>
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md">Numerical Optimizer Library</a></li>
@@ -117,20 +125,22 @@ package org.drip.optimization.regularity;
  * @author Lakshmi Krishnamurthy
  */
 
-public class ConstraintQualifierSCCQ extends org.drip.optimization.regularity.ConstraintQualifier {
+public class ConstraintQualifierSCCQ
+	extends ConstraintQualifier
+{
 
 	/**
-	 * ConstraintQualifierSCCQ Constructor
+	 * <i>ConstraintQualifierSCCQ</i> Constructor
 	 * 
-	 * @param bValid Constraint Qualifier Validity
+	 * @param valid Constraint Qualifier Validity
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public ConstraintQualifierSCCQ (
-		final boolean bValid)
-		throws java.lang.Exception
+		final boolean valid)
+		throws Exception
 	{
-		super ("SCCQ", "SLATER CONDITION CONSTRAINT QUALIFICATION", bValid);
+		super ("SCCQ", "SLATER CONDITION CONSTRAINT QUALIFICATION", valid);
 	}
 }
