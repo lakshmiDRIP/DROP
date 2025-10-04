@@ -6,6 +6,9 @@ package org.drip.optimization.necessary;
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -81,9 +84,17 @@ package org.drip.optimization.necessary;
 
 /**
  * <i>ConditionQualifier</i> holds the Condition Name, the Condition Order, and the Condition Validity Flag
- * that correspond to the Necessary and the Sufficient Conditions. The References are:
+ * 	that correspond to the Necessary and the Sufficient Conditions. It provides the following Functions:
+ * 	<ul>
+ * 		<li><i>ConditionQualifier</i> Constructor</li>
+ * 		<li>Retrieve the Condition Qualifier Description</li>
+ * 		<li>Retrieve the Condition Qualifier Order</li>
+ * 		<li>Retrieve the Condition Qualifier Validity</li>
+ * 		<li>Convert the Condition Qualifier into a Display String</li>
+ * 	</ul>
  * 
- * <br><br>
+ * The References are:
+ * <br>
  * 	<ul>
  * 		<li>
  * 			Boyd, S., and L. van den Berghe (2009): <i>Convex Optimization</i> <b>Cambridge University
@@ -107,43 +118,44 @@ package org.drip.optimization.necessary;
  * 		</li>
  * 	</ul>
  *
- *	<br><br>
- *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md">Numerical Optimizer Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/optimization/README.md">Necessary, Sufficient, and Regularity Checks for Gradient Descent in a Constrained Optimization Setup</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/optimization/necessary/README.md">Constrained Optimizer Necessary Sufficient Conditions</a></li>
- *  </ul>
+ * <br>
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md">Numerical Optimizer Library</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/optimization/README.md">Necessary, Sufficient, and Regularity Checks for Gradient Descent and LP/MILP/MINLP Schemes</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/optimization/necessary/README.md">Constrained Optimizer Necessary Sufficient Conditions</a></td></tr>
+ *  </table>
  * 
  * @author Lakshmi Krishnamurthy
  */
 
-public class ConditionQualifier {
-	private int _iOrder = -1;
-	private boolean _bValid = false;
-	private java.lang.String _strDescription = "";
+public class ConditionQualifier
+{
+	private int _order = -1;
+	private boolean _valid = false;
+	private String _description = "";
 
 	/**
-	 * ConditionQualifier Constructor
+	 * <i>ConditionQualifier</i> Constructor
 	 * 
-	 * @param strDescription Condition Qualifier Description
-	 * @param iOrder Order of the Condition - Typically First/Second
-	 * @param bValid Condition Qualifier Validity
+	 * @param description Condition Qualifier Description
+	 * @param order Order of the Condition - Typically First/Second
+	 * @param valid Condition Qualifier Validity
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public ConditionQualifier (
-		final java.lang.String strDescription,
-		final int iOrder,
-		final boolean bValid)
-		throws java.lang.Exception
+		final String description,
+		final int order,
+		final boolean valid)
+		throws Exception
 	{
-		if (null == (_strDescription = strDescription) || _strDescription.isEmpty() || 0 > (_iOrder =
-			iOrder))
-			throw new java.lang.Exception ("ConditionQualifier Constructor => Invalid Inputs");
+		if (null == (_description = description) || _description.isEmpty() || 0 > (_order = order)) {
+			throw new Exception ("ConditionQualifier Constructor => Invalid Inputs");
+		}
 
-		_bValid = bValid;
+		_valid = valid;
 	}
 
 	/**
@@ -152,9 +164,9 @@ public class ConditionQualifier {
 	 * @return The Condition Qualifier Description
 	 */
 
-	public java.lang.String description()
+	public String description()
 	{
-		return _strDescription;
+		return _description;
 	}
 
 	/**
@@ -165,7 +177,7 @@ public class ConditionQualifier {
 
 	public int order()
 	{
-		return _iOrder;
+		return _order;
 	}
 
 	/**
@@ -176,7 +188,7 @@ public class ConditionQualifier {
 
 	public boolean valid()
 	{
-		return _bValid;
+		return _valid;
 	}
 
 	/**
@@ -185,8 +197,8 @@ public class ConditionQualifier {
 	 * @return The Condition Qualifier into a Display String
 	 */
 
-	public java.lang.String display()
+	public String display()
 	{
-		return "[ " + _strDescription + " | " + _iOrder + " ORDER => " + _bValid + "]";
+		return "[ " + _description + " | " + _order + " ORDER => " + _valid + "]";
 	}
 }

@@ -1,11 +1,16 @@
 
 package org.drip.optimization.cuttingplane;
 
+import org.drip.numerical.common.NumberUtil;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -76,10 +81,16 @@ package org.drip.optimization.cuttingplane;
  */
 
 /**
- * <i>StrengthenedChvatalGomoryCut</i> implements the Strengthened Chvatal Gomory Cut for ILP. The References
- * 	are:
+ * <i>StrengthenedChvatalGomoryCut</i> implements the Strengthened Chvatal Gomory Cut for ILP. It provides
+ * 	the following Functions:
+ * 	<ul>
+ * 		<li><i>StrengthenedChvatalGomoryCut</i> Constructor</li>
+ * 		<li>Retrieve the Strengthening Integer</li>
+ * 		<li>Verify if the Variate Array satisfies the Constraint</li>
+ * 	</ul>
  * 
- * <br><br>
+ * The References are:
+ * <br>
  *  <ul>
  *  	<li>
  * 			Burdet, C. A., and E. L. Johnson (1977): A Sub-additive Approach to Solve Linear Integer Programs
@@ -103,31 +114,31 @@ package org.drip.optimization.cuttingplane;
  *  	</li>
  *  </ul>
  *
- *	<br><br>
- *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md">Numerical Optimizer Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/optimization/README.md">Necessary, Sufficient, and Regularity Checks for Gradient Descent and LP/MILP/MINLP Schemes</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/optimization/cuttingplane/README.md">Polyhedral Cutting Plane Generation Schemes</a></li>
- *  </ul>
+ * <br>
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md">Numerical Optimizer Library</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/optimization/README.md">Necessary, Sufficient, and Regularity Checks for Gradient Descent and LP/MILP/MINLP Schemes</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/optimization/cuttingplane/README.md">Polyhedral Cutting Plane Generation Schemes</a></td></tr>
+ *  </table>
  *
  * @author Lakshmi Krishnamurthy
  */
 
 public class StrengthenedChvatalGomoryCut
-	extends org.drip.optimization.cuttingplane.ChvatalGomoryCut
+	extends ChvatalGomoryCut
 {
 	private int _t = -1;
 
 	/**
-	 * StrengthenedChvatalGomoryCut Constructor
+	 * <i>StrengthenedChvatalGomoryCut</i> Constructor
 	 * 
 	 * @param aGrid "A" Constraint Grid
 	 * @param bArray "b" Constraint Array
 	 * @param lambdaArray The Lambda Array
 	 * @param t Strengthening Integer
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public StrengthenedChvatalGomoryCut (
@@ -135,19 +146,12 @@ public class StrengthenedChvatalGomoryCut
 		final int[] bArray,
 		final double[] lambdaArray,
 		final int t)
-		throws java.lang.Exception
+		throws Exception
 	{
-		super (
-			aGrid,
-			bArray,
-			lambdaArray
-		);
+		super (aGrid, bArray, lambdaArray);
 
-		if (0 >= (_t = t))
-		{
-			throw new java.lang.Exception (
-				"StrengthenedChvatalGomoryCut Constructor => Invalid Inputs"
-			);
+		if (0 >= (_t = t)) {
+			throw new Exception ("StrengthenedChvatalGomoryCut Constructor => Invalid Inputs");
 		}
 	}
 
@@ -168,16 +172,15 @@ public class StrengthenedChvatalGomoryCut
 	 * @param variateArray The Input Variate Array
 	 * 
 	 * @return TRUE - The Variate Array satisfies the Constraint
+	 * 
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public boolean verify (
 		final int[] variateArray)
-		throws java.lang.Exception
+		throws Exception
 	{
-		if (!super.verify (
-			variateArray
-		))
-		{
+		if (!super.verify (variateArray)) {
 			return false;
 		}
 
@@ -187,23 +190,15 @@ public class StrengthenedChvatalGomoryCut
 
 		double[] lambdaArray = lambdaArray();
 
-		double lhs = 0;
+		double lhs = 0.;
 		double rhs = 0.;
 		int dimension = aGrid.length;
 		int constraintCount = bArray.length;
 
-		for (int constraintIndex = 0;
-			constraintIndex < constraintCount;
-			++constraintIndex)
-		{
-			double lambdaTFraction = org.drip.numerical.common.NumberUtil.Fractional (
-				lambdaArray[constraintIndex] * _t
-			);
+		for (int constraintIndex = 0; constraintIndex < constraintCount; ++constraintIndex) {
+			double lambdaTFraction = NumberUtil.Fractional (lambdaArray[constraintIndex] * _t);
 
-			for (int dimensionIndex = 0;
-				dimensionIndex < dimension;
-				++dimensionIndex)
-			{
+			for (int dimensionIndex = 0; dimensionIndex < dimension; ++dimensionIndex) {
 				lhs += variateArray[dimensionIndex] * lambdaTFraction *
 					aGrid[constraintIndex][dimensionIndex];
 			}

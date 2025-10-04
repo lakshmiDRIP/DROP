@@ -1,11 +1,17 @@
 
 package org.drip.optimization.cuttingplane;
 
+import java.util.Set;
+import java.util.TreeMap;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -76,10 +82,17 @@ package org.drip.optimization.cuttingplane;
  */
 
 /**
- * <i>LetchfordLodiPartitionMap</i> implements the Partition Map dictated by the Letchford-Lodi Cut. The
- * 	References are:
- * 
- * <br><br>
+ * <i>LetchfordLodiPartitionMap</i> implements the Partition Map dictated by the Letchford-Lodi Cut. It
+ * 	provides the following Functions:
+ * 	<ul>
+ * 		<li><i>LetchfordLodiPartitionMap</i> Constructor</li>
+ * 		<li>Retrieve the a0 Reciprocal Integer Floor</li>
+ * 		<li>Retrieve the Unadjusted Coefficient Array</li>
+ * 		<li>Retrieve the Partition Map</li>
+ * 	</ul>
+ *
+ * The References are:
+ * <br>
  *  <ul>
  *  	<li>
  * 			Burdet, C. A., and E. L. Johnson (1977): A Sub-additive Approach to Solve Linear Integer Programs
@@ -103,13 +116,13 @@ package org.drip.optimization.cuttingplane;
  *  	</li>
  *  </ul>
  *
- *	<br><br>
- *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md">Numerical Optimizer Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/optimization/README.md">Necessary, Sufficient, and Regularity Checks for Gradient Descent and LP/MILP/MINLP Schemes</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/optimization/cuttingplane/README.md">Polyhedral Cutting Plane Generation Schemes</a></li>
- *  </ul>
+ * <br>
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md">Numerical Optimizer Library</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/optimization/README.md">Necessary, Sufficient, and Regularity Checks for Gradient Descent and LP/MILP/MINLP Schemes</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/optimization/cuttingplane/README.md">Polyhedral Cutting Plane Generation Schemes</a></td></tr>
+ *  </table>
  *
  * @author Lakshmi Krishnamurthy
  */
@@ -118,32 +131,30 @@ public class LetchfordLodiPartitionMap
 {
 	private int _k = -1;
 	private double[] _unadjustedCoefficientArray = null;
-	private java.util.TreeMap<java.lang.Integer, java.util.Set<java.lang.Integer>> _partitionMap = null;
+	private TreeMap<Integer, Set<Integer>> _partitionMap = null;
 
 	/**
-	 * LetchfordLodiPartitionMap Constructor
+	 * <i>LetchfordLodiPartitionMap</i> Constructor
 	 * 
 	 * @param k The a0 Reciprocal Integer Floor
 	 * @param unadjustedCoefficientArray The Unadjusted Coefficient Array
 	 * @param partitionMap The Partition Map
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public LetchfordLodiPartitionMap (
 		final int k,
 		final double[] unadjustedCoefficientArray,
-		final java.util.TreeMap<java.lang.Integer, java.util.Set<java.lang.Integer>> partitionMap)
-		throws java.lang.Exception
+		final TreeMap<Integer, Set<Integer>> partitionMap)
+		throws Exception
 	{
 		if (0 >= (_k = k) ||
 			null == (_unadjustedCoefficientArray = unadjustedCoefficientArray) ||
 				0 == _unadjustedCoefficientArray.length ||
 			null == (_partitionMap = partitionMap) || 0 == partitionMap.size())
 		{
-			throw new java.lang.Exception (
-				"LetchfordLodiPartitionMap Constructor => Invalid Inputs"
-			);
+			throw new Exception ("LetchfordLodiPartitionMap Constructor => Invalid Inputs");
 		}
 	}
 
@@ -175,7 +186,7 @@ public class LetchfordLodiPartitionMap
 	 * @return The Partition Map
 	 */
 
-	public java.util.TreeMap<java.lang.Integer, java.util.Set<java.lang.Integer>> partitionMap()
+	public TreeMap<Integer, Set<Integer>> partitionMap()
 	{
 		return _partitionMap;
 	}

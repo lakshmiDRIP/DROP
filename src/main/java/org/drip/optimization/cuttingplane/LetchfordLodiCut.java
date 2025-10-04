@@ -1,11 +1,20 @@
 
 package org.drip.optimization.cuttingplane;
 
+import java.util.Set;
+import java.util.TreeMap;
+import java.util.TreeSet;
+
+import org.drip.numerical.common.NumberUtil;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -76,9 +85,15 @@ package org.drip.optimization.cuttingplane;
  */
 
 /**
- * <i>LetchfordLodiCut</i> implements the Letchford-Lodi Cut for ILP. The References are:
+ * <i>LetchfordLodiCut</i> implements the Letchford-Lodi Cut for ILP. It provides the following Functions:
+ * 	<ul>
+ * 		<li><i>LetchfordLodiCut</i> Constructor</li>
+ * 		<li>Generate the Partition Map</li>
+ * 		<li>Generate the Adjusted Coefficient Array</li>
+ * 	</ul>
  * 
- * <br><br>
+ * The References are:
+ * <br>
  *  <ul>
  *  	<li>
  * 			Burdet, C. A., and E. L. Johnson (1977): A Sub-additive Approach to Solve Linear Integer Programs
@@ -102,66 +117,55 @@ package org.drip.optimization.cuttingplane;
  *  	</li>
  *  </ul>
  *
- *	<br><br>
- *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md">Numerical Optimizer Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/optimization/README.md">Necessary, Sufficient, and Regularity Checks for Gradient Descent and LP/MILP/MINLP Schemes</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/optimization/cuttingplane/README.md">Polyhedral Cutting Plane Generation Schemes</a></li>
- *  </ul>
+ * <br>
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md">Numerical Optimizer Library</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/optimization/README.md">Necessary, Sufficient, and Regularity Checks for Gradient Descent and LP/MILP/MINLP Schemes</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/optimization/cuttingplane/README.md">Polyhedral Cutting Plane Generation Schemes</a></td></tr>
+ *  </table>
  *
  * @author Lakshmi Krishnamurthy
  */
 
 public class LetchfordLodiCut
-	extends org.drip.optimization.cuttingplane.ChvatalGomoryCut
+	extends ChvatalGomoryCut
 {
 
-	private static final java.util.Set<java.lang.Integer> Partition (
+	private static final Set<Integer> Partition (
 		final double[] coefficientFractionArray)
 	{
-		java.util.Set<java.lang.Integer> partitionSet = new java.util.TreeSet<java.lang.Integer>();
+		Set<Integer> partitionSet = new TreeSet<Integer>();
 
 		int coefficientCount = coefficientFractionArray.length;
 		double a0Fraction = coefficientFractionArray[0];
 
-		for (int coefficientIndex = 1;
-			coefficientIndex < coefficientCount;
-			++coefficientIndex)
-		{
-			if (a0Fraction >= coefficientFractionArray[coefficientIndex])
-			{
-				partitionSet.add (
-					coefficientIndex
-				);
+		for (int coefficientIndex = 1; coefficientIndex < coefficientCount; ++coefficientIndex) {
+			if (a0Fraction >= coefficientFractionArray[coefficientIndex]) {
+				partitionSet.add (coefficientIndex);
 			}
 		}
 
 		return partitionSet;
 	}
 
-	private static final java.util.Set<java.lang.Integer> Partition (
+	private static final Set<Integer> Partition (
 		final double[] coefficientFractionArray,
 		final int k,
 		final int p)
 	{
-		java.util.Set<java.lang.Integer> partitionSet = new java.util.TreeSet<java.lang.Integer>();
+		Set<Integer> partitionSet = new TreeSet<Integer>();
 
 		int coefficientCount = coefficientFractionArray.length;
 		double oneMinusA0FractionOverK = (1. - coefficientFractionArray[0]) / k;
 		double upperBound = coefficientFractionArray[0] + oneMinusA0FractionOverK * p;
 		double lowerBound = coefficientFractionArray[0] + oneMinusA0FractionOverK * (p - 1);
 
-		for (int coefficientIndex = 1;
-			coefficientIndex < coefficientCount;
-			++coefficientIndex)
-		{
+		for (int coefficientIndex = 1; coefficientIndex < coefficientCount; ++coefficientIndex) {
 			if (lowerBound < coefficientFractionArray[coefficientIndex] &&
 				upperBound >= coefficientFractionArray[coefficientIndex])
 			{
-				partitionSet.add (
-					coefficientIndex
-				);
+				partitionSet.add (coefficientIndex);
 			}
 		}
 
@@ -169,26 +173,22 @@ public class LetchfordLodiCut
 	}
 
 	/**
-	 * ILPLetchfordLodiCut Constructor
+	 * <i>LetchfordLodiCut</i> Constructor
 	 * 
 	 * @param aGrid "A" Constraint Grid
 	 * @param bArray "b" Constraint Array
 	 * @param lambdaArray The Lambda Array
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public LetchfordLodiCut (
 		final int[][] aGrid,
 		final int[] bArray,
 		final double[] lambdaArray)
-		throws java.lang.Exception
+		throws Exception
 	{
-		super (
-			aGrid,
-			bArray,
-			lambdaArray
-		);
+		super (aGrid, bArray, lambdaArray);
 	}
 
 	/**
@@ -197,89 +197,60 @@ public class LetchfordLodiCut
 	 * @return The Partition Map
 	 */
 
-	public org.drip.optimization.cuttingplane.LetchfordLodiPartitionMap partitionMap()
+	public LetchfordLodiPartitionMap partitionMap()
 	{
 		double[] unadjustedCoefficientArray = unadjustedCoefficientArray();
 
-		if (null == unadjustedCoefficientArray)
-		{
+		if (null == unadjustedCoefficientArray) {
 			return null;
 		}
 
 		int coefficientCount = unadjustedCoefficientArray.length;
 		double[] coefficientFractionArray = new double[coefficientCount];
 
-		if (0 == coefficientCount)
-		{
+		if (0 == coefficientCount) {
 			return null;
 		}
 
-		java.util.TreeMap<java.lang.Integer, java.util.Set<java.lang.Integer>> partitionMap =
-			new java.util.TreeMap<java.lang.Integer, java.util.Set<java.lang.Integer>>();
+		TreeMap<Integer, Set<Integer>> partitionMap = new TreeMap<Integer, Set<Integer>>();
 
-		try
-		{
-			for (int coefficientIndex = 0;
-				coefficientIndex < coefficientCount;
-				++coefficientIndex)
-			{
+		try {
+			for (int coefficientIndex = 0; coefficientIndex < coefficientCount; ++coefficientIndex) {
 				coefficientFractionArray[coefficientIndex] =
-					org.drip.numerical.common.NumberUtil.Fractional (
-						unadjustedCoefficientArray[0]
-					);
+					NumberUtil.Fractional (unadjustedCoefficientArray[0]);
 			}
 
-			partitionMap.put (
-				0,
-				Partition (
-					unadjustedCoefficientArray
-				)
-			);
+			partitionMap.put (0, Partition (unadjustedCoefficientArray));
 
-			int k = org.drip.numerical.common.NumberUtil.ReciprocalIntegerFloor (
-				coefficientFractionArray[0]
-			);
+			int k = NumberUtil.ReciprocalIntegerFloor (coefficientFractionArray[0]);
 
-			for (int p = 1;
-				p <= k;
-				++p)
-			{
-				partitionMap.put (
-					p,
-					Partition (
-						unadjustedCoefficientArray,
-						k,
-						p
-					)
-				);
+			for (int p = 1; p <= k; ++p) {
+				partitionMap.put (p, Partition (unadjustedCoefficientArray, k, p));
 			}
 
-			return new org.drip.optimization.cuttingplane.LetchfordLodiPartitionMap (
-				k,
-				unadjustedCoefficientArray,
-				partitionMap
-			);
-		}
-		catch (java.lang.Exception e)
-		{
+			return new LetchfordLodiPartitionMap (k, unadjustedCoefficientArray, partitionMap);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
 		return null;
 	}
 
+	/**
+	 * Generate the Adjusted Coefficient Array
+	 * 
+	 * @return The Adjusted Coefficient Array
+	 */
+
 	@Override public double[] adjustedCoefficientArray()
 	{
-		org.drip.optimization.cuttingplane.LetchfordLodiPartitionMap letchfordLodiPartitionMap =
-			partitionMap();
+		LetchfordLodiPartitionMap letchfordLodiPartitionMap = partitionMap();
 
-		if (null == letchfordLodiPartitionMap)
-		{
+		if (null == letchfordLodiPartitionMap) {
 			return null;
 		}
 
-		java.util.TreeMap<java.lang.Integer, java.util.Set<java.lang.Integer>> partitionMap =
-			letchfordLodiPartitionMap.partitionMap();
+		TreeMap<Integer, Set<Integer>> partitionMap = letchfordLodiPartitionMap.partitionMap();
 
 		double[] unadjustedCoefficientArray = letchfordLodiPartitionMap.unadjustedCoefficientArray();
 
@@ -288,30 +259,18 @@ public class LetchfordLodiCut
 		int coefficientCount = unadjustedCoefficientArray.length;
 		double[] adjustedCoefficientArray = new double[coefficientCount];
 
-		for (int coefficientIndex = 0;
-			coefficientIndex < coefficientCount;
-			++coefficientIndex)
-		{
+		for (int coefficientIndex = 0; coefficientIndex < coefficientCount; ++coefficientIndex) {
 			adjustedCoefficientArray[coefficientIndex] = 0.;
 		}
 
-		try
-		{
-			for (int p = 0;
-				p <= k;
-				++p)
-			{
-				for (int listEntry : partitionMap.get (
-					p
-				))
-				{
+		try {
+			for (int p = 0; p <= k; ++p) {
+				for (int listEntry : partitionMap.get (p)) {
 					adjustedCoefficientArray[listEntry] += p +
 						(k + 1) * ((int) unadjustedCoefficientArray[listEntry]);
 				}
 			}
-		}
-		catch (java.lang.Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 
 			return null;

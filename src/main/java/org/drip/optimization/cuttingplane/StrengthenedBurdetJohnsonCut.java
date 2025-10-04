@@ -1,11 +1,16 @@
 
 package org.drip.optimization.cuttingplane;
 
+import org.drip.function.definition.R1ToR1;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -76,10 +81,16 @@ package org.drip.optimization.cuttingplane;
  */
 
 /**
- * <i>StrengthenedBurdetJohnsonCut</i> implements the Strengthened Burdet-Johnson Cut for ILP. The References
- * 	are:
+ * <i>StrengthenedBurdetJohnsonCut</i> implements the Strengthened Burdet-Johnson Cut for ILP. It provides
+ * 	the following Functions:
+ * 	<ul>
+ * 		<li><i>StrengthenedBurdetJohnsonCut</i> Constructor</li>
+ * 		<li>Retrieve the R<sup>1</sup> To R<sup>1</sup> Increasing Function</li>
+ * 		<li>Generate the Adjusted Coefficient Array</li>
+ * 	</ul>
  * 
- * <br><br>
+ * The References are:
+ * <br>
  *  <ul>
  *  	<li>
  * 			Burdet, C. A., and E. L. Johnson (1977): A Sub-additive Approach to Solve Linear Integer Programs
@@ -103,51 +114,44 @@ package org.drip.optimization.cuttingplane;
  *  	</li>
  *  </ul>
  *
- *	<br><br>
- *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md">Numerical Optimizer Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/optimization/README.md">Necessary, Sufficient, and Regularity Checks for Gradient Descent and LP/MILP/MINLP Schemes</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/optimization/cuttingplane/README.md">Polyhedral Cutting Plane Generation Schemes</a></li>
- *  </ul>
+ * <br>
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md">Numerical Optimizer Library</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/optimization/README.md">Necessary, Sufficient, and Regularity Checks for Gradient Descent and LP/MILP/MINLP Schemes</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/optimization/cuttingplane/README.md">Polyhedral Cutting Plane Generation Schemes</a></td></tr>
+ *  </table>
  *
  * @author Lakshmi Krishnamurthy
  */
 
 public class StrengthenedBurdetJohnsonCut
-	extends org.drip.optimization.cuttingplane.ChvatalGomoryCut
+	extends ChvatalGomoryCut
 {
-	private org.drip.function.definition.R1ToR1 _r1ToR1Increasing = null;
+	private R1ToR1 _increasingR1ToR1 = null;
 
 	/**
-	 * StrengthenedBurdetJohnsonCut Constructor
+	 * <i>StrengthenedBurdetJohnsonCut</i> Constructor
 	 * 
 	 * @param aGrid "A" Constraint Grid
 	 * @param bArray "b" Constraint Array
 	 * @param lambdaArray The Lambda Array
-	 * @param r1ToR1Increasing R<sup>1</sup> To R<sup>1</sup> Increasing Function
+	 * @param increasingR1ToR1 R<sup>1</sup> To R<sup>1</sup> Increasing Function
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public StrengthenedBurdetJohnsonCut (
 		final int[][] aGrid,
 		final int[] bArray,
 		final double[] lambdaArray,
-		final org.drip.function.definition.R1ToR1 r1ToR1Increasing)
-		throws java.lang.Exception
+		final R1ToR1 increasingR1ToR1)
+		throws Exception
 	{
-		super (
-			aGrid,
-			bArray,
-			lambdaArray
-		);
+		super (aGrid, bArray, lambdaArray);
 
-		if (null == (_r1ToR1Increasing = r1ToR1Increasing))
-		{
-			throw new java.lang.Exception (
-				"StrengthenedBurdetJohnsonCut Constructor => Invalid Inputs"
-			);
+		if (null == (_increasingR1ToR1 = increasingR1ToR1)) {
+			throw new Exception ("StrengthenedBurdetJohnsonCut Constructor => Invalid Inputs");
 		}
 	}
 
@@ -157,35 +161,34 @@ public class StrengthenedBurdetJohnsonCut
 	 * @return The R<sup>1</sup> To R<sup>1</sup> Increasing Function
 	 */
 
-	public org.drip.function.definition.R1ToR1 r1ToR1Increasing()
+	public R1ToR1 increasingR1ToR1()
 	{
-		return _r1ToR1Increasing;
+		return _increasingR1ToR1;
 	}
+
+	/**
+	 * Generate the Adjusted Coefficient Array
+	 * 
+	 * @return The Adjusted Coefficient Array
+	 */
 
 	@Override public double[] adjustedCoefficientArray()
 	{
 		double[] unadjustedCoefficientArray = unadjustedCoefficientArray();
 
-		if (null == unadjustedCoefficientArray)
-		{
+		if (null == unadjustedCoefficientArray) {
 			return null;
 		}
 
 		int coefficientCount = unadjustedCoefficientArray.length;
 		double[] adjustedCoefficientArray = new double[coefficientCount];
 
-		for (int coefficientIndex = 0;
-			coefficientIndex < coefficientCount;
-			++coefficientIndex)
-		{
-			try
-			{
-				adjustedCoefficientArray[coefficientIndex] = _r1ToR1Increasing.evaluate (
+		for (int coefficientIndex = 0; coefficientIndex < coefficientCount; ++coefficientIndex) {
+			try {
+				adjustedCoefficientArray[coefficientIndex] = _increasingR1ToR1.evaluate (
 					unadjustedCoefficientArray[coefficientIndex]
 				);
-			}
-			catch (java.lang.Exception e)
-			{
+			} catch (Exception e) {
 				e.printStackTrace();
 
 				return null;

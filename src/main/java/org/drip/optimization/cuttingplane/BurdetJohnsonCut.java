@@ -81,7 +81,8 @@ package org.drip.optimization.cuttingplane;
 /**
  * <i>BurdetJohnsonCut</i> implements the Burdet-Johnson Cut for ILP. It provides the following Functions:
  * 	<ul>
- * 		<li>Construct a Standard Instance of <i>RegularityConditions</i></li>
+ * 		<li><i>BurdetJohnsonCut</i> Constructor</li>
+ * 		<li>Generate the Adjusted Coefficient Array</li>
  * 	</ul>
  * 
  * The References are:
@@ -142,6 +143,12 @@ public class BurdetJohnsonCut
 	{
 		super (aGrid, bArray, lambdaArray);
 	}
+
+	/**
+	 * Generate the Adjusted Coefficient Array
+	 * 
+	 * @return The Adjusted Coefficient Array
+	 */
 
 	@Override public double[] adjustedCoefficientArray()
 	{

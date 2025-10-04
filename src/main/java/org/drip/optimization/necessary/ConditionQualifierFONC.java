@@ -6,6 +6,9 @@ package org.drip.optimization.necessary;
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -80,9 +83,14 @@ package org.drip.optimization.necessary;
  */
 
 /**
- * <i>ConditionQualifierFONC</i> holds the First Order Necessary Condition. The References are:
+ * <i>ConditionQualifierFONC</i> holds the First Order Necessary Condition. It provides the following
+ * 	Functions:
+ * 	<ul>
+ * 		<li><i>ConditionQualifierFONC</i> Constructor</li>
+ * 	</ul>
  * 
- * <br><br>
+ * The References are:
+ * <br>
  * 	<ul>
  * 		<li>
  * 			Boyd, S., and L. van den Berghe (2009): <i>Convex Optimization</i> <b>Cambridge University
@@ -106,31 +114,33 @@ package org.drip.optimization.necessary;
  * 		</li>
  * 	</ul>
  *
- *	<br><br>
- *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md">Numerical Optimizer Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/optimization/README.md">Necessary, Sufficient, and Regularity Checks for Gradient Descent in a Constrained Optimization Setup</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/optimization/necessary/README.md">Constrained Optimizer Necessary Sufficient Conditions</a></li>
- *  </ul>
+ * <br>
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md">Numerical Optimizer Library</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/optimization/README.md">Necessary, Sufficient, and Regularity Checks for Gradient Descent and LP/MILP/MINLP Schemes</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/optimization/necessary/README.md">Constrained Optimizer Necessary Sufficient Conditions</a></td></tr>
+ *  </table>
  * 
  * @author Lakshmi Krishnamurthy
  */
 
-public class ConditionQualifierFONC extends org.drip.optimization.necessary.ConditionQualifier {
+public class ConditionQualifierFONC
+	extends ConditionQualifier
+{
 
 	/**
-	 * ConditionQualifierFONC Constructor
+	 * <i>ConditionQualifierFONC</i> Constructor
 	 * 
-	 * @param bValid Condition Qualifier Validity
+	 * @param valid Condition Qualifier Validity
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public ConditionQualifierFONC (
-		final boolean bValid)
-		throws java.lang.Exception
+		final boolean valid)
+		throws Exception
 	{
-		super ("FONC", 1, bValid);
+		super ("FONC", 1, valid);
 	}
 }

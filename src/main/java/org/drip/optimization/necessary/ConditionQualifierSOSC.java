@@ -6,6 +6,9 @@ package org.drip.optimization.necessary;
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -80,9 +83,15 @@ package org.drip.optimization.necessary;
  */
 
 /**
- * <i>ConditionQualifierSOSC</i> holds the Second Order Sufficiency Condition. The References are:
+ * <i>ConditionQualifierSOSC</i> holds the Second Order Sufficiency Condition. It provides the following
+ * 	Functions:
+ * 	<ul>
+ * 		<li><i>ConditionQualifierSOSC</i> Constructor</li>
+ * 	</ul>
  * 
- * <br><br>
+ * The References are:
+ * 
+ * <br>
  * 	<ul>
  * 		<li>
  * 			Boyd, S., and L. van den Berghe (2009): <i>Convex Optimization</i> <b>Cambridge University
@@ -117,20 +126,22 @@ package org.drip.optimization.necessary;
  * @author Lakshmi Krishnamurthy
  */
 
-public class ConditionQualifierSOSC extends org.drip.optimization.necessary.ConditionQualifier {
+public class ConditionQualifierSOSC
+	extends ConditionQualifier
+{
 
 	/**
-	 * ConditionQualifierSOSC Constructor
+	 * <i>ConditionQualifierSOSC</i> Constructor
 	 * 
-	 * @param bValid Condition Qualifier Validity
+	 * @param valid Condition Qualifier Validity
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public ConditionQualifierSOSC (
-		final boolean bValid)
-		throws java.lang.Exception
+		final boolean valid)
+		throws Exception
 	{
-		super ("SOSC", 2, bValid);
+		super ("SOSC", 2, valid);
 	}
 }
