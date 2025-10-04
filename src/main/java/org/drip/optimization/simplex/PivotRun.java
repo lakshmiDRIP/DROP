@@ -80,9 +80,24 @@ import org.drip.service.common.FormatUtil;
  */
 
 /**
- * <i>PivotRun</i> holds the Run Sequence of a Set of Pivoting Operations. The References are:
+ * <i>PivotRun</i> holds the Run Sequence of a Set of Pivoting Operations. It provides the following
+ * 	Functions:
+ * 	<ul>
+ * 		<li><i>PivotRun</i> Constructor</li>
+ * 		<li>Retrieve the Pivot Tableau Column to Row Map</li>
+ * 		<li>Retrieve the Optimum Simplex Value</li>
+ * 		<li>Retrieve the Optimum Value attained Indicator</li>
+ * 		<li>Retrieve the Array of Objective Function (i.e., Relative Cost) Coefficients</li>
+ * 		<li>Retrieve the Basic Feasible Solution</li>
+ * 		<li>Indicate if Phase 1 succeeded</li>
+ * 		<li>Add the Pivot Row Index corresponding to the Tableau Column</li>
+ * 		<li>Indicate if the Objective Function Coefficients indicate that the Finite Optimum has been reached</li>
+ * 		<li>Set the Array of Objective Function (i.e., Relative Cost) Coefficients from the Tableau Row</li>
+ * 		<li>Convert the State to a JSON-like String
+ * 	</ul>
  * 
- * <br><br>
+ * The References are:
+ * <br>
  * 	<ul>
  *  	<li>
  * 			Dadush, D., and S. Huiberts (2020): A Friendly Smoothed Analysis of the Simplex Method <i>SIAM
@@ -105,13 +120,13 @@ import org.drip.service.common.FormatUtil;
  * 		</li>
  * 	</ul>
  *
- *	<br><br>
- *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md">Numerical Optimizer Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/optimization/README.md">Necessary, Sufficient, and Regularity Checks for Gradient Descent in a Constrained Optimization Setup</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/optimization/simplex">R<sup>d</sup> to R<sup>1</sup> Simplex Scheme</a></li>
- *  </ul>
+ * <br>
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md">Numerical Optimizer Library</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/optimization/README.md">Necessary, Sufficient, and Regularity Checks for Gradient Descent and LP/MILP/MINLP Schemes</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/optimization/simplex/README.md">R<sup>d</sup> to R<sup>1</sup> Simplex Scheme</a></td></tr>
+ *  </table>
  * 
  * @author Lakshmi Krishnamurthy
  */
@@ -279,7 +294,7 @@ public class PivotRun
 		_relativeCostCoefficientArray = new double[objectiveFunctionTableauRow.length - 1];
 
 		for (int objectiveFunctionTableauRowIndex = 1;
-			objectiveFunctionTableauRowIndex <objectiveFunctionTableauRow.length - 1;
+			objectiveFunctionTableauRowIndex < objectiveFunctionTableauRow.length - 1;
 			++objectiveFunctionTableauRowIndex)
 		{
 			_relativeCostCoefficientArray[objectiveFunctionTableauRowIndex - 1] =
