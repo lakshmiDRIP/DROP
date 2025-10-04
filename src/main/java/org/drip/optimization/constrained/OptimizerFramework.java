@@ -1,7 +1,11 @@
 
 package org.drip.optimization.constrained;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.drip.function.definition.RdToR1;
+import org.drip.function.rdtor1.AffineMultivariate;
 import org.drip.numerical.linearalgebra.R1MatrixUtil;
 
 /*
@@ -525,24 +529,30 @@ public class OptimizerFramework
 	/**
 	 * Generate the Battery of Necessary and Sufficient Qualification Tests
 	 * 
-	 * @param fjm The specified Fritz John Multipliers
-	 * @param adblVariate The Candidate R^d Variate
-	 * @param bCheckForMinima TRUE - Check whether the R^d Variate corresponds to the SOSC Minimum
+	 * @param fritzJohnMultipliers The specified Fritz John Multipliers
+	 * @param variateArray The Candidate R<sup>d</sup> Variate
+	 * @param checkForMinima TRUE - Check whether the R<sup>d</sup> Variate corresponds to the SOSC Minimum
 	 * 
 	 * @return The Necessary and Sufficient Conditions Qualifier Instance
 	 */
 
-	public org.drip.optimization.constrained.NecessarySufficientConditions necessarySufficientQualifier (
-		final org.drip.optimization.constrained.FritzJohnMultipliers fjm,
-		final double[] adblVariate,
-		final boolean bCheckForMinima)
+	public NecessarySufficientConditions necessarySufficientQualifier (
+		final FritzJohnMultipliers fritzJohnMultipliers,
+		final double[] variateArray,
+		final boolean checkForMinima)
 	{
 		try {
-			return org.drip.optimization.constrained.NecessarySufficientConditions.Standard (adblVariate, fjm,
-				bCheckForMinima, primalFeasibilityCheck (adblVariate), fjm.dualFeasibilityCheck(),
-					complementarySlacknessCheck (fjm, adblVariate), isFONC (fjm, adblVariate), isSOSC (fjm,
-						adblVariate, bCheckForMinima));
-		} catch (java.lang.Exception e) {
+			return NecessarySufficientConditions.Standard (
+				variateArray,
+				fritzJohnMultipliers,
+				checkForMinima,
+				primalFeasibilityCheck (variateArray),
+				fritzJohnMultipliers.dualFeasibilityCheck(),
+				complementarySlacknessCheck (fritzJohnMultipliers, variateArray),
+				isFONC (fritzJohnMultipliers, variateArray),
+				isSOSC (fritzJohnMultipliers, variateArray, checkForMinima)
+			);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -552,174 +562,216 @@ public class OptimizerFramework
 	/**
 	 * Retrieve the Array of Active Constraints
 	 * 
-	 * @param adblVariate The R^d Variate
+	 * @param variateArray The R<sup>d</sup> Variate
 	 * 
 	 * @return The Array of Active Constraints
 	 */
 
-	public org.drip.function.definition.RdToR1[] activeConstraints (
-		final double[] adblVariate)
+	public RdToR1[] activeConstraints (
+		final double[] variateArray)
 	{
-		int iNumEqualityConstraint = numEqualityConstraint();
+		List<RdToR1> activeConstraintList = new ArrayList<RdToR1>();
 
-		int iNumInequalityConstraint = numInequalityConstraint();
+		for (int equalityConstraintIndex = 0;
+			equalityConstraintIndex < numEqualityConstraint();
+			++equalityConstraintIndex)
+		{
+			activeConstraintList.add (_equalityConstraintArray[equalityConstraintIndex]);
+		}
 
-		java.util.List<org.drip.function.definition.RdToR1> lsActiveConstraint = new
-			java.util.ArrayList<org.drip.function.definition.RdToR1>();
-
-		for (int i = 0; i < iNumEqualityConstraint; ++i)
-			lsActiveConstraint.add (_equalityConstraintArray[i]);
-
-		for (int i = 0; i < iNumInequalityConstraint; ++i) {
+		for (int inequalityConstraintIndex = 0;
+			inequalityConstraintIndex < numInequalityConstraint();
+			++inequalityConstraintIndex)
+		{
 			try {
-				if (0. == _inequalityConstraintArray[i].evaluate (adblVariate))
-					lsActiveConstraint.add (_inequalityConstraintArray[i]);
-			} catch (java.lang.Exception e) {
+				if (0. == _inequalityConstraintArray[inequalityConstraintIndex].evaluate (variateArray)) {
+					activeConstraintList.add (_inequalityConstraintArray[inequalityConstraintIndex]);
+				}
+			} catch (Exception e) {
 				e.printStackTrace();
 
 				return null;
 			}
 		}
 
-		int iNumActiveConstraint = lsActiveConstraint.size();
+		int activeConstraintCount = activeConstraintList.size();
 
-		org.drip.function.definition.RdToR1[] aRdToR1ActiveConstraint = new
-			org.drip.function.definition.RdToR1[iNumActiveConstraint];
+		RdToR1[] activeConstraintRdToR1Array = new RdToR1[activeConstraintCount];
 
-		for (int i = 0; i < iNumActiveConstraint; ++i)
-			aRdToR1ActiveConstraint[i] = lsActiveConstraint.get (i);
+		for (int activeConstraintIndex = 0;
+			activeConstraintIndex < activeConstraintCount;
+			++activeConstraintIndex)
+		{
+			activeConstraintRdToR1Array[activeConstraintIndex] =
+				activeConstraintList.get (activeConstraintIndex);
+		}
 
-		return aRdToR1ActiveConstraint;
+		return activeConstraintRdToR1Array;
 	}
 
 	/**
 	 * Active Constraint Set Rank Computation
 	 * 
-	 * @param adblVariate The Candidate R^d Variate
+	 * @param variateArray The Candidate R<sup>d</sup> Variate
 	 * 
 	 * @return The Active Constraint Set Rank
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public int activeConstraintRank (
-		final double[] adblVariate)
-		throws java.lang.Exception
+		final double[] variateArray)
+		throws Exception
 	{
-		int iNumEqualityConstraint = numEqualityConstraint();
+		List<double[]> jacobianList = new ArrayList<double[]>();
 
-		int iNumInequalityConstraint = numInequalityConstraint();
+		double[] jacobian = _objectiveFunction.jacobian (variateArray);
 
-		java.util.List<double[]> lsJacobian = new java.util.ArrayList<double[]>();
-
-		double[] adblJacobian = _objectiveFunction.jacobian (adblVariate);
-
-		if (null == adblJacobian)
-			throw new java.lang.Exception ("OptimizerFramework::activeConstraintRank => Cannot Compute");
-
-		lsJacobian.add (adblJacobian);
-
-		for (int i = 0; i < iNumEqualityConstraint; ++i) {
-			if (null == (adblJacobian = _equalityConstraintArray[i].jacobian (adblVariate)))
-				throw new java.lang.Exception
-					("OptimizerFramework::activeConstraintRank => Cannot Compute");
-
-			lsJacobian.add (adblJacobian);
+		if (null == jacobian) {
+			throw new Exception ("OptimizerFramework::activeConstraintRank => Cannot Compute");
 		}
 
-		for (int i = 0; i < iNumInequalityConstraint; ++i) {
-			if (0. == _inequalityConstraintArray[i].evaluate (adblVariate)) {
-				if (null == (adblJacobian = _inequalityConstraintArray[i].jacobian (adblVariate)))
-					throw new java.lang.Exception
-						("OptimizerFramework::activeConstraintRank => Cannot Compute");
+		jacobianList.add (jacobian);
 
-				lsJacobian.add (adblJacobian);
+		for (int equalityConstraintIndex = 0;
+			equalityConstraintIndex < numEqualityConstraint();
+			++equalityConstraintIndex)
+		{
+			if (null == (
+				jacobian = _equalityConstraintArray[equalityConstraintIndex].jacobian (variateArray)
+			))
+			{
+				throw new Exception ("OptimizerFramework::activeConstraintRank => Cannot Compute");
+			}
+
+			jacobianList.add (jacobian);
+		}
+
+		for (int inequalityConstraintIndex = 0;
+			inequalityConstraintIndex < numInequalityConstraint();
+			++inequalityConstraintIndex)
+		{
+			if (0. == _inequalityConstraintArray[inequalityConstraintIndex].evaluate (variateArray)) {
+				if (null == (
+					jacobian = _inequalityConstraintArray[inequalityConstraintIndex].jacobian (variateArray)
+				))
+				{
+					throw new Exception ("OptimizerFramework::activeConstraintRank => Cannot Compute");
+				}
+
+				jacobianList.add (jacobian);
 			}
 		}
 
-		int iNumJacobian = lsJacobian.size();
+		int jacobianCount = jacobianList.size();
 
-		double[][] aadblJacobian = new double[iNumJacobian][];
+		double[][] jacobianArray = new double[jacobianCount][];
 
-		for (int i = 0; i < iNumJacobian; ++i)
-			aadblJacobian[i] = lsJacobian.get (i);
+		for (int jacobianIndex = 0; jacobianIndex < jacobianCount; ++jacobianIndex) {
+			jacobianArray[jacobianIndex] = jacobianList.get (jacobianIndex);
+		}
 
-		return org.drip.numerical.linearalgebra.R1MatrixUtil.Rank (aadblJacobian);
+		return R1MatrixUtil.Rank (jacobianArray);
 	}
 
 	/**
 	 * Compare the Active Constraint Set Rank at the specified against the specified Rank
 	 * 
-	 * @param adblVariate The Candidate R^d Variate
-	 * @param iRank The specified Rank
+	 * @param variateArray The Candidate R<sup>d</sup> Variate
+	 * @param rank The specified Rank
 	 * 
 	 * @return TRUE - Active Constraint Set Rank matches the specified Rank
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public boolean activeConstraintRankComparison (
-		final double[] adblVariate,
-		final int iRank)
-		throws java.lang.Exception
+		final double[] variateArray,
+		final int rank)
+		throws Exception
 	{
-		return activeConstraintRank (adblVariate) == iRank;
+		return rank == activeConstraintRank (variateArray);
 	}
 
 	/**
 	 * Active Constraint Set Linear Dependence Check
 	 * 
-	 * @param adblVariate The Candidate R^d Variate
-	 * @param bPositiveLinearDependenceCheck TRUE - Perform an Additional Positive Dependence Check
+	 * @param variateArray The Candidate R<sup>d</sup> Variate
+	 * @param positiveLinearDependenceCheck TRUE - Perform an Additional Positive Dependence Check
 	 * 
 	 * @return TRUE - Active Constraint Set Linear Dependence Check is satisfied
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public boolean activeConstraintLinearDependence (
-		final double[] adblVariate,
-		final boolean bPositiveLinearDependenceCheck)
-		throws java.lang.Exception
+		final double[] variateArray,
+		final boolean positiveLinearDependenceCheck)
+		throws Exception
 	{
-		int iNumEqualityConstraint = numEqualityConstraint();
+		int equalityConstraintCount = numEqualityConstraint();
 
-		int iNumInequalityConstraint = numInequalityConstraint();
+		int constraintCount = equalityConstraintCount + numInequalityConstraint();
 
-		int iNumConstraint = iNumEqualityConstraint + iNumInequalityConstraint;
-		double[][] aadblJacobian = new double[iNumConstraint][];
+		double[][] jacobianArray = new double[constraintCount][];
 
-		for (int i = 0; i < iNumEqualityConstraint; ++i) {
-			if (null == (aadblJacobian[i] = _equalityConstraintArray[i].jacobian (adblVariate)))
+		for (int equalityConstraintIndex = 0;
+			equalityConstraintIndex < equalityConstraintCount;
+			++equalityConstraintIndex)
+		{
+			if (null == (
+				jacobianArray[equalityConstraintIndex] =
+					_equalityConstraintArray[equalityConstraintIndex].jacobian (variateArray)
+			))
+			{
 				return false;
-		}
-
-		for (int i = iNumEqualityConstraint; i < iNumConstraint; ++i) {
-			aadblJacobian[i] = null;
-			org.drip.function.definition.RdToR1 rdToR1InequalityConstraint =
-				_inequalityConstraintArray[i - iNumEqualityConstraint];
-
-			if (0. == rdToR1InequalityConstraint.evaluate (adblVariate)) {
-				if (null == (aadblJacobian[i] = rdToR1InequalityConstraint.jacobian (adblVariate)))
-					return false;
 			}
 		}
 
-		for (int i = 0; i < iNumConstraint; ++i) {
-			if (null != aadblJacobian[i]) {
-				for (int j = i + 1; j < iNumConstraint; ++j) {
-					if (null != aadblJacobian[j] && 0. != org.drip.numerical.linearalgebra.R1MatrixUtil.DotProduct
-						(aadblJacobian[i], aadblJacobian[j]))
-						return false;
+		for (int inequalityConstraintIndex = equalityConstraintCount;
+			inequalityConstraintIndex < constraintCount;
+			++inequalityConstraintIndex)
+		{
+			jacobianArray[inequalityConstraintIndex] = null;
+			RdToR1 inequalityConstraint =
+				_inequalityConstraintArray[inequalityConstraintIndex - equalityConstraintCount];
+
+			if (0. == inequalityConstraint.evaluate (variateArray)) {
+				if (null == (
+					jacobianArray[inequalityConstraintIndex] = inequalityConstraint.jacobian (variateArray)
+				))
+				{
+					return false;
 				}
 			}
 		}
 
-		if (bPositiveLinearDependenceCheck) {
-			for (int i = 0; i < iNumConstraint; ++i) {
-				if (null != aadblJacobian[i] &&
-					!org.drip.numerical.linearalgebra.R1MatrixUtil.PositiveLinearlyIndependent (aadblJacobian[i]))
+		for (int constraintIndex = 0; constraintIndex < constraintCount; ++constraintIndex) {
+			if (null != jacobianArray[constraintIndex]) {
+				for (int constraintIndexJ = constraintIndex + 1;
+					constraintIndexJ < constraintCount;
+					++constraintIndexJ)
+				{
+					if (null != jacobianArray[constraintIndexJ] &&
+						0. != R1MatrixUtil.DotProduct (
+							jacobianArray[constraintIndex],
+							jacobianArray[constraintIndexJ]
+						)
+					)
+					{
+						return false;
+					}
+				}
+			}
+		}
+
+		if (positiveLinearDependenceCheck) {
+			for (int constraintIndex = 0; constraintIndex < constraintCount; ++constraintIndex) {
+				if (null != jacobianArray[constraintIndex] &&
+					!R1MatrixUtil.PositiveLinearlyIndependent (jacobianArray[constraintIndex]))
+				{
 					return false;
+				}
 			}
 		}
 
@@ -729,30 +781,35 @@ public class OptimizerFramework
 	/**
 	 * Compute the Along/Away "Naturally" Incremented Variates
 	 * 
-	 * @param adblVariate The Candidate R^d Variate
+	 * @param variateArray The Candidate R<sup>d</sup> Variate
 	 * 
 	 * @return The Along/Away "Natural" Incremented Variates
 	 */
 
 	public double[][] alongAwayVariate (
-		final double[] adblVariate)
+		final double[] variateArray)
 	{
-		double[] adblVariateIncrement = org.drip.numerical.linearalgebra.R1MatrixUtil.Product
-			(org.drip.numerical.linearalgebra.R1MatrixUtil.InvertUsingGaussianElimination (_objectiveFunction.hessian
-				(adblVariate)), _objectiveFunction.jacobian (adblVariate));
+		double[] variateIncrementArray = R1MatrixUtil.Product (
+			R1MatrixUtil.InvertUsingGaussianElimination (_objectiveFunction.hessian (variateArray)),
+			_objectiveFunction.jacobian (variateArray)
+		);
 
-		if (null == adblVariateIncrement) return null;
-
-		int iVariateDimension = adblVariate.length;
-		double[] adblVariateAway = new double[iVariateDimension];
-		double[] adblVariateAlong = new double[iVariateDimension];
-
-		for (int i = 0; i < iVariateDimension; ++i) {
-			adblVariateAway[i] = adblVariate[i] - adblVariateIncrement[i];
-			adblVariateAlong[i] = adblVariate[i] + adblVariateIncrement[i];
+		if (null == variateIncrementArray) {
+			return null;
 		}
 
-		return new double[][] {adblVariateAlong, adblVariateAway};
+		int variateDimension = variateArray.length;
+		double[] awayVariateArray = new double[variateDimension];
+		double[] alongVariateArray = new double[variateDimension];
+
+		for (int variateIndex = 0; variateIndex < variateDimension; ++variateIndex) {
+			awayVariateArray[variateIndex] =
+				variateArray[variateIndex] - variateIncrementArray[variateIndex];
+			alongVariateArray[variateIndex] =
+				variateArray[variateIndex] + variateIncrementArray[variateIndex];
+		}
+
+		return new double[][] {alongVariateArray, awayVariateArray};
 	}
 
 	/**
@@ -763,18 +820,22 @@ public class OptimizerFramework
 
 	public boolean isLCQ()
 	{
-		int iNumEqualityConstraint = numEqualityConstraint();
-
-		int iNumInequalityConstraint = numInequalityConstraint();
-
-		for (int i = 0; i < iNumEqualityConstraint; ++i) {
-			if (!(_equalityConstraintArray[i] instanceof org.drip.function.rdtor1.AffineMultivariate))
+		for (int equalityConstraintIndex = 0;
+			equalityConstraintIndex < numEqualityConstraint();
+			++equalityConstraintIndex)
+		{
+			if (!(_equalityConstraintArray[equalityConstraintIndex] instanceof AffineMultivariate)) {
 				return false;
+			}
 		}
 
-		for (int i = 0; i < iNumInequalityConstraint; ++i) {
-			if (!(_inequalityConstraintArray[i] instanceof org.drip.function.rdtor1.AffineMultivariate))
+		for (int inequalityConstraintIndex = 0;
+			inequalityConstraintIndex < numInequalityConstraint();
+			++inequalityConstraintIndex)
+		{
+			if (!(_inequalityConstraintArray[inequalityConstraintIndex] instanceof AffineMultivariate)) {
 				return false;
+			}
 		}
 
 		return true;
@@ -783,18 +844,18 @@ public class OptimizerFramework
 	/**
 	 * Check for Linearity Independent Constraint Qualification
 	 * 
-	 * @param adblVariate The Candidate R^d Variate
+	 * @param variateArray The Candidate R<sup>d</sup> Variate
 	 * 
 	 * @return TRUE - Linearity Independent Constraint Qualification is satisfied
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public boolean isLICQ (
-		final double[] adblVariate)
-		throws java.lang.Exception
+		final double[] variateArray)
+		throws Exception
 	{
-		return activeConstraintLinearDependence (adblVariate, false);
+		return activeConstraintLinearDependence (variateArray, false);
 	}
 
 	/**
