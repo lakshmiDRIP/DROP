@@ -80,7 +80,12 @@ import org.drip.service.common.FormatUtil;
  * <i>ColumnPivotingDiagnostics</i> holds the Diagnostics of a Column Pivoting Run. It provides the following
  * 	Functions:
  * 	<ul>
- * 		<li><i>MinimumRatioRun</i> Constructor</li>
+ * 		<li><i>ColumnPivotingDiagnostics</i> Constructor</li>
+ * 		<li>Retrieve the Minimum Ratio Run</li>
+ * 		<li>Retrieve the Row Unit Scaler</li>
+ * 		<li>Retrieve the Updated Tableau</li>
+ * 		<li>Update the Simplex Tableau</li>
+ * 		<li>Convert the State to a JSON-like String</li>
  * 	</ul>
  * 
  * The References are:
@@ -108,12 +113,12 @@ import org.drip.service.common.FormatUtil;
  * 	</ul>
  *
  * <br>
- *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md">Numerical Optimizer Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/optimization/README.md">Necessary, Sufficient, and Regularity Checks for Gradient Descent in a Constrained Optimization Setup</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/optimization/simplex/README.md">R<sup>d</sup> to R<sup>1</sup> Simplex Scheme</a></li>
- *  </ul>
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md">Numerical Optimizer Library</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/optimization/README.md">Necessary, Sufficient, and Regularity Checks for Gradient Descent and LP/MILP/MINLP Schemes</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/optimization/simplex/README.md">R<sup>d</sup> to R<sup>1</sup> Simplex Scheme</a></td></tr>
+ *  </table>
  * 
  * @author Lakshmi Krishnamurthy
  */
@@ -223,6 +228,6 @@ public class ColumnPivotingDiagnostics
 			"]; Row Unit Scaler =>" + FormatUtil.FormatDouble (_rowUnitScaler, 4, 3, 1.) + (
 			null == _updatedTableau ? "" : "\n" +
 				NumberUtil.MatrixToString ("Updated Tableau", _updatedTableau, 4, 3)
-		);
+			);
 	}
 }
