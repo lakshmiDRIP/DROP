@@ -6,6 +6,9 @@ package org.drip.optimization.regularity;
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -80,9 +83,14 @@ package org.drip.optimization.regularity;
  */
 
 /**
- * <i>ConstraintQualifierCRCQ</i> holds the Constant Rank Constraint Qualifier (CRCQ). The References are:
+ * <i>ConstraintQualifierCRCQ</i> holds the Constant Rank Constraint Qualifier (CRCQ). It provides the
+ * 	following Functions:
+ * 	<ul>
+ * 		<li><i>ConstraintQualifierCRCQ</i> Constructor</li>
+ * 	</ul>
  * 
- * <br><br>
+ * The References are:
+ * <br>
  * 	<ul>
  * 		<li>
  * 			Boyd, S., and L. van den Berghe (2009): <i>Convex Optimization</i> <b>Cambridge University
@@ -106,31 +114,33 @@ package org.drip.optimization.regularity;
  * 		</li>
  * 	</ul>
  *
- *	<br><br>
+ * <br>
  *  <ul>
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md">Numerical Optimizer Library</a></li>
  *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/optimization/README.md">Necessary, Sufficient, and Regularity Checks for Gradient Descent in a Constrained Optimization Setup</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/optimization/regularity">Constrained Optimizer Regularity Qualifier Conditions</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/optimization/regularity/README.md">Constrained Optimizer Regularity Qualifier Conditions</a></li>
  *  </ul>
  * 
  * @author Lakshmi Krishnamurthy
  */
 
-public class ConstraintQualifierCRCQ extends org.drip.optimization.regularity.ConstraintQualifier {
+public class ConstraintQualifierCRCQ
+	extends ConstraintQualifier
+{
 
 	/**
-	 * ConstraintQualifierCRCQ Constructor
+	 * <i>ConstraintQualifierCRCQ</i> Constructor
 	 * 
-	 * @param bValid Constraint Qualifier Validity
+	 * @param valid Constraint Qualifier Validity
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public ConstraintQualifierCRCQ (
-		final boolean bValid)
-		throws java.lang.Exception
+		final boolean valid)
+		throws Exception
 	{
-		super ("CRCQ", "CONSTANT RANK CONSTRAINT QUALIFICATION", bValid);
+		super ("CRCQ", "CONSTANT RANK CONSTRAINT QUALIFICATION", valid);
 	}
 }

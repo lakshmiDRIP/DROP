@@ -6,6 +6,9 @@ package org.drip.optimization.regularity;
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -80,9 +83,14 @@ package org.drip.optimization.regularity;
  */
 
 /**
- * <i>ConstraintQualifierLCQ</i> holds the Linear Constraint Qualifier (LCQ). The References are:
+ * <i>ConstraintQualifierLCQ</i> holds the Linear Constraint Qualifier (LCQ). It provides the following
+ * 	Functions:
+ * 	<ul>
+ * 		<li><i>ConstraintQualifierLCQ</i> Constructor</li>
+ * 	</ul>
  * 
- * <br><br>
+ * The References are:
+ * <br>
  * 	<ul>
  * 		<li>
  * 			Boyd, S., and L. van den Berghe (2009): <i>Convex Optimization</i> <b>Cambridge University
@@ -117,20 +125,22 @@ package org.drip.optimization.regularity;
  * @author Lakshmi Krishnamurthy
  */
 
-public class ConstraintQualifierLCQ extends org.drip.optimization.regularity.ConstraintQualifier {
+public class ConstraintQualifierLCQ
+	extends ConstraintQualifier
+{
 
 	/**
-	 * ConstraintQualifierLCQ Constructor
+	 * <i>ConstraintQualifierLCQ</i> Constructor
 	 * 
-	 * @param bValid Constraint Qualifier Validity
+	 * @param valid Constraint Qualifier Validity
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
 	public ConstraintQualifierLCQ (
-		final boolean bValid)
+		final boolean valid)
 		throws java.lang.Exception
 	{
-		super ("LCQ", "LINEAR CONSTRAINT QUALIFICATION", bValid);
+		super ("LCQ", "LINEAR CONSTRAINT QUALIFICATION", valid);
 	}
 }

@@ -6,6 +6,9 @@ package org.drip.optimization.regularity;
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -80,10 +83,14 @@ package org.drip.optimization.regularity;
  */
 
 /**
- * <i>ConstraintQualifierLICQ</i> holds the Linear Independence Constraint Qualifier (LICQ). The References
- * are:
+ * <i>ConstraintQualifierLICQ</i> holds the Linear Independence Constraint Qualifier (LICQ). It provides the
+ * 	following Functions:
+ * 	<ul>
+ * 		<li><i>ConstraintQualifierLICQ</i> Constructor</li>
+ * 	</ul>
  * 
- * <br><br>
+ * The References are:
+ * <br>
  * 	<ul>
  * 		<li>
  * 			Boyd, S., and L. van den Berghe (2009): <i>Convex Optimization</i> <b>Cambridge University
@@ -118,20 +125,22 @@ package org.drip.optimization.regularity;
  * @author Lakshmi Krishnamurthy
  */
 
-public class ConstraintQualifierLICQ extends org.drip.optimization.regularity.ConstraintQualifier {
+public class ConstraintQualifierLICQ
+	extends ConstraintQualifier
+{
 
 	/**
-	 * ConstraintQualifierLICQ Constructor
+	 * <i>ConstraintQualifierLICQ</i> Constructor
 	 * 
-	 * @param bValid Constraint Qualifier Validity
+	 * @param valid Constraint Qualifier Validity
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public ConstraintQualifierLICQ (
-		final boolean bValid)
-		throws java.lang.Exception
+		final boolean valid)
+		throws Exception
 	{
-		super ("LICQ", "LINEAR INDEPENDENCE CONSTRAINT QUALIFICATION", bValid);
+		super ("LICQ", "LINEAR INDEPENDENCE CONSTRAINT QUALIFICATION", valid);
 	}
 }

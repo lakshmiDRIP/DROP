@@ -6,6 +6,9 @@ package org.drip.optimization.regularity;
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -81,9 +84,17 @@ package org.drip.optimization.regularity;
 
 /**
  * <i>ConstraintQualifier</i> holds the Constraint Name, the Constraint Code, and the Constraint Validity
- * Flag that correspond to the Regularity Conditions. The References are:
+ * 	Flag that correspond to the Regularity Conditions. It provides the following Functions:
+ * 	<ul>
+ * 		<li><i>ConstraintQualifier</i> Constructor</li>
+ * 		<li>Retrieve the Constraint Qualifier Code</li>
+ * 		<li>Retrieve the Constraint Qualifier Description</li>
+ * 		<li>Retrieve the Constraint Qualifier Validity</li>
+ * 		<li>Convert the Constraint Qualifier into a Display String</li>
+ * 	</ul>
  * 
- * <br><br>
+ * The References are:
+ * <br>
  * 	<ul>
  * 		<li>
  * 			Boyd, S., and L. van den Berghe (2009): <i>Convex Optimization</i> <b>Cambridge University
@@ -107,43 +118,46 @@ package org.drip.optimization.regularity;
  * 		</li>
  * 	</ul>
  *
- *	<br><br>
+ *	<br>
  *  <ul>
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md">Numerical Optimizer Library</a></li>
  *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/optimization/README.md">Necessary, Sufficient, and Regularity Checks for Gradient Descent in a Constrained Optimization Setup</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/optimization/regularity">Constrained Optimizer Regularity Qualifier Conditions</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/optimization/regularity/README.md">Constrained Optimizer Regularity Qualifier Conditions</a></li>
  *  </ul>
  * 
  * @author Lakshmi Krishnamurthy
  */
 
-public class ConstraintQualifier {
-	private boolean _bValid = false;
-	private java.lang.String _strCode = "";
-	private java.lang.String _strDescription = "";
+public class ConstraintQualifier
+{
+	private String _code = "";
+	private boolean _valid = false;
+	private String _description = "";
 
 	/**
-	 * ConstraintQualifier Constructor
+	 * <i>ConstraintQualifier</i> Constructor
 	 * 
-	 * @param strCode Constraint Qualifier Code
-	 * @param strDescription Constraint Qualifier Description
-	 * @param bValid Constraint Qualifier Validity
+	 * @param code Constraint Qualifier Code
+	 * @param description Constraint Qualifier Description
+	 * @param valid Constraint Qualifier Validity
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public ConstraintQualifier (
-		final java.lang.String strCode,
-		final java.lang.String strDescription,
-		final boolean bValid)
-		throws java.lang.Exception
+		final String code,
+		final String description,
+		final boolean valid)
+		throws Exception
 	{
-		if (null == (_strCode = strCode) || _strCode.isEmpty() || null == (_strDescription = strDescription)
-			|| _strDescription.isEmpty())
-			throw new java.lang.Exception ("ConstraintQualifier Constructor => Invalid Inputs");
+		if (null == (_code = code) || _code.isEmpty() ||
+			null == (_description = description) || _description.isEmpty())
+		{
+			throw new Exception ("ConstraintQualifier Constructor => Invalid Inputs");
+		}
 
-		_bValid = bValid;
+		_valid = valid;
 	}
 
 	/**
@@ -152,9 +166,9 @@ public class ConstraintQualifier {
 	 * @return The Constraint Qualifier Code
 	 */
 
-	public java.lang.String code()
+	public String code()
 	{
-		return _strCode;
+		return _code;
 	}
 
 	/**
@@ -163,9 +177,9 @@ public class ConstraintQualifier {
 	 * @return The Constraint Qualifier Description
 	 */
 
-	public java.lang.String description()
+	public String description()
 	{
-		return _strDescription;
+		return _description;
 	}
 
 	/**
@@ -176,7 +190,7 @@ public class ConstraintQualifier {
 
 	public boolean valid()
 	{
-		return _bValid;
+		return _valid;
 	}
 
 	/**
@@ -185,8 +199,8 @@ public class ConstraintQualifier {
 	 * @return The Constraint Qualifier into a Display String
 	 */
 
-	public java.lang.String display()
+	public String display()
 	{
-		return "[ " + _strCode + " | " + _strDescription + " => " + _bValid + "]";
+		return "[ " + _code + " | " + _description + " => " + _valid + "]";
 	}
 }

@@ -6,6 +6,9 @@ package org.drip.optimization.regularity;
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -81,9 +84,13 @@ package org.drip.optimization.regularity;
 
 /**
  * <i>ConstraintQualifierCPLDCQ</i> holds the Constant Positive Linear Dependence Constraint Qualifier
- * (CPLDCQ). The References are:
+ * 	(CPLDCQ). It provides the following Functions:
+ * 	<ul>
+ * 		<li><i>ConstraintQualifierCPLDCQ</i> Constructor</li>
+ * 	</ul>
  * 
- * <br><br>
+ * The References are:
+ * <br>
  * 	<ul>
  * 		<li>
  * 			Boyd, S., and L. van den Berghe (2009): <i>Convex Optimization</i> <b>Cambridge University
@@ -107,31 +114,33 @@ package org.drip.optimization.regularity;
  * 		</li>
  * 	</ul>
  *
- *	<br><br>
+ * <br>
  *  <ul>
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md">Numerical Optimizer Library</a></li>
  *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/optimization/README.md">Necessary, Sufficient, and Regularity Checks for Gradient Descent in a Constrained Optimization Setup</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/optimization/regularity">Constrained Optimizer Regularity Qualifier Conditions</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/optimization/regularity/README.md">Constrained Optimizer Regularity Qualifier Conditions</a></li>
  *  </ul>
  * 
  * @author Lakshmi Krishnamurthy
  */
 
-public class ConstraintQualifierCPLDCQ extends org.drip.optimization.regularity.ConstraintQualifier {
+public class ConstraintQualifierCPLDCQ
+	extends ConstraintQualifier
+{
 
 	/**
-	 * ConstraintQualifierCPLDCQ Constructor
+	 * <i>ConstraintQualifierCPLDCQ</i> Constructor
 	 * 
-	 * @param bValid Constraint Qualifier Validity
+	 * @param valid Constraint Qualifier Validity
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public ConstraintQualifierCPLDCQ (
-		final boolean bValid)
-		throws java.lang.Exception
+		final boolean valid)
+		throws Exception
 	{
-		super ("CPLDCQ", "CONSTANT POSITIVE LINEAR DEPENDENCE CONSTRAINT QUALIFICATION", bValid);
+		super ("CPLDCQ", "CONSTANT POSITIVE LINEAR DEPENDENCE CONSTRAINT QUALIFICATION", valid);
 	}
 }
