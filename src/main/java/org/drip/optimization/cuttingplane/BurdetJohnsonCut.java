@@ -6,6 +6,9 @@ package org.drip.optimization.cuttingplane;
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -76,9 +79,13 @@ package org.drip.optimization.cuttingplane;
  */
 
 /**
- * <i>BurdetJohnsonCut</i> implements the Burdet-Johnson Cut for ILP. The References are:
+ * <i>BurdetJohnsonCut</i> implements the Burdet-Johnson Cut for ILP. It provides the following Functions:
+ * 	<ul>
+ * 		<li>Construct a Standard Instance of <i>RegularityConditions</i></li>
+ * 	</ul>
  * 
- * <br><br>
+ * The References are:
+ * <br>
  *  <ul>
  *  	<li>
  * 			Burdet, C. A., and E. L. Johnson (1977): A Sub-additive Approach to Solve Linear Integer Programs
@@ -102,42 +109,38 @@ package org.drip.optimization.cuttingplane;
  *  	</li>
  *  </ul>
  *
- *	<br><br>
- *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md">Numerical Optimizer Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/optimization/README.md">Necessary, Sufficient, and Regularity Checks for Gradient Descent and LP/MILP/MINLP Schemes</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/optimization/cuttingplane/README.md">Polyhedral Cutting Plane Generation Schemes</a></li>
- *  </ul>
+ * <br>
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md">Numerical Optimizer Library</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/optimization/README.md">Necessary, Sufficient, and Regularity Checks for Gradient Descent and LP/MILP/MINLP Schemes</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/optimization/cuttingplane/README.md">Polyhedral Cutting Plane Generation Schemes</a></td></tr>
+ *  </table>
  *
  * @author Lakshmi Krishnamurthy
  */
 
 public class BurdetJohnsonCut
-	extends org.drip.optimization.cuttingplane.ChvatalGomoryCut
+	extends ChvatalGomoryCut
 {
 
 	/**
-	 * BurdetJohnsonCut Constructor
+	 * <i>BurdetJohnsonCut</i> Constructor
 	 * 
 	 * @param aGrid "A" Constraint Grid
 	 * @param bArray "b" Constraint Array
 	 * @param lambdaArray The Lambda Array
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public BurdetJohnsonCut (
 		final int[][] aGrid,
 		final int[] bArray,
 		final double[] lambdaArray)
-		throws java.lang.Exception
+		throws Exception
 	{
-		super (
-			aGrid,
-			bArray,
-			lambdaArray
-		);
+		super (aGrid, bArray, lambdaArray);
 	}
 
 	@Override public double[] adjustedCoefficientArray()

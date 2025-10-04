@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.drip.function.definition.RdToR1;
 import org.drip.function.rdtor1.AffineMultivariate;
+import org.drip.function.rdtor1.ConvexMultivariate;
 import org.drip.numerical.linearalgebra.R1MatrixUtil;
 
 /*
@@ -93,7 +94,33 @@ import org.drip.numerical.linearalgebra.R1MatrixUtil;
  * <i>OptimizerFramework</i> holds the Non Linear Objective Function and the Collection of Equality and the
  * 	Inequality Constraints that correspond to the Optimization Setup. It provides the following Functions:
  * 	<ul>
- * 		<li>Create a Standard Instance of <i>NecessarySufficientConditions</i></li>
+ * 		<li><i>OptimizerFramework</i> Constructor</li>
+ * 		<li>Retrieve the R<sup>d</sup> To R<sup>1</sup> Objective Function</li>
+ * 		<li>Retrieve the Array of R<sup>d</sup> To R<sup>1</sup> Equality Constraint Functions</li>
+ * 		<li>Retrieve the Array of R<sup>d</sup> To R<sup>1</sup> Inequality Constraint Functions</li>
+ * 		<li>Retrieve the Number of Equality Constraints</li>
+ * 		<li>Retrieve the Number of Inequality Constraints</li>
+ * 		<li>Indicate if the Optimizer Framework is Lagrangian</li>
+ * 		<li>Indicate if the Optimizer Framework is Unconstrained</li>
+ * 		<li>Indicate if the specified Fritz John Multipliers are compatible with the Optimization Framework</li>
+ * 		<li>Check the Candidate Point for Primal Feasibility</li>
+ * 		<li>Check for Complementary Slackness across the Inequality Constraints</li>
+ * 		<li>Check the Candidate Point for First Order Necessary Condition</li>
+ * 		<li>Check the Candidate Point for Second Order Sufficiency Condition</li>
+ * 		<li>Generate the Battery of Necessary and Sufficient Qualification Tests</li>
+ * 		<li>Retrieve the Array of Active Constraints</li>
+ * 		<li>Active Constraint Set Rank Computation</li>
+ * 		<li>Compare the Active Constraint Set Rank at the specified against the specified Rank</li>
+ * 		<li>Active Constraint Set Linear Dependence Check</li>
+ * 		<li>Compute the Along/Away "Naturally" Incremented Variates</li>
+ * 		<li>Check for Linearity Constraint Qualification</li>
+ * 		<li>Check for Linearity Independent Constraint Qualification</li>
+ * 		<li>Check for Mangasarian Fromovitz Constraint Qualification</li>
+ * 		<li>Check for Constant Rank Constraint Qualification</li>
+ * 		<li>Check for Constant Positive Linear Dependence Constraint Qualification</li>
+ * 		<li>Check for Quasi Normal Constraint Qualification</li>
+ * 		<li>Check for Slater Condition Constraint Qualification</li>
+ * 		<li>Generate the Battery of Regularity Constraint Qualification Tests</li>
  * 	</ul>
  * 
  * The References are:
@@ -861,24 +888,24 @@ public class OptimizerFramework
 	/**
 	 * Check for Mangasarian Fromovitz Constraint Qualification
 	 * 
-	 * @param adblVariate The Candidate R^d Variate
+	 * @param variateArray The Candidate R<sup>d</sup> Variate
 	 * 
 	 * @return TRUE - The Mangasarian Fromovitz Constraint Qualification is satisfied
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public boolean isMFCQ (
-		final double[] adblVariate)
-		throws java.lang.Exception
+		final double[] variateArray)
+		throws Exception
 	{
-		return activeConstraintLinearDependence (adblVariate, true);
+		return activeConstraintLinearDependence (variateArray, true);
 	}
 
 	/**
 	 * Check for Constant Rank Constraint Qualification
 	 * 
-	 * @param adblVariate The Candidate R^d Variate
+	 * @param variateArray The Candidate R<sup>d</sup> Variate
 	 * 
 	 * @return TRUE - The Constant Rank Constraint Qualification is satisfied
 	 * 
@@ -886,86 +913,100 @@ public class OptimizerFramework
 	 */
 
 	public boolean isCRCQ (
-		final double[] adblVariate)
-		throws java.lang.Exception
+		final double[] variateArray)
+		throws Exception
 	{
-		int iRank = activeConstraintRank (adblVariate);
+		int rank = activeConstraintRank (variateArray);
 
-		double[][] aadblAlongAwayVariatePair = alongAwayVariate (adblVariate);
+		double[][] alongAwayVariatePairArray = alongAwayVariate (variateArray);
 
-		if (null == aadblAlongAwayVariatePair)
-			throw new java.lang.Exception ("OptimizerFramework::isCRCQ => Cannot generate along/away");
+		if (null == alongAwayVariatePairArray) {
+			throw new Exception ("OptimizerFramework::isCRCQ => Cannot generate along/away");
+		}
 
-		return iRank == activeConstraintRank (aadblAlongAwayVariatePair[0]) && iRank == activeConstraintRank
-			(aadblAlongAwayVariatePair[1]);
+		return rank == activeConstraintRank (alongAwayVariatePairArray[0]) &&
+			rank == activeConstraintRank (alongAwayVariatePairArray[1]);
 	}
 
 	/**
 	 * Check for Constant Positive Linear Dependence Constraint Qualification
 	 * 
-	 * @param adblVariate The Candidate R^d Variate
+	 * @param variateArray The Candidate R<sup>d</sup> Variate
 	 * 
 	 * @return TRUE - The Constant Positive Linear Dependence Constraint Qualification is satisfied
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public boolean isCPLDCQ (
-		final double[] adblVariate)
-		throws java.lang.Exception
+		final double[] variateArray)
+		throws Exception
 	{
-		if (!isMFCQ (adblVariate)) return false;
+		if (!isMFCQ (variateArray)) {
+			return false;
+		}
 
-		double[][] aadblAlongAwayVariatePair = alongAwayVariate (adblVariate);
+		double[][] alongAwayVariatePairArray = alongAwayVariate (variateArray);
 
-		if (null == aadblAlongAwayVariatePair)
-			throw new java.lang.Exception ("OptimizerFramework::isCPLDCQ => Cannot generate along/away");
+		if (null == alongAwayVariatePairArray) {
+			throw new Exception ("OptimizerFramework::isCPLDCQ => Cannot generate along/away");
+		}
 
-		return isMFCQ (aadblAlongAwayVariatePair[0]) && isMFCQ (aadblAlongAwayVariatePair[1]);
+		return isMFCQ (alongAwayVariatePairArray[0]) && isMFCQ (alongAwayVariatePairArray[1]);
 	}
 
 	/**
 	 * Check for Quasi Normal Constraint Qualification
 	 * 
-	 * @param fjm The specified Fritz John Multipliers
-	 * @param adblVariate The Candidate R^d Variate
+	 * @param fritzJohnMultipliers The specified Fritz John Multipliers
+	 * @param variateArray The Candidate R<sup>d</sup> Variate
 	 * 
 	 * @return TRUE - The Quasi Normal Constraint Qualification is satisfied
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public boolean isQNCQ (
-		final org.drip.optimization.constrained.FritzJohnMultipliers fjm,
-		final double[] adblVariate)
-		throws java.lang.Exception
+		final FritzJohnMultipliers fritzJohnMultipliers,
+		final double[] variateArray)
+		throws Exception
 	{
-		if (!isCompatible (fjm))
-			throw new java.lang.Exception ("OptimizerFramework::isQNCQ => Invalid Inputs");
-
-		if (!isMFCQ (adblVariate)) return false;
-
-		int iNumEqualityConstraint = numEqualityConstraint();
-
-		double[] adblEqualityConstraintCoefficient = null == fjm ? null :
-			fjm.equalityConstraintCoefficientArray();
-
-		for (int i = 0; i < iNumEqualityConstraint; ++i) {
-			if (0. != adblEqualityConstraintCoefficient[i] && 0. <= _equalityConstraintArray[i].evaluate
-				(adblVariate) * adblEqualityConstraintCoefficient[i])
-				return false;
+		if (!isCompatible (fritzJohnMultipliers)) {
+			throw new Exception ("OptimizerFramework::isQNCQ => Invalid Inputs");
 		}
 
-		int iNumInequalityConstraint = numInequalityConstraint();
+		if (!isMFCQ (variateArray)) {
+			return false;
+		}
 
-		double[] adblInequalityConstraintCoefficient = null == fjm ? null :
-			fjm.inequalityConstraintCoefficientArray();
+		double[] equalityConstraintCoefficientArray = null == fritzJohnMultipliers ? null :
+			fritzJohnMultipliers.equalityConstraintCoefficientArray();
 
-		for (int i = 0; i < iNumInequalityConstraint; ++i) {
-			if (0. != adblInequalityConstraintCoefficient[i] && 0. <=
-				_inequalityConstraintArray[i].evaluate (adblVariate) *
-					adblInequalityConstraintCoefficient[i])
+		for (int equalityConstraintIndex = 0;
+			equalityConstraintIndex < numEqualityConstraint();
+			++equalityConstraintIndex)
+		{
+			if (0. != equalityConstraintCoefficientArray[equalityConstraintIndex] &&
+				0. <= _equalityConstraintArray[equalityConstraintIndex].evaluate (variateArray) *
+					equalityConstraintCoefficientArray[equalityConstraintIndex])
+			{
 				return false;
+			}
+		}
+
+		double[] inequalityConstraintCoefficientArray = null == fritzJohnMultipliers ? null :
+			fritzJohnMultipliers.inequalityConstraintCoefficientArray();
+
+		for (int inequalityConstraintIndex = 0;
+			inequalityConstraintIndex < numInequalityConstraint();
+			++inequalityConstraintIndex)
+		{
+			if (0. != inequalityConstraintCoefficientArray[inequalityConstraintIndex] &&
+				0. <= _inequalityConstraintArray[inequalityConstraintIndex].evaluate (variateArray) *
+					inequalityConstraintCoefficientArray[inequalityConstraintIndex])
+			{
+				return false;
+			}
 		}
 
 		return true;
@@ -974,29 +1015,37 @@ public class OptimizerFramework
 	/**
 	 * Check for Slater Condition Constraint Qualification
 	 * 
-	 * @param adblVariate The Candidate R^d Variate
+	 * @param variateArray The Candidate R<sup>d</sup> Variate
 	 * 
 	 * @return TRUE - The Slater Condition Constraint Qualification is satisfied
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public boolean isSCCQ (
-		final double[] adblVariate)
-		throws java.lang.Exception
+		final double[] variateArray)
+		throws Exception
 	{
-		if (!(_objectiveFunction instanceof org.drip.function.rdtor1.ConvexMultivariate)) return false;
-
-		int iNumEqualityConstraint = numEqualityConstraint();
-
-		int iNumInequalityConstraint = numInequalityConstraint();
-
-		for (int i = 0; i < iNumEqualityConstraint; ++i) {
-			if (0. != _equalityConstraintArray[i].evaluate (adblVariate)) return false;
+		if (!(_objectiveFunction instanceof ConvexMultivariate)) {
+			return false;
 		}
 
-		for (int i = 0; i < iNumInequalityConstraint; ++i) {
-			if (0. <= _inequalityConstraintArray[i].evaluate (adblVariate)) return false;
+		for (int equalityConstraintIndex = 0;
+			equalityConstraintIndex < numEqualityConstraint();
+			++equalityConstraintIndex)
+		{
+			if (0. != _equalityConstraintArray[equalityConstraintIndex].evaluate (variateArray)) {
+				return false;
+			}
+		}
+
+		for (int inequalityConstraintIndex = 0;
+			inequalityConstraintIndex < numInequalityConstraint();
+			++inequalityConstraintIndex)
+		{
+			if (0. <= _inequalityConstraintArray[inequalityConstraintIndex].evaluate (variateArray)) {
+				return false;
+			}
 		}
 
 		return true;
@@ -1005,21 +1054,29 @@ public class OptimizerFramework
 	/**
 	 * Generate the Battery of Regularity Constraint Qualification Tests
 	 * 
-	 * @param fjm The specified Fritz John Multipliers
-	 * @param adblVariate The Candidate R^d Variate
+	 * @param fritzJohnMultipliers The specified Fritz John Multipliers
+	 * @param variateArray The Candidate R<sup>d</sup> Variate
 	 * 
 	 * @return The Regularity Constraint Qualifier Instance
 	 */
 
-	public org.drip.optimization.constrained.RegularityConditions regularityQualifier (
-		final org.drip.optimization.constrained.FritzJohnMultipliers fjm,
-		final double[] adblVariate)
+	public RegularityConditions regularityQualifier (
+		final FritzJohnMultipliers fritzJohnMultipliers,
+		final double[] variateArray)
 	{
 		try {
-			return org.drip.optimization.constrained.RegularityConditions.Standard (adblVariate, fjm,
-				isLCQ(), isLICQ (adblVariate), isMFCQ (adblVariate), isCRCQ (adblVariate), isCPLDCQ
-					(adblVariate), isQNCQ (fjm, adblVariate), isSCCQ (adblVariate));
-		} catch (java.lang.Exception e) {
+			return RegularityConditions.Standard (
+				variateArray,
+				fritzJohnMultipliers,
+				isLCQ(),
+				isLICQ (variateArray),
+				isMFCQ (variateArray),
+				isCRCQ (variateArray),
+				isCPLDCQ (variateArray),
+				isQNCQ (fritzJohnMultipliers, variateArray),
+				isSCCQ (variateArray)
+			);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 

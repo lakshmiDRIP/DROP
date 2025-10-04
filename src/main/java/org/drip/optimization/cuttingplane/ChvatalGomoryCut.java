@@ -1,6 +1,9 @@
 
 package org.drip.optimization.cuttingplane;
 
+import org.drip.numerical.common.NumberUtil;
+import org.drip.optimization.canonical.ILPConstraint;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
@@ -76,9 +79,17 @@ package org.drip.optimization.cuttingplane;
  */
 
 /**
- * <i>ChvatalGomoryCut</i> implements the ILP Chvatal-Gomory Cut. The References are:
+ * <i>ChvatalGomoryCut</i> implements the ILP Chvatal-Gomory Cut. It provides the following Functions:
+ * 	<ul>
+ * 		<li><i>ChvatalGomoryCut</i> Constructor</li>
+ * 		<li>Retrieve the Lambda Array</li>
+ * 		<li>Generate the Unadjusted Coefficient Array</li>
+ * 		<li>Generate the Adjusted Coefficient Array</li>
+ * 		<li>Verify if the Variate Array satisfies the Constraint</li>
+ * 	</ul>
  * 
- * <br><br>
+ * The References are:
+ * <br>
  *  <ul>
  *  	<li>
  * 			Burdet, C. A., and E. L. Johnson (1977): A Sub-additive Approach to Solve Linear Integer Programs
@@ -102,71 +113,53 @@ package org.drip.optimization.cuttingplane;
  *  	</li>
  *  </ul>
  *
- *	<br><br>
- *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md">Numerical Optimizer Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/optimization/README.md">Necessary, Sufficient, and Regularity Checks for Gradient Descent and LP/MILP/MINLP Schemes</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/optimization/cuttingplane/README.md">Polyhedral Cutting Plane Generation Schemes</a></li>
- *  </ul>
+ * <br>
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md">Numerical Optimizer Library</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/optimization/README.md">Necessary, Sufficient, and Regularity Checks for Gradient Descent and LP/MILP/MINLP Schemes</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/optimization/cuttingplane/README.md">Polyhedral Cutting Plane Generation Schemes</a></td></tr>
+ *  </table>
  *
  * @author Lakshmi Krishnamurthy
  */
 
 public class ChvatalGomoryCut
-	extends org.drip.optimization.canonical.ILPConstraint
+	extends ILPConstraint
 {
 	private double[] _lambdaArray = null;
 
 	/**
-	 * ChvatalGomoryCut Constructor
+	 * <i>ChvatalGomoryCut</i> Constructor
 	 * 
 	 * @param aGrid "A" Constraint Grid
 	 * @param bArray "b" Constraint Array
 	 * @param lambdaArray The Lambda Array
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public ChvatalGomoryCut (
 		final int[][] aGrid,
 		final int[] bArray,
 		final double[] lambdaArray)
-		throws java.lang.Exception
+		throws Exception
 	{
-		super (
-			aGrid,
-			bArray
-		);
+		super (aGrid, bArray);
 
-		if (null == (_lambdaArray = lambdaArray))
-		{
-			throw new java.lang.Exception (
-				"ChvatalGomoryCut Constructor => Invalid Inputs"
-			);
+		if (null == (_lambdaArray = lambdaArray)) {
+			throw new Exception ("ChvatalGomoryCut Constructor => Invalid Inputs");
 		}
 
 		int constraintCount = constraintCount();
 
-		if (_lambdaArray.length != constraintCount)
-		{
-			throw new java.lang.Exception (
-				"ChvatalGomoryCut Constructor => Invalid Inputs"
-			);
+		if (_lambdaArray.length != constraintCount) {
+			throw new Exception ("ChvatalGomoryCut Constructor => Invalid Inputs");
 		}
 
-		for (int constraintIndex = 0;
-			constraintIndex < constraintCount;
-			++constraintIndex)
-		{
-			if (!org.drip.numerical.common.NumberUtil.IsValid (
-					_lambdaArray[constraintIndex]
-				) || 0. > _lambdaArray[constraintIndex]
-			)
-			{
-				throw new java.lang.Exception (
-					"ChvatalGomoryCut Constructor => Invalid Inputs"
-				);
+		for (int constraintIndex = 0; constraintIndex < constraintCount; ++constraintIndex) {
+			if (!NumberUtil.IsValid (_lambdaArray[constraintIndex]) || 0. > _lambdaArray[constraintIndex]) {
+				throw new Exception ("ChvatalGomoryCut Constructor => Invalid Inputs");
 			}
 		}
 	}
@@ -198,21 +191,12 @@ public class ChvatalGomoryCut
 		int constraintCount = bArray.length;
 		double[] unadjustedCoefficientArray = new double[dimension + 1];
 
-		for (int dimensionIndex = 0;
-			dimensionIndex <= dimension;
-			++dimensionIndex)
-		{
+		for (int dimensionIndex = 0; dimensionIndex <= dimension; ++dimensionIndex) {
 			unadjustedCoefficientArray[dimensionIndex] = 0.;
 		}
 
-		for (int constraintIndex = 0;
-			constraintIndex < constraintCount;
-			++constraintIndex)
-		{
-			for (int dimensionIndex = 0;
-				dimensionIndex < dimension;
-				++dimensionIndex)
-			{
+		for (int constraintIndex = 0; constraintIndex < constraintCount; ++constraintIndex) {
+			for (int dimensionIndex = 0; dimensionIndex < dimension; ++dimensionIndex) {
 				unadjustedCoefficientArray[dimensionIndex + 1] += _lambdaArray[constraintIndex] *
 					aGrid[constraintIndex][dimensionIndex];
 			}
@@ -234,18 +218,14 @@ public class ChvatalGomoryCut
 	{
 		double[] unadjustedCoefficientArray = unadjustedCoefficientArray();
 
-		if (null == unadjustedCoefficientArray)
-		{
+		if (null == unadjustedCoefficientArray) {
 			return null;
 		}
 
 		int coefficientCount = unadjustedCoefficientArray.length;
 		double[] adjustedCoefficientArray = new double[coefficientCount];
 
-		for (int coefficientIndex = 0;
-			coefficientIndex < coefficientCount;
-			++coefficientIndex)
-		{
+		for (int coefficientIndex = 0; coefficientIndex < coefficientCount; ++coefficientIndex) {
 			adjustedCoefficientArray[coefficientIndex] = (int) unadjustedCoefficientArray[coefficientIndex];
 		}
 
@@ -258,33 +238,28 @@ public class ChvatalGomoryCut
 	 * @param variateArray The Input Variate Array
 	 * 
 	 * @return TRUE - The Variate Array satisfies the Constraint
+	 * 
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public boolean verify (
 		final int[] variateArray)
-		throws java.lang.Exception
+		throws Exception
 	{
-		if (!super.verify (
-			variateArray
-		))
-		{
+		if (!super.verify (variateArray)) {
 			return false;
 		}
 
 		double[] adjustedCoefficientArray = adjustedCoefficientArray();
 
-		if (null == adjustedCoefficientArray)
-		{
+		if (null == adjustedCoefficientArray) {
 			return false;
 		}
 
 		double lhs = 0.;
 		int coefficientCount = adjustedCoefficientArray.length;
 
-		for (int coefficientIndex = 1;
-			coefficientIndex < coefficientCount;
-			++coefficientIndex)
-		{
+		for (int coefficientIndex = 1; coefficientIndex < coefficientCount; ++coefficientIndex) {
 			lhs += variateArray[coefficientIndex] * adjustedCoefficientArray[coefficientIndex];
 		}
 

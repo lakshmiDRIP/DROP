@@ -1,11 +1,22 @@
 
 package org.drip.optimization.constrained;
 
+import org.drip.optimization.regularity.ConstraintQualifierCPLDCQ;
+import org.drip.optimization.regularity.ConstraintQualifierCRCQ;
+import org.drip.optimization.regularity.ConstraintQualifierLCQ;
+import org.drip.optimization.regularity.ConstraintQualifierLICQ;
+import org.drip.optimization.regularity.ConstraintQualifierMFCQ;
+import org.drip.optimization.regularity.ConstraintQualifierQNCQ;
+import org.drip.optimization.regularity.ConstraintQualifierSCCQ;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -81,10 +92,24 @@ package org.drip.optimization.constrained;
 
 /**
  * <i>RegularityConditions</i> holds the Results of the Verification of the Regularity Conditions/Constraint
- * Qualifications at the specified (possibly) Optimal Variate and the corresponding Fritz John Multipliers.
- * The References are:
+ * 	Qualifications at the specified (possibly) Optimal Variate and the corresponding Fritz John Multipliers.
+ * 	It provides the following Functions:
+ * 	<ul>
+ * 		<li>Construct a Standard Instance of <i>RegularityConditions</i></li>
+ * 		<li><i>RegularityConditions</i> Constructor</li>
+ * 		<li>Retrieve the Fritz John Mutipliers</li>
+ * 		<li>Retrieve the LCQ Constraint Qualifier</li>
+ * 		<li>Retrieve the LICQ Constraint Qualifier</li>
+ * 		<li>Retrieve the MFCQ Constraint Qualifier</li>
+ * 		<li>Retrieve the CRCQ Constraint Qualifier</li>
+ * 		<li>Retrieve the CPLDCQ Constraint Qualifier</li>
+ * 		<li>Retrieve the QNCQ Constraint Qualifier</li>
+ * 		<li>Retrieve the SCCQ Constraint Qualifier</li>
+ * 		<li>Indicate the Ordered Gross Regularity Validity across all the Constraint Qualifiers</li>
+ * 	</ul>
  * 
- * <br><br>
+ * The References are:
+ * <br>
  * 	<ul>
  * 		<li>
  * 			Boyd, S., and L. van den Berghe (2009): <i>Convex Optimization</i> <b>Cambridge University
@@ -108,66 +133,68 @@ package org.drip.optimization.constrained;
  * 		</li>
  * 	</ul>
  *
- *	<br><br>
- *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md">Numerical Optimizer Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/optimization/README.md">Necessary, Sufficient, and Regularity Checks for Gradient Descent and LP/MILP/MINLP Schemes</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/optimization/constrained/README.md">KKT Fritz-John Constrained Optimizer</a></li>
- *  </ul>
+ * <br>
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md">Numerical Optimizer Library</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/optimization/README.md">Necessary, Sufficient, and Regularity Checks for Gradient Descent and LP/MILP/MINLP Schemes</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/optimization/constrained/README.md">KKT Fritz-John Constrained Optimizer</a></td></tr>
+ *  </table>
  * 
  * @author Lakshmi Krishnamurthy
  */
 
-public class RegularityConditions {
-	private double[] _adblVariate = null;
-	private org.drip.optimization.constrained.FritzJohnMultipliers _fjm = null;
-	private org.drip.optimization.regularity.ConstraintQualifierLCQ _cqLCQ = null;
-	private org.drip.optimization.regularity.ConstraintQualifierCRCQ _cqCRCQ = null;
-	private org.drip.optimization.regularity.ConstraintQualifierLICQ _cqLICQ = null;
-	private org.drip.optimization.regularity.ConstraintQualifierMFCQ _cqMFCQ = null;
-	private org.drip.optimization.regularity.ConstraintQualifierQNCQ _cqQNCQ = null;
-	private org.drip.optimization.regularity.ConstraintQualifierSCCQ _cqSCCQ = null;
-	private org.drip.optimization.regularity.ConstraintQualifierCPLDCQ _cqCPLDCQ = null;
+public class RegularityConditions
+{
+	private double[] _variateArray = null;
+	private FritzJohnMultipliers _fritzJohnMultipliers = null;
+	private ConstraintQualifierLCQ _lcqConstraintQualifier = null;
+	private ConstraintQualifierCRCQ _crcqConstraintQualifier = null;
+	private ConstraintQualifierLICQ _licqConstraintQualifier = null;
+	private ConstraintQualifierMFCQ _mfcqConstraintQualifier = null;
+	private ConstraintQualifierQNCQ _qncqConstraintQualifier = null;
+	private ConstraintQualifierSCCQ _sccqConstraintQualifier = null;
+	private ConstraintQualifierCPLDCQ _cpldcqConstraintQualifier = null;
 
 	/**
-	 * Construct a Standard Instance of RegularityConditions
+	 * Construct a Standard Instance of <i>RegularityConditions</i>
 	 * 
-	 * @param adblVariate The Candidate Variate Array
-	 * @param fjm The Fritz John Multipliers
-	 * @param bValidLCQ The LCQ Validity Flag
-	 * @param bValidLICQ The LICQ Validity Flag
-	 * @param bValidMFCQ The MFCQ Validity Flag
-	 * @param bValidCRCQ The CRCQ Validity Flag
-	 * @param bValidCPLDCQ The CPLDCQ Validity Flag
-	 * @param bValidQNCQ The QNCQ Validity Flag
-	 * @param bValidSCCQ The SCCQ Validity Flag
+	 * @param variateArray The Candidate Variate Array
+	 * @param fritzJohnMultipliers The Fritz John Multipliers
+	 * @param validLCQ The LCQ Validity Flag
+	 * @param validLICQ The LICQ Validity Flag
+	 * @param validMFCQ The MFCQ Validity Flag
+	 * @param validCRCQ The CRCQ Validity Flag
+	 * @param validCPLDCQ The CPLDCQ Validity Flag
+	 * @param validQNCQ The QNCQ Validity Flag
+	 * @param validSCCQ The SCCQ Validity Flag
 	 * 
-	 * @return The Standard Instance of CandidateRegularity
+	 * @return The Standard Instance of <i>RegularityConditions</i>
 	 */
 
 	public static final RegularityConditions Standard (
-		final double[] adblVariate,
-		final org.drip.optimization.constrained.FritzJohnMultipliers fjm,
-		final boolean bValidLCQ,
-		final boolean bValidLICQ,
-		final boolean bValidMFCQ,
-		final boolean bValidCRCQ,
-		final boolean bValidCPLDCQ,
-		final boolean bValidQNCQ,
-		final boolean bValidSCCQ)
+		final double[] variateArray,
+		final FritzJohnMultipliers fritzJohnMultipliers,
+		final boolean validLCQ,
+		final boolean validLICQ,
+		final boolean validMFCQ,
+		final boolean validCRCQ,
+		final boolean validCPLDCQ,
+		final boolean validQNCQ,
+		final boolean validSCCQ)
 	{
 		try {
-			return new RegularityConditions (adblVariate, fjm, new
-				org.drip.optimization.regularity.ConstraintQualifierLCQ (bValidLCQ), new
-					org.drip.optimization.regularity.ConstraintQualifierLICQ (bValidLICQ), new
-						org.drip.optimization.regularity.ConstraintQualifierMFCQ (bValidMFCQ), new
-							org.drip.optimization.regularity.ConstraintQualifierCRCQ (bValidCRCQ), new
-								org.drip.optimization.regularity.ConstraintQualifierCPLDCQ (bValidCPLDCQ),
-									new org.drip.optimization.regularity.ConstraintQualifierQNCQ
-										(bValidQNCQ), new
-											org.drip.optimization.regularity.ConstraintQualifierSCCQ
-												(bValidSCCQ));
+			return new RegularityConditions (
+				variateArray,
+				fritzJohnMultipliers,
+				new ConstraintQualifierLCQ (validLCQ),
+				new ConstraintQualifierLICQ (validLICQ),
+				new ConstraintQualifierMFCQ (validMFCQ),
+				new ConstraintQualifierCRCQ (validCRCQ),
+				new ConstraintQualifierCPLDCQ (validCPLDCQ),
+				new ConstraintQualifierQNCQ (validQNCQ),
+				new ConstraintQualifierSCCQ (validSCCQ)
+			);
 		} catch (java.lang.Exception e) {
 			e.printStackTrace();
 		}
@@ -176,38 +203,45 @@ public class RegularityConditions {
 	}
 
 	/**
-	 * RegularityConditions Constructor
+	 * <i>RegularityConditions</i> Constructor
 	 * 
-	 * @param adblVariate The Candidate Variate Array
-	 * @param fjm The Fritz John Multipliers
-	 * @param cqLCQ LCQ Constraint Qualifier Instance
-	 * @param cqLICQ LICQ Constraint Qualifier Instance
-	 * @param cqMFCQ MFCQ Constraint Qualifier Instance
-	 * @param cqCRCQ CRCQ Constraint Qualifier Instance
-	 * @param cqCPLDCQ CPLDCQ Constraint Qualifier Instance
-	 * @param cqQNCQ QNCQ Constraint Qualifier Instance
-	 * @param cqSCCQ SCCQ Constraint Qualifier Instance
+	 * @param variateArray The Candidate Variate Array
+	 * @param fritzJohnMultipliers The Fritz John Multipliers
+	 * @param lcqConstraintQualifier LCQ Constraint Qualifier Instance
+	 * @param licqConstraintQualifier LICQ Constraint Qualifier Instance
+	 * @param mfcqConstraintQualifier MFCQ Constraint Qualifier Instance
+	 * @param crcqConstraintQualifier CRCQ Constraint Qualifier Instance
+	 * @param cpldcqConstraintQualifier CPLDCQ Constraint Qualifier Instance
+	 * @param qncqConstraintQualifier QNCQ Constraint Qualifier Instance
+	 * @param sccqConstraintQualifier SCCQ Constraint Qualifier Instance
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public RegularityConditions (
-		final double[] adblVariate,
-		final org.drip.optimization.constrained.FritzJohnMultipliers fjm,
-		final org.drip.optimization.regularity.ConstraintQualifierLCQ cqLCQ,
-		final org.drip.optimization.regularity.ConstraintQualifierLICQ cqLICQ,
-		final org.drip.optimization.regularity.ConstraintQualifierMFCQ cqMFCQ,
-		final org.drip.optimization.regularity.ConstraintQualifierCRCQ cqCRCQ,
-		final org.drip.optimization.regularity.ConstraintQualifierCPLDCQ cqCPLDCQ,
-		final org.drip.optimization.regularity.ConstraintQualifierQNCQ cqQNCQ,
-		final org.drip.optimization.regularity.ConstraintQualifierSCCQ cqSCCQ)
-		throws java.lang.Exception
+		final double[] variateArray,
+		final FritzJohnMultipliers fritzJohnMultipliers,
+		final ConstraintQualifierLCQ lcqConstraintQualifier,
+		final ConstraintQualifierLICQ licqConstraintQualifier,
+		final ConstraintQualifierMFCQ mfcqConstraintQualifier,
+		final ConstraintQualifierCRCQ crcqConstraintQualifier,
+		final ConstraintQualifierCPLDCQ cpldcqConstraintQualifier,
+		final ConstraintQualifierQNCQ qncqConstraintQualifier,
+		final ConstraintQualifierSCCQ sccqConstraintQualifier)
+		throws Exception
 	{
-		if (null == (_adblVariate = adblVariate) || 0 == _adblVariate.length || null == (_fjm = fjm) || null
-			== (_cqLCQ = cqLCQ) || null == (_cqLICQ = cqLICQ) || null == (_cqMFCQ = cqMFCQ) || null ==
-				(_cqCRCQ = cqCRCQ) || null == (_cqCPLDCQ = cqCPLDCQ) || null == (_cqQNCQ = cqQNCQ) || null ==
-					(_cqSCCQ = cqSCCQ))
-			throw new java.lang.Exception ("RegularityConditions Constructor => Invalid Inputs");
+		if (null == (_variateArray = variateArray) || 0 == _variateArray.length ||
+			null == (_fritzJohnMultipliers = fritzJohnMultipliers) ||
+			null == (_lcqConstraintQualifier = lcqConstraintQualifier) ||
+			null == (_licqConstraintQualifier = licqConstraintQualifier) ||
+			null == (_mfcqConstraintQualifier = mfcqConstraintQualifier) ||
+			null == (_crcqConstraintQualifier = crcqConstraintQualifier) ||
+			null == (_cpldcqConstraintQualifier = cpldcqConstraintQualifier) ||
+			null == (_qncqConstraintQualifier = qncqConstraintQualifier) ||
+			null == (_sccqConstraintQualifier = sccqConstraintQualifier))
+		{
+			throw new Exception ("RegularityConditions Constructor => Invalid Inputs");
+		}
 	}
 
 	/**
@@ -216,20 +250,29 @@ public class RegularityConditions {
 	 * @return The Candidate Variate Array
 	 */
 
-	public double[] variate()
+	public double[] variateArray()
 	{
-		return _adblVariate;
+		return _variateArray;
 	}
 
 	/**
 	 * Retrieve the Fritz John Mutipliers
+	 * Retrieve the LCQ Constraint Qualifier
+	 * Retrieve the LICQ Constraint Qualifier
+	 * Retrieve the MFCQ Constraint Qualifier
+	 * Retrieve the CRCQ Constraint Qualifier
+	 * Retrieve the CPLDCQ Constraint Qualifier
+	 * Retrieve the QNCQ Constraint Qualifier
+	 * Retrieve the SCCQ Constraint Qualifier
+	 * Indicate the Ordered Gross Regularity Validity across all the Constraint Qualifiers
+	 * Retrieve the Array of Strength Orders as specified in Eustaquio, Karas, and Ribeiro (2008)
 	 * 
 	 * @return The Fritz John Mutipliers
 	 */
 
-	public org.drip.optimization.constrained.FritzJohnMultipliers fjm()
+	public FritzJohnMultipliers fritzJohnMultipliers()
 	{
-		return _fjm;
+		return _fritzJohnMultipliers;
 	}
 
 	/**
@@ -238,9 +281,9 @@ public class RegularityConditions {
 	 * @return The LCQ Constraint Qualifier
 	 */
 
-	public org.drip.optimization.regularity.ConstraintQualifierLCQ lcq()
+	public ConstraintQualifierLCQ lcqConstraintQualifier()
 	{
-		return _cqLCQ;
+		return _lcqConstraintQualifier;
 	}
 
 	/**
@@ -249,9 +292,9 @@ public class RegularityConditions {
 	 * @return The LICQ Constraint Qualifier
 	 */
 
-	public org.drip.optimization.regularity.ConstraintQualifierLICQ licq()
+	public ConstraintQualifierLICQ licqConstraintQualifier()
 	{
-		return _cqLICQ;
+		return _licqConstraintQualifier;
 	}
 
 	/**
@@ -260,9 +303,9 @@ public class RegularityConditions {
 	 * @return The MFCQ Constraint Qualifier
 	 */
 
-	public org.drip.optimization.regularity.ConstraintQualifierMFCQ mfcq()
+	public ConstraintQualifierMFCQ mfcqConstraintQualifier()
 	{
-		return _cqMFCQ;
+		return _mfcqConstraintQualifier;
 	}
 
 	/**
@@ -271,9 +314,9 @@ public class RegularityConditions {
 	 * @return The CRCQ Constraint Qualifier
 	 */
 
-	public org.drip.optimization.regularity.ConstraintQualifierCRCQ crcq()
+	public ConstraintQualifierCRCQ crcq()
 	{
-		return _cqCRCQ;
+		return _crcqConstraintQualifier;
 	}
 
 	/**
@@ -282,9 +325,9 @@ public class RegularityConditions {
 	 * @return The CPLDCQ Constraint Qualifier
 	 */
 
-	public org.drip.optimization.regularity.ConstraintQualifierCPLDCQ cpldcq()
+	public ConstraintQualifierCPLDCQ cpldcq()
 	{
-		return _cqCPLDCQ;
+		return _cpldcqConstraintQualifier;
 	}
 
 	/**
@@ -293,9 +336,9 @@ public class RegularityConditions {
 	 * @return The QNCQ Constraint Qualifier
 	 */
 
-	public org.drip.optimization.regularity.ConstraintQualifierQNCQ qncq()
+	public ConstraintQualifierQNCQ qncq()
 	{
-		return _cqQNCQ;
+		return _qncqConstraintQualifier;
 	}
 
 	/**
@@ -304,9 +347,9 @@ public class RegularityConditions {
 	 * @return The SCCQ Constraint Qualifier
 	 */
 
-	public org.drip.optimization.regularity.ConstraintQualifierSCCQ sccq()
+	public ConstraintQualifierSCCQ sccq()
 	{
-		return _cqSCCQ;
+		return _sccqConstraintQualifier;
 	}
 
 	/**
@@ -317,7 +360,11 @@ public class RegularityConditions {
 
 	public boolean valid()
 	{
-		return _cqLICQ.valid() && _cqCRCQ.valid() && _cqMFCQ.valid() && _cqCPLDCQ.valid() && _cqQNCQ.valid();
+		return _licqConstraintQualifier.valid() &&
+			_crcqConstraintQualifier.valid() &&
+			_mfcqConstraintQualifier.valid() &&
+			_cpldcqConstraintQualifier.valid() &&
+			_qncqConstraintQualifier.valid();
 	}
 
 	/**
@@ -326,15 +373,24 @@ public class RegularityConditions {
 	 * @return The Array of Strength Orders as specified in Eustaquio, Karas, and Ribeiro (2008)
 	 */
 
-	public java.lang.String[] strengthOrder()
+	public String[] strengthOrder()
 	{
-		return new java.lang.String[] {"EUSTAQUIO KARAS RIBEIRO STRENGTH ORDER #1: " + _cqLICQ.display() +
-			" >> " + _cqMFCQ.display() + " >> " + _cqCPLDCQ.display() + " >> " + _cqQNCQ.display(),
-				"EUSTAQUIO KARAS RIBEIRO STRENGTH ORDER #2: " + _cqLICQ.display() + " >> " +
-					_cqCRCQ.display() + " >> " + _cqCPLDCQ.display() + " >> " + _cqQNCQ.display(),
-						"EUSTAQUIO KARAS RIBEIRO STRENGTH ORDER #3: " + _cqLCQ.display() + " >> " +
-							_cqLICQ.display() + " >> " + _cqMFCQ.display() + " >> " + _cqCRCQ.display() +
-								" >> " + _cqCPLDCQ.display() + " >> " + _cqQNCQ.display() + " >> " + " >> " +
-									_cqSCCQ.display()};
+		return new String[] {
+			"EUSTAQUIO KARAS RIBEIRO STRENGTH ORDER #1: " + _licqConstraintQualifier.display() +
+				" >> " + _mfcqConstraintQualifier.display() +
+				" >> " + _cpldcqConstraintQualifier.display() +
+				" >> " + _qncqConstraintQualifier.display(),
+			"EUSTAQUIO KARAS RIBEIRO STRENGTH ORDER #2: " + _licqConstraintQualifier.display() +
+				" >> " + _crcqConstraintQualifier.display() +
+				" >> " + _cpldcqConstraintQualifier.display() +
+				" >> " + _qncqConstraintQualifier.display(),
+			"EUSTAQUIO KARAS RIBEIRO STRENGTH ORDER #3: " + _lcqConstraintQualifier.display() +
+				" >> " + _licqConstraintQualifier.display() +
+				" >> " + _mfcqConstraintQualifier.display() +
+				" >> " + _crcqConstraintQualifier.display() +
+				" >> " + _cpldcqConstraintQualifier.display() +
+				" >> " + _qncqConstraintQualifier.display() +
+				" >> " + " >> " + _sccqConstraintQualifier.display()
+		};
 	}
 }
