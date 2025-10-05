@@ -397,7 +397,7 @@ public class StandardForm
 		tableau[0][0] = 1.;
 
 		for (int constraintIndex = 0; constraintIndex < constraintCount; ++constraintIndex) {
-			tableau[constraintIndex+1][0] = 0.;
+			tableau[constraintIndex + 1][0] = 0.;
 		}
 
 		double[] tableauC = tableauC();
