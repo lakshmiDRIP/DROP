@@ -77,9 +77,21 @@ import java.util.List;
  */
 
 /**
- * <i>StandardFormBuilder</i> builds the Standard Form of the Simplex Scheme. The References are:
+ * <i>StandardFormBuilder</i> builds the Standard Form of the Simplex Scheme. It provides the following
+ * 	Functions:
+ * 	<ul>
+ * 		<li><i>StandardFormBuilder</i> Constructor</li>
+ * 		<li>Retrieve the Objective Function</li>
+ * 		<li>Retrieve the Number of Unrestricted Variables</li>
+ * 		<li>Retrieve the List of Equality Constraints</li>
+ * 		<li>Retrieve the List of Greater-Than Constraints</li>
+ * 		<li>Retrieve the List of Less-Than Constraints</li>
+ * 		<li>Convert the Constraint to its Standard Form and add it to the Constraint List</li>
+ * 		<li>Construct an Instance of Simplex <i>CanonicalForm</i> from the EQ/LT/GT Constraints and the Objective</li>
+ * 		<li>Convert the Standard Form Builder into a String</li>
+ * 	</ul>
  * 
- * <br><br>
+ * The References are:
  * 	<ul>
  *  	<li>
  * 			Dadush, D., and S. Huiberts (2020): A Friendly Smoothed Analysis of the Simplex Method <i>SIAM
@@ -102,13 +114,13 @@ import java.util.List;
  * 		</li>
  * 	</ul>
  *
- *	<br><br>
- *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md">Numerical Optimizer Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/optimization/README.md">Necessary, Sufficient, and Regularity Checks for Gradient Descent in a Constrained Optimization Setup</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/optimization/simplex">R<sup>d</sup> to R<sup>1</sup> Simplex Scheme</a></li>
- *  </ul>
+ * <br>
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md">Numerical Optimizer Library</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/optimization/README.md">Necessary, Sufficient, and Regularity Checks for Gradient Descent and LP/MILP/MINLP Schemes</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/optimization/simplex/README.md">R<sup>d</sup> to R<sup>1</sup> Simplex Scheme</a></td></tr>
+ *  </table>
  * 
  * @author Lakshmi Krishnamurthy
  */

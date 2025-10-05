@@ -78,7 +78,22 @@ import java.util.Collection;
 /**
  * <i>StandardForm</i> exposes the Standard Form of the Simplex Scheme. It provides the following Functions:
  * 	<ul>
- * 		<li>TYPE - EQUALITY Constraint</li>
+ * 		<li><i>StandardForm</i> Constructor</li>
+ * 		<li>Retrieve the Simplex Objective Function</li>
+ * 		<li>Retrieve the Simplex Standard Constraint Polytope</li>
+ * 		<li>Retrieve the Diagnostics Setting</li>
+ * 		<li>Construct the Tableau <i>A</i></li>
+ * 		<li>Construct the Tableau <i>B</i></li>
+ * 		<li>Retrieve the Basic Variable Count</li>
+ * 		<li>Retrieve the Free Variable Count</li>
+ * 		<li>Retrieve the Slack Variable Count</li>
+ * 		<li>Construct the Tableau <i>C</i></li>
+ * 		<li>Construct the Full Tableau</li>
+ * 		<li>Compute the Basic Feasible Solution</li>
+ * 		<li>Perform the Phase 1 Simplex Run</li>
+ * 		<li>Perform the Phase 2 Simplex Run - Process the Simplex Tableau to locate the Optimal Solution</li>
+ * 		<li>Construct the Optimal Pivot Run Solution to the Simplex using a Multi-phase Optimizer</li>
+ * 		<li>Convert the Standard Form into a String</li>
  * 	</ul>
  * 
  * The References are:
