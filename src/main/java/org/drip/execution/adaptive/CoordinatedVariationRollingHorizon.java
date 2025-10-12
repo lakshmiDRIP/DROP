@@ -90,10 +90,10 @@ import org.drip.numerical.common.NumberUtil;
  * 	the Transaction Function arising from the Realization of the Market State Variable as described in the
  * 	"Trading Time" Model. It provides the following Functions:
  * 	<ul>
- * 		<li><i>CoordinatedVariationDynamic</i> Constructor</li>
+ * 		<li><i>CoordinatedVariationRollingHorizon</i> Constructor</li>
  * 		<li>Retrieve the Array of the Non Dimensional Holdings</li>
- * 		<li>Retrieve the Array of the Scaled Non Dimensional Trade Rate</li>
- * 		<li>Retrieve the Array of the Non Dimensional Costs</li>
+ * 		<li>Retrieve the Array of the Non Dimensional Trade Rate</li>
+ * 		<li>Retrieve the Array of the Non Dimensional Cost</li>
  * 	</ul>
  * 
  * The References are:

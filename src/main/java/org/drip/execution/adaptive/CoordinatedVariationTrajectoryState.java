@@ -1,11 +1,16 @@
 
 package org.drip.execution.adaptive;
 
+import org.drip.numerical.common.NumberUtil;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -81,11 +86,20 @@ package org.drip.execution.adaptive;
 
 /**
  * <i>CoordinatedVariationTrajectoryState</i> holds the HJB-based Multi Step Optimal Trajectory State at each
- * Step of the Evolution using the Coordinated Variation Version of the Stochastic Volatility and the
- * Transaction Function arising from the Realization of the Market State Variable as described in the
- * "Trading Time" Model. The References are:
+ * 	Step of the Evolution using the Coordinated Variation Version of the Stochastic Volatility and the
+ * 	Transaction Function arising from the Realization of the Market State Variable as described in the
+ * 	"Trading Time" Model. It provides the following Functions:
+ * 	<ul>
+ * 		<li><i>CoordinatedVariationTrajectoryState</i> Constructor</li>
+ * 		<li>Retrieve the Trajectory State Time Node</li>
+ * 		<li>Retrieve the Trajectory State Time Node Holdings</li>
+ * 		<li>Retrieve the Trajectory State Time Node Cost</li>
+ * 		<li>Retrieve the Trajectory State Time Node Trade Rate</li>
+ * 		<li>Retrieve the Trajectory Time Node Market State</li>
+ * 	</ul>
  * 
- * 	<br><br>
+ * The References are:
+ * <br>
  *  <ul>
  * 		<li>
  * 			Almgren, R. F., and N. Chriss (2000): Optimal Execution of Portfolio Transactions <i>Journal of
@@ -109,51 +123,53 @@ package org.drip.execution.adaptive;
  * 		</li>
  *  </ul>
  *
- *	<br><br>
- *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/TransactionCostAnalyticsLibrary.md">Transaction Cost Analytics</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/README.md">Optimal Impact/Capture Based Trading Trajectories - Deterministic, Stochastic, Static, and Dynamic</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/adaptive/README.md">Coordinated Variation Based Adaptive Execution</a></li>
- *  </ul>
+ * <br>
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md">Numerical Optimizer Library</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/README.md">Optimal Impact/Capture Based Trading Trajectories - Deterministic, Stochastic, Static, and Dynamic</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/adaptive/README.md">Coordinated Variation Based Adaptive Execution</a></td></tr>
+ *  </table>
  * 
  * @author Lakshmi Krishnamurthy
  */
 
-public class CoordinatedVariationTrajectoryState {
-	private double _dblCost = java.lang.Double.NaN;
-	private double _dblTime = java.lang.Double.NaN;
-	private double _dblHoldings = java.lang.Double.NaN;
-	private double _dblTradeRate = java.lang.Double.NaN;
-	private double _dblMarketState = java.lang.Double.NaN;
+public class CoordinatedVariationTrajectoryState
+{
+	private double _cost = Double.NaN;
+	private double _time = Double.NaN;
+	private double _holdings = Double.NaN;
+	private double _tradeRate = Double.NaN;
+	private double _marketState = Double.NaN;
 
 	/**
-	 * CoordinatedVariationTrajectoryState Constructor
+	 * <i>CoordinatedVariationTrajectoryState</i> Constructor
 	 * 
-	 * @param dblTime The Time Instant
-	 * @param dblHoldings The Holdings
-	 * @param dblTradeRate The Trade Rate
-	 * @param dblCost The Accumulated Cost
-	 * @param dblMarketState The Current Market State
+	 * @param time The Time Instant
+	 * @param holdings The Holdings
+	 * @param tradeRate The Trade Rate
+	 * @param cost The Accumulated Cost
+	 * @param marketState The Current Market State
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public CoordinatedVariationTrajectoryState (
-		final double dblTime,
-		final double dblHoldings,
-		final double dblTradeRate,
-		final double dblCost,
-		final double dblMarketState)
-		throws java.lang.Exception
+		final double time,
+		final double holdings,
+		final double tradeRate,
+		final double cost,
+		final double marketState)
+		throws Exception
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblTime = dblTime) ||
-			!org.drip.numerical.common.NumberUtil.IsValid (_dblHoldings = dblHoldings) ||
-				!org.drip.numerical.common.NumberUtil.IsValid (_dblTradeRate = dblTradeRate) ||
-					!org.drip.numerical.common.NumberUtil.IsValid (_dblCost = dblCost) ||
-						!org.drip.numerical.common.NumberUtil.IsValid (_dblMarketState = dblMarketState))
-			throw new java.lang.Exception
-				("CoordinatedVariationTrajectoryState Constructor => Invalid Inputs");
+		if (!NumberUtil.IsValid (_time = time) ||
+			!NumberUtil.IsValid (_holdings = holdings) ||
+			!NumberUtil.IsValid (_tradeRate = tradeRate) ||
+			!NumberUtil.IsValid (_cost = cost) ||
+			!NumberUtil.IsValid (_marketState = marketState))
+		{
+			throw new Exception ("CoordinatedVariationTrajectoryState Constructor => Invalid Inputs");
+		}
 	}
 
 	/**
@@ -164,7 +180,7 @@ public class CoordinatedVariationTrajectoryState {
 
 	public double time()
 	{
-		return _dblTime;
+		return _time;
 	}
 
 	/**
@@ -175,7 +191,7 @@ public class CoordinatedVariationTrajectoryState {
 
 	public double holdings()
 	{
-		return _dblHoldings;
+		return _holdings;
 	}
 
 	/**
@@ -186,7 +202,7 @@ public class CoordinatedVariationTrajectoryState {
 
 	public double cost()
 	{
-		return _dblCost;
+		return _cost;
 	}
 
 	/**
@@ -197,7 +213,7 @@ public class CoordinatedVariationTrajectoryState {
 
 	public double tradeRate()
 	{
-		return _dblTradeRate;
+		return _tradeRate;
 	}
 
 	/**
@@ -208,6 +224,6 @@ public class CoordinatedVariationTrajectoryState {
 
 	public double marketState()
 	{
-		return _dblMarketState;
+		return _marketState;
 	}
 }

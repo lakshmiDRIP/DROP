@@ -120,11 +120,32 @@
 			- Action choice set a_t in {Action Set (x_t)}
 			- Next state = T(x_t, a_t)
 	- Bellman's Principle of Optimality
-		- Infinite-horizon Decision Problem: V(x_0) = Max across all a_0 (Payoff(x_0, a_0) + Sum over t not t_0 (MDF^t . Payoff(x_t, a_t)))
+		- Infinite-horizon Decision Problem: V(x_0) = Max across all a_0 (Payoff(x_0, a_0) + Sum over t not t_0 MDF . (MDF^(t-1) . Payoff(x_t, a_t)))
 		- Eventual Constraints:
 			- Action choice set a_t in {Action Set (x_t)}
 			- Next state = T(x_t, a_t)
 		- Initial Constraints:
 			- Action choice set a_0 in {Action Set (x_0)}
 			- Next state = T(x_0, a_0)
+	- The Bellman Equation
+		- Infinite-horizon Decision Problem: V(x_0) = Max across all a_0 (Payoff(x_0, a_0) + MDF . V(x_1)
+		- Eventual Constraints:
+			- Action choice set a_t in {Action Set (x_t)}
+			- Next state = T(x_t, a_t)
+		- Initial Constraints:
+			- Action choice set a_0 in {Action Set (x_0)}
+			- Next state = T(x_0, a_0)
+		- Generalized Form: V(x_0) = Max across all a_t in {Action Set (x_t)} (Payoff(x_t, a_t) + MDF . V(T(x_t, a_t))
+	- In a Stochastic Problem
+		- Infinite-horizon Decision Problem: V(c_0) = Max across all a_t Sum over t (MDF^t . Payoff(c_t, a_t))
+			- Current Endowment is a_t - Initial is a_0
+			- State is Consumption c_t
+			- MDF = 1 / (1 + r) => r being the Stochastic Interest Rate
+		- a_(t+1) = (1 + r).(a_t - c_t)
+		- Stochastic Interest Rate implies that V(x) will be a quadrature over the future interest rate paths
+			- Quadrature Measure Q over the filtration adapted over the realized interest rate trajectory
+		- Stochastic Sequential Optimization Problem - Ex-post over stochastic path evolution
+			- V(x, z) = max over {Action choice set a in {Action Set (x)}} {Payoff(x, a, z) + MDF.Integral over z' {V(T(x, a), z')}}
+ 4.1) Markov Decision Process
+	- Discrete Time Version of the above is the Bellman Optimality Equation, V(.) is called the Reward R(.)
  --------------------------

@@ -6,6 +6,9 @@ package org.drip.execution.athl;
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -81,10 +84,26 @@ package org.drip.execution.athl;
 
 /**
  * <i>CalibrationEmpirics</i> contains the Universal Market Impact Exponent/Coefficients that have been
- * determined empirically by Almgren, Thum, Hauptmann, and Li (2005), using the Parameterization of Almgren
- * (2003). The References are:
+ * 	determined empirically by Almgren, Thum, Hauptmann, and Li (2005), using the Parameterization of Almgren
+ * 	(2003). It provides the following Functions:
+ * 	<ul>
+ * 		<li>Almgren, Thum, Hauptmann, and Li (2005) Universal Permanent Impact Exponent</li>
+ * 		<li>Almgren, Thum, Hauptmann, and Li (2005) Universal Permanent Impact Exponent One Sigma</li>
+ * 		<li>Quasi-Arbitrage Free Universal Permanent Impact Exponent</li>
+ * 		<li>Universal Permanent Impact Exponent</li>
+ * 		<li>Universal Permanent Impact Coefficient</li>
+ * 		<li>Universal Permanent Impact Coefficient One Sigma</li>
+ * 		<li>The ATHL2005 Permanent Impact Inverse Turnover Coefficient</li>
+ * 		<li>The ATHL2005 Permanent Impact Inverse Turnover Coefficient One Sigma Error</li>
+ * 		<li>The Universal Permanent Impact Inverse Turnover Coefficient</li>
+ * 		<li>Universal Temporary Impact Exponent</li>
+ * 		<li>Universal Temporary Impact Exponent One Sigma</li>
+ * 		<li>Universal Temporary Impact Coefficient</li>
+ * 		<li>Universal Temporary Impact Coefficient One Sigma</li>
+ * 	</ul>
  * 
- * <br><br>
+ * The References are:
+ * <br>
  * 	<ul>
  * 	<li>
  * 		Almgren, R., and N. Chriss (1999): Value under Liquidation <i>Risk</i> <b>12 (12)</b>
@@ -106,18 +125,19 @@ package org.drip.execution.athl;
  * 	</li>
  * 	</ul>
  *
- *	<br><br>
- *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/TransactionCostAnalyticsLibrary.md">Transaction Cost Analytics</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/README.md">Optimal Impact/Capture Based Trading Trajectories - Deterministic, Stochastic, Static, and Dynamic</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/athl/README.md">Almgren-Thum-Hauptmann-Li Calibration</a></li>
- *  </ul>
+ * <br>
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md">Numerical Optimizer Library</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/README.md">Optimal Impact/Capture Based Trading Trajectories - Deterministic, Stochastic, Static, and Dynamic</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/athl/README.md">Almgren-Thum-Hauptmann-Li Calibration</a></td></tr>
+ *  </table>
  * 
  * @author Lakshmi Krishnamurthy
  */
 
-public class CalibrationEmpirics {
+public class CalibrationEmpirics
+{
 
 	/**
 	 * Almgren, Thum, Hauptmann, and Li (2005) Universal Permanent Impact Exponent

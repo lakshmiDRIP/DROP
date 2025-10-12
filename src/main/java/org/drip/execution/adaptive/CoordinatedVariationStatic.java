@@ -1,11 +1,16 @@
 
 package org.drip.execution.adaptive;
 
+import org.drip.execution.optimum.EfficientTradingTrajectoryContinuous;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -81,11 +86,16 @@ package org.drip.execution.adaptive;
 
 /**
  * <i>CoordinatedVariationStatic</i> implements the Static Trajectory based on the "Mean Equilibrium Market
- * State" of the Coordinated Variation Version of the Stochastic Volatility and the Transaction Function
- * arising from the Realization of the Market State Variable as described in the "Trading Time" Model. The
- * References are:
+ * 	State" of the Coordinated Variation Version of the Stochastic Volatility and the Transaction Function
+ * 	arising from the Realization of the Market State Variable as described in the "Trading Time" Model. It
+ * 	provides the following Functions:
+ * 	<ul>
+ * 		<li><i>CoordinatedVariationStatic</i> Constructor</li>
+ * 		<li>Retrieve the Static Continuous Trading Trajectory Instance</li>
+ * 	</ul>
  * 
- * 	<br><br>
+ * The References are:
+ * <br>
  *  <ul>
  * 		<li>
  * 			Almgren, R. F., and N. Chriss (2000): Optimal Execution of Portfolio Transactions <i>Journal of
@@ -109,38 +119,41 @@ package org.drip.execution.adaptive;
  * 		</li>
  *  </ul>
  *
- *	<br><br>
- *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/TransactionCostAnalyticsLibrary.md">Transaction Cost Analytics</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/README.md">Optimal Impact/Capture Based Trading Trajectories - Deterministic, Stochastic, Static, and Dynamic</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/adaptive/README.md">Coordinated Variation Based Adaptive Execution</a></li>
- *  </ul>
+ * <br>
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md">Numerical Optimizer Library</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/README.md">Optimal Impact/Capture Based Trading Trajectories - Deterministic, Stochastic, Static, and Dynamic</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/adaptive/README.md">Coordinated Variation Based Adaptive Execution</a></td></tr>
+ *  </table>
  *  
  * @author Lakshmi Krishnamurthy
  */
 
-public class CoordinatedVariationStatic extends org.drip.execution.adaptive.CoordinatedVariationTrajectory {
-	private org.drip.execution.optimum.EfficientTradingTrajectoryContinuous _ettc = null;
+public class CoordinatedVariationStatic
+	extends CoordinatedVariationTrajectory
+{
+	private EfficientTradingTrajectoryContinuous _efficientTradingTrajectoryContinuous = null;
 
 	/**
-	 * CoordinatedVariationStatic Constructor
+	 * <i>CoordinatedVariationStatic</i> Constructor
 	 * 
-	 * @param cvtd The Coordinated Variation Trajectory Determinant 
-	 * @param ettc The Static Continuous Trading Trajectory Instance
+	 * @param trajectoryDeterminant The Coordinated Variation Trajectory Determinant 
+	 * @param efficientTradingTrajectoryContinuous The Static Continuous Trading Trajectory Instance
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public CoordinatedVariationStatic (
-		final org.drip.execution.adaptive.CoordinatedVariationTrajectoryDeterminant cvtd,
-		final org.drip.execution.optimum.EfficientTradingTrajectoryContinuous ettc)
-		throws java.lang.Exception
+		final CoordinatedVariationTrajectoryDeterminant trajectoryDeterminant,
+		final EfficientTradingTrajectoryContinuous efficientTradingTrajectoryContinuous)
+		throws Exception
 	{
-		super (cvtd);
+		super (trajectoryDeterminant);
 
-		if (null == (_ettc = ettc))
-			throw new java.lang.Exception ("CoordinatedVariationStatic Constructor => Invalid Inputs");
+		if (null == (_efficientTradingTrajectoryContinuous = efficientTradingTrajectoryContinuous)) {
+			throw new Exception ("CoordinatedVariationStatic Constructor => Invalid Inputs");
+		}
 	}
 
 	/**
@@ -149,8 +162,8 @@ public class CoordinatedVariationStatic extends org.drip.execution.adaptive.Coor
 	 * @return The Static Continuous Trading Trajectory Instance
 	 */
 
-	public org.drip.execution.optimum.EfficientTradingTrajectoryContinuous trajectory()
+	public EfficientTradingTrajectoryContinuous trajectory()
 	{
-		return _ettc;
+		return _efficientTradingTrajectoryContinuous;
 	}
 }

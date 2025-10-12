@@ -1,11 +1,22 @@
 
 package org.drip.execution.athl;
 
+import org.drip.execution.dynamics.ArithmeticPriceEvolutionParametersBuilder;
+import org.drip.execution.dynamics.LinearPermanentExpectationParameters;
+import org.drip.execution.parameters.ArithmeticPriceDynamicsSettings;
+import org.drip.execution.parameters.AssetFlowSettings;
+import org.drip.execution.profiletime.UniformParticipationRate;
+import org.drip.execution.profiletime.UniformParticipationRateLinear;
+import org.drip.function.r1tor1operator.Flat;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -81,10 +92,16 @@ package org.drip.execution.athl;
 
 /**
  * <i>DynamicsParameters</i> generates the Variants of the Market Dynamics Parameters constructed using the
- * Methodologies presented in Almgren, Thum, Hauptmann, and Li (2005), using the Parameterization of Almgren
- * (2003). The References are:
+ * 	Methodologies presented in Almgren, Thum, Hauptmann, and Li (2005), using the Parameterization of Almgren
+ * 	(2003). It provides the following Functions:
+ * 	<ul>
+ * 		<li><i>DynamicsParameters</i> Constructor</li>
+ * 		<li>Retrieve the Asset Flow Parameters Instance</li>
+ * 		<li>Generate an Instance of the Almgren 2003 Dynamics Parameters</li>
+ * 	</ul>
  * 
- * <br><br>
+ * The References are:
+ * <br>
  * 	<ul>
  * 	<li>
  * 		Almgren, R., and N. Chriss (1999): Value under Liquidation <i>Risk</i> <b>12 (12)</b>
@@ -106,34 +123,36 @@ package org.drip.execution.athl;
  * 	</li>
  * 	</ul>
  *
- *	<br><br>
- *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/TransactionCostAnalyticsLibrary.md">Transaction Cost Analytics</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/README.md">Optimal Impact/Capture Based Trading Trajectories - Deterministic, Stochastic, Static, and Dynamic</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/athl/README.md">Almgren-Thum-Hauptmann-Li Calibration</a></li>
- *  </ul>
+ * <br>
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md">Numerical Optimizer Library</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/README.md">Optimal Impact/Capture Based Trading Trajectories - Deterministic, Stochastic, Static, and Dynamic</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/athl/README.md">Almgren-Thum-Hauptmann-Li Calibration</a></td></tr>
+ *  </table>
  * 
  * @author Lakshmi Krishnamurthy
  */
 
-public class DynamicsParameters {
-	private org.drip.execution.parameters.AssetFlowSettings _afp = null;
+public class DynamicsParameters
+{
+	private AssetFlowSettings _assetFlowSettings = null;
 
 	/**
-	 * DynamicsParameters Constructor
+	 * <i>DynamicsParameters</i> Constructor
 	 * 
-	 * @param afp The Asset Flow Parameters Instance
+	 * @param assetFlowSettings The Asset Flow Parameters Instance
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public DynamicsParameters (
-		final org.drip.execution.parameters.AssetFlowSettings afp)
+		final AssetFlowSettings assetFlowSettings)
 		throws java.lang.Exception
 	{
-		if (null == (_afp = afp))
-			throw new java.lang.Exception ("DynamicsParameters Constructor => Invalid Inputs");
+		if (null == (_assetFlowSettings = assetFlowSettings)) {
+			throw new Exception ("DynamicsParameters Constructor => Invalid Inputs");
+		}
 	}
 
 	/**
@@ -142,9 +161,9 @@ public class DynamicsParameters {
 	 * @return The Asset Flow Parameters Instance
 	 */
 
-	public org.drip.execution.parameters.AssetFlowSettings assetFlowParameters()
+	public AssetFlowSettings assetFlowSettings()
 	{
-		return _afp;
+		return _assetFlowSettings;
 	}
 
 	/**
@@ -153,17 +172,19 @@ public class DynamicsParameters {
 	 * @return Instance of the Almgren 2003 Dynamics Parameters
 	 */
 
-	public org.drip.execution.dynamics.LinearPermanentExpectationParameters almgren2003()
+	public LinearPermanentExpectationParameters almgren2003()
 	{
 		try {
-			return org.drip.execution.dynamics.ArithmeticPriceEvolutionParametersBuilder.Almgren2003 (new
-				org.drip.execution.parameters.ArithmeticPriceDynamicsSettings (0., new
-					org.drip.function.r1tor1operator.Flat (_afp.dailyVolatility()), 0.), new
-						org.drip.execution.profiletime.UniformParticipationRateLinear (new
-							org.drip.execution.athl.PermanentImpactNoArbitrage (_afp)), new
-								org.drip.execution.profiletime.UniformParticipationRate (new
-									org.drip.execution.athl.TemporaryImpact (_afp)));
-		} catch (java.lang.Exception e) {
+			return ArithmeticPriceEvolutionParametersBuilder.Almgren2003 (
+				new ArithmeticPriceDynamicsSettings (
+					0.,
+					new Flat (_assetFlowSettings.dailyVolatility()),
+					0.
+				),
+				new UniformParticipationRateLinear (new PermanentImpactNoArbitrage (_assetFlowSettings)),
+				new UniformParticipationRate (new TemporaryImpact (_assetFlowSettings))
+			);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
