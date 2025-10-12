@@ -11,7 +11,7 @@ Numerical Optimizer Library contains the supporting Functionality for Numerical 
 
  |        Document         | Link |
  |-------------------------|------|
- | Technical Specification | [*Latest*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/NumericalOptimizer/NumericalOptimizer_v7.11.pdf) [*Previous*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/NumericalOptimizer) |
+ | Technical Specification | [*Latest*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/NumericalOptimizer/NumericalOptimizer_v7.13.pdf) [*Previous*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/NumericalOptimizer) |
  | User Guide              |  |
  | API                     | [*Javadoc*](https://lakshmidrip.github.io/DROP/Javadoc/index.html)|
 
@@ -123,6 +123,20 @@ Numerical Optimizer Library contains the supporting Functionality for Numerical 
 	* Solving the Equation
 	* Extension to Stochastic Problems
 		* Application to LQG-Control
+	* See Also
+	* References
+ * Bellman Equation
+	* Overview
+	* Analytical Concepts in Dynamic Programming
+	* Derivation
+		* A Dynamic Decision Problem
+		* Bellman's Principle of Optimality
+		* The Bellman Equation
+		* In a Stochastic Problem
+	* Solution Methods
+	* Applications in Economics
+	* Example
+	* See Also
 	* References
 
 
