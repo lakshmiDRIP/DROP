@@ -6,6 +6,9 @@ package org.drip.execution.adaptive;
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -81,11 +84,16 @@ package org.drip.execution.adaptive;
 
 /**
  * <i>CoordinatedVariationTrajectory</i> holds the "Common" Measures generated from the HJB-based Multi-Step
- * Optimal Cost Dynamic Trajectory Generation using the Coordinated Variation Version of the Stochastic
- * Volatility and the Transaction Function arising from the Realization of the Market State Variable as
- * described in the "Trading Time" Model. The References are:
+ * 	Optimal Cost Dynamic Trajectory Generation using the Coordinated Variation Version of the Stochastic
+ * 	Volatility and the Transaction Function arising from the Realization of the Market State Variable as
+ * 	described in the "Trading Time" Model. It provides the following Functions:
+ * 	<ul>
+ * 		<li><i>CoordinatedVariationTrajectory</i> Constructor</li>
+ * 		<li>Retrieve The Coordinated Variation Trajectory Determinant Instance</li>
+ * 	</ul>
  * 
- * 	<br><br>
+ * The References are:
+ * <br>
  *  <ul>
  * 		<li>
  * 			Almgren, R. F., and N. Chriss (2000): Optimal Execution of Portfolio Transactions <i>Journal of
@@ -109,34 +117,36 @@ package org.drip.execution.adaptive;
  * 		</li>
  *  </ul>
  *
- *	<br><br>
- *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/TransactionCostAnalyticsLibrary.md">Transaction Cost Analytics</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/README.md">Optimal Impact/Capture Based Trading Trajectories - Deterministic, Stochastic, Static, and Dynamic</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/adaptive/README.md">Coordinated Variation Based Adaptive Execution</a></li>
- *  </ul>
+ * <br>
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md">Numerical Optimizer Library</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/README.md">Optimal Impact/Capture Based Trading Trajectories - Deterministic, Stochastic, Static, and Dynamic</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/adaptive/README.md">Coordinated Variation Based Adaptive Execution</a></td></tr>
+ *  </table>
  * 
  * @author Lakshmi Krishnamurthy
  */
 
-public class CoordinatedVariationTrajectory {
-	private org.drip.execution.adaptive.CoordinatedVariationTrajectoryDeterminant _cvtd = null;
+public class CoordinatedVariationTrajectory
+{
+	private CoordinatedVariationTrajectoryDeterminant _determinant = null;
 
 	/**
-	 * CoordinatedVariationTrajectory Constructor
+	 * <i>CoordinatedVariationTrajectory</i> Constructor
 	 * 
-	 * @param cvtd The Coordinated Variation Trajectory Determinant 
+	 * @param determinant The Coordinated Variation Trajectory Determinant 
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public CoordinatedVariationTrajectory (
-		final org.drip.execution.adaptive.CoordinatedVariationTrajectoryDeterminant cvtd)
-		throws java.lang.Exception
+		final CoordinatedVariationTrajectoryDeterminant determinant)
+		throws Exception
 	{
-		if (null == (_cvtd = cvtd))
-			throw new java.lang.Exception ("CoordinatedVariationTrajectory Constructor => Invalid Inputs");
+		if (null == (_determinant = determinant)) {
+			throw new Exception ("CoordinatedVariationTrajectory Constructor => Invalid Inputs");
+		}
 	}
 
 	/**
@@ -145,8 +155,8 @@ public class CoordinatedVariationTrajectory {
 	 * @return The Coordinated Variation Trajectory Determinant Instance
 	 */
 
-	public org.drip.execution.adaptive.CoordinatedVariationTrajectoryDeterminant trajectoryDeterminant()
+	public CoordinatedVariationTrajectoryDeterminant determinant()
 	{
-		return _cvtd;
+		return _determinant;
 	}
 }

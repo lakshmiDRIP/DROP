@@ -1,11 +1,17 @@
 
 package org.drip.execution.adaptive;
 
+import org.drip.execution.hjb.NonDimensionalCost;
+import org.drip.numerical.common.NumberUtil;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -81,11 +87,18 @@ package org.drip.execution.adaptive;
 
 /**
  * <i>CoordinatedVariationDynamic</i> implements the HJB-based Single Step Optimal Cost Dynamic Trajectory
- * using the Coordinated Variation Version of the Stochastic Volatility and the Transaction Function arising
- * from the Realization of the Market State Variable as described in the "Trading Time" Model. The References
- * are:
- *  
- * 	<br><br>
+ * 	using the Coordinated Variation Version of the Stochastic Volatility and the Transaction Function arising
+ * 	from the Realization of the Market State Variable as described in the "Trading Time" Model. It provides
+ * 	the following Functions:
+ * 	<ul>
+ * 		<li><i>CoordinatedVariationDynamic</i> Constructor</li>
+ * 		<li>Retrieve the Array of the Non Dimensional Holdings</li>
+ * 		<li>Retrieve the Array of the Scaled Non Dimensional Trade Rate</li>
+ * 		<li>Retrieve the Array of the Non Dimensional Costs</li>
+ * 	</ul>
+ * 
+ * The References are:
+ * <br>
  *  <ul>
  * 		<li>
  * 			Almgren, R. F., and N. Chriss (2000): Optimal Execution of Portfolio Transactions <i>Journal of
@@ -109,57 +122,64 @@ package org.drip.execution.adaptive;
  * 		</li>
  *  </ul>
  *
- *	<br><br>
- *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/TransactionCostAnalyticsLibrary.md">Transaction Cost Analytics</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/README.md">Optimal Impact/Capture Based Trading Trajectories - Deterministic, Stochastic, Static, and Dynamic</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/adaptive/README.md">Coordinated Variation Based Adaptive Execution</a></li>
- *  </ul>
+ * <br>
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md">Numerical Optimizer Library</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/README.md">Optimal Impact/Capture Based Trading Trajectories - Deterministic, Stochastic, Static, and Dynamic</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/adaptive/README.md">Coordinated Variation Based Adaptive Execution</a></td></tr>
+ *  </table>
  * 
  * @author Lakshmi Krishnamurthy
  */
 
-public class CoordinatedVariationDynamic extends org.drip.execution.adaptive.CoordinatedVariationTrajectory {
-	private double[] _adblNonDimensionalHoldings = null;
-	private double[] _adblScaledNonDimensionalTradeRate = null;
-	private org.drip.execution.hjb.NonDimensionalCost[] _aNDC = null;
+public class CoordinatedVariationDynamic
+	extends CoordinatedVariationTrajectory
+{
+	private double[] _nonDimensionalHoldingsArray = null;
+	private double[] _scaledNonDimensionalTradeRateArray = null;
+	private NonDimensionalCost[] _nonDimensionalCostArray = null;
 
 	/**
-	 * CoordinatedVariationDynamic Constructor
+	 * <i>CoordinatedVariationDynamic</i> Constructor
 	 * 
-	 * @param cvtd The Coordinated Variation Trajectory Determinant 
-	 * @param adblNonDimensionalHoldings The Array of the Non Dimensional Holdings
-	 * @param adblScaledNonDimensionalTradeRate The Array of the Scaled Non Dimensional Trade Rate
-	 * @param aNDC The Array of the Non Dimensional Costs
+	 * @param trajectoryDeterminant The Coordinated Variation Trajectory Determinant 
+	 * @param nonDimensionalHoldingsArray The Array of the Non Dimensional Holdings
+	 * @param scaledNonDimensionalTradeRateArray The Array of the Scaled Non Dimensional Trade Rate
+	 * @param nonDimensionalCostArray The Array of the Non Dimensional Costs
 	 * 
-	 * @throws java.lang.Exception Thrown if the the Inputs are Invalid
+	 * @throws Exception Thrown if the the Inputs are Invalid
 	 */
 
 	public CoordinatedVariationDynamic (
-		final org.drip.execution.adaptive.CoordinatedVariationTrajectoryDeterminant cvtd,
-		final double[] adblNonDimensionalHoldings,
-		final double[] adblScaledNonDimensionalTradeRate,
-		final org.drip.execution.hjb.NonDimensionalCost[] aNDC)
-		throws java.lang.Exception
+		final CoordinatedVariationTrajectoryDeterminant trajectoryDeterminant,
+		final double[] nonDimensionalHoldingsArray,
+		final double[] scaledNonDimensionalTradeRateArray,
+		final NonDimensionalCost[] nonDimensionalCostArray)
+		throws Exception
 	{
-		super (cvtd);
+		super (trajectoryDeterminant);
 
-		if (null == (_aNDC = aNDC) || null == (_adblNonDimensionalHoldings = adblNonDimensionalHoldings) ||
-			null == (_adblScaledNonDimensionalTradeRate = adblScaledNonDimensionalTradeRate) ||
-				!org.drip.numerical.common.NumberUtil.IsValid (_adblNonDimensionalHoldings) ||
-					!org.drip.numerical.common.NumberUtil.IsValid (_adblScaledNonDimensionalTradeRate))
-			throw new java.lang.Exception ("CoordinatedVariationDynamic Constructor => Invalid Inputs");
+		if (null == (_nonDimensionalCostArray = nonDimensionalCostArray) ||
+			null == (_nonDimensionalHoldingsArray = nonDimensionalHoldingsArray) ||
+			null == (_scaledNonDimensionalTradeRateArray = scaledNonDimensionalTradeRateArray) ||
+			!NumberUtil.IsValid (_nonDimensionalHoldingsArray) ||
+			!NumberUtil.IsValid (_scaledNonDimensionalTradeRateArray))
+		{
+			throw new Exception ("CoordinatedVariationDynamic Constructor => Invalid Inputs");
+		}
 
-		int iNumTimeNode = _adblNonDimensionalHoldings.length;
+		if (0 == _nonDimensionalHoldingsArray.length ||
+			_nonDimensionalHoldingsArray.length != _scaledNonDimensionalTradeRateArray.length ||
+			_nonDimensionalHoldingsArray.length != _nonDimensionalCostArray.length)
+		{
+			throw new Exception ("CoordinatedVariationDynamic Constructor => Invalid Inputs");
+		}
 
-		if (0 == iNumTimeNode || iNumTimeNode != _adblScaledNonDimensionalTradeRate.length || iNumTimeNode !=
-			_aNDC.length)
-			throw new java.lang.Exception ("CoordinatedVariationDynamic Constructor => Invalid Inputs");
-
-		for (int i = 0; i < iNumTimeNode; ++i) {
-			if (null == _aNDC[i])
-				throw new java.lang.Exception ("CoordinatedVariationDynamic Constructor => Invalid Inputs");
+		for (int i = 0; i < _nonDimensionalHoldingsArray.length; ++i) {
+			if (null == _nonDimensionalCostArray[i]) {
+				throw new Exception ("CoordinatedVariationDynamic Constructor => Invalid Inputs");
+			}
 		}
 	}
 
@@ -171,7 +191,7 @@ public class CoordinatedVariationDynamic extends org.drip.execution.adaptive.Coo
 
 	public double[] nonDimensionalHoldings()
 	{
-		return _adblNonDimensionalHoldings;
+		return _nonDimensionalHoldingsArray;
 	}
 
 	/**
@@ -182,7 +202,7 @@ public class CoordinatedVariationDynamic extends org.drip.execution.adaptive.Coo
 
 	public double[] scaledNonDimensionalTradeRate()
 	{
-		return _adblScaledNonDimensionalTradeRate;
+		return _scaledNonDimensionalTradeRateArray;
 	}
 
 	/**
@@ -191,8 +211,8 @@ public class CoordinatedVariationDynamic extends org.drip.execution.adaptive.Coo
 	 * @return The Array of the Non Dimensional Costs
 	 */
 
-	public org.drip.execution.hjb.NonDimensionalCost[] nonDimensionalCost()
+	public NonDimensionalCost[] nonDimensionalCost()
 	{
-		return _aNDC;
+		return _nonDimensionalCostArray;
 	}
 }

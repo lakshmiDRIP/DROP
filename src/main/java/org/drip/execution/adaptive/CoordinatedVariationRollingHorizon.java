@@ -1,11 +1,16 @@
 
 package org.drip.execution.adaptive;
 
+import org.drip.numerical.common.NumberUtil;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -81,11 +86,18 @@ package org.drip.execution.adaptive;
 
 /**
  * <i>CoordinatedVariationRollingHorizon</i> implements the "Rolling Horizon" Approximation of the Optimal
- * Cost Dynamic Trajectory arising from the Coordinated Variation Version of the Stochastic Volatility and
- * the Transaction Function arising from the Realization of the Market State Variable as described in the
- * "Trading Time" Model. The References are:
+ * 	Cost Dynamic Trajectory arising from the Coordinated Variation Version of the Stochastic Volatility and
+ * 	the Transaction Function arising from the Realization of the Market State Variable as described in the
+ * 	"Trading Time" Model. It provides the following Functions:
+ * 	<ul>
+ * 		<li><i>CoordinatedVariationDynamic</i> Constructor</li>
+ * 		<li>Retrieve the Array of the Non Dimensional Holdings</li>
+ * 		<li>Retrieve the Array of the Scaled Non Dimensional Trade Rate</li>
+ * 		<li>Retrieve the Array of the Non Dimensional Costs</li>
+ * 	</ul>
  * 
- * 	<br><br>
+ * The References are:
+ * <br>
  *  <ul>
  * 		<li>
  * 			Almgren, R. F., and N. Chriss (2000): Optimal Execution of Portfolio Transactions <i>Journal of
@@ -109,57 +121,59 @@ package org.drip.execution.adaptive;
  * 		</li>
  *  </ul>
  *
- *	<br><br>
- *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/TransactionCostAnalyticsLibrary.md">Transaction Cost Analytics</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/README.md">Optimal Impact/Capture Based Trading Trajectories - Deterministic, Stochastic, Static, and Dynamic</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/adaptive/README.md">Coordinated Variation Based Adaptive Execution</a></li>
- *  </ul>
+ * <br>
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md">Numerical Optimizer Library</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/README.md">Optimal Impact/Capture Based Trading Trajectories - Deterministic, Stochastic, Static, and Dynamic</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/adaptive/README.md">Coordinated Variation Based Adaptive Execution</a></td></tr>
+ *  </table>
  * 
  * @author Lakshmi Krishnamurthy
  */
 
-public class CoordinatedVariationRollingHorizon extends
-	org.drip.execution.adaptive.CoordinatedVariationTrajectory {
-	private double[] _adblNonDimensionalCost = null;
-	private double[] _adblNonDimensionalHoldings = null;
-	private double[] _adblNonDimensionalTradeRate = null;
+public class CoordinatedVariationRollingHorizon
+	extends CoordinatedVariationTrajectory
+{
+	private double[] _nonDimensionalCostArray = null;
+	private double[] _nonDimensionalHoldingsArray = null;
+	private double[] _nonDimensionalTradeRateArray = null;
 
 	/**
-	 * CoordinatedVariationRollingHorizon Constructor
+	 * <i>CoordinatedVariationRollingHorizon</i> Constructor
 	 * 
-	 * @param cvtd The Coordinated Variation Trajectory Determinant 
-	 * @param adblNonDimensionalHoldings The Array of the Non Dimensional Holdings
-	 * @param adblNonDimensionalTradeRate The Array of the Non Dimensional Trade Rate
-	 * @param adblNonDimensionalCost The Array of the Non Dimensional Cost
+	 * @param trajectoryDeterminant The Coordinated Variation Trajectory Determinant 
+	 * @param nonDimensionalHoldingsArray The Array of the Non Dimensional Holdings
+	 * @param nonDimensionalTradeRateArray The Array of the Non Dimensional Trade Rate
+	 * @param nonDimensionalCostArray The Array of the Non Dimensional Cost
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public CoordinatedVariationRollingHorizon (
-		final org.drip.execution.adaptive.CoordinatedVariationTrajectoryDeterminant cvtd,
-		final double[] adblNonDimensionalHoldings,
-		final double[] adblNonDimensionalTradeRate,
-		final double[] adblNonDimensionalCost)
+		final CoordinatedVariationTrajectoryDeterminant trajectoryDeterminant,
+		final double[] nonDimensionalHoldingsArray,
+		final double[] nonDimensionalTradeRateArray,
+		final double[] nonDimensionalCostArray)
 		throws java.lang.Exception
 	{
-		super (cvtd);
+		super (trajectoryDeterminant);
 
-		if (null == (_adblNonDimensionalHoldings = adblNonDimensionalHoldings) || null ==
-			(_adblNonDimensionalTradeRate = adblNonDimensionalTradeRate) || null == (_adblNonDimensionalCost
-				= adblNonDimensionalCost) || !org.drip.numerical.common.NumberUtil.IsValid
-					(_adblNonDimensionalHoldings) || !org.drip.numerical.common.NumberUtil.IsValid
-						(_adblNonDimensionalTradeRate) || !org.drip.numerical.common.NumberUtil.IsValid
-							(_adblNonDimensionalCost))
-			throw new java.lang.Exception
-				("CoordinatedVariationRollingHorizon Constructor => Invalid Inputs");
+		if (null == (_nonDimensionalHoldingsArray = nonDimensionalHoldingsArray) ||
+			null == (_nonDimensionalTradeRateArray = nonDimensionalTradeRateArray) ||
+			null == (_nonDimensionalCostArray = nonDimensionalCostArray) ||
+			!NumberUtil.IsValid (_nonDimensionalHoldingsArray) ||
+			!NumberUtil.IsValid (_nonDimensionalTradeRateArray) ||
+			!NumberUtil.IsValid (_nonDimensionalCostArray))
+		{
+			throw new Exception ("CoordinatedVariationRollingHorizon Constructor => Invalid Inputs");
+		}
 
-		int iNumTimeNode = _adblNonDimensionalHoldings.length;
-
-		if (0 == iNumTimeNode || iNumTimeNode != _adblNonDimensionalTradeRate.length)
-			throw new java.lang.Exception
-				("CoordinatedVariationRollingHorizon Constructor => Invalid Inputs");
+		if (0 == _nonDimensionalHoldingsArray.length ||
+			_nonDimensionalHoldingsArray.length != _nonDimensionalTradeRateArray.length)
+		{
+			throw new Exception ("CoordinatedVariationRollingHorizon Constructor => Invalid Inputs");
+		}
 	}
 
 	/**
@@ -170,7 +184,7 @@ public class CoordinatedVariationRollingHorizon extends
 
 	public double[] nonDimensionalHoldings()
 	{
-		return _adblNonDimensionalHoldings;
+		return _nonDimensionalHoldingsArray;
 	}
 
 	/**
@@ -181,7 +195,7 @@ public class CoordinatedVariationRollingHorizon extends
 
 	public double[] nonDimensionalTradeRate()
 	{
-		return _adblNonDimensionalTradeRate;
+		return _nonDimensionalTradeRateArray;
 	}
 
 	/**
@@ -192,6 +206,6 @@ public class CoordinatedVariationRollingHorizon extends
 
 	public double[] nonDimensionalCost()
 	{
-		return _adblNonDimensionalCost;
+		return _nonDimensionalCostArray;
 	}
 }

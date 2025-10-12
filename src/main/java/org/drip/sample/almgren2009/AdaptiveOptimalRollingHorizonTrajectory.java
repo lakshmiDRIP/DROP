@@ -284,7 +284,7 @@ public class AdaptiveOptimalRollingHorizonTrajectory {
 
 		System.out.println();
 
-		CoordinatedVariationTrajectoryDeterminant cvtd = cvrh.trajectoryDeterminant();
+		CoordinatedVariationTrajectoryDeterminant cvtd = cvrh.determinant();
 
 		System.out.println ("\t||---------------------------------||");
 

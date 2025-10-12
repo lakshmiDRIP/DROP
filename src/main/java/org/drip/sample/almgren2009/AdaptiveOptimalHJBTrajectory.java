@@ -284,7 +284,7 @@ public class AdaptiveOptimalHJBTrajectory {
 
 		System.out.println();
 
-		CoordinatedVariationTrajectoryDeterminant cvtd = cvd.trajectoryDeterminant();
+		CoordinatedVariationTrajectoryDeterminant cvtd = cvd.determinant();
 
 		System.out.println ("\t||---------------------------------||");
 

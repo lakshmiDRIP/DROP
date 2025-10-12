@@ -280,7 +280,7 @@ public class AdaptiveOptimalStaticTrajectory {
 
 		System.out.println();
 
-		CoordinatedVariationTrajectoryDeterminant cvtd = cvs.trajectoryDeterminant();
+		CoordinatedVariationTrajectoryDeterminant cvtd = cvs.determinant();
 
 		System.out.println ("\t||---------------------------------||");
 
