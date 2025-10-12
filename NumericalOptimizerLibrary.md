@@ -11,7 +11,7 @@ Numerical Optimizer Library contains the supporting Functionality for Numerical 
 
  |        Document         | Link |
  |-------------------------|------|
- | Technical Specification | [*Latest*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/NumericalOptimizer/NumericalOptimizer_v7.13.pdf) [*Previous*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/NumericalOptimizer) |
+ | Technical Specification | [*Latest*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/NumericalOptimizer/NumericalOptimizer_v7.14.pdf) [*Previous*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/NumericalOptimizer) |
  | User Guide              |  |
  | API                     | [*Javadoc*](https://lakshmidrip.github.io/DROP/Javadoc/index.html)|
 
@@ -138,6 +138,17 @@ Numerical Optimizer Library contains the supporting Functionality for Numerical 
 	* Example
 	* See Also
 	* References
+ * Understanding Exact Dynamic Programming through Bellman Operators
+	* Overview
+	* Value Functions as Vectors
+	* Expected Reward and State Transition Probabilities
+	* Bellman Operators B_π and B_*
+	* Contraction and Monotonicity of Operators
+	* Policy Evaluation
+	* Policy Improvement
+	* Policy Iteration
+	* Value Iteration
+	* Greedy Policy from an Optimal Value Function is an Optimal Policy
 
 
 ## DROP Specifications

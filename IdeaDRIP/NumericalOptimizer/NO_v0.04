@@ -1,0 +1,117 @@
+
+ --------------------------
+ #1 - Simplex Algorithm
+ --------------------------
+ --------------------------
+ 1.1) Overview
+	- Canonical Form - minimize c^Tx subject to Ax <= b and x >= 0
+	- Feasible Region and basic Feasible Solution
+	- Convex Polytope
+	- Simplex Polyhedron navigation
+ 1.2) Standard Form
+	- Handling x >= a
+	- Slack Variables for less than inequalities
+	- Surplus Variables for greater than inequalities
+	- Handling Unrestricted Variables
+	- Feasible region as the Canonical Form
+	- Rank of A is the number of rows
+ 1.3) Simplex Tableau
+	- Canonical Form of A
+	- Basic Variables
+	- Non-basic/Free Variables
+	- Pricing Out
+	- Updated Objective Function - Relative Cost Coefficients
+ 1.4) Pivot Operations
+	- Entering and Leaving Variables
+ 1.5) Algorithm
+	- Linear Program as a Canonical Tableau - Basic Feasible Solution improved by successive iteration
+	- Choice of pivot column
+		- Entry in the objective row of the tableau is positive
+		- Entrering Variable Choice Rules/Devex Algorithm
+		- Objective Function Relative Cost Coefficients all negative
+	- Leaving variable selection
+		- Choosing the corresponding Pivot Row
+		- Minimum Ratio Test
+		- Dropping Variable Choice Rule
+ 1.6) Finding an initial canonical tableau
+	- Artificial Variables for Equality Constraints
+ --------------------------
+
+ --------------------------
+ #2 - Optimal Control
+ --------------------------
+ --------------------------
+ 2.1) Overview
+	- Continuous-time Cost Functional to be minimized
+		- J(x, u, t0, tf) = E(x(t0), t0, x(tf), tf) + Integrate F(x, u, t) over t0, tf
+	- First Order Dynamic Constraints - State Equations
+		- xdot(t) = f(x, u, t)
+	- Algebraic Path Constraints
+		- h(x, u, t) <= 0
+	- Endpoint Conditions
+		- e(t0, x(t0), tf, x(tf)) = 0
+ 2.2) Linear Quadratic Control
+	- Quadratic Continuous-time Cost Functional to be minimized
+		- J = 1/2.xTranspose(tf).Sf.x(tf) + 1/2.Integrate {xTranspose(t).Q(t).x(t) + uTranspose(t).R.u(t)} over t0, tf
+	- First Order Dynamic Constraints - State Equations
+		- xdot(t) = A(t).x(t)+B(t).u(t)
+	- Initial Conditions
+		- x(t0) = x0
+	- Linear Quadratic Regulator - LQR
+		- A, B, Q, R are constant
+		- tf -> Infinity
+		- Quadratic Continuous-time Cost Functional to be minimized
+			- J = 1/2.Integrate {xTranspose(t).Q(t).x(t) + uTranspose(t).R.u(t)} over t0, Infinity
+		- First Order Dynamic Constraints - State Equations
+			- xdot(t) = A(t).x(t)+B(t).u(t)
+		- Initial Conditions
+			- x(t0) = x0
+	- Q => PSD and R => PD for finite-horizon
+		- Infinite Horizon; Q/R also constant for positive cost
+	- Optimal Feedback for LQ/LQR:
+		- u(t) = -K(t).x(t)
+		- K(t) = RInverse.BTranspose.S(t)
+		- S(t) solution to differential Riccati equation:
+			- Sdot(t) = -S.A-ATranspose.S+S.B.RInverse.BTranspose.S-Q
+			- S(tf) = Sf
+		- Infinite Horizon - Algebraic Riccati Equation ARE:
+			- 0 = -S.A-ATranspose.S+S.B.RInverse.BTranspose.S-Q
+ 2.3) Numerical Methods for Optimal Control
+	- Indirect Cost based Solution
+		- Hamiltonian H = F + lambdaTranspose.f - muTranspose.h (lambda, mu => Lagrange multipliers)
+		- xdot = dH/dlambda
+		- lamdadot = -dH/dx
+ --------------------------
+
+ --------------------------
+ #3 - Hamilton-Jacobi-Bellman Equation
+ --------------------------
+ --------------------------
+ 3.1) Optimal Control Problems
+	- Expression for Deterministic Optimal Control Path-based Cost Function
+	- xdot as a Function of x and u (the control vector)
+ 3.2) PDE
+	- Deterministic Optimal Control Path-based Cost Function PDE
+	- Deterministic Optimal Control Path-based Cost Function Terminal Condition
+ 3.3) Intuition behind Deterministic Optimal Control Path-based Cost Function
+	- Deterministic Optimal Control Path-based Cost Function in terms of optimal incremental subsequent Cost and adjacent Value Function
+		- Taylor expansion of Value Function
+		- Incorporation of xdot
+ 3.3) Extension to Stochastic Problems
+	- Cost Function Adaptation to the Stochastic State Vector
+		- xdot is implicitly a Function of x and u (the control vector) through the stochastic evolver
+	- Stochastic Version of the HJB Equation
+	- Terminal Cost Function remains the same
+ 3.4) Extension to Stochastic Problems - LCQ Control
+	- Evolution of x in terms of x, u, and Brownian
+	- Explicit Form for the Cost Accumulation
+	- Formulation of HJB for Quadratic Control
+	- Expression for Optimal Action
+ --------------------------
+
+ --------------------------
+ #4 - Bellman Equation
+ --------------------------
+ --------------------------
+ 4.1) Optimal Control Problems
+ --------------------------

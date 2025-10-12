@@ -1,6 +1,8 @@
 
 package org.drip.execution.adaptive;
 
+import org.drip.numerical.common.NumberUtil;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
@@ -81,11 +83,22 @@ package org.drip.execution.adaptive;
 
 /**
  * <i>CoordinatedVariationTrajectoryDeterminant</i> contains the HJB-based MultiStep Optimal Cost Dynamic
- * Trajectory Generation Metrics using the Coordinated Variation Version of the Stochastic Volatility and the
- * Transaction Function arising from the Realization of the Market State Variable as described in the
- * "Trading Time" Model. The References are:
+ * 	Trajectory Generation Metrics using the Coordinated Variation Version of the Stochastic Volatility and
+ * 	the Transaction Function arising from the Realization of the Market State Variable as described in the
+ * 	"Trading Time" Model. It provides the following Functions:
+ * 	<ul>
+ * 		<li><i>CoordinatedVariationTrajectoryDeterminant</i> Constructor</li>
+ * 		<li>Retrieve the Order Size</li>
+ * 		<li>Retrieve the Time Scale</li>
+ * 		<li>Retrieve the Cost Scale</li>
+ * 		<li>Retrieve the Trade Rate Scale</li>
+ * 		<li>Retrieve the Mean Market Urgency</li>
+ * 		<li>Retrieve the Non Dimensional Risk Aversion Parameter</li>
+ * 		<li>Retrieve the Preference-free "Market Power" Parameter</li>
+ * 	</ul>
  * 
- * 	<br><br>
+ * The References are:
+ * <br>
  *  <ul>
  * 		<li>
  * 			Almgren, R. F., and N. Chriss (2000): Optimal Execution of Portfolio Transactions <i>Journal of
@@ -109,61 +122,61 @@ package org.drip.execution.adaptive;
  * 		</li>
  *  </ul>
  *
- *	<br><br>
- *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/TransactionCostAnalyticsLibrary.md">Transaction Cost Analytics</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/README.md">Optimal Impact/Capture Based Trading Trajectories - Deterministic, Stochastic, Static, and Dynamic</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/adaptive/README.md">Coordinated Variation Based Adaptive Execution</a></li>
- *  </ul>
+ * <br>
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md">Numerical Optimizer Library</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/README.md">Optimal Impact/Capture Based Trading Trajectories - Deterministic, Stochastic, Static, and Dynamic</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/adaptive/README.md">Coordinated Variation Based Adaptive Execution</a></td></tr>
+ *  </table>
  * 
  * @author Lakshmi Krishnamurthy
  */
 
-public class CoordinatedVariationTrajectoryDeterminant {
-	private double _dblOrderSize = java.lang.Double.NaN;
-	private double _dblCostScale = java.lang.Double.NaN;
-	private double _dblTimeScale = java.lang.Double.NaN;
-	private double _dblMarketPower = java.lang.Double.NaN;
-	private double _dblTradeRateScale = java.lang.Double.NaN;
-	private double _dblMeanMarketUrgency = java.lang.Double.NaN;
-	private double _dblNonDimensionalRiskAversion = java.lang.Double.NaN;
+public class CoordinatedVariationTrajectoryDeterminant
+{
+	private double _orderSize = Double.NaN;
+	private double _costScale = Double.NaN;
+	private double _timeScale = Double.NaN;
+	private double _marketPower = Double.NaN;
+	private double _tradeRateScale = Double.NaN;
+	private double _meanMarketUrgency = Double.NaN;
+	private double _nonDimensionalRiskAversion = Double.NaN;
 
 	/**
-	 * CoordinatedVariationTrajectoryDeterminant Constructor
+	 * <i>CoordinatedVariationTrajectoryDeterminant</i> Constructor
 	 * 
-	 * @param dblOrderSize The Order Size
-	 * @param dblTimeScale The Time Scale
-	 * @param dblCostScale The Cost Scale
-	 * @param dblTradeRateScale The Trade Rate Scale
-	 * @param dblMeanMarketUrgency The Mean Market Urgency
-	 * @param dblNonDimensionalRiskAversion The Non Dimensional Risk Aversion Parameter
-	 * @param dblMarketPower The Preference-free "Market Power" Parameter
+	 * @param orderSize The Order Size
+	 * @param timeScale The Time Scale
+	 * @param costScale The Cost Scale
+	 * @param tradeRateScale The Trade Rate Scale
+	 * @param meanMarketUrgency The Mean Market Urgency
+	 * @param nonDimensionalRiskAversion The Non Dimensional Risk Aversion Parameter
+	 * @param marketPower The Preference-free "Market Power" Parameter
 	 * 
-	 * @throws java.lang.Exception Thrown if the the Inputs are Invalid
+	 * @throws Exception Thrown if the the Inputs are Invalid
 	 */
 
 	public CoordinatedVariationTrajectoryDeterminant (
-		final double dblOrderSize,
-		final double dblTimeScale,
-		final double dblCostScale,
-		final double dblTradeRateScale,
-		final double dblMeanMarketUrgency,
-		final double dblNonDimensionalRiskAversion,
-		final double dblMarketPower)
-		throws java.lang.Exception
+		final double orderSize,
+		final double timeScale,
+		final double costScale,
+		final double tradeRateScale,
+		final double meanMarketUrgency,
+		final double nonDimensionalRiskAversion,
+		final double marketPower)
+		throws Exception
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblOrderSize = dblOrderSize) ||
-			!org.drip.numerical.common.NumberUtil.IsValid (_dblTimeScale = dblTimeScale) ||
-				!org.drip.numerical.common.NumberUtil.IsValid (_dblCostScale = dblCostScale) ||
-					!org.drip.numerical.common.NumberUtil.IsValid (_dblTradeRateScale = dblTradeRateScale) ||
-						!org.drip.numerical.common.NumberUtil.IsValid (_dblMeanMarketUrgency =
-							dblMeanMarketUrgency) || !org.drip.numerical.common.NumberUtil.IsValid
-								(_dblNonDimensionalRiskAversion = dblNonDimensionalRiskAversion) ||
-									!org.drip.numerical.common.NumberUtil.IsValid (_dblMarketPower =
-										dblMarketPower))
-			throw new java.lang.Exception
-				("CoordinatedVariationTrajectoryDeterminant Constructor => Invalid Inputs");
+		if (!NumberUtil.IsValid (_orderSize = orderSize) ||
+			!NumberUtil.IsValid (_timeScale = timeScale) ||
+			!NumberUtil.IsValid (_costScale = costScale) ||
+			!NumberUtil.IsValid (_tradeRateScale = tradeRateScale) ||
+			!NumberUtil.IsValid (_meanMarketUrgency = meanMarketUrgency) ||
+			!NumberUtil.IsValid (_nonDimensionalRiskAversion = nonDimensionalRiskAversion) ||
+			!NumberUtil.IsValid (_marketPower = marketPower))
+		{
+			throw new Exception ("CoordinatedVariationTrajectoryDeterminant Constructor => Invalid Inputs");
+		}
 	}
 
 	/**
@@ -174,7 +187,7 @@ public class CoordinatedVariationTrajectoryDeterminant {
 
 	public double orderSize()
 	{
-		return _dblOrderSize;
+		return _orderSize;
 	}
 
 	/**
@@ -185,7 +198,7 @@ public class CoordinatedVariationTrajectoryDeterminant {
 
 	public double timeScale()
 	{
-		return _dblTimeScale;
+		return _timeScale;
 	}
 
 	/**
@@ -196,7 +209,7 @@ public class CoordinatedVariationTrajectoryDeterminant {
 
 	public double costScale()
 	{
-		return _dblCostScale;
+		return _costScale;
 	}
 
 	/**
@@ -207,7 +220,7 @@ public class CoordinatedVariationTrajectoryDeterminant {
 
 	public double tradeRateScale()
 	{
-		return _dblTradeRateScale;
+		return _tradeRateScale;
 	}
 
 	/**
@@ -218,7 +231,7 @@ public class CoordinatedVariationTrajectoryDeterminant {
 
 	public double meanMarketUrgency()
 	{
-		return _dblMeanMarketUrgency;
+		return _meanMarketUrgency;
 	}
 
 	/**
@@ -229,7 +242,7 @@ public class CoordinatedVariationTrajectoryDeterminant {
 
 	public double nonDimensionalRiskAversion()
 	{
-		return _dblNonDimensionalRiskAversion;
+		return _nonDimensionalRiskAversion;
 	}
 
 	/**
@@ -240,6 +253,6 @@ public class CoordinatedVariationTrajectoryDeterminant {
 
 	public double marketPower()
 	{
-		return _dblMarketPower;
+		return _marketPower;
 	}
 }
