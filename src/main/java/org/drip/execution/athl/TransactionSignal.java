@@ -1,11 +1,16 @@
 
 package org.drip.execution.athl;
 
+import org.drip.numerical.common.NumberUtil;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -81,10 +86,17 @@ package org.drip.execution.athl;
 
 /**
  * <i>TransactionSignal</i> holds the Realized Empirical Signals that have been emitted off of a Transaction
- * Run, decomposed using the Scheme by Almgren, Thum, Hauptmann, and Li (2005), based off of the
- * Parameterization of Almgren (2003). The References are:
+ * 	Run, decomposed using the Scheme by Almgren, Thum, Hauptmann, and Li (2005), based off of the
+ * 	Parameterization of Almgren (2003). It provides the following Functions:
+ * 	<ul>
+ * 		<li><i>TransactionSignal</i> Constructor</li>
+ * 		<li>Retrieve the Drift of the Transaction Signal</li>
+ * 		<li>Retrieve the "I" Component Wander of the Transaction Signal</li>
+ * 		<li>Retrieve the "J" Component Wander of the Transaction Signal</li>
+ * 	</ul>
  * 
- * <br><br>
+ * The References are:
+ * <br>
  * 	<ul>
  * 	<li>
  * 		Almgren, R., and N. Chriss (1999): Value under Liquidation <i>Risk</i> <b>12 (12)</b>
@@ -106,42 +118,45 @@ package org.drip.execution.athl;
  * 	</li>
  * 	</ul>
  *
- *	<br><br>
- *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/TransactionCostAnalyticsLibrary.md">Transaction Cost Analytics</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/README.md">Optimal Impact/Capture Based Trading Trajectories - Deterministic, Stochastic, Static, and Dynamic</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/athl/README.md">Almgren-Thum-Hauptmann-Li Calibration</a></li>
- *  </ul>
+ * <br>
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md">Numerical Optimizer Library</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/README.md">Optimal Impact/Capture Based Trading Trajectories - Deterministic, Stochastic, Static, and Dynamic</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/athl/README.md">Almgren-Thum-Hauptmann-Li Calibration</a></td></tr>
+ *  </table>
  * 
  * @author Lakshmi Krishnamurthy
  */
 
-public class TransactionSignal {
-	private double _dblDrift = java.lang.Double.NaN;
-	private double _dblIWander = java.lang.Double.NaN;
-	private double _dblJWander = java.lang.Double.NaN;
+public class TransactionSignal
+{
+	private double _drift = Double.NaN;
+	private double _iWander = Double.NaN;
+	private double _jWander = Double.NaN;
 
 	/**
-	 * TransactionSignal Constructor
+	 * <i>TransactionSignal</i> Constructor
 	 * 
-	 * @param dblDrift The Signal Drift
-	 * @param dblIWander The "I" Signal Wander
-	 * @param dblJWander The "J" Signal Wander
+	 * @param drift The Signal Drift
+	 * @param iWander The "I" Signal Wander
+	 * @param jWander The "J" Signal Wander
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public TransactionSignal (
-		final double dblDrift,
-		final double dblIWander,
-		final double dblJWander)
-		throws java.lang.Exception
+		final double drift,
+		final double iWander,
+		final double jWander)
+		throws Exception
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblDrift = dblDrift) ||
-			!org.drip.numerical.common.NumberUtil.IsValid (_dblIWander = dblIWander) ||
-				!org.drip.numerical.common.NumberUtil.IsValid (_dblJWander = dblJWander))
-			throw new java.lang.Exception ("TransactionSignal Constructor => Invalid Inputs");
+		if (!NumberUtil.IsValid (_drift = drift) ||
+			!NumberUtil.IsValid (_iWander = iWander) ||
+			!NumberUtil.IsValid (_jWander = jWander))
+		{
+			throw new Exception ("TransactionSignal Constructor => Invalid Inputs");
+		}
 	}
 
 	/**
@@ -152,7 +167,7 @@ public class TransactionSignal {
 
 	public double drift()
 	{
-		return _dblDrift;
+		return _drift;
 	}
 
 	/**
@@ -163,7 +178,7 @@ public class TransactionSignal {
 
 	public double iWander()
 	{
-		return _dblIWander;
+		return _iWander;
 	}
 
 	/**
@@ -174,6 +189,6 @@ public class TransactionSignal {
 
 	public double jWander()
 	{
-		return _dblJWander;
+		return _jWander;
 	}
 }

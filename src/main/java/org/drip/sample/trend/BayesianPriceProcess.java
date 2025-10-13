@@ -156,7 +156,7 @@ public class BayesianPriceProcess {
 			dblNu
 		);
 
-		double[] adblAlpha = pdd.realizedDrift (iN);
+		double[] adblAlpha = pdd.realizedDriftArray (iN);
 
 		System.out.println();
 
@@ -189,7 +189,7 @@ public class BayesianPriceProcess {
 				dblTime
 			);
 
-			double dblPriceSwing = cpd.priceVolatilitySwing();
+			double dblPriceSwing = cpd.volatilitySwing();
 
 			double dblRealizedPriceChange = adblAlpha[i] * dblTimeWidth + dblPriceSwing;
 			dblPrice = dblPrice + dblRealizedPriceChange;

@@ -1,11 +1,17 @@
 
 package org.drip.execution.bayesian;
 
+import org.drip.measure.gaussian.NormalQuadrature;
+import org.drip.measure.gaussian.R1UnivariateNormal;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -81,9 +87,16 @@ package org.drip.execution.bayesian;
 
 /**
  * <i>PriorDriftDistribution</i> holds the Prior Belief Distribution associated with the Directional Drift.
- * The References are:
+ *  It provides the following Functions:
+ * 	<ul>
+ * 		<li>Construct an Instance of <i>PriorDriftDistribution</i></li>
+ * 		<li>Retrieve the Expectation of the Prior Drift Distribution</li>
+ * 		<li>Retrieve the Confidence of the Prior Drift Distribution</li>
+ * 		<li>Generate the given Number of Bayesian Drift Realizations</li>
+ * 	</ul>
  * 
- * <br><br>
+ * The References are:
+ * <br>
  * 	<ul>
  * 		<li>
  * 			Bertsimas, D., and A. W. Lo (1998): Optimal Control of Execution Costs <i>Journal of Financial
@@ -107,34 +120,36 @@ package org.drip.execution.bayesian;
  * 		</li>
  * 	</ul>
  *
- *	<br><br>
- *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/TransactionCostAnalyticsLibrary.md">Transaction Cost Analytics</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/README.md">Optimal Impact/Capture Based Trading Trajectories - Deterministic, Stochastic, Static, and Dynamic</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/bayesian/README.md">Bayesian Price Based Optimal Execution</a></li>
- *  </ul>
+ * <br>
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md">Numerical Optimizer Library</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/README.md">Optimal Impact/Capture Based Trading Trajectories - Deterministic, Stochastic, Static, and Dynamic</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/bayesian/README.md">Bayesian Price Based Optimal Execution</a></td></tr>
+ *  </table>
  * 
  * @author Lakshmi Krishnamurthy
  */
 
-public class PriorDriftDistribution extends org.drip.measure.gaussian.R1UnivariateNormal {
+public class PriorDriftDistribution
+	extends R1UnivariateNormal
+{
 
 	/**
-	 * Construct an Instance of Prior Drift Distribution
+	 * Construct an Instance of <i>PriorDriftDistribution</i>
 	 * 
-	 * @param dblExpectation Expectation of the Prior Drift
-	 * @param dblConfidence Confidence of the Prior Drift
+	 * @param expectation Expectation of the Prior Drift
+	 * @param confidence Confidence of the Prior Drift
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public PriorDriftDistribution (
-		final double dblExpectation,
-		final double dblConfidence)
-		throws java.lang.Exception
+		final double expectation,
+		final double confidence)
+		throws Exception
 	{
-		super (dblExpectation, dblConfidence);
+		super (expectation, confidence);
 	}
 
 	/**
@@ -156,39 +171,41 @@ public class PriorDriftDistribution extends org.drip.measure.gaussian.R1Univaria
 
 	public double confidence()
 	{
-		return java.lang.Math.sqrt (variance());
+		return Math.sqrt (variance());
 	}
 
 	/**
 	 * Generate the given Number of Bayesian Drift Realizations
 	 * 
-	 * @param iNumRealization The Number of Realizations to be generated
+	 * @param realizationCount The Number of Realizations to be generated
 	 * 
 	 * @return Array of the Drift Realizations
 	 */
 
-	public double[] realizedDrift (
-		final int iNumRealization)
+	public double[] realizedDriftArray (
+		final int realizationCount)
 	{
-		if (0 >= iNumRealization) return null;
+		if (0 >= realizationCount) {
+			return null;
+		}
 
-		double[] adblRealizedDrift = new double[iNumRealization];
+		double[] realizedDriftArray = new double[realizationCount];
 
-		double dblConfidence = confidence();
+		double confidence = confidence();
 
-		double dblExpectation = mean();
+		double expectation = mean();
 
-		for (int i = 0; i < iNumRealization; ++i) {
+		for (int realizationIndex = 0; realizationIndex < realizationCount; ++realizationIndex) {
 			try {
-				adblRealizedDrift[i] = dblExpectation + dblConfidence *
-					org.drip.measure.gaussian.NormalQuadrature.InverseCDF (java.lang.Math.random());
-			} catch (java.lang.Exception e) {
+				realizedDriftArray[realizationIndex] =
+					expectation + confidence * NormalQuadrature.InverseCDF (Math.random());
+			} catch (Exception e) {
 				e.printStackTrace();
 
 				return null;
 			}
 		}
 
-		return adblRealizedDrift;
+		return realizedDriftArray;
 	}
 }

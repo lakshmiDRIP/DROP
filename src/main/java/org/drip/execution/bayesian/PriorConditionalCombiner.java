@@ -1,11 +1,17 @@
 
 package org.drip.execution.bayesian;
 
+import org.drip.measure.gaussian.R1UnivariateNormal;
+import org.drip.numerical.common.NumberUtil;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -81,10 +87,18 @@ package org.drip.execution.bayesian;
 
 /**
  * <i>PriorConditionalCombiner</i> holds the Distributions associated with the Prior Drift and the
- * Conditional Price Distributions. It uses them to generate the resulting Joint, Posterior, and MAP Implied
- * Posterior Distributions. The References are:
+ * 	Conditional Price Distributions. It uses them to generate the resulting Joint, Posterior, and MAP Implied
+ * 	Posterior Distributions. It provides the following Functions:
+ * 	<ul>
+ * 		<li><i>PriorConditionalCombiner</i> Constructor</li>
+ * 		<li>Retrieve the Prior Drift Distribution Instance</li>
+ * 		<li>Retrieve the Conditional Price Distribution Instance</li>
+ * 		<li>Generate the Joint Price Distribution</li>
+ * 		<li>Generate the Posterior Drift Distribution</li>
+ * 	</ul>
  * 
- * <br><br>
+ * The References are:
+ * <br>
  * 	<ul>
  * 		<li>
  * 			Bertsimas, D., and A. W. Lo (1998): Optimal Control of Execution Costs <i>Journal of Financial
@@ -108,37 +122,41 @@ package org.drip.execution.bayesian;
  * 		</li>
  * 	</ul>
  *
- *	<br><br>
- *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/TransactionCostAnalyticsLibrary.md">Transaction Cost Analytics</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/README.md">Optimal Impact/Capture Based Trading Trajectories - Deterministic, Stochastic, Static, and Dynamic</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/bayesian/README.md">Bayesian Price Based Optimal Execution</a></li>
- *  </ul>
+ * <br>
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md">Numerical Optimizer Library</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/README.md">Optimal Impact/Capture Based Trading Trajectories - Deterministic, Stochastic, Static, and Dynamic</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/bayesian/README.md">Bayesian Price Based Optimal Execution</a></td></tr>
+ *  </table>
  * 
  * @author Lakshmi Krishnamurthy
  */
 
-public class PriorConditionalCombiner {
-	private org.drip.execution.bayesian.PriorDriftDistribution _pdd = null;
-	private org.drip.execution.bayesian.ConditionalPriceDistribution _cpd = null;
+public class PriorConditionalCombiner
+{
+	private PriorDriftDistribution _driftDistribution = null;
+	private ConditionalPriceDistribution _priceDistribution = null;
 
 	/**
-	 * PriorConditionalCombiner Constructor
+	 * <i>PriorConditionalCombiner</i> Constructor
 	 * 
-	 * @param pdd The Prior Drift Distribution Instance
-	 * @param cpd The Conditional Price Distribution Instance
+	 * @param driftDistribution The Prior Drift Distribution Instance
+	 * @param priceDistribution The Conditional Price Distribution Instance
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public PriorConditionalCombiner (
-		final org.drip.execution.bayesian.PriorDriftDistribution pdd,
-		final org.drip.execution.bayesian.ConditionalPriceDistribution cpd)
-		throws java.lang.Exception
+		final PriorDriftDistribution driftDistribution,
+		final ConditionalPriceDistribution priceDistribution)
+		throws Exception
 	{
-		if (null == (_pdd = pdd) || null == (_cpd = cpd))
-			throw new java.lang.Exception ("PriorConditionalCombiner Constructor => Invalid Inputs");
+		if (null == (_driftDistribution = driftDistribution) ||
+			null == (_priceDistribution = priceDistribution))
+		{
+			throw new Exception ("PriorConditionalCombiner Constructor => Invalid Inputs");
+		}
 	}
 
 	/**
@@ -147,9 +165,9 @@ public class PriorConditionalCombiner {
 	 * @return The Prior Drift Distribution Instance
 	 */
 
-	public org.drip.execution.bayesian.PriorDriftDistribution prior()
+	public PriorDriftDistribution priorDriftDistribution()
 	{
-		return _pdd;
+		return _driftDistribution;
 	}
 
 	/**
@@ -158,9 +176,9 @@ public class PriorConditionalCombiner {
 	 * @return The Conditional Price Distribution Instance
 	 */
 
-	public org.drip.execution.bayesian.ConditionalPriceDistribution conditional()
+	public ConditionalPriceDistribution conditionalPriceDistribution()
 	{
-		return _cpd;
+		return _priceDistribution;
 	}
 
 	/**
@@ -169,14 +187,16 @@ public class PriorConditionalCombiner {
 	 * @return The Joint Price Distribution
 	 */
 
-	public org.drip.measure.gaussian.R1UnivariateNormal jointPriceDistribution()
+	public R1UnivariateNormal jointPriceDistribution()
 	{
-		double dblTime = _cpd.time();
+		double time = _priceDistribution.time();
 
 		try {
-			return new org.drip.measure.gaussian.R1UnivariateNormal (_pdd.expectation() * dblTime,
-				_pdd.variance() * dblTime * dblTime +_cpd.variance());
-		} catch (java.lang.Exception e) {
+			return new R1UnivariateNormal (
+				_driftDistribution.expectation() * time,
+				_driftDistribution.variance() * time * time +_priceDistribution.variance()
+			);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -186,29 +206,32 @@ public class PriorConditionalCombiner {
 	/**
 	 * Generate the Posterior Drift Distribution
 	 * 
-	 * @param dblDeltaS The Price Change (Final - Initial)
+	 * @param deltaS The Price Change (Final - Initial)
 	 * 
 	 * @return The Posterior Drift Distribution
 	 */
 
-	public org.drip.measure.gaussian.R1UnivariateNormal posteriorDriftDistribution (
-		final double dblDeltaS)
+	public R1UnivariateNormal posteriorDriftDistribution (
+		final double deltaS)
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (dblDeltaS)) return null;
+		if (!NumberUtil.IsValid (deltaS)) {
+			return null;
+		}
 
-		double dblT = _cpd.time();
+		double t = _priceDistribution.time();
 
-		double dblNuSquared = _pdd.variance();
+		double nuSquared = _driftDistribution.variance();
 
-		double dblSigmaSquared = _cpd.variance() / dblT;
+		double sigmaSquared = _priceDistribution.variance() / t;
 
-		double dblPrecisionSquared = 1. / (dblSigmaSquared + dblNuSquared * dblT);
+		double precisionSquared = 1. / (sigmaSquared + nuSquared * t);
 
 		try {
-			return new org.drip.measure.gaussian.R1UnivariateNormal ((_pdd.expectation() * dblSigmaSquared +
-				dblNuSquared * dblDeltaS) * dblPrecisionSquared, dblSigmaSquared * dblNuSquared *
-					dblPrecisionSquared);
-		} catch (java.lang.Exception e) {
+			return new R1UnivariateNormal (
+				(_driftDistribution.expectation() * sigmaSquared + nuSquared * deltaS) * precisionSquared,
+				sigmaSquared * nuSquared * precisionSquared
+			);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 

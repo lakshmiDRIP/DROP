@@ -173,7 +173,7 @@ public abstract class R1ToR1 {
 	}
 
 	/**
-	 * Calculate the Differential
+	 * Calculate the Ordered Derivative
 	 * 
 	 * @param dblVariate Variate at which the derivative is to be calculated
 	 * @param iOrder Order of the derivative to be computed

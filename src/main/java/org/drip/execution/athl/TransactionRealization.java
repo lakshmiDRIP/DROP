@@ -1,11 +1,17 @@
 
 package org.drip.execution.athl;
 
+import org.drip.execution.impact.TransactionFunction;
+import org.drip.numerical.common.NumberUtil;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -81,10 +87,21 @@ package org.drip.execution.athl;
 
 /**
  * <i>TransactionRealization</i> holds the Suite of Empirical Drift/Wander Signals that have been emitted off
- * of a Transaction Run using the Scheme by Almgren, Thum, Hauptmann, and Li (2005), using the
- * Parameterization of Almgren (2003). The References are:
+ * 	of a Transaction Run using the Scheme by Almgren, Thum, Hauptmann, and Li (2005), using the
+ * 	Parameterization of Almgren (2003). It provides the following Functions:
+ * 	<ul>
+ * 		<li><i>TransactionRealization</i> Constructor</li>
+ * 		<li>Retrieve the Permanent Market Impact Transaction Function</li>
+ * 		<li>Retrieve the Temporary Market Impact Transaction Function</li>
+ * 		<li>Retrieve the Asset Daily Volatility</li>
+ * 		<li>Retrieve the Transaction Amount X</li>
+ * 		<li>Retrieve the Transaction Completion Time T in Days</li>
+ * 		<li>Retrieve the Transaction Completion Time in Days Adjusted for the Permanent Lag <code>TPost</code></li>
+ * 		<li>Emit the <code>IJK</code> Signal</li>
+ * 	</ul>
  * 
- * <br><br>
+ * The References are:
+ * <br>
  * 	<ul>
  * 	<li>
  * 		Almgren, R., and N. Chriss (1999): Value under Liquidation <i>Risk</i> <b>12 (12)</b>
@@ -106,57 +123,61 @@ package org.drip.execution.athl;
  * 	</li>
  * 	</ul>
  *
- *	<br><br>
- *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/TransactionCostAnalyticsLibrary.md">Transaction Cost Analytics</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/README.md">Optimal Impact/Capture Based Trading Trajectories - Deterministic, Stochastic, Static, and Dynamic</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/athl/README.md">Almgren-Thum-Hauptmann-Li Calibration</a></li>
- *  </ul>
+ * <br>
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md">Numerical Optimizer Library</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/README.md">Optimal Impact/Capture Based Trading Trajectories - Deterministic, Stochastic, Static, and Dynamic</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/athl/README.md">Almgren-Thum-Hauptmann-Li Calibration</a></td></tr>
+ *  </table>
  * 
  * @author Lakshmi Krishnamurthy
  */
 
-public class TransactionRealization {
-	private double _dblT = java.lang.Double.NaN;
-	private double _dblX = java.lang.Double.NaN;
-	private double _dblTPost = java.lang.Double.NaN;
-	private double _dblTSQRT = java.lang.Double.NaN;
-	private double _dblVolatility = java.lang.Double.NaN;
-	private org.drip.execution.impact.TransactionFunction _tfPermanent = null;
-	private org.drip.execution.impact.TransactionFunction _tfTemporary = null;
+public class TransactionRealization
+{
+	private double _t = Double.NaN;
+	private double _x = Double.NaN;
+	private double _tPost = Double.NaN;
+	private double _tSqrt = Double.NaN;
+	private double _volatility = Double.NaN;
+	private TransactionFunction _permanentTransactionFunction = null;
+	private TransactionFunction _temporaryTransactionFunction = null;
 
 	/**
-	 * TransactionRealization Constructor
+	 * <i>TransactionRealization</i> Constructor
 	 * 
-	 * @param tfPermanent The Permanent Market Impact Transaction Function
-	 * @param tfTemporary The Temporary Market Impact Transaction Function
-	 * @param dblVolatility The Asset Daily Volatility
-	 * @param dblX The Transaction Amount
-	 * @param dblT The Transaction Completion Time in Days
-	 * @param dblTPost The Transaction Completion Time in Days Adjusted for the Permanent Lag
+	 * @param permanentTransactionFunction The Permanent Market Impact Transaction Function
+	 * @param temporaryTransactionFunction The Temporary Market Impact Transaction Function
+	 * @param volatility The Asset Daily Volatility
+	 * @param x The Transaction Amount
+	 * @param t The Transaction Completion Time in Days
+	 * @param tPost The Transaction Completion Time in Days Adjusted for the Permanent Lag
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public TransactionRealization (
-		final org.drip.execution.impact.TransactionFunction tfPermanent,
-		final org.drip.execution.impact.TransactionFunction tfTemporary,
-		final double dblVolatility,
-		final double dblX,
-		final double dblT,
-		final double dblTPost)
-		throws java.lang.Exception
+		final TransactionFunction permanentTransactionFunction,
+		final TransactionFunction temporaryTransactionFunction,
+		final double volatility,
+		final double x,
+		final double t,
+		final double tPost)
+		throws Exception
 	{
-		if (null == (_tfPermanent = tfPermanent) || null == (_tfTemporary = tfTemporary) ||
-			!org.drip.numerical.common.NumberUtil.IsValid (_dblVolatility = dblVolatility) || 0. > _dblVolatility
-				|| !org.drip.numerical.common.NumberUtil.IsValid (_dblX = dblX) ||
-					!org.drip.numerical.common.NumberUtil.IsValid (_dblT = dblT) || 0. > _dblT ||
-						!org.drip.numerical.common.NumberUtil.IsValid (_dblTPost = dblTPost) || _dblT >=
-							_dblTPost)
-			throw new java.lang.Exception  ("TransactionRealization Constructor => Invalid Inputs");
+		if (null == (_permanentTransactionFunction = permanentTransactionFunction) ||
+			null == (_temporaryTransactionFunction = temporaryTransactionFunction) ||
+			!NumberUtil.IsValid (_volatility = volatility) || 0. > _volatility ||
+			!NumberUtil.IsValid (_x = x) ||
+			!NumberUtil.IsValid (_t = t) || 0. > _t ||
+			!NumberUtil.IsValid (_tPost = tPost) ||
+			_t >= _tPost)
+		{
+			throw new Exception  ("TransactionRealization Constructor => Invalid Inputs");
+		}
 
-		_dblTSQRT = java.lang.Math.sqrt (_dblT);
+		_tSqrt = Math.sqrt (_t);
 	}
 
 	/**
@@ -165,9 +186,9 @@ public class TransactionRealization {
 	 * @return The Permanent Market Impact Transaction Function
 	 */
 
-	public org.drip.execution.impact.TransactionFunction permanentMarketImpactFunction()
+	public TransactionFunction permanentMarketImpactFunction()
 	{
-		return _tfPermanent;
+		return _permanentTransactionFunction;
 	}
 
 	/**
@@ -176,9 +197,9 @@ public class TransactionRealization {
 	 * @return The Temporary Market Impact Transaction Function
 	 */
 
-	public org.drip.execution.impact.TransactionFunction temporaryMarketImpactFunction()
+	public TransactionFunction temporaryMarketImpactFunction()
 	{
-		return _tfTemporary;
+		return _temporaryTransactionFunction;
 	}
 
 	/**
@@ -189,7 +210,7 @@ public class TransactionRealization {
 
 	public double volatility()
 	{
-		return _dblVolatility;
+		return _volatility;
 	}
 
 	/**
@@ -200,7 +221,7 @@ public class TransactionRealization {
 
 	public double x()
 	{
-		return _dblX;
+		return _x;
 	}
 
 	/**
@@ -211,44 +232,51 @@ public class TransactionRealization {
 
 	public double t()
 	{
-		return _dblT;
+		return _t;
 	}
 
 	/**
-	 * Retrieve the Transaction Completion Time in Days Adjusted for the Permanent Lag TPost
+	 * Retrieve the Transaction Completion Time in Days Adjusted for the Permanent Lag <code>TPost</code>
 	 * 
-	 * @return The Transaction Completion Time in Days Adjusted for the Permanent Lag TPost
+	 * @return The Transaction Completion Time in Days Adjusted for the Permanent Lag <code>TPost</code>
 	 */
 
 	public double tPost()
 	{
-		return _dblTPost;
+		return _tPost;
 	}
 
 	/**
-	 * Emit the IJK Signal
+	 * Emit the <code>IJK</code> Signal
 	 * 
-	 * @param dblIRandom The Random "I" Instance
-	 * @param dblJRandom The Random "J" Instance
+	 * @param randomI The Random "I" Instance
+	 * @param randomJ The Random "J" Instance
 	 * 
-	 * @return The IJK Signal Instance
+	 * @return The <code>IJK</code> Signal Instance
 	 */
 
-	public org.drip.execution.athl.IJK emitSignal (
-		final double dblIRandom,
-		final double dblJRandom)
+	public IJK emitSignal (
+		final double randomI,
+		final double randomJ)
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (dblIRandom) ||
-			!org.drip.numerical.common.NumberUtil.IsValid (dblJRandom))
+		if (!NumberUtil.IsValid (randomI) || !NumberUtil.IsValid (randomJ)) {
 			return null;
+		}
 
 		try {
-			return new org.drip.execution.athl.IJK (new org.drip.execution.athl.TransactionSignal
-				(_tfPermanent.evaluate (_dblX, _dblT), _dblVolatility * _dblTSQRT * dblIRandom, 0.), new
-					org.drip.execution.athl.TransactionSignal (_tfTemporary.evaluate (_dblX, _dblT),
-						_dblVolatility * java.lang.Math.sqrt (_dblT / 12. * (4. - (3. * _dblT / _dblTPost)))
-							* dblJRandom, 0.5 * (_dblTPost - _dblT) / _dblTSQRT * dblIRandom));
-		} catch (java.lang.Exception e) {
+			return new IJK (
+				new TransactionSignal (
+					_permanentTransactionFunction.evaluate (_x, _t),
+					_volatility * _tSqrt * randomI,
+					0.
+				),
+				new TransactionSignal (
+					_temporaryTransactionFunction.evaluate (_x, _t),
+					_volatility * Math.sqrt (_t / 12. * (4. - (3. * _t / _tPost))) * randomJ,
+					0.5 * (_tPost - _t) / _tSqrt * randomI
+				)
+			);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 

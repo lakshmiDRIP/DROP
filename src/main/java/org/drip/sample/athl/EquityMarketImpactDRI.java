@@ -136,7 +136,7 @@ public class EquityMarketImpactDRI {
 		throws Exception
 	{
 		double dblNormalizedTemporaryImpact = ti.evaluate (
-			dblTradeSize / (ti.assetFlowParameters().averageDailyVolume() * dblTime)
+			dblTradeSize / (ti.assetFlowSettings().averageDailyVolume() * dblTime)
 		);
 
 		double dblDenormalizedTemporaryImpact = ti.evaluate (

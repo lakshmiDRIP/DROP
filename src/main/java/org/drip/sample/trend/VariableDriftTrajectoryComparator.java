@@ -176,11 +176,11 @@ public class VariableDriftTrajectoryComparator {
 			dblNu
 		);
 
-		double[] adblAlphaLow = pddLow.realizedDrift (iN);
+		double[] adblAlphaLow = pddLow.realizedDriftArray (iN);
 
-		double[] adblAlphaMid = pddMid.realizedDrift (iN);
+		double[] adblAlphaMid = pddMid.realizedDriftArray (iN);
 
-		double[] adblAlphaHigh = pddHigh.realizedDrift (iN);
+		double[] adblAlphaHigh = pddHigh.realizedDriftArray (iN);
 
 		System.out.println();
 
@@ -231,11 +231,11 @@ public class VariableDriftTrajectoryComparator {
 				dblTime
 			);
 
-			double dblPriceSwingLow = cpdLow.priceVolatilitySwing();
+			double dblPriceSwingLow = cpdLow.volatilitySwing();
 
-			double dblPriceSwingMid = cpdMid.priceVolatilitySwing();
+			double dblPriceSwingMid = cpdMid.volatilitySwing();
 
-			double dblPriceSwingHigh = cpdHigh.priceVolatilitySwing();
+			double dblPriceSwingHigh = cpdHigh.volatilitySwing();
 
 			double dblRealizedPriceChangeLow = adblAlphaLow[i] * dblTimeWidth + dblPriceSwingLow;
 			double dblRealizedPriceChangeMid = adblAlphaMid[i] * dblTimeWidth + dblPriceSwingMid;

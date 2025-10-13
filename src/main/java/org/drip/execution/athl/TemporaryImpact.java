@@ -1,11 +1,18 @@
 
 package org.drip.execution.athl;
 
+import org.drip.execution.impact.TransactionFunctionPower;
+import org.drip.execution.parameters.AssetFlowSettings;
+import org.drip.numerical.common.NumberUtil;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -81,10 +88,21 @@ package org.drip.execution.athl;
 
 /**
  * <i>TemporaryImpact</i> implements the Temporary Market Impact with Exponent/Coefficients that have been
- * determined empirically by Almgren, Thum, Hauptmann, and Li (2005), using the Parameterization of Almgren
- * (2003). The References are:
+ * 	determined empirically by Almgren, Thum, Hauptmann, and Li (2005), using the Parameterization of Almgren
+ * 	(2003). It provides the following Functions:
+ * 	<ul>
+ * 		<li><i>TemporaryImpact</i> Constructor</li>
+ * 		<li>Retrieve the Asset Flow Settings</li>
+ * 		<li>Regularize the Input Function using the specified Trade Inputs</li>
+ * 		<li>Modulate/Scale the Impact Output</li>
+ * 		<li>Retrieve the Constant Market Impact Parameter</li>
+ * 		<li>Retrieve the Power Law Exponent Market Impact Parameter</li>
+ * 		<li>Evaluate the Impact for the given Normalized Holdings</li>
+ * 		<li>Calculate the Ordered Derivative</li>
+ * 	</ul>
  * 
- * <br><br>
+ * The References are:
+ * <br>
  * 	<ul>
  * 	<li>
  * 		Almgren, R., and N. Chriss (1999): Value under Liquidation <i>Risk</i> <b>12 (12)</b>
@@ -106,104 +124,165 @@ package org.drip.execution.athl;
  * 	</li>
  * 	</ul>
  *
- *	<br><br>
- *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/TransactionCostAnalyticsLibrary.md">Transaction Cost Analytics</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/README.md">Optimal Impact/Capture Based Trading Trajectories - Deterministic, Stochastic, Static, and Dynamic</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/athl/README.md">Almgren-Thum-Hauptmann-Li Calibration</a></li>
- *  </ul>
+ * <br>
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md">Numerical Optimizer Library</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/README.md">Optimal Impact/Capture Based Trading Trajectories - Deterministic, Stochastic, Static, and Dynamic</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/athl/README.md">Almgren-Thum-Hauptmann-Li Calibration</a></td></tr>
+ *  </table>
  * 
  * @author Lakshmi Krishnamurthy
  */
 
-public class TemporaryImpact extends org.drip.execution.impact.TransactionFunctionPower {
-	private org.drip.execution.parameters.AssetFlowSettings _afp = null;
+public class TemporaryImpact
+	extends TransactionFunctionPower
+{
+	private AssetFlowSettings _assetFlowSettings = null;
 
 	/**
-	 * TemporaryImpact Constructor
+	 * <i>TemporaryImpact</i> Constructor
 	 * 
-	 * @param afp The Asset Flow Parameters
+	 * @param assetFlowSettings Asset Flow Settings
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public TemporaryImpact (
-		final org.drip.execution.parameters.AssetFlowSettings afp)
-		throws java.lang.Exception
+		final AssetFlowSettings assetFlowSettings)
+		throws Exception
 	{
-		if (null == (_afp = afp))
-			throw new java.lang.Exception ("TemporaryImpact Constructor => Invalid Inputs");
+		if (null == (_assetFlowSettings = assetFlowSettings)) {
+			throw new Exception ("TemporaryImpact Constructor => Invalid Inputs");
+		}
 	}
 
 	/**
-	 * Retrieve the Asset Flow Parameters
+	 * Retrieve the Asset Flow Settings
 	 * 
-	 * @return The Asset Flow Parameters
+	 * @return The Asset Flow Settings
 	 */
 
-	public org.drip.execution.parameters.AssetFlowSettings assetFlowParameters()
+	public AssetFlowSettings assetFlowSettings()
 	{
-		return _afp;
+		return _assetFlowSettings;
 	}
+
+	/**
+	 * Regularize the Input Function using the specified Trade Inputs
+	 * 
+	 * @param tradeInterval The Trade Interval
+	 * 
+	 * @return The Regularize Input
+	 * 
+	 * @throws Exception Thrown if the Inputs are Invalid
+	 */
 
 	@Override public double regularize (
-		final double dblTradeInterval)
-		throws java.lang.Exception
+		final double tradeInterval)
+		throws Exception
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (dblTradeInterval) || 0 >= dblTradeInterval)
-			throw new java.lang.Exception ("TemporaryImpact::regularize => Invalid Inputs");
+		if (!NumberUtil.IsValid (tradeInterval) || 0. >= tradeInterval) {
+			throw new Exception ("TemporaryImpact::regularize => Invalid Inputs");
+		}
 
-		return 1. / (_afp.averageDailyVolume() * dblTradeInterval);
+		return 1. / (_assetFlowSettings.averageDailyVolume() * tradeInterval);
 	}
+
+	/**
+	 * Modulate/Scale the Impact Output
+	 * 
+	 * @param tradeInterval The Trade Interval
+	 * 
+	 * @return The Modulated Output
+	 * 
+	 * @throws Exception Thrown if the Inputs are Invalid
+	 */
 
 	@Override public double modulate (
-		final double dblTradeInterval)
-		throws java.lang.Exception
+		final double tradeInterval)
+		throws Exception
 	{
-		return _afp.dailyVolatility();
+		return _assetFlowSettings.dailyVolatility();
 	}
+
+	/**
+	 * Retrieve the Constant Market Impact Parameter
+	 * 
+	 * @return The Constant Market Impact Parameter
+	 */
 
 	@Override public double constant()
 	{
-		return org.drip.execution.athl.CalibrationEmpirics.TEMPORARY_IMPACT_COEFFICIENT;
+		return CalibrationEmpirics.TEMPORARY_IMPACT_COEFFICIENT;
 	}
+
+	/**
+	 * Retrieve the Power Law Exponent Market Impact Parameter
+	 * 
+	 * @return The Power Law Exponent Market Impact Parameter
+	 */
 
 	@Override public double exponent()
 	{
-		return org.drip.execution.athl.CalibrationEmpirics.TEMPORARY_IMPACT_EXPONENT;
+		return CalibrationEmpirics.TEMPORARY_IMPACT_EXPONENT;
 	}
+
+	/**
+	 * Evaluate the Impact for the given Normalized Holdings
+	 * 
+	 * @param normalizedX Normalized Holdings
+	 *  
+	 * @return The calculated Impact
+	 * 
+	 * @throws Exception Thrown if evaluation cannot be done
+	 */
 
 	@Override public double evaluate (
-		final double dblNormalizedX)
-		throws java.lang.Exception
+		final double normalizedX)
+		throws Exception
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (dblNormalizedX))
-			throw new java.lang.Exception ("TemporaryImpact::evaluate => Invalid Inputs");
+		if (!NumberUtil.IsValid (normalizedX)) {
+			throw new Exception ("TemporaryImpact::evaluate => Invalid Inputs");
+		}
 
-		double dblBeta = org.drip.execution.athl.CalibrationEmpirics.TEMPORARY_IMPACT_EXPONENT;
-		double dblEta = org.drip.execution.athl.CalibrationEmpirics.TEMPORARY_IMPACT_COEFFICIENT;
-
-		return dblEta * (dblNormalizedX < 0. ? -1. : 1.) * java.lang.Math.pow (java.lang.Math.abs
-			(dblNormalizedX), dblBeta);
+		return CalibrationEmpirics.TEMPORARY_IMPACT_COEFFICIENT * (
+			0. > normalizedX ? -1. : 1.
+		) * Math.pow (
+			Math.abs (normalizedX),
+			CalibrationEmpirics.TEMPORARY_IMPACT_EXPONENT
+		);
 	}
 
+	/**
+	 * Calculate the Ordered Derivative
+	 * 
+	 * @param normalizedX Normalized Holdings
+	 * @param order Order of the derivative to be computed
+	 * 
+	 * @return The Ordered Derivative
+	 */
+
 	@Override public double derivative  (
-		final double dblNormalizedX,
-		final int iOrder)
-		throws java.lang.Exception
+		final double normalizedX,
+		final int order)
+		throws Exception
 	{
-		if (0 >= iOrder || !org.drip.numerical.common.NumberUtil.IsValid (dblNormalizedX))
-			throw new java.lang.Exception ("TemporaryImpact::derivative => Invalid Inputs");
+		if (0 >= order || !NumberUtil.IsValid (normalizedX)) {
+			throw new Exception ("TemporaryImpact::derivative => Invalid Inputs");
+		}
 
-		double dblCoefficient = 1.;
-		double dblBeta = org.drip.execution.athl.CalibrationEmpirics.TEMPORARY_IMPACT_EXPONENT;
-		double dblEta = org.drip.execution.athl.CalibrationEmpirics.TEMPORARY_IMPACT_COEFFICIENT;
+		double coefficient = 1.;
 
-		for (int i = 0; i < iOrder; ++i)
-			dblCoefficient = dblCoefficient * (dblBeta - i);
+		for (int i = 0; i < order; ++i) {
+			coefficient = coefficient * (CalibrationEmpirics.TEMPORARY_IMPACT_EXPONENT - i);
+		}
 
-		return dblEta * (dblNormalizedX < 0. ? -1. : 1.) * dblCoefficient * java.lang.Math.pow
-			(java.lang.Math.abs (dblNormalizedX), dblBeta - iOrder);
+		return CalibrationEmpirics.TEMPORARY_IMPACT_COEFFICIENT * coefficient * (
+			0. > normalizedX ? -1. : 1.
+		) * Math.pow (
+			Math.abs (normalizedX),
+			CalibrationEmpirics.TEMPORARY_IMPACT_EXPONENT - order
+		);
 	}
 }

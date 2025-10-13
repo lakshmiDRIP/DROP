@@ -161,7 +161,7 @@ public class FixedDriftTrajectoryComparator {
 			dblNu
 		);
 
-		double[] adblAlpha = pdd.realizedDrift (iN);
+		double[] adblAlpha = pdd.realizedDriftArray (iN);
 
 		System.out.println();
 
@@ -198,7 +198,7 @@ public class FixedDriftTrajectoryComparator {
 				dblTime
 			);
 
-			double dblPriceSwing = cpd.priceVolatilitySwing();
+			double dblPriceSwing = cpd.volatilitySwing();
 
 			double dblRealizedPriceChange = adblAlpha[i] * dblTimeWidth + dblPriceSwing;
 

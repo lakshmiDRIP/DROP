@@ -229,9 +229,9 @@ public class LinearTemporaryImpact {
 				dblExecutionTime * dblExecutionTime * dblExecutionTime * dblDriftEstimate * dblDriftEstimate
 					/ (48. * dblLiquidityCoefficient);
 
-		double dblDriftConfidence = _pcc.prior().confidence();
+		double dblDriftConfidence = _pcc.priorDriftDistribution().confidence();
 
-		final double dblPriceVolatility = _pcc.conditional().priceVolatility();
+		final double dblPriceVolatility = _pcc.conditionalPriceDistribution().volatility();
 
 		org.drip.function.definition.R1ToR1 r1ToR1HoldingsSquared = new org.drip.function.definition.R1ToR1
 			(null) {

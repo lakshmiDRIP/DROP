@@ -6,6 +6,9 @@ package org.drip.execution.athl;
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -81,9 +84,17 @@ package org.drip.execution.athl;
 
 /**
  * <i>IJK</i> holds the Empirical Signals that have been emitted off of a Transaction Run using the Scheme by
- * Almgren, Thum, Hauptmann, and Li (2005), using the Parameterization of Almgren (2003). The References are:
+ * 	Almgren, Thum, Hauptmann, and Li (2005), using the Parameterization of Almgren (2003). It provides the
+ * 	following Functions:
+ * 	<ul>
+ * 		<li><i>IJK</i> Constructor</li>
+ * 		<li>The Almgren-Thum-Hauptmann-Li "I" Transaction Signal</li>
+ * 		<li>The Almgren-Thum-Hauptmann-Li "K" Transaction Signal</li>
+ * 		<li>The Almgren-Thum-Hauptmann-Li "J" Transaction Signal</li>
+ * 	</ul>
  * 
- * <br><br>
+ * The References are:
+ * <br>
  * 	<ul>
  * 	<li>
  * 		Almgren, R., and N. Chriss (1999): Value under Liquidation <i>Risk</i> <b>12 (12)</b>
@@ -105,37 +116,41 @@ package org.drip.execution.athl;
  * 	</li>
  * 	</ul>
  *
- *	<br><br>
- *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/TransactionCostAnalyticsLibrary.md">Transaction Cost Analytics</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/README.md">Optimal Impact/Capture Based Trading Trajectories - Deterministic, Stochastic, Static, and Dynamic</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/athl/README.md">Almgren-Thum-Hauptmann-Li Calibration</a></li>
- *  </ul>
+ * <br>
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md">Numerical Optimizer Library</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/README.md">Optimal Impact/Capture Based Trading Trajectories - Deterministic, Stochastic, Static, and Dynamic</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/athl/README.md">Almgren-Thum-Hauptmann-Li Calibration</a></td></tr>
+ *  </table>
  * 
  * @author Lakshmi Krishnamurthy
  */
 
-public class IJK {
-	private org.drip.execution.athl.TransactionSignal _tsI = null;
-	private org.drip.execution.athl.TransactionSignal _tsK = null;
+public class IJK
+{
+	private TransactionSignal _transactionSignalI = null;
+	private TransactionSignal _transactionSignalK = null;
 
 	/**
-	 * IJK Constructor
+	 * <i>IJK</i> Constructor
 	 * 
-	 * @param tsI The "I" Transaction Signal
-	 * @param tsK The "K" Transaction Signal
+	 * @param transactionSignalI The "I" Transaction Signal
+	 * @param transactionSignalK The "K" Transaction Signal
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public IJK (
-		final org.drip.execution.athl.TransactionSignal tsI,
-		final org.drip.execution.athl.TransactionSignal tsK)
-		throws java.lang.Exception
+		final TransactionSignal transactionSignalI,
+		final TransactionSignal transactionSignalK)
+		throws Exception
 	{
-		if (null == (_tsI = tsI) || null == (_tsK = tsK))
-			throw new java.lang.Exception ("IJK Constructor => Invalid Inputs");
+		if (null == (_transactionSignalI = transactionSignalI) ||
+			null == (_transactionSignalK = transactionSignalK))
+		{
+			throw new Exception ("IJK Constructor => Invalid Inputs");
+		}
 	}
 
 	/**
@@ -144,9 +159,9 @@ public class IJK {
 	 * @return The Almgren-Thum-Hauptmann-Li "I" Transaction Signal
 	 */
 
-	public org.drip.execution.athl.TransactionSignal i()
+	public TransactionSignal i()
 	{
-		return _tsI;
+		return _transactionSignalI;
 	}
 
 	/**
@@ -155,9 +170,9 @@ public class IJK {
 	 * @return The Almgren-Thum-Hauptmann-Li "K" Transaction Signal
 	 */
 
-	public org.drip.execution.athl.TransactionSignal k()
+	public TransactionSignal k()
 	{
-		return _tsK;
+		return _transactionSignalK;
 	}
 
 	/**
@@ -166,12 +181,15 @@ public class IJK {
 	 * @return The Almgren-Thum-Hauptmann-Li "J" Transaction Signal
 	 */
 
-	public org.drip.execution.athl.TransactionSignal j()
+	public TransactionSignal j()
 	{
 		try {
-			return new org.drip.execution.athl.TransactionSignal (_tsK.drift() + 0.5 * _tsI.drift(),
-				_tsK.iWander() + 0.5 * _tsI.iWander(), _tsK.jWander());
-		} catch (java.lang.Exception e) {
+			return new TransactionSignal (
+				_transactionSignalK.drift() + 0.5 * _transactionSignalI.drift(),
+				_transactionSignalK.iWander() + 0.5 * _transactionSignalI.iWander(),
+				_transactionSignalK.jWander()
+			);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 

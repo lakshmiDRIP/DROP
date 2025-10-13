@@ -1,11 +1,18 @@
 
 package org.drip.execution.bayesian;
 
+import org.drip.measure.gaussian.NormalQuadrature;
+import org.drip.measure.gaussian.R1UnivariateNormal;
+import org.drip.numerical.common.NumberUtil;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -80,10 +87,19 @@ package org.drip.execution.bayesian;
  */
 
 /**
- * <i>ConditionalPriceDistribution</i> holds the Price Distribution Conditional on a given Drift. The
- * References are:
+ * <i>ConditionalPriceDistribution</i> holds the Price Distribution Conditional on a given Drift. It provides
+ * 	the following Functions:
+ * 	<ul>
+ * 		<li><i>ConditionalPriceDistribution</i> Constructor</li>
+ * 		<li>Retrieve the Distribution Time Horizon</li>
+ * 		<li>Retrieve the Distribution Price Volatility</li>
+ * 		<li>Retrieve the Distribution Conditional Drift</li>
+ * 		<li>Generate Single Price Volatility Swings</li>
+ * 		<li>Generate the given Number of Price Volatility Swings</li>
+ * 	</ul>
  * 
- * <br><br>
+ * The References are:
+ * <br>
  * 	<ul>
  * 		<li>
  * 			Bertsimas, D., and A. W. Lo (1998): Optimal Control of Execution Costs <i>Journal of Financial
@@ -107,44 +123,48 @@ package org.drip.execution.bayesian;
  * 		</li>
  * 	</ul>
  *
- *	<br><br>
- *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/TransactionCostAnalyticsLibrary.md">Transaction Cost Analytics</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/README.md">Optimal Impact/Capture Based Trading Trajectories - Deterministic, Stochastic, Static, and Dynamic</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/bayesian/README.md">Bayesian Price Based Optimal Execution</a></li>
- *  </ul>
+ * <br>
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md">Numerical Optimizer Library</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/README.md">Optimal Impact/Capture Based Trading Trajectories - Deterministic, Stochastic, Static, and Dynamic</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/bayesian/README.md">Bayesian Price Based Optimal Execution</a></td></tr>
+ *  </table>
  * 
  * @author Lakshmi Krishnamurthy
  */
 
-public class ConditionalPriceDistribution extends org.drip.measure.gaussian.R1UnivariateNormal {
-	private double _dblTime = java.lang.Double.NaN;
-	private double _dblPriceVolatility = java.lang.Double.NaN;
-	private double _dblConditionalDrift = java.lang.Double.NaN;
+public class ConditionalPriceDistribution
+	extends R1UnivariateNormal
+{
+	private double _time = Double.NaN;
+	private double _drift = Double.NaN;
+	private double _volatility = Double.NaN;
 
 	/**
-	 * ConditionalPriceDistribution Constructor
+	 * <i>ConditionalPriceDistribution</i> Constructor
 	 * 
-	 * @param dblConditionalDrift The Conditional Drift
-	 * @param dblPriceVolatility The Price Volatility
-	 * @param dblTime The Distribution Time Horizon
+	 * @param drift The Conditional Drift
+	 * @param volatility The Price Volatility
+	 * @param time The Distribution Time Horizon
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public ConditionalPriceDistribution (
-		final double dblConditionalDrift,
-		final double dblPriceVolatility,
-		final double dblTime)
-		throws java.lang.Exception
+		final double drift,
+		final double volatility,
+		final double time)
+		throws Exception
 	{
-		super (dblConditionalDrift * dblTime, dblPriceVolatility * java.lang.Math.sqrt (dblTime));
+		super (drift * time, volatility * Math.sqrt (time));
 
-		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblTime = dblTime) || 0. >= _dblTime ||
-			!org.drip.numerical.common.NumberUtil.IsValid (_dblConditionalDrift = dblConditionalDrift) ||
-				!org.drip.numerical.common.NumberUtil.IsValid (_dblPriceVolatility = dblPriceVolatility))
-			throw new java.lang.Exception ("ConditionalPriceDistribution Constructor => Invalid Inputs");
+		if (!NumberUtil.IsValid (_time = time) || 0. >= _time ||
+			!NumberUtil.IsValid (_drift = drift) ||
+			!NumberUtil.IsValid (_volatility = volatility))
+		{
+			throw new Exception ("ConditionalPriceDistribution Constructor => Invalid Inputs");
+		}
 	}
 
 	/**
@@ -155,7 +175,7 @@ public class ConditionalPriceDistribution extends org.drip.measure.gaussian.R1Un
 
 	public double time()
 	{
-		return _dblTime;
+		return _time;
 	}
 
 	/**
@@ -164,9 +184,9 @@ public class ConditionalPriceDistribution extends org.drip.measure.gaussian.R1Un
 	 * @return The Distribution Price Volatility
 	 */
 
-	public double priceVolatility()
+	public double volatility()
 	{
-		return _dblPriceVolatility;
+		return _volatility;
 	}
 
 	/**
@@ -175,54 +195,55 @@ public class ConditionalPriceDistribution extends org.drip.measure.gaussian.R1Un
 	 * @return The Distribution Conditional Drift
 	 */
 
-	public double conditionalDrift()
+	public double drift()
 	{
-		return _dblConditionalDrift;
+		return _drift;
 	}
 
 	/**
-	 * Generate s Single Price Volatility Swings
+	 * Generate Single Price Volatility Swings
 	 * 
 	 * @return The Price Volatility Swings
 	 * 
-	 * @throws java.lang.Exception Thrown if the Swing cannot be generated
+	 * @throws Exception Thrown if the Swing cannot be generated
 	 */
 
-	public double priceVolatilitySwing()
-		throws java.lang.Exception
+	public double volatilitySwing()
+		throws Exception
 	{
-		return _dblPriceVolatility * org.drip.measure.gaussian.NormalQuadrature.InverseCDF
-			(java.lang.Math.random()) * java.lang.Math.sqrt (_dblTime);
+		return _volatility * NormalQuadrature.InverseCDF (Math.random()) * Math.sqrt (_time);
 	}
 
 	/**
 	 * Generate the given Number of Price Volatility Swings
 	 * 
-	 * @param iNumRealization The Number of Swings to be generated
+	 * @param realizationCount The Number of Swings to be generated
 	 * 
 	 * @return Array of the Price Volatility Swings
 	 */
 
-	public double[] priceVolatilitySwings (
-		final int iNumRealization)
+	public double[] volatilitySwingArray (
+		final int realizationCount)
 	{
-		if (0 >= iNumRealization) return null;
+		if (0 >= realizationCount) {
+			return null;
+		}
 
-		double[] adblVolatilitySwings = new double[iNumRealization];
+		double[] volatilitySwingArray = new double[realizationCount];
 
-		double dblVolatilityTimeSQRT = _dblPriceVolatility * java.lang.Math.sqrt (_dblTime);
+		double volatilityTimeSQRT = _volatility * Math.sqrt (_time);
 
-		for (int i = 0; i < iNumRealization; ++i) {
+		for (int realizationIndex = 0; realizationIndex < realizationCount; ++realizationIndex) {
 			try {
-				adblVolatilitySwings[i] = org.drip.measure.gaussian.NormalQuadrature.InverseCDF
-					(java.lang.Math.random()) * dblVolatilityTimeSQRT;
-			} catch (java.lang.Exception e) {
+				volatilitySwingArray[realizationIndex] =
+					NormalQuadrature.InverseCDF (Math.random()) * volatilityTimeSQRT;
+			} catch (Exception e) {
 				e.printStackTrace();
 
 				return null;
 			}
 		}
 
-		return adblVolatilitySwings;
+		return volatilitySwingArray;
 	}
 }

@@ -1,11 +1,18 @@
 
 package org.drip.execution.athl;
 
+import org.drip.execution.impact.TransactionFunctionPower;
+import org.drip.execution.parameters.AssetFlowSettings;
+import org.drip.numerical.common.NumberUtil;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -81,10 +88,22 @@ package org.drip.execution.athl;
 
 /**
  * <i>PermanentImpactQuasiArbitrage</i> implements the Linear Permanent Market Impact with Coefficients that
- * have been determined empirically by Almgren, Thum, Hauptmann, and Li (2005), independent of the no Quasi-
- * Arbitrage Criterion identified by Huberman and Stanzl (2004). The References are:
+ * 	have been determined empirically by Almgren, Thum, Hauptmann, and Li (2005), independent of the no Quasi-
+ * 	Arbitrage Criterion identified by Huberman and Stanzl (2004). It provides the following Functions:
+ * 	<ul>
+ * 		<li><i>PermanentImpactQuasiArbitrage</i> Constructor</li>
+ * 		<li>Retrieve the Liquidity Factor</li>
+ * 		<li>Retrieve the Asset Flow Parameters</li>
+ * 		<li>Regularize the Input Function using the specified Trade Inputs</li>
+ * 		<li>Modulate/Scale the Impact Output</li>
+ * 		<li>Retrieve the Constant Market Impact Parameter</li>
+ * 		<li>Retrieve the Power Law Exponent Market Impact Parameter</li>
+ * 		<li>Evaluate the Impact for the given Normalized Holdings</li>
+ * 		<li>Calculate the Ordered Derivative</li>
+ * 	</ul>
  * 
- * <br><br>
+ * The References are:
+ * <br>
  * 	<ul>
  * 	<li>
  * 		Almgren, R., and N. Chriss (2000): Optimal Execution of Portfolio Transactions <i>Journal of Risk</i>
@@ -107,38 +126,43 @@ package org.drip.execution.athl;
  * 	</li>
  * 	</ul>
  *
- *	<br><br>
- *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/TransactionCostAnalyticsLibrary.md">Transaction Cost Analytics</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/README.md">Optimal Impact/Capture Based Trading Trajectories - Deterministic, Stochastic, Static, and Dynamic</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/athl/README.md">Almgren-Thum-Hauptmann-Li Calibration</a></li>
- *  </ul>
+ * <br>
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalOptimizerLibrary.md">Numerical Optimizer Library</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/README.md">Optimal Impact/Capture Based Trading Trajectories - Deterministic, Stochastic, Static, and Dynamic</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/execution/athl/README.md">Almgren-Thum-Hauptmann-Li Calibration</a></td></tr>
+ *  </table>
  * 
  * @author Lakshmi Krishnamurthy
  */
 
-public class PermanentImpactQuasiArbitrage extends org.drip.execution.impact.TransactionFunctionPower {
-	private double _dblLiquidityFactor = java.lang.Double.NaN;
-	private org.drip.execution.parameters.AssetFlowSettings _afp = null;
+public class PermanentImpactQuasiArbitrage
+	extends TransactionFunctionPower
+{
+	private double _liquidityFactor = Double.NaN;
+	private AssetFlowSettings _assetFlowSettings = null;
 
 	/**
-	 * PermanentImpactQuasiArbitrage Constructor
+	 * <i>PermanentImpactQuasiArbitrage</i> Constructor
 	 * 
-	 * @param afp The Asset Flow Parameters
+	 * @param assetFlowSettings Asset Flow Parameters
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public PermanentImpactQuasiArbitrage (
-		final org.drip.execution.parameters.AssetFlowSettings afp)
-		throws java.lang.Exception
+		final AssetFlowSettings assetFlowSettings)
+		throws Exception
 	{
-		if (null == (_afp = afp))
-			throw new java.lang.Exception ("PermanentImpactQuasiArbitrage Constructor => Invalid Inputs");
+		if (null == (_assetFlowSettings = assetFlowSettings)) {
+			throw new Exception ("PermanentImpactQuasiArbitrage Constructor => Invalid Inputs");
+		}
 
-		_dblLiquidityFactor = java.lang.Math.pow (afp.inverseTurnover(),
-			org.drip.execution.athl.CalibrationEmpirics.PERMANENT_IMPACT_INVERSE_TURNOVER_EXPONENT);
+		_liquidityFactor = Math.pow (
+			assetFlowSettings.inverseTurnover(),
+			CalibrationEmpirics.PERMANENT_IMPACT_INVERSE_TURNOVER_EXPONENT
+		);
 	}
 
 	/**
@@ -149,7 +173,7 @@ public class PermanentImpactQuasiArbitrage extends org.drip.execution.impact.Tra
 
 	public double liquidityFactor()
 	{
-		return _dblLiquidityFactor;
+		return _liquidityFactor;
 	}
 
 	/**
@@ -158,72 +182,130 @@ public class PermanentImpactQuasiArbitrage extends org.drip.execution.impact.Tra
 	 * @return The Asset Flow Parameters
 	 */
 
-	public org.drip.execution.parameters.AssetFlowSettings assetFlowParameters()
+	public AssetFlowSettings assetFlowSettings()
 	{
-		return _afp;
+		return _assetFlowSettings;
 	}
+
+	/**
+	 * Regularize the Input Function using the specified Trade Inputs
+	 * 
+	 * @param tradeInterval The Trade Interval
+	 * 
+	 * @return The Regularize Input
+	 * 
+	 * @throws Exception Thrown if the Inputs are Invalid
+	 */
 
 	@Override public double regularize (
-		final double dblTradeInterval)
-		throws java.lang.Exception
+		final double tradeInterval)
+		throws Exception
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (dblTradeInterval) || 0 >= dblTradeInterval)
-			throw new java.lang.Exception ("PermanentImpactQuasiArbitrage::regularize => Invalid Inputs");
+		if (!NumberUtil.IsValid (tradeInterval) || 0 >= tradeInterval) {
+			throw new Exception ("PermanentImpactQuasiArbitrage::regularize => Invalid Inputs");
+		}
 
-		return 1. / (_afp.averageDailyVolume() * dblTradeInterval);
+		return 1. / (_assetFlowSettings.averageDailyVolume() * tradeInterval);
 	}
+
+	/**
+	 * Modulate/Scale the Impact Output
+	 * 
+	 * @param tradeInterval The Trade Interval
+	 * 
+	 * @return The Modulated Output
+	 * 
+	 * @throws Exception Thrown if the Inputs are Invalid
+	 */
 
 	@Override public double modulate (
-		final double dblTradeInterval)
-		throws java.lang.Exception
+		final double tradeInterval)
+		throws Exception
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (dblTradeInterval) || 0 >= dblTradeInterval)
-			throw new java.lang.Exception ("PermanentImpactQuasiArbitrage::modulate => Invalid Inputs");
+		if (!NumberUtil.IsValid (tradeInterval) || 0. >= tradeInterval) {
+			throw new Exception ("PermanentImpactQuasiArbitrage::modulate => Invalid Inputs");
+		}
 
-		return dblTradeInterval * _afp.dailyVolatility();
+		return tradeInterval * _assetFlowSettings.dailyVolatility();
 	}
+
+	/**
+	 * Retrieve the Constant Market Impact Parameter
+	 * 
+	 * @return The Constant Market Impact Parameter
+	 */
 
 	@Override public double constant()
 	{
-		return org.drip.execution.athl.CalibrationEmpirics.PERMANENT_IMPACT_COEFFICIENT *
-			_dblLiquidityFactor;
+		return CalibrationEmpirics.PERMANENT_IMPACT_COEFFICIENT * _liquidityFactor;
 	}
+
+	/**
+	 * Retrieve the Power Law Exponent Market Impact Parameter
+	 * 
+	 * @return The Power Law Exponent Market Impact Parameter
+	 */
 
 	@Override public double exponent()
 	{
-		return org.drip.execution.athl.CalibrationEmpirics.PERMANENT_IMPACT_EXPONENT_ATHL2005;
+		return CalibrationEmpirics.PERMANENT_IMPACT_EXPONENT_ATHL2005;
 	}
+
+	/**
+	 * Evaluate the Impact for the given Normalized Holdings
+	 * 
+	 * @param normalizedX Normalized Holdings
+	 *  
+	 * @return The calculated Impact
+	 * 
+	 * @throws Exception Thrown if evaluation cannot be done
+	 */
 
 	@Override public double evaluate (
-		final double dblNormalizedX)
-		throws java.lang.Exception
+		final double normalizedX)
+		throws Exception
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (dblNormalizedX))
-			throw new java.lang.Exception ("PermanentImpactQuasiArbitrage::evaluate => Invalid Inputs");
+		if (!NumberUtil.IsValid (normalizedX)) {
+			throw new Exception ("PermanentImpactQuasiArbitrage::evaluate => Invalid Inputs");
+		}
 
-		double dblAlpha = org.drip.execution.athl.CalibrationEmpirics.PERMANENT_IMPACT_EXPONENT_ATHL2005;
-		double dblGamma = org.drip.execution.athl.CalibrationEmpirics.PERMANENT_IMPACT_COEFFICIENT;
-
-		return 0.5 * dblGamma * (dblNormalizedX < 0. ? -1. : 1.) * java.lang.Math.pow (java.lang.Math.abs
-			(dblNormalizedX), dblAlpha) * _dblLiquidityFactor;
+		return 0.5 * CalibrationEmpirics.PERMANENT_IMPACT_COEFFICIENT * (
+			0. >normalizedX ? -1. : 1.
+		) * Math.pow (
+			Math.abs (normalizedX),
+			CalibrationEmpirics.PERMANENT_IMPACT_EXPONENT_ATHL2005
+		) * _liquidityFactor;
 	}
 
+	/**
+	 * Calculate the Ordered Derivative
+	 * 
+	 * @param normalizedX Normalized Holdings
+	 * @param order Order of the derivative to be computed
+	 * 
+	 * @return The Ordered Derivative
+	 */
+
 	@Override public double derivative  (
-		final double dblNormalizedX,
-		final int iOrder)
-		throws java.lang.Exception
+		final double normalizedX,
+		final int order)
+		throws Exception
 	{
-		if (0 >= iOrder || !org.drip.numerical.common.NumberUtil.IsValid (dblNormalizedX))
-			throw new java.lang.Exception ("PermanentImpactQuasiArbitrage::derivative => Invalid Inputs");
+		if (0 >= order || !NumberUtil.IsValid (normalizedX)) {
+			throw new Exception ("PermanentImpactQuasiArbitrage::derivative => Invalid Inputs");
+		}
 
-		double dblCoefficient = 1.;
-		double dblAlpha = org.drip.execution.athl.CalibrationEmpirics.PERMANENT_IMPACT_EXPONENT_ATHL2005;
-		double dblGamma = org.drip.execution.athl.CalibrationEmpirics.PERMANENT_IMPACT_COEFFICIENT;
+		double coefficient = 1.;
 
-		for (int i = 0; i < iOrder; ++i)
-			dblCoefficient = dblCoefficient * (dblAlpha - i);
+		for (int i = 0; i < order; ++i) {
+			coefficient = coefficient * (CalibrationEmpirics.PERMANENT_IMPACT_EXPONENT_ATHL2005 - i);
+		}
 
-		return 0.5 * dblGamma * (dblNormalizedX < 0. ? -1. : 1.) * dblCoefficient * java.lang.Math.pow
-			(java.lang.Math.abs (dblNormalizedX), dblAlpha - iOrder) * _dblLiquidityFactor;
+		return 0.5 * CalibrationEmpirics.PERMANENT_IMPACT_COEFFICIENT * (
+			0. > normalizedX ? -1. : 1.
+		) * coefficient * Math.pow (
+			Math.abs (normalizedX),
+			CalibrationEmpirics.PERMANENT_IMPACT_EXPONENT_ATHL2005 - order
+		) * _liquidityFactor;
 	}
 }

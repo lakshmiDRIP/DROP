@@ -143,7 +143,7 @@ public class BayesianDriftTrajectoryDependence {
 
 		double dblTimeWidth = 0.5 * dblT;
 
-		double[] adblAlpha = pdd.realizedDrift (2);
+		double[] adblAlpha = pdd.realizedDriftArray (2);
 
 		ConditionalPriceDistribution cpd0 = new ConditionalPriceDistribution (
 			adblAlpha[0],
@@ -151,7 +151,7 @@ public class BayesianDriftTrajectoryDependence {
 			1.0 * dblTimeWidth
 		);
 
-		double dblPriceSwing0 = cpd0.priceVolatilitySwing();
+		double dblPriceSwing0 = cpd0.volatilitySwing();
 
 		double dblRealizedPriceChange0 = adblAlpha[0] * dblTimeWidth + dblPriceSwing0;
 
@@ -179,7 +179,7 @@ public class BayesianDriftTrajectoryDependence {
 			2.0 * dblTimeWidth
 		);
 
-		double dblPriceSwing1 = cpd1.priceVolatilitySwing();
+		double dblPriceSwing1 = cpd1.volatilitySwing();
 
 		double dblRealizedPriceChange1 = adblAlpha[1] * dblTimeWidth + dblPriceSwing1;
 
