@@ -250,30 +250,166 @@
  --------------------------
 
  --------------------------
- #5 - Inverted Price Venues (COMPLETED)
+ #5 - Limit Order Book Simulations: A Review
  --------------------------
  --------------------------
- 5.1) Maker-Taker pays for Liquidity Post. Inverted pays for Liquidity Seek
+ 5.1) Limit Order Book Dynamics
+	- Buy Section vs. Sell Section
+		- Levels separated by one tick
+		- Best Bid vs Best Ask and Spread/Mid
+	- Levels based on Price
+		- Orders at each Level (orders have quantity)
+		- Aggregate Level Quantity
+	- Order Categories - Limit/Market/Cancel
+		- Market Order - drains liquidity at the corresponding side
+		- Limit Order - post liquidity
+		- Cancel Order - remove posted liquidity
+ 5.2) Order Book Dynamics S_t
+	- Order Book State Dependence at Level x:
+		- Best Bid/Ask Price
+		- Bid/Ask Volumes at x
+	- Order Book Events:
+		- Market Orders Bid/Ask - A/E
+		- In-spread Limit Orders Bid/Ask - B/F
+		- Cancel Orders Bid/Ask - C/G
+		- Not In-spread Limit Orders Bid/Ask - D/H
+	- Order Book Evolution: S_t+1 = S_t + D_t(S_t)
+	- Dynamics Induced:
+		- Market Order Buy/Sell Queue-clearing - one/more tick moves up/down
+		- Market Order Buy/Sell Non-Queue-clearing - changes volume not prices
+ 5.3) Stylized Facts:
+	- Cont (2011):
+		- Price changes anti-correlated at small time lags, uncorrelated at longer lags
+		- Trading Volumes are heterogenous and strongly auto-correlated
+		- Trading volumes show strong intra-day seasonality
+		- Order durations are auto-correlated; positive correlation across order types
+	- Vyetrenko et. al. (2020):
+		- Empiricial Distributions of: Densities of price/returns/order volumes/arrival rates/time-to-fills
+			- Joint densities of bid/ask queue sizes
+			- Long-tailed Distirbution of Returns
+		- Auto-correlation of returns - vanishes with delta t
+			- Auto-correlation of squared returns - measures "Volatility Clustering"
+		- Volatility and Volume positively correlated; Volatility and Returns negatively correlated
+		- U shaped Volume Profile
+		- Signature Plots: Relation between Volatility and Sampling Frequency. This decays slowly
+		- Average Book Shape: M shape for average shape of high-spread stocks and inverted V shape for low spread stocks
+		- Prce Paths comparison to empirical
+ 5.4) Point Processes Models
+	- Arrival Process Associated with a Counting Process
+		- Counting Process - number that arrive in an increment
+		- lambda - Incremental Probability that the Number is > 0 divided by that increment
+ 5.5) Point Processes Models - Poisson Process as 'Zero-Intelligence'
+ 5.6) Point Processes Models - Variable Order Intensity Process
+	- Non-constant Order Intensity
+	- Hult and Kiessling (2010):
+		- Limit/Cancel intensities dependent on distance from mid-price; Market Intensities Constant
+			- Stationary Exponential Order Size Distribution
+			- Markov Chain LOB Model + optimal trading strategies
+	- Huang, Lehalle, and Rosenbaum (2015):
+		- Different Bid/ask Queue Models around a fixed reference price
+		- Queue-reactive Model: Arrival Rates depend on current queue size, bid/ask queue processes independent
+	- Lu and Abergel (2018b):
+		- Augment Huang, Lehalle, and Rosenbaum (2015) using non-Markovian order flow dynamic
+			- Intensities depend on order flow history
+		- Limit Order sizes follow geometric distribution
+		- Cancel order sizes follow truncated geometric distributions
+		- Market order sizes - a mixture of geometric and Delta for units of 50
+		- History dependence on new limit orders' on cleared queues
+ 5.7) Point Processes Models - Poisson Process do not model corelation between order arrivals
+ 5.8) Point Processes Models - Hawkes Process Advantages
+	- Volatility Clustering
+	- Epps Effect - Zeroing of Price covariance at small timescales
+ 5.9) Point Processes Models - Hawkes Process Mathematical Overview
+	- 2D Example: Excitations ask->ask, ask->bid, bid->ask, bid->bid
+	- Sample Dimensions: bid/ask, Limit/Market/Cancel
+	- Dimensions correspond to excitation events, not necessary order arrival events
+	- Mu (i, t) - Endogenous Excitation Intensity for dimension i
+	- Phi (j->i, t) - Excitation by dimension j on dimension i at time t
+	- Lambda (i, t) = Mu (i, t) + Sum over dimensions {Sum over t_j <= t [Phi (j->i, t)]}
+	- Continuous Versions of the Same:
+		- Lambda (i, t) = Mu (i, t) + Sum over dimensions {Integral s over (0, t) of [Phi (j->i, t-s) delta N(j, s)]}
+	- Excitation Kernel Choice: Power law better than Exponential
+ 5.10) Point Processes Models - Multi-dimensional Hawkes Process
+	- Toke (2010) Model 1:
+		- 2D Hawkes - on each for Market (Liquidity Taker) and Limit (Liquidity Provider); Cancels are Poisson
+		- Pre-set Price Distribution for Limit/Cancel
+	- Toke (2010) Model 2:
+		- Self-exciting Limit/Market + Market exciting Future Limit
+	- 8-dimensional Bacry, Jaisson, and Muzy (2016)
+		- Dimension #1 - Orders changing Mid-price
+		- Dimension #2-4 - Market/Limit/Cancel don't change mid
+		- Bid/Ask - total 4x2=8
+	- 10D Large (2007)
+		- Dimension Categories 4 - Limit/Market, Mid-price Change/Don't
+		- Dimension #5 - Cancel
+		- Bid/Ask - total 5x2=10
+		- Order Book Resiliency - ability to replenish after a big depletion
+	- Kirchner (2017) - Non-parametric Hawkes Estimation with AIC
+	- da Fonseca and Zaatour (2014): 4 Moment-matching Hawkes fit: faster than MLE, but weaker true parameter convergence
+	- Zheng, Roueff, and Abergel (2014):
+		- 4D bid/ask cross-excitation Hawkes + spread process to control bid > ask
+	- Lee and Seo (2022):
+		- 4D bid/ask cross-excitation Hawkes + exogenous spread-narrowing process a function of spread reltive to price
+			- Consequence: AT 1-tick width, exogenous spread-narrowing width is zero
+		- Spread-dependent + stochastic decay kernels
+ 5.11) Point Processes Models - Other Hawkes Process Variants
+	- Kaj and Caglar (2017) - also called Buffer Hawkes:
+		- Market Orders -> queue-reactive Poisson arrivals
+		- Limit Orders -> Hawkes with excitation from Market Orders
+		- Cancels -> Constant Intensity Poisson arrivals
+	- Morariu-Patrichi and Pakkanen (2022):
+		- State-dependent Excitation #1 - Triggered when the spread is 1-tick
+		- State-dependent Excitation #2 - Triggered by order-flow imbalance
+	- Kirchner and Vetter (2022):
+		- State-dependent Excitation - Triggered by order-flow imbalance
+	- Mucciante and Sancetta (2023):
+		- State-dependent Excitation - Intensity == Hawkes times a Linear function on market observables
+			- Automatically allow the intensity to follow intraday profile
+	- Wu, Rambaldi, Muzy, and Bacry (2019):
+		- Comparison of Queue-reactive Hawkes against a scaled Queue-reactive Hawkes
+	- Rambaldi, Bacry, and Lillo (2017):
+		- State-dependent Excitation - Triggered by order-size and order count
+		- State-dependency using Marked Hawkes - marks corresponds to various bins of order sizes
+ 5.12) Limit Order Book Simulations: A Review - Hawkes Process Scaling Limits:
+	- Abergel and Jedidi (2015):
+		- Market/Limit are Hawkes and Cancels are Queue-reactive Poisson - SDE for aggregate features
+	- Horst and Xu (2019):
+		- Under scaling limits, Hawkes converges to SDE for bid/ask prices and ODE for volume
+		- Stationary Intensities of different Event Types form Volterra-Fredholm Integral Equations
+ 5.13) Limit Order Book Simulations: A Review - Non-linear Hawkes Process
+	- Lu and Abergel (2018a):
+		- 12D Hawkes: (Limit, Market, Cancel) X (Change Mid, Don't change Mid) X (Bid, Ask)
+		- Non-linearity - Kernels floor negative excitation
+		- Excitation Kernel is a sum of Exponential Functions
+	- Mounjid, Rosenbaum, and Saliba (2019):
+		- Non-linear Kernel Function of Event Type, LOB state, time, and sum of past excitations
  --------------------------
 
  --------------------------
- #6 - Auction On-demand
+ #6 - Inverted Price Venues (COMPLETED)
  --------------------------
  --------------------------
- 6.1) Auction Order Size
- 6.2) BBO
+ 6.1) Maker-Taker pays for Liquidity Post. Inverted pays for Liquidity Seek
+ --------------------------
+
+ --------------------------
+ #7 - Auction On-demand
+ --------------------------
+ --------------------------
+ 7.1) Auction Order Size
+ 7.2) BBO
 	- European BBO
 	- National BBO
 	- Primary (Dealer) BBO
- 6.3) Trading at or within BBO
- 6.4) Features:
+ 7.3) Trading at or within BBO
+ 7.4) Features:
 	- Maximize Traded Volume
 	- Custom Priorities
 		- Order book Level Broker Priority
 		- Time
 		- Size
 	- Different Auction Order Types
- 6.5) Safety Features:
+ 7.5) Safety Features:
 	- Uncross - Random Min and Max Times
 	- Speed Bumps on Cancels TBD
 	- Speed Bumps on Order Modifications
@@ -283,25 +419,25 @@
  --------------------------
 
  --------------------------
- #7 - Volume-weighted average price (COMPLETED)
+ #8 - Volume-weighted average price (COMPLETED)
  --------------------------
- 7.1) Execution Price Benchmark - Part of Volume Participation Algorithms Execution Class
- --------------------------
- --------------------------
-
- --------------------------
- #8 - Execution Cost and Transaction Trajectories (COMPLETED)
- --------------------------
- 8.1) Arrival Price Benchmark vs Trajectory e.g., VWAP/TWAP benchmark
- 8.2) Valuing Unfilled Orders - on closing price
+ 8.1) Execution Price Benchmark - Part of Volume Participation Algorithms Execution Class
  --------------------------
  --------------------------
 
  --------------------------
- #9 - Execution of Portfolio Transactions – Optimal Trajectory (COMPLETED)
+ #9 - Execution Cost and Transaction Trajectories (COMPLETED)
  --------------------------
- 9.1) Definition of a Static Trading Strategy - Discrete/Continuous Execution Schedule
- 9.2) Price Dynamics:
+ 9.1) Arrival Price Benchmark vs Trajectory e.g., VWAP/TWAP benchmark
+ 9.2) Valuing Unfilled Orders - on closing price
+ --------------------------
+ --------------------------
+
+ --------------------------
+ #10 - Execution of Portfolio Transactions – Optimal Trajectory (COMPLETED)
+ --------------------------
+ 10.1) Definition of a Static Trading Strategy - Discrete/Continuous Execution Schedule
+ 10.2) Price Dynamics:
 	- Permanent Impact
 		- Impact Function is a function of amount traded in the period per unit time
 		- Price after Step-wise Permanent Impact
@@ -336,7 +472,7 @@
 			- Expected Implementation Shortfall quadratic in X and (constant + inverse in T)
 				- Therefore fast execution (small T) means high impact
 			- Variance is 0
- 9.3) Efficient Frontier of Optimal Execution
+ 10.3) Efficient Frontier of Optimal Execution
 	- Definition:
 		- Trajectory has Lowest Variance for the same or lower Level of expected Transaction Costs
 		- Or: Variance V∗ ≥ 0, Trajectory that has minimum expected transaction costs
@@ -353,7 +489,7 @@
 		- Comparison of Half-life against T and relation to Least Impact/Least Variance Trajectories
 	- Structure of the frontier
 		- Boundary represents optimal E/V for a given lambda
- 9.4) Risk/Reward Tradeoff
+ 10.4) Risk/Reward Tradeoff
 	- Interpretation using a Utility Function, and VaR
 	- Utility Function Approach
 		- U = E + lambda . V is the Utility
@@ -366,7 +502,7 @@
 		- Uncertainty costs are linear, temporary impact is quadratic
 			- So optimal trajectories are linear for large enough portfolios
 		- Trajectories are not dynamically optimal as before
- 9.5) Value of Information
+ 10.5) Value of Information
 	- Drift
 		- Incorporation of drift into dynamics
 		- Expression for V does not change, modification to E
@@ -395,7 +531,7 @@
 		- Jump to one of the new set of parameter set with their corresponding probabilities
 		- Compartmentalize one trajectory path to T* (X*), and another one from T* to T
 		- X* may be determined by minimizing E* + lambda . V* where E* and V* are probability weighted parameter sets
- 9.6) Multiple-Security Portfolios
+ 10.6) Multiple-Security Portfolios
 	- Trajectory and Trades are Component Vectors
 	- Trading Model
 		- Independent Random walks representing Security Level Idiosyncratics
@@ -420,9 +556,9 @@
  --------------------------
 
  --------------------------
- #10 - Non-linear Impact and Trading-Enhanced Risk (COMPLETED)
+ #11 - Non-linear Impact and Trading-Enhanced Risk (COMPLETED)
  --------------------------
- 10.1) The Model:
+ 11.1) The Model:
 	- X to be fully liquidated by T
 	- x chosen to minimize a cost functional
 	- Lnear Permanent and non-linear temporary impacts
@@ -450,7 +586,7 @@
 	- Imposing Linear Function provides an integral form for P
 		- No Bid-ask spread dependence
 	- Impact of Extraneosuly Specified Liquidation Time on P
- 10.2) Nonlinear Cost Functions
+ 11.2) Nonlinear Cost Functions
 	- Power Law Temporary Impact Functions
 		- Explicit form for P(.) in terms of the power law
 		- Almgren P(.) quadrature problem
@@ -463,20 +599,20 @@
 		- Longest Optimal Time T* as a Function of impact exponent
 		- Self-similarity form, i.e., x(t)/X as a function of T* and impact exponent
 		- Small t, all trajectories are similar, tail of the trajectories is extended for small impact exponent strongly penalizing trading at slow rates
- 10.3) Objective Function
+ 11.3) Objective Function
 	- Closed Form for E and V as a function of k
 	- Closed Form for the Efficient Frontier
 	- Asymptotics for Lambda 0 and Infinity
- 10.4) Trading-Enhanced Risk
+ 11.4) Trading-Enhanced Risk
 	- Linear Temporary and f = alpha + beta . v
 	- Closed Form for E, V, and therefore P(v, lambda)
- 10.5) Constant Enhanced Risk:
+ 11.5) Constant Enhanced Risk:
 	- Case - beta = 0
 	- Closed form for T*
 	- Comparison with f(v)=0, k=1 Case
 	- Closed Form for E, V
 	- Asymptotics for Lambda 0 and infinity
- 10.6) Linear Enhanced Risk:
+ 11.6) Linear Enhanced Risk:
 	- Case - beta not 0, alpha = 0
 	- Closed form for T*, X*
 	- Intuition behind X* - Trading Volatility matches the Linear Enhanced Volatility at this size
@@ -487,9 +623,9 @@
  --------------------------
 
  --------------------------
- #11 - Direct Estimation of Equity Market Impact (COMPLETED)
+ #12 - Direct Estimation of Equity Market Impact (COMPLETED)
  --------------------------
- 11.1) Data
+ 12.1) Data
 	- Data Description and Filtering Rules
 		- 700K orders over 19 months
 		- Sizes, Times, and Prices of Executions (not orders)
@@ -516,18 +652,18 @@
 		- Market Core Empirical Parametric Inputs - ADV and volatility (sigma)
 			- ADV => 10D moving average
 		- Order/execution size normalized by corresponding ADVs (even intra-day)
- 11.1) Trajectory Cost Model
+ 12.2) Trajectory Cost Model
 	- Realized = Permanent + Temporary + Noise
 	- Permanent Impact I=T.g(X/T)+σ√(T_POST).ξ
 	- Temporary Impact J-I/2=h(X/T)+σ[√(T/12.(4-3 T/T_POST )).χ-(T_POST-T)/(2√(T_POST)).ξ]
 		- Error expression reflects the fluctuations on the middle part of the Brownian motion on [0,T] relative to the end point at T_POST
- 11.2) Choice of functional form
+ 12.3) Choice of functional form
 	- Permanant - g(v) = ±γ|v|^α
 		- α = 1
 	- Temporary - h(v) = ±η|v|^β
 		- 0 < β < 1
 	- Error residuals ξ and χ evaluated for normality
- 11.3) Cross-Sectional Description
+ 12.4) Cross-Sectional Description
 	- Parameter Scaling
 		- Basis for the Normalizer Choice - X/(V.T)
 		- I=σTg(X/VT)+⟦noise⟧
@@ -553,28 +689,28 @@
  --------------------------
 
  --------------------------
- #12 - Optimal Execution of Program Trades (COMPLETED)
+ #13 - Optimal Execution of Program Trades (COMPLETED)
  --------------------------
- 12.1) Introduction
+ 13.1) Introduction
 	- Information ratio of a trade - ratio of the annualized expected profit to the annualized standard deviation of the profit
- 12.2) Efficient Frontier Pricing
+ 13.2) Efficient Frontier Pricing
 	- Principal trades, so use ex-ante risk-adjusted return
 	- Put-out-to-bid - check if information ratio hurdle rate meets the bid price
- 12.3) Efficient Frontier Including Discount
+ 13.3) Efficient Frontier Including Discount
 	- Bid as a discount of D dollars per share for a basket in the principal trade
 	- Total Expected Profit = DX-C_PERM-C_TEMP
 	- Power-law cost impact expressions for expected profit and variance on the profit
 	- T dependence for E and V
- 12.4) Annualization
+ 13.4) Annualization
 	- Annualization of E, V, Temporary/Permanent Costs
 	- Efficient frontier in terms of annualized expectation and annualized variance collapses to a single point
 		- Consequence of the annualized variance being independent of the trading time
 	- Expression for Optimal Trading Time - maximizes E/T
 		- Optimal Trading Time Independent of the risk/reward preferences, depends only on D
- 12.5) Definition of the Information Ratio
+ 13.5) Definition of the Information Ratio
 	- Mathematical Definition of Information Ratio
 	- Information Ratio corresponding to optimal Trading Time
- 12.6) Applications the Information Ratio
+ 13.6) Applications the Information Ratio
 	- Discount Implied Maximum Information Ratio
 	- Information Ratio Implied Minimum Discount
 	- Max Information Ratio vs. Temporary Impact Exponent
@@ -582,9 +718,9 @@
  --------------------------
 
  --------------------------
- #13 - Bayesian Trading with a Daily Trend (COMPLETED)
+ #14 - Bayesian Trading with a Daily Trend (COMPLETED)
  --------------------------
- 13.1) Price Model Using Bayesian Update
+ 14.1) Price Model Using Bayesian Update
 	- Arithmetic Walk - Time is volume time relative to a historical profile
 	- Volatility comes from Activity of the “uninformed” traders
 	- Drift from the activity of other institutional traders
@@ -602,7 +738,7 @@
 		- Time Asymptotics on α
 	- Trading and Price Impact
 		- Implementation shortfall C in terms of α
- 13.2) Optimal Trading Strategies
+ 14.2) Optimal Trading Strategies
 	- Risk Aversion Lambda set to zero, so focus is on trading cost reduction
 	- Positive Drift Assumption
 	- Hard Completion at T
@@ -613,7 +749,7 @@
 	- α_* (t,S) assumed not to change during t≤τ≤T
 	- Dynamically Recomputed Unrealized Trajectory Cost
 	- Equivalence with Full Dynamic Optimization
- 13.3) Optimal Trajectories by Calculus of Variations
+ 14.3) Optimal Trajectories by Calculus of Variations
 	- Trajectory Perturbation Fixed at the End-points x(τ)↦x(τ)+∆x(τ) => ∆x(t)=∆x(T)=0
 	- Corresponding Bayesian Cost Impact => ∆E[t,x(t),S,{x(t)}]=∫_t^T▒{-2ηx^'' (τ)+α_* (t,S)}[∆x(τ)]dτ
 	- Cost Optimized Trajectory - Admissibility Condition => ∆E[t,x(t),S,{x(τ)}]>0
@@ -635,40 +771,40 @@
 			- α_C determined by setting T* = T
 	- Optimality of the Adaptive Strategy
 		- Expression for Cost Gain - this is independent of X
- 13.4) Stochastic Optimal Control Treatment
+ 14.4) Stochastic Optimal Control Treatment
  --------------------------
  --------------------------
 
  --------------------------
- #14 - Smart Order Routing
+ #15 - Smart Order Routing
  --------------------------
- 14.1) Addresses problems of venue proliferation and liquidity fragmentation
+ 15.1) Addresses problems of venue proliferation and liquidity fragmentation
  --------------------------
  --------------------------
 
  --------------------------
- #15 - Nagar – Algos and Smart Order Router
+ #16 - Nagar – Algos and Smart Order Router
  --------------------------
  --------------------------
- 15.1) Algos - NAGAR; Venue - VIPANI; Router - PATH
- 15.2) Components - Scheduler, Order Placement, Router
+ 16.1) Algos - NAGAR; Venue - VIPANI; Router - PATH
+ 16.2) Components - Scheduler, Order Placement, Router
 	- Order Placement invokes the Router using the Execution Modes
- 15.3) Execution Modes - Ping, Sweep, Exchange Post, Dark Post
+ 16.3) Execution Modes - Ping, Sweep, Exchange Post, Dark Post
 	- On Marketability - Follow Ping, Sweep, Exchange Post in that order
 	- Dark Post exclusive to the other modes
- 15.4) Ping Execution Mode
+ 16.4) Ping Execution Mode
 	- Locate Hidden Liquidity within bid-ask Spread
 	- Remove Displayed Liquidity at:
 		- Far-touch => NBO for buy, NBB for sell
 		- Near-touch or better => at/above NBB for buy, at/below NBO for sell
 	- Dynamic Ping - uses mid-point and limit IOC on a custom venue set (across Exchange/ATS/IOI Venues)
- 15.5) Sweep Execution Mode
+ 16.5) Sweep Execution Mode
 	- Take Liquidity at best displayed price/better
 	- Liquidity displayed at a Custom venue set (across Exchange/ATS/IOI Venues)
 	- Use ISO IOC orders
 	- Sweep multiple price levels simultaneously
 	- Limit price based on depth needed for order fill, overridden only by more conservative client limit price
- 15.6) Exchange Post Execution Mode
+ 16.6) Exchange Post Execution Mode
 	- Provide Liquidity for Unmarketable Orders
 	- Smart Exchange Post - uses probability of fill in conjunction with price impact on chosen venue
 		- May allocate to both displayed and non-displayed liquidity
@@ -682,7 +818,7 @@
 		- Market Conditions have Changed
 	- When locked/crossed, trigger Ping/Sweep to take liquidity
 	- Just before opening/closing, reallocate to primary exchange to ensure resting orders participate in auctions
- 15.7) Dark Post Execution Mode
+ 16.7) Dark Post Execution Mode
 	- Provide Hidden Liquidity for Unmarketable Orders
 	- Uses Smart Dark Post and Dynamic Dark Post
 	- Posts are typically mid-point DAY, overriden by passive or market-peg on client instructions
@@ -691,7 +827,7 @@
 		- Minimum Time Elapsed
 		- Market Conditions have Changed
 	- NAGAR posts internally to VIPANI for short time to allow for internal crossing
- 15.8) Real-time Venue Selection Criteria:
+ 16.8) Real-time Venue Selection Criteria:
 	- Available Price - Sorted best Price Venues when taking liquidity
 	- Historical Data - Based on a time window
 	- Market Analytics - Intra-day, symbol-specific information:
@@ -711,9 +847,9 @@
 		- Pricing Structure - Inverted, Maker/Taker
 		- Supprt for Order Types/Features
 	- Venue Cost - Fees/Rebates
- 15.9) Accessible Venues and Execution Modes
- 15.10) Order Types and Execution Modes
- 15.11) Order Handling Scenarios to Consider
+ 16.9) Accessible Venues and Execution Modes
+ 16.10) Order Types and Execution Modes
+ 16.11) Order Handling Scenarios to Consider
 	- Short sell securities in price test are sent to primary exchange, unless overridden
 		- Market orders become limit orders with price 1 tick less aggressive than the market impact price
 		- Market Impact Price => More restrictive of either Limit Up/Down price and erroneous price
@@ -724,7 +860,7 @@
 	- Orders with opening/closing TIF sent to primary
 	- Symbols halted for traging are routed to primary unless overridden
 	- Algorithmic venue selection failure - randomized ranking to select venues
- 15.12) PATH Customization Options
+ 16.12) PATH Customization Options
 	- Cross Modes
 		- Disable specific venues/venue types
 		- Route based on exchange cost
@@ -741,23 +877,23 @@
 		- Limit routing to selected displayed/non-displayed venues
 		- Minimum Execution Quantity
 		- Disable initial VIPANI dip in NAGAR
- 15.13) Directed Orders via PATH
+ 16.13) Directed Orders via PATH
 	- PATH forwards limit orders without changes
 	- Market orders sent at marketable limit prices - above NBO/below NBB with an internal threshold
- 15.14) Exchange Market Data
+ 16.14) Exchange Market Data
 	- EXEGY with SIP as a backup
- 15.15) Non-exchange Market Data
+ 165.15) Non-exchange Market Data
 	- IOI Venues
 		- IOI quantity in venue ranking logic
 		- Send IOC orders for sweep, which may not be honored
 	- ATS Venues
 		- Displayed quantity in venue ranking logic
 		- Send IOC orders for sweep, which may not be honored
- 15.16) Performance Evaluation of Algos
+ 16.16) Performance Evaluation of Algos
 	- Average Slippage from VWAP, TWAP, arrivl price
 	- Evaluated across market capitalization, spread duration, order sizes
 	- Order Outlier analysis
- 15.17) Information Leakage Anti-gaming Protection
+ 16.17) Information Leakage Anti-gaming Protection
 	- Symbol-specific Analytics
 		- Volume profile, average spread, quote depth, volatility estimate
 		- Dynamic Scheduling and Volume Forecasting
@@ -766,14 +902,14 @@
 			- Release time of passive/aggressive orders does not fillow a pre-defined progression
 		- Dynamic Limit Pricing for Hidden Non-displayed Orders
 			- Prevents Unfavorable executions due to to short term movements
- 15.18) Capital Commitment - Enabled for Child TWAP VWAP POV
+ 16.18) Capital Commitment - Enabled for Child TWAP VWAP POV
  --------------------------
 
  --------------------------
- #16 - Retail SOR Strategy Builder
+ #17 - Retail SOR Strategy Builder
  --------------------------
  --------------------------
- 16.1) Retail SOR Wave Instructions
+ 17.1) Retail SOR Wave Instructions
 	- Wave #1 - Send quantity to NAGAR with Sweep venue inclusion list (VIPANI).
 		- Order type Ping SEQUENTIAL mid-pegging, and time-in-force IOC
 	- Wave #2 - Remaining quantity to PATH with Sweep venue inclusion list that correspond to inverted venues.
@@ -783,9 +919,9 @@
 		- No ping
 	- Wave #4 - Remaining quantity to PATH with Sweep venue inclusion list (VIPANI) with IOI time-in-force of IOC
 	- Cancel any remaining Quantity to the User
- 16.2) Phase-based Conditional Action
+ 17.2) Phase-based Conditional Action
 	- Phases markers are: Continuous Start and Continuous End
- 16.3) Additional Considerations
+ 17.3) Additional Considerations
 	- Client DAY orders become IOC
 	- Amendments will cancel current wave and restart from #1
 	- Current wave is completed and leaves canceled
@@ -793,21 +929,21 @@
  --------------------------
 
  --------------------------
- #17 - Indifference price
+ #18 - Indifference price
  --------------------------
  --------------------------
- 17.1) Overview
+ 18.1) Overview
 	- Pricing Securities wrt a utility function
 	- Also called reservation price or private valuation
 	- Price at which the expected utility level is the same by exercising a transaction vs. not doing so (with optimal trading otherwise)
 	- Produces Pricing Range - bid/ask or good-deal bounds
- 17.2) Mathematics
+ 18.2) Mathematics
 	- V (x, k) - Supremum of the Terminal of the Expected Utility (u) value of
 		- A Portfolio consisting of an initial amount x + k units of an entity (stock, option, etc.)
 		- Supremum is taken over all self-financing portfolios
 	- Indifference bid price is the solution to V (x - vBid (k), k) = V (x, 0)
 	- Indifference bid price is the solution to V (x + vAsk (k), -k) = V (x, 0)
- 17.3) Approach
+ 18.3) Approach
 	- Assume portfolio of constituent securities whose weighted market value adds up to x + v
 	- Work out V(x + v, k) generically unoptimized across component weights
 	- Remember when k = 0, v = 0, compute the optimal value of V(x, k = 0).
@@ -816,28 +952,28 @@
 	- You now have the optimal weights in terms of v. Remember V(x + v, k) = V(x, 0). So now solve for v to get v = v(k).
  --------------------------
 
- #2 - Execution Algorithms
+ #19 - Execution Algorithms
  --------------------------
  --------------------------
- 2.1) VWAP - Background Volume Histogram, VWAP Window, Price Histogram
- 2.2) TWAP - TWAP Window, Price Histogram
- 2.3) Implementation Shortfall:
+ 19.1) VWAP - Background Volume Histogram, VWAP Window, Price Histogram
+ 19.2) TWAP - TWAP Window, Price Histogram
+ 19.3) Implementation Shortfall:
 	- (EP - DP) x Q + EC
 	- EP: Execution Price
 	- DP: Decision Price
 	- Q: Quantity
 	- EC: Explicit Costs, made from Broker Charges and Commission
 	- (EP - DP) x Q = Also called slippage
- 2.4) Participation of Volume - Total Market Volume, Participation Rate
- 2.5) Iceberg - Splits large ones into small and hides the rest
- 2.6) SOR - All the above across multiple venues
- 2.7) SMRT - SOR + Algo-based Order Placement
- 2.8) Order Scheduling - Timw Window Delay for Order Placement
+ 19.4) Participation of Volume - Total Market Volume, Participation Rate
+ 19.5) Iceberg - Splits large ones into small and hides the rest
+ 19.6) SOR - All the above across multiple venues
+ 19.7) SMRT - SOR + Algo-based Order Placement
+ 19.8) Order Scheduling - Timw Window Delay for Order Placement
  --------------------------
- #3 - Trading Strategy Algo Framework
+ #20 - Trading Strategy Algo Framework
  --------------------------
  --------------------------
- 3.1) Broad Institutional Trading Platform Components
+ 20.1) Broad Institutional Trading Platform Components
 	- Algo Engine
 	- FIX Translator
 	- Order Validator
@@ -845,7 +981,7 @@
 	- Monitoring
 	- Market Data Consumer
 	- Post-trade Processor
- 3.2) Algo Engine
+ 20.2) Algo Engine
 	- Purpose: Takes the client’s high-level instruction, and decides how and when to slice out child orders
 		based on the current state of the market and the pre-loaded quantitative models
 	- Core Functional Components
@@ -859,13 +995,13 @@
 		- Risk Check Interface
 		- Strategy Implementer (e.g., VWAP, DROP LIQUIDITY SEEKER)
 		- Timer Service Interface
- 3.3) The Trading Strategies (Algos)
+ 20.3) The Trading Strategies (Algos)
 	- VWAP - Strategy trades in line with the market volume based on a dynamic volume prediction model
 	- DROP LIQUIDITY SEEKER - Hybrid liquidity seeker/impact minimization algo that balances the speed of
 		execution with avoiding undue market impact as per its equivalent model, with an opportunistic
 		component searching for block liquidity in parallel
 	- Safety Customizations - Order must a) complete, b) exclude auctions
- 3.4) Trading Logic Components
+ 20.4) Trading Logic Components
 	- Algo, Scheduler, Order Task, Order Router
 	- Algo:
 		- Top layer that manages all upstream interactions with the user, e.g., handling new orders and
@@ -894,7 +1030,7 @@
 			- Searches for block liquidity by split-posting mid-point orders across several dark pools and
 				exchanges using a high minimum quantity, generally in the thousands of shares. This may be
 				supplemented with other order types such as conditionals
- 3.5) Order Lifecyle:
+ 20.5) Order Lifecyle:
 	- Order Arrival:
 		- Receipt of a valid order, Algo subscribes to market data and then creates the Scheduler
 		- For a VWAP order, the Algo creates VWAP scheduler; for a DROP LIQUIDITY SEEKER order, it creates an
@@ -932,7 +1068,7 @@
 		- Upon receipt of a client replace request, the Algo generally cancels or amends the Order Task to
 			comply with the new instructions
 		- Algo also creates a new Scheduler to use from this point forward
- 3.6) Trading Objectives/Design Process
+ 20.6) Trading Objectives/Design Process
 	- Low Level:
 		- Objective #1 - Avoiding Adverse Selection
 			- Prop Firm Perspective - When the market transitions to a new price level, there is a flood of
@@ -956,12 +1092,12 @@
 		- Factor #4: How should one pace the trading activity throughout the life of the order? Impact
 			Minimization Model
  --------------------------
- #4 - Volume-Weighted Average Approach
+ #21 - Volume-Weighted Average Approach
  --------------------------
  --------------------------
- 4.1) General Hstorical Market Symbol Cumulative Volume to Time t vs. Realized Symbol Volume at Time t
+ 21.1) General Hstorical Market Symbol Cumulative Volume to Time t vs. Realized Symbol Volume at Time t
 	- Of course, and their VWAP
- 4.2) Problem Formulation
+ 21.2) Problem Formulation
 	- Daily Time Interval (09:30 to 16:00) divv'ied into delta t = 10 minute intervals
 	- Opening Auction Volume is up to 09:30
 	- Closing Auction Volume is after 16:00 (say 16:10)
@@ -974,11 +1110,11 @@
 		- Do nothing - if the catch up market impact is too high
 	- Volume Prediction mismatch Metric
 		- |Historical(t) - Realized(t)| Integrand
- 4.3) Estimation of Predicted Volume Fraction R(t)
+ 21.3) Estimation of Predicted Volume Fraction R(t)
 	- ADV Normalized Trading Volume A(t) = V(t)/ADV
 	- Observations Grouped by V_hist(t) and A(t)
 	- Predicted Volume Fraction R(t) is the average of X_hist(t) across a single grouping of V_hist(t) and A(t)
- 4.4) Partial Trading Days
+ 21.4) Partial Trading Days
 	- Need estimates for volume fraction start and volume fraction end times
 	- Smooth, monotonic interpolation
  --------------------------
