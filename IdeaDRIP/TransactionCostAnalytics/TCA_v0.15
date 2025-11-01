@@ -383,6 +383,87 @@
 		- Excitation Kernel is a sum of Exponential Functions
 	- Mounjid, Rosenbaum, and Saliba (2019):
 		- Non-linear Kernel Function of Event Type, LOB state, time, and sum of past excitations
+ 5.13) Limit Order Book Simulations: A Review - Neural Hawkes Process
+	- Kumar (2021) Deep Neural Hawkes:
+		- Market Making Simulations using Agent-based Trading + Hawkes fitted Intensities
+		- LSTM augmentation to Mei and Eisner (2017) to capture complex feedback
+	- Shi and Cartlidge (2022) Continuous LSTM Deep Neural Hawkes:
+		- Order Price/Size drawn from stationary distributions
+ 5.14) Agent Based Models:
+	- Paddrick, Hyes, Todd, Yang, Beling, and Scherer (2012):
+		- 6 categories of traders: Low-frequency Fundamental Traders to HFT market makers
+		- Each is Zero-intelligence Poisson
+	- Huang, Lehalle, and Rosenbaum (2015):
+		- Institutional agents post to top of the book
+		- HFTs, market makers, arbitrageurs post at deeper levels
+		- Level dependent arrival intensity
+			- Arrival rate depends on the opposite queue size by discretizing the opposite queue into 4 categorical quantiles
+		- Mid/reference price changes single tick at constant probability + a constant price reinitialization probability
+ 5.15) Agent Based Models - Combining ABMs with Others:
+	- Lehalle, Gueant, and Razafinimanana (2015):
+		- Zero-intelligence intensity based on te distance between estimated and 'real' order book 'pegged' to an ABM with Mean Field Game scaling limits
+	- Kumar (2021):
+		- Hybrid with Hawkes as background and pariticating gents below:
+			a. The fundamental trader who flows a mean-reversion strategy
+			b. The chartist trader who follows a momentum strategy
+			c. The noise trader
+			d. Three different kinds of market makers:
+				i. One which uses the Deep Hawkes Process to quote bid-ask orders
+				ii. Second which uses the Neural Hawkes Process proposed by Mei and Eisner (2017)
+				iii. Third being a probabilistic market make whose order placement is based on their view of the fundamental price of the security.
+ 5.16) Deep Learning Based Models Mid-price Prediction from LOB:
+	- Sirignano and Cont (2018):
+		- LSTM to model price formation using price and order flow history
+		- Model Next Mid-price, not Order Book as a whole
+	- Zhang, Zohren, and Roberts (2019): Price movements' prediction using CNNs coupled with LSTM and Inception Modules
+	- Zhang, Lim, and Zohren (2021): Price movements' prediction using Level 3 Data
+	- Briola, Turiel, and Aste (2020): Price prediction from LOB states
+ 5.17) Deep Learning Based Models Recurrent Neural Networks:
+	- Shi, Chen, and Cartlidge (2021):
+		- Use RNN structure likes GRU and ODE-RNN to predict5 L2 levels from L1
+		- Cross-Security Transfer Learning
+	- Shi and Cartlidge (2021)
+		- Parsimony using exponential kernels and computational cost, bias removal using expanded universe testing
+		- Volume Prediction Accuracy decreases with Volatility
+ 5.17) Generative Deep Learning Based Models:
+	- Wiese, knobloch, Korn, and Kretschmer (2020) - DY metric to test GAN performance
+	- Li, Wang, Lin, Sinha, and Wellman (2020):
+		- Conditional Wasserstein GANs simulates orders by conditioning finite window of historical orders
+		- LSTM to encode order flow intensity history
+		- Continuous Double-auction Approximate NN for order book evolution
+	- Lim and Girse (2021): Sequence GAN for order flow modeling
+	- Prenzel, Cont, Cucuringu, and Kochems (2022):
+		- Dynamic GAN calibration
+		- Poisson arrivals - GAN estimation of intensity for different time-of-day and market volatility
+		- Markovian transition between order book states + implicit market impact
+	- Coletta, Moulin, Vyetrenko, and Balch (2022):
+		- Calibrate the Next Trading Action using Conditional GAN
+ 5.18) Deep Learning Based Large Language Models
+	- Nagy, Frey, Sapora, Li, Calinescu, Zohren, and Foerster (2023) uses LLM like Tokenization
+ 5.18) Deep Learning Stochastic Differential Equation Based Models
+	- Continuous Time and Liong-term Order Book Evolution
+	- Segway into Order Control Schemes - portfolio/wealth management, optimal liquidation, market making
+ 5.19) Stochastic Differential Equations Based Models Continuous Limit of Point Process
+	- Korolev, Chertok, Korchagin, and Zeifman (2015): SDE from Doubly Stochastic Poisson
+	- Lakner, Reed, and Stoikov (2016):
+		- One-sided LOB with Poisson intensity dependent on current best price
+		- SDE + weak limits on Price/LOB process
+	- Huang and Rosenbaum (2017):
+		- Generalized Stochastic Dynamics
+		- Separate Jump Processes for Order Book state and Reference Price
+		- Queue-reactive State Transition with constant ref price re-initialization probability
+		- Under certain scaling limits price dynamics converges to Brownian
+	- Cont, de Gond, and Xuan (2023) - Generalized framework where, under scaling limits, other LOB models are special cases
+ 5.20) Stochastic Differential Equations Based Models Continuous Limit of Point Process
+	- Cont and de Larrard (2011) - Under heavy traffic limits, scaling behavior of order flow is deterministic under fluid and stochastic under diffusive limit
+	- Diffusive limit observed more frequently empirically - reducible to 2D Brownian
+	- Analytical Solution to Pirce Dynamics, time between and probability of price moves
+ 5.21) Cont and Muller (2021)
+	- Cancelations into Deletions and Modifications
+	- Modifications bifurcated into:
+		- Symmetric, i.e., Cancel/place back at a near-by level => Diffusive
+		- Anti-symmetric, i.e., Cancel/place back at mid-price => Convective
+	- Continuous Limit for volume at t, p
  --------------------------
 
  --------------------------
