@@ -1,0 +1,153 @@
+
+ --------------------------
+ #1 - Optimal Control
+ --------------------------
+ --------------------------
+ 1.1) Overview
+	- Continuous-time Cost Functional to be minimized
+		- J(x, u, t0, tf) = E(x(t0), t0, x(tf), tf) + Integrate F(x, u, t) over t0, tf
+	- First Order Dynamic Constraints - State Equations
+		- xdot(t) = f(x, u, t)
+	- Algebraic Path Constraints
+		- h(x, u, t) <= 0
+	- Endpoint Conditions
+		- e(t0, x(t0), tf, x(tf)) = 0
+ 1.2) Linear Quadratic Control
+	- Quadratic Continuous-time Cost Functional to be minimized
+		- J = 1/2.xTranspose(tf).Sf.x(tf) + 1/2.Integrate {xTranspose(t).Q(t).x(t) + uTranspose(t).R.u(t)} over t0, tf
+	- First Order Dynamic Constraints - State Equations
+		- xdot(t) = A(t).x(t)+B(t).u(t)
+	- Initial Conditions
+		- x(t0) = x0
+	- Linear Quadratic Regulator - LQR
+		- A, B, Q, R are constant
+		- tf -> Infinity
+		- Quadratic Continuous-time Cost Functional to be minimized
+			- J = 1/2.Integrate {xTranspose(t).Q(t).x(t) + uTranspose(t).R.u(t)} over t0, Infinity
+		- First Order Dynamic Constraints - State Equations
+			- xdot(t) = A(t).x(t)+B(t).u(t)
+		- Initial Conditions
+			- x(t0) = x0
+	- Q => PSD and R => PD for finite-horizon
+		- Infinite Horizon; Q/R also constant for positive cost
+	- Optimal Feedback for LQ/LQR:
+		- u(t) = -K(t).x(t)
+		- K(t) = RInverse.BTranspose.S(t)
+		- S(t) solution to differential Riccati equation:
+			- Sdot(t) = -S.A-ATranspose.S+S.B.RInverse.BTranspose.S-Q
+			- S(tf) = Sf
+		- Infinite Horizon - Algebraic Riccati Equation ARE:
+			- 0 = -S.A-ATranspose.S+S.B.RInverse.BTranspose.S-Q
+ 1.3) Numerical Methods for Optimal Control
+	- Indirect Cost based Solution
+		- Hamiltonian H = F + lambdaTranspose.f - muTranspose.h (lambda, mu => Lagrange multipliers)
+		- xdot = dH/dlambda
+		- lamdadot = -dH/dx
+ --------------------------
+
+ --------------------------
+ #2 - Hamilton-Jacobi-Bellman Equation
+ --------------------------
+ --------------------------
+ 2.1) Optimal Control Problems
+	- Expression for Deterministic Optimal Control Path-based Cost Function
+	- xdot as a Function of x and u (the control vector)
+ 2.2) PDE
+	- Deterministic Optimal Control Path-based Cost Function PDE
+	- Deterministic Optimal Control Path-based Cost Function Terminal Condition
+ 2.3) Intuition behind Deterministic Optimal Control Path-based Cost Function
+	- Deterministic Optimal Control Path-based Cost Function in terms of optimal incremental subsequent Cost and adjacent Value Function
+		- Taylor expansion of Value Function
+		- Incorporation of xdot
+ 2.3) Extension to Stochastic Problems
+	- Cost Function Adaptation to the Stochastic State Vector
+		- xdot is implicitly a Function of x and u (the control vector) through the stochastic evolver
+	- Stochastic Version of the HJB Equation
+	- Terminal Cost Function remains the same
+ 2.4) Extension to Stochastic Problems - LCQ Control
+	- Evolution of x in terms of x, u, and Brownian
+	- Explicit Form for the Cost Accumulation
+	- Formulation of HJB for Quadratic Control
+	- Expression for Optimal Action
+ --------------------------
+
+ --------------------------
+ #3 - Bellman Equation
+ --------------------------
+ --------------------------
+ 3.1) Derivation
+	- A Dynamic Decision Problem
+		- Infinite-horizon Decision Problem: V(x_0) = Max across all a_t Sum over t (MDF^t . Payoff(x_t, a_t))
+		- Constraints:
+			- Action choice set a_t in {Action Set (x_t)}
+			- Next state = T(x_t, a_t)
+	- Bellman's Principle of Optimality
+		- Infinite-horizon Decision Problem: V(x_0) = Max across all a_0 (Payoff(x_0, a_0) + Sum over t not t_0 MDF . (MDF^(t-1) . Payoff(x_t, a_t)))
+		- Eventual Constraints:
+			- Action choice set a_t in {Action Set (x_t)}
+			- Next state = T(x_t, a_t)
+		- Initial Constraints:
+			- Action choice set a_0 in {Action Set (x_0)}
+			- Next state = T(x_0, a_0)
+	- The Bellman Equation
+		- Infinite-horizon Decision Problem: V(x_0) = Max across all a_0 (Payoff(x_0, a_0) + MDF . V(x_1)
+		- Eventual Constraints:
+			- Action choice set a_t in {Action Set (x_t)}
+			- Next state = T(x_t, a_t)
+		- Initial Constraints:
+			- Action choice set a_0 in {Action Set (x_0)}
+			- Next state = T(x_0, a_0)
+		- Generalized Form: V(x_0) = Max across all a_t in {Action Set (x_t)} (Payoff(x_t, a_t) + MDF . V(T(x_t, a_t))
+	- In a Stochastic Problem
+		- Infinite-horizon Decision Problem: V(c_0) = Max across all a_t Sum over t (MDF^t . Payoff(c_t, a_t))
+			- Current Endowment is a_t - Initial is a_0
+			- State is Consumption c_t
+			- MDF = 1 / (1 + r) => r being the Stochastic Interest Rate
+		- a_(t+1) = (1 + r).(a_t - c_t)
+		- Stochastic Interest Rate implies that V(x) will be a quadrature over the future interest rate paths
+			- Quadrature Measure Q over the filtration adapted over the realized interest rate trajectory
+		- Stochastic Sequential Optimization Problem - Ex-post over stochastic path evolution
+			- V(x, z) = max over {Action choice set a in {Action Set (x)}} {Payoff(x, a, z) + MDF.Integral over z' {V(T(x, a), z')}}
+ 3.2) Markov Decision Process
+	- Discrete Time Version of the above is the Bellman Optimality Equation, V(.) is called the Reward R(.)
+ --------------------------
+
+ --------------------------
+ #4 - Understanding Exact Dynamic Programming through Bellman Operators
+ --------------------------
+ --------------------------
+ 4.1) Value Functions as Vectors
+	- State space made up of n R^1 states s_1 through s_n
+	- Action space made up of m actions a_1 through a_m
+	- Stochastic Action Policy (probability of action a at state s)
+		- Deterministic Action Policy: Policy at state s is a
+	- Value Function v as function of policy pi given a starting state s => v_pi(s)
+	- Optimal Value Function v_*(s) = max over pi v_pi(s)
+ 4.2) Reward and Probabilities
+	- R_(s, a) => Expected Reward on action a in state s
+	- P_(s, s', a) => Probability of Transition s -> s' on action a
+	- R_pi(s) = sum over a pi (a given s).R_(s, a)
+	- P_pi(s, s') = sum over a pi (a given s).P_(s, s', a)
+	- Gamma - MDP Discount Factor
+ 4.3) Bellman Operators B_pi and B_star
+	- Bellman Policy Operator B_pi: B_pi(v) = R_pi + Gamma.B_pi(v)
+		- B_pi is a linear operator with a fixed point v_pi
+	- Bellman Optimality Operator B_pi: B_star(v)(s) = max over a {R_(s, a) + Gamma.sum over (s' element of S) [P_(s, s', a)(v)(s')]}
+		- B_pi is a non-linear operator with a fixed point v_pi
+	- Deterministic Greedy Policy G(v): G(v)(s) = arg max of a {R_(s, a) + Gamma.sum over (s' element of S) [P_(s, s', a)(v)(s')]}
+		- B_G(v).v = B_star.v
+ 4.4) Contraction and Monotonicity of Operators
+	- B_pi and B_star are gamma contraction under L_infinity norm, i.e.,
+		- ||B_pi(v1) - B_pi(v2)||_infinity <= gamma.||v1 - v2||_infinity
+		- ||B_star(v1) - B_pi(star)||_infinity <= gamma.||v1 - v2||_infinity
+	- B_pi and B_star are monotonic, i.e.,
+		- v1 <= v2 => B_pi(v1) <= B_pi(v2)
+		- v1 <= v2 => B_star(v1) <= B_star(v2)
+ 4.5) Policy Evaluation
+	- Bellman Expectation Equation => B_pi(v_pi) = v_pi
+	- Policy Evaluation Algorithm => Repeatedly applying B_pi on v => lim (N -> Infinity) B_pi (Iteration N) (v) = v_pi
+ 4.6) Policy Improvement
+	- Proof that Policy Evaluation Iteration Scheme above results in locating the Fixed Point - Consequence of:
+		- Increasing Monotonocity of Reward
+		- Bellman Operator Contractibility
+ --------------------------
