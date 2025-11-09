@@ -16,7 +16,7 @@ Transaction Cost Analytics Library contains the Functionality to:
 
  |        Document         | Link |
  |-------------------------|------|
- | Technical Specification | [*Latest*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/TransactionCostAnalytics/TransactionCostAnalytics_v7.05.pdf) [*Previous*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/TransactionCostAnalytics) |
+ | Technical Specification | [*Latest*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/TransactionCostAnalytics/TransactionCostAnalytics_v7.24.pdf) [*Previous*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/TransactionCostAnalytics) |
  | User Guide              |  |
  | API                     | [*Javadoc*](https://lakshmidrip.github.io/DROP/Javadoc/index.html)|
 
@@ -104,6 +104,62 @@ Transaction Cost Analytics Library contains the Functionality to:
 	* D37 – Transmitting a Guarantee of Execution Prior to Execution
  * Central Limit Order Book
 	* Overview
+	* References
+ * Limit Order Book Simulations: A Review
+	* Abstract
+	* Overview
+		* Motivation
+		* Contributions
+	* Limit Order Books
+		* Dynamics
+	* Stylized Facts
+	* Point Process Models
+		* Poisson Process and Variants
+			* Zero-intelligence Models
+			* Variable Order Intensity Poisson Models
+			* Discussion
+		* Hawkes Process
+			* Mathematical Overview
+			* n-dimensional Hawkes Process
+			* Constrained Hawkes Process
+			* Other Variants
+			* Scaling Limits
+			* Non-linear Hawkes Process
+			* Neural Hawkes Process
+			* Discussion
+	* Agent Based Models
+		* Recent Work
+		* Combining ABMs with Other Methods
+		* Discussion
+	* Deep Learning Based Models
+		* Mid-price Prediction from LOB
+		* Recurrent Neural Networks
+		* Generative Networks
+		* Large Kanguage Models
+		* Discussion
+	* Stochastic Differential Equations Based Models
+		* Continuous Limits of Point Process Models
+		* Volume of Orders as a Stochastic Process
+		* Probabilistic Properties under Scaling Limits
+		* Connecting various Timescales
+		* Discussion
+	* Responsiveness to Trades: Market Impact
+		* Introduction
+		* Zero-intelligence Models
+		* Poisson Process
+		* Hawkes Process
+		* Agent-based Process
+		* Stochastic PDEs basec Models
+		Deep Learning based Models
+	* Comparative Study
+		* Poisson
+		* Hawkes
+		* Hawkes and Deep Learning
+		* Agent-based Model
+		* Deep Learning
+		* Agent-based Model, Hawkes, and Deep Learning
+		* Stochastic Partial Differential Equation
+	* Conclusion and Future Work
 	* References
  * Inverted Price Venues
 	* Reference
