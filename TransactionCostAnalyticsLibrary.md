@@ -105,6 +105,10 @@ Transaction Cost Analytics Library contains the Functionality to:
  * Central Limit Order Book
 	* Overview
 	* References
+ * How Storing Supply and Demand affects Price Diffusion
+	* Abstract
+	* Main
+	* References
  * Limit Order Book Simulations: A Review
 	* Abstract
 	* Overview
