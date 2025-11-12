@@ -158,3 +158,77 @@
  --------------------------
  7.1) RFQ vs. Order Book
  --------------------------
+
+
+ --------------------------
+ #8 - How storing Supply and Demand affects Price Diffusion
+ --------------------------
+ --------------------------
+ 8.1) Market Order - Arrives in chunks of σ shares at μ shares per unit time
+	- Equal probability for buy and sell orders
+	- SIze distibution with standard deviation √(2/π) σ
+ 8.2) Limit Order - Arrives in chunks of σ shares at α shares per unit price per unit time
+ 8.3) Limit Offers placed at a uniform probability at integer multiples of a tick size p_0 in the range b(t)<p<∞ and for bids on -∞<p<a(t)
+ 8.4) Explicit Limit Order Removal Rate: Constant probability δ per unit time
+ 8.5) Depth profile N(p,t): Density of shares in the order book at price p and time t
+	- Positive for bids and negative for offers
+	- Depth of bids/offers using price coordinates centered at the midpoint m(t) so that b(t)≡-a(t)
+ 8.6) π(N,p,t) => Probability that an interval dp centered around price p has N shares at time t
+	- P_+ (∆p,t) be the probability that m(t) increases by ∆p
+	- P_- (∆p,t) be the probability that it decreases by ∆p
+ 8.7) Ignoring Joint Event Occurrence: α, Nδ, P_+, and P_- small so that higher order terms corresponding to simultaneous events are neglected
+ 8.8) General Master Equation for π
+	- ∂π(N,p)/∂t=
+		α(p)dp/σ [π(N-σ,p)-π(N,p)]+
+		δ/σ [(N+σ)π(N+σ,p)-Nπ(N,p)]+
+		μ(p)/2σ [π(N+σ,p)-π(N,p)]+
+		∑_∆p▒〖P_+ (∆p)[π(N,p-∆p)-π(N,p)] 〗+
+		∑_∆p▒〖P_- (∆p)[π(N,p+∆p)-π(N,p)] 〗
+ 8.9) Component Contributions to Master Density:
+	- α term to receipt of a limit order
+	- δ term to spontaneous removal of a limit order
+	- μ term to the receipt of the market order
+	- P_+ term to an increase in the midpoint m(t)→m(t)+∆p
+	- P_- term to a decrease m(t)→m(t)-∆p
+ 8.10) Co-moving Reference Frame for Mid-price Diffusion:
+	- Last two terms imply a diffusion for the depth when viewed in the co-moving reference of price coordinate when the midpoint moves
+ 8.11) Definition of the Best Offer: π(N,p)=0 for p<0
+ 8.12) Mean-field Solution:
+	- Approximate solution to master equation is found by:
+		- Relating P_+ (∆p) and P_- (∆p) self-consistently to mean-functional forms α(p) and μ(p) for which α and μ furnish boundary conditions
+	- Steady-state mean value 〈N(p)〉 obtained from the generating functional for the moments of π
+	- Simulation matches the leading order properties mean-field solution
+ 8.13) Market Impact:
+	- Definition ∆p=ϕ(ω,τ,t)
+	- Intuitive expectation for convex impact
+	- Origin of the Concave Impact
+		- Instantaneous Price Impact - ϕ(ω,0,t)
+		- Average depth 〈N(p)〉 approximated as a smooth function that vanishes at the midpoint
+		- Taylor Expansion for Average Depth 〈N(p)〉≈2λp - time varying liquidity λ(t)
+		- Walking the Order Book Depth:
+			- Price shift caused by a market order ω>0 approximated by ω=∫_0^Δp▒N(p,t)dp
+		- Linear Approximation over Time Averages 〈∆p(ω)〉=〈√(ω/λ(t) )〉
+ 8.14) Scaling using Flow Quantities:
+	- Ignoring the effects caused by finite bin size p_0 and finite order size σ
+	- Fundamental dimensional quantities are shares, price, and time
+	- Non-dimensional Spread is μ/σ
+	- Non-dimensional Asymptotic Depth is α/δ
+	- Non dimensional Liquidity α^2/μδ
+	- Non-dimensional Volatility (δμ^2)/σ^2 Derived as:
+		- Square 〈∆p(ω)〉=〈√(ω/λ(t) )〉
+		- Substitute ω=μ and λ=σ^2/μδ
+		- Diffusion Rate: Slope of V[m(t+τ)-m(t)] vs. τ
+		- Multiple Diffusion Timescales - Short Term vs Long Term
+ 8.15) Scaling using Flow + Granularity Quantities:
+	- Fundamental Discreteness Dimensional Quantities: σ, which has the dimensions of shares, and p_0, which has the dimensions of price
+	- Non-dimensional Order Granularity and Tick σ ̂=σδ/μ
+	- Non-dimensional tick p ̂=(p_0 α)/μ
+	- Well-defined continuum limit with respect to the non-dimensional tick (p_0 α)/μ
+	- No non-dimensional granularity parameter σδ/μ, i.e., does not affect the slope, spread, or asymptotic depth, but affects price diffusion
+	- Granularity Dependence on Diffusion
+		- Product of the continuum diffusion rate (δμ^2)/σ^2  and a τ-dependent power of the non-dimensional granularity parameter δσ/μ
+		- Power is -1/2 for short term diffusion and 1/2 for long-term diffusion
+	- Weak autocorrelations in price differences m(t)-m(t-1) that persist for timescales until the variance vs τ becomes a straight line
+		- Timescale depends on the parameters, but typically 50
+		- Temporal Market-Impact Coefficient: 〈∆p〉=〈ϕ(ω,τ)〉=f(τ) √ω
+			- f(τ) decreases from its initial value, reaching a non-zero asymptotic f(∞)
