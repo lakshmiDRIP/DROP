@@ -11,7 +11,7 @@ Numerical Analysis Library contains the supporting Functionality for Numerical M
 
  |        Document         | Link |
  |-------------------------|------|
- | Technical Specification | [*Latest*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/NumericalAnalysis/NumericalAnalysis_v6.47.pdf) [*Previous*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/NumericalAnalysis) |
+ | Technical Specification | [*Latest*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/NumericalAnalysis/NumericalAnalysis_v7.27.pdf) [*Previous*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/NumericalAnalysis) |
  | User Guide              |  |
  | API                     | [*Javadoc*](https://lakshmidrip.github.io/DROP/Javadoc/index.html)|
 
@@ -206,6 +206,19 @@ Numerical Analysis Library contains the supporting Functionality for Numerical M
 		* Occurrence of Events
 		* Prediction
 	* Random Variate Generation
+	* References
+ * Householder Transformation
+	* Introduction
+	* Definition
+	* Examples
+	* Calculation
+		* Linear Transformations of Random Variables
+		* Linear Combination of Independent Random Variables
+		* Vector-valued Random Variables
+	* Important Properties
+		* Calculations of Moments
+	* Other Properties
+	* Relation to other Functions
 	* References
  * Householder Transformation
 	* Overview

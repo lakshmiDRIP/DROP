@@ -1,0 +1,251 @@
+
+ --------------------------
+ #1 - Optimal Control
+ --------------------------
+ --------------------------
+ 1.1) Overview
+	- Continuous-time Cost Functional to be minimized
+		- J(x, u, t0, tf) = E(x(t0), t0, x(tf), tf) + Integrate F(x, u, t) over t0, tf
+	- First Order Dynamic Constraints - State Equations
+		- xdot(t) = f(x, u, t)
+	- Algebraic Path Constraints
+		- h(x, u, t) <= 0
+	- Endpoint Conditions
+		- e(t0, x(t0), tf, x(tf)) = 0
+ 1.2) Linear Quadratic Control
+	- Quadratic Continuous-time Cost Functional to be minimized
+		- J = 1/2.xTranspose(tf).Sf.x(tf) + 1/2.Integrate {xTranspose(t).Q(t).x(t) + uTranspose(t).R.u(t)} over t0, tf
+	- First Order Dynamic Constraints - State Equations
+		- xdot(t) = A(t).x(t)+B(t).u(t)
+	- Initial Conditions
+		- x(t0) = x0
+	- Linear Quadratic Regulator - LQR
+		- A, B, Q, R are constant
+		- tf -> Infinity
+		- Quadratic Continuous-time Cost Functional to be minimized
+			- J = 1/2.Integrate {xTranspose(t).Q(t).x(t) + uTranspose(t).R.u(t)} over t0, Infinity
+		- First Order Dynamic Constraints - State Equations
+			- xdot(t) = A(t).x(t)+B(t).u(t)
+		- Initial Conditions
+			- x(t0) = x0
+	- Q => PSD and R => PD for finite-horizon
+		- Infinite Horizon; Q/R also constant for positive cost
+	- Optimal Feedback for LQ/LQR:
+		- u(t) = -K(t).x(t)
+		- K(t) = RInverse.BTranspose.S(t)
+		- S(t) solution to differential Riccati equation:
+			- Sdot(t) = -S.A-ATranspose.S+S.B.RInverse.BTranspose.S-Q
+			- S(tf) = Sf
+		- Infinite Horizon - Algebraic Riccati Equation ARE:
+			- 0 = -S.A-ATranspose.S+S.B.RInverse.BTranspose.S-Q
+ 1.3) Numerical Methods for Optimal Control
+	- Indirect Cost based Solution
+		- Hamiltonian H = F + lambdaTranspose.f - muTranspose.h (lambda, mu => Lagrange multipliers)
+		- xdot = dH/dlambda
+		- lamdadot = -dH/dx
+ --------------------------
+
+ --------------------------
+ #2 - Hamilton-Jacobi-Bellman Equation
+ --------------------------
+ --------------------------
+ 2.1) Optimal Control Problems
+	- Expression for Deterministic Optimal Control Path-based Cost Function
+	- xdot as a Function of x and u (the control vector)
+ 2.2) PDE
+	- Deterministic Optimal Control Path-based Cost Function PDE
+	- Deterministic Optimal Control Path-based Cost Function Terminal Condition
+ 2.3) Intuition behind Deterministic Optimal Control Path-based Cost Function
+	- Deterministic Optimal Control Path-based Cost Function in terms of optimal incremental subsequent Cost and adjacent Value Function
+		- Taylor expansion of Value Function
+		- Incorporation of xdot
+ 2.3) Extension to Stochastic Problems
+	- Cost Function Adaptation to the Stochastic State Vector
+		- xdot is implicitly a Function of x and u (the control vector) through the stochastic evolver
+	- Stochastic Version of the HJB Equation
+	- Terminal Cost Function remains the same
+ 2.4) Extension to Stochastic Problems - LCQ Control
+	- Evolution of x in terms of x, u, and Brownian
+	- Explicit Form for the Cost Accumulation
+	- Formulation of HJB for Quadratic Control
+	- Expression for Optimal Action
+ --------------------------
+
+ --------------------------
+ #3 - Bellman Equation
+ --------------------------
+ --------------------------
+ 3.1) Derivation
+	- A Dynamic Decision Problem
+		- Infinite-horizon Decision Problem: V(x_0) = Max across all a_t Sum over t (MDF^t . Payoff(x_t, a_t))
+		- Constraints:
+			- Action choice set a_t in {Action Set (x_t)}
+			- Next state = T(x_t, a_t)
+	- Bellman's Principle of Optimality
+		- Infinite-horizon Decision Problem: V(x_0) = Max across all a_0 (Payoff(x_0, a_0) + Sum over t not t_0 MDF . (MDF^(t-1) . Payoff(x_t, a_t)))
+		- Eventual Constraints:
+			- Action choice set a_t in {Action Set (x_t)}
+			- Next state = T(x_t, a_t)
+		- Initial Constraints:
+			- Action choice set a_0 in {Action Set (x_0)}
+			- Next state = T(x_0, a_0)
+	- The Bellman Equation
+		- Infinite-horizon Decision Problem: V(x_0) = Max across all a_0 (Payoff(x_0, a_0) + MDF . V(x_1)
+		- Eventual Constraints:
+			- Action choice set a_t in {Action Set (x_t)}
+			- Next state = T(x_t, a_t)
+		- Initial Constraints:
+			- Action choice set a_0 in {Action Set (x_0)}
+			- Next state = T(x_0, a_0)
+		- Generalized Form: V(x_0) = Max across all a_t in {Action Set (x_t)} (Payoff(x_t, a_t) + MDF . V(T(x_t, a_t))
+	- In a Stochastic Problem
+		- Infinite-horizon Decision Problem: V(c_0) = Max across all a_t Sum over t (MDF^t . Payoff(c_t, a_t))
+			- Current Endowment is a_t - Initial is a_0
+			- State is Consumption c_t
+			- MDF = 1 / (1 + r) => r being the Stochastic Interest Rate
+		- a_(t+1) = (1 + r).(a_t - c_t)
+		- Stochastic Interest Rate implies that V(x) will be a quadrature over the future interest rate paths
+			- Quadrature Measure Q over the filtration adapted over the realized interest rate trajectory
+		- Stochastic Sequential Optimization Problem - Ex-post over stochastic path evolution
+			- V(x, z) = max over {Action choice set a in {Action Set (x)}} {Payoff(x, a, z) + MDF.Integral over z' {V(T(x, a), z')}}
+ 3.2) Markov Decision Process
+	- Discrete Time Version of the above is the Bellman Optimality Equation, V(.) is called the Reward R(.)
+ --------------------------
+
+ --------------------------
+ #4 - Understanding Exact Dynamic Programming through Bellman Operators
+ --------------------------
+ --------------------------
+ 4.1) Value Functions as Vectors
+	- State space made up of n R^1 states s_1 through s_n
+	- Action space made up of m actions a_1 through a_m
+	- Stochastic Action Policy (probability of action a at state s)
+		- Deterministic Action Policy: Policy at state s is a
+	- Value Function v as function of policy pi given a starting state s => v_pi(s)
+	- Optimal Value Function v_*(s) = max over pi v_pi(s)
+ 4.2) Reward and Probabilities
+	- R_(s, a) => Expected Reward on action a in state s
+	- P_(s, s', a) => Probability of Transition s -> s' on action a
+	- R_pi(s) = sum over a pi (a given s).R_(s, a)
+	- P_pi(s, s') = sum over a pi (a given s).P_(s, s', a)
+	- Gamma - MDP Discount Factor
+ 4.3) Bellman Operators B_pi and B_star
+	- Bellman Policy Operator B_pi: B_pi(v) = R_pi + Gamma.B_pi(v)
+		- B_pi is a linear operator with a fixed point v_pi
+	- Bellman Optimality Operator B_pi: B_star(v)(s) = max over a {R_(s, a) + Gamma.sum over (s' element of S) [P_(s, s', a)(v)(s')]}
+		- B_pi is a non-linear operator with a fixed point v_pi
+	- Deterministic Greedy Policy G(v): G(v)(s) = arg max of a {R_(s, a) + Gamma.sum over (s' element of S) [P_(s, s', a)(v)(s')]}
+		- B_G(v).v = B_star.v
+ 4.4) Contraction and Monotonicity of Operators
+	- B_pi and B_star are gamma contraction under L_infinity norm, i.e.,
+		- ||B_pi(v1) - B_pi(v2)||_infinity <= gamma.||v1 - v2||_infinity
+		- ||B_star(v1) - B_pi(star)||_infinity <= gamma.||v1 - v2||_infinity
+	- B_pi and B_star are monotonic, i.e.,
+		- v1 <= v2 => B_pi(v1) <= B_pi(v2)
+		- v1 <= v2 => B_star(v1) <= B_star(v2)
+ 4.5) Policy Evaluation
+	- Bellman Expectation Equation => B_pi(v_pi) = v_pi
+	- Policy Evaluation Algorithm => Repeatedly applying B_pi on v => lim (N -> Infinity) B_pi (Iteration N) (v) = v_pi
+ 4.6) Policy Improvement
+	- Proof that Policy Evaluation Iteration Scheme above results in locating the Fixed Point - Consequence of:
+		- Increasing Monotonocity of Reward
+		- Bellman Operator Contractibility
+ --------------------------
+
+ --------------------------
+ #7 - Central limit order book (COMPLETED)
+ --------------------------
+ --------------------------
+ 7.1) RFQ vs. Order Book
+ --------------------------
+
+ --------------------------
+ #8 - How storing Supply and Demand affects Price Diffusion
+ --------------------------
+ --------------------------
+ 8.1) Market Order - Arrives in chunks of σ shares at μ shares per unit time
+	- Equal probability for buy and sell orders
+	- Size distibution with standard deviation √(2/π) σ
+ 8.2) Limit Order - Arrives in chunks of σ shares at α shares per unit price per unit time
+ 8.3) Limit Offers placed at a uniform probability at integer multiples of a tick size p_0 in the range b(t)<p<∞ and for bids on -∞<p<a(t)
+ 8.4) Explicit Limit Order Removal Rate: Constant probability δ per unit time
+ 8.5) Depth profile N(p,t): Density of shares in the order book at price p and time t
+	- Positive for bids and negative for offers
+	- Depth of bids/offers using price coordinates centered at the midpoint m(t) so that b(t)≡-a(t)
+ 8.6) π(N,p,t) => Probability that an interval dp centered around price p has N shares at time t
+	- P_+ (∆p,t) be the probability that m(t) increases by ∆p
+	- P_- (∆p,t) be the probability that it decreases by ∆p
+ 8.7) Ignoring Joint Event Occurrence: α, Nδ, P_+, and P_- small so that higher order terms corresponding to simultaneous events are neglected
+ 8.8) General Master Equation for π
+	- ∂π(N,p)/∂t=
+		α(p)dp/σ [π(N-σ,p)-π(N,p)]+
+		δ/σ [(N+σ)π(N+σ,p)-Nπ(N,p)]+
+		μ(p)/2σ [π(N+σ,p)-π(N,p)]+
+		∑_∆p▒〖P_+ (∆p)[π(N,p-∆p)-π(N,p)] 〗+
+		∑_∆p▒〖P_- (∆p)[π(N,p+∆p)-π(N,p)] 〗
+ 8.9) Component Contributions to Master Density:
+	- α term to receipt of a limit order
+	- δ term to spontaneous removal of a limit order
+	- μ term to the receipt of the market order
+	- P_+ term to an increase in the midpoint m(t)→m(t)+∆p
+	- P_- term to a decrease m(t)→m(t)-∆p
+ 8.10) Co-moving Reference Frame for Mid-price Diffusion:
+	- Last two terms imply a diffusion for the depth when viewed in the co-moving reference of price coordinate when the midpoint moves
+ 8.11) Definition of the Best Offer: π(N,p)=0 for p<0
+ 8.12) Mean-field Solution:
+	- Approximate solution to master equation is found by:
+		- Relating P_+ (∆p) and P_- (∆p) self-consistently to mean-functional forms α(p) and μ(p) for which α and μ furnish boundary conditions
+	- Steady-state mean value 〈N(p)〉 obtained from the generating functional for the moments of π
+	- Simulation matches the leading order properties mean-field solution
+ 8.13) Market Impact:
+	- Definition ∆p=ϕ(ω,τ,t)
+	- Intuitive expectation for convex impact
+	- Origin of the Concave Impact
+		- Instantaneous Price Impact - ϕ(ω,0,t)
+		- Average depth 〈N(p)〉 approximated as a smooth function that vanishes at the midpoint
+		- Taylor Expansion for Average Depth 〈N(p)〉≈2λp - time varying liquidity λ(t)
+		- Walking the Order Book Depth:
+			- Price shift caused by a market order ω>0 approximated by ω=∫_0^Δp▒N(p,t)dp
+		- Linear Approximation over Time Averages 〈∆p(ω)〉=〈√(ω/λ(t) )〉
+ 8.14) Scaling using Flow Quantities:
+	- Ignoring the effects caused by finite bin size p_0 and finite order size σ
+	- Fundamental dimensional quantities are shares, price, and time
+	- Non-dimensional Spread is μ/σ
+	- Non-dimensional Asymptotic Depth is α/δ
+	- Non dimensional Liquidity α^2/μδ
+	- Non-dimensional Volatility (δμ^2)/σ^2 Derived as:
+		- Square 〈∆p(ω)〉=〈√(ω/λ(t) )〉
+		- Substitute ω=μ and λ=σ^2/μδ
+		- Diffusion Rate: Slope of V[m(t+τ)-m(t)] vs. τ
+		- Multiple Diffusion Timescales - Short Term vs Long Term
+ 8.15) Scaling using Flow + Granularity Quantities:
+	- Fundamental Discreteness Dimensional Quantities: σ, which has the dimensions of shares, and p_0, which has the dimensions of price
+	- Non-dimensional Order Granularity and Tick σ ̂=σδ/μ
+	- Non-dimensional tick p ̂=(p_0 α)/μ
+	- Well-defined continuum limit with respect to the non-dimensional tick (p_0 α)/μ
+	- No non-dimensional granularity parameter σδ/μ, i.e., does not affect the slope, spread, or asymptotic depth, but affects price diffusion
+	- Granularity Dependence on Diffusion
+		- Product of the continuum diffusion rate (δμ^2)/σ^2  and a τ-dependent power of the non-dimensional granularity parameter δσ/μ
+		- Power is -1/2 for short term diffusion and 1/2 for long-term diffusion
+	- Weak autocorrelations in price differences m(t)-m(t-1) that persist for timescales until the variance vs τ becomes a straight line
+		- Timescale depends on the parameters, but typically 50
+		- Temporal Market-Impact Coefficient: 〈∆p〉=〈ϕ(ω,τ)〉=f(τ) √ω
+			- f(τ) decreases from its initial value, reaching a non-zero asymptotic f(∞)
+ --------------------------
+
+ --------------------------
+ #10 - Moment-generating Function
+ --------------------------
+ --------------------------
+ 10.1) Expressions
+	- M_X (t)=E[e^tX ]=1+tE[X]+(t^2 E[X^2 ])/2!+(t^3 E[X^3 ])/3!+⋯+(t^n E[X^n ])/n!+⋯=1+tm_1+(t^2 m_2)/2!+(t^3 m_3)/3!+⋯+(t^n m_n)/n!+⋯
+	- i^th Moment about Zero: Differentiating M_X (t) i times with respect to t and setting t=0 => i^th moment about the origin m_i
+	- MGF as a 2-sided Laplace Transform:
+		- 2-sided Laplace transform of its probability density function f_X (x) vs. M_X (t): M_X (t)=L{f_X }(-t)
+		- 2-sided Laplace transform: L{f_X }(s)=∫_(-∞)^(+∞)▒〖e^(-sx) f_X (x)dx〗
+		- M_X (t)=E[e^tX ]=∫_(-∞)^(+∞)▒〖e^tx f_X (x)dx〗
+ 10.2) Bounds:
+	- Jensen’s MGF Lower Bound: M_X (t)≥e^μt where μ is the mean of X
+	- Chernoff Tail Upper Bound: P[X≥a]=P[e^tX≥e^ta ]≤e^(-ta) E[e^tX ]=e^(-at) M_X (t) for t>0
+	- Moments Bound for X≥0: E[X^m ]≤(m/te)^m M_X (t) for any X,m≥0 and t>0
+ --------------------------

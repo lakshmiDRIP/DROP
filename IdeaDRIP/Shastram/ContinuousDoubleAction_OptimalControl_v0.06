@@ -112,7 +112,6 @@
 	- Discrete Time Version of the above is the Bellman Optimality Equation, V(.) is called the Reward R(.)
  --------------------------
 
-
  --------------------------
  #4 - Understanding Exact Dynamic Programming through Bellman Operators
  --------------------------
@@ -153,7 +152,6 @@
 		- Bellman Operator Contractibility
  --------------------------
 
-
  --------------------------
  #7 - Central limit order book (COMPLETED)
  --------------------------
@@ -161,14 +159,13 @@
  7.1) RFQ vs. Order Book
  --------------------------
 
-
  --------------------------
  #8 - How storing Supply and Demand affects Price Diffusion
  --------------------------
  --------------------------
  8.1) Market Order - Arrives in chunks of σ shares at μ shares per unit time
 	- Equal probability for buy and sell orders
-	- SIze distibution with standard deviation √(2/π) σ
+	- Size distibution with standard deviation √(2/π) σ
  8.2) Limit Order - Arrives in chunks of σ shares at α shares per unit price per unit time
  8.3) Limit Offers placed at a uniform probability at integer multiples of a tick size p_0 in the range b(t)<p<∞ and for bids on -∞<p<a(t)
  8.4) Explicit Limit Order Removal Rate: Constant probability δ per unit time
@@ -234,3 +231,21 @@
 		- Timescale depends on the parameters, but typically 50
 		- Temporal Market-Impact Coefficient: 〈∆p〉=〈ϕ(ω,τ)〉=f(τ) √ω
 			- f(τ) decreases from its initial value, reaching a non-zero asymptotic f(∞)
+ --------------------------
+
+ --------------------------
+ #10 - Moment-generating Function
+ --------------------------
+ --------------------------
+ 10.1) Expressions
+	- M_X (t)=E[e^tX ]=1+tE[X]+(t^2 E[X^2 ])/2!+(t^3 E[X^3 ])/3!+⋯+(t^n E[X^n ])/n!+⋯=1+tm_1+(t^2 m_2)/2!+(t^3 m_3)/3!+⋯+(t^n m_n)/n!+⋯
+	- i^th Moment about Zero: Differentiating M_X (t) i times with respect to t and setting t=0 => i^th moment about the origin m_i
+	- MGF as a 2-sided Laplace Transform:
+		- 2-sided Laplace transform of its probability density function f_X (x) vs. M_X (t): M_X (t)=L{f_X }(-t)
+		- 2-sided Laplace transform: L{f_X }(s)=∫_(-∞)^(+∞)▒〖e^(-sx) f_X (x)dx〗
+		- M_X (t)=E[e^tX ]=∫_(-∞)^(+∞)▒〖e^tx f_X (x)dx〗
+ 10.2) Bounds:
+	- Jensen’s MGF Lower Bound: M_X (t)≥e^μt where μ is the mean of X
+	- Chernoff Tail Upper Bound: P[X≥a]=P[e^tX≥e^ta ]≤e^(-ta) E[e^tX ]=e^(-at) M_X (t) for t>0
+	- Moments Bound for X≥0: E[X^m ]≤(m/te)^m M_X (t) for any X,m≥0 and t>0
+ --------------------------
