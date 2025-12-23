@@ -11,7 +11,7 @@ Numerical Analysis Library contains the supporting Functionality for Numerical M
 
  |        Document         | Link |
  |-------------------------|------|
- | Technical Specification | [*Latest*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/NumericalAnalysis/NumericalAnalysis_v7.27.pdf) [*Previous*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/NumericalAnalysis) |
+ | Technical Specification | [*Latest*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/NumericalAnalysis/NumericalAnalysis_v7.45.pdf) [*Previous*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/NumericalAnalysis) |
  | User Guide              |  |
  | API                     | [*Javadoc*](https://lakshmidrip.github.io/DROP/Javadoc/index.html)|
 
@@ -143,7 +143,7 @@ Numerical Analysis Library contains the supporting Functionality for Numerical M
 	* Occurrence and Applications
 	* Computational Methods – Generating Gamma Distributed Random Variables
 	* References
- * Chi Square Distribution
+ * Chi-Squared Distribution
 	* Overview
 	* Definition
 	* Introduction
@@ -206,54 +206,6 @@ Numerical Analysis Library contains the supporting Functionality for Numerical M
 		* Occurrence of Events
 		* Prediction
 	* Random Variate Generation
-	* References
- * Householder Transformation
-	* Introduction
-	* Definition
-	* Examples
-	* Calculation
-		* Linear Transformations of Random Variables
-		* Linear Combination of Independent Random Variables
-		* Vector-valued Random Variables
-	* Important Properties
-		* Calculations of Moments
-	* Other Properties
-	* Relation to other Functions
-	* References
- * Householder Transformation
-	* Overview
-	* Definition
-		* Transformation
-		* Householder Matrix
-		* Properties
-	* Applications
-		* Numerical Linear Algebra
-			* QR Decomposition
-			* Tridiagonalization
-			* Examples
-	* Computational and Theoretical Relationship to other Unitary Transformations
-	* References
- * The Householder Transformation in Numerical Linear Algebra
-	* Abstract
-	* Linear Algebra
-		* Geometric Meanings of the Determinant and Matrix Norm
-		* Computation of Determinants
-		* Computation of Matrix Inverses
-		* Error Propagation
-	* Gaussian Elimination
-		* Row Reduction using Gaussian Elimination
-		* Gaussian Elimination without Pivoting
-		* Gaussian Elimination with Pivoting
-	* Householder Transformations
-		* Geometric Construction
-		* Construction with Specified Source and Destination
-		* Properties of Q, Algebraically Obtained
-		* Properties of Q, Geometrically Obtained
-		* Repeated Householders for Upper-Triangularization
-		* Householders for Column-zeroing
-		* Computation of Determinants
-		* Computation of Matrix Inverses
-		* Rotation Matrices
 	* References
  * Hilbert Space
 	* Overview
@@ -337,6 +289,71 @@ Numerical Analysis Library contains the supporting Functionality for Numerical M
 	* Mathematics: The Kernel Trick
 	* Applications
 	* References
+ * Moment-generating Function
+	* Definition
+	* Examples
+	* Calculation
+		* Linear Transformations of Random Variables
+		* Linear Combination of Independent Random Variables
+		* Vector-valued Random Variables
+	* Important Properties
+		* Calculation of Moments
+	* Other Properties
+	* Relation to Other Functions
+	* References
+ * Fokker Planck Equation
+	* One Dimension
+	* Higher Dimensions
+	* Generalization
+	* Examples
+		* Wiener Process
+		* Boltzmann Distribution at the Thermodynamic Equilibrium
+		* Ornstein–Uhlenbeck Process
+		* Plasma Physics
+	* Smoluchowski Diffusion Equation
+	* Computational Considerations
+		* 1-D Linear Potential Example
+			* Theory
+			* Simulation
+	* Solution
+	* Particular Cases with known Solution and Inversion
+	* Fokker–Planck Equation and Path Integral
+	* References
+ * Householder Transformation
+	* Overview
+	* Definition
+		* Transformation
+		* Householder Matrix
+		* Properties
+	* Applications
+		* Numerical Linear Algebra
+			* QR Decomposition
+			* Tridiagonalization
+			* Examples
+	* Computational and Theoretical Relationship to other Unitary Transformations
+	* References
+ * The Householder Transformation in Numerical Linear Algebra
+	* Abstract
+	* Linear Algebra
+		* Geometric Meanings of the Determinant and Matrix Norm
+		* Computation of Determinants
+		* Computation of Matrix Inverses
+		* Error Propagation
+	* Gaussian Elimination
+		* Row Reduction using Gaussian Elimination
+		* Gaussian Elimination without Pivoting
+		* Gaussian Elimination with Pivoting
+	* Householder Transformations
+		* Geometric Construction
+		* Construction with Specified Source and Destination
+		* Properties of Q, Algebraically Obtained
+		* Properties of Q, Geometrically Obtained
+		* Repeated Householders for Upper-Triangularization
+		* Householders for Column-zeroing
+		* Computation of Determinants
+		* Computation of Matrix Inverses
+		* Rotation Matrices
+	* References
  * Successive Over-relaxation
 	* Introduction
 	* Formulation
@@ -348,7 +365,7 @@ Numerical Analysis Library contains the supporting Functionality for Numerical M
 	* References
  * Symmetric Successive Over-relaxation
 	* References
- * Tridiagonal matrix algorithm
+ * Tridiagonal Matrix Algorithm
 	* Introduction
 	* Derivation
 	* Variants
