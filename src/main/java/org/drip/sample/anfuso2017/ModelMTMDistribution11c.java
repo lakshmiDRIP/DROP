@@ -5,7 +5,7 @@ import org.drip.measure.gaussian.R1UnivariateNormal;
 import org.drip.service.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 import org.drip.validation.evidence.Sample;
-import org.drip.validation.hypothesis.ProbabilityIntegralTransform;
+import org.drip.validation.hypothesis.R1ProbabilityIntegralTransform;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -156,9 +156,9 @@ public class ModelMTMDistribution11c
 	}
 
 	private static final void ProbabilityPlot (
-		final ProbabilityIntegralTransform pitTooHighDrift,
-		final ProbabilityIntegralTransform pitCorrectDrift,
-		final ProbabilityIntegralTransform pitTooLowDrift,
+		final R1ProbabilityIntegralTransform pitTooHighDrift,
+		final R1ProbabilityIntegralTransform pitCorrectDrift,
+		final R1ProbabilityIntegralTransform pitTooLowDrift,
 		final double xLeft,
 		final double xRight,
 		final double xWidth)

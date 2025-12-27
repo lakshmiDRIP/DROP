@@ -16,7 +16,7 @@ Transaction Cost Analytics Library contains the Functionality to:
 
  |        Document         | Link |
  |-------------------------|------|
- | Technical Specification | [*Latest*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/TransactionCostAnalytics/TransactionCostAnalytics_v7.24.pdf) [*Previous*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/TransactionCostAnalytics) |
+ | Technical Specification | [*Latest*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/TransactionCostAnalytics/TransactionCostAnalytics_v7.50.pdf) [*Previous*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/TransactionCostAnalytics) |
  | User Guide              |  |
  | API                     | [*Javadoc*](https://lakshmidrip.github.io/DROP/Javadoc/index.html)|
 
@@ -108,6 +108,53 @@ Transaction Cost Analytics Library contains the Functionality to:
  * How Storing Supply and Demand affects Price Diffusion
 	* Abstract
 	* Main
+	* References
+ * Statistical Theory of Continuous Double Auction
+	* Abstract
+	* Introduction
+		* Motivation
+		* Background: The Continuous Double Auction
+		* The Model
+		* Summary of Prior Work
+	* Overview of the Predictions of the Model
+		* Dimensional Analysis
+		* Varying the Granularity Parameter ϵ
+			* Depth Profile
+			* Liquidity for Market Orders: The Price Impact Function
+			* Spread
+			* Volatility and Price Diffusion
+			* Liquidity for Limit Orders: Probability and Time-to-fill
+		* Varying Tick Size ε_p/p_c
+	* Theoretical Analysis
+		* Summary of Analytic Methods
+		* Characterizing Limit-order Books: Dual Coordinates
+		* Frames and Martingales
+		* Factorization Tests
+		* Comments on Renormalized Diffusion
+		* Master Equations and Mean-field Approximations
+			* A Number Density Master Equation
+			* Solution by Generating Functional
+			* Screening of the Market-order Rate
+			* Verifying the Conservation Laws
+			* Self-consistent Parameterization
+			* Accounting for Correlations
+			* Generalizing the Shift-induced Source Terms
+		* A Mean-field Theory of Order Separation Intervals: The Independent Interval Approximation
+			* Asymptotes and Conservation Rules
+			* Direct Simulation in Interval Coordinates
+	* Relationship of Price Impact to Cumulative Depth
+		* Moment Expansion
+		* Quantiles
+	* Supporting Calculations in Density Coordinates
+		* Generating Functional at General Bin Width
+			* Recovering the Continuum Limit for Prices
+		* Cataloging Correlations
+			* Getting the Intercept Right
+			* Fokker-Planck Expanding Correlations
+	* Concluding Remarks
+		* Ongoing Work on Empirical Validation
+		* Future Enhancements
+		* Comparison to Standard Models Based on Valuation and Information Arrival
 	* References
  * Limit Order Book Simulations: A Review
 	* Abstract

@@ -233,6 +233,351 @@
 			- f(τ) decreases from its initial value, reaching a non-zero asymptotic f(∞)
  --------------------------
 
+
+ --------------------------
+ #9 - Statistical Theory of Continuous Double Action
+ --------------------------
+ --------------------------
+ 9.1) Overview of the Model Predictions – Varying the Granularity Parameter ϵ
+	- Limit of ε_p→0
+	- Large ϵ: ϵ≳0.01
+		- Large accumulation of the orders near best bid and the best ask
+		- Nearly linear market impact
+		- Equal short- and long-term diffusion
+		- Regime where the mean-field approximation used works best
+	- Medium ϵ: ϵ∼0.01
+		- Accumulation of orders at the best bid and the best ask is small
+		- Near the midpoint the depth profile increases linearly with price
+		- Approximation: Price increases roughly as square root of the order size
+	- Small ϵ: ϵ≲0.001
+		- Accumulation of orders at the best bid and the best ask is very small
+		- Near the midpoint the depth profile is a convex function of the price
+		- Price impact is very concave
+		- Short-term price diffusion rate is much smaller than the long-term price diffusion rate
+ 9.2) Overview of the Model Predictions – Varying the Granularity Parameter ϵ; Depth Profile
+	- Dimensonless Depth Profile: n ̂=(np_c)/N_c =nδ/α
+	- Cumulative Depth Profile: N(p,t)=∑_(p ̃=0)^p▒〖n(p ̃,t) ε_p 〗
+	- Dimensonless Cumulative Depth Profile: N ̂(p)=N(p)/N_c =2δN(p)/μ=N(p)ϵ/μ
+	- High ϵ Regime Depth Profile:
+		- Annihilation due to market orders is low relative to δσ
+		- Significant accumulation of the orders at the best ask
+		- Average depth is much greater than zero at its mid-point
+		- Mean depth profile is a concave function of price
+	- Medium ϵ Regime Depth Profile:
+		- Market order removal increases, depleting the average depth near the best ask
+		- Profile is nearly linear over p/p_c ≤1
+	- Low ϵ Regime Depth Profile:
+		- Market order removal increases further, average depth near the ask very close to zero
+		- Profile is convex over the range p/p_c ≤1
+	- Standard Deviation of the Cumulative Depth:
+		- Comparable to the mean depth
+		- As ϵ increases, near midpoint there is a similar transition from convex to concave behavior
+	- Density of executed orders decreases rapidly as a function of the distance from the midpoint
+ 9.3) Overview of the Model Predictions – Varying the Granularity Parameter ϵ; Liquidity for Market Orders: The Price Impact Function
+	- Instantaneous Price Impact: ϕ(t,ω,τ→0)
+	- Permanent Price Impact: ϕ(t,ω,τ→∞)
+	- Price Impact Continuum over Depth: ω=N(p,t)=∫_0^p▒〖n(p ̃,t)dp ̃ 〗
+	- Price Impact in Large ϵ Regime: n(p) is constant so price impact is roughly linear
+	- Median ϵ Price Impact: Assumption that n(p) is linearly increasing and n(0)≈0 => mean price should increase roughly as √ω
+	- Small ϵ Price Impact: n(0)≈0 means:
+		- Price impact is highly concave, increasing much slower than √ω
+		- Depth profile n(p) is convex
+ 9.4) Relationship of Price Impact to Cumulative Depth; Moment Expansion
+	- Postulates for ω(p,t) and p(ω,t)
+		- ω(p,t)=a(t)+b(t)∙p+(c(t)^2)/2∙p^2
+		- p(ω,t)=(-b(t)+√(b^2 (t)+2c(t)[ω-a(t)] ))/c(t) 
+	- Explicit Expression for the Time Fluctuation
+		- a(t)=a ̅+δ_a (t); b(t)=b ̅+δ_b (t); c(t)=c ̅+δ_c (t)
+	- Expectation of ω at p=0
+		- 〈ω(0)〉=a ̅; ├ ∂〈ω(p)〉/∂p┤|_(p=0)=b ̅; ├ (∂^2 〈ω(p)〉)/(∂p^2 )┤|_(p=0)=c ̅
+	- Expectation of ω^2 at p=0
+		- ├ (∂^2 〈ω^2 (p)〉)/(∂p^2 )┤|_(p=0)=2(b ̅^2+a ̅c ̅ )+2〈δ_b^2+δ_a δ_c 〉
+		- ├ (∂^3 〈ω^2 (p)〉)/(∂p^3 )┤|_(p=0)=6(b ̅c ̅+〈δ_b δ_c 〉)
+		- ├ (∂^4 〈ω^2 (p)〉)/(∂p^4 )┤|_(p=0)=6(c ̅^2+〈δ_c^2 〉)
+	- Taylor’s Expansion of p off of a, b, and c
+		- 〈p(ω)〉=p ̅+
+			1/2 ├ ((∂^2 p)/(∂a^2 )) ̅ ┤|_(a(t)=a ̅ ) 〈δ_a^2 〉+
+			1/2 (├ (∂^2 p)/(∂b^2 )┤|_(b(t)=b ̅ ) ) ̅〈δ_b^2 〉+
+			1/2 ├ ((∂^2 p)/(∂c^2 )) ̅ ┤|_(c(t)=c ̅ ) 〈δ_c^2 〉+
+			├ ((∂^2 p)/∂a∂b) ̅ ┤|_(a(t)=a ̅; b(t)=b ̅ )  〈δ_a δ_b 〉+
+			├ ((∂^2 p)/∂a∂c) ̅ ┤|_(a(t)=a ̅; c(t)=c ̅ ) 〈δ_a δ_c 〉+
+			├ ((∂^2 p)/∂b∂c) ̅ ┤|_(b(t)=b ̅; c(t)=c ̅ ) 〈δ_b δ_c 〉
+	- Components of 〈p(ω)〉 Taylor Expansion
+		- Z ̅=√(b^2 (t)+2c(t)[ω-a(t)] )
+		- 1/2 ├ ((∂^2 p)/(∂a^2 )) ̅ ┤|_(a(t)=a ̅ )=-c ̅/(2Z ̅^3 )
+		- ├ ((∂^2 p)/∂a∂b) ̅ ┤|_(a(t)=a ̅; b(t)=b ̅ )=b ̅/Z ̅^3 
+		- 1/2 (├ (∂^2 p)/(∂b^2 )┤|_(b(t)=b ̅ ) ) ̅=├ ((∂^2 p)/∂a∂b) ̅ ┤|_(a(t)=a ̅; b(t)=b ̅ )=(ω-a ̅)/Z ̅^3 
+		- ├ ((∂^2 p)/∂b∂c) ̅ ┤|_(b(t)=b ̅; c(t)=c ̅ )=1/c ̅^2 -b ̅/(Zc) ̅^2 -(ω-a ̅ )^2/(2c ̅Z ̅^3 )
+ 9.5) Overview of the Mode Parameters – Varying the Granularity Parameter ϵ; Spread
+	- Spread Probability Density at s/p_c =0:
+		- Spread probability density is substantial at s/p_c =0 which is the limit ε_p→0
+	- Peak of the Spread Density: At approximately 0.2p_c
+	- Spread Dependence on ϵ: Spread is very small for large ϵ, and large for small ϵ
+	- Depth Fluctuations for Large ϵ:
+		- For large ϵ the fluctuations around the mean depth are roughly independent
+		- Probability for a market order to penetrate at a given price level is:
+			- Probability that all the ticks smaller than the price level contain no orders, which gives rise to an exponential decay
+	- Behavior for Small ϵ:
+		- For small ϵ, the probability distribution of the spread becomes insensitive to ϵ
+	- Mean Spread increases with ϵ
+ 9.6) Overview of the Mode Parameters – Varying the Granularity Parameter ϵ; Volatility and Price Diffusion
+	- Characteristic Step for Random Walk: μ/2α
+	- Characteristic Time for Random Walk: 1/δ
+	- Diffusion Rate from Order Flow: (μ^2 δ)/α^2 
+	- Multiple Diffusion Timescales:
+		- Faster diffusion rate for short timescales
+		- Slower diffusion rate for long timescales
+ 9.7) Overview of the Mode Parameters – Varying the Granularity Parameter ϵ; Liquidity for Limit Orders: Probability and Time-to-Fill
+	- Liquidity for Limit Orders: Depends on the probability that they will be filled, and the time to be filled
+		- Limit orders close to transaction prices filled more quickly
+	- Limit Order Fill Probability: Decreases with ϵ
+		- High ϵ - This is less than 1 even for negative prices - even for sells close best bid, significant chance that the offer is deleted before execution
+			- Not true for Low ϵ
+		- Fill Probability ϵ Crossover: Around p=p_c, after which the above low/high ϵ probability of fill reverses
+ 9.8) Overview of the Mode Parameters – Varying the Tick Size ε_p/p_c 
+	- Qualitative changes in behavior are relatively minor
+ 9.9) Theoretical Analysis – Characterizing Limit-order Books: Dual Coordinates
+	- Price Space: Bins of length ε_p representing the ticks
+	- Sign Convention for n(p,t)
+	- Cumulative Order Count LOB Representation: N(p,t)=∑_(-∞)^(p-ε_p)▒|n(p,t)| -∑_(-∞)^(a-ε_p)▒|n(p,t)| 
+	- N↔Price Inverse Relation: p(N,t)=max⁡{p | N(p,t)=N}
+		- p(0,t)≡a(t)
+		- p(-1,t)≡b(t)
+		- x(N,t)=p(N,t)-p(N-1,t)
+	- Instantaneous Bid-Ask Spread:x(0,t)=a(t)-b(t)
+	- Symmetric Order Placement Rules:
+		- n(p,t)→-n(-p,t)
+		- x(N,t)→x(-N,t)
+ 9.10) Theoretical Analysis: Frames and Martingales
+	- Stationary Nature of x(N,t) Specification
+	- Nonstationary Nature of p(N,t) or n(p,t)
+		- Stationary Distributions in Comoving Frames
+	- Centered Configurations:
+		- Bid-centered configuration: n_b (p,t)=n(p-b(t),t)
+		- Mid-centered configuration: n_m (p,t)=n(p-m(t),t)
+	- Mid-centered Ask: s(t)/2
+	- Bid centered Balance Constraint => μ/2=∑_(b+ε_p)^∞▒[α-δ〈n_b (p)〉] 
+	- Mid centered Balance Constraint => μ/2=α 〈s〉/2+∑_(b+ε_p)^∞▒[α-δ〈n_m (p)〉]  
+	- Bid-centered Ask: α〈m-b〉=α〈s〉/2
+ 9.11) Theoretical Analysis: Factorization Tests
+	- Marginal Equation using Independent Marginals: P[{n(p_i )}_i ]=∏_i▒P[n(p_i )] 
+	- Explicit Relation for Spread Probability: P[s/2<p]=1-e^(-∑_(p^'=b+ε_p)^(b+ε_p)▒〈n_m (p^' )〉 )
+	- Validity at High ϵ: Mean-density profile at the midpoint 〈n_m (0)〉≲1 and strongly concave demand
+		- Approximation of independent fluctuations is excellent
+	- Validity at Intermediate ϵ: 〈n_m (0)〉≪1 and nearly linear, and the approximation of independence is marginal
+	- Validity at Small ϵ: 〈n_m (0)〉≪1 and concave upward - approximation of independent fluctuations is invalid
+ 9.12) Theoretical Analysis: Master Equations and Mean Field Approximations
+	- Independence of N(p,t)/p(N,t) Fluctuations:
+		- Probabilities may be defined for any density n(p,t) independently at each p => Mid-centering for n(p,t)
+		- Separation intervals x(N,t) independently at each N => x(N,t) is well-defined without reference to any frame
+ 9.13) Master Equations and Mean Field Approximations – A Number Density Equation
+	- Density of the Distribution π(n,p,t): ∑_n▒π(n,p,t) =1
+	- Density Evolution Master Equation:
+		- ∂π(n,p,t)/∂t=(α(p) ε_p)/σ [π(n-σ,p,t)-π(n,p,t)]+δ/σ [(n+σ)π(n+σ,p,t)-nπ(n,p,t)]+μ(p)/2σ [π(n+σ,p,t)-π(n,p,t)]+∑_∆p▒〖P_+ (∆p)[π(n,p-∆p,t)-π(n,p,t)] 〗+∑_∆p▒〖P_- (∆p)[π(n,p+∆p,t)-π(n,p,t)] 〗
+		- Limit Order Arrival Component:
+			- Depositions of discrete orders at (α(p) ε_p)/σ
+			- Raises configurations from n-σ to n shares at p
+		- Order Cancelation/Removal Component: Number of orders that can independently decay
+		- Market Order Arrival Component: μ(p)/2σ describes market order annihilations
+		- Up/Down Frame Price Shifts: Preceding three effects lead to shifts of the origin by ∆p and P_±
+		- Assumption Valid Outside the Spread, not Inside
+			- Rigorous Inside-Spread Density Handling: Require replacing the product with a sum of products conditioned on states of the order book
+	- α(p) in a Bid-centered Frame: α(p) takes a fixed value α(∞) at all p
+	- α(p) in Mid-centered Frame: Depositions below the midpoint causes shifts that deposit orders above the midpoint
+	- μ(p) in Mid-centered Frame: Rate of market orders surviving to cancel limit orders at p
+	- Price Range of μ(p) Values: μ(0)/2 to 0 at p→∞
+	- Time Parameters for the Simulation: α(∞) and μ(0) are, thus, the parameters α and μ of the simulation
+ 9.14) Theoretical Analysis – Master Equations and Mean-Field Approximations: Solution by Generating Functional
+	- MGF Functional for π(n,p): Π(λ,p)=∑_(n/σ=0)^∞▒〖λ^(n/σ) π(n,p) 〗
+	- MGF at λ=0 and λ=1
+		- Π(0,p)=π(0,p)=π_0 (p)
+		- ∑_n▒π(n,p,t) =1 implies Π(1,p)=1 ∀p
+	- Linear Approximation of MGF across λ
+		- |∂Π(λ,p)/∂λ|_(λ→1)=〈n(p)〉/σ
+		- In the neighborhood of λ=1 linear approximation:  Π(λ,p)=1+(λ-1)  〈n(p)〉/σ+O([λ-1]^2 )
+	- Multiplying Stationary Master Equation by λ^(n/σ) and summing over n, the stationary solution for Π(λ,p) must satisfy:
+		- 0=(λ-1)/p |α(p) ε_p Π(λ,p)-δσ ∂Π(λ,p)/∂λ-μ(p)/2λ [Π(λ,p)-π_0 (p)]|_(λ,p)+∑_∆p▒〖P_+ (∆p)[Π(λ,p-∆p)-Π(λ,p)] 〗+∑_∆p▒〖P_- (∆p)[Π(λ,p+∆p)-Π(λ,p)] 〗
+	- Symmetric Shift with No Drift: P_+ (∆p)=P_- (∆p)=P(∆p)
+	- Expression for ∆p Based Diffusivity: D=∑_∆p▒〖P(∆p) 〖∆p〗^2 〗
+	- Rate of Frame Density Shift: R=∑_∆p▒P(∆p)  and 〈∆p〉=(∑_∆p▒P(∆p)∆p)/(∑_∆p▒P(∆p) )
+	- Frame Diffusivity Stationary Master Equation:
+		- ∂Π(λ,p)/∂λ-D/δ(λ-1)   (∂^2 Π(λ,p))/(∂λ^2 )-(α(p) ε_p-μ(p)/2λ)/δσ Π(λ,p)=μ(p)/2δσλ π_0 (p)
+	- Using Linear MGF Approximation at λ→1:
+		- 〈n(p)〉-D/δ  (∂^2 〈n(p)〉)/(∂p^2 )=(α(p) ε_p)/δ-μ(p)/2δ [1-π_0 (p)]
+	- Simplification under ε_p→0:
+		- Eligible values of any 〈n(p)〉 become just σ and 0, thus 〈n(p)〉=σ[1-π_0 (p)]
+		- Result: (α(p) ε_p)/δ=μ(p)/2δ 〈n(p)〉+〈n(p)〉-D/δ  (∂^2 〈n(p)〉)/(∂p^2 )
+	- Nondimensional Form of Stationary Master:
+		- α(p)/α(∞) =[μ(p)/μ(0) +ϵ(1-D/δ  ∂^2/(∂p^2 ))]  1/ϵ  δ〈n(p)〉/(α(p) ε_p )
+	- 〈n(p)〉 Far from the Midpoint:
+		- Only depositions and cancelations take place
+		- Orders in bins of width ε_p are Poisson-distributed with mean (α(∞) ε_p)/δ
+		- Therefore asymptotic value of δ〈n(p)〉/(α(∞) ε_p ) at large p is unity
+	- Asymptotic α(p) and μ(p) at p→∞:
+		- Consistent with a limit α(p)/α(∞)  of unity, and a limit for the second μ(p)/μ(0)  to zero
+ 9.15) Supporting Calculations in Density Coordinates – Generating Functional at General Bin Width
+	- D/δ Power Series for Π
+		- Π(λ,p)=∑_j▒〖(D/δ)^j Π_j (λ,p) 〗
+		- Π_j (0,p)=π_0j (p)
+	- D/δ Power Series for 〈n(p)〉: 〈n(p)〉=∑_j▒〖(D/δ)^j 〈n(p)〉_j 〗
+	- Collecting the Power Series Coefficients:
+		- [∂/∂λ-(α(p) ε_p-μ(p)/2λ)/δσ] Π_j (λ,p)=μ(p)/2δσλ π_0j (p)+∂^2/(∂p^2 )  (Π_(j-1) (λ,p))/((λ-1) )
+	- Normalization Constraints on Π_j (1,p): Π_0 (1,p)=1; Π_(j≠0) (λ,p)=0 ∀ p
+	- Recursion Relation for 〈n(p)〉_j:
+		- 〈n(p)〉_0=(α(p) ε_p)/δ-μ(p)/2δ [1-π_00 ]
+		- 〈n(p)〉_j=μ(p)/2δ π_0j+∂^2/(∂p^2 ) 〈n(p)〉_(j-1)
+	- Integral Solution to the Π_j (λ,p) Series:
+		- Π_j (λ,p)=π_0j (p)[1+(α(p) ε_p)/δσ I(λ)]+I(λ) ⟦∂^2/(∂p^2 )  (Π_(j-1) (λ,p))/((λ-1) )⟧_λ
+		- I(λ)=λ∫_0^1▒〖e^(λ (α(p) ε_p)/δσ (1-z) ) z^(μ(p)/2δσ) dz〗
+		- ⟦∂^2/(∂p^2 )  (Π_(j-1) (λ,p))/((λ-1) )⟧_λ≡λ/I(λ) ∙∫_0^1▒〖e^(λ (α(p) ε_p)/δσ (1-z) ) z^(μ(p)/2δσ)  ∂^2/(∂p^2 )  (Π_(j-1) (λz,p))/((λz-1) ) dz〗
+	- Π(λ,p) Normalizer as a Starting Point: π_00=1/(1+(α(p) ε_p)/δσ I(1) )
+	- Recursion Sequence for Π_j (λ,p):
+		- I(λ)=λ∫_0^1▒〖e^(λ (α(p) ε_p)/δσ (1-z) ) z^(μ(p)/2δσ) dz〗
+		- ⟦∂^2/(∂p^2 )  (Π_(j-1) (λ,p))/((λ-1) )⟧_λ≡λ/I(λ) ∙∫_0^1▒〖e^(λ (α(p) ε_p)/δσ (1-z) ) z^(μ(p)/2δσ)  ∂^2/(∂p^2 )  (Π_(j-1) (λz,p))/((λz-1) ) dz〗
+		- π_00=1/(1+(α(p) ε_p)/δσ I(1) )
+ 9.16) Supporting Calculations in Density Coordinates – Generating Functional at General Bin Width: Recovering the Continuum Limit for Prices
+	- I(λ) and 〈n(p)〉_0 as ε_p→0:
+		- I(λ)→λ/(1+α(p)/2δσ)+O(ε_p )
+		- 〈n(p)〉_0→((α(p) ε_p)/δσ)/(1+μ(p)/2δσ)+O(ε_p^2 )
+	- Linear MGF Postulate for Π_0 (λ,p): Π_0 (λ,p)=1+(λ-1)  〈n(p)〉_0/σ+O(ε_p^2 )
+	- Inductive Recursive Relation for Π_j (λ,p):
+		- Π_(j-1) (λ,p)=Π_(j-1) (1,p)+(λ-1)  〈n(p)〉_(j-1)/σ+O(ε_p^2 )
+		- n.b. - 〈n(p)〉_(j-1)~O(ε_p ) and Π_(j-1) (1,p)=either 1 or 0
+		- Π_j (λ,p)=(λ-1)I(1)  ∂^2/(∂p^2 )  〈n(p)〉_(j-1)/σ+O(ε_p^2 )
+	- 〈n(p)〉_j in Terms of 〈n(p)〉_(j-1)
+		- 〈n(p)〉_(j≠0)→1/(1+μ(p)/2δσ)  ∂^2/(∂p^2 )  〈n(p)〉_(j-1)/σ+O(ε_p^2 )
+	- Series Summation for 〈n(p)〉:
+		- 〈n(p)〉=∑_j▒[D/δ  1/(1+μ(p)/2δσ)  ∂^2/(∂p^2 )]^j  〈n(p)〉_0
+		- 〈n(p)〉=1/(1+μ(p)/2δσ) ∑_j▒[D/δ  ∂^2/(∂p^2 )+1/(1+μ(p)/2δσ)]^j   (α(p) ε_p)/δ
+	- Series Expansion in Price Laplacian: (α(p) ε_p)/δ=[μ(p)/2δσ+(1-D/δ  ∂^2/(∂p^2 ))]〈n(p)〉
+ 9.17) Theoretical Analysis - Master Equation and Mean-field Approximations: Screening of the Market Rate
+	- Effective μ(p) Increment at p: ∆μ(p)=-μ(p)[1-π_0 (p)]=-μ(p)〈n(p)〉/σ
+	- Differential Form for μ(p): (d log⁡〖μ(p)/μ(0) 〗)/dp=-1/ϵ [2α(∞)/μ(0) ][δ〈n(p)〉/(α(∞) ε_p )] where p_c=  μ(0)/2α(∞) 
+	- Market Orders Screening Rate Function: 1/ϵ  δ〈n(p)〉/(α(p) ε_p )=ψ(p ̂ ) where p ̂≡p/p_c 
+	- p-dependent Forms for μ/α: α(p)/α(∞) =[μ(p)/μ(0) +ϵ(1-β ∂^2/(∂p^2 ))]ψ(p ̂ ) with μ(p)/μ(0) =φ(p ̂ )=e^(-∫_0^p ̂▒〖ψ(p ̂^' )dp ̂^' 〗)
+ 9.18) Theoretical Analysis - Master Equation and Mean-field Approximations: Self-consistent Parametrization
+	- Continuum Form for P[s ̂/2≤p ̂ ]≈φ(p ̂ )
+	- Mid centered Form for φ(p ̂ ):
+		- α(p ̂ )/α(∞ ̂ ) =1+P[s ̂/2≤p ̂ ] and α(p)/α(∞) =[μ(p)/μ(0) +ϵ(1-β ∂^2/(∂p^2 ))]ψ(p ̂ ) become:
+			- 1+φ(p ̂ )=-[dφ(p ̂ )/(dp ̂ )+ϵ(1-β ∂^2/(∂p^2 ))  (d log⁡φ(p ̂ ))/(dp ̂ )]
+	- Density and ψ(p ̂ ) for Negative Price:
+		- At p=0, nπ(n,p-∆p)=0 the boundary condition becomes ψ(0-〈∆p〉)=0
+	- Self-consistent Expressions for β and 〈∆p〉:
+		- Price Shift Probability - 2α(∞)(d∆p)P[a≥∆p]
+		- Symmetric Contribution from Order Removal: P_± (∆p)=4α(∞)(d∆p)P[a≥∆p]
+	- Expression for β from ψ(∆p ̂ ):
+		- Nondimensionalize D=∑_∆p▒〖P(∆p) 〖∆p〗^2 〗 to get β=4/ϵ ∫_0^∞▒〖(∆p ̂ )^2 φ(∆p ̂ )d∆p ̂ 〗
+		- Corresponding Expression for 〈∆p ̂ 〉: 〈∆p ̂ 〉=(∫_0^∞▒〖(∆p ̂ )φ(∆p ̂ )d∆p ̂ 〗)/(∫_0^∞▒〖φ(∆p ̂ )d∆p ̂ 〗)
+	- Corresponding Expression for φ(p ̂ ): 1+φ(p ̂ )=-[dφ(p ̂ )/(dp ̂ )+ϵ(1-β ∂^2/(∂p^2 ))  (d log⁡φ(p ̂ ))/(dp ̂ )]
+ 9.19) Theoretical Analysis - Master Equation and Mean-field Approximations: Accounting for Correlations
+	- Violation of Global Conservation Laws
+	- Incorrect p ̂=0 Boundary Condition
+ 9.20) Theoretical Analysis - Master Equation and Mean-field Approximations: Generalizing the Self-induced Source Terms
+	- Nondimensionalization of the MGF Approximator: Keeping the leading terms in ε_p at λ→0 one gets
+		- α(p ̂ )/α(∞) =[μ(p ̂ )/μ(0) +ϵ]ψ(p ̂ )+∫▒〖dP_+ (∆p ̂ )[ψ(p ̂-∆p ̂ )-ψ(p ̂ )] 〗+∫▒〖dP_- (∆p ̂ )[ψ(p ̂+∆p ̂ )-ψ(p ̂ )] 〗
+	- Inserting Source-dependent Price Terms and Use of the Spread Measure
+		- α(p ̂ )/α(∞) =[μ(p ̂ )/μ(0) +ϵ]ψ(p ̂ )+S
+	- Criterion for Global Conservation: ∫▒〖Sdp ̂ 〗=0
+ 9.21) Supporting Calculations in Density Coordinates – Cataloging Correlations
+	- Events Producing the Occupation Shifts: Decomposing the Source Term
+	- Removal of Buy Limit Orders
+		- Contributing Source Terms
+		- Buy Order Removal Catalog
+		- Buy Order Removal Scenarios
+		- Using Mean-field Measure P[s ̂/2≤p ̂ ]≈φ(p ̂ )
+			- Estimating the Shifts
+			- Measures corresponding to the Shifts: P[a≤∆p ̂ ]
+		- Buy Order Removal Diffusion Integral:
+			- ∫_0^p ̂▒〖2ψ(p ̂-∆p ̂ )[φ(Δp ̂ )-φ(p ̂ )]dΔp ̂ 〗-∫_0^∞▒〖2ψ(p ̂ )[φ(Δp ̂ )-φ(p ̂+Δp ̂ )]dΔp ̂ 〗
+	- Sell Order Removals
+		- Sell Order Removals Scenarios
+		- Sell Order Removal Catalog
+		- Sell Order Removal Diffusion Integral
+			- ∫_0^∞▒〖2ψ(p ̂+∆p ̂ )[φ(Δp ̂ )-φ(p ̂+∆p ̂ )]dΔp ̂ 〗-∫_0^p ̂▒〖2ψ(p ̂ )[φ(Δp ̂ )-φ(p ̂ )]dΔp ̂ 〗
+	- Sell Order Addition
+		- Sell Order Addition Scenario
+		- Sell Order Addition Catalog
+		- Sell Order Addition Diffusion Integral
+			- ∫_0^(p ̂/2)▒〖2ψ(p ̂+∆p ̂ )[φ(Δp ̂ )-φ(p ̂-∆p ̂ )]dΔp ̂ 〗-∫_0^p ̂▒〖2ψ(p ̂ )[φ(Δp ̂ )-φ(p ̂+Δp ̂ )]dΔp ̂ 〗
+	- Buy Order Addition: ∫_0^∞▒〖2ψ(p ̂+∆p ̂ )[φ(Δp ̂ )-φ(p ̂+∆p ̂ )]dΔp ̂ 〗-∫_0^p ̂▒〖2ψ(p ̂ )[φ(Δp ̂ )-φ(p ̂ )]dΔp ̂ 〗
+		- Buy Order Addition Catalog
+	- Combined Buy Additions and Removals: S(p ̂ )=S_buy (p ̂ )+S_sell (p ̂ )
+		- S_buy (p ̂ )=∫_0^p ̂▒〖2[ψ(p ̂-∆p ̂ )-ψ(p ̂ )][φ(Δp ̂ )-φ(p ̂ )]dΔp ̂ 〗-∫_0^∞▒〖2[ψ(p ̂+Δp ̂ )-ψ(p ̂ )][φ(Δp ̂ )-φ(p ̂+Δp ̂ )]dΔp ̂ 〗
+	- Combined Sell Additions and Removals
+		- S_sell (p ̂ )=∫_0^(p ̂/2)▒〖2ψ(p ̂-∆p ̂ )[φ(Δp ̂ )-φ(p ̂-∆p ̂ )]dΔp ̂ 〗-2∫_0^p ̂▒〖2ψ(p ̂ )[φ(Δp ̂ )-φ(p ̂ )]dΔp ̂ 〗+∫_0^∞▒〖2ψ(p ̂+Δp ̂ )[φ(Δp ̂ )-φ(p ̂+Δp ̂ )]dΔp ̂ 〗
+	- Violation of Global Constraint: ∫▒〖Sdp ̂ 〗≠0
+	- Validation of Mid-point Constraint: S(0)=0
+ 9.22) Supporting Calculations in Density Coordinates – Cataloging Correlations; Getting the Intercept Right
+	- α(p ̂ )/α(∞ ̂ )  at p ̂=0:
+		- ψ(0 ̂ )=2/(1+ϵ)
+		- Total Density: 〈n(0)〉/(σε_p )=(2α(∞ ̂ )/σ)/(μ(0)/2σ+δ)
+	- Comparison 〈n(0)〉 with 〈n〉_0: Total Density compared to Zeroth Order Density
+		- Positive Verification from Simulations
+	- ψ(0 ̂ ) in Bid-centered Frame:
+		- ψ(0 ̂ )=1/(1+ϵ)
+		- Bid-centered Violation of Mean-field Approximations
+ 9.23) Supporting Calculations in Density Coordinates – Cataloging Correlations; Fokker-Planck Expanding Correlations
+	- Fokker-Planck Expansion of S
+	- dψ(p ̂ )/(dp ̂ ) Derivative Components in S:
+		- S=R(p ̂ )ψ(p ̂ )+P(p ̂ )  dψ(p ̂ )/(dp ̂ )+ϵβ(p ̂ )  (d^2 ψ(p ̂ ))/(dp ̂^2 )
+	- R(p ̂ ), P(p ̂ ), and ϵβ(p ̂ ):
+		- R(p ̂ )=∫_0^∞▒〖2[φ(Δp ̂ )-φ(p ̂+Δp ̂ )]dΔp ̂ 〗-2∫_0^p ̂▒〖2[φ(Δp ̂ )-φ(p ̂ )]dΔp ̂ 〗+∫_0^(p ̂/2)▒〖2[φ(Δp ̂ )-φ(p ̂-Δp ̂ )]dΔp ̂ 〗
+		- P(p ̂ )=2∫_0^∞▒〖2Δp ̂[φ(Δp ̂ )-φ(p ̂+Δp ̂ )]dΔp ̂ 〗-∫_0^p ̂▒〖2p ̂[φ(Δp ̂ )-φ(p ̂ )]dΔp ̂ 〗-∫_0^(p ̂/2)▒〖2Δp ̂[φ(Δp ̂ )-φ(p ̂-Δp ̂ )]dΔp ̂ 〗
+		- ϵβ(p ̂ )=∫_0^∞▒〖2(Δp ̂ )^2 [φ(Δp ̂ )-φ(p ̂+Δp ̂ )]dΔp ̂ 〗+1/2 ∫_0^p ̂▒〖2(Δp ̂ )^2 [φ(Δp ̂ )-φ(p ̂ )]dΔp ̂ 〗+1/2 ∫_0^(p ̂/2)▒〖2(Δp ̂ )^2 [φ(Δp ̂ )-φ(p ̂-Δp ̂ )]dΔp ̂ 〗
+	- Approximating φ(p ̂±∆p ̂ ) from p ̂, ∆p ̂:
+		- Given μ(p ̂ )/μ(0) =φ(p ̂ )=e^(-∫_0^p ̂▒〖ψ(p ̂^' )dp ̂^' 〗)
+			- φ(p ̂±∆p ̂ )≈φ(p ̂ )φ(∆p ̂ ) e^(±p ̂∆p ̂├ dψ(p ̂ )/(dp ̂ )┤|_0 )
+	- Additional Simplification Applied on φ(p ̂±∆p ̂ )
+		- φ(p ̂±∆p ̂ ) is dominated by the constant term ψ(0)
+		- e^(±p ̂∆p ̂├ dψ(p ̂ )/(dp ̂ )┤|_0 ) can be approximated as unity
+	- Simplified R(p ̂ ), P(p ̂ ), and ϵβ(p ̂ ):
+		- R(p ̂ )=[1-φ(p ̂ )] I_0 (∞)-2[I_0 (p ̂ )-2p ̂φ(p ̂ )]+[1-φ(p ̂ )] I_0 (p ̂/2)
+		- P(p ̂ )=2[1-φ(p ̂ )] I_1 (∞)-[I_1 (p ̂ )-p ̂^2 φ(p ̂ )]+[1-φ(p ̂ )] I_1 (p ̂/2)
+		- ϵβ(p ̂ )=[1-φ(p ̂ )] I_2 (∞)-1/2 [I_2 (p ̂ )-2/3 p ̂^3 φ(p ̂ )]+[1-φ(p ̂ )] I_2 (p ̂/2)
+		- where I_j (p ̂ )≡∫_0^p ̂▒〖2(Δp ̂ )^j φ(Δp ̂ )dΔp ̂ 〗
+ 9.24) Theoretical Analysis – A Mean-Field Theory of Order Separation Intervals: The Independent Interval Approximation
+	- Independent Fluctuations in x(N)
+	- Removal of an Ask: x_0→x_0+x_1 with rate δ+μ/2α
+	- Removal of a Bid: x_0→x_0+x_-1 with rate δ+μ/2α
+	- Adding a Single Sell: x_0→x^' for any value 1≤x^'≤x_0-1 when a sell limit order is deposited anywhere in the spread
+	- Cumulative Sell Additions: (αε_p (x_0-1))/σ
+	- Adding a Single Buy: x_0→x_0-x^' for any value 1≤x^'≤x_0-1 when a sell limit order is deposited anywhere in the spread
+	- Likelihood of Order Staying Untouched: 1-2δ-μ/σ-(2αε_p (x_0-1))/σ
+	- Setting σ=1
+	- Time Evolution of x_0 #1: x_0 (t+∆t)=x_0 (t)[1-2δ-μ_0-2α(x_0-1)]+(x_0+x_1 )(δ+μ/2)+(x_0+x_(-1) )(δ+μ/2)+α_0 ε_p x_0 (x_0-1)
+	- x_i (t) as an Ensemble Average
+	- Time Evolution of x_0: (dx_0 (t))/dt=(x_1+x_(-1) )(δ+μ/2)-αε_p x_0 (x_0-1)
+		- Quadratic Dependence on x_0
+		- 〈x_0^2 〉 => a.〈x_0^2 〉
+	- Steady-State Recurrence Relation: (x_1+x_(-1) )(δ+μ/2)=αε_p x_0 (x_0-1)
+	- Inverse Distance from the Bid: Inverse of the density at a distance ∑_(j=0)^(k-1)▒x_j  from the bid
+		- Explicit Form for x_i: x_i≈1/〈n(∑_(j=0)^(k-1)▒x_j  ε_p )〉 
+	- Normalized Order Separation Interval: x ̂_i≡ϵ α/δ x_i ε_p=(x_i ε_p)/p_c ≈1/ψ(∑_(j=0)^(k-1)▒x ̂_j ) 
+	- Nondimensionalization of the Recurrence Relation:
+		- (x ̂_1+x ̂_(-1) )(1+ϵ)=ax ̂_0 (x ̂_0-ε ̂_p ) where ε ̂_p=ε_p/p_c 
+	- Symmetry of Depth about Origin: x ̂_1=x ̂_(-1)
+	- Nondimensionalized, Symmetrized Recurrence Relation: x ̂_1 (1+ϵ)=a/2 x ̂_0 (x ̂_0-ε ̂_p )=x ̂_(-1) (1+ϵ)
+	- PDE for the x_1 Evolution:
+		- (dx_1 (t))/dt=(2δ+μ/2) x_2-(δ+μ/2) x_1+αε_p [(x_0 (x_0-1))/2-(x_1 (x_1-1))/2-x_1 (x_0-1)]
+	- Nondimensional Recurrence Relation for x ̂_2:
+		- x ̂_2 (1+2ϵ)=a/2 x ̂_1 (x ̂_1-ε ̂_p )+x ̂_1 (x ̂_0-ε ̂_p )
+	- Nondimensional Recurrence Relation for x ̂_k:
+		- x ̂_k (1+kϵ)=a/2 x ̂_(k-1) (x ̂_(k-1)-ε ̂_p )+x ̂_(k-1) ∑_(i=0)^(k-2)▒(x ̂_i-ε ̂_p ) 
+ 9.25) Theoretical Analysis – A Mean-field Theory of Order Separation Intervals; The Independent Interval Approximations: Asymptotes and Conservation Rules
+	- x_∞ Asymptote: As x ̂_(k+1)→x ̂_k
+	- ϵx ̂_∞=x ̂_∞ (x ̂_∞-ε ̂_p ) => x ̂_∞=ϵ+ε ̂_p
+	- Cumulative Departures from the Asymptote
+		- S_∞=∑_(i=0)^(k-2)▒(x ̂_i-x ̂_∞ )  => S_∞=1+(1-a/2)ϵ
+	- Applying Bid-centered Conservation Law:
+		- Net Order Removal Rate => μ/2+δ(k+1)
+		- Net Order Addition Rate => αε_p ∑_(i=0)^k▒(x_i-1) 
+		- Matching them Produces S_∞=1 => Verified by Monte Carlo
+			- Also implies 〈x_k^2 〉=2〈x_k 〉^2 i.e. a=2
+	- PDF Simulation from Gaussian to Exponential: As k goes from 0 to 5
+ 9.26) Theoretical Analysis – A Mean-Field Theory of Order Separation Intervals; The Independent Interval Approximation: Direct Simulation in Interval Coordinates
+	- Power-law Order Placement Process: α=(Δ_0^w)/(Δ+Δ_0 )^w 
+ --------------------------
+
  --------------------------
  #10 - Moment-generating Function
  --------------------------

@@ -9,8 +9,8 @@ import org.drip.validation.distance.HypothesisOutcomeSuite;
 import org.drip.validation.distance.HypothesisSuite;
 import org.drip.validation.evidence.Ensemble;
 import org.drip.validation.evidence.Sample;
-import org.drip.validation.hypothesis.ProbabilityIntegralTransform;
-import org.drip.validation.hypothesis.ProbabilityIntegralTransformTest;
+import org.drip.validation.hypothesis.R1ProbabilityIntegralTransform;
+import org.drip.validation.hypothesis.R1PITTester;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -134,7 +134,7 @@ import org.drip.validation.hypothesis.ProbabilityIntegralTransformTest;
 public class DiscriminatoryPowerAnalyzer
 {
 	private GapTestSetting _gapTestSetting = null;
-	private ProbabilityIntegralTransform _sampleProbabilityIntegralTransform = null;
+	private R1ProbabilityIntegralTransform _sampleProbabilityIntegralTransform = null;
 
 	/**
 	 * Construct a DiscriminatoryPowerAnalyzer Instance from the Sample
@@ -171,7 +171,7 @@ public class DiscriminatoryPowerAnalyzer
 	 */
 
 	public DiscriminatoryPowerAnalyzer (
-		final ProbabilityIntegralTransform sampleProbabilityIntegralTransform,
+		final R1ProbabilityIntegralTransform sampleProbabilityIntegralTransform,
 		final GapTestSetting gapTestSetting)
 		throws Exception
 	{
@@ -187,7 +187,7 @@ public class DiscriminatoryPowerAnalyzer
 	 * @return The Sample Probability Integral Transform
 	 */
 
-	public ProbabilityIntegralTransform sampleProbabilityIntegralTransform()
+	public R1ProbabilityIntegralTransform sampleProbabilityIntegralTransform()
 	{
 		return _sampleProbabilityIntegralTransform;
 	}
@@ -215,7 +215,7 @@ public class DiscriminatoryPowerAnalyzer
 		final Ensemble hypothesis)
 	{
 		try {
-			return null == hypothesis ? null : new ProbabilityIntegralTransformTest (
+			return null == hypothesis ? null : new R1PITTester (
 				hypothesis.nativeProbabilityIntegralTransform()
 			).distanceTest (_sampleProbabilityIntegralTransform, _gapTestSetting);
 		} catch (Exception e) {

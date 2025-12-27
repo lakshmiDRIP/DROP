@@ -3,8 +3,8 @@ package org.drip.validation.evidence;
 
 import org.drip.measure.statistics.UnivariateMoments;
 import org.drip.numerical.common.NumberUtil;
-import org.drip.validation.hypothesis.ProbabilityIntegralTransform;
-import org.drip.validation.hypothesis.ProbabilityIntegralTransformTest;
+import org.drip.validation.hypothesis.R1ProbabilityIntegralTransform;
+import org.drip.validation.hypothesis.R1PITTester;
 import org.drip.validation.hypothesis.SignificanceTestSetting;
 import org.drip.validation.hypothesis.StatisticalTestOutcome;
 import org.drip.validation.hypothesis.TTestOutcome;
@@ -132,7 +132,7 @@ public class Ensemble implements NativePITGenerator
 	private Sample[] _sampleArray = null;
 	private double[][] _evaluatedSampleTestStatistic = null;
 	private TestStatisticEvaluator[] _testStatisticEvaluatorArray = null;
-	private ProbabilityIntegralTransform[] _probabilityIntegralTransformArray = null;
+	private R1ProbabilityIntegralTransform[] _probabilityIntegralTransformArray = null;
 
 	/**
 	 * Ensemble Constructor
@@ -156,7 +156,7 @@ public class Ensemble implements NativePITGenerator
 		int sampleCount = _sampleArray.length;
 		int testStatisticEvaluatorCount = _testStatisticEvaluatorArray.length;
 		_evaluatedSampleTestStatistic = new double[testStatisticEvaluatorCount][sampleCount];
-		_probabilityIntegralTransformArray = new ProbabilityIntegralTransform[testStatisticEvaluatorCount];
+		_probabilityIntegralTransformArray = new R1ProbabilityIntegralTransform[testStatisticEvaluatorCount];
 
 		if (0 == sampleCount || 0 == testStatisticEvaluatorCount) {
 			throw new Exception ("Ensemble Constructor => Invalid Inputs");
@@ -232,7 +232,7 @@ public class Ensemble implements NativePITGenerator
 	 * @return The Array of Probability Integral Transforms
 	 */
 
-	public ProbabilityIntegralTransform[] probabilityIntegralTransformArray()
+	public R1ProbabilityIntegralTransform[] probabilityIntegralTransformArray()
 	{
 		return _probabilityIntegralTransformArray;
 	}
@@ -243,18 +243,18 @@ public class Ensemble implements NativePITGenerator
 	 * @return The Test Statistic Based Significance Test Hypothesis Array
 	 */
 
-	public ProbabilityIntegralTransformTest[] significanceTest()
+	public R1PITTester[] significanceTest()
 	{
 		int probabilityIntegralTransformCount = _testStatisticEvaluatorArray.length;
-		ProbabilityIntegralTransformTest[] probabilityIntegralTransformTestArray =
-			new ProbabilityIntegralTransformTest[probabilityIntegralTransformCount];
+		R1PITTester[] probabilityIntegralTransformTestArray =
+			new R1PITTester[probabilityIntegralTransformCount];
 
 		for (int probabilityIntegralTransformIndex = 0;
 			probabilityIntegralTransformIndex < probabilityIntegralTransformCount;
 			++probabilityIntegralTransformIndex) {
 			try {
 				probabilityIntegralTransformTestArray[probabilityIntegralTransformIndex] = new
-					org.drip.validation.hypothesis.ProbabilityIntegralTransformTest
+					org.drip.validation.hypothesis.R1PITTester
 						(_probabilityIntegralTransformArray[probabilityIntegralTransformIndex]);
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -339,7 +339,7 @@ public class Ensemble implements NativePITGenerator
 		StatisticalTestOutcome[] statisticalTestOutcomeArray =
 			new StatisticalTestOutcome[testStatisticEvaluatorCount];
 
-		ProbabilityIntegralTransformTest[] probabilityIntegralTransformTestArray = significanceTest();
+		R1PITTester[] probabilityIntegralTransformTestArray = significanceTest();
 
 		for (int testStatisticEvaluatorIndex = 0;
 			testStatisticEvaluatorIndex < testStatisticEvaluatorCount;
@@ -383,7 +383,7 @@ public class Ensemble implements NativePITGenerator
 		return statisticalTestOutcomeArray;
 	}
 
-	@Override public ProbabilityIntegralTransform nativeProbabilityIntegralTransform()
+	@Override public R1ProbabilityIntegralTransform nativeProbabilityIntegralTransform()
 	{
 		TestStatisticAccumulator testStatisticAccumulator = new TestStatisticAccumulator();
 

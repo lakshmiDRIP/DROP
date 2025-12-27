@@ -2,7 +2,7 @@
 package org.drip.validation.evidence;
 
 import org.drip.numerical.common.NumberUtil;
-import org.drip.validation.hypothesis.ProbabilityIntegralTransform;
+import org.drip.validation.hypothesis.R1ProbabilityIntegralTransform;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -175,7 +175,7 @@ public class Sample implements NativePITGenerator
 		return testStatisticEvaluator.evaluate (_realizationArray);
 	}
 
-	@Override public ProbabilityIntegralTransform nativeProbabilityIntegralTransform()
+	@Override public R1ProbabilityIntegralTransform nativeProbabilityIntegralTransform()
 	{
 		TestStatisticAccumulator testStatisticAccumulator = new TestStatisticAccumulator();
 

@@ -16,7 +16,7 @@ import org.drip.validation.evidence.Sample;
 import org.drip.validation.evidence.TestStatisticEvaluator;
 import org.drip.validation.hypothesis.HistogramTestOutcome;
 import org.drip.validation.hypothesis.HistogramTestSetting;
-import org.drip.validation.hypothesis.ProbabilityIntegralTransformTest;
+import org.drip.validation.hypothesis.R1PITTester;
 import org.drip.validation.quantile.PlottingPositionGeneratorHeuristic;
 import org.drip.validation.riskfactorjoint.NormalSampleCohort;
 import org.drip.validation.riskfactorsingle.DiscriminatoryPowerAnalyzer;
@@ -155,7 +155,7 @@ public class CVMCorrelationBacktesting7d
 		final double pValueThreshold)
 		throws Exception
 	{
-		HistogramTestOutcome histogram = new ProbabilityIntegralTransformTest (
+		HistogramTestOutcome histogram = new R1PITTester (
 			gapTestOutcome.probabilityIntegralTransformWeighted()
 		).histogramTest (
 			HistogramTestSetting.AnfusoKaryampasNawroth2017 (

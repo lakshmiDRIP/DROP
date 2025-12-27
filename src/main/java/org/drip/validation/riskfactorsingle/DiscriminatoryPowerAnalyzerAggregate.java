@@ -7,7 +7,7 @@ import org.drip.analytics.support.CaseInsensitiveHashMap;
 import org.drip.validation.distance.GapTestOutcome;
 import org.drip.validation.distance.GapTestSetting;
 import org.drip.validation.evidence.Ensemble;
-import org.drip.validation.hypothesis.ProbabilityIntegralTransform;
+import org.drip.validation.hypothesis.R1ProbabilityIntegralTransform;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -133,8 +133,8 @@ public class DiscriminatoryPowerAnalyzerAggregate
 	private GapTestSetting _gapTestSetting = null;
 	private EventAggregationWeightFunction _eventAggregationWeightFunction = null;
 
-	private Map<String, ProbabilityIntegralTransform> _eventSamplePITMap =
-		new CaseInsensitiveHashMap<ProbabilityIntegralTransform>();
+	private Map<String, R1ProbabilityIntegralTransform> _eventSamplePITMap =
+		new CaseInsensitiveHashMap<R1ProbabilityIntegralTransform>();
 
 	/**
 	 * DiscriminatoryPowerAnalyzerAggregate Constructor
@@ -147,7 +147,7 @@ public class DiscriminatoryPowerAnalyzerAggregate
 	 */
 
 	public DiscriminatoryPowerAnalyzerAggregate (
-		final Map<String, ProbabilityIntegralTransform> eventSamplePITMap,
+		final Map<String, R1ProbabilityIntegralTransform> eventSamplePITMap,
 		final GapTestSetting gapTestSetting,
 		final EventAggregationWeightFunction eventAggregationWeightFunction)
 		throws Exception
@@ -187,7 +187,7 @@ public class DiscriminatoryPowerAnalyzerAggregate
 	 * @return The Event Sample PIT Map
 	 */
 
-	public Map<String, ProbabilityIntegralTransform> eventSamplePITMap()
+	public Map<String, R1ProbabilityIntegralTransform> eventSamplePITMap()
 	{
 		return _eventSamplePITMap;
 	}

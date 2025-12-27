@@ -1,0 +1,680 @@
+
+ --------------------------
+ #1 - Optimal Control
+ --------------------------
+ --------------------------
+ 1.1) Overview
+	- Continuous-time Cost Functional to be minimized
+		- J(x, u, t0, tf) = E(x(t0), t0, x(tf), tf) + Integrate F(x, u, t) over t0, tf
+	- First Order Dynamic Constraints - State Equations
+		- xdot(t) = f(x, u, t)
+	- Algebraic Path Constraints
+		- h(x, u, t) <= 0
+	- Endpoint Conditions
+		- e(t0, x(t0), tf, x(tf)) = 0
+ 1.2) Linear Quadratic Control
+	- Quadratic Continuous-time Cost Functional to be minimized
+		- J = 1/2.xTranspose(tf).Sf.x(tf) + 1/2.Integrate {xTranspose(t).Q(t).x(t) + uTranspose(t).R.u(t)} over t0, tf
+	- First Order Dynamic Constraints - State Equations
+		- xdot(t) = A(t).x(t)+B(t).u(t)
+	- Initial Conditions
+		- x(t0) = x0
+	- Linear Quadratic Regulator - LQR
+		- A, B, Q, R are constant
+		- tf -> Infinity
+		- Quadratic Continuous-time Cost Functional to be minimized
+			- J = 1/2.Integrate {xTranspose(t).Q(t).x(t) + uTranspose(t).R.u(t)} over t0, Infinity
+		- First Order Dynamic Constraints - State Equations
+			- xdot(t) = A(t).x(t)+B(t).u(t)
+		- Initial Conditions
+			- x(t0) = x0
+	- Q => PSD and R => PD for finite-horizon
+		- Infinite Horizon; Q/R also constant for positive cost
+	- Optimal Feedback for LQ/LQR:
+		- u(t) = -K(t).x(t)
+		- K(t) = RInverse.BTranspose.S(t)
+		- S(t) solution to differential Riccati equation:
+			- Sdot(t) = -S.A-ATranspose.S+S.B.RInverse.BTranspose.S-Q
+			- S(tf) = Sf
+		- Infinite Horizon - Algebraic Riccati Equation ARE:
+			- 0 = -S.A-ATranspose.S+S.B.RInverse.BTranspose.S-Q
+ 1.3) Numerical Methods for Optimal Control
+	- Indirect Cost based Solution
+		- Hamiltonian H = F + lambdaTranspose.f - muTranspose.h (lambda, mu => Lagrange multipliers)
+		- xdot = dH/dlambda
+		- lamdadot = -dH/dx
+ --------------------------
+
+ --------------------------
+ #2 - Hamilton-Jacobi-Bellman Equation
+ --------------------------
+ --------------------------
+ 2.1) Optimal Control Problems
+	- Expression for Deterministic Optimal Control Path-based Cost Function
+	- xdot as a Function of x and u (the control vector)
+ 2.2) PDE
+	- Deterministic Optimal Control Path-based Cost Function PDE
+	- Deterministic Optimal Control Path-based Cost Function Terminal Condition
+ 2.3) Intuition behind Deterministic Optimal Control Path-based Cost Function
+	- Deterministic Optimal Control Path-based Cost Function in terms of optimal incremental subsequent Cost and adjacent Value Function
+		- Taylor expansion of Value Function
+		- Incorporation of xdot
+ 2.3) Extension to Stochastic Problems
+	- Cost Function Adaptation to the Stochastic State Vector
+		- xdot is implicitly a Function of x and u (the control vector) through the stochastic evolver
+	- Stochastic Version of the HJB Equation
+	- Terminal Cost Function remains the same
+ 2.4) Extension to Stochastic Problems - LCQ Control
+	- Evolution of x in terms of x, u, and Brownian
+	- Explicit Form for the Cost Accumulation
+	- Formulation of HJB for Quadratic Control
+	- Expression for Optimal Action
+ --------------------------
+
+ --------------------------
+ #3 - Bellman Equation
+ --------------------------
+ --------------------------
+ 3.1) Derivation
+	- A Dynamic Decision Problem
+		- Infinite-horizon Decision Problem: V(x_0) = Max across all a_t Sum over t (MDF^t . Payoff(x_t, a_t))
+		- Constraints:
+			- Action choice set a_t in {Action Set (x_t)}
+			- Next state = T(x_t, a_t)
+	- Bellman's Principle of Optimality
+		- Infinite-horizon Decision Problem: V(x_0) = Max across all a_0 (Payoff(x_0, a_0) + Sum over t not t_0 MDF . (MDF^(t-1) . Payoff(x_t, a_t)))
+		- Eventual Constraints:
+			- Action choice set a_t in {Action Set (x_t)}
+			- Next state = T(x_t, a_t)
+		- Initial Constraints:
+			- Action choice set a_0 in {Action Set (x_0)}
+			- Next state = T(x_0, a_0)
+	- The Bellman Equation
+		- Infinite-horizon Decision Problem: V(x_0) = Max across all a_0 (Payoff(x_0, a_0) + MDF . V(x_1)
+		- Eventual Constraints:
+			- Action choice set a_t in {Action Set (x_t)}
+			- Next state = T(x_t, a_t)
+		- Initial Constraints:
+			- Action choice set a_0 in {Action Set (x_0)}
+			- Next state = T(x_0, a_0)
+		- Generalized Form: V(x_0) = Max across all a_t in {Action Set (x_t)} (Payoff(x_t, a_t) + MDF . V(T(x_t, a_t))
+	- In a Stochastic Problem
+		- Infinite-horizon Decision Problem: V(c_0) = Max across all a_t Sum over t (MDF^t . Payoff(c_t, a_t))
+			- Current Endowment is a_t - Initial is a_0
+			- State is Consumption c_t
+			- MDF = 1 / (1 + r) => r being the Stochastic Interest Rate
+		- a_(t+1) = (1 + r).(a_t - c_t)
+		- Stochastic Interest Rate implies that V(x) will be a quadrature over the future interest rate paths
+			- Quadrature Measure Q over the filtration adapted over the realized interest rate trajectory
+		- Stochastic Sequential Optimization Problem - Ex-post over stochastic path evolution
+			- V(x, z) = max over {Action choice set a in {Action Set (x)}} {Payoff(x, a, z) + MDF.Integral over z' {V(T(x, a), z')}}
+ 3.2) Markov Decision Process
+	- Discrete Time Version of the above is the Bellman Optimality Equation, V(.) is called the Reward R(.)
+ --------------------------
+
+ --------------------------
+ #4 - Understanding Exact Dynamic Programming through Bellman Operators
+ --------------------------
+ --------------------------
+ 4.1) Value Functions as Vectors
+	- State space made up of n R^1 states s_1 through s_n
+	- Action space made up of m actions a_1 through a_m
+	- Stochastic Action Policy (probability of action a at state s)
+		- Deterministic Action Policy: Policy at state s is a
+	- Value Function v as function of policy pi given a starting state s => v_pi(s)
+	- Optimal Value Function v_*(s) = max over pi v_pi(s)
+ 4.2) Reward and Probabilities
+	- R_(s, a) => Expected Reward on action a in state s
+	- P_(s, s', a) => Probability of Transition s -> s' on action a
+	- R_pi(s) = sum over a pi (a given s).R_(s, a)
+	- P_pi(s, s') = sum over a pi (a given s).P_(s, s', a)
+	- Gamma - MDP Discount Factor
+ 4.3) Bellman Operators B_pi and B_star
+	- Bellman Policy Operator B_pi: B_pi(v) = R_pi + Gamma.B_pi(v)
+		- B_pi is a linear operator with a fixed point v_pi
+	- Bellman Optimality Operator B_pi: B_star(v)(s) = max over a {R_(s, a) + Gamma.sum over (s' element of S) [P_(s, s', a)(v)(s')]}
+		- B_pi is a non-linear operator with a fixed point v_pi
+	- Deterministic Greedy Policy G(v): G(v)(s) = arg max of a {R_(s, a) + Gamma.sum over (s' element of S) [P_(s, s', a)(v)(s')]}
+		- B_G(v).v = B_star.v
+ 4.4) Contraction and Monotonicity of Operators
+	- B_pi and B_star are gamma contraction under L_infinity norm, i.e.,
+		- ||B_pi(v1) - B_pi(v2)||_infinity <= gamma.||v1 - v2||_infinity
+		- ||B_star(v1) - B_pi(star)||_infinity <= gamma.||v1 - v2||_infinity
+	- B_pi and B_star are monotonic, i.e.,
+		- v1 <= v2 => B_pi(v1) <= B_pi(v2)
+		- v1 <= v2 => B_star(v1) <= B_star(v2)
+ 4.5) Policy Evaluation
+	- Bellman Expectation Equation => B_pi(v_pi) = v_pi
+	- Policy Evaluation Algorithm => Repeatedly applying B_pi on v => lim (N -> Infinity) B_pi (Iteration N) (v) = v_pi
+ 4.6) Policy Improvement
+	- Proof that Policy Evaluation Iteration Scheme above results in locating the Fixed Point - Consequence of:
+		- Increasing Monotonocity of Reward
+		- Bellman Operator Contractibility
+ --------------------------
+
+ --------------------------
+ #7 - Central limit order book (COMPLETED)
+ --------------------------
+ --------------------------
+ 7.1) RFQ vs. Order Book
+ --------------------------
+
+ --------------------------
+ #8 - How storing Supply and Demand affects Price Diffusion
+ --------------------------
+ --------------------------
+ 8.1) Market Order - Arrives in chunks of σ shares at μ shares per unit time
+	- Equal probability for buy and sell orders
+	- Size distibution with standard deviation √(2/π) σ
+ 8.2) Limit Order - Arrives in chunks of σ shares at α shares per unit price per unit time
+ 8.3) Limit Offers placed at a uniform probability at integer multiples of a tick size p_0 in the range b(t)<p<∞ and for bids on -∞<p<a(t)
+ 8.4) Explicit Limit Order Removal Rate: Constant probability δ per unit time
+ 8.5) Depth profile N(p,t): Density of shares in the order book at price p and time t
+	- Positive for bids and negative for offers
+	- Depth of bids/offers using price coordinates centered at the midpoint m(t) so that b(t)≡-a(t)
+ 8.6) π(N,p,t) => Probability that an interval dp centered around price p has N shares at time t
+	- P_+ (∆p,t) be the probability that m(t) increases by ∆p
+	- P_- (∆p,t) be the probability that it decreases by ∆p
+ 8.7) Ignoring Joint Event Occurrence: α, Nδ, P_+, and P_- small so that higher order terms corresponding to simultaneous events are neglected
+ 8.8) General Master Equation for π
+	- ∂π(N,p)/∂t=
+		α(p)dp/σ [π(N-σ,p)-π(N,p)]+
+		δ/σ [(N+σ)π(N+σ,p)-Nπ(N,p)]+
+		μ(p)/2σ [π(N+σ,p)-π(N,p)]+
+		∑_∆p▒〖P_+ (∆p)[π(N,p-∆p)-π(N,p)] 〗+
+		∑_∆p▒〖P_- (∆p)[π(N,p+∆p)-π(N,p)] 〗
+ 8.9) Component Contributions to Master Density:
+	- α term to receipt of a limit order
+	- δ term to spontaneous removal of a limit order
+	- μ term to the receipt of the market order
+	- P_+ term to an increase in the midpoint m(t)→m(t)+∆p
+	- P_- term to a decrease m(t)→m(t)-∆p
+ 8.10) Co-moving Reference Frame for Mid-price Diffusion:
+	- Last two terms imply a diffusion for the depth when viewed in the co-moving reference of price coordinate when the midpoint moves
+ 8.11) Definition of the Best Offer: π(N,p)=0 for p<0
+ 8.12) Mean-field Solution:
+	- Approximate solution to master equation is found by:
+		- Relating P_+ (∆p) and P_- (∆p) self-consistently to mean-functional forms α(p) and μ(p) for which α and μ furnish boundary conditions
+	- Steady-state mean value 〈N(p)〉 obtained from the generating functional for the moments of π
+	- Simulation matches the leading order properties mean-field solution
+ 8.13) Market Impact:
+	- Definition ∆p=ϕ(ω,τ,t)
+	- Intuitive expectation for convex impact
+	- Origin of the Concave Impact
+		- Instantaneous Price Impact - ϕ(ω,0,t)
+		- Average depth 〈N(p)〉 approximated as a smooth function that vanishes at the midpoint
+		- Taylor Expansion for Average Depth 〈N(p)〉≈2λp - time varying liquidity λ(t)
+		- Walking the Order Book Depth:
+			- Price shift caused by a market order ω>0 approximated by ω=∫_0^Δp▒N(p,t)dp
+		- Linear Approximation over Time Averages 〈∆p(ω)〉=〈√(ω/λ(t) )〉
+ 8.14) Scaling using Flow Quantities:
+	- Ignoring the effects caused by finite bin size p_0 and finite order size σ
+	- Fundamental dimensional quantities are shares, price, and time
+	- Non-dimensional Spread is μ/σ
+	- Non-dimensional Asymptotic Depth is α/δ
+	- Non dimensional Liquidity α^2/μδ
+	- Non-dimensional Volatility (δμ^2)/σ^2 Derived as:
+		- Square 〈∆p(ω)〉=〈√(ω/λ(t) )〉
+		- Substitute ω=μ and λ=σ^2/μδ
+		- Diffusion Rate: Slope of V[m(t+τ)-m(t)] vs. τ
+		- Multiple Diffusion Timescales - Short Term vs Long Term
+ 8.15) Scaling using Flow + Granularity Quantities:
+	- Fundamental Discreteness Dimensional Quantities: σ, which has the dimensions of shares, and p_0, which has the dimensions of price
+	- Non-dimensional Order Granularity and Tick σ ̂=σδ/μ
+	- Non-dimensional tick p ̂=(p_0 α)/μ
+	- Well-defined continuum limit with respect to the non-dimensional tick (p_0 α)/μ
+	- No non-dimensional granularity parameter σδ/μ, i.e., does not affect the slope, spread, or asymptotic depth, but affects price diffusion
+	- Granularity Dependence on Diffusion
+		- Product of the continuum diffusion rate (δμ^2)/σ^2  and a τ-dependent power of the non-dimensional granularity parameter δσ/μ
+		- Power is -1/2 for short term diffusion and 1/2 for long-term diffusion
+	- Weak autocorrelations in price differences m(t)-m(t-1) that persist for timescales until the variance vs τ becomes a straight line
+		- Timescale depends on the parameters, but typically 50
+		- Temporal Market-Impact Coefficient: 〈∆p〉=〈ϕ(ω,τ)〉=f(τ) √ω
+			- f(τ) decreases from its initial value, reaching a non-zero asymptotic f(∞)
+ --------------------------
+
+
+ --------------------------
+ #9 - Statistical Theory of Continuous Double Action
+ --------------------------
+ --------------------------
+ 9.1) Overview of the Model Predictions – Varying the Granularity Parameter ϵ
+	- Limit of ε_p→0
+	- Large ϵ: ϵ≳0.01
+		- Large accumulation of the orders near best bid and the best ask
+		- Nearly linear market impact
+		- Equal short- and long-term diffusion
+		- Regime where the mean-field approximation used works best
+	- Medium ϵ: ϵ∼0.01
+		- Accumulation of orders at the best bid and the best ask is small
+		- Near the midpoint the depth profile increases linearly with price
+		- Approximation: Price increases roughly as square root of the order size
+	- Small ϵ: ϵ≲0.001
+		- Accumulation of orders at the best bid and the best ask is very small
+		- Near the midpoint the depth profile is a convex function of the price
+		- Price impact is very concave
+		- Short-term price diffusion rate is much smaller than the long-term price diffusion rate
+ 9.2) Overview of the Model Predictions – Varying the Granularity Parameter ϵ; Depth Profile
+	- Dimensonless Depth Profile: n ̂=(np_c)/N_c =nδ/α
+	- Cumulative Depth Profile: N(p,t)=∑_(p ̃=0)^p▒〖n(p ̃,t) ε_p 〗
+	- Dimensonless Cumulative Depth Profile: N ̂(p)=N(p)/N_c =2δN(p)/μ=N(p)ϵ/μ
+	- High ϵ Regime Depth Profile:
+		- Annihilation due to market orders is low relative to δσ
+		- Significant accumulation of the orders at the best ask
+		- Average depth is much greater than zero at its mid-point
+		- Mean depth profile is a concave function of price
+	- Medium ϵ Regime Depth Profile:
+		- Market order removal increases, depleting the average depth near the best ask
+		- Profile is nearly linear over p/p_c ≤1
+	- Low ϵ Regime Depth Profile:
+		- Market order removal increases further, average depth near the ask very close to zero
+		- Profile is convex over the range p/p_c ≤1
+	- Standard Deviation of the Cumulative Depth:
+		- Comparable to the mean depth
+		- As ϵ increases, near midpoint there is a similar transition from convex to concave behavior
+	- Density of executed orders decreases rapidly as a function of the distance from the midpoint
+ 9.3) Overview of the Model Predictions – Varying the Granularity Parameter ϵ; Liquidity for Market Orders: The Price Impact Function
+	- Instantaneous Price Impact: ϕ(t,ω,τ→0)
+	- Permanent Price Impact: ϕ(t,ω,τ→∞)
+	- Price Impact Continuum over Depth: ω=N(p,t)=∫_0^p▒〖n(p ̃,t)dp ̃ 〗
+	- Price Impact in Large ϵ Regime: n(p) is constant so price impact is roughly linear
+	- Median ϵ Price Impact: Assumption that n(p) is linearly increasing and n(0)≈0 => mean price should increase roughly as √ω
+	- Small ϵ Price Impact: n(0)≈0 means:
+		- Price impact is highly concave, increasing much slower than √ω
+		- Depth profile n(p) is convex
+ 9.4) Relationship of Price Impact to Cumulative Depth; Moment Expansion
+	- Postulates for ω(p,t) and p(ω,t)
+		- ω(p,t)=a(t)+b(t)∙p+(c(t)^2)/2∙p^2
+		- p(ω,t)=(-b(t)+√(b^2 (t)+2c(t)[ω-a(t)] ))/c(t) 
+	- Explicit Expression for the Time Fluctuation
+		- a(t)=a ̅+δ_a (t); b(t)=b ̅+δ_b (t); c(t)=c ̅+δ_c (t)
+	- Expectation of ω at p=0
+		- 〈ω(0)〉=a ̅; ├ ∂〈ω(p)〉/∂p┤|_(p=0)=b ̅; ├ (∂^2 〈ω(p)〉)/(∂p^2 )┤|_(p=0)=c ̅
+	- Expectation of ω^2 at p=0
+		- ├ (∂^2 〈ω^2 (p)〉)/(∂p^2 )┤|_(p=0)=2(b ̅^2+a ̅c ̅ )+2〈δ_b^2+δ_a δ_c 〉
+		- ├ (∂^3 〈ω^2 (p)〉)/(∂p^3 )┤|_(p=0)=6(b ̅c ̅+〈δ_b δ_c 〉)
+		- ├ (∂^4 〈ω^2 (p)〉)/(∂p^4 )┤|_(p=0)=6(c ̅^2+〈δ_c^2 〉)
+	- Taylor’s Expansion of p off of a, b, and c
+		- 〈p(ω)〉=p ̅+
+			1/2 ├ ((∂^2 p)/(∂a^2 )) ̅ ┤|_(a(t)=a ̅ ) 〈δ_a^2 〉+
+			1/2 (├ (∂^2 p)/(∂b^2 )┤|_(b(t)=b ̅ ) ) ̅〈δ_b^2 〉+
+			1/2 ├ ((∂^2 p)/(∂c^2 )) ̅ ┤|_(c(t)=c ̅ ) 〈δ_c^2 〉+
+			├ ((∂^2 p)/∂a∂b) ̅ ┤|_(a(t)=a ̅; b(t)=b ̅ )  〈δ_a δ_b 〉+
+			├ ((∂^2 p)/∂a∂c) ̅ ┤|_(a(t)=a ̅; c(t)=c ̅ ) 〈δ_a δ_c 〉+
+			├ ((∂^2 p)/∂b∂c) ̅ ┤|_(b(t)=b ̅; c(t)=c ̅ ) 〈δ_b δ_c 〉
+	- Components of 〈p(ω)〉 Taylor Expansion
+		- Z ̅=√(b^2 (t)+2c(t)[ω-a(t)] )
+		- 1/2 ├ ((∂^2 p)/(∂a^2 )) ̅ ┤|_(a(t)=a ̅ )=-c ̅/(2Z ̅^3 )
+		- ├ ((∂^2 p)/∂a∂b) ̅ ┤|_(a(t)=a ̅; b(t)=b ̅ )=b ̅/Z ̅^3 
+		- 1/2 (├ (∂^2 p)/(∂b^2 )┤|_(b(t)=b ̅ ) ) ̅=├ ((∂^2 p)/∂a∂b) ̅ ┤|_(a(t)=a ̅; b(t)=b ̅ )=(ω-a ̅)/Z ̅^3 
+		- ├ ((∂^2 p)/∂b∂c) ̅ ┤|_(b(t)=b ̅; c(t)=c ̅ )=1/c ̅^2 -b ̅/(Zc) ̅^2 -(ω-a ̅ )^2/(2c ̅Z ̅^3 )
+ 9.5) Overview of the Mode Parameters – Varying the Granularity Parameter ϵ; Spread
+	- Spread Probability Density at s/p_c =0:
+		- Spread probability density is substantial at s/p_c =0 which is the limit ε_p→0
+	- Peak of the Spread Density: At approximately 0.2p_c
+	- Spread Dependence on ϵ: Spread is very small for large ϵ, and large for small ϵ
+	- Depth Fluctuations for Large ϵ:
+		- For large ϵ the fluctuations around the mean depth are roughly independent
+		- Probability for a market order to penetrate at a given price level is:
+			- Probability that all the ticks smaller than the price level contain no orders, which gives rise to an exponential decay
+	- Behavior for Small ϵ:
+		- For small ϵ, the probability distribution of the spread becomes insensitive to ϵ
+	- Mean Spread increases with ϵ
+ 9.6) Overview of the Mode Parameters – Varying the Granularity Parameter ϵ; Volatility and Price Diffusion
+	- Characteristic Step for Random Walk: μ/2α
+	- Characteristic Time for Random Walk: 1/δ
+	- Diffusion Rate from Order Flow: (μ^2 δ)/α^2 
+	- Multiple Diffusion Timescales:
+		- Faster diffusion rate for short timescales
+		- Slower diffusion rate for long timescales
+ 9.7) Overview of the Mode Parameters – Varying the Granularity Parameter ϵ; Liquidity for Limit Orders: Probability and Time-to-Fill
+	- Liquidity for Limit Orders: Depends on the probability that they will be filled, and the time to be filled
+		- Limit orders close to transaction prices filled more quickly
+	- Limit Order Fill Probability: Decreases with ϵ
+		- High ϵ - This is less than 1 even for negative prices - even for sells close best bid, significant chance that the offer is deleted before execution
+			- Not true for Low ϵ
+		- Fill Probability ϵ Crossover: Around p=p_c, after which the above low/high ϵ probability of fill reverses
+ 9.8) Overview of the Mode Parameters – Varying the Tick Size ε_p/p_c 
+	- Qualitative changes in behavior are relatively minor
+ 9.9) Theoretical Analysis – Characterizing Limit-order Books: Dual Coordinates
+	- Price Space: Bins of length ε_p representing the ticks
+	- Sign Convention for n(p,t)
+	- Cumulative Order Count LOB Representation: N(p,t)=∑_(-∞)^(p-ε_p)▒|n(p,t)| -∑_(-∞)^(a-ε_p)▒|n(p,t)| 
+	- N↔Price Inverse Relation: p(N,t)=max⁡{p | N(p,t)=N}
+		- p(0,t)≡a(t)
+		- p(-1,t)≡b(t)
+		- x(N,t)=p(N,t)-p(N-1,t)
+	- Instantaneous Bid-Ask Spread:x(0,t)=a(t)-b(t)
+	- Symmetric Order Placement Rules:
+		- n(p,t)→-n(-p,t)
+		- x(N,t)→x(-N,t)
+ 9.10) Theoretical Analysis: Frames and Martingales
+	- Stationary Nature of x(N,t) Specification
+	- Nonstationary Nature of p(N,t) or n(p,t)
+		- Stationary Distributions in Comoving Frames
+	- Centered Configurations:
+		- Bid-centered configuration: n_b (p,t)=n(p-b(t),t)
+		- Mid-centered configuration: n_m (p,t)=n(p-m(t),t)
+	- Mid-centered Ask: s(t)/2
+	- Bid centered Balance Constraint => μ/2=∑_(b+ε_p)^∞▒[α-δ〈n_b (p)〉] 
+	- Mid centered Balance Constraint => μ/2=α 〈s〉/2+∑_(b+ε_p)^∞▒[α-δ〈n_m (p)〉]  
+	- Bid-centered Ask: α〈m-b〉=α〈s〉/2
+ 9.11) Theoretical Analysis: Factorization Tests
+	- Marginal Equation using Independent Marginals: P[{n(p_i )}_i ]=∏_i▒P[n(p_i )] 
+	- Explicit Relation for Spread Probability: P[s/2<p]=1-e^(-∑_(p^'=b+ε_p)^(b+ε_p)▒〈n_m (p^' )〉 )
+	- Validity at High ϵ: Mean-density profile at the midpoint 〈n_m (0)〉≲1 and strongly concave demand
+		- Approximation of independent fluctuations is excellent
+	- Validity at Intermediate ϵ: 〈n_m (0)〉≪1 and nearly linear, and the approximation of independence is marginal
+	- Validity at Small ϵ: 〈n_m (0)〉≪1 and concave upward - approximation of independent fluctuations is invalid
+ 9.12) Theoretical Analysis: Master Equations and Mean Field Approximations
+	- Independence of N(p,t)/p(N,t) Fluctuations:
+		- Probabilities may be defined for any density n(p,t) independently at each p => Mid-centering for n(p,t)
+		- Separation intervals x(N,t) independently at each N => x(N,t) is well-defined without reference to any frame
+ 9.13) Master Equations and Mean Field Approximations – A Number Density Equation
+	- Density of the Distribution π(n,p,t): ∑_n▒π(n,p,t) =1
+	- Density Evolution Master Equation:
+		- ∂π(n,p,t)/∂t=(α(p) ε_p)/σ [π(n-σ,p,t)-π(n,p,t)]+δ/σ [(n+σ)π(n+σ,p,t)-nπ(n,p,t)]+μ(p)/2σ [π(n+σ,p,t)-π(n,p,t)]+∑_∆p▒〖P_+ (∆p)[π(n,p-∆p,t)-π(n,p,t)] 〗+∑_∆p▒〖P_- (∆p)[π(n,p+∆p,t)-π(n,p,t)] 〗
+		- Limit Order Arrival Component:
+			- Depositions of discrete orders at (α(p) ε_p)/σ
+			- Raises configurations from n-σ to n shares at p
+		- Order Cancelation/Removal Component: Number of orders that can independently decay
+		- Market Order Arrival Component: μ(p)/2σ describes market order annihilations
+		- Up/Down Frame Price Shifts: Preceding three effects lead to shifts of the origin by ∆p and P_±
+		- Assumption Valid Outside the Spread, not Inside
+			- Rigorous Inside-Spread Density Handling: Require replacing the product with a sum of products conditioned on states of the order book
+	- α(p) in a Bid-centered Frame: α(p) takes a fixed value α(∞) at all p
+	- α(p) in Mid-centered Frame: Depositions below the midpoint causes shifts that deposit orders above the midpoint
+	- μ(p) in Mid-centered Frame: Rate of market orders surviving to cancel limit orders at p
+	- Price Range of μ(p) Values: μ(0)/2 to 0 at p→∞
+	- Time Parameters for the Simulation: α(∞) and μ(0) are, thus, the parameters α and μ of the simulation
+ 9.14) Theoretical Analysis – Master Equations and Mean-Field Approximations: Solution by Generating Functional
+	- MGF Functional for π(n,p): Π(λ,p)=∑_(n/σ=0)^∞▒〖λ^(n/σ) π(n,p) 〗
+	- MGF at λ=0 and λ=1
+		- Π(0,p)=π(0,p)=π_0 (p)
+		- ∑_n▒π(n,p,t) =1 implies Π(1,p)=1 ∀p
+	- Linear Approximation of MGF across λ
+		- |∂Π(λ,p)/∂λ|_(λ→1)=〈n(p)〉/σ
+		- In the neighborhood of λ=1 linear approximation:  Π(λ,p)=1+(λ-1)  〈n(p)〉/σ+O([λ-1]^2 )
+	- Multiplying Stationary Master Equation by λ^(n/σ) and summing over n, the stationary solution for Π(λ,p) must satisfy:
+		- 0=(λ-1)/p |α(p) ε_p Π(λ,p)-δσ ∂Π(λ,p)/∂λ-μ(p)/2λ [Π(λ,p)-π_0 (p)]|_(λ,p)+∑_∆p▒〖P_+ (∆p)[Π(λ,p-∆p)-Π(λ,p)] 〗+∑_∆p▒〖P_- (∆p)[Π(λ,p+∆p)-Π(λ,p)] 〗
+	- Symmetric Shift with No Drift: P_+ (∆p)=P_- (∆p)=P(∆p)
+	- Expression for ∆p Based Diffusivity: D=∑_∆p▒〖P(∆p) 〖∆p〗^2 〗
+	- Rate of Frame Density Shift: R=∑_∆p▒P(∆p)  and 〈∆p〉=(∑_∆p▒P(∆p)∆p)/(∑_∆p▒P(∆p) )
+	- Frame Diffusivity Stationary Master Equation:
+		- ∂Π(λ,p)/∂λ-D/δ(λ-1)   (∂^2 Π(λ,p))/(∂λ^2 )-(α(p) ε_p-μ(p)/2λ)/δσ Π(λ,p)=μ(p)/2δσλ π_0 (p)
+	- Using Linear MGF Approximation at λ→1:
+		- 〈n(p)〉-D/δ  (∂^2 〈n(p)〉)/(∂p^2 )=(α(p) ε_p)/δ-μ(p)/2δ [1-π_0 (p)]
+	- Simplification under ε_p→0:
+		- Eligible values of any 〈n(p)〉 become just σ and 0, thus 〈n(p)〉=σ[1-π_0 (p)]
+		- Result: (α(p) ε_p)/δ=μ(p)/2δ 〈n(p)〉+〈n(p)〉-D/δ  (∂^2 〈n(p)〉)/(∂p^2 )
+	- Nondimensional Form of Stationary Master:
+		- α(p)/α(∞) =[μ(p)/μ(0) +ϵ(1-D/δ  ∂^2/(∂p^2 ))]  1/ϵ  δ〈n(p)〉/(α(p) ε_p )
+	- 〈n(p)〉 Far from the Midpoint:
+		- Only depositions and cancelations take place
+		- Orders in bins of width ε_p are Poisson-distributed with mean (α(∞) ε_p)/δ
+		- Therefore asymptotic value of δ〈n(p)〉/(α(∞) ε_p ) at large p is unity
+	- Asymptotic α(p) and μ(p) at p→∞:
+		- Consistent with a limit α(p)/α(∞)  of unity, and a limit for the second μ(p)/μ(0)  to zero
+ 9.15) Supporting Calculations in Density Coordinates – Generating Functional at General Bin Width
+	- D/δ Power Series for Π
+		- Π(λ,p)=∑_j▒〖(D/δ)^j Π_j (λ,p) 〗
+		- Π_j (0,p)=π_0j (p)
+	- D/δ Power Series for 〈n(p)〉: 〈n(p)〉=∑_j▒〖(D/δ)^j 〈n(p)〉_j 〗
+	- Collecting the Power Series Coefficients:
+		- [∂/∂λ-(α(p) ε_p-μ(p)/2λ)/δσ] Π_j (λ,p)=μ(p)/2δσλ π_0j (p)+∂^2/(∂p^2 )  (Π_(j-1) (λ,p))/((λ-1) )
+	- Normalization Constraints on Π_j (1,p): Π_0 (1,p)=1; Π_(j≠0) (λ,p)=0 ∀ p
+	- Recursion Relation for 〈n(p)〉_j:
+		- 〈n(p)〉_0=(α(p) ε_p)/δ-μ(p)/2δ [1-π_00 ]
+		- 〈n(p)〉_j=μ(p)/2δ π_0j+∂^2/(∂p^2 ) 〈n(p)〉_(j-1)
+	- Integral Solution to the Π_j (λ,p) Series:
+		- Π_j (λ,p)=π_0j (p)[1+(α(p) ε_p)/δσ I(λ)]+I(λ) ⟦∂^2/(∂p^2 )  (Π_(j-1) (λ,p))/((λ-1) )⟧_λ
+		- I(λ)=λ∫_0^1▒〖e^(λ (α(p) ε_p)/δσ (1-z) ) z^(μ(p)/2δσ) dz〗
+		- ⟦∂^2/(∂p^2 )  (Π_(j-1) (λ,p))/((λ-1) )⟧_λ≡λ/I(λ) ∙∫_0^1▒〖e^(λ (α(p) ε_p)/δσ (1-z) ) z^(μ(p)/2δσ)  ∂^2/(∂p^2 )  (Π_(j-1) (λz,p))/((λz-1) ) dz〗
+	- Π(λ,p) Normalizer as a Starting Point: π_00=1/(1+(α(p) ε_p)/δσ I(1) )
+	- Recursion Sequence for Π_j (λ,p):
+		- I(λ)=λ∫_0^1▒〖e^(λ (α(p) ε_p)/δσ (1-z) ) z^(μ(p)/2δσ) dz〗
+		- ⟦∂^2/(∂p^2 )  (Π_(j-1) (λ,p))/((λ-1) )⟧_λ≡λ/I(λ) ∙∫_0^1▒〖e^(λ (α(p) ε_p)/δσ (1-z) ) z^(μ(p)/2δσ)  ∂^2/(∂p^2 )  (Π_(j-1) (λz,p))/((λz-1) ) dz〗
+		- π_00=1/(1+(α(p) ε_p)/δσ I(1) )
+ 9.16) Supporting Calculations in Density Coordinates – Generating Functional at General Bin Width: Recovering the Continuum Limit for Prices
+	- I(λ) and 〈n(p)〉_0 as ε_p→0:
+		- I(λ)→λ/(1+α(p)/2δσ)+O(ε_p )
+		- 〈n(p)〉_0→((α(p) ε_p)/δσ)/(1+μ(p)/2δσ)+O(ε_p^2 )
+	- Linear MGF Postulate for Π_0 (λ,p): Π_0 (λ,p)=1+(λ-1)  〈n(p)〉_0/σ+O(ε_p^2 )
+	- Inductive Recursive Relation for Π_j (λ,p):
+		- Π_(j-1) (λ,p)=Π_(j-1) (1,p)+(λ-1)  〈n(p)〉_(j-1)/σ+O(ε_p^2 )
+		- n.b. - 〈n(p)〉_(j-1)~O(ε_p ) and Π_(j-1) (1,p)=either 1 or 0
+		- Π_j (λ,p)=(λ-1)I(1)  ∂^2/(∂p^2 )  〈n(p)〉_(j-1)/σ+O(ε_p^2 )
+	- 〈n(p)〉_j in Terms of 〈n(p)〉_(j-1)
+		- 〈n(p)〉_(j≠0)→1/(1+μ(p)/2δσ)  ∂^2/(∂p^2 )  〈n(p)〉_(j-1)/σ+O(ε_p^2 )
+	- Series Summation for 〈n(p)〉:
+		- 〈n(p)〉=∑_j▒[D/δ  1/(1+μ(p)/2δσ)  ∂^2/(∂p^2 )]^j  〈n(p)〉_0
+		- 〈n(p)〉=1/(1+μ(p)/2δσ) ∑_j▒[D/δ  ∂^2/(∂p^2 )+1/(1+μ(p)/2δσ)]^j   (α(p) ε_p)/δ
+	- Series Expansion in Price Laplacian: (α(p) ε_p)/δ=[μ(p)/2δσ+(1-D/δ  ∂^2/(∂p^2 ))]〈n(p)〉
+ 9.17) Theoretical Analysis - Master Equation and Mean-field Approximations: Screening of the Market Rate
+	- Effective μ(p) Increment at p: ∆μ(p)=-μ(p)[1-π_0 (p)]=-μ(p)〈n(p)〉/σ
+	- Differential Form for μ(p): (d log⁡〖μ(p)/μ(0) 〗)/dp=-1/ϵ [2α(∞)/μ(0) ][δ〈n(p)〉/(α(∞) ε_p )] where p_c=  μ(0)/2α(∞) 
+	- Market Orders Screening Rate Function: 1/ϵ  δ〈n(p)〉/(α(p) ε_p )=ψ(p ̂ ) where p ̂≡p/p_c 
+	- p-dependent Forms for μ/α: α(p)/α(∞) =[μ(p)/μ(0) +ϵ(1-β ∂^2/(∂p^2 ))]ψ(p ̂ ) with μ(p)/μ(0) =φ(p ̂ )=e^(-∫_0^p ̂▒〖ψ(p ̂^' )dp ̂^' 〗)
+ 9.18) Theoretical Analysis - Master Equation and Mean-field Approximations: Self-consistent Parametrization
+	- Continuum Form for P[s ̂/2≤p ̂ ]≈φ(p ̂ )
+	- Mid centered Form for φ(p ̂ ):
+		- α(p ̂ )/α(∞ ̂ ) =1+P[s ̂/2≤p ̂ ] and α(p)/α(∞) =[μ(p)/μ(0) +ϵ(1-β ∂^2/(∂p^2 ))]ψ(p ̂ ) become:
+			- 1+φ(p ̂ )=-[dφ(p ̂ )/(dp ̂ )+ϵ(1-β ∂^2/(∂p^2 ))  (d log⁡φ(p ̂ ))/(dp ̂ )]
+	- Density and ψ(p ̂ ) for Negative Price:
+		- At p=0, nπ(n,p-∆p)=0 the boundary condition becomes ψ(0-〈∆p〉)=0
+	- Self-consistent Expressions for β and 〈∆p〉:
+		- Price Shift Probability - 2α(∞)(d∆p)P[a≥∆p]
+		- Symmetric Contribution from Order Removal: P_± (∆p)=4α(∞)(d∆p)P[a≥∆p]
+	- Expression for β from ψ(∆p ̂ ):
+		- Nondimensionalize D=∑_∆p▒〖P(∆p) 〖∆p〗^2 〗 to get β=4/ϵ ∫_0^∞▒〖(∆p ̂ )^2 φ(∆p ̂ )d∆p ̂ 〗
+		- Corresponding Expression for 〈∆p ̂ 〉: 〈∆p ̂ 〉=(∫_0^∞▒〖(∆p ̂ )φ(∆p ̂ )d∆p ̂ 〗)/(∫_0^∞▒〖φ(∆p ̂ )d∆p ̂ 〗)
+	- Corresponding Expression for φ(p ̂ ): 1+φ(p ̂ )=-[dφ(p ̂ )/(dp ̂ )+ϵ(1-β ∂^2/(∂p^2 ))  (d log⁡φ(p ̂ ))/(dp ̂ )]
+ 9.19) Theoretical Analysis - Master Equation and Mean-field Approximations: Accounting for Correlations
+	- Violation of Global Conservation Laws
+	- Incorrect p ̂=0 Boundary Condition
+ 9.20) Theoretical Analysis - Master Equation and Mean-field Approximations: Generalizing the Self-induced Source Terms
+	- Nondimensionalization of the MGF Approximator: Keeping the leading terms in ε_p at λ→0 one gets
+		- α(p ̂ )/α(∞) =[μ(p ̂ )/μ(0) +ϵ]ψ(p ̂ )+∫▒〖dP_+ (∆p ̂ )[ψ(p ̂-∆p ̂ )-ψ(p ̂ )] 〗+∫▒〖dP_- (∆p ̂ )[ψ(p ̂+∆p ̂ )-ψ(p ̂ )] 〗
+	- Inserting Source-dependent Price Terms and Use of the Spread Measure
+		- α(p ̂ )/α(∞) =[μ(p ̂ )/μ(0) +ϵ]ψ(p ̂ )+S
+	- Criterion for Global Conservation: ∫▒〖Sdp ̂ 〗=0
+ 9.21) Supporting Calculations in Density Coordinates – Cataloging Correlations
+	- Events Producing the Occupation Shifts: Decomposing the Source Term
+	- Removal of Buy Limit Orders
+		- Contributing Source Terms
+		- Buy Order Removal Catalog
+		- Buy Order Removal Scenarios
+		- Using Mean-field Measure P[s ̂/2≤p ̂ ]≈φ(p ̂ )
+			- Estimating the Shifts
+			- Measures corresponding to the Shifts: P[a≤∆p ̂ ]
+		- Buy Order Removal Diffusion Integral:
+			- ∫_0^p ̂▒〖2ψ(p ̂-∆p ̂ )[φ(Δp ̂ )-φ(p ̂ )]dΔp ̂ 〗-∫_0^∞▒〖2ψ(p ̂ )[φ(Δp ̂ )-φ(p ̂+Δp ̂ )]dΔp ̂ 〗
+	- Sell Order Removals
+		- Sell Order Removals Scenarios
+		- Sell Order Removal Catalog
+		- Sell Order Removal Diffusion Integral
+			- ∫_0^∞▒〖2ψ(p ̂+∆p ̂ )[φ(Δp ̂ )-φ(p ̂+∆p ̂ )]dΔp ̂ 〗-∫_0^p ̂▒〖2ψ(p ̂ )[φ(Δp ̂ )-φ(p ̂ )]dΔp ̂ 〗
+	- Sell Order Addition
+		- Sell Order Addition Scenario
+		- Sell Order Addition Catalog
+		- Sell Order Addition Diffusion Integral
+			- ∫_0^(p ̂/2)▒〖2ψ(p ̂+∆p ̂ )[φ(Δp ̂ )-φ(p ̂-∆p ̂ )]dΔp ̂ 〗-∫_0^p ̂▒〖2ψ(p ̂ )[φ(Δp ̂ )-φ(p ̂+Δp ̂ )]dΔp ̂ 〗
+	- Buy Order Addition: ∫_0^∞▒〖2ψ(p ̂+∆p ̂ )[φ(Δp ̂ )-φ(p ̂+∆p ̂ )]dΔp ̂ 〗-∫_0^p ̂▒〖2ψ(p ̂ )[φ(Δp ̂ )-φ(p ̂ )]dΔp ̂ 〗
+		- Buy Order Addition Catalog
+	- Combined Buy Additions and Removals: S(p ̂ )=S_buy (p ̂ )+S_sell (p ̂ )
+		- S_buy (p ̂ )=∫_0^p ̂▒〖2[ψ(p ̂-∆p ̂ )-ψ(p ̂ )][φ(Δp ̂ )-φ(p ̂ )]dΔp ̂ 〗-∫_0^∞▒〖2[ψ(p ̂+Δp ̂ )-ψ(p ̂ )][φ(Δp ̂ )-φ(p ̂+Δp ̂ )]dΔp ̂ 〗
+	- Combined Sell Additions and Removals
+		- S_sell (p ̂ )=∫_0^(p ̂/2)▒〖2ψ(p ̂-∆p ̂ )[φ(Δp ̂ )-φ(p ̂-∆p ̂ )]dΔp ̂ 〗-2∫_0^p ̂▒〖2ψ(p ̂ )[φ(Δp ̂ )-φ(p ̂ )]dΔp ̂ 〗+∫_0^∞▒〖2ψ(p ̂+Δp ̂ )[φ(Δp ̂ )-φ(p ̂+Δp ̂ )]dΔp ̂ 〗
+	- Violation of Global Constraint: ∫▒〖Sdp ̂ 〗≠0
+	- Validation of Mid-point Constraint: S(0)=0
+ 9.22) Supporting Calculations in Density Coordinates – Cataloging Correlations; Getting the Intercept Right
+	- α(p ̂ )/α(∞ ̂ )  at p ̂=0:
+		- ψ(0 ̂ )=2/(1+ϵ)
+		- Total Density: 〈n(0)〉/(σε_p )=(2α(∞ ̂ )/σ)/(μ(0)/2σ+δ)
+	- Comparison 〈n(0)〉 with 〈n〉_0: Total Density compared to Zeroth Order Density
+		- Positive Verification from Simulations
+	- ψ(0 ̂ ) in Bid-centered Frame:
+		- ψ(0 ̂ )=1/(1+ϵ)
+		- Bid-centered Violation of Mean-field Approximations
+ 9.23) Supporting Calculations in Density Coordinates – Cataloging Correlations; Fokker-Planck Expanding Correlations
+	- Fokker-Planck Expansion of S
+	- dψ(p ̂ )/(dp ̂ ) Derivative Components in S:
+		- S=R(p ̂ )ψ(p ̂ )+P(p ̂ )  dψ(p ̂ )/(dp ̂ )+ϵβ(p ̂ )  (d^2 ψ(p ̂ ))/(dp ̂^2 )
+	- R(p ̂ ), P(p ̂ ), and ϵβ(p ̂ ):
+		- R(p ̂ )=∫_0^∞▒〖2[φ(Δp ̂ )-φ(p ̂+Δp ̂ )]dΔp ̂ 〗-2∫_0^p ̂▒〖2[φ(Δp ̂ )-φ(p ̂ )]dΔp ̂ 〗+∫_0^(p ̂/2)▒〖2[φ(Δp ̂ )-φ(p ̂-Δp ̂ )]dΔp ̂ 〗
+		- P(p ̂ )=2∫_0^∞▒〖2Δp ̂[φ(Δp ̂ )-φ(p ̂+Δp ̂ )]dΔp ̂ 〗-∫_0^p ̂▒〖2p ̂[φ(Δp ̂ )-φ(p ̂ )]dΔp ̂ 〗-∫_0^(p ̂/2)▒〖2Δp ̂[φ(Δp ̂ )-φ(p ̂-Δp ̂ )]dΔp ̂ 〗
+		- ϵβ(p ̂ )=∫_0^∞▒〖2(Δp ̂ )^2 [φ(Δp ̂ )-φ(p ̂+Δp ̂ )]dΔp ̂ 〗+1/2 ∫_0^p ̂▒〖2(Δp ̂ )^2 [φ(Δp ̂ )-φ(p ̂ )]dΔp ̂ 〗+1/2 ∫_0^(p ̂/2)▒〖2(Δp ̂ )^2 [φ(Δp ̂ )-φ(p ̂-Δp ̂ )]dΔp ̂ 〗
+	- Approximating φ(p ̂±∆p ̂ ) from p ̂, ∆p ̂:
+		- Given μ(p ̂ )/μ(0) =φ(p ̂ )=e^(-∫_0^p ̂▒〖ψ(p ̂^' )dp ̂^' 〗)
+			- φ(p ̂±∆p ̂ )≈φ(p ̂ )φ(∆p ̂ ) e^(±p ̂∆p ̂├ dψ(p ̂ )/(dp ̂ )┤|_0 )
+	- Additional Simplification Applied on φ(p ̂±∆p ̂ )
+		- φ(p ̂±∆p ̂ ) is dominated by the constant term ψ(0)
+		- e^(±p ̂∆p ̂├ dψ(p ̂ )/(dp ̂ )┤|_0 ) can be approximated as unity
+	- Simplified R(p ̂ ), P(p ̂ ), and ϵβ(p ̂ ):
+		- R(p ̂ )=[1-φ(p ̂ )] I_0 (∞)-2[I_0 (p ̂ )-2p ̂φ(p ̂ )]+[1-φ(p ̂ )] I_0 (p ̂/2)
+		- P(p ̂ )=2[1-φ(p ̂ )] I_1 (∞)-[I_1 (p ̂ )-p ̂^2 φ(p ̂ )]+[1-φ(p ̂ )] I_1 (p ̂/2)
+		- ϵβ(p ̂ )=[1-φ(p ̂ )] I_2 (∞)-1/2 [I_2 (p ̂ )-2/3 p ̂^3 φ(p ̂ )]+[1-φ(p ̂ )] I_2 (p ̂/2)
+		- where I_j (p ̂ )≡∫_0^p ̂▒〖2(Δp ̂ )^j φ(Δp ̂ )dΔp ̂ 〗
+ 9.24) Theoretical Analysis – A Mean-Field Theory of Order Separation Intervals: The Independent Interval Approximation
+	- Independent Fluctuations in x(N)
+	- Removal of an Ask: x_0→x_0+x_1 with rate δ+μ/2α
+	- Removal of a Bid: x_0→x_0+x_-1 with rate δ+μ/2α
+	- Adding a Single Sell: x_0→x^' for any value 1≤x^'≤x_0-1 when a sell limit order is deposited anywhere in the spread
+	- Cumulative Sell Additions: (αε_p (x_0-1))/σ
+	- Adding a Single Buy: x_0→x_0-x^' for any value 1≤x^'≤x_0-1 when a sell limit order is deposited anywhere in the spread
+	- Likelihood of Order Staying Untouched: 1-2δ-μ/σ-(2αε_p (x_0-1))/σ
+	- Setting σ=1
+	- Time Evolution of x_0 #1: x_0 (t+∆t)=x_0 (t)[1-2δ-μ_0-2α(x_0-1)]+(x_0+x_1 )(δ+μ/2)+(x_0+x_(-1) )(δ+μ/2)+α_0 ε_p x_0 (x_0-1)
+	- x_i (t) as an Ensemble Average
+	- Time Evolution of x_0: (dx_0 (t))/dt=(x_1+x_(-1) )(δ+μ/2)-αε_p x_0 (x_0-1)
+		- Quadratic Dependence on x_0
+		- 〈x_0^2 〉 => a.〈x_0^2 〉
+	- Steady-State Recurrence Relation: (x_1+x_(-1) )(δ+μ/2)=αε_p x_0 (x_0-1)
+	- Inverse Distance from the Bid: Inverse of the density at a distance ∑_(j=0)^(k-1)▒x_j  from the bid
+		- Explicit Form for x_i: x_i≈1/〈n(∑_(j=0)^(k-1)▒x_j  ε_p )〉 
+	- Normalized Order Separation Interval: x ̂_i≡ϵ α/δ x_i ε_p=(x_i ε_p)/p_c ≈1/ψ(∑_(j=0)^(k-1)▒x ̂_j ) 
+	- Nondimensionalization of the Recurrence Relation:
+		- (x ̂_1+x ̂_(-1) )(1+ϵ)=ax ̂_0 (x ̂_0-ε ̂_p ) where ε ̂_p=ε_p/p_c 
+	- Symmetry of Depth about Origin: x ̂_1=x ̂_(-1)
+	- Nondimensionalized, Symmetrized Recurrence Relation: x ̂_1 (1+ϵ)=a/2 x ̂_0 (x ̂_0-ε ̂_p )=x ̂_(-1) (1+ϵ)
+	- PDE for the x_1 Evolution:
+		- (dx_1 (t))/dt=(2δ+μ/2) x_2-(δ+μ/2) x_1+αε_p [(x_0 (x_0-1))/2-(x_1 (x_1-1))/2-x_1 (x_0-1)]
+	- Nondimensional Recurrence Relation for x ̂_2:
+		- x ̂_2 (1+2ϵ)=a/2 x ̂_1 (x ̂_1-ε ̂_p )+x ̂_1 (x ̂_0-ε ̂_p )
+	- Nondimensional Recurrence Relation for x ̂_k:
+		- x ̂_k (1+kϵ)=a/2 x ̂_(k-1) (x ̂_(k-1)-ε ̂_p )+x ̂_(k-1) ∑_(i=0)^(k-2)▒(x ̂_i-ε ̂_p ) 
+ 9.25) Theoretical Analysis – A Mean-field Theory of Order Separation Intervals; The Independent Interval Approximations: Asymptotes and Conservation Rules
+	- x_∞ Asymptote: As x ̂_(k+1)→x ̂_k
+	- ϵx ̂_∞=x ̂_∞ (x ̂_∞-ε ̂_p ) => x ̂_∞=ϵ+ε ̂_p
+	- Cumulative Departures from the Asymptote
+		- S_∞=∑_(i=0)^(k-2)▒(x ̂_i-x ̂_∞ )  => S_∞=1+(1-a/2)ϵ
+	- Applying Bid-centered Conservation Law:
+		- Net Order Removal Rate => μ/2+δ(k+1)
+		- Net Order Addition Rate => αε_p ∑_(i=0)^k▒(x_i-1) 
+		- Matching them Produces S_∞=1 => Verified by Monte Carlo
+			- Also implies 〈x_k^2 〉=2〈x_k 〉^2 i.e. a=2
+	- PDF Simulation from Gaussian to Exponential: As k goes from 0 to 5
+ 9.26) Theoretical Analysis – A Mean-Field Theory of Order Separation Intervals; The Independent Interval Approximation: Direct Simulation in Interval Coordinates
+	- Power-law Order Placement Process: α=(Δ_0^w)/(Δ+Δ_0 )^w 
+ --------------------------
+
+ --------------------------
+ #10 - Moment-generating Function
+ --------------------------
+ --------------------------
+ 10.1) Expressions
+	- M_X (t)=E[e^tX ]=1+tE[X]+(t^2 E[X^2 ])/2!+(t^3 E[X^3 ])/3!+⋯+(t^n E[X^n ])/n!+⋯=1+tm_1+(t^2 m_2)/2!+(t^3 m_3)/3!+⋯+(t^n m_n)/n!+⋯
+	- i^th Moment about Zero: Differentiating M_X (t) i times with respect to t and setting t=0 => i^th moment about the origin m_i
+	- MGF as a 2-sided Laplace Transform:
+		- 2-sided Laplace transform of its probability density function f_X (x) vs. M_X (t): M_X (t)=L{f_X }(-t)
+		- 2-sided Laplace transform: L{f_X }(s)=∫_(-∞)^(+∞)▒〖e^(-sx) f_X (x)dx〗
+		- M_X (t)=E[e^tX ]=∫_(-∞)^(+∞)▒〖e^tx f_X (x)dx〗
+ 10.2) Bounds:
+	- Jensen’s MGF Lower Bound: M_X (t)≥e^μt where μ is the mean of X
+	- Chernoff Tail Upper Bound: P[X≥a]=P[e^tX≥e^ta ]≤e^(-ta) E[e^tX ]=e^(-at) M_X (t) for t>0
+	- Moments Bound for X≥0: E[X^m ]≤(m/te)^m M_X (t) for any X,m≥0 and t>0
+ --------------------------
+
+ --------------------------
+ #11 - Fokker-Planck Equation
+ --------------------------
+ --------------------------
+ 11.1) PDE of time evolution of PDF of an entity under the drag and random forces
+ 11.2) One Dimension: SDE ∆x=μ(x,t)∆t+σ(x,t)∆W_t
+	- ∂p(x,t)/∂t=-∂[μ(x,t)p(x,t)]/∂x+(∂^2 [D(x,t)p(x,t)])/(∂x^2 )
+ 11.3) One Dimension – Link between the Ito SDE and the Fokker-Planck Equation:
+	- Fokker-Planck used with where the initial distribution is known
+	- If final point is fixed, Feynman-Kac formula used to calculate values such as mean first-passage times
+	- Reverse-time Fokker-Planck: Distribution at previous times, starting from the known distribution at later times
+	- Ito SDE using Stratonovich Convention:
+		- ∆X_t=[μ(X_t,t)-1/2  ∂D(X_t,t)/(∂X_t )]∆t+√(2D(X_t,t) )°∆W_t
+ 11.4) Classical Brownian Motion: ∂p(x,t)/∂t=D_0  (∂^2 p(x,t))/(∂x^2 )
+	- Fixed Boundary Conditions for {0≤x≤L}
+	- p(0,t)=p(L,t)=0
+	- p(x,t)=p_0 (x)
+	- Uncertainty Relation for the Phase Volume => ∆x∆v≥D_0
+		- D_0 is a minimal value of a corresponding diffusion spectrum D_j
+ 11.5) Higher Dimensions:
+	- Multi-dimensional Ito Fokker-Planck:
+		- ∂p(x,t)/∂t=-∑_(i=1)^N▒∂[μ_i (x,t)p(x,t)]/(∂x_i )+∑_(i=1)^N▒∑_(j=1)^N▒(∂^2 [D(x,t)p(x,t)])/(∂x_i ∂x_j )
+		- μ=(μ_1,⋯,μ_N )
+		- D=1/2 σσ^T => D_ij (x,t)=1/2 ∑_(k=1)^M▒〖σ_ik (x,t) σ_jk (x,t) 〗
+	- Multi-dimensional Stratonovich Fokker Planck:
+		- ∂p(x,t)/∂t=-∑_(i=1)^N▒∂[μ_i (x,t)p(x,t)]/(∂x_i )+∑_(k=1)^M▒∑_(i=1)^N▒〖∂/(∂x_i ) {σ_ik (x,t) ∑_(j=1)^N▒∂[σ_jk (x,t)p(x,t)]/(∂x_j )} 〗
+ 11.6) Generalization: ∂_t p=A^* p
+	- Linear operator A^* is the Hermitian adjoint to the infinitesimal generator for the Markov process
+ 11.7) Examples – Wiener: ∆X_t=∆W_t
+	- ∂p(x,t)/∂t=1/2  (∂^2 p(x,t))/(∂x^2 )
+	- Closed Form for Initial Delta Distribution
+		- p(x,0)=δ_0 (x)
+		- p(x,t)=1/√2πt e^(-x^2/2t)
+ 11.8) Examples – Boltzmann Distribution at the Thermodynamic Equilibrium
+	- The Overdamped Langevin Stochastic Evolution Equation
+		- ∆x_t=-1/(k_B T) (∇_x U)∆t+∆W_t
+		- Fokker Planck: ∂_t p=1/2 ∇.(p/(k_B T) ∇U+∇p)
+	- Equilibrium Distribution for Langevin Evolver - p(x)=e^(-U(x)/(k_B T))
+		- U(x) grows sufficiently rapidly:
+			- The potential well is deep enough to confine the particle
+			- The Boltzmann distribution is the unique equilibrium
+ 11.9) Example – Ornstein-Uhlenbeck Process - ∆X_t=-aX_t ∆t+σ∆W_t; a>0
+	- Fokker-Planck => ∂p(x,t)/∂t=a ∂[xp(x,t)]/∂x+σ^2/2  (∂^2 p(x,t))/(∂x^2 )
+	- Stationary Solution => ∂p(x,t)/∂t=0 => p_SS (x)=√(a/(πσ^2 )) e^(-(ax^2)/σ^2 )
+ 11.10) Example – Plasma Physics
+	- Distribution Function for Particle Species p_s (x,v,t)
+	- Plasma Physics Boltzmann Distribution Evolver:
+		- (∂p_s)/∂t+v.∇p_s+(Z_s e)/m_S  (E+v×B).∇_v p_s=∂(p_s 〈∇v_i 〉)/(∂v_i )+(∂^2 (p_s 〈∇v_i ∇v_j 〉))/(∂v_i ∂v_j )
+	- Velocity Change First/Second Moments
+		- 〈∇v_i 〉 and 〈∇v_i ∇v_j 〉 => average change in the velocity of a particle of type s due to collisions with others in unit time
+ 11.11) Smoluchowski Diffusion Equation
+	- Overdamped Brownian under External Force: mr ̈=-γr ̇+F(r)+σξ(t)
+	- Overdamped Brownian – Steady-State Dynamics: γΔr=F(r)Δt+σΔW_t
+	- Overdamped Brownian Fokker Planck Equation: ∂P(r,t|r_0,t_0 )/∂t=∇.{D[∇-βF(r)]P(r,t|r_0,t_0 )}
+	- Explicit Dependence on Temperature/Spatial Diffusion: β=1/(k_B T)
+ 11.12) Computational Considerations – 1D Linear Potential Example; Theory
+	- Linear Potential Based on Position: U(x)=cx
+		- ∂p(x,t|x_0,t_0 )/∂t=∂/∂x [(D ∂/∂x+c/(k_B T))p(x,t|x_0,t_0 )]
+	- Boundary Conditions of the PDF: x→±∞
+		= ∂p(x,t|x_0,t_0 )/∂x=δ(x-x_0 )
+	- Transformation Variables: τ=Dt and b=c/(k_B T)
+		- y=x+τb
+	- Transformed Smoluchowski Equation: p(x,t|x_0,t_0 )=q(y,τ|y_0,τ_0 )
+		- ∂q(y,τ|y_0,τ_0 )/∂τ=(∂^2 q(y,τ|y_0,τ_0 ))/(∂y^2 )
+		- q(y,τ|y_0,τ_0 )=1/√(4π(τ-τ_0 ) ) e^(-(y-y_0 )^2/4(τ-τ_0 ) )
+	- Transformation Back to Original Coordinates:
+		- p(x,t|x_0,t_0 )=1/√(4π(τ-τ_0 ) ) e^(-(x-x_0+Dc/(k_B T) [t-t_0 ])^2/4D(t-t_0 ) )
+ 11.13) Fokker-Planck Equation and Path Integral
+	- Deriving the Path Integral:
+		- ∂p(x^',t)/∂t
+			=-∂[D_1 (x^',t)p(x^',t)]/(∂x^' )+(∂^2 [D_2 (x^',t)p(x^',t)])/(∂〖x^'〗^2 )
+			=∫_(-∞)^(+∞)▒{[D_1 (x,t)  ∂/∂x+D_2 (x,t)  ∂^2/(∂x^2 )]δ(x^'-x)}p(x,t)dx+O(ε^2 )
+	- Expression for p(x^',t+ε):
+		- p(x^',t+ε)=∫_(-∞)^(+∞)▒{[1+ε(D_1 (x,t)  ∂/∂x+D_2 (x,t)  ∂^2/(∂x^2 )) ̅ ]δ(x^'-x)}p(x,t)dx+O(ε^2 )
+	- Use of the Fourier Integral:
+		- δ(x^'-x)=∫_(-i∞)^(+i∞)▒〖e^(x ̃(x-x^' ) )  (dx ̃)/2πi〗
+		- p(x^',t+ε)
+			=∫_(-∞)^(+∞)▒{∫_(-i∞)^(+i∞)▒[1+ε(D_1 (x,t)  ∂/∂x+D_2 (x,t)  ∂^2/(∂x^2 )) ̅ ]  e^(x ̃(x-x^' ) )  (dx ̃)/2πi}p(x,t)dx+O(ε^2 )
+			=∫_(-∞)^(+∞)▒〖∫_(-i∞)^(+i∞)▒{e^ε[-x ̃ (x^'-x)/ε+x ̃D_1 (x,t)+x ̃^2 D_2 (x,t)]   (dx ̃)/2πi}  p(x,t)dx〗+O(ε^2 )
+	- Path Integral Action:
+		- Iterating (t^'-t)/ε times and performing the limit ε→0
+			- Action S=∫▒[x ̃D_1 (x,t)+x ̃^2 D_2 (x,t)-x ̃ ∂x/∂t]dt
+ --------------------------

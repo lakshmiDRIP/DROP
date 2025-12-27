@@ -12,7 +12,7 @@ import org.drip.validation.evidence.Sample;
 import org.drip.validation.evidence.TestStatisticEvaluator;
 import org.drip.validation.hypothesis.HistogramTestOutcome;
 import org.drip.validation.hypothesis.HistogramTestSetting;
-import org.drip.validation.hypothesis.ProbabilityIntegralTransformTest;
+import org.drip.validation.hypothesis.R1PITTester;
 import org.drip.validation.quantile.PlottingPositionGenerator;
 import org.drip.validation.quantile.PlottingPositionGeneratorHeuristic;
 
@@ -221,7 +221,7 @@ public class ExponentialCramersVonMisesGapAnalysis
 		final GapTestSetting gapTestSetting)
 		throws Exception
 	{
-		return new ProbabilityIntegralTransformTest (
+		return new R1PITTester (
 			ensemble.nativeProbabilityIntegralTransform()
 		).distanceTest (
 			sample.nativeProbabilityIntegralTransform(),
@@ -250,7 +250,7 @@ public class ExponentialCramersVonMisesGapAnalysis
 			gapTestSetting
 		);
 
-		HistogramTestOutcome histogram = new ProbabilityIntegralTransformTest (
+		HistogramTestOutcome histogram = new R1PITTester (
 			gapTestOutcome.probabilityIntegralTransformWeighted()
 		).histogramTest (
 			HistogramTestSetting.AnfusoKaryampasNawroth2017 (

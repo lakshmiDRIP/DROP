@@ -1,7 +1,7 @@
 
 package org.drip.validation.evidence;
 
-import org.drip.validation.hypothesis.ProbabilityIntegralTransform;
+import org.drip.validation.hypothesis.R1ProbabilityIntegralTransform;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -130,5 +130,5 @@ public interface NativePITGenerator
 	 * @return PIT over the Sample Instance Realizations
 	 */
 
-	public abstract ProbabilityIntegralTransform nativeProbabilityIntegralTransform();
+	public abstract R1ProbabilityIntegralTransform nativeProbabilityIntegralTransform();
 }

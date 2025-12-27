@@ -5,7 +5,7 @@ import java.util.Map;
 import java.util.TreeMap;
 
 import org.drip.numerical.common.NumberUtil;
-import org.drip.validation.hypothesis.ProbabilityIntegralTransform;
+import org.drip.validation.hypothesis.R1ProbabilityIntegralTransform;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -257,7 +257,7 @@ public class TestStatisticAccumulator
 	 * @return The Test Statistic CDF Distribution
 	 */
 
-	public ProbabilityIntegralTransform probabilityIntegralTransform()
+	public R1ProbabilityIntegralTransform probabilityIntegralTransform()
 	{
 		int instanceCount = 0;
 		double totalInstanceCountReciprocal = 1. / _totalInstanceCount;
@@ -271,7 +271,7 @@ public class TestStatisticAccumulator
 		}
 
 		try {
-			return new ProbabilityIntegralTransform (testStatisticPValueMap);
+			return new R1ProbabilityIntegralTransform (testStatisticPValueMap);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

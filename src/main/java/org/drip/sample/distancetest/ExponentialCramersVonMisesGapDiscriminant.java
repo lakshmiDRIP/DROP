@@ -10,7 +10,7 @@ import org.drip.validation.distance.GapLossWeightFunction;
 import org.drip.validation.evidence.Ensemble;
 import org.drip.validation.evidence.Sample;
 import org.drip.validation.evidence.TestStatisticEvaluator;
-import org.drip.validation.hypothesis.ProbabilityIntegralTransformTest;
+import org.drip.validation.hypothesis.R1PITTester;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -217,7 +217,7 @@ public class ExponentialCramersVonMisesGapDiscriminant
 		final GapTestSetting gapTestSetting)
 		throws Exception
 	{
-		return new ProbabilityIntegralTransformTest (
+		return new R1PITTester (
 			ensemble.nativeProbabilityIntegralTransform()
 		).distanceTest (
 			sample.nativeProbabilityIntegralTransform(),

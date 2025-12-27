@@ -7,10 +7,10 @@ import org.drip.service.env.EnvManager;
 import org.drip.validation.evidence.Ensemble;
 import org.drip.validation.evidence.Sample;
 import org.drip.validation.evidence.TestStatisticEvaluator;
-import org.drip.validation.hypothesis.ProbabilityIntegralTransformTest;
+import org.drip.validation.hypothesis.R1PITTester;
 import org.drip.validation.quantile.PlottingPositionGeneratorHeuristic;
-import org.drip.validation.quantile.QQTestOutcome;
-import org.drip.validation.quantile.QQVertex;
+import org.drip.validation.quantile.R1QQTestOutcome;
+import org.drip.validation.quantile.R1QQVertex;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -209,10 +209,10 @@ public class QQTest1
 	}
 
 	private static final void QQPlot (
-		final QQTestOutcome qqTestOutcome)
+		final R1QQTestOutcome qqTestOutcome)
 		throws Exception
 	{
-		QQVertex[] qqVertexArray = qqTestOutcome.qqVertexArray();
+		R1QQVertex[] qqVertexArray = qqTestOutcome.qqVertexArray();
 
 		System.out.println ("\t|------------------------------------||");
 
@@ -232,7 +232,7 @@ public class QQTest1
 
 		System.out.println ("\t|------------------------------------||");
 
-		for (QQVertex qqVertex : qqVertexArray)
+		for (R1QQVertex qqVertex : qqVertexArray)
 		{
 			System.out.println (
 				"\t| " + FormatUtil.FormatDouble (
@@ -295,7 +295,7 @@ public class QQTest1
 		);
 
 		QQPlot (
-			new ProbabilityIntegralTransformTest (
+			new R1PITTester (
 				hypothesis.nativeProbabilityIntegralTransform()
 			).qqTest (
 				sample.nativeProbabilityIntegralTransform(),

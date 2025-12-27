@@ -343,4 +343,15 @@ public abstract class R1Multivariate {
 
 		return adblVariance;
 	}
+
+	/**
+	 * Construct the Moment Generating Function
+	 * 
+	 * @return The Moment Generating Function
+	 */
+
+	public org.drip.function.definition.RdToR1 momentGeneratingFunction()
+	{
+		return null;
+	}
 }

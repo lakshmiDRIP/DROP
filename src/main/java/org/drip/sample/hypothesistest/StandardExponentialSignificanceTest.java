@@ -9,7 +9,7 @@ import org.drip.validation.evidence.Ensemble;
 import org.drip.validation.evidence.Sample;
 import org.drip.validation.evidence.TestStatisticEvaluator;
 import org.drip.validation.hypothesis.SignificanceTestOutcome;
-import org.drip.validation.hypothesis.ProbabilityIntegralTransformTest;
+import org.drip.validation.hypothesis.R1PITTester;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -192,7 +192,7 @@ public class StandardExponentialSignificanceTest
 	}
 
 	private static final void SignificanceTest (
-		final ProbabilityIntegralTransformTest test,
+		final R1PITTester test,
 		final int drawCount,
 		final TestStatisticEvaluator testStatisticEvaluator,
 		final SignificanceTestSetting pTestSetting)
@@ -241,7 +241,7 @@ public class StandardExponentialSignificanceTest
 			testStatisticEvaluatorArray
 		);
 
-		ProbabilityIntegralTransformTest test = ensemble.significanceTest()[0];
+		R1PITTester test = ensemble.significanceTest()[0];
 
 		SignificanceTestSetting significanceTestSettingRightTail = SignificanceTestSetting.FisherRightTail();
 

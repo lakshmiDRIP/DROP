@@ -2,7 +2,7 @@
 package org.drip.validation.distance;
 
 import org.drip.numerical.common.NumberUtil;
-import org.drip.validation.hypothesis.ProbabilityIntegralTransform;
+import org.drip.validation.hypothesis.R1ProbabilityIntegralTransform;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -124,8 +124,8 @@ import org.drip.validation.hypothesis.ProbabilityIntegralTransform;
 public class GapTestOutcome
 {
 	private double _distance = Double.NaN;
-	private ProbabilityIntegralTransform _probabilityIntegralTransformWeighted = null;
-	private ProbabilityIntegralTransform _probabilityIntegralTransformUnweighted = null;
+	private R1ProbabilityIntegralTransform _probabilityIntegralTransformWeighted = null;
+	private R1ProbabilityIntegralTransform _probabilityIntegralTransformUnweighted = null;
 
 	/**
 	 * GapTestOutcome Constructor
@@ -139,8 +139,8 @@ public class GapTestOutcome
 	 */
 
 	public GapTestOutcome (
-		final ProbabilityIntegralTransform probabilityIntegralTransformUnweighted,
-		final ProbabilityIntegralTransform probabilityIntegralTransformWeighted,
+		final R1ProbabilityIntegralTransform probabilityIntegralTransformUnweighted,
+		final R1ProbabilityIntegralTransform probabilityIntegralTransformWeighted,
 		final double distance)
 		throws Exception
 	{
@@ -157,7 +157,7 @@ public class GapTestOutcome
 	 * @return The Probability Integral Transform of the Raw Gap Losses
 	 */
 
-	public ProbabilityIntegralTransform probabilityIntegralTransformUnweighted()
+	public R1ProbabilityIntegralTransform probabilityIntegralTransformUnweighted()
 	{
 		return _probabilityIntegralTransformUnweighted;
 	}
@@ -168,7 +168,7 @@ public class GapTestOutcome
 	 * @return The Probability Integral Transform of the Weighted Gap Losses
 	 */
 
-	public ProbabilityIntegralTransform probabilityIntegralTransformWeighted()
+	public R1ProbabilityIntegralTransform probabilityIntegralTransformWeighted()
 	{
 		return _probabilityIntegralTransformWeighted;
 	}

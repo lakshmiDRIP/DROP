@@ -14,7 +14,7 @@ import org.drip.validation.distance.GapTestSetting;
 import org.drip.validation.evidence.Ensemble;
 import org.drip.validation.evidence.Sample;
 import org.drip.validation.evidence.TestStatisticEvaluator;
-import org.drip.validation.hypothesis.ProbabilityIntegralTransform;
+import org.drip.validation.hypothesis.R1ProbabilityIntegralTransform;
 import org.drip.validation.riskfactorsingle.DiscriminatoryPowerAnalyzerAggregate;
 import org.drip.validation.riskfactorsingle.EventAggregationWeightFunction;
 import org.drip.validation.riskfactorsingle.GapTestOutcomeAggregate;
@@ -175,15 +175,15 @@ public class ADDiscriminatoryPowerAggregation6b
 		return new Sample (univariateRandomArray);
 	}
 
-	private static final Map<String, ProbabilityIntegralTransform> EventSamplePITMap (
+	private static final Map<String, R1ProbabilityIntegralTransform> EventSamplePITMap (
 		final double annualMean,
 		final double annualVolatility,
 		final String[] horizonTenorArray,
 		final int drawCount)
 		throws Exception
 	{
-		Map<String, ProbabilityIntegralTransform> eventSamplePITMap = new
-			CaseInsensitiveHashMap<ProbabilityIntegralTransform>();
+		Map<String, R1ProbabilityIntegralTransform> eventSamplePITMap = new
+			CaseInsensitiveHashMap<R1ProbabilityIntegralTransform>();
 
 		for (int horizonIndex = 0; horizonIndex < horizonTenorArray.length; ++horizonIndex)
 		{
@@ -335,7 +335,7 @@ public class ADDiscriminatoryPowerAggregation6b
 		EventAggregationWeightFunction eventAggregationWeightFunction =
 			EventAggregationWeightFunction.AnfusoKaryampasNawroth();
 
-		Map<String, ProbabilityIntegralTransform> eventSamplePITMap = EventSamplePITMap (
+		Map<String, R1ProbabilityIntegralTransform> eventSamplePITMap = EventSamplePITMap (
 			sampleAnnualMean,
 			sampleAnnualVolatility,
 			horizonTenorArray,
