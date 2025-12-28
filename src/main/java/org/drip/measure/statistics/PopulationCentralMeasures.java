@@ -1,11 +1,21 @@
 
 package org.drip.measure.statistics;
 
+import org.drip.numerical.common.NumberUtil;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2030 Lakshmi Krishnamurthy
+ * Copyright (C) 2029 Lakshmi Krishnamurthy
+ * Copyright (C) 2028 Lakshmi Krishnamurthy
+ * Copyright (C) 2027 Lakshmi Krishnamurthy
+ * Copyright (C) 2026 Lakshmi Krishnamurthy
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -81,42 +91,48 @@ package org.drip.measure.statistics;
 
 /**
  * <i>PopulationCentralMeasures</i> holds the Population Central Measures (Mean, and Variance) of the
- * Population.
+ * 	Population. It provides the following Functionality:
  *
- *	<br><br>
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md">Numerical Analysis Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/README.md">R<sup>d</sup> Continuous/Discrete Probability Measures</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/statistics/README.md">R<sup>1</sup> R<sup>d</sup> Thin Thick Moments</a></li>
+ * 		<li><i>PopulationCentralMeasures</i> Constructor</li>
+ * 		<li>Retrieve the Population Mean</li>
+ * 		<li>Retrieve the Population Variance</li>
+ * 		<li>Compute the Draw's z-Score around the Population Mean</li>
  *  </ul>
+ *
+ *	<br>
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md">Numerical Analysis Library</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/README.md">R<sup>d</sup> Continuous/Discrete Probability Measures</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/statistics/README.md">R<sup>1</sup> R<sup>d</sup> Thin Thick Moments</a></td></tr>
+ *  </table>
+ *	<br>
  *
  * @author Lakshmi Krishnamurthy
  */
 
 public class PopulationCentralMeasures
 {
-	private double _mean = java.lang.Double.NaN;
-	private double _variance = java.lang.Double.NaN;
+	private double _mean = Double.NaN;
+	private double _variance = Double.NaN;
 
 	/**
-	 * PopulationCentralMeasures Constructor
+	 * <i>PopulationCentralMeasures</i> Constructor
 	 * 
 	 * @param mean Population Mean
 	 * @param variance Population Variance
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public PopulationCentralMeasures (
 		final double mean,
 		final double variance)
-		throws java.lang.Exception
+		throws Exception
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (_mean = mean) ||
-			java.lang.Double.isNaN (_variance = variance))
-		{
-			throw new java.lang.Exception ("PopulationCentralMeasures Constructor => Invalid Inputsx");
+		if (!NumberUtil.IsValid (_mean = mean) || Double.isNaN (_variance = variance)) {
+			throw new Exception ("PopulationCentralMeasures Constructor => Invalid Inputs");
 		}
 	}
 
@@ -149,18 +165,17 @@ public class PopulationCentralMeasures
 	 * 
 	 * @return The Draw's z-Score around the Population Mean
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public double zScore (
 		final double x)
-		throws java.lang.Exception
+		throws Exception
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (x))
-		{
-			throw new java.lang.Exception ("PopulationCentralMeasures::zScore => Invalid Inputs");
+		if (!NumberUtil.IsValid (x)) {
+			throw new Exception ("PopulationCentralMeasures::zScore => Invalid Inputs");
 		}
 
-		return (_mean - x) / java.lang.Math.sqrt (_variance);
+		return (_mean - x) / Math.sqrt (_variance);
 	}
 }

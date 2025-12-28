@@ -1,11 +1,24 @@
 
 package org.drip.measure.statistics;
 
+import java.util.Set;
+
+import org.drip.analytics.support.CaseInsensitiveHashMap;
+import org.drip.numerical.common.NumberUtil;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2030 Lakshmi Krishnamurthy
+ * Copyright (C) 2029 Lakshmi Krishnamurthy
+ * Copyright (C) 2028 Lakshmi Krishnamurthy
+ * Copyright (C) 2027 Lakshmi Krishnamurthy
+ * Copyright (C) 2026 Lakshmi Krishnamurthy
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -81,119 +94,169 @@ package org.drip.measure.statistics;
 
 /**
  * <i>MultivariateMoments</i> generates and holds the Specified Multivariate Series Mean, Co-variance, and
- * other selected Moments.
+ * 	other selected Moments. It provides the following Functionality:
  *
- *	<br><br>
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md">Numerical Analysis Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/README.md">R<sup>d</sup> Continuous/Discrete Probability Measures</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/statistics/README.md">R<sup>1</sup> R<sup>d</sup> Thin Thick Moments</a></li>
+ * 		<li>Generate the <i>MultivariateMoments</i> Instance from the Series Realizations provided</li>
+ * 		<li>Generate the <i>MultivariateMoments</i> Instance from the Specified Mean and Co-variance Inputs</li>
+ * 		<li>Retrieve the Number of Variates in the Distribution</li>
+ * 		<li>Retrieve the Variates for which the Metrics are available</li>
+ * 		<li>Add the Mean for the Named Variate</li>
+ * 		<li>Retrieve the Mean of the Named Variate</li>
+ * 		<li>Add the Co-variance for the Named Variate Pair</li>
+ * 		<li>Retrieve the Variance of the Named Variate</li>
+ * 		<li>Retrieve the Co-variance of the Named Variate Pair</li>
+ * 		<li>Retrieve the Correlation between the Named Variate Pair</li>
  *  </ul>
+ *
+ *	<br>
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md">Numerical Analysis Library</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/README.md">R<sup>d</sup> Continuous/Discrete Probability Measures</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/statistics/README.md">R<sup>1</sup> R<sup>d</sup> Thin Thick Moments</a></td></tr>
+ *  </table>
+ *	<br>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class MultivariateMoments {
-	private org.drip.analytics.support.CaseInsensitiveHashMap<java.lang.Double> _mapMean = new
-		org.drip.analytics.support.CaseInsensitiveHashMap<java.lang.Double>();
+public class MultivariateMoments
+{
+	private CaseInsensitiveHashMap<Double> _meanMap = new CaseInsensitiveHashMap<Double>();
 
-	private org.drip.analytics.support.CaseInsensitiveHashMap<java.lang.Double> _mapCovariance = new
-		org.drip.analytics.support.CaseInsensitiveHashMap<java.lang.Double>();
+	private CaseInsensitiveHashMap<Double> _covarianceMap = new CaseInsensitiveHashMap<Double>();
 
 	/**
-	 * Generate the MultivariateMetrics Instance from the Series Realizations provided
+	 * Generate the <i>MultivariateMoments</i> Instance from the Series Realizations provided
 	 * 
-	 * @param astrVariateName Array of Variate Name Headers
-	 * @param aadblVariate Array of Variate Realization Arrays
+	 * @param variateNameArray Array of Variate Name Headers
+	 * @param multiVariateArray Array of Variate Realization Arrays
 	 * 
-	 * @return The MultivariateMetrics Instance
+	 * @return The <i>MultivariateMoments</i> Instance
 	 */
 
 	public static final MultivariateMoments Standard (
-		final java.lang.String[] astrVariateName,
-		final double[][] aadblVariate)
+		final String[] variateNameArray,
+		final double[][] multiVariateArray)
 	{
-		if (null == astrVariateName || null == aadblVariate) return null;
-
-		int iNumVariate = astrVariateName.length;
-		double[] adblMean = new double[iNumVariate];
-
-		if (0 == iNumVariate || iNumVariate != aadblVariate.length) return null;
-
-		int iNumSample = aadblVariate[0].length;
-
-		if (0 == iNumSample) return null;
-
-		MultivariateMoments mvm = new MultivariateMoments();
-
-		for (int i = 0; i < iNumVariate; ++i) {
-			adblMean[i] = 0.;
-			double[] adblVariateSample = aadblVariate[i];
-
-			if (null == adblVariateSample || adblVariateSample.length != iNumSample) return null;
-
-			for (int k = 0; k < iNumSample; ++k) {
-				if (!org.drip.numerical.common.NumberUtil.IsValid (adblVariateSample[k])) return null;
-
-				adblMean[i] += adblVariateSample[k];
-			}
-
-			if (!mvm.addMean (astrVariateName[i], adblMean[i] /= iNumSample)) return null;
+		if (null == variateNameArray || null == multiVariateArray) {
+			return null;
 		}
 
-		for (int i = 0; i < iNumVariate; ++i) {
-			for (int j = 0; j < iNumVariate; ++j) {
-				double dblCovariance = 0.;
+		int variateCount = variateNameArray.length;
+		double[] meanArray = new double[variateCount];
 
-				for (int k = 0; k < iNumSample; ++k)
-					dblCovariance += (aadblVariate[i][k] - adblMean[i]) * (aadblVariate[j][k] - adblMean[j]);
+		if (0 == variateCount || variateCount != multiVariateArray.length) {
+			return null;
+		}
 
-				if (!mvm.addCovariance (astrVariateName[i], astrVariateName[j], dblCovariance / iNumSample))
+		int sampleCount = multiVariateArray[0].length;
+
+		if (0 == sampleCount) {
+			return null;
+		}
+
+		MultivariateMoments multivariateMoments = new MultivariateMoments();
+
+		for (int variateIndex = 0; variateIndex < variateCount; ++variateIndex) {
+			meanArray[variateIndex] = 0.;
+			double[] variateSampleArray = multiVariateArray[variateIndex];
+
+			if (null == variateSampleArray || variateSampleArray.length != sampleCount) {
+				return null;
+			}
+
+			for (int sampleIndex = 0; sampleIndex < sampleCount; ++sampleIndex) {
+				if (!NumberUtil.IsValid (variateSampleArray[sampleIndex])) {
 					return null;
+				}
+
+				meanArray[variateIndex] += variateSampleArray[sampleIndex];
+			}
+
+			if (!multivariateMoments.addMean (
+				variateNameArray[variateIndex],
+				meanArray[variateIndex] /= sampleCount
+			))
+			{
+				return null;
 			}
 		}
 
-		return mvm;
+		for (int variateIndexI = 0; variateIndexI < variateCount; ++variateIndexI) {
+			for (int variateIndexJ = 0; variateIndexJ < variateCount; ++variateIndexJ) {
+				double covariance = 0.;
+
+				for (int variateIndexK = 0; variateIndexK < sampleCount; ++variateIndexK) {
+					covariance +=
+						(multiVariateArray[variateIndexI][variateIndexK] - meanArray[variateIndexI]) *
+							(multiVariateArray[variateIndexJ][variateIndexK] - meanArray[variateIndexJ]);
+				}
+
+				if (!multivariateMoments.addCovariance (
+					variateNameArray[variateIndexI],
+					variateNameArray[variateIndexJ],
+					covariance / sampleCount
+				))
+				{
+					return null;
+				}
+			}
+		}
+
+		return multivariateMoments;
 	}
 
 	/**
-	 * Generate the MultivariateMetrics Instance from the Specified Mean and Co-variance Inputs
+	 * Generate the <i>MultivariateMoments</i> Instance from the Specified Mean and Co-variance Inputs
 	 * 
-	 * @param astrVariateName Array of Variate Name Headers
-	 * @param adblMean Array of Variate Means
-	 * @param aadblCovariance Double Array of the Variate Co-variance
+	 * @param variateNameArray Array of Variate Name Headers
+	 * @param meanArray Array of Variate Means
+	 * @param covarianceMatrix Double Array of the Variate Co-variance
 	 * 
-	 * @return The MultivariateMetrics Instance
+	 * @return The <i>MultivariateMoments</i> Instance
 	 */
 
 	public static final MultivariateMoments Standard (
-		final java.lang.String[] astrVariateName,
-		final double[] adblMean,
-		final double[][] aadblCovariance)
+		final String[] variateNameArray,
+		final double[] meanArray,
+		final double[][] covarianceMatrix)
 	{
-		if (null == astrVariateName || null == adblMean || null == aadblCovariance) return null;
-
-		int iNumVariate = astrVariateName.length;
-
-		if (0 == iNumVariate || iNumVariate != adblMean.length || iNumVariate != aadblCovariance.length ||
-			null == aadblCovariance[0] || iNumVariate != aadblCovariance[0].length)
+		if (null == variateNameArray || null == meanArray || null == covarianceMatrix) {
 			return null;
-
-		MultivariateMoments mvm = new MultivariateMoments();
-
-		for (int i = 0; i < iNumVariate; ++i) {
-			if (!mvm.addMean (astrVariateName[i], adblMean[i])) return null;
 		}
 
-		for (int i = 0; i < iNumVariate; ++i) {
-			for (int j = 0; j < iNumVariate; ++j) {
-				if (!mvm.addCovariance (astrVariateName[i], astrVariateName[j], aadblCovariance[i][j]))
-					return null;
+		int variateCount = variateNameArray.length;
+
+		if (0 == variateCount || variateCount != meanArray.length || variateCount != covarianceMatrix.length
+			|| null == covarianceMatrix[0] || variateCount != covarianceMatrix[0].length)
+		{
+			return null;
+		}
+
+		MultivariateMoments multivariateMoments = new MultivariateMoments();
+
+		for (int variateIndex = 0; variateIndex < variateCount; ++variateIndex) {
+			if (!multivariateMoments.addMean (variateNameArray[variateIndex], meanArray[variateIndex])) {
+				return null;
 			}
 		}
 
-		return mvm;
+		for (int variateIndexI = 0; variateIndexI < variateCount; ++variateIndexI) {
+			for (int variateIndexJ = 0; variateIndexJ < variateCount; ++variateIndexJ) {
+				if (!multivariateMoments.addCovariance (
+					variateNameArray[variateIndexI],
+					variateNameArray[variateIndexJ],
+					covarianceMatrix[variateIndexI][variateIndexJ]
+				))
+				{
+					return null;
+				}
+			}
+		}
+
+		return multivariateMoments;
 	}
 
 	protected MultivariateMoments()
@@ -208,7 +271,7 @@ public class MultivariateMoments {
 
 	public int numVariate()
 	{
-		return _mapMean.size();
+		return _meanMap.size();
 	}
 
 	/**
@@ -217,29 +280,29 @@ public class MultivariateMoments {
 	 * @return The Set of Variates
 	 */
 
-	public java.util.Set<java.lang.String> variateList()
+	public Set<String> variateList()
 	{
-		return _mapMean.keySet();
+		return _meanMap.keySet();
 	}
 
 	/**
 	 * Add the Mean for the Named Variate
 	 * 
-	 * @param strVariateName The Named Variate
-	 * @param dblMean The Variate Mean
+	 * @param variateName The Named Variate
+	 * @param mean The Variate Mean
 	 * 
 	 * @return TRUE - The Variate Mean successfully added
 	 */
 
 	public boolean addMean (
-		final java.lang.String strVariateName,
-		final double dblMean)
+		final String variateName,
+		final double mean)
 	{
-		if (null == strVariateName || strVariateName.isEmpty() || !org.drip.numerical.common.NumberUtil.IsValid
-			(dblMean))
+		if (null == variateName || variateName.isEmpty() || !NumberUtil.IsValid (mean)) {
 			return false;
+		}
 
-		_mapMean.put (strVariateName, dblMean);
+		_meanMap.put (variateName, mean);
 
 		return true;
 	}
@@ -247,45 +310,49 @@ public class MultivariateMoments {
 	/**
 	 * Retrieve the Mean of the Named Variate
 	 * 
-	 * @param strVariateName The Named Variate
+	 * @param variateName The Named Variate
 	 * 
 	 * @return Mean of the Named Variate
 	 * 
-	 * @throws java.lang.Exception Thrown if the Named Variate Mean cannot be retrieved
+	 * @throws Exception Thrown if the Named Variate Mean cannot be retrieved
 	 */
 
 	public double mean (
-		final java.lang.String strVariateName)
-		throws java.lang.Exception
+		final String variateName)
+		throws Exception
 	{
-		if (null == strVariateName || strVariateName.isEmpty() || !_mapMean.containsKey (strVariateName))
-			throw new java.lang.Exception ("MultivariateMetrics::mean => Invalid Inputs");
+		if (null == variateName || variateName.isEmpty() || !_meanMap.containsKey (variateName)) {
+			throw new Exception ("MultivariateMetrics::mean => Invalid Inputs");
+		}
 
-		return _mapMean.get (strVariateName);
+		return _meanMap.get (variateName);
 	}
 
 	/**
 	 * Add the Co-variance for the Named Variate Pair
 	 * 
-	 * @param strVariate1Name The Named Variate #1
-	 * @param strVariate2Name The Named Variate #2
-	 * @param dblCovariance The Variate Mean
+	 * @param variate1Name The Named Variate #1
+	 * @param variate2Name The Named Variate #2
+	 * @param covariance The Variate-Pair Covariance
 	 * 
 	 * @return TRUE - The Variate Pair Co-variance successfully added
 	 */
 
 	public boolean addCovariance (
-		final java.lang.String strVariate1Name,
-		final java.lang.String strVariate2Name,
-		final double dblCovariance)
+		final String variate1Name,
+		final String variate2Name,
+		final double covariance)
 	{
-		if (null == strVariate1Name || strVariate1Name.isEmpty() || null == strVariate2Name ||
-			strVariate2Name.isEmpty() || !org.drip.numerical.common.NumberUtil.IsValid (dblCovariance))
+		if (null == variate1Name || variate1Name.isEmpty() ||
+			null == variate2Name || variate2Name.isEmpty() ||
+			!NumberUtil.IsValid (covariance))
+		{
 			return false;
+		}
 
-		_mapCovariance.put (strVariate1Name + "@#" + strVariate2Name, dblCovariance);
+		_covarianceMap.put (variate1Name + "@#" + variate2Name, covariance);
 
-		_mapCovariance.put (strVariate2Name + "@#" + strVariate1Name, dblCovariance);
+		_covarianceMap.put (variate2Name + "@#" + variate1Name, covariance);
 
 		return true;
 	}
@@ -293,73 +360,82 @@ public class MultivariateMoments {
 	/**
 	 * Retrieve the Variance of the Named Variate
 	 * 
-	 * @param strVariateName The Named Variate
+	 * @param variateName The Named Variate
 	 * 
 	 * @return Variance of the Named Variate
 	 * 
-	 * @throws java.lang.Exception Thrown if the Named Variate Variance cannot be retrieved
+	 * @throws Exception Thrown if the Named Variate Variance cannot be retrieved
 	 */
 
 	public double variance (
-		final java.lang.String strVariateName)
-		throws java.lang.Exception
+		final String variateName)
+		throws Exception
 	{
-		if (null == strVariateName || strVariateName.isEmpty())
-			throw new java.lang.Exception ("MultivariateMetrics::variance => Invalid Inputs");
+		if (null == variateName || variateName.isEmpty()) {
+			throw new Exception ("MultivariateMetrics::variance => Invalid Inputs");
+		}
 
-		java.lang.String strVarianceEntry = strVariateName + "@#" + strVariateName;
+		String varianceEntry = variateName + "@#" + variateName;
 
-		if (!_mapCovariance.containsKey (strVarianceEntry))
-			throw new java.lang.Exception ("MultivariateMetrics::variance => Invalid Inputs");
+		if (!_covarianceMap.containsKey (varianceEntry)) {
+			throw new Exception ("MultivariateMetrics::variance => Invalid Inputs");
+		}
 
-		return _mapCovariance.get (strVarianceEntry);
+		return _covarianceMap.get (varianceEntry);
 	}
 
 	/**
 	 * Retrieve the Co-variance of the Named Variate Pair
 	 * 
-	 * @param strVariate1Name The Named Variate #1
-	 * @param strVariate2Name The Named Variate #2
+	 * @param variate1Name The Named Variate #1
+	 * @param variate2Name The Named Variate #2
 	 * 
 	 * @return Co-variance of the Named Variate Pair
 	 * 
-	 * @throws java.lang.Exception Thrown if the Named Variate Co-variance cannot be retrieved
+	 * @throws Exception Thrown if the Named Variate Co-variance cannot be retrieved
 	 */
 
 	public double covariance (
-		final java.lang.String strVariate1Name,
-		final java.lang.String strVariate2Name)
-		throws java.lang.Exception
+		final String variate1Name,
+		final String variate2Name)
+		throws Exception
 	{
-		if (null == strVariate1Name || strVariate1Name.isEmpty() || null == strVariate2Name ||
-			strVariate2Name.isEmpty())
-			throw new java.lang.Exception ("MultivariateMetrics::covariance => Invalid Inputs");
+		if (null == variate1Name || variate1Name.isEmpty() || null == variate2Name || variate2Name.isEmpty())
+		{
+			throw new Exception ("MultivariateMetrics::covariance => Invalid Inputs");
+		}
 
-		java.lang.String strCovarianceEntry = strVariate1Name + "@#" + strVariate2Name;
+		String covarianceEntry12 = variate1Name + "@#" + variate2Name;
+		String covarianceEntry21 = variate1Name + "@#" + variate2Name;
 
-		if (!_mapCovariance.containsKey (strCovarianceEntry))
-			throw new java.lang.Exception ("MultivariateMetrics::coariance => Invalid Inputs");
+		if (_covarianceMap.containsKey (covarianceEntry12)) {
+			return _covarianceMap.get (covarianceEntry12);
+		}
 
-		return _mapCovariance.get (strCovarianceEntry);
+		if (_covarianceMap.containsKey (covarianceEntry21)) {
+			return _covarianceMap.get (covarianceEntry21);
+		}
+
+		throw new Exception ("MultivariateMetrics::covariance => Invalid Inputs");
 	}
 
 	/**
 	 * Retrieve the Correlation between the Named Variate Pair
 	 * 
-	 * @param strVariate1Name The Named Variate #1
-	 * @param strVariate2Name The Named Variate #2
+	 * @param variate1Name The Named Variate #1
+	 * @param variate2Name The Named Variate #2
 	 * 
 	 * @return Correlation between the Named Variate Pair
 	 * 
-	 * @throws java.lang.Exception Thrown if the Named Variate Correlation cannot be retrieved
+	 * @throws Exception Thrown if the Named Variate Correlation cannot be retrieved
 	 */
 
 	public double correlation (
-		final java.lang.String strVariate1Name,
-		final java.lang.String strVariate2Name)
-		throws java.lang.Exception
+		final String variate1Name,
+		final String variate2Name)
+		throws Exception
 	{
-		return covariance (strVariate1Name, strVariate2Name) / java.lang.Math.sqrt (variance
-			(strVariate1Name) * variance (strVariate2Name));
+		return covariance (variate1Name, variate2Name) /
+			Math.sqrt (variance (variate1Name) * variance (variate2Name));
 	}
 }

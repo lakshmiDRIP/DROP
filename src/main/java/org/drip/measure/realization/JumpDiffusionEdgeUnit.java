@@ -1,11 +1,22 @@
 
 package org.drip.measure.realization;
 
+import org.drip.measure.gaussian.NormalQuadrature;
+import org.drip.numerical.common.NumberUtil;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2030 Lakshmi Krishnamurthy
+ * Copyright (C) 2029 Lakshmi Krishnamurthy
+ * Copyright (C) 2028 Lakshmi Krishnamurthy
+ * Copyright (C) 2027 Lakshmi Krishnamurthy
+ * Copyright (C) 2026 Lakshmi Krishnamurthy
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -79,38 +90,55 @@ package org.drip.measure.realization;
  */
 
 /**
- * <i>JumpDiffusionEdgeUnit</i> holds the Jump Diffusion R<sup>d</sup> Unit Edge Realizations.
+ * <i>JumpDiffusionEdgeUnit</i> holds the Jump Diffusion R<sup>d</sup> Unit Edge Realizations. It provides
+ * 	the following Functionality:
  *
- *	<br><br>
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md">Numerical Analysis Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/README.md">R<sup>d</sup> Continuous/Discrete Probability Measures</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/realization/README.md">Stochastic Jump Diffusion Vertex Edge</a></li>
+ * 		<li>Generate a <i>JumpDiffusionEdgeUnit</i> Uniform Diffusion Instance</li>
+ * 		<li>Generate a <i>JumpDiffusionEdgeUnit</i> Gaussian Diffusion Realization Instance</li>
+ * 		<li>Generate a <i>JumpDiffusionEdgeUnit</i> Uniform Jump Realization</li>
+ * 		<li>Generate a <i>JumpDiffusionEdgeUnit</i> Gaussian Jump Realization</li>
+ * 		<li>Generate an Array of <i>JumpDiffusionEdgeUnit</i> Realizations #1</li>
+ * 		<li>Generate an Array of <i>JumpDiffusionEdgeUnit</i> Realizations #2</li>
+ * 		<li>Generate an Array of <i>JumpDiffusionEdgeUnit</i> Realizations #3</li>
+ * 		<li><i>JumpDiffusionEdgeUnit</i> Constructor</li>
+ * 		<li>Retrieve the Edge Time Increment</li>
+ * 		<li>Retrieve the Diffusion Unit Random Variable</li>
+ * 		<li>Retrieve the Jump Unit Random Variable</li>
  *  </ul>
+ *
+ *	<br>
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md">Numerical Analysis Library</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/README.md">R<sup>d</sup> Continuous/Discrete Probability Measures</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/realization/README.md">Stochastic Jump Diffusion Vertex Edge</a></td></tr>
+ *  </table>
+ *	<br>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class JumpDiffusionEdgeUnit {
-	private double _dblJump = java.lang.Double.NaN;
-	private double _dblDiffusion = java.lang.Double.NaN;
-	private double _dblTimeIncrement = java.lang.Double.NaN;
+public class JumpDiffusionEdgeUnit
+{
+	private double _jump = Double.NaN;
+	private double _diffusion = Double.NaN;
+	private double _timeIncrement = Double.NaN;
 
 	/**
-	 * Generate a R^1 Uniform Diffusion Realization
+	 * Generate a <i>JumpDiffusionEdgeUnit</i> Uniform Diffusion Instance
 	 * 
-	 * @param dblTimeIncrement The Time Increment
+	 * @param timeIncrement The Time Increment
 	 * 
-	 * @return The R^1 Uniform Diffusion Realization
+	 * @return The <i>JumpDiffusionEdgeUnit</i> Uniform Diffusion Instance
 	 */
 
 	public static final JumpDiffusionEdgeUnit UniformDiffusion (
-		final double dblTimeIncrement)
+		final double timeIncrement)
 	{
 		try {
-			return new JumpDiffusionEdgeUnit (dblTimeIncrement, java.lang.Math.random(), 0.);
-		} catch (java.lang.Exception e) {
+			return new JumpDiffusionEdgeUnit (timeIncrement, Math.random(), 0.);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -118,20 +146,19 @@ public class JumpDiffusionEdgeUnit {
 	}
 
 	/**
-	 * Generate a R^1 Gaussian Diffusion Realization
+	 * Generate a <i>JumpDiffusionEdgeUnit</i> Gaussian Diffusion Realization Instance
 	 * 
-	 * @param dblTimeIncrement The Time Increment
+	 * @param timeIncrement The Time Increment
 	 * 
-	 * @return The R^1 Gaussian Diffusion Realization
+	 * @return The <i>JumpDiffusionEdgeUnit</i> Gaussian Diffusion Realization Instance
 	 */
 
 	public static final JumpDiffusionEdgeUnit GaussianDiffusion (
-		final double dblTimeIncrement)
+		final double timeIncrement)
 	{
 		try {
-			return new JumpDiffusionEdgeUnit (dblTimeIncrement,
-				org.drip.measure.gaussian.NormalQuadrature.Random(), 0.);
-		} catch (java.lang.Exception e) {
+			return new JumpDiffusionEdgeUnit (timeIncrement, NormalQuadrature.Random(), 0.);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -139,19 +166,19 @@ public class JumpDiffusionEdgeUnit {
 	}
 
 	/**
-	 * Generate a R^1 Uniform Jump Realization
+	 * Generate a <i>JumpDiffusionEdgeUnit</i> Uniform Jump Realization
 	 * 
-	 * @param dblTimeIncrement The Time Increment
+	 * @param timeIncrement The Time Increment
 	 * 
-	 * @return The R^1 Uniform Jump Realization
+	 * @return The <i>JumpDiffusionEdgeUnit</i> Uniform Jump Realization
 	 */
 
 	public static final JumpDiffusionEdgeUnit UniformJump (
-		final double dblTimeIncrement)
+		final double timeIncrement)
 	{
 		try {
-			return new JumpDiffusionEdgeUnit (dblTimeIncrement, 0., java.lang.Math.random());
-		} catch (java.lang.Exception e) {
+			return new JumpDiffusionEdgeUnit (timeIncrement, 0., Math.random());
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -159,20 +186,19 @@ public class JumpDiffusionEdgeUnit {
 	}
 
 	/**
-	 * Generate a R^1 Gaussian Jump Realization
+	 * Generate a <i>JumpDiffusionEdgeUnit</i> Gaussian Jump Realization
 	 * 
-	 * @param dblTimeIncrement The Time Increment
+	 * @param timeIncrement The Time Increment
 	 * 
-	 * @return The R^1 Gaussian Jump Realization
+	 * @return The <i>JumpDiffusionEdgeUnit</i> Gaussian Jump Realization
 	 */
 
 	public static final JumpDiffusionEdgeUnit GaussianJump (
-		final double dblTimeIncrement)
+		final double timeIncrement)
 	{
 		try {
-			return new JumpDiffusionEdgeUnit (dblTimeIncrement, 0.,
-				org.drip.measure.gaussian.NormalQuadrature.Random());
-		} catch (java.lang.Exception e) {
+			return new JumpDiffusionEdgeUnit (timeIncrement, 0., NormalQuadrature.Random());
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -180,128 +206,155 @@ public class JumpDiffusionEdgeUnit {
 	}
 
 	/**
-	 * Generate an Array of R^1 Diffusion Realizations
+	 * Generate an Array of <i>JumpDiffusionEdgeUnit</i> Realizations #1
 	 * 
-	 * @param adblTimeIncrement The Array of Time Increments
-	 * @param adblDiffusionRealization The Array of Diffusion Realizations
+	 * @param timeIncrementArray The Array of Time Increments
+	 * @param diffusionRealizationArray The Array of Diffusion Realizations
 	 * 
-	 * @return Array of R^1 Diffusion Realizations
+	 * @return Array of <i>JumpDiffusionEdgeUnit</i> Realizations
 	 */
 
 	public static final JumpDiffusionEdgeUnit[] Diffusion (
-		final double[] adblTimeIncrement,
-		final double[] adblDiffusionRealization)
+		final double[] timeIncrementArray,
+		final double[] diffusionRealizationArray)
 	{
-		if (null == adblDiffusionRealization) return null;
+		if (null == diffusionRealizationArray) {
+			return null;
+		}
 
-		int iSize = adblDiffusionRealization.length;
-		JumpDiffusionEdgeUnit[] aJDU = 0 == iSize ? null : new JumpDiffusionEdgeUnit[iSize];
+		int size = diffusionRealizationArray.length;
+		JumpDiffusionEdgeUnit[] jumpDiffusionEdgeUnitArray =
+			0 == size ? null : new JumpDiffusionEdgeUnit[size];
 
-		if (0 == iSize || iSize != adblTimeIncrement.length) return null;
+		if (0 == size || size != timeIncrementArray.length) {
+			return null;
+		}
 
-		for (int i = 0; i < iSize; ++i) {
+		for (int i = 0; i < size; ++i) {
 			try {
-				aJDU[i] = new JumpDiffusionEdgeUnit (adblTimeIncrement[i], adblDiffusionRealization[i], 0.);
-			} catch (java.lang.Exception e) {
+				jumpDiffusionEdgeUnitArray[i] = new JumpDiffusionEdgeUnit (
+					timeIncrementArray[i],
+					diffusionRealizationArray[i],
+					0.
+				);
+			} catch (Exception e) {
 				e.printStackTrace();
 
 				return null;
 			}
 		}
 
-		return aJDU;
+		return jumpDiffusionEdgeUnitArray;
 	}
 
 	/**
-	 * Generate an Array of R^1 Jump Realizations
+	 * Generate an Array of <i>JumpDiffusionEdgeUnit</i> Realizations #2
 	 * 
-	 * @param adblTimeIncrement The Array of Time Increments
-	 * @param adblJumpRealization The Array of Jump Realizations
+	 * @param timeIncrementArray The Array of Time Increments
+	 * @param jumpRealizationArray The Array of Jump Realizations
 	 * 
-	 * @return Array of R^1 Jump Realizations
+	 * @return Array of <i>JumpDiffusionEdgeUnit</i> Realizations
 	 */
 
 	public static final JumpDiffusionEdgeUnit[] Jump (
-		final double[] adblTimeIncrement,
-		final double[] adblJumpRealization)
+		final double[] timeIncrementArray,
+		final double[] jumpRealizationArray)
 	{
-		if (null == adblJumpRealization) return null;
+		if (null == jumpRealizationArray) {
+			return null;
+		}
 
-		int iSize = adblJumpRealization.length;
-		JumpDiffusionEdgeUnit[] aJDU = 0 == iSize ? null : new JumpDiffusionEdgeUnit[iSize];
+		int size = jumpRealizationArray.length;
+		JumpDiffusionEdgeUnit[] jumpDiffusionEdgeUnitArray =
+			0 == size ? null : new JumpDiffusionEdgeUnit[size];
 
-		if (0 == iSize || iSize != adblTimeIncrement.length) return null;
+		if (0 == size || size != timeIncrementArray.length) {
+			return null;
+		}
 
-		for (int i = 0; i < iSize; ++i) {
+		for (int i = 0; i < size; ++i) {
 			try {
-				aJDU[i] = new JumpDiffusionEdgeUnit (adblTimeIncrement[i], 0., adblJumpRealization[i]);
-			} catch (java.lang.Exception e) {
+				jumpDiffusionEdgeUnitArray[i] = new JumpDiffusionEdgeUnit (
+					timeIncrementArray[i],
+					0.,
+					jumpRealizationArray[i]
+				);
+			} catch (Exception e) {
 				e.printStackTrace();
 
 				return null;
 			}
 		}
 
-		return aJDU;
+		return jumpDiffusionEdgeUnitArray;
 	}
 
 	/**
-	 * Generate an Array of R^1 Jump Diffusion Realizations
+	 * Generate an Array of <i>JumpDiffusionEdgeUnit</i> Realizations #3
 	 * 
-	 * @param adblTimeIncrement The Array of Time Increments
-	 * @param adblDiffusionRealization The Array of Diffusion Realizations
-	 * @param adblJumpRealization The Array of Jump Realizations
+	 * @param timeIncrementArray The Array of Time Increments
+	 * @param diffusionRealizationArray The Array of Diffusion Realizations
+	 * @param jumpRealizationArray The Array of Jump Realizations
 	 * 
-	 * @return Array of R^1 Jump Diffusion Realizations
+	 * @return Array of <i>JumpDiffusionEdgeUnit</i> Realizations
 	 */
 
 	public static final JumpDiffusionEdgeUnit[] JumpDiffusion (
-		final double[] adblTimeIncrement,
-		final double[] adblDiffusionRealization,
-		final double[] adblJumpRealization)
+		final double[] timeIncrementArray,
+		final double[] diffusionRealizationArray,
+		final double[] jumpRealizationArray)
 	{
-		if (null == adblDiffusionRealization || null == adblJumpRealization) return null;
-
-		int iSize = adblDiffusionRealization.length;
-		JumpDiffusionEdgeUnit[] aJDEU = 0 == iSize ? null : new JumpDiffusionEdgeUnit[iSize];
-
-		if (0 == iSize || iSize != adblJumpRealization.length || iSize != adblTimeIncrement.length)
+		if (null == diffusionRealizationArray || null == jumpRealizationArray) {
 			return null;
+		}
 
-		for (int i = 0; i < iSize; ++i) {
+		int size = diffusionRealizationArray.length;
+		JumpDiffusionEdgeUnit[] jumpDiffusionEdgeUnitArray =
+			0 == size ? null : new JumpDiffusionEdgeUnit[size];
+
+		if (0 == size || size != jumpRealizationArray.length || size != timeIncrementArray.length) {
+			return null;
+		}
+
+		for (int i = 0; i < size; ++i) {
 			try {
-				aJDEU[i] = new JumpDiffusionEdgeUnit (adblTimeIncrement[i], adblDiffusionRealization[i],
-					adblJumpRealization[i]);
-			} catch (java.lang.Exception e) {
+				jumpDiffusionEdgeUnitArray[i] = new JumpDiffusionEdgeUnit (
+					timeIncrementArray[i],
+					diffusionRealizationArray[i],
+					jumpRealizationArray[i]
+				);
+			} catch (Exception e) {
 				e.printStackTrace();
 
 				return null;
 			}
 		}
 
-		return aJDEU;
+		return jumpDiffusionEdgeUnitArray;
 	}
 
 	/**
-	 * JumpDiffusionEdgeUnit Constructor
+	 * <i>JumpDiffusionEdgeUnit</i> Constructor
 	 * 
-	 * @param dblTimeIncrement The Edge Time Increment
-	 * @param dblDiffusion The Diffusion Random Variable
-	 * @param dblJump The Jump Random Variable
+	 * @param timeIncrement The Edge Time Increment
+	 * @param diffusion The Diffusion Random Variable
+	 * @param jump The Jump Random Variable
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public JumpDiffusionEdgeUnit (
-		final double dblTimeIncrement,
-		final double dblDiffusion,
-		final double dblJump)
-		throws java.lang.Exception
+		final double timeIncrement,
+		final double diffusion,
+		final double jump)
+		throws Exception
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblTimeIncrement = dblTimeIncrement) || 0. ==
-			_dblTimeIncrement || !org.drip.numerical.common.NumberUtil.IsValid (_dblDiffusion = dblDiffusion) ||
-				!org.drip.numerical.common.NumberUtil.IsValid (_dblJump = dblJump))
-			throw new java.lang.Exception ("JumpDiffusionEdgeUnit Constructor => Invalid Inputs");
+		if (!NumberUtil.IsValid (_timeIncrement = timeIncrement) || 0. == _timeIncrement ||
+			!NumberUtil.IsValid (_diffusion = diffusion) ||
+			!NumberUtil.IsValid (_jump = jump))
+		{
+			throw new Exception ("JumpDiffusionEdgeUnit Constructor => Invalid Inputs");
+		}
 	}
 
 	/**
@@ -312,7 +365,7 @@ public class JumpDiffusionEdgeUnit {
 
 	public double timeIncrement()
 	{
-		return _dblTimeIncrement;
+		return _timeIncrement;
 	}
 
 	/**
@@ -323,7 +376,7 @@ public class JumpDiffusionEdgeUnit {
 
 	public double diffusion()
 	{
-		return _dblDiffusion;
+		return _diffusion;
 	}
 
 	/**
@@ -334,6 +387,6 @@ public class JumpDiffusionEdgeUnit {
 
 	public double jump()
 	{
-		return _dblJump;
+		return _jump;
 	}
 }

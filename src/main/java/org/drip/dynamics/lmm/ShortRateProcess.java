@@ -113,7 +113,7 @@ package org.drip.dynamics.lmm;
 
 public class ShortRateProcess {
 	private int _iSpotDate = java.lang.Integer.MIN_VALUE;
-	private org.drip.measure.identifier.R1R1ToR1 _funcR1R1ToR1 = null;
+	private org.drip.function.definition.R1R1ToR1 _funcR1R1ToR1 = null;
 
 	/**
 	 * ShortRateProcess Constructor
@@ -126,7 +126,7 @@ public class ShortRateProcess {
 
 	public ShortRateProcess (
 		final int iSpotDate,
-		final org.drip.measure.identifier.R1R1ToR1 funcR1R1ToR1)
+		final org.drip.function.definition.R1R1ToR1 funcR1R1ToR1)
 		throws java.lang.Exception
 	{
 		if (null == (_funcR1R1ToR1 = funcR1R1ToR1))
@@ -152,7 +152,7 @@ public class ShortRateProcess {
 	 * @return The Stochastic Short Rate Function
 	 */
 
-	public org.drip.measure.identifier.R1R1ToR1 stochasticShortRateFunction()
+	public org.drip.function.definition.R1R1ToR1 stochasticShortRateFunction()
 	{
 		return _funcR1R1ToR1;
 	}

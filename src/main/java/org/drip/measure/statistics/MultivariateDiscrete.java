@@ -1,11 +1,21 @@
 
 package org.drip.measure.statistics;
 
+import org.drip.numerical.common.NumberUtil;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2030 Lakshmi Krishnamurthy
+ * Copyright (C) 2029 Lakshmi Krishnamurthy
+ * Copyright (C) 2028 Lakshmi Krishnamurthy
+ * Copyright (C) 2027 Lakshmi Krishnamurthy
+ * Copyright (C) 2026 Lakshmi Krishnamurthy
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -80,107 +90,132 @@ package org.drip.measure.statistics;
 
 /**
  * <i>MultivariateDiscrete</i> analyzes and computes the Moment and Metric Statistics for the Realized
- * Multivariate Sequence.
+ * 	Multivariate Sequence. It provides the following Functionality:
  *
- *	<br><br>
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md">Numerical Analysis Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/README.md">R<sup>d</sup> Continuous/Discrete Probability Measures</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/statistics/README.md">R<sup>1</sup> R<sup>d</sup> Thin Thick Moments</a></li>
+ * 		<li><i>MultivariateDiscrete</i> Constructor</li>
+ * 		<li>Retrieve the Multivariate Means</li>
+ * 		<li>Retrieve the Multivariate Sequence "Error"</li>
+ * 		<li>Retrieve the Multivariate Covariance</li>
+ * 		<li>Retrieve the Multivariate Correlation</li>
+ * 		<li>Retrieve the Multivariate Variance</li>
+ * 		<li>Retrieve the Multivariate Standard Deviation</li>
  *  </ul>
+ *
+ *	<br>
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md">Numerical Analysis Library</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/README.md">R<sup>d</sup> Continuous/Discrete Probability Measures</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/statistics/README.md">R<sup>1</sup> R<sup>d</sup> Thin Thick Moments</a></td></tr>
+ *  </table>
+ *	<br>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class MultivariateDiscrete {
-	private double[] _adblMean = null;
-	private double[] _adblError = null;
-	private double[] _adblVariance = null;
-	private double[][] _aadblCovariance = null;
-	private double[][] _aadblCorrelation = null;
-	private double[] _adblStandardDeviation = null;
+public class MultivariateDiscrete
+{
+	private double[] _meanArray = null;
+	private double[] _errorArray = null;
+	private double[] _varianceArray = null;
+	private double[][] _covarianceMatrix = null;
+	private double[][] _correlationMatrix = null;
+	private double[] _standardDeviationArray = null;
 
 	/**
-	 * MultivariateDiscrete Constructor
+	 * <i>MultivariateDiscrete</i> Constructor
 	 * 
-	 * @param aadblSequence The Array of Multivariate Realizations
+	 * @param sequence The Array of Multivariate Realizations
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public MultivariateDiscrete (
-		final double[][] aadblSequence)
-		throws java.lang.Exception
+		final double[][] sequence)
+		throws Exception
 	{
-		if (null == aadblSequence)
-			throw new java.lang.Exception ("MultivariateDiscrete Constructor => Invalid Inputs");
-
-		int iNumVariate = -1;
-		int iSequenceSize = aadblSequence.length;
-
-		if (0 == iSequenceSize)
-			throw new java.lang.Exception ("MultivariateDiscrete Constructor => Invalid Inputs");
-
-		for (int iSequence = 0; iSequence < iSequenceSize; ++iSequence) {
-			if (null == aadblSequence[iSequence] || !org.drip.numerical.common.NumberUtil.IsValid
-				(aadblSequence[iSequence]))
-				throw new java.lang.Exception ("MultivariateDiscrete Constructor => Invalid Inputs");
-
-			if (0 == iSequence) {
-				if (0 == (iNumVariate = aadblSequence[0].length))
-					throw new java.lang.Exception ("MultivariateDiscrete Constructor => Invalid Inputs");
-
-				_adblMean = new double[iNumVariate];
-				_adblError = new double[iNumVariate];
-				_adblVariance = new double[iNumVariate];
-				_adblStandardDeviation = new double[iNumVariate];
-				_aadblCovariance = new double[iNumVariate][iNumVariate];
-				_aadblCorrelation = new double[iNumVariate][iNumVariate];
-
-				for (int iVariate = 0; iVariate < iNumVariate; ++iVariate) {
-					_adblMean[iVariate] = 0.;
-					_adblError[iVariate] = 0.;
-
-					for (int iVariateOther = 0; iVariateOther < iNumVariate; ++iVariateOther)
-						_aadblCovariance[iVariate][iVariateOther] = 0.;
-				}
-			} else if (iNumVariate != aadblSequence[iSequence].length)
-				throw new java.lang.Exception ("MultivariateDiscrete Constructor => Invalid Inputs");
-
-			for (int iVariate = 0; iVariate < iNumVariate; ++iVariate)
-				_adblMean[iVariate] += aadblSequence[iSequence][iVariate];
+		if (null == sequence) {
+			throw new Exception ("MultivariateDiscrete Constructor => Invalid Inputs");
 		}
 
-		for (int iVariate = 0; iVariate < iNumVariate; ++iVariate)
-			_adblMean[iVariate] /= iSequenceSize;
+		int variateCount = -1;
+		int sequenceSize = sequence.length;
 
-		for (int iSequence = 0; iSequence < iSequenceSize; ++iSequence) {
-			for (int iVariate = 0; iVariate < iNumVariate; ++iVariate) {
-				double dblOffsetFromMean = aadblSequence[iSequence][iVariate] - _adblMean[iVariate];
+		if (0 == sequenceSize) {
+			throw new Exception ("MultivariateDiscrete Constructor => Invalid Inputs");
+		}
 
-				_adblError[iVariate] += java.lang.Math.abs (dblOffsetFromMean);
+		for (int sequenceIndex = 0; sequenceIndex < sequenceSize; ++sequenceIndex) {
+			if (null == sequence[sequenceIndex] || !NumberUtil.IsValid (sequence[sequenceIndex])) {
+				throw new Exception ("MultivariateDiscrete Constructor => Invalid Inputs");
+			}
 
-				for (int iVariateOther = 0; iVariateOther < iNumVariate; ++iVariateOther)
-					_aadblCovariance[iVariate][iVariateOther] += dblOffsetFromMean *
-						(aadblSequence[iSequence][iVariateOther] - _adblMean[iVariateOther]);
+			if (0 == sequenceIndex) {
+				if (0 == (variateCount = sequence[0].length)) {
+					throw new Exception ("MultivariateDiscrete Constructor => Invalid Inputs");
+				}
+
+				_meanArray = new double[variateCount];
+				_errorArray = new double[variateCount];
+				_varianceArray = new double[variateCount];
+				_standardDeviationArray = new double[variateCount];
+				_covarianceMatrix = new double[variateCount][variateCount];
+				_correlationMatrix = new double[variateCount][variateCount];
+
+				for (int variateIndex = 0; variateIndex < variateCount; ++variateIndex) {
+					_meanArray[variateIndex] = 0.;
+					_errorArray[variateIndex] = 0.;
+
+					for (int variateIndexOther = 0; variateIndexOther < variateCount; ++variateIndexOther) {
+						_covarianceMatrix[variateIndex][variateIndexOther] = 0.;
+					}
+				}
+			} else if (variateCount != sequence[sequenceIndex].length) {
+				throw new Exception ("MultivariateDiscrete Constructor => Invalid Inputs");
+			}
+
+			for (int variateIndex = 0; variateIndex < variateCount; ++variateIndex) {
+				_meanArray[variateIndex] += sequence[sequenceIndex][variateIndex];
 			}
 		}
 
-		for (int iVariate = 0; iVariate < iNumVariate; ++iVariate) {
-			_adblError[iVariate] /= iSequenceSize;
-
-			for (int iVariateOther = 0; iVariateOther < iNumVariate; ++iVariateOther)
-				_aadblCovariance[iVariate][iVariateOther] /= iSequenceSize;
-
-			_adblStandardDeviation[iVariate] = java.lang.Math.sqrt (_adblVariance[iVariate] =
-				_aadblCovariance[iVariate][iVariate]);
+		for (int variateIndex = 0; variateIndex < variateCount; ++variateIndex) {
+			_meanArray[variateIndex] /= sequenceSize;
 		}
 
-		for (int iVariate = 0; iVariate < iNumVariate; ++iVariate) {
-			for (int iVariateOther = 0; iVariateOther < iNumVariate; ++iVariateOther)
-				_aadblCorrelation[iVariate][iVariateOther] = _aadblCovariance[iVariate][iVariateOther] /
-					(_adblStandardDeviation[iVariate] * _adblStandardDeviation[iVariateOther]);
+		for (int sequenceIndex = 0; sequenceIndex < sequenceSize; ++sequenceIndex) {
+			for (int variateIndex = 0; variateIndex < variateCount; ++variateIndex) {
+				double offsetFromMean = sequence[sequenceIndex][variateIndex] - _meanArray[variateIndex];
+
+				_errorArray[variateIndex] += Math.abs (offsetFromMean);
+
+				for (int variateIndexOther = 0; variateIndexOther < variateCount; ++variateIndexOther) {
+					_covarianceMatrix[variateIndex][variateIndexOther] += offsetFromMean *
+						(sequence[sequenceIndex][variateIndexOther] - _meanArray[variateIndexOther]);
+				}
+			}
+		}
+
+		for (int variateIndex = 0; variateIndex < variateCount; ++variateIndex) {
+			_errorArray[variateIndex] /= sequenceSize;
+
+			for (int variateIndexOther = 0; variateIndexOther < variateCount; ++variateIndexOther) {
+				_covarianceMatrix[variateIndex][variateIndexOther] /= sequenceSize;
+			}
+
+			_standardDeviationArray[variateIndex] = Math.sqrt (
+				_varianceArray[variateIndex] = _covarianceMatrix[variateIndex][variateIndex]
+			);
+		}
+
+		for (int variateIndex = 0; variateIndex < variateCount; ++variateIndex) {
+			for (int variateIndexOther = 0; variateIndexOther < variateCount; ++variateIndexOther) {
+				_correlationMatrix[variateIndex][variateIndexOther] =
+					_covarianceMatrix[variateIndex][variateIndexOther] / (
+						_standardDeviationArray[variateIndex] * _standardDeviationArray[variateIndexOther]
+					);
+			}
 		}
 	}
 
@@ -192,7 +227,7 @@ public class MultivariateDiscrete {
 
 	public double[] mean()
 	{
-		return _adblMean;
+		return _meanArray;
 	}
 
 	/**
@@ -203,7 +238,7 @@ public class MultivariateDiscrete {
 
 	public double[] error()
 	{
-		return _adblError;
+		return _errorArray;
 	}
 
 	/**
@@ -214,7 +249,7 @@ public class MultivariateDiscrete {
 
 	public double[][] covariance()
 	{
-		return _aadblCovariance;
+		return _covarianceMatrix;
 	}
 
 	/**
@@ -225,7 +260,7 @@ public class MultivariateDiscrete {
 
 	public double[][] correlation()
 	{
-		return _aadblCorrelation;
+		return _correlationMatrix;
 	}
 
 	/**
@@ -236,7 +271,7 @@ public class MultivariateDiscrete {
 
 	public double[] variance()
 	{
-		return _adblVariance;
+		return _varianceArray;
 	}
 
 	/**
@@ -247,6 +282,6 @@ public class MultivariateDiscrete {
 
 	public double[] standardDeviation()
 	{
-		return _adblStandardDeviation;
+		return _standardDeviationArray;
 	}
 }

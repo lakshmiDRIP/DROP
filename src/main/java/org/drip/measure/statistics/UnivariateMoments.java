@@ -1,11 +1,24 @@
 
 package org.drip.measure.statistics;
 
+import java.util.Map;
+import java.util.TreeMap;
+
+import org.drip.numerical.common.NumberUtil;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2030 Lakshmi Krishnamurthy
+ * Copyright (C) 2029 Lakshmi Krishnamurthy
+ * Copyright (C) 2028 Lakshmi Krishnamurthy
+ * Copyright (C) 2027 Lakshmi Krishnamurthy
+ * Copyright (C) 2026 Lakshmi Krishnamurthy
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -81,79 +94,106 @@ package org.drip.measure.statistics;
 
 /**
  * <i>UnivariateMoments</i> generates and holds the Specified Univariate Series Mean, Variance, and a few
- * selected Moments.
+ * 	selected Moments. It provides the following Functionality:
  *
- *	<br><br>
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md">Numerical Analysis Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/README.md">R<sup>d</sup> Continuous/Discrete Probability Measures</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/statistics/README.md">R<sup>1</sup> R<sup>d</sup> Thin Thick Moments</a></li>
+ * 		<li>Construct a <i>UnivariateMoments</i> Instance for the specified Series #1</li>
+ * 		<li>Construct a <i>UnivariateMoments</i> Instance for the specified Series #2</li>
+ * 		<li>Retrieve the Series Name</li>
+ * 		<li>Retrieve the Number of Samples</li>
+ * 		<li>Retrieve the Series Mean</li>
+ * 		<li>Retrieve the Series Variance</li>
+ * 		<li>Retrieve the Series Standard Deviation</li>
+ * 		<li>Retrieve the Series Standard Error</li>
+ * 		<li>Retrieve the Moments Map</li>
+ * 		<li>Compute the Series t-Statistic around the Series Hypothesis Pivot</li>
+ * 		<li>Compute the Series t-Statistic for Hypothesis Pivot = 0 (e.g., the False Positive NULL Hypothesis for for Homoscedastic Univariate Linear Regression)</li>
+ * 		<li>Estimate the Offset in Terms of the Number of Standard Errors</li>
+ * 		<li>Retrieve the Degrees of Freedom</li>
+ * 		<li>Compute the Predictive Confidence Level</li>
  *  </ul>
+ *
+ *	<br>
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md">Numerical Analysis Library</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/README.md">R<sup>d</sup> Continuous/Discrete Probability Measures</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/statistics/README.md">R<sup>1</sup> R<sup>d</sup> Thin Thick Moments</a></td></tr>
+ *  </table>
+ *	<br>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class UnivariateMoments {
-	private int _iNumSample = 0;
-	private java.lang.String _strName = "";
-	private double _dblMean = java.lang.Double.NaN;
-	private double _dblVariance = java.lang.Double.NaN;
-	private java.util.Map<java.lang.Integer, java.lang.Double> _mapMoment = null;
+public class UnivariateMoments
+{
+	private String _name = "";
+	private int _sampleCount = 0;
+	private double _mean = Double.NaN;
+	private double _variance = Double.NaN;
+	private Map<Integer, Double> _momentMap = null;
 
 	/**
-	 * Construct a UnivariateMoments Instance for the specified Series
+	 * Construct a <i>UnivariateMoments</i> Instance for the specified Series #1
 	 * 
-	 * @param strName Series Name
-	 * @param adblEntry Series Entry
-	 * @param aiMoment Array of Moments to be Calculated
+	 * @param name Series Name
+	 * @param entryArray Series Entry
+	 * @param orderStatisticArray Array of Moment Order Statistic to be Calculated
 	 * 
-	 * @return The UnivariateMoments Instance
+	 * @return The <i>UnivariateMoments</i> Instance
 	 */
 
 	public static final UnivariateMoments Standard (
-		final java.lang.String strName,
-		final double[] adblEntry,
-		final int[] aiMoment)
+		final String name,
+		final double[] entryArray,
+		final int[] orderStatisticArray)
 	{
-		if (null == adblEntry) return null;
-
-		double dblMean = 0.;
-		double dblVariance = 0.;
-		int iNumSample = adblEntry.length;
-		int iNumMoment = null == aiMoment ? 0 : aiMoment.length;
-		double[] adblMoment = 0 == iNumMoment ? null : new double[iNumMoment];
-
-		java.util.Map<java.lang.Integer, java.lang.Double> mapMoment = 0 == iNumMoment ? null : new
-			java.util.TreeMap<java.lang.Integer, java.lang.Double>();
-
-		if (0 == iNumSample) return null;
-
-		for (int i = 0; i < iNumSample; ++i) {
-			if (!org.drip.numerical.common.NumberUtil.IsValid (adblEntry[i])) return null;
-
-			dblMean += adblEntry[i];
+		if (null == entryArray) {
+			return null;
 		}
 
-		dblMean /= iNumSample;
+		double mean = 0.;
+		double variance = 0.;
+		int sampleCount = entryArray.length;
+		int momentCount = null == orderStatisticArray ? 0 : orderStatisticArray.length;
+		double[] momentArray = 0 == momentCount ? null : new double[momentCount];
 
-		for (int j = 0; j < iNumMoment; ++j)
-			adblMoment[j] = 0.;
+		Map<Integer, Double> mapMoment = 0 == momentCount ? null : new TreeMap<Integer, Double>();
 
-		for (int i = 0; i < iNumSample; ++i) {
-			double dblError = dblMean - adblEntry[i];
-			dblVariance += (dblError * dblError);
-
-			for (int j = 0; j < iNumMoment; ++j)
-				adblMoment[j] = adblMoment[j] + java.lang.Math.pow (dblError, aiMoment[j]);
+		if (0 == sampleCount) {
+			return null;
 		}
 
-		for (int j = 0; j < iNumMoment; ++j)
-			mapMoment.put (aiMoment[j], adblMoment[j]);
+		for (int sampleIndex = 0; sampleIndex < sampleCount; ++sampleIndex) {
+			if (!NumberUtil.IsValid (entryArray[sampleIndex])) {
+				return null;
+			}
+
+			mean += entryArray[sampleIndex];
+		}
+
+		mean /= sampleCount;
+
+		for (int momentIndex = 0; momentIndex < momentCount; ++momentIndex) {
+			momentArray[momentIndex] = 0.;
+		}
+
+		for (int sampleIndex = 0; sampleIndex < sampleCount; ++sampleIndex) {
+			double error = mean - entryArray[sampleIndex];
+			variance += (error * error);
+
+			for (int momentIndex = 0; momentIndex < momentCount; ++momentIndex) {
+				momentArray[momentIndex] += Math.pow (error, orderStatisticArray[momentIndex]);
+			}
+		}
+
+		for (int momentIndex = 0; momentIndex < momentCount; ++momentIndex) {
+			mapMoment.put (orderStatisticArray[momentIndex], momentArray[momentIndex]);
+		}
 
 		try {
-			return new UnivariateMoments (strName, dblMean, dblVariance / iNumSample, iNumSample, mapMoment);
-		} catch (java.lang.Exception e) {
+			return new UnivariateMoments (name, mean, variance / sampleCount, sampleCount, mapMoment);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -161,35 +201,38 @@ public class UnivariateMoments {
 	}
 
 	/**
-	 * Construct a UnivariateMoments Instance for the specified Series
+	 * Construct a <i>UnivariateMoments</i> Instance for the specified Series #2
 	 * 
-	 * @param strName Series Name
-	 * @param adblEntry Series Entry
+	 * @param name Series Name
+	 * @param entryArray Series Entry
 	 * 
-	 * @return The UnivariateMoments Instance
+	 * @return The <i>UnivariateMoments</i> Instance
 	 */
 
 	public static final UnivariateMoments Standard (
-		final java.lang.String strName,
-		final double[] adblEntry)
+		final String name,
+		final double[] entryArray)
 	{
-		return Standard (strName, adblEntry, null);
+		return Standard (name, entryArray, null);
 	}
 
 	protected UnivariateMoments (
-		final java.lang.String strName,
-		final double dblMean,
-		final double dblVariance,
-		final int iNumSample,
-		final java.util.Map<java.lang.Integer, java.lang.Double> mapMoment)
-		throws java.lang.Exception
+		final String name,
+		final double mean,
+		final double variance,
+		final int sampleCount,
+		final Map<Integer, Double> momentMap)
+		throws Exception
 	{
-		if (null == (_strName = strName) || _strName.isEmpty() || !org.drip.numerical.common.NumberUtil.IsValid
-			(_dblMean = dblMean) || !org.drip.numerical.common.NumberUtil.IsValid (_dblVariance = dblVariance) ||
-				0 >= (_iNumSample = iNumSample))
-			throw new java.lang.Exception ("UnivariateMetrics Constructor => Invalid Inputs!");
+		if (null == (_name = name) || _name.isEmpty() ||
+			!NumberUtil.IsValid (_mean = mean) ||
+			!NumberUtil.IsValid (_variance = variance) ||
+			0 >= (_sampleCount = sampleCount))
+		{
+			throw new Exception ("UnivariateMetrics Constructor => Invalid Inputs!");
+		}
 
-		_mapMoment = mapMoment;
+		_momentMap = momentMap;
 	}
 
 	/**
@@ -198,9 +241,9 @@ public class UnivariateMoments {
 	 * @return The Series Name
 	 */
 
-	public java.lang.String name()
+	public String name()
 	{
-		return _strName;
+		return _name;
 	}
 
 	/**
@@ -211,7 +254,7 @@ public class UnivariateMoments {
 
 	public int numSample()
 	{
-		return _iNumSample;
+		return _sampleCount;
 	}
 
 	/**
@@ -222,7 +265,7 @@ public class UnivariateMoments {
 
 	public double mean()
 	{
-		return _dblMean;
+		return _mean;
 	}
 
 	/**
@@ -233,7 +276,7 @@ public class UnivariateMoments {
 
 	public double variance()
 	{
-		return _dblVariance;
+		return _variance;
 	}
 
 	/**
@@ -244,7 +287,7 @@ public class UnivariateMoments {
 
 	public double stdDev()
 	{
-		return java.lang.Math.sqrt (_dblVariance);
+		return Math.sqrt (_variance);
 	}
 
 	/**
@@ -255,7 +298,7 @@ public class UnivariateMoments {
 
 	public double stdError()
 	{
-		return java.lang.Math.sqrt (_dblVariance);
+		return Math.sqrt (_variance);
 	}
 
 	/**
@@ -264,9 +307,9 @@ public class UnivariateMoments {
 	 * @return The Map of Moments
 	 */
 
-	public java.util.Map<java.lang.Integer, java.lang.Double> momentMap()
+	public Map<Integer, Double> momentMap()
 	{
-		return _mapMoment;
+		return _momentMap;
 	}
 
 	/**
@@ -276,34 +319,33 @@ public class UnivariateMoments {
 	 * 
 	 * @return The Series t-Statistic around the Series Hypothesis Pivot
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public double tStatistic (
 		final double hypothesisPivot)
-		throws java.lang.Exception
+		throws Exception
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (hypothesisPivot))
-		{
-			throw new java.lang.Exception ("UnivariateMetrics::tStatistic => Invalid Inputs");
+		if (!NumberUtil.IsValid (hypothesisPivot)) {
+			throw new Exception ("UnivariateMetrics::tStatistic => Invalid Inputs");
 		}
 
-		return (_dblMean - hypothesisPivot) / java.lang.Math.sqrt (_dblVariance);
+		return (_mean - hypothesisPivot) / Math.sqrt (_variance);
 	}
 
 	/**
 	 * Compute the Series t-Statistic for Hypothesis Pivot = 0 (e.g., the False Positive NULL Hypothesis for
 	 * 	for Homoscedastic Univariate Linear Regression)
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 * 
 	 * @return The Series t-Statistic
 	 */
 
 	public double tStatistic()
-		throws java.lang.Exception
+		throws Exception
 	{
-		return _dblMean / java.lang.Math.sqrt (_dblVariance);
+		return _mean / Math.sqrt (_variance);
 	}
 
 	/**
@@ -313,19 +355,18 @@ public class UnivariateMoments {
 	 * 
 	 * @return The Offset in Terms of the NUmber of Standard Errors
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public double standardErrorOffset (
 		final double x)
-		throws java.lang.Exception
+		throws Exception
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (x))
-		{
-			throw new java.lang.Exception ("UnivariateMetrics::standardErrorOffset => Invalid Inputs");
+		if (!NumberUtil.IsValid (x)) {
+			throw new Exception ("UnivariateMetrics::standardErrorOffset => Invalid Inputs");
 		}
 
-		return (_dblMean - x) / java.lang.Math.sqrt (_dblVariance);
+		return (_mean - x) / Math.sqrt (_variance);
 	}
 
 	/**
@@ -336,7 +377,7 @@ public class UnivariateMoments {
 
 	public int degreesOfFreedom()
 	{
-		return _iNumSample - 1;
+		return _sampleCount - 1;
 	}
 
 	/**
@@ -347,6 +388,6 @@ public class UnivariateMoments {
 
 	public double predictiveConfidenceLevel()
 	{
-		return java.lang.Math.sqrt (_dblVariance * (1. + 1. / (1. + _iNumSample)));
+		return Math.sqrt (_variance * (1. + 1. / (1. + _sampleCount)));
 	}
 }

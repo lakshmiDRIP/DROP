@@ -1,11 +1,23 @@
 
 package org.drip.measure.statistics;
 
+import java.util.List;
+
+import org.drip.numerical.common.NumberUtil;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2030 Lakshmi Krishnamurthy
+ * Copyright (C) 2029 Lakshmi Krishnamurthy
+ * Copyright (C) 2028 Lakshmi Krishnamurthy
+ * Copyright (C) 2027 Lakshmi Krishnamurthy
+ * Copyright (C) 2026 Lakshmi Krishnamurthy
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -80,61 +92,66 @@ package org.drip.measure.statistics;
 
 /**
  * <i>UnivariateDiscreteThin</i> analyzes and computes the "Thin" Statistics for the Realized Univariate
- * Sequence.
+ * 	Sequence. It provides the following Functionality:
  *
- *	<br><br>
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md">Numerical Analysis Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/README.md">R<sup>d</sup> Continuous/Discrete Probability Measures</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/statistics/README.md">R<sup>1</sup> R<sup>d</sup> Thin Thick Moments</a></li>
+ * 		<li>Generate a <i>UnivariateDiscreteThin</i> Instance from the specified List of Double's</li>
+ * 		<li><i>UnivariateDiscreteThin</i> Constructor</li>
+ * 		<li>Retrieve the Sequence Average</li>
+ * 		<li>Retrieve the Sequence Error</li>
+ * 		<li>Retrieve the Sequence Maximum</li>
+ * 		<li>Retrieve the Sequence Minimum</li>
  *  </ul>
+ *
+ *	<br>
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md">Numerical Analysis Library</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/README.md">R<sup>d</sup> Continuous/Discrete Probability Measures</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/statistics/README.md">R<sup>1</sup> R<sup>d</sup> Thin Thick Moments</a></td></tr>
+ *  </table>
+ *	<br>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class UnivariateDiscreteThin {
-	private double _dblError = java.lang.Double.NaN;
-	private double _dblAverage = java.lang.Double.NaN;
-	private double _dblMaximum = java.lang.Double.NaN;
-	private double _dblMinimum = java.lang.Double.NaN;
+public class UnivariateDiscreteThin
+{
+	private double _error = Double.NaN;
+	private double _average = Double.NaN;
+	private double _maximum = Double.NaN;
+	private double _minimum = Double.NaN;
 
 	/**
-	 * Generate a UnivariateDiscreteThin Instance from the specified List of Double's
+	 * Generate a <i>UnivariateDiscreteThin</i> Instance from the specified List of Double's
 	 * 
-	 * @param doubleList The List of Doubles
+	 * @param r1List The List of R<sup>1</sup>
 	 * 
-	 * @return The UnivariateDiscreteThin Instance
+	 * @return The <i>UnivariateDiscreteThin</i> Instance
 	 */
 
 	public static final UnivariateDiscreteThin FromList (
-		final java.util.List<java.lang.Double> doubleList)
+		final List<Double> r1List)
 	{
-		if (null == doubleList)
-		{
+		if (null == r1List) {
 			return null;
 		}
 
-		int listSize = doubleList.size();
+		int listSize = r1List.size();
 
-		if (0 == listSize)
-		{
+		if (0 == listSize) {
 			return null;
 		}
 
 		double[] sequence = new double[listSize];
 
-		for (int index = 0; index < listSize; ++index)
-		{
-			sequence[index] = doubleList.get (index);
+		for (int index = 0; index < listSize; ++index) {
+			sequence[index] = r1List.get (index);
 		}
 
-		try
-		{
+		try {
 			return new UnivariateDiscreteThin (sequence);
-		}
-		catch (java.lang.Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -142,51 +159,59 @@ public class UnivariateDiscreteThin {
 	}
 
 	/**
-	 * UnivariateDiscreteThin Constructor
+	 * <i>UnivariateDiscreteThin</i> Constructor
 	 * 
-	 * @param adblSequence The Univariate Sequence
+	 * @param sequence The Univariate Sequence
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public UnivariateDiscreteThin (
-		final double[] adblSequence)
-		throws java.lang.Exception
+		final double[] sequence)
+		throws Exception
 	{
-		if (null == adblSequence)
-			throw new java.lang.Exception ("UnivariateDiscreteThin Constructor => Invalid Inputs");
-
-		_dblError = 0.;
-		_dblAverage = 0.;
-		_dblMaximum = 0.;
-		_dblMinimum = 0.;
-		int iSequenceSize = adblSequence.length;
-
-		if (0 == iSequenceSize)
-			throw new java.lang.Exception ("UnivariateDiscreteThin Constructor => Invalid Inputs");
-
-		for (int i = 0; i < iSequenceSize; ++i) {
-			if (!org.drip.numerical.common.NumberUtil.IsValid (adblSequence[i]))
-				throw new java.lang.Exception ("UnivariateDiscreteThin Constructor => Invalid Inputs");
-
-			if (0 == i) {
-				_dblMaximum = adblSequence[0];
-				_dblMinimum = adblSequence[0];
-			} else {
-				if (_dblMaximum < adblSequence[i]) _dblMaximum = adblSequence[i];
-
-				if (_dblMinimum > adblSequence[i]) _dblMinimum = adblSequence[i];
-			}
-
-			_dblAverage = _dblAverage + adblSequence[i];
+		if (null == sequence) {
+			throw new Exception ("UnivariateDiscreteThin Constructor => Invalid Inputs");
 		}
 
-		_dblAverage /= iSequenceSize;
+		_error = 0.;
+		_average = 0.;
+		_maximum = 0.;
+		_minimum = 0.;
+		int sequenceSize = sequence.length;
 
-		for (int i = 0; i < iSequenceSize; ++i)
-			_dblError = _dblError + java.lang.Math.abs (_dblAverage - adblSequence[i]);
+		if (0 == sequenceSize) {
+			throw new Exception ("UnivariateDiscreteThin Constructor => Invalid Inputs");
+		}
 
-		_dblError /= iSequenceSize;
+		for (int sequenceIndex = 0; sequenceIndex < sequenceSize; ++sequenceIndex) {
+			if (!NumberUtil.IsValid (sequence[sequenceIndex])) {
+				throw new Exception ("UnivariateDiscreteThin Constructor => Invalid Inputs");
+			}
+
+			if (0 == sequenceIndex) {
+				_maximum = sequence[0];
+				_minimum = sequence[0];
+			} else {
+				if (_maximum < sequence[sequenceIndex]) {
+					_maximum = sequence[sequenceIndex];
+				}
+
+				if (_minimum > sequence[sequenceIndex]) {
+					_minimum = sequence[sequenceIndex];
+				}
+			}
+
+			_average = _average + sequence[sequenceIndex];
+		}
+
+		_average /= sequenceSize;
+
+		for (int sequenceIndex = 0; sequenceIndex < sequenceSize; ++sequenceIndex) {
+			_error = _error + Math.abs (_average - sequence[sequenceIndex]);
+		}
+
+		_error /= sequenceSize;
 	}
 
 	/**
@@ -197,7 +222,7 @@ public class UnivariateDiscreteThin {
 
 	public double average()
 	{
-		return _dblAverage;
+		return _average;
 	}
 
 	/**
@@ -208,7 +233,7 @@ public class UnivariateDiscreteThin {
 
 	public double error()
 	{
-		return _dblError;
+		return _error;
 	}
 
 	/**
@@ -219,7 +244,7 @@ public class UnivariateDiscreteThin {
 
 	public double maximum()
 	{
-		return _dblMaximum;
+		return _maximum;
 	}
 
 	/**
@@ -230,6 +255,6 @@ public class UnivariateDiscreteThin {
 
 	public double minimum()
 	{
-		return _dblMinimum;
+		return _minimum;
 	}
 }

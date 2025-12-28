@@ -2,27 +2,22 @@
 
 <p align="center"><img src="https://github.com/lakshmiDRIP/DROP/blob/master/DRIP_Logo.gif?raw=true" width="100"></p>
 
-DROP Measure Stochastic implements R<sup>1</sup> R<sup>1</sup> To R<sup>1</sup> Stochastic Process.
+DROP Measure Stochastic implements Labels for Latent State Identifiers.
 
 
 ## Class Components
 
- * [***LabelBase***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/stochastic/LabelBase.java)
- <i>LabelBase</i> is the Base Class that holds the Labeled Latent State Vertex Content.
+ * [***LabelledVertex***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/identifier/LabelledVertex.java)
+ <i>LabelledVertex</i> is the Base Class that holds the Labeled Latent State Vertex Content.
 
- * [***LabelCorrelation***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/stochastic/LabelCorrelation.java)
- <i>LabelCorrelation</i> holds the Correlations between any Stochastic Variates identified by their Labels.
+ * [***LabelledVertexCorrelation***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/identifier/LabelledVertexCorrelation.java)
+ <i>LabelledVertexCorrelation</i> holds the Correlations between any Stochastic Variates identified by their Labels.
 
- * [***LabelCovariance***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/stochastic/LabelCovariance.java)
- <i>LabelCovariance</i> holds the Covariance between any Stochastic Variates identified by their Labels, as well as their Means.
+ * [***LabelledVertexCovariance***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/identifier/LabelledVertexCovariance.java)
+ <i>LabelledVertexCovariance</i> holds the Covariance between any Stochastic Variates identified by their Labels, as well as their Means.
 
- * [***LabelRdVertex***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/stochastic/LabelRdVertex.java)
- <i>LabelRdVertex</i> holds the Labeled R<sup>d</sup> Multi-Factor Latent State Vertex Realizations.
-
- * [***R1R1ToR1***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/stochastic/R1R1ToR1.java)
- <i>R1R1ToR1</i> interface exposes the stubs for the evaluation of the objective function and its derivatives
- for a R<sup>1</sup> Deterministic + R<sup>1</sup> Random To R<sup>1</sup> Stochastic Function with one
- Random Component.
+ * [***LabelledVertexRd***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/identifier/LabelledVertexRd.java)
+ <i>LabelledVertexRd</i> holds the Labeled R<sup>d</sup> Multi-Factor Latent State Vertex Realizations.
 
 
 ## DROP Specifications

@@ -1,11 +1,21 @@
 
 package org.drip.measure.realization;
 
+import org.drip.numerical.common.NumberUtil;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2030 Lakshmi Krishnamurthy
+ * Copyright (C) 2029 Lakshmi Krishnamurthy
+ * Copyright (C) 2028 Lakshmi Krishnamurthy
+ * Copyright (C) 2027 Lakshmi Krishnamurthy
+ * Copyright (C) 2026 Lakshmi Krishnamurthy
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -79,36 +89,45 @@ package org.drip.measure.realization;
  */
 
 /**
- * <i>StochasticEdgeDiffusion</i> holds the Edge of the Diffusion Stochastic Evaluator Outcome.
+ * <i>StochasticEdgeDiffusion</i> holds the Edge of the Diffusion Stochastic Evaluator Outcome. It provides
+ * 	the following Functionality:
  *
- *	<br><br>
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md">Numerical Analysis Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/README.md">R<sup>d</sup> Continuous/Discrete Probability Measures</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/realization/README.md">Stochastic Jump Diffusion Vertex Edge</a></li>
+ * 		<li><i>StochasticEdgeDiffusion</i> Constructor</li>
+ * 		<li>Retrieve the Diffusion Stochastic Edge Change Amount</li>
  *  </ul>
+ *
+ *	<br>
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md">Numerical Analysis Library</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/README.md">R<sup>d</sup> Continuous/Discrete Probability Measures</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/realization/README.md">Stochastic Jump Diffusion Vertex Edge</a></td></tr>
+ *  </table>
+ *	<br>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class StochasticEdgeDiffusion {
-	private double _dblChange = java.lang.Double.NaN;
+public class StochasticEdgeDiffusion
+{
+	private double _change = Double.NaN;
 
 	/**
-	 * StochasticEdgeDiffusion Constructor
+	 * <i>StochasticEdgeDiffusion</i> Constructor
 	 * 
-	 * @param dblChange The Diffusion Stochastic Edge Change Amount
+	 * @param change The Diffusion Stochastic Edge Change Amount
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public StochasticEdgeDiffusion (
-		final double dblChange)
-		throws java.lang.Exception
+		final double change)
+		throws Exception
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblChange = dblChange))
-			throw new java.lang.Exception ("StochasticEdgeDiffusion Constructor => Invalid Inputs");
+		if (!NumberUtil.IsValid (_change = change)) {
+			throw new Exception ("StochasticEdgeDiffusion Constructor => Invalid Inputs");
+		}
 	}
 
 	/**
@@ -119,6 +138,6 @@ public class StochasticEdgeDiffusion {
 
 	public double change()
 	{
-		return _dblChange;
+		return _change;
 	}
 }

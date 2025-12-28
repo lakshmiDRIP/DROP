@@ -1,11 +1,21 @@
 
 package org.drip.measure.realization;
 
+import org.drip.numerical.common.NumberUtil;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2030 Lakshmi Krishnamurthy
+ * Copyright (C) 2029 Lakshmi Krishnamurthy
+ * Copyright (C) 2028 Lakshmi Krishnamurthy
+ * Copyright (C) 2027 Lakshmi Krishnamurthy
+ * Copyright (C) 2026 Lakshmi Krishnamurthy
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -80,50 +90,62 @@ package org.drip.measure.realization;
 
 /**
  * <i>JumpDiffusionVertex</i> holds the Snapshot Values of the Realized R<sup>d</sup> Variable - its Value,
- * whether it has terminated, and the Cumulative Hazard Integral - and Time.
+ * 	whether it has terminated, and the Cumulative Hazard Integral - and Time. It provides the following
+ * 	Functionality:
  *
- *	<br><br>
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md">Numerical Analysis Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/README.md">R<sup>d</sup> Continuous/Discrete Probability Measures</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/realization/README.md">Stochastic Jump Diffusion Vertex Edge</a></li>
+ * 		<li><i>JumpDiffusionVertex</i> Constructor</li>
+ * 		<li>Retrieve the Evolution Time Instant</li>
+ * 		<li>Retrieve the Realized Random Value</li>
+ * 		<li>Retrieve the Jump Occurred Flag</li>
+ * 		<li>Retrieve the Jump Occurrence Cumulative Hazard Integral</li>
  *  </ul>
+ *
+ *	<br>
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md">Numerical Analysis Library</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/README.md">R<sup>d</sup> Continuous/Discrete Probability Measures</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/realization/README.md">Stochastic Jump Diffusion Vertex Edge</a></td></tr>
+ *  </table>
+ *	<br>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class JumpDiffusionVertex {
-	private boolean _bJumpOccurred = false;
-	private double _dblTime = java.lang.Double.NaN;
-	private double _dblValue = java.lang.Double.NaN;
-	private double _dblCumulativeHazardIntegral = java.lang.Double.NaN;
+public class JumpDiffusionVertex
+{
+	private double _time = Double.NaN;
+	private double _value = Double.NaN;
+	private boolean _jumpOccurred = false;
+	private double _cumulativeHazardIntegral = Double.NaN;
 
 	/**
-	 * JumpDiffusionVertex Constructor
+	 * <i>JumpDiffusionVertex</i> Constructor
 	 * 
-	 * @param dblTime The Time Instant
-	 * @param dblValue The Random Variable Value
-	 * @param dblCumulativeHazardIntegral The Jump Occurrence Cumulative Hazard Integral
-	 * @param bJumpOccurred TRUE - Jump Occurred
+	 * @param time The Time Instant
+	 * @param value The Random Variable Value
+	 * @param cumulativeHazardIntegral The Jump Occurrence Cumulative Hazard Integral
+	 * @param jumpOccurred TRUE - Jump Occurred
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public JumpDiffusionVertex (
-		final double dblTime,
-		final double dblValue,
-		final double dblCumulativeHazardIntegral,
-		final boolean bJumpOccurred)
-		throws java.lang.Exception
+		final double time,
+		final double value,
+		final double cumulativeHazardIntegral,
+		final boolean jumpOccurred)
+		throws Exception
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblTime = dblTime) ||
-			!org.drip.numerical.common.NumberUtil.IsValid (_dblValue = dblValue) ||
-				!org.drip.numerical.common.NumberUtil.IsValid (_dblCumulativeHazardIntegral =
-					dblCumulativeHazardIntegral))
-			throw new java.lang.Exception ("JumpDiffusionVertex Constructor => Invalid Inputs");
+		if (!NumberUtil.IsValid (_time = time) ||
+			!NumberUtil.IsValid (_value = value) ||
+			!NumberUtil.IsValid (_cumulativeHazardIntegral = cumulativeHazardIntegral))
+		{
+			throw new Exception ("JumpDiffusionVertex Constructor => Invalid Inputs");
+		}
 
-		_bJumpOccurred = bJumpOccurred;
+		_jumpOccurred = jumpOccurred;
 	}
 
 	/**
@@ -134,7 +156,7 @@ public class JumpDiffusionVertex {
 
 	public double time()
 	{
-		return _dblTime;
+		return _time;
 	}
 
 	/**
@@ -145,7 +167,7 @@ public class JumpDiffusionVertex {
 
 	public double value()
 	{
-		return _dblValue;
+		return _value;
 	}
 
 	/**
@@ -156,7 +178,7 @@ public class JumpDiffusionVertex {
 
 	public boolean jumpOccurred()
 	{
-		return _bJumpOccurred;
+		return _jumpOccurred;
 	}
 
 	/**
@@ -167,6 +189,6 @@ public class JumpDiffusionVertex {
 
 	public final double cumulativeHazardIntegral()
 	{
-		return _dblCumulativeHazardIntegral;
+		return _cumulativeHazardIntegral;
 	}
 }

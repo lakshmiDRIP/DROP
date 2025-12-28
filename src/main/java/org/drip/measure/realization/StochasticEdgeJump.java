@@ -1,11 +1,21 @@
 
 package org.drip.measure.realization;
 
+import org.drip.numerical.common.NumberUtil;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2030 Lakshmi Krishnamurthy
+ * Copyright (C) 2029 Lakshmi Krishnamurthy
+ * Copyright (C) 2028 Lakshmi Krishnamurthy
+ * Copyright (C) 2027 Lakshmi Krishnamurthy
+ * Copyright (C) 2026 Lakshmi Krishnamurthy
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -79,49 +89,62 @@ package org.drip.measure.realization;
  */
 
 /**
- * <i>StochasticEdgeJump</i> holds the Edge of the Jump Stochastic Evaluator Outcome.
+ * <i>StochasticEdgeJump</i> holds the Edge of the Jump Stochastic Evaluator Outcome. It provides the
+ * 	following Functionality:
  *
- *	<br><br>
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md">Numerical Analysis Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/README.md">R<sup>d</sup> Continuous/Discrete Probability Measures</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/realization/README.md">Stochastic Jump Diffusion Vertex Edge</a></li>
+ * 		<li><i>StochasticEdgeJump</i> Constructor</li>
+ * 		<li>Retrieve the "Jump Occurred in this Level Period" Flag</li>
+ * 		<li>Retrieve the Jump Occurrence Probability Density</li>
+ * 		<li>Retrieve the Jump Occurrence Hazard Integral</li>
+ * 		<li>Retrieve the Jump Target Value</li>
  *  </ul>
+ *
+ *	<br>
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md">Numerical Analysis Library</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/README.md">R<sup>d</sup> Continuous/Discrete Probability Measures</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/realization/README.md">Stochastic Jump Diffusion Vertex Edge</a></td></tr>
+ *  </table>
+ *	<br>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class StochasticEdgeJump {
-	private boolean _bOccurred = false;
-	private double _dblTarget = java.lang.Double.NaN;
-	private double _dblHazardRate = java.lang.Double.NaN;
-	private double _dblHazardIntegral = java.lang.Double.NaN;
+public class StochasticEdgeJump
+{
+	private boolean _occurred = false;
+	private double _target = Double.NaN;
+	private double _hazardRate = Double.NaN;
+	private double _hazardIntegral = Double.NaN;
 
 	/**
-	 * StochasticEdgeJump Constructor
+	 * <i>StochasticEdgeJump</i> Constructor
 	 * 
-	 * @param bOccurred TRUE - The Jump Occurred in this Edge Period
-	 * @param dblHazardRate The Hazard Rate
-	 * @param dblHazardIntegral The Level Hazard Integral
-	 * @param dblTarget The Jump Target
+	 * @param occurred TRUE - The Jump Occurred in this Edge Period
+	 * @param hazardRate The Hazard Rate
+	 * @param hazardIntegral The Level Hazard Integral
+	 * @param target The Jump Target
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public StochasticEdgeJump (
-		final boolean bOccurred,
-		final double dblHazardRate,
-		final double dblHazardIntegral,
-		final double dblTarget)
-		throws java.lang.Exception
+		final boolean occurred,
+		final double hazardRate,
+		final double hazardIntegral,
+		final double target)
+		throws Exception
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblHazardRate = dblHazardRate) ||
-			!org.drip.numerical.common.NumberUtil.IsValid (_dblHazardIntegral = dblHazardIntegral) ||
-				!org.drip.numerical.common.NumberUtil.IsValid (_dblTarget = dblTarget))
-			throw new java.lang.Exception ("StochasticEdgeJump Constructor => Invalid Inputs");
+		if (!NumberUtil.IsValid (_hazardRate = hazardRate) ||
+			!NumberUtil.IsValid (_hazardIntegral = hazardIntegral) ||
+			!NumberUtil.IsValid (_target = target))
+		{
+			throw new Exception ("StochasticEdgeJump Constructor => Invalid Inputs");
+		}
 
-		_bOccurred = bOccurred;
+		_occurred = occurred;
 	}
 
 	/**
@@ -132,7 +155,7 @@ public class StochasticEdgeJump {
 
 	public final boolean jumpOccurred()
 	{
-		return _bOccurred;
+		return _occurred;
 	}
 
 	/**
@@ -143,7 +166,7 @@ public class StochasticEdgeJump {
 
 	public final double hazardRate()
 	{
-		return _dblHazardRate;
+		return _hazardRate;
 	}
 
 	/**
@@ -154,7 +177,7 @@ public class StochasticEdgeJump {
 
 	public final double hazardIntegral()
 	{
-		return _dblHazardIntegral;
+		return _hazardIntegral;
 	}
 
 	/**
@@ -165,6 +188,6 @@ public class StochasticEdgeJump {
 
 	public final double target()
 	{
-		return _dblTarget;
+		return _target;
 	}
 }

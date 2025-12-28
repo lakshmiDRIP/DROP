@@ -1,5 +1,5 @@
 
-package org.drip.measure.identifier;
+package org.drip.function.definition;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
