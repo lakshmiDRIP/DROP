@@ -1,5 +1,5 @@
 
-package org.drip.measure.stochastic;
+package org.drip.measure.identifier;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -10,6 +10,10 @@ package org.drip.measure.stochastic;
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
+ * Copyright (C) 2018 Lakshmi Krishnamurthy
+ * Copyright (C) 2017 Lakshmi Krishnamurthy
+ * Copyright (C) 2016 Lakshmi Krishnamurthy
+ * Copyright (C) 2015 Lakshmi Krishnamurthy
  * 
  *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
  *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
@@ -77,34 +81,9 @@ package org.drip.measure.stochastic;
  */
 
 /**
- * <i>LabelRdVertex</i> holds the Labeled R<sup>d</sup> Multi-Factor Latent State Vertex Realizations. The
- * References are:
- * 
- * <br><br>
- * 	<ul>
- * 		<li>
- *  		Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Credit Exposure in the Presence of Initial
- *  			Margin https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2806156 <b>eSSRN</b>
- * 		</li>
- * 		<li>
- *  		Albanese, C., S. Caenazzo, and O. Frankel (2017): Regression Sensitivities for Initial Margin
- *  			Calculations https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2763488 <b>eSSRN</b>
- * 		</li>
- * 		<li>
- *  		Anfuso, F., D. Aziz, P. Giltinan, and K. Loukopoulus (2017): A Sound Modeling and Back-testing
- *  			Framework for Forecasting Initial Margin Requirements
- *  			https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2716279 <b>eSSRN</b>
- * 		</li>
- * 		<li>
- *  		Caspers, P., P. Giltinan, R. Lichters, and N. Nowaczyk (2017): Forecasting Initial Margin
- *  			Requirements - A Model Evaluation https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2911167
- *  			<b>eSSRN</b>
- * 		</li>
- * 		<li>
- *  		International Swaps and Derivatives Association (2017): SIMM v2.0 Methodology
- *  			https://www.isda.org/a/oFiDE/isda-simm-v2.pdf
- * 		</li>
- * 	</ul>
+ * <i>R1R1ToR1</i> interface exposes the stubs for the evaluation of the objective function and its
+ * derivatives for a R<sup>1</sup> Deterministic + R<sup>1</sup> Random To R<sup>1</sup> Stochastic Function
+ * with one Random Component.
  *
  *	<br><br>
  *  <ul>
@@ -113,91 +92,101 @@ package org.drip.measure.stochastic;
  *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/README.md">R<sup>d</sup> Continuous/Discrete Probability Measures</a></li>
  *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/stochastic/README.md">R<sup>1</sup> R<sup>1</sup> To R<sup>1</sup> Process</a></li>
  *  </ul>
- * 
+ *
  * @author Lakshmi Krishnamurthy
  */
 
-public class LabelRdVertex extends org.drip.measure.stochastic.LabelBase
-{
-	private double[][] _vertexRd = null;
+public interface R1R1ToR1 {
 
 	/**
-	 * LabelRdVertex Constructor
+	 * Evaluate a Single Realization for the given variate
 	 * 
-	 * @param labelList The List of Labels
-	 * @param vertexRd The R<sup>d</sup> Vertex Realizations
+	 * @param dblVariate Variate
+	 *  
+	 * @return Return the Single Realization for the given variate
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws java.lang.Exception Thrown if evaluation cannot be done
 	 */
 
-	public LabelRdVertex (
-		final java.util.List<java.lang.String> labelList,
-		final double[][] vertexRd)
-		throws java.lang.Exception
-	{
-		super (labelList);
-
-		if (null == (_vertexRd = vertexRd))
-		{
-			throw new java.lang.Exception ("LabelRdVertex Constructor => Invalid Inputs");
-		}
-
-		int labelCount = labelList.size();
-
-		if (null == _vertexRd[0] || labelCount != _vertexRd[0].length)
-		{
-			throw new java.lang.Exception ("LabelRdVertex Constructor => Invalid Inputs");
-		}
-
-		int vertexCount = _vertexRd.length;
-
-		for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex)
-		{
-			if (null == _vertexRd[vertexIndex] || labelCount != _vertexRd[vertexIndex].length ||
-				!org.drip.numerical.common.NumberUtil.IsValid (_vertexRd[vertexIndex]))
-			{
-				throw new java.lang.Exception ("LabelRdVertex Constructor => Invalid Inputs");
-			}
-		}
-	}
+	public abstract double evaluateRealization (
+		final double dblVariate)
+		throws java.lang.Exception;
 
 	/**
-	 * Retrieve the Vertex R<sup>d</sup> Values
+	 * Evaluate the Expectation for the given variate
 	 * 
-	 * @return The Vertex R<sup>d</sup> Values
+	 * @param dblVariate Variate
+	 *  
+	 * @return Return the Expectation for the given variate
+	 * 
+	 * @throws java.lang.Exception Thrown if evaluation cannot be done
 	 */
 
-	public double[][] vertexRd()
-	{
-		return _vertexRd;
-	}
+	public abstract double evaluateExpectation (
+		final double dblVariate)
+		throws java.lang.Exception;
 
 	/**
-	 * Retrieve the Vertex R<sup>1</sup> Array for the Specified Label
+	 * Evaluate the Derivative for a Single Realization for the given variate
 	 * 
-	 * @param label The Label
+	 * @param dblVariate Variate at which the derivative is to be calculated
+	 * @param iOrder Order of the derivative to be computed
+	 *  
+	 * @return Return the Derivative for a Single Realization for the given variate
 	 * 
-	 * @return The Vertex R<sup>1</sup> Array
+	 * @throws java.lang.Exception Thrown if evaluation cannot be done
 	 */
 
-	public double[] vertexR1 (
-		final java.lang.String label)
-	{
-		if (null == label || !_labelList.contains (label))
-		{
-			return null;
-		}
+	public abstract double derivativeRealization (
+		final double dblVariate,
+		final int iOrder)
+		throws java.lang.Exception;
 
-		int vertexCount = _vertexRd.length;
-		double[] vertexR1 = new double[vertexCount];
+	/**
+	 * Evaluate the Derivative Expectation at the given variate
+	 * 
+	 * @param dblVariate Variate at which the derivative is to be calculated
+	 * @param iOrder Order of the derivative to be computed
+	 *  
+	 * @return Return the Derivative Expectation at the given variate
+	 * 
+	 * @throws java.lang.Exception Thrown if evaluation cannot be done
+	 */
 
-		int labelIndex = _labelIndexMap.get (label);
+	public abstract double derivativeExpectation (
+		final double dblVariate,
+		final int iOrder)
+		throws java.lang.Exception;
 
-		for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex)
-		{
-			vertexR1[vertexIndex] = _vertexRd[vertexIndex][labelIndex];
-		}
+	/**
+	 * Evaluate a Path-wise Integral between the Vriates
+	 * 
+	 * @param dblStart Variate Start
+	 * @param dblEnd Variate End
+	 *  
+	 * @return The Path-wise Integral between the Variates
+	 * 
+	 * @throws java.lang.Exception Thrown if evaluation cannot be done
+	 */
 
-		return vertexR1;
-	}
+	public abstract double integralRealization (
+		final double dblStart,
+		final double dblEnd)
+		throws java.lang.Exception;
+
+	/**
+	 * Evaluate the Expected Path-wise Integral between the Vriates
+	 * 
+	 * @param dblStart Variate Start
+	 * @param dblEnd Variate End
+	 *  
+	 * @return The Expected Path-wise Integral between the Variates
+	 * 
+	 * @throws java.lang.Exception Thrown if evaluation cannot be done
+	 */
+
+	public abstract double integralExpectation (
+		final double dblStart,
+		final double dblEnd)
+		throws java.lang.Exception;
 }

@@ -4,7 +4,7 @@ package org.drip.simm.product;
 import java.util.Map;
 import java.util.TreeMap;
 
-import org.drip.measure.stochastic.LabelCorrelation;
+import org.drip.measure.identifier.LabelCorrelation;
 import org.drip.simm.foundation.CurvatureEstimator;
 import org.drip.simm.foundation.MarginEstimationSettings;
 import org.drip.simm.margin.BucketAggregateIR;

@@ -6,8 +6,8 @@ import org.drip.numerical.common.NumberUtil;
 import org.drip.validation.hypothesis.R1ProbabilityIntegralTransform;
 import org.drip.validation.hypothesis.R1PITTester;
 import org.drip.validation.hypothesis.SignificanceTestSetting;
-import org.drip.validation.hypothesis.StatisticalTestOutcome;
-import org.drip.validation.hypothesis.TTestOutcome;
+import org.drip.validation.hypothesis.R1StatisticalTestOutcome;
+import org.drip.validation.hypothesis.R1TTestOutcome;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -88,8 +88,8 @@ import org.drip.validation.hypothesis.TTestOutcome;
  */
 
 /**
- * <i>Ensemble</i> contains the Ensemble Collection of Statistical Samples and their Test Statistic
- * Evaluators.
+ * <i>R1Ensemble</i> contains the Ensemble Collection of Statistical R<sup>1</sup> Samples and their Test
+ * 	Statistic Evaluators.
  *
  *  <br><br>
  *  <ul>
@@ -127,52 +127,55 @@ import org.drip.validation.hypothesis.TTestOutcome;
  * @author Lakshmi Krishnamurthy
  */
 
-public class Ensemble implements NativePITGenerator
+public class R1Ensemble implements NativeR1PITGenerator
 {
-	private Sample[] _sampleArray = null;
+	private R1Sample[] _r1SampleArray = null;
 	private double[][] _evaluatedSampleTestStatistic = null;
-	private TestStatisticEvaluator[] _testStatisticEvaluatorArray = null;
-	private R1ProbabilityIntegralTransform[] _probabilityIntegralTransformArray = null;
+	private R1TestStatisticEvaluator[] _r1TestStatisticEvaluatorArray = null;
+	private R1ProbabilityIntegralTransform[] _r1ProbabilityIntegralTransformArray = null;
 
 	/**
-	 * Ensemble Constructor
+	 * <i>R1Ensemble</i> Constructor
 	 * 
-	 * @param sampleArray Array of the Statistical Hypothesis Samples
-	 * @param testStatisticEvaluatorArray Array of the Test Statistic Evaluators
+	 * @param r1SampleArray Array of the Statistical Hypothesis Samples
+	 * @param r1TestStatisticEvaluatorArray Array of the Test Statistic Evaluators
 	 * 
 	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
-	public Ensemble (
-		final Sample[] sampleArray,
-		final TestStatisticEvaluator[] testStatisticEvaluatorArray)
+	public R1Ensemble (
+		final R1Sample[] r1SampleArray,
+		final R1TestStatisticEvaluator[] r1TestStatisticEvaluatorArray)
 		throws Exception
 	{
-		if (null == (_sampleArray = sampleArray) ||
-			null == (_testStatisticEvaluatorArray = testStatisticEvaluatorArray)) {
-			throw new Exception ("Ensemble Constructor => Invalid Inputs");
+		if (null == (_r1SampleArray = r1SampleArray) ||
+			null == (_r1TestStatisticEvaluatorArray = r1TestStatisticEvaluatorArray))
+		{
+			throw new Exception ("R1Ensemble Constructor => Invalid Inputs");
 		}
 
-		int sampleCount = _sampleArray.length;
-		int testStatisticEvaluatorCount = _testStatisticEvaluatorArray.length;
+		int sampleCount = _r1SampleArray.length;
+		int testStatisticEvaluatorCount = _r1TestStatisticEvaluatorArray.length;
 		_evaluatedSampleTestStatistic = new double[testStatisticEvaluatorCount][sampleCount];
-		_probabilityIntegralTransformArray = new R1ProbabilityIntegralTransform[testStatisticEvaluatorCount];
+		_r1ProbabilityIntegralTransformArray =
+			new R1ProbabilityIntegralTransform[testStatisticEvaluatorCount];
 
 		if (0 == sampleCount || 0 == testStatisticEvaluatorCount) {
-			throw new Exception ("Ensemble Constructor => Invalid Inputs");
+			throw new Exception ("R1Ensemble Constructor => Invalid Inputs");
 		}
 
 		for (int sampleIndex = 0; sampleIndex < sampleCount; ++sampleIndex) {
-			if (null == _sampleArray[sampleIndex]) {
-				throw new Exception ("Ensemble Constructor => Invalid Inputs");
+			if (null == _r1SampleArray[sampleIndex]) {
+				throw new Exception ("R1Ensemble Constructor => Invalid Inputs");
 			}
 		}
 
 		for (int testStatisticEvaluatorIndex = 0;
 			testStatisticEvaluatorIndex < testStatisticEvaluatorCount;
-			++testStatisticEvaluatorIndex) {
-			if (null == _testStatisticEvaluatorArray[testStatisticEvaluatorIndex]) {
-				throw new Exception ("Ensemble Constructor => Invalid Inputs");
+			++testStatisticEvaluatorIndex)
+		{
+			if (null == _r1TestStatisticEvaluatorArray[testStatisticEvaluatorIndex]) {
+				throw new Exception ("R1Ensemble Constructor => Invalid Inputs");
 			}
 
 			TestStatisticAccumulator testStatisticAccumulator = new TestStatisticAccumulator();
@@ -180,15 +183,17 @@ public class Ensemble implements NativePITGenerator
 			for (int sampleIndex = 0; sampleIndex < sampleCount; ++sampleIndex) {
 				if (!testStatisticAccumulator.addTestStatistic
 					(_evaluatedSampleTestStatistic[testStatisticEvaluatorIndex][sampleIndex] =
-						_sampleArray[sampleIndex].applyTestStatistic
-							(_testStatisticEvaluatorArray[testStatisticEvaluatorIndex]))) {
-					throw new Exception ("Ensemble Constructor => Invalid Inputs");
+						_r1SampleArray[sampleIndex].applyTestStatistic
+							(_r1TestStatisticEvaluatorArray[testStatisticEvaluatorIndex])))
+				{
+					throw new Exception ("R1Ensemble Constructor => Invalid Inputs");
 				}
 			}
 
-			if (null == (_probabilityIntegralTransformArray[testStatisticEvaluatorIndex] =
-				testStatisticAccumulator.probabilityIntegralTransform())) {
-				throw new Exception ("Ensemble Constructor => Invalid Inputs");
+			if (null == (_r1ProbabilityIntegralTransformArray[testStatisticEvaluatorIndex] =
+				testStatisticAccumulator.probabilityIntegralTransform()))
+			{
+				throw new Exception ("R1Ensemble Constructor => Invalid Inputs");
 			}
 		}
 	}
@@ -210,9 +215,9 @@ public class Ensemble implements NativePITGenerator
 	 * @return The Array of the Statistical Hypothesis Samples
 	 */
 
-	public Sample[] sampleArray()
+	public R1Sample[] sampleArray()
 	{
-		return _sampleArray;
+		return _r1SampleArray;
 	}
 
 	/**
@@ -221,9 +226,9 @@ public class Ensemble implements NativePITGenerator
 	 * @return The Array of the Test Statistic Evaluators
 	 */
 
-	public TestStatisticEvaluator[] testStatisticEvaluatorArray()
+	public R1TestStatisticEvaluator[] testStatisticEvaluatorArray()
 	{
-		return _testStatisticEvaluatorArray;
+		return _r1TestStatisticEvaluatorArray;
 	}
 
 	/**
@@ -234,7 +239,7 @@ public class Ensemble implements NativePITGenerator
 
 	public R1ProbabilityIntegralTransform[] probabilityIntegralTransformArray()
 	{
-		return _probabilityIntegralTransformArray;
+		return _r1ProbabilityIntegralTransformArray;
 	}
 
 	/**
@@ -245,7 +250,7 @@ public class Ensemble implements NativePITGenerator
 
 	public R1PITTester[] significanceTest()
 	{
-		int probabilityIntegralTransformCount = _testStatisticEvaluatorArray.length;
+		int probabilityIntegralTransformCount = _r1TestStatisticEvaluatorArray.length;
 		R1PITTester[] probabilityIntegralTransformTestArray =
 			new R1PITTester[probabilityIntegralTransformCount];
 
@@ -254,8 +259,7 @@ public class Ensemble implements NativePITGenerator
 			++probabilityIntegralTransformIndex) {
 			try {
 				probabilityIntegralTransformTestArray[probabilityIntegralTransformIndex] = new
-					org.drip.validation.hypothesis.R1PITTester
-						(_probabilityIntegralTransformArray[probabilityIntegralTransformIndex]);
+					R1PITTester (_r1ProbabilityIntegralTransformArray[probabilityIntegralTransformIndex]);
 			} catch (Exception e) {
 				e.printStackTrace();
 
@@ -274,12 +278,12 @@ public class Ensemble implements NativePITGenerator
 	 * @return The Array of t-Test Results
 	 */
 
-	public TTestOutcome[] tTest (
+	public R1TTestOutcome[] tTest (
 		final double testStatistic)
 	{
-		int sampleCount = _sampleArray.length;
-		int testStatisticEvaluatorCount = _testStatisticEvaluatorArray.length;
-		TTestOutcome[] tTestOutcomeArray = new TTestOutcome[testStatisticEvaluatorCount];
+		int sampleCount = _r1SampleArray.length;
+		int testStatisticEvaluatorCount = _r1TestStatisticEvaluatorArray.length;
+		R1TTestOutcome[] tTestOutcomeArray = new R1TTestOutcome[testStatisticEvaluatorCount];
 
 		for (int testStatisticEvaluatorIndex = 0;
 			testStatisticEvaluatorIndex < testStatisticEvaluatorCount;
@@ -295,7 +299,7 @@ public class Ensemble implements NativePITGenerator
 			}
 
 			try {
-				tTestOutcomeArray[testStatisticEvaluatorIndex] = new TTestOutcome (
+				tTestOutcomeArray[testStatisticEvaluatorIndex] = new R1TTestOutcome (
 					testStatistic,
 					sampleCount,
 					ensembleUnivariateMoments.mean(),
@@ -326,7 +330,7 @@ public class Ensemble implements NativePITGenerator
 	 * @return The Array of Statistical Test Outcomes
 	 */
 
-	public StatisticalTestOutcome[] statisticalTest (
+	public R1StatisticalTestOutcome[] statisticalTest (
 		final double testStatistic,
 		final SignificanceTestSetting pTestSetting)
 	{
@@ -334,10 +338,10 @@ public class Ensemble implements NativePITGenerator
 			return null;
 		}
 
-		int sampleCount = _sampleArray.length;
-		int testStatisticEvaluatorCount = _testStatisticEvaluatorArray.length;
-		StatisticalTestOutcome[] statisticalTestOutcomeArray =
-			new StatisticalTestOutcome[testStatisticEvaluatorCount];
+		int sampleCount = _r1SampleArray.length;
+		int testStatisticEvaluatorCount = _r1TestStatisticEvaluatorArray.length;
+		R1StatisticalTestOutcome[] statisticalTestOutcomeArray =
+			new R1StatisticalTestOutcome[testStatisticEvaluatorCount];
 
 		R1PITTester[] probabilityIntegralTransformTestArray = significanceTest();
 
@@ -355,12 +359,12 @@ public class Ensemble implements NativePITGenerator
 			}
 
 			try {
-				statisticalTestOutcomeArray[testStatisticEvaluatorIndex] = new StatisticalTestOutcome (
+				statisticalTestOutcomeArray[testStatisticEvaluatorIndex] = new R1StatisticalTestOutcome (
 					probabilityIntegralTransformTestArray[testStatisticEvaluatorIndex].significanceTest (
 						testStatistic,
 						pTestSetting
 					),
-					new TTestOutcome (
+					new R1TTestOutcome (
 						testStatistic,
 						sampleCount,
 						ensembleUnivariateMoments.mean(),
@@ -387,10 +391,10 @@ public class Ensemble implements NativePITGenerator
 	{
 		TestStatisticAccumulator testStatisticAccumulator = new TestStatisticAccumulator();
 
-		int sampleCount = _sampleArray.length;
+		int sampleCount = _r1SampleArray.length;
 
 		for (int sampleIndex = 0; sampleIndex < sampleCount; ++sampleIndex) {
-			for (double realization : _sampleArray[sampleIndex].realizationArray()) {
+			for (double realization : _r1SampleArray[sampleIndex].realizationArray()) {
 				if (!testStatisticAccumulator.addTestStatistic (realization)) {
 					return null;
 				}

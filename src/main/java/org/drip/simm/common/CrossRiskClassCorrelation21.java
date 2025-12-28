@@ -4,7 +4,7 @@ package org.drip.simm.common;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.drip.measure.stochastic.LabelCorrelation;
+import org.drip.measure.identifier.LabelCorrelation;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-

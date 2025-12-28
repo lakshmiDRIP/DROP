@@ -4,7 +4,7 @@ package org.drip.validation.riskfactorsingle;
 import java.util.Map;
 
 import org.drip.analytics.support.CaseInsensitiveHashMap;
-import org.drip.validation.evidence.Ensemble;
+import org.drip.validation.evidence.R1Ensemble;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -126,8 +126,8 @@ import org.drip.validation.evidence.Ensemble;
 
 public class HypothesisSuiteAggregate
 {
-	private Map<String, Map<String, Ensemble>> _hypothesisEventMap =
-		new CaseInsensitiveHashMap<Map<String, Ensemble>>();
+	private Map<String, Map<String, R1Ensemble>> _hypothesisEventMap =
+		new CaseInsensitiveHashMap<Map<String, R1Ensemble>>();
 
 	/**
 	 * Empty HypothesisSuiteAggregate Constructor
@@ -143,7 +143,7 @@ public class HypothesisSuiteAggregate
 	 * @return The Hypothesis Event Map
 	 */
 
-	public Map<String, Map<String, Ensemble>> hypothesisEventMap()
+	public Map<String, Map<String, R1Ensemble>> hypothesisEventMap()
 	{
 		return _hypothesisEventMap;
 	}
@@ -161,7 +161,7 @@ public class HypothesisSuiteAggregate
 	public boolean add (
 		final String hypothesisID,
 		final String eventID,
-		final Ensemble hypothesis)
+		final R1Ensemble hypothesis)
 	{
 		if (null == hypothesisID || hypothesisID.isEmpty() || null == eventID || eventID.isEmpty() ||
 			null == hypothesis) {
@@ -171,7 +171,7 @@ public class HypothesisSuiteAggregate
 		if (_hypothesisEventMap.containsKey (hypothesisID)) {
 			_hypothesisEventMap.get (hypothesisID).put (eventID, hypothesis);
 		} else {
-			Map<String, Ensemble> eventMap = new CaseInsensitiveHashMap<Ensemble>();
+			Map<String, R1Ensemble> eventMap = new CaseInsensitiveHashMap<R1Ensemble>();
 
 			eventMap.put (eventID, hypothesis);
 
@@ -208,7 +208,7 @@ public class HypothesisSuiteAggregate
 	 * @return The Specified Hypothesis
 	 */
 
-	public Ensemble hypothesis (
+	public R1Ensemble hypothesis (
 		final String hypothesisID,
 		final String eventID)
 	{

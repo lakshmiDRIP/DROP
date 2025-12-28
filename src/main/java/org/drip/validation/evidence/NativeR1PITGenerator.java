@@ -1,7 +1,6 @@
 
 package org.drip.validation.evidence;
 
-import org.drip.numerical.common.NumberUtil;
 import org.drip.validation.hypothesis.R1ProbabilityIntegralTransform;
 
 /*
@@ -83,7 +82,8 @@ import org.drip.validation.hypothesis.R1ProbabilityIntegralTransform;
  */
 
 /**
- * <i>Sample</i> holds the Sample of Realizations.
+ * <i>NativeR1PITGenerator</i> exposes Functionality to Generate Native R<sup>1</sup> Probability Integral
+ * 	Transforms on their Realizations.
  *
  *  <br><br>
  *  <ul>
@@ -121,70 +121,14 @@ import org.drip.validation.hypothesis.R1ProbabilityIntegralTransform;
  * @author Lakshmi Krishnamurthy
  */
 
-public class Sample implements NativePITGenerator
+public interface NativeR1PITGenerator
 {
-	private double[] _realizationArray = null;
 
 	/**
-	 * Sample Constructor
+	 * Generate the PIT over the Sample Instance Realizations
 	 * 
-	 * @param realizationArray The Sample Realization Array
-	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @return PIT over the Sample Instance Realizations
 	 */
 
-	public Sample (
-		final double[] realizationArray)
-		throws Exception
-	{
-		if (null == (_realizationArray = realizationArray) || 0 == _realizationArray.length ||
-			!NumberUtil.IsValid (_realizationArray)) {
-			throw new Exception ("Sample Constructor => Invalid Inputs");
-		}
-	}
-
-	/**
-	 * Retrieve the Realization Array
-	 * 
-	 * @return The Realization Array
-	 */
-
-	public double[] realizationArray()
-	{
-		return _realizationArray;
-	}
-
-	/**
-	 * Apply the specified Test Statistic Evaluator to the Sample
-	 * 
-	 * @param testStatisticEvaluator The Test Statistic Evaluator
-	 * 
-	 * @return The Sample Test Statistic
-	 * 
-	 * @throws Exception Thrown if the Inputs are Invalid
-	 */
-
-	public double applyTestStatistic (
-		final TestStatisticEvaluator testStatisticEvaluator)
-		throws Exception
-	{
-		if (null == testStatisticEvaluator) {
-			throw new Exception ("Sample::applyTestStatistic => Invalid Inputs");
-		}
-
-		return testStatisticEvaluator.evaluate (_realizationArray);
-	}
-
-	@Override public R1ProbabilityIntegralTransform nativeProbabilityIntegralTransform()
-	{
-		TestStatisticAccumulator testStatisticAccumulator = new TestStatisticAccumulator();
-
-		for (double realization : _realizationArray) {
-			if (!testStatisticAccumulator.addTestStatistic (realization)) {
-				return null;
-			}
-		}
-
-		return testStatisticAccumulator.probabilityIntegralTransform();
-	}
+	public abstract R1ProbabilityIntegralTransform nativeProbabilityIntegralTransform();
 }

@@ -6,7 +6,7 @@ import java.util.Map;
 import org.drip.analytics.support.CaseInsensitiveHashMap;
 import org.drip.validation.distance.GapTestOutcome;
 import org.drip.validation.distance.GapTestSetting;
-import org.drip.validation.evidence.Ensemble;
+import org.drip.validation.evidence.R1Ensemble;
 import org.drip.validation.hypothesis.R1ProbabilityIntegralTransform;
 
 /*
@@ -194,14 +194,14 @@ public class DiscriminatoryPowerAnalyzerAggregate
 
 	private GapTestOutcomeAggregate eventOutcomeAggregate (
 		final String hypothesisID,
-		final Map<String, Ensemble> eventEnsembleMap)
+		final Map<String, R1Ensemble> eventEnsembleMap)
 	{
 		double distanceAggregate = 0.;
 
 		Map<String, GapTestOutcome> eventOutcomeMap = new CaseInsensitiveHashMap<GapTestOutcome>();
 
 		try {
-			for (Map.Entry<String, Ensemble> eventEnsemble : eventEnsembleMap.entrySet()) {
+			for (Map.Entry<String, R1Ensemble> eventEnsemble : eventEnsembleMap.entrySet()) {
 				String eventID = eventEnsemble.getKey();
 
 				if (!_eventSamplePITMap.containsKey (eventID)) {
@@ -249,7 +249,7 @@ public class DiscriminatoryPowerAnalyzerAggregate
 			return null;
 		}
 
-		Map<String, Map<String, Ensemble>> hypothesisEventMap =
+		Map<String, Map<String, R1Ensemble>> hypothesisEventMap =
 			hypothesisSuiteAggregate.hypothesisEventMap();
 
 		if (0 == hypothesisEventMap.size()) {
@@ -259,7 +259,7 @@ public class DiscriminatoryPowerAnalyzerAggregate
 		HypothesisOutcomeSuiteAggregate hypothesisOutcomeSuiteAggregate =
 			new HypothesisOutcomeSuiteAggregate();
 
-		for (Map.Entry<String, Map<String, Ensemble>> hypothesisEvent : hypothesisEventMap.entrySet()) {
+		for (Map.Entry<String, Map<String, R1Ensemble>> hypothesisEvent : hypothesisEventMap.entrySet()) {
 			java.lang.String hypothesisID = hypothesisEvent.getKey();
 
 			if (!hypothesisOutcomeSuiteAggregate.add (

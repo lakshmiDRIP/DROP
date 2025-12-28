@@ -1,10 +1,8 @@
 
-package org.drip.validation.riskfactorjoint;
+package org.drip.validation.evidence;
 
-import java.util.List;
-
-import org.drip.measure.stochastic.LabelRdVertex;
-import org.drip.validation.evidence.Sample;
+import org.drip.numerical.common.NumberUtil;
+import org.drip.validation.hypothesis.R1ProbabilityIntegralTransform;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -85,27 +83,26 @@ import org.drip.validation.evidence.Sample;
  */
 
 /**
- * <i>SampleCohort</i> exposes the Multiple Risk Factor Sample Realizations and its Reduction to a Synthetic
- * Single Risk Factor.
+ * <i>R1Sample</i> holds the Sample of R<sup>1</sup> Realizations.
  *
  *  <br><br>
  *  <ul>
  *  	<li>
- *  		Anfuso, F., D. Karyampas, and A. Nawroth (2017): A Sound Basel III Compliant Framework for
- *  			Back-testing Credit Exposure Models
- *  			https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2264620 <b>eSSRN</b>
+ *  		Bhattacharya, B., and D. Habtzghi (2002): Median of the p-value under the Alternate Hypothesis
+ *  			<i>American Statistician</i> <b>56 (3)</b> 202-206
  *  	</li>
  *  	<li>
- *  		Diebold, F. X., T. A. Gunther, and A. S. Tay (1998): Evaluating Density Forecasts with
- *  			Applications to Financial Risk Management, International Economic Review 39 (4) 863-883
+ *  		Head, M. L., L. Holman, R, Lanfear, A. T. Kahn, and M. D. Jennions (2015): The Extent and
+ *  			<i>Consequences of p-Hacking in Science PLoS Biology</i> <b>13 (3)</b> e1002106
  *  	</li>
  *  	<li>
- *  		Kenyon, C., and R. Stamm (2012): Discounting, LIBOR, CVA, and Funding: Interest Rate and Credit
- *  			Pricing, Palgrave Macmillan
+ *  		Wasserstein, R. L., and N. A. Lazar (2016): The ASA’s Statement on p-values: Context, Process,
+ *  			and Purpose <i>American Statistician</i> <b>70 (2)</b> 129-133
  *  	</li>
  *  	<li>
- *  		Wikipedia (2018): Probability Integral Transform
- *  			https://en.wikipedia.org/wiki/Probability_integral_transform
+ *  		Wetzels, R., D. Matzke, M. D. Lee, J. N. Rouder, G, J, Iverson, and E. J. Wagenmakers (2011):
+ *  			Statistical Evidence in Experimental Psychology: An Empirical Comparison using 855 t-Tests
+ *  			<i>Perspectives in Psychological Science</i> <b>6 (3)</b> 291-298
  *  	</li>
  *  	<li>
  *  		Wikipedia (2019): p-value https://en.wikipedia.org/wiki/P-value
@@ -117,43 +114,78 @@ import org.drip.validation.evidence.Sample;
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ModelValidationAnalyticsLibrary.md">Model Validation Analytics Library</a></li>
  *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/validation/README.md">Risk Factor and Hypothesis Validation, Evidence Processing, and Model Testing</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/validation/riskfactorjoint/README.md">Joint Risk Factor Aggregate Tests</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/validation/evidence/README.md">Sample and Ensemble Evidence Processors</a></li>
  *  </ul>
  * <br><br>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public interface SampleCohort
+public class R1Sample implements NativeR1PITGenerator
 {
+	private double[] _realizationArray = null;
 
 	/**
-	 * Retrieve the List of Latent State Labels
+	 * <i>R1Sample</i> Constructor
 	 * 
-	 * @return The List of Latent State Labels
+	 * @param realizationArray The Sample Realization Array
+	 * 
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
-	public abstract List<String> latentStateLabelList();
+	public R1Sample (
+		final double[] realizationArray)
+		throws Exception
+	{
+		if (null == (_realizationArray = realizationArray) || 0 == _realizationArray.length ||
+			!NumberUtil.IsValid (_realizationArray))
+		{
+			throw new Exception ("R1Sample Constructor => Invalid Inputs");
+		}
+	}
 
 	/**
-	 * Retrieve the Vertex R<sup>d</sup> Multi-Factor Realizations
+	 * Retrieve the Realization Array
 	 * 
-	 * @return The Vertex R<sup>d</sup> Multi-Factor Realizations
+	 * @return The Realization Array
 	 */
 
-	public abstract LabelRdVertex vertexRd();
+	public double[] realizationArray()
+	{
+		return _realizationArray;
+	}
 
 	/**
-	 * Reduce the Joint Realizations for the Pair of State Labels to a Single Risk Factor Sample
+	 * Apply the specified Test Statistic Evaluator to the Sample
 	 * 
-	 * @param label1 Latent State Label 1
-	 * @param label2 Latent State Label 2
+	 * @param testStatisticEvaluator The Test Statistic Evaluator
 	 * 
-	 * @return The Single Risk Factor Sample
+	 * @return The Sample Test Statistic
+	 * 
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
-	public abstract Sample reduce (
-		final String label1,
-		final String label2
-	);
+	public double applyTestStatistic (
+		final R1TestStatisticEvaluator testStatisticEvaluator)
+		throws Exception
+	{
+		if (null == testStatisticEvaluator) {
+			throw new Exception ("R1Sample::applyTestStatistic => Invalid Inputs");
+		}
+
+		return testStatisticEvaluator.evaluate (_realizationArray);
+	}
+
+	@Override public R1ProbabilityIntegralTransform nativeProbabilityIntegralTransform()
+	{
+		TestStatisticAccumulator testStatisticAccumulator = new TestStatisticAccumulator();
+
+		for (double realization : _realizationArray) {
+			if (!testStatisticAccumulator.addTestStatistic (realization)) {
+				return null;
+			}
+		}
+
+		return testStatisticAccumulator.probabilityIntegralTransform();
+	}
 }

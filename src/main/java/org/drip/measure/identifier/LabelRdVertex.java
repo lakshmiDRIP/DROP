@@ -1,22 +1,15 @@
 
-package org.drip.measure.transform;
-
-import org.drip.measure.continuous.R1ParetoDistribution;
-import org.drip.measure.exponential.R1RateDistribution;
+package org.drip.measure.identifier;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
- * Copyright (C) 2030 Lakshmi Krishnamurthy
- * Copyright (C) 2029 Lakshmi Krishnamurthy
- * Copyright (C) 2028 Lakshmi Krishnamurthy
- * Copyright (C) 2027 Lakshmi Krishnamurthy
- * Copyright (C) 2026 Lakshmi Krishnamurthy
- * Copyright (C) 2025 Lakshmi Krishnamurthy
- * Copyright (C) 2024 Lakshmi Krishnamurthy
- * Copyright (C) 2023 Lakshmi Krishnamurthy
+ * Copyright (C) 2022 Lakshmi Krishnamurthy
+ * Copyright (C) 2021 Lakshmi Krishnamurthy
+ * Copyright (C) 2020 Lakshmi Krishnamurthy
+ * Copyright (C) 2019 Lakshmi Krishnamurthy
  * 
  *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
  *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
@@ -84,30 +77,32 @@ import org.drip.measure.exponential.R1RateDistribution;
  */
 
 /**
- * <i>FromExponential</i> transforms R<sup>1</sup> Exponential Distribution to Derived Distributions. The
- *  References are:
+ * <i>LabelRdVertex</i> holds the Labeled R<sup>d</sup> Multi-Factor Latent State Vertex Realizations. The
+ * References are:
  * 
  * <br><br>
  * 	<ul>
  * 		<li>
- * 			Devroye, L. (1986): <i>Non-Uniform Random Variate Generation</i> <b>Springer-Verlag</b> New York
+ *  		Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Credit Exposure in the Presence of Initial
+ *  			Margin https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2806156 <b>eSSRN</b>
  * 		</li>
  * 		<li>
- * 			Exponential Distribution (2019): Exponential Distribution
- * 				https://en.wikipedia.org/wiki/Exponential_distribution
+ *  		Albanese, C., S. Caenazzo, and O. Frankel (2017): Regression Sensitivities for Initial Margin
+ *  			Calculations https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2763488 <b>eSSRN</b>
  * 		</li>
  * 		<li>
- * 			Norton, M., V. Khokhlov, and S. Uryasev (2019): Calculating CVaR and bPOE for Common Probability
- * 				Distributions with Application to Portfolio Optimization and Density Estimation <i>Annals of
- * 				Operations Research</i> <b>299 (1-2)</b> 1281-1315
+ *  		Anfuso, F., D. Aziz, P. Giltinan, and K. Loukopoulus (2017): A Sound Modeling and Back-testing
+ *  			Framework for Forecasting Initial Margin Requirements
+ *  			https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2716279 <b>eSSRN</b>
  * 		</li>
  * 		<li>
- * 			Ross, S. M. (2009): <i>Introduction to Probability and Statistics for Engineers and Scientists
- * 				4<sup>th</sup> Edition</i> <b>Associated Press</b> New York, NY
+ *  		Caspers, P., P. Giltinan, R. Lichters, and N. Nowaczyk (2017): Forecasting Initial Margin
+ *  			Requirements - A Model Evaluation https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2911167
+ *  			<b>eSSRN</b>
  * 		</li>
  * 		<li>
- * 			Schmidt, D. F., and D. Makalic (2009): Universal Models for the Exponential Distribution <i>IEEE
- * 				Transactions on Information Theory</i> <b>55 (7)</b> 3087-3090
+ *  		International Swaps and Derivatives Association (2017): SIMM v2.0 Methodology
+ *  			https://www.isda.org/a/oFiDE/isda-simm-v2.pdf
  * 		</li>
  * 	</ul>
  *
@@ -122,38 +117,94 @@ import org.drip.measure.exponential.R1RateDistribution;
  *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
  *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md">Numerical Analysis Library</a></td></tr>
  *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/README.md">R<sup>d</sup> Continuous/Discrete Probability Measures</a></td></tr>
- *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/transform/README.md">Expressing one Measure Using Another</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/identifier/README.md">Labels for Latent State Identifiers</a></td></tr>
  *  </table>
  *	<br>
- *
+ * 
  * @author Lakshmi Krishnamurthy
  */
 
-public class FromExponential
+public class LabelRdVertex extends org.drip.measure.identifier.VertexLabel
 {
+	private double[][] _vertexRd = null;
 
 	/**
-	 * Transform the Input R<sup>1</sup> Exponential Distribution to Pareto
+	 * LabelRdVertex Constructor
 	 * 
-	 * @param exponentialDistribution Input R<sup>1</sup> Exponential Distribution
-	 * @param k Pareto "K"
+	 * @param labelList The List of Labels
+	 * @param vertexRd The R<sup>d</sup> Vertex Realizations
 	 * 
-	 * @return R<sup>1</sup> Pareto Distribution
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public static final R1ParetoDistribution ToPareto (
-		final R1RateDistribution exponentialDistribution,
-		final double k)
+	public LabelRdVertex (
+		final java.util.List<java.lang.String> labelList,
+		final double[][] vertexRd)
+		throws java.lang.Exception
 	{
-		try {
-			return null == exponentialDistribution ? null : new R1ParetoDistribution (
-				exponentialDistribution.lambda(),
-				k
-			);
-		} catch (Exception e) {
-			e.printStackTrace();
+		super (labelList);
+
+		if (null == (_vertexRd = vertexRd))
+		{
+			throw new java.lang.Exception ("LabelRdVertex Constructor => Invalid Inputs");
 		}
 
-		return null;
+		int labelCount = labelList.size();
+
+		if (null == _vertexRd[0] || labelCount != _vertexRd[0].length)
+		{
+			throw new java.lang.Exception ("LabelRdVertex Constructor => Invalid Inputs");
+		}
+
+		int vertexCount = _vertexRd.length;
+
+		for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex)
+		{
+			if (null == _vertexRd[vertexIndex] || labelCount != _vertexRd[vertexIndex].length ||
+				!org.drip.numerical.common.NumberUtil.IsValid (_vertexRd[vertexIndex]))
+			{
+				throw new java.lang.Exception ("LabelRdVertex Constructor => Invalid Inputs");
+			}
+		}
+	}
+
+	/**
+	 * Retrieve the Vertex R<sup>d</sup> Values
+	 * 
+	 * @return The Vertex R<sup>d</sup> Values
+	 */
+
+	public double[][] vertexRd()
+	{
+		return _vertexRd;
+	}
+
+	/**
+	 * Retrieve the Vertex R<sup>1</sup> Array for the Specified Label
+	 * 
+	 * @param label The Label
+	 * 
+	 * @return The Vertex R<sup>1</sup> Array
+	 */
+
+	public double[] vertexR1 (
+		final java.lang.String label)
+	{
+		if (null == label || !_idList.contains (label))
+		{
+			return null;
+		}
+
+		int vertexCount = _vertexRd.length;
+		double[] vertexR1 = new double[vertexCount];
+
+		int labelIndex = _idMap.get (label);
+
+		for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex)
+		{
+			vertexR1[vertexIndex] = _vertexRd[vertexIndex][labelIndex];
+		}
+
+		return vertexR1;
 	}
 }

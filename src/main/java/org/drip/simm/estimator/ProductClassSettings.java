@@ -3,7 +3,7 @@ package org.drip.simm.estimator;
 
 import java.util.List;
 
-import org.drip.measure.stochastic.LabelCorrelation;
+import org.drip.measure.identifier.LabelCorrelation;
 import org.drip.simm.common.CrossRiskClassCorrelation20;
 import org.drip.simm.common.CrossRiskClassCorrelation21;
 import org.drip.simm.parameters.RiskClassSensitivitySettings;

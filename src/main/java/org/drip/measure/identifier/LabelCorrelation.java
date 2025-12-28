@@ -1,5 +1,5 @@
 
-package org.drip.measure.stochastic;
+package org.drip.measure.identifier;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -10,6 +10,7 @@ package org.drip.measure.stochastic;
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
+ * Copyright (C) 2018 Lakshmi Krishnamurthy
  * 
  *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
  *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
@@ -77,8 +78,8 @@ package org.drip.measure.stochastic;
  */
 
 /**
- * <i>LabelCovariance</i> holds the Covariance between any Stochastic Variates identified by their Labels, as
- * well as their Means. The References are:
+ * <i>LabelCorrelation</i> holds the Correlations between any Stochastic Variates identified by their Labels.
+ * The References are:
  * 
  * <br><br>
  * 	<ul>
@@ -117,166 +118,141 @@ package org.drip.measure.stochastic;
  * @author Lakshmi Krishnamurthy
  */
 
-public class LabelCovariance extends org.drip.measure.stochastic.LabelCorrelation
+public class LabelCorrelation extends org.drip.measure.identifier.VertexLabel
 {
-	private double[] _meanArray = null;
-	private double[] _volatilityArray = null;
-	private org.drip.measure.gaussian.Covariance _covariance = null;
+	protected double[][] _matrix = null;
 
 	/**
-	 * LabelCovariance Constructor
+	 * LabelCorrelation Constructor
 	 * 
 	 * @param labelList The List of Labels
-	 * @param meanArray Array of Variate Means
-	 * @param volatilityArray Array of Variate Volatilities
-	 * @param correlationMatrix The Correlation Matrix
+	 * @param matrix The Correlation Matrix
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public LabelCovariance (
+	public LabelCorrelation (
 		final java.util.List<java.lang.String> labelList,
-		final double[] meanArray,
-		final double[] volatilityArray,
-		final double[][] correlationMatrix)
+		final double[][] matrix)
 		throws java.lang.Exception
 	{
-		super (
-			labelList,
-			correlationMatrix
-		);
+		super (labelList);
 
-		if (null == (_meanArray = meanArray) ||
-			null == (_volatilityArray = volatilityArray))
+		if (null == (_matrix = matrix))
 		{
-			throw new java.lang.Exception ("LabelCovariance Constructor => Invalid Inputs");
+			throw new java.lang.Exception ("LabelCorrelation Constructor => Invalid Inputs");
 		}
 
-		int variateCount = correlationMatrix.length;
-		double[][] covarianceMatrix = new double[variateCount][variateCount];
+		int labelCount = labelList.size();
 
-		if (variateCount != _meanArray.length ||
-			variateCount != _volatilityArray.length)
+		if (0 == labelCount || labelCount != _matrix.length)
 		{
-			throw new java.lang.Exception ("LabelCovariance Constructor => Invalid Inputs");
+			throw new java.lang.Exception ("LabelCorrelation Constructor => Invalid Inputs");
 		}
 
-		for (int variateIndexI = 0; variateIndexI < variateCount; ++variateIndexI)
+		for (int labelIndex = 0; labelIndex < labelCount; ++labelIndex)
 		{
-			if (!org.drip.numerical.common.NumberUtil.IsValid (_meanArray[variateIndexI]) ||
-				!org.drip.numerical.common.NumberUtil.IsValid (_volatilityArray[variateIndexI]) ||
-				0. > _volatilityArray[variateIndexI])
+			if (null == _matrix[labelIndex] || labelCount != _matrix[labelIndex].length ||
+				!org.drip.numerical.common.NumberUtil.IsValid (_matrix[labelIndex]))
 			{
-				throw new java.lang.Exception ("LabelCovariance Constructor => Invalid Inputs");
-			}
-
-			for (int variateIndexJ = 0; variateIndexJ < variateCount; ++variateIndexJ)
-			{
-				covarianceMatrix[variateIndexI][variateIndexJ] =
-					correlationMatrix[variateIndexI][variateIndexJ] * _volatilityArray[variateIndexI] *
-					_volatilityArray[variateIndexJ];
+				throw new java.lang.Exception ("LabelCorrelation Constructor => Invalid Inputs");
 			}
 		}
-
-		_covariance = new org.drip.measure.gaussian.Covariance (covarianceMatrix);
 	}
 
 	/**
-	 * Retrieve the Array of Variate Means
+	 * Retrieve the Cross-Label Correlation Matrix
 	 * 
-	 * @return The Array of Variate Means
+	 * @return The Cross-Label Correlation Matrix
 	 */
 
-	public double[] meanArray()
-	{
-		return _meanArray;
-	}
-
-	/**
-	 * Retrieve the Array of Variate Volatilities
-	 * 
-	 * @return The Array of Variate Volatilities
-	 */
-
-	public double[] volatilityArray()
-	{
-		return _volatilityArray;
-	}
-
-	/**
-	 * Retrieve the Correlation Matrix
-	 * 
-	 * @return The Correlation Matrix
-	 */
-
-	public double[][] correlationMatrix()
+	public double[][] matrix()
 	{
 		return _matrix;
 	}
 
 	/**
-	 * Retrieve the Covariance Matrix
+	 * Retrieve the Correlation Entry for the Pair of Labels
 	 * 
-	 * @return The Covariance Matrix
-	 */
-
-	public double[][] covarianceMatrix()
-	{
-		return _covariance.covarianceMatrix();
-	}
-
-	/**
-	 * Retrieve the Precision Matrix
+	 * @param label1 Label #1
+	 * @param label2 Label #2
 	 * 
-	 * @return The Precision Matrix
-	 */
-
-	public double[][] precisionMatrix()
-	{
-		return _covariance.precisionMatrix();
-	}
-
-	/**
-	 * Retrieve the Mean of the Latent State
-	 * 
-	 * @param label Latent State Label
-	 * 
-	 * @return Mean of the Latent State
+	 * @return The Correlation Entry
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public double mean (
-		final java.lang.String label)
+	public double entry (
+		final java.lang.String label1,
+		final java.lang.String label2)
 		throws java.lang.Exception
 	{
-		if (null == label || !_labelList.contains (label))
+		if (null == label1 || !_idList.contains (label1) ||
+			null == label2 || !_idList.contains (label2))
 		{
-			throw new java.lang.Exception ("LabelCovariance::mean => Invalid Inputs");
+			throw new java.lang.Exception ("LabelCorrelation::entry => Invalid Inputs");
 		}
 
-		return _meanArray[_labelIndexMap.get (label)];
+		return _matrix[_idMap.get (label1)][_idMap.get (label2)];
 	}
 
 	/**
-	 * Retrieve the Volatility of the Latent State
+	 * Generate the InterestRateTenorCorrelation Instance that corresponds to the Tenor sub-space
 	 * 
-	 * @param label Latent State Label
+	 * @param subTenorList The sub-Tenor List
 	 * 
-	 * @return Volatility of the Latent State
-	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @return The InterestRateTenorCorrelation Instance
 	 */
 
-	public double volatility (
-		final java.lang.String label)
-		throws java.lang.Exception
+	public LabelCorrelation subTenor (
+		final java.util.List<java.lang.String> subTenorList)
 	{
-		if (null == label || !_labelList.contains (label))
+		if (null == subTenorList)
 		{
-			throw new java.lang.Exception ("LabelCovariance::volatility => Invalid Inputs");
+			return null;
 		}
 
-		return _volatilityArray[_labelIndexMap.get (label)];
+		int subTenorSize = subTenorList.size();
+
+		if (0 == subTenorSize)
+		{
+			return null;
+		}
+
+		double[][] subTenorMatrix = new double[subTenorSize][subTenorSize];
+
+		for (int subTenorOuterIndex = 0; subTenorOuterIndex < subTenorSize; ++subTenorOuterIndex)
+		{
+			for (int subTenorInnerIndex = 0; subTenorInnerIndex < subTenorSize; ++subTenorInnerIndex)
+			{
+				try
+				{
+					subTenorMatrix[subTenorOuterIndex][subTenorInnerIndex] = entry (
+						subTenorList.get (subTenorOuterIndex),
+						subTenorList.get (subTenorInnerIndex)
+					);
+				}
+				catch (java.lang.Exception e)
+				{
+					e.printStackTrace();
+
+					return null;
+				}
+			}
+		}
+
+		try
+		{
+			return new LabelCorrelation (
+				subTenorList,
+				subTenorMatrix
+			);
+		}
+		catch (java.lang.Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
 	}
 }

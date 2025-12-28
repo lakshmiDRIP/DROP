@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.drip.analytics.support.CaseInsensitiveHashMap;
-import org.drip.measure.stochastic.LabelCorrelation;
+import org.drip.measure.identifier.LabelCorrelation;
 import org.drip.simm.credit.CRNQBucketCorrelation20;
 import org.drip.simm.credit.CRNQBucketCorrelation21;
 import org.drip.simm.credit.CRNQBucketCorrelation24;

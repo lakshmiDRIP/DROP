@@ -6,11 +6,11 @@ import java.util.List;
 import org.drip.measure.crng.RandomNumberGenerator;
 import org.drip.measure.discrete.CorrelatedPathVertexDimension;
 import org.drip.measure.discrete.VertexRd;
-import org.drip.measure.stochastic.LabelCorrelation;
-import org.drip.measure.stochastic.LabelCovariance;
-import org.drip.measure.stochastic.LabelRdVertex;
+import org.drip.measure.identifier.LabelCorrelation;
+import org.drip.measure.identifier.LabelCovariance;
+import org.drip.measure.identifier.LabelRdVertex;
 import org.drip.numerical.common.NumberUtil;
-import org.drip.validation.evidence.Sample;
+import org.drip.validation.evidence.R1Sample;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -91,8 +91,8 @@ import org.drip.validation.evidence.Sample;
  */
 
 /**
- * <i>NormalSampleCohort</i> holds the Joint Realizations from a Multivariate Normal Distribution and its
- * Reduction to a Synthetic Single Risk Factor.
+ * <i>NormalLatentStateSampleCohort</i> holds the Joint Realizations from a Multivariate Normal Distribution
+ * 	and its Reduction to a Synthetic Single Risk Factor.
  *
  *  <br><br>
  *  <ul>
@@ -131,14 +131,15 @@ import org.drip.validation.evidence.Sample;
  * @author Lakshmi Krishnamurthy
  */
 
-public class NormalSampleCohort implements SampleCohort
+public class NormalLatentStateSampleCohort
+	implements LatentStateSampleCohort
 {
 	private double _horizon = Double.NaN;
 	private LabelRdVertex _labelRdVertex = null;
-	private LabelCovariance _latentStateLabelCovariance = null;
+	private LabelCovariance _labelCovariance = null;
 
 	/**
-	 * Generate a Correlated NormalSampleCohort
+	 * Generate a Correlated <i>NormalLatentStateSampleCohort</i>
 	 * 
 	 * @param labelList Label List
 	 * @param annualMeanArray Array of Annual Means
@@ -147,10 +148,10 @@ public class NormalSampleCohort implements SampleCohort
 	 * @param vertexCount Vertex Count
 	 * @param horizon Horizon
 	 * 
-	 * @return NormalSampleCohort Instance
+	 * @return <i>NormalLatentStateSampleCohort</i> Instance
 	 */
 
-	public static final NormalSampleCohort Correlated (
+	public static final NormalLatentStateSampleCohort Correlated (
 		final List<String> labelList,
 		final double[] annualMeanArray,
 		final double[] annualVolatilityArray,
@@ -196,13 +197,13 @@ public class NormalSampleCohort implements SampleCohort
 		for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex) {
 			for (int entityIndex = 0; entityIndex < correlationMatrix.length; ++entityIndex) {
 				realization[vertexIndex][entityIndex] =
-					realization[vertexIndex][entityIndex] * annualVolatilityArray[entityIndex] * horizonSQRT +
-					annualMeanArray[entityIndex] * horizon;
+					realization[vertexIndex][entityIndex] * annualVolatilityArray[entityIndex] * horizonSQRT
+					+ annualMeanArray[entityIndex] * horizon;
 			}
 		}
 
 		try {
-			return new NormalSampleCohort (
+			return new NormalLatentStateSampleCohort (
 				new LabelRdVertex (labelList, realization),
 				new LabelCovariance (labelList, annualMeanArray, annualVolatilityArray, correlationMatrix),
 				horizon
@@ -215,25 +216,26 @@ public class NormalSampleCohort implements SampleCohort
 	}
 
 	/**
-	 * NormalSampleCohort Constructor
+	 * <i>NormalLatentStateSampleCohort</i> Constructor
 	 * 
 	 * @param labelRdVertex R<sup>d</sup> Labeled Vertex
-	 * @param latentStateLabelCovariance R<sup>d</sup> Labeled Covariance
+	 * @param labelCovariance R<sup>d</sup> Labeled Covariance
 	 * @param horizon Horizon
 	 * 
 	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
-	public NormalSampleCohort (
+	public NormalLatentStateSampleCohort (
 		final LabelRdVertex labelRdVertex,
-		final LabelCovariance latentStateLabelCovariance,
+		final LabelCovariance labelCovariance,
 		final double horizon)
 		throws Exception
 	{
 		if (null == (_labelRdVertex = labelRdVertex) ||
-			null == (_latentStateLabelCovariance = latentStateLabelCovariance) ||
-			!NumberUtil.IsValid (_horizon = horizon) || 0. >= _horizon) {
-			throw new Exception ("NormalSampleCohort Constructor => Invalid Inputs");
+			null == (_labelCovariance = labelCovariance) ||
+			!NumberUtil.IsValid (_horizon = horizon) || 0. >= _horizon)
+		{
+			throw new Exception ("NormalLatentStateSampleCohort Constructor => Invalid Inputs");
 		}
 	}
 
@@ -243,9 +245,9 @@ public class NormalSampleCohort implements SampleCohort
 	 * @return The Latent State Label Covariance
 	 */
 
-	public LabelCorrelation latentStateLabelCovariance()
+	public LabelCorrelation labelCovariance()
 	{
-		return _latentStateLabelCovariance;
+		return _labelCovariance;
 	}
 
 	/**
@@ -259,9 +261,9 @@ public class NormalSampleCohort implements SampleCohort
 		return _horizon;
 	}
 
-	@Override public List<String> latentStateLabelList()
+	@Override public List<String> labelList()
 	{
-		return _latentStateLabelCovariance.labelList();
+		return _labelCovariance.idList();
 	}
 
 	@Override public LabelRdVertex vertexRd()
@@ -269,7 +271,7 @@ public class NormalSampleCohort implements SampleCohort
 		return _labelRdVertex;
 	}
 
-	@Override public Sample reduce (
+	@Override public R1Sample reduce (
 		final String label1,
 		final String label2)
 	{
@@ -282,15 +284,15 @@ public class NormalSampleCohort implements SampleCohort
 		double annualVolatility2 = Double.NaN;
 
 		try {
-			correlation = _latentStateLabelCovariance.entry (label1, label2);
+			annualMean1 = _labelCovariance.mean (label1);
 
-			annualMean1 = _latentStateLabelCovariance.mean (label1);
+			annualMean2 = _labelCovariance.mean (label2);
 
-			annualMean2 = _latentStateLabelCovariance.mean (label2);
+			correlation = _labelCovariance.entry (label1, label2);
 
-			annualPrecision1 = (1. / (annualVolatility1 = _latentStateLabelCovariance.volatility (label1)));
+			annualPrecision1 = (1. / (annualVolatility1 = _labelCovariance.volatility (label1)));
 
-			annualPrecision2 = (1. / (annualVolatility2 = _latentStateLabelCovariance.volatility (label2)));
+			annualPrecision2 = (1. / (annualVolatility2 = _labelCovariance.volatility (label2)));
 		} catch (Exception e) {
 			e.printStackTrace();
 
@@ -319,7 +321,7 @@ public class NormalSampleCohort implements SampleCohort
 		}
 
 		try {
-			return new Sample (cohortRealization);
+			return new R1Sample (cohortRealization);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

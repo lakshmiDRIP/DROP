@@ -1,7 +1,7 @@
 
 package org.drip.simm.estimator;
 
-import org.drip.measure.stochastic.LabelCorrelation;
+import org.drip.measure.identifier.LabelCorrelation;
 import org.drip.simm.common.Chargram;
 import org.drip.simm.margin.RiskClassAggregate;
 import org.drip.simm.margin.RiskClassAggregateCR;

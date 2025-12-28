@@ -175,7 +175,7 @@ public class ConjugateParameterPrior
 	 */
 
 	public boolean bayesUpdate (
-		final org.drip.validation.evidence.Sample sample)
+		final org.drip.validation.evidence.R1Sample sample)
 	{
 		if (null == sample)
 		{

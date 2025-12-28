@@ -82,7 +82,7 @@ import org.drip.numerical.common.NumberUtil;
  */
 
 /**
- * <i>TTestOutcome</i> holds the Results of a Statistic Hypothesis t-Test.
+ * <i>R1TTestOutcome</i> holds the Results of a Statistic Hypothesis t-Test on an R<sup>1</sup> Ensemble.
  *
  *  <br><br>
  *  <ul>
@@ -118,7 +118,7 @@ import org.drip.numerical.common.NumberUtil;
  * @author Lakshmi Krishnamurthy
  */
 
-public class TTestOutcome
+public class R1TTestOutcome
 {
 	private double _ensembleMean = Double.NaN;
 	private double _testStatistic = Double.NaN;
@@ -132,7 +132,7 @@ public class TTestOutcome
 	private double _ensemblePredictiveConfidenceInterval = Double.NaN;
 
 	/**
-	 * TTestOutcome Constructor
+	 * <i>R1TTestOutcome</i> Constructor
 	 * 
 	 * @param testStatistic Sample Test Statistic
 	 * @param sampleCount Number of Samples in the Ensemble
@@ -148,7 +148,7 @@ public class TTestOutcome
 	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
-	public TTestOutcome (
+	public R1TTestOutcome (
 		final double testStatistic,
 		final int sampleCount,
 		final double ensembleMean,
@@ -159,7 +159,7 @@ public class TTestOutcome
 		final double ensemblePredictiveConfidenceInterval,
 		final double ensembleTStatistics,
 		final double ensembleStandardErrorOffset)
-		throws java.lang.Exception
+		throws Exception
 	{
 		if (!NumberUtil.IsValid (_testStatistic = testStatistic) || 0 >= (_sampleCount = sampleCount) ||
 			!NumberUtil.IsValid (_ensembleMean = ensembleMean) ||
@@ -170,8 +170,9 @@ public class TTestOutcome
 			!NumberUtil.IsValid (_ensemblePredictiveConfidenceInterval =
 				ensemblePredictiveConfidenceInterval) ||
 			!NumberUtil.IsValid (_ensembleTStatistics = ensembleTStatistics) ||
-			!NumberUtil.IsValid (_ensembleStandardErrorOffset = ensembleStandardErrorOffset)) {
-			throw new Exception ("TTestOutcome Constructor => Invalid Inputs");
+			!NumberUtil.IsValid (_ensembleStandardErrorOffset = ensembleStandardErrorOffset))
+		{
+			throw new Exception ("R1TTestOutcome Constructor => Invalid Inputs");
 		}
 	}
 

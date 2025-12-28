@@ -1,16 +1,27 @@
 
-package org.drip.measure.stochastic;
+package org.drip.measure.identifier;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2030 Lakshmi Krishnamurthy
+ * Copyright (C) 2029 Lakshmi Krishnamurthy
+ * Copyright (C) 2028 Lakshmi Krishnamurthy
+ * Copyright (C) 2027 Lakshmi Krishnamurthy
+ * Copyright (C) 2026 Lakshmi Krishnamurthy
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
- * Copyright (C) 2018 Lakshmi Krishnamurthy
  * 
  *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
  *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
@@ -78,8 +89,8 @@ package org.drip.measure.stochastic;
  */
 
 /**
- * <i>LabelCorrelation</i> holds the Correlations between any Stochastic Variates identified by their Labels.
- * The References are:
+ * <i>VertexLabel</i> is the Base Class that holds the Labeled Latent State Vertex Content. The References
+ * 	are:
  * 
  * <br><br>
  * 	<ul>
@@ -107,152 +118,65 @@ package org.drip.measure.stochastic;
  * 		</li>
  * 	</ul>
  *
- *	<br><br>
+ * 	It provides the following Functionality:
+ *
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md">Numerical Analysis Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/README.md">R<sup>d</sup> Continuous/Discrete Probability Measures</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/stochastic/README.md">R<sup>1</sup> R<sup>1</sup> To R<sup>1</sup> Process</a></li>
+ * 		<li>Transform the Input R<sup>1</sup> Exponential Distribution to Pareto</li>
  *  </ul>
+ *
+ *	<br>
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md">Numerical Analysis Library</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/README.md">R<sup>d</sup> Continuous/Discrete Probability Measures</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/identifier/README.md">Labels for Latent State Identifiers</a></td></tr>
+ *  </table>
+ *	<br>
  * 
  * @author Lakshmi Krishnamurthy
  */
 
-public class LabelCorrelation extends org.drip.measure.stochastic.LabelBase
+public class VertexLabel
 {
-	protected double[][] _matrix = null;
+	protected List<String> _idList = null;
+
+	protected Map<String, Integer> _idMap = new HashMap<String, Integer>();
 
 	/**
-	 * LabelCorrelation Constructor
+	 * <i>VertexLabel</i> Constructor
 	 * 
-	 * @param labelList The List of Labels
-	 * @param matrix The Correlation Matrix
+	 * @param idList The List of Labels
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
-	public LabelCorrelation (
-		final java.util.List<java.lang.String> labelList,
-		final double[][] matrix)
-		throws java.lang.Exception
+	public VertexLabel (
+		final List<String> idList)
+		throws Exception
 	{
-		super (labelList);
-
-		if (null == (_matrix = matrix))
-		{
-			throw new java.lang.Exception ("LabelCorrelation Constructor => Invalid Inputs");
+		if (null == (_idList = idList)) {
+			throw new Exception ("VertexLabel Constructor => Invalid Inputs");
 		}
 
-		int labelCount = labelList.size();
+		int labelCount = _idList.size();
 
-		if (0 == labelCount || labelCount != _matrix.length)
-		{
-			throw new java.lang.Exception ("LabelCorrelation Constructor => Invalid Inputs");
+		if (0 == labelCount) {
+			throw new Exception ("VertexLabel Constructor => Invalid Inputs");
 		}
 
-		for (int labelIndex = 0; labelIndex < labelCount; ++labelIndex)
-		{
-			if (null == _matrix[labelIndex] || labelCount != _matrix[labelIndex].length ||
-				!org.drip.numerical.common.NumberUtil.IsValid (_matrix[labelIndex]))
-			{
-				throw new java.lang.Exception ("LabelCorrelation Constructor => Invalid Inputs");
-			}
+		for (int labelIndex = 0; labelIndex < labelCount; ++labelIndex) {
+			_idMap.put (_idList.get (labelIndex), labelIndex);
 		}
 	}
 
 	/**
-	 * Retrieve the Cross-Label Correlation Matrix
+	 * Retrieve the Label List
 	 * 
-	 * @return The Cross-Label Correlation Matrix
+	 * @return The Label List
 	 */
 
-	public double[][] matrix()
+	public List<String> idList()
 	{
-		return _matrix;
-	}
-
-	/**
-	 * Retrieve the Correlation Entry for the Pair of Labels
-	 * 
-	 * @param label1 Label #1
-	 * @param label2 Label #2
-	 * 
-	 * @return The Correlation Entry
-	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
-	 */
-
-	public double entry (
-		final java.lang.String label1,
-		final java.lang.String label2)
-		throws java.lang.Exception
-	{
-		if (null == label1 || !_labelList.contains (label1) ||
-			null == label2 || !_labelList.contains (label2))
-		{
-			throw new java.lang.Exception ("LabelCorrelation::entry => Invalid Inputs");
-		}
-
-		return _matrix[_labelIndexMap.get (label1)][_labelIndexMap.get (label2)];
-	}
-
-	/**
-	 * Generate the InterestRateTenorCorrelation Instance that corresponds to the Tenor sub-space
-	 * 
-	 * @param subTenorList The sub-Tenor List
-	 * 
-	 * @return The InterestRateTenorCorrelation Instance
-	 */
-
-	public LabelCorrelation subTenor (
-		final java.util.List<java.lang.String> subTenorList)
-	{
-		if (null == subTenorList)
-		{
-			return null;
-		}
-
-		int subTenorSize = subTenorList.size();
-
-		if (0 == subTenorSize)
-		{
-			return null;
-		}
-
-		double[][] subTenorMatrix = new double[subTenorSize][subTenorSize];
-
-		for (int subTenorOuterIndex = 0; subTenorOuterIndex < subTenorSize; ++subTenorOuterIndex)
-		{
-			for (int subTenorInnerIndex = 0; subTenorInnerIndex < subTenorSize; ++subTenorInnerIndex)
-			{
-				try
-				{
-					subTenorMatrix[subTenorOuterIndex][subTenorInnerIndex] = entry (
-						subTenorList.get (subTenorOuterIndex),
-						subTenorList.get (subTenorInnerIndex)
-					);
-				}
-				catch (java.lang.Exception e)
-				{
-					e.printStackTrace();
-
-					return null;
-				}
-			}
-		}
-
-		try
-		{
-			return new LabelCorrelation (
-				subTenorList,
-				subTenorMatrix
-			);
-		}
-		catch (java.lang.Exception e)
-		{
-			e.printStackTrace();
-		}
-
-		return null;
+		return _idList;
 	}
 }

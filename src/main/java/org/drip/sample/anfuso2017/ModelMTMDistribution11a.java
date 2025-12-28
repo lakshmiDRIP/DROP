@@ -4,7 +4,7 @@ package org.drip.sample.anfuso2017;
 import org.drip.measure.gaussian.R1UnivariateNormal;
 import org.drip.service.common.FormatUtil;
 import org.drip.service.env.EnvManager;
-import org.drip.validation.evidence.Sample;
+import org.drip.validation.evidence.R1Sample;
 import org.drip.validation.hypothesis.R1ProbabilityIntegralTransform;
 
 /*
@@ -136,7 +136,7 @@ public class ModelMTMDistribution11a
 		).random();
 	}
 
-	private static final Sample GenerateSample (
+	private static final R1Sample GenerateSample (
 		final double mean,
 		final double sigma,
 		final int drawCount)
@@ -152,7 +152,7 @@ public class ModelMTMDistribution11a
 			);
 		}
 
-		return new Sample (univariateRandomArray);
+		return new R1Sample (univariateRandomArray);
 	}
 
 	private static final void ProbabilityPlot (
@@ -213,19 +213,19 @@ public class ModelMTMDistribution11a
 		double xRight = 7.00;
 		double xWidth = 0.50;
 
-		Sample sampleVolatilityTooHigh = GenerateSample (
+		R1Sample sampleVolatilityTooHigh = GenerateSample (
 			mean,
 			volatilityTooHigh,
 			drawCount
 		);
 
-		Sample sampleVolatilityCorrect = GenerateSample (
+		R1Sample sampleVolatilityCorrect = GenerateSample (
 			mean,
 			volatilityCorrect,
 			drawCount
 		);
 
-		Sample sampleVolatilityTooLow = GenerateSample (
+		R1Sample sampleVolatilityTooLow = GenerateSample (
 			mean,
 			volatilityTooLow,
 			drawCount

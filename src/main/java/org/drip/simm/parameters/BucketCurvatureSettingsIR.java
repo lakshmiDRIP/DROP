@@ -589,7 +589,7 @@ public class BucketCurvatureSettingsIR
 		final Map<String, Double> libor12MTenorVegaRiskWeight,
 		final Map<String, Double> primeTenorVegaRiskWeight,
 		final Map<String, Double> municipalTenorVegaRiskWeight,
-		final org.drip.measure.stochastic.LabelCorrelation crossTenorCorrelation,
+		final org.drip.measure.identifier.LabelCorrelation crossTenorCorrelation,
 		final double crossCurveCorrelation,
 		final double concentrationThreshold,
 		final double vegaScaler,

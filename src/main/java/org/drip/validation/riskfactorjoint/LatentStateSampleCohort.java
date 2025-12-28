@@ -1,7 +1,10 @@
 
-package org.drip.validation.evidence;
+package org.drip.validation.riskfactorjoint;
 
-import org.drip.validation.hypothesis.R1ProbabilityIntegralTransform;
+import java.util.List;
+
+import org.drip.measure.identifier.LabelRdVertex;
+import org.drip.validation.evidence.R1Sample;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -82,27 +85,27 @@ import org.drip.validation.hypothesis.R1ProbabilityIntegralTransform;
  */
 
 /**
- * <i>NativePITGenerator</i> exposes Functionality to Generate Native Probability Integral Transforms on
- * their Realizations.
+ * <i>LatentStateSampleCohort</i> exposes the Multiple Risk Factor Sample Realizations and its Reduction to a
+ *  Synthetic Single Risk Factor.
  *
  *  <br><br>
  *  <ul>
  *  	<li>
- *  		Bhattacharya, B., and D. Habtzghi (2002): Median of the p-value under the Alternate Hypothesis
- *  			<i>American Statistician</i> <b>56 (3)</b> 202-206
+ *  		Anfuso, F., D. Karyampas, and A. Nawroth (2017): A Sound Basel III Compliant Framework for
+ *  			Back-testing Credit Exposure Models
+ *  			https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2264620 <b>eSSRN</b>
  *  	</li>
  *  	<li>
- *  		Head, M. L., L. Holman, R, Lanfear, A. T. Kahn, and M. D. Jennions (2015): The Extent and
- *  			<i>Consequences of p-Hacking in Science PLoS Biology</i> <b>13 (3)</b> e1002106
+ *  		Diebold, F. X., T. A. Gunther, and A. S. Tay (1998): Evaluating Density Forecasts with
+ *  			Applications to Financial Risk Management, International Economic Review 39 (4) 863-883
  *  	</li>
  *  	<li>
- *  		Wasserstein, R. L., and N. A. Lazar (2016): The ASA’s Statement on p-values: Context, Process,
- *  			and Purpose <i>American Statistician</i> <b>70 (2)</b> 129-133
+ *  		Kenyon, C., and R. Stamm (2012): Discounting, LIBOR, CVA, and Funding: Interest Rate and Credit
+ *  			Pricing, Palgrave Macmillan
  *  	</li>
  *  	<li>
- *  		Wetzels, R., D. Matzke, M. D. Lee, J. N. Rouder, G, J, Iverson, and E. J. Wagenmakers (2011):
- *  			Statistical Evidence in Experimental Psychology: An Empirical Comparison using 855 t-Tests
- *  			<i>Perspectives in Psychological Science</i> <b>6 (3)</b> 291-298
+ *  		Wikipedia (2018): Probability Integral Transform
+ *  			https://en.wikipedia.org/wiki/Probability_integral_transform
  *  	</li>
  *  	<li>
  *  		Wikipedia (2019): p-value https://en.wikipedia.org/wiki/P-value
@@ -114,21 +117,43 @@ import org.drip.validation.hypothesis.R1ProbabilityIntegralTransform;
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ModelValidationAnalyticsLibrary.md">Model Validation Analytics Library</a></li>
  *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/validation/README.md">Risk Factor and Hypothesis Validation, Evidence Processing, and Model Testing</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/validation/evidence/README.md">Sample and Ensemble Evidence Processors</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/validation/riskfactorjoint/README.md">Joint Risk Factor Aggregate Tests</a></li>
  *  </ul>
  * <br><br>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public interface NativePITGenerator
+public interface LatentStateSampleCohort
 {
 
 	/**
-	 * Generate the PIT over the Sample Instance Realizations
+	 * Retrieve the List of Latent State Labels
 	 * 
-	 * @return PIT over the Sample Instance Realizations
+	 * @return The List of Latent State Labels
 	 */
 
-	public abstract R1ProbabilityIntegralTransform nativeProbabilityIntegralTransform();
+	public abstract List<String> labelList();
+
+	/**
+	 * Retrieve the Vertex R<sup>d</sup> Multi-Factor Realizations
+	 * 
+	 * @return The Vertex R<sup>d</sup> Multi-Factor Realizations
+	 */
+
+	public abstract LabelRdVertex vertexRd();
+
+	/**
+	 * Reduce the Joint Realizations for the Pair of State Labels to a Single Risk Factor Sample
+	 * 
+	 * @param label1 Latent State Label 1
+	 * @param label2 Latent State Label 2
+	 * 
+	 * @return The Single Risk Factor Sample
+	 */
+
+	public abstract R1Sample reduce (
+		final String label1,
+		final String label2
+	);
 }

@@ -1,5 +1,5 @@
 
-package org.drip.validation.evidence;
+package org.drip.validation.hypothesis;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -80,27 +80,25 @@ package org.drip.validation.evidence;
  */
 
 /**
- * <i>TestStatisticEvaluator</i> exposes the Function that must be applied on a Set to evaluate the Test
- * Statistic.
+ * <i>R1StatisticalTestOutcome</i> contains the Results of the Significant Test and R<sup>1</sup> t-Test of
+ * 	the given Statistical Hypothesis.
  *
  *  <br><br>
  *  <ul>
  *  	<li>
  *  		Bhattacharya, B., and D. Habtzghi (2002): Median of the p-value under the Alternate Hypothesis
- *  			<i>American Statistician</i> <b>56 (3)</b> 202-206
+ *  			American Statistician 56 (3) 202-206
  *  	</li>
  *  	<li>
  *  		Head, M. L., L. Holman, R, Lanfear, A. T. Kahn, and M. D. Jennions (2015): The Extent and
- *  			<i>Consequences of p-Hacking in Science PLoS Biology</i> <b>13 (3)</b> e1002106
+ *  			Consequences of p-Hacking in Science PLoS Biology 13 (3) e1002106
  *  	</li>
  *  	<li>
  *  		Wasserstein, R. L., and N. A. Lazar (2016): The ASA’s Statement on p-values: Context, Process,
- *  			and Purpose <i>American Statistician</i> <b>70 (2)</b> 129-133
+ *  			and Purpose American Statistician 70 (2) 129-133
  *  	</li>
  *  	<li>
- *  		Wetzels, R., D. Matzke, M. D. Lee, J. N. Rouder, G, J, Iverson, and E. J. Wagenmakers (2011):
- *  			Statistical Evidence in Experimental Psychology: An Empirical Comparison using 855 t-Tests
- *  			<i>Perspectives in Psychological Science</i> <b>6 (3)</b> 291-298
+ *  		Wikipedia (2018): t-statistic https://en.wikipedia.org/wiki/T-statistic
  *  	</li>
  *  	<li>
  *  		Wikipedia (2019): p-value https://en.wikipedia.org/wiki/P-value
@@ -112,27 +110,58 @@ package org.drip.validation.evidence;
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ModelValidationAnalyticsLibrary.md">Model Validation Analytics Library</a></li>
  *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/validation/README.md">Risk Factor and Hypothesis Validation, Evidence Processing, and Model Testing</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/validation/evidence/README.md">Sample and Ensemble Evidence Processors</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/validation/hypothesis/README.md">Statistical Hypothesis Validation Test Suite</a></li>
  *  </ul>
  * <br><br>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public interface TestStatisticEvaluator
+public class R1StatisticalTestOutcome
 {
+	private R1TTestOutcome _r1TTestOutcome = null;
+	private SignificanceTestOutcome _significanceTestOutcome = null;
 
 	/**
-	 * Evaluate the Test Statistic for the sample Array
+	 * <i>R1StatisticalTestOutcome</i> Constructor
 	 * 
-	 * @param sampleArray The Sample Array
-	 * 
-	 * @return The Test Statistic
+	 * @param significanceTestOutcome The Significance Test Outcome
+	 * @param r1TTestOutcome The R<sup>1</sup> t-Test Outcome
 	 * 
 	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
-	public abstract double evaluate (
-		final double[] sampleArray)
-		throws Exception;
+	public R1StatisticalTestOutcome (
+		final SignificanceTestOutcome significanceTestOutcome,
+		final R1TTestOutcome r1TTestOutcome)
+		throws Exception
+	{
+		if (null == (_significanceTestOutcome = significanceTestOutcome) ||
+			null == (_r1TTestOutcome = r1TTestOutcome))
+		{
+			throw new Exception ("R1StatisticalTestOutcome Constructor => Invalid Inputs");
+		}
+	}
+
+	/**
+	 * Retrieve the t-Test Outcome
+	 * 
+	 * @return The t-Test Outcome
+	 */
+
+	public R1TTestOutcome tTest()
+	{
+		return _r1TTestOutcome;
+	}
+
+	/**
+	 * Retrieve the Significance Test Outcome
+	 * 
+	 * @return The Significance Test Outcome
+	 */
+
+	public SignificanceTestOutcome significanceTest()
+	{
+		return _significanceTestOutcome;
+	}
 }

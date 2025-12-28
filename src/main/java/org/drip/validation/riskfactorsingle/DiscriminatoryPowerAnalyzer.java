@@ -7,8 +7,8 @@ import org.drip.validation.distance.GapTestOutcome;
 import org.drip.validation.distance.GapTestSetting;
 import org.drip.validation.distance.HypothesisOutcomeSuite;
 import org.drip.validation.distance.HypothesisSuite;
-import org.drip.validation.evidence.Ensemble;
-import org.drip.validation.evidence.Sample;
+import org.drip.validation.evidence.R1Ensemble;
+import org.drip.validation.evidence.R1Sample;
 import org.drip.validation.hypothesis.R1ProbabilityIntegralTransform;
 import org.drip.validation.hypothesis.R1PITTester;
 
@@ -146,7 +146,7 @@ public class DiscriminatoryPowerAnalyzer
 	 */
 
 	public static final DiscriminatoryPowerAnalyzer FromSample (
-		final Sample sample,
+		final R1Sample sample,
 		final GapTestSetting gapTestSetting)
 	{
 		try {
@@ -212,7 +212,7 @@ public class DiscriminatoryPowerAnalyzer
 	 */
 
 	public GapTestOutcome gapTest (
-		final Ensemble hypothesis)
+		final R1Ensemble hypothesis)
 	{
 		try {
 			return null == hypothesis ? null : new R1PITTester (
@@ -240,7 +240,7 @@ public class DiscriminatoryPowerAnalyzer
 			return null;
 		}
 
-		Map<String, Ensemble> hypothesisMap = hypothesisSuite.hypothesisMap();
+		Map<String, R1Ensemble> hypothesisMap = hypothesisSuite.hypothesisMap();
 
 		if (0 == hypothesisMap.size()) {
 			return null;
@@ -248,7 +248,7 @@ public class DiscriminatoryPowerAnalyzer
 
 		HypothesisOutcomeSuite hypothesisOutcomeSuite = new HypothesisOutcomeSuite();
 
-		for (Map.Entry<String, Ensemble> hypothesisMapEntry : hypothesisMap.entrySet()) {
+		for (Map.Entry<String, R1Ensemble> hypothesisMapEntry : hypothesisMap.entrySet()) {
 			GapTestOutcome gapTestOutcome = gapTest (hypothesisMapEntry.getValue());
 
 			if (null == gapTestOutcome) {

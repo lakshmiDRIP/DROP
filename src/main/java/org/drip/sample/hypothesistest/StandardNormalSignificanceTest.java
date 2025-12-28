@@ -5,9 +5,9 @@ import org.drip.measure.gaussian.R1UnivariateNormal;
 import org.drip.service.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 import org.drip.validation.hypothesis.SignificanceTestSetting;
-import org.drip.validation.evidence.Ensemble;
-import org.drip.validation.evidence.Sample;
-import org.drip.validation.evidence.TestStatisticEvaluator;
+import org.drip.validation.evidence.R1Ensemble;
+import org.drip.validation.evidence.R1Sample;
+import org.drip.validation.evidence.R1TestStatisticEvaluator;
 import org.drip.validation.hypothesis.SignificanceTestOutcome;
 import org.drip.validation.hypothesis.R1PITTester;
 
@@ -134,7 +134,7 @@ public class StandardNormalSignificanceTest
 		return R1UnivariateNormal.Standard().random();
 	}
 
-	private static final Sample GenerateSample (
+	private static final R1Sample GenerateSample (
 		final int drawCount)
 		throws Exception
 	{
@@ -145,15 +145,15 @@ public class StandardNormalSignificanceTest
 			univariateRandomArray[drawIndex] = UnivariateRandom();
 		}
 
-		return new Sample (univariateRandomArray);
+		return new R1Sample (univariateRandomArray);
 	}
 
-	private static final Sample[] GenerateSampleArray (
+	private static final R1Sample[] GenerateSampleArray (
 		final int drawCount,
 		final int sampleCount)
 		throws Exception
 	{
-		Sample[] sampleArray = new Sample[sampleCount];
+		R1Sample[] sampleArray = new R1Sample[sampleCount];
 
 		for (int sampleIndex = 0; sampleIndex < sampleCount; ++sampleIndex)
 		{
@@ -163,12 +163,12 @@ public class StandardNormalSignificanceTest
 		return sampleArray;
 	}
 
-	private static final TestStatisticEvaluator[] MakeTestStatisticEvaluatorArray()
+	private static final R1TestStatisticEvaluator[] MakeTestStatisticEvaluatorArray()
 		throws Exception
 	{
-		return new TestStatisticEvaluator[]
+		return new R1TestStatisticEvaluator[]
 		{
-			new TestStatisticEvaluator()
+			new R1TestStatisticEvaluator()
 			{
 				public double evaluate (
 					final double[] drawArray)
@@ -191,11 +191,11 @@ public class StandardNormalSignificanceTest
 	private static final void SignificanceTest (
 		final R1PITTester test,
 		final int drawCount,
-		final TestStatisticEvaluator testStatisticEvaluator,
+		final R1TestStatisticEvaluator testStatisticEvaluator,
 		final SignificanceTestSetting pTestSetting)
 		throws Exception
 	{
-		Sample testSample = GenerateSample (drawCount);
+		R1Sample testSample = GenerateSample (drawCount);
 
 		SignificanceTestOutcome significanceTest = test.significanceTest (
 			testSample.applyTestStatistic (testStatisticEvaluator),
@@ -228,9 +228,9 @@ public class StandardNormalSignificanceTest
 		int sampleCount = 100;
 		int significanceTestCount = 20;
 
-		TestStatisticEvaluator[] testStatisticEvaluatorArray = MakeTestStatisticEvaluatorArray();
+		R1TestStatisticEvaluator[] testStatisticEvaluatorArray = MakeTestStatisticEvaluatorArray();
 
-		Ensemble ensemble = new Ensemble (
+		R1Ensemble ensemble = new R1Ensemble (
 			GenerateSampleArray (
 				drawCount,
 				sampleCount

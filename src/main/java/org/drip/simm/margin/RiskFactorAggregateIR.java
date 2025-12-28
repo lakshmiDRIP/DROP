@@ -3,7 +3,7 @@ package org.drip.simm.margin;
 
 import java.util.Map;
 
-import org.drip.measure.stochastic.LabelCorrelation;
+import org.drip.measure.identifier.LabelCorrelation;
 import org.drip.numerical.common.NumberUtil;
 import org.drip.simm.parameters.BucketSensitivitySettingsIR;
 

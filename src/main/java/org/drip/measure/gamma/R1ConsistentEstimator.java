@@ -132,7 +132,7 @@ public class R1ConsistentEstimator
 		try
 		{
 			return new R1ConsistentEstimator (
-				new org.drip.validation.evidence.Sample (
+				new org.drip.validation.evidence.R1Sample (
 					realizationArray
 				)
 			);
@@ -154,7 +154,7 @@ public class R1ConsistentEstimator
 	 */
 
 	public R1ConsistentEstimator (
-		final org.drip.validation.evidence.Sample sample)
+		final org.drip.validation.evidence.R1Sample sample)
 		throws java.lang.Exception
 	{
 		super (

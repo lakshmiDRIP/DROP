@@ -7,9 +7,9 @@ import org.drip.service.env.EnvManager;
 import org.drip.validation.distance.GapLossWeightFunction;
 import org.drip.validation.distance.GapTestOutcome;
 import org.drip.validation.distance.GapTestSetting;
-import org.drip.validation.evidence.Ensemble;
-import org.drip.validation.evidence.Sample;
-import org.drip.validation.evidence.TestStatisticEvaluator;
+import org.drip.validation.evidence.R1Ensemble;
+import org.drip.validation.evidence.R1Sample;
+import org.drip.validation.evidence.R1TestStatisticEvaluator;
 import org.drip.validation.hypothesis.HistogramTestOutcome;
 import org.drip.validation.hypothesis.HistogramTestSetting;
 import org.drip.validation.hypothesis.R1PITTester;
@@ -145,7 +145,7 @@ public class MTMVolatilityComparison11b
 		).random();
 	}
 
-	private static final Sample GenerateSample (
+	private static final R1Sample GenerateSample (
 		final double mean,
 		final double sigma,
 		final int drawCount)
@@ -161,17 +161,17 @@ public class MTMVolatilityComparison11b
 			);
 		}
 
-		return new Sample (univariateRandomArray);
+		return new R1Sample (univariateRandomArray);
 	}
 
-	private static final Sample[] GenerateSampleArray (
+	private static final R1Sample[] GenerateSampleArray (
 		final double mean,
 		final double sigma,
 		final int drawCount,
 		final int sampleCount)
 		throws Exception
 	{
-		Sample[] sampleArray = new Sample[sampleCount];
+		R1Sample[] sampleArray = new R1Sample[sampleCount];
 
 		for (int sampleIndex = 0; sampleIndex < sampleCount; ++sampleIndex)
 		{
@@ -185,23 +185,23 @@ public class MTMVolatilityComparison11b
 		return sampleArray;
 	}
 
-	private static final Ensemble GenerateEnsemble (
+	private static final R1Ensemble GenerateEnsemble (
 		final double mean,
 		final double sigma,
 		final int drawCount,
 		final int sampleCount)
 		throws Exception
 	{
-		return new Ensemble (
+		return new R1Ensemble (
 			GenerateSampleArray (
 				mean,
 				sigma,
 				drawCount,
 				sampleCount
 			),
-			new TestStatisticEvaluator[]
+			new R1TestStatisticEvaluator[]
 			{
-				new TestStatisticEvaluator()
+				new R1TestStatisticEvaluator()
 				{
 					public double evaluate (
 						final double[] drawArray)
@@ -271,7 +271,7 @@ public class MTMVolatilityComparison11b
 		double hypothesis1Volatility = 1.;
 		double hypothesis2Volatility = 3.;
 
-		Sample sample = GenerateSample (
+		R1Sample sample = GenerateSample (
 			mean,
 			sampleVolatility,
 			drawCount

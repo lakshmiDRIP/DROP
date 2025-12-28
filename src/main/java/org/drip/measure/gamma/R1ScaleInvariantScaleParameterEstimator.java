@@ -116,7 +116,7 @@ package org.drip.measure.gamma;
 
 public class R1ScaleInvariantScaleParameterEstimator
 {
-	private org.drip.validation.evidence.Sample _sample = null;
+	private org.drip.validation.evidence.R1Sample _sample = null;
 
 	/**
 	 * Construct and Instance of R1ScaleInvariantScaleParameterEstimator from the Array of Realizations
@@ -132,7 +132,7 @@ public class R1ScaleInvariantScaleParameterEstimator
 		try
 		{
 			return new R1ScaleInvariantScaleParameterEstimator (
-				new org.drip.validation.evidence.Sample (
+				new org.drip.validation.evidence.R1Sample (
 					realizationArray
 				)
 			);
@@ -154,7 +154,7 @@ public class R1ScaleInvariantScaleParameterEstimator
 	 */
 
 	public R1ScaleInvariantScaleParameterEstimator (
-		final org.drip.validation.evidence.Sample sample)
+		final org.drip.validation.evidence.R1Sample sample)
 		throws java.lang.Exception
 	{
 		if (null == (_sample = sample))
@@ -171,7 +171,7 @@ public class R1ScaleInvariantScaleParameterEstimator
 	 * @return Samples used for the ML Estimate
 	 */
 
-	public org.drip.validation.evidence.Sample sample()
+	public org.drip.validation.evidence.R1Sample sample()
 	{
 		return _sample;
 	}

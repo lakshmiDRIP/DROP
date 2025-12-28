@@ -116,10 +116,10 @@ package org.drip.measure.gamma;
 
 public abstract class R1ParameterEstimator
 {
-	private org.drip.validation.evidence.Sample _sample = null;
+	private org.drip.validation.evidence.R1Sample _sample = null;
 
 	protected R1ParameterEstimator (
-		final org.drip.validation.evidence.Sample sample)
+		final org.drip.validation.evidence.R1Sample sample)
 		throws java.lang.Exception
 	{
 		if (null == (_sample = sample))
@@ -136,7 +136,7 @@ public abstract class R1ParameterEstimator
 	 * @return Samples used for the ML Estimate
 	 */
 
-	public org.drip.validation.evidence.Sample sample()
+	public org.drip.validation.evidence.R1Sample sample()
 	{
 		return _sample;
 	}

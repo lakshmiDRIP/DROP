@@ -113,7 +113,7 @@ package org.drip.dynamics.lmm;
 
 public class ContinuouslyCompoundedForwardProcess {
 	private int _iSpotDate = java.lang.Integer.MIN_VALUE;
-	private org.drip.measure.stochastic.R1R1ToR1 _funcR1R1ToR1 = null;
+	private org.drip.measure.identifier.R1R1ToR1 _funcR1R1ToR1 = null;
 
 	/**
 	 * ContinuouslyCompoundedForwardProcess Constructor
@@ -126,7 +126,7 @@ public class ContinuouslyCompoundedForwardProcess {
 
 	public ContinuouslyCompoundedForwardProcess (
 		final int iSpotDate,
-		final org.drip.measure.stochastic.R1R1ToR1 funcR1R1ToR1)
+		final org.drip.measure.identifier.R1R1ToR1 funcR1R1ToR1)
 		throws java.lang.Exception
 	{
 		if (null == (_funcR1R1ToR1 = funcR1R1ToR1))
@@ -152,7 +152,7 @@ public class ContinuouslyCompoundedForwardProcess {
 	 * @return The Stochastic Forward Rate Function
 	 */
 
-	public org.drip.measure.stochastic.R1R1ToR1 stochasticForwardRateFunction()
+	public org.drip.measure.identifier.R1R1ToR1 stochasticForwardRateFunction()
 	{
 		return _funcR1R1ToR1;
 	}

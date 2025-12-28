@@ -4,9 +4,9 @@ package org.drip.sample.quantile;
 import org.drip.measure.gaussian.R1UnivariateNormal;
 import org.drip.service.common.FormatUtil;
 import org.drip.service.env.EnvManager;
-import org.drip.validation.evidence.Ensemble;
-import org.drip.validation.evidence.Sample;
-import org.drip.validation.evidence.TestStatisticEvaluator;
+import org.drip.validation.evidence.R1Ensemble;
+import org.drip.validation.evidence.R1Sample;
+import org.drip.validation.evidence.R1TestStatisticEvaluator;
 import org.drip.validation.hypothesis.R1PITTester;
 import org.drip.validation.quantile.PlottingPositionGeneratorHeuristic;
 import org.drip.validation.quantile.R1QQTestOutcome;
@@ -139,7 +139,7 @@ public class QQTest5
 		).random();
 	}
 
-	private static final Sample GenerateSample (
+	private static final R1Sample GenerateSample (
 		final double mean,
 		final double sigma,
 		final int drawCount)
@@ -155,17 +155,17 @@ public class QQTest5
 			);
 		}
 
-		return new Sample (univariateRandomArray);
+		return new R1Sample (univariateRandomArray);
 	}
 
-	private static final Sample[] GenerateSampleArray (
+	private static final R1Sample[] GenerateSampleArray (
 		final double mean,
 		final double sigma,
 		final int drawCount,
 		final int sampleCount)
 		throws Exception
 	{
-		Sample[] sampleArray = new Sample[sampleCount];
+		R1Sample[] sampleArray = new R1Sample[sampleCount];
 
 		for (int sampleIndex = 0; sampleIndex < sampleCount; ++sampleIndex)
 		{
@@ -179,23 +179,23 @@ public class QQTest5
 		return sampleArray;
 	}
 
-	private static final Ensemble GenerateEnsemble (
+	private static final R1Ensemble GenerateEnsemble (
 		final double mean,
 		final double sigma,
 		final int drawCount,
 		final int sampleCount)
 		throws Exception
 	{
-		return new Ensemble (
+		return new R1Ensemble (
 			GenerateSampleArray (
 				mean,
 				sigma,
 				drawCount,
 				sampleCount
 			),
-			new TestStatisticEvaluator[]
+			new R1TestStatisticEvaluator[]
 			{
-				new TestStatisticEvaluator()
+				new R1TestStatisticEvaluator()
 				{
 					public double evaluate (
 						final double[] drawArray)
@@ -281,13 +281,13 @@ public class QQTest5
 		PlottingPositionGeneratorHeuristic plottingPositionGenerator =
 			PlottingPositionGeneratorHeuristic.Filliben1975 (orderStatisticCount);
 
-		Sample sample = GenerateSample (
+		R1Sample sample = GenerateSample (
 			sampleMean,
 			sampleVolatility,
 			drawCount
 		);
 
-		Ensemble hypothesis = GenerateEnsemble (
+		R1Ensemble hypothesis = GenerateEnsemble (
 			hypothesisMean,
 			hypothesisVolatility,
 			drawCount,

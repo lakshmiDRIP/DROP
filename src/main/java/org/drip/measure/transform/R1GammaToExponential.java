@@ -11,6 +11,14 @@ import org.drip.measure.gamma.ShapeScaleParameters;
  */
 
 /*!
+ * Copyright (C) 2030 Lakshmi Krishnamurthy
+ * Copyright (C) 2029 Lakshmi Krishnamurthy
+ * Copyright (C) 2028 Lakshmi Krishnamurthy
+ * Copyright (C) 2027 Lakshmi Krishnamurthy
+ * Copyright (C) 2026 Lakshmi Krishnamurthy
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -108,13 +116,21 @@ import org.drip.measure.gamma.ShapeScaleParameters;
  * 		</li>
  * 	</ul>
  *
- *	<br><br>
+ * 	It provides the following Functionality:
+ *
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md">Numerical Analysis Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/README.md">R<sup>d</sup> Continuous/Discrete Probability Measures</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/gamma/README.md">R<sup>1</sup> Gamma Distribution Implementation/Properties</a></li>
+ * 		<li><i>R1GammaToExponential</i> Constructor</li>
+ * 		<li>Construct a Gamma Distribution Based of n i.i.d. Exponential Distributions</li>
  *  </ul>
+ *
+ *	<br>
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md">Numerical Analysis Library</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/README.md">R<sup>d</sup> Continuous/Discrete Probability Measures</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/transform/README.md">Expressing one Measure Using Another</a></td></tr>
+ *  </table>
+ *	<br>
  *
  * @author Lakshmi Krishnamurthy
  */
@@ -124,7 +140,7 @@ public class R1GammaToExponential
 {
 
 	/**
-	 * R1GammaToExponential Constructor
+	 * <i>R1GammaToExponential</i> Constructor
 	 * 
 	 * @param scaleParameter Scale Parameter
 	 * @param gammaEstimator Gamma Estimator
@@ -142,10 +158,7 @@ public class R1GammaToExponential
 		throws Exception
 	{
 		super (
-			new ShapeScaleParameters (
-				1.,
-				scaleParameter
-			),
+			new ShapeScaleParameters (1., scaleParameter),
 			gammaEstimator,
 			digammaEstimator,
 			lowerIncompleteGammaEstimator
@@ -163,20 +176,14 @@ public class R1GammaToExponential
 	public R1ShapeScaleDistribution iidDistribution (
 		final int n)
 	{
-		try
-		{
+		try {
 			return new R1ShapeScaleDistribution (
-				new ShapeScaleParameters (
-					n,
-					shapeScaleParameters().scale()
-				),
+				new ShapeScaleParameters (n, shapeScaleParameters().scale()),
 				gammaEstimator(),
 				digammaEstimator(),
 				lowerIncompleteGammaEstimator()
 			);
-		}
-		catch (Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 

@@ -4,9 +4,9 @@ package org.drip.sample.hypothesistest;
 import org.drip.measure.gaussian.R1UnivariateNormal;
 import org.drip.service.common.FormatUtil;
 import org.drip.service.env.EnvManager;
-import org.drip.validation.evidence.Ensemble;
-import org.drip.validation.evidence.Sample;
-import org.drip.validation.evidence.TestStatisticEvaluator;
+import org.drip.validation.evidence.R1Ensemble;
+import org.drip.validation.evidence.R1Sample;
+import org.drip.validation.evidence.R1TestStatisticEvaluator;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -131,7 +131,7 @@ public class StandardNormalTTest
 		return R1UnivariateNormal.Standard().random();
 	}
 
-	private static final Sample GenerateSample (
+	private static final R1Sample GenerateSample (
 		final int drawCount)
 		throws Exception
 	{
@@ -142,15 +142,15 @@ public class StandardNormalTTest
 			univariateRandomArray[drawIndex] = UnivariateRandom();
 		}
 
-		return new Sample (univariateRandomArray);
+		return new R1Sample (univariateRandomArray);
 	}
 
-	private static final Sample[] GenerateSampleArray (
+	private static final R1Sample[] GenerateSampleArray (
 		final int drawCount,
 		final int sampleCount)
 		throws Exception
 	{
-		Sample[] sampleArray = new Sample[sampleCount];
+		R1Sample[] sampleArray = new R1Sample[sampleCount];
 
 		for (int sampleIndex = 0; sampleIndex < sampleCount; ++sampleIndex)
 		{
@@ -160,12 +160,12 @@ public class StandardNormalTTest
 		return sampleArray;
 	}
 
-	private static final TestStatisticEvaluator[] MakeTestStatisticEvaluatorArray()
+	private static final R1TestStatisticEvaluator[] MakeTestStatisticEvaluatorArray()
 		throws Exception
 	{
-		return new TestStatisticEvaluator[]
+		return new R1TestStatisticEvaluator[]
 		{
-			new TestStatisticEvaluator()
+			new R1TestStatisticEvaluator()
 			{
 				public double evaluate (
 					final double[] drawArray)
@@ -186,14 +186,14 @@ public class StandardNormalTTest
 	}
 
 	private static final void TTest (
-		final Ensemble ensemble,
+		final R1Ensemble ensemble,
 		final int drawCount,
-		final TestStatisticEvaluator testStatisticEvaluator)
+		final R1TestStatisticEvaluator testStatisticEvaluator)
 		throws Exception
 	{
-		Sample testSample = GenerateSample (drawCount);
+		R1Sample testSample = GenerateSample (drawCount);
 
-		org.drip.validation.hypothesis.TTestOutcome[] tTestArray = ensemble.tTest (
+		org.drip.validation.hypothesis.R1TTestOutcome[] tTestArray = ensemble.tTest (
 			testSample.applyTestStatistic (testStatisticEvaluator)
 		);
 
@@ -229,9 +229,9 @@ public class StandardNormalTTest
 		int sampleCount = 100;
 		int tTestCount = 25;
 
-		TestStatisticEvaluator[] testStatisticEvaluatorArray = MakeTestStatisticEvaluatorArray();
+		R1TestStatisticEvaluator[] testStatisticEvaluatorArray = MakeTestStatisticEvaluatorArray();
 
-		Ensemble ensemble = new Ensemble (
+		R1Ensemble ensemble = new R1Ensemble (
 			GenerateSampleArray (
 				drawCount,
 				sampleCount

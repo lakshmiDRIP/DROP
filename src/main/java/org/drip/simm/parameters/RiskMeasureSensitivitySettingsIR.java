@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.drip.measure.stochastic.LabelCorrelation;
+import org.drip.measure.identifier.LabelCorrelation;
 import org.drip.simm.rates.IRSystemics20;
 import org.drip.simm.rates.IRSystemics21;
 import org.drip.simm.rates.IRSystemics24;

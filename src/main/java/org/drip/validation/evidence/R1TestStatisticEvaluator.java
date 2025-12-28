@@ -1,5 +1,5 @@
 
-package org.drip.validation.hypothesis;
+package org.drip.validation.evidence;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -80,25 +80,27 @@ package org.drip.validation.hypothesis;
  */
 
 /**
- * <i>StatisticalTestOutcome</i> contains the Results of the Significant Test and t-Test of the given
- * Statistical Hypothesis.
+ * <i>R1TestStatisticEvaluator</i> exposes the Function that must be applied on a R<sup>1</sup> Sample Set to
+ * 	evaluate the Test Statistic.
  *
  *  <br><br>
  *  <ul>
  *  	<li>
  *  		Bhattacharya, B., and D. Habtzghi (2002): Median of the p-value under the Alternate Hypothesis
- *  			American Statistician 56 (3) 202-206
+ *  			<i>American Statistician</i> <b>56 (3)</b> 202-206
  *  	</li>
  *  	<li>
  *  		Head, M. L., L. Holman, R, Lanfear, A. T. Kahn, and M. D. Jennions (2015): The Extent and
- *  			Consequences of p-Hacking in Science PLoS Biology 13 (3) e1002106
+ *  			<i>Consequences of p-Hacking in Science PLoS Biology</i> <b>13 (3)</b> e1002106
  *  	</li>
  *  	<li>
  *  		Wasserstein, R. L., and N. A. Lazar (2016): The ASA’s Statement on p-values: Context, Process,
- *  			and Purpose American Statistician 70 (2) 129-133
+ *  			and Purpose <i>American Statistician</i> <b>70 (2)</b> 129-133
  *  	</li>
  *  	<li>
- *  		Wikipedia (2018): t-statistic https://en.wikipedia.org/wiki/T-statistic
+ *  		Wetzels, R., D. Matzke, M. D. Lee, J. N. Rouder, G, J, Iverson, and E. J. Wagenmakers (2011):
+ *  			Statistical Evidence in Experimental Psychology: An Empirical Comparison using 855 t-Tests
+ *  			<i>Perspectives in Psychological Science</i> <b>6 (3)</b> 291-298
  *  	</li>
  *  	<li>
  *  		Wikipedia (2019): p-value https://en.wikipedia.org/wiki/P-value
@@ -110,57 +112,27 @@ package org.drip.validation.hypothesis;
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ModelValidationAnalyticsLibrary.md">Model Validation Analytics Library</a></li>
  *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/validation/README.md">Risk Factor and Hypothesis Validation, Evidence Processing, and Model Testing</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/validation/hypothesis/README.md">Statistical Hypothesis Validation Test Suite</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/validation/evidence/README.md">Sample and Ensemble Evidence Processors</a></li>
  *  </ul>
  * <br><br>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class StatisticalTestOutcome
+public interface R1TestStatisticEvaluator
 {
-	private TTestOutcome _tTestOutcome = null;
-	private SignificanceTestOutcome _significanceTestOutcome = null;
 
 	/**
-	 * StatisticalTestOutcome Constructor
+	 * Evaluate the Test Statistic for the sample Array
 	 * 
-	 * @param significanceTestOutcome The Significance Test Outcome
-	 * @param tTestOutcome The t-Test Outcome
+	 * @param sampleArray The Sample Array
+	 * 
+	 * @return The Test Statistic
 	 * 
 	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
-	public StatisticalTestOutcome (
-		final SignificanceTestOutcome significanceTestOutcome,
-		final TTestOutcome tTestOutcome)
-		throws Exception
-	{
-		if (null == (_significanceTestOutcome = significanceTestOutcome) ||
-			null == (_tTestOutcome = tTestOutcome)) {
-			throw new Exception ("StatisticalTestOutcome Constructor => Invalid Inputs");
-		}
-	}
-
-	/**
-	 * Retrieve the t-Test Outcome
-	 * 
-	 * @return The t-Test Outcome
-	 */
-
-	public TTestOutcome tTest()
-	{
-		return _tTestOutcome;
-	}
-
-	/**
-	 * Retrieve the Significance Test Outcome
-	 * 
-	 * @return The Significance Test Outcome
-	 */
-
-	public SignificanceTestOutcome significanceTest()
-	{
-		return _significanceTestOutcome;
-	}
+	public abstract double evaluate (
+		final double[] sampleArray)
+		throws Exception;
 }

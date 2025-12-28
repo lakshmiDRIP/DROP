@@ -11,15 +11,15 @@ import org.drip.state.identifier.FXLabel;
 import org.drip.validation.distance.GapLossWeightFunction;
 import org.drip.validation.distance.GapTestOutcome;
 import org.drip.validation.distance.GapTestSetting;
-import org.drip.validation.evidence.Ensemble;
-import org.drip.validation.evidence.Sample;
-import org.drip.validation.evidence.TestStatisticEvaluator;
+import org.drip.validation.evidence.R1Ensemble;
+import org.drip.validation.evidence.R1Sample;
+import org.drip.validation.evidence.R1TestStatisticEvaluator;
 import org.drip.validation.hypothesis.HistogramTestOutcome;
 import org.drip.validation.hypothesis.HistogramTestSetting;
 import org.drip.validation.hypothesis.R1PITTester;
 import org.drip.validation.quantile.PlottingPositionGenerator;
 import org.drip.validation.quantile.PlottingPositionGeneratorHeuristic;
-import org.drip.validation.riskfactorjoint.NormalSampleCohort;
+import org.drip.validation.riskfactorjoint.NormalLatentStateSampleCohort;
 import org.drip.validation.riskfactorsingle.DiscriminatoryPowerAnalyzer;
 
 /*
@@ -210,7 +210,7 @@ public class ADCorrelationBacktesting7a
 		System.out.println ("\t|--------------------------------------------------------------------||");
 	}
 
-	private static final Ensemble Hypothesis (
+	private static final R1Ensemble Hypothesis (
 		final List<String> labelList,
 		final double[] annualStateMeanArray,
 		final double[] annualStateVolatilityArray,
@@ -222,11 +222,11 @@ public class ADCorrelationBacktesting7a
 		final String label2)
 		throws Exception
 	{
-		Sample[] sampleArray = new Sample[sampleCount];
+		R1Sample[] sampleArray = new R1Sample[sampleCount];
 
 		for (int sampleIndex = 0; sampleIndex < sampleCount; ++sampleIndex)
 		{
-			sampleArray[sampleIndex] = NormalSampleCohort.Correlated (
+			sampleArray[sampleIndex] = NormalLatentStateSampleCohort.Correlated (
 				labelList,
 				annualStateMeanArray,
 				annualStateVolatilityArray,
@@ -239,11 +239,11 @@ public class ADCorrelationBacktesting7a
 			);
 		}
 
-		return new Ensemble (
+		return new R1Ensemble (
 			sampleArray,
-			new TestStatisticEvaluator[]
+			new R1TestStatisticEvaluator[]
 			{
-				new TestStatisticEvaluator()
+				new R1TestStatisticEvaluator()
 				{
 					public double evaluate (
 						final double[] drawArray)
@@ -302,7 +302,7 @@ public class ADCorrelationBacktesting7a
 
 		labelList.add (chfusdLabel);
 
-		Sample sample = NormalSampleCohort.Correlated (
+		R1Sample sample = NormalLatentStateSampleCohort.Correlated (
 			labelList,
 			annualStateMeanArray,
 			annualStateVolatilityArray,
@@ -321,7 +321,7 @@ public class ADCorrelationBacktesting7a
 			)
 		);
 
-		Ensemble hypothesis = Hypothesis (
+		R1Ensemble hypothesis = Hypothesis (
 			labelList,
 			annualStateMeanArray,
 			annualStateVolatilityArray,

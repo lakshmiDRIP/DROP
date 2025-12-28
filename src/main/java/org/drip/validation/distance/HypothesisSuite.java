@@ -4,7 +4,7 @@ package org.drip.validation.distance;
 import java.util.Map;
 
 import org.drip.analytics.support.CaseInsensitiveHashMap;
-import org.drip.validation.evidence.Ensemble;
+import org.drip.validation.evidence.R1Ensemble;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -125,7 +125,7 @@ import org.drip.validation.evidence.Ensemble;
 
 public class HypothesisSuite
 {
-	private Map<String, Ensemble> _hypothesisMap = new CaseInsensitiveHashMap<Ensemble>();
+	private Map<String, R1Ensemble> _hypothesisMap = new CaseInsensitiveHashMap<R1Ensemble>();
 
 	/**
 	 * Empty HypothesisSuite Constructor
@@ -141,7 +141,7 @@ public class HypothesisSuite
 	 * @return The Hypothesis Map
 	 */
 
-	public Map<String, Ensemble> hypothesisMap()
+	public Map<String, R1Ensemble> hypothesisMap()
 	{
 		return _hypothesisMap;
 	}
@@ -157,7 +157,7 @@ public class HypothesisSuite
 
 	public boolean add (
 		final String hypothesisID,
-		final Ensemble hypothesis)
+		final R1Ensemble hypothesis)
 	{
 		if (null == hypothesisID || hypothesisID.isEmpty() || null == hypothesis) {
 			return false;
@@ -190,7 +190,7 @@ public class HypothesisSuite
 	 * @return The Hypothesis Specified by the ID
 	 */
 
-	public Ensemble hypothesis (
+	public R1Ensemble hypothesis (
 		final String hypothesisID)
 	{
 		return containsHypothesis (hypothesisID) ? _hypothesisMap.get (hypothesisID) : null;
