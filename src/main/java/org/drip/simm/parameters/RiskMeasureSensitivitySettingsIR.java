@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.drip.measure.identifier.LabelCorrelation;
+import org.drip.measure.identifier.LabelledVertexCorrelation;
 import org.drip.simm.rates.IRSystemics20;
 import org.drip.simm.rates.IRSystemics21;
 import org.drip.simm.rates.IRSystemics24;
@@ -130,7 +130,7 @@ import org.drip.simm.rates.IRSystemics24;
 
 public class RiskMeasureSensitivitySettingsIR
 {
-	private LabelCorrelation _crossBucketCorrelation = null;
+	private LabelledVertexCorrelation _crossBucketCorrelation = null;
 	private Map<String, BucketSensitivitySettingsIR> _bucketSensitivitySettingsMap = null;
 
 	/**
@@ -191,7 +191,7 @@ public class RiskMeasureSensitivitySettingsIR
 		{
 			return new RiskMeasureSensitivitySettingsIR (
 				bucketDeltaSettingsMap,
-				new LabelCorrelation (
+				new LabelledVertexCorrelation (
 					currencyList,
 					crossCurrencyCorrelation
 				)
@@ -264,7 +264,7 @@ public class RiskMeasureSensitivitySettingsIR
 		{
 			return new RiskMeasureSensitivitySettingsIR (
 				bucketDeltaSettingsMap,
-				new LabelCorrelation (
+				new LabelledVertexCorrelation (
 					currencyList,
 					crossCurrencyCorrelation
 				)
@@ -337,7 +337,7 @@ public class RiskMeasureSensitivitySettingsIR
 		{
 			return new RiskMeasureSensitivitySettingsIR (
 				bucketDeltaSettingsMap,
-				new LabelCorrelation (
+				new LabelledVertexCorrelation (
 					currencyList,
 					crossCurrencyCorrelation
 				)
@@ -410,7 +410,7 @@ public class RiskMeasureSensitivitySettingsIR
 		{
 			return new RiskMeasureSensitivitySettingsIR (
 				bucketVegaSettingsMap,
-				new LabelCorrelation (
+				new LabelledVertexCorrelation (
 					currencyList,
 					crossCurrencyCorrelation
 				)
@@ -482,7 +482,7 @@ public class RiskMeasureSensitivitySettingsIR
 		{
 			return new RiskMeasureSensitivitySettingsIR (
 				bucketVegaSettingsMap,
-				new LabelCorrelation (
+				new LabelledVertexCorrelation (
 					currencyList,
 					crossCurrencyCorrelation
 				)
@@ -554,7 +554,7 @@ public class RiskMeasureSensitivitySettingsIR
 		{
 			return new RiskMeasureSensitivitySettingsIR (
 				bucketVegaSettingsMap,
-				new LabelCorrelation (
+				new LabelledVertexCorrelation (
 					currencyList,
 					crossCurrencyCorrelation
 				)
@@ -627,7 +627,7 @@ public class RiskMeasureSensitivitySettingsIR
 		{
 			return new RiskMeasureSensitivitySettingsIR (
 				bucketCurvatureSettingsMap,
-				new LabelCorrelation (
+				new LabelledVertexCorrelation (
 					currencyList,
 					crossCurrencyCorrelation
 				)
@@ -700,7 +700,7 @@ public class RiskMeasureSensitivitySettingsIR
 		{
 			return new RiskMeasureSensitivitySettingsIR (
 				bucketCurvatureSettingsMap,
-				new LabelCorrelation (
+				new LabelledVertexCorrelation (
 					currencyList,
 					crossCurrencyCorrelation
 				)
@@ -773,7 +773,7 @@ public class RiskMeasureSensitivitySettingsIR
 		{
 			return new RiskMeasureSensitivitySettingsIR (
 				bucketCurvatureSettingsMap,
-				new LabelCorrelation (
+				new LabelledVertexCorrelation (
 					currencyList,
 					crossCurrencyCorrelation
 				)
@@ -798,7 +798,7 @@ public class RiskMeasureSensitivitySettingsIR
 
 	public RiskMeasureSensitivitySettingsIR (
 		final Map<String, BucketSensitivitySettingsIR> bucketSensitivitySettingsMap,
-		final LabelCorrelation crossBucketCorrelation)
+		final LabelledVertexCorrelation crossBucketCorrelation)
 		throws Exception
 	{
 		if (null == (_bucketSensitivitySettingsMap = bucketSensitivitySettingsMap) ||
@@ -818,7 +818,7 @@ public class RiskMeasureSensitivitySettingsIR
 	 * @return The Cross Bucket Correlation
 	 */
 
-	public LabelCorrelation crossBucketCorrelation()
+	public LabelledVertexCorrelation crossBucketCorrelation()
 	{
 		return _crossBucketCorrelation;
 	}

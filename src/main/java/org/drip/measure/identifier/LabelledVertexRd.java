@@ -1,9 +1,9 @@
 
 package org.drip.measure.identifier;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+
+import org.drip.numerical.common.NumberUtil;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -89,8 +89,8 @@ import java.util.Map;
  */
 
 /**
- * <i>VertexLabel</i> is the Base Class that holds the Labeled Latent State Vertex Content. The References
- * 	are:
+ * <i>LabelledVertexRd</i> holds the Labeled R<sup>d</sup> Multi-Factor Latent State Vertex Realizations. The
+ * 	References are:
  * 
  * <br><br>
  * 	<ul>
@@ -121,7 +121,9 @@ import java.util.Map;
  * 	It provides the following Functionality:
  *
  *  <ul>
- * 		<li>Transform the Input R<sup>1</sup> Exponential Distribution to Pareto</li>
+ * 		<li><i>LabelledVertexRd</i> Constructor</li>
+ * 		<li>Retrieve the Vertex R<sup>d</sup> Values</li>
+ * 		<li>Retrieve the Vertex R<sup>1</sup> Array for the Specified Label</li>
  *  </ul>
  *
  *	<br>
@@ -136,47 +138,84 @@ import java.util.Map;
  * @author Lakshmi Krishnamurthy
  */
 
-public class VertexLabel
+public class LabelledVertexRd
+	extends LabelledVertex
 {
-	protected List<String> _idList = null;
-
-	protected Map<String, Integer> _idMap = new HashMap<String, Integer>();
+	private double[][] _realizationGrid = null;
 
 	/**
-	 * <i>VertexLabel</i> Constructor
+	 * <i>LabelledVertexRd</i> Constructor
 	 * 
-	 * @param idList The List of Labels
+	 * @param labelList The List of Labels
+	 * @param realizationGrid The R<sup>d</sup> Vertex Realizations
 	 * 
 	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
-	public VertexLabel (
-		final List<String> idList)
+	public LabelledVertexRd (
+		final List<String> labelList,
+		final double[][] realizationGrid)
 		throws Exception
 	{
-		if (null == (_idList = idList)) {
-			throw new Exception ("VertexLabel Constructor => Invalid Inputs");
+		super (labelList);
+
+		if (null == (_realizationGrid = realizationGrid)) {
+			throw new Exception ("LabelledVertexRd Constructor => Invalid Inputs");
 		}
 
-		int labelCount = _idList.size();
+		int labelCount = labelList.size();
 
-		if (0 == labelCount) {
-			throw new Exception ("VertexLabel Constructor => Invalid Inputs");
+		if (null == _realizationGrid[0] || labelCount != _realizationGrid[0].length) {
+			throw new Exception ("LabelledVertexRd Constructor => Invalid Inputs");
 		}
 
-		for (int labelIndex = 0; labelIndex < labelCount; ++labelIndex) {
-			_idMap.put (_idList.get (labelIndex), labelIndex);
+		int vertexCount = _realizationGrid.length;
+
+		for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex) {
+			if (null == _realizationGrid[vertexIndex] ||
+				labelCount != _realizationGrid[vertexIndex].length ||
+				!NumberUtil.IsValid (_realizationGrid[vertexIndex]))
+			{
+				throw new Exception ("LabelledVertexRd Constructor => Invalid Inputs");
+			}
 		}
 	}
 
 	/**
-	 * Retrieve the Label List
+	 * Retrieve the Vertex R<sup>d</sup> Values
 	 * 
-	 * @return The Label List
+	 * @return The Vertex R<sup>d</sup> Values
 	 */
 
-	public List<String> idList()
+	public double[][] realizationGrid()
 	{
-		return _idList;
+		return _realizationGrid;
+	}
+
+	/**
+	 * Retrieve the Vertex R<sup>1</sup> Array for the Specified Label
+	 * 
+	 * @param label The Label
+	 * 
+	 * @return The Vertex R<sup>1</sup> Array
+	 */
+
+	public double[] vertexR1 (
+		final String label)
+	{
+		if (null == label || !_idList.contains (label)) {
+			return null;
+		}
+
+		int vertexCount = _realizationGrid.length;
+		double[] vertexR1 = new double[vertexCount];
+
+		int labelIndex = _idMap.get (label);
+
+		for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex) {
+			vertexR1[vertexIndex] = _realizationGrid[vertexIndex][labelIndex];
+		}
+
+		return vertexR1;
 	}
 }

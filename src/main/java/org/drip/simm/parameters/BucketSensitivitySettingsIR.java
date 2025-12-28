@@ -3,7 +3,7 @@ package org.drip.simm.parameters;
 
 import java.util.Map;
 
-import org.drip.measure.identifier.LabelCorrelation;
+import org.drip.measure.identifier.LabelledVertexCorrelation;
 import org.drip.numerical.common.NumberUtil;
 import org.drip.simm.rates.IRSettingsContainer20;
 import org.drip.simm.rates.IRSettingsContainer21;
@@ -161,7 +161,7 @@ public class BucketSensitivitySettingsIR
 	extends LiquiditySettings
 {
 	private double _crossCurveCorrelation = Double.NaN;
-	private LabelCorrelation _crossTenorCorrelation = null;
+	private LabelledVertexCorrelation _crossTenorCorrelation = null;
 	private Map<String, Double> _oisTenorRiskWeight = null;
 	private Map<String, Double> _primeTenorRiskWeight = null;
 	private Map<String, Double> _libor1MTenorRiskWeight = null;
@@ -411,7 +411,7 @@ public class BucketSensitivitySettingsIR
 		final Map<String, Double> libor12MTenorRiskWeight,
 		final Map<String, Double> primeTenorRiskWeight,
 		final Map<String, Double> municipalTenorRiskWeight,
-		final LabelCorrelation crossTenorCorrelation,
+		final LabelledVertexCorrelation crossTenorCorrelation,
 		final double crossCurveCorrelation,
 		final double concentrationThreshold)
 		throws Exception
@@ -527,7 +527,7 @@ public class BucketSensitivitySettingsIR
 	 * @return The Single Curve Cross Tenor Correlation
 	 */
 
-	public LabelCorrelation crossTenorCorrelation()
+	public LabelledVertexCorrelation crossTenorCorrelation()
 	{
 		return _crossTenorCorrelation;
 	}

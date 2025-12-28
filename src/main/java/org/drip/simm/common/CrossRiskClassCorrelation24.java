@@ -4,7 +4,7 @@ package org.drip.simm.common;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.drip.measure.identifier.LabelCorrelation;
+import org.drip.measure.identifier.LabelledVertexCorrelation;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -243,7 +243,7 @@ public class CrossRiskClassCorrelation24
 	 * @return The Risk Class Correlation Matrix
 	 */
 
-	public static final LabelCorrelation Matrix()
+	public static final LabelledVertexCorrelation Matrix()
 	{
 		double[][] riskClassCorrelationMatrix = new double[6][6];
 
@@ -315,7 +315,7 @@ public class CrossRiskClassCorrelation24
 
 		try
 		{
-			return new LabelCorrelation (
+			return new LabelledVertexCorrelation (
 				chargramList,
 				riskClassCorrelationMatrix
 			);

@@ -4,7 +4,7 @@ package org.drip.sample.simmsettings;
 import java.util.List;
 import java.util.Map;
 
-import org.drip.measure.identifier.LabelCorrelation;
+import org.drip.measure.identifier.LabelledVertexCorrelation;
 import org.drip.service.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 import org.drip.simm.rates.IRSettingsContainer20;
@@ -246,7 +246,7 @@ public class InterestRate20
 	private static final void SingleCurrencyTenorCorrelation()
 		throws Exception
 	{
-		LabelCorrelation singleCurveTenorCorrelation = IRSettingsContainer20.SingleCurveTenorCorrelation();
+		LabelledVertexCorrelation singleCurveTenorCorrelation = IRSettingsContainer20.SingleCurveTenorCorrelation();
 
 		List<String> tenorList = singleCurveTenorCorrelation.idList();
 

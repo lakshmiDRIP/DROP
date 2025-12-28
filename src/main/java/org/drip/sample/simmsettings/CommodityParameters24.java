@@ -4,7 +4,7 @@ package org.drip.sample.simmsettings;
 import java.util.List;
 import java.util.Set;
 
-import org.drip.measure.identifier.LabelCorrelation;
+import org.drip.measure.identifier.LabelledVertexCorrelation;
 import org.drip.service.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 import org.drip.simm.commodity.CTBucket;
@@ -210,7 +210,7 @@ public class CommodityParameters24
 	private static final void CrossBucketCorrelation()
 		throws Exception
 	{
-		LabelCorrelation crossBucketCorrelation = CTSettingsContainer24.CrossBucketCorrelation();
+		LabelledVertexCorrelation crossBucketCorrelation = CTSettingsContainer24.CrossBucketCorrelation();
 
 		List<String> bucketList = crossBucketCorrelation.idList();
 

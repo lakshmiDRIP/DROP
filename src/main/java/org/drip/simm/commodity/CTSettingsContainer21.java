@@ -7,7 +7,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 
-import org.drip.measure.identifier.LabelCorrelation;
+import org.drip.measure.identifier.LabelledVertexCorrelation;
 import org.drip.simm.foundation.RiskGroupPrincipalCovariance;
 
 /*
@@ -145,7 +145,7 @@ import org.drip.simm.foundation.RiskGroupPrincipalCovariance;
 
 public class CTSettingsContainer21
 {
-	private static LabelCorrelation s_CrossBucketCorrelation = null;
+	private static LabelledVertexCorrelation s_CrossBucketCorrelation = null;
 
 	private static final Map<Integer, CTBucket> s_BucketMap =
 		new TreeMap<Integer, CTBucket>();
@@ -189,7 +189,7 @@ public class CTSettingsContainer21
 		bucketList.add ("17");
 
 		try {
-			s_CrossBucketCorrelation = new LabelCorrelation (
+			s_CrossBucketCorrelation = new LabelledVertexCorrelation (
 				bucketList,
 				new double[][] {
 					{ 1.00, 0.16, 0.11, 0.19, 0.22, 0.12, 0.22, 0.02, 0.27, 0.08, 0.11, 0.05, 0.04, 0.06, 0.01, 0.00, 0.10}, // #01
@@ -316,7 +316,7 @@ public class CTSettingsContainer21
 	 * @return The Cross Bucket Correlation
 	 */
 
-	public static final LabelCorrelation CrossBucketCorrelation()
+	public static final LabelledVertexCorrelation CrossBucketCorrelation()
 	{
 		return s_CrossBucketCorrelation;
 	}

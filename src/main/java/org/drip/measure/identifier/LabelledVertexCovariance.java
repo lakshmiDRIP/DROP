@@ -1,11 +1,24 @@
 
 package org.drip.measure.identifier;
 
+import java.util.List;
+
+import org.drip.measure.gaussian.Covariance;
+import org.drip.numerical.common.NumberUtil;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2030 Lakshmi Krishnamurthy
+ * Copyright (C) 2029 Lakshmi Krishnamurthy
+ * Copyright (C) 2028 Lakshmi Krishnamurthy
+ * Copyright (C) 2027 Lakshmi Krishnamurthy
+ * Copyright (C) 2026 Lakshmi Krishnamurthy
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -77,8 +90,8 @@ package org.drip.measure.identifier;
  */
 
 /**
- * <i>LabelCovariance</i> holds the Covariance between any Stochastic Variates identified by their Labels, as
- * well as their Means. The References are:
+ * <i>LabelledVertexCovariance</i> holds the Covariance between any Stochastic Variates identified by their
+ * 	Labels, as well as their Means. The References are:
  * 
  * <br><br>
  * 	<ul>
@@ -106,79 +119,85 @@ package org.drip.measure.identifier;
  * 		</li>
  * 	</ul>
  *
- *	<br><br>
+ * 	It provides the following Functionality:
+ *
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md">Numerical Analysis Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/README.md">R<sup>d</sup> Continuous/Discrete Probability Measures</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/stochastic/README.md">R<sup>1</sup> R<sup>1</sup> To R<sup>1</sup> Process</a></li>
+ * 		<li><i>LabelledVertexCovariance</i> Constructor</li>
+ * 		<li>Retrieve the Array of Variate Means</li>
+ * 		<li>Retrieve the Array of Variate Volatilities</li>
+ * 		<li>Retrieve the Correlation Matrix</li>
+ * 		<li>Retrieve the Covariance Matrix</li>
+ * 		<li>Retrieve the Precision Matrix</li>
+ * 		<li>Retrieve the Mean of the Latent State</li>
+ * 		<li>Retrieve the Volatility of the Latent State</li>
  *  </ul>
+ *
+ *	<br>
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md">Numerical Analysis Library</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/README.md">R<sup>d</sup> Continuous/Discrete Probability Measures</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/identifier/README.md">Labels for Latent State Identifiers</a></td></tr>
+ *  </table>
+ *	<br>
  * 
  * @author Lakshmi Krishnamurthy
  */
 
-public class LabelCovariance extends org.drip.measure.identifier.LabelCorrelation
+public class LabelledVertexCovariance
+	extends LabelledVertexCorrelation
 {
 	private double[] _meanArray = null;
+	private Covariance _covariance = null;
 	private double[] _volatilityArray = null;
-	private org.drip.measure.gaussian.Covariance _covariance = null;
 
 	/**
-	 * LabelCovariance Constructor
+	 * <i>LabelledVertexCovariance</i> Constructor
 	 * 
 	 * @param labelList The List of Labels
 	 * @param meanArray Array of Variate Means
 	 * @param volatilityArray Array of Variate Volatilities
 	 * @param correlationMatrix The Correlation Matrix
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
-	public LabelCovariance (
-		final java.util.List<java.lang.String> labelList,
+	public LabelledVertexCovariance (
+		final List<String> labelList,
 		final double[] meanArray,
 		final double[] volatilityArray,
 		final double[][] correlationMatrix)
-		throws java.lang.Exception
+		throws Exception
 	{
-		super (
-			labelList,
-			correlationMatrix
-		);
+		super (labelList, correlationMatrix);
 
-		if (null == (_meanArray = meanArray) ||
-			null == (_volatilityArray = volatilityArray))
-		{
-			throw new java.lang.Exception ("LabelCovariance Constructor => Invalid Inputs");
+		if (null == (_meanArray = meanArray) || null == (_volatilityArray = volatilityArray)) {
+			throw new Exception ("LabelledVertexCovariance Constructor => Invalid Inputs");
 		}
 
 		int variateCount = correlationMatrix.length;
 		double[][] covarianceMatrix = new double[variateCount][variateCount];
 
-		if (variateCount != _meanArray.length ||
-			variateCount != _volatilityArray.length)
-		{
-			throw new java.lang.Exception ("LabelCovariance Constructor => Invalid Inputs");
+		if (variateCount != _meanArray.length || variateCount != _volatilityArray.length) {
+			throw new Exception ("LabelledVertexCovariance Constructor => Invalid Inputs");
 		}
 
-		for (int variateIndexI = 0; variateIndexI < variateCount; ++variateIndexI)
-		{
-			if (!org.drip.numerical.common.NumberUtil.IsValid (_meanArray[variateIndexI]) ||
-				!org.drip.numerical.common.NumberUtil.IsValid (_volatilityArray[variateIndexI]) ||
+		for (int variateIndexI = 0; variateIndexI < variateCount; ++variateIndexI) {
+			if (!NumberUtil.IsValid (_meanArray[variateIndexI]) ||
+				!NumberUtil.IsValid (_volatilityArray[variateIndexI]) ||
 				0. > _volatilityArray[variateIndexI])
 			{
-				throw new java.lang.Exception ("LabelCovariance Constructor => Invalid Inputs");
+				throw new Exception ("LabelledVertexCovariance Constructor => Invalid Inputs");
 			}
 
-			for (int variateIndexJ = 0; variateIndexJ < variateCount; ++variateIndexJ)
-			{
+			for (int variateIndexJ = 0; variateIndexJ < variateCount; ++variateIndexJ) {
 				covarianceMatrix[variateIndexI][variateIndexJ] =
 					correlationMatrix[variateIndexI][variateIndexJ] * _volatilityArray[variateIndexI] *
 					_volatilityArray[variateIndexJ];
 			}
 		}
 
-		_covariance = new org.drip.measure.gaussian.Covariance (covarianceMatrix);
+		_covariance = new Covariance (covarianceMatrix);
 	}
 
 	/**
@@ -243,16 +262,15 @@ public class LabelCovariance extends org.drip.measure.identifier.LabelCorrelatio
 	 * 
 	 * @return Mean of the Latent State
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public double mean (
-		final java.lang.String label)
-		throws java.lang.Exception
+		final String label)
+		throws Exception
 	{
-		if (null == label || !_idList.contains (label))
-		{
-			throw new java.lang.Exception ("LabelCovariance::mean => Invalid Inputs");
+		if (null == label || !_idList.contains (label)) {
+			throw new Exception ("LabelledVertexCovariance::mean => Invalid Inputs");
 		}
 
 		return _meanArray[_idMap.get (label)];
@@ -265,16 +283,15 @@ public class LabelCovariance extends org.drip.measure.identifier.LabelCorrelatio
 	 * 
 	 * @return Volatility of the Latent State
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public double volatility (
-		final java.lang.String label)
-		throws java.lang.Exception
+		final String label)
+		throws Exception
 	{
-		if (null == label || !_idList.contains (label))
-		{
-			throw new java.lang.Exception ("LabelCovariance::volatility => Invalid Inputs");
+		if (null == label || !_idList.contains (label)) {
+			throw new Exception ("LabelledVertexCovariance::volatility => Invalid Inputs");
 		}
 
 		return _volatilityArray[_idMap.get (label)];
