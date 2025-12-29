@@ -1,11 +1,24 @@
 
 package org.drip.measure.discontinuous;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.drip.numerical.common.NumberUtil;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2030 Lakshmi Krishnamurthy
+ * Copyright (C) 2029 Lakshmi Krishnamurthy
+ * Copyright (C) 2028 Lakshmi Krishnamurthy
+ * Copyright (C) 2027 Lakshmi Krishnamurthy
+ * Copyright (C) 2026 Lakshmi Krishnamurthy
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -79,51 +92,70 @@ package org.drip.measure.discontinuous;
  */
 
 /**
- * <i>VertexRd</i> holds the R<sup>d</sup> Realizations at the Individual Vertexes.
+ * <i>VertexRd</i> holds the R<sup>d</sup> Realizations at the Individual Vertexes. It provides the following
+ *  Functionality:
  *
- *	<br><br>
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md">Numerical Analysis Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/README.md">R<sup>d</sup> Continuous/Discrete Probability Measures</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/discrete/README.md">Antithetic, Quadratically Re-sampled, De-biased Distribution</a></li>
+ * 		<li>Construct a VertexRd Instance from the R<sup>d</sup> Sequence</li>
+ * 		<li>Empty <i>VertexRd</i> Constructor</li>
+ * 		<li>Retrieve the Vertex R<sup>d</sup> List</li>
+ * 		<li>Add the Vertex Index and its corresponding Realization</li>
+ * 		<li>Retrieve the Vertex Realization given the Vertex Index</li>
+ * 		<li>Flatten out into a 2D Array</li>
  *  </ul>
+ *
+ *	<br>
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md">Numerical Analysis Library</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/README.md">R<sup>d</sup> Continuous/Discrete Probability Measures</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/discontinuous/README.md">Antithetic, Quadratically Re-sampled, De-biased Distribution</a></td></tr>
+ *  </table>
+ *	<br>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class VertexRd {
-	private java.util.List<double[]> _lsVertexRd = new java.util.ArrayList<double[]>();
+public class VertexRd
+{
+	private List<double[]> _nodeList = new ArrayList<double[]>();
 
 	/**
-	 * Construct a VertexRd Instance from the R^d Sequence
+	 * Construct a <i>VertexRd</i> Instance from the R<sup>d</sup> Sequence
 	 * 
-	 * @param aadblSequence The R^d Sequence
+	 * @param sequenceArray The R<sup>d</sup> Sequence Array
 	 * 
-	 * @return The VertexRd Instance
+	 * @return The <i>VertexRd</i> Instance
 	 */
 
 	public static final VertexRd FromFlatForm (
-		final double[][] aadblSequence)
+		final double[][] sequenceArray)
 	{
-		if (null == aadblSequence) return null;
+		if (null == sequenceArray) {
+			return null;
+		}
 
-		int iSequenceSize = aadblSequence.length;
+		int sequenceSize = sequenceArray.length;
 
-		if (0 == iSequenceSize) return null;
+		if (0 == sequenceSize) {
+			return null;
+		}
 
 		VertexRd vertexRd = new VertexRd();
 
-		for (int iSequence = 0; iSequence < iSequenceSize; ++iSequence) {
-			if (null == aadblSequence[iSequence] || !vertexRd.add (iSequence, aadblSequence[iSequence]))
+		for (int sequenceIndex = 0; sequenceIndex < sequenceSize; ++sequenceIndex) {
+			if (null == sequenceArray[sequenceIndex] ||
+				!vertexRd.add (sequenceIndex, sequenceArray[sequenceIndex]))
+			{
 				return null;
+			}
 		}
 
 		return vertexRd;
 	}
 
 	/**
-	 * Empty VertexRd Constructor
+	 * Empty <i>VertexRd</i> Constructor
 	 */
 
 	public VertexRd()
@@ -131,34 +163,37 @@ public class VertexRd {
 	}
 
 	/**
-	 * Retrieve the Vertex R^d List
+	 * Retrieve the Vertex R<sup>d</sup> List
 	 * 
-	 * @return The Vertex R^d List
+	 * @return The Vertex R<sup>d</sup> List
 	 */
 
-	public java.util.List<double[]> vertexList()
+	public List<double[]> nodeList()
 	{
-		return _lsVertexRd;
+		return _nodeList;
 	}
 
 	/**
 	 * Add the Vertex Index and its corresponding Realization
 	 * 
-	 * @param iVertex The Vertex Index
-	 * @param adblRealization The R^d Realization Array
+	 * @param vertexIndex The Vertex Index
+	 * @param realizationArray The R<sup>d</sup> Realization Array
 	 * 
 	 * @return TRUE - The Vertex Index/Realization successfully added
 	 */
 
 	public boolean add (
-		final int iVertex,
-		final double[] adblRealization)
+		final int vertexIndex,
+		final double[] realizationArray)
 	{
-		if (-1 >= iVertex || null == adblRealization || 0 == adblRealization.length ||
-			!org.drip.numerical.common.NumberUtil.IsValid (adblRealization))
+		if (-1 >= vertexIndex ||
+			null == realizationArray || 0 == realizationArray.length ||
+			!NumberUtil.IsValid (realizationArray))
+		{
 			return false;
+		}
 
-		_lsVertexRd.add (iVertex, adblRealization);
+		_nodeList.add (vertexIndex, realizationArray);
 
 		return true;
 	}
@@ -166,15 +201,15 @@ public class VertexRd {
 	/**
 	 * Retrieve the Vertex Realization given the Vertex Index
 	 * 
-	 * @param iVertex The Vertex Index
+	 * @param vertexIndex The Vertex Index
 	 * 
 	 * @return Array of Vertex Realizations
 	 */
 
-	public double[] vertexRealization (
-		final int iVertex)
+	public double[] indexRealization (
+		final int vertexIndex)
 	{
-		return -1 >= iVertex ? null : _lsVertexRd.get (iVertex);
+		return -1 >= vertexIndex ? null : _nodeList.get (vertexIndex);
 	}
 
 	/**
@@ -185,15 +220,18 @@ public class VertexRd {
 
 	public double[][] flatform()
 	{
-		int iSize = _lsVertexRd.size();
+		int size = _nodeList.size();
 
-		if (0 == iSize) return null;
+		if (0 == size) {
+			return null;
+		}
 
-		double[][] aadblSequence = new double[iSize][];
+		double[][] sequenceArray = new double[size][];
 
-		for (int i = 0; i < iSize; ++i)
-			aadblSequence[i] = _lsVertexRd.get (i);
+		for (int index = 0; index < size; ++index) {
+			sequenceArray[index] = _nodeList.get (index);
+		}
 
-		return aadblSequence;
+		return sequenceArray;
 	}
 }

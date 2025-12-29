@@ -6,6 +6,14 @@ package org.drip.measure.continuous;
  */
 
 /*!
+ * Copyright (C) 2030 Lakshmi Krishnamurthy
+ * Copyright (C) 2029 Lakshmi Krishnamurthy
+ * Copyright (C) 2028 Lakshmi Krishnamurthy
+ * Copyright (C) 2027 Lakshmi Krishnamurthy
+ * Copyright (C) 2026 Lakshmi Krishnamurthy
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -81,71 +89,80 @@ package org.drip.measure.continuous;
  */
 
 /**
- * <i>RdR1</i> implements the Base Abstract Class behind R<sup>d</sup> X R<sup>1</sup> Distributions. It
- * exports Methods for incremental, cumulative, and inverse cumulative Distribution Densities.
+ * <i>RdR1Distribution</i> implements the Base Abstract Class behind R<sup>d</sup> X R<sup>1</sup>
+ *  Distributions. It exports Methods for incremental, cumulative, and inverse cumulative Distribution
+ *  Densities. It provides the following Functionality:
  *
- *	<br><br>
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md">Numerical Analysis Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/README.md">R<sup>d</sup> Continuous/Discrete Probability Measures</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/continuous/README.md">R<sup>1</sup> and R<sup>d</sup> Continuous Random Measure</a></li>
+ * 		<li>Compute the Cumulative under the Distribution to the given Variate Array/Variate Combination</li>
+ * 		<li>Compute the Incremental under the Distribution between the Variate Array/Variate Pair</li>
+ * 		<li>Compute the Density under the Distribution at the given Variate Array/Variate</li>
  *  </ul>
+ *
+ *	<br>
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md">Numerical Analysis Library</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/README.md">R<sup>d</sup> Continuous/Discrete Probability Measures</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/continuous/README.md">R<sup>1</sup> and R<sup>d</sup> Continuous Random Measure</a></td></tr>
+ *  </table>
+ *	<br>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public abstract class RdR1 {
+public abstract class RdR1Distribution
+{
 
 	/**
 	 * Compute the Cumulative under the Distribution to the given Variate Array/Variate Combination
 	 * 
-	 * @param adblX R^d The Variate Array to which the Cumulative is to be computed
-	 * @param dblY R^1 The Variate to which the Cumulative is to be computed
+	 * @param xArray R<sup>d</sup> The Variate Array to which the Cumulative is to be computed
+	 * @param y R<sup>1</sup> The Variate to which the Cumulative is to be computed
 	 * 
 	 * @return The Cumulative under the Distribution to the given Variate Array/Variate Combination
 	 * 
-	 * @throws java.lang.Exception Thrown if the inputs are invalid
+	 * @throws Exception Thrown if the inputs are invalid
 	 */
 
 	public abstract double cumulative (
-		final double[] adblX,
-		final double dblY)
-		throws java.lang.Exception;
+		final double[] xArray,
+		final double y)
+		throws Exception;
 
 	/**
 	 * Compute the Incremental under the Distribution between the Variate Array/Variate Pair
 	 * 
-	 * @param adblXLeft Left R^d Variate Array from which the Cumulative is to be computed
-	 * @param dblYLeft Left R^1 Variate from which the Cumulative is to be computed
-	 * @param adblXRight Right R^d Variate Array to which the Cumulative is to be computed
-	 * @param dblYRight Right R^1 Variate to which the Cumulative is to be computed
+	 * @param leftXArray Left R<sup>d</sup> Variate Array from which the Cumulative is to be computed
+	 * @param leftY Left R<sup>1</sup> Variate from which the Cumulative is to be computed
+	 * @param rightXArray Right R<sup>d</sup> Variate Array to which the Cumulative is to be computed
+	 * @param rightY Right R<sup>1</sup> Variate to which the Cumulative is to be computed
 	 * 
 	 * @return The Incremental under the Distribution between the Variate Array/Variate Pair
 	 * 
-	 * @throws java.lang.Exception Thrown if the inputs are invalid
+	 * @throws Exception Thrown if the inputs are invalid
 	 */
 
 	public abstract double incremental (
-		final double[] adblXLeft,
-		final double dblYLeft,
-		final double[] adblXRight,
-		final double dblYRight)
-		throws java.lang.Exception;
+		final double[] leftXArray,
+		final double leftY,
+		final double[] rightXArray,
+		final double rightY)
+		throws Exception;
 
 	/**
 	 * Compute the Density under the Distribution at the given Variate Array/Variate
 	 * 
-	 * @param adblX R^d The Variate Array to which the Cumulative is to be computed
-	 * @param dblY R^1 The Variate to which the Cumulative is to be computed
+	 * @param xArray R<sup>d</sup> The Variate Array to which the Cumulative is to be computed
+	 * @param y R<sup>1</sup> The Variate to which the Cumulative is to be computed
 	 * 
 	 * @return The Density under the Distribution at the given Variate Array/Variate
 	 * 
-	 * @throws java.lang.Exception Thrown if the Input is Invalid
+	 * @throws Exception Thrown if the Input is Invalid
 	 */
 
 	public abstract double density (
-		final double[] adblX,
-		final double dblY)
-		throws java.lang.Exception;
+		final double[] xArray,
+		final double y)
+		throws Exception;
 }

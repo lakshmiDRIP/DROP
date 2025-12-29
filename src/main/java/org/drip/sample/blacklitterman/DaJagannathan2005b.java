@@ -2,7 +2,7 @@
 package org.drip.sample.blacklitterman;
 
 import org.drip.measure.bayesian.*;
-import org.drip.measure.continuous.MultivariateMeta;
+import org.drip.measure.continuous.MetaRd;
 import org.drip.measure.gaussian.*;
 import org.drip.service.common.FormatUtil;
 import org.drip.service.env.EnvManager;
@@ -170,13 +170,13 @@ public class DaJagannathan2005b {
 		};
 
 		R1MultivariateNormal viewDistribution = R1MultivariateNormal.Standard (
-			new MultivariateMeta (new String[] {"DJVIEW"}),
+			new MetaRd (new String[] {"DJVIEW"}),
 			adblProjectionExpectedExcessReturns,
 			aadblProjectionExcessReturnsCovariance
 		);
 
 		R1MultivariateNormal r1mnScoping = R1MultivariateNormal.Standard (
-			new MultivariateMeta (astrAssetID),
+			new MetaRd (astrAssetID),
 			adblAssetExcessReturns,
 			aadblAssetExcessReturnsCovariance
 		);

@@ -132,7 +132,7 @@ public class RdMultiPath {
 			{0.114, 0.000, 0.000, 0.000, 0.000, 0.000, 0.000, 0.000, 1.000},	// GBPUSD
 		};
 
-		CorrelatedPathVertexDimension cpvd = new CorrelatedPathVertexDimension (
+		CorrelatedFactorsPathVertexRealization cpvd = new CorrelatedFactorsPathVertexRealization (
 			new RandomNumberGenerator(),
 			aadblCorrelation,
 			iNumVertex,
@@ -143,7 +143,7 @@ public class RdMultiPath {
 
 		VertexRd vertexRd = cpvd.multiPathVertexRd()[0];
 
-		List<double[]> lsVertexRd = vertexRd.vertexList();
+		List<double[]> lsVertexRd = vertexRd.nodeList();
 
 		System.out.println();
 

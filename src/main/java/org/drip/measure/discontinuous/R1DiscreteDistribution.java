@@ -10,6 +10,14 @@ import org.drip.numerical.common.NumberUtil;
  */
 
 /*!
+ * Copyright (C) 2030 Lakshmi Krishnamurthy
+ * Copyright (C) 2029 Lakshmi Krishnamurthy
+ * Copyright (C) 2028 Lakshmi Krishnamurthy
+ * Copyright (C) 2027 Lakshmi Krishnamurthy
+ * Copyright (C) 2026 Lakshmi Krishnamurthy
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -85,15 +93,23 @@ import org.drip.numerical.common.NumberUtil;
  */
 
 /**
- * <i>R1Distribution</i> implements the Discrete Distribution over the Combinatorial R<sup>1</sup> Outcomes.
+ * <i>R1DiscreteDistribution</i> implements the Discrete Distribution over the Combinatorial R<sup>1</sup>
+ *  Outcomes. It provides the following Functionality:
  *
- *	<br><br>
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md">Numerical Analysis Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/README.md">R<sup>d</sup> Continuous/Discrete Probability Measures</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/discrete/README.md">Antithetic, Quadratically Re-sampled, De-biased Distribution</a></li>
+ * 		<li>Generate an Standard Instance of Discrete <i>R1DiscreteDistribution</i></li>
+ * 		<li>Retrieve the Discrete Probability Map</li>
+ * 		<li>Retrieve the Probability of the Instance Occurrence</li>
  *  </ul>
+ *
+ *	<br>
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md">Numerical Analysis Library</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/README.md">R<sup>d</sup> Continuous/Discrete Probability Measures</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/discontinuous/README.md">Antithetic, Quadratically Re-sampled, De-biased Distribution</a></td></tr>
+ *  </table>
+ *	<br>
  *
  * @author Lakshmi Krishnamurthy
  */
@@ -103,28 +119,25 @@ public class R1DiscreteDistribution
 	private TreeMap<Double, Double> _probabilityMap = null;
 
 	/**
-	 * Generate an Standard Instance of Discrete <i>R1Distribution</i>
+	 * Generate an Standard Instance of Discrete <i>R1DiscreteDistribution</i>
 	 * 
 	 * @param instanceArray Instance Array
 	 * @param probabilityArray Probability Array
 	 * 
-	 * @return Standard Instance of Discrete <i>R1Distribution</i>
+	 * @return Standard Instance of Discrete <i>R1DiscreteDistribution</i>
 	 */
 
 	public static R1DiscreteDistribution Standard (
 		final double[] instanceArray,
 		final double[] probabilityArray)
 	{
-		if (null == instanceArray ||
-			null == probabilityArray)
-		{
+		if (null == instanceArray || null == probabilityArray) {
 			return null;
 		}
 
 		int instanceCount = instanceArray.length;
 
-		if (0 == instanceCount || instanceCount != probabilityArray.length)
-		{
+		if (0 == instanceCount || instanceCount != probabilityArray.length) {
 			return null;
 		}
 
@@ -132,33 +145,30 @@ public class R1DiscreteDistribution
 
 		double cumulativeProbability = 0.;
 
-		for (double probability : probabilityArray)
-		{
-			if (!NumberUtil.IsValid (probability) || 0. > probability)
-			{
+		for (double probability : probabilityArray) {
+			if (!NumberUtil.IsValid (probability) || 0. > probability) {
 				return null;
 			}
 
 			cumulativeProbability += probability;
 		}
 
-		if (0. == cumulativeProbability)
-		{
+		if (0. == cumulativeProbability) {
 			return null;
 		}
 
-		for (int i = 0; i < instanceCount; ++i)
-		{
-			if (!NumberUtil.IsValid (instanceArray[i]))
-			{
+		for (int instanceIndex = 0; instanceIndex < instanceCount; ++instanceIndex) {
+			if (!NumberUtil.IsValid (instanceArray[instanceIndex])) {
 				return null;
 			}
 
-			probabilityMap.put (instanceArray[i], probabilityArray[i] / cumulativeProbability);
+			probabilityMap.put (
+				instanceArray[instanceIndex],
+				probabilityArray[instanceIndex] / cumulativeProbability
+			);
 		}
 
-		try
-		{
+		try {
 			return new R1DiscreteDistribution (probabilityMap);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -198,9 +208,8 @@ public class R1DiscreteDistribution
 		final double x)
 		throws Exception
 	{
-		if (!NumberUtil.IsValid (x) || !_probabilityMap.containsKey (x))
-		{
-			throw new Exception ("R1Distribution::probability => Input Instance is Invalid");
+		if (!NumberUtil.IsValid (x) || !_probabilityMap.containsKey (x)) {
+			throw new Exception ("R1DiscreteDistribution::probability => Input Instance is Invalid");
 		}
 
 		return _probabilityMap.get (x);

@@ -26,7 +26,7 @@ import org.drip.exposure.universe.MarketVertex;
 import org.drip.exposure.universe.MarketVertexGenerator;
 import org.drip.function.definition.R1ToR1;
 import org.drip.measure.crng.RandomNumberGenerator;
-import org.drip.measure.discontinuous.CorrelatedPathVertexDimension;
+import org.drip.measure.discontinuous.CorrelatedFactorsPathVertexRealization;
 import org.drip.measure.dynamics.DiffusionEvaluatorLinear;
 import org.drip.measure.dynamics.DiffusionEvaluatorLogarithmic;
 import org.drip.measure.dynamics.HazardJumpEvaluator;
@@ -655,7 +655,7 @@ public class ExposurePathBrownianBridge
 
 		AndersenPykhtinSokolLag andersenPykhtinSokolLag = AndersenPykhtinSokolLag.ClassicalMinus();
 
-		CorrelatedPathVertexDimension correlatedPathVertexDimension = new CorrelatedPathVertexDimension (
+		CorrelatedFactorsPathVertexRealization correlatedPathVertexDimension = new CorrelatedFactorsPathVertexRealization (
 			new RandomNumberGenerator(),
 			correlationMatrix,
 			sparseExposurePeriodCount,

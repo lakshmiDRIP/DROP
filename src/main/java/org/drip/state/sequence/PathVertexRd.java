@@ -6,7 +6,7 @@ import java.util.List;
 import org.drip.analytics.daycount.ActActDCParams;
 import org.drip.analytics.daycount.Convention;
 import org.drip.analytics.support.Helper;
-import org.drip.measure.discontinuous.CorrelatedPathVertexDimension;
+import org.drip.measure.discontinuous.CorrelatedFactorsPathVertexRealization;
 import org.drip.measure.discontinuous.VertexRd;
 import org.drip.measure.process.DiffusionEvolver;
 import org.drip.measure.realization.JumpDiffusionEdgeUnit;
@@ -125,7 +125,7 @@ import org.drip.numerical.common.NumberUtil;
 public class PathVertexRd
 {
 	private DiffusionEvolver[] _diffusionEvolverArray = null;
-	private CorrelatedPathVertexDimension _correlatedPathVertexDimension = null;
+	private CorrelatedFactorsPathVertexRealization _correlatedPathVertexDimension = null;
 
 	/**
 	 * Generate a Standard Instance of PathVertexRd
@@ -137,12 +137,12 @@ public class PathVertexRd
 	 */
 
 	public static final PathVertexRd Standard (
-		final org.drip.measure.discontinuous.CorrelatedPathVertexDimension cpvd,
+		final org.drip.measure.discontinuous.CorrelatedFactorsPathVertexRealization cpvd,
 		final org.drip.measure.process.DiffusionEvolver de)
 	{
 		if (null == cpvd || null == de) return null;
 
-		int iNumDimension = cpvd.numDimension();
+		int iNumDimension = cpvd.dimensionCount();
 
 		org.drip.measure.process.DiffusionEvolver[] aDE = new
 			org.drip.measure.process.DiffusionEvolver[iNumDimension];
@@ -169,7 +169,7 @@ public class PathVertexRd
 	 */
 
 	public PathVertexRd (
-		final CorrelatedPathVertexDimension correlatedPathVertexDimension,
+		final CorrelatedFactorsPathVertexRealization correlatedPathVertexDimension,
 		final DiffusionEvolver[] diffusionEvolverArray)
 		throws Exception
 	{
@@ -180,7 +180,7 @@ public class PathVertexRd
 
 		int dimension = _diffusionEvolverArray.length;
 
-		if (dimension != _correlatedPathVertexDimension.numDimension()) {
+		if (dimension != _correlatedPathVertexDimension.dimensionCount()) {
 			throw new Exception ("PathVertexRd Constructor => Invalid Inputs");
 		}
 
@@ -208,7 +208,7 @@ public class PathVertexRd
 	 * @return The Latent State Evolver CPVD Instance
 	 */
 
-	public CorrelatedPathVertexDimension cpvd()
+	public CorrelatedFactorsPathVertexRealization cpvd()
 	{
 		return _correlatedPathVertexDimension;
 	}
@@ -242,11 +242,11 @@ public class PathVertexRd
 			return null;
 		}
 
-		int pathCount = _correlatedPathVertexDimension.numPath();
+		int pathCount = _correlatedPathVertexDimension.simulationCount();
 
 		int dimension = dimension();
 
-		int vertexCount = _correlatedPathVertexDimension.numVertex();
+		int vertexCount = _correlatedPathVertexDimension.nodeCount();
 
 		if (dimension != startingRd.length || vertexCount != timeIncrementArray.length) {
 			return null;
@@ -265,7 +265,7 @@ public class PathVertexRd
 				return null;
 			}
 
-			List<double[]> vertexRdList = vertexRdArray[pathIndex].vertexList();
+			List<double[]> vertexRdList = vertexRdArray[pathIndex].nodeList();
 
 			JumpDiffusionEdgeUnit[][] jumpDiffusionEdgeUnitGrid =
 				new JumpDiffusionEdgeUnit[dimension][vertexCount];
@@ -338,7 +338,7 @@ public class PathVertexRd
 			return null;
 		}
 
-		int timeVertexCount = _correlatedPathVertexDimension.numVertex();
+		int timeVertexCount = _correlatedPathVertexDimension.nodeCount();
 
 		double[] timeIncrementArray = new double[timeVertexCount];
 
@@ -367,7 +367,7 @@ public class PathVertexRd
 			return null;
 		}
 
-		int timeVertexCount = _correlatedPathVertexDimension.numVertex();
+		int timeVertexCount = _correlatedPathVertexDimension.nodeCount();
 
 		if (timeVertexCount != evolutionTenorArray.length) {
 			return null;
@@ -410,7 +410,7 @@ public class PathVertexRd
 			return null;
 		}
 
-		int timeVertexCount = _correlatedPathVertexDimension.numVertex();
+		int timeVertexCount = _correlatedPathVertexDimension.nodeCount();
 
 		if (timeVertexCount != eventDateArray.length) return null;
 

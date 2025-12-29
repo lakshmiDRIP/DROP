@@ -2,7 +2,7 @@
 package org.drip.sample.idzorek;
 
 import org.drip.measure.bayesian.*;
-import org.drip.measure.continuous.MultivariateMeta;
+import org.drip.measure.continuous.MetaRd;
 import org.drip.measure.gaussian.*;
 import org.drip.portfolioconstruction.allocator.ForwardReverseHoldingsAllocation;
 import org.drip.portfolioconstruction.asset.*;
@@ -190,7 +190,7 @@ public class PortfolioAndBenchmarkMetrics
 			);
 
 		R1MultivariateNormal viewDistribution = R1MultivariateNormal.Standard (
-			new MultivariateMeta (
+			new MetaRd (
 				new String[]
 				{
 					"PROJECTION #1",

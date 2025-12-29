@@ -2,7 +2,7 @@
 package org.drip.service.assetallocation;
 
 import org.drip.measure.bayesian.R1MultivariateConvolutionMetrics;
-import org.drip.measure.continuous.MultivariateMeta;
+import org.drip.measure.continuous.MetaRd;
 import org.drip.measure.continuous.MetaRdDistribution;
 import org.drip.measure.gaussian.R1MultivariateNormal;
 import org.drip.portfolioconstruction.allocator.ForwardReverseHoldingsAllocation;
@@ -159,7 +159,7 @@ public class BlackLittermanProcessor
 			riskFreeRate = Converter.DoubleEntry (jsonParameter, "RiskFreeRate");
 
 			viewDistribution = R1MultivariateNormal.Standard (
-				new MultivariateMeta (projectionNameArray),
+				new MetaRd (projectionNameArray),
 				projectionExpectedExcessReturnsArray,
 				Converter.DualDoubleArrayEntry (jsonParameter, "ProjectionExcessReturnsCovariance")
 			);

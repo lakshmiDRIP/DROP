@@ -4,7 +4,7 @@ package org.drip.sample.xvabasel;
 import org.drip.analytics.date.*;
 import org.drip.exposure.evolver.LatentStateVertexContainer;
 import org.drip.exposure.universe.*;
-import org.drip.measure.discontinuous.SequenceGenerator;
+import org.drip.measure.discontinuous.RandomSequenceGenerator;
 import org.drip.measure.dynamics.*;
 import org.drip.measure.process.DiffusionEvolver;
 import org.drip.measure.realization.*;
@@ -298,7 +298,7 @@ public class UncollateralizedFundingNeutral {
 			aadblPortfolio1Value[i] = SwapPortfolioValueRealization (
 				deATMSwapRateOffset,
 				dblATMSwapRateOffsetStart1,
-				SequenceGenerator.Gaussian (iNumStep),
+				RandomSequenceGenerator.Gaussian (iNumStep),
 				iNumVertex,
 				dblTime,
 				dblTimeWidth,
@@ -309,7 +309,7 @@ public class UncollateralizedFundingNeutral {
 			aadblPortfolio2Value[i] = SwapPortfolioValueRealization (
 				deATMSwapRateOffset,
 				dblATMSwapRateOffsetStart2,
-				SequenceGenerator.Gaussian (iNumStep),
+				RandomSequenceGenerator.Gaussian (iNumStep),
 				iNumVertex,
 				dblTime,
 				dblTimeWidth,

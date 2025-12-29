@@ -1,7 +1,7 @@
 
 package org.drip.sample.measure;
 
-import org.drip.measure.discontinuous.SequenceGenerator;
+import org.drip.measure.discontinuous.RandomSequenceGenerator;
 import org.drip.service.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 
@@ -106,7 +106,7 @@ public class GaussianSequence {
 		final String strHeader)
 		throws Exception
 	{
-		double[][] aadblGaussianJoint = SequenceGenerator.GaussianJoint (
+		double[][] aadblGaussianJoint = RandomSequenceGenerator.GaussianJoint (
 			iCount,
 			aadblCorrelation
 		);

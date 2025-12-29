@@ -158,7 +158,7 @@ public class R1MultivariateNormalConvolutionEngine implements org.drip.measure.b
 
 		double[][] aadblUnconditionalCovariance = r1mnUnconditional.covariance().covarianceMatrix();
 
-		org.drip.measure.continuous.MultivariateMeta meta = r1mnPrior.meta();
+		org.drip.measure.continuous.MetaRd meta = r1mnPrior.meta();
 
 		for (int i = 0; i < iNumVariate; ++i) {
 			for (int j = 0; j < iNumVariate; ++j)

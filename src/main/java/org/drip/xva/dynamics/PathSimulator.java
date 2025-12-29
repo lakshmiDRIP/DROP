@@ -10,7 +10,7 @@ import org.drip.exposure.universe.LatentStateWeiner;
 import org.drip.exposure.universe.MarketPath;
 import org.drip.exposure.universe.MarketVertex;
 import org.drip.exposure.universe.MarketVertexGenerator;
-import org.drip.measure.discontinuous.CorrelatedPathVertexDimension;
+import org.drip.measure.discontinuous.CorrelatedFactorsPathVertexRealization;
 import org.drip.numerical.linearalgebra.R1MatrixUtil;
 import org.drip.state.identifier.LatentStateLabel;
 import org.drip.xva.gross.ExposureAdjustmentAggregator;
@@ -403,7 +403,7 @@ public class PathSimulator
 	public ExposureAdjustmentAggregator simulate (
 		final List<LatentStateLabel> latentStateLabelList,
 		final MarketVertex initialMarketVertex,
-		final CorrelatedPathVertexDimension correlatedPathVertexDimension)
+		final CorrelatedFactorsPathVertexRealization correlatedPathVertexDimension)
 	{
 		if (null == correlatedPathVertexDimension) {
 			return null;

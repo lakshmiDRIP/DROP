@@ -7,36 +7,45 @@ DROP Measure Continuous implements the R<sup>1</sup> R<sup>d</sup> Continuous Ra
 
 ## Class Components
 
- * [***Multivariate***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/continuous/Multivariate.java)
- <i>Multivariate</i> contains the Generalized Multivariate Distributions.
+ * [***MetaRd***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/continuous/MetaRd.java)
+ <i>MetaRd</i> holds a Group of Variable Names - each of which separately is a Valid Single R<sup>1</sup>/R<sup>d</sup> Variable.
 
- * [***MultivariateMeta***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/continuous/MultivariateMeta.java)
- <i>MultivariateMeta</i> holds a Group of Variable Names - each of which separately is a Valid Single
- R<sup>1</sup>/R<sup>d</sup> Variable.
+ * [***MetaRdDistribution***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/continuous/MetaRdDistribution.java)
+ <i>MetaRdDistribution</i> contains the Generalized R<sup>1</sup> Multivariate Distributions.
 
- * [***R1R1***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/continuous/R1R1.java)
- <i>R1R1</i> implements the Base Abstract Class behind Bivariate R<sup>1</sup> Distributions. It exports
- Methods for Incremental, Cumulative, and Inverse Cumulative Distribution Densities.
+ * [***R1Distribution***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/continuous/R1Distribution.java)
+ <i>R1Distribution</i> exposes the Base Abstract Class behind continuous R<sup>1</sup> Distributions. It exports the Methods for incremental, cumulative, and inverse cumulative distribution densities.
 
- * [***R1Univariate***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/continuous/R1Univariate.java)
- <i>R1Univariate</i> implements the Base Abstract Class behind Univariate R<sup>1</sup> Distributions. It exports the Methods for incremental, cumulative, and inverse cumulative distribution densities.
+ * [***R1ParetoDistribution***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/continuous/R1ParetoDistribution.java)
+ <i>R1ParetoDistribution</i> implements the R<sup>1</sup> Pareto Distribution.
 
- * [***R1UnivariateExponential***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/continuous/R1UnivariateExponential.java)
- <i>R1UnivariateExponential</i> implements the Univariate R<sup>1</sup> Exponential Distribution. It implements the Incremental, the Cumulative, and the Inverse Cumulative Distribution Densities.
+ * [***R1PowerLawDistribution***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/continuous/R1PowerLawDistribution.java)
+ <i>R1PowerLawDistribution</i> implements the R<sup>1</sup> Power Law Distribution.
 
- * [***R1UnivariateScaledExponential***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/continuous/R1UnivariateScaledExponential.java)
- <i>R1UnivariateScaledExponential</i> implements the Probability Density Function for the Scaled Univariate R<sup>1</sup> Exponential Function.
+ * [***R1R1Distribution***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/continuous/R1R1Distribution.java)
+ <i>R1R1Distribution</i> implements the Base Abstract Class behind Bivariate R<sup>1</sup> Distributions. It exports Methods for Incremental, Cumulative, and Inverse Cumulative Distribution Densities.
 
- * [***R1UnivariateUniform***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/continuous/R1UnivariateUniform.java)
- <i>R1UnivariateUniform</i> implements the Univariate R<sup>1</sup> Uniform Distribution. It implements the Incremental, the Cumulative, and the Inverse Cumulative Distribution Densities.
+ * [***R1UniformDistribution***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/continuous/R1UniformDistribution.java)
+ <i>R1UniformDistribution</i> implements the Univariate R<sup>1</sup> Uniform Distribution. It implements the Incremental, the Cumulative, and the Inverse Cumulative Distribution Densities.
 
- * [***Rd***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/continuous/Rd.java)
- <i>Rd</i> implements the Base Abstract Class behind R<sup>d</sup> Distributions. It exports Methods for
- incremental, cumulative, and inverse cumulative Distribution Densities.
+ * [***RdDistribution***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/continuous/RdDistribution.java)
+ <i>RdDistribution</i> implements the Base Abstract Class behind R<sup>d</sup> Distributions. It exports Methods for incremental, cumulative, and inverse cumulative Distribution Densities.
 
- * [***RdR1***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/continuous/RdR1.java)
- <i>RdR1</i> implements the Base Abstract Class behind R<sup>d</sup> X R<sup>1</sup> Distributions. It
- exports Methods for incremental, cumulative, and inverse cumulative Distribution Densities.
+ * [***RdR1Distribution***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/continuous/RdR1Distribution.java)
+ <i>RdR1Distribution</i> implements the Base Abstract Class behind R<sup>d</sup> X R<sup>1</sup> Distributions. It exports Methods for incremental, cumulative, and inverse cumulative Distribution Densities.
+
+
+## References
+
+ * Devroye, L. (1986): <i>Non-Uniform Random Variate Generation</i> <b>Springer-Verlag</b> New York
+
+ * Exponential Distribution (2019): Exponential Distribution https://en.wikipedia.org/wiki/Exponential_distribution
+
+ * Norton, M., V. Khokhlov, and S. Uryasev (2019): Calculating CVaR and bPOE for Common Probability Distributions with Application to Portfolio Optimization and Density Estimation <i>Annals of Operations Research</i> <b>299 (1-2)</b> 1281-1315
+
+ * Ross, S. M. (2009): <i>Introduction to Probability and Statistics for Engineers and Scientists 4<sup>th</sup> Edition</i> <b>Associated Press</b> New York, NY
+
+ * Schmidt, D. F., and D. Makalic (2009): Universal Models for the Exponential Distribution <i>IEEE Transactions on Information Theory</i> <b>55 (7)</b> 3087-3090
 
 
 ## DROP Specifications

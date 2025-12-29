@@ -6,6 +6,14 @@ package org.drip.measure.continuous;
  */
 
 /*!
+ * Copyright (C) 2030 Lakshmi Krishnamurthy
+ * Copyright (C) 2029 Lakshmi Krishnamurthy
+ * Copyright (C) 2028 Lakshmi Krishnamurthy
+ * Copyright (C) 2027 Lakshmi Krishnamurthy
+ * Copyright (C) 2026 Lakshmi Krishnamurthy
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -13,7 +21,6 @@ package org.drip.measure.continuous;
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
- * Copyright (C) 2015 Lakshmi Krishnamurthy
  * 
  *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
  *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
@@ -81,71 +88,104 @@ package org.drip.measure.continuous;
  */
 
 /**
- * <i>R1R1</i> implements the Base Abstract Class behind Bivariate R<sup>1</sup> Distributions. It exports
- * Methods for Incremental, Cumulative, and Inverse Cumulative Distribution Densities.
+ * <i>MetaRd</i> holds a Group of Variable Names - each of which separately is a Valid Single
+ * 	R<sup>1</sup>/R<sup>d</sup> Variable. It provides the following Functionality:
  *
- *	<br><br>
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md">Numerical Analysis Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/README.md">R<sup>d</sup> Continuous/Discrete Probability Measures</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/continuous/README.md">R<sup>1</sup> and R<sup>d</sup> Continuous Random Measure</a></li>
+ * 		<li><i>MetaRd</i> Constructor</li>
+ * 		<li>Retrieve the Number of Variate</li>
+ * 		<li>Retrieve the Array of the Variate Names</li>
+ * 		<li>Retrieve the Index of the Named Variate</li>
  *  </ul>
+ *
+ *	<br>
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md">Numerical Analysis Library</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/README.md">R<sup>d</sup> Continuous/Discrete Probability Measures</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/continuous/README.md">R<sup>1</sup> and R<sup>d</sup> Continuous Random Measure</a></td></tr>
+ *  </table>
+ *	<br>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public abstract class R1R1 {
+public class MetaRd
+{
+	private String[] _nameArray = null;
 
 	/**
-	 * Compute the Cumulative under the Distribution to the given Variate Pair
+	 * <i>MetaRd</i> Constructor
 	 * 
-	 * @param dblX R^1 The X Variate to which the Cumulative is to be computed
-	 * @param dblY R^1 The Y Variate to which the Cumulative is to be computed
+	 * @param nameArray Array of the Variate Names
 	 * 
-	 * @return The Cumulative under the Distribution to the given Variate Pair
-	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
-	public abstract double cumulative (
-		final double dblX,
-		final double dblY)
-		throws java.lang.Exception;
+	public MetaRd (
+		final String[] nameArray)
+		throws Exception
+	{
+		if (null == (_nameArray = nameArray)) {
+			throw new Exception ("MetaRd Constructor => Invalid Inputs");
+		}
+
+		int variableCount = _nameArray.length;
+
+		if (0 >= variableCount) {
+			throw new Exception ("MetaRd Constructor => Invalid Inputs");
+		}
+
+		for (int variableIndex = 0; variableIndex < variableCount; ++variableIndex) {
+			if (null == _nameArray[variableIndex] || _nameArray[variableIndex].isEmpty()) {
+				throw new Exception ("MetaRd Constructor => Invalid Inputs");
+			}
+		}
+	}
 
 	/**
-	 * Compute the Incremental under the Distribution between the Variate Pair
+	 * Retrieve the Number of Variate
 	 * 
-	 * @param dblXLeft R^1 Left X Variate from which the Cumulative is to be computed
-	 * @param dblYLeft R^1 Left Y Variate from which the Cumulative is to be computed
-	 * @param dblXRight R^1 Right X Variate to which the Cumulative is to be computed
-	 * @param dblYRight R^1 Right Y Variate to which the Cumulative is to be computed
-	 * 
-	 * @return The Incremental under the Distribution between the Variate Pair
-	 * 
-	 * @throws java.lang.Exception Thrown if the inputs are invalid
+	 * @return The Number of Variate
 	 */
 
-	public abstract double incremental (
-		final double dblXLeft,
-		final double dblYLeft,
-		final double dblXRight,
-		final double dblYRight)
-		throws java.lang.Exception;
+	public int numVariable()
+	{
+		return _nameArray.length;
+	}
 
 	/**
-	 * Compute the Density under the Distribution at the given Variate Pair
+	 * Retrieve the Array of the Variate Names
 	 * 
-	 * @param dblX R^1 The Variate to which the Cumulative is to be computed
-	 * @param dblY R^1 The Variate to which the Cumulative is to be computed
-	 * 
-	 * @return The Density under the Distribution at the given Variate Pair
-	 * 
-	 * @throws java.lang.Exception Thrown if the Input is Invalid
+	 * @return The Array of the Variate Names
 	 */
 
-	public abstract double density (
-		final double dblX,
-		final double dblY)
-		throws java.lang.Exception;
+	public String[] names()
+	{
+		return _nameArray;
+	}
+
+	/**
+	 * Retrieve the Index of the Named Variate
+	 * 
+	 * @param variateName The Named Variate
+	 * 
+	 * @return Index of the Named Variate
+	 */
+
+	public int variateIndex (
+		final String variateName)
+	{
+		if (null == variateName || variateName.isEmpty()) {
+			return -1;
+		}
+
+		for (int variateIndex = 0; variateIndex < numVariable(); ++variateIndex) {
+			if (variateName.equalsIgnoreCase (_nameArray[variateIndex])) {
+				return variateIndex;
+			}
+		}
+
+		return -1;
+	}
 }

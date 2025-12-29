@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.drip.measure.crng.RandomNumberGenerator;
-import org.drip.measure.discontinuous.CorrelatedPathVertexDimension;
+import org.drip.measure.discontinuous.CorrelatedFactorsPathVertexRealization;
 import org.drip.measure.statistics.MultivariateDiscrete;
 import org.drip.service.common.FormatUtil;
 import org.drip.service.env.EnvManager;
@@ -151,7 +151,7 @@ public class RollingWindowCorrelation8
 			{0.161, 1.000},	// CHFUSD
 		};
 
-		CorrelatedPathVertexDimension correlatedPathVertexDimension = new CorrelatedPathVertexDimension (
+		CorrelatedFactorsPathVertexRealization correlatedPathVertexDimension = new CorrelatedFactorsPathVertexRealization (
 			new RandomNumberGenerator(),
 			correlation,
 			vertexCount,

@@ -2,7 +2,7 @@
 package org.drip.sample.blacklitterman;
 
 import org.drip.measure.bayesian.R1MultivariateConvolutionMetrics;
-import org.drip.measure.continuous.MultivariateMeta;
+import org.drip.measure.continuous.MetaRd;
 import org.drip.measure.gaussian.*;
 import org.drip.portfolioconstruction.allocator.ForwardReverseHoldingsAllocation;
 import org.drip.portfolioconstruction.asset.Portfolio;
@@ -180,7 +180,7 @@ public class Yamabe2016 {
 		};
 
 		R1MultivariateNormal viewDistribution = R1MultivariateNormal.Standard (
-			new MultivariateMeta (
+			new MetaRd (
 				new String[] {
 					"PROJECTION #1",
 					"PROJECTION #2",

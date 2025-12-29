@@ -8,6 +8,13 @@ import org.drip.numerical.common.NumberUtil;
  */
 
 /*!
+ * Copyright (C) 2030 Lakshmi Krishnamurthy
+ * Copyright (C) 2029 Lakshmi Krishnamurthy
+ * Copyright (C) 2028 Lakshmi Krishnamurthy
+ * Copyright (C) 2027 Lakshmi Krishnamurthy
+ * Copyright (C) 2026 Lakshmi Krishnamurthy
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
  * Copyright (C) 2023 Lakshmi Krishnamurthy
  * 
  *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
@@ -101,14 +108,31 @@ import org.drip.numerical.common.NumberUtil;
  * 				Transactions on Information Theory</i> <b>55 (7)</b> 3087-3090
  * 		</li>
  * 	</ul>
+ * 
+ *  It provides the following Functionality:
  *
- *	<br><br>
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md">Numerical Analysis Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/README.md">R<sup>d</sup> Continuous/Discrete Probability Measures</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/exponential/README.md">R<sup>1</sup> Exponential Distribution Implementation/Properties</a></li>
+ * 		<li><i>R1ParetoDistribution</i> Constructor</li>
+ * 		<li>Retrieve k</li>
+ * 		<li>Retrieve Lambda</li>
+ * 		<li>Lay out the Support of the PDF Range</li>
+ * 		<li>Compute the Density under the Distribution at the given Variate</li>
+ * 		<li>Retrieve the Mode of the Distribution</li>
+ * 		<li>Compute the cumulative under the distribution to the given value</li>
+ * 		<li>Retrieve the Quantile Variate of the Distribution</li>
+ * 		<li>Retrieve the Mean of the Distribution</li>
+ * 		<li>Retrieve the Median of the Distribution</li>
+ * 		<li>Retrieve the Variance of the Distribution</li>
  *  </ul>
+ *
+ *	<br>
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md">Numerical Analysis Library</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/README.md">R<sup>d</sup> Continuous/Discrete Probability Measures</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/continuous/README.md">R<sup>1</sup> and R<sup>d</sup> Continuous Random Measure</a></td></tr>
+ *  </table>
+ *	<br>
  *
  * @author Lakshmi Krishnamurthy
  */
@@ -120,7 +144,7 @@ public class R1ParetoDistribution
 	private double _lambda = Double.NaN;
 
 	/**
-	 * R1ParetoDistribution Constructor
+	 * <i>R1ParetoDistribution</i> Constructor
 	 * 
 	 * @param lambda Rate Parameter
 	 * @param k K Parameter
@@ -133,16 +157,10 @@ public class R1ParetoDistribution
 		final double k)
 		throws Exception
 	{
-		if (!NumberUtil.IsValid (
-				_lambda = lambda
-			) || 0. >= _lambda || !NumberUtil.IsValid (
-				_k = k
-			) || 0. >= _k
-		)
+		if (!NumberUtil.IsValid (_lambda = lambda) || 0. >= _lambda ||
+			!NumberUtil.IsValid (_k = k) || 0. >= _k)
 		{
-			throw new Exception (
-				"R1ParetoDistribution Constructor => Invalid Inputs"
-			);
+			throw new Exception ("R1ParetoDistribution Constructor => Invalid Inputs");
 		}
 	}
 
@@ -150,8 +168,8 @@ public class R1ParetoDistribution
 	 * Retrieve k
 	 * 
 	 * @return k
-
 	 */
+
 	public double k()
 	{
 		return _k;
@@ -168,36 +186,45 @@ public class R1ParetoDistribution
 		return _lambda;
 	}
 
+	/**
+	 * Lay out the Support of the PDF Range
+	 * 
+	 * @return Support of the PDF Range
+	 */
+
 	@Override public double[] support()
 	{
-		return new double[]
-		{
-			_k,
-			Double.POSITIVE_INFINITY
-		};
+		return new double[] {_k, Double.POSITIVE_INFINITY};
 	}
+
+	/**
+	 * Compute the Density under the Distribution at the given Variate
+	 * 
+	 * @param t Variate at which the Density needs to be computed
+	 * 
+	 * @return The Density
+	 * 
+	 * @throws Exception Thrown if the input is invalid
+	 */
 
 	@Override public double density (
 		final double t)
 		throws Exception
 	{
-		if (!supported (
-			t
-		))
-		{
-			throw new Exception (
-				"R1ParetoDistribution::density => Variate not in Range"
-			);
+		if (!supported (t)) {
+			throw new Exception ("R1ParetoDistribution::density => Variate not in Range");
 		}
 
-		return _lambda * Math.pow (
-			_k,
-			_lambda
-		) * Math.pow (
-			t,
-			-1. - _lambda
-		);
+		return _lambda * Math.pow (_k, _lambda) * Math.pow (t, -1. - _lambda);
 	}
+
+	/**
+	 * Retrieve the Mode of the Distribution
+	 * 
+	 * @return The Mode of the Distribution
+	 * 
+	 * @throws Exception Thrown if the Mode cannot be estimated
+	 */
 
 	@Override public double mode()
 		throws Exception
@@ -205,85 +232,101 @@ public class R1ParetoDistribution
 		return _k;
 	}
 
+	/**
+	 * Compute the cumulative under the distribution to the given value
+	 * 
+	 * @param t Variate to which the cumulative is to be computed
+	 * 
+	 * @return The cumulative
+	 * 
+	 * @throws Exception Thrown if the inputs are invalid
+	 */
+
 	@Override public double cumulative (
 		final double t)
 		throws Exception
 	{
-		if (!supported (
-			t
-		))
-		{
-			throw new Exception (
-				"R1ParetoDistribution::cumulative => Variate not in Range"
-			);
+		if (!supported (t)) {
+			throw new Exception ("R1ParetoDistribution::cumulative => Variate not in Range");
 		}
 
-		return 1. - Math.pow (
-			_k / t,
-			_lambda
-		);
+		return 1. - Math.pow (_k / t, _lambda);
 	}
+
+	/**
+	 * Retrieve the Quantile Variate of the Distribution
+	 * 
+	 * @param p The Quantile Fraction
+	 * 
+	 * @return The Quantile Variate of the Distribution
+	 * 
+	 * @throws Exception Thrown if the Quantile Variate cannot be estimated
+	 */
 
 	@Override public double quantile (
 		final double p)
 		throws Exception
 	{
-		if (!NumberUtil.IsValid (
-				p
-			) || 0. > p || 1. < p
-		)
-		{
-			throw new Exception (
-				"R1ParetoDistribution::quantile => p is Invalid"
-			);
+		if (!NumberUtil.IsValid (p) || 0. > p || 1. < p) {
+			throw new Exception ("R1ParetoDistribution::quantile => p is Invalid");
 		}
 
-		if (0. == p)
-		{
+		if (0. == p) {
 			return support()[0];
 		}
 
-		if (1. == p)
-		{
+		if (1. == p) {
 			return support()[1];
 		}
 
-		return _k + Math.pow (
-			1. - p,
-			-1. * _lambda
-		);
+		return _k + Math.pow (1. - p, -1. * _lambda);
 	}
+
+	/**
+	 * Retrieve the Mean of the Distribution
+	 * 
+	 * @return The Mean of the Distribution
+	 * 
+	 * @throws Exception Thrown if the Mean cannot be estimated
+	 */
 
 	@Override public double mean()
 		throws Exception
 	{
-		if (1. >= _lambda)
-		{
-			throw new Exception (
-				"R1ParetoDistribution::mean => Does not converge for lambda <= 1."
-			);
+		if (1. >= _lambda) {
+			throw new Exception ("R1ParetoDistribution::mean => Does not converge for lambda <= 1.");
 		}
 
 		return _lambda * _k / (_lambda - 1.);
 	}
 
+	/**
+	 * Retrieve the Median of the Distribution
+	 * 
+	 * @return The Median of the Distribution
+	 * 
+	 * @throws Exception Thrown if the Median cannot be estimated
+	 */
+
 	@Override public double median()
 		throws Exception
 	{
-		return _k * Math.pow (
-			2.,
-			1. / _lambda
-		);
+		return _k * Math.pow (2., 1. / _lambda);
 	}
+
+	/**
+	 * Retrieve the Variance of the Distribution
+	 * 
+	 * @return The Variance of the Distribution
+	 * 
+	 * @throws Exception Thrown if the Variance cannot be estimated
+	 */
 
 	@Override public double variance()
 		throws Exception
 	{
-		if (2. >= _lambda)
-		{
-			throw new Exception (
-				"R1ParetoDistribution::variance => Does not converge for lambda <= 2."
-			);
+		if (2. >= _lambda) {
+			throw new Exception ("R1ParetoDistribution::variance => Does not converge for lambda <= 2.");
 		}
 
 		double mean = mean();

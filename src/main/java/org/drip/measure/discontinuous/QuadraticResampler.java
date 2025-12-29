@@ -1,11 +1,21 @@
 
 package org.drip.measure.discontinuous;
 
+import org.drip.numerical.linearalgebra.R1MatrixUtil;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2030 Lakshmi Krishnamurthy
+ * Copyright (C) 2029 Lakshmi Krishnamurthy
+ * Copyright (C) 2028 Lakshmi Krishnamurthy
+ * Copyright (C) 2027 Lakshmi Krishnamurthy
+ * Copyright (C) 2026 Lakshmi Krishnamurthy
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -79,39 +89,50 @@ package org.drip.measure.discontinuous;
  */
 
 /**
- * <i>QuadraticResampler</i> Quadratically Re-samples the Input Points to Convert it to a Standard Normal.
+ * <i>QuadraticResampler</i> Quadratically Re-samples the Input Points to Convert it to a Standard Normal. It
+ * 	provides the following Functionality:
  *
- *	<br><br>
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md">Numerical Analysis Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/README.md">R<sup>d</sup> Continuous/Discrete Probability Measures</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/discrete/README.md">Antithetic, Quadratically Re-sampled, De-biased Distribution</a></li>
+ * 		<li><i>QuadraticResampler</i> Constructor</li>
+ * 		<li>Indicate if the Sequence is to be Mean Centered</li>
+ * 		<li>Indicate if the Sampling Bias needs to be Removed</li>
+ * 		<li>Transform the Input R<sup>1</sup> Sequence by applying Quadratic Sampling</li>
+ * 		<li>Transform the Array of Input R<sup>d</sup> Sequence by applying Quadratic Sampling</li>
  *  </ul>
+ *
+ *	<br>
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md">Numerical Analysis Library</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/README.md">R<sup>d</sup> Continuous/Discrete Probability Measures</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/discontinuous/README.md">Antithetic, Quadratically Re-sampled, De-biased Distribution</a></td></tr>
+ *  </table>
+ *	<br>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class QuadraticResampler {
-	private boolean _bDebias = false;
-	private boolean _bMeanCenter = false;
+public class QuadraticResampler
+{
+	private boolean _debias = false;
+	private boolean _meanCenter = false;
 
 	/**
-	 * QuadraticResampler Constructor
+	 * <i>QuadraticResampler</i> Constructor
 	 * 
-	 * @param bMeanCenter TRUE - The Sequence is to be Mean Centered
-	 * @param bDebias TRUE - Remove the Sampling Bias
+	 * @param meanCenter TRUE - The Sequence is to be Mean Centered
+	 * @param debias TRUE - Remove the Sampling Bias
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public QuadraticResampler (
-		final boolean bMeanCenter,
-		final boolean bDebias)
-		throws java.lang.Exception
+		final boolean meanCenter,
+		final boolean debias)
+		throws Exception
 	{
-		_bDebias = bDebias;
-		_bMeanCenter = bMeanCenter;
+		_debias = debias;
+		_meanCenter = meanCenter;
 	}
 
 	/**
@@ -122,7 +143,7 @@ public class QuadraticResampler {
 
 	public boolean meanCenter()
 	{
-		return _bMeanCenter;
+		return _meanCenter;
 	}
 
 	/**
@@ -133,71 +154,81 @@ public class QuadraticResampler {
 
 	public boolean debias()
 	{
-		return _bDebias;
+		return _debias;
 	}
 
 	/**
-	 * Transform the Input R^1 Sequence by applying Quadratic Sampling
+	 * Transform the Input R<sup>1</sup> Sequence by applying Quadratic Sampling
 	 * 
-	 * @param adblSequence The Input R^1 Sequence
+	 * @param sequence The Input R<sup>1</sup> Sequence
 	 * 
 	 * @return The Transformed Sequence
 	 */
 
 	public double[] transform (
-		final double[] adblSequence)
+		final double[] sequence)
 	{
-		if (null == adblSequence) return null;
-
-		double dblMean = 0.;
-		double dblVariance = 0.;
-		int iSequenceSize = adblSequence.length;
-		double[] adblTransfomedSequence = 0 == iSequenceSize ? null : new double[iSequenceSize];
-
-		if (0 == iSequenceSize) return null;
-
-		if (_bMeanCenter) {
-			for (int i = 0; i < iSequenceSize; ++i)
-				dblMean += adblSequence[i];
-
-			dblMean = dblMean / iSequenceSize;
+		if (null == sequence) {
+			return null;
 		}
 
-		for (int i = 0; i < iSequenceSize; ++i) {
-			double dblOffset = adblSequence[i] - dblMean;
-			dblVariance += dblOffset * dblOffset;
+		double mean = 0.;
+		double variance = 0.;
+		double[] transfomedSequence = 0 == sequence.length ? null : new double[sequence.length];
+
+		if (0 == sequence.length) {
+			return null;
 		}
 
-		double dblStandardDeviation = java.lang.Math.sqrt (dblVariance / (_bDebias ? iSequenceSize - 1 :
-			iSequenceSize));
+		if (_meanCenter) {
+			for (int sequenceIndex = 0; sequenceIndex < sequence.length; ++sequenceIndex) {
+				mean += sequence[sequenceIndex];
+			}
 
-		for (int i = 0; i < iSequenceSize; ++i)
-			adblTransfomedSequence[i] = adblSequence[i] / dblStandardDeviation;
+			mean = mean / sequence.length;
+		}
 
-		return adblTransfomedSequence;
+		for (int sequenceIndex = 0; sequenceIndex < sequence.length; ++sequenceIndex) {
+			double offset = sequence[sequenceIndex] - mean;
+			variance += offset * offset;
+		}
+
+		double standardDeviation = Math.sqrt (variance / (_debias ? sequence.length - 1 : sequence.length));
+
+		for (int sequenceIndex = 0; sequenceIndex < sequence.length; ++sequenceIndex) {
+			transfomedSequence[sequenceIndex] = sequence[sequenceIndex] / standardDeviation;
+		}
+
+		return transfomedSequence;
 	}
 
 	/**
-	 * Transform the Input R^d Sequence by applying Quadratic Sampling
+	 * Transform the Array of Input R<sup>d</sup> Sequence by applying Quadratic Sampling
 	 * 
-	 * @param aadblSequence The Input R^d Sequence
+	 * @param sequenceArray The Input R<sup>d</sup> Sequence Array
 	 * 
 	 * @return The Transformed Sequence
 	 */
 
 	public double[][] transform (
-		final double[][] aadblSequence)
+		final double[][] sequenceArray)
 	{
-		double[][] aadblFlippedSequence = org.drip.numerical.linearalgebra.R1MatrixUtil.Transpose (aadblSequence);
+		double[][] flippedSequenceArray = R1MatrixUtil.Transpose (sequenceArray);
 
-		if (null == aadblFlippedSequence) return null;
+		if (null == flippedSequenceArray) {
+			return null;
+		}
 
-		int iDimension = aadblFlippedSequence.length;
-		double[][] aadblFlippedTransformedSequence = new double[iDimension][];
+		double[][] transformedFlippedSequenceArray = new double[flippedSequenceArray.length][];
 
-		for (int i = 0; i < iDimension; ++i)
-			aadblFlippedTransformedSequence[i] = transform (aadblFlippedSequence[i]);
+		for (int flippedSequenceIndex = 0;
+			flippedSequenceIndex < flippedSequenceArray.length;
+			++flippedSequenceIndex)
+		{
+			transformedFlippedSequenceArray[flippedSequenceIndex] =
+				transform (flippedSequenceArray[flippedSequenceIndex]);
+		}
 		
-		return org.drip.numerical.linearalgebra.R1MatrixUtil.Transpose (aadblFlippedTransformedSequence);
+		return R1MatrixUtil.Transpose (transformedFlippedSequenceArray);
 	}
 }

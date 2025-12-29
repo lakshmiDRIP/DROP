@@ -176,14 +176,14 @@ public class RdWienerDriver
 	{
 		try
 		{
-			double[] singleCorrelatedSuite = new org.drip.measure.discontinuous.CorrelatedPathVertexDimension (
+			double[] singleCorrelatedSuite = new org.drip.measure.discontinuous.CorrelatedFactorsPathVertexRealization (
 				new org.drip.measure.crng.RandomNumberGenerator(),
 				_correlation.correlationMatrix(),
 				1,
 				1,
 				false,
 				null
-			).straightVertexRealization();
+			).nodeRd();
 
 			if (null == singleCorrelatedSuite)
 			{

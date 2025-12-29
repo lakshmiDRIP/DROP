@@ -114,7 +114,7 @@ public class TheilMixedEstimationModel {
 	 */
 
 	public static final org.drip.measure.bayesian.R1MultivariateConvolutionMetrics GenerateComposite (
-		final org.drip.measure.continuous.MultivariateMeta meta,
+		final org.drip.measure.continuous.MetaRd meta,
 		final org.drip.measure.bayesian.ProjectionDistributionLoading pdl1,
 		final org.drip.measure.bayesian.ProjectionDistributionLoading pdl2,
 		final org.drip.measure.gaussian.R1MultivariateNormal r1mnUnconditional)

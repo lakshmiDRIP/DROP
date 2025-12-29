@@ -3,7 +3,7 @@ package org.drip.state.sequence;
 
 import org.drip.analytics.date.JulianDate;
 import org.drip.analytics.support.Helper;
-import org.drip.measure.discontinuous.CorrelatedPathVertexDimension;
+import org.drip.measure.discontinuous.CorrelatedFactorsPathVertexRealization;
 import org.drip.measure.process.DiffusionEvolver;
 import org.drip.state.govvie.GovvieCurve;
 import org.drip.state.nonlinear.FlatForwardGovvieCurve;
@@ -127,11 +127,11 @@ public class PathVertexGovvie extends PathVertexRd
 			return null;
 		}
 
-		CorrelatedPathVertexDimension correlatedPathVertexDimension = cpvd();
+		CorrelatedFactorsPathVertexRealization correlatedPathVertexDimension = cpvd();
 
-		int pathCount = correlatedPathVertexDimension.numPath();
+		int pathCount = correlatedPathVertexDimension.simulationCount();
 
-		int timeVertexCount = correlatedPathVertexDimension.numVertex();
+		int timeVertexCount = correlatedPathVertexDimension.nodeCount();
 
 		String[] tenorArray = _govvieBuilderSettings.tenors();
 
@@ -190,14 +190,14 @@ public class PathVertexGovvie extends PathVertexRd
 
 	public static final PathVertexGovvie Standard (
 		final GovvieBuilderSettings govvieBuilderSettings,
-		final CorrelatedPathVertexDimension correlatedPathVertexDimension,
+		final CorrelatedFactorsPathVertexRealization correlatedPathVertexDimension,
 		final DiffusionEvolver diffusionEvolver)
 	{
 		if (null == correlatedPathVertexDimension || null == diffusionEvolver) {
 			return null;
 		}
 
-		int dimension = correlatedPathVertexDimension.numDimension();
+		int dimension = correlatedPathVertexDimension.dimensionCount();
 
 		DiffusionEvolver[] diffusionEvolverArray = new DiffusionEvolver[dimension];
 
@@ -230,7 +230,7 @@ public class PathVertexGovvie extends PathVertexRd
 
 	public PathVertexGovvie (
 		final GovvieBuilderSettings govvieBuilderSettings,
-		final CorrelatedPathVertexDimension correlatedPathVertexDimension,
+		final CorrelatedFactorsPathVertexRealization correlatedPathVertexDimension,
 		final DiffusionEvolver[] diffusionEvolverArray)
 		throws Exception
 	{

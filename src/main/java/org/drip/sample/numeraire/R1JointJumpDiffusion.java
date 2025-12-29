@@ -1,7 +1,7 @@
 
 package org.drip.sample.numeraire;
 
-import org.drip.measure.discontinuous.SequenceGenerator;
+import org.drip.measure.discontinuous.RandomSequenceGenerator;
 import org.drip.measure.dynamics.*;
 import org.drip.measure.process.*;
 import org.drip.measure.realization.*;
@@ -136,7 +136,7 @@ public class R1JointJumpDiffusion {
 		final String strHeader)
 		throws Exception
 	{
-		double[][] aadblGaussianJoint = SequenceGenerator.GaussianJoint (
+		double[][] aadblGaussianJoint = RandomSequenceGenerator.GaussianJoint (
 			iCount,
 			aadblCorrelation
 		);
@@ -251,9 +251,9 @@ public class R1JointJumpDiffusion {
 			"\t|| ASSET, COLLATERAL, BANK, COUNTER PARTY REALIZATION ||"
 		);
 
-		double[] adblBankDefaultIndicator = SequenceGenerator.Uniform (iNumTimeStep);
+		double[] adblBankDefaultIndicator = RandomSequenceGenerator.Uniform (iNumTimeStep);
 
-		double[] adblCounterPartyDefaultIndicator = SequenceGenerator.Uniform (iNumTimeStep);
+		double[] adblCounterPartyDefaultIndicator = RandomSequenceGenerator.Uniform (iNumTimeStep);
 
 		double[] adblTimeWidth = new double[iNumTimeStep];
 

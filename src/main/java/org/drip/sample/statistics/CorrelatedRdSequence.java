@@ -132,7 +132,7 @@ public class CorrelatedRdSequence {
 			{0.114, 0.000, 0.000, 0.000, 0.000, 0.000, 0.000, 0.000, 1.000},	// GBPUSD
 		};
 
-		CorrelatedPathVertexDimension cpvd = new CorrelatedPathVertexDimension (
+		CorrelatedFactorsPathVertexRealization cpvd = new CorrelatedFactorsPathVertexRealization (
 			new RandomNumberGenerator(),
 			aadblCorrelationInput,
 			iNumVertex,

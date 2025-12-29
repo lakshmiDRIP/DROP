@@ -1,7 +1,7 @@
 
 package org.drip.state.sequence;
 
-import org.drip.measure.discontinuous.SequenceGenerator;
+import org.drip.measure.discontinuous.RandomSequenceGenerator;
 import org.drip.numerical.common.NumberUtil;
 
 /*
@@ -193,7 +193,7 @@ public class PathRd
 		double[][] sequenceGrid = new double[pathCount][dimension];
 
 		for (int pathIndex = 0; pathIndex < pathCount; ++pathIndex) {
-			double[] randomArray = SequenceGenerator.Gaussian (dimension);
+			double[] randomArray = RandomSequenceGenerator.Gaussian (dimension);
 
 			if (null == randomArray || dimension != randomArray.length) {
 				return null;

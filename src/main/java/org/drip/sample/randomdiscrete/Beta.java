@@ -1,7 +1,7 @@
 
 package org.drip.sample.randomdiscrete;
 
-import org.drip.measure.discontinuous.SequenceGenerator;
+import org.drip.measure.discontinuous.RandomSequenceGenerator;
 import org.drip.service.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 
@@ -127,7 +127,7 @@ public class Beta
 		final int degreesOfFreedom2)
 		throws Exception
 	{
-		double[] randomArray = SequenceGenerator.Beta (
+		double[] randomArray = RandomSequenceGenerator.Beta (
 			200,
 			degreesOfFreedom1,
 			degreesOfFreedom2

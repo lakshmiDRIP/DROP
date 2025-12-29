@@ -2,7 +2,7 @@
 package org.drip.sample.helitterman;
 
 import org.drip.measure.bayesian.R1MultivariateConvolutionMetrics;
-import org.drip.measure.continuous.MultivariateMeta;
+import org.drip.measure.continuous.MetaRd;
 import org.drip.measure.gaussian.*;
 import org.drip.measure.statistics.MultivariateMoments;
 import org.drip.portfolioconstruction.allocator.*;
@@ -227,7 +227,7 @@ public class Table7Reconciler
 		};
 
 		R1MultivariateNormal viewDistribution = R1MultivariateNormal.Standard (
-			new MultivariateMeta (
+			new MetaRd (
 				new String[]
 				{
 					"PROJECTION #1",

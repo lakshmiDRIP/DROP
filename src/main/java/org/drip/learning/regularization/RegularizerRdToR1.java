@@ -159,7 +159,7 @@ public interface RegularizerRdToR1 {
 	 */
 
 	public abstract double structuralRisk (
-		final org.drip.measure.continuous.RdR1 distRdR1,
+		final org.drip.measure.continuous.RdR1Distribution distRdR1,
 		final org.drip.function.definition.RdToR1 funcRdToR1,
 		final double[][] aadblX,
 		final double[] adblY)

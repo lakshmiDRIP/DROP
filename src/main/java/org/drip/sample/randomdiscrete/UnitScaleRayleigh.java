@@ -1,7 +1,7 @@
 
 package org.drip.sample.randomdiscrete;
 
-import org.drip.measure.discontinuous.SequenceGenerator;
+import org.drip.measure.discontinuous.RandomSequenceGenerator;
 import org.drip.service.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 
@@ -124,7 +124,7 @@ public class UnitScaleRayleigh
 	private static final void DisplayStream()
 		throws Exception
 	{
-		double[] randomArray = SequenceGenerator.UnitScaleRayleigh (200);
+		double[] randomArray = RandomSequenceGenerator.UnitScaleRayleigh (200);
 
 		System.out.println ("\t|---------------------------------------------------------------------------------------------------||");
 

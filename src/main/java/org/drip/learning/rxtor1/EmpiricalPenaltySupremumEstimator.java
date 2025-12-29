@@ -135,8 +135,8 @@ public class EmpiricalPenaltySupremumEstimator extends org.drip.sequence.functio
 	public static final int SUPREMUM_PENALTY_REGULARIZED_RISK = 32;
 
 	private int _iSupremumPenaltyLossMode = -1;
-	private org.drip.measure.continuous.R1R1 _distR1R1 = null;
-	private org.drip.measure.continuous.RdR1 _distRdR1 = null;
+	private org.drip.measure.continuous.R1R1Distribution _distR1R1 = null;
+	private org.drip.measure.continuous.RdR1Distribution _distRdR1 = null;
 	private org.drip.spaces.rxtor1.NormedR1ToNormedR1[] _aR1ToR1 = null;
 	private org.drip.spaces.rxtor1.NormedRdToNormedR1[] _aRdToR1 = null;
 	private org.drip.spaces.instance.GeneralizedValidatedVector _gvviY = null;
@@ -158,8 +158,8 @@ public class EmpiricalPenaltySupremumEstimator extends org.drip.sequence.functio
 		final int iSupremumPenaltyLossMode,
 		final org.drip.learning.rxtor1.EmpiricalLearningMetricEstimator elme,
 		final org.drip.spaces.instance.GeneralizedValidatedVector gvviY,
-		final org.drip.measure.continuous.R1R1 distR1R1,
-		final org.drip.measure.continuous.RdR1 distRdR1)
+		final org.drip.measure.continuous.R1R1Distribution distR1R1,
+		final org.drip.measure.continuous.RdR1Distribution distRdR1)
 		throws java.lang.Exception
 	{
 		if (null == (_elme = elme))

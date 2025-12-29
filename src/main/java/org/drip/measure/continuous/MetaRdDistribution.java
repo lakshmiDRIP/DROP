@@ -121,10 +121,10 @@ import org.drip.function.definition.RdToR1;
 public abstract class MetaRdDistribution
 	extends RdDistribution
 {
-	private MultivariateMeta _multivariateMeta = null;
+	private MetaRd _multivariateMeta = null;
 
 	protected MetaRdDistribution (
-		final MultivariateMeta multivariateMeta)
+		final MetaRd multivariateMeta)
 		throws Exception
 	{
 		if (null == (_multivariateMeta = multivariateMeta)) {
@@ -138,7 +138,7 @@ public abstract class MetaRdDistribution
 	 * @return The Multivariate Meta Instance
 	 */
 
-	public MultivariateMeta meta()
+	public MetaRd meta()
 	{
 		return _multivariateMeta;
 	}

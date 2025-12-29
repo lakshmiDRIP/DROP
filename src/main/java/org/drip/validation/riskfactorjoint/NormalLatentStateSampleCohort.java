@@ -4,7 +4,7 @@ package org.drip.validation.riskfactorjoint;
 import java.util.List;
 
 import org.drip.measure.crng.RandomNumberGenerator;
-import org.drip.measure.discontinuous.CorrelatedPathVertexDimension;
+import org.drip.measure.discontinuous.CorrelatedFactorsPathVertexRealization;
 import org.drip.measure.discontinuous.VertexRd;
 import org.drip.measure.identifier.LabelledVertexCorrelation;
 import org.drip.measure.identifier.LabelledVertexCovariance;
@@ -163,10 +163,10 @@ public class NormalLatentStateSampleCohort
 			return null;
 		}
 
-		CorrelatedPathVertexDimension correlatedPathVertexDimension = null;
+		CorrelatedFactorsPathVertexRealization correlatedPathVertexDimension = null;
 
 		try {
-			correlatedPathVertexDimension = new CorrelatedPathVertexDimension (
+			correlatedPathVertexDimension = new CorrelatedFactorsPathVertexRealization (
 				new RandomNumberGenerator(),
 				correlationMatrix,
 				vertexCount,

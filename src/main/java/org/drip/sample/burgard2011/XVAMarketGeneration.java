@@ -10,7 +10,7 @@ import org.drip.analytics.support.VertexDateBuilder;
 import org.drip.exposure.evolver.*;
 import org.drip.exposure.universe.*;
 import org.drip.measure.crng.RandomNumberGenerator;
-import org.drip.measure.discontinuous.CorrelatedPathVertexDimension;
+import org.drip.measure.discontinuous.CorrelatedFactorsPathVertexRealization;
 import org.drip.measure.dynamics.*;
 import org.drip.measure.process.*;
 import org.drip.numerical.linearalgebra.R1MatrixUtil;
@@ -966,7 +966,7 @@ public class XVAMarketGeneration {
 			latentStateVertexContainer
 		);
 
-		CorrelatedPathVertexDimension correlatedPathVertexDimension = new CorrelatedPathVertexDimension (
+		CorrelatedFactorsPathVertexRealization correlatedPathVertexDimension = new CorrelatedFactorsPathVertexRealization (
 			new RandomNumberGenerator(),
 			latentStateCorrelationMatrix,
 			vertexCount,

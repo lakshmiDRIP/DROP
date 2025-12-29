@@ -154,7 +154,7 @@ public class ProjectionDistributionLoading {
 	 */
 
 	public static final ProjectionDistributionLoading FromConfidence (
-		final org.drip.measure.continuous.MultivariateMeta meta,
+		final org.drip.measure.continuous.MetaRd meta,
 		final double[] adblMean,
 		final double[][] aadblScopingCovariance,
 		final double[][] aadblScopingLoading,

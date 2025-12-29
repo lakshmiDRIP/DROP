@@ -1,7 +1,7 @@
 
 package org.drip.sample.numeraire;
 
-import org.drip.measure.discontinuous.SequenceGenerator;
+import org.drip.measure.discontinuous.RandomSequenceGenerator;
 import org.drip.measure.dynamics.*;
 import org.drip.measure.process.JumpDiffusionEvolver;
 import org.drip.measure.realization.*;
@@ -166,9 +166,9 @@ public class R1Jump {
 			)
 		);
 
-		double[] adblAssetNumeraireTimeSeries = SequenceGenerator.Gaussian (iNumTimeStep);
+		double[] adblAssetNumeraireTimeSeries = RandomSequenceGenerator.Gaussian (iNumTimeStep);
 
-		double[] adblDefaultIndicatorTimeSeries = SequenceGenerator.Uniform (iNumTimeStep);
+		double[] adblDefaultIndicatorTimeSeries = RandomSequenceGenerator.Uniform (iNumTimeStep);
 
 		JumpDiffusionEdge[] aR1AssetLR = meAsset.incrementSequence (
 			new JumpDiffusionVertex (

@@ -22,7 +22,7 @@ import org.drip.exposure.universe.MarketVertexGenerator;
 import org.drip.market.otc.FixedFloatSwapConvention;
 import org.drip.market.otc.IBORFixedFloatContainer;
 import org.drip.measure.crng.RandomNumberGenerator;
-import org.drip.measure.discontinuous.CorrelatedPathVertexDimension;
+import org.drip.measure.discontinuous.CorrelatedFactorsPathVertexRealization;
 import org.drip.measure.dynamics.DiffusionEvaluatorLinear;
 import org.drip.measure.dynamics.DiffusionEvaluatorLogarithmic;
 import org.drip.measure.dynamics.HazardJumpEvaluator;
@@ -684,7 +684,7 @@ public class EnsembleVariationMarginEstimate
 			fixFloatNotional
 		);
 
-		CorrelatedPathVertexDimension correlatedPathVertexDimension = new CorrelatedPathVertexDimension (
+		CorrelatedFactorsPathVertexRealization correlatedPathVertexDimension = new CorrelatedFactorsPathVertexRealization (
 			new RandomNumberGenerator(),
 			correlationMatrix,
 			latentStateVertexCount,

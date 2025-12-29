@@ -2,7 +2,7 @@
 package org.drip.sample.govviemc;
 
 import org.drip.analytics.date.*;
-import org.drip.measure.discontinuous.SequenceGenerator;
+import org.drip.measure.discontinuous.RandomSequenceGenerator;
 import org.drip.service.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 import org.drip.service.template.LatentMarketStateBuilder;
@@ -200,7 +200,7 @@ public class PathVertexForwardState {
 			adblTreasuryYield
 		);
 
-		double[] adblWanderer = SequenceGenerator.Gaussian (iNumPath);
+		double[] adblWanderer = RandomSequenceGenerator.Gaussian (iNumPath);
 
 		for (int iPath = 0; iPath < iNumPath; ++iPath) {
 			double[] adblPathTreasuryYield = new double[iNumTreasury];

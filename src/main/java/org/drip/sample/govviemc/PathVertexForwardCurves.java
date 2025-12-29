@@ -3,7 +3,7 @@ package org.drip.sample.govviemc;
 
 import org.drip.analytics.date.*;
 import org.drip.measure.crng.RandomNumberGenerator;
-import org.drip.measure.discontinuous.CorrelatedPathVertexDimension;
+import org.drip.measure.discontinuous.CorrelatedFactorsPathVertexRealization;
 import org.drip.measure.dynamics.DiffusionEvaluatorLogarithmic;
 import org.drip.measure.process.DiffusionEvolver;
 import org.drip.service.common.FormatUtil;
@@ -181,7 +181,7 @@ public class PathVertexForwardCurves {
 				adblTreasuryCoupon,
 				adblTreasuryYield
 			),
-			new CorrelatedPathVertexDimension (
+			new CorrelatedFactorsPathVertexRealization (
 				new RandomNumberGenerator(),
 				aadblCorrelation,
 				iNumVertex,

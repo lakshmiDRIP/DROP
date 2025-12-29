@@ -1,11 +1,24 @@
 
 package org.drip.measure.discontinuous;
 
+import org.drip.measure.gaussian.Covariance;
+import org.drip.measure.gaussian.NormalQuadrature;
+import org.drip.numerical.common.NumberUtil;
+import org.drip.numerical.linearalgebra.R1MatrixUtil;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2030 Lakshmi Krishnamurthy
+ * Copyright (C) 2029 Lakshmi Krishnamurthy
+ * Copyright (C) 2028 Lakshmi Krishnamurthy
+ * Copyright (C) 2027 Lakshmi Krishnamurthy
+ * Copyright (C) 2026 Lakshmi Krishnamurthy
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -81,7 +94,7 @@ package org.drip.measure.discontinuous;
  */
 
 /**
- * <i>SequenceGenerator</i> generates the specified Univariate Sequence of the Given Distribution Type.
+ * <i>RandomSequenceGenerator</i> generates the specified Univariate Sequence of the Given Distribution Type.
  *
  * <br><br>
  * 	<ul>
@@ -107,141 +120,174 @@ package org.drip.measure.discontinuous;
  * 		</li>
  * 	</ul>
  * 
- *	<br><br>
+ * It provides the following Functionality:
+ *
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md">Numerical Analysis Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/README.md">R<sup>d</sup> Continuous/Discrete Probability Measures</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/discrete/README.md">Antithetic, Quadratically Re-sampled, De-biased Distribution</a></li>
+ * 		<li>Generate a Sequence of Uniform Random Numbers</li>
+ * 		<li>Generate a Sequence of Gaussian Random Numbers</li>
+ * 		<li>Generate a Sequence of Log Normal Random Numbers</li>
+ * 		<li>Generate a Sequence of R<sup>d</sup> Correlated Gaussian Random Numbers</li>
+ * 		<li>Generate an Array of Chi-Squared Distributed Random Numbers</li>
+ * 		<li>Generate an Array of Scaled Gamma Distributed Random Numbers</li>
+ * 		<li>Generate an Array of Chi Distributed Random Numbers</li>
+ * 		<li>Generate an Array of Unit Scale Rayleigh Distributed Random Numbers</li>
+ * 		<li>Generate an Array of Unit Scale Maxwell Distributed Random Numbers</li>
+ * 		<li>Generate an Array of Inverse Chi-Squared Distributed Random Numbers</li>
+ * 		<li>Generate an Array of Beta Distributed Random Numbers</li>
+ * 		<li>Generate an Array of F Distributed Random Numbers</li>
+ * 		<li>Generate a Rank-reduced Chi-Squared Distributed Array</li>
+ * 		<li>Generate a Pillai (2016) Special Chi-Squared Distributed Array</li>
  *  </ul>
+ *
+ *	<br>
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md">Numerical Analysis Library</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/README.md">R<sup>d</sup> Continuous/Discrete Probability Measures</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/discontinuous/README.md">Antithetic, Quadratically Re-sampled, De-biased Distribution</a></td></tr>
+ *  </table>
+ *	<br>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class SequenceGenerator
+public class RandomSequenceGenerator
 {
 
 	/**
 	 * Generate a Sequence of Uniform Random Numbers
 	 * 
-	 * @param iCount The Count in the Sequence
+	 * @param count The Count in the Sequence
 	 * 
 	 * @return The Sequence of Uniform Random Numbers
 	 */
 
 	public static final double[] Uniform (
-		final int iCount)
+		final int count)
 	{
-		if (0 >= iCount) return null;
+		if (0 >= count) {
+			return null;
+		}
 
-		double[] adblRandom = new double[iCount];
+		double[] randomArray = new double[count];
 
-		for (int i = 0; i < iCount; ++i)
-			adblRandom[i] = java.lang.Math.random();
+		for (int i = 0; i < count; ++i) {
+			randomArray[i] = Math.random();
+		}
 
-		return adblRandom;
+		return randomArray;
 	}
 
 	/**
 	 * Generate a Sequence of Gaussian Random Numbers
 	 * 
-	 * @param iCount The Count in the Sequence
+	 * @param count The Count in the Sequence
 	 * 
 	 * @return The Sequence of Gaussian Random Numbers
 	 */
 
 	public static final double[] Gaussian (
-		final int iCount)
+		final int count)
 	{
-		if (0 >= iCount) return null;
+		if (0 >= count) {
+			return null;
+		}
 
-		double[] adblRandom = new double[iCount];
+		double[] randomArray = new double[count];
 
-		for (int i = 0; i < iCount; ++i) {
+		for (int i = 0; i < count; ++i) {
 			try {
-				adblRandom[i] = org.drip.measure.gaussian.NormalQuadrature.Random();
-			} catch (java.lang.Exception e) {
+				randomArray[i] = NormalQuadrature.Random();
+			} catch (Exception e) {
 				e.printStackTrace();
 
 				return null;
 			}
 		}
 
-		return adblRandom;
+		return randomArray;
 	}
 
 	/**
 	 * Generate a Sequence of Log Normal Random Numbers
 	 * 
-	 * @param iCount The Count in the Sequence
+	 * @param count The Count in the Sequence
 	 * 
 	 * @return The Sequence of Log Normal Random Numbers
 	 */
 
 	public static final double[] LogNormal (
-		final int iCount)
+		final int count)
 	{
-		if (0 >= iCount) return null;
+		if (0 >= count) {
+			return null;
+		}
 
-		double[] adblRandom = new double[iCount];
+		double[] randomArray = new double[count];
 
-		double dblNormalizer = 1. / java.lang.Math.sqrt (java.lang.Math.E);
+		double normalizer = 1. / Math.sqrt (Math.E);
 
-		for (int i = 0; i < iCount; ++i) {
+		for (int i = 0; i < count; ++i) {
 			try {
-				adblRandom[i] = java.lang.Math.exp (org.drip.measure.gaussian.NormalQuadrature.Random()) *
-					dblNormalizer;
-			} catch (java.lang.Exception e) {
+				randomArray[i] = Math.exp (NormalQuadrature.Random()) * normalizer;
+			} catch (Exception e) {
 				e.printStackTrace();
 
 				return null;
 			}
 		}
 
-		return adblRandom;
+		return randomArray;
 	}
 
 	/**
-	 * Generate a Sequence of R^d Correlated Gaussian Random Numbers
+	 * Generate a Sequence of R<sup>d</sup> Correlated Gaussian Random Numbers
 	 * 
-	 * @param iCount The Count in the Sequence
-	 * @param aadblCorrelation The Correlation Matrix
+	 * @param count The Count in the Sequence
+	 * @param correlationMatrix The Correlation Matrix
 	 * 
-	 * @return The Sequence of R^d Correlated Gaussian Random Numbers
+	 * @return The Sequence of R<sup>d</sup> Correlated Gaussian Random Numbers
 	 */
 
 	public static final double[][] GaussianJoint (
-		final int iCount,
-		final double[][] aadblCorrelation)
+		final int count,
+		final double[][] correlationMatrix)
 	{
-		if (0 >= iCount) return null;
-
-		double[][] aadblCholesky = org.drip.numerical.linearalgebra.R1MatrixUtil.CholeskyBanachiewiczFactorization
-			(aadblCorrelation);
-
-		if (null == aadblCholesky) return null;
-
-		int iDimension = aadblCholesky.length;
-		double[][] aadblRandom = new double[iCount][];
-
-		for (int k = 0; k < iCount; ++k) {
-			double[] adblUncorrelatedRandom = Gaussian (iDimension);
-
-			if (null == adblUncorrelatedRandom || iDimension != adblUncorrelatedRandom.length) return null;
-
-			double[] adblCorrelatedRandom = new double[iDimension];
-
-			for (int i = 0; i < iDimension; ++i) {
-				adblCorrelatedRandom[i] = 0.;
-
-				for (int j = 0; j < iDimension; ++j)
-					adblCorrelatedRandom[i] += aadblCholesky[i][j] * adblUncorrelatedRandom[j];
-			}
-
-			aadblRandom[k] = adblCorrelatedRandom;
+		if (0 >= count) {
+			return null;
 		}
 
-		return aadblRandom;
+		double[][] choleskyMatrix = R1MatrixUtil.CholeskyBanachiewiczFactorization (correlationMatrix);
+
+		if (null == choleskyMatrix) {
+			return null;
+		}
+
+		int dimension = choleskyMatrix.length;
+		double[][] randomArraySequence = new double[count][];
+
+		for (int k = 0; k < count; ++k) {
+			double[] uncorrelatedRandomArray = Gaussian (dimension);
+
+			if (null == uncorrelatedRandomArray || dimension != uncorrelatedRandomArray.length) {
+				return null;
+			}
+
+			double[] correlatedRandomArray = new double[dimension];
+
+			for (int dimensionI = 0; dimensionI < dimension; ++dimensionI) {
+				correlatedRandomArray[dimensionI] = 0.;
+
+				for (int dimensionJ = 0; dimensionJ < dimension; ++dimensionJ) {
+					correlatedRandomArray[dimensionI] +=
+						choleskyMatrix[dimensionI][dimensionJ] * uncorrelatedRandomArray[dimensionJ];
+				}
+			}
+
+			randomArraySequence[k] = correlatedRandomArray;
+		}
+
+		return randomArraySequence;
 	}
 
 	/**
@@ -257,29 +303,22 @@ public class SequenceGenerator
 		final int count,
 		final int degreesOfFreedom)
 	{
-		if (0 >= degreesOfFreedom)
-		{
+		if (0 >= degreesOfFreedom) {
 			return null;
 		}
 
 		double[] chiSquaredArray = new double[count];
 
-		for (int index = 0; index < count; ++index)
-		{
+		for (int index = 0; index < count; ++index) {
 			double sumOfStandardNormalSquares = 0.;
 
-			for (int drawIndex = 0; drawIndex < degreesOfFreedom; ++drawIndex)
-			{
-				try
-				{
-					double randomStandardNormal = org.drip.measure.gaussian.NormalQuadrature.InverseCDF
-						(java.lang.Math.random());
+			for (int drawIndex = 0; drawIndex < degreesOfFreedom; ++drawIndex) {
+				try {
+					double randomStandardNormal = NormalQuadrature.InverseCDF (Math.random());
 
 					sumOfStandardNormalSquares = sumOfStandardNormalSquares +
 						randomStandardNormal * randomStandardNormal;
-				}
-				catch (java.lang.Exception e)
-				{
+				} catch (Exception e) {
 					e.printStackTrace();
 
 					return null;
@@ -307,25 +346,19 @@ public class SequenceGenerator
 		final int degreesOfFreedom,
 		final double scale)
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (scale) || 0. >= scale)
-		{
+		if (!NumberUtil.IsValid (scale) || 0. >= scale) {
 			return null;
 		}
 
-		double[] chiSquaredArray =  ChiSquared (
-			count,
-			degreesOfFreedom
-		);
+		double[] chiSquaredArray =  ChiSquared (count, degreesOfFreedom);
 
-		if (null == chiSquaredArray)
-		{
+		if (null == chiSquaredArray) {
 			return null;
 		}
 
 		double[] scaledGammaArray = new double[count];
 
-		for (int index = 0; index < count; ++index)
-		{
+		for (int index = 0; index < count; ++index) {
 			scaledGammaArray[index] = scale * chiSquaredArray[index];
 		}
 
@@ -345,21 +378,16 @@ public class SequenceGenerator
 		final int count,
 		final int degreesOfFreedom)
 	{
-		double[] chiSquaredArray =  ChiSquared (
-			count,
-			degreesOfFreedom
-		);
+		double[] chiSquaredArray =  ChiSquared (count, degreesOfFreedom);
 
-		if (null == chiSquaredArray)
-		{
+		if (null == chiSquaredArray) {
 			return null;
 		}
 
 		double[] chiArray = new double[count];
 
-		for (int index = 0; index < count; ++index)
-		{
-			chiArray[index] = java.lang.Math.sqrt (chiSquaredArray[index]);
+		for (int index = 0; index < count; ++index) {
+			chiArray[index] = Math.sqrt (chiSquaredArray[index]);
 		}
 
 		return chiArray;
@@ -376,21 +404,16 @@ public class SequenceGenerator
 	public static final double[] UnitScaleRayleigh (
 		final int count)
 	{
-		double[] chiSquaredArray =  ChiSquared (
-			count,
-			2
-		);
+		double[] chiSquaredArray = ChiSquared (count, 2);
 
-		if (null == chiSquaredArray)
-		{
+		if (null == chiSquaredArray) {
 			return null;
 		}
 
 		double[] unitScaleRayleighArray = new double[count];
 
-		for (int index = 0; index < count; ++index)
-		{
-			unitScaleRayleighArray[index] = java.lang.Math.sqrt (chiSquaredArray[index]);
+		for (int index = 0; index < count; ++index) {
+			unitScaleRayleighArray[index] = Math.sqrt (chiSquaredArray[index]);
 		}
 
 		return unitScaleRayleighArray;
@@ -407,21 +430,16 @@ public class SequenceGenerator
 	public static final double[] UnitScaleMaxwell (
 		final int count)
 	{
-		double[] chiSquaredArray =  ChiSquared (
-			count,
-			3
-		);
+		double[] chiSquaredArray = ChiSquared (count, 3);
 
-		if (null == chiSquaredArray)
-		{
+		if (null == chiSquaredArray) {
 			return null;
 		}
 
 		double[] unitScaleMaxwellArray = new double[count];
 
-		for (int index = 0; index < count; ++index)
-		{
-			unitScaleMaxwellArray[index] = java.lang.Math.sqrt (chiSquaredArray[index]);
+		for (int index = 0; index < count; ++index) {
+			unitScaleMaxwellArray[index] = Math.sqrt (chiSquaredArray[index]);
 		}
 
 		return unitScaleMaxwellArray;
@@ -440,20 +458,15 @@ public class SequenceGenerator
 		final int count,
 		final int degreesOfFreedom)
 	{
-		double[] chiSquaredArray =  ChiSquared (
-			count,
-			degreesOfFreedom
-		);
+		double[] chiSquaredArray = ChiSquared (count, degreesOfFreedom);
 
-		if (null == chiSquaredArray)
-		{
+		if (null == chiSquaredArray) {
 			return null;
 		}
 
 		double[] inverseChiSquaredArray = new double[count];
 
-		for (int index = 0; index < count; ++index)
-		{
+		for (int index = 0; index < count; ++index) {
 			inverseChiSquaredArray[index] = 1. / chiSquaredArray[index];
 		}
 
@@ -475,25 +488,17 @@ public class SequenceGenerator
 		final int degreesOfFreedom1,
 		final int degreesOfFreedom2)
 	{
-		double[] chiSquaredArray1 = ChiSquared (
-			count,
-			degreesOfFreedom1
-		);
+		double[] chiSquaredArray1 = ChiSquared (count, degreesOfFreedom1);
 
-		double[] chiSquaredArray2 = ChiSquared (
-			count,
-			degreesOfFreedom2
-		);
+		double[] chiSquaredArray2 = ChiSquared (count, degreesOfFreedom2);
 
-		if (null == chiSquaredArray1 || null == chiSquaredArray2)
-		{
+		if (null == chiSquaredArray1 || null == chiSquaredArray2) {
 			return null;
 		}
 
 		double[] betaArray = new double[count];
 
-		for (int index = 0; index < count; ++index)
-		{
+		for (int index = 0; index < count; ++index) {
 			betaArray[index] = chiSquaredArray1[index] / (chiSquaredArray1[index] + chiSquaredArray2[index]);
 		}
 
@@ -515,25 +520,17 @@ public class SequenceGenerator
 		final int degreesOfFreedom1,
 		final int degreesOfFreedom2)
 	{
-		double[] chiSquaredArray1 = ChiSquared (
-			count,
-			degreesOfFreedom1
-		);
+		double[] chiSquaredArray1 = ChiSquared (count, degreesOfFreedom1);
 
-		double[] chiSquaredArray2 = ChiSquared (
-			count,
-			degreesOfFreedom2
-		);
+		double[] chiSquaredArray2 = ChiSquared (count, degreesOfFreedom2);
 
-		if (null == chiSquaredArray1 || null == chiSquaredArray2)
-		{
+		if (null == chiSquaredArray1 || null == chiSquaredArray2) {
 			return null;
 		}
 
 		double[] fArray = new double[count];
 
-		for (int index = 0; index < count; ++index)
-		{
+		for (int index = 0; index < count; ++index) {
 			fArray[index] = (chiSquaredArray1[index] * degreesOfFreedom2) /
 				(chiSquaredArray2[index] * degreesOfFreedom1);
 		}
@@ -554,46 +551,32 @@ public class SequenceGenerator
 		final int count,
 		final double[][] covarianceMatrix)
 	{
+		Covariance covariance = null;
 		double[] rankReducedChiSquare = new double[count];
-		org.drip.measure.gaussian.Covariance covariance = null;
 
-		try
-		{
-			covariance = new org.drip.measure.gaussian.Covariance (covarianceMatrix);
-		}
-		catch (java.lang.Exception e)
-		{
+		try {
+			covariance = new Covariance (covarianceMatrix);
+		} catch (Exception e) {
 			e.printStackTrace();
 
 			return null;
 		}
 
-		double[][] gaussianJointArray = GaussianJoint (
-			count,
-			covariance.correlationMatrix()
-		);
+		double[][] gaussianJointArraySequence = GaussianJoint (count, covariance.correlationMatrix());
 
-		if (null == gaussianJointArray)
-		{
+		if (null == gaussianJointArraySequence) {
 			return null;
 		}
 
 		double[][] precisionMatrix = covariance.precisionMatrix();
 
-		for (int index = 0; index < count; ++index)
-		{
-			try
-			{
-				rankReducedChiSquare[index] = org.drip.numerical.linearalgebra.R1MatrixUtil.DotProduct (
-					gaussianJointArray[index],
-					org.drip.numerical.linearalgebra.R1MatrixUtil.Product (
-						precisionMatrix,
-						gaussianJointArray[index]
-					)
+		for (int index = 0; index < count; ++index) {
+			try {
+				rankReducedChiSquare[index] = R1MatrixUtil.DotProduct (
+					gaussianJointArraySequence[index],
+					R1MatrixUtil.Product (precisionMatrix, gaussianJointArraySequence[index])
 				);
-			}
-			catch (java.lang.Exception e)
-			{
+			} catch (Exception e) {
 				e.printStackTrace();
 
 				return null;
@@ -602,7 +585,6 @@ public class SequenceGenerator
 
 		return rankReducedChiSquare;
 	}
-
 
 	/**
 	 * Generate a Pillai (2016) Special Chi-Squared Distributed Array
@@ -619,38 +601,29 @@ public class SequenceGenerator
 		final double[][] covarianceMatrix,
 		final double[] weightArray)
 	{
-		if (!org.drip.numerical.common.NumberUtil.NormalizedPositive (weightArray))
-		{
+		if (!NumberUtil.NormalizedPositive (weightArray)) {
 			return null;
 		}
 
+		Covariance covariance = null;
 		int pillaiVectorSize = weightArray.length;
 		double[] pillaiSpecialChiSquare = new double[count];
-		org.drip.measure.gaussian.Covariance covariance = null;
 
-		try
-		{
+		try {
 			covariance = new org.drip.measure.gaussian.Covariance (covarianceMatrix);
-		}
-		catch (java.lang.Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 
 			return null;
 		}
 
-		if (pillaiVectorSize != covarianceMatrix.length)
-		{
+		if (pillaiVectorSize != covarianceMatrix.length) {
 			return null;
 		}
 
-		double[][] gaussianJointArray = GaussianJoint (
-			count,
-			covariance.correlationMatrix()
-		);
+		double[][] gaussianJointArraySequence = GaussianJoint (count, covariance.correlationMatrix());
 
-		if (null == gaussianJointArray)
-		{
+		if (null == gaussianJointArraySequence) {
 			return null;
 		}
 
@@ -658,24 +631,17 @@ public class SequenceGenerator
 		{
 			double[] pillaiVector = new double[pillaiVectorSize];
 
-			for (int pillaiVectorIndex = 0; pillaiVectorIndex < pillaiVectorSize; ++pillaiVectorIndex)
-			{
+			for (int pillaiVectorIndex = 0; pillaiVectorIndex < pillaiVectorSize; ++pillaiVectorIndex) {
 				pillaiVector[pillaiVectorIndex] = weightArray[pillaiVectorIndex] /
-					gaussianJointArray[index][pillaiVectorIndex];
+					gaussianJointArraySequence[index][pillaiVectorIndex];
 			}
 
-			try
-			{
-				pillaiSpecialChiSquare[index] = 1. / org.drip.numerical.linearalgebra.R1MatrixUtil.DotProduct (
+			try {
+				pillaiSpecialChiSquare[index] = 1. / R1MatrixUtil.DotProduct (
 					pillaiVector,
-					org.drip.numerical.linearalgebra.R1MatrixUtil.Product (
-						covarianceMatrix,
-						pillaiVector
-					)
+					R1MatrixUtil.Product (covarianceMatrix, pillaiVector)
 				);
-			}
-			catch (java.lang.Exception e)
-			{
+			} catch (Exception e) {
 				e.printStackTrace();
 
 				return null;

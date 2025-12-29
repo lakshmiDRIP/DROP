@@ -2,7 +2,7 @@
 package org.drip.sample.blacklitterman;
 
 import org.drip.measure.bayesian.R1MultivariateConvolutionMetrics;
-import org.drip.measure.continuous.MultivariateMeta;
+import org.drip.measure.continuous.MetaRd;
 import org.drip.measure.gaussian.*;
 import org.drip.numerical.linearalgebra.R1MatrixUtil;
 import org.drip.portfolioconstruction.allocator.*;
@@ -254,7 +254,7 @@ public class Soontornkit2010 {
 		};
 
 		R1MultivariateNormal viewDistribution = R1MultivariateNormal.Standard (
-			new MultivariateMeta (
+			new MetaRd (
 				new String[] {
 					"PROJECTION #1",
 					"PROJECTION #2",

@@ -4,7 +4,7 @@ package org.drip.sample.xva;
 import org.drip.analytics.date.*;
 import org.drip.exposure.evolver.LatentStateVertexContainer;
 import org.drip.exposure.universe.*;
-import org.drip.measure.discontinuous.SequenceGenerator;
+import org.drip.measure.discontinuous.RandomSequenceGenerator;
 import org.drip.measure.dynamics.*;
 import org.drip.measure.process.DiffusionEvolver;
 import org.drip.measure.realization.*;
@@ -407,7 +407,7 @@ public class UncollateralizedCollateralGroupCorrelated {
 
 		for (int i = 0; i < iNumPath; ++i) {
 			double[][] aadblNumeraire = R1MatrixUtil.Transpose (
-				SequenceGenerator.GaussianJoint (
+				RandomSequenceGenerator.GaussianJoint (
 					iNumStep,
 					aadblCorrelation
 				)

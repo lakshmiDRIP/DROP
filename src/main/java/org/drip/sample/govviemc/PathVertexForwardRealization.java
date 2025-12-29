@@ -253,7 +253,7 @@ public class PathVertexForwardRealization {
 
 		System.out.println (strDump + "|");
 
-		CorrelatedPathVertexDimension cpvd = new CorrelatedPathVertexDimension (
+		CorrelatedFactorsPathVertexRealization cpvd = new CorrelatedFactorsPathVertexRealization (
 			new RandomNumberGenerator(),
 			aadblCorrelation,
 			iNumVertex,
@@ -265,7 +265,7 @@ public class PathVertexForwardRealization {
 		VertexRd[] aVertexRd = cpvd.multiPathVertexRd();
 
 		for (int iPath = 0; iPath < iNumPath; ++iPath) {
-			List<double[]> lsVertexRd = aVertexRd[iPath].vertexList();
+			List<double[]> lsVertexRd = aVertexRd[iPath].nodeList();
 
 			JumpDiffusionEdgeUnit[][] aaUR = new JumpDiffusionEdgeUnit[iNumDimension][iNumVertex];
 			JumpDiffusionVertex[][] aaJDV = new JumpDiffusionVertex[iNumDimension][iNumVertex + 1];

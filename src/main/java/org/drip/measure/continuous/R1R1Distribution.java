@@ -21,6 +21,7 @@ package org.drip.measure.continuous;
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
  * Copyright (C) 2016 Lakshmi Krishnamurthy
+ * Copyright (C) 2015 Lakshmi Krishnamurthy
  * 
  *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
  *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
@@ -88,14 +89,14 @@ package org.drip.measure.continuous;
  */
 
 /**
- * <i>MultivariateMeta</i> holds a Group of Variable Names - each of which separately is a Valid Single
- * 	R<sup>1</sup>/R<sup>d</sup> Variable. It provides the following Functionality:
+ * <i>R1R1Distribution</i> implements the Base Abstract Class behind Bivariate R<sup>1</sup> Distributions.
+ * 	It exports Methods for Incremental, Cumulative, and Inverse Cumulative Distribution Densities. It
+ * 	provides the following Functionality:
  *
  *  <ul>
- * 		<li><i>MultivariateMeta</i> Constructor</li>
- * 		<li>Retrieve the Number of Variate</li>
- * 		<li>Retrieve the Array of the Variate Names</li>
- * 		<li>Retrieve the Index of the Named Variate</li>
+ * 		<li>Compute the Cumulative under the Distribution to the given Variate Pair</li>
+ * 		<li>Compute the Incremental under the Distribution between the Variate Pair</li>
+ * 		<li>Compute the Density under the Distribution at the given Variate Pair</li>
  *  </ul>
  *
  *	<br>
@@ -110,82 +111,58 @@ package org.drip.measure.continuous;
  * @author Lakshmi Krishnamurthy
  */
 
-public class MultivariateMeta
+public abstract class R1R1Distribution
 {
-	private String[] _nameArray = null;
 
 	/**
-	 * <i>MultivariateMeta</i> Constructor
+	 * Compute the Cumulative under the Distribution to the given Variate Pair
 	 * 
-	 * @param nameArray Array of the Variate Names
+	 * @param x R<sup>1</sup> The X Variate to which the Cumulative is to be computed
+	 * @param y R<sup>1</sup> The Y Variate to which the Cumulative is to be computed
+	 * 
+	 * @return The Cumulative under the Distribution to the given Variate Pair
 	 * 
 	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
-	public MultivariateMeta (
-		final String[] nameArray)
-		throws Exception
-	{
-		if (null == (_nameArray = nameArray)) {
-			throw new Exception ("MultivariateMeta Constructor => Invalid Inputs");
-		}
-
-		int variableCount = _nameArray.length;
-
-		if (0 >= variableCount) {
-			throw new Exception ("MultivariateMeta Constructor => Invalid Inputs");
-		}
-
-		for (int variableIndex = 0; variableIndex < variableCount; ++variableIndex) {
-			if (null == _nameArray[variableIndex] || _nameArray[variableIndex].isEmpty()) {
-				throw new Exception ("MultivariateMeta Constructor => Invalid Inputs");
-			}
-		}
-	}
+	public abstract double cumulative (
+		final double x,
+		final double y)
+		throws Exception;
 
 	/**
-	 * Retrieve the Number of Variate
+	 * Compute the Incremental under the Distribution between the Variate Pair
 	 * 
-	 * @return The Number of Variate
+	 * @param xLeft R<sup>1</sup> Left X Variate from which the Cumulative is to be computed
+	 * @param yLeft R<sup>1</sup> Left Y Variate from which the Cumulative is to be computed
+	 * @param xRight R<sup>1</sup> Right X Variate to which the Cumulative is to be computed
+	 * @param yRight R<sup>1</sup> Right Y Variate to which the Cumulative is to be computed
+	 * 
+	 * @return The Incremental under the Distribution between the Variate Pair
+	 * 
+	 * @throws Exception Thrown if the inputs are invalid
 	 */
 
-	public int numVariable()
-	{
-		return _nameArray.length;
-	}
+	public abstract double incremental (
+		final double xLeft,
+		final double yLeft,
+		final double xRight,
+		final double yRight)
+		throws Exception;
 
 	/**
-	 * Retrieve the Array of the Variate Names
+	 * Compute the Density under the Distribution at the given Variate Pair
 	 * 
-	 * @return The Array of the Variate Names
+	 * @param x R<sup>1</sup> The Variate to which the Cumulative is to be computed
+	 * @param y R<sup>1</sup> The Variate to which the Cumulative is to be computed
+	 * 
+	 * @return The Density under the Distribution at the given Variate Pair
+	 * 
+	 * @throws Exception Thrown if the Input is Invalid
 	 */
 
-	public String[] names()
-	{
-		return _nameArray;
-	}
-
-	/**
-	 * Retrieve the Index of the Named Variate
-	 * 
-	 * @param variateName The Named Variate
-	 * 
-	 * @return Index of the Named Variate
-	 */
-
-	public int variateIndex (
-		final String variateName)
-	{
-		if (null == variateName || variateName.isEmpty()) {
-			return -1;
-		}
-
-		for (int variateIndex = 0; variateIndex < numVariable(); ++variateIndex) {
-			if (variateName.equalsIgnoreCase (_nameArray[variateIndex])) {
-				return variateIndex;
-			}
-		}
-
-		return -1;
-	}
+	public abstract double density (
+		final double x,
+		final double y)
+		throws Exception;
 }

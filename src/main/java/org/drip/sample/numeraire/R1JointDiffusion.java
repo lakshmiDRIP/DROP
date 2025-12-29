@@ -1,7 +1,7 @@
 
 package org.drip.sample.numeraire;
 
-import org.drip.measure.discontinuous.SequenceGenerator;
+import org.drip.measure.discontinuous.RandomSequenceGenerator;
 import org.drip.measure.dynamics.DiffusionEvaluatorLogarithmic;
 import org.drip.measure.process.DiffusionEvolver;
 import org.drip.measure.realization.*;
@@ -136,7 +136,7 @@ public class R1JointDiffusion {
 		final String strHeader)
 		throws Exception
 	{
-		double[][] aadblGaussianJoint = SequenceGenerator.GaussianJoint (
+		double[][] aadblGaussianJoint = RandomSequenceGenerator.GaussianJoint (
 			iCount,
 			aadblCorrelation
 		);

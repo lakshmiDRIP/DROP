@@ -6,7 +6,7 @@ import org.drip.exposure.evolver.LatentStateVertexContainer;
 import org.drip.exposure.mpor.CollateralAmountEstimator;
 import org.drip.exposure.universe.*;
 import org.drip.measure.bridge.BrokenDateInterpolatorLinearT;
-import org.drip.measure.discontinuous.SequenceGenerator;
+import org.drip.measure.discontinuous.RandomSequenceGenerator;
 import org.drip.measure.dynamics.DiffusionEvaluatorLinear;
 import org.drip.measure.process.DiffusionEvolver;
 import org.drip.measure.realization.*;
@@ -164,7 +164,7 @@ public class CollateralizedCollateralGroup {
 			),
 			JumpDiffusionEdgeUnit.Diffusion (
 				adblTimeWidth,
-				SequenceGenerator.Gaussian (iNumStep)
+				RandomSequenceGenerator.Gaussian (iNumStep)
 			),
 			dblTimeWidth
 		);

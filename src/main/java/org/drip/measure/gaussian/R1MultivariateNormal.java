@@ -109,7 +109,7 @@ public class R1MultivariateNormal extends org.drip.measure.continuous.MetaRdDist
 	 */
 
 	public static final R1MultivariateNormal Standard (
-		final org.drip.measure.continuous.MultivariateMeta meta,
+		final org.drip.measure.continuous.MetaRd meta,
 		final double[] adblMean,
 		final double[][] aadblCovariance)
 	{
@@ -139,7 +139,7 @@ public class R1MultivariateNormal extends org.drip.measure.continuous.MetaRdDist
 		final double[][] aadblCovariance)
 	{
 		try {
-			return new R1MultivariateNormal (new org.drip.measure.continuous.MultivariateMeta
+			return new R1MultivariateNormal (new org.drip.measure.continuous.MetaRd
 				(astrVariateID), adblMean, new org.drip.measure.gaussian.Covariance (aadblCovariance));
 		} catch (java.lang.Exception e) {
 			e.printStackTrace();
@@ -159,7 +159,7 @@ public class R1MultivariateNormal extends org.drip.measure.continuous.MetaRdDist
 	 */
 
 	public R1MultivariateNormal (
-		final org.drip.measure.continuous.MultivariateMeta meta,
+		final org.drip.measure.continuous.MetaRd meta,
 		final double[] adblMean,
 		final org.drip.measure.gaussian.Covariance covariance)
 		throws java.lang.Exception

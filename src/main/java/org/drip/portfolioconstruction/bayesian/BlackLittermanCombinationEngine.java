@@ -285,7 +285,7 @@ public class BlackLittermanCombinationEngine
 		double[][] assetExcessReturnsCovarianceMatrix =
 			_forwardReverseOptimizationOutputUnadjusted.assetExcessReturnsCovarianceMatrix();
 
-		org.drip.measure.continuous.MultivariateMeta portfolioMeta =
+		org.drip.measure.continuous.MetaRd portfolioMeta =
 			_forwardReverseOptimizationOutputUnadjusted.optimalPortfolio().meta();
 
 		org.drip.measure.bayesian.ScopingProjectionVariateDistribution scopingProjectionVariateDistribution =
@@ -357,7 +357,7 @@ public class BlackLittermanCombinationEngine
 
 	public org.drip.portfolioconstruction.bayesian.BlackLittermanOutput fullConfidenceRun()
 	{
-		org.drip.measure.continuous.MultivariateMeta portfolioMeta =
+		org.drip.measure.continuous.MetaRd portfolioMeta =
 			_forwardReverseOptimizationOutputUnadjusted.optimalPortfolio().meta();
 
 		double[][] assetExcessReturnsCovarianceMatrix =
@@ -450,7 +450,7 @@ public class BlackLittermanCombinationEngine
 
 		boolean useAlternateReferenceModel = _priorControlSpecification.useAlternateReferenceModel();
 
-		org.drip.measure.continuous.MultivariateMeta portfolioMeta = unadjustedPortfolio.meta();
+		org.drip.measure.continuous.MetaRd portfolioMeta = unadjustedPortfolio.meta();
 
 		double riskAversion = _forwardReverseOptimizationOutputUnadjusted.riskAversion();
 

@@ -7,7 +7,7 @@ import org.drip.exposure.mpor.CollateralAmountEstimator;
 import org.drip.exposure.universe.*;
 import org.drip.measure.bridge.BrokenDateInterpolatorLinearT;
 import org.drip.measure.crng.RandomNumberGenerator;
-import org.drip.measure.discontinuous.CorrelatedPathVertexDimension;
+import org.drip.measure.discontinuous.CorrelatedFactorsPathVertexRealization;
 import org.drip.measure.dynamics.*;
 import org.drip.measure.process.DiffusionEvolver;
 import org.drip.measure.realization.*;
@@ -294,7 +294,7 @@ public class ZeroThresholdCollateralReceivableStochastic {
 		final int iNumVertex)
 		throws Exception
 	{
-		CorrelatedPathVertexDimension cpvd = new CorrelatedPathVertexDimension (
+		CorrelatedFactorsPathVertexRealization cpvd = new CorrelatedFactorsPathVertexRealization (
 			new RandomNumberGenerator(),
 			aadblCorrelation,
 			iNumVertex,

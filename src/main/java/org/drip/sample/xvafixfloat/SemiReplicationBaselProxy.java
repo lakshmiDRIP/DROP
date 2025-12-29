@@ -9,7 +9,7 @@ import org.drip.exposure.evolver.*;
 import org.drip.exposure.holdings.*;
 import org.drip.exposure.universe.*;
 import org.drip.measure.crng.*;
-import org.drip.measure.discontinuous.CorrelatedPathVertexDimension;
+import org.drip.measure.discontinuous.CorrelatedFactorsPathVertexRealization;
 import org.drip.measure.dynamics.*;
 import org.drip.measure.process.*;
 import org.drip.measure.statistics.UnivariateDiscreteThin;
@@ -817,7 +817,7 @@ public class SemiReplicationBaselProxy
 			latentStateVertexContainer
 		);
 
-		CorrelatedPathVertexDimension correlatedPathVertexDimension = new CorrelatedPathVertexDimension (
+		CorrelatedFactorsPathVertexRealization correlatedPathVertexDimension = new CorrelatedFactorsPathVertexRealization (
 			new RandomNumberGenerator(),
 			correlationMatrix,
 			exposureSamplingNodeCount,

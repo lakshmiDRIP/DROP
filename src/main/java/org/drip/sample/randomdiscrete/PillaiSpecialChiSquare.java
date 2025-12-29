@@ -1,7 +1,7 @@
 
 package org.drip.sample.randomdiscrete;
 
-import org.drip.measure.discontinuous.SequenceGenerator;
+import org.drip.measure.discontinuous.RandomSequenceGenerator;
 import org.drip.service.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 
@@ -127,7 +127,7 @@ public class PillaiSpecialChiSquare
 		final double[] weightArray)
 		throws Exception
 	{
-		double[] randomArray = SequenceGenerator.PillaiSpecialChiSquare (
+		double[] randomArray = RandomSequenceGenerator.PillaiSpecialChiSquare (
 			200,
 			covarianceMatrix,
 			weightArray
