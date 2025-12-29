@@ -5,4 +5,4 @@
  * @author Lakshmi Krishnamurthy
  */
 
-package org.drip.measure.discrete;
+package org.drip.measure.discontinuous;

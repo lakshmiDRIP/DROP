@@ -6,7 +6,7 @@ import java.util.List;
 import org.drip.analytics.date.*;
 import org.drip.analytics.support.Helper;
 import org.drip.measure.crng.RandomNumberGenerator;
-import org.drip.measure.discrete.*;
+import org.drip.measure.discontinuous.*;
 import org.drip.measure.dynamics.DiffusionEvaluatorLogarithmic;
 import org.drip.measure.process.DiffusionEvolver;
 import org.drip.measure.realization.*;

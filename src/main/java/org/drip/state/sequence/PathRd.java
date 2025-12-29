@@ -1,7 +1,7 @@
 
 package org.drip.state.sequence;
 
-import org.drip.measure.discrete.SequenceGenerator;
+import org.drip.measure.discontinuous.SequenceGenerator;
 import org.drip.numerical.common.NumberUtil;
 
 /*

@@ -117,7 +117,7 @@ package org.drip.measure.chisquare;
  */
 
 public abstract class R1WilsonHilferty
-	extends org.drip.measure.continuous.R1Univariate
+	extends org.drip.measure.continuous.R1Distribution
 {
 	private double _degreesOfFreedom = -1;
 	private org.drip.measure.gaussian.R1UnivariateNormal _r1UnivariateNormal = null;

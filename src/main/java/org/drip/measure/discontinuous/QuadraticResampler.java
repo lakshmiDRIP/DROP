@@ -1,5 +1,5 @@
 
-package org.drip.measure.continuous;
+package org.drip.measure.discontinuous;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -10,6 +10,8 @@ package org.drip.measure.continuous;
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
+ * Copyright (C) 2018 Lakshmi Krishnamurthy
+ * Copyright (C) 2017 Lakshmi Krishnamurthy
  * 
  *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
  *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
@@ -77,170 +79,125 @@ package org.drip.measure.continuous;
  */
 
 /**
- * <i>R1UnivariateUniform</i> implements the Univariate R<sup>1</sup> Uniform Distribution. It implements the
- * 	Incremental, the Cumulative, and the Inverse Cumulative Distribution Densities.
+ * <i>QuadraticResampler</i> Quadratically Re-samples the Input Points to Convert it to a Standard Normal.
  *
  *	<br><br>
  *  <ul>
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md">Numerical Analysis Library</a></li>
  *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/README.md">R<sup>d</sup> Continuous/Discrete Probability Measures</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/continuous/README.md">R<sup>1</sup> and R<sup>d</sup> Continuous Random Measure</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/discrete/README.md">Antithetic, Quadratically Re-sampled, De-biased Distribution</a></li>
  *  </ul>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class R1UnivariateUniform extends org.drip.measure.continuous.R1Univariate
-{
-	private double _leftSupport = java.lang.Double.NaN;
-	private double _rightSupport = java.lang.Double.NaN;
+public class QuadraticResampler {
+	private boolean _bDebias = false;
+	private boolean _bMeanCenter = false;
 
 	/**
-	 * Construct a Standard (0, 1) R<sup>1</sup> Univariate Uniform Distribution
+	 * QuadraticResampler Constructor
 	 * 
-	 * @return Standard (0, 1) R<sup>1</sup> Univariate Uniform Distribution
-	 */
-
-	public static final R1UnivariateUniform Standard()
-	{
-		try
-		{
-			return new R1UnivariateUniform (
-				0.,
-				1.
-			);
-		}
-		catch (java.lang.Exception e)
-		{
-			e.printStackTrace();
-		}
-
-		return null;
-	}
-
-	/**
-	 * R1UnivariateUniform Constructor
-	 * 
-	 * @param leftSupport The Left Support
-	 * @param rightSupport The Right Support
+	 * @param bMeanCenter TRUE - The Sequence is to be Mean Centered
+	 * @param bDebias TRUE - Remove the Sampling Bias
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public R1UnivariateUniform (
-		final double leftSupport,
-		final double rightSupport)
+	public QuadraticResampler (
+		final boolean bMeanCenter,
+		final boolean bDebias)
 		throws java.lang.Exception
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (_leftSupport = leftSupport) ||
-			!org.drip.numerical.common.NumberUtil.IsValid (_rightSupport = rightSupport) ||
-			_leftSupport >= _rightSupport)
-		{
-			throw new java.lang.Exception ("R1UnivariateUniform Constructor => Invalid Inputs");
+		_bDebias = bDebias;
+		_bMeanCenter = bMeanCenter;
+	}
+
+	/**
+	 * Indicate if the Sequence is to be Mean Centered
+	 * 
+	 * @return TRUE - The Sequence is to be Mean Centered
+	 */
+
+	public boolean meanCenter()
+	{
+		return _bMeanCenter;
+	}
+
+	/**
+	 * Indicate if the Sampling Bias needs to be Removed
+	 * 
+	 * @return TRUE - The Sampling Bias needs to be Removed
+	 */
+
+	public boolean debias()
+	{
+		return _bDebias;
+	}
+
+	/**
+	 * Transform the Input R^1 Sequence by applying Quadratic Sampling
+	 * 
+	 * @param adblSequence The Input R^1 Sequence
+	 * 
+	 * @return The Transformed Sequence
+	 */
+
+	public double[] transform (
+		final double[] adblSequence)
+	{
+		if (null == adblSequence) return null;
+
+		double dblMean = 0.;
+		double dblVariance = 0.;
+		int iSequenceSize = adblSequence.length;
+		double[] adblTransfomedSequence = 0 == iSequenceSize ? null : new double[iSequenceSize];
+
+		if (0 == iSequenceSize) return null;
+
+		if (_bMeanCenter) {
+			for (int i = 0; i < iSequenceSize; ++i)
+				dblMean += adblSequence[i];
+
+			dblMean = dblMean / iSequenceSize;
 		}
+
+		for (int i = 0; i < iSequenceSize; ++i) {
+			double dblOffset = adblSequence[i] - dblMean;
+			dblVariance += dblOffset * dblOffset;
+		}
+
+		double dblStandardDeviation = java.lang.Math.sqrt (dblVariance / (_bDebias ? iSequenceSize - 1 :
+			iSequenceSize));
+
+		for (int i = 0; i < iSequenceSize; ++i)
+			adblTransfomedSequence[i] = adblSequence[i] / dblStandardDeviation;
+
+		return adblTransfomedSequence;
 	}
 
 	/**
-	 * Retrieve the Left Support
+	 * Transform the Input R^d Sequence by applying Quadratic Sampling
 	 * 
-	 * @return The Left Support
+	 * @param aadblSequence The Input R^d Sequence
+	 * 
+	 * @return The Transformed Sequence
 	 */
 
-	public double leftSupport()
+	public double[][] transform (
+		final double[][] aadblSequence)
 	{
-		return _leftSupport;
-	}
+		double[][] aadblFlippedSequence = org.drip.numerical.linearalgebra.R1MatrixUtil.Transpose (aadblSequence);
 
-	/**
-	 * Retrieve the Right Support
-	 * 
-	 * @return The Right Support
-	 */
+		if (null == aadblFlippedSequence) return null;
 
-	public double rightSupport()
-	{
-		return _rightSupport;
-	}
+		int iDimension = aadblFlippedSequence.length;
+		double[][] aadblFlippedTransformedSequence = new double[iDimension][];
 
-	/**
-	 * Indicate if the specified x Value stays inside the Support
-	 * 
-	 * @param x X
-	 * 
-	 * @return The Value stays in Support
-	 */
-
-	public boolean supported (
-		final double x)
-	{
-		return org.drip.numerical.common.NumberUtil.IsValid (x) && x >= _leftSupport || x <= _rightSupport;			
-	}
-
-	@Override public double[] support()
-	{
-		return new double[]
-		{
-			_leftSupport,
-			_rightSupport
-		};
-	}
-
-	@Override public double cumulative (
-		final double x)
-		throws java.lang.Exception
-	{
-		if (!supported (x))
-			throw new java.lang.Exception ("R1UnivariateUniform::cumulative => Invalid Inputs");
-
-		return  (x - _leftSupport) / (_rightSupport - _leftSupport);
-	}
-
-	@Override public double incremental (
-		final double xLeft,
-		final double xRight)
-		throws java.lang.Exception
-	{
-		return cumulative (xLeft) - cumulative (xRight);
-	}
-
-	@Override public double invCumulative (
-		final double y)
-		throws java.lang.Exception
-	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (y) || 1. < y || 0. > y)
-			throw new java.lang.Exception ("R1UnivariateUniform::invCumulative => Cannot calculate");
-
-	    return y * (_rightSupport - _leftSupport) + _leftSupport;
-	}
-
-	@Override public double density (
-		final double x)
-		throws java.lang.Exception
-	{
-		if (!supported (x)) throw new java.lang.Exception ("R1UnivariateUniform::density => Invalid Inputs");
-
-		return 1. / (_rightSupport - _leftSupport);
-	}
-
-	@Override public double mean()
-	{
-	    return 0.5 * (_rightSupport + _leftSupport);
-	}
-
-	@Override public double variance()
-	{
-		double support = _rightSupport - _leftSupport;
-		return support * support / 12.;
-	}
-
-	@Override public double random()
-	{
-	    return java.lang.Math.random() * (_rightSupport - _leftSupport) + _leftSupport;
-	}
-
-	@Override public org.drip.numerical.common.Array2D histogram()
-	{
-		return null;
+		for (int i = 0; i < iDimension; ++i)
+			aadblFlippedTransformedSequence[i] = transform (aadblFlippedSequence[i]);
+		
+		return org.drip.numerical.linearalgebra.R1MatrixUtil.Transpose (aadblFlippedTransformedSequence);
 	}
 }

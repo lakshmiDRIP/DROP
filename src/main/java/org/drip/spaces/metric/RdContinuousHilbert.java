@@ -1,7 +1,7 @@
 
 package org.drip.spaces.metric;
 
-import org.drip.measure.continuous.Rd;
+import org.drip.measure.continuous.RdDistribution;
 import org.drip.spaces.tensor.R1ContinuousVector;
 
 /*
@@ -136,7 +136,7 @@ public class RdContinuousHilbert extends RdContinuousBanach
 
 	public static final RdContinuousHilbert StandardHilbert (
 		final int iDimension,
-		final org.drip.measure.continuous.Rd distRd)
+		final org.drip.measure.continuous.RdDistribution distRd)
 	{
 		try {
 			return 0 >= iDimension ? null : new RdContinuousHilbert (new
@@ -159,7 +159,7 @@ public class RdContinuousHilbert extends RdContinuousBanach
 
 	public RdContinuousHilbert (
 		final R1ContinuousVector[] r1ContinuousVectorArray,
-		final Rd rd)
+		final RdDistribution rd)
 		throws Exception
 	{
 		super (r1ContinuousVectorArray, rd, 2);

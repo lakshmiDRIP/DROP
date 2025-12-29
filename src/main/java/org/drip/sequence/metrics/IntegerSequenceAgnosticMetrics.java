@@ -97,7 +97,7 @@ public class IntegerSequenceAgnosticMetrics extends
 
 	public IntegerSequenceAgnosticMetrics (
 		final double[] adblSequence,
-		final org.drip.measure.continuous.R1Univariate distPopulation)
+		final org.drip.measure.continuous.R1Distribution distPopulation)
 		throws java.lang.Exception
 	{
 		super (adblSequence, distPopulation);

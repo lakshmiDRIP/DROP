@@ -1,7 +1,7 @@
 
 package org.drip.sample.samplestatistics;
 
-import org.drip.measure.continuous.R1UnivariateUniform;
+import org.drip.measure.continuous.R1UniformDistribution;
 import org.drip.service.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 import org.drip.validation.evidence.TestStatisticAccumulator;
@@ -128,7 +128,7 @@ public class StandardUniformPIT
 	private static final double UnivariateRandom()
 		throws Exception
 	{
-		return R1UnivariateUniform.Standard().random();
+		return R1UniformDistribution.Standard().random();
 	}
 
 	/**

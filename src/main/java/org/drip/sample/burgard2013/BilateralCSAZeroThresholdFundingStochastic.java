@@ -5,7 +5,7 @@ import org.drip.analytics.date.*;
 import org.drip.exposure.evolver.LatentStateVertexContainer;
 import org.drip.exposure.universe.*;
 import org.drip.measure.crng.RandomNumberGenerator;
-import org.drip.measure.discrete.CorrelatedPathVertexDimension;
+import org.drip.measure.discontinuous.CorrelatedPathVertexDimension;
 import org.drip.measure.dynamics.*;
 import org.drip.measure.process.DiffusionEvolver;
 import org.drip.measure.realization.*;

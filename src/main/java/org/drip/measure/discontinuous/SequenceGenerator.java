@@ -1,5 +1,5 @@
 
-package org.drip.measure.discrete;
+package org.drip.measure.discontinuous;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-

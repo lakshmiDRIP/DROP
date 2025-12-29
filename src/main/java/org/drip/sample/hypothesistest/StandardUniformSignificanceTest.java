@@ -1,7 +1,7 @@
 
 package org.drip.sample.hypothesistest;
 
-import org.drip.measure.continuous.R1UnivariateUniform;
+import org.drip.measure.continuous.R1UniformDistribution;
 import org.drip.service.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 import org.drip.validation.hypothesis.SignificanceTestSetting;
@@ -131,7 +131,7 @@ public class StandardUniformSignificanceTest
 	private static final double UnivariateRandom()
 		throws Exception
 	{
-		return R1UnivariateUniform.Standard().random();
+		return R1UniformDistribution.Standard().random();
 	}
 
 	private static final R1Sample GenerateSample (

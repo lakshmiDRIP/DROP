@@ -4,6 +4,9 @@ package org.drip.measure.continuous;
 import org.drip.function.definition.R1ToR1;
 import org.drip.function.r1tor1solver.FixedPointFinderBrent;
 import org.drip.function.r1tor1solver.FixedPointFinderOutput;
+import org.drip.measure.statistics.PopulationCentralMeasures;
+import org.drip.numerical.common.Array2D;
+import org.drip.numerical.common.NumberUtil;
 import org.drip.numerical.integration.NewtonCotesQuadratureGenerator;
 import org.drip.numerical.integration.R1ToR1Integrator;
 
@@ -12,6 +15,14 @@ import org.drip.numerical.integration.R1ToR1Integrator;
  */
 
 /*!
+ * Copyright (C) 2030 Lakshmi Krishnamurthy
+ * Copyright (C) 2029 Lakshmi Krishnamurthy
+ * Copyright (C) 2028 Lakshmi Krishnamurthy
+ * Copyright (C) 2027 Lakshmi Krishnamurthy
+ * Copyright (C) 2026 Lakshmi Krishnamurthy
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -89,21 +100,57 @@ import org.drip.numerical.integration.R1ToR1Integrator;
  */
 
 /**
- * <i>R1Univariate</i> exposes the Base Abstract Class behind Univariate R<sup>1</sup> Distributions. It
- * 	exports the Methods for incremental, cumulative, and inverse cumulative distribution densities.
+ * <i>R1Distribution</i> exposes the Base Abstract Class behind continuous R<sup>1</sup> Distributions. It
+ * 	exports the Methods for incremental, cumulative, and inverse cumulative distribution densities. It
+ * 	provides the following Functionality:
  *
- *	<br><br>
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md">Numerical Analysis Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/README.md">R<sup>d</sup> Continuous/Discrete Probability Measures</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/continuous/README.md">R<sup>1</sup> and R<sup>d</sup> Continuous Random Measure</a></li>
+ * 		<li>Retrieve the Quantile Variate of the Distribution</li>
+ * 		<li>Retrieve the Mode of the Distribution</li>
+ * 		<li>Retrieve the Variance of the Distribution</li>
+ * 		<li>Retrieve the Skewness of the Distribution</li>
+ * 		<li>Retrieve the Excess Kurtosis of the Distribution</li>
+ * 		<li>Retrieve the Differential Entropy of the Distribution</li>
+ * 		<li>Construct the Moment Generating Function</li>
+ * 		<li>Construct the Probability Generating Function</li>
+ * 		<li>Retrieve the Fisher Information of the Distribution</li>
+ * 		<li>Compute the Kullback-Leibler Divergence against the other R<sup>1</sup> Distribution</li>
+ * 		<li>Retrieve the Quantile CVaR (Conditional Value-at-Risk) of the Distribution</li>
+ * 		<li>Retrieve the Quantile ES (Expected Shortfall) of the Distribution</li>
+ * 		<li>Retrieve the Buffered Probability of Existence</li>
+ * 		<li>Retrieve the n<sup>th</sup> Non-central Moment</li>
+ * 		<li>Retrieve the n<sup>th</sup> Central Moment</li>
+ * 		<li>Retrieve the Inter-quantile Range (IQR) of the Distribution</li>
+ * 		<li>Retrieve the Tukey Criterion of the Distribution</li>
+ * 		<li>Retrieve the Tukey Anomaly of the Distribution</li>
+ * 		<li>Generate a Random Variable corresponding to the Distribution</li>
+ * 		<li>Retrieve the Array of Generated Random Variables</li>
+ * 		<li>Retrieve the Population Central Measures</li>
+ * 		<li>Retrieve the Univariate Weighted Histogram</li>
+ * 		<li>Lay out the Support of the PDF Range</li>
+ * 		<li>Indicate if x is inside the Supported Range</li>
+ * 		<li>Compute the Density under the Distribution at the given Variate</li>
+ * 		<li>Compute the cumulative under the distribution to the given value</li>
+ * 		<li>Compute the Incremental under the Distribution between the 2 variates</li>
+ * 		<li>Compute the inverse cumulative under the distribution corresponding to the given value</li>
+ * 		<li>Retrieve the Mean of the Distribution</li>
+ * 		<li>Retrieve the Median of the Distribution</li>
  *  </ul>
+ *
+ *	<br>
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md">Numerical Analysis Library</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/README.md">R<sup>d</sup> Continuous/Discrete Probability Measures</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/continuous/README.md">R<sup>1</sup> and R<sup>d</sup> Continuous Random Measure</a></td></tr>
+ *  </table>
+ *	<br>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public abstract class R1Univariate {
+public abstract class R1Distribution
+{
 
 	/**
 	 * Lay out the Support of the PDF Range
@@ -124,8 +171,7 @@ public abstract class R1Univariate {
 	public boolean supported (
 		final double x)
 	{
-		if (java.lang.Double.isNaN (x))
-		{
+		if (Double.isNaN (x)) {
 			return false;
 		}
 
@@ -137,48 +183,48 @@ public abstract class R1Univariate {
 	/**
 	 * Compute the Density under the Distribution at the given Variate
 	 * 
-	 * @param dblX Variate at which the Density needs to be computed
+	 * @param x Variate at which the Density needs to be computed
 	 * 
 	 * @return The Density
 	 * 
-	 * @throws java.lang.Exception Thrown if the input is invalid
+	 * @throws Exception Thrown if the input is invalid
 	 */
 
 	public abstract double density (
-		final double dblX)
-		throws java.lang.Exception;
+		final double x)
+		throws Exception;
 
 	/**
 	 * Compute the cumulative under the distribution to the given value
 	 * 
-	 * @param dblX Variate to which the cumulative is to be computed
+	 * @param x Variate to which the cumulative is to be computed
 	 * 
 	 * @return The cumulative
 	 * 
-	 * @throws java.lang.Exception Thrown if the inputs are invalid
+	 * @throws Exception Thrown if the inputs are invalid
 	 */
 
 	public abstract double cumulative (
-		final double dblX)
-		throws java.lang.Exception;
+		final double x)
+		throws Exception;
 
 	/**
 	 * Compute the Incremental under the Distribution between the 2 variates
 	 * 
-	 * @param dblXLeft Left Variate to which the cumulative is to be computed
-	 * @param dblXRight Right Variate to which the cumulative is to be computed
+	 * @param xLeft Left Variate to which the cumulative is to be computed
+	 * @param xRight Right Variate to which the cumulative is to be computed
 	 * 
 	 * @return The Incremental under the Distribution between the 2 variates
 	 * 
-	 * @throws java.lang.Exception Thrown if the inputs are invalid
+	 * @throws Exception Thrown if the inputs are invalid
 	 */
 
 	public double incremental (
-		final double dblXLeft,
-		final double dblXRight)
-		throws java.lang.Exception
+		final double xLeft,
+		final double xRight)
+		throws Exception
 	{
-		return cumulative (dblXRight) - cumulative (dblXLeft);
+		return cumulative (xRight) - cumulative (xLeft);
 	}
 
 	/**
@@ -188,36 +234,32 @@ public abstract class R1Univariate {
 	 * 
 	 * @return The inverse cumulative
 	 * 
-	 * @throws java.lang.Exception Thrown if the Input is invalid
+	 * @throws Exception Thrown if the Input is invalid
 	 */
 
 	public double invCumulative (
 		final double p)
-		throws java.lang.Exception
+		throws Exception
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (p) || 0. > p || 1. < p)
-		{
-			throw new java.lang.Exception ("R1Univariate::invCumulative => Invalid Inputs");
+		if (!NumberUtil.IsValid (p) || 0. > p || 1. < p) {
+			throw new Exception ("R1Distribution::invCumulative => Invalid Inputs");
 		}
 
-		org.drip.function.r1tor1solver.FixedPointFinderOutput fixedPointFinderOutput =
-			new org.drip.function.r1tor1solver.FixedPointFinderBrent (
-				0.,
-				new org.drip.function.definition.R1ToR1 (null)
+		FixedPointFinderOutput fixedPointFinderOutput = new FixedPointFinderBrent (
+			0.,
+			new R1ToR1 (null) {
+				@Override public double evaluate (
+					final double u)
+					throws Exception
 				{
-					@Override public double evaluate (
-						final double u)
-						throws java.lang.Exception
-					{
-						return cumulative (u) - p;
-					}
-				},
-				true
-			).findRoot();
+					return cumulative (u) - p;
+				}
+			},
+			true
+		).findRoot();
 
-		if (null == fixedPointFinderOutput)
-		{
-			throw new java.lang.Exception ("R1Univariate::invCumulative => Cannot find Root");
+		if (null == fixedPointFinderOutput) {
+			throw new Exception ("R1Distribution::invCumulative => Cannot find Root");
 		}
 
 		return fixedPointFinderOutput.getRoot();
@@ -228,24 +270,24 @@ public abstract class R1Univariate {
 	 * 
 	 * @return The Mean of the Distribution
 	 * 
-	 * @throws java.lang.Exception Thrown if the Mean cannot be estimated
+	 * @throws Exception Thrown if the Mean cannot be estimated
 	 */
 
 	public abstract double mean()
-		throws java.lang.Exception;
+		throws Exception;
 
 	/**
 	 * Retrieve the Median of the Distribution
 	 * 
 	 * @return The Median of the Distribution
 	 * 
-	 * @throws java.lang.Exception Thrown if the Median cannot be estimated
+	 * @throws Exception Thrown if the Median cannot be estimated
 	 */
 
 	public double median()
-		throws java.lang.Exception
+		throws Exception
 	{
-		return invCumulative (0.50);
+		return invCumulative (0.5);
 	}
 
 	/**
@@ -255,12 +297,12 @@ public abstract class R1Univariate {
 	 * 
 	 * @return The Quantile Variate of the Distribution
 	 * 
-	 * @throws java.lang.Exception Thrown if the Quantile Variate cannot be estimated
+	 * @throws Exception Thrown if the Quantile Variate cannot be estimated
 	 */
 
 	public double quantile (
 		final double p)
-		throws java.lang.Exception
+		throws Exception
 	{
 		return invCumulative (p);
 	}
@@ -270,44 +312,36 @@ public abstract class R1Univariate {
 	 * 
 	 * @return The Mode of the Distribution
 	 * 
-	 * @throws java.lang.Exception Thrown if the Mode cannot be estimated
+	 * @throws Exception Thrown if the Mode cannot be estimated
 	 */
 
 	public double mode()
-		throws java.lang.Exception
+		throws Exception
 	{
-		final org.drip.function.definition.R1ToR1 densityFunction =
-			new org.drip.function.definition.R1ToR1 (null)
-		{
+		final R1ToR1 densityFunction = new R1ToR1 (null) {
 			@Override public double evaluate (
 				final double u)
-				throws java.lang.Exception
+				throws Exception
 			{
 				return density (u);
 			}
 		};
 
-		org.drip.function.r1tor1solver.FixedPointFinderOutput fixedPointFinderOutput =
-			new org.drip.function.r1tor1solver.FixedPointFinderBrent (
-				0.,
-				new org.drip.function.definition.R1ToR1 (null)
+		FixedPointFinderOutput fixedPointFinderOutput = new FixedPointFinderBrent (
+			0.,
+			new R1ToR1 (null) {
+				@Override public double evaluate (
+					final double u)
+					throws Exception
 				{
-					@Override public double evaluate (
-						final double u)
-						throws java.lang.Exception
-					{
-						return densityFunction.derivative (
-							u,
-							1
-						);
-					}
-				},
-				true
-			).findRoot();
+					return densityFunction.derivative (u, 1);
+				}
+			},
+			true
+		).findRoot();
 
-		if (null == fixedPointFinderOutput)
-		{
-			throw new java.lang.Exception ("R1Univariate::invCumulative => Cannot find Root");
+		if (null == fixedPointFinderOutput) {
+			throw new Exception ("R1Distribution::invCumulative => Cannot find Root");
 		}
 
 		return fixedPointFinderOutput.getRoot();
@@ -318,24 +352,24 @@ public abstract class R1Univariate {
 	 * 
 	 * @return The Variance of the Distribution
 	 * 
-	 * @throws java.lang.Exception Thrown if the Variance cannot be estimated
+	 * @throws Exception Thrown if the Variance cannot be estimated
 	 */
 
 	public abstract double variance()
-		throws java.lang.Exception;
+		throws Exception;
 
 	/**
 	 * Retrieve the Skewness of the Distribution
 	 * 
 	 * @return The Skewness of the Distribution
 	 * 
-	 * @throws java.lang.Exception Thrown if the Skewness cannot be estimated
+	 * @throws Exception Thrown if the Skewness cannot be estimated
 	 */
 
 	public double skewness()
-		throws java.lang.Exception
+		throws Exception
 	{
-		throw new java.lang.Exception ("R1Univariate::skewness => Not implemented");
+		throw new Exception ("R1Distribution::skewness => Not implemented");
 	}
 
 	/**
@@ -343,13 +377,13 @@ public abstract class R1Univariate {
 	 * 
 	 * @return The Excess Kurtosis of the Distribution
 	 * 
-	 * @throws java.lang.Exception Thrown if the Skewness cannot be estimated
+	 * @throws Exception Thrown if the Skewness cannot be estimated
 	 */
 
 	public double excessKurtosis()
-		throws java.lang.Exception
+		throws Exception
 	{
-		throw new java.lang.Exception ("R1Univariate::excessKurtosis => Not implemented");
+		throw new Exception ("R1Distribution::excessKurtosis => Not implemented");
 	}
 
 	/**
@@ -357,25 +391,21 @@ public abstract class R1Univariate {
 	 * 
 	 * @return The Differential Entropy of the Distribution
 	 * 
-	 * @throws java.lang.Exception Thrown if the Entropy cannot be estimated
+	 * @throws Exception Thrown if the Entropy cannot be estimated
 	 */
 
 	public double differentialEntropy()
-		throws java.lang.Exception
+		throws Exception
 	{
-		return org.drip.numerical.integration.NewtonCotesQuadratureGenerator.GaussLaguerreLeftDefinite (
-			0.,
-			10000
-		).integrate (
-			new org.drip.function.definition.R1ToR1 (null)
-			{
+		return NewtonCotesQuadratureGenerator.GaussLaguerreLeftDefinite (0., 10000).integrate (
+			new R1ToR1 (null) {
 				@Override public double evaluate (
 					final double t)
-					throws java.lang.Exception
+					throws Exception
 				{
 					double density = density (t);
 
-					return density * java.lang.Math.log (density);
+					return density * Math.log (density);
 				}
 			}
 		);
@@ -387,7 +417,7 @@ public abstract class R1Univariate {
 	 * @return The Moment Generating Function
 	 */
 
-	public org.drip.function.definition.R1ToR1 momentGeneratingFunction()
+	public R1ToR1 momentGeneratingFunction()
 	{
 		return null;
 	}
@@ -398,7 +428,7 @@ public abstract class R1Univariate {
 	 * @return The Probability Generating Function
 	 */
 
-	public org.drip.function.definition.R1ToR1 probabilityGeneratingFunction()
+	public R1ToR1 probabilityGeneratingFunction()
 	{
 		return null;
 	}
@@ -408,13 +438,13 @@ public abstract class R1Univariate {
 	 * 
 	 * @return The Fisher Information of the Distribution
 	 * 
-	 * @throws java.lang.Exception Thrown if the Fisher Information cannot be estimated
+	 * @throws Exception Thrown if the Fisher Information cannot be estimated
 	 */
 
 	public double fisherInformation()
-		throws java.lang.Exception
+		throws Exception
 	{
-		throw new java.lang.Exception ("R1Univariate::fisherInformation => Not implemented");
+		throw new Exception ("R1Distribution::fisherInformation => Not implemented");
 	}
 
 	/**
@@ -428,14 +458,11 @@ public abstract class R1Univariate {
 	 */
 
 	public double kullbackLeiblerDivergence (
-		final R1Univariate r1UnivariateOther)
+		final R1Distribution r1UnivariateOther)
 		throws Exception
 	{
-		if (null == r1UnivariateOther)
-		{
-			throw new Exception (
-				"R1Univariate::kullbackLeiblerDivergence => Invalid Inputs"
-			);
+		if (null == r1UnivariateOther) {
+			throw new Exception ("R1Distribution::kullbackLeiblerDivergence => Invalid Inputs");
 		}
 
 		R1ToR1 pdfDifferentialFunction = new R1ToR1 (null) {
@@ -449,34 +476,23 @@ public abstract class R1Univariate {
 
 		double[] leftRight = support();
 
-		if (Double.isFinite (leftRight[0]) && Double.isFinite (leftRight[1]))
-		{
-			return R1ToR1Integrator.Boole (
-				pdfDifferentialFunction,
-				leftRight[0],
-				leftRight[1]
+		if (Double.isFinite (leftRight[0]) && Double.isFinite (leftRight[1])) {
+			return R1ToR1Integrator.Boole (pdfDifferentialFunction, leftRight[0], leftRight[1]);
+		}
+
+		if (Double.isFinite (leftRight[0])) {
+			return NewtonCotesQuadratureGenerator.GaussLaguerreLeftDefinite (leftRight[0], 1000).integrate (
+				pdfDifferentialFunction
 			);
 		}
 
-		if (Double.isFinite (leftRight[0]))
-		{
-			return NewtonCotesQuadratureGenerator.GaussLaguerreLeftDefinite (
-				leftRight[0],
-				1000
-			).integrate (pdfDifferentialFunction);
+		if (Double.isFinite (leftRight[1])) {
+			return NewtonCotesQuadratureGenerator.GaussLaguerreRightDefinite (leftRight[1],1000).integrate (
+				pdfDifferentialFunction
+			);
 		}
 
-		if (Double.isFinite (leftRight[1]))
-		{
-			return NewtonCotesQuadratureGenerator.GaussLaguerreRightDefinite (
-				leftRight[1],
-				1000
-			).integrate (pdfDifferentialFunction);
-		}
-
-		return NewtonCotesQuadratureGenerator.GaussHermite (
-			1000
-		).integrate (pdfDifferentialFunction);
+		return NewtonCotesQuadratureGenerator.GaussHermite (1000).integrate (pdfDifferentialFunction);
 	}
 
 	/**
@@ -486,23 +502,20 @@ public abstract class R1Univariate {
 	 * 
 	 * @return The Quantile CVaR of the Distribution
 	 * 
-	 * @throws java.lang.Exception Thrown if the Quantile CVaR cannot be estimated
+	 * @throws Exception Thrown if the Quantile CVaR cannot be estimated
 	 */
 
 	public double cvar (
 		final double p)
-		throws java.lang.Exception
+		throws Exception
 	{
 		return R1ToR1Integrator.Boole (
-			new R1ToR1 (null)
-			{
+			new R1ToR1 (null) {
 				@Override public double evaluate (
 					final double t)
 					throws Exception
 				{
-					return quantile (
-						t
-					);
+					return quantile (t);
 				}
 			},
 			p,
@@ -517,12 +530,12 @@ public abstract class R1Univariate {
 	 * 
 	 * @return The Quantile ES  of the Distribution
 	 * 
-	 * @throws java.lang.Exception Thrown if the Quantile ES cannot be estimated
+	 * @throws Exception Thrown if the Quantile ES cannot be estimated
 	 */
 
 	public double expectedShortfall (
 		final double p)
-		throws java.lang.Exception
+		throws Exception
 	{
 		return cvar (p);
 	}
@@ -543,25 +556,19 @@ public abstract class R1Univariate {
 	{
 		FixedPointFinderOutput fixedPointFinderOutput = new FixedPointFinderBrent (
 			0.,
-			new R1ToR1 (null)
-			{
+			new R1ToR1 (null) {
 				@Override public double evaluate (
 					final double u)
 					throws Exception
 				{
-					return cvar (
-						u
-					) - x;
+					return cvar (u) - x;
 				}
 			},
 			true
 		).findRoot();
 
-		if (null == fixedPointFinderOutput)
-		{
-			throw new Exception (
-				"R1Univariate::bPOE => Cannot find Root"
-			);
+		if (null == fixedPointFinderOutput) {
+			throw new Exception ("R1Distribution::bPOE => Cannot find Root");
 		}
 
 		return 1. - fixedPointFinderOutput.getRoot();
@@ -574,14 +581,14 @@ public abstract class R1Univariate {
 	 * 
 	 * @return The n<sup>th</sup> Non-central Moment
 	 * 
-	 * @throws java.lang.Exception Thrown if the n<sup>th</sup> Non-central Moment cannot be estimated
+	 * @throws Exception Thrown if the n<sup>th</sup> Non-central Moment cannot be estimated
 	 */
 
 	public double nonCentralMoment (
 		final int n)
-		throws java.lang.Exception
+		throws Exception
 	{
-		throw new java.lang.Exception ("R1Univariate::nonCentralMoment => Not implemented");
+		throw new Exception ("R1Distribution::nonCentralMoment => Not implemented");
 	}
 
 	/**
@@ -591,14 +598,14 @@ public abstract class R1Univariate {
 	 * 
 	 * @return The n<sup>th</sup> Central Moment
 	 * 
-	 * @throws java.lang.Exception Thrown if the n<sup>th</sup> Central Moment cannot be estimated
+	 * @throws Exception Thrown if the n<sup>th</sup> Central Moment cannot be estimated
 	 */
 
 	public double centralMoment (
 		final int n)
-		throws java.lang.Exception
+		throws Exception
 	{
-		throw new java.lang.Exception ("R1Univariate::centralMoment => Not implemented");
+		throw new Exception ("R1Distribution::centralMoment => Not implemented");
 	}
 
 	/**
@@ -606,13 +613,13 @@ public abstract class R1Univariate {
 	 * 
 	 * @return The Inter-quantile Range of the Distribution
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inter-quantile Range cannot be estimated
+	 * @throws Exception Thrown if the Inter-quantile Range cannot be estimated
 	 */
 
 	public double iqr()
-		throws java.lang.Exception
+		throws Exception
 	{
-		throw new java.lang.Exception ("R1Univariate::iqr => Not implemented");
+		throw new Exception ("R1Distribution::iqr => Not implemented");
 	}
 
 	/**
@@ -620,15 +627,13 @@ public abstract class R1Univariate {
 	 * 
 	 * @return The Tukey Criterion of the Distribution
 	 * 
-	 * @throws java.lang.Exception Thrown if the Tukey Criterion cannot be estimated
+	 * @throws Exception Thrown if the Tukey Criterion cannot be estimated
 	 */
 
 	public double tukeyCriterion()
-		throws java.lang.Exception
+		throws Exception
 	{
-		return invCumulative (
-			0.75
-		) + 1.5 * iqr();
+		return invCumulative (0.75) + 1.5 * iqr();
 	}
 
 	/**
@@ -636,11 +641,11 @@ public abstract class R1Univariate {
 	 * 
 	 * @return The Tukey Anomaly of the Distribution
 	 * 
-	 * @throws java.lang.Exception Thrown if the Tukey Anomaly cannot be estimated
+	 * @throws Exception Thrown if the Tukey Anomaly cannot be estimated
 	 */
 
 	public double tukeyAnomaly()
-		throws java.lang.Exception
+		throws Exception
 	{
 		return 1. - tukeyCriterion();
 	}
@@ -650,13 +655,13 @@ public abstract class R1Univariate {
 	 * 
 	 * @return Random Variable corresponding to the Distribution
 	 * 
-	 * @throws java.lang.Exception Thrown if the Random Instance cannot be estimated
+	 * @throws Exception Thrown if the Random Instance cannot be estimated
 	 */
 
 	public double random()
-		throws java.lang.Exception
+		throws Exception
 	{
-		return invCumulative (java.lang.Math.random());
+		return invCumulative (Math.random());
 	}
 
 	/**
@@ -670,21 +675,16 @@ public abstract class R1Univariate {
 	public double[] randomArray (
 		final int arrayCount)
 	{
-		if (0 >= arrayCount)
-		{
+		if (0 >= arrayCount) {
 			return null;
 		}
 
 		double[] randomArray = new double[arrayCount];
 
-		for (int index = 0; index < arrayCount; ++index)
-		{
-			try
-			{
+		for (int index = 0; index < arrayCount; ++index) {
+			try {
 				randomArray[index] = random();
-			}
-			catch (java.lang.Exception e)
-			{
+			} catch (Exception e) {
 				e.printStackTrace();
 
 				return null;
@@ -700,17 +700,11 @@ public abstract class R1Univariate {
 	 * @return The Population Central Measures
 	 */
 
-	public org.drip.measure.statistics.PopulationCentralMeasures populationCentralMeasures()
+	public PopulationCentralMeasures populationCentralMeasures()
 	{
-		try
-		{
-			return new org.drip.measure.statistics.PopulationCentralMeasures (
-				mean(),
-				variance()
-			);
-		}
-		catch (java.lang.Exception e)
-		{
+		try {
+			return new PopulationCentralMeasures (mean(), variance());
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -723,7 +717,7 @@ public abstract class R1Univariate {
 	 * @return The Univariate Weighted Histogram
 	 */
 
-	public org.drip.numerical.common.Array2D histogram()
+	public Array2D histogram()
 	{
 		return null;
 	}

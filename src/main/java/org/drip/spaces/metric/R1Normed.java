@@ -2,7 +2,7 @@
 package org.drip.spaces.metric;
 
 import org.drip.function.definition.R1ToR1;
-import org.drip.measure.continuous.R1Univariate;
+import org.drip.measure.continuous.R1Distribution;
 import org.drip.spaces.tensor.R1GeneralizedVector;
 
 /*
@@ -134,7 +134,7 @@ public interface R1Normed extends GeneralizedMetricVectorSpace, R1GeneralizedVec
 	 * @return The Borel Sigma R<sup>1</sup> Probability Measure
 	 */
 
-	public abstract R1Univariate borelSigmaMeasure();
+	public abstract R1Distribution borelSigmaMeasure();
 
 	/**
 	 * Compute the Metric Norm of the Sample

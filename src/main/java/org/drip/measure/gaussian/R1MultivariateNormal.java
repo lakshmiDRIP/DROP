@@ -94,7 +94,7 @@ package org.drip.measure.gaussian;
  * @author Lakshmi Krishnamurthy
  */
 
-public class R1MultivariateNormal extends org.drip.measure.continuous.R1Multivariate {
+public class R1MultivariateNormal extends org.drip.measure.continuous.MetaRdDistribution {
 	private double[] _adblMean = null;
 	private org.drip.measure.gaussian.Covariance _covariance = null;
 

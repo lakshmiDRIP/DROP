@@ -1,7 +1,7 @@
 
 package org.drip.spaces.metric;
 
-import org.drip.measure.continuous.Rd;
+import org.drip.measure.continuous.RdDistribution;
 import org.drip.spaces.tensor.R1CombinatorialVector;
 
 /*
@@ -133,7 +133,7 @@ public class RdCombinatorialHilbert extends RdCombinatorialBanach
 
 	public RdCombinatorialHilbert (
 		final R1CombinatorialVector[] r1CombinatorialVectorArray,
-		final Rd rdDistribution)
+		final RdDistribution rdDistribution)
 		throws Exception
 	{
 		super (r1CombinatorialVectorArray, rdDistribution, 2);

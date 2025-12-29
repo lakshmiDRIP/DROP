@@ -2,7 +2,7 @@
 package org.drip.sample.statistics;
 
 import org.drip.measure.crng.RandomNumberGenerator;
-import org.drip.measure.discrete.*;
+import org.drip.measure.discontinuous.*;
 import org.drip.measure.statistics.MultivariateDiscrete;
 import org.drip.service.common.FormatUtil;
 import org.drip.service.env.EnvManager;

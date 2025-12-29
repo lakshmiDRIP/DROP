@@ -95,11 +95,11 @@ package org.drip.measure.bayesian;
  */
 
 public class R1MultivariateConvolutionMetrics {
-	private org.drip.measure.continuous.R1Multivariate _r1mJoint = null;
-	private org.drip.measure.continuous.R1Multivariate _r1mPrior = null;
-	private org.drip.measure.continuous.R1Multivariate _r1mPosterior = null;
-	private org.drip.measure.continuous.R1Multivariate _r1mConditional = null;
-	private org.drip.measure.continuous.R1Multivariate _r1mUnconditional = null;
+	private org.drip.measure.continuous.MetaRdDistribution _r1mJoint = null;
+	private org.drip.measure.continuous.MetaRdDistribution _r1mPrior = null;
+	private org.drip.measure.continuous.MetaRdDistribution _r1mPosterior = null;
+	private org.drip.measure.continuous.MetaRdDistribution _r1mConditional = null;
+	private org.drip.measure.continuous.MetaRdDistribution _r1mUnconditional = null;
 
 	/**
 	 * R1MultivariateConvolutionMetrics Constructor
@@ -114,11 +114,11 @@ public class R1MultivariateConvolutionMetrics {
 	 */
 
 	public R1MultivariateConvolutionMetrics (
-		final org.drip.measure.continuous.R1Multivariate r1mPrior,
-		final org.drip.measure.continuous.R1Multivariate r1mUnconditional,
-		final org.drip.measure.continuous.R1Multivariate r1mConditional,
-		final org.drip.measure.continuous.R1Multivariate r1mJoint,
-		final org.drip.measure.continuous.R1Multivariate r1mPosterior)
+		final org.drip.measure.continuous.MetaRdDistribution r1mPrior,
+		final org.drip.measure.continuous.MetaRdDistribution r1mUnconditional,
+		final org.drip.measure.continuous.MetaRdDistribution r1mConditional,
+		final org.drip.measure.continuous.MetaRdDistribution r1mJoint,
+		final org.drip.measure.continuous.MetaRdDistribution r1mPosterior)
 		throws java.lang.Exception
 	{
 		if (null == (_r1mPrior = r1mPrior) || null == (_r1mUnconditional = r1mUnconditional) || null ==
@@ -135,7 +135,7 @@ public class R1MultivariateConvolutionMetrics {
 	 * @return The Prior Distribution
 	 */
 
-	public org.drip.measure.continuous.R1Multivariate prior()
+	public org.drip.measure.continuous.MetaRdDistribution prior()
 	{
 		return _r1mPrior;
 	}
@@ -146,7 +146,7 @@ public class R1MultivariateConvolutionMetrics {
 	 * @return The Unconditional Distribution
 	 */
 
-	public org.drip.measure.continuous.R1Multivariate unconditional()
+	public org.drip.measure.continuous.MetaRdDistribution unconditional()
 	{
 		return _r1mUnconditional;
 	}
@@ -157,7 +157,7 @@ public class R1MultivariateConvolutionMetrics {
 	 * @return The Conditional Distribution
 	 */
 
-	public org.drip.measure.continuous.R1Multivariate conditional()
+	public org.drip.measure.continuous.MetaRdDistribution conditional()
 	{
 		return _r1mConditional;
 	}
@@ -168,7 +168,7 @@ public class R1MultivariateConvolutionMetrics {
 	 * @return The Joint Distribution
 	 */
 
-	public org.drip.measure.continuous.R1Multivariate joint()
+	public org.drip.measure.continuous.MetaRdDistribution joint()
 	{
 		return _r1mJoint;
 	}
@@ -179,7 +179,7 @@ public class R1MultivariateConvolutionMetrics {
 	 * @return The Posterior Distribution
 	 */
 
-	public org.drip.measure.continuous.R1Multivariate posterior()
+	public org.drip.measure.continuous.MetaRdDistribution posterior()
 	{
 		return _r1mPosterior;
 	}

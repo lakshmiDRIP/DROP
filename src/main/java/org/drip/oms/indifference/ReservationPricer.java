@@ -1,8 +1,8 @@
 
 package org.drip.oms.indifference;
 
-import org.drip.measure.continuous.R1Univariate;
-import org.drip.measure.discrete.R1Distribution;
+import org.drip.measure.continuous.R1Distribution;
+import org.drip.measure.discontinuous.R1DiscreteDistribution;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -209,7 +209,7 @@ public class ReservationPricer
 	 */
 
 	public double noClaimsInventoryUtilityExpectation (
-		final R1Univariate underlierPriceDistribution,
+		final R1Distribution underlierPriceDistribution,
 		final double moneyMarketPrice)
 		throws Exception
 	{
@@ -234,7 +234,7 @@ public class ReservationPricer
 	 */
 
 	public double noClaimsInventoryUtilityExpectation (
-		final R1Distribution underlierPriceDistribution,
+		final R1DiscreteDistribution underlierPriceDistribution,
 		final double[] underlierPriceArray,
 		final double moneyMarketPrice)
 		throws Exception
@@ -261,7 +261,7 @@ public class ReservationPricer
 	 */
 
 	public double bidClaimsPositionValueAdjustment (
-		final R1Univariate underlierPriceDistribution,
+		final R1Distribution underlierPriceDistribution,
 		final double moneyMarketPrice,
 		final double noClaimsInventoryUtilityExpectation)
 		throws Exception
@@ -299,7 +299,7 @@ public class ReservationPricer
 	 */
 
 	public double bidClaimsPositionValueAdjustment (
-		final R1Distribution underlierPriceDistribution,
+		final R1DiscreteDistribution underlierPriceDistribution,
 		final double[] underlierPriceArray,
 		final double moneyMarketPrice,
 		final double noClaimsInventoryUtilityExpectation)
@@ -338,7 +338,7 @@ public class ReservationPricer
 	 */
 
 	public double askClaimsPositionValueAdjustment (
-		final R1Univariate underlierPriceDistribution,
+		final R1Distribution underlierPriceDistribution,
 		final double moneyMarketPrice,
 		final double noClaimsInventoryUtilityExpectation)
 		throws Exception
@@ -376,7 +376,7 @@ public class ReservationPricer
 	 */
 
 	public double askClaimsPositionValueAdjustment (
-		final R1Distribution underlierPriceDistribution,
+		final R1DiscreteDistribution underlierPriceDistribution,
 		final double[] underlierPriceArray,
 		final double moneyMarketPrice,
 		final double noClaimsInventoryUtilityExpectation)
@@ -411,7 +411,7 @@ public class ReservationPricer
 	 */
 
 	public ReservationPricingRun reservationPricingRun (
-		final R1Univariate underlierPriceDistribution,
+		final R1Distribution underlierPriceDistribution,
 		final double moneyMarketPrice)
 	{
 		try {
@@ -451,7 +451,7 @@ public class ReservationPricer
 	 */
 
 	public ReservationPricingRun reservationPricingRun (
-		final R1Distribution underlierPriceDistribution,
+		final R1DiscreteDistribution underlierPriceDistribution,
 		final double[] underlierPriceArray,
 		final double moneyMarketPrice)
 	{

@@ -4,8 +4,8 @@ package org.drip.validation.riskfactorjoint;
 import java.util.List;
 
 import org.drip.measure.crng.RandomNumberGenerator;
-import org.drip.measure.discrete.CorrelatedPathVertexDimension;
-import org.drip.measure.discrete.VertexRd;
+import org.drip.measure.discontinuous.CorrelatedPathVertexDimension;
+import org.drip.measure.discontinuous.VertexRd;
 import org.drip.measure.identifier.LabelledVertexCorrelation;
 import org.drip.measure.identifier.LabelledVertexCovariance;
 import org.drip.measure.identifier.LabelledVertexRd;

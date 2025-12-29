@@ -96,7 +96,7 @@ package org.drip.measure.bayesian;
 
 public class ProjectionDistributionLoading {
 	private double[][] _aadblScopingLoading = null;
-	private org.drip.measure.continuous.R1Multivariate _r1mDistribution = null;
+	private org.drip.measure.continuous.MetaRdDistribution _r1mDistribution = null;
 
 	/**
 	 * Generate the Projection Co-variance Matrix from the Confidence Level
@@ -181,7 +181,7 @@ public class ProjectionDistributionLoading {
 	 */
 
 	public ProjectionDistributionLoading (
-		final org.drip.measure.continuous.R1Multivariate r1mDistribution,
+		final org.drip.measure.continuous.MetaRdDistribution r1mDistribution,
 		final double[][] aadblScopingLoading)
 		throws java.lang.Exception
 	{
@@ -208,7 +208,7 @@ public class ProjectionDistributionLoading {
 	 * @return The Projection Distribution
 	 */
 
-	public org.drip.measure.continuous.R1Multivariate distribution()
+	public org.drip.measure.continuous.MetaRdDistribution distribution()
 	{
 		return _r1mDistribution;
 	}

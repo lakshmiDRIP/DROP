@@ -24,7 +24,7 @@ import org.drip.exposure.universe.MarketVertexGenerator;
 import org.drip.market.otc.FixedFloatSwapConvention;
 import org.drip.market.otc.IBORFixedFloatContainer;
 import org.drip.measure.crng.RandomNumberGenerator;
-import org.drip.measure.discrete.CorrelatedPathVertexDimension;
+import org.drip.measure.discontinuous.CorrelatedPathVertexDimension;
 import org.drip.measure.dynamics.DiffusionEvaluatorLinear;
 import org.drip.measure.dynamics.DiffusionEvaluatorLogarithmic;
 import org.drip.measure.dynamics.HazardJumpEvaluator;

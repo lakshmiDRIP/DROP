@@ -116,7 +116,7 @@ package org.drip.measure.chisquare;
  */
 
 public class R1NonCentral
-	extends org.drip.measure.continuous.R1Univariate
+	extends org.drip.measure.continuous.R1Distribution
 {
 	private double _cdfScaler = java.lang.Double.NaN;
 	private org.drip.function.definition.R1ToR1 _gammaEstimator = null;

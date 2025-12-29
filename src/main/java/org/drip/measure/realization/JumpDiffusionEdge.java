@@ -1,11 +1,21 @@
 
 package org.drip.measure.realization;
 
+import org.drip.numerical.common.NumberUtil;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2030 Lakshmi Krishnamurthy
+ * Copyright (C) 2029 Lakshmi Krishnamurthy
+ * Copyright (C) 2028 Lakshmi Krishnamurthy
+ * Copyright (C) 2027 Lakshmi Krishnamurthy
+ * Copyright (C) 2026 Lakshmi Krishnamurthy
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -81,7 +91,7 @@ package org.drip.measure.realization;
 
 /**
  * <i>JumpDiffusionEdge</i> implements the Deterministic and the Stochastic Components of a R<sup>d</sup>
- * Marginal Random Increment Edge as well the Original Marginal Random Variate. The References are:
+ * 	Marginal Random Increment Edge as well the Original Marginal Random Variate. The References are:
  * 
  * <br><br>
  * 	<ul>
@@ -107,61 +117,83 @@ package org.drip.measure.realization;
  * 		</li>
  * 	</ul>
  *
- *	<br><br>
+ * 	It provides the following Functionality:
+ *
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md">Numerical Analysis Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/README.md">R<sup>d</sup> Continuous/Discrete Probability Measures</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/realization/README.md">Stochastic Jump Diffusion Vertex Edge</a></li>
+ * 		<li>Construct the Standard <i>JumpDiffusionEdge</i> Instance #1</li>
+ * 		<li>Construct the Standard <i>JumpDiffusionEdge</i> Instance #2</li>
+ * 		<li><i>JumpDiffusionEdge</i> Constructor</li>
+ * 		<li>Retrieve the Edge Time Increment</li>
+ * 		<li>Retrieve the Start Realization</li>
+ * 		<li>Retrieve the Deterministic Component</li>
+ * 		<li>Retrieve the Diffusion Stochastic Component</li>
+ * 		<li>Retrieve the Diffusion Wander Realization</li>
+ * 		<li>Retrieve the Jump Stochastic Component</li>
+ * 		<li>Retrieve the Jump Wander Realization</li>
+ * 		<li>Retrieve the Finish Realization</li>
+ * 		<li>Retrieve the Gross Change</li>
+ * 		<li>Retrieve the Stochastic Diffusion Edge Instance</li>
+ * 		<li>Retrieve the Stochastic Jump Edge Instance</li>
  *  </ul>
+ *
+ *	<br>
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md">Numerical Analysis Library</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/README.md">R<sup>d</sup> Continuous/Discrete Probability Measures</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/realization/README.md">Stochastic Jump Diffusion Vertex Edge</a></td></tr>
+ *  </table>
+ *	<br>
  * 
  * @author Lakshmi Krishnamurthy
  */
 
-public class JumpDiffusionEdge {
-	private double _dblStart = java.lang.Double.NaN;
-	private double _dblDeterministic = java.lang.Double.NaN;
-	private org.drip.measure.realization.StochasticEdgeJump _sej = null;
-	private org.drip.measure.realization.JumpDiffusionEdgeUnit _jdeu = null;
-	private org.drip.measure.realization.StochasticEdgeDiffusion _sed = null;
+public class JumpDiffusionEdge
+{
+	private double _start = Double.NaN;
+	private double _deterministic = Double.NaN;
+	private JumpDiffusionEdgeUnit _unit = null;
+	private StochasticEdgeJump _stochasticEdgeJump = null;
+	private StochasticEdgeDiffusion _stochasticEdgeDiffusion = null;
 
 	/**
-	 * Construct the Standard JumpDiffusionEdge Instance
+	 * Construct the Standard <i>JumpDiffusionEdge</i> Instance #1
 	 * 
-	 * @param dblStart The Starting Random Variable Realization
-	 * @param dblDeterministic The Deterministic Increment Component
-	 * @param dblDiffusionStochastic The Diffusion Stochastic Edge Change Amount
-	 * @param bJumpOccurred TRUE - The Jump Occurred in this Edge Period
-	 * @param dblHazardRate The Hazard Rate
-	 * @param dblHazardIntegral The Level Hazard Integral
-	 * @param dblJumpTarget The Jump Target
-	 * @param dblTimeIncrement The Time Increment
-	 * @param dblUnitDiffusion The Diffusion Random Variable
-	 * @param dblUnitJump The Jump Random Variable
+	 * @param start The Starting Random Variable Realization
+	 * @param deterministic The Deterministic Increment Component
+	 * @param diffusionStochastic The Diffusion Stochastic Edge Change Amount
+	 * @param jumpOccurred TRUE - The Jump Occurred in this Edge Period
+	 * @param hazardRate The Hazard Rate
+	 * @param hazardIntegral The Level Hazard Integral
+	 * @param jumpTarget The Jump Target
+	 * @param timeIncrement The Time Increment
+	 * @param unitDiffusion The Diffusion Random Variable
+	 * @param unitJump The Jump Random Variable
 	 * 
-	 * @return The JumpDiffusionEdge Instance
+	 * @return The <i>JumpDiffusionEdge</i> Instance
 	 */
 
 	public static final JumpDiffusionEdge Standard (
-		final double dblStart,
-		final double dblDeterministic,
-		final double dblDiffusionStochastic,
-		final boolean bJumpOccurred,
-		final double dblHazardRate,
-		final double dblHazardIntegral,
-		final double dblJumpTarget,
-		final double dblTimeIncrement,
-		final double dblUnitDiffusion,
-		final double dblUnitJump)
+		final double start,
+		final double deterministic,
+		final double diffusionStochastic,
+		final boolean jumpOccurred,
+		final double hazardRate,
+		final double hazardIntegral,
+		final double jumpTarget,
+		final double timeIncrement,
+		final double unitDiffusion,
+		final double unitJump)
 	{
 		try {
-			return new JumpDiffusionEdge (dblStart, dblDeterministic, new
-				org.drip.measure.realization.StochasticEdgeDiffusion (dblDiffusionStochastic), new
-					org.drip.measure.realization.StochasticEdgeJump (bJumpOccurred, dblHazardRate,
-						dblHazardIntegral, dblJumpTarget), new
-							org.drip.measure.realization.JumpDiffusionEdgeUnit (dblTimeIncrement,
-								dblUnitDiffusion, dblUnitJump));
-		} catch (java.lang.Exception e) {
+			return new JumpDiffusionEdge (
+				start,
+				deterministic,
+				new StochasticEdgeDiffusion (diffusionStochastic),
+				new StochasticEdgeJump (jumpOccurred, hazardRate, hazardIntegral, jumpTarget),
+				new JumpDiffusionEdgeUnit (timeIncrement, unitDiffusion, unitJump)
+			);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -169,28 +201,33 @@ public class JumpDiffusionEdge {
 	}
 
 	/**
-	 * Construct the Standard JumpDiffusionEdge Instance
+	 * Construct the Standard <i>JumpDiffusionEdge</i> Instance #2
 	 * 
-	 * @param dblStart The Starting Random Variable Realization
-	 * @param dblDeterministic The Deterministic Increment Component
-	 * @param dblDiffusionStochastic The Diffusion Stochastic Edge Change Amount
-	 * @param sej The Stochastic Jump Edge Instance
-	 * @param jdeu The Random Unit Realization
+	 * @param start The Starting Random Variable Realization
+	 * @param deterministic The Deterministic Increment Component
+	 * @param diffusionStochastic The Diffusion Stochastic Edge Change Amount
+	 * @param stochasticEdgeJump The Stochastic Jump Edge Instance
+	 * @param unit The Random Unit Realization
 	 * 
-	 * @return The JumpDiffusionEdge Instance
+	 * @return The <i>JumpDiffusionEdge</i> Instance
 	 */
 
 	public static final JumpDiffusionEdge Standard (
-		final double dblStart,
-		final double dblDeterministic,
-		final double dblDiffusionStochastic,
-		final org.drip.measure.realization.StochasticEdgeJump sej,
-		final org.drip.measure.realization.JumpDiffusionEdgeUnit jdeu)
+		final double start,
+		final double deterministic,
+		final double diffusionStochastic,
+		final StochasticEdgeJump stochasticEdgeJump,
+		final JumpDiffusionEdgeUnit unit)
 	{
 		try {
-			return new JumpDiffusionEdge (dblStart, dblDeterministic, new
-				org.drip.measure.realization.StochasticEdgeDiffusion (dblDiffusionStochastic), sej, jdeu);
-		} catch (java.lang.Exception e) {
+			return new JumpDiffusionEdge (
+				start,
+				deterministic,
+				new StochasticEdgeDiffusion (diffusionStochastic),
+				stochasticEdgeJump,
+				unit
+			);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -198,32 +235,35 @@ public class JumpDiffusionEdge {
 	}
 
 	/**
-	 * JumpDiffusionEdge Constructor
+	 * <i>JumpDiffusionEdge</i> Constructor
 	 * 
-	 * @param dblStart The Starting Random Variable Realization
-	 * @param dblDeterministic The Deterministic Increment Component
-	 * @param sed The Stochastic Diffusion Edge Instance
-	 * @param sej The Stochastic Jump Edge Instance
-	 * @param jdeu The Random Unit Realization
+	 * @param start The Starting Random Variable Realization
+	 * @param deterministic The Deterministic Increment Component
+	 * @param stochasticEdgeDiffusion The Stochastic Diffusion Edge Instance
+	 * @param stochasticEdgeJump The Stochastic Jump Edge Instance
+	 * @param unit The Random Unit Realization
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public JumpDiffusionEdge (
-		final double dblStart,
-		final double dblDeterministic,
-		final org.drip.measure.realization.StochasticEdgeDiffusion sed,
-		final org.drip.measure.realization.StochasticEdgeJump sej,
-		final org.drip.measure.realization.JumpDiffusionEdgeUnit jdeu)
-		throws java.lang.Exception
+		final double start,
+		final double deterministic,
+		final StochasticEdgeDiffusion stochasticEdgeDiffusion,
+		final StochasticEdgeJump stochasticEdgeJump,
+		final JumpDiffusionEdgeUnit unit)
+		throws Exception
 	{
-		_sed = sed;
-		_sej = sej;
+		_stochasticEdgeJump = stochasticEdgeJump;
+		_stochasticEdgeDiffusion = stochasticEdgeDiffusion;
 
-		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblStart = dblStart) ||
-			!org.drip.numerical.common.NumberUtil.IsValid (_dblDeterministic = dblDeterministic) || (null == _sed
-				&& null == _sej) || null == (_jdeu = jdeu))
-			throw new java.lang.Exception ("JumpDiffusionEdge Constructor => Invalid Inputs");
+		if (!NumberUtil.IsValid (_start = start) ||
+			!NumberUtil.IsValid (_deterministic = deterministic) ||
+			(null == _stochasticEdgeDiffusion && null == _stochasticEdgeJump) ||
+			null == (_unit = unit))
+		{
+			throw new Exception ("JumpDiffusionEdge Constructor => Invalid Inputs");
+		}
 	}
 
 	/**
@@ -234,7 +274,7 @@ public class JumpDiffusionEdge {
 
 	public double timeIncrement()
 	{
-		return _jdeu.timeIncrement();
+		return _unit.timeIncrement();
 	}
 
 	/**
@@ -245,7 +285,7 @@ public class JumpDiffusionEdge {
 
 	public double start()
 	{
-		return _dblStart;
+		return _start;
 	}
 
 	/**
@@ -256,7 +296,7 @@ public class JumpDiffusionEdge {
 
 	public double deterministic()
 	{
-		return _dblDeterministic;
+		return _deterministic;
 	}
 
 	/**
@@ -267,7 +307,7 @@ public class JumpDiffusionEdge {
 
 	public double diffusionStochastic()
 	{
-		return null == _sed ? 0. : _sed.change();
+		return null == _stochasticEdgeDiffusion ? 0. : _stochasticEdgeDiffusion.change();
 	}
 
 	/**
@@ -278,7 +318,7 @@ public class JumpDiffusionEdge {
 
 	public double diffusionWander()
 	{
-		return _jdeu.diffusion();
+		return _unit.diffusion();
 	}
 
 	/**
@@ -289,7 +329,7 @@ public class JumpDiffusionEdge {
 
 	public double jumpStochastic()
 	{
-		return null == _sej ? 0. : _sej.target();
+		return null == _stochasticEdgeJump ? 0. : _stochasticEdgeJump.target();
 	}
 
 	/**
@@ -300,7 +340,7 @@ public class JumpDiffusionEdge {
 
 	public double jumpWander()
 	{
-		return _jdeu.jump();
+		return _unit.jump();
 	}
 
 	/**
@@ -311,8 +351,8 @@ public class JumpDiffusionEdge {
 
 	public double finish()
 	{
-		return null == _sej || !_sej.jumpOccurred() ? _dblStart + _dblDeterministic + diffusionStochastic() :
-			_sej.target();
+		return null == _stochasticEdgeJump || !_stochasticEdgeJump.jumpOccurred() ?
+			_start + _deterministic + diffusionStochastic() : _stochasticEdgeJump.target();
 	}
 
 	/**
@@ -323,7 +363,7 @@ public class JumpDiffusionEdge {
 
 	public double grossChange()
 	{
-		return finish() - _dblStart;
+		return finish() - _start;
 	}
 
 	/**
@@ -332,9 +372,9 @@ public class JumpDiffusionEdge {
 	 * @return The Stochastic Diffusion Edge Instance
 	 */
 
-	public org.drip.measure.realization.StochasticEdgeDiffusion stochasticDiffusionEdge()
+	public StochasticEdgeDiffusion stochasticDiffusionEdge()
 	{
-		return _sed;
+		return _stochasticEdgeDiffusion;
 	}
 
 	/**
@@ -343,8 +383,8 @@ public class JumpDiffusionEdge {
 	 * @return The Stochastic Jump Edge Instance
 	 */
 
-	public org.drip.measure.realization.StochasticEdgeJump stochasticJumpEdge()
+	public StochasticEdgeJump stochasticJumpEdge()
 	{
-		return _sej;
+		return _stochasticEdgeJump;
 	}
 }

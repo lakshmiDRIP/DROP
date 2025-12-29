@@ -1,7 +1,7 @@
 
 package org.drip.sample.distancetest;
 
-import org.drip.measure.continuous.R1UnivariateUniform;
+import org.drip.measure.continuous.R1UniformDistribution;
 import org.drip.service.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 import org.drip.validation.distance.GapTestOutcome;
@@ -152,7 +152,7 @@ public class UniformCramersVonMisesGapAnalysis
 		final double rightSupport)
 		throws Exception
 	{
-		return new R1UnivariateUniform (
+		return new R1UniformDistribution (
 			leftSupport,
 			rightSupport
 		).random();

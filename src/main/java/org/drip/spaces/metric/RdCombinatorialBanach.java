@@ -2,7 +2,7 @@
 package org.drip.spaces.metric;
 
 import org.drip.function.definition.RdToR1;
-import org.drip.measure.continuous.Rd;
+import org.drip.measure.continuous.RdDistribution;
 import org.drip.spaces.iterator.RdSpanningCombinatorialIterator;
 import org.drip.spaces.tensor.R1CombinatorialVector;
 import org.drip.spaces.tensor.RdCombinatorialVector;
@@ -127,7 +127,7 @@ import org.drip.spaces.tensor.RdCombinatorialVector;
 public class RdCombinatorialBanach extends RdCombinatorialVector implements RdNormed
 {
 	private int _pNorm = -1;
-	private Rd _rdContinuous = null;
+	private RdDistribution _rdContinuous = null;
 
 	/**
 	 * <i>RdCombinatorialBanach</i> Space Constructor
@@ -141,7 +141,7 @@ public class RdCombinatorialBanach extends RdCombinatorialVector implements RdNo
 
 	public RdCombinatorialBanach (
 		final R1CombinatorialVector[] r1CombinatorialVectorArray,
-		final Rd rdContinuous,
+		final RdDistribution rdContinuous,
 		final int pNorm)
 		throws Exception
 	{
@@ -159,7 +159,7 @@ public class RdCombinatorialBanach extends RdCombinatorialVector implements RdNo
 		return _pNorm;
 	}
 
-	@Override public Rd borelSigmaMeasure()
+	@Override public RdDistribution borelSigmaMeasure()
 	{
 		return _rdContinuous;
 	}

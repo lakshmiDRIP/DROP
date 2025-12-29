@@ -6,6 +6,14 @@ package org.drip.measure.continuous;
  */
 
 /*!
+ * Copyright (C) 2030 Lakshmi Krishnamurthy
+ * Copyright (C) 2029 Lakshmi Krishnamurthy
+ * Copyright (C) 2028 Lakshmi Krishnamurthy
+ * Copyright (C) 2027 Lakshmi Krishnamurthy
+ * Copyright (C) 2026 Lakshmi Krishnamurthy
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -81,45 +89,57 @@ package org.drip.measure.continuous;
 
 /**
  * <i>MultivariateMeta</i> holds a Group of Variable Names - each of which separately is a Valid Single
- * R<sup>1</sup>/R<sup>d</sup> Variable.
+ * 	R<sup>1</sup>/R<sup>d</sup> Variable. It provides the following Functionality:
  *
- *	<br><br>
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md">Numerical Analysis Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/README.md">R<sup>d</sup> Continuous/Discrete Probability Measures</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/continuous/README.md">R<sup>1</sup> and R<sup>d</sup> Continuous Random Measure</a></li>
+ * 		<li><i>MultivariateMeta</i> Constructor</li>
+ * 		<li>Retrieve the Number of Variate</li>
+ * 		<li>Retrieve the Array of the Variate Names</li>
+ * 		<li>Retrieve the Index of the Named Variate</li>
  *  </ul>
+ *
+ *	<br>
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md">Numerical Analysis Library</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/README.md">R<sup>d</sup> Continuous/Discrete Probability Measures</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/continuous/README.md">R<sup>1</sup> and R<sup>d</sup> Continuous Random Measure</a></td></tr>
+ *  </table>
+ *	<br>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class MultivariateMeta {
-	private java.lang.String[] _astrName = null;
+public class MultivariateMeta
+{
+	private String[] _nameArray = null;
 
 	/**
-	 * MultivariateMeta Constructor
+	 * <i>MultivariateMeta</i> Constructor
 	 * 
-	 * @param astrName Array of the Variate Names
+	 * @param nameArray Array of the Variate Names
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public MultivariateMeta (
-		final java.lang.String[] astrName)
-		throws java.lang.Exception
+		final String[] nameArray)
+		throws Exception
 	{
-		if (null == (_astrName = astrName))
-			throw new java.lang.Exception ("MultivariateMeta Constructor => Invalid Inputs");
+		if (null == (_nameArray = nameArray)) {
+			throw new Exception ("MultivariateMeta Constructor => Invalid Inputs");
+		}
 
-		int iNumVariable = _astrName.length;
+		int variableCount = _nameArray.length;
 
-		if (0 >= iNumVariable)
-			throw new java.lang.Exception ("MultivariateMeta Constructor => Invalid Inputs");
+		if (0 >= variableCount) {
+			throw new Exception ("MultivariateMeta Constructor => Invalid Inputs");
+		}
 
-		for (int i = 0; i < iNumVariable; ++i) {
-			if (null == _astrName[i] || _astrName[i].isEmpty())
-				throw new java.lang.Exception ("MultivariateMeta Constructor => Invalid Inputs");
+		for (int variableIndex = 0; variableIndex < variableCount; ++variableIndex) {
+			if (null == _nameArray[variableIndex] || _nameArray[variableIndex].isEmpty()) {
+				throw new Exception ("MultivariateMeta Constructor => Invalid Inputs");
+			}
 		}
 	}
 
@@ -131,7 +151,7 @@ public class MultivariateMeta {
 
 	public int numVariable()
 	{
-		return _astrName.length;
+		return _nameArray.length;
 	}
 
 	/**
@@ -140,28 +160,30 @@ public class MultivariateMeta {
 	 * @return The Array of the Variate Names
 	 */
 
-	public java.lang.String[] names()
+	public String[] names()
 	{
-		return _astrName;
+		return _nameArray;
 	}
 
 	/**
 	 * Retrieve the Index of the Named Variate
 	 * 
-	 * @param strName The Named Variate
+	 * @param variateName The Named Variate
 	 * 
 	 * @return Index of the Named Variate
 	 */
 
 	public int variateIndex (
-		final java.lang.String strName)
+		final String variateName)
 	{
-		if (null == strName || strName.isEmpty()) return -1;
+		if (null == variateName || variateName.isEmpty()) {
+			return -1;
+		}
 
-		int iNumVariable = numVariable();
-
-		for (int i = 0; i < iNumVariable; ++i) {
-			if (strName.equalsIgnoreCase (_astrName[i])) return i;
+		for (int variateIndex = 0; variateIndex < numVariable(); ++variateIndex) {
+			if (variateName.equalsIgnoreCase (_nameArray[variateIndex])) {
+				return variateIndex;
+			}
 		}
 
 		return -1;

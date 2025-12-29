@@ -115,7 +115,7 @@ package org.drip.measure.gamma;
  */
 
 public class R1ShapeScaleDistribution
-	extends org.drip.measure.continuous.R1Univariate
+	extends org.drip.measure.continuous.R1Distribution
 {
 	private double _cdfScaler = java.lang.Double.NaN;
 	private double _pdfScaler = java.lang.Double.NaN;

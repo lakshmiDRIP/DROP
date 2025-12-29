@@ -3,7 +3,7 @@ package org.drip.service.assetallocation;
 
 import org.drip.measure.bayesian.R1MultivariateConvolutionMetrics;
 import org.drip.measure.continuous.MultivariateMeta;
-import org.drip.measure.continuous.R1Multivariate;
+import org.drip.measure.continuous.MetaRdDistribution;
 import org.drip.measure.gaussian.R1MultivariateNormal;
 import org.drip.portfolioconstruction.allocator.ForwardReverseHoldingsAllocation;
 import org.drip.portfolioconstruction.asset.Portfolio;
@@ -192,11 +192,11 @@ public class BlackLittermanProcessor
 		R1MultivariateConvolutionMetrics jointPosteriorConvolutionMetrics =
 			blackLittermanCustomConfidenceOutput.jointPosteriorMetrics();
 
-		R1Multivariate priorMultivariate = jointPosteriorConvolutionMetrics.prior();
+		MetaRdDistribution priorMultivariate = jointPosteriorConvolutionMetrics.prior();
 
-		R1Multivariate posteriorMultivariate = jointPosteriorConvolutionMetrics.posterior();
+		MetaRdDistribution posteriorMultivariate = jointPosteriorConvolutionMetrics.posterior();
 
-		R1Multivariate jointPosteriorMultivariate = jointPosteriorConvolutionMetrics.joint();
+		MetaRdDistribution jointPosteriorMultivariate = jointPosteriorConvolutionMetrics.joint();
 
 		if (null == priorMultivariate || !(priorMultivariate instanceof R1MultivariateNormal) ||
 			null == jointPosteriorMultivariate ||

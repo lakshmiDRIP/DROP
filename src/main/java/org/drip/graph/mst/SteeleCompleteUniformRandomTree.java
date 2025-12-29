@@ -283,7 +283,7 @@ public class SteeleCompleteUniformRandomTree
 	 */
 
 	public static final double AsymptoticFriezeMSTLength (
-		final org.drip.measure.continuous.R1Univariate r1Univariate)
+		final org.drip.measure.continuous.R1Distribution r1Univariate)
 		throws java.lang.Exception
 	{
 		if (null == r1Univariate)

@@ -1,17 +1,27 @@
 
-package org.drip.measure.discrete;
+package org.drip.measure.continuous;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2030 Lakshmi Krishnamurthy
+ * Copyright (C) 2029 Lakshmi Krishnamurthy
+ * Copyright (C) 2028 Lakshmi Krishnamurthy
+ * Copyright (C) 2027 Lakshmi Krishnamurthy
+ * Copyright (C) 2026 Lakshmi Krishnamurthy
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
+ * Copyright (C) 2016 Lakshmi Krishnamurthy
+ * Copyright (C) 2015 Lakshmi Krishnamurthy
  * 
  *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
  *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
@@ -79,121 +89,72 @@ package org.drip.measure.discrete;
  */
 
 /**
- * <i>VertexRd</i> holds the R<sup>d</sup> Realizations at the Individual Vertexes.
+ * <i>RdDistribution</i> implements the Base Abstract Class behind R<sup>d</sup> Distributions. It exports
+ *  Methods for incremental, cumulative, and inverse cumulative Distribution Densities. It provides the
+ * 	following Functionality:
  *
- *	<br><br>
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md">Numerical Analysis Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/README.md">R<sup>d</sup> Continuous/Discrete Probability Measures</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/discrete/README.md">Antithetic, Quadratically Re-sampled, De-biased Distribution</a></li>
+ * 		<li>Compute the Cumulative under the Distribution to the given Variate Array</li>
+ * 		<li>Compute the Incremental under the Distribution between the 2 Variate Arrays</li>
+ * 		<li>Compute the Density under the Distribution at the given Variate Array</li>
  *  </ul>
+ *
+ *	<br>
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md">Numerical Analysis Library</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/README.md">R<sup>d</sup> Continuous/Discrete Probability Measures</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/continuous/README.md">R<sup>1</sup> and R<sup>d</sup> Continuous Random Measure</a></td></tr>
+ *  </table>
+ *	<br>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class VertexRd {
-	private java.util.List<double[]> _lsVertexRd = new java.util.ArrayList<double[]>();
+public abstract class RdDistribution
+{
 
 	/**
-	 * Construct a VertexRd Instance from the R^d Sequence
+	 * Compute the Cumulative under the Distribution to the given Variate Array
 	 * 
-	 * @param aadblSequence The R^d Sequence
+	 * @param xArray Variate Array to which the Cumulative is to be computed
 	 * 
-	 * @return The VertexRd Instance
+	 * @return The Cumulative
+	 * 
+	 * @throws Exception Thrown if the inputs are invalid
 	 */
 
-	public static final VertexRd FromFlatForm (
-		final double[][] aadblSequence)
-	{
-		if (null == aadblSequence) return null;
-
-		int iSequenceSize = aadblSequence.length;
-
-		if (0 == iSequenceSize) return null;
-
-		VertexRd vertexRd = new VertexRd();
-
-		for (int iSequence = 0; iSequence < iSequenceSize; ++iSequence) {
-			if (null == aadblSequence[iSequence] || !vertexRd.add (iSequence, aadblSequence[iSequence]))
-				return null;
-		}
-
-		return vertexRd;
-	}
+	public abstract double cumulative (
+		final double[] xArray)
+		throws Exception;
 
 	/**
-	 * Empty VertexRd Constructor
+	 * Compute the Incremental under the Distribution between the 2 Variate Arrays
+	 * 
+	 * @param leftXArray Left Variate Array to which the Cumulative is to be computed
+	 * @param rightXArray Right Variate Array to which the Cumulative is to be computed
+	 * 
+	 * @return The Incremental
+	 * 
+	 * @throws Exception Thrown if the inputs are invalid
 	 */
 
-	public VertexRd()
-	{
-	}
+	public abstract double incremental (
+		final double[] leftXArray,
+		final double[] rightXArray)
+		throws Exception;
 
 	/**
-	 * Retrieve the Vertex R^d List
+	 * Compute the Density under the Distribution at the given Variate Array
 	 * 
-	 * @return The Vertex R^d List
+	 * @param xArray Variate Array at which the Density needs to be computed
+	 * 
+	 * @return The Density
+	 * 
+	 * @throws Exception Thrown if the input is invalid
 	 */
 
-	public java.util.List<double[]> vertexList()
-	{
-		return _lsVertexRd;
-	}
-
-	/**
-	 * Add the Vertex Index and its corresponding Realization
-	 * 
-	 * @param iVertex The Vertex Index
-	 * @param adblRealization The R^d Realization Array
-	 * 
-	 * @return TRUE - The Vertex Index/Realization successfully added
-	 */
-
-	public boolean add (
-		final int iVertex,
-		final double[] adblRealization)
-	{
-		if (-1 >= iVertex || null == adblRealization || 0 == adblRealization.length ||
-			!org.drip.numerical.common.NumberUtil.IsValid (adblRealization))
-			return false;
-
-		_lsVertexRd.add (iVertex, adblRealization);
-
-		return true;
-	}
-
-	/**
-	 * Retrieve the Vertex Realization given the Vertex Index
-	 * 
-	 * @param iVertex The Vertex Index
-	 * 
-	 * @return Array of Vertex Realizations
-	 */
-
-	public double[] vertexRealization (
-		final int iVertex)
-	{
-		return -1 >= iVertex ? null : _lsVertexRd.get (iVertex);
-	}
-
-	/**
-	 * Flatten out into a 2D Array
-	 * 
-	 * @return The 2D Array of the VertexRd Realizations
-	 */
-
-	public double[][] flatform()
-	{
-		int iSize = _lsVertexRd.size();
-
-		if (0 == iSize) return null;
-
-		double[][] aadblSequence = new double[iSize][];
-
-		for (int i = 0; i < iSize; ++i)
-			aadblSequence[i] = _lsVertexRd.get (i);
-
-		return aadblSequence;
-	}
+	public abstract double density (
+		final double[] xArray)
+		throws Exception;
 }

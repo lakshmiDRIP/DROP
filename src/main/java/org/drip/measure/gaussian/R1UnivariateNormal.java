@@ -97,7 +97,7 @@ package org.drip.measure.gaussian;
  * @author Lakshmi Krishnamurthy
  */
 
-public class R1UnivariateNormal extends org.drip.measure.continuous.R1Univariate {
+public class R1UnivariateNormal extends org.drip.measure.continuous.R1Distribution {
 	private double _dblMean = java.lang.Double.NaN;
 	private double _dblSigma = java.lang.Double.NaN;
 

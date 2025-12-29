@@ -6,8 +6,8 @@ import java.util.List;
 import org.drip.analytics.daycount.ActActDCParams;
 import org.drip.analytics.daycount.Convention;
 import org.drip.analytics.support.Helper;
-import org.drip.measure.discrete.CorrelatedPathVertexDimension;
-import org.drip.measure.discrete.VertexRd;
+import org.drip.measure.discontinuous.CorrelatedPathVertexDimension;
+import org.drip.measure.discontinuous.VertexRd;
 import org.drip.measure.process.DiffusionEvolver;
 import org.drip.measure.realization.JumpDiffusionEdgeUnit;
 import org.drip.measure.realization.JumpDiffusionVertex;
@@ -137,7 +137,7 @@ public class PathVertexRd
 	 */
 
 	public static final PathVertexRd Standard (
-		final org.drip.measure.discrete.CorrelatedPathVertexDimension cpvd,
+		final org.drip.measure.discontinuous.CorrelatedPathVertexDimension cpvd,
 		final org.drip.measure.process.DiffusionEvolver de)
 	{
 		if (null == cpvd || null == de) return null;

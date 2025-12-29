@@ -121,7 +121,7 @@ public abstract class Bounded extends org.drip.sequence.random.UnivariateSequenc
 
 	@Override public org.drip.sequence.metrics.SingleSequenceAgnosticMetrics sequence (
 		final int iNumEntry,
-		final org.drip.measure.continuous.R1Univariate distPopulation)
+		final org.drip.measure.continuous.R1Distribution distPopulation)
 	{
 		double[] adblSequence = new double[iNumEntry];
 

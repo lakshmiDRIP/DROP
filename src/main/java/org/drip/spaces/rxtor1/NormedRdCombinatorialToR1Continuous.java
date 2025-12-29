@@ -2,7 +2,7 @@
 package org.drip.spaces.rxtor1;
 
 import org.drip.function.definition.RdToR1;
-import org.drip.measure.continuous.Rd;
+import org.drip.measure.continuous.RdDistribution;
 import org.drip.spaces.iterator.RdSpanningCombinatorialIterator;
 import org.drip.spaces.metric.R1Continuous;
 import org.drip.spaces.metric.RdCombinatorialBanach;
@@ -161,7 +161,7 @@ public class NormedRdCombinatorialToR1Continuous extends NormedRdToNormedR1
 
 		RdCombinatorialBanach rdCombinatorialBanachInput = (RdCombinatorialBanach) inputMetricVectorSpace();
 
-		Rd rdContinuousDistribution = rdCombinatorialBanachInput.borelSigmaMeasure();
+		RdDistribution rdContinuousDistribution = rdCombinatorialBanachInput.borelSigmaMeasure();
 
 		RdToR1 rdToR1Function = function();
 

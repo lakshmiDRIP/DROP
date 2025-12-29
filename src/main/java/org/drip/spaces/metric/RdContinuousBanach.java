@@ -3,7 +3,7 @@ package org.drip.spaces.metric;
 
 import org.drip.function.definition.RdToR1;
 import org.drip.function.definition.VariateOutputPair;
-import org.drip.measure.continuous.Rd;
+import org.drip.measure.continuous.RdDistribution;
 import org.drip.spaces.tensor.R1ContinuousVector;
 import org.drip.spaces.tensor.RdContinuousVector;
 
@@ -129,7 +129,7 @@ import org.drip.spaces.tensor.RdContinuousVector;
 public class RdContinuousBanach extends RdContinuousVector implements RdNormed
 {
 	private int _pNorm = -1;
-	private Rd _rdDistribution = null;
+	private RdDistribution _rdDistribution = null;
 
 	/**
 	 * Construct the Standard l<sup>p</sup> R<sup>d</sup> Continuous Banach Space Instance
@@ -143,7 +143,7 @@ public class RdContinuousBanach extends RdContinuousVector implements RdNormed
 
 	public static final RdContinuousBanach StandardBanach (
 		final int iDimension,
-		final org.drip.measure.continuous.Rd distRd,
+		final org.drip.measure.continuous.RdDistribution distRd,
 		final int iPNorm)
 	{
 		try {
@@ -167,7 +167,7 @@ public class RdContinuousBanach extends RdContinuousVector implements RdNormed
 
 	public static final RdContinuousBanach SupremumBanach (
 		final int iDimension,
-		final org.drip.measure.continuous.Rd distRd)
+		final org.drip.measure.continuous.RdDistribution distRd)
 	{
 		try {
 			return 0 >= iDimension ? null : new RdContinuousBanach (new
@@ -191,7 +191,7 @@ public class RdContinuousBanach extends RdContinuousVector implements RdNormed
 
 	public RdContinuousBanach (
 		final R1ContinuousVector[] r1ContinuousVectorArray,
-		final Rd rdDistribution,
+		final RdDistribution rdDistribution,
 		final int pNorm)
 		throws Exception
 	{
@@ -209,7 +209,7 @@ public class RdContinuousBanach extends RdContinuousVector implements RdNormed
 		return _pNorm;
 	}
 
-	@Override public Rd borelSigmaMeasure()
+	@Override public RdDistribution borelSigmaMeasure()
 	{
 		return _rdDistribution;
 	}

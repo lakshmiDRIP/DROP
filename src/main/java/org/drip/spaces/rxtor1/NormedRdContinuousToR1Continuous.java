@@ -2,7 +2,7 @@
 package org.drip.spaces.rxtor1;
 
 import org.drip.function.definition.RdToR1;
-import org.drip.measure.continuous.Rd;
+import org.drip.measure.continuous.RdDistribution;
 import org.drip.spaces.metric.R1Continuous;
 import org.drip.spaces.metric.RdContinuousBanach;
 
@@ -160,7 +160,7 @@ public class NormedRdContinuousToR1Continuous extends NormedRdToNormedR1
 
 		RdContinuousBanach rdContinuousBanachInput = (RdContinuousBanach) inputMetricVectorSpace();
 
-		final Rd rdContinuousDistribution = rdContinuousBanachInput.borelSigmaMeasure();
+		final RdDistribution rdContinuousDistribution = rdContinuousBanachInput.borelSigmaMeasure();
 
 		final RdToR1 rdToR1Function = function();
 

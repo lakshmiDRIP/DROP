@@ -5,8 +5,8 @@ import org.drip.function.definition.R1ToR1;
 import org.drip.function.r1tor1solver.FixedPointFinderBrent;
 import org.drip.function.r1tor1solver.FixedPointFinderOutput;
 import org.drip.function.r1tor1solver.InitializationHeuristics;
-import org.drip.measure.continuous.R1Univariate;
-import org.drip.measure.discrete.R1Distribution;
+import org.drip.measure.continuous.R1Distribution;
+import org.drip.measure.discontinuous.R1DiscreteDistribution;
 import org.drip.numerical.common.NumberUtil;
 import org.drip.numerical.integration.NewtonCotesQuadratureGenerator;
 
@@ -234,7 +234,7 @@ public class UtilityFunctionExpectation
 	 */
 
 	public UtilityExpectationOptimizationRun optimizationRun (
-		final R1Distribution underlierPriceDistribution,
+		final R1DiscreteDistribution underlierPriceDistribution,
 		final double[] underlierPriceArray,
 		final double positionValueAdjustment)
 	{
@@ -269,7 +269,7 @@ public class UtilityFunctionExpectation
 	 */
 
 	public ClaimsUtilityExpectationInferenceRun inferPositionAdjustment (
-		final R1Distribution underlierPriceDistribution,
+		final R1DiscreteDistribution underlierPriceDistribution,
 		final double[] underlierPriceArray,
 		final double targetUtilityExpectationValue)
 	{
@@ -322,7 +322,7 @@ public class UtilityFunctionExpectation
 	 */
 
 	public UtilityExpectationOptimizationRun optimizationRun (
-		final R1Univariate underlierPriceDistribution,
+		final R1Distribution underlierPriceDistribution,
 		final double positionValueAdjustment)
 	{
 		if (null == underlierPriceDistribution) {
@@ -360,7 +360,7 @@ public class UtilityFunctionExpectation
 	 */
 
 	public ClaimsUtilityExpectationInferenceRun inferPositionAdjustment (
-		final R1Univariate underlierPriceDistribution,
+		final R1Distribution underlierPriceDistribution,
 		final double targetUtilityExpectationValue)
 		throws Exception
 	{

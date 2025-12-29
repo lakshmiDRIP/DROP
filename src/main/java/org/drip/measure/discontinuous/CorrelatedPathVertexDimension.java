@@ -1,5 +1,5 @@
 
-package org.drip.measure.discrete;
+package org.drip.measure.discontinuous;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -100,7 +100,7 @@ public class CorrelatedPathVertexDimension {
 	private boolean _bApplyAntithetic = false;
 	private double[][] _aadblCorrelation = null;
 	private org.drip.measure.crng.RandomNumberGenerator _rng = null;
-	private org.drip.measure.discrete.QuadraticResampler _qr = null;
+	private org.drip.measure.discontinuous.QuadraticResampler _qr = null;
 
 	/**
 	 * CorrelatedPathVertexDimension Constructor
@@ -121,7 +121,7 @@ public class CorrelatedPathVertexDimension {
 		final int iNumVertex,
 		final int iNumPath,
 		final boolean bApplyAntithetic,
-		final org.drip.measure.discrete.QuadraticResampler qr)
+		final org.drip.measure.discontinuous.QuadraticResampler qr)
 		throws java.lang.Exception
 	{
 		if (null == (_rng = rng) || 0 >= (_iNumVertex = iNumVertex) || 0 >= (_iNumPath = iNumPath))
@@ -218,7 +218,7 @@ public class CorrelatedPathVertexDimension {
 	 * @return The Quadratic Resampler Instance
 	 */
 
-	public org.drip.measure.discrete.QuadraticResampler quadraticResampler()
+	public org.drip.measure.discontinuous.QuadraticResampler quadraticResampler()
 	{
 		return _qr;
 	}
@@ -281,16 +281,16 @@ public class CorrelatedPathVertexDimension {
 	 * @return Single Straight Path R^d Vertex Realization
 	 */
 
-	public org.drip.measure.discrete.VertexRd straightPathVertexRd()
+	public org.drip.measure.discontinuous.VertexRd straightPathVertexRd()
 	{
-		org.drip.measure.discrete.VertexRd vertexRealization = new
-			org.drip.measure.discrete.VertexRd();
+		org.drip.measure.discontinuous.VertexRd vertexRealization = new
+			org.drip.measure.discontinuous.VertexRd();
 
 		for (int i = 0; i < _iNumVertex; ++i) {
 			if (!vertexRealization.add (i, straightVertexRealization())) return null;
 		}
 
-		return null != _qr ? org.drip.measure.discrete.VertexRd.FromFlatForm (_qr.transform
+		return null != _qr ? org.drip.measure.discontinuous.VertexRd.FromFlatForm (_qr.transform
 			(vertexRealization.flatform())) : vertexRealization;
 	}
 
@@ -300,13 +300,13 @@ public class CorrelatedPathVertexDimension {
 	 * @return Antithetic Pair Path R^d Vertex Realizations
 	 */
 
-	public org.drip.measure.discrete.VertexRd[] antitheticPairPathVertexRd()
+	public org.drip.measure.discontinuous.VertexRd[] antitheticPairPathVertexRd()
 	{
-		org.drip.measure.discrete.VertexRd straightVertexRealization = new
-			org.drip.measure.discrete.VertexRd();
+		org.drip.measure.discontinuous.VertexRd straightVertexRealization = new
+			org.drip.measure.discontinuous.VertexRd();
 
-		org.drip.measure.discrete.VertexRd antitheticVertexRealization = new
-			org.drip.measure.discrete.VertexRd();
+		org.drip.measure.discontinuous.VertexRd antitheticVertexRealization = new
+			org.drip.measure.discontinuous.VertexRd();
 
 		for (int i = 0; i < _iNumVertex; ++i) {
 			double[][] aadblStraightAntitheticRealization = antitheticVertexPairRealization();
@@ -317,12 +317,12 @@ public class CorrelatedPathVertexDimension {
 		}
 
 		if (null == _qr)
-			return new org.drip.measure.discrete.VertexRd[] {straightVertexRealization,
+			return new org.drip.measure.discontinuous.VertexRd[] {straightVertexRealization,
 				antitheticVertexRealization};
 
-		return new org.drip.measure.discrete.VertexRd[] {org.drip.measure.discrete.VertexRd.FromFlatForm
+		return new org.drip.measure.discontinuous.VertexRd[] {org.drip.measure.discontinuous.VertexRd.FromFlatForm
 			(_qr.transform (straightVertexRealization.flatform())),
-				org.drip.measure.discrete.VertexRd.FromFlatForm (_qr.transform
+				org.drip.measure.discontinuous.VertexRd.FromFlatForm (_qr.transform
 					(antitheticVertexRealization.flatform()))};
 	}
 
@@ -332,10 +332,10 @@ public class CorrelatedPathVertexDimension {
 	 * @return Straight Multi-Path R^d Vertex Realizations Array
 	 */
 
-	public org.drip.measure.discrete.VertexRd[] straightMultiPathVertexRd()
+	public org.drip.measure.discontinuous.VertexRd[] straightMultiPathVertexRd()
 	{
-		org.drip.measure.discrete.VertexRd[] aVertexRd = new
-			org.drip.measure.discrete.VertexRd[_iNumPath];
+		org.drip.measure.discontinuous.VertexRd[] aVertexRd = new
+			org.drip.measure.discontinuous.VertexRd[_iNumPath];
 
 		for (int i = 0; i < _iNumPath; ++i) {
 			if (null == (aVertexRd[i] = straightPathVertexRd())) return null;
@@ -350,15 +350,15 @@ public class CorrelatedPathVertexDimension {
 	 * @return Antithetic Multi-Path R^d Vertex Realizations Array
 	 */
 
-	public org.drip.measure.discrete.VertexRd[] antitheticMultiPathVertexRd()
+	public org.drip.measure.discontinuous.VertexRd[] antitheticMultiPathVertexRd()
 	{
-		org.drip.measure.discrete.VertexRd[] aVertexRd = new
-			org.drip.measure.discrete.VertexRd[_iNumPath];
+		org.drip.measure.discontinuous.VertexRd[] aVertexRd = new
+			org.drip.measure.discontinuous.VertexRd[_iNumPath];
 
 		int iNumGeneration = _iNumPath / 2;
 
 		for (int i = 0; i < iNumGeneration; ++i) {
-			org.drip.measure.discrete.VertexRd[] aAntitheticVertexRd = antitheticPairPathVertexRd();
+			org.drip.measure.discontinuous.VertexRd[] aAntitheticVertexRd = antitheticPairPathVertexRd();
 
 			if (null == aAntitheticVertexRd || 2 != aAntitheticVertexRd.length) return null;
 
@@ -378,7 +378,7 @@ public class CorrelatedPathVertexDimension {
 	 * @return Multi-Path R^d Vertex Realizations Array
 	 */
 
-	public org.drip.measure.discrete.VertexRd[] multiPathVertexRd()
+	public org.drip.measure.discontinuous.VertexRd[] multiPathVertexRd()
 	{
 		return _bApplyAntithetic ? antitheticMultiPathVertexRd() : straightMultiPathVertexRd();
 	}

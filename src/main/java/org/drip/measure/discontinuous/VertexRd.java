@@ -1,5 +1,5 @@
 
-package org.drip.measure.discrete;
+package org.drip.measure.discontinuous;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -12,8 +12,6 @@ package org.drip.measure.discrete;
  * Copyright (C) 2019 Lakshmi Krishnamurthy
  * Copyright (C) 2018 Lakshmi Krishnamurthy
  * Copyright (C) 2017 Lakshmi Krishnamurthy
- * Copyright (C) 2016 Lakshmi Krishnamurthy
- * Copyright (C) 2015 Lakshmi Krishnamurthy
  * 
  *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
  *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
@@ -81,8 +79,7 @@ package org.drip.measure.discrete;
  */
 
 /**
- * <i>PoissonDistribution</i> implements the Univariate Poisson Distribution using the specified
- * Mean/Variance.
+ * <i>VertexRd</i> holds the R<sup>d</sup> Realizations at the Individual Vertexes.
  *
  *	<br><br>
  *  <ul>
@@ -95,116 +92,108 @@ package org.drip.measure.discrete;
  * @author Lakshmi Krishnamurthy
  */
 
-public class PoissonDistribution extends org.drip.measure.continuous.R1Univariate {
-	private double _dblLambda = java.lang.Double.NaN;
-	private double _dblExponentialLambda = java.lang.Double.NaN;
+public class VertexRd {
+	private java.util.List<double[]> _lsVertexRd = new java.util.ArrayList<double[]>();
 
 	/**
-	 * Construct a PoissonDistribution Instance
+	 * Construct a VertexRd Instance from the R^d Sequence
 	 * 
-	 * @param dblLambda Lambda
+	 * @param aadblSequence The R^d Sequence
 	 * 
-	 * @throws java.lang.Exception Thrown if the inputs are invalid
+	 * @return The VertexRd Instance
 	 */
 
-	public PoissonDistribution (
-		final double dblLambda)
-		throws java.lang.Exception
+	public static final VertexRd FromFlatForm (
+		final double[][] aadblSequence)
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblLambda = dblLambda) || 0. >= _dblLambda)
-			throw new java.lang.Exception ("PoissonDistribution constructor: Invalid inputs");
+		if (null == aadblSequence) return null;
 
-		_dblExponentialLambda = java.lang.Math.exp (-1. * _dblLambda);
+		int iSequenceSize = aadblSequence.length;
+
+		if (0 == iSequenceSize) return null;
+
+		VertexRd vertexRd = new VertexRd();
+
+		for (int iSequence = 0; iSequence < iSequenceSize; ++iSequence) {
+			if (null == aadblSequence[iSequence] || !vertexRd.add (iSequence, aadblSequence[iSequence]))
+				return null;
+		}
+
+		return vertexRd;
 	}
 
 	/**
-	 * Retrieve Lambda
-	 * 
-	 * @return Lambda
+	 * Empty VertexRd Constructor
 	 */
 
-	public double lambda()
+	public VertexRd()
 	{
-		return _dblLambda;
 	}
 
-	@Override public double[] support()
+	/**
+	 * Retrieve the Vertex R^d List
+	 * 
+	 * @return The Vertex R^d List
+	 */
+
+	public java.util.List<double[]> vertexList()
 	{
-		return new double[]
-		{
-			0.,
-			java.lang.Double.POSITIVE_INFINITY
-		};
+		return _lsVertexRd;
 	}
 
-	@Override public double cumulative (
-		final double dblX)
-		throws java.lang.Exception
+	/**
+	 * Add the Vertex Index and its corresponding Realization
+	 * 
+	 * @param iVertex The Vertex Index
+	 * @param adblRealization The R^d Realization Array
+	 * 
+	 * @return TRUE - The Vertex Index/Realization successfully added
+	 */
+
+	public boolean add (
+		final int iVertex,
+		final double[] adblRealization)
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (dblX))
-			throw new java.lang.Exception ("PoissonDistribution::cumulative => Invalid inputs");
+		if (-1 >= iVertex || null == adblRealization || 0 == adblRealization.length ||
+			!org.drip.numerical.common.NumberUtil.IsValid (adblRealization))
+			return false;
 
-		int iEnd = (int) dblX;
-		double dblYLocal = 1.;
-		double dblYCumulative = 0.;
+		_lsVertexRd.add (iVertex, adblRealization);
 
-		for (int i = 1; i < iEnd; ++i) {
-			i = i + 1;
-			dblYLocal *= _dblLambda / i;
-			dblYCumulative += _dblExponentialLambda * dblYLocal;
-		}
-
-		return dblYCumulative;
+		return true;
 	}
 
-	@Override public double incremental (
-		final double dblXLeft,
-		final double dblXRight)
-		throws java.lang.Exception
+	/**
+	 * Retrieve the Vertex Realization given the Vertex Index
+	 * 
+	 * @param iVertex The Vertex Index
+	 * 
+	 * @return Array of Vertex Realizations
+	 */
+
+	public double[] vertexRealization (
+		final int iVertex)
 	{
-		return cumulative (dblXRight) - cumulative (dblXLeft);
+		return -1 >= iVertex ? null : _lsVertexRd.get (iVertex);
 	}
 
-	@Override public double invCumulative (
-		final double dblY)
-		throws java.lang.Exception
+	/**
+	 * Flatten out into a 2D Array
+	 * 
+	 * @return The 2D Array of the VertexRd Realizations
+	 */
+
+	public double[][] flatform()
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (dblY))
-			throw new java.lang.Exception ("PoissonDistribution::invCumulative => Invalid inputs");
+		int iSize = _lsVertexRd.size();
 
-		int i = 0;
-		double dblYLocal = 1.;
-		double dblYCumulative = 0.;
+		if (0 == iSize) return null;
 
-		while (dblYCumulative < dblY) {
-			i = i + 1;
-			dblYLocal *= _dblLambda / i;
-			dblYCumulative += _dblExponentialLambda * dblYLocal;
-		}
+		double[][] aadblSequence = new double[iSize][];
 
-		return i - 1;
-	}
+		for (int i = 0; i < iSize; ++i)
+			aadblSequence[i] = _lsVertexRd.get (i);
 
-	@Override public double density (
-		final double dblX)
-		throws java.lang.Exception
-	{
-		throw new java.lang.Exception
-			("PoissonDistribution::density => Not available for discrete distributions");
-	}
-
-	@Override public double mean()
-	{
-	    return _dblLambda;
-	}
-
-	@Override public double variance()
-	{
-	    return _dblLambda;
-	}
-
-	@Override public org.drip.numerical.common.Array2D histogram()
-	{
-		return null;
+		return aadblSequence;
 	}
 }

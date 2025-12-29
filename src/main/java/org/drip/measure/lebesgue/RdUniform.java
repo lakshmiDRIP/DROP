@@ -95,7 +95,7 @@ package org.drip.measure.lebesgue;
  * @author Lakshmi Krishnamurthy
  */
 
-public class RdUniform extends org.drip.measure.continuous.Rd {
+public class RdUniform extends org.drip.measure.continuous.RdDistribution {
 	private org.drip.spaces.tensor.RdGeneralizedVector _gmvs = null;
 
 	/**

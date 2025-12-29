@@ -2,7 +2,7 @@
 package org.drip.spaces.rxtord;
 
 import org.drip.function.definition.R1ToRd;
-import org.drip.measure.continuous.R1Univariate;
+import org.drip.measure.continuous.R1Distribution;
 import org.drip.spaces.metric.R1Combinatorial;
 import org.drip.spaces.metric.RdContinuousBanach;
 
@@ -158,7 +158,7 @@ public class NormedR1CombinatorialToRdContinuous
 
 		R1Combinatorial r1CombinatorialInput = (R1Combinatorial) inputMetricVectorSpace();
 
-		R1Univariate r1UnivariateDistribution = r1CombinatorialInput.borelSigmaMeasure();
+		R1Distribution r1UnivariateDistribution = r1CombinatorialInput.borelSigmaMeasure();
 
 		R1ToRd r1ToRdFunction = function();
 

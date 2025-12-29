@@ -4,7 +4,7 @@ package org.drip.sample.rng;
 import java.util.List;
 
 import org.drip.measure.crng.RandomNumberGenerator;
-import org.drip.measure.discrete.*;
+import org.drip.measure.discontinuous.*;
 import org.drip.service.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 

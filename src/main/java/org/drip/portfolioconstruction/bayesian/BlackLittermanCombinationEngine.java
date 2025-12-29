@@ -312,7 +312,7 @@ public class BlackLittermanCombinationEngine
 			return null;
 		}
 
-		org.drip.measure.continuous.R1Multivariate r1mPosterior = jointPosteriorMetrics.posterior();
+		org.drip.measure.continuous.MetaRdDistribution r1mPosterior = jointPosteriorMetrics.posterior();
 
 		org.drip.portfolioconstruction.allocator.ForwardReverseHoldingsAllocation
 			forwardReverseOptimizationOutputAdjusted =
@@ -477,7 +477,7 @@ public class BlackLittermanCombinationEngine
 			return null;
 		}
 
-		org.drip.measure.continuous.R1Multivariate posteriorDistribution = jointPosteriorMetrics.posterior();
+		org.drip.measure.continuous.MetaRdDistribution posteriorDistribution = jointPosteriorMetrics.posterior();
 
 		org.drip.portfolioconstruction.allocator.ForwardReverseHoldingsAllocation
 			forwardReverseOptimizationOutputCustomConfidence =

@@ -2,7 +2,7 @@
 package org.drip.spaces.rxtor1;
 
 import org.drip.function.definition.R1ToR1;
-import org.drip.measure.continuous.R1Univariate;
+import org.drip.measure.continuous.R1Distribution;
 import org.drip.spaces.metric.R1Continuous;
 import org.drip.spaces.tensor.R1GeneralizedVector;
 
@@ -165,7 +165,7 @@ public class NormedR1ContinuousToR1Continuous
 
 		R1Continuous r1Continuous = (R1Continuous) r1GeneralizedVectorInput;
 
-		final R1Univariate r1UnivariateDistribution = r1Continuous.borelSigmaMeasure();
+		final R1Distribution r1UnivariateDistribution = r1Continuous.borelSigmaMeasure();
 
 		if (null == r1UnivariateDistribution || null == r1ToR1Function) {
 			throw new Exception ("NormedR1ContinuousToR1Continuous::populationMetricNorm => Invalid Inputs");

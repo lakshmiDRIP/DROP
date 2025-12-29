@@ -108,7 +108,7 @@ public interface R1UnivariateConvolutionEngine
 	 */
 
 	public abstract org.drip.measure.bayesian.R1UnivariateConvolutionMetrics process (
-		final org.drip.measure.continuous.R1Univariate univariatePrior,
-		final org.drip.measure.continuous.R1Univariate univariateUnconditional,
-		final org.drip.measure.continuous.R1Univariate univariateConditional);
+		final org.drip.measure.continuous.R1Distribution univariatePrior,
+		final org.drip.measure.continuous.R1Distribution univariateUnconditional,
+		final org.drip.measure.continuous.R1Distribution univariateConditional);
 }

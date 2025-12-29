@@ -1,9 +1,5 @@
 
-package org.drip.measure.discrete;
-
-import java.util.TreeMap;
-
-import org.drip.numerical.common.NumberUtil;
+package org.drip.measure.discontinuous;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -85,7 +81,8 @@ import org.drip.numerical.common.NumberUtil;
  */
 
 /**
- * <i>R1Distribution</i> implements the Discrete Distribution over the Combinatorial R<sup>1</sup> Outcomes.
+ * <i>BoundedUniformIntegerDistribution</i> implements the Univariate Bounded Uniform Integer Distribution,
+ * with the Integer being generated between a (n inclusive) lower and an upper Bound.
  *
  *	<br><br>
  *  <ul>
@@ -98,111 +95,128 @@ import org.drip.numerical.common.NumberUtil;
  * @author Lakshmi Krishnamurthy
  */
 
-public class R1Distribution
-{
-	private TreeMap<Double, Double> _probabilityMap = null;
+public class BoundedUniformIntegerDistribution extends org.drip.measure.continuous.R1Distribution {
+	private int _iStart = -1;
+	private int _iFinish = -1;
 
 	/**
-	 * Generate an Standard Instance of Discrete <i>R1Distribution</i>
+	 * Construct a Univariate Bounded Uniform Integer Distribution
 	 * 
-	 * @param instanceArray Instance Array
-	 * @param probabilityArray Probability Array
+	 * @param iStart The Starting Integer
+	 * @param iFinish The Finishing Integer
 	 * 
-	 * @return Standard Instance of Discrete <i>R1Distribution</i>
+	 * @throws java.lang.Exception Thrown if the inputs are invalid
 	 */
 
-	public static R1Distribution Standard (
-		final double[] instanceArray,
-		final double[] probabilityArray)
+	public BoundedUniformIntegerDistribution (
+		final int iStart,
+		final int iFinish)
+		throws java.lang.Exception
 	{
-		if (null == instanceArray ||
-			null == probabilityArray)
+		if ((_iFinish = iFinish) <= (_iStart = iStart))
+			throw new java.lang.Exception ("BoundedUniformIntegerDistribution constructor: Invalid inputs");
+	}
+
+	/**
+	 * Retrieve the Start
+	 * 
+	 * @return The Start
+	 */
+
+	public int start()
+	{
+		return _iStart;
+	}
+
+	/**
+	 * Retrieve the Finish
+	 * 
+	 * @return The Finish
+	 */
+
+	public int finish()
+	{
+		return _iFinish;
+	}
+
+	@Override public double[] support()
+	{
+		return new double[]
 		{
-			return null;
+			_iStart,
+			_iFinish
+		};
+	}
+
+	@Override public double cumulative (
+		final double dblX)
+		throws java.lang.Exception
+	{
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblX))
+			throw new java.lang.Exception
+				("BoundedUniformIntegerDistribution::cumulative => Invalid inputs");
+
+		if (dblX <= _iStart) return 0.;
+
+		if (dblX >= _iFinish) return 1.;
+
+		return (dblX - _iStart) / (_iFinish - _iStart);
+	}
+
+	@Override public double incremental (
+		final double dblXLeft,
+		final double dblXRight)
+		throws java.lang.Exception
+	{
+		return cumulative (dblXRight) - cumulative (dblXLeft);
+	}
+
+	@Override public double invCumulative (
+		final double dblY)
+		throws java.lang.Exception
+	{
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblY) || dblY < 0. || dblY > 1.)
+			throw new java.lang.Exception
+				("BoundedUniformIntegerDistribution::invCumulative => Invalid inputs");
+
+	    return dblY * (_iFinish - _iStart) + _iStart;
+	}
+
+	@Override public double density (
+		final double dblX)
+		throws java.lang.Exception
+	{
+		throw new java.lang.Exception
+			("BoundedUniformIntegerDistribution::density => Not available for discrete distributions");
+	}
+
+	@Override public double mean()
+	{
+	    return 0.5 * (_iFinish + _iStart);
+	}
+
+	@Override public double variance()
+	{
+	    return (_iFinish - _iStart) * (_iFinish - _iStart) / 12.;
+	}
+
+	@Override public org.drip.numerical.common.Array2D histogram()
+	{
+		int iGridWidth = _iFinish - _iStart;
+		double[] adblX = new double[iGridWidth];
+		double[] adblY = new double[iGridWidth];
+
+		for (int i = 0; i < iGridWidth; ++i) {
+			adblY[i] = 1. / iGridWidth;
+			adblX[i] = _iStart + (i + 1);
 		}
 
-		int instanceCount = instanceArray.length;
-
-		if (0 == instanceCount || instanceCount != probabilityArray.length)
-		{
-			return null;
-		}
-
-		TreeMap<Double, Double> probabilityMap = new TreeMap<Double, Double>();
-
-		double cumulativeProbability = 0.;
-
-		for (double probability : probabilityArray)
-		{
-			if (!NumberUtil.IsValid (probability) || 0. > probability)
-			{
-				return null;
-			}
-
-			cumulativeProbability += probability;
-		}
-
-		if (0. == cumulativeProbability)
-		{
-			return null;
-		}
-
-		for (int i = 0; i < instanceCount; ++i)
-		{
-			if (!NumberUtil.IsValid (instanceArray[i]))
-			{
-				return null;
-			}
-
-			probabilityMap.put (instanceArray[i], probabilityArray[i] / cumulativeProbability);
-		}
-
-		try
-		{
-			return new R1Distribution (probabilityMap);
-		} catch (Exception e) {
+		try {
+			
+		} catch (java.lang.Exception e) {
 			e.printStackTrace();
 		}
 
 		return null;
-	}
-
-	private R1Distribution (
-		final TreeMap<Double, Double> probabilityMap)
-	{
-		_probabilityMap = probabilityMap;
-	}
-
-	/**
-	 * Retrieve the Discrete Probability Map
-	 * 
-	 * @return The Discrete Probability Map
-	 */
-
-	public TreeMap<Double, Double> probabilityMap()
-	{
-		return _probabilityMap;
-	}
-
-	/**
-	 * Retrieve the Probability of the Instance Occurrence
-	 * 
-	 * @param x Input Instance
-	 * 
-	 * @return Probability of the Instance Occurrence
-	 * 
-	 * @throws Exception Thrown if the Input Instance is Invalid
-	 */
-
-	public double probability (
-		final double x)
-		throws Exception
-	{
-		if (!NumberUtil.IsValid (x) || !_probabilityMap.containsKey (x))
-		{
-			throw new Exception ("R1Distribution::probability => Input Instance is Invalid");
-		}
-
-		return _probabilityMap.get (x);
 	}
 }

@@ -1,7 +1,7 @@
 
 package org.drip.sample.randomdiscrete;
 
-import org.drip.measure.discrete.SequenceGenerator;
+import org.drip.measure.discontinuous.SequenceGenerator;
 import org.drip.service.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 

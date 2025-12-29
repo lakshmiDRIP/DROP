@@ -112,7 +112,7 @@ package org.drip.measure.continuous;
  */
 
 public abstract class R1PowerLawDistribution
-	extends R1Univariate
+	extends R1Distribution
 {
 	private double _k = Double.NaN;
 	private double _lambda = Double.NaN;

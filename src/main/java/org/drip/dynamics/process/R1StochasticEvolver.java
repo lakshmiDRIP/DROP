@@ -282,7 +282,7 @@ public class R1StochasticEvolver
 	 * @return The Future Value Distribution
 	 */
 
-	public org.drip.measure.continuous.R1Univariate futureValueDistribution (
+	public org.drip.measure.continuous.R1Distribution futureValueDistribution (
 		final double x0,
 		final double t)
 	{

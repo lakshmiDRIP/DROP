@@ -1,5 +1,5 @@
 
-package org.drip.measure.continuous;
+package org.drip.measure.discontinuous;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -81,63 +81,130 @@ package org.drip.measure.continuous;
  */
 
 /**
- * <i>Rd</i> implements the Base Abstract Class behind R<sup>d</sup> Distributions. It exports Methods for
- * incremental, cumulative, and inverse cumulative Distribution Densities.
+ * <i>PoissonDistribution</i> implements the Univariate Poisson Distribution using the specified
+ * Mean/Variance.
  *
  *	<br><br>
  *  <ul>
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md">Numerical Analysis Library</a></li>
  *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/README.md">R<sup>d</sup> Continuous/Discrete Probability Measures</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/continuous/README.md">R<sup>1</sup> and R<sup>d</sup> Continuous Random Measure</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/discrete/README.md">Antithetic, Quadratically Re-sampled, De-biased Distribution</a></li>
  *  </ul>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public abstract class Rd {
+public class PoissonDistribution extends org.drip.measure.continuous.R1Distribution {
+	private double _dblLambda = java.lang.Double.NaN;
+	private double _dblExponentialLambda = java.lang.Double.NaN;
 
 	/**
-	 * Compute the Cumulative under the Distribution to the given Variaate Array
+	 * Construct a PoissonDistribution Instance
 	 * 
-	 * @param adblX Variate Array to which the Cumulative is to be computed
-	 * 
-	 * @return The Cumulative
+	 * @param dblLambda Lambda
 	 * 
 	 * @throws java.lang.Exception Thrown if the inputs are invalid
 	 */
 
-	public abstract double cumulative (
-		final double[] adblX)
-		throws java.lang.Exception;
+	public PoissonDistribution (
+		final double dblLambda)
+		throws java.lang.Exception
+	{
+		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblLambda = dblLambda) || 0. >= _dblLambda)
+			throw new java.lang.Exception ("PoissonDistribution constructor: Invalid inputs");
+
+		_dblExponentialLambda = java.lang.Math.exp (-1. * _dblLambda);
+	}
 
 	/**
-	 * Compute the Incremental under the Distribution between the 2 Variate Arrays
+	 * Retrieve Lambda
 	 * 
-	 * @param adblXLeft Left Variate Array to which the Cumulative is to be computed
-	 * @param adblXRight Right Variate Array to which the Cumulative is to be computed
-	 * 
-	 * @return The Incremental
-	 * 
-	 * @throws java.lang.Exception Thrown if the inputs are invalid
+	 * @return Lambda
 	 */
 
-	public abstract double incremental (
-		final double[] adblXLeft,
-		final double[] adblXRight)
-		throws java.lang.Exception;
+	public double lambda()
+	{
+		return _dblLambda;
+	}
 
-	/**
-	 * Compute the Density under the Distribution at the given Variate Array
-	 * 
-	 * @param adblX Variate Array at which the Density needs to be computed
-	 * 
-	 * @return The Density
-	 * 
-	 * @throws java.lang.Exception Thrown if the input is invalid
-	 */
+	@Override public double[] support()
+	{
+		return new double[]
+		{
+			0.,
+			java.lang.Double.POSITIVE_INFINITY
+		};
+	}
 
-	public abstract double density (
-		final double[] adblX)
-		throws java.lang.Exception;
+	@Override public double cumulative (
+		final double dblX)
+		throws java.lang.Exception
+	{
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblX))
+			throw new java.lang.Exception ("PoissonDistribution::cumulative => Invalid inputs");
+
+		int iEnd = (int) dblX;
+		double dblYLocal = 1.;
+		double dblYCumulative = 0.;
+
+		for (int i = 1; i < iEnd; ++i) {
+			i = i + 1;
+			dblYLocal *= _dblLambda / i;
+			dblYCumulative += _dblExponentialLambda * dblYLocal;
+		}
+
+		return dblYCumulative;
+	}
+
+	@Override public double incremental (
+		final double dblXLeft,
+		final double dblXRight)
+		throws java.lang.Exception
+	{
+		return cumulative (dblXRight) - cumulative (dblXLeft);
+	}
+
+	@Override public double invCumulative (
+		final double dblY)
+		throws java.lang.Exception
+	{
+		if (!org.drip.numerical.common.NumberUtil.IsValid (dblY))
+			throw new java.lang.Exception ("PoissonDistribution::invCumulative => Invalid inputs");
+
+		int i = 0;
+		double dblYLocal = 1.;
+		double dblYCumulative = 0.;
+
+		while (dblYCumulative < dblY) {
+			i = i + 1;
+			dblYLocal *= _dblLambda / i;
+			dblYCumulative += _dblExponentialLambda * dblYLocal;
+		}
+
+		return i - 1;
+	}
+
+	@Override public double density (
+		final double dblX)
+		throws java.lang.Exception
+	{
+		throw new java.lang.Exception
+			("PoissonDistribution::density => Not available for discrete distributions");
+	}
+
+	@Override public double mean()
+	{
+	    return _dblLambda;
+	}
+
+	@Override public double variance()
+	{
+	    return _dblLambda;
+	}
+
+	@Override public org.drip.numerical.common.Array2D histogram()
+	{
+		return null;
+	}
 }

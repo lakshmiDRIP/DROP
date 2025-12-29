@@ -107,7 +107,7 @@ public interface R1MultivariateConvolutionEngine {
 	 */
 
 	public abstract org.drip.measure.bayesian.R1MultivariateConvolutionMetrics process (
-		final org.drip.measure.continuous.R1Multivariate rmPrior,
-		final org.drip.measure.continuous.R1Multivariate rmUnconditional,
-		final org.drip.measure.continuous.R1Multivariate rmConditional);
+		final org.drip.measure.continuous.MetaRdDistribution rmPrior,
+		final org.drip.measure.continuous.MetaRdDistribution rmUnconditional,
+		final org.drip.measure.continuous.MetaRdDistribution rmConditional);
 }

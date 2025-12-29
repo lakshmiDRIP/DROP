@@ -2,7 +2,7 @@
 package org.drip.spaces.rxtord;
 
 import org.drip.function.definition.RdToRd;
-import org.drip.measure.continuous.Rd;
+import org.drip.measure.continuous.RdDistribution;
 import org.drip.spaces.iterator.RdSpanningCombinatorialIterator;
 import org.drip.spaces.metric.RdCombinatorialBanach;
 import org.drip.spaces.metric.RdContinuousBanach;
@@ -159,7 +159,7 @@ public class NormedRdCombinatorialToRdContinuous
 
 		RdCombinatorialBanach rdCombinatorialBanachInput = (RdCombinatorialBanach) inputMetricVectorSpace();
 
-		Rd rdCombinatorialDistribution = rdCombinatorialBanachInput.borelSigmaMeasure();
+		RdDistribution rdCombinatorialDistribution = rdCombinatorialBanachInput.borelSigmaMeasure();
 
 		RdSpanningCombinatorialIterator rdSpanningCombinatorialIterator =
 			rdCombinatorialBanachInput.iterator();

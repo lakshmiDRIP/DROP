@@ -116,7 +116,7 @@ package org.drip.measure.chisquare;
  * @author Lakshmi Krishnamurthy
  */
 
-public class R1Central extends org.drip.measure.continuous.R1Univariate
+public class R1Central extends org.drip.measure.continuous.R1Distribution
 {
 	private double _degreesOfFreedom = -1;
 	private double _cdfScaler = java.lang.Double.NaN;

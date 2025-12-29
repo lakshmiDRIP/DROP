@@ -127,9 +127,9 @@ public class TheilMixedEstimationModel {
 			pdl2.numberOfScopingVariate() || iNumScopingVariate != r1mnUnconditional.meta().numVariable())
 			return null;
 
-		org.drip.measure.continuous.R1Multivariate r1m1 = pdl1.distribution();
+		org.drip.measure.continuous.MetaRdDistribution r1m1 = pdl1.distribution();
 
-		org.drip.measure.continuous.R1Multivariate r1m2 = pdl2.distribution();
+		org.drip.measure.continuous.MetaRdDistribution r1m2 = pdl2.distribution();
 
 		if (!(r1m1 instanceof org.drip.measure.gaussian.R1MultivariateNormal) || !(r1m2 instanceof
 			org.drip.measure.gaussian.R1MultivariateNormal))
@@ -247,7 +247,7 @@ public class TheilMixedEstimationModel {
 	{
 		if (null == spvd) return null;
 
-		org.drip.measure.continuous.R1Multivariate r1m = spvd.scopingDistribution();
+		org.drip.measure.continuous.MetaRdDistribution r1m = spvd.scopingDistribution();
 
 		if (!(r1m instanceof org.drip.measure.gaussian.R1MultivariateNormal)) return null;
 
@@ -332,7 +332,7 @@ public class TheilMixedEstimationModel {
 	{
 		if (null == spvd) return null;
 
-		org.drip.measure.continuous.R1Multivariate r1mScoping = spvd.scopingDistribution();
+		org.drip.measure.continuous.MetaRdDistribution r1mScoping = spvd.scopingDistribution();
 
 		if (!(r1mScoping instanceof org.drip.measure.gaussian.R1MultivariateNormal)) return null;
 
@@ -373,7 +373,7 @@ public class TheilMixedEstimationModel {
 	{
 		if (null == spvd) return null;
 
-		org.drip.measure.continuous.R1Multivariate r1mScoping = spvd.scopingDistribution();
+		org.drip.measure.continuous.MetaRdDistribution r1mScoping = spvd.scopingDistribution();
 
 		if (!(r1mScoping instanceof org.drip.measure.gaussian.R1MultivariateNormal)) return null;
 
@@ -400,7 +400,7 @@ public class TheilMixedEstimationModel {
 	{
 		if (null == spvd) return null;
 
-		org.drip.measure.continuous.R1Multivariate r1mScoping = spvd.scopingDistribution();
+		org.drip.measure.continuous.MetaRdDistribution r1mScoping = spvd.scopingDistribution();
 
 		org.drip.measure.bayesian.ProjectionDistributionLoading pdl = spvd.projectionDistributionLoading
 			(strProjection);
@@ -431,7 +431,7 @@ public class TheilMixedEstimationModel {
 
 		if (null == pdl) return null;
 
-		org.drip.measure.continuous.R1Multivariate r1mProjection = pdl.distribution();
+		org.drip.measure.continuous.MetaRdDistribution r1mProjection = pdl.distribution();
 
 		return !(r1mProjection instanceof org.drip.measure.gaussian.R1MultivariateNormal) ? null :
 			org.drip.numerical.linearalgebra.R1MatrixUtil.Product (((org.drip.measure.gaussian.R1MultivariateNormal)
@@ -453,7 +453,7 @@ public class TheilMixedEstimationModel {
 	{
 		if (null == spvd) return null;
 
-		org.drip.measure.continuous.R1Multivariate r1mScoping = spvd.scopingDistribution();
+		org.drip.measure.continuous.MetaRdDistribution r1mScoping = spvd.scopingDistribution();
 
 		if (!(r1mScoping instanceof org.drip.measure.gaussian.R1MultivariateNormal)) return null;
 
@@ -507,7 +507,7 @@ public class TheilMixedEstimationModel {
 	{
 		if (null == spvd) return null;
 
-		org.drip.measure.continuous.R1Multivariate r1mScoping = spvd.scopingDistribution();
+		org.drip.measure.continuous.MetaRdDistribution r1mScoping = spvd.scopingDistribution();
 
 		double[] adblScopingMean = r1mScoping.mean();
 
@@ -579,7 +579,7 @@ public class TheilMixedEstimationModel {
 
 		if (null == pdl) return null;
 
-		org.drip.measure.continuous.R1Multivariate r1mProjection = pdl.distribution();
+		org.drip.measure.continuous.MetaRdDistribution r1mProjection = pdl.distribution();
 
 		if (!(r1mProjection instanceof org.drip.measure.gaussian.R1MultivariateNormal)) return null;
 
@@ -606,7 +606,7 @@ public class TheilMixedEstimationModel {
 	{
 		if (null == spvd) return null;
 
-		org.drip.measure.continuous.R1Multivariate r1mScoping = spvd.scopingDistribution();
+		org.drip.measure.continuous.MetaRdDistribution r1mScoping = spvd.scopingDistribution();
 
 		if (!(r1mScoping instanceof org.drip.measure.gaussian.R1MultivariateNormal)) return null;
 
@@ -640,7 +640,7 @@ public class TheilMixedEstimationModel {
 	{
 		if (null == spvd || null == r1mnUnconditional) return null;
 
-		org.drip.measure.continuous.R1Multivariate r1mScoping = spvd.scopingDistribution();
+		org.drip.measure.continuous.MetaRdDistribution r1mScoping = spvd.scopingDistribution();
 
 		double[] adblScopingMean = r1mScoping.mean();
 
@@ -689,7 +689,7 @@ public class TheilMixedEstimationModel {
 			adblProjectionInducedScopingMean[i] = adblScopingMean[i] +
 				adblProjectionInducedScopingDeviation[i];
 
-		org.drip.measure.continuous.R1Multivariate r1mProjection = pdl.distribution();
+		org.drip.measure.continuous.MetaRdDistribution r1mProjection = pdl.distribution();
 
 		if (!(r1mProjection instanceof org.drip.measure.gaussian.R1MultivariateNormal)) return null;
 

@@ -1,7 +1,7 @@
 
 package org.drip.spaces.metric;
 
-import org.drip.measure.continuous.R1Univariate;
+import org.drip.measure.continuous.R1Distribution;
 import org.drip.numerical.common.NumberUtil;
 
 /*
@@ -141,7 +141,7 @@ public class R1ContinuousBall extends R1Continuous
 	public static final R1ContinuousBall ClosedUnit (
 		final double dblLeftEdge,
 		final double dblRightEdge,
-		final org.drip.measure.continuous.R1Univariate distR1,
+		final org.drip.measure.continuous.R1Distribution distR1,
 		final int iPNorm)
 	{
 		try {
@@ -168,7 +168,7 @@ public class R1ContinuousBall extends R1Continuous
 	public R1ContinuousBall (
 		final double leftEdge,
 		final double rightEdge,
-		final R1Univariate r1Univariate,
+		final R1Distribution r1Univariate,
 		final int pNorm,
 		final double normRadius)
 		throws Exception

@@ -2,7 +2,7 @@
 package org.drip.measure.exponential;
 
 import org.drip.function.definition.R1ToR1;
-import org.drip.measure.continuous.R1Univariate;
+import org.drip.measure.continuous.R1Distribution;
 import org.drip.numerical.common.NumberUtil;
 
 /*
@@ -117,7 +117,7 @@ import org.drip.numerical.common.NumberUtil;
  */
 
 public class R1RateDistribution
-	extends R1Univariate
+	extends R1Distribution
 {
 	private double _lambda = Double.NaN;
 
@@ -341,7 +341,7 @@ public class R1RateDistribution
 	}
 
 	@Override public double kullbackLeiblerDivergence (
-		final R1Univariate r1UnivariateOther)
+		final R1Distribution r1UnivariateOther)
 		throws Exception
 	{
 		if (null == r1UnivariateOther ||

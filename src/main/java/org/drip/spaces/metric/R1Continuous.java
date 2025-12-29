@@ -3,7 +3,7 @@ package org.drip.spaces.metric;
 
 import org.drip.function.definition.R1ToR1;
 import org.drip.function.definition.VariateOutputPair;
-import org.drip.measure.continuous.R1Univariate;
+import org.drip.measure.continuous.R1Distribution;
 import org.drip.spaces.tensor.R1ContinuousVector;
 
 /*
@@ -128,7 +128,7 @@ import org.drip.spaces.tensor.R1ContinuousVector;
 public class R1Continuous extends R1ContinuousVector implements R1Normed
 {
 	private int _pNorm = -1;
-	private R1Univariate _r1Univariate = null;
+	private R1Distribution _r1Univariate = null;
 
 	/**
 	 * Construct the Standard l<sup>p</sup> R<sup>1</sup> Continuous Space Instance
@@ -144,7 +144,7 @@ public class R1Continuous extends R1ContinuousVector implements R1Normed
 	public static final R1Continuous Standard (
 		final double dblLeftEdge,
 		final double dblRightEdge,
-		final org.drip.measure.continuous.R1Univariate distR1,
+		final org.drip.measure.continuous.R1Distribution distR1,
 		final int iPNorm)
 	{
 		try {
@@ -169,7 +169,7 @@ public class R1Continuous extends R1ContinuousVector implements R1Normed
 	public static final R1Continuous Supremum (
 		final double dblLeftEdge,
 		final double dblRightEdge,
-		final org.drip.measure.continuous.R1Univariate distR1)
+		final org.drip.measure.continuous.R1Distribution distR1)
 	{
 		try {
 			return new R1Continuous (dblLeftEdge, dblRightEdge, distR1, java.lang.Integer.MAX_VALUE);
@@ -194,7 +194,7 @@ public class R1Continuous extends R1ContinuousVector implements R1Normed
 	public R1Continuous (
 		final double leftEdge,
 		final double rightEdge,
-		final R1Univariate r1Univariate,
+		final R1Distribution r1Univariate,
 		final int pNorm)
 		throws Exception
 	{
@@ -212,7 +212,7 @@ public class R1Continuous extends R1ContinuousVector implements R1Normed
 		return _pNorm;
 	}
 
-	@Override public R1Univariate borelSigmaMeasure()
+	@Override public R1Distribution borelSigmaMeasure()
 	{
 		return _r1Univariate;
 	}

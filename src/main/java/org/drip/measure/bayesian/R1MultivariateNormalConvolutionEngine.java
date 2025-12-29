@@ -105,9 +105,9 @@ public class R1MultivariateNormalConvolutionEngine implements org.drip.measure.b
 	}
 
 	@Override public org.drip.measure.bayesian.R1MultivariateConvolutionMetrics process (
-		final org.drip.measure.continuous.R1Multivariate r1mPrior,
-		final org.drip.measure.continuous.R1Multivariate r1mUnconditional,
-		final org.drip.measure.continuous.R1Multivariate r1mConditional)
+		final org.drip.measure.continuous.MetaRdDistribution r1mPrior,
+		final org.drip.measure.continuous.MetaRdDistribution r1mUnconditional,
+		final org.drip.measure.continuous.MetaRdDistribution r1mConditional)
 	{
 		if (null == r1mPrior || !(r1mPrior instanceof org.drip.measure.gaussian.R1MultivariateNormal) || null
 			== r1mConditional || !(r1mConditional instanceof org.drip.measure.gaussian.R1MultivariateNormal)

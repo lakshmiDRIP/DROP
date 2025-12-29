@@ -176,7 +176,7 @@ public class RdWienerDriver
 	{
 		try
 		{
-			double[] singleCorrelatedSuite = new org.drip.measure.discrete.CorrelatedPathVertexDimension (
+			double[] singleCorrelatedSuite = new org.drip.measure.discontinuous.CorrelatedPathVertexDimension (
 				new org.drip.measure.crng.RandomNumberGenerator(),
 				_correlation.correlationMatrix(),
 				1,

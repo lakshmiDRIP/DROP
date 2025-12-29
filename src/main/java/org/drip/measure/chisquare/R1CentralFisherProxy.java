@@ -116,7 +116,7 @@ package org.drip.measure.chisquare;
  * @author Lakshmi Krishnamurthy
  */
 
-public class R1CentralFisherProxy extends org.drip.measure.continuous.R1Univariate
+public class R1CentralFisherProxy extends org.drip.measure.continuous.R1Distribution
 {
 	private int _degreesOfFreedom = -1;
 	private org.drip.measure.gaussian.R1UnivariateNormal _r1UnivariateNormal = null;
