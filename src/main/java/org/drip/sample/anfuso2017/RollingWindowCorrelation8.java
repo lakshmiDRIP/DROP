@@ -161,7 +161,7 @@ public class RollingWindowCorrelation8
 		);
 
 		double[][] correlatedSequence =
-			correlatedPathVertexDimension.straightMultiPathVertexRd()[0].flatform();
+			correlatedPathVertexDimension.multiTrajectoryStraightNodeRd()[0].flatform();
 
 		List<double[]> windowSequence = new ArrayList<double[]>();
 

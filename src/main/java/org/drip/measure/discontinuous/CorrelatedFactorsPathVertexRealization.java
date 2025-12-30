@@ -95,7 +95,22 @@ import org.drip.numerical.linearalgebra.R1MatrixUtil;
  *  specified Vertexes, over the Specified Paths. It provides the following Functionality:
  *
  *  <ul>
- * 		<li><i>QuadraticResampler</i> Constructor</li>
+ * 		<li><i>CorrelatedFactorsPathVertexRealization</i> Constructor</li>
+ * 		<li>Retrieve the Random Number Generator</li>
+ * 		<li>Retrieve the Correlation Matrix</li>
+ * 		<li>Retrieve the Cholesky Matrix</li>
+ * 		<li>Retrieve the Number of Vertex Nodes</li>
+ * 		<li>Retrieve the Number of Simulation Paths</li>
+ * 		<li>Retrieve the Number of Factor Dimensions</li>
+ * 		<li>Indicate if the Antithetic Variable Generation is to be applied</li>
+ * 		<li>Retrieve the Quadratic Resampler Instance</li>
+ * 		<li>Generate a Straight R<sup>d</sup> Vertex Node Realization</li>
+ * 		<li>Generate the Array of R<sup>d</sup> Vertex and its Antithetic Realization Pairs</li>
+ * 		<li>Generate a Straight Path R<sup>d</sup> Vertex Realization</li>
+ * 		<li>Generate an Pair of Straight/Antithetic Path R<sup>d</sup> Vertex Realizations</li>
+ * 		<li>Generate Multi-Path R<sup>d</sup> Vertex Realizations Array</li>
+ * 		<li>Generate Antithetic Multi-Path R<sup>d</sup> Vertex Realizations Array</li>
+ * 		<li>Generate Multi-Path R<sup>d</sup> Vertex Realizations Array</li>
  *  </ul>
  *
  *	<br>
@@ -251,12 +266,12 @@ public class CorrelatedFactorsPathVertexRealization
 	}
 
 	/**
-	 * Generate a Single R<sup>d</sup> Vertex Node Realization
+	 * Generate a Straight R<sup>d</sup> Vertex Node Realization
 	 * 
-	 * @return Single R<sup>d</sup> Vertex Node Realization
+	 * @return Straight R<sup>d</sup> Vertex Node Realization
 	 */
 
-	public double[] nodeRd()
+	public double[] straightNodeRd()
 	{
 		double[] correlatedRd = new double[_choleskyMatrix.length];
 		double[] uncorrelatedRd = new double[_choleskyMatrix.length];
@@ -285,119 +300,77 @@ public class CorrelatedFactorsPathVertexRealization
 	}
 
 	/**
-	 * Generate an Antithetic R<sup>d</sup> Vertex Pair Realization
+	 * Generate the Array of R<sup>d</sup> Vertex and its Antithetic Realization Pairs
 	 * 
-	 * @return Antithetic R<sup>d</sup> Vertex Pair Realization
+	 * @return Array of R<sup>d</sup> Vertex and its Antithetic Realization Pairs
 	 */
 
-	public double[][] antitheticNodeRd()
+	public double[][] straightAntitheticNodePair()
 	{
-		double[] nodeRd = nodeRd();
+		double[] straightNodeRd = straightNodeRd();
 
 		double[] antitheticNodeRd = new double[_choleskyMatrix.length];
 
 		for (int factorIndex = 0; factorIndex < _choleskyMatrix.length; ++factorIndex) {
-			antitheticNodeRd[factorIndex] = -1. * nodeRd[factorIndex];
+			antitheticNodeRd[factorIndex] = -1. * straightNodeRd[factorIndex];
 		}
 
-		return new double[][] {nodeRd, antitheticNodeRd};
+		return new double[][] {straightNodeRd, antitheticNodeRd};
 	}
 
 	/**
-	 * Generate a Single Straight Path R<sup>d</sup> Vertex Realization
+	 * Generate a Straight Path R<sup>d</sup> Vertex Realization
 	 * 
-	 * @return Single Straight Path R<sup>d</sup> Vertex Realization
+	 * @return Straight Path R<sup>d</sup> Vertex Realization
 	 */
 
-	public org.drip.measure.discontinuous.VertexRd straightPathVertexRd()
+	public VertexRd trajectoryStraightNodeRd()
 	{
-		org.drip.measure.discontinuous.VertexRd vertexRealization = new
-			org.drip.measure.discontinuous.VertexRd();
+		VertexRd trajectoryStraightNodeRd = new VertexRd();
 
-		for (int i = 0; i < _nodeCount; ++i) {
-			if (!vertexRealization.add (i, nodeRd())) return null;
+		for (int nodeIndex = 0; nodeIndex < _nodeCount; ++nodeIndex) {
+			if (!trajectoryStraightNodeRd.add (nodeIndex, straightNodeRd())) {
+				return null;
+			}
 		}
 
-		return null != _quadraticResampler ? org.drip.measure.discontinuous.VertexRd.FromFlatForm (_quadraticResampler.transform
-			(vertexRealization.flatform())) : vertexRealization;
+		return null != _quadraticResampler ? VertexRd.FromFlatForm (
+			_quadraticResampler.transform (trajectoryStraightNodeRd.flatform())
+		) : trajectoryStraightNodeRd;
 	}
 
 	/**
-	 * Generate an Antithetic Pair Path R<sup>d</sup> Vertex Realizations
+	 * Generate an Pair of Straight/Antithetic Path R<sup>d</sup> Vertex Realizations
 	 * 
-	 * @return Antithetic Pair Path R<sup>d</sup> Vertex Realizations
+	 * @return Pair of Straight/Antithetic Path R<sup>d</sup> Vertex Realizations
 	 */
 
-	public org.drip.measure.discontinuous.VertexRd[] antitheticPairPathVertexRd()
+	public VertexRd[] trajectoryStraightAntitheticNodePair()
 	{
-		org.drip.measure.discontinuous.VertexRd straightVertexRealization = new
-			org.drip.measure.discontinuous.VertexRd();
+		VertexRd trajectoryStraightNodeVertexRd = new VertexRd();
 
-		org.drip.measure.discontinuous.VertexRd antitheticVertexRealization = new
-			org.drip.measure.discontinuous.VertexRd();
+		VertexRd trajectoryAntitheticNodeVertexRd = new VertexRd();
 
-		for (int i = 0; i < _nodeCount; ++i) {
-			double[][] aadblStraightAntitheticRealization = antitheticNodeRd();
+		for (int nodeIndex = 0; nodeIndex < _nodeCount; ++nodeIndex) {
+			double[][] nodeAntitheticRdPair = straightAntitheticNodePair();
 
-			if (!straightVertexRealization.add (i, aadblStraightAntitheticRealization[0]) ||
-				!antitheticVertexRealization.add (i, aadblStraightAntitheticRealization[1]))
+			if (!trajectoryStraightNodeVertexRd.add (nodeIndex, nodeAntitheticRdPair[0]) ||
+				!trajectoryAntitheticNodeVertexRd.add (nodeIndex, nodeAntitheticRdPair[1]))
 				return null;
 		}
 
-		if (null == _quadraticResampler)
-			return new org.drip.measure.discontinuous.VertexRd[] {straightVertexRealization,
-				antitheticVertexRealization};
-
-		return new org.drip.measure.discontinuous.VertexRd[] {org.drip.measure.discontinuous.VertexRd.FromFlatForm
-			(_quadraticResampler.transform (straightVertexRealization.flatform())),
-				org.drip.measure.discontinuous.VertexRd.FromFlatForm (_quadraticResampler.transform
-					(antitheticVertexRealization.flatform()))};
-	}
-
-	/**
-	 * Generate Straight Multi-Path R<sup>d</sup> Vertex Realizations Array
-	 * 
-	 * @return Straight Multi-Path R<sup>d</sup> Vertex Realizations Array
-	 */
-
-	public org.drip.measure.discontinuous.VertexRd[] straightMultiPathVertexRd()
-	{
-		org.drip.measure.discontinuous.VertexRd[] aVertexRd = new
-			org.drip.measure.discontinuous.VertexRd[_simulationCount];
-
-		for (int i = 0; i < _simulationCount; ++i) {
-			if (null == (aVertexRd[i] = straightPathVertexRd())) return null;
+		if (null == _quadraticResampler) {
+			return new VertexRd[] {trajectoryStraightNodeVertexRd, trajectoryAntitheticNodeVertexRd};
 		}
 
-		return aVertexRd;
-	}
-
-	/**
-	 * Generate Antithetic Multi-Path R<sup>d</sup> Vertex Realizations Array
-	 * 
-	 * @return Antithetic Multi-Path R<sup>d</sup> Vertex Realizations Array
-	 */
-
-	public org.drip.measure.discontinuous.VertexRd[] antitheticMultiPathVertexRd()
-	{
-		org.drip.measure.discontinuous.VertexRd[] aVertexRd = new
-			org.drip.measure.discontinuous.VertexRd[_simulationCount];
-
-		int iNumGeneration = _simulationCount / 2;
-
-		for (int i = 0; i < iNumGeneration; ++i) {
-			org.drip.measure.discontinuous.VertexRd[] aAntitheticVertexRd = antitheticPairPathVertexRd();
-
-			if (null == aAntitheticVertexRd || 2 != aAntitheticVertexRd.length) return null;
-
-			if (null == (aVertexRd[i] = aAntitheticVertexRd[0]) || null == (aVertexRd[i + iNumGeneration] =
-				aAntitheticVertexRd[1]))
-				return null;
-		}
-
-		if (1 == (_simulationCount % 2)) aVertexRd[_simulationCount - 1] = straightPathVertexRd();
-
-		return aVertexRd;
+		return new VertexRd[] {
+			VertexRd.FromFlatForm (
+				_quadraticResampler.transform (trajectoryStraightNodeVertexRd.flatform())
+			),
+			VertexRd.FromFlatForm (
+				_quadraticResampler.transform (trajectoryAntitheticNodeVertexRd.flatform())
+			)
+		};
 	}
 
 	/**
@@ -406,8 +379,62 @@ public class CorrelatedFactorsPathVertexRealization
 	 * @return Multi-Path R<sup>d</sup> Vertex Realizations Array
 	 */
 
-	public org.drip.measure.discontinuous.VertexRd[] multiPathVertexRd()
+	public VertexRd[] multiTrajectoryStraightNodeRd()
 	{
-		return _applyAntithetic ? antitheticMultiPathVertexRd() : straightMultiPathVertexRd();
+		VertexRd[] multiTrajectoryStraightNodeVertexRd = new VertexRd[_simulationCount];
+
+		for (int simulationIndex = 0; simulationIndex < _simulationCount; ++simulationIndex) {
+			if (null == (multiTrajectoryStraightNodeVertexRd[simulationIndex] = trajectoryStraightNodeRd()))
+			{
+				return null;
+			}
+		}
+
+		return multiTrajectoryStraightNodeVertexRd;
+	}
+
+	/**
+	 * Generate Antithetic Multi-Path R<sup>d</sup> Vertex Realizations Array
+	 * 
+	 * @return Antithetic Multi-Path R<sup>d</sup> Vertex Realizations Array
+	 */
+
+	public VertexRd[] multiTrajectoryStraightAntitheticNodePair()
+	{
+		VertexRd[] vertexRdArray = new VertexRd[_simulationCount];
+
+		int pathCount = _simulationCount / 2;
+
+		for (int pathIndex = 0; pathIndex < pathCount; ++pathIndex) {
+			VertexRd[] trajectoryNodeAntitheticRdPair = trajectoryStraightAntitheticNodePair();
+
+			if (null == trajectoryNodeAntitheticRdPair || 2 != trajectoryNodeAntitheticRdPair.length) {
+				return null;
+			}
+
+			if (null == (vertexRdArray[pathIndex] = trajectoryNodeAntitheticRdPair[0]) ||
+				null == (vertexRdArray[pathIndex + pathCount] = trajectoryNodeAntitheticRdPair[1]))
+			{
+				return null;
+			}
+		}
+
+		if (1 == (_simulationCount % 2)) {
+			vertexRdArray[_simulationCount - 1] = trajectoryStraightNodeRd();
+		}
+
+		return vertexRdArray;
+	}
+
+	/**
+	 * Generate Multi-Path R<sup>d</sup> Vertex Realizations Array
+	 * 
+	 * @return Multi-Path R<sup>d</sup> Vertex Realizations Array
+	 */
+
+	public VertexRd[] multiTrajectoryNodeRd()
+	{
+		return _applyAntithetic ?
+			multiTrajectoryStraightAntitheticNodePair() : multiTrajectoryStraightNodeRd();
 	}
 }

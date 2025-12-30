@@ -6,6 +6,14 @@ package org.drip.measure.crng;
  */
 
 /*!
+ * Copyright (C) 2030 Lakshmi Krishnamurthy
+ * Copyright (C) 2029 Lakshmi Krishnamurthy
+ * Copyright (C) 2028 Lakshmi Krishnamurthy
+ * Copyright (C) 2027 Lakshmi Krishnamurthy
+ * Copyright (C) 2026 Lakshmi Krishnamurthy
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -80,108 +88,121 @@ package org.drip.measure.crng;
 
 /**
  * <i>MultiStreamGenerator</i> helps generate Multiple Independent (i.e., Non-Overlapping) Streams of Random
- * Numbers.
+ * 	Numbers. It provides the following Functionality:
  *
- *	<br><br>
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md">Numerical Analysis Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/README.md">R<sup>d</sup> Continuous/Discrete Probability Measures</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/crng/README.md">Continuous Random Number Stream Generator</a></li>
+ * 		<li>Generate Multiple Independent Streams using the Skip Ahead Technique</li>
+ * 		<li>Generate Multiple Independent Streams using the Leap Frog Technique</li>
+ * 		<li>Generate Multiple Independent Streams using the Skip Ahead Technique from the Default Random Number Generator</li>
+ * 		<li>Generate Multiple Independent Streams using the Leap Frog Technique from the Default Random Number Generator</li>
  *  </ul>
+ *
+ *	<br>
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md">Numerical Analysis Library</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/README.md">R<sup>d</sup> Continuous/Discrete Probability Measures</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/crng/README.md">Continuous Random Number Stream Generator</a></td></tr>
+ *  </table>
+ *	<br>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class MultiStreamGenerator {
+public class MultiStreamGenerator
+{
 
 	/**
 	 * Generate Multiple Independent Streams using the Skip Ahead Technique
 	 * 
-	 * @param rng The Random Number Generator
-	 * @param iNumStream Number of Streams to be Generated
-	 * @param iNumElementsPerStream Number of Elements Per Stream
+	 * @param randomNumberGenerator The Random Number Generator
+	 * @param streamCount Number of Streams to be Generated
+	 * @param elementsPerStream Number of Elements Per Stream
 	 * 
 	 * @return Double Array of Multiple Independent Streams
 	 */
 
 	public static final double[][] SkipAhead (
-		final org.drip.measure.crng.RandomNumberGenerator rng,
-		final int iNumStream,
-		final int iNumElementsPerStream)
+		final RandomNumberGenerator randomNumberGenerator,
+		final int streamCount,
+		final int elementsPerStream)
 	{
-		if (null == rng || 0 >= iNumStream || 0 >= iNumElementsPerStream) return null;
-
-		double[][] aadblRandomStream = new double[iNumStream][iNumElementsPerStream];
-
-		for (int iStream = 0; iStream < iNumStream; ++iStream) {
-			for (int iElement = 0; iElement < iNumElementsPerStream; ++iElement)
-				aadblRandomStream[iStream][iElement] = rng.nextDouble01();
+		if (null == randomNumberGenerator || 0 >= streamCount || 0 >= elementsPerStream) {
+			return null;
 		}
 
-		return aadblRandomStream;
+		double[][] randomStream = new double[streamCount][elementsPerStream];
+
+		for (int streamIndex = 0; streamIndex < streamCount; ++streamIndex) {
+			for (int elementIndex = 0; elementIndex < elementsPerStream; ++elementIndex) {
+				randomStream[streamIndex][elementIndex] = randomNumberGenerator.nextDouble01();
+			}
+		}
+
+		return randomStream;
 	}
 
 	/**
 	 * Generate Multiple Independent Streams using the Leap Frog Technique
 	 * 
-	 * @param rng The Random Number Generator
-	 * @param iNumStream Number of Streams to be Generated
-	 * @param iNumElementsPerStream Number of Elements Per Stream
+	 * @param randomNumberGenerator The Random Number Generator
+	 * @param streamCount Number of Streams to be Generated
+	 * @param elementsPerStream Number of Elements Per Stream
 	 * 
 	 * @return Double Array of Multiple Independent Streams
 	 */
 
 	public static final double[][] LeapFrog (
-		final org.drip.measure.crng.RandomNumberGenerator rng,
-		final int iNumStream,
-		final int iNumElementsPerStream)
+		final RandomNumberGenerator randomNumberGenerator,
+		final int streamCount,
+		final int elementsPerStream)
 	{
-		if (null == rng || 0 >= iNumStream || 0 >= iNumElementsPerStream) return null;
-
-		double[][] aadblRandomStream = new double[iNumStream][iNumElementsPerStream];
-
-		for (int iElement = 0; iElement < iNumElementsPerStream; ++iElement) {
-			for (int iStream = 0; iStream < iNumStream; ++iStream)
-				aadblRandomStream[iStream][iElement] = rng.nextDouble01();
+		if (null == randomNumberGenerator || 0 >= streamCount || 0 >= elementsPerStream) {
+			return null;
 		}
 
-		return aadblRandomStream;
+		double[][] randomStream = new double[streamCount][elementsPerStream];
+
+		for (int elementIndex = 0; elementIndex < elementsPerStream; ++elementIndex) {
+			for (int streamIndex = 0; streamIndex < streamCount; ++streamIndex) {
+				randomStream[streamIndex][elementIndex] = randomNumberGenerator.nextDouble01();
+			}
+		}
+
+		return randomStream;
 	}
 
 	/**
 	 * Generate Multiple Independent Streams using the Skip Ahead Technique from the Default Random Number
 	 * 	Generator
 	 * 
-	 * @param iNumStream Number of Streams to be Generated
-	 * @param iNumElementsPerStream Number of Elements Per Stream
+	 * @param streamCount Number of Streams to be Generated
+	 * @param elementsPerStream Number of Elements Per Stream
 	 * 
 	 * @return Double Array of Multiple Independent Streams
 	 */
 
 	public static final double[][] SkipAhead (
-		final int iNumStream,
-		final int iNumElementsPerStream)
+		final int streamCount,
+		final int elementsPerStream)
 	{
-		return SkipAhead (new org.drip.measure.crng.RandomNumberGenerator(), iNumStream,
-			iNumElementsPerStream);
+		return SkipAhead (new RandomNumberGenerator(), streamCount, elementsPerStream);
 	}
 
 	/**
 	 * Generate Multiple Independent Streams using the Leap Frog Technique from the Default Random Number
 	 * 	Generator
 	 * 
-	 * @param iNumStream Number of Streams to be Generated
-	 * @param iNumElementsPerStream Number of Elements Per Stream
+	 * @param streamCount Number of Streams to be Generated
+	 * @param elementsPerStream Number of Elements Per Stream
 	 * 
 	 * @return Double Array of Multiple Independent Streams
 	 */
 
 	public static final double[][] LeapFrog (
-		final int iNumStream,
-		final int iNumElementsPerStream)
+		final int streamCount,
+		final int elementsPerStream)
 	{
-		return LeapFrog (new org.drip.measure.crng.RandomNumberGenerator(), iNumStream,
-			iNumElementsPerStream);
+		return LeapFrog (new RandomNumberGenerator(), streamCount, elementsPerStream);
 	}
 }

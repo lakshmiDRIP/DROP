@@ -1,30 +1,25 @@
-# DROP Measure Discrete Package
+# DROP Measure Discontinuous Package
 
 <p align="center"><img src="https://github.com/lakshmiDRIP/DROP/blob/master/DRIP_Logo.gif?raw=true" width="100"></p>
 
-DROP Measure Discrete generates Antithetic, Quadratically Re-sampled, De-biased Sequences.
+DROP Measure Discontinuous generates Antithetic, Quadratically Re-sampled, De-biased Sequences.
 
 
 ## Class Components
 
- * [***BoundedUniformIntegerDistribution***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/discrete/BoundedUniformIntegerDistribution.java)
- <i>BoundedUniformIntegerDistribution</i> implements the Univariate Bounded Uniform Integer Distribution,
- with the Integer being generated between a (n inclusive) lower and an upper Bound.
+ * [***CorrelatedFactorsPathVertexRealization***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/discontinuous/CorrelatedFactorsPathVertexRealization.java)
+ <i>CorrelatedFactorsPathVertexRealization</i> generates Correlated R<sup>d</sup> Random Numbers at the specified Vertexes, over the Specified Paths.
 
- * [***CorrelatedPathVertexDimension***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/discrete/CorrelatedPathVertexDimension.java)
- <i>CorrelatedPathVertexDimension</i> generates Correlated R^d Random Numbers at the specified Vertexes, over
- the Specified Paths.
-
- * [***PoissonDistribution***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/discrete/PoissonDistribution.java)
- <i>PoissonDistribution</i> implements the Univariate Poisson Distribution using the specified Mean/Variance.
-
- * [***QuadraticResampler***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/discrete/QuadraticResampler.java)
+ * [***QuadraticResampler***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/discontinuous/QuadraticResampler.java)
  <i>QuadraticResampler</i> Quadratically Re-samples the Input Points to Convert it to a Standard Normal.
 
- * [***SequenceGenerator***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/discrete/SequenceGenerator.java)
- <i>SequenceGenerator</i> generates the specified Univariate Sequence of the Given Distribution Type.
+ * [***R1DiscreteDistribution***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/discontinuous/R1DiscreteDistribution.java)
+ <i>R1DiscreteDistribution</i> implements the Discrete Distribution over the Combinatorial R<sup>1</sup> Outcomes.
 
- * [***VertexRd***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/discrete/VertexRd.java)
+ * [***RandomSequenceGenerator***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/discontinuous/RandomSequenceGenerator.java)
+ <i>RandomSequenceGenerator</i> generates the specified Univariate Sequence of the Given Distribution Type.
+
+ * [***VertexRd***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/discontinuous/VertexRd.java)
  <i>VertexRd</i> holds the R<sup>d</sup> Realizations at the Individual Vertexes.
 
 

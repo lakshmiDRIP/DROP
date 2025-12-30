@@ -1,11 +1,21 @@
 
 package org.drip.measure.crng;
 
+import org.drip.numerical.common.NumberUtil;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2030 Lakshmi Krishnamurthy
+ * Copyright (C) 2029 Lakshmi Krishnamurthy
+ * Copyright (C) 2028 Lakshmi Krishnamurthy
+ * Copyright (C) 2027 Lakshmi Krishnamurthy
+ * Copyright (C) 2026 Lakshmi Krishnamurthy
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -80,33 +90,52 @@ package org.drip.measure.crng;
 
 /**
  * <i>MultipleRecursiveGeneratorLEcuyer</i> - L'Ecuyer's Multiple Recursive Generator - combines Multiple
- * Recursive Sequences to produce a Large State Space with good Randomness Properties. MRG32k3a is a special
- * Type of MultipleRecursiveGeneratorLEcuyer.
+ * 	Recursive Sequences to produce a Large State Space with good Randomness Properties. MRG32k3a is a special
+ * 	Type of MultipleRecursiveGeneratorLEcuyer. It provides the following Functionality:
  *
- *	<br><br>
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md">Numerical Analysis Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/README.md">R<sup>d</sup> Continuous/Discrete Probability Measures</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/crng/README.md">Continuous Random Number Stream Generator</a></li>
+ * 		<li>Generate the MRG32k3a Variant of the L'Ecuyer's Multiple Recursive Generator</li>
+ * 		<li><i>MultipleRecursiveGeneratorLEcuyer</i> Constructor</li>
+ * 		<li>Retrieve M1</li>
+ * 		<li>Retrieve M2</li>
+ * 		<li>Retrieve A12</li>
+ * 		<li>Retrieve A13</li>
+ * 		<li>Retrieve A21</li>
+ * 		<li>Retrieve A23</li>
+ * 		<li>Retrieve Y1 Previous</li>
+ * 		<li>Retrieve Y1 Previous Previous</li>
+ * 		<li>Retrieve Y1 Previous Previous Previous</li>
+ * 		<li>Retrieve Y2 Previous</li>
+ * 		<li>Retrieve Y2 Previous Previous</li>
+ * 		<li>Retrieve Y2 Previous Previous Previous</li>
+ * 		<li>Generate the Next Number in the Sequence</li>
  *  </ul>
  *
- * @author Lakshmi Krishnamurthy
+ *	<br>
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md">Numerical Analysis Library</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/README.md">R<sup>d</sup> Continuous/Discrete Probability Measures</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/crng/README.md">Continuous Random Number Stream Generator</a></td></tr>
+ *  </table>
+ *	<br>
  */
 
-public class MultipleRecursiveGeneratorLEcuyer implements org.drip.measure.crng.RecursiveGenerator {
-	private long _lM1 = java.lang.Long.MIN_VALUE;
-	private long _lM2 = java.lang.Long.MIN_VALUE;
-	private long _lA12 = java.lang.Long.MIN_VALUE;
-	private long _lA13 = java.lang.Long.MIN_VALUE;
-	private long _lA21 = java.lang.Long.MIN_VALUE;
-	private long _lA23 = java.lang.Long.MIN_VALUE;
-	private long _lY1Prev = java.lang.Long.MIN_VALUE;
-	private long _lY2Prev = java.lang.Long.MIN_VALUE;
-	private long _lY1PrevPrev = java.lang.Long.MIN_VALUE;
-	private long _lY2PrevPrev = java.lang.Long.MIN_VALUE;
-	private long _lY1PrevPrevPrev = java.lang.Long.MIN_VALUE;
-	private long _lY2PrevPrevPrev = java.lang.Long.MIN_VALUE;
+public class MultipleRecursiveGeneratorLEcuyer
+	implements RecursiveGenerator
+{
+	private long _m1 = Long.MIN_VALUE;
+	private long _m2 = Long.MIN_VALUE;
+	private long _a12 = Long.MIN_VALUE;
+	private long _a13 = Long.MIN_VALUE;
+	private long _a21 = Long.MIN_VALUE;
+	private long _a23 = Long.MIN_VALUE;
+	private long _y1Previous = Long.MIN_VALUE;
+	private long _y2Previous = Long.MIN_VALUE;
+	private long _y1PreviousPrevious = Long.MIN_VALUE;
+	private long _y2PreviousPrevious = Long.MIN_VALUE;
+	private long _y1PreviousPreviousPrevious = Long.MIN_VALUE;
+	private long _y2PreviousPreviousPrevious = Long.MIN_VALUE;
 
 	/**
 	 * Generate the MRG32k3a Variant of the L'Ecuyer's Multiple Recursive Generator
@@ -136,7 +165,7 @@ public class MultipleRecursiveGeneratorLEcuyer implements org.drip.measure.crng.
 				l2Power32 - 209,
 				l2Power32 - 22853
 			);
-		} catch (java.lang.Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -144,53 +173,54 @@ public class MultipleRecursiveGeneratorLEcuyer implements org.drip.measure.crng.
 	}
 
 	/**
-	 * MultipleRecursiveGeneratorLEcuyer Constructor
+	 * <i>MultipleRecursiveGeneratorLEcuyer</i> Constructor
 	 * 
-	 * @param lY1Prev Y1 Previous
-	 * @param lY1PrevPrev Y1 Previous Previous
-	 * @param lY1PrevPrevPrev Y1 Previous Previous Previous
-	 * @param lY2Prev Y2 Previous
-	 * @param lY2PrevPrev Y2 Previous Previous
-	 * @param lY2PrevPrevPrev Y2 Previous Previous Previous
-	 * @param lA12 A12
-	 * @param lA13 A13
-	 * @param lA21 A21
-	 * @param lA23 A23
-	 * @param lM1 M1
-	 * @param lM2 M2
+	 * @param y1Previous Y1 Previous
+	 * @param y1PreviousPrevious Y1 Previous Previous
+	 * @param y1PreviousPreviousPrevious Y1 Previous Previous Previous
+	 * @param y2Previous Y2 Previous
+	 * @param y2PreviousPrevious Y2 Previous Previous
+	 * @param y2PreviousPreviousPrevious Y2 Previous Previous Previous
+	 * @param a12 A12
+	 * @param a13 A13
+	 * @param a21 A21
+	 * @param a23 A23
+	 * @param m1 M1
+	 * @param m2 M2
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public MultipleRecursiveGeneratorLEcuyer (
-		final long lY1Prev,
-		final long lY1PrevPrev,
-		final long lY1PrevPrevPrev,
-		final long lY2Prev,
-		final long lY2PrevPrev,
-		final long lY2PrevPrevPrev,
-		final long lA12,
-		final long lA13,
-		final long lA21,
-		final long lA23,
-		final long lM1,
-		final long lM2)
-		throws java.lang.Exception
+		final long y1Previous,
+		final long y1PreviousPrevious,
+		final long y1PreviousPreviousPrevious,
+		final long y2Previous,
+		final long y2PreviousPrevious,
+		final long y2PreviousPreviousPrevious,
+		final long a12,
+		final long a13,
+		final long a21,
+		final long a23,
+		final long m1,
+		final long m2)
+		throws Exception
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (_lY1Prev = lY1Prev) ||
-			!org.drip.numerical.common.NumberUtil.IsValid (_lY1PrevPrev = lY1PrevPrev) ||
-			!org.drip.numerical.common.NumberUtil.IsValid (_lY1PrevPrevPrev = lY1PrevPrevPrev) ||
-			!org.drip.numerical.common.NumberUtil.IsValid (_lY2Prev = lY2Prev) ||
-			!org.drip.numerical.common.NumberUtil.IsValid (_lY2PrevPrev = lY2PrevPrev) ||
-			!org.drip.numerical.common.NumberUtil.IsValid (_lY2PrevPrevPrev = lY2PrevPrevPrev) ||
-			!org.drip.numerical.common.NumberUtil.IsValid (_lA12 = lA12) ||
-			!org.drip.numerical.common.NumberUtil.IsValid (_lA13 = lA13) ||
-			!org.drip.numerical.common.NumberUtil.IsValid (_lA21 = lA21) ||
-			!org.drip.numerical.common.NumberUtil.IsValid (_lA23 = lA23) ||
-			!org.drip.numerical.common.NumberUtil.IsValid (_lM1 = lM1) ||
-			!org.drip.numerical.common.NumberUtil.IsValid (_lM2 = lM2))
-			throw new java.lang.Exception
-				("MultipleRecursiveGeneratorLEcuyer Constructor => Invalid Inputs");
+		if (!NumberUtil.IsValid (_y1Previous = y1Previous) ||
+			!NumberUtil.IsValid (_y1PreviousPrevious = y1PreviousPrevious) ||
+			!NumberUtil.IsValid (_y1PreviousPreviousPrevious = y1PreviousPreviousPrevious) ||
+			!NumberUtil.IsValid (_y2Previous = y2Previous) ||
+			!NumberUtil.IsValid (_y2PreviousPrevious = y2PreviousPrevious) ||
+			!NumberUtil.IsValid (_y2PreviousPreviousPrevious = y2PreviousPreviousPrevious) ||
+			!NumberUtil.IsValid (_a12 = a12) ||
+			!NumberUtil.IsValid (_a13 = a13) ||
+			!NumberUtil.IsValid (_a21 = a21) ||
+			!NumberUtil.IsValid (_a23 = a23) ||
+			!NumberUtil.IsValid (_m1 = m1) ||
+			!NumberUtil.IsValid (_m2 = m2))
+		{
+			throw new Exception ("MultipleRecursiveGeneratorLEcuyer Constructor => Invalid Inputs");
+		}
 	}
 
 	/**
@@ -201,7 +231,7 @@ public class MultipleRecursiveGeneratorLEcuyer implements org.drip.measure.crng.
 
 	public long m1()
 	{
-		return _lM1;
+		return _m1;
 	}
 
 	/**
@@ -212,7 +242,7 @@ public class MultipleRecursiveGeneratorLEcuyer implements org.drip.measure.crng.
 
 	public long m2()
 	{
-		return _lM2;
+		return _m2;
 	}
 
 	/**
@@ -223,7 +253,7 @@ public class MultipleRecursiveGeneratorLEcuyer implements org.drip.measure.crng.
 
 	public long a12()
 	{
-		return _lA12;
+		return _a12;
 	}
 
 	/**
@@ -234,7 +264,7 @@ public class MultipleRecursiveGeneratorLEcuyer implements org.drip.measure.crng.
 
 	public long a13()
 	{
-		return _lA13;
+		return _a13;
 	}
 
 	/**
@@ -245,7 +275,7 @@ public class MultipleRecursiveGeneratorLEcuyer implements org.drip.measure.crng.
 
 	public long a21()
 	{
-		return _lA21;
+		return _a21;
 	}
 
 	/**
@@ -256,7 +286,7 @@ public class MultipleRecursiveGeneratorLEcuyer implements org.drip.measure.crng.
 
 	public long a23()
 	{
-		return _lA23;
+		return _a23;
 	}
 
 	/**
@@ -267,7 +297,7 @@ public class MultipleRecursiveGeneratorLEcuyer implements org.drip.measure.crng.
 
 	public long y1Prev()
 	{
-		return _lY1Prev;
+		return _y1Previous;
 	}
 
 	/**
@@ -278,7 +308,7 @@ public class MultipleRecursiveGeneratorLEcuyer implements org.drip.measure.crng.
 
 	public long y1PrevPrev()
 	{
-		return _lY1PrevPrev;
+		return _y1PreviousPrevious;
 	}
 
 	/**
@@ -289,7 +319,7 @@ public class MultipleRecursiveGeneratorLEcuyer implements org.drip.measure.crng.
 
 	public long y1PrevPrevPrev()
 	{
-		return _lY1PrevPrevPrev;
+		return _y1PreviousPreviousPrevious;
 	}
 
 	/**
@@ -300,7 +330,7 @@ public class MultipleRecursiveGeneratorLEcuyer implements org.drip.measure.crng.
 
 	public long y2Prev()
 	{
-		return _lY2Prev;
+		return _y2Previous;
 	}
 
 	/**
@@ -311,7 +341,7 @@ public class MultipleRecursiveGeneratorLEcuyer implements org.drip.measure.crng.
 
 	public long y2PrevPrev()
 	{
-		return _lY2PrevPrev;
+		return _y2PreviousPrevious;
 	}
 
 	/**
@@ -322,19 +352,25 @@ public class MultipleRecursiveGeneratorLEcuyer implements org.drip.measure.crng.
 
 	public long y2PrevPrevPrev()
 	{
-		return _lY2PrevPrevPrev;
+		return _y2PreviousPreviousPrevious;
 	}
+
+	/**
+	 * Generate the Next Number in the Sequence
+	 * 
+	 * @return The Next Number in the Sequence
+	 */
 
 	@Override public long next()
 	{
-		long lY1 = (_lA12 * _lY1PrevPrev + _lA13 * _lY1PrevPrevPrev) % _lM1;
-		long lY2 = (_lA21 * _lY2Prev     + _lA23 * _lY2PrevPrevPrev) % _lM2;
-		_lY2PrevPrevPrev = _lY2PrevPrev;
-		_lY1PrevPrevPrev = _lY1PrevPrev;
-		_lY2PrevPrev = _lY2Prev;
-		_lY1PrevPrev = _lY1Prev;
-		_lY2Prev = lY2;
-		_lY1Prev = lY1;
-		return lY1 + lY2;
+		long y1 = (_a12 * _y1PreviousPrevious + _a13 * _y1PreviousPreviousPrevious) % _m1;
+		long y2 = (_a21 * _y2Previous + _a23 * _y2PreviousPreviousPrevious) % _m2;
+		_y2PreviousPreviousPrevious = _y2PreviousPrevious;
+		_y1PreviousPreviousPrevious = _y1PreviousPrevious;
+		_y2PreviousPrevious = _y2Previous;
+		_y1PreviousPrevious = _y1Previous;
+		_y2Previous = y2;
+		_y1Previous = y1;
+		return y1 + y2;
 	}
 }

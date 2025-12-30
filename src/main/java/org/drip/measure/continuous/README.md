@@ -7,6 +7,9 @@ DROP Measure Continuous implements the R<sup>1</sup> R<sup>d</sup> Continuous Ra
 
 ## Class Components
 
+ * [***I1UniformDistribution***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/continuous/I1UniformDistribution.java)
+ <i>I1UniformDistribution</i> implements the Univariate Bounded Uniform Integer Distribution, with the Integer being generated between a (n inclusive) lower and an upper Bound.
+
  * [***MetaRd***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/continuous/MetaRd.java)
  <i>MetaRd</i> holds a Group of Variable Names - each of which separately is a Valid Single R<sup>1</sup>/R<sup>d</sup> Variable.
 

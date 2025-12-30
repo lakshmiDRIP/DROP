@@ -304,7 +304,7 @@ public class ZeroThresholdFundingPayableStochastic {
 			null
 		);
 
-		return cpvd.multiPathVertexRd()[0].flatform();
+		return cpvd.multiTrajectoryNodeRd()[0].flatform();
 	}
 
 	private static final ExposureAdjustmentAggregator[] Mix (

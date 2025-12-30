@@ -141,7 +141,7 @@ public class CorrelatedRdSequence {
 			null
 		);
 
-		VertexRd vertexRd = cpvd.multiPathVertexRd()[0];
+		VertexRd vertexRd = cpvd.multiTrajectoryNodeRd()[0];
 
 		MultivariateDiscrete mds = new MultivariateDiscrete (vertexRd.flatform());
 

@@ -417,7 +417,7 @@ public class PathSimulator
 				LatentStateWeiner.FromUnitRandom (
 					latentStateLabelList,
 					R1MatrixUtil.Transpose (
-						R1MatrixUtil.Transpose (correlatedPathVertexDimension.straightPathVertexRd().flatform())))
+						R1MatrixUtil.Transpose (correlatedPathVertexDimension.trajectoryStraightNodeRd().flatform())))
 			))) {
 				return null;
 			}

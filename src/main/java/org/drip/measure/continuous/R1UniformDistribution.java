@@ -262,14 +262,14 @@ public class R1UniformDistribution
 	 */
 
 	@Override public double invCumulative (
-		final double y)
+		final double p)
 		throws Exception
 	{
-		if (!NumberUtil.IsValid (y) || 1. < y || 0. > y) {
+		if (!NumberUtil.IsValid (p) || 1. < p || 0. > p) {
 			throw new Exception ("R1UniformDistribution::invCumulative => Cannot calculate");
 		}
 
-	    return y * (_rightSupport - _leftSupport) + _leftSupport;
+	    return p * (_rightSupport - _leftSupport) + _leftSupport;
 	}
 
 	/**

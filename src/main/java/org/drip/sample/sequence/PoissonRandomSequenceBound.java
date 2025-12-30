@@ -2,7 +2,6 @@
 package org.drip.sample.sequence;
 
 import org.drip.measure.continuous.R1Distribution;
-import org.drip.measure.discontinuous.*;
 import org.drip.measure.exponential.PoissonDistribution;
 import org.drip.sequence.metrics.*;
 import org.drip.sequence.random.*;

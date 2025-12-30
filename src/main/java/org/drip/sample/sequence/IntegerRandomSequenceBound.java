@@ -1,8 +1,8 @@
 
 package org.drip.sample.sequence;
 
+import org.drip.measure.continuous.I1UniformDistribution;
 import org.drip.measure.continuous.R1Distribution;
-import org.drip.measure.discontinuous.*;
 import org.drip.sequence.metrics.*;
 import org.drip.sequence.random.*;
 import org.drip.service.common.FormatUtil;
@@ -146,7 +146,7 @@ public class IntegerRandomSequenceBound {
 			100
 		);
 
-		BoundedUniformIntegerDistribution buiDistribution = new BoundedUniformIntegerDistribution (
+		I1UniformDistribution buiDistribution = new I1UniformDistribution (
 			0,
 			100
 		);

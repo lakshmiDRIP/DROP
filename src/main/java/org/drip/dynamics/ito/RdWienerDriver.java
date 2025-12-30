@@ -183,7 +183,7 @@ public class RdWienerDriver
 				1,
 				false,
 				null
-			).nodeRd();
+			).straightNodeRd();
 
 			if (null == singleCorrelatedSuite)
 			{

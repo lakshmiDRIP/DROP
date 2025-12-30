@@ -1,11 +1,21 @@
 
 package org.drip.measure.crng;
 
+import org.drip.numerical.common.NumberUtil;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2030 Lakshmi Krishnamurthy
+ * Copyright (C) 2029 Lakshmi Krishnamurthy
+ * Copyright (C) 2028 Lakshmi Krishnamurthy
+ * Copyright (C) 2027 Lakshmi Krishnamurthy
+ * Copyright (C) 2026 Lakshmi Krishnamurthy
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -80,44 +90,59 @@ package org.drip.measure.crng;
 
 /**
  * <i>LinearCongruentialGenerator</i> implements a RNG based on Recurrence Based on Modular Integer
- * Arithmetic.
+ * 	Arithmetic. It provides the following Functionality:
  *
- *	<br><br>
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md">Numerical Analysis Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/README.md">R<sup>d</sup> Continuous/Discrete Probability Measures</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/crng/README.md">Continuous Random Number Stream Generator</a></li>
+ * 		<li>Construct an Instance of <i>LinearCongruentialGenerator</i> with the MRG of Type MRG32k3a</li>
+ * 		<li>Construct a NumericalRecipes Version of <i>LinearCongruentialGenerator</i></li>
+ * 		<li><i>LinearCongruentialGenerator</i> Constructor</li>
+ * 		<li>Retrieve A</li>
+ * 		<li>Retrieve B</li>
+ * 		<li>Retrieve M</li>
+ * 		<li>Retrieve the Recursive Generator Instance</li>
+ * 		<li>Retrieve the Next Pseudo-random Long</li>
+ * 		<li>Retrieve a Random Number between -1 and 1</li>
+ * 		<li>Retrieve a Random Number between 0 and 1</li>
  *  </ul>
+ *
+ *	<br>
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md">Numerical Analysis Library</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/README.md">R<sup>d</sup> Continuous/Discrete Probability Measures</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/crng/README.md">Continuous Random Number Stream Generator</a></td></tr>
+ *  </table>
+ *	<br>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class LinearCongruentialGenerator extends org.drip.measure.crng.RandomNumberGenerator {
-	private long _lA = java.lang.Long.MIN_VALUE;
-	private long _lB = java.lang.Long.MIN_VALUE;
-	private long _lM = java.lang.Long.MIN_VALUE;
-	private org.drip.measure.crng.RecursiveGenerator _rg = null;
+public class LinearCongruentialGenerator
+	extends RandomNumberGenerator
+{
+	private long _a = Long.MIN_VALUE;
+	private long _b = Long.MIN_VALUE;
+	private long _m = Long.MIN_VALUE;
+	private RecursiveGenerator _recursiveGenerator = null;
 
 	/**
-	 * Construct an Instance of LinearCongruentialGenerator with the MRG of Type MRG32k3a
+	 * Construct an Instance of <i>LinearCongruentialGenerator</i> with the MRG of Type MRG32k3a
 	 * 
-	 * @param lA A
-	 * @param lB B
-	 * @param lM M
+	 * @param a A
+	 * @param b B
+	 * @param m M
 	 * 
-	 * @return Instance of LinearCongruentialGenerator with the MRG of Type MRG32k3a
+	 * @return Instance of <i>LinearCongruentialGenerator</i> with the MRG of Type MRG32k3a
 	 */
 
 	public static final LinearCongruentialGenerator MRG32k3a (
-		final long lA,
-		final long lB,
-		final long lM)
+		final long a,
+		final long b,
+		final long m)
 	{
 		try {
-			return new LinearCongruentialGenerator (lA, lB, lM,
-				org.drip.measure.crng.MultipleRecursiveGeneratorLEcuyer.MRG32k3a());
-		} catch (java.lang.Exception e) {
+			return new LinearCongruentialGenerator (a, b, m, MultipleRecursiveGeneratorLEcuyer.MRG32k3a());
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -125,24 +150,25 @@ public class LinearCongruentialGenerator extends org.drip.measure.crng.RandomNum
 	}
 
 	/**
-	 * Construct a NumericalRecipes Version of LinearCongruentialGenerator
+	 * Construct the Numerical Recipes Version of <i>LinearCongruentialGenerator</i>
 	 * 
-	 * @param rg The Recursive Generator Instance
+	 * @param recursiveGenerator The Recursive Generator Instance
 	 * 
-	 * @return NumericalRecipes Version of LinearCongruentialGenerator
+	 * @return Numerical Recipes Version of <i>LinearCongruentialGenerator</i>
 	 */
 
 	public static final LinearCongruentialGenerator NumericalRecipes (
-		final org.drip.measure.crng.RecursiveGenerator rg)
+		final RecursiveGenerator recursiveGenerator)
 	{
-		long l2Power32 = 1;
+		long twoPower32 = 1L;
 
-		for (int i = 0; i < 32; ++i)
-			l2Power32 *= 2;
+		for (int i = 0; i < 32; ++i) {
+			twoPower32 *= 2L;
+		}
 
 		try {
-			return new LinearCongruentialGenerator (1664525L, 1013904223L, l2Power32, rg);
-		} catch (java.lang.Exception e) {
+			return new LinearCongruentialGenerator (1664525L, 1013904223L, twoPower32, recursiveGenerator);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -150,26 +176,30 @@ public class LinearCongruentialGenerator extends org.drip.measure.crng.RandomNum
 	}
 
 	/**
-	 * LinearCongruentialGenerator Contructor
+	 * <i>LinearCongruentialGenerator</i> Constructor
 	 * 
-	 * @param lA A
-	 * @param lB B
-	 * @param lM M
-	 * @param rg The MultipleRecursiveGenerator Instance
+	 * @param a A
+	 * @param b B
+	 * @param m M
+	 * @param recursiveGenerator  Recursive Generator Instance
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public LinearCongruentialGenerator (
-		final long lA,
-		final long lB,
-		final long lM,
-		final org.drip.measure.crng.RecursiveGenerator rg)
-		throws java.lang.Exception
+		final long a,
+		final long b,
+		final long m,
+		final RecursiveGenerator recursiveGenerator)
+		throws Exception
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (_lA = lA) || !org.drip.numerical.common.NumberUtil.IsValid
-			(_lB = lB) || !org.drip.numerical.common.NumberUtil.IsValid (_lM = lM) || null == (_rg = rg))
-			throw new java.lang.Exception ("LinearCongruentialGenerator Constructor => Invalid Inputs");
+		if (!NumberUtil.IsValid (_a = a) ||
+			!NumberUtil.IsValid (_b = b) ||
+			!NumberUtil.IsValid (_m = m) ||
+			null == (_recursiveGenerator = recursiveGenerator))
+		{
+			throw new Exception ("LinearCongruentialGenerator Constructor => Invalid Inputs");
+		}
 	}
 
 	/**
@@ -180,7 +210,7 @@ public class LinearCongruentialGenerator extends org.drip.measure.crng.RandomNum
 
 	public long a()
 	{
-		return _lA;
+		return _a;
 	}
 
 	/**
@@ -191,7 +221,7 @@ public class LinearCongruentialGenerator extends org.drip.measure.crng.RandomNum
 
 	public long b()
 	{
-		return _lB;
+		return _b;
 	}
 
 	/**
@@ -202,7 +232,7 @@ public class LinearCongruentialGenerator extends org.drip.measure.crng.RandomNum
 
 	public long m()
 	{
-		return _lM;
+		return _m;
 	}
 
 	/**
@@ -211,9 +241,9 @@ public class LinearCongruentialGenerator extends org.drip.measure.crng.RandomNum
 	 * @return The Recursive Generator Instance
 	 */
 
-	public org.drip.measure.crng.RecursiveGenerator recursiveGenerator()
+	public RecursiveGenerator recursiveGenerator()
 	{
-		return _rg;
+		return _recursiveGenerator;
 	}
 
 	/**
@@ -224,7 +254,7 @@ public class LinearCongruentialGenerator extends org.drip.measure.crng.RandomNum
 
 	public long nextLong()
 	{
-		return (_lA * _rg.next() + _lB) % _lM;
+		return (_a * _recursiveGenerator.next() + _b) % _m;
 	}
 
 	/**
@@ -235,8 +265,14 @@ public class LinearCongruentialGenerator extends org.drip.measure.crng.RandomNum
 
 	public double nextDouble()
 	{
-		return ((double) nextLong()) / ((double) _lM);
+		return ((double) nextLong()) / ((double) _m);
 	}
+
+	/**
+	 * Retrieve a Random Number between 0 and 1
+	 * 
+	 * @return Random Number between 0 and 1
+	 */
 
 	@Override public double nextDouble01()
 	{

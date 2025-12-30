@@ -832,7 +832,7 @@ public class SemiReplicationBaselProxy
 				initialMarketVertex,
 				LatentStateWeiner.FromUnitRandom (
 					latentStateLabelList,
-					R1MatrixUtil.Transpose (correlatedPathVertexDimension.straightPathVertexRd().flatform())
+					R1MatrixUtil.Transpose (correlatedPathVertexDimension.trajectoryStraightNodeRd().flatform())
 				)
 			);
 		}

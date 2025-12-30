@@ -10,6 +10,11 @@ import org.drip.numerical.matrix.R1Triangular;
  */
 
 /*!
+ * Copyright (C) 2030 Lakshmi Krishnamurthy
+ * Copyright (C) 2029 Lakshmi Krishnamurthy
+ * Copyright (C) 2028 Lakshmi Krishnamurthy
+ * Copyright (C) 2027 Lakshmi Krishnamurthy
+ * Copyright (C) 2026 Lakshmi Krishnamurthy
  * Copyright (C) 2025 Lakshmi Krishnamurthy
  * 
  *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
@@ -103,14 +108,29 @@ import org.drip.numerical.matrix.R1Triangular;
  * 		</li>
  * 	</ul>
  * 
- * <br><br>
+ * It provides the following Functionality:
+ *
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md">Numerical Analysis Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/numerical/README.md">Numerical Quadrature, Differentiation, Eigenization, Linear Algebra, and Utilities</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/numerical/linearalgebra/README.md">Linear Algebra Matrix Transform Library</a></li>
+ * 		<li>Construct a Lower Triangular Matrix of Random Elements up to the Maximum Value</li>
+ * 		<li>Construct an Upper Triangular Matrix of Random Elements up to the Maximum Value</li>
+ * 		<li>Construct a Diagonal Matrix of Random Elements up to the Maximum Value</li>
+ *		<li>Construct a Lower Unitriangular Matrix of Random Elements up to the Maximum Value</li>
+ * 		<li>Construct an Upper Unitriangular Matrix of Random Elements up to the Maximum Value</li>
+ * 		<li>Construct a Strictly Lower Triangular Matrix of Random Elements up to the Maximum Value</li>
+ * 		<li>Construct a Strictly Upper Triangular Matrix of Random Elements up to the Maximum Value</li>
+ * 		<li>Construct an Atomic Lower Triangular Matrix of Random Elements up to the Maximum Value</li>
+ * 		<li>Construct an Atomic Upper Triangular Matrix of Random Elements up to the Maximum Value</li>
+ * 		<li>Construct an Eigenized Square Matrix of Random Elements up to the Maximum Value</li>
  *  </ul>
- * <br><br>
+ *
+ *	<br>
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md">Numerical Analysis Library</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/README.md">R<sup>d</sup> Continuous/Discrete Probability Measures</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/crng/README.md">Continuous Random Number Stream Generator</a></td></tr>
+ *  </table>
+ *	<br>
  *
  * @author Lakshmi Krishnamurthy
  */

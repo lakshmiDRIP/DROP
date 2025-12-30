@@ -262,7 +262,7 @@ public class PathVertexForwardRealization {
 			null
 		);
 
-		VertexRd[] aVertexRd = cpvd.multiPathVertexRd();
+		VertexRd[] aVertexRd = cpvd.multiTrajectoryNodeRd();
 
 		for (int iPath = 0; iPath < iNumPath; ++iPath) {
 			List<double[]> lsVertexRd = aVertexRd[iPath].nodeList();

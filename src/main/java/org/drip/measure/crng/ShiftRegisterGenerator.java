@@ -6,6 +6,14 @@ package org.drip.measure.crng;
  */
 
 /*!
+ * Copyright (C) 2030 Lakshmi Krishnamurthy
+ * Copyright (C) 2029 Lakshmi Krishnamurthy
+ * Copyright (C) 2028 Lakshmi Krishnamurthy
+ * Copyright (C) 2027 Lakshmi Krishnamurthy
+ * Copyright (C) 2026 Lakshmi Krishnamurthy
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -79,49 +87,65 @@ package org.drip.measure.crng;
  */
 
 /**
- * <i>ShiftRegisterGenerator</i> implements a RNG based on the Shift Register Generation Scheme.
+ * <i>ShiftRegisterGenerator</i> implements a RNG based on the Shift Register Generation Scheme. It provides
+ * 	the following Functionality:
  *
- *	<br><br>
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md">Numerical Analysis Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/README.md">R<sup>d</sup> Continuous/Discrete Probability Measures</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/crng/README.md">Continuous Random Number Stream Generator</a></li>
+ * 		<li>Construct a Standard Instance of <i>ShiftRegisterGenerator</i> from the Specified Period Power</li>
+ * 		<li><i>ShiftRegisterGenerator</i> Constructor</li>
+ * 		<li>Retrieve the Array of Coefficients</li>
+ * 		<li>Retrieve the Array of State Values</li>
+ * 		<li>Retrieve the Maximum Period</li>
+ * 		<li>Generate the Next Long in the Sequence</li>
+ * 		<li>Retrieve a Random Number between 0 and 1</li>
  *  </ul>
+ *
+ *	<br>
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md">Numerical Analysis Library</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/README.md">R<sup>d</sup> Continuous/Discrete Probability Measures</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/crng/README.md">Continuous Random Number Stream Generator</a></td></tr>
+ *  </table>
+ *	<br>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class ShiftRegisterGenerator extends org.drip.measure.crng.RandomNumberGenerator {
-	private boolean[] _abA = null;
-	private boolean[] _abX = null;
-	private long _lMaximumPeriod = java.lang.Long.MIN_VALUE;
+public class ShiftRegisterGenerator
+	extends RandomNumberGenerator
+{
+	private boolean[] _stateValueArray = null;
+	private boolean[] _coefficientArray = null;
+	private long _maximumPeriod = Long.MIN_VALUE;
 
 	/**
-	 * Construct a Standard Instance of ShiftRegisterGenerator from the Specified Period Power
+	 * Construct a Standard Instance of <i>ShiftRegisterGenerator</i> from the Specified Period Power
 	 * 
-	 * @param iK The Period Power
+	 * @param k The Period Power
 	 * 
-	 * @return Instance of ShiftRegisterGenerator
+	 * @return Instance of <i>ShiftRegisterGenerator</i>
 	 */
 
 	public static final ShiftRegisterGenerator Standard (
-		final int iK)
+		final int k)
 	{
-		if (3 >= iK) return null;
+		if (3 >= k) {
+			return null;
+		}
 
-		boolean[] abA = new boolean[iK];
-		boolean[] abX = new boolean[iK];
+		boolean[] stateValueArray = new boolean[k];
+		boolean[] coefficientArray = new boolean[k];
 
-		for (int i = 0; i < iK; ++i) {
-			abA[i] = true;
+		for (int i = 0; i < k; ++i) {
+			coefficientArray[i] = true;
 
-			abX[i] = 1 == (System.nanoTime() % 2) ? true : false;
+			stateValueArray[i] = 1 == (System.nanoTime() % 2) ? true : false;
 		}
 
 		try {
-			return new ShiftRegisterGenerator (abA, abX);
-		} catch (java.lang.Exception e) {
+			return new ShiftRegisterGenerator (coefficientArray, stateValueArray);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -129,32 +153,34 @@ public class ShiftRegisterGenerator extends org.drip.measure.crng.RandomNumberGe
 	}
 
 	/**
-	 * ShiftRegisterGenerator Constructor
+	 * <i>ShiftRegisterGenerator</i> Constructor
 	 * 
-	 * @param abA Array of Coefficients
-	 * @param abX Array of State Values
+	 * @param coefficientArray Array of Coefficients
+	 * @param stateValueArray Array of State Values
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public ShiftRegisterGenerator (
-		final boolean[] abA,
-		final boolean[] abX)
-		throws java.lang.Exception
+		final boolean[] coefficientArray,
+		final boolean[] stateValueArray)
+		throws Exception
 	{
-		if (null == (_abA = abA) || null == (_abX = abX))
-			throw new java.lang.Exception ("ShiftRegisterGenerator Constructor => Invalid Inputs");
+		if (null == (_coefficientArray = coefficientArray) || null == (_stateValueArray = stateValueArray)) {
+			throw new Exception ("ShiftRegisterGenerator Constructor => Invalid Inputs");
+		}
 
-		_lMaximumPeriod = 1;
-		int iK = _abA.length;
+		_maximumPeriod = 1L;
 
-		if (0 == iK || iK != _abX.length)
-			throw new java.lang.Exception ("ShiftRegisterGenerator Constructor => Invalid Inputs");
+		if (0 == _coefficientArray.length || _coefficientArray.length != _stateValueArray.length) {
+			throw new Exception ("ShiftRegisterGenerator Constructor => Invalid Inputs");
+		}
 
-		for (int i = 0; i < iK; ++i)
-			_lMaximumPeriod = _lMaximumPeriod * 2;
+		for (int coefficientIndex = 0; coefficientIndex < _coefficientArray.length; ++coefficientIndex) {
+			_maximumPeriod = _maximumPeriod * 2L;
+		}
 
-		_lMaximumPeriod -= 1;
+		_maximumPeriod -= 1L;
 	}
 
 	/**
@@ -165,7 +191,7 @@ public class ShiftRegisterGenerator extends org.drip.measure.crng.RandomNumberGe
 
 	public boolean[] a()
 	{
-		return _abA;
+		return _coefficientArray;
 	}
 
 	/**
@@ -176,7 +202,7 @@ public class ShiftRegisterGenerator extends org.drip.measure.crng.RandomNumberGe
 
 	public boolean[] x()
 	{
-		return _abX;
+		return _stateValueArray;
 	}
 
 	/**
@@ -187,7 +213,7 @@ public class ShiftRegisterGenerator extends org.drip.measure.crng.RandomNumberGe
 
 	public long maximumPeriod()
 	{
-		return _lMaximumPeriod;
+		return _maximumPeriod;
 	}
 
 	/**
@@ -198,26 +224,34 @@ public class ShiftRegisterGenerator extends org.drip.measure.crng.RandomNumberGe
 
 	public long nextLong()
 	{
-		long lNext = 0L;
-		int iTwosIndex = 1;
-		int iK = _abA.length;
+		long next = 0L;
+		int twosIndex = 1;
 
-		for (int i = 0; i < iK; ++i) {
-			if (_abA[i] && _abX[i]) lNext = lNext + iTwosIndex;
+		for (int coefficientIndex = 0; coefficientIndex < _coefficientArray.length; ++coefficientIndex) {
+			if (_coefficientArray[coefficientIndex] && _stateValueArray[coefficientIndex]) {
+				next = next + twosIndex;
+			}
 
-			iTwosIndex *= 2;
+			twosIndex *= 2;
 		}
 
-		_abX[iK - 1] = 1 == (lNext  % 2) ? true : false;
+		_stateValueArray[_coefficientArray.length - 1] = 1 == (next  % 2) ? true : false;
 
-		for (int i = 0; i < iK - 1; ++i)
-			_abX[i] = _abX[i + 1];
+		for (int coefficientIndex = 0; coefficientIndex < _coefficientArray.length - 1; ++coefficientIndex) {
+			_stateValueArray[coefficientIndex] = _stateValueArray[coefficientIndex + 1];
+		}
 
-		return lNext;
+		return next;
 	}
+
+	/**
+	 * Retrieve a Random Number between 0 and 1
+	 * 
+	 * @return Random Number between 0 and 1
+	 */
 
 	@Override public double nextDouble01()
 	{
-		return ((double) nextLong()) / ((double) _lMaximumPeriod);
+		return ((double) nextLong()) / ((double) _maximumPeriod);
 	}
 }

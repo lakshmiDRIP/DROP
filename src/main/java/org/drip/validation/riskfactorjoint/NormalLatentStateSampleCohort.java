@@ -180,7 +180,7 @@ public class NormalLatentStateSampleCohort
 			return null;
 		}
 
-		VertexRd[] vertexRdArray = correlatedPathVertexDimension.straightMultiPathVertexRd();
+		VertexRd[] vertexRdArray = correlatedPathVertexDimension.multiTrajectoryStraightNodeRd();
 
 		if (null == vertexRdArray || null == vertexRdArray[0]) {
 			return null;

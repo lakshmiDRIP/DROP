@@ -254,7 +254,7 @@ public class PathVertexRd
 
 		double[][][] forwardPathVertexDimension = new double[pathCount][vertexCount][dimension];
 
-		VertexRd[] vertexRdArray = _correlatedPathVertexDimension.multiPathVertexRd();
+		VertexRd[] vertexRdArray = _correlatedPathVertexDimension.multiTrajectoryNodeRd();
 
 		if (null == vertexRdArray || pathCount != vertexRdArray.length) {
 			return null;
