@@ -1,7 +1,7 @@
 
 package org.drip.sample.randomdiscrete;
 
-import org.drip.measure.crng.RdRandomSequence;
+import org.drip.measure.crng.RdRandomSequenceGenerator;
 import org.drip.service.env.EnvManager;
 
 /*
@@ -129,10 +129,10 @@ public class DigitsGenerator
 
 		for (int sampleIndex = 0; sampleIndex < sampleCount; ++sampleIndex) {
 			System.out.println (
-				"\t| " + RdRandomSequence.RandomDigit() + " | " +
-					RdRandomSequence.RandomUpperAlpha() + " | " +
-					RdRandomSequence.RandomUpperAlphaNumeric() + " | " +
-					RdRandomSequence.RandomCUSIP() + " ||"
+				"\t| " + RdRandomSequenceGenerator.Digit() + " | " +
+					RdRandomSequenceGenerator.UpperCaseAlphabet() + " | " +
+					RdRandomSequenceGenerator.UpperCaseAlphabetOrNumber() + " | " +
+					RdRandomSequenceGenerator.CUSIP() + " ||"
 			);
 		}
 

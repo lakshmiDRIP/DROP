@@ -1,7 +1,7 @@
 
 package org.drip.numerical.linearsolver;
 
-import org.drip.measure.crng.RdRandomSequence;
+import org.drip.measure.crng.RdRandomSequenceGenerator;
 import org.drip.numerical.common.NumberUtil;
 import org.drip.numerical.decomposition.QR;
 import org.drip.numerical.linearalgebra.R1MatrixUtil;
@@ -296,13 +296,13 @@ public class BartelsStewartScheme
 		final String[] argumentArray)
 		throws Exception
 	{
-		double[][] matrixA = RdRandomSequence.TwoD (
+		double[][] matrixA = RdRandomSequenceGenerator.DoubleMatrix (
 			3,
 			99.,
 			true
 		);
 
-		double[][] matrixB = RdRandomSequence.TwoD (
+		double[][] matrixB = RdRandomSequenceGenerator.DoubleMatrix (
 			3,
 			99.,
 			true

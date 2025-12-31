@@ -3,7 +3,7 @@ package org.drip.sample.tridiagonal;
 
 import java.util.Date;
 
-import org.drip.measure.crng.RdRandomSequence;
+import org.drip.measure.crng.RdRandomSequenceGenerator;
 import org.drip.numerical.common.NumberUtil;
 import org.drip.numerical.linearalgebra.R1MatrixUtil;
 import org.drip.numerical.linearsolver.ShermanMorrisonScheme;
@@ -130,9 +130,9 @@ public class PeriodicShermanMorrisonSolverSuite
 		final double maximumElement)
 		throws Exception
 	{
-		double[] xArray = RdRandomSequence.OneD (elementCount, maximumElement, true);
+		double[] xArray = RdRandomSequenceGenerator.DoubleArray (elementCount, maximumElement, true);
 
-		double[][] periodicTridiagonalMatrix = RdRandomSequence.PeriodicTridiagonal (
+		double[][] periodicTridiagonalMatrix = RdRandomSequenceGenerator.PeriodicTridiagonalMatix (
 			elementCount,
 			maximumElement,
 			true

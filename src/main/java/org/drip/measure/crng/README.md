@@ -22,8 +22,14 @@ DROP Measure CRNG implements the Continuous Random Number Stream Generator.
  <i>MultiStreamGenerator</i> helps generate Multiple Independent (i.e., Non-Overlapping) Streams of Random
  Numbers.
 
+ * [***RandomMatrixGenerator***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/crng/RandomMatrixGenerator.java)
+ <i>RandomMatrixGenerator</i> provides Functionality for generating different Kinds of Random Matrices.
+
  * [***RandomNumberGenerator***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/crng/RandomNumberGenerator.java)
  <i>RandomNumberGenerator</i> provides the Functionality to generate Random Numbers. Default simply forwards to the Native JRE/JDK Implementation.
+
+ * [***RdRandomSequenceGenerator***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/crng/RdRandomSequenceGenerator.java)
+ <i>RdRandomSequenceGenerator</i> generates 1D and 2D random arrays.
 
  * [***RecursiveGenerator***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/crng/RecursiveGenerator.java)
  <i>RecursiveGenerator</i> exposes Sequence Generation using Recursive Schemes. The Recursion Schemes can be
@@ -31,6 +37,19 @@ DROP Measure CRNG implements the Continuous Random Number Stream Generator.
 
  * [***ShiftRegisterGenerator***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/crng/ShiftRegisterGenerator.java)
  <i>ShiftRegisterGenerator</i> implements a RNG based on the Shift Register Generation Scheme.
+
+
+## References
+
+ * Axler, S. J. (1997): <i>Linear Algebra Done Right 2<sup>nd</sup> Edition</i> <b>Springer</b> New York NY
+
+ * Bernstein, D. S. (2009): <i>Matrix Mathematics: Theory, Facts, and Formulas 2<sup>nd</sup> Edition</i> <b>Princeton University Press</b> Princeton NJ
+
+ * Herstein, I. N. (1975): <i>Topics in Algebra 2<sup>nd</sup> Edition</i> <b>Wiley</b> New York NY
+
+ * Prasolov, V. V. (1994): <i>Topics in Algebra</i> <b>American Mathematical Society</b> Providence RI
+
+ * Wikipedia (2024): Triangular Matrix https://en.wikipedia.org/wiki/Triangular_matrix
 
 
 ## DROP Specifications

@@ -3,7 +3,7 @@ package org.drip.sample.leanallocator;
 
 import java.util.Map;
 
-import org.drip.measure.crng.RdRandomSequence;
+import org.drip.measure.crng.RdRandomSequenceGenerator;
 import org.drip.portfolioconstruction.lean.FullSequenceAllocationDiagnostics;
 import org.drip.portfolioconstruction.lean.FullSequenceAllocator;
 import org.drip.portfolioconstruction.lean.HoldingsContainer;
@@ -119,7 +119,7 @@ public class BuyOnlyAllocation
 
 		for (int i = 0; i < size; ++i) {
 			holdingsContainer.setAsset (
-				RdRandomSequence.RandomCUSIP(),
+				RdRandomSequenceGenerator.CUSIP(),
 				100. * ScaledMarketValue (scale)
 			);
 		}

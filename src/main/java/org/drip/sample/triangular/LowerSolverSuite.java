@@ -4,7 +4,7 @@ package org.drip.sample.triangular;
 import java.util.Date;
 
 import org.drip.measure.crng.RandomMatrixGenerator;
-import org.drip.measure.crng.RdRandomSequence;
+import org.drip.measure.crng.RdRandomSequenceGenerator;
 import org.drip.numerical.common.NumberUtil;
 import org.drip.numerical.linearalgebra.R1MatrixUtil;
 import org.drip.numerical.linearsolver.TriangularScheme;
@@ -129,7 +129,7 @@ public class LowerSolverSuite
 		final double maximumElement)
 		throws Exception
 	{
-		double[] xArray = RdRandomSequence.OneD (elementCount, maximumElement, true);
+		double[] xArray = RdRandomSequenceGenerator.DoubleArray (elementCount, maximumElement, true);
 
 		R1Triangular lowerTriangularMatrix = RandomMatrixGenerator.LowerTriangular (
 			elementCount,

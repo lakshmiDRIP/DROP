@@ -1,11 +1,28 @@
 
 package org.drip.measure.chisquare;
 
+import org.drip.function.definition.R1ToR1;
+import org.drip.function.definition.R2ToR1;
+import org.drip.measure.continuous.R1Distribution;
+import org.drip.measure.gamma.R1ShapeScaleDistribution;
+import org.drip.measure.gamma.ShapeScaleParameters;
+import org.drip.measure.gaussian.NormalQuadrature;
+import org.drip.measure.gaussian.R1UnivariateNormal;
+import org.drip.numerical.common.NumberUtil;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2030 Lakshmi Krishnamurthy
+ * Copyright (C) 2029 Lakshmi Krishnamurthy
+ * Copyright (C) 2028 Lakshmi Krishnamurthy
+ * Copyright (C) 2027 Lakshmi Krishnamurthy
+ * Copyright (C) 2026 Lakshmi Krishnamurthy
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -104,26 +121,69 @@ package org.drip.measure.chisquare;
  * 				https://www.itl.nist.gov/div898/handbook/eda/section3/eda3666.htm
  * 		</li>
  * 	</ul>
+ * 
+ *  It provides the following Functionality:
  *
- *	<br><br>
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md">Numerical Analysis Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/README.md">R<sup>d</sup> Continuous/Discrete Probability Measures</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/chisquare/README.md">Chi-Square Distribution Implementation/Properties</a></li>
+ * 		<li>Generate a Consolidated Chi-squared Distribution from Independent Component Distributions</li>
+ * 		<li><i>R1Central</i> Constructor</li>
+ * 		<li>Retrieve the Degrees of Freedom</li>
+ * 		<li>Retrieve the Gamma Estimator</li>
+ * 		<li>Retrieve the Digamma Estimator</li>
+ * 		<li>Retrieve the Lower Incomplete Gamma Estimator</li>
+ * 		<li>Lay out the Support of the PDF Range</li>
+ * 		<li>Compute the Density under the Distribution at the given Variate</li>
+ * 		<li>Compute the cumulative under the distribution to the given value</li>
+ * 		<li>Retrieve the Mean of the Distribution</li>
+ * 		<li>Retrieve the Median of the Distribution</li>
+ * 		<li>Retrieve the Mode of the Distribution</li>
+ * 		<li>Retrieve the Variance of the Distribution</li>
+ * 		<li>Retrieve the Skewness of the Distribution</li>
+ * 		<li>Retrieve the Excess Kurtosis of the Distribution</li>
+ * 		<li>Retrieve the Differential Entropy of the Distribution</li>
+ * 		<li>Construct the Moment Generating Function</li>
+ * 		<li>Construct the Probability Generating Function</li>
+ * 		<li>Generate a Random Variable corresponding to the Distribution</li>
+ * 		<li>Retrieve the Normalizer</li>
+ * 		<li>Retrieve the CDF Scaler</li>
+ * 		<li>Compute the Chernoff Upper Bound</li>
+ *		<li> Compute the Non-central Moment about Zero</li>
+ * 		<li>Compute the Cumulant</li>
+ * 		<li>Retrieve the Central Limit Theorem Equivalent Normal Distribution Proxy</li>
+ * 		<li>Indicate if the Current Distribution is a Valid Proxy as a CLT</li>
+ * 		<li>Generate a Gamma-distribution off of the Scaled Chi-Square Distribution</li>
+ * 		<li>Generate Logarithm Proxy Based Random Number - Proxy to Univariate Normal Distribution</li>
+ * 		<li>Generate CLT Proxy Based Random Number - Proxy to Univariate Normal Distribution</li>
+ * 		<li>Generate Fisher Proxy Random Number - Proxy to Univariate Normal Distribution</li>
+ * 		<li>Generate Wilson-Hilferty Proxy Random Number - Proxy to Univariate Normal Distribution</li>
+ * 		<li>Generate Gamma Distributed Random Number</li>
+ * 		<li>Generate the Chi Distributed Random Number</li>
+ * 		<li>Generate Exponential (0.5) Distributed Random Number</li>
+ * 		<li>Generate Rayleigh (1) Distributed Random Number</li>
+ * 		<li>Generate Maxwell (1) Distributed Random Number</li>
  *  </ul>
+ *
+ *	<br>
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md">Numerical Analysis Library</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/README.md">R<sup>d</sup> Continuous/Discrete Probability Measures</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/chisquare/README.md">Chi-Square Distribution Implementation/Properties</a></td></tr>
+ *  </table>
+ *	<br>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class R1Central extends org.drip.measure.continuous.R1Distribution
+public class R1Central
+	extends R1Distribution
 {
-	private double _degreesOfFreedom = -1;
-	private double _cdfScaler = java.lang.Double.NaN;
-	private double _normalizer = java.lang.Double.NaN;
-	private org.drip.function.definition.R1ToR1 _gammaEstimator = null;
-	private org.drip.function.definition.R1ToR1 _digammaEstimator = null;
-	private org.drip.function.definition.R2ToR1 _lowerIncompleteGammaEstimator = null;
+	private R1ToR1 _gammaEstimator = null;
+	private double _degreesOfFreedom = -1.;
+	private double _cdfScaler = Double.NaN;
+	private double _normalizer = Double.NaN;
+	private R1ToR1 _digammaEstimator = null;
+	private R2ToR1 _lowerIncompleteGammaEstimator = null;
 
 	/**
 	 * Generate a Consolidated Chi-squared Distribution from Independent Component Distributions
@@ -134,37 +194,30 @@ public class R1Central extends org.drip.measure.continuous.R1Distribution
 	 */
 
 	public static final R1Central FromIndependentChiSquared (
-		final org.drip.measure.chisquare.R1Central[] chiSquaredDistributionArray)
+		final R1Central[] chiSquaredDistributionArray)
 	{
-		if (null == chiSquaredDistributionArray || 0 == chiSquaredDistributionArray.length)
-		{
+		if (null == chiSquaredDistributionArray || 0 == chiSquaredDistributionArray.length) {
 			return null;
 		}
 
 		double degreesOfFreedom = 0;
 
-		for (org.drip.measure.chisquare.R1Central chiSquaredDistribution :
-			chiSquaredDistributionArray)
-		{
-			if (null == chiSquaredDistribution)
-			{
+		for (R1Central chiSquaredDistribution : chiSquaredDistributionArray) {
+			if (null == chiSquaredDistribution) {
 				return null;
 			}
 
 			degreesOfFreedom = degreesOfFreedom + chiSquaredDistribution.degreesOfFreedom();
 		}
 
-		try
-		{
+		try {
 			return new R1Central (
 				degreesOfFreedom,
 				chiSquaredDistributionArray[0].gammaEstimator(),
 				chiSquaredDistributionArray[0].digammaEstimator(),
 				chiSquaredDistributionArray[0].lowerIncompleteGammaEstimator()
 			);
-		}
-		catch (java.lang.Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -172,39 +225,34 @@ public class R1Central extends org.drip.measure.continuous.R1Distribution
 	}
 
 	/**
-	 * R1Central Constructor
+	 * <i>R1Central</i> Constructor
 	 * 
 	 * @param degreesOfFreedom Degrees of Freedom
 	 * @param gammaEstimator Gamma Estimator
 	 * @param digammaEstimator Digamma Estimator
 	 * @param lowerIncompleteGammaEstimator Lower Incomplete Gamma Estimator
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public R1Central (
 		final double degreesOfFreedom,
-		final org.drip.function.definition.R1ToR1 gammaEstimator,
-		final org.drip.function.definition.R1ToR1 digammaEstimator,
-		final org.drip.function.definition.R2ToR1 lowerIncompleteGammaEstimator)
-		throws java.lang.Exception
+		final R1ToR1 gammaEstimator,
+		final R1ToR1 digammaEstimator,
+		final R2ToR1 lowerIncompleteGammaEstimator)
+		throws Exception
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (
-				_degreesOfFreedom = degreesOfFreedom
-			) || 0. >= _degreesOfFreedom ||
+		if (!NumberUtil.IsValid (_degreesOfFreedom = degreesOfFreedom) || 0. >= _degreesOfFreedom ||
 			null == (_gammaEstimator = gammaEstimator) ||
 			null == (_digammaEstimator = digammaEstimator) ||
 			null == (_lowerIncompleteGammaEstimator = lowerIncompleteGammaEstimator))
 		{
-			throw new java.lang.Exception ("R1Central Constructor => Invalid Inputs");
+			throw new Exception ("R1Central Constructor => Invalid Inputs");
 		}
 
 		double halfDOF = 0.5 * _degreesOfFreedom;
 
-		_normalizer = (_cdfScaler = 1. / _gammaEstimator.evaluate (halfDOF)) * java.lang.Math.pow (
-			2.,
-			-1. * halfDOF
-		);
+		_normalizer = (_cdfScaler = 1. / _gammaEstimator.evaluate (halfDOF)) * Math.pow (2., -1. * halfDOF);
 	}
 
 	/**
@@ -224,7 +272,7 @@ public class R1Central extends org.drip.measure.continuous.R1Distribution
 	 * @return Gamma Estimator
 	 */
 
-	public org.drip.function.definition.R1ToR1 gammaEstimator()
+	public R1ToR1 gammaEstimator()
 	{
 		return _gammaEstimator;
 	}
@@ -235,7 +283,7 @@ public class R1Central extends org.drip.measure.continuous.R1Distribution
 	 * @return Digamma Estimator
 	 */
 
-	public org.drip.function.definition.R1ToR1 digammaEstimator()
+	public R1ToR1 digammaEstimator()
 	{
 		return _digammaEstimator;
 	}
@@ -246,58 +294,88 @@ public class R1Central extends org.drip.measure.continuous.R1Distribution
 	 * @return Lower Incomplete Gamma Estimator
 	 */
 
-	public org.drip.function.definition.R2ToR1 lowerIncompleteGammaEstimator()
+	public R2ToR1 lowerIncompleteGammaEstimator()
 	{
 		return _lowerIncompleteGammaEstimator;
 	}
 
+	/**
+	 * Lay out the Support of the PDF Range
+	 * 
+	 * @return Support of the PDF Range
+	 */
+
 	@Override public double[] support()
 	{
-		return new double[]
-		{
-			0.,
-			java.lang.Double.POSITIVE_INFINITY
-		};
+		return new double[] {0., Double.POSITIVE_INFINITY};
 	}
+
+	/**
+	 * Compute the Density under the Distribution at the given Variate
+	 * 
+	 * @param t Variate at which the Density needs to be computed
+	 * 
+	 * @return The Density
+	 * 
+	 * @throws Exception Thrown if the input is invalid
+	 */
 
 	@Override public double density (
 		final double t)
-		throws java.lang.Exception
+		throws Exception
 	{
-		if (!supported (t))
-		{
-			throw new java.lang.Exception ("R1Central::density => Variate not in Range");
+		if (!supported (t)) {
+			throw new Exception ("R1Central::density => Variate not in Range");
 		}
 
-		return _normalizer * java.lang.Math.pow (
-			t,
-			0.5 * _degreesOfFreedom - 1.
-		) * java.lang.Math.exp (-0.5 * t);
+		return _normalizer * Math.pow (t, 0.5 * _degreesOfFreedom - 1.) * Math.exp (-0.5 * t);
 	}
+
+	/**
+	 * Compute the cumulative under the distribution to the given value
+	 * 
+	 * @param t Variate to which the cumulative is to be computed
+	 * 
+	 * @return The cumulative
+	 * 
+	 * @throws Exception Thrown if the inputs are invalid
+	 */
 
 	@Override public double cumulative (
 		final double t)
-		throws java.lang.Exception
+		throws Exception
 	{
-		if (!supported (t))
-		{
-			throw new java.lang.Exception ("R1Central::cumulative => Invalid Inputs");
+		if (!supported (t)) {
+			throw new Exception ("R1Central::cumulative => Invalid Inputs");
 		}
 
-		return _cdfScaler * _lowerIncompleteGammaEstimator.evaluate (
-			0.5 * _degreesOfFreedom,
-			0.5 * t
-		);
+		return _cdfScaler * _lowerIncompleteGammaEstimator.evaluate (0.5 * _degreesOfFreedom, 0.5 * t);
 	}
 
+	/**
+	 * Retrieve the Mean of the Distribution
+	 * 
+	 * @return The Mean of the Distribution
+	 * 
+	 * @throws Exception Thrown if the Mean cannot be estimated
+	 */
+
 	@Override public double mean()
-		throws java.lang.Exception
+		throws Exception
 	{
 		return _degreesOfFreedom;
 	}
 
+	/**
+	 * Retrieve the Median of the Distribution
+	 * 
+	 * @return The Median of the Distribution
+	 * 
+	 * @throws Exception Thrown if the Median cannot be estimated
+	 */
+
 	@Override public double median()
-		throws java.lang.Exception
+		throws Exception
 	{
 		double oneMinus_twoOver_9dof__ = 1. - (2. / (9. * _degreesOfFreedom));
 
@@ -305,96 +383,140 @@ public class R1Central extends org.drip.measure.continuous.R1Distribution
 			oneMinus_twoOver_9dof__;
 	}
 
+	/**
+	 * Retrieve the Mode of the Distribution
+	 * 
+	 * @return The Mode of the Distribution
+	 * 
+	 * @throws Exception Thrown if the Mode cannot be estimated
+	 */
+
 	@Override public double mode()
-		throws java.lang.Exception
+		throws Exception
 	{
-		return java.lang.Math.max (
-			_degreesOfFreedom - 2.,
-			0.
-		);
+		return Math.max (_degreesOfFreedom - 2., 0.);
 	}
 
+	/**
+	 * Retrieve the Variance of the Distribution
+	 * 
+	 * @return The Variance of the Distribution
+	 * 
+	 * @throws Exception Thrown if the Variance cannot be estimated
+	 */
+
 	@Override public double variance()
-		throws java.lang.Exception
+		throws Exception
 	{
 		return 2. * _degreesOfFreedom;
 	}
 
+	/**
+	 * Retrieve the Skewness of the Distribution
+	 * 
+	 * @return The Skewness of the Distribution
+	 * 
+	 * @throws Exception Thrown if the Skewness cannot be estimated
+	 */
+
 	@Override public double skewness()
-		throws java.lang.Exception
+		throws Exception
 	{
-		return java.lang.Math.sqrt (8. / _degreesOfFreedom);
+		return Math.sqrt (8. / _degreesOfFreedom);
 	}
 
+	/**
+	 * Retrieve the Excess Kurtosis of the Distribution
+	 * 
+	 * @return The Excess Kurtosis of the Distribution
+	 * 
+	 * @throws Exception Thrown if the Skewness cannot be estimated
+	 */
+
 	@Override public double excessKurtosis()
-		throws java.lang.Exception
+		throws Exception
 	{
 		return 12. / _degreesOfFreedom;
 	}
 
+	/**
+	 * Retrieve the Differential Entropy of the Distribution
+	 * 
+	 * @return The Differential Entropy of the Distribution
+	 * 
+	 * @throws Exception Thrown if the Entropy cannot be estimated
+	 */
+
 	@Override public double differentialEntropy()
-		throws java.lang.Exception
+		throws Exception
 	{
 		double halfDOF = 0.5 * _degreesOfFreedom;
 
-		return halfDOF + java.lang.Math.log (2. * _gammaEstimator.evaluate (halfDOF)) +
+		return halfDOF + Math.log (2. * _gammaEstimator.evaluate (halfDOF)) +
 			(1. - halfDOF) * _digammaEstimator.evaluate (halfDOF);
 	}
 
-	@Override public org.drip.function.definition.R1ToR1 momentGeneratingFunction()
+	/**
+	 * Construct the Moment Generating Function
+	 * 
+	 * @return The Moment Generating Function
+	 */
+
+	@Override public R1ToR1 momentGeneratingFunction()
 	{
-		return new org.drip.function.definition.R1ToR1 (null)
-		{
+		return new R1ToR1 (null) {
 			@Override public double evaluate (
 				final double t)
-				throws java.lang.Exception
+				throws Exception
 			{
-				if (!org.drip.numerical.common.NumberUtil.IsValid (t) || t > 0.5)
-				{
-					throw new java.lang.Exception
-						("R1Central::momentGeneratingFunction::evaluate => Invalid Input");
+				if (!NumberUtil.IsValid (t) || t > 0.5) {
+					throw new Exception ("R1Central::momentGeneratingFunction::evaluate => Invalid Input");
 				}
 
-				return java.lang.Math.pow (
-					1. - 2. * t,
-					-0.5 * _degreesOfFreedom
-				);
+				return Math.pow (1. - 2. * t, -0.5 * _degreesOfFreedom);
 			}
 		};
 	}
 
-	@Override public org.drip.function.definition.R1ToR1 probabilityGeneratingFunction()
+	/**
+	 * Construct the Probability Generating Function
+	 * 
+	 * @return The Probability Generating Function
+	 */
+
+	@Override public R1ToR1 probabilityGeneratingFunction()
 	{
-		return new org.drip.function.definition.R1ToR1 (null)
-		{
+		return new R1ToR1 (null) {
 			@Override public double evaluate (
 				final double t)
-				throws java.lang.Exception
+				throws Exception
 			{
-				if (!org.drip.numerical.common.NumberUtil.IsValid (t) ||
-					t <= 0. || t > java.lang.Math.sqrt (java.lang.Math.E))
-				{
-					throw new java.lang.Exception
-						("R1Central::probabilityGeneratingFunction::evaluate => Invalid Input");
+				if (!NumberUtil.IsValid (t) || t <= 0. || t > Math.sqrt (Math.E)) {
+					throw new Exception (
+						"R1Central::probabilityGeneratingFunction::evaluate => Invalid Input"
+					);
 				}
 
-				return java.lang.Math.pow (
-					1. - 2. * java.lang.Math.log (t),
-					-0.5 * _degreesOfFreedom
-				);
+				return Math.pow (1. - 2. * Math.log (t), -0.5 * _degreesOfFreedom);
 			}
 		};
 	}
+
+	/**
+	 * Generate a Random Variable corresponding to the Distribution
+	 * 
+	 * @return Random Variable corresponding to the Distribution
+	 * 
+	 * @throws Exception Thrown if the Random Instance cannot be estimated
+	 */
 
 	@Override public double random()
-		throws java.lang.Exception
+		throws Exception
 	{
 		double sumOfStandardNormalSquares = 0.;
 
-		for (int drawIndex = 0; drawIndex < _degreesOfFreedom; ++drawIndex)
-		{
-			double randomStandardNormal = org.drip.measure.gaussian.NormalQuadrature.InverseCDF
-				(java.lang.Math.random());
+		for (int drawIndex = 0; drawIndex < _degreesOfFreedom; ++drawIndex) {
+			double randomStandardNormal = NormalQuadrature.InverseCDF (Math.random());
 
 			sumOfStandardNormalSquares = sumOfStandardNormalSquares +
 				randomStandardNormal * randomStandardNormal;
@@ -432,27 +554,25 @@ public class R1Central extends org.drip.measure.continuous.R1Distribution
 	 * 
 	 * @return The Chernoff Upper Bound
 	 * 
-	 * @throws java.lang.Exception Thrown if the Chernoff Upper Bound cannot be calculated
+	 * @throws Exception Thrown if the Chernoff Upper Bound cannot be calculated
 	 */
 
 	public double chernoffBound (
 		final double x)
-		throws java.lang.Exception
+		throws Exception
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (x) || 0. >= x)
-		{
-			throw new java.lang.Exception ("R1Central::chernoffBound => Invalid Inputs");
+		if (!NumberUtil.IsValid (x) || 0. >= x) {
+			throw new Exception ("R1Central::chernoffBound => Invalid Inputs");
 		}
 
 		double z = x / _degreesOfFreedom;
 
-		if (1. == z)
-		{
-			throw new java.lang.Exception ("R1Central::chernoffBound => Invalid Inputs");
+		if (1. == z) {
+			throw new Exception ("R1Central::chernoffBound => Invalid Inputs");
 		}
 
-		double _zExponent_OneMinusZ__powerHalfDegreesOfFreedom = java.lang.Math.pow (
-			z * java.lang.Math.exp (1. - z),
+		double _zExponent_OneMinusZ__powerHalfDegreesOfFreedom = Math.pow (
+			z * Math.exp (1. - z),
 			0.5 * _degreesOfFreedom
 		);
 
@@ -467,24 +587,21 @@ public class R1Central extends org.drip.measure.continuous.R1Distribution
 	 * 
 	 * @return The Non-central Moment about Zero
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public double nonCentralMoment (
 		final int m)
-		throws java.lang.Exception
+		throws Exception
 	{
-		if (0 > m)
-		{
-			throw new java.lang.Exception ("R1Central::nonCentralMoment => Invalid Inputs");
+		if (0 > m) {
+			throw new Exception ("R1Central::nonCentralMoment => Invalid Inputs");
 		}
 
 		double halfDOF = 0.5 * _degreesOfFreedom;
 
-		return java.lang.Math.pow (
-			2.,
-			m
-		) * _gammaEstimator.evaluate (m + halfDOF) / _gammaEstimator.evaluate (halfDOF);
+		return Math.pow (2., m) *
+			_gammaEstimator.evaluate (m + halfDOF) / _gammaEstimator.evaluate (halfDOF);
 	}
 
 	/**
@@ -494,22 +611,18 @@ public class R1Central extends org.drip.measure.continuous.R1Distribution
 	 * 
 	 * @return The Cumulant
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public double cumulant (
 		final int n)
-		throws java.lang.Exception
+		throws Exception
 	{
-		if (0 > n)
-		{
-			throw new java.lang.Exception ("R1Central::cumulant => Invalid Inputs");
+		if (0 > n) {
+			throw new Exception ("R1Central::cumulant => Invalid Inputs");
 		}
 
-		return _degreesOfFreedom * java.lang.Math.pow (
-			2.,
-			n - 1.
-		) * _gammaEstimator.evaluate (n);
+		return _degreesOfFreedom * Math.pow (2., n - 1.) * _gammaEstimator.evaluate (n);
 	}
 
 	/**
@@ -518,17 +631,11 @@ public class R1Central extends org.drip.measure.continuous.R1Distribution
 	 * @return The Central Limit Theorem Equivalent Normal Distribution Proxy
 	 */
 
-	public org.drip.measure.gaussian.R1UnivariateNormal cltProxy()
+	public R1UnivariateNormal cltProxy()
 	{
-		try
-		{
-			return new org.drip.measure.gaussian.R1UnivariateNormal (
-				_degreesOfFreedom,
-				2. * _degreesOfFreedom
-			);
-		}
-		catch (java.lang.Exception e)
-		{
+		try {
+			return new R1UnivariateNormal (_degreesOfFreedom, 2. * _degreesOfFreedom);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -554,23 +661,17 @@ public class R1Central extends org.drip.measure.continuous.R1Distribution
 	 * @return The Gamma Distribution
 	 */
 
-	public org.drip.measure.gamma.R1ShapeScaleDistribution gammaDistribution (
+	public R1ShapeScaleDistribution gammaDistribution (
 		final double scale)
 	{
-		try
-		{
-			return new org.drip.measure.gamma.R1ShapeScaleDistribution (
-				new org.drip.measure.gamma.ShapeScaleParameters (
-					0.5 * _degreesOfFreedom,
-					2. * scale
-				),
+		try {
+			return new R1ShapeScaleDistribution (
+				new ShapeScaleParameters (0.5 * _degreesOfFreedom, 2. * scale),
 				_gammaEstimator,
 				_digammaEstimator,
 				_lowerIncompleteGammaEstimator
 			);
-		}
-		catch (java.lang.Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -582,13 +683,13 @@ public class R1Central extends org.drip.measure.continuous.R1Distribution
 	 * 
 	 * @return Logarithm Proxy Based Random Number - Proxy to Univariate Normal Distribution
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public double randomLogProxy()
-		throws java.lang.Exception
+		throws Exception
 	{
-		return java.lang.Math.log (_degreesOfFreedom);
+		return Math.log (_degreesOfFreedom);
 	}
 
 	/**
@@ -596,13 +697,13 @@ public class R1Central extends org.drip.measure.continuous.R1Distribution
 	 * 
 	 * @return CLT Proxy Based Random Number - Proxy to Univariate Normal Distribution
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public double randomCLTProxy()
-		throws java.lang.Exception
+		throws Exception
 	{
-		return (random() - _degreesOfFreedom) / java.lang.Math.sqrt (2. * _degreesOfFreedom);
+		return (random() - _degreesOfFreedom) / Math.sqrt (2. * _degreesOfFreedom);
 	}
 
 	/**
@@ -610,13 +711,13 @@ public class R1Central extends org.drip.measure.continuous.R1Distribution
 	 * 
 	 * @return Fisher Proxy Random Number - Proxy to Univariate Normal Distribution
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public double randomFisherProxy()
-		throws java.lang.Exception
+		throws Exception
 	{
-		return java.lang.Math.sqrt (2. * random());
+		return Math.sqrt (2. * random());
 	}
 
 	/**
@@ -624,16 +725,13 @@ public class R1Central extends org.drip.measure.continuous.R1Distribution
 	 * 
 	 * @return Wilson-Hilferty Proxy Random Number - Proxy to Univariate Normal Distribution
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
-	public double randomWilsonHilferty()
-		throws java.lang.Exception
+	public double randomWilsonHilfertyProxy()
+		throws Exception
 	{
-		return java.lang.Math.pow (
-			random() / _degreesOfFreedom,
-			1. / 3.
-		);
+		return Math.pow (random() / _degreesOfFreedom, 1. / 3.);
 	}
 
 	/**
@@ -643,16 +741,15 @@ public class R1Central extends org.drip.measure.continuous.R1Distribution
 	 * 
 	 * @return Gamma Distributed Random Number
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public double randomGamma (
 		final double c)
-		throws java.lang.Exception
+		throws Exception
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (c) || 0. >= c)
-		{
-			throw new java.lang.Exception ("R1Central::randomGamma => Invalid Inputs");
+		if (!NumberUtil.IsValid (c) || 0. >= c) {
+			throw new Exception ("R1Central::randomGamma => Invalid Inputs");
 		}
 
 		return random() * c;
@@ -663,13 +760,13 @@ public class R1Central extends org.drip.measure.continuous.R1Distribution
 	 * 
 	 * @return Chi Distributed Random Number
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public double randomChi()
-		throws java.lang.Exception
+		throws Exception
 	{
-		return java.lang.Math.sqrt (random());
+		return Math.sqrt (random());
 	}
 
 	/**
@@ -677,15 +774,14 @@ public class R1Central extends org.drip.measure.continuous.R1Distribution
 	 * 
 	 * @return Exponential (0.5) Distributed Random Number
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public double randomExponentialHalf()
-		throws java.lang.Exception
+		throws Exception
 	{
-		if (2. != _degreesOfFreedom)
-		{
-			throw new java.lang.Exception ("R1Central::randomExponentialHalf => Invalid Inputs");
+		if (2. != _degreesOfFreedom) {
+			throw new Exception ("R1Central::randomExponentialHalf => Invalid Inputs");
 		}
 
 		return random();
@@ -696,15 +792,14 @@ public class R1Central extends org.drip.measure.continuous.R1Distribution
 	 * 
 	 * @return Rayleigh (1) Distributed Random Number
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public double randomRayleigh1()
-		throws java.lang.Exception
+		throws Exception
 	{
-		if (2. != _degreesOfFreedom)
-		{
-			throw new java.lang.Exception ("R1Central::randomRayleigh1 => Invalid Inputs");
+		if (2. != _degreesOfFreedom) {
+			throw new Exception ("R1Central::randomRayleigh1 => Invalid Inputs");
 		}
 
 		return random();
@@ -715,15 +810,14 @@ public class R1Central extends org.drip.measure.continuous.R1Distribution
 	 * 
 	 * @return Maxwell (1) Distributed Random Number
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public double randomMaxwell1()
-		throws java.lang.Exception
+		throws Exception
 	{
-		if (3. != _degreesOfFreedom)
-		{
-			throw new java.lang.Exception ("R1Central::randomMaxwell1 => Invalid Inputs");
+		if (3. != _degreesOfFreedom) {
+			throw new Exception ("R1Central::randomMaxwell1 => Invalid Inputs");
 		}
 
 		return random();

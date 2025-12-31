@@ -153,7 +153,7 @@ public class RandomMatrixGenerator
 		final double maximumElement,
 		final boolean isEntryInteger)
 	{
-		double[][] r2Array = RdRandomSequence.TwoD (elementCount, maximumElement, isEntryInteger);
+		double[][] r2Array = RdRandomSequenceGenerator.DoubleMatrix (elementCount, maximumElement, isEntryInteger);
 
     	for (int i = 0; i < r2Array.length; ++i) {
         	for (int j = i + 1; j < r2Array.length; ++j) {
@@ -179,7 +179,7 @@ public class RandomMatrixGenerator
 		final double maximumElement,
 		final boolean isEntryInteger)
 	{
-		double[][] r2Array = RdRandomSequence.TwoD (elementCount, maximumElement, isEntryInteger);
+		double[][] r2Array = RdRandomSequenceGenerator.DoubleMatrix (elementCount, maximumElement, isEntryInteger);
 
     	for (int i = 0; i < r2Array.length; ++i) {
         	for (int j = 0; j < i; ++j) {
@@ -205,7 +205,7 @@ public class RandomMatrixGenerator
 		final double maximumElement,
 		final boolean isEntryInteger)
 	{
-		double[][] r2Array = RdRandomSequence.TwoD (elementCount, maximumElement, isEntryInteger);
+		double[][] r2Array = RdRandomSequenceGenerator.DoubleMatrix (elementCount, maximumElement, isEntryInteger);
 
     	for (int i = 0; i < r2Array.length; ++i) {
         	for (int j = 0; j < r2Array.length; ++j) {
@@ -233,7 +233,7 @@ public class RandomMatrixGenerator
 		final double maximumElement,
 		final boolean isEntryInteger)
 	{
-		double[][] r2Array = RdRandomSequence.TwoD (elementCount, maximumElement, isEntryInteger);
+		double[][] r2Array = RdRandomSequenceGenerator.DoubleMatrix (elementCount, maximumElement, isEntryInteger);
 
     	for (int i = 0; i < r2Array.length; ++i) {
         	for (int j = i + 1; j < r2Array.length; ++j) {
@@ -263,7 +263,7 @@ public class RandomMatrixGenerator
 		final double maximumElement,
 		final boolean isEntryInteger)
 	{
-		double[][] r2Array = RdRandomSequence.TwoD (elementCount, maximumElement, isEntryInteger);
+		double[][] r2Array = RdRandomSequenceGenerator.DoubleMatrix (elementCount, maximumElement, isEntryInteger);
 
     	for (int i = 0; i < r2Array.length; ++i) {
         	for (int j = 0; j < i; ++j) {
@@ -293,7 +293,7 @@ public class RandomMatrixGenerator
 		final double maximumElement,
 		final boolean isEntryInteger)
 	{
-		double[][] r2Array = RdRandomSequence.TwoD (elementCount, maximumElement, isEntryInteger);
+		double[][] r2Array = RdRandomSequenceGenerator.DoubleMatrix (elementCount, maximumElement, isEntryInteger);
 
     	for (int i = 0; i < r2Array.length; ++i) {
         	for (int j = i + 1; j < r2Array.length; ++j) {
@@ -323,7 +323,7 @@ public class RandomMatrixGenerator
 		final double maximumElement,
 		final boolean isEntryInteger)
 	{
-		double[][] r2Array = RdRandomSequence.TwoD (elementCount, maximumElement, isEntryInteger);
+		double[][] r2Array = RdRandomSequenceGenerator.DoubleMatrix (elementCount, maximumElement, isEntryInteger);
 
     	for (int i = 0; i < r2Array.length; ++i) {
         	for (int j = 0; j < i; ++j) {
@@ -353,7 +353,7 @@ public class RandomMatrixGenerator
 		final double maximumElement,
 		final boolean isEntryInteger)
 	{
-		double[][] r2Array = RdRandomSequence.TwoD (elementCount, maximumElement, isEntryInteger);
+		double[][] r2Array = RdRandomSequenceGenerator.DoubleMatrix (elementCount, maximumElement, isEntryInteger);
 
     	for (int i = 0; i < r2Array.length; ++i) {
         	for (int j = 0; j < r2Array.length; ++j) {
@@ -397,7 +397,7 @@ public class RandomMatrixGenerator
 		final double maximumElement,
 		final boolean isEntryInteger)
 	{
-		double[][] r2Array = RdRandomSequence.TwoD (elementCount, maximumElement, isEntryInteger);
+		double[][] r2Array = RdRandomSequenceGenerator.DoubleMatrix (elementCount, maximumElement, isEntryInteger);
 
     	for (int i = 0; i < r2Array.length; ++i) {
         	for (int j = 0; j < r2Array.length; ++j) {
@@ -444,8 +444,8 @@ public class RandomMatrixGenerator
 		try {
 			return R1SquareEigenized.Standard (
 				new EigenOutput (
-					RdRandomSequence.TwoD (elementCount, maximumElement, isEntryInteger),
-					RdRandomSequence.OneD (elementCount, maximumElement, isEntryInteger)
+					RdRandomSequenceGenerator.DoubleMatrix (elementCount, maximumElement, isEntryInteger),
+					RdRandomSequenceGenerator.DoubleArray (elementCount, maximumElement, isEntryInteger)
 				)
 			);
 		} catch (Exception e) {

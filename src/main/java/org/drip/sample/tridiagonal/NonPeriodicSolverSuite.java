@@ -3,7 +3,7 @@ package org.drip.sample.tridiagonal;
 
 import java.util.Date;
 
-import org.drip.measure.crng.RdRandomSequence;
+import org.drip.measure.crng.RdRandomSequenceGenerator;
 import org.drip.numerical.common.NumberUtil;
 import org.drip.numerical.linearalgebra.R1MatrixUtil;
 import org.drip.numerical.linearsolver.NonPeriodicTridiagonalScheme;
@@ -129,9 +129,9 @@ public class NonPeriodicSolverSuite
 		final double maximumElement)
 		throws Exception
 	{
-		double[] xArray = RdRandomSequence.OneD (elementCount, maximumElement, true);
+		double[] xArray = RdRandomSequenceGenerator.DoubleArray (elementCount, maximumElement, true);
 
-		double[][] tridiagonalMatrix = RdRandomSequence.Tridiagonal (elementCount, maximumElement, true);
+		double[][] tridiagonalMatrix = RdRandomSequenceGenerator.TridiagonalMatrix (elementCount, maximumElement, true);
 
 		System.out.println ("\t|-----------------------------------------------------------------||");
 

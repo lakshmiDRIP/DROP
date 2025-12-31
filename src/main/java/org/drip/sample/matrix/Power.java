@@ -3,7 +3,7 @@ package org.drip.sample.matrix;
 
 import java.util.Date;
 
-import org.drip.measure.crng.RdRandomSequence;
+import org.drip.measure.crng.RdRandomSequenceGenerator;
 import org.drip.numerical.common.NumberUtil;
 import org.drip.numerical.linearalgebra.R1MatrixUtil;
 import org.drip.service.env.EnvManager;
@@ -137,7 +137,7 @@ public class Power
 		int k = 5;
 		int elementCount = 4;
 
-		double[][] a = RdRandomSequence.TwoD (elementCount, 1., false);
+		double[][] a = RdRandomSequenceGenerator.DoubleMatrix (elementCount, 1., false);
 
 		double[][] aPower = a;
 

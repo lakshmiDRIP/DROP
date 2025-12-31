@@ -8,6 +8,14 @@ import org.drip.numerical.linearalgebra.R1MatrixUtil;
  */
 
 /*!
+ * Copyright (C) 2030 Lakshmi Krishnamurthy
+ * Copyright (C) 2029 Lakshmi Krishnamurthy
+ * Copyright (C) 2028 Lakshmi Krishnamurthy
+ * Copyright (C) 2027 Lakshmi Krishnamurthy
+ * Copyright (C) 2026 Lakshmi Krishnamurthy
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -81,20 +89,34 @@ import org.drip.numerical.linearalgebra.R1MatrixUtil;
  */
 
 /**
- * <i>RdRandomSequence</i> generates 1D and 2D random arrays.
+ * <i>RdRandomSequenceGenerator</i> generates 1D and 2D random arrays. It provides the following
+ * 	Functionality:
  *
- *	<br><br>
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md">Numerical Analysis Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/README.md">R<sup>d</sup> Continuous/Discrete Probability Measures</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/crng/README.md">Continuous Random Number Stream Generator</a></li>
+ * 		<li>Generate a Random Digit</li>
+ * 		<li>Generate a Random Upper-case Alphabet</li>
+ * 		<li>Generate a Random Upper Alpha-numeric Character</li>
+ * 		<li>Generate a Random CUSIP</li>
+ * 		<li>Generate a Random Number within the Maximum Value</li>
+ * 		<li>Construct a 1D Array of Random Elements up to the Maximum Value</li>
+ * 		<li>Construct a 2D Matrix of Random Elements up to the Maximum Value</li>
+ * 		<li>Construct a Tridiagonal Matrix of Random Elements up to the Maximum Value</li>
+ * 		<li>Construct a Periodic Tridiagonal Matrix of Random Elements up to the Maximum Value</li>
  *  </ul>
+ *
+ *	<br>
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md">Numerical Analysis Library</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/README.md">R<sup>d</sup> Continuous/Discrete Probability Measures</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/crng/README.md">Continuous Random Number Stream Generator</a></td></tr>
+ *  </table>
+ *	<br>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class RdRandomSequence
+public class RdRandomSequenceGenerator
 {
 
 	/**
@@ -103,7 +125,7 @@ public class RdRandomSequence
 	 * @return Random Digit
 	 */
 
-	public static final int RandomDigit()
+	public static final int Digit()
 	{
 		return (int) (10. * Math.random());
 	}
@@ -114,7 +136,7 @@ public class RdRandomSequence
 	 * @return Random Upper-case Alphabet
 	 */
 
-	public static final char RandomUpperAlpha()
+	public static final char UpperCaseAlphabet()
 	{
 		return (char) (26. * Math.random() + (int) 'A');
 	}
@@ -125,7 +147,7 @@ public class RdRandomSequence
 	 * @return Random Upper Alpha-numeric Character
 	 */
 
-	public static final char RandomUpperAlphaNumeric()
+	public static final char UpperCaseAlphabetOrNumber()
 	{
 		int ascii = (int) (36. * Math.random());
 
@@ -138,12 +160,12 @@ public class RdRandomSequence
 	 * @return The CUSIP
 	 */
 
-	public static final String RandomCUSIP()
+	public static final String CUSIP()
 	{
-		String cusip = "XS0" + RdRandomSequence.RandomDigit();
+		String cusip = "XS0" + RdRandomSequenceGenerator.Digit();
 
 		for (int i = 0; i < 6; ++i) {
-			cusip += RdRandomSequence.RandomUpperAlphaNumeric();
+			cusip += RdRandomSequenceGenerator.UpperCaseAlphabetOrNumber();
 		}
 
 		return cusip;
@@ -160,13 +182,13 @@ public class RdRandomSequence
 	 * @throws Exception Thrown if the Maximum Element is Invalid
 	 */
 
-	public static final double Single (
+	public static final double Double (
 		final double maximumElement,
 		final boolean isEntryInteger)
 		throws Exception
 	{
 		if (0. >= maximumElement) {
-			throw new Exception ("RdRandomSequence::Single => Invalid Maximum Element");
+			throw new Exception ("RdRandomSequenceGenerator::Double => Invalid Maximum Element");
 		}
 
 		double random = Math.random() * maximumElement;
@@ -184,7 +206,7 @@ public class RdRandomSequence
 	 * @return 1D Array of Random Elements up to the Maximum Value
 	 */
 
-	public static final double[] OneD (
+	public static final double[] DoubleArray (
 		final int elementCount,
 		final double maximumElement,
 		final boolean isEntryInteger)
@@ -195,11 +217,11 @@ public class RdRandomSequence
 
 		double[] oneDArray = new double[elementCount];
 
-		for (int i = 0; i < elementCount; ++i) {
-			oneDArray[i] = Math.random() * maximumElement;
+		for (int elementIndex = 0; elementIndex < elementCount; ++elementIndex) {
+			oneDArray[elementIndex] = Math.random() * maximumElement;
 
 			if (isEntryInteger) {
-				oneDArray[i] = (int) (oneDArray[i] + 0.5);
+				oneDArray[elementIndex] = (int) (oneDArray[elementIndex] + 0.5);
 			}
 		}
 
@@ -216,15 +238,18 @@ public class RdRandomSequence
 	 * @return 2D Matrix of Random Elements up to the Maximum Value
 	 */
 
-	public static final double[][] TwoD (
+	public static final double[][] DoubleMatrix (
 		final int elementCount,
 		final double maximumElement,
 		final boolean isEntryInteger)
 	{
 		double[][] twoDArray = new double[elementCount][elementCount];
 
-		for (int i = 0; i < elementCount; ++i) {
-			if (null == (twoDArray[i] = OneD (elementCount, maximumElement, isEntryInteger))) {
+		for (int elementIndex = 0; elementIndex < elementCount; ++elementIndex) {
+			if (null == (
+				twoDArray[elementIndex] = DoubleArray (elementCount, maximumElement, isEntryInteger)
+			))
+			{
 				return null;
 			}
 		}
@@ -242,21 +267,21 @@ public class RdRandomSequence
 	 * @return Tridiagonal Matrix of Random Elements up to the Maximum Value
 	 */
 
-	public static final double[][] Tridiagonal (
+	public static final double[][] TridiagonalMatrix (
 		final int elementCount,
 		final double maximumElement,
 		final boolean isEntryInteger)
 	{
-		double[][] tridiagonalMatrix = TwoD (elementCount, maximumElement, isEntryInteger);
+		double[][] tridiagonalMatrix = DoubleMatrix (elementCount, maximumElement, isEntryInteger);
 
 		if (null == tridiagonalMatrix) {
 			return null;
 		}
 
-    	for (int i = 0; i < tridiagonalMatrix.length; ++i) {
-        	for (int j = 0; j < tridiagonalMatrix.length; ++j) {
-        		if (j <= i - 2 || j >= i + 2) {
-        			tridiagonalMatrix[i][j] = 0.;
+    	for (int elementIndexI = 0; elementIndexI < tridiagonalMatrix.length; ++elementIndexI) {
+        	for (int elementIndexJ = 0; elementIndexJ < tridiagonalMatrix.length; ++elementIndexJ) {
+        		if (elementIndexJ <= elementIndexI - 2 || elementIndexJ >= elementIndexI + 2) {
+        			tridiagonalMatrix[elementIndexI][elementIndexJ] = 0.;
         		}
         	}
     	}
@@ -274,22 +299,24 @@ public class RdRandomSequence
 	 * @return Periodic Tridiagonal Matrix of Random Elements up to the Maximum Value
 	 */
 
-	public static final double[][] PeriodicTridiagonal (
+	public static final double[][] PeriodicTridiagonalMatix (
 		final int elementCount,
 		final double maximumElement,
 		final boolean isEntryInteger)
 	{
-		double[][] tridiagonalMatrix = TwoD (elementCount, maximumElement, isEntryInteger);
+		double[][] tridiagonalMatrix = DoubleMatrix (elementCount, maximumElement, isEntryInteger);
 
 		if (null == tridiagonalMatrix) {
 			return null;
 		}
 
-    	for (int i = 0; i < tridiagonalMatrix.length; ++i) {
-        	for (int j = 0; j < tridiagonalMatrix.length; ++j) {
-        		if (j <= i - 2 || j >= i + 2) {
-        			if (!R1MatrixUtil.TopRight (i, j, elementCount) && !R1MatrixUtil.BottomLeft (i, j, elementCount)) {
-	        			tridiagonalMatrix[i][j] = 0.;
+    	for (int elementIndexI = 0; elementIndexI < tridiagonalMatrix.length; ++elementIndexI) {
+        	for (int elementIndexJ = 0; elementIndexJ < tridiagonalMatrix.length; ++elementIndexJ) {
+        		if (elementIndexJ <= elementIndexI - 2 || elementIndexJ >= elementIndexI + 2) {
+        			if (!R1MatrixUtil.TopRight (elementIndexI, elementIndexJ, elementCount) &&
+    					!R1MatrixUtil.BottomLeft (elementIndexI, elementIndexJ, elementCount))
+        			{
+	        			tridiagonalMatrix[elementIndexI][elementIndexJ] = 0.;
         			}
         		}
         	}

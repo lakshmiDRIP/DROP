@@ -1,7 +1,7 @@
 
 package org.drip.sample.simplex;
 
-import org.drip.measure.crng.RdRandomSequence;
+import org.drip.measure.crng.RdRandomSequenceGenerator;
 import org.drip.numerical.common.NumberUtil;
 import org.drip.optimization.simplex.LinearExpression;
 import org.drip.optimization.simplex.ObjectiveFunction;
@@ -129,15 +129,15 @@ public class ThreeDimensionTwoConstraints
 		final String description)
 		throws Exception
 	{
-		double[] objectiveCoefficientArray = RdRandomSequence.OneD (3, 10., true);
+		double[] objectiveCoefficientArray = RdRandomSequenceGenerator.DoubleArray (3, 10., true);
 
-		double[] constraintCoefficient1 = RdRandomSequence.OneD (3, 10., true);
+		double[] constraintCoefficient1 = RdRandomSequenceGenerator.DoubleArray (3, 10., true);
 
-		double[] constraintCoefficient2 = RdRandomSequence.OneD (3, 10., true);
+		double[] constraintCoefficient2 = RdRandomSequenceGenerator.DoubleArray (3, 10., true);
 
-		double constraintRHS1 = RdRandomSequence.Single (100., true);
+		double constraintRHS1 = RdRandomSequenceGenerator.Double (100., true);
 
-		double constraintRHS2 = RdRandomSequence.Single (100., true);
+		double constraintRHS2 = RdRandomSequenceGenerator.Double (100., true);
 
 		for (int i = 0; i < objectiveCoefficientArray.length; ++i) {
 			objectiveCoefficientArray[i] = -1. * (objectiveCoefficientArray[i] + 1.);
