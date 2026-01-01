@@ -13,6 +13,13 @@ import org.drip.specialfunction.gamma.Definitions;
  */
 
 /*!
+ * Copyright (C) 2030 Lakshmi Krishnamurthy
+ * Copyright (C) 2029 Lakshmi Krishnamurthy
+ * Copyright (C) 2028 Lakshmi Krishnamurthy
+ * Copyright (C) 2027 Lakshmi Krishnamurthy
+ * Copyright (C) 2026 Lakshmi Krishnamurthy
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
  * Copyright (C) 2023 Lakshmi Krishnamurthy
  * 
  *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
@@ -108,13 +115,29 @@ import org.drip.specialfunction.gamma.Definitions;
  * 		</li>
  * 	</ul>
  *
- *	<br><br>
+ * 	It provides the following Functionality:
+ *
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md">Numerical Analysis Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/README.md">R<sup>d</sup> Continuous/Discrete Probability Measures</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/exponential/README.md">R<sup>1</sup> Exponential Distribution Implementation/Properties</a></li>
+ * 		<li><i>TwoIIDSum</i> Constructor</li>
+ * 		<li>Retrieve the Larger Exponential Distribution</li>
+ * 		<li>Retrieve the Smaller Exponential Distribution</li>
+ * 		<li>Lay out the Support of the PDF Range</li>
+ * 		<li>Compute the Density under the Distribution at the given Variate</li>
+ * 		<li>Retrieve the Mean of the Distribution</li>
+ * 		<li>Retrieve the Mode of the Distribution</li>
+ * 		<li>Retrieve the Variance of the Distribution</li>
+ * 		<li>Compute the cumulative under the distribution to the given value</li>
+ * 		<li>Retrieve the Differential Entropy of the Distribution</li>
  *  </ul>
+ *
+ *	<br>
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md">Numerical Analysis Library</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/README.md">R<sup>d</sup> Continuous/Discrete Probability Measures</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/continuous/README.md">R<sup>1</sup> and R<sup>d</sup> Continuous Random Measure</a></td></tr>
+ *  </table>
+ *	<br>
  *
  * @author Lakshmi Krishnamurthy
  */
@@ -128,7 +151,7 @@ public class TwoIIDSum
 	private R1RateDistribution _smallerR1RateDistribution = null;
 
 	/**
-	 * TwoIIDSum Constructor
+	 * <i>TwoIIDSum</i> Constructor
 	 * 
 	 * @param firstR1RateDistribution First R<sup>1</sup> Exponential Distribution
 	 * @param secondR1RateDistribution Second R<sup>1</sup> Exponential Distribution
@@ -141,24 +164,18 @@ public class TwoIIDSum
 		final R1RateDistribution secondR1RateDistribution)
 		throws Exception
 	{
-		if (null == firstR1RateDistribution || null == secondR1RateDistribution)
-		{
-			throw new Exception (
-				"TwoIIDSum Constructor: Invalid Inputs"
-			);
+		if (null == firstR1RateDistribution || null == secondR1RateDistribution) {
+			throw new Exception ("TwoIIDSum Constructor: Invalid Inputs");
 		}
 
 		double firstRate = firstR1RateDistribution.rate();
 
 		double secondRate = secondR1RateDistribution.rate();
 
-		if (firstRate > secondRate)
-		{
+		if (firstRate > secondRate) {
 			_largerR1RateDistribution = firstR1RateDistribution;
 			_smallerR1RateDistribution = secondR1RateDistribution;
-		}
-		else
-		{
+		} else {
 			_largerR1RateDistribution = secondR1RateDistribution;
 			_smallerR1RateDistribution = firstR1RateDistribution;
 		}
@@ -186,54 +203,59 @@ public class TwoIIDSum
 		return _smallerR1RateDistribution;
 	}
 
+	/**
+	 * Lay out the Support of the PDF Range
+	 * 
+	 * @return Support of the PDF Range
+	 */
+
 	@Override public double[] support()
 	{
-		return new double[]
-		{
-			0.,
-			Double.POSITIVE_INFINITY
-		};
+		return new double[] {0., Double.POSITIVE_INFINITY};
 	}
+
+	/**
+	 * Compute the Density under the Distribution at the given Variate
+	 * 
+	 * @param t Variate at which the Density needs to be computed
+	 * 
+	 * @return The Density
+	 * 
+	 * @throws Exception Thrown if the input is invalid
+	 */
 
 	@Override public double density (
 		final double t)
 		throws Exception
 	{
-		if (Double.isInfinite (
-			t
-		))
-		{
+		if (Double.isInfinite (t)) {
 			return 0.;
 		}
 
-		if (!supported (
-			t
-		))
-		{
-			throw new Exception (
-				"TwoIIDSum::density => Variate not in Range"
-			);
+		if (!supported (t)) {
+			throw new Exception ("TwoIIDSum::density => Variate not in Range");
 		}
 
 		double largerRate = _largerR1RateDistribution.rate();
 
 		double smallerRate = _smallerR1RateDistribution.rate();
 
-		if (largerRate == smallerRate)
-		{
-			return smallerRate * smallerRate * t * Math.exp (
-				-1. * smallerRate * t
-			);
+		if (largerRate == smallerRate) {
+			return smallerRate * smallerRate * t * Math.exp (-1. * smallerRate * t);
 		}
 
 		return smallerRate * largerRate * (
-			Math.exp (
-				-1. * smallerRate * t
-			) - Math.exp (
-				-1. * largerRate * t
-			)
+			Math.exp (-1. * smallerRate * t) - Math.exp (-1. * largerRate * t)
 		) / (largerRate - smallerRate);
 	}
+
+	/**
+	 * Retrieve the Mean of the Distribution
+	 * 
+	 * @return The Mean of the Distribution
+	 * 
+	 * @throws Exception Thrown if the Mean cannot be estimated
+	 */
 
 	@Override public double mean()
 		throws Exception
@@ -242,21 +264,24 @@ public class TwoIIDSum
 			0.,
 			QUADRATURE_POINT_COUNT
 		).integrate (
-			new R1ToR1 (
-				null
-			)
-			{
+			new R1ToR1 (null) {
 				@Override public double evaluate (
 					final double z)
 					throws Exception
 				{
-					return z * density (
-						z
-					);
+					return z * density (z);
 				}
 			}
 		);
 	}
+
+	/**
+	 * Retrieve the Mode of the Distribution
+	 * 
+	 * @return The Mode of the Distribution
+	 * 
+	 * @throws Exception Thrown if the Mode cannot be estimated
+	 */
 
 	@Override public double mode()
 		throws Exception
@@ -266,13 +291,17 @@ public class TwoIIDSum
 		double smallerRate = _smallerR1RateDistribution.rate();
 
 		return largerRate == smallerRate ? 1. / largerRate : (
-			Math.log (
-				largerRate
-			) - Math.log (
-				smallerRate
-			)
+			Math.log (largerRate) - Math.log (smallerRate)
 		) / (largerRate - smallerRate);
 	}
+
+	/**
+	 * Retrieve the Variance of the Distribution
+	 * 
+	 * @return The Variance of the Distribution
+	 * 
+	 * @throws Exception Thrown if the Variance cannot be estimated
+	 */
 
 	@Override public double variance()
 		throws Exception
@@ -283,53 +312,56 @@ public class TwoIIDSum
 			0.,
 			QUADRATURE_POINT_COUNT
 		).integrate (
-			new R1ToR1 (
-				null
-			)
-			{
+			new R1ToR1 (null) {
 				@Override public double evaluate (
 					final double z)
 					throws Exception
 				{
-					return (z - mean) * (z - mean) * density (
-						z
-					);
+					return (z - mean) * (z - mean) * density (z);
 				}
 			}
 		);
 	}
 
+	/**
+	 * Compute the cumulative under the distribution to the given value
+	 * 
+	 * @param upper Variate to which the cumulative is to be computed
+	 * 
+	 * @return The cumulative
+	 * 
+	 * @throws Exception Thrown if the inputs are invalid
+	 */
+
 	@Override public double cumulative (
 		final double upper)
 		throws Exception
 	{
-		if (Double.isNaN (
-			upper
-		))
-		{
-			throw new Exception (
-				"TwoIIDSum::cumulative => Invalid Upper Variate"
-			);
+		if (Double.isNaN (upper)) {
+			throw new Exception ("TwoIIDSum::cumulative => Invalid Upper Variate");
 		}
 
 		return R1ToR1Integrator.Boole (
-			new R1ToR1 (
-				null
-			)
-			{
+			new R1ToR1 (null) {
 				@Override public double evaluate (
 					final double z)
 					throws Exception
 				{
-					return density (
-						z
-					);
+					return density (z);
 				}
 			},
 			0.,
 			upper
 		);
 	}
+
+	/**
+	 * Retrieve the Differential Entropy of the Distribution
+	 * 
+	 * @return The Differential Entropy of the Distribution
+	 * 
+	 * @throws Exception Thrown if the Entropy cannot be estimated
+	 */
 
 	@Override public double differentialEntropy()
 		throws Exception
@@ -340,10 +372,6 @@ public class TwoIIDSum
 
 		return largerRate == smallerRate ? Double.NaN : 1. + Definitions.EULER_MASCHERONI + Math.log (
 			(largerRate - smallerRate) / (largerRate * smallerRate)
-		) + new BinetFirstIntegral (
-			null
-		).evaluate (
-			largerRate / (largerRate - smallerRate)
-		);
+		) + new BinetFirstIntegral (null).evaluate (largerRate / (largerRate - smallerRate));
 	}
 }

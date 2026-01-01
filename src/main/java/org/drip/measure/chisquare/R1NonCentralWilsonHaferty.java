@@ -1,11 +1,21 @@
 
 package org.drip.measure.chisquare;
 
+import org.drip.measure.gaussian.R1UnivariateNormal;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2030 Lakshmi Krishnamurthy
+ * Copyright (C) 2029 Lakshmi Krishnamurthy
+ * Copyright (C) 2028 Lakshmi Krishnamurthy
+ * Copyright (C) 2027 Lakshmi Krishnamurthy
+ * Copyright (C) 2026 Lakshmi Krishnamurthy
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -103,34 +113,38 @@ package org.drip.measure.chisquare;
  * 				Statistical Software</i> <b>36 (5)</b> 1-39
  * 		</li>
  * 	</ul>
+ * 
+ *  It provides the following Functionality:
  *
- *	<br><br>
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md">Numerical Analysis Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/README.md">R<sup>d</sup> Continuous/Discrete Probability Measures</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/chisquare/README.md">Chi-Square Distribution Implementation/Properties</a></li>
+ * 		<li>Retrieve the R<sup>1</sup> Non-Central Parameters</li>
  *  </ul>
+ *
+ *	<br>
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md">Numerical Analysis Library</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/README.md">R<sup>d</sup> Continuous/Discrete Probability Measures</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/chisquare/README.md">Chi-Square Distribution Implementation/Properties</a></td></tr>
+ *  </table>
+ *	<br>
  *
  * @author Lakshmi Krishnamurthy
  */
 
 public abstract class R1NonCentralWilsonHaferty
-	extends org.drip.measure.chisquare.R1WilsonHilferty
+	extends R1WilsonHilferty
 {
-	private org.drip.measure.chisquare.R1NonCentralParameters _r1NonCentralParameters = null;
+	private R1NonCentralParameters _parameters = null;
 
 	protected R1NonCentralWilsonHaferty (
-		final org.drip.measure.chisquare.R1NonCentralParameters r1NonCentralParameters,
-		final org.drip.measure.gaussian.R1UnivariateNormal r1UnivariateNormal)
+		final R1NonCentralParameters r1NonCentralParameters,
+		final R1UnivariateNormal r1UnivariateNormal)
 		throws java.lang.Exception
 	{
-		super (
-			r1NonCentralParameters.degreesOfFreedom(),
-			r1UnivariateNormal
-		);
+		super (r1NonCentralParameters.degreesOfFreedom(), r1UnivariateNormal);
 
-		_r1NonCentralParameters = r1NonCentralParameters;
+		_parameters = r1NonCentralParameters;
 	}
 
 	/**
@@ -139,8 +153,8 @@ public abstract class R1NonCentralWilsonHaferty
 	 * @return The R<sup>1</sup> Non-Central Parameters
 	 */
 
-	public org.drip.measure.chisquare.R1NonCentralParameters parameters()
+	public R1NonCentralParameters parameters()
 	{
-		return _r1NonCentralParameters;
+		return _parameters;
 	}
 }

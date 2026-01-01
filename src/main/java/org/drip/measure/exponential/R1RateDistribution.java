@@ -10,6 +10,13 @@ import org.drip.numerical.common.NumberUtil;
  */
 
 /*!
+ * Copyright (C) 2030 Lakshmi Krishnamurthy
+ * Copyright (C) 2029 Lakshmi Krishnamurthy
+ * Copyright (C) 2028 Lakshmi Krishnamurthy
+ * Copyright (C) 2027 Lakshmi Krishnamurthy
+ * Copyright (C) 2026 Lakshmi Krishnamurthy
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
  * Copyright (C) 2023 Lakshmi Krishnamurthy
  * 
  *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
@@ -105,13 +112,42 @@ import org.drip.numerical.common.NumberUtil;
  * 		</li>
  * 	</ul>
  *
- *	<br><br>
+ * 	It provides the following Functionality:
+ *
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md">Numerical Analysis Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/README.md">R<sup>d</sup> Continuous/Discrete Probability Measures</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/exponential/README.md">R<sup>1</sup> Exponential Distribution Implementation/Properties</a></li>
+ * 		<li>Construct a Standard Scale Parameterized Instance of R<sup>1</sup> Exponential Distribution</li>
+ * 		<li><i>R1RateDistribution</i> Constructor</li>
+ * 		<li>Retrieve the Lambda</li>
+ * 		<li>Retrieve the Rate Parameter</li>
+ * 		<li>Retrieve the Scale Parameter</li>
+ * 		<li>Lay out the Support of the PDF Range</li>
+ * 		<li>Compute the Density under the Distribution at the given Variate</li>
+ * 		<li>Compute the cumulative under the distribution to the given value</li>
+ * 		<li>Retrieve the Mean of the Distribution</li>
+ * 		<li>Retrieve the Median of the Distribution</li>
+ * 		<li>Retrieve the Mode of the Distribution</li>
+ * 		<li>Retrieve the Quantile Variate of the Distribution</li>
+ * 		<li>Retrieve the Variance of the Distribution</li>
+ * 		<li>Retrieve the Skewness of the Distribution</li>
+ * 		<li>Retrieve the Excess Kurtosis of the Distribution</li>
+ * 		<li>Construct the Moment Generating Function</li>
+ * 		<li>Retrieve the Fisher Information of the Distribution</li>
+ * 		<li>Compute the Kullback-Leibler Divergence against the other R<sup>1</sup> Distribution</li>
+ * 		<li>Retrieve the Quantile CVaR (Conditional Value-at-Risk) of the Distribution</li>
+ * 		<li>Retrieve the Buffered Probability of Existence</li>
+ * 		<li>Retrieve the n<sup>th</sup> Non-central Moment</li>
+ * 		<li>Retrieve the n<sup>th</sup> Central Moment</li>
+ * 		<li>Retrieve the Inter-quantile Range (IQR) of the Distribution</li>
  *  </ul>
+ *
+ *	<br>
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md">Numerical Analysis Library</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/README.md">R<sup>d</sup> Continuous/Discrete Probability Measures</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/continuous/README.md">R<sup>1</sup> and R<sup>d</sup> Continuous Random Measure</a></td></tr>
+ *  </table>
+ *	<br>
  *
  * @author Lakshmi Krishnamurthy
  */
@@ -132,12 +168,9 @@ public class R1RateDistribution
 	public static final R1RateDistribution ScaleStandard (
 		final double beta)
 	{
-		try
-		{
+		try {
 			return new R1RateDistribution (1. / beta);
-		}
-		catch (Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -145,7 +178,7 @@ public class R1RateDistribution
 	}
 
 	/**
-	 * R1RateDistribution Constructor
+	 * <i>R1RateDistribution</i> Constructor
 	 * 
 	 * @param lambda Rate Parameter
 	 * 
@@ -156,8 +189,7 @@ public class R1RateDistribution
 		final double lambda)
 		throws Exception
 	{
-		if (!NumberUtil.IsValid (_lambda = lambda) || 0. >= _lambda)
-		{
+		if (!NumberUtil.IsValid (_lambda = lambda) || 0. >= _lambda) {
 			throw new Exception ("R1RateDistribution Constructor => Invalid lambda");
 		}
 	}
@@ -195,50 +227,66 @@ public class R1RateDistribution
 		return 1. / _lambda;
 	}
 
+	/**
+	 * Lay out the Support of the PDF Range
+	 * 
+	 * @return Support of the PDF Range
+	 */
+
 	@Override public double[] support()
 	{
-		return new double[]
-		{
-			0.,
-			Double.POSITIVE_INFINITY
-		};
+		return new double[] {0., Double.POSITIVE_INFINITY};
 	}
+
+	/**
+	 * Compute the Density under the Distribution at the given Variate
+	 * 
+	 * @param t Variate at which the Density needs to be computed
+	 * 
+	 * @return The Density
+	 * 
+	 * @throws Exception Thrown if the input is invalid
+	 */
 
 	@Override public double density (
 		final double t)
 		throws Exception
 	{
-		if (!supported (
-			t
-		))
-		{
-			throw new Exception (
-				"R1RateDistribution::density => Variate not in Range"
-			);
+		if (!supported (t)) {
+			throw new Exception ("R1RateDistribution::density => Variate not in Range");
 		}
 
-		return 0. > t ? 0. : _lambda * Math.exp (
-			-1. * _lambda * t
-		);
+		return 0. > t ? 0. : _lambda * Math.exp (-1. * _lambda * t);
 	}
+
+	/**
+	 * Compute the cumulative under the distribution to the given value
+	 * 
+	 * @param t Variate to which the cumulative is to be computed
+	 * 
+	 * @return The cumulative
+	 * 
+	 * @throws Exception Thrown if the inputs are invalid
+	 */
 
 	@Override public double cumulative (
 		final double t)
 		throws Exception
 	{
-		if (!supported (
-			t
-		))
-		{
-			throw new Exception (
-				"R1RateDistribution::cumulative => Variate not in Range"
-			);
+		if (!supported (t)) {
+			throw new Exception ("R1RateDistribution::cumulative => Variate not in Range");
 		}
 
-		return 0. > t ? 0. : 1. - Math.exp (
-			-1. * _lambda * t
-		);
+		return 0. > t ? 0. : 1. - Math.exp (-1. * _lambda * t);
 	}
+
+	/**
+	 * Retrieve the Mean of the Distribution
+	 * 
+	 * @return The Mean of the Distribution
+	 * 
+	 * @throws Exception Thrown if the Mean cannot be estimated
+	 */
 
 	@Override public double mean()
 		throws Exception
@@ -246,13 +294,27 @@ public class R1RateDistribution
 		return 1. / _lambda;
 	}
 
+	/**
+	 * Retrieve the Median of the Distribution
+	 * 
+	 * @return The Median of the Distribution
+	 * 
+	 * @throws Exception Thrown if the Median cannot be estimated
+	 */
+
 	@Override public double median()
 		throws Exception
 	{
-		return Math.exp (
-			2.
-		) / _lambda;
+		return Math.exp (2.) / _lambda;
 	}
+
+	/**
+	 * Retrieve the Mode of the Distribution
+	 * 
+	 * @return The Mode of the Distribution
+	 * 
+	 * @throws Exception Thrown if the Mode cannot be estimated
+	 */
 
 	@Override public double mode()
 		throws Exception
@@ -260,34 +322,42 @@ public class R1RateDistribution
 		return 0.;
 	}
 
+	/**
+	 * Retrieve the Quantile Variate of the Distribution
+	 * 
+	 * @param p The Quantile Fraction
+	 * 
+	 * @return The Quantile Variate of the Distribution
+	 * 
+	 * @throws Exception Thrown if the Quantile Variate cannot be estimated
+	 */
+
 	@Override public double quantile (
 		final double p)
 		throws Exception
 	{
-		if (!NumberUtil.IsValid (
-				p
-			) || 0. > p || 1. < p
-		)
-		{
-			throw new Exception (
-				"R1RateDistribution::quantile => p is Invalid"
-			);
+		if (!NumberUtil.IsValid (p) || 0. > p || 1. < p) {
+			throw new Exception ("R1RateDistribution::quantile => p is Invalid");
 		}
 
-		if (0. == p)
-		{
+		if (0. == p) {
 			return support()[0];
 		}
 
-		if (1. == p)
-		{
+		if (1. == p) {
 			return support()[1];
 		}
 
-		return -1. * Math.log (
-			1. - p
-		) / _lambda;
+		return -1. * Math.log (1. - p) / _lambda;
 	}
+
+	/**
+	 * Retrieve the Variance of the Distribution
+	 * 
+	 * @return The Variance of the Distribution
+	 * 
+	 * @throws Exception Thrown if the Variance cannot be estimated
+	 */
 
 	@Override public double variance()
 		throws Exception
@@ -295,35 +365,48 @@ public class R1RateDistribution
 		return 1. / _lambda / _lambda;
 	}
 
+	/**
+	 * Retrieve the Skewness of the Distribution
+	 * 
+	 * @return The Skewness of the Distribution
+	 * 
+	 * @throws Exception Thrown if the Skewness cannot be estimated
+	 */
+
 	@Override public double skewness()
 		throws Exception
 	{
 		return 2.;
 	}
 
+	/**
+	 * Retrieve the Excess Kurtosis of the Distribution
+	 * 
+	 * @return The Excess Kurtosis of the Distribution
+	 * 
+	 * @throws Exception Thrown if the Excess Kurtosis cannot be estimated
+	 */
+
 	@Override public double excessKurtosis()
 		throws Exception
 	{
-		return 1. - Math.log (
-			_lambda
-		);
+		return 1. - Math.log (_lambda);
 	}
+
+	/**
+	 * Construct the Moment Generating Function
+	 * 
+	 * @return The Moment Generating Function
+	 */
 
 	@Override public R1ToR1 momentGeneratingFunction()
 	{
-		return new R1ToR1 (
-			null
-		)
-		{
+		return new R1ToR1 (null) {
 			@Override public double evaluate (
 				final double t)
 				throws Exception
 			{
-				if (!NumberUtil.IsValid (
-						t
-					)
-				)
-				{
+				if (!NumberUtil.IsValid (t)) {
 					throw new Exception (
 						"R1RateDistribution::momentGeneratingFunction::evaluate => t is Invalid"
 					);
@@ -334,101 +417,130 @@ public class R1RateDistribution
 		};
 	}
 
+	/**
+	 * Retrieve the Fisher Information of the Distribution
+	 * 
+	 * @return The Fisher Information of the Distribution
+	 * 
+	 * @throws Exception Thrown if the Fisher Information cannot be estimated
+	 */
+
 	@Override public double fisherInformation()
 		throws Exception
 	{
 		return 1. / _lambda / _lambda;
 	}
 
+	/**
+	 * Compute the Kullback-Leibler Divergence against the other R<sup>1</sup> Distribution
+	 * 
+	 * @param r1UnivariateOther Other R<sup>1</sup> Distribution
+	 * 
+	 * @return Kullback-Leibler Divergence against the other R<sup>1</sup> Distribution
+	 * 
+	 * @throws Exception Thrown if the Kullback-Leibler Divergence cannot be estimated
+	 */
+
 	@Override public double kullbackLeiblerDivergence (
 		final R1Distribution r1UnivariateOther)
 		throws Exception
 	{
-		if (null == r1UnivariateOther ||
-			!(r1UnivariateOther instanceof R1RateDistribution)
-		)
-		{
-			throw new Exception (
-				"R1RateDistribution::kullbackLeiblerDivergence => Invalid Inputs"
-			);
+		if (null == r1UnivariateOther || !(r1UnivariateOther instanceof R1RateDistribution)) {
+			throw new Exception ("R1RateDistribution::kullbackLeiblerDivergence => Invalid Inputs");
 		}
 
 		double lambdaRatio = (((R1RateDistribution) r1UnivariateOther).lambda()) / _lambda;
 
-		return lambdaRatio - Math.log (
-			lambdaRatio
-		) - 1.;
+		return lambdaRatio - Math.log (lambdaRatio) - 1.;
 	}
+
+	/**
+	 * Retrieve the Quantile CVaR (Conditional Value-at-Risk) of the Distribution
+	 * 
+	 * @param p The Quantile
+	 * 
+	 * @return The Quantile CVaR of the Distribution
+	 * 
+	 * @throws Exception Thrown if the Quantile CVaR cannot be estimated
+	 */
 
 	@Override public double cvar (
 		final double p)
 		throws Exception
 	{
-		if (!NumberUtil.IsValid (
-				p
-			) || 0. > p || 1. < p
-		)
-		{
-			throw new Exception (
-				"R1RateDistribution::cvar => p is Invalid"
-			);
+		if (!NumberUtil.IsValid (p) || 0. > p || 1. < p) {
+			throw new Exception ("R1RateDistribution::cvar => p is Invalid");
 		}
 
-		return -1. * (
-			1. + Math.log (
-				1. - p
-			)
-		) / _lambda;
+		return -1. * (1. + Math.log (1. - p)) / _lambda;
 	}
+
+	/**
+	 * Retrieve the Buffered Probability of Existence
+	 * 
+	 * @param x The Variate
+	 * 
+	 * @return The Buffered Probability of Existence
+	 * 
+	 * @throws Exception Thrown if the Buffered Probability of Existence cannot be estimated
+	 */
 
 	@Override public double bPOE (
 		final double x)
 		throws Exception
 	{
-		if (!NumberUtil.IsValid (
-				x
-			)
-		)
-		{
-			throw new Exception (
-				"R1RateDistribution::bPOE => x is Invalid"
-			);
+		if (!NumberUtil.IsValid (x)) {
+			throw new Exception ("R1RateDistribution::bPOE => x is Invalid");
 		}
 
-		return Math.exp (
-			1. - _lambda * x
-		);
+		return Math.exp (1. - _lambda * x);
 	}
+
+	/**
+	 * Retrieve the n<sup>th</sup> Non-central Moment
+	 * 
+	 * @param n Moment Number
+	 * 
+	 * @return The n<sup>th</sup> Non-central Moment
+	 * 
+	 * @throws Exception Thrown if the n<sup>th</sup> Non-central Moment cannot be estimated
+	 */
 
 	@Override public double nonCentralMoment (
 		final int n)
-		throws java.lang.Exception
+		throws Exception
 	{
-		return NumberUtil.Factorial (
-			n
-		) * Math.pow (
-			_lambda,
-			-n
-		);
+		return NumberUtil.Factorial (n) * Math.pow (_lambda, -n);
 	}
+
+	/**
+	 * Retrieve the n<sup>th</sup> Central Moment
+	 * 
+	 * @param n Moment Number
+	 * 
+	 * @return The n<sup>th</sup> Central Moment
+	 * 
+	 * @throws Exception Thrown if the n<sup>th</sup> Central Moment cannot be estimated
+	 */
 
 	@Override public double centralMoment (
 		final int n)
 		throws Exception
 	{
-		return NumberUtil.SubFactorial (
-			n
-		) * Math.pow (
-			_lambda,
-			-n
-		);
+		return NumberUtil.SubFactorial (n) * Math.pow (_lambda, -n);
 	}
+
+	/**
+	 * Retrieve the Inter-quantile Range (IQR) of the Distribution
+	 * 
+	 * @return The Inter-quantile Range of the Distribution
+	 * 
+	 * @throws Exception Thrown if the Inter-quantile Range cannot be estimated
+	 */
 
 	@Override public double iqr()
 		throws Exception
 	{
-		return Math.log (
-			3.
-		) / _lambda;
+		return Math.log (3.) / _lambda;
 	}
 }

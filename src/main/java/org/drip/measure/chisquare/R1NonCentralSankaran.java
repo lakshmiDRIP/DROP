@@ -118,7 +118,12 @@ import org.drip.numerical.common.NumberUtil;
  *  It provides the following Functionality:
  *
  *  <ul>
- * 		<li>Construct the Second Cumulant Invariant Instance of <i>R1NonCentralCumulantInvariant</i></li>
+ * 		<li>Construct a Standard Instance of <i>R1NonCentralSankaran</i></li>
+ * 		<li>Retrieve the Sankaran "h" Parameter</li>
+ * 		<li>Retrieve the Sankaran "p" Parameter</li>
+ * 		<li>Retrieve the Sankaran "m" Parameter</li>
+ * 		<li>Transform x into the Wilson-Hilferty Variate</li>
+ * 		<li>Transform the Wilson-Hilferty Variate into x</li>
  *  </ul>
  *
  *	<br>

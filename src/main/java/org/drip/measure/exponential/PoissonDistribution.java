@@ -1,11 +1,23 @@
 
 package org.drip.measure.exponential;
 
+import org.drip.measure.continuous.R1Distribution;
+import org.drip.numerical.common.Array2D;
+import org.drip.numerical.common.NumberUtil;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2030 Lakshmi Krishnamurthy
+ * Copyright (C) 2029 Lakshmi Krishnamurthy
+ * Copyright (C) 2028 Lakshmi Krishnamurthy
+ * Copyright (C) 2027 Lakshmi Krishnamurthy
+ * Copyright (C) 2026 Lakshmi Krishnamurthy
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -82,39 +94,55 @@ package org.drip.measure.exponential;
 
 /**
  * <i>PoissonDistribution</i> implements the Univariate Poisson Distribution using the specified
- * Mean/Variance.
+ * 	Mean/Variance. It provides the following Functionality:
  *
- *	<br><br>
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md">Numerical Analysis Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/README.md">R<sup>d</sup> Continuous/Discrete Probability Measures</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/discrete/README.md">Antithetic, Quadratically Re-sampled, De-biased Distribution</a></li>
+ * 		<li>Construct a <i>PoissonDistribution</i> Instance</li>
+ * 		<li>Retrieve Lambda</li>
+ * 		<li>Lay out the Support of the PDF Range</li>
+ * 		<li>Compute the cumulative under the distribution to the given value</li>
+ * 		<li>Compute the inverse cumulative under the distribution corresponding to the given value</li>
+ * 		<li>Compute the Density under the Distribution at the given Variate</li>
+ * 		<li>Retrieve the Mean of the Distribution</li>
+ * 		<li>Retrieve the Variance of the Distribution</li>
+ * 		<li>Retrieve the Univariate Weighted Histogram</li>
  *  </ul>
+ *
+ *	<br>
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md">Numerical Analysis Library</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/README.md">R<sup>d</sup> Continuous/Discrete Probability Measures</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/continuous/README.md">R<sup>1</sup> and R<sup>d</sup> Continuous Random Measure</a></td></tr>
+ *  </table>
+ *	<br>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class PoissonDistribution extends org.drip.measure.continuous.R1Distribution {
-	private double _dblLambda = java.lang.Double.NaN;
-	private double _dblExponentialLambda = java.lang.Double.NaN;
+public class PoissonDistribution
+	extends R1Distribution
+{
+	private double _lambda = Double.NaN;
+	private double _exponentialLambda = Double.NaN;
 
 	/**
-	 * Construct a PoissonDistribution Instance
+	 * Construct a <i>PoissonDistribution</i> Instance
 	 * 
-	 * @param dblLambda Lambda
+	 * @param lambda Lambda
 	 * 
-	 * @throws java.lang.Exception Thrown if the inputs are invalid
+	 * @throws Exception Thrown if the inputs are invalid
 	 */
 
 	public PoissonDistribution (
-		final double dblLambda)
-		throws java.lang.Exception
+		final double lambda)
+		throws Exception
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblLambda = dblLambda) || 0. >= _dblLambda)
-			throw new java.lang.Exception ("PoissonDistribution constructor: Invalid inputs");
+		if (!NumberUtil.IsValid (_lambda = lambda) || 0. >= _lambda) {
+			throw new Exception ("PoissonDistribution constructor: Invalid inputs");
+		}
 
-		_dblExponentialLambda = java.lang.Math.exp (-1. * _dblLambda);
+		_exponentialLambda = Math.exp (-1. * _lambda);
 	}
 
 	/**
@@ -125,85 +153,135 @@ public class PoissonDistribution extends org.drip.measure.continuous.R1Distribut
 
 	public double lambda()
 	{
-		return _dblLambda;
+		return _lambda;
 	}
+
+	/**
+	 * Lay out the Support of the PDF Range
+	 * 
+	 * @return Support of the PDF Range
+	 */
 
 	@Override public double[] support()
 	{
-		return new double[]
-		{
-			0.,
-			java.lang.Double.POSITIVE_INFINITY
-		};
+		return new double[] {0., Double.POSITIVE_INFINITY};
 	}
+
+	/**
+	 * Compute the cumulative under the distribution to the given value
+	 * 
+	 * @param x Variate to which the cumulative is to be computed
+	 * 
+	 * @return The cumulative
+	 * 
+	 * @throws Exception Thrown if the inputs are invalid
+	 */
 
 	@Override public double cumulative (
-		final double dblX)
-		throws java.lang.Exception
+		final double x)
+		throws Exception
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (dblX))
-			throw new java.lang.Exception ("PoissonDistribution::cumulative => Invalid inputs");
-
-		int iEnd = (int) dblX;
-		double dblYLocal = 1.;
-		double dblYCumulative = 0.;
-
-		for (int i = 1; i < iEnd; ++i) {
-			i = i + 1;
-			dblYLocal *= _dblLambda / i;
-			dblYCumulative += _dblExponentialLambda * dblYLocal;
+		if (!NumberUtil.IsValid (x)) {
+			throw new Exception ("PoissonDistribution::cumulative => Invalid inputs");
 		}
 
-		return dblYCumulative;
+		double yLocal = 1.;
+		double yCumulative = 0.;
+
+		for (int i = 1; i < (int) x; ++i) {
+			i = i + 1;
+			yLocal *= _lambda / i;
+			yCumulative += _exponentialLambda * yLocal;
+		}
+
+		return yCumulative;
 	}
 
-	@Override public double incremental (
-		final double dblXLeft,
-		final double dblXRight)
-		throws java.lang.Exception
-	{
-		return cumulative (dblXRight) - cumulative (dblXLeft);
-	}
+	/**
+	 * Compute the inverse cumulative under the distribution corresponding to the given value
+	 * 
+	 * @param y Value corresponding to which the inverse cumulative is to be computed
+	 * 
+	 * @return The inverse cumulative
+	 * 
+	 * @throws Exception Thrown if the Input is invalid
+	 */
 
 	@Override public double invCumulative (
-		final double dblY)
-		throws java.lang.Exception
+		final double y)
+		throws Exception
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (dblY))
-			throw new java.lang.Exception ("PoissonDistribution::invCumulative => Invalid inputs");
+		if (!NumberUtil.IsValid (y)) {
+			throw new Exception ("PoissonDistribution::invCumulative => Invalid inputs");
+		}
 
 		int i = 0;
-		double dblYLocal = 1.;
-		double dblYCumulative = 0.;
+		double yLocal = 1.;
+		double yCumulative = 0.;
 
-		while (dblYCumulative < dblY) {
+		while (yCumulative < y) {
 			i = i + 1;
-			dblYLocal *= _dblLambda / i;
-			dblYCumulative += _dblExponentialLambda * dblYLocal;
+			yLocal *= _lambda / i;
+			yCumulative += _exponentialLambda * yLocal;
 		}
 
 		return i - 1;
 	}
 
+	/**
+	 * Compute the Density under the Distribution at the given Variate
+	 * 
+	 * @param x Variate at which the Density needs to be computed
+	 * 
+	 * @return The Density
+	 * 
+	 * @throws Exception Thrown if the input is invalid
+	 */
+
 	@Override public double density (
-		final double dblX)
-		throws java.lang.Exception
+		final double x)
+		throws Exception
 	{
-		throw new java.lang.Exception
-			("PoissonDistribution::density => Not available for discrete distributions");
+		if (0 >= x) {
+			throw new Exception ("PoissonDistribution::density => Not available for discrete distributions");
+		}
+
+		return _lambda * Math.exp (-1. * _lambda * x);
 	}
+
+	/**
+	 * Retrieve the Mean of the Distribution
+	 * 
+	 * @return The Mean of the Distribution
+	 * 
+	 * @throws Exception Thrown if the Mean cannot be estimated
+	 */
 
 	@Override public double mean()
 	{
-	    return _dblLambda;
+	    return 1. / _lambda;
 	}
+
+	/**
+	 * Retrieve the Variance of the Distribution
+	 * 
+	 * @return The Variance of the Distribution
+	 * 
+	 * @throws Exception Thrown if the Variance cannot be estimated
+	 */
 
 	@Override public double variance()
 	{
-	    return _dblLambda;
+	    return _lambda;
 	}
 
-	@Override public org.drip.numerical.common.Array2D histogram()
+	/**
+	 * Retrieve the Univariate Weighted Histogram
+	 * 
+	 * @return The Univariate Weighted Histogram
+	 */
+
+	@Override public Array2D histogram()
 	{
 		return null;
 	}

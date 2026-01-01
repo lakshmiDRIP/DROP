@@ -6,6 +6,13 @@ package org.drip.measure.exponential;
  */
 
 /*!
+ * Copyright (C) 2030 Lakshmi Krishnamurthy
+ * Copyright (C) 2029 Lakshmi Krishnamurthy
+ * Copyright (C) 2028 Lakshmi Krishnamurthy
+ * Copyright (C) 2027 Lakshmi Krishnamurthy
+ * Copyright (C) 2026 Lakshmi Krishnamurthy
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
  * Copyright (C) 2023 Lakshmi Krishnamurthy
  * 
  *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
@@ -100,14 +107,23 @@ package org.drip.measure.exponential;
  * 				Transactions on Information Theory</i> <b>55 (7)</b> 3087-3090
  * 		</li>
  * 	</ul>
+ * 
+ *  It provides the following Functionality:
  *
- *	<br><br>
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md">Numerical Analysis Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/README.md">R<sup>d</sup> Continuous/Discrete Probability Measures</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/exponential/README.md">R<sup>1</sup> Exponential Distribution Implementation/Properties</a></li>
+ * 		<li>Get the Maximum of the specified Order Statistic</li>
+ * 		<li>Get the Minimum of the specified Order Statistic</li>
+ * 		<li>Compute the Joint Moment of the Order Statistics for a Set of i.i.d. Distributions</li>
  *  </ul>
+ *
+ *	<br>
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md">Numerical Analysis Library</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/README.md">R<sup>d</sup> Continuous/Discrete Probability Measures</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/exponential/README.md">R<sup>1</sup> Exponential Distribution Implementation/Properties</a></td></tr>
+ *  </table>
+ *	<br>
  *
  * @author Lakshmi Krishnamurthy
  */
@@ -169,12 +185,9 @@ public class IIDComposite
 	{
 		if (null == r1RateDistribution ||
 			1 > orderStatistic1 || orderStatistic1 > variateCount ||
-			1 > orderStatistic2 || orderStatistic2 > variateCount || orderStatistic1 == orderStatistic2
-		)
+			1 > orderStatistic2 || orderStatistic2 > variateCount || orderStatistic1 == orderStatistic2)
 		{
-			throw new Exception (
-				"IIDComposite::OrderStatisticsJointMoment => Invalid Inputs"
-			);
+			throw new Exception ("IIDComposite::OrderStatisticsJointMoment => Invalid Inputs");
 		}
 
 		double expectationMaxIndex = 0.;
@@ -185,19 +198,13 @@ public class IIDComposite
 
 		double inverseRate = 1. / r1RateDistribution.rate();
 
-		for (int k = 0;
-			k < minIndex;
-			++k)
-		{
+		for (int k = 0; k < minIndex; ++k) {
 			double expectation = inverseRate / (variateCount - k);
 			expectationMinIndexSquared += expectation * expectation;
 			expectationMinIndex += expectation;
 		}
 
-		for (int k = 0;
-			k < maxIndex;
-			++k)
-		{
+		for (int k = 0; k < maxIndex; ++k) {
 			expectationMaxIndex += inverseRate / (variateCount - k);
 		}
 

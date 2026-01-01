@@ -12,6 +12,14 @@ import org.drip.specialfunction.definition.ScaledExponentialEstimator;
  */
 
 /*!
+ * Copyright (C) 2030 Lakshmi Krishnamurthy
+ * Copyright (C) 2029 Lakshmi Krishnamurthy
+ * Copyright (C) 2028 Lakshmi Krishnamurthy
+ * Copyright (C) 2027 Lakshmi Krishnamurthy
+ * Copyright (C) 2026 Lakshmi Krishnamurthy
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -111,13 +119,30 @@ import org.drip.specialfunction.definition.ScaledExponentialEstimator;
  * 		</li>
  * 	</ul>
  *
- *	<br><br>
+ * 	It provides the following Functionality:
+ *
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md">Numerical Analysis Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/README.md">R<sup>d</sup> Continuous/Discrete Probability Measures</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/continuous/README.md">R<sup>1</sup> and R<sup>d</sup> Continuous Random Measure</a></li>
+ * 		<li><i>R1ScaledDistribution</i> Constructor</li>
+ * 		<li>Retrieve the Scaled Exponential Estimator</li>
+ * 		<li>Retrieve the Gamma Estimator</li>
+ * 		<li>Lay out the Support of the PDF Range</li>
+ * 		<li>Compute the Density under the Distribution at the given Variate</li>
+ * 		<li>Compute the cumulative under the distribution to the given value</li>
+ * 		<li>Compute the Incremental under the Distribution between the 2 variates</li>
+ * 		<li>Retrieve the Mean of the Distribution</li>
+ * 		<li>Retrieve the Variance of the Distribution</li>
+ * 		<li>Retrieve the Normalizer</li>
+ * 		<li>Retrieve the "Lambda" Parameter</li>
  *  </ul>
+ *
+ *	<br>
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md">Numerical Analysis Library</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/README.md">R<sup>d</sup> Continuous/Discrete Probability Measures</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/continuous/README.md">R<sup>1</sup> and R<sup>d</sup> Continuous Random Measure</a></td></tr>
+ *  </table>
+ *	<br>
  *
  * @author Lakshmi Krishnamurthy
  */
@@ -130,7 +155,7 @@ public class R1ScaledDistribution
 	private ScaledExponentialEstimator _scaledExponentialEstimator = null;
 
 	/**
-	 * R1ScaledDistribution Constructor
+	 * <i>R1ScaledDistribution</i> Constructor
 	 * 
 	 * @param scaledExponentialEstimator Scaled Exponential Estimator
 	 * @param gammaEstimator Gamma Estimator
@@ -144,12 +169,9 @@ public class R1ScaledDistribution
 		throws Exception
 	{
 		if (null == (_scaledExponentialEstimator = scaledExponentialEstimator) ||
-			null == (_gammaEstimator = gammaEstimator)
-			)
+			null == (_gammaEstimator = gammaEstimator))
 		{
-			throw new java.lang.Exception (
-				"R1ScaledDistribution Constructor => Invalid Inputs"
-			);
+			throw new Exception ("R1ScaledDistribution Constructor => Invalid Inputs");
 		}
 
 		_normalizer = 1. / _gammaEstimator.evaluate (1. + (1. / _scaledExponentialEstimator.exponent())) /
@@ -178,120 +200,127 @@ public class R1ScaledDistribution
 		return _gammaEstimator;
 	}
 
+	/**
+	 * Lay out the Support of the PDF Range
+	 * 
+	 * @return Support of the PDF Range
+	 */
+
 	@Override public double[] support()
 	{
-		return new double[]
-		{
-			0.,
-			java.lang.Double.POSITIVE_INFINITY
-		};
+		return new double[] {0., Double.POSITIVE_INFINITY};
 	}
+
+	/**
+	 * Compute the Density under the Distribution at the given Variate
+	 * 
+	 * @param t Variate at which the Density needs to be computed
+	 * 
+	 * @return The Density
+	 * 
+	 * @throws Exception Thrown if the input is invalid
+	 */
 
 	@Override public double density (
 		final double t)
 		throws Exception
 	{
-		return _scaledExponentialEstimator.evaluate (
-			t
-		) * _normalizer;
+		return _scaledExponentialEstimator.evaluate (t) * _normalizer;
 	}
+
+	/**
+	 * Compute the cumulative under the distribution to the given value
+	 * 
+	 * @param t Variate to which the cumulative is to be computed
+	 * 
+	 * @return The cumulative
+	 * 
+	 * @throws Exception Thrown if the inputs are invalid
+	 */
 
 	@Override public double cumulative (
 		final double t)
 		throws Exception
 	{
-		if (!supported (
-			t
-		))
-		{
-			throw new Exception (
-				"R1ScaledDistribution::cumulative => Invalid Inputs"
-			);
+		if (!supported (t)) {
+			throw new Exception ("R1ScaledDistribution::cumulative => Invalid Inputs");
 		}
 
-		return NewtonCotesQuadratureGenerator.Zero_PlusOne (
-			0.,
-			t,
-			100
-		).integrate (
-			new R1ToR1 (null)
-			{
+		return NewtonCotesQuadratureGenerator.Zero_PlusOne (0., t, 100).integrate (
+			new R1ToR1 (null) {
 				@Override public double evaluate (
 					final double u)
 					throws Exception
 				{
-					return Double.isInfinite (
-						u
-					) || 0. == u ? 0. : _scaledExponentialEstimator.evaluate (
-						u
-					);
+					return Double.isInfinite (u) || 0. == u ? 0. : _scaledExponentialEstimator.evaluate (u);
 				}
 			}
 		) * _normalizer;
 	}
+
+	/**
+	 * Compute the Incremental under the Distribution between the 2 variates
+	 * 
+	 * @param t1 Left Variate to which the cumulative is to be computed
+	 * @param t2 Right Variate to which the cumulative is to be computed
+	 * 
+	 * @return The Incremental under the Distribution between the 2 variates
+	 * 
+	 * @throws Exception Thrown if the inputs are invalid
+	 */
 
 	@Override public double incremental (
 		final double t1,
 		final double t2)
-		throws java.lang.Exception
+		throws Exception
 	{
-		if (NumberUtil.IsValid (
-				t1
-			) || 0. > t1 || !NumberUtil.IsValid (
-				t2
-			) || t1 > t2
-		)
-		{
-			throw new Exception (
-				"R1ScaledDistribution::incremental => Invalid Inputs"
-			);
+		if (NumberUtil.IsValid (t1) || 0. > t1 || !NumberUtil.IsValid (t2) || t1 > t2) {
+			throw new Exception ("R1ScaledDistribution::incremental => Invalid Inputs");
 		}
 
-		return NewtonCotesQuadratureGenerator.Zero_PlusOne (
-			t1,
-			t2,
-			100
-		).integrate (
-			new R1ToR1 (null)
-			{
+		return NewtonCotesQuadratureGenerator.Zero_PlusOne (t1, t2, 100).integrate (
+			new R1ToR1 (null) {
 				@Override public double evaluate (
 					final double u)
 					throws Exception
 				{
-					return Double.isInfinite (
-						u
-					) || 0. == u ? 0. : _scaledExponentialEstimator.evaluate (
-						u
-					);
+					return Double.isInfinite (u) || 0. == u ? 0. : _scaledExponentialEstimator.evaluate (u);
 				}
 			}
 		) * _normalizer;
 	}
 
+	/**
+	 * Retrieve the Mean of the Distribution
+	 * 
+	 * @return The Mean of the Distribution
+	 * 
+	 * @throws Exception Thrown if the Mean cannot be estimated
+	 */
+
 	@Override public double mean()
 		throws Exception
 	{
-		return _scaledExponentialEstimator.firstMoment (
-			_gammaEstimator
-		) * _normalizer;
+		return _scaledExponentialEstimator.firstMoment (_gammaEstimator) * _normalizer;
 	}
+
+	/**
+	 * Retrieve the Variance of the Distribution
+	 * 
+	 * @return The Variance of the Distribution
+	 * 
+	 * @throws Exception Thrown if the Variance cannot be estimated
+	 */
 
 	@Override public double variance()
 		throws Exception
 	{
-		try
-		{
-			double mean = _scaledExponentialEstimator.firstMoment (
-				_gammaEstimator
-			) * _normalizer;
+		try {
+			double mean = _scaledExponentialEstimator.firstMoment (_gammaEstimator) * _normalizer;
 
-			return _scaledExponentialEstimator.higherMoment (
-				2,
-				_gammaEstimator
-			) * _normalizer * _normalizer - mean * mean;
-		}
-		catch (Exception e)
-		{
+			return _scaledExponentialEstimator.higherMoment (2, _gammaEstimator) * _normalizer * _normalizer
+				- mean * mean;
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
