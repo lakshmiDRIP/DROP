@@ -1,11 +1,25 @@
 
 package org.drip.measure.chisquare;
 
+import org.drip.function.definition.R1ToR1;
+import org.drip.function.definition.R2ToR1;
+import org.drip.measure.continuous.R1Distribution;
+import org.drip.numerical.common.NumberUtil;
+import org.drip.specialfunction.definition.ModifiedBesselFirstKindEstimator;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2030 Lakshmi Krishnamurthy
+ * Copyright (C) 2029 Lakshmi Krishnamurthy
+ * Copyright (C) 2028 Lakshmi Krishnamurthy
+ * Copyright (C) 2027 Lakshmi Krishnamurthy
+ * Copyright (C) 2026 Lakshmi Krishnamurthy
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -103,64 +117,80 @@ package org.drip.measure.chisquare;
  * 				Statistical Software</i> <b>36 (5)</b> 1-39
  * 		</li>
  * 	</ul>
+ * 
+ *  It provides the following Functionality:
  *
- *	<br><br>
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md">Numerical Analysis Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/README.md">R<sup>d</sup> Continuous/Discrete Probability Measures</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/chisquare/README.md">Chi-Square Distribution Implementation/Properties</a></li>
+ * 		<li>Construct the Standard Instance of <i>R1NonCentral</i></li>
+ * 		<li><i>R1NonCentral</i> Constructor</li>
+ * 		<li>Retrieve the R<sup>1</sup> Non-Central Parameters</li>
+ * 		<li>Retrieve the Gamma Estimator</li>
+ * 		<li>Retrieve the Digamma Estimator</li>
+ * 		<li>Retrieve the Lower Incomplete Gamma Estimator</li>
+ * 		<li>Retrieve the Modified Bessel First Kind Estimator</li>
+ * 		<li>Lay out the Support of the PDF Range</li>
+ * 		<li>Compute the Density under the Distribution at the given Variate</li>
+ * 		<li>Compute the cumulative under the distribution to the given value</li>
+ * 		<li>Retrieve the Mean of the Distribution</li>
+ * 		<li>Retrieve the Variance of the Distribution</li>
+ * 		<li>Retrieve the Skewness of the Distribution</li>
+ * 		<li>Retrieve the Excess Kurtosis of the Distribution</li>
+ * 		<li>Construct the Moment Generating Function</li>
+ * 		<li>Compute the Cumulant</li>
+ * 		<li>Compute the Leading Non-central Moments</li>
+ * 		<li>Compute the Leading Central Moments</li>
+ * 		<li>Compute the Non-central Moment</li>
  *  </ul>
+ *
+ *	<br>
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md">Numerical Analysis Library</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/README.md">R<sup>d</sup> Continuous/Discrete Probability Measures</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/chisquare/README.md">Chi-Square Distribution Implementation/Properties</a></td></tr>
+ *  </table>
+ *	<br>
  *
  * @author Lakshmi Krishnamurthy
  */
 
 public class R1NonCentral
-	extends org.drip.measure.continuous.R1Distribution
+	extends R1Distribution
 {
-	private double _cdfScaler = java.lang.Double.NaN;
-	private org.drip.function.definition.R1ToR1 _gammaEstimator = null;
-	private org.drip.function.definition.R1ToR1 _digammaEstimator = null;
-	private org.drip.function.definition.R2ToR1 _lowerIncompleteGammaEstimator = null;
-	private org.drip.measure.chisquare.R1NonCentralParameters _r1NonCentralParameters = null;
-	private org.drip.specialfunction.definition.ModifiedBesselFirstKindEstimator
-		_modifiedBesselFirstKindEstimator = null;
+	private R1ToR1 _gammaEstimator = null;
+	private double _cdfScaler = Double.NaN;
+	private R1ToR1 _digammaEstimator = null;
+	private R1NonCentralParameters _parameters = null;
+	private R2ToR1 _lowerIncompleteGammaEstimator = null;
+	private ModifiedBesselFirstKindEstimator _modifiedBesselFirstKindEstimator = null;
 
-	private double nonCentralMoment (
+	private double moment (
 		final int n,
-		final double[] fourLeadingRawMoments)
-		throws java.lang.Exception
+		final double[] fourLeadingRawMomentArray)
+		throws Exception
 	{
-		if (n <= 3)
-		{
-			return fourLeadingRawMoments[n - 1];
+		if (n <= 3) {
+			return fourLeadingRawMomentArray[n - 1];
 		}
 
-		double nonCentralMoment = cumulant (
-			n
-		);
+		double nonCentralMoment = cumulant (n);
 
-		double degreesOfFreedom = _r1NonCentralParameters.degreesOfFreedom();
+		double degreesOfFreedom = _parameters.degreesOfFreedom();
 
-		double nonCentralityParameter = _r1NonCentralParameters.nonCentralityParameter();
+		double nonCentralityParameter = _parameters.nonCentralityParameter();
 
-		for (int j = 1;
-			j < n;
-			++j)
-		{
+		for (int nonCentralMomentIndex = 1; nonCentralMomentIndex < n; ++nonCentralMomentIndex) {
 			nonCentralMoment = nonCentralMoment +
-				_gammaEstimator.evaluate (
-					n
-				) * java.lang.Math.pow (
+				_gammaEstimator.evaluate (n) * Math.pow (
 					2.,
-					j - 1.
+					nonCentralMomentIndex - 1.
 				) * (
-					degreesOfFreedom + j * nonCentralityParameter
-				) * nonCentralMoment (
-					n - j,
-					fourLeadingRawMoments
+					degreesOfFreedom + nonCentralMomentIndex * nonCentralityParameter
+				) * moment (
+					n - nonCentralMomentIndex,
+					fourLeadingRawMomentArray
 				) / _gammaEstimator.evaluate (
-					n - j + 1
+					n - nonCentralMomentIndex + 1
 				);
 		}
 
@@ -168,7 +198,7 @@ public class R1NonCentral
 	}
 
 	/**
-	 * Construct the Standard Instance of R1NonCentral
+	 * Construct the Standard Instance of <i>R1NonCentral</i>
 	 * 
 	 * @param degreesOfFreedom Degrees of Freedom
 	 * @param nonCentralityParameter Non-centrality Parameter
@@ -177,33 +207,26 @@ public class R1NonCentral
 	 * @param lowerIncompleteGammaEstimator Lower Incomplete Gamma Estimator
 	 * @param modifiedBesselFirstKindEstimator Modified Bessel First Kind Estimator
 	 * 
-	 * @return The Standard Instance of R1NonCentral
+	 * @return The Standard Instance of <i>R1NonCentral</i>
 	 */
 
 	public static final R1NonCentral Standard (
 		final double degreesOfFreedom,
 		final double nonCentralityParameter,
-		final org.drip.function.definition.R1ToR1 gammaEstimator,
-		final org.drip.function.definition.R1ToR1 digammaEstimator,
-		final org.drip.function.definition.R2ToR1 lowerIncompleteGammaEstimator,
-		final org.drip.specialfunction.definition.ModifiedBesselFirstKindEstimator
-			modifiedBesselFirstKindEstimator)
+		final R1ToR1 gammaEstimator,
+		final R1ToR1 digammaEstimator,
+		final R2ToR1 lowerIncompleteGammaEstimator,
+		final ModifiedBesselFirstKindEstimator modifiedBesselFirstKindEstimator)
 	{
-		try
-		{
+		try {
 			return new R1NonCentral (
-				new org.drip.measure.chisquare.R1NonCentralParameters (
-					degreesOfFreedom,
-					nonCentralityParameter
-				),
+				new R1NonCentralParameters (degreesOfFreedom, nonCentralityParameter),
 				gammaEstimator,
 				digammaEstimator,
 				lowerIncompleteGammaEstimator,
 				modifiedBesselFirstKindEstimator
 			);
-		}
-		catch (java.lang.Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -211,41 +234,35 @@ public class R1NonCentral
 	}
 
 	/**
-	 * R1NonCentral Constructor
+	 * <i>R1NonCentral</i> Constructor
 	 * 
-	 * @param r1NonCentralParameters R<sup>1</sup> Non-central Parameters
+	 * @param parameters R<sup>1</sup> Non-central Parameters
 	 * @param gammaEstimator Gamma Estimator
 	 * @param digammaEstimator Digamma Estimator
 	 * @param lowerIncompleteGammaEstimator Lower Incomplete Gamma Estimator
 	 * @param modifiedBesselFirstKindEstimator Modified Bessel First Kind Estimator
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public R1NonCentral (
-		final org.drip.measure.chisquare.R1NonCentralParameters r1NonCentralParameters,
-		final org.drip.function.definition.R1ToR1 gammaEstimator,
-		final org.drip.function.definition.R1ToR1 digammaEstimator,
-		final org.drip.function.definition.R2ToR1 lowerIncompleteGammaEstimator,
-		final org.drip.specialfunction.definition.ModifiedBesselFirstKindEstimator
-			modifiedBesselFirstKindEstimator)
-		throws java.lang.Exception
+		final R1NonCentralParameters parameters,
+		final R1ToR1 gammaEstimator,
+		final R1ToR1 digammaEstimator,
+		final R2ToR1 lowerIncompleteGammaEstimator,
+		final ModifiedBesselFirstKindEstimator modifiedBesselFirstKindEstimator)
+		throws Exception
 	{
-		if (null == (_r1NonCentralParameters = r1NonCentralParameters) ||
+		if (null == (_parameters = parameters) ||
 			null == (_gammaEstimator = gammaEstimator) ||
 			null == (_digammaEstimator = digammaEstimator) ||
 			null == (_lowerIncompleteGammaEstimator = lowerIncompleteGammaEstimator) ||
-			null == (_modifiedBesselFirstKindEstimator = modifiedBesselFirstKindEstimator)
-		)
+			null == (_modifiedBesselFirstKindEstimator = modifiedBesselFirstKindEstimator))
 		{
-			throw new java.lang.Exception (
-				"R1NonCentral Constructor => Invalid Inputs"
-			);
+			throw new Exception ("R1NonCentral Constructor => Invalid Inputs");
 		}
 
-		_cdfScaler = java.lang.Math.exp (
-			-0.5 * _r1NonCentralParameters.nonCentralityParameter()
-		);
+		_cdfScaler = Math.exp (-0.5 * _parameters.nonCentralityParameter());
 	}
 
 	/**
@@ -254,9 +271,9 @@ public class R1NonCentral
 	 * @return The R<sup>1</sup> Non-Central Parameters
 	 */
 
-	public org.drip.measure.chisquare.R1NonCentralParameters parameters()
+	public R1NonCentralParameters parameters()
 	{
-		return _r1NonCentralParameters;
+		return _parameters;
 	}
 
 	/**
@@ -265,7 +282,7 @@ public class R1NonCentral
 	 * @return Gamma Estimator
 	 */
 
-	public org.drip.function.definition.R1ToR1 gammaEstimator()
+	public R1ToR1 gammaEstimator()
 	{
 		return _gammaEstimator;
 	}
@@ -276,7 +293,7 @@ public class R1NonCentral
 	 * @return Digamma Estimator
 	 */
 
-	public org.drip.function.definition.R1ToR1 digammaEstimator()
+	public R1ToR1 digammaEstimator()
 	{
 		return _digammaEstimator;
 	}
@@ -287,7 +304,7 @@ public class R1NonCentral
 	 * @return Lower Incomplete Gamma Estimator
 	 */
 
-	public org.drip.function.definition.R2ToR1 lowerIncompleteGammaEstimator()
+	public R2ToR1 lowerIncompleteGammaEstimator()
 	{
 		return _lowerIncompleteGammaEstimator;
 	}
@@ -298,87 +315,93 @@ public class R1NonCentral
 	 * @return Modified Bessel First Kind Estimator
 	 */
 
-	public org.drip.specialfunction.definition.ModifiedBesselFirstKindEstimator
-		modifiedBesselFirstKindEstimator()
+	public ModifiedBesselFirstKindEstimator modifiedBesselFirstKindEstimator()
 	{
 		return _modifiedBesselFirstKindEstimator;
 	}
 
+	/**
+	 * Lay out the Support of the PDF Range
+	 * 
+	 * @return Support of the PDF Range
+	 */
+
 	@Override public double[] support()
 	{
-		return new double[]
-		{
-			0.,
-			java.lang.Double.POSITIVE_INFINITY
-		};
+		return new double[] {0., Double.POSITIVE_INFINITY};
 	}
+
+	/**
+	 * Compute the Density under the Distribution at the given Variate
+	 * 
+	 * @param x Variate at which the Density needs to be computed
+	 * 
+	 * @return The Density
+	 * 
+	 * @throws Exception Thrown if the input is invalid
+	 */
 
 	@Override public double density (
 		final double x)
-		throws java.lang.Exception
+		throws Exception
 	{
-		if (!supported (
-			x
-		))
-		{
-			throw new java.lang.Exception (
-				"R1NonCentral::density => Variate not in Range"
-			);
+		if (!supported (x)) {
+			throw new Exception ("R1NonCentral::density => Variate not in Range");
 		}
 
-		double degreesOfFreedom = _r1NonCentralParameters.degreesOfFreedom();
+		double degreesOfFreedom = _parameters.degreesOfFreedom();
 
-		double nonCentralityParameter = _r1NonCentralParameters.nonCentralityParameter();
+		double nonCentralityParameter = _parameters.nonCentralityParameter();
 
-		return 0.5 * java.lang.Math.pow (
+		return 0.5 * Math.pow (
 			x / nonCentralityParameter,
 			0.25 * degreesOfFreedom - 0.5
-		) * java.lang.Math.exp (
+		) * Math.exp (
 			-0.5 * (x + nonCentralityParameter)
 		) * _modifiedBesselFirstKindEstimator.bigI (
 			0.5 * degreesOfFreedom - 1.,
-			java.lang.Math.sqrt (
-				x * nonCentralityParameter
-			)
+			Math.sqrt (x * nonCentralityParameter)
 		);
 	}
 
+	/**
+	 * Compute the cumulative under the distribution to the given value
+	 * 
+	 * @param t Variate to which the cumulative is to be computed
+	 * 
+	 * @return The cumulative
+	 * 
+	 * @throws Exception Thrown if the inputs are invalid
+	 */
+
 	@Override public double cumulative (
 		final double t)
-		throws java.lang.Exception
+		throws Exception
 	{
-		if (!supported (
-			t
-		))
-		{
-			throw new java.lang.Exception (
-				"R1NonCentral::cumulative => Invalid Inputs"
-			);
+		if (!supported (t)) {
+			throw new Exception ("R1NonCentral::cumulative => Invalid Inputs");
 		}
 
 		int termCount = 10;
 		double cumulative = 0.;
 
-		double degreesOfFreedom = _r1NonCentralParameters.degreesOfFreedom();
+		double degreesOfFreedom = _parameters.degreesOfFreedom();
 
-		double nonCentralityParameter = _r1NonCentralParameters.nonCentralityParameter();
+		double nonCentralityParameter = _parameters.nonCentralityParameter();
 
-		for (int termIndex = 0;
-			termIndex < termCount;
-			++termIndex)
-		{
+		for (int termIndex = 0; termIndex < termCount; ++termIndex) {
 			cumulative = cumulative +
-				java.lang.Math.pow (
+				Math.pow (
 					0.5 * nonCentralityParameter,
 					termIndex
-				) * new org.drip.measure.chisquare.R1Central (
+				) * new R1Central (
 					degreesOfFreedom + 2 * termIndex,
 					_gammaEstimator,
 					_digammaEstimator,
 					_lowerIncompleteGammaEstimator
 				).cumulative (
 					t
-				) / org.drip.numerical.common.NumberUtil.Factorial (
+				) / NumberUtil.Factorial (
 					termIndex
 				);
 		}
@@ -386,72 +409,95 @@ public class R1NonCentral
 		return _cdfScaler * cumulative;
 	}
 
+	/**
+	 * Retrieve the Mean of the Distribution
+	 * 
+	 * @return The Mean of the Distribution
+	 * 
+	 * @throws Exception Thrown if the Mean cannot be estimated
+	 */
+
 	@Override public double mean()
-		throws java.lang.Exception
+		throws Exception
 	{
-		return _r1NonCentralParameters.degreesOfFreedom() + _r1NonCentralParameters.nonCentralityParameter();
+		return _parameters.degreesOfFreedom() + _parameters.nonCentralityParameter();
 	}
+
+	/**
+	 * Retrieve the Variance of the Distribution
+	 * 
+	 * @return The Variance of the Distribution
+	 * 
+	 * @throws Exception Thrown if the Variance cannot be estimated
+	 */
 
 	@Override public double variance()
-		throws java.lang.Exception
+		throws Exception
 	{
-		return 2. * _r1NonCentralParameters.degreesOfFreedom() +
-			4. * _r1NonCentralParameters.nonCentralityParameter();
+		return 2. * _parameters.degreesOfFreedom() + 4. * _parameters.nonCentralityParameter();
 	}
+
+	/**
+	 * Retrieve the Skewness of the Distribution
+	 * 
+	 * @return The Skewness of the Distribution
+	 * 
+	 * @throws Exception Thrown if the Skewness cannot be estimated
+	 */
 
 	@Override public double skewness()
-		throws java.lang.Exception
+		throws Exception
 	{
-		double degreesOfFreedom = _r1NonCentralParameters.degreesOfFreedom();
+		double degreesOfFreedom = _parameters.degreesOfFreedom();
 
-		double nonCentralityParameter = _r1NonCentralParameters.nonCentralityParameter();
+		double nonCentralityParameter = _parameters.nonCentralityParameter();
 
-		return (degreesOfFreedom + 3. * nonCentralityParameter) * java.lang.Math.pow (
-			2.,
-			degreesOfFreedom + 2. * nonCentralityParameter
-		);
+		return (degreesOfFreedom + 3. * nonCentralityParameter) *
+			Math.pow (2., degreesOfFreedom + 2. * nonCentralityParameter);
 	}
+
+	/**
+	 * Retrieve the Excess Kurtosis of the Distribution
+	 * 
+	 * @return The Excess Kurtosis of the Distribution
+	 * 
+	 * @throws Exception Thrown if the Skewness cannot be estimated
+	 */
 
 	@Override public double excessKurtosis()
-		throws java.lang.Exception
+		throws Exception
 	{
-		double degreesOfFreedom = _r1NonCentralParameters.degreesOfFreedom();
+		double degreesOfFreedom = _parameters.degreesOfFreedom();
 
-		double nonCentralityParameter = _r1NonCentralParameters.nonCentralityParameter();
+		double nonCentralityParameter = _parameters.nonCentralityParameter();
 
 		double kPlusTwoLambda = degreesOfFreedom + 2. * nonCentralityParameter;
-		return 12. * (degreesOfFreedom + 4. * nonCentralityParameter) /
-			(kPlusTwoLambda* kPlusTwoLambda);
+		return 12. * (degreesOfFreedom + 4. * nonCentralityParameter) / (kPlusTwoLambda* kPlusTwoLambda);
 	}
 
-	@Override public org.drip.function.definition.R1ToR1 momentGeneratingFunction()
+	/**
+	 * Construct the Moment Generating Function
+	 * 
+	 * @return The Moment Generating Function
+	 */
+
+	@Override public R1ToR1 momentGeneratingFunction()
 	{
-		return new org.drip.function.definition.R1ToR1 (
-			null
-		)
-		{
+		return new R1ToR1 (null) {
 			@Override public double evaluate (
 				final double t)
-				throws java.lang.Exception
+				throws Exception
 			{
-				if (!org.drip.numerical.common.NumberUtil.IsValid (
-						t
-					) || t > 0.5
-				)
-				{
-					throw new java.lang.Exception (
+				if (!NumberUtil.IsValid (t) || t > 0.5) {
+					throw new Exception (
 						"R1NonCentral::momentGeneratingFunction::evaluate => Invalid Input"
 					);
 				}
 
 				double oneMinusTwoT = 1. - 2. * t;
 
-				return java.lang.Math.exp (
-					_r1NonCentralParameters.nonCentralityParameter() * t / oneMinusTwoT
-				) / java.lang.Math.pow (
-					oneMinusTwoT,
-					0.5 * _r1NonCentralParameters.degreesOfFreedom()
-				);
+				return Math.exp (_parameters.nonCentralityParameter() * t / oneMinusTwoT) /
+					Math.pow (oneMinusTwoT, 0.5 * _parameters.degreesOfFreedom());
 			}
 		};
 	}
@@ -463,28 +509,19 @@ public class R1NonCentral
 	 * 
 	 * @return The Cumulant
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public double cumulant (
 		final int n)
-		throws java.lang.Exception
+		throws Exception
 	{
-		if (0 > n)
-		{
-			throw new java.lang.Exception (
-				"R1NonCentral::cumulant => Invalid Inputs"
-			);
+		if (0 > n) {
+			throw new Exception ("R1NonCentral::cumulant => Invalid Inputs");
 		}
 
-		return (
-			_r1NonCentralParameters.degreesOfFreedom() + n * _r1NonCentralParameters.nonCentralityParameter()
-		) * java.lang.Math.pow (
-			2.,
-			n - 1.
-		) * _gammaEstimator.evaluate (
-			n
-		);
+		return (_parameters.degreesOfFreedom() + n * _parameters.nonCentralityParameter()) *
+			Math.pow (2., n - 1.) * _gammaEstimator.evaluate (n);
 	}
 
 	/**
@@ -495,9 +532,9 @@ public class R1NonCentral
 
 	public double[] leadingRawMoments()
 	{
-		double degreesOfFreedom = _r1NonCentralParameters.degreesOfFreedom();
+		double degreesOfFreedom = _parameters.degreesOfFreedom();
 
-		double nonCentralityParameter = _r1NonCentralParameters.nonCentralityParameter();
+		double nonCentralityParameter = _parameters.nonCentralityParameter();
 
 		double[] fourLeadingRawMomentArray = new double[4];
 		fourLeadingRawMomentArray[0] = nonCentralityParameter + degreesOfFreedom;
@@ -523,16 +560,16 @@ public class R1NonCentral
 	}
 
 	/**
-	 * Compute the Leading central Moments
+	 * Compute the Leading Central Moments
 	 * 
-	 * @return Leading central Moments
+	 * @return Leading Central Moments
 	 */
 
 	public double[] leadingCentralMoments()
 	{
-		double degreesOfFreedom = _r1NonCentralParameters.degreesOfFreedom();
+		double degreesOfFreedom = _parameters.degreesOfFreedom();
 
-		double nonCentralityParameter = _r1NonCentralParameters.nonCentralityParameter();
+		double nonCentralityParameter = _parameters.nonCentralityParameter();
 
 		double[] fourLeadingCentralMomentArray = new double[4];
 		fourLeadingCentralMomentArray[0] = 0.;
@@ -554,23 +591,17 @@ public class R1NonCentral
 	 * 
 	 * @return The Non-central Moment
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public double nonCentralMoment (
 		final int n)
-		throws java.lang.Exception
+		throws Exception
 	{
-		if (0 >= n)
-		{
-			throw new java.lang.Exception (
-				"R1NonCentral::nonCentralMoment => Invalid Inputs"
-			);
+		if (0 >= n) {
+			throw new Exception ("R1NonCentral::nonCentralMoment => Invalid Inputs");
 		}
 
-		return nonCentralMoment (
-			n,
-			leadingRawMoments()
-		);
+		return moment (n, leadingRawMoments());
 	}
 }

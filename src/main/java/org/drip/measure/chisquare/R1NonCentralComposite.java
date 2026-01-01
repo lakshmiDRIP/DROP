@@ -1,11 +1,22 @@
 
 package org.drip.measure.chisquare;
 
+import org.drip.measure.gaussian.R1UnivariateNormal;
+import org.drip.numerical.common.NumberUtil;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2030 Lakshmi Krishnamurthy
+ * Copyright (C) 2029 Lakshmi Krishnamurthy
+ * Copyright (C) 2028 Lakshmi Krishnamurthy
+ * Copyright (C) 2027 Lakshmi Krishnamurthy
+ * Copyright (C) 2026 Lakshmi Krishnamurthy
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -103,14 +114,23 @@ package org.drip.measure.chisquare;
  * 				Statistical Software</i> <b>36 (5)</b> 1-39
  * 		</li>
  * 	</ul>
+ * 
+ *  It provides the following Functionality:
  *
- *	<br><br>
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md">Numerical Analysis Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/README.md">R<sup>d</sup> Continuous/Discrete Probability Measures</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/chisquare/README.md">Chi-Square Distribution Implementation/Properties</a></li>
+ * 		<li>Generate a Random Variable following the Rice Distribution</li>
+ * 		<li>Generate a Non-Central F Distribution Based off of R<sup>1</sup> Non-central Chi-Square Distribution Pair</li>
+ * 		<li>Generate the R<sup>1</sup> Non-central Distribution corresponding to the Sum of Independent R<sup>1</sup> Non-central Distributions</li>
  *  </ul>
+ *
+ *	<br>
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md">Numerical Analysis Library</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/README.md">R<sup>d</sup> Continuous/Discrete Probability Measures</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/chisquare/README.md">Chi-Square Distribution Implementation/Properties</a></td></tr>
+ *  </table>
+ *	<br>
  *
  * @author Lakshmi Krishnamurthy
  */
@@ -125,34 +145,20 @@ public class R1NonCentralComposite
 	 * 
 	 * @return Random Variable following the Rice Distribution
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public static final double RandomRice (
 		final double lambda)
-		throws java.lang.Exception
+		throws Exception
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (
-				lambda
-			) || 0. >= lambda
-		)
-		{
-			throw new java.lang.Exception (
-				"R1NonCentralComposite::RandomRice => Invalid Inputs"
-			);
+		if (!NumberUtil.IsValid (lambda) || 0. >= lambda) {
+			throw new Exception ("R1NonCentralComposite::RandomRice => Invalid Inputs");
 		}
 
-		double random1 = new org.drip.measure.gaussian.R1UnivariateNormal (
-			0.,
-			1.
-		).random();
+		double random1 = new R1UnivariateNormal (0., 1.).random();
 
-		double random2 = new org.drip.measure.gaussian.R1UnivariateNormal (
-			java.lang.Math.sqrt (
-				lambda
-			),
-			1.
-		).random();
+		double random2 = new R1UnivariateNormal (Math.sqrt (lambda), 1.).random();
 
 		return random1 * random1 + random2 * random2;
 	}
@@ -166,20 +172,16 @@ public class R1NonCentralComposite
 	 * 
 	 * @return Non-Central F Distribution Random Variable
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public static final double RandomNonCentralF (
-		final org.drip.measure.chisquare.R1NonCentral r1NonCentral1,
-		final org.drip.measure.chisquare.R1NonCentral r1NonCentral2)
-		throws java.lang.Exception
+		final R1NonCentral r1NonCentral1,
+		final R1NonCentral r1NonCentral2)
+		throws Exception
 	{
-		if (null == r1NonCentral1 ||
-			null == r1NonCentral2)
-		{
-			throw new java.lang.Exception (
-				"R1NonCentralComposite::RandomNonCentralF => Invalid Inputs"
-			);
+		if (null == r1NonCentral1 || null == r1NonCentral2) {
+			throw new Exception ("R1NonCentralComposite::RandomNonCentralF => Invalid Inputs");
 		}
 
 		return r1NonCentral1.random() * r1NonCentral2.parameters().degreesOfFreedom() /
@@ -188,19 +190,18 @@ public class R1NonCentralComposite
 
 	/**
 	 * Generate the R<sup>1</sup> Non-central Distribution corresponding to the Sum of Independent
-	 * 		R<sup>1</sup> Non-central Distributions
+	 * 	R<sup>1</sup> Non-central Distributions
 	 * 
 	 * @param r1NonCentralArray Array of Independent R<sup>1</sup> Non-central Distributions
 	 * 
 	 * @return R<sup>1</sup> Non-central Distribution corresponding to the Sum of Independent R<sup>1</sup>
-	 * 		Non-central Distributions
+	 * 	Non-central Distributions
 	 */
 
-	public static final org.drip.measure.chisquare.R1NonCentral IndependentSum (
-		final org.drip.measure.chisquare.R1NonCentral[] r1NonCentralArray)
+	public static final R1NonCentral IndependentSum (
+		final R1NonCentral[] r1NonCentralArray)
 	{
-		if (null == r1NonCentralArray)
-		{
+		if (null == r1NonCentralArray) {
 			return null;
 		}
 
@@ -210,15 +211,13 @@ public class R1NonCentralComposite
 
 		for (int nonCentralDistributionIndex = 0;
 			nonCentralDistributionIndex < nonCentralDistributionCount;
-			++nonCentralDistributionIndex
-			)
+			++nonCentralDistributionIndex)
 		{
-			if (null == r1NonCentralArray[nonCentralDistributionIndex])
-			{
+			if (null == r1NonCentralArray[nonCentralDistributionIndex]) {
 				return null;
 			}
 
-			org.drip.measure.chisquare.R1NonCentralParameters r1NonCentralParameters =
+			R1NonCentralParameters r1NonCentralParameters =
 				r1NonCentralArray[nonCentralDistributionIndex].parameters();
 
 			compositeDegreesOfFreedom = r1NonCentralParameters.degreesOfFreedom();
@@ -226,7 +225,7 @@ public class R1NonCentralComposite
 			compositeNonCentralityParameter = r1NonCentralParameters.nonCentralityParameter();
 		}
 
-		return org.drip.measure.chisquare.R1NonCentral.Standard (
+		return R1NonCentral.Standard (
 			compositeDegreesOfFreedom,
 			compositeNonCentralityParameter,
 			r1NonCentralArray[0].gammaEstimator(),

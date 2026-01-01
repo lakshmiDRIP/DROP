@@ -1,11 +1,22 @@
 
 package org.drip.measure.chisquare;
 
+import org.drip.measure.gaussian.NormalQuadrature;
+import org.drip.measure.gaussian.R1UnivariateNormal;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2030 Lakshmi Krishnamurthy
+ * Copyright (C) 2029 Lakshmi Krishnamurthy
+ * Copyright (C) 2028 Lakshmi Krishnamurthy
+ * Copyright (C) 2027 Lakshmi Krishnamurthy
+ * Copyright (C) 2026 Lakshmi Krishnamurthy
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -104,52 +115,55 @@ package org.drip.measure.chisquare;
  * 				https://www.itl.nist.gov/div898/handbook/eda/section3/eda3666.htm
  * 		</li>
  * 	</ul>
+ * 
+ *  It provides the following Functionality:
  *
- *	<br><br>
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md">Numerical Analysis Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/README.md">R<sup>d</sup> Continuous/Discrete Probability Measures</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/chisquare/README.md">Chi-Square Distribution Implementation/Properties</a></li>
+ * 		<li>Construct a Standard Instance of <i>R1CentralWilsonHilferty</i></li>
+ * 		<li>Transform x into the Wilson-Hilferty Variate</li>
+ * 		<li>Transform the Wilson-Hilferty Variate into x</li>
+ * 		<li>Generate a Random Variable corresponding to the Distribution</li>
  *  </ul>
+ *
+ *	<br>
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md">Numerical Analysis Library</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/README.md">R<sup>d</sup> Continuous/Discrete Probability Measures</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/chisquare/README.md">Chi-Square Distribution Implementation/Properties</a></td></tr>
+ *  </table>
+ *	<br>
  *
  * @author Lakshmi Krishnamurthy
  */
 
 public class R1CentralWilsonHilferty
-	extends org.drip.measure.chisquare.R1WilsonHilferty
+	extends R1WilsonHilferty
 {
 
 	/**
-	 * Construct a Standard Instance of R1CentralWilsonHilferty
+	 * Construct a Standard Instance of <i>R1CentralWilsonHilferty</i>
 	 * 
 	 * @param degreesOfFreedom Degrees of Freedom
 	 * 
-	 * @return Standard Instance of R1CentralWilsonHilferty
+	 * @return Standard Instance of <i>R1CentralWilsonHilferty</i>
 	 */
 
 	public static final R1CentralWilsonHilferty Standard (
 		final int degreesOfFreedom)
 	{
-		if (0 >= degreesOfFreedom)
-		{
+		if (0 >= degreesOfFreedom) {
 			return null;
 		}
 
 		double twoOver_9degreesOfFreedom_ = 2. / (9. * degreesOfFreedom);
 
-		try
-		{
+		try {
 			return new R1CentralWilsonHilferty (
 				degreesOfFreedom,
-				new org.drip.measure.gaussian.R1UnivariateNormal (
-					1. - twoOver_9degreesOfFreedom_,
-					twoOver_9degreesOfFreedom_
-				)
+				new R1UnivariateNormal (1. - twoOver_9degreesOfFreedom_, twoOver_9degreesOfFreedom_)
 			);
-		}
-		catch (java.lang.Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -158,14 +172,19 @@ public class R1CentralWilsonHilferty
 
 	protected R1CentralWilsonHilferty (
 		final int degreesOfFreedom,
-		final org.drip.measure.gaussian.R1UnivariateNormal r1UnivariateNormal)
-		throws java.lang.Exception
+		final R1UnivariateNormal r1UnivariateNormal)
+		throws Exception
 	{
-		super (
-			degreesOfFreedom,
-			r1UnivariateNormal
-		);
+		super (degreesOfFreedom, r1UnivariateNormal);
 	}
+
+	/**
+	 * Transform x into the Wilson-Hilferty Variate
+	 * 
+	 * @param x X
+	 * 
+	 * @return The Wilson-Hilferty Variate
+	 */
 
 	@Override public double transform (
 		final double x)
@@ -173,31 +192,42 @@ public class R1CentralWilsonHilferty
 		return x;
 	}
 
+	/**
+	 * Transform the Wilson-Hilferty Variate into x
+	 * 
+	 * @param wilsonHilferty The Wilson-Hilferty Variate
+	 * 
+	 * @return The Wilson-Hilferty Variate transformed back to x
+	 */
+
 	@Override public double inverseTransform (
 		final double wilsonHilferty)
 	{
 		return wilsonHilferty;
 	}
 
+	/**
+	 * Generate a Random Variable corresponding to the Distribution
+	 * 
+	 * @return Random Variable corresponding to the Distribution
+	 * 
+	 * @throws Exception Thrown if the Random Instance cannot be estimated
+	 */
+
 	@Override public double random()
-		throws java.lang.Exception
+		throws Exception
 	{
 		double sumOfStandardNormalSquares = 0.;
 
 		double degreesOfFreedom = degreesOfFreedom();
 
-		for (int drawIndex = 0; drawIndex < degreesOfFreedom; ++drawIndex)
-		{
-			double randomStandardNormal = org.drip.measure.gaussian.NormalQuadrature.InverseCDF
-				(java.lang.Math.random());
+		for (int drawIndex = 0; drawIndex < degreesOfFreedom; ++drawIndex) {
+			double randomStandardNormal = NormalQuadrature.InverseCDF (Math.random());
 
 			sumOfStandardNormalSquares = sumOfStandardNormalSquares +
 				randomStandardNormal * randomStandardNormal;
 		}
 
-		return java.lang.Math.pow (
-			sumOfStandardNormalSquares / degreesOfFreedom,
-			1. / 3.
-		);
+		return Math.pow (sumOfStandardNormalSquares / degreesOfFreedom, 1. / 3.);
 	}
 }

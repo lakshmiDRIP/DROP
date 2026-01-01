@@ -1,11 +1,21 @@
 
 package org.drip.measure.chisquare;
 
+import org.drip.numerical.common.NumberUtil;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2030 Lakshmi Krishnamurthy
+ * Copyright (C) 2029 Lakshmi Krishnamurthy
+ * Copyright (C) 2028 Lakshmi Krishnamurthy
+ * Copyright (C) 2027 Lakshmi Krishnamurthy
+ * Copyright (C) 2026 Lakshmi Krishnamurthy
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -103,14 +113,23 @@ package org.drip.measure.chisquare;
  * 				Statistical Software</i> <b>36 (5)</b> 1-39
  * 		</li>
  * 	</ul>
+ * 
+ *  It provides the following Functionality:
  *
- *	<br><br>
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md">Numerical Analysis Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/README.md">R<sup>d</sup> Continuous/Discrete Probability Measures</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/chisquare/README.md">Chi-Square Distribution Implementation/Properties</a></li>
+ * 		<li><i>R1NonCentralParameters</i> Constructor</li>
+ * 		<li>Retrieve the Degrees of Freedom</li>
+ * 		<li>Retrieve the Non-centrality Parameter</li>
  *  </ul>
+ *
+ *	<br>
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md">Numerical Analysis Library</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/README.md">R<sup>d</sup> Continuous/Discrete Probability Measures</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/chisquare/README.md">Chi-Square Distribution Implementation/Properties</a></td></tr>
+ *  </table>
+ *	<br>
  *
  * @author Lakshmi Krishnamurthy
  */
@@ -118,32 +137,28 @@ package org.drip.measure.chisquare;
 public class R1NonCentralParameters
 {
 	private double _degreesOfFreedom = -1;
-	private double _nonCentralityParameter = java.lang.Double.NaN;
+	private double _nonCentralityParameter = Double.NaN;
 
 	/**
-	 * R1NonCentralParameters Constructor
+	 * <i>R1NonCentralParameters</i> Constructor
 	 * 
 	 * @param degreesOfFreedom Degrees of Freedom
 	 * @param nonCentralityParameter Non-centrality Parameter
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public R1NonCentralParameters (
 		final double degreesOfFreedom,
 		final double nonCentralityParameter)
-		throws java.lang.Exception
+		throws Exception
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (
-				_degreesOfFreedom = degreesOfFreedom
-			) || 0 >= _degreesOfFreedom ||
-			!org.drip.numerical.common.NumberUtil.IsValid (
-				_nonCentralityParameter = nonCentralityParameter
-			)
-		)
+		if (!NumberUtil.IsValid (_degreesOfFreedom = degreesOfFreedom) || 0 >= _degreesOfFreedom ||
+			!NumberUtil.IsValid (_nonCentralityParameter = nonCentralityParameter))
 		{
-			throw new java.lang.Exception (
-				"R1NonCentralParameters Constructor => Invalid Inputs: " + degreesOfFreedom + " | " + nonCentralityParameter
+			throw new Exception (
+				"R1NonCentralParameters Constructor => Invalid Inputs: " + degreesOfFreedom + " | " +
+					nonCentralityParameter
 			);
 		}
 	}

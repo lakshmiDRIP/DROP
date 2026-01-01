@@ -1,11 +1,24 @@
 
 package org.drip.measure.chisquare;
 
+import org.drip.function.definition.R1ToR1;
+import org.drip.function.definition.R2ToR1;
+import org.drip.numerical.common.NumberUtil;
+import org.drip.specialfunction.definition.ModifiedBesselFirstKindEstimator;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2030 Lakshmi Krishnamurthy
+ * Copyright (C) 2029 Lakshmi Krishnamurthy
+ * Copyright (C) 2028 Lakshmi Krishnamurthy
+ * Copyright (C) 2027 Lakshmi Krishnamurthy
+ * Copyright (C) 2026 Lakshmi Krishnamurthy
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -103,32 +116,44 @@ package org.drip.measure.chisquare;
  * 				Statistical Software</i> <b>36 (5)</b> 1-39
  * 		</li>
  * 	</ul>
+ * 
+ *  It provides the following Functionality:
  *
- *	<br><br>
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md">Numerical Analysis Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/README.md">R<sup>d</sup> Continuous/Discrete Probability Measures</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/chisquare/README.md">Chi-Square Distribution Implementation/Properties</a></li>
+ * 		<li>Construct the Second Cumulant Invariant Instance of <i>R1NonCentralCumulantInvariant</i></li>
+ * 		<li>Construct the Third Cumulant Invariant Instance of <i>R1NonCentralCumulantInvariant</i></li>
+ * 		<li>Construct the Fourth Cumulant Invariant Instance of <i>R1NonCentralCumulantInvariant</i></li>
+ * 		<li><i>R1NonCentralCumulantInvariant</i> Constructor</li>
+ * 		<li>Retrieve the Sankaran (1963) "B"</li>
+ * 		<li>Compute the Density under the Distribution at the given Variate</li>
+ * 		<li>Transform x into the Wilson-Hilferty Variate</li>
+ * 		<li>Transform the Wilson-Hilferty Variate into x</li>
  *  </ul>
+ *
+ *	<br>
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md">Numerical Analysis Library</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/README.md">R<sup>d</sup> Continuous/Discrete Probability Measures</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/chisquare/README.md">Chi-Square Distribution Implementation/Properties</a></td></tr>
+ *  </table>
+ *	<br>
  *
  * @author Lakshmi Krishnamurthy
  */
 
 public class R1NonCentralCumulantInvariant
-	extends org.drip.measure.chisquare.R1NonCentral
+	extends R1NonCentral
 {
-	private double _sankaranB = java.lang.Double.NaN;
+	private double _sankaranB = Double.NaN;
 
 	private double transform (
 		final double x)
 	{
-		org.drip.measure.chisquare.R1NonCentralParameters r1NonCentralParameters = parameters();
+		R1NonCentralParameters r1NonCentralParameters = parameters();
 
-		return java.lang.Math.sqrt (
-			(
-				x - _sankaranB
-			) / (
+		return Math.sqrt (
+			(x - _sankaranB) / (
 				r1NonCentralParameters.degreesOfFreedom() + r1NonCentralParameters.nonCentralityParameter()
 			)
 		);
@@ -137,7 +162,7 @@ public class R1NonCentralCumulantInvariant
 	private double inverseTransform (
 		final double y)
 	{
-		org.drip.measure.chisquare.R1NonCentralParameters r1NonCentralParameters = parameters();
+		R1NonCentralParameters r1NonCentralParameters = parameters();
 
 		return y * y * (
 			r1NonCentralParameters.degreesOfFreedom() + r1NonCentralParameters.nonCentralityParameter()
@@ -145,7 +170,7 @@ public class R1NonCentralCumulantInvariant
 	}
 
 	/**
-	 * Construct the Second Cumulant Invariant Instance of R1NonCentralCumulantInvariant
+	 * Construct the Second Cumulant Invariant Instance of <i>R1NonCentralCumulantInvariant</i>
 	 * 
 	 * @param degreesOfFreedom Degrees of Freedom
 	 * @param nonCentralityParameter Non-centrality Parameter
@@ -154,34 +179,27 @@ public class R1NonCentralCumulantInvariant
 	 * @param lowerIncompleteGammaEstimator Lower Incomplete Gamma Estimator
 	 * @param modifiedBesselFirstKindEstimator Modified Bessel First Kind Estimator
 	 * 
-	 * @return The Second Cumulant Invariant Instance of R1NonCentralCumulantInvariant
+	 * @return The Second Cumulant Invariant Instance of <i>R1NonCentralCumulantInvariant</i>
 	 */
 
-	public static final R1NonCentralCumulantInvariant InvariantSecondCumulant (
+	public static final R1NonCentralCumulantInvariant SecondCumulant (
 		final int degreesOfFreedom,
 		final double nonCentralityParameter,
-		final org.drip.function.definition.R1ToR1 gammaEstimator,
-		final org.drip.function.definition.R1ToR1 digammaEstimator,
-		final org.drip.function.definition.R2ToR1 lowerIncompleteGammaEstimator,
-		final org.drip.specialfunction.definition.ModifiedBesselFirstKindEstimator
-			modifiedBesselFirstKindEstimator)
+		final R1ToR1 gammaEstimator,
+		final R1ToR1 digammaEstimator,
+		final R2ToR1 lowerIncompleteGammaEstimator,
+		final ModifiedBesselFirstKindEstimator modifiedBesselFirstKindEstimator)
 	{
-		try
-		{
+		try {
 			return new R1NonCentralCumulantInvariant (
-				new org.drip.measure.chisquare.R1NonCentralParameters (
-					degreesOfFreedom,
-					nonCentralityParameter
-				),
+				new R1NonCentralParameters (degreesOfFreedom, nonCentralityParameter),
 				gammaEstimator,
 				digammaEstimator,
 				lowerIncompleteGammaEstimator,
 				modifiedBesselFirstKindEstimator,
-				(degreesOfFreedom - 1.) / 2.
+				0.5 * (degreesOfFreedom - 1.)
 			);
-		}
-		catch (java.lang.Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -189,7 +207,7 @@ public class R1NonCentralCumulantInvariant
 	}
 
 	/**
-	 * Construct the Third Cumulant Invariant Instance of R1NonCentralCumulantInvariant
+	 * Construct the Third Cumulant Invariant Instance of <i>R1NonCentralCumulantInvariant</i>
 	 * 
 	 * @param degreesOfFreedom Degrees of Freedom
 	 * @param nonCentralityParameter Non-centrality Parameter
@@ -198,34 +216,27 @@ public class R1NonCentralCumulantInvariant
 	 * @param lowerIncompleteGammaEstimator Lower Incomplete Gamma Estimator
 	 * @param modifiedBesselFirstKindEstimator Modified Bessel First Kind Estimator
 	 * 
-	 * @return The Third Cumulant Invariant Instance of R1NonCentralCumulantInvariant
+	 * @return The Third Cumulant Invariant Instance of <i>R1NonCentralCumulantInvariant</i>
 	 */
 
-	public static final R1NonCentralCumulantInvariant InvariantThirdCumulant (
+	public static final R1NonCentralCumulantInvariant ThirdCumulant (
 		final int degreesOfFreedom,
 		final double nonCentralityParameter,
-		final org.drip.function.definition.R1ToR1 gammaEstimator,
-		final org.drip.function.definition.R1ToR1 digammaEstimator,
-		final org.drip.function.definition.R2ToR1 lowerIncompleteGammaEstimator,
-		final org.drip.specialfunction.definition.ModifiedBesselFirstKindEstimator
-			modifiedBesselFirstKindEstimator)
+		final R1ToR1 gammaEstimator,
+		final R1ToR1 digammaEstimator,
+		final R2ToR1 lowerIncompleteGammaEstimator,
+		final ModifiedBesselFirstKindEstimator modifiedBesselFirstKindEstimator)
 	{
-		try
-		{
+		try {
 			return new R1NonCentralCumulantInvariant (
-				new org.drip.measure.chisquare.R1NonCentralParameters (
-					degreesOfFreedom,
-					nonCentralityParameter
-				),
+				new R1NonCentralParameters (degreesOfFreedom, nonCentralityParameter),
 				gammaEstimator,
 				digammaEstimator,
 				lowerIncompleteGammaEstimator,
 				modifiedBesselFirstKindEstimator,
 				(degreesOfFreedom - 1.) / 3.
 			);
-		}
-		catch (java.lang.Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -233,7 +244,7 @@ public class R1NonCentralCumulantInvariant
 	}
 
 	/**
-	 * Construct the Fourth Cumulant Invariant Instance of R1NonCentralCumulantInvariant
+	 * Construct the Fourth Cumulant Invariant Instance of <i>R1NonCentralCumulantInvariant</i>
 	 * 
 	 * @param degreesOfFreedom Degrees of Freedom
 	 * @param nonCentralityParameter Non-centrality Parameter
@@ -242,34 +253,27 @@ public class R1NonCentralCumulantInvariant
 	 * @param lowerIncompleteGammaEstimator Lower Incomplete Gamma Estimator
 	 * @param modifiedBesselFirstKindEstimator Modified Bessel First Kind Estimator
 	 * 
-	 * @return The Fourth Cumulant Invariant Instance of R1NonCentralCumulantInvariant
+	 * @return The Fourth Cumulant Invariant Instance of <i>R1NonCentralCumulantInvariant</i>
 	 */
 
-	public static final R1NonCentralCumulantInvariant InvariantFourthCumulant (
+	public static final R1NonCentralCumulantInvariant FourthCumulant (
 		final int degreesOfFreedom,
 		final double nonCentralityParameter,
-		final org.drip.function.definition.R1ToR1 gammaEstimator,
-		final org.drip.function.definition.R1ToR1 digammaEstimator,
-		final org.drip.function.definition.R2ToR1 lowerIncompleteGammaEstimator,
-		final org.drip.specialfunction.definition.ModifiedBesselFirstKindEstimator
-			modifiedBesselFirstKindEstimator)
+		final R1ToR1 gammaEstimator,
+		final R1ToR1 digammaEstimator,
+		final R2ToR1 lowerIncompleteGammaEstimator,
+		final ModifiedBesselFirstKindEstimator modifiedBesselFirstKindEstimator)
 	{
-		try
-		{
+		try {
 			return new R1NonCentralCumulantInvariant (
-				new org.drip.measure.chisquare.R1NonCentralParameters (
-					degreesOfFreedom,
-					nonCentralityParameter
-				),
+				new R1NonCentralParameters (degreesOfFreedom, nonCentralityParameter),
 				gammaEstimator,
 				digammaEstimator,
 				lowerIncompleteGammaEstimator,
 				modifiedBesselFirstKindEstimator,
-				(degreesOfFreedom - 1.) / 4.
+				0.25 * (degreesOfFreedom - 1.)
 			);
-		}
-		catch (java.lang.Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -277,7 +281,7 @@ public class R1NonCentralCumulantInvariant
 	}
 
 	/**
-	 * R1NonCentralCumulantInvariant Constructor
+	 * <i>R1NonCentralCumulantInvariant</i> Constructor
 	 * 
 	 * @param r1NonCentralParameters R<sup>1</sup> Non-central Parameters
 	 * @param gammaEstimator Gamma Estimator
@@ -286,18 +290,17 @@ public class R1NonCentralCumulantInvariant
 	 * @param modifiedBesselFirstKindEstimator Modified Bessel First Kind Estimator
 	 * @param sankaranB Sankaran (1963) "B"
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public R1NonCentralCumulantInvariant (
-		final org.drip.measure.chisquare.R1NonCentralParameters r1NonCentralParameters,
-		final org.drip.function.definition.R1ToR1 gammaEstimator,
-		final org.drip.function.definition.R1ToR1 digammaEstimator,
-		final org.drip.function.definition.R2ToR1 lowerIncompleteGammaEstimator,
-		final org.drip.specialfunction.definition.ModifiedBesselFirstKindEstimator
-			modifiedBesselFirstKindEstimator,
+		final R1NonCentralParameters r1NonCentralParameters,
+		final R1ToR1 gammaEstimator,
+		final R1ToR1 digammaEstimator,
+		final R2ToR1 lowerIncompleteGammaEstimator,
+		final ModifiedBesselFirstKindEstimator modifiedBesselFirstKindEstimator,
 		final double sankaranB)
-		throws java.lang.Exception
+		throws Exception
 	{
 		super (
 			r1NonCentralParameters,
@@ -307,13 +310,8 @@ public class R1NonCentralCumulantInvariant
 			modifiedBesselFirstKindEstimator
 		);
 
-		if (!org.drip.numerical.common.NumberUtil.IsValid (
-			_sankaranB = sankaranB
-		))
-		{
-			throw new java.lang.Exception (
-				"R1NonCentralCumulantInvariant Constructor => Invalid Inputs"
-			);
+		if (!NumberUtil.IsValid (_sankaranB = sankaranB)) {
+			throw new Exception ("R1NonCentralCumulantInvariant Constructor => Invalid Inputs");
 		}
 	}
 
@@ -328,36 +326,50 @@ public class R1NonCentralCumulantInvariant
 		return _sankaranB;
 	}
 
+	/**
+	 * Compute the Density under the Distribution at the given Variate
+	 * 
+	 * @param x Variate at which the Density needs to be computed
+	 * 
+	 * @return The Density
+	 * 
+	 * @throws Exception Thrown if the input is invalid
+	 */
+
 	@Override public double density (
 		final double x)
-		throws java.lang.Exception
+		throws Exception
 	{
-		return super.density (
-			transform (
-				x
-			)
-		);
+		return super.density (transform (x));
 	}
+
+	/**
+	 * Transform x into the Wilson-Hilferty Variate
+	 * 
+	 * @param x X
+	 * 
+	 * @return The Wilson-Hilferty Variate
+	 */
 
 	@Override public double cumulative (
 		final double x)
-		throws java.lang.Exception
+		throws Exception
 	{
-		return super.cumulative (
-			transform (
-				x
-			)
-		);
+		return super.cumulative (transform (x));
 	}
+
+	/**
+	 * Transform the Wilson-Hilferty Variate into x
+	 * 
+	 * @param y The Wilson-Hilferty Variate
+	 * 
+	 * @return The Wilson-Hilferty Variate transformed back to x
+	 */
 
 	@Override public double invCumulative (
 		final double y)
-		throws java.lang.Exception
+		throws Exception
 	{
-		return inverseTransform (
-			super.invCumulative (
-				y
-			)
-		);
+		return inverseTransform (super.invCumulative (y));
 	}
 }

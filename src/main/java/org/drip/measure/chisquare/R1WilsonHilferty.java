@@ -1,11 +1,24 @@
 
 package org.drip.measure.chisquare;
 
+import org.drip.function.definition.R1ToR1;
+import org.drip.measure.continuous.R1Distribution;
+import org.drip.measure.gaussian.R1UnivariateNormal;
+import org.drip.numerical.common.NumberUtil;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2030 Lakshmi Krishnamurthy
+ * Copyright (C) 2029 Lakshmi Krishnamurthy
+ * Copyright (C) 2028 Lakshmi Krishnamurthy
+ * Copyright (C) 2027 Lakshmi Krishnamurthy
+ * Copyright (C) 2026 Lakshmi Krishnamurthy
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -77,8 +90,8 @@ package org.drip.measure.chisquare;
  */
 
 /**
- * <i>R1CentralWilsonHilferty</i> implements the Normal Proxy Version for the R<sup>1</sup> Chi-Square
- * 	Distribution using the Wilson-Hilferty Transformation. The References are:
+ * <i>R1WilsonHilferty</i> implements the Normal Proxy Version for the R<sup>1</sup> Chi-Square Distribution
+ * 	using the Wilson-Hilferty Transformation. The References are:
  * 
  * <br><br>
  * 	<ul>
@@ -104,38 +117,55 @@ package org.drip.measure.chisquare;
  * 				https://www.itl.nist.gov/div898/handbook/eda/section3/eda3666.htm
  * 		</li>
  * 	</ul>
+ * 
+ *  It provides the following Functionality:
  *
- *	<br><br>
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md">Numerical Analysis Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/README.md">R<sup>d</sup> Continuous/Discrete Probability Measures</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/chisquare/README.md">Chi-Square Distribution Implementation/Properties</a></li>
+ * 		<li>Retrieve the Degrees of Freedom</li>
+ * 		<li>Retrieve the R<sup>1</sup> Univariate Normal</li>
+ * 		<li>Transform x into the Wilson-Hilferty Variate</li>
+ * 		<li>Transform the Wilson-Hilferty Variate into x</li>
+ * 		<li>Lay out the Support of the PDF Range</li>
+ * 		<li>Compute the Density under the Distribution at the given Variate</li>
+ * 		<li>Compute the cumulative under the distribution to the given value</li>
+ * 		<li>Compute the inverse cumulative under the distribution corresponding to the given value</li>
+ * 		<li>Retrieve the Mean of the Distribution</li>
+ * 		<li>Retrieve the Median of the Distribution</li>
+ * 		<li>Retrieve the Mode of the Distribution</li>
+ * 		<li>Retrieve the Variance of the Distribution</li>
+ * 		<li>Retrieve the Skewness of the Distribution</li>
+ * 		<li>Retrieve the Excess Kurtosis of the Distribution</li>
+ * 		<li>Construct the Moment Generating Function</li>
+ * 		<li>Construct the Probability Generating Function</li>
  *  </ul>
+ *
+ *	<br>
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md">Numerical Analysis Library</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/README.md">R<sup>d</sup> Continuous/Discrete Probability Measures</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/chisquare/README.md">Chi-Square Distribution Implementation/Properties</a></td></tr>
+ *  </table>
+ *	<br>
  *
  * @author Lakshmi Krishnamurthy
  */
 
 public abstract class R1WilsonHilferty
-	extends org.drip.measure.continuous.R1Distribution
+	extends R1Distribution
 {
 	private double _degreesOfFreedom = -1;
-	private org.drip.measure.gaussian.R1UnivariateNormal _r1UnivariateNormal = null;
+	private R1UnivariateNormal _r1UnivariateNormal = null;
 
 	protected R1WilsonHilferty (
 		final double degreesOfFreedom,
-		final org.drip.measure.gaussian.R1UnivariateNormal r1UnivariateNormal)
-		throws java.lang.Exception
+		final R1UnivariateNormal r1UnivariateNormal)
+		throws Exception
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (
-				_degreesOfFreedom = degreesOfFreedom
-			) || 0. >= _degreesOfFreedom ||
-			null == (_r1UnivariateNormal = r1UnivariateNormal)
-		)
+		if (!NumberUtil.IsValid (_degreesOfFreedom = degreesOfFreedom) || 0. >= _degreesOfFreedom ||
+			null == (_r1UnivariateNormal = r1UnivariateNormal))
 		{
-			throw new java.lang.Exception (
-				"R1WilsonHilferty Constructor => Invalid Inputs"
-			);
+			throw new Exception ("R1WilsonHilferty Constructor => Invalid Inputs");
 		}
 	}
 
@@ -156,7 +186,7 @@ public abstract class R1WilsonHilferty
 	 * @return The R<sup>1</sup> Univariate Normal
 	 */
 
-	public org.drip.measure.gaussian.R1UnivariateNormal r1UnivariateNormal()
+	public R1UnivariateNormal r1UnivariateNormal()
 	{
 		return _r1UnivariateNormal;
 	}
@@ -170,7 +200,8 @@ public abstract class R1WilsonHilferty
 	 */
 
 	public abstract double transform (
-		final double x);
+		final double x
+	);
 
 	/**
 	 * Transform the Wilson-Hilferty Variate into x
@@ -181,92 +212,173 @@ public abstract class R1WilsonHilferty
 	 */
 
 	public abstract double inverseTransform (
-		final double wilsonHilferty);
+		final double wilsonHilferty
+	);
+
+	/**
+	 * Lay out the Support of the PDF Range
+	 * 
+	 * @return Support of the PDF Range
+	 */
 
 	@Override public double[] support()
 	{
-		return new double[]
-		{
-			0.,
-			java.lang.Double.POSITIVE_INFINITY
-		};
+		return new double[] {0., Double.POSITIVE_INFINITY};
 	}
+
+	/**
+	 * Compute the Density under the Distribution at the given Variate
+	 * 
+	 * @param t Variate at which the Density needs to be computed
+	 * 
+	 * @return The Density
+	 * 
+	 * @throws Exception Thrown if the input is invalid
+	 */
 
 	@Override public double density (
 		final double t)
-		throws java.lang.Exception
+		throws Exception
 	{
-		return _r1UnivariateNormal.density (
-			transform (
-				t
-			)
-		);
+		return _r1UnivariateNormal.density (transform (t));
 	}
+
+	/**
+	 * Compute the cumulative under the distribution to the given value
+	 * 
+	 * @param t Variate to which the cumulative is to be computed
+	 * 
+	 * @return The cumulative
+	 * 
+	 * @throws Exception Thrown if the inputs are invalid
+	 */
 
 	@Override public double cumulative (
 		final double t)
-		throws java.lang.Exception
+		throws Exception
 	{
-		return _r1UnivariateNormal.cumulative (
-			transform (
-				t
-			)
-		);
+		return _r1UnivariateNormal.cumulative (transform (t));
 	}
+
+	/**
+	 * Compute the inverse cumulative under the distribution corresponding to the given value
+	 * 
+	 * @param y Value corresponding to which the inverse cumulative is to be computed
+	 * 
+	 * @return The inverse cumulative
+	 * 
+	 * @throws Exception Thrown if the Input is invalid
+	 */
 
 	@Override public double invCumulative (
 		final double y)
-		throws java.lang.Exception
+		throws Exception
 	{
-		return inverseTransform (
-			_r1UnivariateNormal.invCumulative (
-				y
-			)
-		);
+		return inverseTransform (_r1UnivariateNormal.invCumulative (y));
 	}
 
+	/**
+	 * Retrieve the Mean of the Distribution
+	 * 
+	 * @return The Mean of the Distribution
+	 * 
+	 * @throws Exception Thrown if the Mean cannot be estimated
+	 */
+
 	@Override public double mean()
-		throws java.lang.Exception
+		throws Exception
 	{
 		return _r1UnivariateNormal.mean();
 	}
 
+	/**
+	 * Retrieve the Median of the Distribution
+	 * 
+	 * @return The Median of the Distribution
+	 * 
+	 * @throws Exception Thrown if the Median cannot be estimated
+	 */
+
 	@Override public double median()
-		throws java.lang.Exception
+		throws Exception
 	{
 		return _r1UnivariateNormal.median();
 	}
 
+	/**
+	 * Retrieve the Mode of the Distribution
+	 * 
+	 * @return The Mode of the Distribution
+	 * 
+	 * @throws Exception Thrown if the Mode cannot be estimated
+	 */
+
 	@Override public double mode()
-		throws java.lang.Exception
+		throws Exception
 	{
 		return _r1UnivariateNormal.mode();
 	}
 
+	/**
+	 * Retrieve the Variance of the Distribution
+	 * 
+	 * @return The Variance of the Distribution
+	 * 
+	 * @throws Exception Thrown if the Variance cannot be estimated
+	 */
+
 	@Override public double variance()
-		throws java.lang.Exception
+		throws Exception
 	{
 		return _r1UnivariateNormal.variance();
 	}
 
+	/**
+	 * Retrieve the Skewness of the Distribution
+	 * 
+	 * @return The Skewness of the Distribution
+	 * 
+	 * @throws Exception Thrown if the Skewness cannot be estimated
+	 */
+
 	@Override public double skewness()
-		throws java.lang.Exception
+		throws Exception
 	{
 		return _r1UnivariateNormal.skewness();
 	}
 
+	/**
+	 * Retrieve the Excess Kurtosis of the Distribution
+	 * 
+	 * @return The Excess Kurtosis of the Distribution
+	 * 
+	 * @throws Exception Thrown if the Skewness cannot be estimated
+	 */
+
 	@Override public double excessKurtosis()
-		throws java.lang.Exception
+		throws Exception
 	{
 		return _r1UnivariateNormal.excessKurtosis();
 	}
 
-	@Override public org.drip.function.definition.R1ToR1 momentGeneratingFunction()
+	/**
+	 * Construct the Moment Generating Function
+	 * 
+	 * @return The Moment Generating Function
+	 */
+
+	@Override public R1ToR1 momentGeneratingFunction()
 	{
 		return _r1UnivariateNormal.momentGeneratingFunction();
 	}
 
-	@Override public org.drip.function.definition.R1ToR1 probabilityGeneratingFunction()
+	/**
+	 * Construct the Probability Generating Function
+	 * 
+	 * @return The Probability Generating Function
+	 */
+
+	@Override public R1ToR1 probabilityGeneratingFunction()
 	{
 		return _r1UnivariateNormal.probabilityGeneratingFunction();
 	}

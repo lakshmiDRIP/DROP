@@ -1,11 +1,22 @@
 
 package org.drip.measure.chisquare;
 
+import org.drip.measure.gaussian.R1UnivariateNormal;
+import org.drip.numerical.common.NumberUtil;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2030 Lakshmi Krishnamurthy
+ * Copyright (C) 2029 Lakshmi Krishnamurthy
+ * Copyright (C) 2028 Lakshmi Krishnamurthy
+ * Copyright (C) 2027 Lakshmi Krishnamurthy
+ * Copyright (C) 2026 Lakshmi Krishnamurthy
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -103,61 +114,57 @@ package org.drip.measure.chisquare;
  * 				Statistical Software</i> <b>36 (5)</b> 1-39
  * 		</li>
  * 	</ul>
+ * 
+ *  It provides the following Functionality:
  *
- *	<br><br>
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md">Numerical Analysis Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/README.md">R<sup>d</sup> Continuous/Discrete Probability Measures</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/chisquare/README.md">Chi-Square Distribution Implementation/Properties</a></li>
+ * 		<li>Construct a Standard Instance of <i>R1NonCentralCLTProxy</i></li>
+ * 		<li>Transform x into the Wilson-Hilferty Variate</li>
+ * 		<li>Transform the Wilson-Hilferty Variate into x</li>
  *  </ul>
+ *
+ *	<br>
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md">Numerical Analysis Library</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/README.md">R<sup>d</sup> Continuous/Discrete Probability Measures</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/chisquare/README.md">Chi-Square Distribution Implementation/Properties</a></td></tr>
+ *  </table>
+ *	<br>
  *
  * @author Lakshmi Krishnamurthy
  */
 
 public class R1NonCentralCLTProxy
-	extends org.drip.measure.chisquare.R1NonCentralWilsonHaferty
+	extends R1NonCentralWilsonHaferty
 {
 
 	/**
-	 * Construct a Standard Instance of R1NonCentralCLTProxy
+	 * Construct a Standard Instance of <i>R1NonCentralCLTProxy</i>
 	 * 
 	 * @param degreesOfFreedom Degrees of Freedom
 	 * @param nonCentralityParameter Non-centrality Parameter
 	 * 
-	 * @return Standard Instance of R1NonCentralCLTProxy
+	 * @return Standard Instance of <i>R1NonCentralCLTProxy</i>
 	 */
 
 	public static final R1NonCentralCLTProxy Standard (
 		final int degreesOfFreedom,
 		final double nonCentralityParameter)
 	{
-		if (0 >= degreesOfFreedom ||
-			!org.drip.numerical.common.NumberUtil.IsValid (
-				nonCentralityParameter
-			)
-		)
-		{
+		if (0 >= degreesOfFreedom || !NumberUtil.IsValid (nonCentralityParameter)) {
 			return null;
 		}
 
-		try
-		{
+		try {
 			return new R1NonCentralCLTProxy (
-				new org.drip.measure.chisquare.R1NonCentralParameters (
-					degreesOfFreedom,
-					nonCentralityParameter
-				),
-				new org.drip.measure.gaussian.R1UnivariateNormal (
+				new R1NonCentralParameters (degreesOfFreedom, nonCentralityParameter),
+				new R1UnivariateNormal (
 					degreesOfFreedom + nonCentralityParameter,
-					java.lang.Math.sqrt (
-						2. * (degreesOfFreedom + 2. * nonCentralityParameter)
-					)
+					Math.sqrt (2. * (degreesOfFreedom + 2. * nonCentralityParameter))
 				)
 			);
-		}
-		catch (java.lang.Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -165,21 +172,34 @@ public class R1NonCentralCLTProxy
 	}
 
 	protected R1NonCentralCLTProxy (
-		final org.drip.measure.chisquare.R1NonCentralParameters r1NonCentralParameters,
-		final org.drip.measure.gaussian.R1UnivariateNormal r1UnivariateNormal)
-		throws java.lang.Exception
+		final R1NonCentralParameters r1NonCentralParameters,
+		final R1UnivariateNormal r1UnivariateNormal)
+		throws Exception
 	{
-		super (
-			r1NonCentralParameters,
-			r1UnivariateNormal
-		);
+		super (r1NonCentralParameters, r1UnivariateNormal);
 	}
+
+	/**
+	 * Transform x into the Wilson-Hilferty Variate
+	 * 
+	 * @param x X
+	 * 
+	 * @return The Wilson-Hilferty Variate
+	 */
 
 	@Override public double transform (
 		final double x)
 	{
 		return x;
 	}
+
+	/**
+	 * Transform the Wilson-Hilferty Variate into x
+	 * 
+	 * @param wilsonHilferty The Wilson-Hilferty Variate
+	 * 
+	 * @return The Wilson-Hilferty Variate transformed back to x
+	 */
 
 	@Override public double inverseTransform (
 		final double wilsonHilferty)
