@@ -1,11 +1,23 @@
 
 package org.drip.measure.gamma;
 
+import org.drip.function.definition.R1ToR1;
+import org.drip.function.definition.R2ToR1;
+import org.drip.numerical.common.NumberUtil;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2030 Lakshmi Krishnamurthy
+ * Copyright (C) 2029 Lakshmi Krishnamurthy
+ * Copyright (C) 2028 Lakshmi Krishnamurthy
+ * Copyright (C) 2027 Lakshmi Krishnamurthy
+ * Copyright (C) 2026 Lakshmi Krishnamurthy
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -102,20 +114,34 @@ package org.drip.measure.gamma;
  * 				Likelihood Equations <i>The American Statistician</i> <b>71 (2)</b> 177-181
  * 		</li>
  * 	</ul>
+ * 
+ *  It provides the following Functionality:
  *
- *	<br><br>
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md">Numerical Analysis Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/README.md">R<sup>d</sup> Continuous/Discrete Probability Measures</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/gamma/README.md">R<sup>1</sup> Gamma Distribution Implementation/Properties</a></li>
+ * 		<li>Generate Random Discrete from Inverse CDF</li>
+ * 		<li>Generate Random Discrete from Ahrens-Dieter (1982) Scheme</li>
+ * 		<li>Generate Random Discrete from Marsaglia (1977) Scheme</li>
+ * 		<li><i>R1ShapeScaleDiscrete</i> Constructor</li>
+ * 		<li>Retrieve the Discrete Random Number Generator Scheme</li>
+ * 		<li>Generate a Random Variable corresponding to the Distribution</li>
+ * 		<li>Generate Generalized Gamma Distributed Random Number</li>
+ * 		<li>Generate Inverse Gamma Distributed Random Number</li>
  *  </ul>
+ *
+ *	<br>
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md">Numerical Analysis Library</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/README.md">R<sup>d</sup> Continuous/Discrete Probability Measures</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/gamma/README.md">R<sup>1</sup> Gamma Distribution Implementation/Properties</a></td></tr>
+ *  </table>
+ *	<br>
  *
  * @author Lakshmi Krishnamurthy
  */
 
 public class R1ShapeScaleDiscrete
-	extends org.drip.measure.gamma.R1ShapeScaleDistribution
+	extends R1ShapeScaleDistribution
 {
 
 	/**
@@ -139,7 +165,7 @@ public class R1ShapeScaleDiscrete
 	private int _randomGenerationScheme = -1;
 
 	/**
-	 * R1ShapeScaleDiscrete Constructor
+	 * <i>R1ShapeScaleDiscrete</i> Constructor
 	 * 
 	 * @param shapeParameter Shape Parameter
 	 * @param scaleParameter Scale Parameter
@@ -148,23 +174,20 @@ public class R1ShapeScaleDiscrete
 	 * @param lowerIncompleteGammaEstimator Lower Incomplete Gamma Estimator
 	 * @param randomGenerationScheme Scheme for the Random Gamma NUmber Generator
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public R1ShapeScaleDiscrete (
 		final double shapeParameter,
 		final double scaleParameter,
-		final org.drip.function.definition.R1ToR1 gammaEstimator,
-		final org.drip.function.definition.R1ToR1 digammaEstimator,
-		final org.drip.function.definition.R2ToR1 lowerIncompleteGammaEstimator,
+		final R1ToR1 gammaEstimator,
+		final R1ToR1 digammaEstimator,
+		final R2ToR1 lowerIncompleteGammaEstimator,
 		final int randomGenerationScheme)
-		throws java.lang.Exception
+		throws Exception
 	{
 		super (
-			new org.drip.measure.gamma.ShapeScaleParameters (
-				shapeParameter,
-				scaleParameter
-			),
+			new ShapeScaleParameters (shapeParameter, scaleParameter),
 			gammaEstimator,
 			digammaEstimator,
 			lowerIncompleteGammaEstimator
@@ -184,27 +207,30 @@ public class R1ShapeScaleDiscrete
 		return _randomGenerationScheme;
 	}
 
+	/**
+	 * Generate a Random Variable corresponding to the Distribution
+	 * 
+	 * @return Random Variable corresponding to the Distribution
+	 * 
+	 * @throws Exception Thrown if the Random Instance cannot be estimated
+	 */
+
 	@Override public double random()
-		throws java.lang.Exception
+		throws Exception
 	{
-		if (DISCRETE_RANDOM_FROM_INVERSE_CDF == _randomGenerationScheme)
-		{
+		if (DISCRETE_RANDOM_FROM_INVERSE_CDF == _randomGenerationScheme) {
 			return super.random();
 		}
 
-		if (DISCRETE_RANDOM_FROM_AHRENS_DIETER == _randomGenerationScheme)
-		{
+		if (DISCRETE_RANDOM_FROM_AHRENS_DIETER == _randomGenerationScheme) {
 			return randomAhrensDieter1982();
 		}
 
-		if (DISCRETE_RANDOM_FROM_MARSAGLIA == _randomGenerationScheme)
-		{
+		if (DISCRETE_RANDOM_FROM_MARSAGLIA == _randomGenerationScheme) {
 			return randomMarsaglia1977();
 		}
 
-		throw new java.lang.Exception (
-			"R1ShapeScaleDiscrete::random => Invalid Scheme"
-		);
+		throw new Exception ("R1ShapeScaleDiscrete::random => Invalid Scheme");
 	}
 
 	/**
@@ -214,27 +240,18 @@ public class R1ShapeScaleDiscrete
 	 * 
 	 * @return The Generalized Gamma Distributed Random Number
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public double randomGeneralizedGamma (
 		final double q)
-		throws java.lang.Exception
+		throws Exception
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (
-				q
-			) || 0. >= q
-		)
-		{
-			throw new java.lang.Exception (
-				"R1ShapeScaleDiscrete::randomGeneralizedGamma => Invalid Inputs"
-			);
+		if (!NumberUtil.IsValid (q) || 0. >= q) {
+			throw new Exception ("R1ShapeScaleDiscrete::randomGeneralizedGamma => Invalid Inputs");
 		}
 
-		return java.lang.Math.pow (
-			random(),
-			q
-		);
+		return Math.pow (random(), q);
 	}
 
 	/**
@@ -242,11 +259,11 @@ public class R1ShapeScaleDiscrete
 	 * 
 	 * @return The Generalized Gamma Distributed Random Number
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public double randomInverseGamma()
-		throws java.lang.Exception
+		throws Exception
 	{
 		return 1. / random();
 	}

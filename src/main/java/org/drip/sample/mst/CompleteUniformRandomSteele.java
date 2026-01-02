@@ -168,7 +168,7 @@ public class CompleteUniformRandomSteele
 			"\t| Gamma Asymptotic Frieze MST Length   => " +
 			FormatUtil.FormatDouble (
 				SteeleCompleteUniformRandomTree.AsymptoticFriezeMSTLength (
-					R1ShapeScaleDistribution.ShapeRate (
+					R1ShapeScaleDistribution.FromShapeAndRate (
 						1.,
 						1.,
 						new EulerIntegralSecondKind (

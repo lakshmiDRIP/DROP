@@ -4,6 +4,9 @@ package org.drip.measure.gamma;
 import org.drip.function.definition.R1ToR1;
 import org.drip.function.definition.R2ToR1;
 import org.drip.measure.continuous.R1Distribution;
+import org.drip.measure.gaussian.NormalQuadrature;
+import org.drip.measure.gaussian.R1UnivariateNormal;
+import org.drip.numerical.common.NumberUtil;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -118,7 +121,37 @@ import org.drip.measure.continuous.R1Distribution;
  *  It provides the following Functionality:
  *
  *  <ul>
- * 		<li><i>ShapeScaleParameters</i> Constructor</li>
+ * 		<li>Construct a Gamma Distribution from Shape and Rate Parameters</li>
+ * 		<li>Shape Summation Based <i>R1ShapeScaleDistribution</i></li>
+ * 		<li>Construct the Standard <i>R1ShapeScaleDistribution</i> Instance</li>
+ * 		<li><i>R1ShapeScaleDistribution</i> Constructor</li>
+ * 		<li>Retrieve the Shape-Scale Parameters</li>
+ * 		<li>Retrieve the Gamma Estimator</li>
+ * 		<li>Retrieve the Digamma Estimator</li>
+ * 		<li>Retrieve the Lower Incomplete Gamma Estimator</li>
+ * 		<li>Lay out the Support of the PDF Range</li>
+ * 		<li>Compute the Density under the Distribution at the given Variate</li>
+ * 		<li>Compute the cumulative under the distribution to the given value</li>
+ * 		<li>Retrieve the Mean of the Distribution</li>
+ * 		<li>Retrieve the Mode of the Distribution</li>
+ * 		<li>Retrieve the Variance of the Distribution</li>
+ * 		<li>Retrieve the Skewness of the Distribution</li>
+ * 		<li>Retrieve the Excess Kurtosis of the Distribution</li>
+ * 		<li>Retrieve the Differential Entropy of the Distribution</li>
+ * 		<li>Retrieve the Moment Generating Function of the Distribution</li>
+ * 		<li>Retrieve the Central Limit Theorem Equivalent Normal Distribution Proxy</li>
+ * 		<li>Compute the Logarithmic Expectation</li>
+ * 		<li>Compute the Banneheke-Ekayanake Approximation for the Median when k gte 1</li>
+ * 		<li>Compute the Ramanujan-Choi Approximation for the Median</li>
+ * 		<li>Compute the Chen-Rubin Median Lower Bound</li>
+ * 		<li>Compute the Chen-Rubin Median Upper Bound</li>
+ * 		<li>Generate a Scaled Gamma Distribution</li>
+ * 		<li>Retrieve the Array of Natural Parameters</li>
+ * 		<li>Retrieve the Array of Natural Statistics</li>
+ * 		<li>Generate the Exponential Family Representation</li>
+ * 		<li>Compute the Laplacian</li>
+ * 		<li>Generate a Random Variable using the Ahrens-Dieter (1982) Scheme</li>
+ * 		<li>Generate a Random Variable using the Marsaglia (1977) Scheme</li>
  *  </ul>
  *
  *	<br>
@@ -155,7 +188,7 @@ public class R1ShapeScaleDistribution
 	 * @return Gamma Distribution from Shape Alpha and Rate Beta Parameters
 	 */
 
-	public static final R1ShapeScaleDistribution ShapeRate (
+	public static final R1ShapeScaleDistribution FromShapeAndRate (
 		final double shapeParameter,
 		final double rateParameter,
 		final R1ToR1 gammaEstimator,
@@ -172,7 +205,7 @@ public class R1ShapeScaleDistribution
 	}
 
 	/**
-	 * Shape Summation Based ShapeScaleDistribution
+	 * Shape Summation Based <i>R1ShapeScaleDistribution</i>
 	 * 
 	 * @param shapeParameterArray Shape Parameter Array
 	 * @param scaleParameter Scale Parameter
@@ -180,37 +213,31 @@ public class R1ShapeScaleDistribution
 	 * @param digammaEstimator Digamma Estimator
 	 * @param lowerIncompleteGammaEstimator Lower Incomplete Gamma Estimator
 	 * 
-	 * @return Shape Summation Based ShapeScaleDistribution
+	 * @return Shape Summation Based <i>R1ShapeScaleDistribution</i>
 	 */
 
-	public static final R1ShapeScaleDistribution ShapeSummation (
+	public static final R1ShapeScaleDistribution FromShapeAndSummation (
 		final double[] shapeParameterArray,
 		final double scaleParameter,
 		final R1ToR1 gammaEstimator,
 		final R1ToR1 digammaEstimator,
 		final R2ToR1 lowerIncompleteGammaEstimator)
 	{
-		if (null == shapeParameterArray)
-		{
+		if (null == shapeParameterArray) {
 			return null;
 		}
 
 		double shapeParameter = 0.;
-		int shapeParameterArraySize = shapeParameterArray.length;
 
-		if (0 == shapeParameterArraySize)
-		{
+		if (0 == shapeParameterArray.length) {
 			return null;
 		}
 
 		for (int shapeParameterIndex = 0;
-			shapeParameterIndex < shapeParameterArraySize;
+			shapeParameterIndex < shapeParameterArray.length;
 			++shapeParameterIndex)
 		{
-			if (!org.drip.numerical.common.NumberUtil.IsValid (
-				shapeParameterArray[shapeParameterIndex]
-			))
-			{
+			if (!NumberUtil.IsValid (shapeParameterArray[shapeParameterIndex])) {
 				return null;
 			}
 
@@ -227,7 +254,7 @@ public class R1ShapeScaleDistribution
 	}
 
 	/**
-	 * Construct the Standard R1ShapeScaleDistribution Instance
+	 * Construct the Standard <i>R1ShapeScaleDistribution</i> Instance
 	 * 
 	 * @param shapeParameter Shape Parameter
 	 * @param scaleParameter Scale Parameter
@@ -235,7 +262,7 @@ public class R1ShapeScaleDistribution
 	 * @param digammaEstimator Digamma Estimator
 	 * @param lowerIncompleteGammaEstimator Lower Incomplete Gamma Estimator
 	 * 
-	 * @return The R1ShapeScaleDistribution Instance
+	 * @return The <i>R1ShapeScaleDistribution</i> Instance
 	 */
 
 	public static final R1ShapeScaleDistribution Standard (
@@ -245,20 +272,14 @@ public class R1ShapeScaleDistribution
 		final R1ToR1 digammaEstimator,
 		final R2ToR1 lowerIncompleteGammaEstimator)
 	{
-		try
-		{
+		try {
 			return new R1ShapeScaleDistribution (
-				new org.drip.measure.gamma.ShapeScaleParameters (
-					shapeParameter,
-					scaleParameter
-				),
+				new ShapeScaleParameters (shapeParameter, scaleParameter),
 				gammaEstimator,
 				digammaEstimator,
 				lowerIncompleteGammaEstimator
 			);
-		}
-		catch (Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -274,40 +295,27 @@ public class R1ShapeScaleDistribution
 		double v = 0.;
 		double u = 0.;
 
-		double c = 1. / Math.sqrt (
-			9. * d
-		);
+		double c = 1. / Math.sqrt (9. * d);
 
-		while (true)
-		{
-			double x = org.drip.measure.gaussian.NormalQuadrature.Random();
+		while (true) {
+			double x = NormalQuadrature.Random();
 
 			u = Math.random();
 
 			v = 1. + c * x;
 			v = v * v * v;
 
-			if (v > 0. &&
-				0.5 * x * x + d - d * v + d * Math.log (
-					v
-				) > Math.log (
-					u
-				)
-			)
-			{
-				double marsagliaRandom =_shapeScaleParameters.scale() * d * v;
+			if (v > 0. && 0.5 * x * x + d - d * v + d * Math.log (v) > Math.log (u)) {
+				double marsagliaRandom = _shapeScaleParameters.scale() * d * v;
 
 				return shapeParameter != shapeParameterIn ?
-					marsagliaRandom * Math.pow (
-						u,
-						1. / shapeParameterIn
-					) : marsagliaRandom;
+					marsagliaRandom * Math.pow (u, 1. / shapeParameterIn) : marsagliaRandom;
 			}
 		}
 	}
 
 	/**
-	 * R1ShapeScaleDistribution Constructor
+	 * <i>R1ShapeScaleDistribution</i> Constructor
 	 * 
 	 * @param shapeScaleParameters Shape-Scale Parameters
 	 * @param gammaEstimator Gamma Estimator
@@ -318,7 +326,7 @@ public class R1ShapeScaleDistribution
 	 */
 
 	public R1ShapeScaleDistribution (
-		final org.drip.measure.gamma.ShapeScaleParameters shapeScaleParameters,
+		final ShapeScaleParameters shapeScaleParameters,
 		final R1ToR1 gammaEstimator,
 		final R1ToR1 digammaEstimator,
 		final R2ToR1 lowerIncompleteGammaEstimator)
@@ -327,24 +335,15 @@ public class R1ShapeScaleDistribution
 		if (null == (_shapeScaleParameters = shapeScaleParameters) ||
 			null == (_gammaEstimator = gammaEstimator) ||
 			null == (_digammaEstimator = digammaEstimator) ||
-			null == (_lowerIncompleteGammaEstimator = lowerIncompleteGammaEstimator)
-		)
+			null == (_lowerIncompleteGammaEstimator = lowerIncompleteGammaEstimator))
 		{
-			throw new Exception (
-				"R1ShapeScaleDistribution Constructor => Invalid Inputs"
-			);
+			throw new Exception ("R1ShapeScaleDistribution Constructor => Invalid Inputs");
 		}
 
 		double shape = _shapeScaleParameters.shape();
 
-		_pdfScaler = (
-			_cdfScaler = 1. / _gammaEstimator.evaluate (
-				shape
-			)
-		) * Math.pow (
-			_shapeScaleParameters.scale(),
-			-1. * shape
-		);
+		_pdfScaler = (_cdfScaler = 1. / _gammaEstimator.evaluate (shape)) *
+			Math.pow (_shapeScaleParameters.scale(), -1. * shape);
 	}
 
 	/**
@@ -353,7 +352,7 @@ public class R1ShapeScaleDistribution
 	 * @return The Shape-Scale Parameters
 	 */
 
-	public org.drip.measure.gamma.ShapeScaleParameters shapeScaleParameters()
+	public ShapeScaleParameters shapeScaleParameters()
 	{
 		return _shapeScaleParameters;
 	}
@@ -391,47 +390,55 @@ public class R1ShapeScaleDistribution
 		return _lowerIncompleteGammaEstimator;
 	}
 
+	/**
+	 * Lay out the Support of the PDF Range
+	 * 
+	 * @return Support of the PDF Range
+	 */
+
 	@Override public double[] support()
 	{
-		return new double[]
-		{
-			0.,
-			Double.POSITIVE_INFINITY
-		};
+		return new double[] {0., Double.POSITIVE_INFINITY};
 	}
+
+	/**
+	 * Compute the Density under the Distribution at the given Variate
+	 * 
+	 * @param t Variate at which the Density needs to be computed
+	 * 
+	 * @return The Density
+	 * 
+	 * @throws Exception Thrown if the input is invalid
+	 */
 
 	@Override public double density (
 		final double t)
 		throws Exception
 	{
-		if (!supported (
-			t
-		))
-		{
-			throw new Exception (
-				"ShapeScaleDistribution::density => Variate not in Range"
-			);
+		if (!supported (t)) {
+			throw new Exception ("ShapeScaleDistribution::density => Variate not in Range");
 		}
 
-		return _pdfScaler * Math.pow (
-			t,
-			_shapeScaleParameters.shape() - 1.
-		) * Math.exp (
-			-1. * t / _shapeScaleParameters.scale()
-		);
+		return _pdfScaler * Math.pow (t, _shapeScaleParameters.shape() - 1.) *
+			Math.exp (-1. * t / _shapeScaleParameters.scale());
 	}
+
+	/**
+	 * Compute the cumulative under the distribution to the given value
+	 * 
+	 * @param t Variate to which the cumulative is to be computed
+	 * 
+	 * @return The cumulative
+	 * 
+	 * @throws Exception Thrown if the inputs are invalid
+	 */
 
 	@Override public double cumulative (
 		final double t)
 		throws Exception
 	{
-		if (!supported (
-			t
-		))
-		{
-			throw new Exception (
-				"ShapeScaleDistribution::cumulative => Invalid Inputs"
-			);
+		if (!supported (t)) {
+			throw new Exception ("ShapeScaleDistribution::cumulative => Invalid Inputs");
 		}
 
 		return _cdfScaler * _lowerIncompleteGammaEstimator.evaluate (
@@ -440,26 +447,47 @@ public class R1ShapeScaleDistribution
 		);
 	}
 
+	/**
+	 * Retrieve the Mean of the Distribution
+	 * 
+	 * @return The Mean of the Distribution
+	 * 
+	 * @throws Exception Thrown if the Mean cannot be estimated
+	 */
+
 	@Override public double mean()
 		throws Exception
 	{
 		return _shapeScaleParameters.shape() * _shapeScaleParameters.scale();
 	}
 
+	/**
+	 * Retrieve the Mode of the Distribution
+	 * 
+	 * @return The Mode of the Distribution
+	 * 
+	 * @throws Exception Thrown if the Mode cannot be estimated
+	 */
+
 	@Override public double mode()
 		throws Exception
 	{
 		double shape = _shapeScaleParameters.shape();
 
-		if (shape < 1.)
-		{
-			throw new Exception (
-				"ShapeScaleDistribution::mode => No Closed Form Available"
-			);
+		if (shape < 1.) {
+			throw new Exception ("ShapeScaleDistribution::mode => No Closed Form Available");
 		}
 
 		return (shape - 1.) * _shapeScaleParameters.scale();
 	}
+
+	/**
+	 * Retrieve the Variance of the Distribution
+	 * 
+	 * @return The Variance of the Distribution
+	 * 
+	 * @throws Exception Thrown if the Variance cannot be estimated
+	 */
 
 	@Override public double variance()
 		throws Exception
@@ -469,11 +497,27 @@ public class R1ShapeScaleDistribution
 		return _shapeScaleParameters.shape() * scale * scale;
 	}
 
+	/**
+	 * Retrieve the Skewness of the Distribution
+	 * 
+	 * @return The Skewness of the Distribution
+	 * 
+	 * @throws Exception Thrown if the Skewness cannot be estimated
+	 */
+
 	@Override public double skewness()
 		throws Exception
 	{
 		return 2. * Math.sqrt (1. / _shapeScaleParameters.shape());
 	}
+
+	/**
+	 * Retrieve the Excess Kurtosis of the Distribution
+	 * 
+	 * @return The Excess Kurtosis of the Distribution
+	 * 
+	 * @throws Exception Thrown if the Excess Kurtosis cannot be estimated
+	 */
 
 	@Override public double excessKurtosis()
 		throws Exception
@@ -481,44 +525,47 @@ public class R1ShapeScaleDistribution
 		return 6. / _shapeScaleParameters.shape();
 	}
 
+	/**
+	 * Retrieve the Differential Entropy of the Distribution
+	 * 
+	 * @return The Differential Entropy of the Distribution
+	 * 
+	 * @throws Exception Thrown if the Differential Entropy cannot be estimated
+	 */
+
 	@Override public double differentialEntropy()
 		throws Exception
 	{
 		double shape = _shapeScaleParameters.shape();
 
-		return shape + Math.log (
-			_shapeScaleParameters.scale() / _cdfScaler
-		) + (1. - shape) * _digammaEstimator.evaluate (
-			shape
-		);
+		return shape + Math.log (_shapeScaleParameters.scale() / _cdfScaler) +
+			(1. - shape) * _digammaEstimator.evaluate (shape);
 	}
+
+	/**
+	 * Retrieve the Moment Generating Function of the Distribution
+	 * 
+	 * @return The Moment Generating Function of the Distribution
+	 * 
+	 * @throws Exception Thrown if the Moment Generating Function cannot be estimated
+	 */
 
 	@Override public R1ToR1 momentGeneratingFunction()
 	{
 		final double scale = _shapeScaleParameters.scale();
 
-		return new R1ToR1 (
-			null
-		)
-		{
+		return new R1ToR1 (null) {
 			@Override public double evaluate (
 				final double t)
 				throws Exception
 			{
-				if (!org.drip.numerical.common.NumberUtil.IsValid (
-						t
-					) || t >= 1. / scale
-				)
-				{
+				if (!NumberUtil.IsValid (t) || t >= 1. / scale) {
 					throw new Exception (
 						"ShapeScaleDistribution::momentGeneratingFunction::evaluate => Invalid Input"
 					);
 				}
 
-				return Math.pow (
-					1. - scale * t,
-					-1. * _shapeScaleParameters.shape()
-				);
+				return Math.pow (1. - scale * t, -1. * _shapeScaleParameters.shape());
 			}
 		};
 	}
@@ -529,23 +576,15 @@ public class R1ShapeScaleDistribution
 	 * @return The Central Limit Theorem Equivalent Normal Distribution Proxy
 	 */
 
-	public org.drip.measure.gaussian.R1UnivariateNormal cltProxy()
+	public R1UnivariateNormal cltProxy()
 	{
 		double scale = _shapeScaleParameters.scale();
 
 		double shape = _shapeScaleParameters.shape();
 
-		try
-		{
-			return new org.drip.measure.gaussian.R1UnivariateNormal (
-				shape * scale,
-				scale * Math.sqrt (
-					shape
-				)
-			);
-		}
-		catch (Exception e)
-		{
+		try {
+			return new R1UnivariateNormal (shape * scale, scale * Math.sqrt (shape));
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -563,11 +602,8 @@ public class R1ShapeScaleDistribution
 	public double logarithmicExpectation()
 		throws Exception
 	{
-		return _digammaEstimator.evaluate (
-			_shapeScaleParameters.shape()
-		) - Math.log (
-			_shapeScaleParameters.scale()
-		);
+		return _digammaEstimator.evaluate (_shapeScaleParameters.shape()) -
+			Math.log (_shapeScaleParameters.scale());
 	}
 
 	/**
@@ -583,8 +619,7 @@ public class R1ShapeScaleDistribution
 	{
 		double shape = _shapeScaleParameters.shape();
 
-		if (1. > shape)
-		{
+		if (1. > shape) {
 			throw new Exception (
 				"ShapeScaleDistribution::bannehekeEkayanakeMedianApproximation => Invalid Shape Parameter"
 			);
@@ -605,8 +640,7 @@ public class R1ShapeScaleDistribution
 
 		double inverseShapeParameter = 1. / shape;
 
-		return shape - 1. / 3. +
-			8. * inverseShapeParameter / 405. +
+		return shape - 1. / 3. + 8. * inverseShapeParameter / 405. +
 			184. * inverseShapeParameter * inverseShapeParameter / 25515. +
 			2248. * inverseShapeParameter * inverseShapeParameter * inverseShapeParameter / 3444525.;
 	}
@@ -644,10 +678,9 @@ public class R1ShapeScaleDistribution
 	public R1ShapeScaleDistribution scale (
 		final double scaleFactor)
 	{
-		try
-		{
+		try {
 			return new R1ShapeScaleDistribution (
-				new org.drip.measure.gamma.ShapeScaleParameters (
+				new ShapeScaleParameters (
 					_shapeScaleParameters.shape(),
 					_shapeScaleParameters.scale() * scaleFactor
 				),
@@ -655,9 +688,7 @@ public class R1ShapeScaleDistribution
 				_digammaEstimator,
 				_lowerIncompleteGammaEstimator
 			);
-		}
-		catch (Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -672,11 +703,7 @@ public class R1ShapeScaleDistribution
 
 	public double[] naturalParameters()
 	{
-		return new double[]
-		{
-			_shapeScaleParameters.shape() - 1,
-			-1. / _shapeScaleParameters.scale()
-		};
+		return new double[] {_shapeScaleParameters.shape() - 1, -1. / _shapeScaleParameters.scale()};
 	}
 
 	/**
@@ -690,15 +717,7 @@ public class R1ShapeScaleDistribution
 	public double[] naturalStatistics (
 		final double x)
 	{
-		return org.drip.numerical.common.NumberUtil.IsValid (
-			x
-		) ? new double[]
-		{
-			x,
-			Math.log (
-				x
-			)
-		} : null;
+		return NumberUtil.IsValid (x) ? new double[] {x, Math.log (x)} : null;
 	}
 
 	/**
@@ -709,20 +728,12 @@ public class R1ShapeScaleDistribution
 	 * @return Exponential Family Representation
 	 */
 
-	public org.drip.measure.gamma.ExponentialFamilyRepresentation exponentialFamilyRepresentation (
+	public ExponentialFamilyRepresentation exponentialFamilyRepresentation (
 		final double x)
 	{
-		try
-		{
-			return new org.drip.measure.gamma.ExponentialFamilyRepresentation (
-				naturalParameters(),
-				naturalStatistics (
-					x
-				)
-			);
-		}
-		catch (Exception e)
-		{
+		try {
+			return new ExponentialFamilyRepresentation (naturalParameters(), naturalStatistics (x));
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -743,17 +754,11 @@ public class R1ShapeScaleDistribution
 		final double s)
 		throws Exception
 	{
-		if (0. > s)
-		{
-			throw new Exception (
-				"ShapeScaleDistribution::laplacian => Invalid Shape Parameter"
-			);
+		if (0. > s) {
+			throw new Exception ("ShapeScaleDistribution::laplacian => Invalid Shape Parameter");
 		}
 
-		return Math.pow (
-			1. + s * _shapeScaleParameters.scale(),
-			-1. * _shapeScaleParameters.shape()
-		);
+		return Math.pow (1. + s * _shapeScaleParameters.scale(), -1. * _shapeScaleParameters.shape());
 	}
 
 	/**
@@ -775,59 +780,32 @@ public class R1ShapeScaleDistribution
 		int k = (int) shape;
 		double delta = shape - k;
 
-		for (int index = 0;
-			index < k;
-			++index)
-		{
-			random = random - Math.log (
-				Math.random()
-			);
+		for (int index = 0; index < k; ++index) {
+			random = random - Math.log (Math.random());
 		}
 
-		if (0. == delta)
-		{
+		if (0. == delta) {
 			return random;
 		}
 
-		while (true)
-		{
+		while (true) {
 			double u = Math.random();
 
 			double v = Math.random();
 
 			double w = Math.random();
 
-			if (u <= Math.E / (Math.E + delta))
-			{
-				epsilon = Math.pow (
-					v,
-					1. / delta
-				);
+			if (u <= Math.E / (Math.E + delta)) {
+				epsilon = Math.pow (v, 1. / delta);
 
-				eta = w * Math.pow (
-					epsilon,
-					delta - 1.
-				);
-			}
-			else
-			{
-				epsilon = 1. - Math.log (
-					v
-				);
+				eta = w * Math.pow (epsilon, delta - 1.);
+			} else {
+				epsilon = 1. - Math.log (v);
 
-				eta = w * Math.exp (
-					-1. * epsilon
-				);
+				eta = w * Math.exp (-1. * epsilon);
 			}
 
-			if (eta <= Math.pow (
-				epsilon,
-				delta - 1.
-			) * Math.exp (
-				-1. * epsilon
-				)
-			)
-			{
+			if (eta <= Math.pow (epsilon, delta - 1.) * Math.exp (-1. * epsilon)) {
 				break;
 			}
 		}
@@ -846,8 +824,6 @@ public class R1ShapeScaleDistribution
 	public double randomMarsaglia1977()
 		throws Exception
 	{
-		return randomMarsaglia1977 (
-			_shapeScaleParameters.shape()
-		);
+		return randomMarsaglia1977 (_shapeScaleParameters.shape());
 	}
 }

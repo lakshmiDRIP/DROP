@@ -1,11 +1,21 @@
 
 package org.drip.measure.gamma;
 
+import org.drip.numerical.common.NumberUtil;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2030 Lakshmi Krishnamurthy
+ * Copyright (C) 2029 Lakshmi Krishnamurthy
+ * Copyright (C) 2028 Lakshmi Krishnamurthy
+ * Copyright (C) 2027 Lakshmi Krishnamurthy
+ * Copyright (C) 2026 Lakshmi Krishnamurthy
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -102,14 +112,23 @@ package org.drip.measure.gamma;
  * 				Likelihood Equations <i>The American Statistician</i> <b>71 (2)</b> 177-181
  * 		</li>
  * 	</ul>
+ * 
+ *  It provides the following Functionality:
  *
- *	<br><br>
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md">Numerical Analysis Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/README.md">R<sup>d</sup> Continuous/Discrete Probability Measures</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/gamma/README.md">R<sup>1</sup> Gamma Distribution Implementation/Properties</a></li>
+ * 		<li><i>ExponentialFamilyRepresentation</i> Constructor</li>
+ * 		<li>Retrieve the Array of Natural Parameters</li>
+ * 		<li>Retrieve the Array of Natural Statistics</li>
  *  </ul>
+ *
+ *	<br>
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md">Numerical Analysis Library</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/README.md">R<sup>d</sup> Continuous/Discrete Probability Measures</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/gamma/README.md">R<sup>1</sup> Gamma Distribution Implementation/Properties</a></td></tr>
+ *  </table>
+ *	<br>
  *
  * @author Lakshmi Krishnamurthy
  */
@@ -120,33 +139,26 @@ public class ExponentialFamilyRepresentation
 	private double[] _naturalStatisticsArray = null;
 
 	/**
-	 * ExponentialFamilyRepresentation Constructor
+	 * <i>ExponentialFamilyRepresentation</i> Constructor
 	 * 
 	 * @param naturalParametersArray Array of Natural Parameters
 	 * @param naturalStatisticsArray Array of Natural Statistics
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public ExponentialFamilyRepresentation (
 		final double[] naturalParametersArray,
 		final double[] naturalStatisticsArray)
-		throws java.lang.Exception
+		throws Exception
 	{
 		if (null == (_naturalParametersArray = naturalParametersArray) ||
+				0 == _naturalParametersArray.length ||
 			null == (_naturalStatisticsArray = naturalStatisticsArray) ||
-			0 == _naturalParametersArray.length ||
-			org.drip.numerical.common.NumberUtil.IsValid (
-				_naturalParametersArray
-			) || 0 == _naturalStatisticsArray.length ||
-			org.drip.numerical.common.NumberUtil.IsValid (
-				_naturalStatisticsArray
-			)
-		)
+				0 == _naturalStatisticsArray.length ||
+			NumberUtil.IsValid (_naturalParametersArray) || NumberUtil.IsValid (_naturalStatisticsArray))
 		{
-			throw new java.lang.Exception (
-				"ExponentialFamilyRepresentation Constructor => Invalid Inputs"
-			);
+			throw new Exception ("ExponentialFamilyRepresentation Constructor => Invalid Inputs");
 		}
 	}
 

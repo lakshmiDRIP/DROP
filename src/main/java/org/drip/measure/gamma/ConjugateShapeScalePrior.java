@@ -1,11 +1,21 @@
 
 package org.drip.measure.gamma;
 
+import org.drip.function.definition.R1ToR1;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2030 Lakshmi Krishnamurthy
+ * Copyright (C) 2029 Lakshmi Krishnamurthy
+ * Copyright (C) 2028 Lakshmi Krishnamurthy
+ * Copyright (C) 2027 Lakshmi Krishnamurthy
+ * Copyright (C) 2026 Lakshmi Krishnamurthy
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -102,23 +112,30 @@ package org.drip.measure.gamma;
  * 				Likelihood Equations <i>The American Statistician</i> <b>71 (2)</b> 177-181
  * 		</li>
  * 	</ul>
+ * 
+ *  It provides the following Functionality:
  *
- *	<br><br>
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md">Numerical Analysis Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/README.md">R<sup>d</sup> Continuous/Discrete Probability Measures</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/gamma/README.md">R<sup>1</sup> Gamma Distribution Implementation/Properties</a></li>
+ * 		<li><i>ConjugateShapePrior</i> Constructor</li>
  *  </ul>
+ *
+ *	<br>
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md">Numerical Analysis Library</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/README.md">R<sup>d</sup> Continuous/Discrete Probability Measures</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/gamma/README.md">R<sup>1</sup> Gamma Distribution Implementation/Properties</a></td></tr>
+ *  </table>
+ *	<br>
  *
  * @author Lakshmi Krishnamurthy
  */
 
 public class ConjugateShapeScalePrior
 {
-	private org.drip.function.definition.R1ToR1 _gammaEstimator = null;
-	private org.drip.measure.gamma.ConjugateScalePrior _conjugateScalePrior = null;
-	private org.drip.measure.gamma.ConjugateShapePrior _conjugateShapePrior = null;
+	private R1ToR1 _gammaEstimator = null;
+	private ConjugateScalePrior _conjugateScalePrior = null;
+	private ConjugateShapePrior _conjugateShapePrior = null;
 
 	/**
 	 * ConjugateShapeScalePrior Constructor
@@ -153,7 +170,7 @@ public class ConjugateShapeScalePrior
 	 * @return The Conjugate Shape Prior
 	 */
 
-	public org.drip.measure.gamma.ConjugateShapePrior conjugateShapePrior()
+	public ConjugateShapePrior conjugateShapePrior()
 	{
 		return _conjugateShapePrior;
 	}
@@ -164,7 +181,7 @@ public class ConjugateShapeScalePrior
 	 * @return The Conjugate Scale Prior
 	 */
 
-	public org.drip.measure.gamma.ConjugateScalePrior conjugateScalePrior()
+	public ConjugateScalePrior conjugateScalePrior()
 	{
 		return _conjugateScalePrior;
 	}
@@ -175,7 +192,7 @@ public class ConjugateShapeScalePrior
 	 * @return Gamma Estimator
 	 */
 
-	public org.drip.function.definition.R1ToR1 gammaEstimator()
+	public R1ToR1 gammaEstimator()
 	{
 		return _gammaEstimator;
 	}

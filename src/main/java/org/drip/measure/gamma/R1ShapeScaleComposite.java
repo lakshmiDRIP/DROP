@@ -1,11 +1,21 @@
 
 package org.drip.measure.gamma;
 
+import org.drip.function.definition.R1ToR1;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2030 Lakshmi Krishnamurthy
+ * Copyright (C) 2029 Lakshmi Krishnamurthy
+ * Copyright (C) 2028 Lakshmi Krishnamurthy
+ * Copyright (C) 2027 Lakshmi Krishnamurthy
+ * Copyright (C) 2026 Lakshmi Krishnamurthy
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -101,14 +111,25 @@ package org.drip.measure.gamma;
  * 				Likelihood Equations <i>The American Statistician</i> <b>71 (2)</b> 177-181
  * 		</li>
  * 	</ul>
+ * 
+ *  It provides the following Functionality:
  *
- *	<br><br>
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md">Numerical Analysis Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/README.md">R<sup>d</sup> Continuous/Discrete Probability Measures</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/gamma/README.md">R<sup>1</sup> Gamma Distribution Implementation/Properties</a></li>
+ * 		<li>Generate a Random Number that follows the F Distribution</li>
+ * 		<li>Generate a Random Number that follows the Beta Prime Distribution</li>
+ * 		<li>Generate a Random Number that follows the Beta Distribution</li>
+ * 		<li>Generate a Random Vector that follows the Dirichlet Distribution</li>
+ * 		<li>Compute the Kullback-Liebler Divergence for the Gamma Distribution Pair</li>
  *  </ul>
+ *
+ *	<br>
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md">Numerical Analysis Library</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/README.md">R<sup>d</sup> Continuous/Discrete Probability Measures</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/gamma/README.md">R<sup>1</sup> Gamma Distribution Implementation/Properties</a></td></tr>
+ *  </table>
+ *	<br>
  *
  * @author Lakshmi Krishnamurthy
  */
@@ -124,33 +145,27 @@ public class R1ShapeScaleComposite
 	 * 
 	 * @return Random Number that follows the F Distribution
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public static final double RandomF (
-		final org.drip.measure.gamma.R1ShapeScaleDiscrete gammaDistribution1,
-		final org.drip.measure.gamma.R1ShapeScaleDiscrete gammaDistribution2)
-		throws java.lang.Exception
+		final R1ShapeScaleDiscrete gammaDistribution1,
+		final R1ShapeScaleDiscrete gammaDistribution2)
+		throws Exception
 	{
-		if (null == gammaDistribution1 ||
-			null == gammaDistribution2)
-		{
-			throw new java.lang.Exception (
-				"R1ShapeScaleComposite::RandomF => Invalid Inputs"
-			);
+		if (null == gammaDistribution1 || null == gammaDistribution2) {
+			throw new Exception ("R1ShapeScaleComposite::RandomF => Invalid Inputs");
 		}
 
-		org.drip.measure.gamma.ShapeScaleParameters shapeScaleParameters1 =
-			gammaDistribution1.shapeScaleParameters();
+		ShapeScaleParameters shapeScaleParameters1 = gammaDistribution1.shapeScaleParameters();
 
-		org.drip.measure.gamma.ShapeScaleParameters shapeScaleParameters2 =
-			gammaDistribution2.shapeScaleParameters();
+		ShapeScaleParameters shapeScaleParameters2 = gammaDistribution2.shapeScaleParameters();
 
 		return gammaDistribution1.random() / (
 			shapeScaleParameters1.shape() * shapeScaleParameters1.scale()
-		) / (gammaDistribution2.random() / (
-			shapeScaleParameters2.shape() * shapeScaleParameters2.scale()
-		));
+		) / (
+			gammaDistribution2.random() / (shapeScaleParameters2.shape() * shapeScaleParameters2.scale())
+		);
 	}
 
 	/**
@@ -161,20 +176,16 @@ public class R1ShapeScaleComposite
 	 * 
 	 * @return Random Number that follows the Beta Prime Distribution
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public static final double RandomBetaPrime (
-		final org.drip.measure.gamma.R1ShapeScaleDiscrete gammaDistribution1,
-		final org.drip.measure.gamma.R1ShapeScaleDiscrete gammaDistribution2)
-		throws java.lang.Exception
+		final R1ShapeScaleDiscrete gammaDistribution1,
+		final R1ShapeScaleDiscrete gammaDistribution2)
+		throws Exception
 	{
-		if (null == gammaDistribution1 ||
-			null == gammaDistribution2)
-		{
-			throw new java.lang.Exception (
-				"R1ShapeScaleComposite::RandomBetaPrime => Invalid Inputs"
-			);
+		if (null == gammaDistribution1 || null == gammaDistribution2) {
+			throw new Exception ("R1ShapeScaleComposite::RandomBetaPrime => Invalid Inputs");
 		}
 
 		return gammaDistribution1.random() / gammaDistribution2.random();
@@ -188,29 +199,22 @@ public class R1ShapeScaleComposite
 	 * 
 	 * @return Random Number that follows the Beta Distribution
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public static final double RandomBeta (
-		final org.drip.measure.gamma.R1ShapeScaleDiscrete gammaDistribution1,
-		final org.drip.measure.gamma.R1ShapeScaleDiscrete gammaDistribution2)
-		throws java.lang.Exception
+		final R1ShapeScaleDiscrete gammaDistribution1,
+		final R1ShapeScaleDiscrete gammaDistribution2)
+		throws Exception
 	{
-		if (null == gammaDistribution1 ||
-			null == gammaDistribution2)
-		{
-			throw new java.lang.Exception (
-				"R1ShapeScaleComposite::RandomBeta => Invalid Inputs"
-			);
+		if (null == gammaDistribution1 || null == gammaDistribution2) {
+			throw new Exception ("R1ShapeScaleComposite::RandomBeta => Invalid Inputs");
 		}
 
 		double scale = gammaDistribution1.shapeScaleParameters().scale();
 
-		if (scale != gammaDistribution2.shapeScaleParameters().scale())
-		{
-			throw new java.lang.Exception (
-				"R1ShapeScaleComposite::RandomBeta => Invalid Inputs"
-			);
+		if (scale != gammaDistribution2.shapeScaleParameters().scale()) {
+			throw new Exception ("R1ShapeScaleComposite::RandomBeta => Invalid Inputs");
 		}
 
 		double gammaDistribution1Random = gammaDistribution1.random();
@@ -227,10 +231,9 @@ public class R1ShapeScaleComposite
 	 */
 
 	public static final double[] RandomDirichletVector (
-		final org.drip.measure.gamma.R1ShapeScaleDiscrete[] gammaDistributionArray)
+		final R1ShapeScaleDiscrete[] gammaDistributionArray)
 	{
-		if (null == gammaDistributionArray)
-		{
+		if (null == gammaDistributionArray) {
 			return null;
 		}
 
@@ -238,8 +241,7 @@ public class R1ShapeScaleComposite
 		int dirichletVectorCount = gammaDistributionArray.length;
 		double[] randomDirichletVector = new double[dirichletVectorCount];
 
-		if (0 == dirichletVectorCount)
-		{
+		if (0 == dirichletVectorCount) {
 			return null;
 		}
 
@@ -253,15 +255,12 @@ public class R1ShapeScaleComposite
 				return null;
 			}
 
-			try
-			{
+			try {
 				dirichletSum = dirichletSum + (
 					randomDirichletVector[dirichletVectorIndex] =
 					gammaDistributionArray[dirichletVectorIndex].random()
 				);
-			}
-			catch (java.lang.Exception e)
-			{
+			} catch (Exception e) {
 				e.printStackTrace();
 
 				return null;
@@ -287,27 +286,21 @@ public class R1ShapeScaleComposite
 	 * 
 	 * @return The Kullback-Liebler Divergence for the Gamma Distribution Pair
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public static final double KullbackLieblerDivergence (
-		final org.drip.measure.gamma.R1ShapeScaleDistribution gammaDistribution1,
-		final org.drip.measure.gamma.R1ShapeScaleDistribution gammaDistribution2)
-		throws java.lang.Exception
+		final R1ShapeScaleDistribution gammaDistribution1,
+		final R1ShapeScaleDistribution gammaDistribution2)
+		throws Exception
 	{
-		if (null == gammaDistribution1 ||
-			null == gammaDistribution2)
-		{
-			throw new java.lang.Exception (
-				"R1ShapeScaleComposite::KullbackLieblerDivergence => Invalid Inputs"
-			);
+		if (null == gammaDistribution1 || null == gammaDistribution2) {
+			throw new Exception ("R1ShapeScaleComposite::KullbackLieblerDivergence => Invalid Inputs");
 		}
 
-		org.drip.measure.gamma.ShapeScaleParameters shapeScaleParameters1 =
-			gammaDistribution1.shapeScaleParameters();
+		ShapeScaleParameters shapeScaleParameters1 = gammaDistribution1.shapeScaleParameters();
 
-		org.drip.measure.gamma.ShapeScaleParameters shapeScaleParameters2 =
-			gammaDistribution2.shapeScaleParameters();
+		ShapeScaleParameters shapeScaleParameters2 = gammaDistribution2.shapeScaleParameters();
 
 		double scale1 = shapeScaleParameters1.scale();
 
@@ -317,20 +310,13 @@ public class R1ShapeScaleComposite
 
 		double shape2 = shapeScaleParameters2.shape();
 
-		org.drip.function.definition.R1ToR1 gammaEstimator = gammaDistribution1.gammaEstimator();
+		R1ToR1 gammaEstimator = gammaDistribution1.gammaEstimator();
 
-		return (shape1 - shape2) * gammaDistribution1.digammaEstimator().evaluate (
-			shape1
-		) - gammaEstimator.evaluate (
-			shape1
-		) + gammaEstimator.evaluate (
-			shape2
-		) + shape2 * (
-			java.lang.Math.log (
-				scale2
-			) - java.lang.Math.log (
-				scale1
-			)
-		) + shape1 * (scale1 - scale2) / scale1;
+		return (shape1 - shape2) *
+			gammaDistribution1.digammaEstimator().evaluate (shape1) -
+			gammaEstimator.evaluate (shape1) +
+			gammaEstimator.evaluate (shape2) +
+			shape2 * (Math.log (scale2) - Math.log (scale1)) +
+			shape1 * (scale1 - scale2) / scale1;
 	}
 }

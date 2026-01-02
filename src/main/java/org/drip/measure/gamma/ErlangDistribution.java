@@ -1,11 +1,23 @@
 
 package org.drip.measure.gamma;
 
+import org.drip.function.definition.R1ToR1;
+import org.drip.function.definition.R2ToR1;
+import org.drip.numerical.common.NumberUtil;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2030 Lakshmi Krishnamurthy
+ * Copyright (C) 2029 Lakshmi Krishnamurthy
+ * Copyright (C) 2028 Lakshmi Krishnamurthy
+ * Copyright (C) 2027 Lakshmi Krishnamurthy
+ * Copyright (C) 2026 Lakshmi Krishnamurthy
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -102,24 +114,33 @@ package org.drip.measure.gamma;
  * 				Likelihood Equations <i>The American Statistician</i> <b>71 (2)</b> 177-181
  * 		</li>
  * 	</ul>
+ * 
+ *  It provides the following Functionality:
  *
- *	<br><br>
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md">Numerical Analysis Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/README.md">R<sup>d</sup> Continuous/Discrete Probability Measures</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/gamma/README.md">R<sup>1</sup> Gamma Distribution Implementation/Properties</a></li>
+ * 		<li><i>ErlangDistribution</i> Constructor</li>
+ * 		<li>Compute the cumulative under the distribution to the given value</li>
+ * 		<li>Compute the k<sup>th</sup> Arrival Poisson Waiting Time</li>
  *  </ul>
+ *
+ *	<br>
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md">Numerical Analysis Library</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/README.md">R<sup>d</sup> Continuous/Discrete Probability Measures</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/gamma/README.md">R<sup>1</sup> Gamma Distribution Implementation/Properties</a></td></tr>
+ *  </table>
+ *	<br>
  *
  * @author Lakshmi Krishnamurthy
  */
 
 public class ErlangDistribution
-	extends org.drip.measure.gamma.R1ShapeScaleDistribution
+	extends R1ShapeScaleDistribution
 {
 
 	/**
-	 * ErlangDistribution Constructor
+	 * <i>ErlangDistribution</i> Constructor
 	 * 
 	 * @param shapeParameter Shape Parameter
 	 * @param scaleParameter Scale Parameter
@@ -127,42 +148,44 @@ public class ErlangDistribution
 	 * @param digammaEstimator Digamma Estimator
 	 * @param lowerIncompleteGammaEstimator Lower Incomplete Gamma Estimator
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public ErlangDistribution (
 		final int shapeParameter,
 		final double scaleParameter,
-		final org.drip.function.definition.R1ToR1 gammaEstimator,
-		final org.drip.function.definition.R1ToR1 digammaEstimator,
-		final org.drip.function.definition.R2ToR1 lowerIncompleteGammaEstimator)
-		throws java.lang.Exception
+		final R1ToR1 gammaEstimator,
+		final R1ToR1 digammaEstimator,
+		final R2ToR1 lowerIncompleteGammaEstimator)
+		throws Exception
 	{
 		super (
-			new org.drip.measure.gamma.ShapeScaleParameters (
-				shapeParameter,
-				scaleParameter
-			),
+			new ShapeScaleParameters (shapeParameter, scaleParameter),
 			gammaEstimator,
 			digammaEstimator,
 			lowerIncompleteGammaEstimator
 		);
 	}
 
+	/**
+	 * Compute the cumulative under the distribution to the given value
+	 * 
+	 * @param x Variate to which the cumulative is to be computed
+	 * 
+	 * @return The cumulative
+	 * 
+	 * @throws Exception Thrown if the inputs are invalid
+	 */
+
 	@Override public double cumulative (
 		final double x)
-		throws java.lang.Exception
+		throws Exception
 	{
-		if (!supported (
-			x
-		))
-		{
-			throw new java.lang.Exception (
-				"ErlangDistribution::cumulative => Invalid Inputs"
-			);
+		if (!supported (x)) {
+			throw new Exception ("ErlangDistribution::cumulative => Invalid Inputs");
 		}
 
-		org.drip.measure.gamma.ShapeScaleParameters shapeScaleParameters = shapeScaleParameters();
+		ShapeScaleParameters shapeScaleParameters = shapeScaleParameters();
 
 		double rate = (double) shapeScaleParameters.rate();
 
@@ -171,21 +194,11 @@ public class ErlangDistribution
 		double betaX = rate * x;
 		double idf = 0.;
 
-		for (int index = 0;
-			index < shape;
-			++index)
-		{
-			idf = idf + java.lang.Math.pow (
-				betaX,
-				index
-			) / org.drip.numerical.common.NumberUtil.Factorial (
-				index
-			);
+		for (int index = 0; index < shape; ++index) {
+			idf = idf + Math.pow (betaX, index) / NumberUtil.Factorial (index);
 		}
 
-		return 1. - java.lang.Math.exp (
-			-1. * betaX
-		) * idf;
+		return 1. - Math.exp (-1. * betaX) * idf;
 	}
 
 	/**

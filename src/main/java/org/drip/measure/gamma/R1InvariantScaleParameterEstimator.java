@@ -1,11 +1,24 @@
 
 package org.drip.measure.gamma;
 
+import org.drip.function.definition.R1ToR1;
+import org.drip.measure.gaussian.R1UnivariateNormal;
+import org.drip.numerical.common.NumberUtil;
+import org.drip.validation.evidence.R1Sample;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2030 Lakshmi Krishnamurthy
+ * Copyright (C) 2029 Lakshmi Krishnamurthy
+ * Copyright (C) 2028 Lakshmi Krishnamurthy
+ * Copyright (C) 2027 Lakshmi Krishnamurthy
+ * Copyright (C) 2026 Lakshmi Krishnamurthy
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -77,8 +90,8 @@ package org.drip.measure.gamma;
  */
 
 /**
- * <i>R1ScaleInvariantScaleParameterEstimator</i> implements the Scale Parameter Estimator using
- * 	Scale-Invariant Prior for the Scale Parameter under a Sequence of Observations. The References are:
+ * <i>R1InvariantScaleParameterEstimator</i> implements the Scale Parameter Estimator using Scale-Invariant
+ *  Prior for the Scale Parameter under a Sequence of Observations. The References are:
  * 
  * <br><br>
  * 	<ul>
@@ -102,43 +115,47 @@ package org.drip.measure.gamma;
  * 				Likelihood Equations <i>The American Statistician</i> <b>71 (2)</b> 177-181
  * 		</li>
  * 	</ul>
+ * 
+ *  It provides the following Functionality:
  *
- *	<br><br>
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md">Numerical Analysis Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/README.md">R<sup>d</sup> Continuous/Discrete Probability Measures</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/gamma/README.md">R<sup>1</sup> Gamma Distribution Implementation/Properties</a></li>
+ * 		<li>Construct an Instance of <i>R1InvariantScaleParameterEstimator</i> from the Array of Realizations</li>
+ * 		<li><i>R1InvariantScaleParameterEstimator</i> Constructor</li>
+ * 		<li>Retrieve the Samples used for the ML Estimate</li>
+ * 		<li>Infer the Scale Parameter Distribution</li>
+ * 		<li>Infer the Distribution Moment's Scale Parameter</li>
  *  </ul>
+ *
+ *	<br>
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md">Numerical Analysis Library</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/README.md">R<sup>d</sup> Continuous/Discrete Probability Measures</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/gamma/README.md">R<sup>1</sup> Gamma Distribution Implementation/Properties</a></td></tr>
+ *  </table>
+ *	<br>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class R1ScaleInvariantScaleParameterEstimator
+public class R1InvariantScaleParameterEstimator
 {
-	private org.drip.validation.evidence.R1Sample _sample = null;
+	private R1Sample _sample = null;
 
 	/**
-	 * Construct and Instance of R1ScaleInvariantScaleParameterEstimator from the Array of Realizations
+	 * Construct an Instance of <i>R1InvariantScaleParameterEstimator</i> from the Array of Realizations
 	 * 
 	 * @param realizationArray The Realization Array
 	 * 
-	 * @return Instance of R1ScaleInvariantScaleParameterEstimator
+	 * @return Instance of <i>R1InvariantScaleParameterEstimator</i>
 	 */
 
-	public static final R1ScaleInvariantScaleParameterEstimator FromRealizationArray (
+	public static final R1InvariantScaleParameterEstimator FromRealizationArray (
 		final double[] realizationArray)
 	{
-		try
-		{
-			return new R1ScaleInvariantScaleParameterEstimator (
-				new org.drip.validation.evidence.R1Sample (
-					realizationArray
-				)
-			);
-		}
-		catch (java.lang.Exception e)
-		{
+		try {
+			return new R1InvariantScaleParameterEstimator (new R1Sample (realizationArray));
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -146,22 +163,19 @@ public class R1ScaleInvariantScaleParameterEstimator
 	}
 
 	/**
-	 * R1ScaleInvariantScaleParameterEstimator Constructor
+	 * <i>R1InvariantScaleParameterEstimator</i> Constructor
 	 * 
 	 * @param sample The Sample
 	 * 
-	 * @throws java.lang.Exception Thrown of the Inputs are Invalid
+	 * @throws Exception Thrown of the Inputs are Invalid
 	 */
 
-	public R1ScaleInvariantScaleParameterEstimator (
-		final org.drip.validation.evidence.R1Sample sample)
-		throws java.lang.Exception
+	public R1InvariantScaleParameterEstimator (
+		final R1Sample sample)
+		throws Exception
 	{
-		if (null == (_sample = sample))
-		{
-			throw new java.lang.Exception (
-				"R1ScaleInvariantScaleParameterEstimator Constructor => Invalid Inputs"
-			);
+		if (null == (_sample = sample)) {
+			throw new Exception ("R1InvariantScaleParameterEstimator Constructor => Invalid Inputs");
 		}
 	}
 
@@ -171,7 +185,7 @@ public class R1ScaleInvariantScaleParameterEstimator
 	 * @return Samples used for the ML Estimate
 	 */
 
-	public org.drip.validation.evidence.R1Sample sample()
+	public R1Sample sample()
 	{
 		return _sample;
 	}
@@ -184,41 +198,34 @@ public class R1ScaleInvariantScaleParameterEstimator
 	 * @return The Scale Parameter Distribution
 	 */
 
-	public org.drip.measure.gaussian.R1UnivariateNormal inferScaleParameterDistribution (
+	public R1UnivariateNormal inferScaleParameterDistribution (
 		final double shape)
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (
-			shape
-		))
-		{
+		if (!NumberUtil.IsValid (shape)) {
 			return null;
 		}
 
 		double[] realizationArray = sample().realizationArray();
 
-		double realizationCount = realizationArray.length;
-		double nk = realizationCount * shape;
+		double nk = realizationArray.length * shape;
 		double oneOver_nkMinusOne_ = 1. / (nk - 1.);
 		double realizationSum = 0.;
 
 		for (int realizationIndex = 0;
-			realizationIndex < realizationCount;
+			realizationIndex < realizationArray.length;
 			++realizationIndex)
 		{
 			realizationSum = realizationSum + realizationArray[realizationIndex];
 		}
 
-		try
-		{
-			return new org.drip.measure.gaussian.R1UnivariateNormal (
-				realizationSum * oneOver_nkMinusOne_,
-				realizationSum * oneOver_nkMinusOne_ * java.lang.Math.sqrt (
-					1. / (nk - 2.)
-				)
+		try {
+			double realizationSumOneOver_nkMinusOne_ = realizationSum * oneOver_nkMinusOne_;
+
+			return new R1UnivariateNormal (
+				realizationSumOneOver_nkMinusOne_,
+				realizationSumOneOver_nkMinusOne_ * Math.sqrt (1. / (nk - 2.))
 			);
-		}
-		catch (java.lang.Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -234,46 +241,31 @@ public class R1ScaleInvariantScaleParameterEstimator
 	 * 
 	 * @return The Scale Parameter
 	 * 
-	 * @throws java.lang.Exception Thrown if the Scale Parameter cannot be estimated
+	 * @throws Exception Thrown if the Scale Parameter cannot be estimated
 	 */
 
 	public double inferScaleParameterDistributionMoment (
 		final double shape,
 		final int moment,
-		final org.drip.function.definition.R1ToR1 gammaEstimator)
-		throws java.lang.Exception
+		final R1ToR1 gammaEstimator)
+		throws Exception
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (
-				shape
-			) || 1 > moment ||
-			null == gammaEstimator
-		)
-		{
-			throw new java.lang.Exception (
-				"R1ScaleInvariantScaleParameterEstimator::inferScaleParameterDistributionMoment => Invalid Inputs"
+		if (!NumberUtil.IsValid (shape) || 1 > moment || null == gammaEstimator) {
+			throw new Exception (
+				"R1InvariantScaleParameterEstimator::inferScaleParameterDistributionMoment => Invalid Inputs"
 			);
 		}
 
 		double[] realizationArray = sample().realizationArray();
 
-		double realizationCount = realizationArray.length;
-		double nk = realizationCount * shape;
+		double nk = realizationArray.length * shape;
 		double realizationSum = 0.;
 
-		for (int realizationIndex = 0;
-			realizationIndex < realizationCount;
-			++realizationIndex)
-		{
+		for (int realizationIndex = 0; realizationIndex < realizationArray.length; ++realizationIndex) {
 			realizationSum = realizationSum + realizationArray[realizationIndex];
 		}
 
-		return gammaEstimator.evaluate (
-			nk - moment
-		) * java.lang.Math.pow (
-			realizationSum,
-			moment
-		) / gammaEstimator.evaluate (
-			nk
-		);
+		return gammaEstimator.evaluate (nk - moment) * Math.pow (realizationSum, moment) /
+			gammaEstimator.evaluate (nk);
 	}
 }

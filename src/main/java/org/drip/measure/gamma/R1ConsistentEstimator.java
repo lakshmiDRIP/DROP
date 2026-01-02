@@ -1,11 +1,22 @@
 
 package org.drip.measure.gamma;
 
+import org.drip.numerical.common.NumberUtil;
+import org.drip.validation.evidence.R1Sample;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2030 Lakshmi Krishnamurthy
+ * Copyright (C) 2029 Lakshmi Krishnamurthy
+ * Copyright (C) 2028 Lakshmi Krishnamurthy
+ * Copyright (C) 2027 Lakshmi Krishnamurthy
+ * Copyright (C) 2026 Lakshmi Krishnamurthy
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -102,43 +113,47 @@ package org.drip.measure.gamma;
  * 				Likelihood Equations <i>The American Statistician</i> <b>71 (2)</b> 177-181
  * 		</li>
  * 	</ul>
+ * 
+ *  It provides the following Functionality:
  *
- *	<br><br>
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md">Numerical Analysis Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/README.md">R<sup>d</sup> Continuous/Discrete Probability Measures</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/gamma/README.md">R<sup>1</sup> Gamma Distribution Implementation/Properties</a></li>
+ * 		<li>Construct and Instance of <i>R1ConsistentEstimator</i> from the Array of Realizations</li>
+ * 		<li><i>R1ConsistentEstimator</i> Constructor</li>
+ * 		<li>Infer the Shape-Scale Parameter from the Observations</li>
+ * 		<li>Retrieve the Scale Bias Correction Factor</li>
+ * 		<li>Compute the Shape Bias Correction Adjustment</li>
  *  </ul>
+ *
+ *	<br>
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md">Numerical Analysis Library</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/README.md">R<sup>d</sup> Continuous/Discrete Probability Measures</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/gamma/README.md">R<sup>1</sup> Gamma Distribution Implementation/Properties</a></td></tr>
+ *  </table>
+ *	<br>
  *
  * @author Lakshmi Krishnamurthy
  */
 
 public class R1ConsistentEstimator
-	extends org.drip.measure.gamma.R1ParameterEstimator
+	extends R1ParameterEstimator
 {
 
 	/**
-	 * Construct and Instance of R1ConsistentEstimator from the Array of Realizations
+	 * Construct and Instance of <i>R1ConsistentEstimator</i> from the Array of Realizations
 	 * 
 	 * @param realizationArray The Realization Array
 	 * 
-	 * @return Instance of R1ConsistentEstimator
+	 * @return Instance of <i>R1ConsistentEstimator</i>
 	 */
 
 	public static final R1ConsistentEstimator FromRealizationArray (
 		final double[] realizationArray)
 	{
-		try
-		{
-			return new R1ConsistentEstimator (
-				new org.drip.validation.evidence.R1Sample (
-					realizationArray
-				)
-			);
-		}
-		catch (java.lang.Exception e)
-		{
+		try {
+			return new R1ConsistentEstimator (new R1Sample (realizationArray));
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -146,20 +161,18 @@ public class R1ConsistentEstimator
 	}
 
 	/**
-	 * R1ConsistentEstimator Constructor
+	 * <i>R1ConsistentEstimator</i> Constructor
 	 * 
 	 * @param sample The Sample
 	 * 
-	 * @throws java.lang.Exception Thrown of the Inputs are Invalid
+	 * @throws Exception Thrown of the Inputs are Invalid
 	 */
 
 	public R1ConsistentEstimator (
-		final org.drip.validation.evidence.R1Sample sample)
-		throws java.lang.Exception
+		final R1Sample sample)
+		throws Exception
 	{
-		super (
-			sample
-		);
+		super (sample);
 	}
 
 	/**
@@ -168,22 +181,19 @@ public class R1ConsistentEstimator
 	 * @return The Shape-Scale Parameter from the Observations
 	 */
 
-	public org.drip.measure.gamma.ShapeScaleParameters inferShapeScaleParameter()
+	public ShapeScaleParameters inferShapeScaleParameter()
 	{
 		double[] realizationArray = sample().realizationArray();
 
-		int realizationCount = realizationArray.length;
 		double realizationLogRealizationSum = 0.;
 		double logRealizationSum = 0.;
 		double realizationSum = 0.;
 
 		for (int realizationIndex = 0;
-			realizationIndex < realizationCount;
+			realizationIndex < realizationArray.length;
 			++realizationIndex)
 		{
-			double logRealization = java.lang.Math.log (
-				realizationArray[realizationIndex]
-			);
+			double logRealization = Math.log (realizationArray[realizationIndex]);
 
 			logRealizationSum = logRealizationSum + logRealization;
 			realizationSum = realizationSum + realizationArray[realizationIndex];
@@ -191,18 +201,15 @@ public class R1ConsistentEstimator
 				realizationArray[realizationIndex] * logRealization;
 		}
 
-		double nonNormalizedScale = realizationCount * realizationLogRealizationSum -
+		double nonNormalizedScale = realizationArray.length * realizationLogRealizationSum -
 			logRealizationSum * realizationSum;
 
-		try
-		{
-			return new org.drip.measure.gamma.ShapeScaleParameters (
-				realizationCount * realizationSum / nonNormalizedScale,
-				nonNormalizedScale / realizationCount / realizationCount
+		try {
+			return new ShapeScaleParameters (
+				realizationArray.length * realizationSum / nonNormalizedScale,
+				nonNormalizedScale / realizationArray.length / realizationArray.length
 			);
-		}
-		catch (java.lang.Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -229,27 +236,24 @@ public class R1ConsistentEstimator
 	 * 
 	 * @return The Shape Bias Correction Adjustment
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public double shapeBiasCorrectionAdjustment (
 		final double scaleEstimate)
-		throws java.lang.Exception
+		throws Exception
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (
-			scaleEstimate
-		))
-		{
-			throw new java.lang.Exception (
-				"R1ConsistentEstimator::shapeBiasCorrectionAdjustment => Invalid Inputs"
-			);
+		if (!NumberUtil.IsValid (scaleEstimate)) {
+			throw new Exception ("R1ConsistentEstimator::shapeBiasCorrectionAdjustment => Invalid Inputs");
 		}
 
 		double onePlusScaleEstimate = 1. + scaleEstimate;
+		double scaleEstimateOver_onePlusScaleEstimate_ = scaleEstimate / onePlusScaleEstimate;
 
-		return (3. * scaleEstimate
-			- (2. / 3. * scaleEstimate / onePlusScaleEstimate)
-			+ (4. / 5. * scaleEstimate / onePlusScaleEstimate / onePlusScaleEstimate)) /
-				sample().realizationArray().length;
+		return (
+			3. * scaleEstimate
+			- (2. / 3. * scaleEstimateOver_onePlusScaleEstimate_)
+			+ (4. / 5. * scaleEstimateOver_onePlusScaleEstimate_ / onePlusScaleEstimate)
+		) / sample().realizationArray().length;
 	}
 }

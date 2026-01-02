@@ -1,11 +1,23 @@
 
 package org.drip.measure.gamma;
 
+import org.drip.measure.bayesian.ConjugateParameterPrior;
+import org.drip.numerical.common.NumberUtil;
+import org.drip.validation.evidence.R1Sample;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2030 Lakshmi Krishnamurthy
+ * Copyright (C) 2029 Lakshmi Krishnamurthy
+ * Copyright (C) 2028 Lakshmi Krishnamurthy
+ * Copyright (C) 2027 Lakshmi Krishnamurthy
+ * Copyright (C) 2026 Lakshmi Krishnamurthy
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -102,51 +114,52 @@ package org.drip.measure.gamma;
  * 				Likelihood Equations <i>The American Statistician</i> <b>71 (2)</b> 177-181
  * 		</li>
  * 	</ul>
+ * 
+ *  It provides the following Functionality:
  *
- *	<br><br>
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md">Numerical Analysis Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/README.md">R<sup>d</sup> Continuous/Discrete Probability Measures</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/gamma/README.md">R<sup>1</sup> Gamma Distribution Implementation/Properties</a></li>
+ * 		<li><i>ConjugateShapePrior</i> Constructor</li>
+ * 		<li>Retrieve the Product of the Observation Suite</li>
+ * 		<li>Perform an Bayes' Update of the Conjugate Prior from the Sample</li>
  *  </ul>
+ *
+ *	<br>
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md">Numerical Analysis Library</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/README.md">R<sup>d</sup> Continuous/Discrete Probability Measures</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/gamma/README.md">R<sup>1</sup> Gamma Distribution Implementation/Properties</a></td></tr>
+ *  </table>
+ *	<br>
  *
  * @author Lakshmi Krishnamurthy
  */
 
 public class ConjugateShapePrior
-	extends org.drip.measure.bayesian.ConjugateParameterPrior
+	extends ConjugateParameterPrior
 {
-	private double _observationProduct = java.lang.Double.NaN;
+	private double _observationProduct = Double.NaN;
 
 	/**
-	 * ConjugateShapePrior Constructor
+	 * <i>ConjugateShapePrior</i> Constructor
 	 * 
 	 * @param parameterEstimate Parameter Estimate
 	 * @param observationCount Count of Observations
 	 * @param observationProduct Product of the Observations
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public ConjugateShapePrior (
 		final double parameterEstimate,
 		final int observationCount,
 		final double observationProduct)
-		throws java.lang.Exception
+		throws Exception
 	{
-		super (
-			parameterEstimate,
-			observationCount
-		);
+		super (parameterEstimate, observationCount);
 
-		if (!org.drip.numerical.common.NumberUtil.IsValid (
-			_observationProduct = observationProduct
-		))
-		{
-			throw new java.lang.Exception (
-				"ConjugateShapePrior Constructor => Invalid Inputs"
-			);
+		if (!NumberUtil.IsValid (_observationProduct = observationProduct)) {
+			throw new Exception ("ConjugateShapePrior Constructor => Invalid Inputs");
 		}
 	}
 
@@ -161,27 +174,27 @@ public class ConjugateShapePrior
 		return _observationProduct;
 	}
 
+	/**
+	 * Perform an Bayes' Update of the Conjugate Prior from the Sample
+	 * 
+	 * @param sample The Sample
+	 * 
+	 * @return TRUE - Bayes' Update of the Conjugate Prior from the Sample completed successfully
+	 */
+
 	@Override public boolean bayesUpdate (
-		final org.drip.validation.evidence.R1Sample sample)
+		final R1Sample sample)
 	{
-		if (null == sample)
-		{
+		if (null == sample) {
 			return false;
 		}
 
 		double[] realizationArray = sample.realizationArray();
 
-		int realizationCount = realizationArray.length;
-
-		for (int realizationIndex = 0;
-			realizationIndex < realizationCount;
-			++realizationIndex)
-		{
+		for (int realizationIndex = 0; realizationIndex < realizationArray.length; ++realizationIndex) {
 			_observationProduct = _observationProduct * realizationArray[realizationIndex];
 		}
 
-		return super.bayesUpdate (
-			sample
-		);
+		return super.bayesUpdate (sample);
 	}
 }
