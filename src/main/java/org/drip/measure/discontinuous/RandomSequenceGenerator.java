@@ -1,7 +1,7 @@
 
 package org.drip.measure.discontinuous;
 
-import org.drip.measure.gaussian.Covariance;
+import org.drip.measure.gaussian.JointVariance;
 import org.drip.measure.gaussian.NormalQuadrature;
 import org.drip.numerical.common.NumberUtil;
 import org.drip.numerical.linearalgebra.R1MatrixUtil;
@@ -551,11 +551,11 @@ public class RandomSequenceGenerator
 		final int count,
 		final double[][] covarianceMatrix)
 	{
-		Covariance covariance = null;
+		JointVariance covariance = null;
 		double[] rankReducedChiSquare = new double[count];
 
 		try {
-			covariance = new Covariance (covarianceMatrix);
+			covariance = new JointVariance (covarianceMatrix);
 		} catch (Exception e) {
 			e.printStackTrace();
 
@@ -605,12 +605,12 @@ public class RandomSequenceGenerator
 			return null;
 		}
 
-		Covariance covariance = null;
+		JointVariance covariance = null;
 		int pillaiVectorSize = weightArray.length;
 		double[] pillaiSpecialChiSquare = new double[count];
 
 		try {
-			covariance = new org.drip.measure.gaussian.Covariance (covarianceMatrix);
+			covariance = new org.drip.measure.gaussian.JointVariance (covarianceMatrix);
 		} catch (Exception e) {
 			e.printStackTrace();
 

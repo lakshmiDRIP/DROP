@@ -181,11 +181,11 @@ public class DaJagannathan2005b {
 			aadblAssetExcessReturnsCovariance
 		);
 
-		ScopingProjectionVariateDistribution spvd = new ScopingProjectionVariateDistribution (r1mnScoping);
+		ScopingContainer spvd = new ScopingContainer (r1mnScoping);
 
-		spvd.addProjectionDistributionLoading (
+		spvd.addViewLoading (
 			"VIEW",
-			new ProjectionDistributionLoading (
+			new ViewLoading (
 				viewDistribution,
 				aadblAssetSpaceViewProjection
 			)

@@ -259,7 +259,7 @@ public class MaximumLikelihoodInference
 						)
 					);
 
-				ShapeScaleParameters shapeScaleParameters = parameterEstimator.inferShapeScaleParameter();
+				ShapeScaleParameters shapeScaleParameters = parameterEstimator.inferShapeScale();
 
 				System.out.println (
 					"\t| [" + FormatUtil.FormatDouble (k, 1, 2, 1., false) + " | " +

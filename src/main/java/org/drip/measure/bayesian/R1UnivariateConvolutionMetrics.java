@@ -1,11 +1,21 @@
 
 package org.drip.measure.bayesian;
 
+import org.drip.measure.continuous.R1Distribution;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2030 Lakshmi Krishnamurthy
+ * Copyright (C) 2029 Lakshmi Krishnamurthy
+ * Copyright (C) 2028 Lakshmi Krishnamurthy
+ * Copyright (C) 2027 Lakshmi Krishnamurthy
+ * Copyright (C) 2026 Lakshmi Krishnamurthy
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -81,57 +91,64 @@ package org.drip.measure.bayesian;
 
 /**
  * <i>R1UnivariateConvolutionMetrics</i> holds the Inputs and the Results of a Bayesian R<sup>1</sup>
- * 	Univariate Convolution Execution.
+ * 	Univariate Convolution Execution. It provides the following Functionality:
  *
- *	<br><br>
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md">Numerical Analysis Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/README.md">R<sup>d</sup> Continuous/Discrete Probability Measures</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/bayesian/README.md">Prior, Conditional, Posterior Theil Bayesian</a></li>
+ * 		<li><i>R1UnivariateConvolutionMetrics</i> Constructor</li>
+ * 		<li>Retrieve the R<sup>1</sup> Univariate Prior Distribution</li>
+ * 		<li>Retrieve the R<sup>1</sup> Univariate Unconditional Distribution</li>
+ * 		<li>Retrieve the R<sup>1</sup> Univariate Conditional Distribution</li>
+ * 		<li>Retrieve the R<sup>1</sup> Univariate Joint Distribution</li>
+ * 		<li>Retrieve the R<sup>1</sup> Univariate Posterior Distribution</li>
  *  </ul>
+ *
+ *	<br>
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md">Numerical Analysis Library</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/README.md">R<sup>d</sup> Continuous/Discrete Probability Measures</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/bayesian/README.md">Prior, Conditional, Posterior Theil Bayesian</a></td></tr>
+ *  </table>
+ *	<br>
  *
  * @author Lakshmi Krishnamurthy
  */
 
 public class R1UnivariateConvolutionMetrics
 {
-	private org.drip.measure.continuous.R1Distribution _joint = null;
-	private org.drip.measure.continuous.R1Distribution _prior = null;
-	private org.drip.measure.continuous.R1Distribution _posterior = null;
-	private org.drip.measure.continuous.R1Distribution _conditional = null;
-	private org.drip.measure.continuous.R1Distribution _unconditional = null;
+	private R1Distribution _jointDistribution = null;
+	private R1Distribution _priorDistribution = null;
+	private R1Distribution _posteriorDistribution = null;
+	private R1Distribution _conditionalDistribution = null;
+	private R1Distribution _unconditionalDistribution = null;
 
 	/**
-	 * R1UnivariateConvolutionMetrics Constructor
+	 * <i>R1UnivariateConvolutionMetrics</i> Constructor
 	 * 
-	 * @param prior The R<sup>1</sup> Univariate Prior Distribution (Input)
-	 * @param unconditional The R<sup>1</sup> Univariate Unconditional Distribution (Input)
-	 * @param conditional The R<sup>1</sup> Univariate Conditional Distribution (Input)
-	 * @param joint The R<sup>1</sup> Univariate Joint Distribution (Output)
-	 * @param posterior The R<sup>1</sup> Univariate Posterior Distribution (Output)
+	 * @param priorDistribution The R<sup>1</sup> Univariate Prior Distribution (Input)
+	 * @param unconditionalDistribution The R<sup>1</sup> Univariate Unconditional Distribution (Input)
+	 * @param conditionalDistribution The R<sup>1</sup> Univariate Conditional Distribution (Input)
+	 * @param jointDistribution The R<sup>1</sup> Univariate Joint Distribution (Output)
+	 * @param posteriorDistribution The R<sup>1</sup> Univariate Posterior Distribution (Output)
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public R1UnivariateConvolutionMetrics (
-		final org.drip.measure.continuous.R1Distribution prior,
-		final org.drip.measure.continuous.R1Distribution unconditional,
-		final org.drip.measure.continuous.R1Distribution conditional,
-		final org.drip.measure.continuous.R1Distribution joint,
-		final org.drip.measure.continuous.R1Distribution posterior)
-		throws java.lang.Exception
+		final R1Distribution priorDistribution,
+		final R1Distribution unconditionalDistribution,
+		final R1Distribution conditionalDistribution,
+		final R1Distribution jointDistribution,
+		final R1Distribution posteriorDistribution)
+		throws Exception
 	{
-		if (null == (_prior = prior) ||
-			null == (_unconditional = unconditional) ||
-			null == (_conditional = conditional) ||
-			null == (_joint = joint) ||
-			null == (_posterior = posterior)
-		)
+		if (null == (_priorDistribution = priorDistribution) ||
+			null == (_unconditionalDistribution = unconditionalDistribution) ||
+			null == (_conditionalDistribution = conditionalDistribution) ||
+			null == (_jointDistribution = jointDistribution) ||
+			null == (_posteriorDistribution = posteriorDistribution))
 		{
-			throw new java.lang.Exception (
-				"R1UnivariateConvolutionMetrics Constructor => Invalid Inputs!"
-			);
+			throw new Exception ("R1UnivariateConvolutionMetrics Constructor => Invalid Inputs!");
 		}
 	}
 
@@ -141,9 +158,9 @@ public class R1UnivariateConvolutionMetrics
 	 * @return The R<sup>1</sup> Univariate Prior Distribution
 	 */
 
-	public org.drip.measure.continuous.R1Distribution prior()
+	public R1Distribution priorDistribution()
 	{
-		return _prior;
+		return _priorDistribution;
 	}
 
 	/**
@@ -152,9 +169,9 @@ public class R1UnivariateConvolutionMetrics
 	 * @return The R<sup>1</sup> Univariate Unconditional Distribution
 	 */
 
-	public org.drip.measure.continuous.R1Distribution unconditional()
+	public R1Distribution unconditionalDistribution()
 	{
-		return _unconditional;
+		return _unconditionalDistribution;
 	}
 
 	/**
@@ -163,9 +180,9 @@ public class R1UnivariateConvolutionMetrics
 	 * @return The R<sup>1</sup> Univariate Conditional Distribution
 	 */
 
-	public org.drip.measure.continuous.R1Distribution conditional()
+	public R1Distribution conditionalDistribution()
 	{
-		return _conditional;
+		return _conditionalDistribution;
 	}
 
 	/**
@@ -174,9 +191,9 @@ public class R1UnivariateConvolutionMetrics
 	 * @return The R<sup>1</sup> Univariate Joint Distribution
 	 */
 
-	public org.drip.measure.continuous.R1Distribution joint()
+	public R1Distribution jointDistribution()
 	{
-		return _joint;
+		return _jointDistribution;
 	}
 
 	/**
@@ -185,8 +202,8 @@ public class R1UnivariateConvolutionMetrics
 	 * @return The R<sup>1</sup> Univariate Posterior Distribution
 	 */
 
-	public org.drip.measure.continuous.R1Distribution posterior()
+	public R1Distribution posteriorDistribution()
 	{
-		return _posterior;
+		return _posteriorDistribution;
 	}
 }

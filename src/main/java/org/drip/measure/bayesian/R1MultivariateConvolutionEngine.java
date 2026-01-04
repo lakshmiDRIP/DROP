@@ -1,11 +1,21 @@
 
 package org.drip.measure.bayesian;
 
+import org.drip.measure.continuous.MetaRdDistribution;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2030 Lakshmi Krishnamurthy
+ * Copyright (C) 2029 Lakshmi Krishnamurthy
+ * Copyright (C) 2028 Lakshmi Krishnamurthy
+ * Copyright (C) 2027 Lakshmi Krishnamurthy
+ * Copyright (C) 2026 Lakshmi Krishnamurthy
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -81,33 +91,41 @@ package org.drip.measure.bayesian;
 
 /**
  * <i>R1MultivariateConvolutionEngine</i> implements the Engine that generates the Joint/Posterior
- * 	Distributions from the Prior and the Conditional Multivariate R<sup>1</sup> Distributions.
+ * 	Distributions from the Prior and the Conditional Multivariate R<sup>1</sup> Distributions. It provides
+ * 	the following Functionality:
  *
- *	<br><br>
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md">Numerical Analysis Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/README.md">R<sup>d</sup> Continuous/Discrete Probability Measures</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/bayesian/README.md">Prior, Conditional, Posterior Theil Bayesian</a></li>
+ * 		<li>Generate the Joint R<sup>1</sup> Multivariate Combined Distribution</li>
  *  </ul>
+ *
+ *	<br>
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md">Numerical Analysis Library</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/README.md">R<sup>d</sup> Continuous/Discrete Probability Measures</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/bayesian/README.md">Prior, Conditional, Posterior Theil Bayesian</a></td></tr>
+ *  </table>
+ *	<br>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public interface R1MultivariateConvolutionEngine {
+public interface R1MultivariateConvolutionEngine
+{
 
 	/**
-	 * Generate the Joint R^1 Multivariate Combined Distribution
+	 * Generate the Joint R<sup>1</sup> Multivariate Combined Distribution
 	 * 
-	 * @param rmPrior The Prior Distribution
-	 * @param rmUnconditional The Unconditional Distribution
-	 * @param rmConditional The Conditional Distribution
+	 * @param priorDistribution The Prior Distribution
+	 * @param unconditionalDistribution The Unconditional Distribution
+	 * @param conditionalDistribution The Conditional Distribution
 	 * 
-	 * @return The Joint R^1 Multivariate Combined Distribution
+	 * @return The Joint R<sup>1</sup> Multivariate Combined Distribution
 	 */
 
-	public abstract org.drip.measure.bayesian.R1MultivariateConvolutionMetrics process (
-		final org.drip.measure.continuous.MetaRdDistribution rmPrior,
-		final org.drip.measure.continuous.MetaRdDistribution rmUnconditional,
-		final org.drip.measure.continuous.MetaRdDistribution rmConditional);
+	public abstract R1MultivariateConvolutionMetrics process (
+		final MetaRdDistribution priorDistribution,
+		final MetaRdDistribution unconditionalDistribution,
+		final MetaRdDistribution conditionalDistribution
+	);
 }

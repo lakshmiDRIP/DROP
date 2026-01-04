@@ -1,11 +1,22 @@
 
 package org.drip.measure.gaussian;
 
+import org.drip.numerical.common.NumberUtil;
+import org.drip.numerical.linearalgebra.R1MatrixUtil;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2030 Lakshmi Krishnamurthy
+ * Copyright (C) 2029 Lakshmi Krishnamurthy
+ * Copyright (C) 2028 Lakshmi Krishnamurthy
+ * Copyright (C) 2027 Lakshmi Krishnamurthy
+ * Copyright (C) 2026 Lakshmi Krishnamurthy
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -80,52 +91,68 @@ package org.drip.measure.gaussian;
  */
 
 /**
- * <i>Covariance</i> holds the Standard Covariance Matrix, and provides functions to manipulate it.
+ * <i>JointVariance</i> holds the Standard Covariance Matrix, and provides functions to manipulate it. It
+ * 	provides the following Functionality:
  *
- *	<br><br>
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md">Numerical Analysis Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/README.md">R<sup>d</sup> Continuous/Discrete Probability Measures</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/gaussian/README.md">R<sup>1</sup> R<sup>d</sup> Covariant Gaussian Quadrature</a></li>
+ * 		<li><i>JointVariance</i> Constructor</li>
+ * 		<li>Retrieve the Number of Variates</li>
+ * 		<li>Retrieve the Covariance Matrix</li>
+ * 		<li>Retrieve the Precision Matrix</li>
+ * 		<li>Retrieve the Variance Array</li>
+ * 		<li>Retrieve the Volatility Array</li>
+ * 		<li>Retrieve the Correlation Matrix</li>
  *  </ul>
+ *
+ *	<br>
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md">Numerical Analysis Library</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/README.md">R<sup>d</sup> Continuous/Discrete Probability Measures</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/gaussian/README.md">R<sup>1</sup> Covariant Gaussian Quadrature</a></td></tr>
+ *  </table>
+ *	<br>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class Covariance {
-	private double[][] _aadblPrecision = null;
-	private double[][] _aadblCovariance = null;
+public class JointVariance
+{
+	private double[][] _precisionMatrix = null;
+	private double[][] _covarianceMatrix = null;
 
 	/**
-	 * Covariance Constructor
+	 * <i>JointVariance</i> Constructor
 	 * 
-	 * @param aadblCovariance Double Array of the Covariance Matrix
+	 * @param covarianceMatrix Double Array of the Covariance Matrix
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
-	public Covariance (
-		final double[][] aadblCovariance)
-		throws java.lang.Exception
+	public JointVariance (
+		final double[][] covarianceMatrix)
+		throws Exception
 	{
-		if (null == (_aadblCovariance = aadblCovariance))
-			throw new java.lang.Exception ("Covariance Constructor => Invalid Inputs!");
-
-		int iNumVariate = _aadblCovariance.length;
-
-		if (0 == iNumVariate)
-			throw new java.lang.Exception ("R1MultivariateNormal Constructor => Invalid Inputs!");
-
-		for (int i = 0; i < iNumVariate; ++i) {
-			if (null == _aadblCovariance[i] || iNumVariate != _aadblCovariance[i].length ||
-				!org.drip.numerical.common.NumberUtil.IsValid (_aadblCovariance[i]))
-				throw new java.lang.Exception ("R1MultivariateNormal Constructor => Invalid Inputs!");
+		if (null == (_covarianceMatrix = covarianceMatrix)) {
+			throw new Exception ("JointVariance Constructor => Invalid Inputs!");
 		}
 
-		if (null == (_aadblPrecision = org.drip.numerical.linearalgebra.R1MatrixUtil.InvertUsingGaussianElimination
-			(_aadblCovariance)))
-			throw new java.lang.Exception ("R1MultivariateNormal Constructor => Invalid Inputs!");
+		if (0 == _covarianceMatrix.length) {
+			throw new Exception ("JointVariance Constructor => Invalid Inputs!");
+		}
+
+		for (int variateIndex = 0; variateIndex < _covarianceMatrix.length; ++variateIndex) {
+			if (null == _covarianceMatrix[variateIndex] ||
+				_covarianceMatrix.length != _covarianceMatrix[variateIndex].length ||
+				!NumberUtil.IsValid (_covarianceMatrix[variateIndex]))
+			{
+				throw new Exception ("JointVariance Constructor => Invalid Inputs!");
+			}
+		}
+
+		if (null == (_precisionMatrix = R1MatrixUtil.InvertUsingGaussianElimination (_covarianceMatrix))) {
+			throw new Exception ("JointVariance Constructor => Invalid Inputs!");
+		}
 	}
 
 	/**
@@ -134,9 +161,9 @@ public class Covariance {
 	 * @return The Number of Variates
 	 */
 
-	public int numVariate()
+	public int variateCount()
 	{
-		return _aadblCovariance.length;
+		return _covarianceMatrix.length;
 	}
 
 	/**
@@ -147,7 +174,7 @@ public class Covariance {
 
 	public double[][] covarianceMatrix()
 	{
-		return _aadblCovariance;
+		return _covarianceMatrix;
 	}
 
 	/**
@@ -158,7 +185,7 @@ public class Covariance {
 
 	public double[][] precisionMatrix()
 	{
-		return _aadblPrecision;
+		return _precisionMatrix;
 	}
 
 	/**
@@ -167,15 +194,15 @@ public class Covariance {
 	 * @return The Variance Array
 	 */
 
-	public double[] variance()
+	public double[] varianceArray()
 	{
-		int iNumVariate = _aadblCovariance.length;
-		double[] adblVariance = new double[iNumVariate];
+		double[] varianceArray = new double[_covarianceMatrix.length];
 
-		for (int i = 0; i < iNumVariate; ++i)
-			adblVariance[i] = _aadblCovariance[i][i];
+		for (int variateIndex = 0; variateIndex < _covarianceMatrix.length; ++variateIndex) {
+			varianceArray[variateIndex] = _covarianceMatrix[variateIndex][variateIndex];
+		}
 
-		return adblVariance;
+		return varianceArray;
 	}
 
 	/**
@@ -184,15 +211,15 @@ public class Covariance {
 	 * @return The Volatility Array
 	 */
 
-	public double[] volatility()
+	public double[] volatilityArray()
 	{
-		int iNumVariate = _aadblCovariance.length;
-		double[] adblVolatility = new double[iNumVariate];
+		double[] volatilityArray = new double[_covarianceMatrix.length];
 
-		for (int i = 0; i < iNumVariate; ++i)
-			adblVolatility[i] = java.lang.Math.sqrt (_aadblCovariance[i][i]);
+		for (int variateIndex = 0; variateIndex < _covarianceMatrix.length; ++variateIndex) {
+			volatilityArray[variateIndex] = Math.sqrt (_covarianceMatrix[variateIndex][variateIndex]);
+		}
 
-		return adblVolatility;
+		return volatilityArray;
 	}
 
 	/**
@@ -203,16 +230,19 @@ public class Covariance {
 
 	public double[][] correlationMatrix()
 	{
-		int iNumVariate = _aadblCovariance.length;
-		double[][] aadblCorrelation = new double[iNumVariate][iNumVariate];
+		double[][] correlationMatrix = new double[_covarianceMatrix.length][_covarianceMatrix.length];
 
-		double[] adblVolatility = volatility();
+		double[] volatilityArray = volatilityArray();
 
-		for (int i = 0; i < iNumVariate; ++i) {
-			for (int j = 0; j < iNumVariate; ++j)
-				aadblCorrelation[i][j] = _aadblCovariance[i][j] / (adblVolatility[i] * adblVolatility[j]);
+		for (int variateIndexI = 0; variateIndexI < _covarianceMatrix.length; ++variateIndexI) {
+			for (int variateIndexJ = 0; variateIndexJ < _covarianceMatrix.length; ++variateIndexJ) {
+				correlationMatrix[variateIndexI][variateIndexJ] =
+					_covarianceMatrix[variateIndexI][variateIndexJ] / (
+						volatilityArray[variateIndexI] * volatilityArray[variateIndexJ]
+					);
+			}
 		}
 
-		return aadblCorrelation;
+		return correlationMatrix;
 	}
 }

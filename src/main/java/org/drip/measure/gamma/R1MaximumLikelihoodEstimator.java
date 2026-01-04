@@ -1,11 +1,21 @@
 
 package org.drip.measure.gamma;
 
+import org.drip.validation.evidence.R1Sample;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2030 Lakshmi Krishnamurthy
+ * Copyright (C) 2029 Lakshmi Krishnamurthy
+ * Copyright (C) 2028 Lakshmi Krishnamurthy
+ * Copyright (C) 2027 Lakshmi Krishnamurthy
+ * Copyright (C) 2026 Lakshmi Krishnamurthy
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -102,43 +112,45 @@ package org.drip.measure.gamma;
  * 				Likelihood Equations <i>The American Statistician</i> <b>71 (2)</b> 177-181
  * 		</li>
  * 	</ul>
+ * 
+ *  It provides the following Functionality:
  *
- *	<br><br>
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md">Numerical Analysis Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/README.md">R<sup>d</sup> Continuous/Discrete Probability Measures</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/gamma/README.md">R<sup>1</sup> Gamma Distribution Implementation/Properties</a></li>
+ * 		<li>Construct and Instance of <i>R1MaximumLikelihoodEstimator</i> from the Array of Realizations
+ * 		<li><i>R1MaximumLikelihoodEstimator</i> Constructor
+ * 		<li>Infer the Shape-Scale Parameter from the Observations
  *  </ul>
+ *
+ *	<br>
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md">Numerical Analysis Library</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/README.md">R<sup>d</sup> Continuous/Discrete Probability Measures</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/gamma/README.md">R<sup>1</sup> Gamma Distribution Implementation/Properties</a></td></tr>
+ *  </table>
+ *	<br>
  *
  * @author Lakshmi Krishnamurthy
  */
 
 public class R1MaximumLikelihoodEstimator
-	extends org.drip.measure.gamma.R1ParameterEstimator
+	extends R1ParameterEstimator
 {
 
 	/**
-	 * Construct and Instance of R1MaximumLikelihoodEstimator from the Array of Realizations
+	 * Construct and Instance of <i>R1MaximumLikelihoodEstimator</i> from the Array of Realizations
 	 * 
 	 * @param realizationArray The Realization Array
 	 * 
-	 * @return Instance of R1MaximumLikelihoodEstimator
+	 * @return Instance of <i>R1MaximumLikelihoodEstimator</i>
 	 */
 
 	public static final R1MaximumLikelihoodEstimator FromRealizationArray (
 		final double[] realizationArray)
 	{
-		try
-		{
-			return new R1MaximumLikelihoodEstimator (
-				new org.drip.validation.evidence.R1Sample (
-					realizationArray
-				)
-			);
-		}
-		catch (java.lang.Exception e)
-		{
+		try {
+			return new R1MaximumLikelihoodEstimator (new R1Sample (realizationArray));
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -146,20 +158,18 @@ public class R1MaximumLikelihoodEstimator
 	}
 
 	/**
-	 * R1MaximumLikelihoodEstimator Constructor
+	 * <i>R1MaximumLikelihoodEstimator</i> Constructor
 	 * 
 	 * @param sample The Sample
 	 * 
-	 * @throws java.lang.Exception Thrown of the Inputs are Invalid
+	 * @throws Exception Thrown of the Inputs are Invalid
 	 */
 
 	public R1MaximumLikelihoodEstimator (
-		final org.drip.validation.evidence.R1Sample sample)
-		throws java.lang.Exception
+		final R1Sample sample)
+		throws Exception
 	{
-		super (
-			sample
-		);
+		super (sample);
 	}
 
 	/**
@@ -168,41 +178,29 @@ public class R1MaximumLikelihoodEstimator
 	 * @return The Shape-Scale Parameter from the Observations
 	 */
 
-	public org.drip.measure.gamma.ShapeScaleParameters inferShapeScaleParameter()
+	@Override public ShapeScaleParameters inferShapeScale()
 	{
 		double[] realizationArray = sample().realizationArray();
 
-		int realizationCount = realizationArray.length;
 		double logRealizationSum = 0.;
 		double realizationSum = 0.;
 
-		for (int realizationIndex = 0;
-			realizationIndex < realizationCount;
-			++realizationIndex)
-		{
+		for (int realizationIndex = 0; realizationIndex < realizationArray.length; ++realizationIndex) {
 			realizationSum = realizationSum + realizationArray[realizationIndex];
 
-			logRealizationSum = logRealizationSum + java.lang.Math.log (
-				realizationArray[realizationIndex]
-			);
+			logRealizationSum = logRealizationSum + Math.log (realizationArray[realizationIndex]);
 		}
 
-		double s = java.lang.Math.log (realizationSum / realizationCount) - logRealizationSum /
-			realizationCount;
+		double s = Math.log (realizationSum / realizationArray.length) - logRealizationSum /
+			realizationArray.length;
 
 		double threeMinusS = 3. - s;
 
-		double shape = (threeMinusS + java.lang.Math.sqrt (threeMinusS * threeMinusS + 24. * s)) / (12. * s);
+		double shape = (threeMinusS + Math.sqrt (threeMinusS * threeMinusS + 24. * s)) / (12. * s);
 
-		try
-		{
-			return new org.drip.measure.gamma.ShapeScaleParameters (
-				shape,
-				realizationSum / shape / realizationCount
-			);
-		}
-		catch (java.lang.Exception e)
-		{
+		try {
+			return new ShapeScaleParameters (shape, realizationSum / shape / realizationArray.length);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 

@@ -1,11 +1,21 @@
 
 package org.drip.measure.gamma;
 
+import org.drip.validation.evidence.R1Sample;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2030 Lakshmi Krishnamurthy
+ * Copyright (C) 2029 Lakshmi Krishnamurthy
+ * Copyright (C) 2028 Lakshmi Krishnamurthy
+ * Copyright (C) 2027 Lakshmi Krishnamurthy
+ * Copyright (C) 2026 Lakshmi Krishnamurthy
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -102,31 +112,36 @@ package org.drip.measure.gamma;
  * 				Likelihood Equations <i>The American Statistician</i> <b>71 (2)</b> 177-181
  * 		</li>
  * 	</ul>
+ * 
+ *  It provides the following Functionality:
  *
- *	<br><br>
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md">Numerical Analysis Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/README.md">R<sup>d</sup> Continuous/Discrete Probability Measures</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/gamma/README.md">R<sup>1</sup> Gamma Distribution Implementation/Properties</a></li>
+ * 		<li>Retrieve the Samples used for the ML Estimate</li>
+ * 		<li>Infer the Shape-Scale Parameter from the Observations</li>
  *  </ul>
+ *
+ *	<br>
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md">Numerical Analysis Library</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/README.md">R<sup>d</sup> Continuous/Discrete Probability Measures</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/gamma/README.md">R<sup>1</sup> Gamma Distribution Implementation/Properties</a></td></tr>
+ *  </table>
+ *	<br>
  *
  * @author Lakshmi Krishnamurthy
  */
 
 public abstract class R1ParameterEstimator
 {
-	private org.drip.validation.evidence.R1Sample _sample = null;
+	private R1Sample _sample = null;
 
 	protected R1ParameterEstimator (
-		final org.drip.validation.evidence.R1Sample sample)
-		throws java.lang.Exception
+		final R1Sample sample)
+		throws Exception
 	{
-		if (null == (_sample = sample))
-		{
-			throw new java.lang.Exception (
-				"R1ParameterEstimator Constructor => Invalid Inputs"
-			);
+		if (null == (_sample = sample)) {
+			throw new Exception ("R1ParameterEstimator Constructor => Invalid Inputs");
 		}
 	}
 
@@ -136,7 +151,7 @@ public abstract class R1ParameterEstimator
 	 * @return Samples used for the ML Estimate
 	 */
 
-	public org.drip.validation.evidence.R1Sample sample()
+	public R1Sample sample()
 	{
 		return _sample;
 	}
@@ -147,5 +162,5 @@ public abstract class R1ParameterEstimator
 	 * @return The Shape-Scale Parameter from the Observations
 	 */
 
-	public abstract org.drip.measure.gamma.ShapeScaleParameters inferShapeScaleParameter();
+	public abstract ShapeScaleParameters inferShapeScale();
 }

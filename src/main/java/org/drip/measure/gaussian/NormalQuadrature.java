@@ -1,11 +1,21 @@
 
 package org.drip.measure.gaussian;
 
+import org.drip.numerical.common.NumberUtil;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2030 Lakshmi Krishnamurthy
+ * Copyright (C) 2029 Lakshmi Krishnamurthy
+ * Copyright (C) 2028 Lakshmi Krishnamurthy
+ * Copyright (C) 2027 Lakshmi Krishnamurthy
+ * Copyright (C) 2026 Lakshmi Krishnamurthy
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -84,106 +94,130 @@ package org.drip.measure.gaussian;
 
 /**
  * <i>NormalQuadrature</i> implements the Quadrature Metrics behind the Univariate Normal Distribution. It
- * implements the Incremental, the Cumulative, and the Inverse Cumulative Distribution Densities.
+ * implements the Incremental, the Cumulative, and the Inverse Cumulative Distribution Densities. It
+ * provides the following Functionality:
  *
- *	<br><br>
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md">Numerical Analysis Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/README.md">R<sup>d</sup> Continuous/Discrete Probability Measures</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/gaussian/README.md">R<sup>1</sup> R<sup>d</sup> Covariant Gaussian Quadrature</a></li>
+ * 		<li>Retrieve the Density at the specified Point using Zero Mean and Unit Variance</li>
+ * 		<li>Compute the Cumulative Distribution Function up to the specified Variate</li>
+ * 		<li>Compute the Inverse CDF of the Distribution up to the specified Y</li>
+ * 		<li>Compute the Probit of the Distribution up to the specified p</li>
+ * 		<li>Generate a Random Univariate Number following a Gaussian Distribution</li>
+ * 		<li>Compute the Error Function of x</li>
+ * 		<li>Compute the Error Function Complement of x</li>
  *  </ul>
+ *
+ *	<br>
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md">Numerical Analysis Library</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/README.md">R<sup>d</sup> Continuous/Discrete Probability Measures</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/gaussian/README.md">R<sup>1</sup> Covariant Gaussian Quadrature</a></td></tr>
+ *  </table>
+ *	<br>
  *
  * @author Robert Sedgewick
  * @author Lakshmi Krishnamurthy
  */
 
-public class NormalQuadrature {
-    private static final double InverseCDF (
-    	final double dblY,
-    	final double dblTolerance,
-    	final double dblLowCutoff,
-    	final double dblHighCutoff)
-    	throws java.lang.Exception
+public class NormalQuadrature
+{
+
+	private static final double InverseCDF (
+    	final double y,
+    	final double tolerance,
+    	final double lowCutoff,
+    	final double highCutoff)
+    	throws Exception
     {
-        double dblMid = 0.5 * (dblHighCutoff + dblLowCutoff);
+        double mid = 0.5 * (highCutoff + lowCutoff);
 
-        if (dblHighCutoff - dblLowCutoff < dblTolerance) return dblMid;
+        if (highCutoff - lowCutoff < tolerance) {
+        	return mid;
+        }
 
-        return CDF (dblMid) > dblY ? InverseCDF (dblY, dblTolerance, dblLowCutoff, dblMid) : InverseCDF
-        	(dblY, dblTolerance, dblMid, dblHighCutoff);
+        return CDF (mid) > y ?
+    		InverseCDF (y, tolerance, lowCutoff, mid) :
+			InverseCDF (y, tolerance, mid, highCutoff);
     }
 
     /**
      * Retrieve the Density at the specified Point using Zero Mean and Unit Variance
      * 
-     * @param dblX The Ordinate
+     * @param x The Ordinate
      * 
      * @return The Density at the specified Point Zero Mean and Unit Variance
      * 
-     * @throws java.lang.Exception Thrown if Inputs are Invalid
+     * @throws Exception Thrown if Inputs are Invalid
      */
 
     public static final double Density (
-    	final double dblX)
-    	throws java.lang.Exception
+    	final double x)
+    	throws Exception
     {
-    	if (!org.drip.numerical.common.NumberUtil.IsValid (dblX))
-    		throw new java.lang.Exception ("NormalQuadrature::Density => Invalid Inputs");
+    	if (!NumberUtil.IsValid (x)) {
+    		throw new Exception ("NormalQuadrature::Density => Invalid Inputs");
+    	}
 
-    	return java.lang.Math.exp (-0.5 * dblX * dblX) / java.lang.Math.sqrt (2 * java.lang.Math.PI);
+    	return Math.exp (-0.5 * x * x) / Math.sqrt (2 * Math.PI);
     }
 
     /**
      * Compute the Cumulative Distribution Function up to the specified Variate
      * 
-     * @param dblX The Variate
+     * @param x The Variate
      * 
      * @return The Cumulative Distribution Function up to the specified Variate
      * 
-     * @throws java.lang.Exception thrown if the Inputs are Invalid
+     * @throws Exception thrown if the Inputs are Invalid
      */
 
     public static final double CDF (
-    	final double dblX)
-    	throws java.lang.Exception
+    	final double x)
+    	throws Exception
     {
-    	if (java.lang.Double.isNaN (dblX))
-    		throw new java.lang.Exception ("NormalQuadrature::CDF => Invalid Inputs");
+    	if (Double.isNaN (x)) {
+    		throw new Exception ("NormalQuadrature::CDF => Invalid Inputs");
+    	}
 
-        if (dblX < -8.) return 0.;
-
-        if (dblX > 8.) return 1.;
-
-        double dblSum = 0.;
-        double dblTerm = dblX;
-
-        for (int i = 3; dblSum + dblTerm != dblSum; i += 2) {
-        	dblSum  = dblSum + dblTerm;
-        	dblTerm = dblTerm * dblX * dblX / i;
+        if (x < -8.) {
+        	return 0.;
         }
 
-        return 0.5 + dblSum * Density (dblX);
+        if (x > 8.) {
+        	return 1.;
+        }
+
+        double sum = 0.;
+        double term = x;
+
+        for (int i = 3; sum + term != sum; i += 2) {
+        	sum  = sum + term;
+        	term = term * x * x / i;
+        }
+
+        return 0.5 + sum * Density (x);
     }
 
     /**
      * Compute the Inverse CDF of the Distribution up to the specified Y
      * 
-     * @param dblY Y
+     * @param y Y
      * 
      * @return The Inverse CDF of the Distribution up to the specified Y
      * 
-     * @throws java.lang.Exception Thrown if Inputs are Invalid
+     * @throws Exception Thrown if Inputs are Invalid
      */
 
     public static final double InverseCDF (
-    	final double dblY)
-    	throws java.lang.Exception
+    	final double y)
+    	throws Exception
     {
-    	if (!org.drip.numerical.common.NumberUtil.IsValid (dblY))
-    		throw new java.lang.Exception ("NormalQuadrature::InverseCDF => Invalid Inputs");
+    	if (!NumberUtil.IsValid (y)) {
+    		throw new Exception ("NormalQuadrature::InverseCDF => Invalid Inputs");
+    	}
 
-        return InverseCDF (dblY, .00000001, -8., 8.);
+        return InverseCDF (y, .00000001, -8., 8.);
     } 
 
     /**
@@ -193,12 +227,12 @@ public class NormalQuadrature {
      * 
      * @return The Probit of the Distribution up to the specified p
      * 
-     * @throws java.lang.Exception Thrown if Inputs are Invalid
+     * @throws Exception Thrown if Inputs are Invalid
      */
 
     public static final double Probit (
     	final double p)
-    	throws java.lang.Exception
+    	throws Exception
     {
         return InverseCDF (p);
     } 
@@ -208,13 +242,13 @@ public class NormalQuadrature {
      * 
      * @return The Random Univariate Number
      * 
-     * @throws java.lang.Exception Thrown the Random Number cannot be generated
+     * @throws Exception Thrown the Random Number cannot be generated
      */
 
     public static final double Random()
-    	throws java.lang.Exception
+    	throws Exception
     {
-    	return InverseCDF (java.lang.Math.random());
+    	return InverseCDF (Math.random());
     }
 
     /**
@@ -224,14 +258,14 @@ public class NormalQuadrature {
      * 
      * @return The Error Function of x
      * 
-     * @throws java.lang.Exception Thrown if the Inputs are Invalid
+     * @throws Exception Thrown if the Inputs are Invalid
      */
 
     public static final double ERF (
     	final double x)
-    	throws java.lang.Exception
+    	throws Exception
 	{
-    	return 2. * CDF (x * java.lang.Math.sqrt (2.)) - 1.;
+    	return 2. * CDF (x * Math.sqrt (2.)) - 1.;
 	}
 
     /**
@@ -241,13 +275,13 @@ public class NormalQuadrature {
      * 
      * @return The Error Function Complement of x
      * 
-     * @throws java.lang.Exception Thrown if the Inputs are Invalid
+     * @throws Exception Thrown if the Inputs are Invalid
      */
 
     public static final double ERFC (
     	final double x)
-    	throws java.lang.Exception
+    	throws Exception
 	{
-    	return 2. * CDF (1. - x * java.lang.Math.sqrt (2.));
+    	return 2. * CDF (1. - x * Math.sqrt (2.));
 	}
 }

@@ -2,6 +2,7 @@
 package org.drip.measure.gamma;
 
 import org.drip.function.definition.R1ToR1;
+import org.drip.validation.evidence.R1Sample;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -116,7 +117,12 @@ import org.drip.function.definition.R1ToR1;
  *  It provides the following Functionality:
  *
  *  <ul>
- * 		<li><i>ConjugateShapePrior</i> Constructor</li>
+ * 		<li><i>ConjugateShapeScalePrior</i> Constructor</li>
+ * 		<li>Retrieve the Conjugate Shape Prior</li>
+ * 		<li>Retrieve the Conjugate Scale Prior</li>
+ * 		<li>Retrieve the Gamma Estimator</li>
+ * 		<li>Compute the Conjugate Shape-Scale Unnormalized Prior Probability</li>
+ * 		<li>Perform an Bayes' Update of the Conjugate Prior from the Sample</li>
  *  </ul>
  *
  *	<br>
@@ -138,29 +144,26 @@ public class ConjugateShapeScalePrior
 	private ConjugateShapePrior _conjugateShapePrior = null;
 
 	/**
-	 * ConjugateShapeScalePrior Constructor
+	 * <i>ConjugateShapeScalePrior</i> Constructor
 	 * 
 	 * @param conjugateShapePrior The Conjugate Shape Prior
 	 * @param conjugateScalePrior The Conjugate Scale Prior
 	 * @param gammaEstimator The Gamma Estimator
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public ConjugateShapeScalePrior (
-		final org.drip.measure.gamma.ConjugateShapePrior conjugateShapePrior,
-		final org.drip.measure.gamma.ConjugateScalePrior conjugateScalePrior,
-		final org.drip.function.definition.R1ToR1 gammaEstimator)
-		throws java.lang.Exception
+		final ConjugateShapePrior conjugateShapePrior,
+		final ConjugateScalePrior conjugateScalePrior,
+		final R1ToR1 gammaEstimator)
+		throws Exception
 	{
 		if (null == (_conjugateShapePrior = conjugateShapePrior) ||
 			null == (_conjugateScalePrior = conjugateScalePrior) ||
-			null == (_gammaEstimator = gammaEstimator)
-		)
+			null == (_gammaEstimator = gammaEstimator))
 		{
-			throw new java.lang.Exception (
-				"ConjugateShapeScalePrior Constructor => Invalid Inputs"
-			);
+			throw new Exception ("ConjugateShapeScalePrior Constructor => Invalid Inputs");
 		}
 	}
 
@@ -202,27 +205,25 @@ public class ConjugateShapeScalePrior
 	 * 
 	 * @return The Conjugate Shape-Scale Unnormalized Prior Probability
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public double unnormalizedPriorProbability()
-		throws java.lang.Exception
+		throws Exception
 	{
 		double scaleEstimate = _conjugateScalePrior.parameterEstimate();
 
 		double shapeEstimate = _conjugateShapePrior.parameterEstimate();
 
-		return java.lang.Math.pow (
+		return Math.pow (
 			_conjugateShapePrior.observationProduct(),
 			shapeEstimate - 1.
-		) * java.lang.Math.exp (
+		) * Math.exp (
 			-1. * _conjugateScalePrior.observationSum() / scaleEstimate
-		) * java.lang.Math.pow (
-			_gammaEstimator.evaluate (
-				shapeEstimate
-			),
+		) * Math.pow (
+			_gammaEstimator.evaluate (shapeEstimate),
 			-1. * _conjugateShapePrior.observationCount()
-		) * java.lang.Math.pow (
+		) * Math.pow (
 			scaleEstimate,
 			-1. * shapeEstimate * _conjugateScalePrior.observationCount()
 		);
@@ -237,12 +238,8 @@ public class ConjugateShapeScalePrior
 	 */
 
 	public boolean bayesUpdate (
-		final org.drip.validation.evidence.R1Sample sample)
+		final R1Sample sample)
 	{
-		return _conjugateScalePrior.bayesUpdate (
-			sample
-		) && _conjugateShapePrior.bayesUpdate (
-			sample
-		);
+		return _conjugateScalePrior.bayesUpdate (sample) && _conjugateShapePrior.bayesUpdate (sample);
 	}
 }

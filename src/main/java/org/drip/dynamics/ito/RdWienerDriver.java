@@ -118,7 +118,7 @@ public class RdWienerDriver
 	extends org.drip.dynamics.ito.RdStochasticDriver
 {
 	private double _timeWidthSQRT = java.lang.Double.NaN;
-	private org.drip.measure.gaussian.Covariance _correlation = null;
+	private org.drip.measure.gaussian.JointVariance _correlation = null;
 
 	/**
 	 * RdWienerDriver Constructor
@@ -131,7 +131,7 @@ public class RdWienerDriver
 
 	public RdWienerDriver (
 		final double timeWidth,
-		final org.drip.measure.gaussian.Covariance correlation)
+		final org.drip.measure.gaussian.JointVariance correlation)
 		throws java.lang.Exception
 	{
 		if (!org.drip.numerical.common.NumberUtil.IsValid (
@@ -167,7 +167,7 @@ public class RdWienerDriver
 	 * @return The Correlation
 	 */
 
-	public org.drip.measure.gaussian.Covariance correlation()
+	public org.drip.measure.gaussian.JointVariance correlation()
 	{
 		return _correlation;
 	}
@@ -190,7 +190,7 @@ public class RdWienerDriver
 				return null;
 			}
 
-			int dimension = _correlation.numVariate();
+			int dimension = _correlation.variateCount();
 
 			for (int dimensionIndex = 0;
 				dimensionIndex < dimension;

@@ -1,11 +1,22 @@
 
 package org.drip.measure.bayesian;
 
+import org.drip.numerical.common.NumberUtil;
+import org.drip.validation.evidence.R1Sample;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2030 Lakshmi Krishnamurthy
+ * Copyright (C) 2029 Lakshmi Krishnamurthy
+ * Copyright (C) 2028 Lakshmi Krishnamurthy
+ * Copyright (C) 2027 Lakshmi Krishnamurthy
+ * Copyright (C) 2026 Lakshmi Krishnamurthy
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -102,14 +113,24 @@ package org.drip.measure.bayesian;
  * 				Likelihood Equations <i>The American Statistician</i> <b>71 (2)</b> 177-181
  * 		</li>
  * 	</ul>
+ * 
+ *  It provides the following Functionality:
  *
- *	<br><br>
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md">Numerical Analysis Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/README.md">R<sup>d</sup> Continuous/Discrete Probability Measures</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/gamma/README.md">R<sup>1</sup> Gamma Distribution Implementation/Properties</a></li>
+ * 		<li><i>ConjugateParameterPrior</i> Constructor</li>
+ * 		<li>Retrieve the Count of the Observation Suite</li>
+ * 		<li>Retrieve the Parameter Estimate</li>
+ * 		<li>Perform an Bayes' Update of the Conjugate Prior from the Sample</li>
  *  </ul>
+ *
+ *	<br>
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md">Numerical Analysis Library</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/README.md">R<sup>d</sup> Continuous/Discrete Probability Measures</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/bayesian/README.md">Prior, Conditional, Posterior Theil Bayesian</a></td></tr>
+ *  </table>
+ *	<br>
  *
  * @author Lakshmi Krishnamurthy
  */
@@ -117,30 +138,26 @@ package org.drip.measure.bayesian;
 public class ConjugateParameterPrior
 {
 	private int _observationCount = -1;
-	private double _parameterEstimate = java.lang.Double.NaN;
+	private double _parameterEstimate = Double.NaN;
 
 	/**
-	 * ConjugateParameterPrior Constructor
+	 * <i>ConjugateParameterPrior</i> Constructor
 	 * 
 	 * @param parameterEstimate Parameter Estimate
 	 * @param observationCount Count of Observations
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public ConjugateParameterPrior (
 		final double parameterEstimate,
 		final int observationCount)
-		throws java.lang.Exception
+		throws Exception
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (
-				_parameterEstimate = parameterEstimate
-			) || 0 >= (_observationCount = observationCount)
-		)
+		if (!NumberUtil.IsValid (_parameterEstimate = parameterEstimate) ||
+			0 >= (_observationCount = observationCount))
 		{
-			throw new java.lang.Exception (
-				"ConjugateParameterPrior Constructor => Invalid Inputs"
-			);
+			throw new Exception ("ConjugateParameterPrior Constructor => Invalid Inputs");
 		}
 	}
 
@@ -167,7 +184,7 @@ public class ConjugateParameterPrior
 	}
 
 	/**
-	 * Perform an Bayes' Update of the Conjugate Prior from the Sample
+	 * Perform a Bayes' Update of the Conjugate Prior from the Sample
 	 * 
 	 * @param sample The Sample
 	 * 
@@ -175,10 +192,9 @@ public class ConjugateParameterPrior
 	 */
 
 	public boolean bayesUpdate (
-		final org.drip.validation.evidence.R1Sample sample)
+		final R1Sample sample)
 	{
-		if (null == sample)
-		{
+		if (null == sample) {
 			return false;
 		}
 

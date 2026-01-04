@@ -183,7 +183,7 @@ public class PortfolioAndBenchmarkMetrics
 		};
 
 		double[][] projectionExcessReturnsCovarianceMatrix =
-			ProjectionDistributionLoading.ProjectionCovariance (
+			ViewLoading.ProjectionCovariance (
 				assetExcessReturnsCovarianceMatrix,
 				assetSpaceViewProjectionMatrix,
 				tau

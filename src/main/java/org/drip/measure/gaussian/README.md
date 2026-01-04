@@ -7,8 +7,8 @@ DROP Measure Gaussian implements R<sup>1</sup> R<sup>d</sup> Covariant Gaussian 
 
 ## Class Components
 
- * [***Covariance***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/gaussian/Covariance.java)
- <i>Covariance</i> holds the Standard Covariance Matrix, and provides functions to manipulate it.
+ * [***JointVariance***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/gaussian/JointVariance.java)
+ <i>JointVariance</i> holds the Standard Covariance Matrix, and provides functions to manipulate it.
 
  * [***NormalQuadrature***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/gaussian/NormalQuadrature.java)
  <i>NormalQuadrature</i> implements the Quadrature Metrics behind the Univariate Normal Distribution. It

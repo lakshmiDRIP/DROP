@@ -1,11 +1,23 @@
 
 package org.drip.measure.gaussian;
 
+import org.drip.measure.continuous.MetaRd;
+import org.drip.measure.continuous.MetaRdDistribution;
+import org.drip.numerical.common.NumberUtil;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2030 Lakshmi Krishnamurthy
+ * Copyright (C) 2029 Lakshmi Krishnamurthy
+ * Copyright (C) 2028 Lakshmi Krishnamurthy
+ * Copyright (C) 2027 Lakshmi Krishnamurthy
+ * Copyright (C) 2026 Lakshmi Krishnamurthy
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -81,42 +93,54 @@ package org.drip.measure.gaussian;
 
 /**
  * <i>R1MultivariateNormal</i> contains the Generalized Joint Multivariate R<sup>1</sup> Normal
- * Distributions.
+ * 	Distributions. It provides the following Functionality:
  *
- *	<br><br>
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md">Numerical Analysis Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/README.md">R<sup>d</sup> Continuous/Discrete Probability Measures</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/gaussian/README.md">R<sup>1</sup> R<sup>d</sup> Covariant Gaussian Quadrature</a></li>
+ * 		<li>Construct a Standard <i>R1MultivariateNormal</i> Instance #1</li>
+ * 		<li>Construct a Standard <i>R1MultivariateNormal</i> Instance #2</li>
+ * 		<li><i>R1MultivariateNormal</i> Constructor</li>
+ * 		<li>Compute the Co-variance of the Distribution</li>
+ * 		<li>Compute the Density under the Distribution at the given Variate Array</li>
+ * 		<li>Compute the Mean of the Distribution</li>
+ * 		<li>Compute the Variance of the Distribution</li>
  *  </ul>
+ *
+ *	<br>
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md">Numerical Analysis Library</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/README.md">R<sup>d</sup> Continuous/Discrete Probability Measures</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/gaussian/README.md">R<sup>1</sup> Covariant Gaussian Quadrature</a></td></tr>
+ *  </table>
+ *	<br>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class R1MultivariateNormal extends org.drip.measure.continuous.MetaRdDistribution {
-	private double[] _adblMean = null;
-	private org.drip.measure.gaussian.Covariance _covariance = null;
+public class R1MultivariateNormal
+	extends MetaRdDistribution
+{
+	private double[] _meanArray = null;
+	private JointVariance _jointVariance = null;
 
 	/**
-	 * Construct a Standard R1MultivariateNormal Instance
+	 * Construct a Standard <i>R1MultivariateNormal</i> Instance #1
 	 * 
-	 * @param meta The R^1 Multivariate Meta Headers
-	 * @param adblMean Array of the Univariate Means
-	 * @param aadblCovariance The Covariance Matrix
+	 * @param metaRd The R<sup>1</sup> Multivariate Meta Headers
+	 * @param meanArray Array of the Univariate Means
+	 * @param covarianceMatrix The Covariance Matrix
 	 * 
 	 * @return The Standard Normal Univariate Distribution
 	 */
 
 	public static final R1MultivariateNormal Standard (
-		final org.drip.measure.continuous.MetaRd meta,
-		final double[] adblMean,
-		final double[][] aadblCovariance)
+		final MetaRd metaRd,
+		final double[] meanArray,
+		final double[][] covarianceMatrix)
 	{
 		try {
-			return new R1MultivariateNormal (meta, adblMean, new org.drip.measure.gaussian.Covariance
-				(aadblCovariance));
-		} catch (java.lang.Exception e) {
+			return new R1MultivariateNormal (metaRd, meanArray, new JointVariance (covarianceMatrix));
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -124,24 +148,27 @@ public class R1MultivariateNormal extends org.drip.measure.continuous.MetaRdDist
 	}
 
 	/**
-	 * Construct a Standard R1MultivariateNormal Instance
+	 * Construct a Standard <i>R1MultivariateNormal</i> Instance #2
 	 * 
-	 * @param astrVariateID Array of Variate IDs
-	 * @param adblMean Array of the Univariate Means
-	 * @param aadblCovariance The Covariance Matrix
+	 * @param variateIDArray Array of Variate IDs
+	 * @param meanArray Array of the Univariate Means
+	 * @param covarianceMatrix The Covariance Matrix
 	 * 
 	 * @return The Standard Normal Univariate Distribution
 	 */
 
 	public static final R1MultivariateNormal Standard (
-		final java.lang.String[] astrVariateID,
-		final double[] adblMean,
-		final double[][] aadblCovariance)
+		final String[] variateIDArray,
+		final double[] meanArray,
+		final double[][] covarianceMatrix)
 	{
 		try {
-			return new R1MultivariateNormal (new org.drip.measure.continuous.MetaRd
-				(astrVariateID), adblMean, new org.drip.measure.gaussian.Covariance (aadblCovariance));
-		} catch (java.lang.Exception e) {
+			return new R1MultivariateNormal (
+				new MetaRd (variateIDArray),
+				meanArray,
+				new JointVariance (covarianceMatrix)
+			);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -149,35 +176,34 @@ public class R1MultivariateNormal extends org.drip.measure.continuous.MetaRdDist
 	}
 
 	/**
-	 * R1MultivariateNormal Constructor
+	 * <i>R1MultivariateNormal</i> Constructor
 	 * 
-	 * @param meta The R^1 Multivariate Meta Headers
-	 * @param adblMean Array of the Univariate Means
-	 * @param covariance The Multivariate Covariance
+	 * @param metaRd The R<sup>1</sup> Multivariate Meta Headers
+	 * @param meanArray Array of the Univariate Means
+	 * @param jointVariance The Multivariate Covariance
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public R1MultivariateNormal (
-		final org.drip.measure.continuous.MetaRd meta,
-		final double[] adblMean,
-		final org.drip.measure.gaussian.Covariance covariance)
-		throws java.lang.Exception
+		final MetaRd metaRd,
+		final double[] meanArray,
+		final JointVariance jointVariance)
+		throws Exception
 	{
-		super (meta);
+		super (metaRd);
 
-		if (null == (_adblMean = adblMean) || null == (_covariance = covariance))
-			throw new java.lang.Exception ("R1MultivariateNormal Constructor => Invalid Inputs!");
+		if (null == (_meanArray = meanArray) || null == (_jointVariance = jointVariance)) {
+			throw new Exception ("R1MultivariateNormal Constructor => Invalid Inputs!");
+		}
 
-		int iNumVariate = meta.numVariable();
+		int variateCount = metaRd.numVariable();
 
-		if (iNumVariate != _adblMean.length || iNumVariate != _covariance.numVariate() ||
-			!org.drip.numerical.common.NumberUtil.IsValid (_adblMean)) {
-			System.out.println ("iNumVariate = " + iNumVariate);
-
-			System.out.println ("_adblMean = " + _adblMean.length);
-
-			throw new java.lang.Exception ("R1MultivariateNormal Constructor => Invalid Inputs!");
+		if (variateCount != _meanArray.length ||
+			variateCount != _jointVariance.variateCount() ||
+			!NumberUtil.IsValid (_meanArray))
+		{
+			throw new Exception ("R1MultivariateNormal Constructor => Invalid Inputs!");
 		}
 	}
 
@@ -187,47 +213,72 @@ public class R1MultivariateNormal extends org.drip.measure.continuous.MetaRdDist
 	 * @return The Co-variance of the Distribution
 	 */
 
-	public org.drip.measure.gaussian.Covariance covariance()
+	public JointVariance covariance()
 	{
-		return _covariance;
+		return _jointVariance;
 	}
+
+	/**
+	 * Compute the Density under the Distribution at the given Variate Array
+	 * 
+	 * @param variateArray Variate Array at which the Density needs to be computed
+	 * 
+	 * @return The Density
+	 * 
+	 * @throws Exception Thrown if the input is invalid
+	 */
 
 	@Override public double density (
-		final double[] adblVariate)
-		throws java.lang.Exception
+		final double[] variateArray)
+		throws Exception
 	{
-		if (null == adblVariate || !org.drip.numerical.common.NumberUtil.IsValid (adblVariate))
-			throw new java.lang.Exception ("R1MultivariateNormal::density => Invalid Inputs");
-
-		double dblDensity = 0.;
-		int iNumVariate = _adblMean.length;
-		double[] adblVariateOffset = new double[iNumVariate];
-
-		if (iNumVariate != adblVariate.length)
-			throw new java.lang.Exception ("R1MultivariateNormal Constructor => Invalid Inputs!");
-
-		for (int i = 0; i < iNumVariate; ++i)
-			adblVariateOffset[i] = adblVariate[i] - _adblMean[i];
-
-		double[][] aadblPrecision = _covariance.precisionMatrix();
-
-		for (int i = 0; i < iNumVariate; ++i) {
-			for (int j = 0; j < iNumVariate; ++j)
-				dblDensity = dblDensity + adblVariateOffset[i] * aadblPrecision[i][j] *
-					adblVariateOffset[j];
+		if (null == variateArray || !NumberUtil.IsValid (variateArray)) {
+			throw new Exception ("R1MultivariateNormal::density => Invalid Inputs");
 		}
 
-		return java.lang.Math.exp (dblDensity) * java.lang.Math.pow (2. * java.lang.Math.PI, -0.5 *
-			iNumVariate);
+		double density = 0.;
+		double[] variateOffsetArray = new double[_meanArray.length];
+
+		if (_meanArray.length != variateArray.length) {
+			throw new Exception ("R1MultivariateNormal Constructor => Invalid Inputs!");
+		}
+
+		for (int variateIndex = 0; variateIndex < _meanArray.length; ++variateIndex) {
+			variateOffsetArray[variateIndex] = variateArray[variateIndex] - _meanArray[variateIndex];
+		}
+
+		double[][] precisionMatrix = _jointVariance.precisionMatrix();
+
+		for (int variateIndexI = 0; variateIndexI < _meanArray.length; ++variateIndexI) {
+			for (int variateIndexJ = 0; variateIndexJ < _meanArray.length; ++variateIndexJ) {
+				density +=
+					variateOffsetArray[variateIndexI] * precisionMatrix[variateIndexI][variateIndexJ] *
+					variateOffsetArray[variateIndexJ];
+			}
+		}
+
+		return Math.exp (density) * Math.pow (2. * Math.PI, -0.5 * _meanArray.length);
 	}
+
+	/**
+	 * Compute the Mean of the Distribution
+	 * 
+	 * @return The Mean of the Distribution
+	 */
 
 	@Override public double[] mean()
 	{
-		return _adblMean;
+		return _meanArray;
 	}
+
+	/**
+	 * Compute the Variance of the Distribution
+	 * 
+	 * @return The Variance of the Distribution
+	 */
 
 	@Override public double[] variance()
 	{
-		return _covariance.variance();
+		return _jointVariance.varianceArray();
 	}
 }

@@ -169,9 +169,9 @@ public class R1MultivariateNormalConvolutionEngine implements org.drip.measure.b
 		try {
 			return new org.drip.measure.bayesian.R1MultivariateConvolutionMetrics (r1mPrior, r1mUnconditional,
 				r1mConditional, new org.drip.measure.gaussian.R1MultivariateNormal (meta,
-					adblJointPosteriorMean, new org.drip.measure.gaussian.Covariance (aadblJointCovariance)),
+					adblJointPosteriorMean, new org.drip.measure.gaussian.JointVariance (aadblJointCovariance)),
 						new org.drip.measure.gaussian.R1MultivariateNormal (meta, adblJointPosteriorMean, new
-							org.drip.measure.gaussian.Covariance (aadblPosteriorCovariance)));
+							org.drip.measure.gaussian.JointVariance (aadblPosteriorCovariance)));
 		} catch (java.lang.Exception e) {
 			e.printStackTrace();
 		}

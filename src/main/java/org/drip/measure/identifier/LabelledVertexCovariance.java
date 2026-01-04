@@ -3,7 +3,7 @@ package org.drip.measure.identifier;
 
 import java.util.List;
 
-import org.drip.measure.gaussian.Covariance;
+import org.drip.measure.gaussian.JointVariance;
 import org.drip.numerical.common.NumberUtil;
 
 /*
@@ -148,7 +148,7 @@ public class LabelledVertexCovariance
 	extends LabelledVertexCorrelation
 {
 	private double[] _meanArray = null;
-	private Covariance _covariance = null;
+	private JointVariance _covariance = null;
 	private double[] _volatilityArray = null;
 
 	/**
@@ -197,7 +197,7 @@ public class LabelledVertexCovariance
 			}
 		}
 
-		_covariance = new Covariance (covarianceMatrix);
+		_covariance = new JointVariance (covarianceMatrix);
 	}
 
 	/**

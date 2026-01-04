@@ -293,7 +293,7 @@ public class PriorPosteriorMetricsComparison
 		};
 
 		double[][] projectionExcessReturnsCovarianceMatrix =
-			ProjectionDistributionLoading.ProjectionCovariance (
+			ViewLoading.ProjectionCovariance (
 				assetExcessReturnsCovarianceMatrix,
 				assetSpaceViewProjectionMatrix,
 				tau

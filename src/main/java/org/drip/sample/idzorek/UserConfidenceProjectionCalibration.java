@@ -2,7 +2,7 @@
 package org.drip.sample.idzorek;
 
 import org.drip.function.definition.R1ToR1;
-import org.drip.measure.bayesian.ProjectionDistributionLoading;
+import org.drip.measure.bayesian.ViewLoading;
 import org.drip.measure.continuous.MetaRd;
 import org.drip.measure.gaussian.R1MultivariateNormal;
 import org.drip.portfolioconstruction.allocator.ForwardReverseHoldingsAllocation;
@@ -271,7 +271,7 @@ public class UserConfidenceProjectionCalibration
 							}
 						),
 						projectionExpectedExcessReturnsArray,
-						ProjectionDistributionLoading.ProjectionCovariance (
+						ViewLoading.ProjectionCovariance (
 							assetExcessReturnsCovarianceMatrix,
 							assetSpaceViewProjectionMatrix,
 							tau

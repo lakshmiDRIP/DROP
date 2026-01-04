@@ -113,7 +113,7 @@ public class MeucciViewUncertaintyParameterization
 	 * @return The Projection Co-variance Instance
 	 */
 
-	public static final org.drip.measure.gaussian.Covariance ProjectionCovariance (
+	public static final org.drip.measure.gaussian.JointVariance ProjectionCovariance (
 		final double[][] scopingCovarianceMatrix,
 		final double alphaArray)
 	{
@@ -157,7 +157,7 @@ public class MeucciViewUncertaintyParameterization
 
 		try
 		{
-			return new org.drip.measure.gaussian.Covariance (projectionCovarianceMatrix);
+			return new org.drip.measure.gaussian.JointVariance (projectionCovarianceMatrix);
 		}
 		catch (java.lang.Exception e)
 		{

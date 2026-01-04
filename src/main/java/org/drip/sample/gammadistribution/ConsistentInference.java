@@ -262,7 +262,7 @@ public class ConsistentInference
 						)
 					);
 
-				ShapeScaleParameters shapeScaleParameters = consistentEstimator.inferShapeScaleParameter();
+				ShapeScaleParameters shapeScaleParameters = consistentEstimator.inferShapeScale();
 
 				System.out.println (
 					"\t| [" + FormatUtil.FormatDouble (k, 1, 2, 1., false) + " | " +

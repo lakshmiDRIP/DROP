@@ -1,11 +1,23 @@
 
 package org.drip.measure.gaussian;
 
+import org.drip.measure.continuous.R1Distribution;
+import org.drip.numerical.common.Array2D;
+import org.drip.numerical.common.NumberUtil;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2030 Lakshmi Krishnamurthy
+ * Copyright (C) 2029 Lakshmi Krishnamurthy
+ * Copyright (C) 2028 Lakshmi Krishnamurthy
+ * Copyright (C) 2027 Lakshmi Krishnamurthy
+ * Copyright (C) 2026 Lakshmi Krishnamurthy
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -84,22 +96,46 @@ package org.drip.measure.gaussian;
 
 /**
  * <i>R1UnivariateNormal</i> implements the Univariate R<sup>1</sup> Normal Distribution. It implements the
- * Incremental, the Cumulative, and the Inverse Cumulative Distribution Densities.
+ * 	Incremental, the Cumulative, and the Inverse Cumulative Distribution Densities. It provides the following
+ * 	Functionality:
  *
- *	<br><br>
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md">Numerical Analysis Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/README.md">R<sup>d</sup> Continuous/Discrete Probability Measures</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/gaussian/README.md">R<sup>1</sup> R<sup>d</sup> Covariant Gaussian Quadrature</a></li>
+ * 		<li>Generate a N (0, 1) distribution</li>
+ * 		<li>Construct a R1 Normal/Gaussian Distribution</li>
+ * 		<li>Retrieve the Sigma</li>
+ * 		<li>Lay out the Support of the PDF Range</li>
+ * 		<li>Compute the cumulative under the distribution to the given value</li>
+ * 		<li>Compute the Incremental under the Distribution between the 2 variates</li>
+ * 		<li>Compute the inverse cumulative under the distribution corresponding to the given value</li>
+ * 		<li>Compute the Density under the Distribution at the given Variate</li>
+ * 		<li>Retrieve the Mean of the Distribution</li>
+ * 		<li>Retrieve the Median of the Distribution</li>
+ * 		<li>Retrieve the Mode of the Distribution</li>
+ * 		<li>Retrieve the Variance of the Distribution</li>
+ * 		<li>Retrieve the Univariate Weighted Histogram</li>
+ * 		<li>Generate a Random Variable corresponding to the Distribution</li>
+ * 		<li>Compute the Error Function Around an Absolute Width around the Mean</li>
+ * 		<li>Compute the Confidence given the Width around the Mean</li>
+ * 		<li>Compute the Width around the Mean given the Confidence Level</li>
  *  </ul>
+ *
+ *	<br>
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md">Numerical Analysis Library</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/README.md">R<sup>d</sup> Continuous/Discrete Probability Measures</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/gaussian/README.md">R<sup>1</sup> Covariant Gaussian Quadrature</a></td></tr>
+ *  </table>
+ *	<br>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class R1UnivariateNormal extends org.drip.measure.continuous.R1Distribution {
-	private double _dblMean = java.lang.Double.NaN;
-	private double _dblSigma = java.lang.Double.NaN;
+public class R1UnivariateNormal
+	extends R1Distribution
+{
+	private double _mean = Double.NaN;
+	private double _sigma = Double.NaN;
 
 	/**
 	 * Generate a N (0, 1) distribution
@@ -107,11 +143,11 @@ public class R1UnivariateNormal extends org.drip.measure.continuous.R1Distributi
 	 * @return The N (0, 1) distribution
 	 */
 
-	public static final org.drip.measure.gaussian.R1UnivariateNormal Standard()
+	public static final R1UnivariateNormal Standard()
 	{
 		try {
 			return new R1UnivariateNormal (0., 1.);
-		} catch (java.lang.Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -121,20 +157,20 @@ public class R1UnivariateNormal extends org.drip.measure.continuous.R1Distributi
 	/**
 	 * Construct a R1 Normal/Gaussian Distribution
 	 * 
-	 * @param dblMean Mean of the Distribution
-	 * @param dblSigma Sigma of the Distribution
+	 * @param mean Mean of the Distribution
+	 * @param sigma Sigma of the Distribution
 	 * 
-	 * @throws java.lang.Exception Thrown if the inputs are invalid
+	 * @throws Exception Thrown if the inputs are invalid
 	 */
 
 	public R1UnivariateNormal (
-		final double dblMean,
-		final double dblSigma)
-		throws java.lang.Exception
+		final double mean,
+		final double sigma)
+		throws Exception
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblMean = dblMean) ||
-			!org.drip.numerical.common.NumberUtil.IsValid (_dblSigma = dblSigma) || 0. > _dblSigma)
-			throw new java.lang.Exception ("R1UnivariateNormal Constructor: Invalid Inputs");
+		if (!NumberUtil.IsValid (_mean = mean) || !NumberUtil.IsValid (_sigma = sigma) || 0. > _sigma) {
+			throw new Exception ("R1UnivariateNormal Constructor: Invalid Inputs");
+		}
 	}
 
 	/**
@@ -145,158 +181,252 @@ public class R1UnivariateNormal extends org.drip.measure.continuous.R1Distributi
 
 	public double sigma()
 	{
-	    return _dblSigma;
+	    return _sigma;
 	}
+
+	/**
+	 * Lay out the Support of the PDF Range
+	 * 
+	 * @return Support of the PDF Range
+	 */
 
 	@Override public double[] support()
 	{
-		return new double[]
-		{
-			java.lang.Double.NEGATIVE_INFINITY,
-			java.lang.Double.POSITIVE_INFINITY
-		};
+		return new double[] {Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY};
 	}
+
+	/**
+	 * Compute the cumulative under the distribution to the given value
+	 * 
+	 * @param x Variate to which the cumulative is to be computed
+	 * 
+	 * @return The cumulative
+	 * 
+	 * @throws Exception Thrown if the inputs are invalid
+	 */
 
 	@Override public double cumulative (
-		final double dblX)
-		throws java.lang.Exception
+		final double x)
+		throws Exception
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (dblX))
-			throw new java.lang.Exception ("R1UnivariateNormal::cumulative => Invalid Inputs");
+		if (!NumberUtil.IsValid (x)) {
+			throw new Exception ("R1UnivariateNormal::cumulative => Invalid Inputs");
+		}
 
-		if (0. == _dblSigma) return dblX >= _dblMean ? 1. : 0.;
+		if (0. == _sigma) {
+			return x >= _mean ? 1. : 0.;
+		}
 
-		return org.drip.measure.gaussian.NormalQuadrature.CDF ((dblX - _dblMean) / _dblSigma);
+		return NormalQuadrature.CDF ((x - _mean) / _sigma);
 	}
+
+	/**
+	 * Compute the Incremental under the Distribution between the 2 variates
+	 * 
+	 * @param xLeft Left Variate to which the cumulative is to be computed
+	 * @param xRight Right Variate to which the cumulative is to be computed
+	 * 
+	 * @return The Incremental under the Distribution between the 2 variates
+	 * 
+	 * @throws Exception Thrown if the inputs are invalid
+	 */
 
 	@Override public double incremental (
-		final double dblXLeft,
-		final double dblXRight)
-		throws java.lang.Exception
+		final double xLeft,
+		final double xRight)
+		throws Exception
 	{
-		return cumulative (dblXRight) - cumulative (dblXLeft);
+		return cumulative (xRight) - cumulative (xLeft);
 	}
+
+	/**
+	 * Compute the inverse cumulative under the distribution corresponding to the given value
+	 * 
+	 * @param y Value corresponding to which the inverse cumulative is to be computed
+	 * 
+	 * @return The inverse cumulative
+	 * 
+	 * @throws Exception Thrown if the Input is invalid
+	 */
 
 	@Override public double invCumulative (
-		final double dblY)
-		throws java.lang.Exception
+		final double y)
+		throws Exception
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (dblY) || 0. == _dblSigma)
-			throw new java.lang.Exception ("R1UnivariateNormal::invCumulative => Cannot calculate");
+		if (!NumberUtil.IsValid (y) || 0. == _sigma) {
+			throw new Exception ("R1UnivariateNormal::invCumulative => Cannot calculate");
+		}
 
-	    return org.drip.measure.gaussian.NormalQuadrature.InverseCDF (dblY) * _dblSigma + _dblMean;
+	    return NormalQuadrature.InverseCDF (y) * _sigma + _mean;
 	}
+
+	/**
+	 * Compute the Density under the Distribution at the given Variate
+	 * 
+	 * @param x Variate at which the Density needs to be computed
+	 * 
+	 * @return The Density
+	 * 
+	 * @throws Exception Thrown if the input is invalid
+	 */
 
 	@Override public double density (
-		final double dblX)
-		throws java.lang.Exception
+		final double x)
+		throws Exception
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (dblX))
-			throw new java.lang.Exception ("R1UnivariateNormal::density => Invalid Inputs");
+		if (!NumberUtil.IsValid (x)) {
+			throw new Exception ("R1UnivariateNormal::density => Invalid Inputs");
+		}
 
-		if (0. == _dblSigma) return dblX == _dblMean ? 1. : 0.;
+		if (0. == _sigma) {
+			return x == _mean ? 1. : 0.;
+		}
 
-		double dblMeanShift = (dblX - _dblMean) / _dblSigma;
+		double meanShift = (x - _mean) / _sigma;
 
-		return java.lang.Math.exp (-0.5 * dblMeanShift * dblMeanShift);
+		return Math.exp (-0.5 * meanShift * meanShift);
 	}
+
+	/**
+	 * Retrieve the Mean of the Distribution
+	 * 
+	 * @return The Mean of the Distribution
+	 * 
+	 * @throws Exception Thrown if the Mean cannot be estimated
+	 */
 
 	@Override public double mean()
 	{
-	    return _dblMean;
+	    return _mean;
 	}
+
+	/**
+	 * Retrieve the Median of the Distribution
+	 * 
+	 * @return The Median of the Distribution
+	 * 
+	 * @throws Exception Thrown if the Median cannot be estimated
+	 */
 
 	@Override public double median()
 	{
-	    return _dblMean;
+	    return _mean;
 	}
+
+	/**
+	 * Retrieve the Mode of the Distribution
+	 * 
+	 * @return The Mode of the Distribution
+	 * 
+	 * @throws Exception Thrown if the Mode cannot be estimated
+	 */
 
 	@Override public double mode()
 	{
-	    return _dblMean;
+	    return _mean;
 	}
+
+	/**
+	 * Retrieve the Variance of the Distribution
+	 * 
+	 * @return The Variance of the Distribution
+	 * 
+	 * @throws Exception Thrown if the Variance cannot be estimated
+	 */
 
 	@Override public double variance()
 	{
-	    return _dblSigma * _dblSigma;
+	    return _sigma * _sigma;
 	}
 
-	@Override public org.drip.numerical.common.Array2D histogram()
+	/**
+	 * Retrieve the Univariate Weighted Histogram
+	 * 
+	 * @return The Univariate Weighted Histogram
+	 */
+
+	@Override public Array2D histogram()
 	{
 		return null;
 	}
 
+	/**
+	 * Generate a Random Variable corresponding to the Distribution
+	 * 
+	 * @return Random Variable corresponding to the Distribution
+	 * 
+	 * @throws Exception Thrown if the Random Instance cannot be estimated
+	 */
+
 	@Override public double random()
 	{
-		try
-		{
-			return invCumulative (java.lang.Math.random());
-		}
-		catch (java.lang.Exception e)
-		{
+		try {
+			return invCumulative (Math.random());
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
-		return java.lang.Double.NaN;
+		return Double.NaN;
 	}
 
 	/**
 	 * Compute the Error Function Around an Absolute Width around the Mean
 	 * 
-	 * @param dblX The Width
+	 * @param x The Width
 	 * 
 	 * @return The Error Function Around an Absolute Width around the Mean
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public double errorFunction (
-		final double dblX)
-		throws java.lang.Exception
+		final double x)
+		throws Exception
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (dblX))
-			throw new java.lang.Exception ("R1UnivariateNormal::errorFunction => Invalid Inputs");
+		if (!NumberUtil.IsValid (x)) {
+			throw new Exception ("R1UnivariateNormal::errorFunction => Invalid Inputs");
+		}
 
-		double dblWidth = java.lang.Math.abs (dblX);
+		double dblWidth = Math.abs (x);
 
-		return cumulative (_dblMean + dblWidth) - cumulative (_dblMean - dblWidth);
+		return cumulative (_mean + dblWidth) - cumulative (_mean - dblWidth);
 	}
 
 	/**
 	 * Compute the Confidence given the Width around the Mean
 	 * 
-	 * @param dblWidth The Width
+	 * @param width The Width
 	 * 
 	 * @return The Error Function Around an Absolute Width around the Mean
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public double confidence (
-		final double dblWidth)
-		throws java.lang.Exception
+		final double width)
+		throws Exception
 	{
-		return errorFunction (dblWidth);
+		return errorFunction (width);
 	}
 
 	/**
 	 * Compute the Width around the Mean given the Confidence Level
 	 * 
-	 * @param dblConfidence The Confidence Level
+	 * @param confidence The Confidence Level
 	 * 
 	 * @return The Width around the Mean given the Confidence Level
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public double confidenceInterval (
-		final double dblConfidence)
-		throws java.lang.Exception
+		final double confidence)
+		throws Exception
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (dblConfidence) || 0. >= dblConfidence || 1. <=
-			dblConfidence)
-			throw new java.lang.Exception ("R1UnivariateNormal::confidenceInterval => Invalid Inputs");
+		if (!NumberUtil.IsValid (confidence) || 0. >= confidence || 1. <= confidence) {
+			throw new Exception ("R1UnivariateNormal::confidenceInterval => Invalid Inputs");
+		}
 
-		return invCumulative (0.5 * (1. + dblConfidence));
+		return invCumulative (0.5 * (1. + confidence));
 	}
 }

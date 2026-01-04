@@ -115,21 +115,21 @@ public class TheilMixedEstimationModel {
 
 	public static final org.drip.measure.bayesian.R1MultivariateConvolutionMetrics GenerateComposite (
 		final org.drip.measure.continuous.MetaRd meta,
-		final org.drip.measure.bayesian.ProjectionDistributionLoading pdl1,
-		final org.drip.measure.bayesian.ProjectionDistributionLoading pdl2,
+		final org.drip.measure.bayesian.ViewLoading pdl1,
+		final org.drip.measure.bayesian.ViewLoading pdl2,
 		final org.drip.measure.gaussian.R1MultivariateNormal r1mnUnconditional)
 	{
 		if (null == meta || null == pdl1 || null == pdl2 || null == r1mnUnconditional) return null;
 
 		int iNumScopingVariate = meta.numVariable();
 
-		if (iNumScopingVariate != pdl1.numberOfScopingVariate() || iNumScopingVariate !=
-			pdl2.numberOfScopingVariate() || iNumScopingVariate != r1mnUnconditional.meta().numVariable())
+		if (iNumScopingVariate != pdl1.scopingVariateCount() || iNumScopingVariate !=
+			pdl2.scopingVariateCount() || iNumScopingVariate != r1mnUnconditional.meta().numVariable())
 			return null;
 
-		org.drip.measure.continuous.MetaRdDistribution r1m1 = pdl1.distribution();
+		org.drip.measure.continuous.MetaRdDistribution r1m1 = pdl1.projectionDistribution();
 
-		org.drip.measure.continuous.MetaRdDistribution r1m2 = pdl2.distribution();
+		org.drip.measure.continuous.MetaRdDistribution r1m2 = pdl2.projectionDistribution();
 
 		if (!(r1m1 instanceof org.drip.measure.gaussian.R1MultivariateNormal) || !(r1m2 instanceof
 			org.drip.measure.gaussian.R1MultivariateNormal))
@@ -143,9 +143,9 @@ public class TheilMixedEstimationModel {
 		org.drip.measure.gaussian.R1MultivariateNormal r1mn2 =
 			(org.drip.measure.gaussian.R1MultivariateNormal) r1m2;
 
-		double[][] aadblScopingLoading1 = pdl1.scopingLoading();
+		double[][] aadblScopingLoading1 = pdl1.projectionScopingLoadingMatrix();
 
-		double[][] aadblScopingLoading2 = pdl2.scopingLoading();
+		double[][] aadblScopingLoading2 = pdl2.projectionScopingLoadingMatrix();
 
 		double[][] aadblScopingWeightedPrecision1 = org.drip.numerical.linearalgebra.R1MatrixUtil.Product
 			(org.drip.numerical.linearalgebra.R1MatrixUtil.Transpose (aadblScopingLoading1),
@@ -197,9 +197,9 @@ public class TheilMixedEstimationModel {
 		try {
 			return new org.drip.measure.bayesian.R1MultivariateConvolutionMetrics (r1mn1, r1mnUnconditional, r1mn2, new
 				org.drip.measure.gaussian.R1MultivariateNormal (meta, adblJointPosteriorMean, new
-					org.drip.measure.gaussian.Covariance (aadblJointCovariance)), new
+					org.drip.measure.gaussian.JointVariance (aadblJointCovariance)), new
 						org.drip.measure.gaussian.R1MultivariateNormal (meta, adblJointPosteriorMean, new
-							org.drip.measure.gaussian.Covariance (aadblPosteriorCovariance)));
+							org.drip.measure.gaussian.JointVariance (aadblPosteriorCovariance)));
 		} catch (java.lang.Exception e) {
 			e.printStackTrace();
 		}
@@ -219,13 +219,13 @@ public class TheilMixedEstimationModel {
 	 */
 
 	public static final org.drip.measure.bayesian.R1MultivariateConvolutionMetrics GenerateComposite (
-		final org.drip.measure.bayesian.ScopingProjectionVariateDistribution spvd,
+		final org.drip.measure.bayesian.ScopingContainer spvd,
 		final java.lang.String strProjection1,
 		final java.lang.String strProjection2,
 		final org.drip.measure.gaussian.R1MultivariateNormal r1mnUnconditional)
 	{
-		return null == spvd ? null : GenerateComposite (spvd.scopingDistribution().meta(),
-			spvd.projectionDistributionLoading (strProjection1), spvd.projectionDistributionLoading
+		return null == spvd ? null : GenerateComposite (spvd.projectionDistribution().meta(),
+			spvd.viewLoading (strProjection1), spvd.viewLoading
 				(strProjection2), r1mnUnconditional);
 	}
 
@@ -241,21 +241,21 @@ public class TheilMixedEstimationModel {
 	 */
 
 	public static final org.drip.measure.bayesian.R1MultivariateConvolutionMetrics GenerateComposite (
-		final org.drip.measure.bayesian.ScopingProjectionVariateDistribution spvd,
+		final org.drip.measure.bayesian.ScopingContainer spvd,
 		final java.lang.String strProjection,
 		final org.drip.measure.gaussian.R1MultivariateNormal r1mnUnconditional)
 	{
 		if (null == spvd) return null;
 
-		org.drip.measure.continuous.MetaRdDistribution r1m = spvd.scopingDistribution();
+		org.drip.measure.continuous.MetaRdDistribution r1m = spvd.projectionDistribution();
 
 		if (!(r1m instanceof org.drip.measure.gaussian.R1MultivariateNormal)) return null;
 
 		org.drip.measure.gaussian.R1MultivariateNormal r1mnScoping =
 			(org.drip.measure.gaussian.R1MultivariateNormal) r1m;
 
-		return GenerateComposite (r1mnScoping.meta(), spvd.projectionDistributionLoading ("NATIVE"),
-			spvd.projectionDistributionLoading (strProjection), r1mnUnconditional);
+		return GenerateComposite (r1mnScoping.meta(), spvd.viewLoading ("NATIVE"),
+			spvd.viewLoading (strProjection), r1mnUnconditional);
 	}
 
 	/**
@@ -268,16 +268,16 @@ public class TheilMixedEstimationModel {
 	 */
 
 	public static final double[] ProjectionSpaceScopingMean (
-		final org.drip.measure.bayesian.ScopingProjectionVariateDistribution spvd,
+		final org.drip.measure.bayesian.ScopingContainer spvd,
 		final java.lang.String strProjection)
 	{
 		if (null == spvd) return null;
 
-		org.drip.measure.bayesian.ProjectionDistributionLoading pdl = spvd.projectionDistributionLoading
+		org.drip.measure.bayesian.ViewLoading pdl = spvd.viewLoading
 			(strProjection);
 
-		return null == pdl ? null : org.drip.numerical.linearalgebra.R1MatrixUtil.Product (pdl.scopingLoading(),
-			spvd.scopingDistribution().mean());
+		return null == pdl ? null : org.drip.numerical.linearalgebra.R1MatrixUtil.Product (pdl.projectionScopingLoadingMatrix(),
+			spvd.projectionDistribution().mean());
 	}
 
 	/**
@@ -290,25 +290,25 @@ public class TheilMixedEstimationModel {
 	 */
 
 	public static final double[] ProjectionSpaceScopingDifferential (
-		final org.drip.measure.bayesian.ScopingProjectionVariateDistribution spvd,
+		final org.drip.measure.bayesian.ScopingContainer spvd,
 		final java.lang.String strProjection)
 	{
 		if (null == spvd) return null;
 
-		org.drip.measure.bayesian.ProjectionDistributionLoading pdl = spvd.projectionDistributionLoading
+		org.drip.measure.bayesian.ViewLoading pdl = spvd.viewLoading
 			(strProjection);
 
 		if (null == pdl) return null;
 
 		double[] adblProjectionSpaceScopingMean = org.drip.numerical.linearalgebra.R1MatrixUtil.Product
-			(pdl.scopingLoading(), spvd.scopingDistribution().mean());
+			(pdl.projectionScopingLoadingMatrix(), spvd.projectionDistribution().mean());
 
 		if (null == adblProjectionSpaceScopingMean) return null;
 
 		int iNumProjection = adblProjectionSpaceScopingMean.length;
 		double[] adblProjectionSpaceScopingDifferential = new double[iNumProjection];
 
-		double[] adblProjectionMean = pdl.distribution().mean();
+		double[] adblProjectionMean = pdl.projectionDistribution().mean();
 
 		for (int i = 0; i < iNumProjection; ++i)
 			adblProjectionSpaceScopingDifferential[i] = adblProjectionMean[i] -
@@ -326,28 +326,28 @@ public class TheilMixedEstimationModel {
 	 * @return The Projection Space Scoping Co-variance
 	 */
 
-	public static final org.drip.measure.gaussian.Covariance ProjectionSpaceScopingCovariance (
-		final org.drip.measure.bayesian.ScopingProjectionVariateDistribution spvd,
+	public static final org.drip.measure.gaussian.JointVariance ProjectionSpaceScopingCovariance (
+		final org.drip.measure.bayesian.ScopingContainer spvd,
 		final java.lang.String strProjection)
 	{
 		if (null == spvd) return null;
 
-		org.drip.measure.continuous.MetaRdDistribution r1mScoping = spvd.scopingDistribution();
+		org.drip.measure.continuous.MetaRdDistribution r1mScoping = spvd.projectionDistribution();
 
 		if (!(r1mScoping instanceof org.drip.measure.gaussian.R1MultivariateNormal)) return null;
 
 		org.drip.measure.gaussian.R1MultivariateNormal r1mnScoping =
 			(org.drip.measure.gaussian.R1MultivariateNormal) r1mScoping;
 
-		org.drip.measure.bayesian.ProjectionDistributionLoading pdl = spvd.projectionDistributionLoading
+		org.drip.measure.bayesian.ViewLoading pdl = spvd.viewLoading
 			(strProjection);
 
 		if (null == pdl) return null;
 
-		double[][] aadblScopingLoading = pdl.scopingLoading();
+		double[][] aadblScopingLoading = pdl.projectionScopingLoadingMatrix();
 
 		try {
-			return new org.drip.measure.gaussian.Covariance (org.drip.numerical.linearalgebra.R1MatrixUtil.Product
+			return new org.drip.measure.gaussian.JointVariance (org.drip.numerical.linearalgebra.R1MatrixUtil.Product
 				(aadblScopingLoading, org.drip.numerical.linearalgebra.R1MatrixUtil.Product
 					(r1mnScoping.covariance().covarianceMatrix(),
 						org.drip.numerical.linearalgebra.R1MatrixUtil.Transpose (aadblScopingLoading))));
@@ -368,21 +368,21 @@ public class TheilMixedEstimationModel {
 	 */
 
 	public static final double[][] ShadowScopingProjectionTranspose (
-		final org.drip.measure.bayesian.ScopingProjectionVariateDistribution spvd,
+		final org.drip.measure.bayesian.ScopingContainer spvd,
 		final java.lang.String strProjection)
 	{
 		if (null == spvd) return null;
 
-		org.drip.measure.continuous.MetaRdDistribution r1mScoping = spvd.scopingDistribution();
+		org.drip.measure.continuous.MetaRdDistribution r1mScoping = spvd.projectionDistribution();
 
 		if (!(r1mScoping instanceof org.drip.measure.gaussian.R1MultivariateNormal)) return null;
 
-		org.drip.measure.bayesian.ProjectionDistributionLoading pdl = spvd.projectionDistributionLoading
+		org.drip.measure.bayesian.ViewLoading pdl = spvd.viewLoading
 			(strProjection);
 
 		return null == pdl ? null : org.drip.numerical.linearalgebra.R1MatrixUtil.Product
 			(((org.drip.measure.gaussian.R1MultivariateNormal) r1mScoping).covariance().covarianceMatrix(),
-				org.drip.numerical.linearalgebra.R1MatrixUtil.Transpose (pdl.scopingLoading()));
+				org.drip.numerical.linearalgebra.R1MatrixUtil.Transpose (pdl.projectionScopingLoadingMatrix()));
 	}
 
 	/**
@@ -395,18 +395,18 @@ public class TheilMixedEstimationModel {
 	 */
 
 	public static final double[][] ShadowScopingProjection (
-		final org.drip.measure.bayesian.ScopingProjectionVariateDistribution spvd,
+		final org.drip.measure.bayesian.ScopingContainer spvd,
 		final java.lang.String strProjection)
 	{
 		if (null == spvd) return null;
 
-		org.drip.measure.continuous.MetaRdDistribution r1mScoping = spvd.scopingDistribution();
+		org.drip.measure.continuous.MetaRdDistribution r1mScoping = spvd.projectionDistribution();
 
-		org.drip.measure.bayesian.ProjectionDistributionLoading pdl = spvd.projectionDistributionLoading
+		org.drip.measure.bayesian.ViewLoading pdl = spvd.viewLoading
 			(strProjection);
 
 		return !(r1mScoping instanceof org.drip.measure.gaussian.R1MultivariateNormal) || null == pdl ? null
-			: org.drip.numerical.linearalgebra.R1MatrixUtil.Product (pdl.scopingLoading(),
+			: org.drip.numerical.linearalgebra.R1MatrixUtil.Product (pdl.projectionScopingLoadingMatrix(),
 				((org.drip.measure.gaussian.R1MultivariateNormal)
 					r1mScoping).covariance().covarianceMatrix());
 	}
@@ -421,17 +421,17 @@ public class TheilMixedEstimationModel {
 	 */
 
 	public static final double[] ProjectionPrecisionMeanProduct (
-		final org.drip.measure.bayesian.ScopingProjectionVariateDistribution spvd,
+		final org.drip.measure.bayesian.ScopingContainer spvd,
 		final java.lang.String strProjection)
 	{
 		if (null == spvd) return null;
 
-		org.drip.measure.bayesian.ProjectionDistributionLoading pdl = spvd.projectionDistributionLoading
+		org.drip.measure.bayesian.ViewLoading pdl = spvd.viewLoading
 			(strProjection);
 
 		if (null == pdl) return null;
 
-		org.drip.measure.continuous.MetaRdDistribution r1mProjection = pdl.distribution();
+		org.drip.measure.continuous.MetaRdDistribution r1mProjection = pdl.projectionDistribution();
 
 		return !(r1mProjection instanceof org.drip.measure.gaussian.R1MultivariateNormal) ? null :
 			org.drip.numerical.linearalgebra.R1MatrixUtil.Product (((org.drip.measure.gaussian.R1MultivariateNormal)
@@ -448,24 +448,24 @@ public class TheilMixedEstimationModel {
 	 */
 
 	public static final double[] ProjectionInducedScopingDeviation (
-		final org.drip.measure.bayesian.ScopingProjectionVariateDistribution spvd,
+		final org.drip.measure.bayesian.ScopingContainer spvd,
 		final java.lang.String strProjection)
 	{
 		if (null == spvd) return null;
 
-		org.drip.measure.continuous.MetaRdDistribution r1mScoping = spvd.scopingDistribution();
+		org.drip.measure.continuous.MetaRdDistribution r1mScoping = spvd.projectionDistribution();
 
 		if (!(r1mScoping instanceof org.drip.measure.gaussian.R1MultivariateNormal)) return null;
 
 		org.drip.measure.gaussian.R1MultivariateNormal r1mnScoping =
 			(org.drip.measure.gaussian.R1MultivariateNormal) r1mScoping;
 
-		org.drip.measure.bayesian.ProjectionDistributionLoading pdl = spvd.projectionDistributionLoading
+		org.drip.measure.bayesian.ViewLoading pdl = spvd.viewLoading
 			(strProjection);
 
 		if (null == pdl) return null;
 
-		double[][] aadblScopingLoading = pdl.scopingLoading();
+		double[][] aadblScopingLoading = pdl.projectionScopingLoadingMatrix();
 
 		double[][] aadblProjectionScopingShadow = org.drip.numerical.linearalgebra.R1MatrixUtil.Product
 			(r1mnScoping.covariance().covarianceMatrix(), org.drip.numerical.linearalgebra.R1MatrixUtil.Transpose
@@ -479,7 +479,7 @@ public class TheilMixedEstimationModel {
 		int iNumProjection = adblProjectionSpaceScopingMean.length;
 		double[] adblProjectionSpaceScopingDifferential = new double[iNumProjection];
 
-		double[] adblProjectionMean = pdl.distribution().mean();
+		double[] adblProjectionMean = pdl.projectionDistribution().mean();
 
 		for (int i = 0; i < iNumProjection; ++i)
 			adblProjectionSpaceScopingDifferential[i] = adblProjectionMean[i] -
@@ -502,12 +502,12 @@ public class TheilMixedEstimationModel {
 	 */
 
 	public static final double[] ProjectionInducedScopingMean (
-		final org.drip.measure.bayesian.ScopingProjectionVariateDistribution spvd,
+		final org.drip.measure.bayesian.ScopingContainer spvd,
 		final java.lang.String strProjection)
 	{
 		if (null == spvd) return null;
 
-		org.drip.measure.continuous.MetaRdDistribution r1mScoping = spvd.scopingDistribution();
+		org.drip.measure.continuous.MetaRdDistribution r1mScoping = spvd.projectionDistribution();
 
 		double[] adblScopingMean = r1mScoping.mean();
 
@@ -518,12 +518,12 @@ public class TheilMixedEstimationModel {
 		org.drip.measure.gaussian.R1MultivariateNormal r1mnScoping =
 			(org.drip.measure.gaussian.R1MultivariateNormal) r1mScoping;
 
-		org.drip.measure.bayesian.ProjectionDistributionLoading pdl = spvd.projectionDistributionLoading
+		org.drip.measure.bayesian.ViewLoading pdl = spvd.viewLoading
 			(strProjection);
 
 		if (null == pdl) return null;
 
-		double[][] aadblScopingLoading = pdl.scopingLoading();
+		double[][] aadblScopingLoading = pdl.projectionScopingLoadingMatrix();
 
 		double[][] aadblProjectionScopingShadow = org.drip.numerical.linearalgebra.R1MatrixUtil.Product
 			(r1mnScoping.covariance().covarianceMatrix(), org.drip.numerical.linearalgebra.R1MatrixUtil.Transpose
@@ -538,7 +538,7 @@ public class TheilMixedEstimationModel {
 		double[] adblProjectionInducedScopingMean = new double[iNumScopingVariate];
 		double[] adblProjectionSpaceScopingDifferential = new double[iNumProjection];
 
-		double[] adblProjectionMean = pdl.distribution().mean();
+		double[] adblProjectionMean = pdl.projectionDistribution().mean();
 
 		for (int i = 0; i < iNumProjection; ++i)
 			adblProjectionSpaceScopingDifferential[i] = adblProjectionMean[i] -
@@ -569,21 +569,21 @@ public class TheilMixedEstimationModel {
 	 */
 
 	public static final double[][] AssetSpaceProjectionCovariance (
-		final org.drip.measure.bayesian.ScopingProjectionVariateDistribution spvd,
+		final org.drip.measure.bayesian.ScopingContainer spvd,
 		final java.lang.String strProjection)
 	{
 		if (null == spvd) return null;
 
-		org.drip.measure.bayesian.ProjectionDistributionLoading pdl = spvd.projectionDistributionLoading
+		org.drip.measure.bayesian.ViewLoading pdl = spvd.viewLoading
 			(strProjection);
 
 		if (null == pdl) return null;
 
-		org.drip.measure.continuous.MetaRdDistribution r1mProjection = pdl.distribution();
+		org.drip.measure.continuous.MetaRdDistribution r1mProjection = pdl.projectionDistribution();
 
 		if (!(r1mProjection instanceof org.drip.measure.gaussian.R1MultivariateNormal)) return null;
 
-		double[][] aadblScopingLoading = pdl.scopingLoading();
+		double[][] aadblScopingLoading = pdl.projectionScopingLoadingMatrix();
 
 		return org.drip.numerical.linearalgebra.R1MatrixUtil.Product (org.drip.numerical.linearalgebra.R1MatrixUtil.Transpose
 			(aadblScopingLoading), org.drip.numerical.linearalgebra.R1MatrixUtil.Product
@@ -601,21 +601,21 @@ public class TheilMixedEstimationModel {
 	 */
 
 	public static final double[][] ProjectionSpaceAssetCovariance (
-		final org.drip.measure.bayesian.ScopingProjectionVariateDistribution spvd,
+		final org.drip.measure.bayesian.ScopingContainer spvd,
 		final java.lang.String strProjection)
 	{
 		if (null == spvd) return null;
 
-		org.drip.measure.continuous.MetaRdDistribution r1mScoping = spvd.scopingDistribution();
+		org.drip.measure.continuous.MetaRdDistribution r1mScoping = spvd.projectionDistribution();
 
 		if (!(r1mScoping instanceof org.drip.measure.gaussian.R1MultivariateNormal)) return null;
 
-		org.drip.measure.bayesian.ProjectionDistributionLoading pdl = spvd.projectionDistributionLoading
+		org.drip.measure.bayesian.ViewLoading pdl = spvd.viewLoading
 			(strProjection);
 
 		if (null == pdl) return null;
 
-		double[][] aadblScopingLoading = pdl.scopingLoading();
+		double[][] aadblScopingLoading = pdl.projectionScopingLoadingMatrix();
 
 		return org.drip.numerical.linearalgebra.R1MatrixUtil.Product (aadblScopingLoading,
 			org.drip.numerical.linearalgebra.R1MatrixUtil.Product (((org.drip.measure.gaussian.R1MultivariateNormal)
@@ -634,13 +634,13 @@ public class TheilMixedEstimationModel {
 	 */
 
 	public static final org.drip.measure.gaussian.R1MultivariateNormal ProjectionInducedScopingDistribution (
-		final org.drip.measure.bayesian.ScopingProjectionVariateDistribution spvd,
+		final org.drip.measure.bayesian.ScopingContainer spvd,
 		final java.lang.String strProjection,
 		final org.drip.measure.gaussian.R1MultivariateNormal r1mnUnconditional)
 	{
 		if (null == spvd || null == r1mnUnconditional) return null;
 
-		org.drip.measure.continuous.MetaRdDistribution r1mScoping = spvd.scopingDistribution();
+		org.drip.measure.continuous.MetaRdDistribution r1mScoping = spvd.projectionDistribution();
 
 		double[] adblScopingMean = r1mScoping.mean();
 
@@ -651,12 +651,12 @@ public class TheilMixedEstimationModel {
 		org.drip.measure.gaussian.R1MultivariateNormal r1mnScoping =
 			(org.drip.measure.gaussian.R1MultivariateNormal) r1mScoping;
 
-		org.drip.measure.bayesian.ProjectionDistributionLoading pdl = spvd.projectionDistributionLoading
+		org.drip.measure.bayesian.ViewLoading pdl = spvd.viewLoading
 			(strProjection);
 
 		if (null == pdl) return null;
 
-		double[][] aadblScopingLoading = pdl.scopingLoading();
+		double[][] aadblScopingLoading = pdl.projectionScopingLoadingMatrix();
 
 		double[][] aadblProjectionScopingShadow = org.drip.numerical.linearalgebra.R1MatrixUtil.Product
 			(r1mnScoping.covariance().covarianceMatrix(), org.drip.numerical.linearalgebra.R1MatrixUtil.Transpose
@@ -671,7 +671,7 @@ public class TheilMixedEstimationModel {
 		double[] adblProjectionInducedScopingMean = new double[iNumScopingVariate];
 		double[] adblProjectionSpaceScopingDifferential = new double[iNumProjection];
 
-		double[] adblProjectionMean = pdl.distribution().mean();
+		double[] adblProjectionMean = pdl.projectionDistribution().mean();
 
 		for (int i = 0; i < iNumProjection; ++i)
 			adblProjectionSpaceScopingDifferential[i] = adblProjectionMean[i] -
@@ -689,13 +689,13 @@ public class TheilMixedEstimationModel {
 			adblProjectionInducedScopingMean[i] = adblScopingMean[i] +
 				adblProjectionInducedScopingDeviation[i];
 
-		org.drip.measure.continuous.MetaRdDistribution r1mProjection = pdl.distribution();
+		org.drip.measure.continuous.MetaRdDistribution r1mProjection = pdl.projectionDistribution();
 
 		if (!(r1mProjection instanceof org.drip.measure.gaussian.R1MultivariateNormal)) return null;
 
 		try {
 			return new org.drip.measure.gaussian.R1MultivariateNormal (r1mnUnconditional.meta(),
-				adblProjectionInducedScopingMean, new org.drip.measure.gaussian.Covariance
+				adblProjectionInducedScopingMean, new org.drip.measure.gaussian.JointVariance
 					(org.drip.numerical.linearalgebra.R1MatrixUtil.Product
 						(org.drip.numerical.linearalgebra.R1MatrixUtil.Transpose (aadblScopingLoading),
 							org.drip.numerical.linearalgebra.R1MatrixUtil.Product

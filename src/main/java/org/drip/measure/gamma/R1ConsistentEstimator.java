@@ -181,7 +181,7 @@ public class R1ConsistentEstimator
 	 * @return The Shape-Scale Parameter from the Observations
 	 */
 
-	public ShapeScaleParameters inferShapeScaleParameter()
+	@Override public ShapeScaleParameters inferShapeScale()
 	{
 		double[] realizationArray = sample().realizationArray();
 

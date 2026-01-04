@@ -115,7 +115,7 @@ public class BlackLittermanCombinationEngine
 	private org.drip.portfolioconstruction.allocator.ForwardReverseHoldingsAllocation
 		_forwardReverseOptimizationOutputUnadjusted = null;
 
-	private org.drip.measure.bayesian.ScopingProjectionVariateDistribution
+	private org.drip.measure.bayesian.ScopingContainer
 		scopingProjectionVariateDistribution()
 	{
 		double[][] assetExcessReturnsCovarianceMatrix =
@@ -145,9 +145,9 @@ public class BlackLittermanCombinationEngine
 
 		try
 		{
-			org.drip.measure.bayesian.ScopingProjectionVariateDistribution
+			org.drip.measure.bayesian.ScopingContainer
 				scopingProjectionVariateDistribution =
-					new org.drip.measure.bayesian.ScopingProjectionVariateDistribution (
+					new org.drip.measure.bayesian.ScopingContainer (
 						org.drip.measure.gaussian.R1MultivariateNormal.Standard (
 							_forwardReverseOptimizationOutputUnadjusted.optimalPortfolio().meta(),
 							priorExpectedAssetReturnsArray,
@@ -155,9 +155,9 @@ public class BlackLittermanCombinationEngine
 						)
 					);
 
-			return scopingProjectionVariateDistribution.addProjectionDistributionLoading (
+			return scopingProjectionVariateDistribution.addViewLoading (
 				"VIEW",
-				new org.drip.measure.bayesian.ProjectionDistributionLoading (
+				new org.drip.measure.bayesian.ViewLoading (
 					_projectionSpecification.excessReturnsDistribution(),
 					_projectionSpecification.assetSpaceLoadingMatrix()
 				)
@@ -288,7 +288,7 @@ public class BlackLittermanCombinationEngine
 		org.drip.measure.continuous.MetaRd portfolioMeta =
 			_forwardReverseOptimizationOutputUnadjusted.optimalPortfolio().meta();
 
-		org.drip.measure.bayesian.ScopingProjectionVariateDistribution scopingProjectionVariateDistribution =
+		org.drip.measure.bayesian.ScopingContainer scopingProjectionVariateDistribution =
 			scopingProjectionVariateDistribution();
 
 		if (null == scopingProjectionVariateDistribution)
@@ -302,7 +302,7 @@ public class BlackLittermanCombinationEngine
 				"VIEW",
 				org.drip.measure.gaussian.R1MultivariateNormal.Standard (
 					portfolioMeta,
-					scopingProjectionVariateDistribution.scopingDistribution().mean(),
+					scopingProjectionVariateDistribution.projectionDistribution().mean(),
 					assetExcessReturnsCovarianceMatrix
 				)
 			);
@@ -367,7 +367,7 @@ public class BlackLittermanCombinationEngine
 
 		java.lang.String[] assetIDArray = portfolioMeta.names();
 
-		org.drip.measure.bayesian.ScopingProjectionVariateDistribution scopingProjectionVariateDistribution =
+		org.drip.measure.bayesian.ScopingContainer scopingProjectionVariateDistribution =
 			scopingProjectionVariateDistribution();
 
 		if (null == scopingProjectionVariateDistribution)
@@ -399,7 +399,7 @@ public class BlackLittermanCombinationEngine
 					"VIEW",
 					org.drip.measure.gaussian.R1MultivariateNormal.Standard (
 						portfolioMeta,
-						scopingProjectionVariateDistribution.scopingDistribution().mean(),
+						scopingProjectionVariateDistribution.projectionDistribution().mean(),
 						assetExcessReturnsCovarianceMatrix
 					)
 				);
@@ -445,7 +445,7 @@ public class BlackLittermanCombinationEngine
 		org.drip.portfolioconstruction.asset.Portfolio unadjustedPortfolio =
 			_forwardReverseOptimizationOutputUnadjusted.optimalPortfolio();
 
-		org.drip.measure.bayesian.ScopingProjectionVariateDistribution scopingProjectionVariateDistribution =
+		org.drip.measure.bayesian.ScopingContainer scopingProjectionVariateDistribution =
 			scopingProjectionVariateDistribution();
 
 		boolean useAlternateReferenceModel = _priorControlSpecification.useAlternateReferenceModel();
@@ -467,7 +467,7 @@ public class BlackLittermanCombinationEngine
 				"VIEW",
 				org.drip.measure.gaussian.R1MultivariateNormal.Standard (
 					portfolioMeta,
-					scopingProjectionVariateDistribution.scopingDistribution().mean(),
+					scopingProjectionVariateDistribution.projectionDistribution().mean(),
 					assetExcessReturnsCovarianceMatrix
 				)
 			);
@@ -519,7 +519,7 @@ public class BlackLittermanCombinationEngine
 					"VIEW",
 					org.drip.measure.gaussian.R1MultivariateNormal.Standard (
 						portfolioMeta,
-						scopingProjectionVariateDistribution.scopingDistribution().mean(),
+						scopingProjectionVariateDistribution.projectionDistribution().mean(),
 						assetExcessReturnsCovarianceMatrix
 					)
 				);
@@ -567,7 +567,7 @@ public class BlackLittermanCombinationEngine
 
 	public org.drip.portfolioconstruction.bayesian.ProjectionExposure projectionExposureAttribution()
 	{
-		org.drip.measure.bayesian.ScopingProjectionVariateDistribution scopingProjectionVariateDistribution =
+		org.drip.measure.bayesian.ScopingContainer scopingProjectionVariateDistribution =
 			scopingProjectionVariateDistribution();
 
 		if (null == scopingProjectionVariateDistribution)
