@@ -272,10 +272,10 @@ public class Table5Reconciler
 		R1MultivariateConvolutionMetrics jointPosteriorMetrics =
 			blackLittermanCombinationEngine.customConfidenceRun().jointPosteriorMetrics();
 
-		R1MultivariateNormal jointDistribution = (R1MultivariateNormal) jointPosteriorMetrics.joint();
+		R1MultivariateNormal jointDistribution = (R1MultivariateNormal) jointPosteriorMetrics.jointDistribution();
 
 		R1MultivariateNormal posteriorDistribution =
-			(R1MultivariateNormal) jointPosteriorMetrics.posterior();
+			(R1MultivariateNormal) jointPosteriorMetrics.posteriorDistribution();
 
 		double[] assetSpaceJointReturnsArray = jointDistribution.mean();
 

@@ -240,11 +240,11 @@ public class Yamabe2016 {
 
 		R1MultivariateConvolutionMetrics jpm = blce.customConfidenceRun().jointPosteriorMetrics();
 
-		R1MultivariateNormal priorDistribution = (R1MultivariateNormal) jpm.prior();
+		R1MultivariateNormal priorDistribution = (R1MultivariateNormal) jpm.priorDistribution();
 
-		R1MultivariateNormal jointDistribution = (R1MultivariateNormal) jpm.joint();
+		R1MultivariateNormal jointDistribution = (R1MultivariateNormal) jpm.jointDistribution();
 
-		R1MultivariateNormal posteriorDistribution = (R1MultivariateNormal) jpm.posterior();
+		R1MultivariateNormal posteriorDistribution = (R1MultivariateNormal) jpm.posteriorDistribution();
 
 		double[] adblAssetSpacePriorReturns = priorDistribution.mean();
 

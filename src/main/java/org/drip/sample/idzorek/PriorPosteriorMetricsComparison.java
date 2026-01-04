@@ -332,12 +332,12 @@ public class PriorPosteriorMetricsComparison
 			)
 		).customConfidenceRun().jointPosteriorMetrics();
 
-		R1MultivariateNormal priorDistribution = (R1MultivariateNormal) jointPosteriorMetrics.prior();
+		R1MultivariateNormal priorDistribution = (R1MultivariateNormal) jointPosteriorMetrics.priorDistribution();
 
-		R1MultivariateNormal jointDistribution = (R1MultivariateNormal) jointPosteriorMetrics.joint();
+		R1MultivariateNormal jointDistribution = (R1MultivariateNormal) jointPosteriorMetrics.jointDistribution();
 
 		R1MultivariateNormal posteriorDistribution =
-			(R1MultivariateNormal) jointPosteriorMetrics.posterior();
+			(R1MultivariateNormal) jointPosteriorMetrics.posteriorDistribution();
 
 		double[] assetSpacePriorReturnsArray = priorDistribution.mean();
 

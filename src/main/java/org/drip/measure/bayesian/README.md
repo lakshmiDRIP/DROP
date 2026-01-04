@@ -11,10 +11,6 @@ DROP Measure Bayesian contains the Functionality to generate the Prior, Conditio
  * [***ConjugateParameterPrior***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/bayesian/ConjugateParameterPrior.java)
  <i>ConjugateParameterPrior</i> implements the Determinants of the Parameter of the Conjugate Prior.
 
- * [***ProjectionDistributionLoading***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/bayesian/ProjectionDistributionLoading.java)
- <i>ProjectionDistributionLoading</i> contains the Projection Distribution and its Loadings to the Scoping
- Distribution.
-
  * [***R1MultivariateConvolutionEngine***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/bayesian/R1MultivariateConvolutionEngine.java)
  <i>R1MultivariateConvolutionEngine</i> implements the Engine that generates the Joint/Posterior Distributions from the Prior and the Conditional Joint Multivariate R<sup>1</sup> Distributions.
 
@@ -24,11 +20,20 @@ DROP Measure Bayesian contains the Functionality to generate the Prior, Conditio
  * [***R1MultivariateNormalConvolutionEngine***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/bayesian/R1MultivariateNormalConvolutionEngine.java)
  <i>R1MultivariateNormalConvolutionEngine</i> implements the Engine that generates the Joint/Posterior Distribution from the Prior and the Conditional Joint R<sup>1</sup> Multivariate Normal Distributions.
 
- * [***ScopingProjectionVariateDistribution***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/bayesian/ScopingProjectionVariateDistribution.java)
- <i>ScopingProjectionVariateDistribution</i> holds the Scoping Variate Distribution, the Projection Variate Distributions, and the Projection Variate Loadings based off of the Scoping Variates.
+ * [***R1UnivariateConvolutionEngine***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/bayesian/R1UnivariateConvolutionEngine.java)
+ <i>R1UnivariateConvolutionEngine</i> implements the Engine that generates the Joint and the Posterior Distributions from the Prior and the Conditional Multivariate R<sup>1</sup> Distributions.
+
+ * [***R1UnivariateConvolutionMetrics***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/bayesian/R1UnivariateConvolutionMetrics.java)
+ <i>R1UnivariateConvolutionMetrics</i> holds the Inputs and the Results of a Bayesian R<sup>1</sup> Univariate Convolution Execution.
+
+ * [***ScopingContainer***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/bayesian/ScopingContainer.java)
+ <i>ScopingContainer</i> holds the Scoping Variate Distribution, the Projection Variate Distributions, and the Projection Variate Loadings based off of the Scoping Variates.
 
  * [***TheilMixedEstimationModel***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/bayesian/TheilMixedEstimationModel.java)
  <i>TheilMixedEstimationModel</i> implements the Theil's Mixed Model for the Estimation of the Distribution Parameters.
+
+ * [***ViewLoading***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/bayesian/ViewLoading.java)
+ <i>ViewLoading</i> contains the View Projection Distribution and its Loadings to the Scoping Distribution.
 
 
 ## References

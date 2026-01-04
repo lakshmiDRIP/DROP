@@ -245,9 +245,9 @@ public class DaJagannathan2005e {
 
 		R1MultivariateConvolutionMetrics jpm = blce.customConfidenceRun().jointPosteriorMetrics();
 
-		R1MultivariateNormal jointDistribution = (R1MultivariateNormal) jpm.joint();
+		R1MultivariateNormal jointDistribution = (R1MultivariateNormal) jpm.jointDistribution();
 
-		R1MultivariateNormal posteriorDistribution = (R1MultivariateNormal) jpm.posterior();
+		R1MultivariateNormal posteriorDistribution = (R1MultivariateNormal) jpm.posteriorDistribution();
 
 		double[] adblAssetSpaceJointReturns = jointDistribution.mean();
 

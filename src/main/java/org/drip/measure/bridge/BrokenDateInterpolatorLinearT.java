@@ -1,11 +1,21 @@
 
 package org.drip.measure.bridge;
 
+import org.drip.numerical.common.NumberUtil;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2030 Lakshmi Krishnamurthy
+ * Copyright (C) 2029 Lakshmi Krishnamurthy
+ * Copyright (C) 2028 Lakshmi Krishnamurthy
+ * Copyright (C) 2027 Lakshmi Krishnamurthy
+ * Copyright (C) 2026 Lakshmi Krishnamurthy
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -80,34 +90,46 @@ package org.drip.measure.bridge;
 
 /**
  * <i>BrokenDateInterpolatorLinearT</i> Interpolates using Two Stochastic Value Nodes with Linear Scheme. The
- * Scheme is Linear in Time.
+ * 	Scheme is Linear in Time. It provides the following Functionality:
  *
- *	<br><br>
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md">Numerical Analysis Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/README.md">R<sup>d</sup> Continuous/Discrete Probability Measures</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/bridge/README.md">Broken Date Brownian Bridge Interpolator</a></li>
+ * 		<li><i>BrokenDateInterpolatorLinearT</i> Constructor</li>
+ * 		<li>Retrieve T1</li>
+ * 		<li>Retrieve T2</li>
+ * 		<li>Retrieve V1</li>
+ * 		<li>Retrieve V2</li>
+ * 		<li>Interpolate the Value at T</li>
  *  </ul>
+ *
+ *	<br>
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md">Numerical Analysis Library</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/README.md">R<sup>d</sup> Continuous/Discrete Probability Measures</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/bridge/README.md">Broken Date Brownian Bridge Interpolator</a></td></tr>
+ *  </table>
+ *	<br>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class BrokenDateInterpolatorLinearT implements org.drip.measure.bridge.BrokenDateInterpolator {
-	private double _dblT1 = java.lang.Double.NaN;
-	private double _dblT2 = java.lang.Double.NaN;
-	private double _dblV1 = java.lang.Double.NaN;
-	private double _dblV2 = java.lang.Double.NaN;
+public class BrokenDateInterpolatorLinearT
+	implements BrokenDateInterpolator
+{
+	private double _dblT1 = Double.NaN;
+	private double _dblT2 = Double.NaN;
+	private double _dblV1 = Double.NaN;
+	private double _dblV2 = Double.NaN;
 
 	/**
-	 * BrokenDateInterpolatorLinearT Constructor
+	 * <i>BrokenDateInterpolatorLinearT</i> Constructor
 	 * 
 	 * @param dblT1 T1
 	 * @param dblT2 T2
 	 * @param dblV1 V1
 	 * @param dblV2 V2
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public BrokenDateInterpolatorLinearT (
@@ -115,13 +137,16 @@ public class BrokenDateInterpolatorLinearT implements org.drip.measure.bridge.Br
 		final double dblT2,
 		final double dblV1,
 		final double dblV2)
-		throws java.lang.Exception
+		throws Exception
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblT1 = dblT1) ||
-			!org.drip.numerical.common.NumberUtil.IsValid (_dblT2 = dblT2) ||
-				!org.drip.numerical.common.NumberUtil.IsValid (_dblV1 = dblV1) ||
-					!org.drip.numerical.common.NumberUtil.IsValid (_dblV2 = dblV2)|| _dblT1 >= _dblT2)
-			throw new java.lang.Exception ("BrokenDateInterpolatorLinearT Constructor => Invalid Inputs");
+		if (!NumberUtil.IsValid (_dblT1 = dblT1) ||
+			!NumberUtil.IsValid (_dblT2 = dblT2) ||
+			!NumberUtil.IsValid (_dblV1 = dblV1) ||
+			!NumberUtil.IsValid (_dblV2 = dblV2) ||
+			_dblT1 >= _dblT2)
+		{
+			throw new Exception ("BrokenDateInterpolatorLinearT Constructor => Invalid Inputs");
+		}
 	}
 
 	/**
@@ -168,13 +193,24 @@ public class BrokenDateInterpolatorLinearT implements org.drip.measure.bridge.Br
 		return _dblV2;
 	}
 
-	@Override public double interpolate (
-		final double dblT)
-		throws java.lang.Exception
-	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (dblT) || dblT < _dblT1 || dblT > _dblT2)
-			throw new java.lang.Exception ("BrokenDateInterpolatorLinearT::interpolate => Invalid Inputs");
+	/**
+	 * Interpolate the Value at T
+	 * 
+	 * @param t T
+	 * 
+	 * @return The Interpolated Value
+	 * 
+	 * @throws Exception Thrown if the Inputs are Invalid
+	 */
 
-		return ((_dblT2 - dblT) * _dblV1 + (dblT - _dblT1) * _dblV2) / (_dblT2 - _dblT1);
+	@Override public double interpolate (
+		final double t)
+		throws Exception
+	{
+		if (!NumberUtil.IsValid (t) || t < _dblT1 || t > _dblT2) {
+			throw new Exception ("BrokenDateInterpolatorLinearT::interpolate => Invalid Inputs");
+		}
+
+		return ((_dblT2 - t) * _dblV1 + (t - _dblT1) * _dblV2) / (_dblT2 - _dblT1);
 	}
 }

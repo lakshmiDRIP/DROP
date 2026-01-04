@@ -222,7 +222,7 @@ public class PortfolioAndBenchmarkMetrics
 			)
 		).customConfidenceRun().jointPosteriorMetrics();
 
-		R1MultivariateNormal jointDistribution = (R1MultivariateNormal) jointPosteriorMetrics.joint();
+		R1MultivariateNormal jointDistribution = (R1MultivariateNormal) jointPosteriorMetrics.jointDistribution();
 
 		ForwardReverseHoldingsAllocation priorForwardReverseOptimizationOutput =
 			ForwardReverseHoldingsAllocation.Reverse (

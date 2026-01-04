@@ -1,11 +1,21 @@
 
 package org.drip.measure.bayesian;
 
+import org.drip.measure.continuous.MetaRdDistribution;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2030 Lakshmi Krishnamurthy
+ * Copyright (C) 2029 Lakshmi Krishnamurthy
+ * Copyright (C) 2028 Lakshmi Krishnamurthy
+ * Copyright (C) 2027 Lakshmi Krishnamurthy
+ * Copyright (C) 2026 Lakshmi Krishnamurthy
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -81,52 +91,65 @@ package org.drip.measure.bayesian;
 
 /**
  * <i>R1MultivariateConvolutionMetrics</i> holds the Inputs and the Results of a Bayesian Multivariate
- * 	Convolution Execution.
+ * 	Convolution Execution. It provides the following Functionality:
  *
- *	<br><br>
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md">Numerical Analysis Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/README.md">R<sup>d</sup> Continuous/Discrete Probability Measures</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/bayesian/README.md">Prior, Conditional, Posterior Theil Bayesian</a></li>
+ * 		<li><i>R1MultivariateConvolutionMetrics</i> Constructor</li>
+ * 		<li>Retrieve the Prior Distribution</li>
+ * 		<li>Retrieve the Unconditional Distribution</li>
+ * 		<li>Retrieve the Conditional Distribution</li>
+ * 		<li>Retrieve the Joint Distribution</li>
+ * 		<li>Retrieve the Posterior Distribution</li>
  *  </ul>
+ *
+ *	<br>
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md">Numerical Analysis Library</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/README.md">R<sup>d</sup> Continuous/Discrete Probability Measures</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/bayesian/README.md">Prior, Conditional, Posterior Theil Bayesian</a></td></tr>
+ *  </table>
+ *	<br>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class R1MultivariateConvolutionMetrics {
-	private org.drip.measure.continuous.MetaRdDistribution _r1mJoint = null;
-	private org.drip.measure.continuous.MetaRdDistribution _r1mPrior = null;
-	private org.drip.measure.continuous.MetaRdDistribution _r1mPosterior = null;
-	private org.drip.measure.continuous.MetaRdDistribution _r1mConditional = null;
-	private org.drip.measure.continuous.MetaRdDistribution _r1mUnconditional = null;
+public class R1MultivariateConvolutionMetrics
+{
+	private MetaRdDistribution _jointDistribution = null;
+	private MetaRdDistribution _priorDistribution = null;
+	private MetaRdDistribution _posteriorDistribution = null;
+	private MetaRdDistribution _conditionalDistribution = null;
+	private MetaRdDistribution _unconditionalDistribution = null;
 
 	/**
-	 * R1MultivariateConvolutionMetrics Constructor
+	 * <i>R1MultivariateConvolutionMetrics</i> Constructor
 	 * 
-	 * @param r1mPrior The R^1 Multivariate Prior Distribution (Input)
-	 * @param r1mUnconditional The R^1 Multivariate Unconditional Distribution (Input)
-	 * @param r1mConditional The R^1 Multivariate Conditional Distribution (Input)
-	 * @param r1mJoint The R^1 Multivariate Joint Distribution (Output)
-	 * @param r1mPosterior The R^1 Multivariate Posterior Distribution (Output)
+	 * @param priorDistribution The R<sup>1</sup> Multivariate Prior Distribution (Input)
+	 * @param unconditionalDistribution The R<sup>1</sup> Multivariate Unconditional Distribution (Input)
+	 * @param conditionalDistribution The R<sup>1</sup> Multivariate Conditional Distribution (Input)
+	 * @param jointDistribution The R<sup>1</sup> Multivariate Joint Distribution (Output)
+	 * @param posteriorDistribution The R<sup>1</sup> Multivariate Posterior Distribution (Output)
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public R1MultivariateConvolutionMetrics (
-		final org.drip.measure.continuous.MetaRdDistribution r1mPrior,
-		final org.drip.measure.continuous.MetaRdDistribution r1mUnconditional,
-		final org.drip.measure.continuous.MetaRdDistribution r1mConditional,
-		final org.drip.measure.continuous.MetaRdDistribution r1mJoint,
-		final org.drip.measure.continuous.MetaRdDistribution r1mPosterior)
-		throws java.lang.Exception
+		final MetaRdDistribution priorDistribution,
+		final MetaRdDistribution unconditionalDistribution,
+		final MetaRdDistribution conditionalDistribution,
+		final MetaRdDistribution jointDistribution,
+		final MetaRdDistribution posteriorDistribution)
+		throws Exception
 	{
-		if (null == (_r1mPrior = r1mPrior) || null == (_r1mUnconditional = r1mUnconditional) || null ==
-			(_r1mConditional= r1mConditional) || null == (_r1mJoint= r1mJoint) || null == (_r1mPosterior =
-				r1mPosterior))
-			throw new java.lang.Exception (
-				"R1MultivariateConvolutionMetrics Constructor => Invalid Inputs!"
-			);
+		if (null == (_priorDistribution = priorDistribution) ||
+			null == (_unconditionalDistribution = unconditionalDistribution) ||
+			null == (_conditionalDistribution = conditionalDistribution) ||
+			null == (_jointDistribution = jointDistribution) ||
+			null == (_posteriorDistribution = posteriorDistribution))
+		{
+			throw new Exception ("R1MultivariateConvolutionMetrics Constructor => Invalid Inputs!");
+		}
 	}
 
 	/**
@@ -135,9 +158,9 @@ public class R1MultivariateConvolutionMetrics {
 	 * @return The Prior Distribution
 	 */
 
-	public org.drip.measure.continuous.MetaRdDistribution prior()
+	public MetaRdDistribution priorDistribution()
 	{
-		return _r1mPrior;
+		return _priorDistribution;
 	}
 
 	/**
@@ -146,9 +169,9 @@ public class R1MultivariateConvolutionMetrics {
 	 * @return The Unconditional Distribution
 	 */
 
-	public org.drip.measure.continuous.MetaRdDistribution unconditional()
+	public MetaRdDistribution unconditionalDistribution()
 	{
-		return _r1mUnconditional;
+		return _unconditionalDistribution;
 	}
 
 	/**
@@ -157,9 +180,9 @@ public class R1MultivariateConvolutionMetrics {
 	 * @return The Conditional Distribution
 	 */
 
-	public org.drip.measure.continuous.MetaRdDistribution conditional()
+	public MetaRdDistribution conditionalDistribution()
 	{
-		return _r1mConditional;
+		return _conditionalDistribution;
 	}
 
 	/**
@@ -168,9 +191,9 @@ public class R1MultivariateConvolutionMetrics {
 	 * @return The Joint Distribution
 	 */
 
-	public org.drip.measure.continuous.MetaRdDistribution joint()
+	public MetaRdDistribution jointDistribution()
 	{
-		return _r1mJoint;
+		return _jointDistribution;
 	}
 
 	/**
@@ -179,8 +202,8 @@ public class R1MultivariateConvolutionMetrics {
 	 * @return The Posterior Distribution
 	 */
 
-	public org.drip.measure.continuous.MetaRdDistribution posterior()
+	public MetaRdDistribution posteriorDistribution()
 	{
-		return _r1mPosterior;
+		return _posteriorDistribution;
 	}
 }

@@ -192,11 +192,11 @@ public class BlackLittermanProcessor
 		R1MultivariateConvolutionMetrics jointPosteriorConvolutionMetrics =
 			blackLittermanCustomConfidenceOutput.jointPosteriorMetrics();
 
-		MetaRdDistribution priorMultivariate = jointPosteriorConvolutionMetrics.prior();
+		MetaRdDistribution priorMultivariate = jointPosteriorConvolutionMetrics.priorDistribution();
 
-		MetaRdDistribution posteriorMultivariate = jointPosteriorConvolutionMetrics.posterior();
+		MetaRdDistribution posteriorMultivariate = jointPosteriorConvolutionMetrics.posteriorDistribution();
 
-		MetaRdDistribution jointPosteriorMultivariate = jointPosteriorConvolutionMetrics.joint();
+		MetaRdDistribution jointPosteriorMultivariate = jointPosteriorConvolutionMetrics.jointDistribution();
 
 		if (null == priorMultivariate || !(priorMultivariate instanceof R1MultivariateNormal) ||
 			null == jointPosteriorMultivariate ||

@@ -197,9 +197,9 @@ public class DaJagannathan2005a {
 			r1mnScoping
 		);
 
-		R1MultivariateNormal jointDistribution = (R1MultivariateNormal) jpm.joint();
+		R1MultivariateNormal jointDistribution = (R1MultivariateNormal) jpm.jointDistribution();
 
-		R1MultivariateNormal posteriorDistribution = (R1MultivariateNormal) jpm.posterior();
+		R1MultivariateNormal posteriorDistribution = (R1MultivariateNormal) jpm.posteriorDistribution();
 
 		double[] adblAssetSpaceJointReturns = jointDistribution.mean();
 

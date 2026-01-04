@@ -1,11 +1,21 @@
 
 package org.drip.measure.bridge;
 
+import org.drip.numerical.common.NumberUtil;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2030 Lakshmi Krishnamurthy
+ * Copyright (C) 2029 Lakshmi Krishnamurthy
+ * Copyright (C) 2028 Lakshmi Krishnamurthy
+ * Copyright (C) 2027 Lakshmi Krishnamurthy
+ * Copyright (C) 2026 Lakshmi Krishnamurthy
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -80,30 +90,45 @@ package org.drip.measure.bridge;
 
 /**
  * <i>BrokenDateInterpolatorBrownian3P</i> Interpolates the Broken Dates using Three Stochastic Value Nodes
- * using the Three Point Brownian Bridge Scheme.
+ * 	using the Three Point Brownian Bridge Scheme. It provides the following Functionality:
  *
- *	<br><br>
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md">Numerical Analysis Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/README.md">R<sup>d</sup> Continuous/Discrete Probability Measures</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/bridge/README.md">Broken Date Brownian Bridge Interpolator</a></li>
+ * 		<li><i>BrokenDateInterpolatorBrownian3P</i> Constructor</li>
+ * 		<li>Retrieve T1</li>
+ * 		<li>Retrieve T2</li>
+ * 		<li>Retrieve T3</li>
+ * 		<li>Retrieve V1</li>
+ * 		<li>Retrieve V2</li>
+ * 		<li>Retrieve V3</li>
+ * 		<li>Retrieve the Brownian Bridge Factor</li>
+ * 		<li>Interpolate the Value at T</li>
  *  </ul>
+ *
+ *	<br>
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md">Numerical Analysis Library</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/README.md">R<sup>d</sup> Continuous/Discrete Probability Measures</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/bridge/README.md">Broken Date Brownian Bridge Interpolator</a></td></tr>
+ *  </table>
+ *	<br>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class BrokenDateInterpolatorBrownian3P implements org.drip.measure.bridge.BrokenDateInterpolator {
-	private double _dblT1 = java.lang.Double.NaN;
-	private double _dblT2 = java.lang.Double.NaN;
-	private double _dblT3 = java.lang.Double.NaN;
-	private double _dblV1 = java.lang.Double.NaN;
-	private double _dblV2 = java.lang.Double.NaN;
-	private double _dblV3 = java.lang.Double.NaN;
-	private double _dblBrownianBridgeFactor = java.lang.Double.NaN;
+public class BrokenDateInterpolatorBrownian3P
+	implements BrokenDateInterpolator
+{
+	private double _t1 = Double.NaN;
+	private double _t2 = Double.NaN;
+	private double _t3 = Double.NaN;
+	private double _v1 = Double.NaN;
+	private double _v2 = Double.NaN;
+	private double _v3 = Double.NaN;
+	private double _bridgeFactor = Double.NaN;
 
 	/**
-	 * BrokenDateInterpolatorBrownian3P Constructor
+	 * <i>BrokenDateInterpolatorBrownian3P</i> Constructor
 	 * 
 	 * @param dblT1 T1
 	 * @param dblT2 T2
@@ -112,7 +137,7 @@ public class BrokenDateInterpolatorBrownian3P implements org.drip.measure.bridge
 	 * @param dblV2 V2
 	 * @param dblV3 V3
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public BrokenDateInterpolatorBrownian3P (
@@ -122,23 +147,28 @@ public class BrokenDateInterpolatorBrownian3P implements org.drip.measure.bridge
 		final double dblV1,
 		final double dblV2,
 		final double dblV3)
-		throws java.lang.Exception
+		throws Exception
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblT1 = dblT1) ||
-			!org.drip.numerical.common.NumberUtil.IsValid (_dblT2 = dblT2) ||
-				!org.drip.numerical.common.NumberUtil.IsValid (_dblT3 = dblT3) ||
-					!org.drip.numerical.common.NumberUtil.IsValid (_dblV1 = dblV1) ||
-						!org.drip.numerical.common.NumberUtil.IsValid (_dblV2 = dblV2) ||
-							!org.drip.numerical.common.NumberUtil.IsValid (_dblV3 = dblV3) || _dblT1 >= _dblT2 ||
-								_dblT2 >= _dblT3)
-			throw new java.lang.Exception ("BrokenDateInterpolatorBrownian3P Constructor => Invalid Inputs");
+		if (!NumberUtil.IsValid (_t1 = dblT1) ||
+			!NumberUtil.IsValid (_t2 = dblT2) ||
+			!NumberUtil.IsValid (_t3 = dblT3) ||
+			!NumberUtil.IsValid (_v1 = dblV1) ||
+			!NumberUtil.IsValid (_v2 = dblV2) ||
+			!NumberUtil.IsValid (_v3 = dblV3) ||
+			_t1 >= _t2 ||
+			_t2 >= _t3)
+		{
+			throw new Exception ("BrokenDateInterpolatorBrownian3P Constructor => Invalid Inputs");
+		}
 
-		double dblT3MinusT1 = _dblT3 - _dblT1;
-		double dblT3MinusT2 = _dblT3 - _dblT2;
-		double dblT2MinusT1 = _dblT2 - _dblT1;
+		double t2MinusT1 = _t2 - _t1;
+		double t3MinusT1 = _t3 - _t1;
+		double t3MinusT2 = _t3 - _t2;
 
-		_dblBrownianBridgeFactor = java.lang.Math.sqrt (dblT3MinusT1 / (dblT3MinusT2 * dblT2MinusT1)) *
-			(_dblV2 - (dblT3MinusT2 * _dblV1 / dblT3MinusT1) - (dblT2MinusT1 * _dblV3 / dblT3MinusT1));
+		_bridgeFactor = Math.sqrt (
+			t3MinusT1 / (t3MinusT2 * t2MinusT1)) * (_v2 - (t3MinusT2 * _v1 / t3MinusT1) -
+				t2MinusT1 * _v3 / t3MinusT1
+		);
 	}
 
 	/**
@@ -149,7 +179,7 @@ public class BrokenDateInterpolatorBrownian3P implements org.drip.measure.bridge
 
 	public double t1()
 	{
-		return _dblT1;
+		return _t1;
 	}
 
 	/**
@@ -160,7 +190,7 @@ public class BrokenDateInterpolatorBrownian3P implements org.drip.measure.bridge
 
 	public double t2()
 	{
-		return _dblT2;
+		return _t2;
 	}
 
 	/**
@@ -171,7 +201,7 @@ public class BrokenDateInterpolatorBrownian3P implements org.drip.measure.bridge
 
 	public double t3()
 	{
-		return _dblT3;
+		return _t3;
 	}
 
 	/**
@@ -182,7 +212,7 @@ public class BrokenDateInterpolatorBrownian3P implements org.drip.measure.bridge
 
 	public double v1()
 	{
-		return _dblV1;
+		return _v1;
 	}
 
 	/**
@@ -193,7 +223,7 @@ public class BrokenDateInterpolatorBrownian3P implements org.drip.measure.bridge
 
 	public double v2()
 	{
-		return _dblV2;
+		return _v2;
 	}
 
 	/**
@@ -204,7 +234,7 @@ public class BrokenDateInterpolatorBrownian3P implements org.drip.measure.bridge
 
 	public double v3()
 	{
-		return _dblV3;
+		return _v3;
 	}
 
 	/**
@@ -213,24 +243,34 @@ public class BrokenDateInterpolatorBrownian3P implements org.drip.measure.bridge
 	 * @return The Brownian Bridge Factor
 	 */
 
-	public double brownianBridgeFactor()
+	public double bridgeFactor()
 	{
-		return _dblBrownianBridgeFactor;
+		return _bridgeFactor;
 	}
 
+	/**
+	 * Interpolate the Value at T
+	 * 
+	 * @param t T
+	 * 
+	 * @return The Interpolated Value
+	 * 
+	 * @throws Exception Thrown if the Inputs are Invalid
+	 */
+
 	@Override public double interpolate (
-		final double dblT)
-		throws java.lang.Exception
+		final double t)
+		throws Exception
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (dblT) || dblT < _dblT1 || dblT > _dblT3)
-			throw new java.lang.Exception
-				("BrokenDateInterpolatorBrownian3P::interpolate => Invalid Inputs");
+		if (!NumberUtil.IsValid (t) || t < _t1 || t > _t3) {
+			throw new Exception ("BrokenDateInterpolatorBrownian3P::interpolate => Invalid Inputs");
+		}
 
-		double dblT3MinusT1 = _dblT3 - _dblT1;
-		double dblT3MinusT = _dblT3 - dblT;
-		double dblTMinusT1 = dblT - _dblT1;
+		double t3MinusT1 = _t3 - _t1;
+		double t3MinusT = _t3 - t;
+		double tMinusT1 = t - _t1;
 
-		return (dblT3MinusT * _dblV1 / dblT3MinusT1) + (dblTMinusT1 * _dblV3 / dblT3MinusT1) +
-			_dblBrownianBridgeFactor * java.lang.Math.sqrt (dblT3MinusT * dblTMinusT1 / dblT3MinusT1);
+		return (t3MinusT * _v1 / t3MinusT1) + (tMinusT1 * _v3 / t3MinusT1) +
+			_bridgeFactor * Math.sqrt (t3MinusT * tMinusT1 / t3MinusT1);
 	}
 }

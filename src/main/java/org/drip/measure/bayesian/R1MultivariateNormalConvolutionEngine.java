@@ -1,11 +1,25 @@
 
 package org.drip.measure.bayesian;
 
+import org.drip.measure.continuous.MetaRd;
+import org.drip.measure.continuous.MetaRdDistribution;
+import org.drip.measure.gaussian.JointVariance;
+import org.drip.measure.gaussian.R1MultivariateNormal;
+import org.drip.numerical.linearalgebra.R1MatrixUtil;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2030 Lakshmi Krishnamurthy
+ * Copyright (C) 2029 Lakshmi Krishnamurthy
+ * Copyright (C) 2028 Lakshmi Krishnamurthy
+ * Copyright (C) 2027 Lakshmi Krishnamurthy
+ * Copyright (C) 2026 Lakshmi Krishnamurthy
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -80,99 +94,148 @@ package org.drip.measure.bayesian;
  */
 
 /**
- * <i>R1NormalConvolutionEngine</i> implements the Engine that generates the Joint/Posterior Distribution
- * 	from the Prior and the Conditional Joint R<sup>1</sup> Multivariate Normal Distributions.
+ * <i>R1MultivariateNormalConvolutionEngine</i> implements the Engine that generates the Joint/Posterior
+ * 	Distribution from the Prior and the Conditional Joint R<sup>1</sup> Multivariate Normal Distributions. It
+ * 	provides the following Functionality:
  *
- *	<br><br>
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md">Numerical Analysis Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/README.md">R<sup>d</sup> Continuous/Discrete Probability Measures</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/bayesian/README.md">Prior, Conditional, Posterior Theil Bayesian</a></li>
+ * 		<li>Empty <i>R1MultivariateNormalConvolutionEngine</i> Constructor</li>
+ * 		<li>Generate the Joint R<sup>1</sup> Multivariate Combined Distribution</li>
  *  </ul>
+ *
+ *	<br>
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md">Numerical Analysis Library</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/README.md">R<sup>d</sup> Continuous/Discrete Probability Measures</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/bayesian/README.md">Prior, Conditional, Posterior Theil Bayesian</a></td></tr>
+ *  </table>
+ *	<br>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class R1MultivariateNormalConvolutionEngine implements org.drip.measure.bayesian.R1MultivariateConvolutionEngine {
+public class R1MultivariateNormalConvolutionEngine
+	implements R1MultivariateConvolutionEngine
+{
 
 	/**
-	 * Empty R1MultivariateNormalConvolutionEngine Construction
+	 * Empty <i>R1MultivariateNormalConvolutionEngine</i> Constructor
 	 */
 
 	public R1MultivariateNormalConvolutionEngine()
 	{
 	}
 
-	@Override public org.drip.measure.bayesian.R1MultivariateConvolutionMetrics process (
-		final org.drip.measure.continuous.MetaRdDistribution r1mPrior,
-		final org.drip.measure.continuous.MetaRdDistribution r1mUnconditional,
-		final org.drip.measure.continuous.MetaRdDistribution r1mConditional)
+	/**
+	 * Generate the Joint R<sup>1</sup> Multivariate Combined Distribution
+	 * 
+	 * @param priorDistribution The Prior Distribution
+	 * @param unconditionalDistribution The Unconditional Distribution
+	 * @param conditionalDistribution The Conditional Distribution
+	 * 
+	 * @return The Joint R<sup>1</sup> Multivariate Combined Distribution
+	 */
+
+	@Override public R1MultivariateConvolutionMetrics process (
+		final MetaRdDistribution priorDistribution,
+		final MetaRdDistribution unconditionalDistribution,
+		final MetaRdDistribution conditionalDistribution)
 	{
-		if (null == r1mPrior || !(r1mPrior instanceof org.drip.measure.gaussian.R1MultivariateNormal) || null
-			== r1mConditional || !(r1mConditional instanceof org.drip.measure.gaussian.R1MultivariateNormal)
-				|| null == r1mUnconditional || !(r1mUnconditional instanceof
-					org.drip.measure.gaussian.R1MultivariateNormal))
+		if (null == priorDistribution || !(priorDistribution instanceof R1MultivariateNormal) ||
+			null == conditionalDistribution || !(conditionalDistribution instanceof R1MultivariateNormal) ||
+			null == unconditionalDistribution ||
+				!(unconditionalDistribution instanceof R1MultivariateNormal))
+		{
 			return null;
-
-		org.drip.measure.gaussian.R1MultivariateNormal r1mnPrior =
-			(org.drip.measure.gaussian.R1MultivariateNormal) r1mPrior;
-		org.drip.measure.gaussian.R1MultivariateNormal r1mnConditional =
-			(org.drip.measure.gaussian.R1MultivariateNormal) r1mConditional;
-		org.drip.measure.gaussian.R1MultivariateNormal r1mnUnconditional =
-			(org.drip.measure.gaussian.R1MultivariateNormal) r1mUnconditional;
-
-		double[][] aadblPriorPrecision = r1mnPrior.covariance().precisionMatrix();
-
-		double[][] aadblConditionalPrecision = r1mnConditional.covariance().precisionMatrix();
-
-		int iNumVariate = aadblConditionalPrecision.length;
-		double[] adblJointMean = new double[iNumVariate];
-		double[][] aadblJointPrecision = new double[iNumVariate][iNumVariate];
-		double[][] aadblPosteriorCovariance = new double[iNumVariate][iNumVariate];
-
-		if (aadblPriorPrecision.length != iNumVariate) return null;
-
-		double[] adblPrecisionWeightedPriorMean = org.drip.numerical.linearalgebra.R1MatrixUtil.Product
-			(aadblPriorPrecision, r1mnPrior.mean());
-
-		if (null == adblPrecisionWeightedPriorMean) return null;
-
-		double[] adblPrecisionWeightedConditionalMean = org.drip.numerical.linearalgebra.R1MatrixUtil.Product
-			(aadblConditionalPrecision, r1mnConditional.mean());
-
-		if (null == adblPrecisionWeightedConditionalMean) return null;
-
-		for (int i = 0; i < iNumVariate; ++i) {
-			adblJointMean[i] = adblPrecisionWeightedPriorMean[i] + adblPrecisionWeightedConditionalMean[i];
-
-			for (int j = 0; j < iNumVariate; ++j)
-				aadblJointPrecision[i][j] = aadblPriorPrecision[i][j] + aadblConditionalPrecision[i][j];
 		}
 
-		double[][] aadblJointCovariance = org.drip.numerical.linearalgebra.R1MatrixUtil.InvertUsingGaussianElimination
-			(aadblJointPrecision);
+		R1MultivariateNormal multivariatePriorDistribution = (R1MultivariateNormal) priorDistribution;
+		R1MultivariateNormal multivariateConditionalDistribution =
+			(R1MultivariateNormal) conditionalDistribution;
+		R1MultivariateNormal multivariateUnconditionalDistribution =
+			(R1MultivariateNormal) unconditionalDistribution;
 
-		double[] adblJointPosteriorMean = org.drip.numerical.linearalgebra.R1MatrixUtil.Product (aadblJointCovariance,
-			adblJointMean);
+		double[][] priorPrecisionMatrix = multivariatePriorDistribution.covariance().precisionMatrix();
 
-		double[][] aadblUnconditionalCovariance = r1mnUnconditional.covariance().covarianceMatrix();
+		double[][] conditionalPrecisionMatrix =
+			multivariateConditionalDistribution.covariance().precisionMatrix();
 
-		org.drip.measure.continuous.MetaRd meta = r1mnPrior.meta();
+		double[] jointMeanArray = new double[conditionalPrecisionMatrix.length];
+		double[][] jointPrecisionMatrix =
+			new double[conditionalPrecisionMatrix.length][conditionalPrecisionMatrix.length];
+		double[][] posteriorCovarianceMatrix =
+			new double[conditionalPrecisionMatrix.length][conditionalPrecisionMatrix.length];
 
-		for (int i = 0; i < iNumVariate; ++i) {
-			for (int j = 0; j < iNumVariate; ++j)
-				aadblPosteriorCovariance[i][j] = aadblJointCovariance[i][j] +
-					aadblUnconditionalCovariance[i][j];
+		if (priorPrecisionMatrix.length != conditionalPrecisionMatrix.length) {
+			return null;
+		}
+
+		double[] precisionWeightedPriorMeanArray = R1MatrixUtil.Product (
+			priorPrecisionMatrix,
+			multivariatePriorDistribution.mean()
+		);
+
+		if (null == precisionWeightedPriorMeanArray) {
+			return null;
+		}
+
+		double[] precisionWeightedConditionalMeanArray = R1MatrixUtil.Product (
+			conditionalPrecisionMatrix,
+			multivariateConditionalDistribution.mean()
+		);
+
+		if (null == precisionWeightedConditionalMeanArray) {
+			return null;
+		}
+
+		for (int variateIndexI = 0; variateIndexI < conditionalPrecisionMatrix.length; ++variateIndexI) {
+			jointMeanArray[variateIndexI] =
+				precisionWeightedPriorMeanArray[variateIndexI] +
+				precisionWeightedConditionalMeanArray[variateIndexI];
+
+			for (int variateIndexJ = 0; variateIndexJ < conditionalPrecisionMatrix.length; ++variateIndexJ) {
+				jointPrecisionMatrix[variateIndexI][variateIndexJ] =
+					priorPrecisionMatrix[variateIndexI][variateIndexJ] +
+					conditionalPrecisionMatrix[variateIndexI][variateIndexJ];
+			}
+		}
+
+		double[][] jointCovarianceMatrix =
+			R1MatrixUtil.InvertUsingGaussianElimination (jointPrecisionMatrix);
+
+		double[] jointPosteriorMeanArray = R1MatrixUtil.Product (jointCovarianceMatrix, jointMeanArray);
+
+		double[][] unconditionalCovarianceMatrix =
+			multivariateUnconditionalDistribution.covariance().covarianceMatrix();
+
+		MetaRd meta = multivariatePriorDistribution.meta();
+
+		for (int variateIndexI = 0; variateIndexI < conditionalPrecisionMatrix.length; ++variateIndexI) {
+			for (int variateIndexJ = 0; variateIndexJ < conditionalPrecisionMatrix.length; ++variateIndexJ) {
+				posteriorCovarianceMatrix[variateIndexI][variateIndexJ] =
+					jointCovarianceMatrix[variateIndexI][variateIndexJ] +
+					unconditionalCovarianceMatrix[variateIndexI][variateIndexJ];
+			}
 		}
 
 		try {
-			return new org.drip.measure.bayesian.R1MultivariateConvolutionMetrics (r1mPrior, r1mUnconditional,
-				r1mConditional, new org.drip.measure.gaussian.R1MultivariateNormal (meta,
-					adblJointPosteriorMean, new org.drip.measure.gaussian.JointVariance (aadblJointCovariance)),
-						new org.drip.measure.gaussian.R1MultivariateNormal (meta, adblJointPosteriorMean, new
-							org.drip.measure.gaussian.JointVariance (aadblPosteriorCovariance)));
-		} catch (java.lang.Exception e) {
+			return new R1MultivariateConvolutionMetrics (
+				priorDistribution,
+				unconditionalDistribution,
+				conditionalDistribution,
+				new R1MultivariateNormal (
+					meta,
+					jointPosteriorMeanArray,
+					new JointVariance (jointCovarianceMatrix)
+				),
+				new R1MultivariateNormal (
+					meta,
+					jointPosteriorMeanArray,
+					new JointVariance (posteriorCovarianceMatrix)
+				)
+			);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
