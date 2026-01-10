@@ -1,7 +1,7 @@
 
 package org.drip.sample.pareto;
 
-import org.drip.measure.continuous.R1ParetoDistribution;
+import org.drip.measure.distribution.R1ContinuousPareto;
 import org.drip.service.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 
@@ -169,7 +169,7 @@ public class R1QuantileVariates
 		{
 			for (int j = 0; j < lambdaArray.length; ++j)
 			{
-				R1ParetoDistribution paretoDistribution = new R1ParetoDistribution (lambdaArray[j], kArray[i]);
+				R1ContinuousPareto paretoDistribution = new R1ContinuousPareto (lambdaArray[j], kArray[i]);
 
 				String display = "\t|| [" + FormatUtil.FormatDouble (
 					lambdaArray[j], 2, 2, 1.

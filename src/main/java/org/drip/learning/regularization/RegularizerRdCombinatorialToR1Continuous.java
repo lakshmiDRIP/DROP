@@ -138,7 +138,7 @@ public class RegularizerRdCombinatorialToR1Continuous extends
 	public RegularizerRdCombinatorialToR1Continuous (
 		final org.drip.function.definition.RdToR1 funcRegularizerRdToR1,
 		final org.drip.spaces.metric.RdCombinatorialBanach rdCombinatorialInput,
-		final org.drip.spaces.metric.R1Continuous r1ContinuousOutput,
+		final org.drip.spaces.metric.R1Field r1ContinuousOutput,
 		final double dblLambda)
 		throws java.lang.Exception
 	{
@@ -195,7 +195,7 @@ public class RegularizerRdCombinatorialToR1Continuous extends
 	}
 
 	@Override public double structuralRisk (
-		final org.drip.measure.continuous.RdR1Distribution distRdR1,
+		final org.drip.measure.distribution.RdR1Continuous distRdR1,
 		final org.drip.function.definition.RdToR1 funcRdToR1,
 		final double[][] aadblX,
 		final double[] adblY)

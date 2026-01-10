@@ -147,7 +147,7 @@ public class JumpDiffusionEvolver extends org.drip.measure.process.DiffusionEvol
 			return null;
 		}
 
-		double dblHazardRate = _heie.hazardRate();
+		double dblHazardRate = _heie.rate();
 
 		org.drip.measure.dynamics.DiffusionEvaluator de = evaluator();
 
@@ -165,10 +165,10 @@ public class JumpDiffusionEvolver extends org.drip.measure.process.DiffusionEvol
 				return org.drip.measure.realization.JumpDiffusionEdge.Standard (dblPreviousValue, 0., 0.,
 					sej, ur);
 
-			org.drip.measure.dynamics.LocalEvaluator leVolatility = de.volatility();
+			org.drip.measure.dynamics.LocalEvaluator leVolatility = de.localVolatilityEvaluator();
 
 			return org.drip.measure.realization.JumpDiffusionEdge.Standard (dblPreviousValue,
-				de.drift().value (jdv) * dblTimeIncrement, null == leVolatility ? 0. : leVolatility.value
+				de.localDriftEvaluator().value (jdv) * dblTimeIncrement, null == leVolatility ? 0. : leVolatility.value
 					(jdv) * ur.diffusion() * java.lang.Math.sqrt (java.lang.Math.abs (dblTimeIncrement)),
 						sej, ur);
 		} catch (java.lang.Exception e) {

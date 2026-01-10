@@ -6,11 +6,11 @@ import java.util.List;
 import org.drip.analytics.daycount.ActActDCParams;
 import org.drip.analytics.daycount.Convention;
 import org.drip.analytics.support.Helper;
-import org.drip.measure.discontinuous.CorrelatedFactorsPathVertexRealization;
-import org.drip.measure.discontinuous.VertexRd;
+import org.drip.measure.crng.CorrelatedFactorsPathVertexRealization;
 import org.drip.measure.process.DiffusionEvolver;
 import org.drip.measure.realization.JumpDiffusionEdgeUnit;
 import org.drip.measure.realization.JumpDiffusionVertex;
+import org.drip.measure.realization.VertexRdSequence;
 import org.drip.numerical.common.NumberUtil;
 
 /*
@@ -137,7 +137,7 @@ public class PathVertexRd
 	 */
 
 	public static final PathVertexRd Standard (
-		final org.drip.measure.discontinuous.CorrelatedFactorsPathVertexRealization cpvd,
+		final org.drip.measure.crng.CorrelatedFactorsPathVertexRealization cpvd,
 		final org.drip.measure.process.DiffusionEvolver de)
 	{
 		if (null == cpvd || null == de) return null;
@@ -254,7 +254,7 @@ public class PathVertexRd
 
 		double[][][] forwardPathVertexDimension = new double[pathCount][vertexCount][dimension];
 
-		VertexRd[] vertexRdArray = _correlatedPathVertexDimension.multiTrajectoryNodeRd();
+		VertexRdSequence[] vertexRdArray = _correlatedPathVertexDimension.multiTrajectoryNodeRd();
 
 		if (null == vertexRdArray || pathCount != vertexRdArray.length) {
 			return null;

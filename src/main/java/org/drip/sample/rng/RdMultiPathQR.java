@@ -3,8 +3,10 @@ package org.drip.sample.rng;
 
 import java.util.List;
 
+import org.drip.measure.crng.CorrelatedFactorsPathVertexRealization;
+import org.drip.measure.crng.QuadraticResampler;
 import org.drip.measure.crng.RandomNumberGenerator;
-import org.drip.measure.discontinuous.*;
+import org.drip.measure.realization.VertexRdSequence;
 import org.drip.service.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 
@@ -146,7 +148,7 @@ public class RdMultiPathQR {
 			)
 		);
 
-		VertexRd vertexRd = cpvd.multiTrajectoryNodeRd()[0];
+		VertexRdSequence vertexRd = cpvd.multiTrajectoryNodeRd()[0];
 
 		List<double[]> lsVertexRd = vertexRd.nodeList();
 

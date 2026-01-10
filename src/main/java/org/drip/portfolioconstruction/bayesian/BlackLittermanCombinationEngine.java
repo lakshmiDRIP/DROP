@@ -285,7 +285,7 @@ public class BlackLittermanCombinationEngine
 		double[][] assetExcessReturnsCovarianceMatrix =
 			_forwardReverseOptimizationOutputUnadjusted.assetExcessReturnsCovarianceMatrix();
 
-		org.drip.measure.continuous.MetaRd portfolioMeta =
+		org.drip.measure.distribution.MetaRd portfolioMeta =
 			_forwardReverseOptimizationOutputUnadjusted.optimalPortfolio().meta();
 
 		org.drip.measure.bayesian.ScopingContainer scopingProjectionVariateDistribution =
@@ -312,7 +312,7 @@ public class BlackLittermanCombinationEngine
 			return null;
 		}
 
-		org.drip.measure.continuous.MetaRdDistribution r1mPosterior = jointPosteriorMetrics.posteriorDistribution();
+		org.drip.measure.distribution.MetaRdContinuous r1mPosterior = jointPosteriorMetrics.posteriorDistribution();
 
 		org.drip.portfolioconstruction.allocator.ForwardReverseHoldingsAllocation
 			forwardReverseOptimizationOutputAdjusted =
@@ -357,7 +357,7 @@ public class BlackLittermanCombinationEngine
 
 	public org.drip.portfolioconstruction.bayesian.BlackLittermanOutput fullConfidenceRun()
 	{
-		org.drip.measure.continuous.MetaRd portfolioMeta =
+		org.drip.measure.distribution.MetaRd portfolioMeta =
 			_forwardReverseOptimizationOutputUnadjusted.optimalPortfolio().meta();
 
 		double[][] assetExcessReturnsCovarianceMatrix =
@@ -450,7 +450,7 @@ public class BlackLittermanCombinationEngine
 
 		boolean useAlternateReferenceModel = _priorControlSpecification.useAlternateReferenceModel();
 
-		org.drip.measure.continuous.MetaRd portfolioMeta = unadjustedPortfolio.meta();
+		org.drip.measure.distribution.MetaRd portfolioMeta = unadjustedPortfolio.meta();
 
 		double riskAversion = _forwardReverseOptimizationOutputUnadjusted.riskAversion();
 
@@ -477,7 +477,7 @@ public class BlackLittermanCombinationEngine
 			return null;
 		}
 
-		org.drip.measure.continuous.MetaRdDistribution posteriorDistribution = jointPosteriorMetrics.posteriorDistribution();
+		org.drip.measure.distribution.MetaRdContinuous posteriorDistribution = jointPosteriorMetrics.posteriorDistribution();
 
 		org.drip.portfolioconstruction.allocator.ForwardReverseHoldingsAllocation
 			forwardReverseOptimizationOutputCustomConfidence =

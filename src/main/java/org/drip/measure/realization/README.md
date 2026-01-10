@@ -24,6 +24,9 @@ DROP Measure Realization implements the Stochastic Jump Diffusion Vertex Edge.
  * [***StochasticEdgeJump***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/realization/StochasticEdgeJump.java)
  <i>StochasticEdgeJump</i> holds the Edge of the Jump Stochastic Evaluator Outcome.
 
+ * [***VertexRdSequence***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/realization/VertexRdSequence.java)
+ <i>VertexRdSequence</i> holds the R<sup>d</sup> Realizations at the Individual Vertexes.
+
 
 ## References
 

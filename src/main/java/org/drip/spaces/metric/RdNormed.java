@@ -2,7 +2,7 @@
 package org.drip.spaces.metric;
 
 import org.drip.function.definition.RdToR1;
-import org.drip.measure.continuous.RdDistribution;
+import org.drip.measure.distribution.RdContinuous;
 import org.drip.spaces.tensor.RdGeneralizedVector;
 
 /*
@@ -136,7 +136,7 @@ public interface RdNormed extends GeneralizedMetricVectorSpace, RdGeneralizedVec
 	 * @return The Borel Sigma R<sup>d</sup> Probability Measure
 	 */
 
-	public abstract RdDistribution borelSigmaMeasure();
+	public abstract RdContinuous borelSigmaMeasure();
 
 	/**
 	 * Compute the Supremum Norm of the Sample

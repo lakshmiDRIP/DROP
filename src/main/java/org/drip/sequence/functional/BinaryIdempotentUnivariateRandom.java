@@ -100,7 +100,7 @@ public class BinaryIdempotentUnivariateRandom extends
 
 	public BinaryIdempotentUnivariateRandom (
 		final double dblOffset,
-		final org.drip.measure.continuous.R1Distribution dist,
+		final org.drip.measure.distribution.R1Continuous dist,
 		final double dblVariateBound,
 		final double dblPositiveProbability)
 		throws java.lang.Exception

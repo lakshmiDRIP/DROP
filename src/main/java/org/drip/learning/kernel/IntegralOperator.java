@@ -116,7 +116,7 @@ package org.drip.learning.kernel;
  */
 
 public abstract class IntegralOperator {
-	private org.drip.measure.continuous.RdDistribution _distRd = null;
+	private org.drip.measure.distribution.RdContinuous _distRd = null;
 	private org.drip.function.definition.RdToR1 _funcRdToR1 = null;
 	private org.drip.spaces.metric.R1Normed _r1OperatorOutput = null;
 	private org.drip.learning.kernel.SymmetricRdToNormedR1Kernel _kernel = null;
@@ -170,7 +170,7 @@ public abstract class IntegralOperator {
 	 * @return The Input Space Borel Sigma Measure
 	 */
 
-	public org.drip.measure.continuous.RdDistribution inputSpaceBorelMeasure()
+	public org.drip.measure.distribution.RdContinuous inputSpaceBorelMeasure()
 	{
 		return _distRd;
 	}

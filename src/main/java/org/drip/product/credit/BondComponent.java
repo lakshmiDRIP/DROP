@@ -16533,7 +16533,7 @@ public class BondComponent extends org.drip.product.definition.Bond implements
 
 		try {
 			if (null == (pvg = org.drip.state.sequence.PathVertexGovvie.Standard (gbs, new
-				org.drip.measure.discontinuous.CorrelatedFactorsPathVertexRealization (new
+				org.drip.measure.crng.CorrelatedFactorsPathVertexRealization (new
 					org.drip.measure.crng.RandomNumberGenerator(), aadblCorrelation, iNumVertex, iNumPath,
 						false, null), deGovvieForward)))
 				return null;
@@ -16704,7 +16704,7 @@ public class BondComponent extends org.drip.product.definition.Bond implements
 
 		try {
 			if (null == (pvg = org.drip.state.sequence.PathVertexGovvie.Standard (gbs, new
-				org.drip.measure.discontinuous.CorrelatedFactorsPathVertexRealization (new
+				org.drip.measure.crng.CorrelatedFactorsPathVertexRealization (new
 					org.drip.measure.crng.RandomNumberGenerator(), aadblCorrelation, iNumVertex, iNumPath,
 						false, null), deGovvieForward)))
 				return null;

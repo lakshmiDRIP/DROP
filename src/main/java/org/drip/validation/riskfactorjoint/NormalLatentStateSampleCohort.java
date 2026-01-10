@@ -3,12 +3,12 @@ package org.drip.validation.riskfactorjoint;
 
 import java.util.List;
 
+import org.drip.measure.crng.CorrelatedFactorsPathVertexRealization;
 import org.drip.measure.crng.RandomNumberGenerator;
-import org.drip.measure.discontinuous.CorrelatedFactorsPathVertexRealization;
-import org.drip.measure.discontinuous.VertexRd;
 import org.drip.measure.identifier.LabelledVertexCorrelation;
 import org.drip.measure.identifier.LabelledVertexCovariance;
 import org.drip.measure.identifier.LabelledVertexRd;
+import org.drip.measure.realization.VertexRdSequence;
 import org.drip.numerical.common.NumberUtil;
 import org.drip.validation.evidence.R1Sample;
 
@@ -180,7 +180,7 @@ public class NormalLatentStateSampleCohort
 			return null;
 		}
 
-		VertexRd[] vertexRdArray = correlatedPathVertexDimension.multiTrajectoryStraightNodeRd();
+		VertexRdSequence[] vertexRdArray = correlatedPathVertexDimension.multiTrajectoryStraightNodeRd();
 
 		if (null == vertexRdArray || null == vertexRdArray[0]) {
 			return null;

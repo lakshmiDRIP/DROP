@@ -2,7 +2,7 @@
 package org.drip.measure.exponential;
 
 import org.drip.function.definition.R1ToR1;
-import org.drip.measure.continuous.R1Distribution;
+import org.drip.measure.distribution.R1Continuous;
 import org.drip.numerical.common.NumberUtil;
 import org.drip.numerical.integration.NewtonCotesQuadratureGenerator;
 import org.drip.specialfunction.definition.ScaledExponentialEstimator;
@@ -148,7 +148,7 @@ import org.drip.specialfunction.definition.ScaledExponentialEstimator;
  */
 
 public class R1ScaledDistribution
-	extends R1Distribution
+	extends R1Continuous
 {
 	private R1ToR1 _gammaEstimator = null;
 	private double _normalizer = Double.NaN;

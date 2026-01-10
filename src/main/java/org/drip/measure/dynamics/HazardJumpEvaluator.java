@@ -1,7 +1,18 @@
 
 package org.drip.measure.dynamics;
 
+import org.drip.measure.realization.JumpDiffusionVertex;
+import org.drip.numerical.common.NumberUtil;
+
 /*!
+ * Copyright (C) 2030 Lakshmi Krishnamurthy
+ * Copyright (C) 2029 Lakshmi Krishnamurthy
+ * Copyright (C) 2028 Lakshmi Krishnamurthy
+ * Copyright (C) 2027 Lakshmi Krishnamurthy
+ * Copyright (C) 2026 Lakshmi Krishnamurthy
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -76,58 +87,69 @@ package org.drip.measure.dynamics;
 
 /**
  * <i>HazardJumpEvaluator</i> implements the Hazard Jump Process Point Event Indication Evaluator that guides
- * the Single Factor Jump-Termination Random Process Variable Evolution.
+ * 	the Single Factor Jump-Termination Random Process Variable Evolution. It provides the following
+ *  Functionality:
  *
- *	<br><br>
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md">Numerical Analysis Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/README.md">R<sup>d</sup> Continuous/Discrete Probability Measures</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/dynamics/README.md">Jump Diffusion Evolution Evaluator Variants</a></li>
+ * 		<li>Generate a Standard Instance of <i>HazardJumpEvaluator</i></li>
+ * 		<li>Retrieve the Hazard Rate</li>
+ * 		<li>Retrieve the Magnitude</li>
  *  </ul>
+ *
+ *	<br>
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md">Numerical Analysis Library</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/README.md">R<sup>d</sup> Continuous/Discrete Probability Measures</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/dynamics/README.md">Jump Diffusion Evolution Evaluator Variants</a></td></tr>
+ *  </table>
+ *	<br>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class HazardJumpEvaluator extends org.drip.measure.dynamics.SingleJumpEvaluator {
-	private double _dblMagnitude = java.lang.Double.NaN;
-	private double _dblHazardRate = java.lang.Double.NaN;
+public class HazardJumpEvaluator
+	extends SingleJumpEvaluator
+{
+	private double _rate = Double.NaN;
+	private double _magnitude = Double.NaN;
 
 	/**
-	 * Generate a Standard Instance of HazardJumpEvaluator
+	 * Generate a Standard Instance of <i>HazardJumpEvaluator</i>
 	 * 
-	 * @param dblHazardRate The Hazard Rate
-	 * @param dblMagnitude The Magnitude
+	 * @param rate The Hazard Rate
+	 * @param magnitude The Magnitude
 	 * 
-	 * @return The Standard Instance of HazardJumpEvaluator
+	 * @return The Standard Instance of <i>HazardJumpEvaluator</i>
 	 */
 
 	public static final HazardJumpEvaluator Standard (
-		final double dblHazardRate,
-		final double dblMagnitude)
+		final double rate,
+		final double magnitude)
 	{
-		org.drip.measure.dynamics.LocalEvaluator leDensity = new org.drip.measure.dynamics.LocalEvaluator() {
-			@Override public double value (
-				final org.drip.measure.realization.JumpDiffusionVertex jdv)
-				throws java.lang.Exception
-			{
-				return -1. * dblHazardRate * java.lang.Math.exp (-1. * dblHazardRate);
-			}
-		};
-
-		org.drip.measure.dynamics.LocalEvaluator leMagnitude = new org.drip.measure.dynamics.LocalEvaluator()
-		{
-			@Override public double value (
-				final org.drip.measure.realization.JumpDiffusionVertex jdv)
-				throws java.lang.Exception
-			{
-				return dblMagnitude;
-			}
-		};
-
 		try {
-			return new HazardJumpEvaluator (dblHazardRate, dblMagnitude, leDensity, leMagnitude);
-		} catch (java.lang.Exception e) {
+			return new HazardJumpEvaluator (
+				rate,
+				magnitude,
+				new LocalEvaluator() {
+					@Override public double value (
+						final JumpDiffusionVertex jumpDiffusionVertex)
+						throws Exception
+					{
+						return -1. * rate * Math.exp (-1. * rate);
+					}
+				},
+				new LocalEvaluator()
+				{
+					@Override public double value (
+						final JumpDiffusionVertex jumpDiffusionVertex)
+						throws Exception
+					{
+						return magnitude;
+					}
+				}
+			);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -135,18 +157,19 @@ public class HazardJumpEvaluator extends org.drip.measure.dynamics.SingleJumpEva
 	}
 
 	private HazardJumpEvaluator (
-		final double dblHazardRate,
-		final double dblMagnitude,
-		final org.drip.measure.dynamics.LocalEvaluator leDensity,
-		final org.drip.measure.dynamics.LocalEvaluator leMagnitude)
-		throws java.lang.Exception
+		final double rate,
+		final double magnitude,
+		final LocalEvaluator localDensityEvaluator,
+		final LocalEvaluator localMagnitudeEvaluator)
+		throws Exception
 	{
-		super (leDensity, leMagnitude);
+		super (localDensityEvaluator, localMagnitudeEvaluator);
 
-		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblHazardRate = dblHazardRate) || 0. > _dblHazardRate
-			|| !org.drip.numerical.common.NumberUtil.IsValid (_dblMagnitude = dblMagnitude) || 0. >
-				_dblMagnitude)
-			throw new java.lang.Exception ("HazardJumpEvaluator Constructor => Invalid Inputs");
+		if (!NumberUtil.IsValid (_rate = rate) || 0. > _rate ||
+			!NumberUtil.IsValid (_magnitude = magnitude) || 0. > _magnitude)
+		{
+			throw new Exception ("HazardJumpEvaluator Constructor => Invalid Inputs");
+		}
 	}
 
 	/**
@@ -155,9 +178,9 @@ public class HazardJumpEvaluator extends org.drip.measure.dynamics.SingleJumpEva
 	 * @return The Hazard Rate
 	 */
 
-	public double hazardRate()
+	public double rate()
 	{
-		return _dblHazardRate;
+		return _rate;
 	}
 
 	/**
@@ -168,6 +191,6 @@ public class HazardJumpEvaluator extends org.drip.measure.dynamics.SingleJumpEva
 
 	public double magnitude()
 	{
-		return _dblMagnitude;
+		return _magnitude;
 	}
 }

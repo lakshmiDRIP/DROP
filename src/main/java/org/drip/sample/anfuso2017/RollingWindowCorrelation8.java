@@ -4,8 +4,8 @@ package org.drip.sample.anfuso2017;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.drip.measure.crng.CorrelatedFactorsPathVertexRealization;
 import org.drip.measure.crng.RandomNumberGenerator;
-import org.drip.measure.discontinuous.CorrelatedFactorsPathVertexRealization;
 import org.drip.measure.statistics.MultivariateDiscrete;
 import org.drip.service.common.FormatUtil;
 import org.drip.service.env.EnvManager;

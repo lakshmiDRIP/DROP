@@ -2,8 +2,8 @@
 package org.drip.spaces.rxtord;
 
 import org.drip.function.definition.RdToRd;
-import org.drip.measure.continuous.RdDistribution;
-import org.drip.spaces.metric.RdContinuousBanach;
+import org.drip.measure.distribution.RdContinuous;
+import org.drip.spaces.metric.RdBanach;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -133,8 +133,8 @@ public class NormedRdContinuousToRdContinuous
 	 */
 
 	public NormedRdContinuousToRdContinuous (
-		final RdContinuousBanach rdContinuousBanachInput,
-		final RdContinuousBanach rdContinuousBanachOutput,
+		final RdBanach rdContinuousBanachInput,
+		final RdBanach rdContinuousBanachOutput,
 		final RdToRd rdToRdFunction)
 		throws Exception
 	{
@@ -149,9 +149,9 @@ public class NormedRdContinuousToRdContinuous
 
 	@Override public double[] populationMetricNorm()
 	{
-		RdContinuousBanach rdContinuousBanachInput = (RdContinuousBanach) inputMetricVectorSpace();
+		RdBanach rdContinuousBanachInput = (RdBanach) inputMetricVectorSpace();
 
-		final RdDistribution rdDistribution = rdContinuousBanachInput.borelSigmaMeasure();
+		final RdContinuous rdDistribution = rdContinuousBanachInput.borelSigmaMeasure();
 
 		final RdToRd rdToRdFunction = function();
 

@@ -10,8 +10,8 @@ import org.drip.spaces.instance.GeneralizedValidatedVector;
 import org.drip.spaces.instance.ValidatedR1;
 import org.drip.spaces.instance.ValidatedRd;
 import org.drip.spaces.metric.GeneralizedMetricVectorSpace;
-import org.drip.spaces.metric.R1Continuous;
-import org.drip.spaces.metric.RdContinuousBanach;
+import org.drip.spaces.metric.R1Field;
+import org.drip.spaces.metric.RdBanach;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -311,14 +311,14 @@ public abstract class NormedRxToNormedRxFinite
 	{
 		GeneralizedMetricVectorSpace generalizedMetricVectorSpaceOutput = outputMetricVectorSpace();
 
-		if (!(generalizedMetricVectorSpaceOutput instanceof R1Continuous) &&
-			!(generalizedMetricVectorSpaceOutput instanceof RdContinuousBanach))
+		if (!(generalizedMetricVectorSpaceOutput instanceof R1Field) &&
+			!(generalizedMetricVectorSpaceOutput instanceof RdBanach))
 		{
 			throw new Exception ("NormedRxToNormedRxFinite::dimension => Invalid Inputs");
 		}
 
-		return generalizedMetricVectorSpaceOutput instanceof R1Continuous ? 1 :
-			((RdContinuousBanach) generalizedMetricVectorSpaceOutput).dimension();
+		return generalizedMetricVectorSpaceOutput instanceof R1Field ? 1 :
+			((RdBanach) generalizedMetricVectorSpaceOutput).dimension();
 	}
 
 	/**

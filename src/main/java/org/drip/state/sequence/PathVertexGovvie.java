@@ -3,7 +3,7 @@ package org.drip.state.sequence;
 
 import org.drip.analytics.date.JulianDate;
 import org.drip.analytics.support.Helper;
-import org.drip.measure.discontinuous.CorrelatedFactorsPathVertexRealization;
+import org.drip.measure.crng.CorrelatedFactorsPathVertexRealization;
 import org.drip.measure.process.DiffusionEvolver;
 import org.drip.state.govvie.GovvieCurve;
 import org.drip.state.nonlinear.FlatForwardGovvieCurve;

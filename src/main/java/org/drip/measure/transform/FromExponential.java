@@ -1,7 +1,7 @@
 
 package org.drip.measure.transform;
 
-import org.drip.measure.continuous.R1ParetoDistribution;
+import org.drip.measure.distribution.R1ContinuousPareto;
 import org.drip.measure.exponential.R1RateDistribution;
 
 /*
@@ -141,12 +141,12 @@ public class FromExponential
 	 * @return R<sup>1</sup> Pareto Distribution
 	 */
 
-	public static final R1ParetoDistribution ToPareto (
+	public static final R1ContinuousPareto ToPareto (
 		final R1RateDistribution exponentialDistribution,
 		final double k)
 	{
 		try {
-			return null == exponentialDistribution ? null : new R1ParetoDistribution (
+			return null == exponentialDistribution ? null : new R1ContinuousPareto (
 				exponentialDistribution.lambda(),
 				k
 			);

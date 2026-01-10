@@ -2,7 +2,7 @@
 package org.drip.validation.distance;
 
 import org.drip.function.e2erf.ErrorFunctionInverse;
-import org.drip.measure.continuous.R1Distribution;
+import org.drip.measure.distribution.R1Continuous;
 import org.drip.measure.gaussian.R1UnivariateNormal;
 import org.drip.numerical.common.NumberUtil;
 
@@ -125,7 +125,7 @@ import org.drip.numerical.common.NumberUtil;
 
 public class ImportanceWeight
 {
-	private R1Distribution _r1Univariate = null;
+	private R1Continuous _r1Univariate = null;
 	private double _positiveExpectation = Double.NaN;
 
 	/**
@@ -187,7 +187,7 @@ public class ImportanceWeight
 	 */
 
 	public ImportanceWeight (
-		final R1Distribution r1Univariate,
+		final R1Continuous r1Univariate,
 		final double positiveExpectation)
 		throws Exception
 	{
@@ -214,7 +214,7 @@ public class ImportanceWeight
 	 * @return The Underlying R<sup>1</sup> Distribution
 	 */
 
-	public R1Distribution r1Univariate()
+	public R1Continuous r1Univariate()
 	{
 		return _r1Univariate;
 	}

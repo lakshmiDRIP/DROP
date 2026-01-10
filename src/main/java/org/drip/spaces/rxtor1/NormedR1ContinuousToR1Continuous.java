@@ -2,8 +2,8 @@
 package org.drip.spaces.rxtor1;
 
 import org.drip.function.definition.R1ToR1;
-import org.drip.measure.continuous.R1Distribution;
-import org.drip.spaces.metric.R1Continuous;
+import org.drip.measure.distribution.R1Continuous;
+import org.drip.spaces.metric.R1Field;
 import org.drip.spaces.tensor.R1GeneralizedVector;
 
 /*
@@ -134,8 +134,8 @@ public class NormedR1ContinuousToR1Continuous
 	 */
 
 	public NormedR1ContinuousToR1Continuous (
-		final R1Continuous r1ContinuousInput,
-		final R1Continuous r1ContinuousOutput,
+		final R1Field r1ContinuousInput,
+		final R1Field r1ContinuousOutput,
 		final R1ToR1 r1ToR1Function)
 		throws Exception
 	{
@@ -163,9 +163,9 @@ public class NormedR1ContinuousToR1Continuous
 
 		R1GeneralizedVector r1GeneralizedVectorInput = inputMetricVectorSpace();
 
-		R1Continuous r1Continuous = (R1Continuous) r1GeneralizedVectorInput;
+		R1Field r1Continuous = (R1Field) r1GeneralizedVectorInput;
 
-		final R1Distribution r1UnivariateDistribution = r1Continuous.borelSigmaMeasure();
+		final R1Continuous r1UnivariateDistribution = r1Continuous.borelSigmaMeasure();
 
 		if (null == r1UnivariateDistribution || null == r1ToR1Function) {
 			throw new Exception ("NormedR1ContinuousToR1Continuous::populationMetricNorm => Invalid Inputs");

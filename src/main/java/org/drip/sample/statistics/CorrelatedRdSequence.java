@@ -1,8 +1,9 @@
 
 package org.drip.sample.statistics;
 
+import org.drip.measure.crng.CorrelatedFactorsPathVertexRealization;
 import org.drip.measure.crng.RandomNumberGenerator;
-import org.drip.measure.discontinuous.*;
+import org.drip.measure.realization.VertexRdSequence;
 import org.drip.measure.statistics.MultivariateDiscrete;
 import org.drip.service.common.FormatUtil;
 import org.drip.service.env.EnvManager;
@@ -141,7 +142,7 @@ public class CorrelatedRdSequence {
 			null
 		);
 
-		VertexRd vertexRd = cpvd.multiTrajectoryNodeRd()[0];
+		VertexRdSequence vertexRd = cpvd.multiTrajectoryNodeRd()[0];
 
 		MultivariateDiscrete mds = new MultivariateDiscrete (vertexRd.flatform());
 

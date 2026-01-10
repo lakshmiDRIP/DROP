@@ -2,7 +2,7 @@
 package org.drip.sample.idzorek;
 
 import org.drip.measure.bayesian.ViewLoading;
-import org.drip.measure.continuous.MetaRd;
+import org.drip.measure.distribution.MetaRd;
 import org.drip.measure.gaussian.*;
 import org.drip.portfolioconstruction.allocator.ForwardReverseHoldingsAllocation;
 import org.drip.portfolioconstruction.asset.Portfolio;

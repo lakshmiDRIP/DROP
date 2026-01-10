@@ -2,7 +2,7 @@
 package org.drip.sample.measure;
 
 import org.drip.analytics.date.*;
-import org.drip.measure.lebesgue.R1PiecewiseDisplaced;
+import org.drip.measure.distribution.R1ContinuousUniformPiecewiseDisplaced;
 import org.drip.service.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 
@@ -111,7 +111,7 @@ public class PiecewiseDisplacedLebesgue {
 		final double dblXMean)
 		throws Exception
 	{
-		R1PiecewiseDisplaced rpdl = R1PiecewiseDisplaced.Standard (
+		R1ContinuousUniformPiecewiseDisplaced rpdl = R1ContinuousUniformPiecewiseDisplaced.Standard (
 			dblXMin,
 			dblXMax,
 			adblX,
@@ -137,7 +137,7 @@ public class PiecewiseDisplacedLebesgue {
 				FormatUtil.FormatDouble (rpdl.invCumulative (adblQuintile[i]), 3, 3, 1.) + " =>" +
 				FormatUtil.FormatDouble (adblQuintile[i], 1, 2, 1.) + "   | ";
 
-		double[] adblDensitySlope = rpdl.piecewiseDensitySlopes();
+		double[] adblDensitySlope = rpdl.piecewiseDensitySlopeArray();
 
 		for (int i = 0; i < adblDensitySlope.length; ++i)
 			strDump += FormatUtil.FormatDouble (adblDensitySlope[i], 1, 9, 1.) + ",";
@@ -154,7 +154,7 @@ public class PiecewiseDisplacedLebesgue {
 		final double dblXMean)
 		throws Exception
 	{
-		R1PiecewiseDisplaced rpdl = R1PiecewiseDisplaced.Standard (
+		R1ContinuousUniformPiecewiseDisplaced rpdl = R1ContinuousUniformPiecewiseDisplaced.Standard (
 			dblXMin,
 			dblXMax,
 			adblX,
@@ -175,7 +175,7 @@ public class PiecewiseDisplacedLebesgue {
 				new JulianDate ((int) rpdl.invCumulative (adblQuintile[i])) + " =>" +
 				FormatUtil.FormatDouble (adblQuintile[i], 1, 2, 1.) + " | ";
 
-		double[] adblDensitySlope = rpdl.piecewiseDensitySlopes();
+		double[] adblDensitySlope = rpdl.piecewiseDensitySlopeArray();
 
 		for (int i = 0; i < adblDensitySlope.length; ++i)
 			strDump += FormatUtil.FormatDouble (adblDensitySlope[i], 1, 9, 1.) + ",";

@@ -124,7 +124,7 @@ public abstract class UnivariateSequenceGenerator {
 
 	public org.drip.sequence.metrics.SingleSequenceAgnosticMetrics sequence (
 		final int iNumEntry,
-		final org.drip.measure.continuous.R1Distribution distPopulation)
+		final org.drip.measure.distribution.R1Continuous distPopulation)
 	{
 		try {
 			return new org.drip.sequence.metrics.SingleSequenceAgnosticMetrics (sequence (iNumEntry),

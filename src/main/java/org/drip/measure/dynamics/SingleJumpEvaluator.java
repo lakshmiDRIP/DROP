@@ -6,6 +6,14 @@ package org.drip.measure.dynamics;
  */
 
 /*!
+ * Copyright (C) 2030 Lakshmi Krishnamurthy
+ * Copyright (C) 2029 Lakshmi Krishnamurthy
+ * Copyright (C) 2028 Lakshmi Krishnamurthy
+ * Copyright (C) 2027 Lakshmi Krishnamurthy
+ * Copyright (C) 2026 Lakshmi Krishnamurthy
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -80,39 +88,50 @@ package org.drip.measure.dynamics;
 
 /**
  * <i>SingleJumpEvaluator</i> implements the Single Point Jump Event Indication Evaluator that guides the One
- * Factor Jump Random Process Variable Evolution.
+ * 	Factor Jump Random Process Variable Evolution. It provides the following Functionality:
  *
- *	<br><br>
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md">Numerical Analysis Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/README.md">R<sup>d</sup> Continuous/Discrete Probability Measures</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/dynamics/README.md">Jump Diffusion Evolution Evaluator Variants</a></li>
+ * 		<li><i>SingleJumpEvaluator</i> Constructor</li>
+ * 		<li>Retrieve the Jump Density Evaluator</li>
+ * 		<li>Retrieve the Jump Magnitude Evaluator</li>
  *  </ul>
+ *
+ *	<br>
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md">Numerical Analysis Library</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/README.md">R<sup>d</sup> Continuous/Discrete Probability Measures</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/dynamics/README.md">Jump Diffusion Evolution Evaluator Variants</a></td></tr>
+ *  </table>
+ *	<br>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class SingleJumpEvaluator {
-	private org.drip.measure.dynamics.LocalEvaluator _leDensity = null;
-	private org.drip.measure.dynamics.LocalEvaluator _leMagnitude = null;
+public class SingleJumpEvaluator
+{
+	private LocalEvaluator _localDensityEvaluator = null;
+	private LocalEvaluator _localMagnitudeEvaluator = null;
 
 	/**
-	 * SingleJumpEvaluator Constructor
+	 * <i>SingleJumpEvaluator</i> Constructor
 	 * 
-	 * @param leDensity The Jump Density Evaluator
-	 * @param leMagnitude The Jump Magnitude Evaluator
+	 * @param localDensityEvaluator The Jump Density Evaluator
+	 * @param localMagnitudeEvaluator The Jump Magnitude Evaluator
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public SingleJumpEvaluator (
-		final org.drip.measure.dynamics.LocalEvaluator leDensity,
-		final org.drip.measure.dynamics.LocalEvaluator leMagnitude)
-		throws java.lang.Exception
+		final LocalEvaluator localDensityEvaluator,
+		final LocalEvaluator localMagnitudeEvaluator)
+		throws Exception
 	{
-		if (null == (_leDensity = leDensity) || null == (_leMagnitude = leMagnitude))
-			throw new java.lang.Exception ("SingleJumpEvaluator Constructor => Invalid Inputs");
+		if (null == (_localDensityEvaluator = localDensityEvaluator) ||
+			null == (_localMagnitudeEvaluator = localMagnitudeEvaluator))
+		{
+			throw new Exception ("SingleJumpEvaluator Constructor => Invalid Inputs");
+		}
 	}
 
 	/**
@@ -121,9 +140,9 @@ public class SingleJumpEvaluator {
 	 * @return The Jump Density Evaluator
 	 */
 
-	public org.drip.measure.dynamics.LocalEvaluator densityEvaluator()
+	public LocalEvaluator densityEvaluator()
 	{
-		return _leDensity;
+		return _localDensityEvaluator;
 	}
 
 	/**
@@ -132,8 +151,8 @@ public class SingleJumpEvaluator {
 	 * @return The Jump Magnitude Evaluator
 	 */
 
-	public org.drip.measure.dynamics.LocalEvaluator magnitudeEvaluator()
+	public LocalEvaluator magnitudeEvaluator()
 	{
-		return _leMagnitude;
+		return _localMagnitudeEvaluator;
 	}
 }

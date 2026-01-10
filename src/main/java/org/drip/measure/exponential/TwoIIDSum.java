@@ -2,7 +2,7 @@
 package org.drip.measure.exponential;
 
 import org.drip.function.definition.R1ToR1;
-import org.drip.measure.continuous.R1Distribution;
+import org.drip.measure.distribution.R1Continuous;
 import org.drip.numerical.integration.NewtonCotesQuadratureGenerator;
 import org.drip.numerical.integration.R1ToR1Integrator;
 import org.drip.specialfunction.digamma.BinetFirstIntegral;
@@ -143,7 +143,7 @@ import org.drip.specialfunction.gamma.Definitions;
  */
 
 public class TwoIIDSum
-	extends R1Distribution
+	extends R1Continuous
 {
 	private static final int QUADRATURE_POINT_COUNT = 100;
 

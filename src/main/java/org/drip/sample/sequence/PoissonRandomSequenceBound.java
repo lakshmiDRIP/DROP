@@ -1,7 +1,7 @@
 
 package org.drip.sample.sequence;
 
-import org.drip.measure.continuous.R1Distribution;
+import org.drip.measure.distribution.R1Continuous;
 import org.drip.measure.exponential.PoissonDistribution;
 import org.drip.sequence.metrics.*;
 import org.drip.sequence.random.*;
@@ -124,7 +124,7 @@ public class PoissonRandomSequenceBound {
 
 	private static final void ChernoffStirlingBounds (
 		final UnivariateSequenceGenerator iidsg,
-		final R1Distribution dist,
+		final R1Continuous dist,
 		final int[] aiSampleSize,
 		final double[] adblTolerance)
 		throws Exception

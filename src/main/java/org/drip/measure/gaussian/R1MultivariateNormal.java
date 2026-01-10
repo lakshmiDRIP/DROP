@@ -1,8 +1,8 @@
 
 package org.drip.measure.gaussian;
 
-import org.drip.measure.continuous.MetaRd;
-import org.drip.measure.continuous.MetaRdDistribution;
+import org.drip.measure.distribution.MetaRd;
+import org.drip.measure.distribution.MetaRdContinuous;
 import org.drip.numerical.common.NumberUtil;
 
 /*
@@ -118,7 +118,7 @@ import org.drip.numerical.common.NumberUtil;
  */
 
 public class R1MultivariateNormal
-	extends MetaRdDistribution
+	extends MetaRdContinuous
 {
 	private double[] _meanArray = null;
 	private JointVariance _jointVariance = null;

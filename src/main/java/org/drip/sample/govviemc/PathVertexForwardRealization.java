@@ -5,8 +5,8 @@ import java.util.List;
 
 import org.drip.analytics.date.*;
 import org.drip.analytics.support.Helper;
+import org.drip.measure.crng.CorrelatedFactorsPathVertexRealization;
 import org.drip.measure.crng.RandomNumberGenerator;
-import org.drip.measure.discontinuous.*;
 import org.drip.measure.dynamics.DiffusionEvaluatorLogarithmic;
 import org.drip.measure.process.DiffusionEvolver;
 import org.drip.measure.realization.*;
@@ -262,7 +262,7 @@ public class PathVertexForwardRealization {
 			null
 		);
 
-		VertexRd[] aVertexRd = cpvd.multiTrajectoryNodeRd();
+		VertexRdSequence[] aVertexRd = cpvd.multiTrajectoryNodeRd();
 
 		for (int iPath = 0; iPath < iNumPath; ++iPath) {
 			List<double[]> lsVertexRd = aVertexRd[iPath].nodeList();

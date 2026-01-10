@@ -202,12 +202,12 @@ public abstract class GeneralizedLearner implements org.drip.learning.rxtor1.Emp
 		org.drip.spaces.metric.GeneralizedMetricVectorSpace gmvsOutput =
 			finiteClassR1ToR1.outputMetricVectorSpace();
 
-		if (gmvsOutput instanceof org.drip.spaces.metric.R1Continuous)
+		if (gmvsOutput instanceof org.drip.spaces.metric.R1Field)
 			throw new java.lang.Exception ("GeneralizedLearner::structuralLoss => Invalid Inputs");
 
 		org.drip.learning.regularization.RegularizerR1ToR1 regularizerR1ToR1 =
 			org.drip.learning.regularization.RegularizerBuilder.ToR1Continuous (funcRegularizerR1ToR1,
-				(org.drip.spaces.metric.R1Normed) gmvsInput, (org.drip.spaces.metric.R1Continuous)
+				(org.drip.spaces.metric.R1Normed) gmvsInput, (org.drip.spaces.metric.R1Field)
 					gmvsOutput, _regularizerFunc.lambda());
 
 		if (null == regularizerR1ToR1)
@@ -243,12 +243,12 @@ public abstract class GeneralizedLearner implements org.drip.learning.rxtor1.Emp
 		org.drip.spaces.metric.GeneralizedMetricVectorSpace gmvsOutput =
 			finiteClassRdToR1.outputMetricVectorSpace();
 
-		if (gmvsOutput instanceof org.drip.spaces.metric.R1Continuous)
+		if (gmvsOutput instanceof org.drip.spaces.metric.R1Field)
 			throw new java.lang.Exception ("GeneralizedLearner::structuralLoss => Invalid Inputs");
 
 		org.drip.learning.regularization.RegularizerRdToR1 regularizerRdToR1 =
 			org.drip.learning.regularization.RegularizerBuilder.ToRdContinuous (funcRegularizerRdToR1,
-				(org.drip.spaces.metric.RdNormed) gmvsInput, (org.drip.spaces.metric.R1Continuous)
+				(org.drip.spaces.metric.RdNormed) gmvsInput, (org.drip.spaces.metric.R1Field)
 					gmvsOutput, _regularizerFunc.lambda());
 
 		if (null == regularizerRdToR1)
@@ -306,7 +306,7 @@ public abstract class GeneralizedLearner implements org.drip.learning.rxtor1.Emp
 	}
 
 	@Override public org.drip.learning.rxtor1.EmpiricalPenaltySupremum supremumEmpiricalRisk (
-		final org.drip.measure.continuous.R1R1Distribution distR1R1,
+		final org.drip.measure.distribution.R1R1Continuous distR1R1,
 		final org.drip.spaces.instance.GeneralizedValidatedVector gvviX,
 		final org.drip.spaces.instance.GeneralizedValidatedVector gvviY)
 	{
@@ -322,7 +322,7 @@ public abstract class GeneralizedLearner implements org.drip.learning.rxtor1.Emp
 	}
 
 	@Override public org.drip.learning.rxtor1.EmpiricalPenaltySupremum supremumEmpiricalRisk (
-		final org.drip.measure.continuous.RdR1Distribution distRdR1,
+		final org.drip.measure.distribution.RdR1Continuous distRdR1,
 		final org.drip.spaces.instance.GeneralizedValidatedVector gvviX,
 		final org.drip.spaces.instance.GeneralizedValidatedVector gvviY)
 	{
@@ -338,7 +338,7 @@ public abstract class GeneralizedLearner implements org.drip.learning.rxtor1.Emp
 	}
 
 	@Override public double structuralRisk (
-		final org.drip.measure.continuous.R1R1Distribution distR1R1,
+		final org.drip.measure.distribution.R1R1Continuous distR1R1,
 		final org.drip.function.definition.R1ToR1 funcLearnerR1ToR1,
 		final org.drip.spaces.instance.GeneralizedValidatedVector gvviX,
 		final org.drip.spaces.instance.GeneralizedValidatedVector gvviY)
@@ -367,12 +367,12 @@ public abstract class GeneralizedLearner implements org.drip.learning.rxtor1.Emp
 		org.drip.spaces.metric.GeneralizedMetricVectorSpace gmvsOutput =
 			finiteClassR1ToR1.outputMetricVectorSpace();
 
-		if (gmvsOutput instanceof org.drip.spaces.metric.R1Continuous)
+		if (gmvsOutput instanceof org.drip.spaces.metric.R1Field)
 			throw new java.lang.Exception ("GeneralizedLearner::structuralRisk => Invalid Inputs");
 
 		org.drip.learning.regularization.RegularizerR1ToR1 regularizerR1ToR1 =
 			org.drip.learning.regularization.RegularizerBuilder.ToR1Continuous (funcRegularizerR1ToR1,
-				(org.drip.spaces.metric.R1Normed) gmvsInput, (org.drip.spaces.metric.R1Continuous)
+				(org.drip.spaces.metric.R1Normed) gmvsInput, (org.drip.spaces.metric.R1Field)
 					gmvsOutput, _regularizerFunc.lambda());
 
 		if (null == regularizerR1ToR1)
@@ -384,7 +384,7 @@ public abstract class GeneralizedLearner implements org.drip.learning.rxtor1.Emp
 	}
 
 	@Override public double structuralRisk (
-		final org.drip.measure.continuous.RdR1Distribution distRdR1,
+		final org.drip.measure.distribution.RdR1Continuous distRdR1,
 		final org.drip.function.definition.RdToR1 funcLearnerRdToR1,
 		final org.drip.spaces.instance.GeneralizedValidatedVector gvviX,
 		final org.drip.spaces.instance.GeneralizedValidatedVector gvviY)
@@ -413,12 +413,12 @@ public abstract class GeneralizedLearner implements org.drip.learning.rxtor1.Emp
 		org.drip.spaces.metric.GeneralizedMetricVectorSpace gmvsOutput =
 			finiteClassRdToR1.outputMetricVectorSpace();
 
-		if (gmvsOutput instanceof org.drip.spaces.metric.R1Continuous)
+		if (gmvsOutput instanceof org.drip.spaces.metric.R1Field)
 			throw new java.lang.Exception ("GeneralizedLearner::structuralRisk => Invalid Inputs");
 
 		org.drip.learning.regularization.RegularizerRdToR1 regularizerRdToR1 =
 			org.drip.learning.regularization.RegularizerBuilder.ToRdContinuous (funcRegularizerRdToR1,
-				(org.drip.spaces.metric.RdNormed) gmvsInput, (org.drip.spaces.metric.R1Continuous)
+				(org.drip.spaces.metric.RdNormed) gmvsInput, (org.drip.spaces.metric.R1Field)
 					gmvsOutput, _regularizerFunc.lambda());
 
 		if (null == regularizerRdToR1)
@@ -430,7 +430,7 @@ public abstract class GeneralizedLearner implements org.drip.learning.rxtor1.Emp
 	}
 
 	@Override public org.drip.learning.rxtor1.EmpiricalPenaltySupremum supremumStructuralRisk (
-		final org.drip.measure.continuous.R1R1Distribution distR1R1,
+		final org.drip.measure.distribution.R1R1Continuous distR1R1,
 		final org.drip.spaces.instance.GeneralizedValidatedVector gvviX,
 		final org.drip.spaces.instance.GeneralizedValidatedVector gvviY)
 	{
@@ -446,7 +446,7 @@ public abstract class GeneralizedLearner implements org.drip.learning.rxtor1.Emp
 	}
 
 	@Override public org.drip.learning.rxtor1.EmpiricalPenaltySupremum supremumStructuralRisk (
-		final org.drip.measure.continuous.RdR1Distribution distRdR1,
+		final org.drip.measure.distribution.RdR1Continuous distRdR1,
 		final org.drip.spaces.instance.GeneralizedValidatedVector gvviX,
 		final org.drip.spaces.instance.GeneralizedValidatedVector gvviY)
 	{
@@ -462,7 +462,7 @@ public abstract class GeneralizedLearner implements org.drip.learning.rxtor1.Emp
 	}
 
 	@Override public double regularizedRisk (
-		final org.drip.measure.continuous.R1R1Distribution distR1R1,
+		final org.drip.measure.distribution.R1R1Continuous distR1R1,
 		final org.drip.function.definition.R1ToR1 funcLearnerR1ToR1,
 		final org.drip.spaces.instance.GeneralizedValidatedVector gvviX,
 		final org.drip.spaces.instance.GeneralizedValidatedVector gvviY)
@@ -473,7 +473,7 @@ public abstract class GeneralizedLearner implements org.drip.learning.rxtor1.Emp
 	}
 
 	@Override public double regularizedRisk (
-		final org.drip.measure.continuous.RdR1Distribution distRdR1,
+		final org.drip.measure.distribution.RdR1Continuous distRdR1,
 		final org.drip.function.definition.RdToR1 funcLearnerRdToR1,
 		final org.drip.spaces.instance.GeneralizedValidatedVector gvviX,
 		final org.drip.spaces.instance.GeneralizedValidatedVector gvviY)
@@ -484,7 +484,7 @@ public abstract class GeneralizedLearner implements org.drip.learning.rxtor1.Emp
 	}
 
 	@Override public org.drip.learning.rxtor1.EmpiricalPenaltySupremum supremumRegularizedRisk (
-		final org.drip.measure.continuous.R1R1Distribution distR1R1,
+		final org.drip.measure.distribution.R1R1Continuous distR1R1,
 		final org.drip.spaces.instance.GeneralizedValidatedVector gvviX,
 		final org.drip.spaces.instance.GeneralizedValidatedVector gvviY)
 	{
@@ -500,7 +500,7 @@ public abstract class GeneralizedLearner implements org.drip.learning.rxtor1.Emp
 	}
 
 	@Override public org.drip.learning.rxtor1.EmpiricalPenaltySupremum supremumRegularizedRisk (
-		final org.drip.measure.continuous.RdR1Distribution distRdR1,
+		final org.drip.measure.distribution.RdR1Continuous distRdR1,
 		final org.drip.spaces.instance.GeneralizedValidatedVector gvviX,
 		final org.drip.spaces.instance.GeneralizedValidatedVector gvviY)
 	{

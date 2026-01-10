@@ -232,11 +232,11 @@ public class Portfolio
 	 * @return The Multivariate Meta Instance around the Assets
 	 */
 
-	public org.drip.measure.continuous.MetaRd meta()
+	public org.drip.measure.distribution.MetaRd meta()
 	{
 		try
 		{
-			return new org.drip.measure.continuous.MetaRd (assetIDArray());
+			return new org.drip.measure.distribution.MetaRd (assetIDArray());
 		}
 		catch (java.lang.Exception e)
 		{

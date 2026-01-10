@@ -1,7 +1,7 @@
 
 package org.drip.measure.bayesian;
 
-import org.drip.measure.continuous.R1Distribution;
+import org.drip.measure.distribution.R1Continuous;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -124,8 +124,8 @@ public interface R1UnivariateConvolutionEngine
 	 */
 
 	public abstract R1UnivariateConvolutionMetrics process (
-		final R1Distribution univariatePriorDistribution,
-		final R1Distribution univariateUnconditionalDistribution,
-		final R1Distribution univariateConditionalDistribution
+		final R1Continuous univariatePriorDistribution,
+		final R1Continuous univariateUnconditionalDistribution,
+		final R1Continuous univariateConditionalDistribution
 	);
 }

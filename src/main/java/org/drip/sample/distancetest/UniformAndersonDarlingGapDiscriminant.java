@@ -1,7 +1,7 @@
 
 package org.drip.sample.distancetest;
 
-import org.drip.measure.continuous.R1UniformDistribution;
+import org.drip.measure.distribution.R1ContinuousUniform;
 import org.drip.service.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 import org.drip.validation.distance.GapLossWeightFunction;
@@ -148,7 +148,7 @@ public class UniformAndersonDarlingGapDiscriminant
 		final double rightSupport)
 		throws Exception
 	{
-		return new R1UniformDistribution (
+		return new R1ContinuousUniform (
 			leftSupport,
 			rightSupport
 		).random();

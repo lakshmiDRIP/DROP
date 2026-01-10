@@ -1,8 +1,8 @@
 
 package org.drip.measure.bayesian;
 
-import org.drip.measure.continuous.MetaRd;
-import org.drip.measure.continuous.MetaRdDistribution;
+import org.drip.measure.distribution.MetaRd;
+import org.drip.measure.distribution.MetaRdContinuous;
 import org.drip.measure.gaussian.JointVariance;
 import org.drip.measure.gaussian.R1MultivariateNormal;
 import org.drip.numerical.linearalgebra.R1MatrixUtil;
@@ -171,9 +171,9 @@ public class TheilMixedEstimationModel
 			return null;
 		}
 
-		MetaRdDistribution projectionDistribution1 = viewLoading1.projectionDistribution();
+		MetaRdContinuous projectionDistribution1 = viewLoading1.projectionDistribution();
 
-		MetaRdDistribution projectionDistribution2 = viewLoading2.projectionDistribution();
+		MetaRdContinuous projectionDistribution2 = viewLoading2.projectionDistribution();
 
 		if (!(projectionDistribution1 instanceof R1MultivariateNormal) ||
 			!(projectionDistribution2 instanceof R1MultivariateNormal))
@@ -342,7 +342,7 @@ public class TheilMixedEstimationModel
 			return null;
 		}
 
-		MetaRdDistribution projectionDistribution = scopingContainer.projectionDistribution();
+		MetaRdContinuous projectionDistribution = scopingContainer.projectionDistribution();
 
 		if (!(projectionDistribution instanceof R1MultivariateNormal)) {
 			return null;
@@ -447,7 +447,7 @@ public class TheilMixedEstimationModel
 			return null;
 		}
 
-		MetaRdDistribution projectionDistribution = scopingContainer.projectionDistribution();
+		MetaRdContinuous projectionDistribution = scopingContainer.projectionDistribution();
 
 		if (!(projectionDistribution instanceof R1MultivariateNormal)) {
 			return null;
@@ -498,7 +498,7 @@ public class TheilMixedEstimationModel
 			return null;
 		}
 
-		MetaRdDistribution projectionDistribution = scopingContainer.projectionDistribution();
+		MetaRdContinuous projectionDistribution = scopingContainer.projectionDistribution();
 
 		if (!(projectionDistribution instanceof R1MultivariateNormal)) {
 			return null;
@@ -529,7 +529,7 @@ public class TheilMixedEstimationModel
 			return null;
 		}
 
-		MetaRdDistribution projectionDistribution = scopingContainer.projectionDistribution();
+		MetaRdContinuous projectionDistribution = scopingContainer.projectionDistribution();
 
 		ViewLoading viewLoading = scopingContainer.viewLoading (viewName);
 
@@ -563,7 +563,7 @@ public class TheilMixedEstimationModel
 			return null;
 		}
 
-		MetaRdDistribution projectionDistribution = viewLoading.projectionDistribution();
+		MetaRdContinuous projectionDistribution = viewLoading.projectionDistribution();
 
 		return !(projectionDistribution instanceof R1MultivariateNormal) ? null : R1MatrixUtil.Product (
 			((R1MultivariateNormal) projectionDistribution).covariance().precisionMatrix(),
@@ -588,7 +588,7 @@ public class TheilMixedEstimationModel
 			return null;
 		}
 
-		MetaRdDistribution projectionDistribution = scopingContainer.projectionDistribution();
+		MetaRdContinuous projectionDistribution = scopingContainer.projectionDistribution();
 
 		if (!(projectionDistribution instanceof R1MultivariateNormal)) {
 			return null;
@@ -660,7 +660,7 @@ public class TheilMixedEstimationModel
 			return null;
 		}
 
-		MetaRdDistribution projectionDistribution = scopingContainer.projectionDistribution();
+		MetaRdContinuous projectionDistribution = scopingContainer.projectionDistribution();
 
 		double[] scopingMeanArray = projectionDistribution.mean();
 
@@ -756,7 +756,7 @@ public class TheilMixedEstimationModel
 			return null;
 		}
 
-		MetaRdDistribution projectionDistribution = viewLoading.projectionDistribution();
+		MetaRdContinuous projectionDistribution = viewLoading.projectionDistribution();
 
 		if (!(projectionDistribution instanceof R1MultivariateNormal)) {
 			return null;
@@ -790,7 +790,7 @@ public class TheilMixedEstimationModel
 			return null;
 		}
 
-		MetaRdDistribution projectionDistribution = scopingContainer.projectionDistribution();
+		MetaRdContinuous projectionDistribution = scopingContainer.projectionDistribution();
 
 		if (!(projectionDistribution instanceof R1MultivariateNormal)) {
 			return null;
@@ -832,7 +832,7 @@ public class TheilMixedEstimationModel
 			return null;
 		}
 
-		MetaRdDistribution projectionDistribution = scopingContainer.projectionDistribution();
+		MetaRdContinuous projectionDistribution = scopingContainer.projectionDistribution();
 
 		int iNumScopingVariate = projectionDistribution.meta().numVariable();
 
@@ -899,7 +899,7 @@ public class TheilMixedEstimationModel
 				projectionInducedScopingDeviationArray[scopingVariateIndex];
 		}
 
-		MetaRdDistribution viewProjectionDistribution = viewLoading.projectionDistribution();
+		MetaRdContinuous viewProjectionDistribution = viewLoading.projectionDistribution();
 
 		if (!(viewProjectionDistribution instanceof R1MultivariateNormal)) {
 			return null;

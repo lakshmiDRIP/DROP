@@ -184,7 +184,7 @@ public class ParabolicDifferentialOperator
 
 		PositionGreekVertex positionGreekVertex = evolutionTrajectoryVertex.positionGreekVertex();
 
-		double volatility = _tradeable.evolver().evaluator().volatility().value (
+		double volatility = _tradeable.evolver().evaluator().localVolatilityEvaluator().value (
 			new JumpDiffusionVertex (evolutionTrajectoryVertex.time(), positionValueVertex, 0., false)
 		);
 
@@ -222,7 +222,7 @@ public class ParabolicDifferentialOperator
 		double positionValueVertexDown = positionValueVertex - shift;
 
 		try {
-			volatility = _tradeable.evolver().evaluator().volatility().value (
+			volatility = _tradeable.evolver().evaluator().localVolatilityEvaluator().value (
 				new JumpDiffusionVertex (evolutionTrajectoryVertex.time(), positionValueVertex, 0., false)
 			);
 		} catch (Exception e) {

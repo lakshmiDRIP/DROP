@@ -2,10 +2,10 @@
 package org.drip.spaces.rxtord;
 
 import org.drip.function.definition.RdToRd;
-import org.drip.measure.continuous.RdDistribution;
+import org.drip.measure.distribution.RdContinuous;
 import org.drip.spaces.iterator.RdSpanningCombinatorialIterator;
 import org.drip.spaces.metric.RdCombinatorialBanach;
-import org.drip.spaces.metric.RdContinuousBanach;
+import org.drip.spaces.metric.RdBanach;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -136,7 +136,7 @@ public class NormedRdCombinatorialToRdContinuous
 
 	public NormedRdCombinatorialToRdContinuous (
 		final RdCombinatorialBanach rdCombinatorialBanachInput,
-		final RdContinuousBanach rdContinuousBanachOutput,
+		final RdBanach rdContinuousBanachOutput,
 		final RdToRd rdToRdFunction)
 		throws Exception
 	{
@@ -159,7 +159,7 @@ public class NormedRdCombinatorialToRdContinuous
 
 		RdCombinatorialBanach rdCombinatorialBanachInput = (RdCombinatorialBanach) inputMetricVectorSpace();
 
-		RdDistribution rdCombinatorialDistribution = rdCombinatorialBanachInput.borelSigmaMeasure();
+		RdContinuous rdCombinatorialDistribution = rdCombinatorialBanachInput.borelSigmaMeasure();
 
 		RdSpanningCombinatorialIterator rdSpanningCombinatorialIterator =
 			rdCombinatorialBanachInput.iterator();

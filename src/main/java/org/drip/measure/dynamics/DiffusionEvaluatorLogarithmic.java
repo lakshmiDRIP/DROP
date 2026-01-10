@@ -1,11 +1,22 @@
 
 package org.drip.measure.dynamics;
 
+import org.drip.measure.realization.JumpDiffusionVertex;
+import org.drip.numerical.common.NumberUtil;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2030 Lakshmi Krishnamurthy
+ * Copyright (C) 2029 Lakshmi Krishnamurthy
+ * Copyright (C) 2028 Lakshmi Krishnamurthy
+ * Copyright (C) 2027 Lakshmi Krishnamurthy
+ * Copyright (C) 2026 Lakshmi Krishnamurthy
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -80,66 +91,79 @@ package org.drip.measure.dynamics;
 
 /**
  * <i>DiffusionEvaluatorLogarithmic</i> evaluates the Drift/Volatility of the Diffusion Random Variable
- * Evolution according to R<sup>1</sup> Logarithmic Process.
+ * 	Evolution according to R<sup>1</sup> Logarithmic Process. It provides the following Functionality:
  *
- *	<br><br>
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md">Numerical Analysis Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/README.md">R<sup>d</sup> Continuous/Discrete Probability Measures</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/dynamics/README.md">Jump Diffusion Evolution Evaluator Variants</a></li>
+ * 		<li>Generate a Standard Instance of <i>DiffusionEvaluatorLogarithmic</i></li>
+ * 		<li>Retrieve the Logarithmic Drift Value</li>
+ * 		<li>Retrieve the Logarithmic Volatility Value</li>
  *  </ul>
+ *
+ *	<br>
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md">Numerical Analysis Library</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/README.md">R<sup>d</sup> Continuous/Discrete Probability Measures</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/dynamics/README.md">Jump Diffusion Evolution Evaluator Variants</a></td></tr>
+ *  </table>
+ *	<br>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class DiffusionEvaluatorLogarithmic extends org.drip.measure.dynamics.DiffusionEvaluator {
-	private double _dblDrift = java.lang.Double.NaN;
-	private double _dblVolatility = java.lang.Double.NaN;
+public class DiffusionEvaluatorLogarithmic
+	extends DiffusionEvaluator
+{
+	private double _drift = Double.NaN;
+	private double _volatility = Double.NaN;
 
 	/**
-	 * Generate a Standard Instance of DiffusionEvaluatorLogarithmic
+	 * Generate a Standard Instance of <i>DiffusionEvaluatorLogarithmic</i>
 	 * 
-	 * @param dblDrift The Drift
-	 * @param dblVolatility The Volatility
+	 * @param drift The Drift
+	 * @param volatility The Volatility
 	 * 
-	 * @return The Standard Instance of DiffusionEvaluatorLogarithmic
+	 * @return The Standard Instance of <i>DiffusionEvaluatorLogarithmic</i>
 	 */
 
 	public static final DiffusionEvaluatorLogarithmic Standard (
-		final double dblDrift,
-		final double dblVolatility)
+		final double drift,
+		final double volatility)
 	{
-		org.drip.measure.dynamics.LocalEvaluator leDrift = new org.drip.measure.dynamics.LocalEvaluator() {
-			@Override public double value (
-				final org.drip.measure.realization.JumpDiffusionVertex jdv)
-				throws java.lang.Exception
-			{
-				if (null == jdv)
-					throw new java.lang.Exception
-						("DiffusionEvaluatorLogarithmic::DriftEvaluator::value => Invalid Inputs");
-
-				return jdv.value() * dblDrift;
-			}
-		};
-
-		org.drip.measure.dynamics.LocalEvaluator leVolatility = new
-			org.drip.measure.dynamics.LocalEvaluator() {
-			@Override public double value (
-				final org.drip.measure.realization.JumpDiffusionVertex jdv)
-				throws java.lang.Exception
-			{
-				if (null == jdv)
-					throw new java.lang.Exception
-						("DiffusionEvaluatorLogarithmic::volatilityEvaluator::value => Invalid Inputs");
-
-				return jdv.value() * dblVolatility;
-			}
-		};
-
 		try {
-			return new DiffusionEvaluatorLogarithmic (dblDrift, dblVolatility, leDrift, leVolatility);
-		} catch (java.lang.Exception e) {
+			return new DiffusionEvaluatorLogarithmic (
+				drift,
+				volatility,
+				new LocalEvaluator() {
+					@Override public double value (
+						final JumpDiffusionVertex jumpDiffusionVertex)
+						throws Exception
+					{
+						if (null == jumpDiffusionVertex) {
+							throw new Exception (
+								"DiffusionEvaluatorLogarithmic::DriftEvaluator::value => Invalid Inputs"
+							);
+						}
+
+						return jumpDiffusionVertex.value() * drift;
+					}
+				},
+				new LocalEvaluator() {
+					@Override public double value (
+						final JumpDiffusionVertex jumpDiffusionVertex)
+						throws Exception
+					{
+						if (null == jumpDiffusionVertex) {
+							throw new Exception (
+								"DiffusionEvaluatorLogarithmic::volatilityEvaluator::value => Invalid Inputs"
+							);
+						}
+	
+						return jumpDiffusionVertex.value() * volatility;
+					}
+				}
+			);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -147,17 +171,17 @@ public class DiffusionEvaluatorLogarithmic extends org.drip.measure.dynamics.Dif
 	}
 
 	private DiffusionEvaluatorLogarithmic (
-		final double dblDrift,
-		final double dblVolatility,
-		final org.drip.measure.dynamics.LocalEvaluator leDrift,
-		final org.drip.measure.dynamics.LocalEvaluator leVolatility)
-		throws java.lang.Exception
+		final double drift,
+		final double volatility,
+		final LocalEvaluator localDriftEvaluator,
+		final LocalEvaluator localVolatilityEvaluator)
+		throws Exception
 	{
-		super (leDrift, leVolatility);
+		super (localDriftEvaluator, localVolatilityEvaluator);
 
-		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblDrift = dblDrift) ||
-			!org.drip.numerical.common.NumberUtil.IsValid (_dblVolatility = dblVolatility))
-			throw new java.lang.Exception ("DiffusionEvaluatorLogarithmic Constructor => Invalid Inputs");
+		if (!NumberUtil.IsValid (_drift = drift) || !NumberUtil.IsValid (_volatility = volatility)) {
+			throw new Exception ("DiffusionEvaluatorLogarithmic Constructor => Invalid Inputs");
+		}
 	}
 
 	/**
@@ -166,9 +190,9 @@ public class DiffusionEvaluatorLogarithmic extends org.drip.measure.dynamics.Dif
 	 * @return The Logarithmic Drift Value
 	 */
 
-	public double driftValue()
+	public double drift()
 	{
-		return _dblDrift;
+		return _drift;
 	}
 
 	/**
@@ -177,8 +201,8 @@ public class DiffusionEvaluatorLogarithmic extends org.drip.measure.dynamics.Dif
 	 * @return The Logarithmic Volatility Value
 	 */
 
-	public double volatilityValue()
+	public double volatility()
 	{
-		return _dblVolatility;
+		return _volatility;
 	}
 }

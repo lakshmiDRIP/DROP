@@ -2,8 +2,8 @@
 package org.drip.sample.govviemc;
 
 import org.drip.analytics.date.*;
+import org.drip.measure.crng.CorrelatedFactorsPathVertexRealization;
 import org.drip.measure.crng.RandomNumberGenerator;
-import org.drip.measure.discontinuous.CorrelatedFactorsPathVertexRealization;
 import org.drip.measure.dynamics.DiffusionEvaluatorLogarithmic;
 import org.drip.measure.process.DiffusionEvolver;
 import org.drip.measure.statistics.UnivariateDiscreteThin;

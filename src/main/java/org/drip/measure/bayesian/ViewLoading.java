@@ -1,8 +1,8 @@
 
 package org.drip.measure.bayesian;
 
-import org.drip.measure.continuous.MetaRd;
-import org.drip.measure.continuous.MetaRdDistribution;
+import org.drip.measure.distribution.MetaRd;
+import org.drip.measure.distribution.MetaRdContinuous;
 import org.drip.measure.gaussian.JointVariance;
 import org.drip.measure.gaussian.R1MultivariateNormal;
 import org.drip.numerical.common.NumberUtil;
@@ -123,7 +123,7 @@ import org.drip.numerical.linearalgebra.R1MatrixUtil;
 public class ViewLoading
 {
 	private double[][] _projectionScopingLoadingMatrix = null;
-	private MetaRdDistribution _projectionDistribution = null;
+	private MetaRdContinuous _projectionDistribution = null;
 
 	/**
 	 * Generate the Projection Co-variance Matrix from the Confidence Level
@@ -220,7 +220,7 @@ public class ViewLoading
 	 */
 
 	public ViewLoading (
-		final MetaRdDistribution projectionDistribution,
+		final MetaRdContinuous projectionDistribution,
 		final double[][] projectionScopingLoadingMatrix)
 		throws Exception
 	{
@@ -252,7 +252,7 @@ public class ViewLoading
 	 * @return The Projection Distribution
 	 */
 
-	public MetaRdDistribution projectionDistribution()
+	public MetaRdContinuous projectionDistribution()
 	{
 		return _projectionDistribution;
 	}

@@ -2,10 +2,10 @@
 package org.drip.spaces.rxtord;
 
 import org.drip.function.definition.R1ToRd;
-import org.drip.measure.continuous.R1Distribution;
+import org.drip.measure.distribution.R1Continuous;
 import org.drip.spaces.metric.R1Combinatorial;
-import org.drip.spaces.metric.R1Continuous;
-import org.drip.spaces.metric.RdContinuousBanach;
+import org.drip.spaces.metric.R1Field;
+import org.drip.spaces.metric.RdBanach;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -135,8 +135,8 @@ public class NormedR1ContinuousToRdContinuous
 	 */
 
 	public NormedR1ContinuousToRdContinuous (
-		final R1Continuous r1ContinuousInput,
-		final RdContinuousBanach rdContinuousBanachOutput,
+		final R1Field r1ContinuousInput,
+		final RdBanach rdContinuousBanachOutput,
 		final R1ToRd r1ToRdFunction)
 		throws java.lang.Exception
 	{
@@ -161,7 +161,7 @@ public class NormedR1ContinuousToRdContinuous
 
 		R1Combinatorial r1CombinatorialInput = (R1Combinatorial) inputMetricVectorSpace();
 
-		final R1Distribution r1UnivariateDistribution = r1CombinatorialInput.borelSigmaMeasure();
+		final R1Continuous r1UnivariateDistribution = r1CombinatorialInput.borelSigmaMeasure();
 
 		if (null == r1UnivariateDistribution || null == r1ToRdFunction) {
 			return null;

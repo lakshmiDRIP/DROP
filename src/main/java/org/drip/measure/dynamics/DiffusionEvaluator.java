@@ -6,6 +6,14 @@ package org.drip.measure.dynamics;
  */
 
 /*!
+ * Copyright (C) 2030 Lakshmi Krishnamurthy
+ * Copyright (C) 2029 Lakshmi Krishnamurthy
+ * Copyright (C) 2028 Lakshmi Krishnamurthy
+ * Copyright (C) 2027 Lakshmi Krishnamurthy
+ * Copyright (C) 2026 Lakshmi Krishnamurthy
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -80,39 +88,50 @@ package org.drip.measure.dynamics;
 
 /**
  * <i>DiffusionEvaluator</i> implements the Drift/Volatility Evaluators for R<sup>1</sup> Random Diffusion
- * Process.
+ * 	Process. It provides the following Functionality:
  *
- *	<br><br>
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md">Numerical Analysis Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/README.md">R<sup>d</sup> Continuous/Discrete Probability Measures</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/dynamics/README.md">Jump Diffusion Evolution Evaluator Variants</a></li>
+ * 		<li><i>DiffusionEvaluator</i> Constructor</li>
+ * 		<li>Retrieve the Drift Evaluator</li>
+ * 		<li>Retrieve the Volatility Evaluator</li>
  *  </ul>
+ *
+ *	<br>
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md">Numerical Analysis Library</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/README.md">R<sup>d</sup> Continuous/Discrete Probability Measures</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/dynamics/README.md">Jump Diffusion Evolution Evaluator Variants</a></td></tr>
+ *  </table>
+ *	<br>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class DiffusionEvaluator {
-	private org.drip.measure.dynamics.LocalEvaluator _leDrift = null;
-	private org.drip.measure.dynamics.LocalEvaluator _leVolatility = null;
+public class DiffusionEvaluator
+{
+	private LocalEvaluator _localDriftEvaluator = null;
+	private LocalEvaluator _localVolatilityEvaluator = null;
 
 	/**
-	 * DiffusionEvaluator Constructor
+	 * <i>DiffusionEvaluator</i> Constructor
 	 * 
-	 * @param leDrift The Drift Evaluator
-	 * @param leVolatility The Volatility Evaluator
+	 * @param localDriftEvaluator The Drift Evaluator
+	 * @param localVolatilityEvaluator The Volatility Evaluator
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public DiffusionEvaluator (
-		final org.drip.measure.dynamics.LocalEvaluator leDrift,
-		final org.drip.measure.dynamics.LocalEvaluator leVolatility)
-		throws java.lang.Exception
+		final LocalEvaluator localDriftEvaluator,
+		final LocalEvaluator localVolatilityEvaluator)
+		throws Exception
 	{
-		if (null == (_leDrift = leDrift) || null == (_leVolatility = leVolatility))
-			throw new java.lang.Exception ("DiffusionEvaluator Constructor => Invalid Inputs");
+		if (null == (_localDriftEvaluator = localDriftEvaluator) ||
+			null == (_localVolatilityEvaluator = localVolatilityEvaluator))
+		{
+			throw new Exception ("DiffusionEvaluator Constructor => Invalid Inputs");
+		}
 	}
 
 	/**
@@ -121,9 +140,9 @@ public class DiffusionEvaluator {
 	 * @return The Drift Evaluator
 	 */
 
-	public org.drip.measure.dynamics.LocalEvaluator drift()
+	public LocalEvaluator localDriftEvaluator()
 	{
-		return _leDrift;
+		return _localDriftEvaluator;
 	}
 
 	/**
@@ -132,8 +151,8 @@ public class DiffusionEvaluator {
 	 * @return The Volatility Evaluator
 	 */
 
-	public org.drip.measure.dynamics.LocalEvaluator volatility()
+	public LocalEvaluator localVolatilityEvaluator()
 	{
-		return _leVolatility;
+		return _localVolatilityEvaluator;
 	}
 }

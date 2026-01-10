@@ -144,10 +144,10 @@ public class DiffusionEvolver {
 		double dblPreviousValue = jdv.value();
 
 		try {
-			org.drip.measure.dynamics.LocalEvaluator leVolatility = _de.volatility();
+			org.drip.measure.dynamics.LocalEvaluator leVolatility = _de.localVolatilityEvaluator();
 
 			return org.drip.measure.realization.JumpDiffusionEdge.Standard (dblPreviousValue,
-				_de.drift().value (jdv) * dblTimeIncrement, null == leVolatility ? 0. : leVolatility.value
+				_de.localDriftEvaluator().value (jdv) * dblTimeIncrement, null == leVolatility ? 0. : leVolatility.value
 					(jdv) * jdeu.diffusion() * java.lang.Math.sqrt (java.lang.Math.abs (dblTimeIncrement)),
 						null, jdeu);
 		} catch (java.lang.Exception e) {
@@ -178,10 +178,10 @@ public class DiffusionEvolver {
 		double dblPreviousValue = jdv.value();
 
 		try {
-			org.drip.measure.dynamics.LocalEvaluator leVolatility = _de.volatility();
+			org.drip.measure.dynamics.LocalEvaluator leVolatility = _de.localVolatilityEvaluator();
 
 			return org.drip.measure.realization.JumpDiffusionEdge.Standard (dblPreviousValue, -1. *
-				_de.drift().value (jdv) * dblTimeIncrement, null == leVolatility ? 0. : -1. *
+				_de.localDriftEvaluator().value (jdv) * dblTimeIncrement, null == leVolatility ? 0. : -1. *
 					leVolatility.value (jdv) * jdeu.diffusion() * java.lang.Math.sqrt (java.lang.Math.abs
 						(dblTimeIncrement)), null, jdeu);
 		} catch (java.lang.Exception e) {

@@ -1,8 +1,8 @@
 
 package org.drip.measure.bayesian;
 
-import org.drip.measure.continuous.MetaRd;
-import org.drip.measure.continuous.MetaRdDistribution;
+import org.drip.measure.distribution.MetaRd;
+import org.drip.measure.distribution.MetaRdContinuous;
 import org.drip.measure.gaussian.JointVariance;
 import org.drip.measure.gaussian.R1MultivariateNormal;
 import org.drip.numerical.linearalgebra.R1MatrixUtil;
@@ -138,9 +138,9 @@ public class R1MultivariateNormalConvolutionEngine
 	 */
 
 	@Override public R1MultivariateConvolutionMetrics process (
-		final MetaRdDistribution priorDistribution,
-		final MetaRdDistribution unconditionalDistribution,
-		final MetaRdDistribution conditionalDistribution)
+		final MetaRdContinuous priorDistribution,
+		final MetaRdContinuous unconditionalDistribution,
+		final MetaRdContinuous conditionalDistribution)
 	{
 		if (null == priorDistribution || !(priorDistribution instanceof R1MultivariateNormal) ||
 			null == conditionalDistribution || !(conditionalDistribution instanceof R1MultivariateNormal) ||

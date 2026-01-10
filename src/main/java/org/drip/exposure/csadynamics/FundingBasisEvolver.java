@@ -214,7 +214,7 @@ public class FundingBasisEvolver
 						throw new java.lang.Exception
 							("FundingBasisEvolver::CSAForwardVolatility::Evaluator::value => Invalid Inputs");
 
-					return vertex.value() * _underlyingEvolver.volatilityValue();
+					return vertex.value() * _underlyingEvolver.volatility();
 				}
 			};
 
@@ -245,7 +245,7 @@ public class FundingBasisEvolver
 		final java.lang.String tenor)
 	{
 		try {
-			double meanReversionSpeed = _fundingSpreadEvolver.meanReversionRate();
+			double meanReversionSpeed = _fundingSpreadEvolver.rate();
 
 			double b = org.drip.analytics.support.Helper.TenorToYearFraction (tenor);
 
@@ -281,7 +281,7 @@ public class FundingBasisEvolver
 					}
 
 					return -1. * jumpDiffusionVertex.value() * piterbarg2010BFactor *
-						_fundingSpreadEvolver.volatilityValue();
+						_fundingSpreadEvolver.volatility();
 				}
 			};
 
@@ -313,7 +313,7 @@ public class FundingBasisEvolver
 	{
 		try
 		{
-			double meanReversionSpeed = _fundingSpreadEvolver.meanReversionRate();
+			double meanReversionSpeed = _fundingSpreadEvolver.rate();
 
 			double b = org.drip.analytics.support.Helper.TenorToYearFraction (tenor);
 
@@ -349,7 +349,7 @@ public class FundingBasisEvolver
 					}
 
 					return -1. * jumpDiffusionVertex.value() * piterbarg2010BFactor *
-						_fundingSpreadEvolver.volatilityValue();
+						_fundingSpreadEvolver.volatility();
 				}
 			};
 
@@ -382,11 +382,11 @@ public class FundingBasisEvolver
 		final java.lang.String tenor)
 		throws java.lang.Exception
 	{
-		double underlyingVolatility = _underlyingEvolver.volatilityValue();
+		double underlyingVolatility = _underlyingEvolver.volatility();
 
-		double meanReversionSpeed = _fundingSpreadEvolver.meanReversionRate();
+		double meanReversionSpeed = _fundingSpreadEvolver.rate();
 
-		double fundingSpreadVolatility = _fundingSpreadEvolver.volatilityValue();
+		double fundingSpreadVolatility = _fundingSpreadEvolver.volatility();
 
 		double maturity = org.drip.analytics.support.Helper.TenorToYearFraction (tenor);
 

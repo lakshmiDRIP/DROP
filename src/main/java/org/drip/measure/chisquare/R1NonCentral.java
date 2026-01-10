@@ -3,7 +3,7 @@ package org.drip.measure.chisquare;
 
 import org.drip.function.definition.R1ToR1;
 import org.drip.function.definition.R2ToR1;
-import org.drip.measure.continuous.R1Distribution;
+import org.drip.measure.distribution.R1Continuous;
 import org.drip.numerical.common.NumberUtil;
 import org.drip.specialfunction.definition.ModifiedBesselFirstKindEstimator;
 
@@ -155,7 +155,7 @@ import org.drip.specialfunction.definition.ModifiedBesselFirstKindEstimator;
  */
 
 public class R1NonCentral
-	extends R1Distribution
+	extends R1Continuous
 {
 	private R1ToR1 _gammaEstimator = null;
 	private double _cdfScaler = Double.NaN;

@@ -259,7 +259,7 @@ public class LpLossLearner extends org.drip.learning.rxtor1.GeneralizedLearner {
 	}
 
 	@Override public double empiricalRisk (
-		final org.drip.measure.continuous.R1R1Distribution distR1R1,
+		final org.drip.measure.distribution.R1R1Continuous distR1R1,
 		final org.drip.function.definition.R1ToR1 funcLearnerR1ToR1,
 		final org.drip.spaces.instance.GeneralizedValidatedVector gvviX,
 		final org.drip.spaces.instance.GeneralizedValidatedVector gvviY)
@@ -294,7 +294,7 @@ public class LpLossLearner extends org.drip.learning.rxtor1.GeneralizedLearner {
 	}
 
 	@Override public double empiricalRisk (
-		final org.drip.measure.continuous.RdR1Distribution distRdR1,
+		final org.drip.measure.distribution.RdR1Continuous distRdR1,
 		final org.drip.function.definition.RdToR1 funcLearnerRdToR1,
 		final org.drip.spaces.instance.GeneralizedValidatedVector gvviX,
 		final org.drip.spaces.instance.GeneralizedValidatedVector gvviY)

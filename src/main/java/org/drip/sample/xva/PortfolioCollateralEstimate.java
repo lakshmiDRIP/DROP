@@ -5,7 +5,7 @@ import org.drip.analytics.date.*;
 import org.drip.exposure.mpor.CollateralAmountEstimator;
 import org.drip.exposure.mpor.CollateralAmountEstimatorOutput;
 import org.drip.measure.bridge.BrokenDateInterpolatorLinearT;
-import org.drip.measure.discontinuous.RandomSequenceGenerator;
+import org.drip.measure.crng.RandomSequenceGenerator;
 import org.drip.measure.dynamics.DiffusionEvaluatorLinear;
 import org.drip.measure.process.DiffusionEvolver;
 import org.drip.measure.realization.*;

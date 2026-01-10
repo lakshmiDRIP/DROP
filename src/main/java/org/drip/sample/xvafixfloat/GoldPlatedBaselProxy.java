@@ -9,7 +9,6 @@ import org.drip.exposure.evolver.*;
 import org.drip.exposure.holdings.*;
 import org.drip.exposure.universe.*;
 import org.drip.measure.crng.*;
-import org.drip.measure.discontinuous.CorrelatedFactorsPathVertexRealization;
 import org.drip.measure.dynamics.*;
 import org.drip.measure.process.*;
 import org.drip.measure.statistics.UnivariateDiscreteThin;

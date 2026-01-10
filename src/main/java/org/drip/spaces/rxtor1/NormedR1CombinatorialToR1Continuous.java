@@ -2,9 +2,9 @@
 package org.drip.spaces.rxtor1;
 
 import org.drip.function.definition.R1ToR1;
-import org.drip.measure.continuous.R1Distribution;
+import org.drip.measure.distribution.R1Continuous;
 import org.drip.spaces.metric.R1Combinatorial;
-import org.drip.spaces.metric.R1Continuous;
+import org.drip.spaces.metric.R1Field;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -133,7 +133,7 @@ public class NormedR1CombinatorialToR1Continuous
 
 	public NormedR1CombinatorialToR1Continuous (
 		final R1Combinatorial r1CombinatorialInput,
-		final R1Continuous r1ContinuousOutput,
+		final R1Field r1ContinuousOutput,
 		final R1ToR1 r1ToR1Function)
 		throws Exception
 	{
@@ -159,7 +159,7 @@ public class NormedR1CombinatorialToR1Continuous
 
 		R1Combinatorial r1Combinatorial = (R1Combinatorial) inputMetricVectorSpace();
 
-		R1Distribution r1UnivariateDistrbution = r1Combinatorial.borelSigmaMeasure();
+		R1Continuous r1UnivariateDistrbution = r1Combinatorial.borelSigmaMeasure();
 
 		R1ToR1 r1ToR1Function = function();
 

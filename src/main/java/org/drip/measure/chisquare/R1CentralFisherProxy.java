@@ -2,7 +2,7 @@
 package org.drip.measure.chisquare;
 
 import org.drip.function.definition.R1ToR1;
-import org.drip.measure.continuous.R1Distribution;
+import org.drip.measure.distribution.R1Continuous;
 import org.drip.measure.gaussian.NormalQuadrature;
 import org.drip.measure.gaussian.R1UnivariateNormal;
 
@@ -152,7 +152,7 @@ import org.drip.measure.gaussian.R1UnivariateNormal;
  */
 
 public class R1CentralFisherProxy
-	extends R1Distribution
+	extends R1Continuous
 {
 	private int _degreesOfFreedom = -1;
 	private R1UnivariateNormal _r1UnivariateNormal = null;

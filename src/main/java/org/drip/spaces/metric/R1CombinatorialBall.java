@@ -3,7 +3,7 @@ package org.drip.spaces.metric;
 
 import java.util.List;
 
-import org.drip.measure.continuous.R1Distribution;
+import org.drip.measure.distribution.R1Continuous;
 import org.drip.numerical.common.NumberUtil;
 
 /*
@@ -141,7 +141,7 @@ public class R1CombinatorialBall extends R1Combinatorial
 
 	public static final R1CombinatorialBall ClosedUnit (
 		final java.util.List<Double> lsElementSpace,
-		final org.drip.measure.continuous.R1Distribution distR1,
+		final org.drip.measure.distribution.R1Continuous distR1,
 		final int iPNorm)
 	{
 		try {
@@ -166,7 +166,7 @@ public class R1CombinatorialBall extends R1Combinatorial
 
 	public R1CombinatorialBall (
 		final List<Double> elementSpaceList,
-		final R1Distribution r1Distribution,
+		final R1Continuous r1Distribution,
 		final int pNorm,
 		final double normRadius)
 		throws Exception

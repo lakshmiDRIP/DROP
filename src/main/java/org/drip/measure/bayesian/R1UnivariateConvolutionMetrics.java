@@ -1,7 +1,7 @@
 
 package org.drip.measure.bayesian;
 
-import org.drip.measure.continuous.R1Distribution;
+import org.drip.measure.distribution.R1Continuous;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -116,11 +116,11 @@ import org.drip.measure.continuous.R1Distribution;
 
 public class R1UnivariateConvolutionMetrics
 {
-	private R1Distribution _jointDistribution = null;
-	private R1Distribution _priorDistribution = null;
-	private R1Distribution _posteriorDistribution = null;
-	private R1Distribution _conditionalDistribution = null;
-	private R1Distribution _unconditionalDistribution = null;
+	private R1Continuous _jointDistribution = null;
+	private R1Continuous _priorDistribution = null;
+	private R1Continuous _posteriorDistribution = null;
+	private R1Continuous _conditionalDistribution = null;
+	private R1Continuous _unconditionalDistribution = null;
 
 	/**
 	 * <i>R1UnivariateConvolutionMetrics</i> Constructor
@@ -135,11 +135,11 @@ public class R1UnivariateConvolutionMetrics
 	 */
 
 	public R1UnivariateConvolutionMetrics (
-		final R1Distribution priorDistribution,
-		final R1Distribution unconditionalDistribution,
-		final R1Distribution conditionalDistribution,
-		final R1Distribution jointDistribution,
-		final R1Distribution posteriorDistribution)
+		final R1Continuous priorDistribution,
+		final R1Continuous unconditionalDistribution,
+		final R1Continuous conditionalDistribution,
+		final R1Continuous jointDistribution,
+		final R1Continuous posteriorDistribution)
 		throws Exception
 	{
 		if (null == (_priorDistribution = priorDistribution) ||
@@ -158,7 +158,7 @@ public class R1UnivariateConvolutionMetrics
 	 * @return The R<sup>1</sup> Univariate Prior Distribution
 	 */
 
-	public R1Distribution priorDistribution()
+	public R1Continuous priorDistribution()
 	{
 		return _priorDistribution;
 	}
@@ -169,7 +169,7 @@ public class R1UnivariateConvolutionMetrics
 	 * @return The R<sup>1</sup> Univariate Unconditional Distribution
 	 */
 
-	public R1Distribution unconditionalDistribution()
+	public R1Continuous unconditionalDistribution()
 	{
 		return _unconditionalDistribution;
 	}
@@ -180,7 +180,7 @@ public class R1UnivariateConvolutionMetrics
 	 * @return The R<sup>1</sup> Univariate Conditional Distribution
 	 */
 
-	public R1Distribution conditionalDistribution()
+	public R1Continuous conditionalDistribution()
 	{
 		return _conditionalDistribution;
 	}
@@ -191,7 +191,7 @@ public class R1UnivariateConvolutionMetrics
 	 * @return The R<sup>1</sup> Univariate Joint Distribution
 	 */
 
-	public R1Distribution jointDistribution()
+	public R1Continuous jointDistribution()
 	{
 		return _jointDistribution;
 	}
@@ -202,7 +202,7 @@ public class R1UnivariateConvolutionMetrics
 	 * @return The R<sup>1</sup> Univariate Posterior Distribution
 	 */
 
-	public R1Distribution posteriorDistribution()
+	public R1Continuous posteriorDistribution()
 	{
 		return _posteriorDistribution;
 	}

@@ -1,7 +1,7 @@
 
 package org.drip.measure.gaussian;
 
-import org.drip.measure.continuous.R1Distribution;
+import org.drip.measure.distribution.R1Continuous;
 import org.drip.numerical.common.Array2D;
 import org.drip.numerical.common.NumberUtil;
 
@@ -132,7 +132,7 @@ import org.drip.numerical.common.NumberUtil;
  */
 
 public class R1UnivariateNormal
-	extends R1Distribution
+	extends R1Continuous
 {
 	private double _mean = Double.NaN;
 	private double _sigma = Double.NaN;

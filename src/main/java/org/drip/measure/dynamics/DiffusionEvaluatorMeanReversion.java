@@ -1,11 +1,22 @@
 
 package org.drip.measure.dynamics;
 
+import org.drip.measure.realization.JumpDiffusionVertex;
+import org.drip.numerical.common.NumberUtil;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2030 Lakshmi Krishnamurthy
+ * Copyright (C) 2029 Lakshmi Krishnamurthy
+ * Copyright (C) 2028 Lakshmi Krishnamurthy
+ * Copyright (C) 2027 Lakshmi Krishnamurthy
+ * Copyright (C) 2026 Lakshmi Krishnamurthy
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -80,66 +91,78 @@ package org.drip.measure.dynamics;
 
 /**
  * <i>DiffusionEvaluatorMeanReversion</i> evaluates the Drift/Volatility of the Diffusion Random Variable
- * Evolution according to R<sup>1</sup> Mean Reversion Process.
+ * 	Evolution according to R<sup>1</sup> Mean Reversion Process. It provides the following Functionality:
  *
- *	<br><br>
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md">Numerical Analysis Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/README.md">R<sup>d</sup> Continuous/Discrete Probability Measures</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/dynamics/README.md">Jump Diffusion Evolution Evaluator Variants</a></li>
+ * 		<li>Generate a Standard Instance of <i>DiffusionEvaluatorMeanReversion</i></li>
+ * 		<li>Retrieve the Mean Reversion Speed</li>
+ * 		<li>Retrieve the Mean Reversion Level</li>
+ * 		<li>Retrieve the Logarithmic Volatility Value</li>
  *  </ul>
+ *
+ *	<br>
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md">Numerical Analysis Library</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/README.md">R<sup>d</sup> Continuous/Discrete Probability Measures</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/dynamics/README.md">Jump Diffusion Evolution Evaluator Variants</a></td></tr>
+ *  </table>
+ *	<br>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class DiffusionEvaluatorMeanReversion extends org.drip.measure.dynamics.DiffusionEvaluator {
-	private double _dblVolatility = java.lang.Double.NaN;
-	private double _dblMeanReversionRate = java.lang.Double.NaN;
-	private double _dblMeanReversionLevel = java.lang.Double.NaN;
+public class DiffusionEvaluatorMeanReversion
+	extends DiffusionEvaluator
+{
+	private double _rate = Double.NaN;
+	private double _level = Double.NaN;
+	private double _volatility = Double.NaN;
 
 	/**
-	 * Generate a Standard Instance of DiffusionEvaluatorMeanReversion
+	 * Generate a Standard Instance of <i>DiffusionEvaluatorMeanReversion</i>
 	 * 
-	 * @param dblMeanReversionRate The Mean Reversion Rate
-	 * @param dblMeanReversionLevel The Mean Reversion Level
-	 * @param dblVolatility The Volatility
+	 * @param rate The Mean Reversion Rate
+	 * @param level The Mean Reversion Level
+	 * @param volatility The Volatility
 	 * 
-	 * @return The Standard Instance of DiffusionEvaluatorMeanReversion
+	 * @return The Standard Instance of <i>DiffusionEvaluatorMeanReversion</i>
 	 */
 
 	public static final DiffusionEvaluatorMeanReversion Standard (
-		final double dblMeanReversionRate,
-		final double dblMeanReversionLevel,
-		final double dblVolatility)
+		final double rate,
+		final double level,
+		final double volatility)
 	{
-		org.drip.measure.dynamics.LocalEvaluator leDrift = new org.drip.measure.dynamics.LocalEvaluator() {
-			@Override public double value (
-				final org.drip.measure.realization.JumpDiffusionVertex jdv)
-				throws java.lang.Exception
-			{
-				if (null == jdv)
-					throw new java.lang.Exception
-						("DiffusionEvaluatorMeanReversion::driftEvaluator::value => Invalid Inputs");
-
-				return -1. * dblMeanReversionRate * (dblMeanReversionLevel - jdv.value());
-			}
-		};
-
-		org.drip.measure.dynamics.LocalEvaluator leVolatility = new
-			org.drip.measure.dynamics.LocalEvaluator() {
-			@Override public double value (
-				final org.drip.measure.realization.JumpDiffusionVertex jdv)
-				throws java.lang.Exception
-			{
-				return dblVolatility;
-			}
-		};
-
 		try {
-			return new DiffusionEvaluatorMeanReversion (dblMeanReversionRate, dblMeanReversionLevel,
-				dblVolatility, leDrift, leVolatility);
-		} catch (java.lang.Exception e) {
+			return new DiffusionEvaluatorMeanReversion (
+				rate,
+				level,
+				volatility,
+				new LocalEvaluator() {
+					@Override public double value (
+						final JumpDiffusionVertex jumpDiffusionVertex)
+						throws Exception
+					{
+						if (null == jumpDiffusionVertex) {
+							throw new Exception (
+								"DiffusionEvaluatorMeanReversion::driftEvaluator::value => Invalid Inputs"
+							);
+						}
+
+						return -1. * rate * (level - jumpDiffusionVertex.value());
+					}
+				},
+				new LocalEvaluator() {
+					@Override public double value (
+						final JumpDiffusionVertex jumpDiffusionVertex)
+						throws Exception
+					{
+						return volatility;
+					}
+				}
+			);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -147,19 +170,21 @@ public class DiffusionEvaluatorMeanReversion extends org.drip.measure.dynamics.D
 	}
 
 	private DiffusionEvaluatorMeanReversion (
-		final double dblMeanReversionRate,
-		final double dblMeanReversionLevel,
-		final double dblVolatility,
-		final org.drip.measure.dynamics.LocalEvaluator leDrift,
-		final org.drip.measure.dynamics.LocalEvaluator leVolatility)
-		throws java.lang.Exception
+		final double rate,
+		final double level,
+		final double volatility,
+		final LocalEvaluator localDriftEvaluator,
+		final LocalEvaluator locaVolatilityEvaluator)
+		throws Exception
 	{
-		super (leDrift, leVolatility);
+		super (localDriftEvaluator, locaVolatilityEvaluator);
 
-		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblMeanReversionRate = dblMeanReversionRate) ||
-			!org.drip.numerical.common.NumberUtil.IsValid (_dblMeanReversionLevel = dblMeanReversionLevel) ||
-				!org.drip.numerical.common.NumberUtil.IsValid (_dblVolatility = dblVolatility))
-			throw new java.lang.Exception ("DiffusionEvaluatorMeanReversion Constructor => Invalid Inputs");
+		if (!NumberUtil.IsValid (_rate = rate) ||
+			!NumberUtil.IsValid (_level = level) ||
+			!NumberUtil.IsValid (_volatility = volatility))
+		{
+			throw new Exception ("DiffusionEvaluatorMeanReversion Constructor => Invalid Inputs");
+		}
 	}
 
 	/**
@@ -168,9 +193,9 @@ public class DiffusionEvaluatorMeanReversion extends org.drip.measure.dynamics.D
 	 * @return The Mean Reversion Speed
 	 */
 
-	public double meanReversionRate()
+	public double rate()
 	{
-		return _dblMeanReversionRate;
+		return _rate;
 	}
 
 	/**
@@ -179,9 +204,9 @@ public class DiffusionEvaluatorMeanReversion extends org.drip.measure.dynamics.D
 	 * @return The Mean Reversion Level
 	 */
 
-	public double meanReversionLevel()
+	public double level()
 	{
-		return _dblMeanReversionLevel;
+		return _level;
 	}
 
 	/**
@@ -190,8 +215,8 @@ public class DiffusionEvaluatorMeanReversion extends org.drip.measure.dynamics.D
 	 * @return The Logarithmic Volatility Value
 	 */
 
-	public double volatilityValue()
+	public double volatility()
 	{
-		return _dblVolatility;
+		return _volatility;
 	}
 }

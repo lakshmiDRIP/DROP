@@ -150,10 +150,10 @@ public class NormedR1ToL1R1Finite extends NormedR1ToNormedR1Finite
 		if (0 == iNumFunction) return null;
 
 		try {
-			org.drip.spaces.metric.R1Continuous r1ContinuousInput = new org.drip.spaces.metric.R1Continuous
+			org.drip.spaces.metric.R1Field r1ContinuousInput = new org.drip.spaces.metric.R1Field
 				(-0.5 * dblPredictorSupport, 0.5 * dblPredictorSupport, null, 1);
 
-			org.drip.spaces.metric.R1Continuous r1ContinuousOutput = new org.drip.spaces.metric.R1Continuous
+			org.drip.spaces.metric.R1Field r1ContinuousOutput = new org.drip.spaces.metric.R1Field
 				(-0.5 * dblResponseBound, 0.5 * dblResponseBound, null, 1);
 
 			for (int i = 0; i < iNumFunction; ++i)

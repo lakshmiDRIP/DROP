@@ -2,7 +2,7 @@
 package org.drip.sample.govviemc;
 
 import org.drip.analytics.date.*;
-import org.drip.measure.discontinuous.RandomSequenceGenerator;
+import org.drip.measure.crng.RandomSequenceGenerator;
 import org.drip.service.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 import org.drip.service.template.LatentMarketStateBuilder;

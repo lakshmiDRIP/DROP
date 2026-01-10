@@ -1,7 +1,7 @@
 
 package org.drip.measure.bayesian;
 
-import org.drip.measure.continuous.MetaRdDistribution;
+import org.drip.measure.distribution.MetaRdContinuous;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -124,8 +124,8 @@ public interface R1MultivariateConvolutionEngine
 	 */
 
 	public abstract R1MultivariateConvolutionMetrics process (
-		final MetaRdDistribution priorDistribution,
-		final MetaRdDistribution unconditionalDistribution,
-		final MetaRdDistribution conditionalDistribution
+		final MetaRdContinuous priorDistribution,
+		final MetaRdContinuous unconditionalDistribution,
+		final MetaRdContinuous conditionalDistribution
 	);
 }

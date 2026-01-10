@@ -1,7 +1,7 @@
 
 package org.drip.sample.numeraire;
 
-import org.drip.measure.discontinuous.RandomSequenceGenerator;
+import org.drip.measure.crng.RandomSequenceGenerator;
 import org.drip.measure.dynamics.*;
 import org.drip.measure.process.*;
 import org.drip.measure.realization.*;

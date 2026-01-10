@@ -1,7 +1,7 @@
 
 package org.drip.sample.pareto;
 
-import org.drip.measure.continuous.R1ParetoDistribution;
+import org.drip.measure.distribution.R1ContinuousPareto;
 import org.drip.service.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 
@@ -175,7 +175,7 @@ public class R1PDFAndCDF
 					lambdaArray[j], 1, 2, 1., false
 				) + "] =>";
 
-				R1ParetoDistribution paretoDistribution = new R1ParetoDistribution (lambdaArray[j], kArray[i]);
+				R1ContinuousPareto paretoDistribution = new R1ContinuousPareto (lambdaArray[j], kArray[i]);
 
 				for (int k = 0; k < horizonArray.length; ++k)
 				{
@@ -232,7 +232,7 @@ public class R1PDFAndCDF
 					lambdaArray[j], 1, 2, 1., false
 				) + "] =>";
 
-				R1ParetoDistribution paretoDistribution = new R1ParetoDistribution (lambdaArray[j], kArray[i]);
+				R1ContinuousPareto paretoDistribution = new R1ContinuousPareto (lambdaArray[j], kArray[i]);
 
 				for (int k = 0; k < horizonArray.length; ++k)
 				{

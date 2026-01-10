@@ -176,7 +176,7 @@ public class RdWienerDriver
 	{
 		try
 		{
-			double[] singleCorrelatedSuite = new org.drip.measure.discontinuous.CorrelatedFactorsPathVertexRealization (
+			double[] singleCorrelatedSuite = new org.drip.measure.crng.CorrelatedFactorsPathVertexRealization (
 				new org.drip.measure.crng.RandomNumberGenerator(),
 				_correlation.correlationMatrix(),
 				1,

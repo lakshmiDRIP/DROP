@@ -4,7 +4,7 @@ package org.drip.sample.netting;
 import org.drip.analytics.date.*;
 import org.drip.exposure.evolver.LatentStateVertexContainer;
 import org.drip.exposure.universe.*;
-import org.drip.measure.discontinuous.RandomSequenceGenerator;
+import org.drip.measure.crng.RandomSequenceGenerator;
 import org.drip.measure.dynamics.DiffusionEvaluatorLogarithmic;
 import org.drip.measure.process.DiffusionEvolver;
 import org.drip.measure.realization.*;

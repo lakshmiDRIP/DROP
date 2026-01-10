@@ -4,7 +4,7 @@ package org.drip.spaces.metric;
 import java.util.List;
 
 import org.drip.function.definition.R1ToR1;
-import org.drip.measure.continuous.R1Distribution;
+import org.drip.measure.distribution.R1Continuous;
 import org.drip.numerical.common.NumberUtil;
 import org.drip.spaces.tensor.R1CombinatorialVector;
 
@@ -130,7 +130,7 @@ import org.drip.spaces.tensor.R1CombinatorialVector;
 public class R1Combinatorial extends R1CombinatorialVector implements R1Normed
 {
 	private int _pNorm = -1;
-	private R1Distribution _r1Distribution = null;
+	private R1Continuous _r1Distribution = null;
 
 	/**
 	 * Construct the Standard l<sub>p</sub> R<sub>1</sub> Combinatorial Space Instance
@@ -144,7 +144,7 @@ public class R1Combinatorial extends R1CombinatorialVector implements R1Normed
 
 	public static final R1Combinatorial Standard (
 		final java.util.List<java.lang.Double> lsElementSpace,
-		final org.drip.measure.continuous.R1Distribution distR1,
+		final org.drip.measure.distribution.R1Continuous distR1,
 		final int iPNorm)
 	{
 		try {
@@ -167,7 +167,7 @@ public class R1Combinatorial extends R1CombinatorialVector implements R1Normed
 
 	public static final R1Combinatorial Supremum (
 		final java.util.List<java.lang.Double> lsElementSpace,
-		final org.drip.measure.continuous.R1Distribution distR1)
+		final org.drip.measure.distribution.R1Continuous distR1)
 	{
 		try {
 			return new R1Combinatorial (lsElementSpace, distR1, java.lang.Integer.MAX_VALUE);
@@ -190,7 +190,7 @@ public class R1Combinatorial extends R1CombinatorialVector implements R1Normed
 
 	public R1Combinatorial (
 		final List<Double> elementSpaceList,
-		final R1Distribution r1Distribution,
+		final R1Continuous r1Distribution,
 		final int pNorm)
 		throws Exception
 	{
@@ -208,7 +208,7 @@ public class R1Combinatorial extends R1CombinatorialVector implements R1Normed
 		return _pNorm;
 	}
 
-	@Override public R1Distribution borelSigmaMeasure()
+	@Override public R1Continuous borelSigmaMeasure()
 	{
 		return _r1Distribution;
 	}

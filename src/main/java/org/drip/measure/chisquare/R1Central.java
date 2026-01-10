@@ -3,7 +3,7 @@ package org.drip.measure.chisquare;
 
 import org.drip.function.definition.R1ToR1;
 import org.drip.function.definition.R2ToR1;
-import org.drip.measure.continuous.R1Distribution;
+import org.drip.measure.distribution.R1Continuous;
 import org.drip.measure.gamma.R1ShapeScaleDistribution;
 import org.drip.measure.gamma.ShapeScaleParameters;
 import org.drip.measure.gaussian.NormalQuadrature;
@@ -176,7 +176,7 @@ import org.drip.numerical.common.NumberUtil;
  */
 
 public class R1Central
-	extends R1Distribution
+	extends R1Continuous
 {
 	private R1ToR1 _gammaEstimator = null;
 	private double _degreesOfFreedom = -1.;

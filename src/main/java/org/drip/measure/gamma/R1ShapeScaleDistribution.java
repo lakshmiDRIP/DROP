@@ -3,7 +3,7 @@ package org.drip.measure.gamma;
 
 import org.drip.function.definition.R1ToR1;
 import org.drip.function.definition.R2ToR1;
-import org.drip.measure.continuous.R1Distribution;
+import org.drip.measure.distribution.R1Continuous;
 import org.drip.measure.gaussian.NormalQuadrature;
 import org.drip.measure.gaussian.R1UnivariateNormal;
 import org.drip.numerical.common.NumberUtil;
@@ -167,7 +167,7 @@ import org.drip.numerical.common.NumberUtil;
  */
 
 public class R1ShapeScaleDistribution
-	extends R1Distribution
+	extends R1Continuous
 {
 	private R1ToR1 _gammaEstimator = null;
 	private double _cdfScaler = Double.NaN;

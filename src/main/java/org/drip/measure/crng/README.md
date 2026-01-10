@@ -28,6 +28,9 @@ DROP Measure CRNG implements the Continuous Random Number Stream Generator.
  * [***RandomNumberGenerator***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/crng/RandomNumberGenerator.java)
  <i>RandomNumberGenerator</i> provides the Functionality to generate Random Numbers. Default simply forwards to the Native JRE/JDK Implementation.
 
+ * [***RandomSequenceGenerator***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/crng/RandomSequenceGenerator.java)
+ <i>RandomSequenceGenerator</i> generates the specified Univariate Sequence of the Given Distribution Type.
+
  * [***RdRandomSequenceGenerator***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/crng/RdRandomSequenceGenerator.java)
  <i>RdRandomSequenceGenerator</i> generates 1D and 2D random arrays.
 
@@ -43,9 +46,19 @@ DROP Measure CRNG implements the Continuous Random Number Stream Generator.
 
  * Axler, S. J. (1997): <i>Linear Algebra Done Right 2<sup>nd</sup> Edition</i> <b>Springer</b> New York NY
 
+ * Backstrom, T., and J. Fischer (2018): Fast Randomization for Distributed Low Bit-rate Coding of Speech and Audio <i>IEEE/ACM Transactions on Audio, Speech, and Language Processing</i> <b>26 (1)</b> 19-30
+
  * Bernstein, D. S. (2009): <i>Matrix Mathematics: Theory, Facts, and Formulas 2<sup>nd</sup> Edition</i> <b>Princeton University Press</b> Princeton NJ
 
+ * Chi-Squared Distribution (2019): Chi-Squared Function https://en.wikipedia.org/wiki/Chi-squared_distribution
+
  * Herstein, I. N. (1975): <i>Topics in Algebra 2<sup>nd</sup> Edition</i> <b>Wiley</b> New York NY
+
+ * Johnson, N. L., S. Klotz, and N. Balakrishnan (1994): <i>Continuous Univariate Distributions <b>1</b> 2<sup>nd</sup> Edition</i> <b>John Wiley and Sons</b>
+
+ * Lancaster, H, O. (1969): <i>The Chi-Squared Distribution</i> <b>Wiley</b> New York NY
+
+ * Pillai, N. S. (1026): An Unexpected Encounter with Cauchy and Levy <i>Annals of Statistics</i> <b>44 (5)</b> 2089-2097
 
  * Prasolov, V. V. (1994): <i>Topics in Algebra</i> <b>American Mathematical Society</b> Providence RI
 

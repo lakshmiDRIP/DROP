@@ -161,7 +161,7 @@ public class IntegralOperatorEigenComponent {
 
 			org.drip.spaces.metric.R1Normed r1ContinuousOutput = efRdToR1.outputMetricVectorSpace();
 
-			org.drip.spaces.metric.R1Continuous r1Continuous = org.drip.spaces.metric.R1Continuous.Standard
+			org.drip.spaces.metric.R1Field r1Continuous = org.drip.spaces.metric.R1Field.Standard
 				(r1ContinuousOutput.leftEdge(), r1ContinuousOutput.rightEdge(),
 					r1ContinuousOutput.borelSigmaMeasure(), 2);
 
@@ -169,7 +169,7 @@ public class IntegralOperatorEigenComponent {
 				org.drip.spaces.rxtor1.NormedRdCombinatorialToR1Continuous
 					((org.drip.spaces.metric.RdCombinatorialBanach) rdContinuousInput, r1Continuous,
 						rkhsFeatureMapRdToR1) : new org.drip.spaces.rxtor1.NormedRdContinuousToR1Continuous
-							((org.drip.spaces.metric.RdContinuousBanach) rdContinuousInput, r1Continuous,
+							((org.drip.spaces.metric.RdBanach) rdContinuousInput, r1Continuous,
 								rkhsFeatureMapRdToR1);
 		}
 	}

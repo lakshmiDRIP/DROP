@@ -1,7 +1,7 @@
 
 package org.drip.spaces.metric;
 
-import org.drip.measure.continuous.RdDistribution;
+import org.drip.measure.distribution.RdContinuous;
 import org.drip.numerical.common.NumberUtil;
 import org.drip.spaces.tensor.R1CombinatorialVector;
 
@@ -139,7 +139,7 @@ public class RdCombinatorialBall extends RdCombinatorialBanach
 
 	public static final RdCombinatorialBall ClosedUnit (
 		final org.drip.spaces.tensor.R1CombinatorialVector[] aR1CV,
-		final org.drip.measure.continuous.RdDistribution distRd,
+		final org.drip.measure.distribution.RdContinuous distRd,
 		final int iPNorm)
 	{
 		try {
@@ -164,7 +164,7 @@ public class RdCombinatorialBall extends RdCombinatorialBanach
 
 	public RdCombinatorialBall (
 		final R1CombinatorialVector[] r1CombinatorialVectorArray,
-		final RdDistribution rdContinuousBorelMeasure,
+		final RdContinuous rdContinuousBorelMeasure,
 		final int pNorm,
 		final double normRadius)
 		throws Exception

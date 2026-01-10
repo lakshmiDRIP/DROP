@@ -10,7 +10,7 @@ import org.drip.exposure.universe.LatentStateWeiner;
 import org.drip.exposure.universe.MarketPath;
 import org.drip.exposure.universe.MarketVertex;
 import org.drip.exposure.universe.MarketVertexGenerator;
-import org.drip.measure.discontinuous.CorrelatedFactorsPathVertexRealization;
+import org.drip.measure.crng.CorrelatedFactorsPathVertexRealization;
 import org.drip.numerical.linearalgebra.R1MatrixUtil;
 import org.drip.state.identifier.LatentStateLabel;
 import org.drip.xva.gross.ExposureAdjustmentAggregator;

@@ -4,7 +4,7 @@ package org.drip.measure.bayesian;
 import java.util.Map;
 
 import org.drip.analytics.support.CaseInsensitiveHashMap;
-import org.drip.measure.continuous.MetaRdDistribution;
+import org.drip.measure.distribution.MetaRdContinuous;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -119,7 +119,7 @@ import org.drip.measure.continuous.MetaRdDistribution;
 
 public class ScopingContainer
 {
-	private MetaRdDistribution _projectionDistribution = null;
+	private MetaRdContinuous _projectionDistribution = null;
 
 	private Map<String, ViewLoading> _viewLoadingMap = new CaseInsensitiveHashMap<ViewLoading>();
 
@@ -132,7 +132,7 @@ public class ScopingContainer
 	 */
 
 	public ScopingContainer (
-		final MetaRdDistribution projectionDistribution)
+		final MetaRdContinuous projectionDistribution)
 		throws Exception
 	{
 		if (null == (_projectionDistribution = projectionDistribution)) {
@@ -146,7 +146,7 @@ public class ScopingContainer
 	 * @return The Projection Distribution
 	 */
 
-	public MetaRdDistribution projectionDistribution()
+	public MetaRdContinuous projectionDistribution()
 	{
 		return _projectionDistribution;
 	}

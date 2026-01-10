@@ -9,8 +9,8 @@ import org.drip.analytics.date.*;
 import org.drip.analytics.support.VertexDateBuilder;
 import org.drip.exposure.evolver.*;
 import org.drip.exposure.universe.*;
+import org.drip.measure.crng.CorrelatedFactorsPathVertexRealization;
 import org.drip.measure.crng.RandomNumberGenerator;
-import org.drip.measure.discontinuous.CorrelatedFactorsPathVertexRealization;
 import org.drip.measure.dynamics.*;
 import org.drip.measure.process.*;
 import org.drip.measure.realization.*;
@@ -689,7 +689,7 @@ public class XVAReplicationPortfolio {
 				dblDerivativeXVAValueDeltaFinish,
 				dblDerivativeXVAValueGammaFinish,
 				agvStart.derivativeFairValue() * Math.exp (
-					-1. * dblTimeWidth * tc.csa().evolver().evaluator().drift().value (
+					-1. * dblTimeWidth * tc.csa().evolver().evaluator().localDriftEvaluator().value (
 						new JumpDiffusionVertex (
 							dblTime,
 							dblCollateralSchemeNumeraire,

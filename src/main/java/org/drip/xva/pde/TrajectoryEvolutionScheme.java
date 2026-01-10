@@ -411,7 +411,7 @@ public class TrajectoryEvolutionScheme
 						thetaPositionValueUp + thetaPositionValueDown - 2. * theta
 					) * timeIncrement / (positionValueBump * positionValueBump),
 					initialPositionGreekVertex.derivativeFairValue() * Math.exp (
-						-1. * timeIncrement * csaTradeable.evolver().evaluator().drift().value (
+						-1. * timeIncrement * csaTradeable.evolver().evaluator().localDriftEvaluator().value (
 							new JumpDiffusionVertex (
 								initialTime - 0.5 * timeIncrement,
 								marketEdge.start().csaReplicator(),

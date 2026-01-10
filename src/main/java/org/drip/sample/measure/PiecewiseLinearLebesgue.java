@@ -2,7 +2,7 @@
 package org.drip.sample.measure;
 
 import org.drip.analytics.date.*;
-import org.drip.measure.lebesgue.R1PiecewiseLinear;
+import org.drip.measure.distribution.R1ContinuousUniformPiecewiseLinear;
 import org.drip.service.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 
@@ -110,7 +110,7 @@ public class PiecewiseLinearLebesgue {
 		final double[] adblProb)
 		throws Exception
 	{
-		R1PiecewiseLinear rpll = R1PiecewiseLinear.Standard (
+		R1ContinuousUniformPiecewiseLinear rpll = R1ContinuousUniformPiecewiseLinear.Standard (
 			dblXMin,
 			dblXMax,
 			adblX,
@@ -135,7 +135,7 @@ public class PiecewiseLinearLebesgue {
 				FormatUtil.FormatDouble (rpll.invCumulative (adblQuintile[i]), 3, 3, 1.) + " =>" +
 				FormatUtil.FormatDouble (adblQuintile[i], 1, 2, 1.) + "   | ";
 
-		double[] adblDensity = rpll.piecewiseDensities();
+		double[] adblDensity = rpll.piecewiseDensityArray();
 
 		for (int i = 0; i < adblDensity.length; ++i)
 			strDump += FormatUtil.FormatDouble (adblDensity[i], 1, 9, 1.) + ",";
@@ -151,7 +151,7 @@ public class PiecewiseLinearLebesgue {
 		final double[] adblProb)
 		throws Exception
 	{
-		R1PiecewiseLinear rpll = R1PiecewiseLinear.Standard (
+		R1ContinuousUniformPiecewiseLinear rpll = R1ContinuousUniformPiecewiseLinear.Standard (
 			dblXMin,
 			dblXMax,
 			adblX,
@@ -171,7 +171,7 @@ public class PiecewiseLinearLebesgue {
 				new JulianDate ((int) rpll.invCumulative (adblQuintile[i])) + " =>" +
 				FormatUtil.FormatDouble (adblQuintile[i], 1, 2, 1.) + " | ";
 
-		double[] adblDensity = rpll.piecewiseDensities();
+		double[] adblDensity = rpll.piecewiseDensityArray();
 
 		for (int i = 0; i < adblDensity.length; ++i)
 			strDump += FormatUtil.FormatDouble (adblDensity[i], 1, 9, 1.) + ",";

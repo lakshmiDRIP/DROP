@@ -1,7 +1,7 @@
 
 package org.drip.measure.exponential;
 
-import org.drip.measure.continuous.R1Distribution;
+import org.drip.measure.distribution.R1Continuous;
 import org.drip.numerical.common.Array2D;
 import org.drip.numerical.common.NumberUtil;
 
@@ -121,7 +121,7 @@ import org.drip.numerical.common.NumberUtil;
  */
 
 public class PoissonDistribution
-	extends R1Distribution
+	extends R1Continuous
 {
 	private double _lambda = Double.NaN;
 	private double _exponentialLambda = Double.NaN;
