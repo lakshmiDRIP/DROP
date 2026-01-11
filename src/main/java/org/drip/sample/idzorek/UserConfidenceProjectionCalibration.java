@@ -3,8 +3,8 @@ package org.drip.sample.idzorek;
 
 import org.drip.function.definition.R1ToR1;
 import org.drip.measure.bayesian.ViewLoading;
-import org.drip.measure.distribution.MetaRd;
 import org.drip.measure.gaussian.R1MultivariateNormal;
+import org.drip.measure.state.LabelledRd;
 import org.drip.portfolioconstruction.allocator.ForwardReverseHoldingsAllocation;
 import org.drip.portfolioconstruction.asset.Portfolio;
 import org.drip.portfolioconstruction.bayesian.*;
@@ -262,7 +262,7 @@ public class UserConfidenceProjectionCalibration
 				),
 				new ProjectionSpecification (
 					R1MultivariateNormal.Standard (
-						new MetaRd (
+						LabelledRd.FromArray (
 							new String[]
 							{
 								"PROJECTION #1",

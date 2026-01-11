@@ -1,11 +1,22 @@
 
 package org.drip.measure.dynamics;
 
+import org.drip.measure.realization.JumpDiffusionVertex;
+import org.drip.numerical.common.NumberUtil;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2030 Lakshmi Krishnamurthy
+ * Copyright (C) 2029 Lakshmi Krishnamurthy
+ * Copyright (C) 2028 Lakshmi Krishnamurthy
+ * Copyright (C) 2027 Lakshmi Krishnamurthy
+ * Copyright (C) 2026 Lakshmi Krishnamurthy
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -80,67 +91,85 @@ package org.drip.measure.dynamics;
 
 /**
  * <i>DiffusionEvaluatorOrnsteinUhlenbeck</i> evaluates the Drift/Volatility of the Diffusion Random Variable
- * Evolution according to R<sup>1</sup> Ornstein Uhlenbeck Process.
+ * 	Evolution according to R<sup>1</sup> Ornstein Uhlenbeck Process. It provides the following Functionality:
  *
- *	<br><br>
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md">Numerical Analysis Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/README.md">R<sup>d</sup> Continuous/Discrete Probability Measures</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/dynamics/README.md">Jump Diffusion Evolution Evaluator Variants</a></li>
+ * 		<li>Construct a Standard Instance of <i>DiffusionEvaluatorOrnsteinUhlenbeck</i></li>
+ * 		<li>Construct a Zero-Mean Instance of <i>DiffusionEvaluatorOrnsteinUhlenbeck</i></li>
+ * 		<li>Retrieve the Mean Reversion Level</li>
+ * 		<li>Retrieve the Burstiness Parameter</li>
+ * 		<li>Retrieve the Relaxation Time</li>
+ * 		<li>Retrieve the Reference Relaxation Time Scale</li>
+ * 		<li>Retrieve the Reference Burstiness Scale</li>
+ * 		<li>Retrieve the Reference Mean Reversion Level Scale</li>
  *  </ul>
+ *
+ *	<br>
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md">Numerical Analysis Library</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/README.md">R<sup>d</sup> Continuous/Discrete Probability Measures</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/dynamics/README.md">Jump Diffusion Evolution Evaluator Variants</a></td></tr>
+ *  </table>
+ *	<br>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class DiffusionEvaluatorOrnsteinUhlenbeck extends org.drip.measure.dynamics.DiffusionEvaluator
-	implements org.drip.measure.process.OrnsteinUhlenbeck {
-	private double _dblBurstiness = java.lang.Double.NaN;
-	private double _dblRelaxationTime = java.lang.Double.NaN;
-	private double _dblMeanReversionLevel = java.lang.Double.NaN;
+public class DiffusionEvaluatorOrnsteinUhlenbeck
+	extends DiffusionEvaluator
+	implements OrnsteinUhlenbeck
+{
+	private double _burstiness = Double.NaN;
+	private double _relaxationTime = Double.NaN;
+	private double _meanReversionLevel = Double.NaN;
 
 	/**
-	 * Construct a Standard Instance of DiffusionEvaluatorOrnsteinUhlenbeck
+	 * Construct a Standard Instance of <i>DiffusionEvaluatorOrnsteinUhlenbeck</i>
 	 * 
-	 * @param dblMeanReversionLevel The Mean Reversion Level
-	 * @param dblBurstiness The Burstiness Parameter
-	 * @param dblRelaxationTime The Relaxation Time
+	 * @param meanReversionLevel The Mean Reversion Level
+	 * @param burstiness The Burstiness Parameter
+	 * @param relaxationTime The Relaxation Time
 	 * 
-	 * @return The Standard Instance of DiffusionEvaluatorOrnsteinUhlenbeck
+	 * @return The Standard Instance of <i>DiffusionEvaluatorOrnsteinUhlenbeck</i>
 	 */
 
 	public static final DiffusionEvaluatorOrnsteinUhlenbeck Standard (
-		final double dblMeanReversionLevel,
-		final double dblBurstiness,
-		final double dblRelaxationTime)
+		final double meanReversionLevel,
+		final double burstiness,
+		final double relaxationTime)
 	{
-		org.drip.measure.dynamics.LocalEvaluator leDrift = new org.drip.measure.dynamics.LocalEvaluator() {
-			@Override public double value (
-				final org.drip.measure.realization.JumpDiffusionVertex jdv)
-				throws java.lang.Exception
-			{
-				if (null == jdv)
-					throw new java.lang.Exception
-						("DiffusionEvaluatorOrnsteinUhlenbeck::DriftLDEV::value => Invalid Inputs");
-
-				return -1. * jdv.value() / dblRelaxationTime;
-			}
-		};
-
-		org.drip.measure.dynamics.LocalEvaluator leVolatility = new
-			org.drip.measure.dynamics.LocalEvaluator() {
-			@Override public double value (
-				final org.drip.measure.realization.JumpDiffusionVertex jdv)
-				throws java.lang.Exception
-			{
-				return dblBurstiness * java.lang.Math.sqrt (1. / dblRelaxationTime);
-			}
-		};
-
 		try {
-			return new DiffusionEvaluatorOrnsteinUhlenbeck (dblMeanReversionLevel, dblBurstiness,
-				dblRelaxationTime, leDrift, leVolatility);
-		} catch (java.lang.Exception e) {
+			return new DiffusionEvaluatorOrnsteinUhlenbeck (
+				meanReversionLevel,
+				burstiness,
+				relaxationTime,
+				new LocalEvaluator()
+				{
+					@Override public double value (
+						final JumpDiffusionVertex jumpDiffusionVertex)
+						throws Exception
+					{
+						if (null == jumpDiffusionVertex) {
+							throw new Exception (
+								"DiffusionEvaluatorOrnsteinUhlenbeck::DriftLDEV::value => Invalid Inputs"
+							);
+						}
+
+						return -1. * jumpDiffusionVertex.value() / relaxationTime;
+					}
+				},
+				new LocalEvaluator()
+				{
+					@Override public double value (
+						final JumpDiffusionVertex jumpDiffusionVertex)
+						throws Exception
+					{
+						return burstiness * Math.sqrt (1. / relaxationTime);
+					}
+				}
+			);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -148,37 +177,37 @@ public class DiffusionEvaluatorOrnsteinUhlenbeck extends org.drip.measure.dynami
 	}
 
 	/**
-	 * Construct a Zero-Mean Instance of DiffusionEvaluatorOrnsteinUhlenbeck
+	 * Construct a Zero-Mean Instance of <i>DiffusionEvaluatorOrnsteinUhlenbeck</i>
 	 * 
-	 * @param dblBurstiness The Burstiness Parameter
-	 * @param dblRelaxationTime The Relaxation Time
+	 * @param burstiness The Burstiness Parameter
+	 * @param relaxationTime The Relaxation Time
 	 * 
-	 * @return The Zero-Mean Instance of DiffusionEvaluatorOrnsteinUhlenbeck
+	 * @return The Zero-Mean Instance of <i>DiffusionEvaluatorOrnsteinUhlenbeck</i>
 	 */
 
 	public static final DiffusionEvaluatorOrnsteinUhlenbeck ZeroMean (
-		final double dblBurstiness,
-		final double dblRelaxationTime)
+		final double burstiness,
+		final double relaxationTime)
 	{
-		return Standard (0., dblBurstiness, dblRelaxationTime);
+		return Standard (0., burstiness, relaxationTime);
 	}
 
 	private DiffusionEvaluatorOrnsteinUhlenbeck (
-		final double dblMeanReversionLevel,
-		final double dblBurstiness,
-		final double dblRelaxationTime,
-		final org.drip.measure.dynamics.LocalEvaluator leDrift,
-		final org.drip.measure.dynamics.LocalEvaluator leVolatility)
-		throws java.lang.Exception
+		final double meanReversionLevel,
+		final double burstiness,
+		final double relaxationTime,
+		final LocalEvaluator localDriftEvaluator,
+		final LocalEvaluator localVolatilityEvaluator)
+		throws Exception
 	{
-		super (leDrift, leVolatility);
+		super (localDriftEvaluator, localVolatilityEvaluator);
 
-		if (!org.drip.numerical.common.NumberUtil.IsValid (_dblMeanReversionLevel = dblMeanReversionLevel) ||
-			!org.drip.numerical.common.NumberUtil.IsValid (_dblBurstiness = dblBurstiness) || 0. >=
-				_dblBurstiness || !org.drip.numerical.common.NumberUtil.IsValid (_dblRelaxationTime =
-					dblRelaxationTime) || 0. >= _dblRelaxationTime)
-			throw new java.lang.Exception
-				("DiffusionEvaluatorOrnsteinUhlenbeck Constructor => Invalid Inputs");
+		if (!NumberUtil.IsValid (_meanReversionLevel = meanReversionLevel) ||
+			!NumberUtil.IsValid (_burstiness = burstiness) || 0. >= _burstiness ||
+			!NumberUtil.IsValid (_relaxationTime = relaxationTime) || 0. >= _relaxationTime)
+		{
+			throw new Exception ("DiffusionEvaluatorOrnsteinUhlenbeck Constructor => Invalid Inputs");
+		}
 	}
 
 	/**
@@ -189,7 +218,7 @@ public class DiffusionEvaluatorOrnsteinUhlenbeck extends org.drip.measure.dynami
 
 	public double meanReversionLevel()
 	{
-		return _dblMeanReversionLevel;
+		return _meanReversionLevel;
 	}
 
 	/**
@@ -200,7 +229,7 @@ public class DiffusionEvaluatorOrnsteinUhlenbeck extends org.drip.measure.dynami
 
 	public double burstiness()
 	{
-		return _dblBurstiness;
+		return _burstiness;
 	}
 
 	/**
@@ -211,18 +240,36 @@ public class DiffusionEvaluatorOrnsteinUhlenbeck extends org.drip.measure.dynami
 
 	public double relaxationTime()
 	{
-		return _dblRelaxationTime;
+		return _relaxationTime;
 	}
+
+	/**
+	 * Retrieve the Reference Relaxation Time Scale
+	 * 
+	 * @return The Reference Relaxation Time Scale
+	 */
 
 	@Override public double referenceRelaxationTime()
 	{
 		return relaxationTime();
 	}
 
+	/**
+	 * Retrieve the Reference Burstiness Scale
+	 * 
+	 * @return The Reference Burstiness Scale
+	 */
+
 	@Override public double referenceBurstiness()
 	{
 		return burstiness();
 	}
+
+	/**
+	 * Retrieve the Reference Mean Reversion Level Scale
+	 * 
+	 * @return The Reference Mean Reversion Level Scale
+	 */
 
 	@Override public double referenceMeanReversionLevel()
 	{

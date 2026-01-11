@@ -122,7 +122,7 @@ package org.drip.exposure.evolver;
 
 public class ScalingNumeraire
 {
-	private org.drip.measure.process.DiffusionEvolver _evolver = null;
+	private org.drip.measure.realization.DiffusionEvolver _evolver = null;
 
 	/**
 	 * ScalingNumeraire Constructor
@@ -133,7 +133,7 @@ public class ScalingNumeraire
 	 */
 
 	public ScalingNumeraire (
-		final org.drip.measure.process.DiffusionEvolver evolver)
+		final org.drip.measure.realization.DiffusionEvolver evolver)
 		throws java.lang.Exception
 	{
 		if (null == (_evolver = evolver))
@@ -148,7 +148,7 @@ public class ScalingNumeraire
 	 * @return The Scaling Numeraire Evolver
 	 */
 
-	public org.drip.measure.process.DiffusionEvolver evolver()
+	public org.drip.measure.realization.DiffusionEvolver evolver()
 	{
 		return _evolver;
 	}

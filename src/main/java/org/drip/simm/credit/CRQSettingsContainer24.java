@@ -8,7 +8,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 
-import org.drip.measure.identifier.LabelledVertexCorrelation;
+import org.drip.measure.state.LabelledRdCorrelation;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -140,7 +140,7 @@ import org.drip.measure.identifier.LabelledVertexCorrelation;
 
 public class CRQSettingsContainer24
 {
-	private static LabelledVertexCorrelation s_CrossBucketCorrelation = null;
+	private static LabelledRdCorrelation s_CrossBucketCorrelation = null;
 
 	private static final Map<Integer, CRBucket> s_BucketMap = new TreeMap<Integer, CRBucket>();
 
@@ -173,7 +173,7 @@ public class CRQSettingsContainer24
 		bucketList.add ("12");
 
 		try {
-			s_CrossBucketCorrelation = new LabelledVertexCorrelation (
+			s_CrossBucketCorrelation = new LabelledRdCorrelation (
 				bucketList,
 				new double[][] {
 					{1.00, 0.35, 0.37, 0.35, 0.37, 0.34, 0.38, 0.31, 0.34, 0.33, 0.30, 0.31}, // #01
@@ -394,7 +394,7 @@ public class CRQSettingsContainer24
 	 * @return The Cross Bucket Correlation
 	 */
 
-	public static final LabelledVertexCorrelation CrossBucketCorrelation()
+	public static final LabelledRdCorrelation CrossBucketCorrelation()
 	{
 		return s_CrossBucketCorrelation;
 	}

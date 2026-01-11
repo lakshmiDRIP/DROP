@@ -1,9 +1,9 @@
 
-package org.drip.measure.identifier;
+package org.drip.measure.state;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+
+import org.drip.numerical.common.NumberUtil;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -22,6 +22,7 @@ import java.util.Map;
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
+ * Copyright (C) 2018 Lakshmi Krishnamurthy
  * 
  *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
  *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
@@ -89,8 +90,8 @@ import java.util.Map;
  */
 
 /**
- * <i>LabelledVertex</i> is the Base Class that holds the Labeled Latent State Vertex Content. The References
- * 	are:
+ * <i>LabelledRdCorrelation</i> holds the Correlations between any Stochastic Variates identified by their
+ *  Labels. The References are:
  * 
  * <br><br>
  * 	<ul>
@@ -121,8 +122,10 @@ import java.util.Map;
  * 	It provides the following Functionality:
  *
  *  <ul>
- * 		<li><i>LabelledVertex</i> Constructor</li>
- * 		<li>Retrieve the Label List</li>
+ * 		<li><i>LabelledRdCorrelation</i> Constructor</li>
+ * 		<li>Retrieve the Cross-Label Correlation Matrix</li>
+ * 		<li>Retrieve the Correlation Entry for the Pair of Labels</li>
+ * 		<li>Generate the <i>LabelledVertexCorrelation</i> Instance that corresponds to the Tenor sub-space</li>
  *  </ul>
  *
  *	<br>
@@ -130,54 +133,131 @@ import java.util.Map;
  *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
  *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md">Numerical Analysis Library</a></td></tr>
  *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/README.md">R<sup>d</sup> Continuous/Discrete Probability Measures</a></td></tr>
- *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/identifier/README.md">Labels for Latent State Identifiers</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/state/README.md">Labels for Latent State Identifiers</a></td></tr>
  *  </table>
  *	<br>
  * 
  * @author Lakshmi Krishnamurthy
  */
 
-public class LabelledVertex
+public class LabelledRdCorrelation
+	extends LabelledRd
 {
-	protected List<String> _idList = null;
-
-	protected Map<String, Integer> _idMap = new HashMap<String, Integer>();
+	protected double[][] _matrix = null;
 
 	/**
-	 * <i>LabelledVertex</i> Constructor
+	 * <i>LabelledRdCorrelation</i> Constructor
 	 * 
-	 * @param idList The List of Labels
+	 * @param labelList The List of Labels
+	 * @param matrix The Correlation Matrix
 	 * 
 	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
-	public LabelledVertex (
-		final List<String> idList)
+	public LabelledRdCorrelation (
+		final List<String> labelList,
+		final double[][] matrix)
 		throws Exception
 	{
-		if (null == (_idList = idList)) {
-			throw new Exception ("LabelledVertex Constructor => Invalid Inputs");
+		super (labelList);
+
+		if (null == (_matrix = matrix)) {
+			throw new Exception ("LabelledRdCorrelation Constructor => Invalid Inputs");
 		}
 
-		int labelCount = _idList.size();
+		int labelCount = labelList.size();
 
-		if (0 == labelCount) {
-			throw new Exception ("LabelledVertex Constructor => Invalid Inputs");
+		if (0 == labelCount || labelCount != _matrix.length) {
+			throw new Exception ("LabelledRdCorrelation Constructor => Invalid Inputs");
 		}
 
 		for (int labelIndex = 0; labelIndex < labelCount; ++labelIndex) {
-			_idMap.put (_idList.get (labelIndex), labelIndex);
+			if (null == _matrix[labelIndex] || labelCount != _matrix[labelIndex].length ||
+				!NumberUtil.IsValid (_matrix[labelIndex]))
+			{
+				throw new Exception ("LabelledRdCorrelation Constructor => Invalid Inputs");
+			}
 		}
 	}
 
 	/**
-	 * Retrieve the Label List
+	 * Retrieve the Cross-Label Correlation Matrix
 	 * 
-	 * @return The Label List
+	 * @return The Cross-Label Correlation Matrix
 	 */
 
-	public List<String> idList()
+	public double[][] matrix()
 	{
-		return _idList;
+		return _matrix;
+	}
+
+	/**
+	 * Retrieve the Correlation Entry for the Pair of Labels
+	 * 
+	 * @param label1 Label #1
+	 * @param label2 Label #2
+	 * 
+	 * @return The Correlation Entry
+	 * 
+	 * @throws Exception Thrown if the Inputs are Invalid
+	 */
+
+	public double entry (
+		final String label1,
+		final String label2)
+		throws Exception
+	{
+		if (null == label1 || !_idList.contains (label1) || null == label2 || !_idList.contains (label2)) {
+			throw new Exception ("LabelledRdCorrelation::entry => Invalid Inputs");
+		}
+
+		return _matrix[_idMap.get (label1)][_idMap.get (label2)];
+	}
+
+	/**
+	 * Generate the <i>LabelledRdCorrelation</i> Instance that corresponds to the Tenor sub-space
+	 * 
+	 * @param subTenorList The sub-Tenor List
+	 * 
+	 * @return The <i>LabelledRdCorrelation</i> Instance
+	 */
+
+	public LabelledRdCorrelation subTenor (
+		final List<String> subTenorList)
+	{
+		if (null == subTenorList) {
+			return null;
+		}
+
+		int subTenorSize = subTenorList.size();
+
+		if (0 == subTenorSize) {
+			return null;
+		}
+
+		double[][] subTenorMatrix = new double[subTenorSize][subTenorSize];
+
+		for (int subTenorOuterIndex = 0; subTenorOuterIndex < subTenorSize; ++subTenorOuterIndex) {
+			for (int subTenorInnerIndex = 0; subTenorInnerIndex < subTenorSize; ++subTenorInnerIndex) {
+				try {
+					subTenorMatrix[subTenorOuterIndex][subTenorInnerIndex] = entry (
+						subTenorList.get (subTenorOuterIndex),
+						subTenorList.get (subTenorInnerIndex)
+					);
+				} catch (Exception e) {
+					e.printStackTrace();
+
+					return null;
+				}
+			}
+		}
+
+		try {
+			return new LabelledRdCorrelation (subTenorList, subTenorMatrix);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return null;
 	}
 }

@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.drip.measure.identifier.LabelledVertexCorrelation;
+import org.drip.measure.state.LabelledRdCorrelation;
 import org.drip.simm.foundation.RiskGroupPrincipalCovariance;
 
 /*
@@ -156,7 +156,7 @@ import org.drip.simm.foundation.RiskGroupPrincipalCovariance;
 public class IRSettingsContainer24
 {
 	private static IRWeight ZERO_RISK_WEIGHT = null;
-	private static LabelledVertexCorrelation s_SingleCurveTenorCorrelation = null;
+	private static LabelledRdCorrelation s_SingleCurveTenorCorrelation = null;
 
 	private static final Map<String, IRWeight> s_RiskWeightMap = new HashMap<String, IRWeight>();
 
@@ -189,7 +189,7 @@ public class IRSettingsContainer24
 		tenorList.add ("30Y");
 
 		try {
-			s_SingleCurveTenorCorrelation = new LabelledVertexCorrelation (
+			s_SingleCurveTenorCorrelation = new LabelledRdCorrelation (
 				tenorList,
 				new double[][] {
 					{1.00, 0.75, 0.63, 0.55, 0.44, 0.35, 0.31, 0.26, 0.21, 0.17, 0.15, 0.14},  //  2W
@@ -606,7 +606,7 @@ public class IRSettingsContainer24
 	 * @return The Interest Rate Single Curve Tenor Correlation Instance
 	 */
 
-	public static final LabelledVertexCorrelation SingleCurveTenorCorrelation()
+	public static final LabelledRdCorrelation SingleCurveTenorCorrelation()
 	{
 		return s_SingleCurveTenorCorrelation;
 	}

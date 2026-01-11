@@ -1,7 +1,7 @@
 
 package org.drip.simm.estimator;
 
-import org.drip.measure.identifier.LabelledVertexCorrelation;
+import org.drip.measure.state.LabelledRdCorrelation;
 import org.drip.simm.common.Chargram;
 import org.drip.simm.margin.RiskClassAggregate;
 import org.drip.simm.margin.RiskClassAggregateCR;
@@ -261,7 +261,7 @@ public class ProductClassMargin
 	 */
 
 	public double total (
-		final LabelledVertexCorrelation labelCorrelation)
+		final LabelledRdCorrelation labelCorrelation)
 		throws Exception
 	{
 		if (null == labelCorrelation) {

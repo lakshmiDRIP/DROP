@@ -133,8 +133,8 @@ public class NonDimensionalCostEvolverCorrelated extends
 		org.drip.execution.hjb.NonDimensionalCostCorrelated ndcc =
 			(org.drip.execution.hjb.NonDimensionalCostCorrelated) ndc;
 
-		org.drip.measure.process.OrnsteinUhlenbeckPair oup2D =
-			(org.drip.measure.process.OrnsteinUhlenbeckPair) ornsteinUnlenbeckProcess();
+		org.drip.measure.dynamics.OrnsteinUhlenbeckPair oup2D =
+			(org.drip.measure.dynamics.OrnsteinUhlenbeckPair) ornsteinUnlenbeckProcess();
 
 		org.drip.measure.dynamics.DiffusionEvaluatorOrnsteinUhlenbeck oup1DLiquidity = oup2D.reference();
 
@@ -175,7 +175,7 @@ public class NonDimensionalCostEvolverCorrelated extends
 	 */
 
 	public NonDimensionalCostEvolverCorrelated (
-		final org.drip.measure.process.OrnsteinUhlenbeckPair oup2D,
+		final org.drip.measure.dynamics.OrnsteinUhlenbeckPair oup2D,
 		final double dblAsymptoticEulerUrgencyThreshold,
 		final boolean bAsymptoticEnhancedEulerCorrection)
 		throws java.lang.Exception

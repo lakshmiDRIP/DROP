@@ -1,23 +1,26 @@
-# DROP Measure Stochastic Package
+# DROP Measure State Package
 
 <p align="center"><img src="https://github.com/lakshmiDRIP/DROP/blob/master/DRIP_Logo.gif?raw=true" width="100"></p>
 
-DROP Measure Stochastic implements Labels for Latent State Identifiers.
+DROP Measure State implements Labels for Latent State Identifiers.
 
 
 ## Class Components
 
- * [***LabelledVertex***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/identifier/LabelledVertex.java)
- <i>LabelledVertex</i> is the Base Class that holds the Labeled Latent State Vertex Content.
+ * [***LabelledRd***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/state/LabelledRd.java)
+ <i>LabelledRd</i> is the Base Class that holds the Labeled Latent State Vertex Content.
 
- * [***LabelledVertexCorrelation***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/identifier/LabelledVertexCorrelation.java)
- <i>LabelledVertexCorrelation</i> holds the Correlations between any Stochastic Variates identified by their Labels.
+ * [***LabelledRdContinuousDistribution***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/state/LabelledRdContinuousDistribution.java)
+ <i>LabelledRdContinuousDistribution</i> contains the Generalized, Labelled R<sup>1</sup> Multivariate Distributions.
 
- * [***LabelledVertexCovariance***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/identifier/LabelledVertexCovariance.java)
- <i>LabelledVertexCovariance</i> holds the Covariance between any Stochastic Variates identified by their Labels, as well as their Means.
+ * [***LabelledRdCorrelation***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/state/LabelledRdCorrelation.java)
+ <i>LabelledRdCorrelation</i> holds the Correlations between any Stochastic Variates identified by their Labels.
 
- * [***LabelledVertexRd***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/identifier/LabelledVertexRd.java)
- <i>LabelledVertexRd</i> holds the Labeled R<sup>d</sup> Multi-Factor Latent State Vertex Realizations.
+ * [***LabelledRdCovariance***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/state/LabelledRdCovariance.java)
+ <i>LabelledRdCovariance</i> holds the Covariance between any Stochastic Variates identified by their Labels, as well as their Means.
+
+ * [***LabelledRdRealizationSequence***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/state/LabelledRdRealizationSequence.java)
+ <i>LabelledRdRealizationSequence</i> holds the Labeled R<sup>d</sup> Multi-Factor Latent State Vertex Realizations.
 
 
 ## DROP Specifications

@@ -188,7 +188,7 @@ public class FundingBasisEvolver
 	 * @return The CSA Forward Diffusion Process
 	 */
 
-	public org.drip.measure.process.DiffusionEvolver csaForwardProcess()
+	public org.drip.measure.realization.DiffusionEvolver csaForwardProcess()
 	{
 		try
 		{
@@ -218,7 +218,7 @@ public class FundingBasisEvolver
 				}
 			};
 
-			return new org.drip.measure.process.DiffusionEvolver (
+			return new org.drip.measure.realization.DiffusionEvolver (
 				new org.drip.measure.dynamics.DiffusionEvaluator (
 					driftEvolver,
 					volatilityEvolver
@@ -241,7 +241,7 @@ public class FundingBasisEvolver
 	 * @return The Funding Numeraire Diffusion Process
 	 */
 
-	public org.drip.measure.process.DiffusionEvolver fundingNumeraireProcess (
+	public org.drip.measure.realization.DiffusionEvolver fundingNumeraireProcess (
 		final java.lang.String tenor)
 	{
 		try {
@@ -285,7 +285,7 @@ public class FundingBasisEvolver
 				}
 			};
 
-			return new org.drip.measure.process.DiffusionEvolver (
+			return new org.drip.measure.realization.DiffusionEvolver (
 				new org.drip.measure.dynamics.DiffusionEvaluator (
 					driftEvaluator,
 					volatilityEvaluator
@@ -308,7 +308,7 @@ public class FundingBasisEvolver
 	 * @return The Funding Spread Numeraire Diffusion Process
 	 */
 
-	public org.drip.measure.process.DiffusionEvolver fundingSpreadNumeraireProcess (
+	public org.drip.measure.realization.DiffusionEvolver fundingSpreadNumeraireProcess (
 		final java.lang.String tenor)
 	{
 		try
@@ -353,7 +353,7 @@ public class FundingBasisEvolver
 				}
 			};
 
-			return new org.drip.measure.process.DiffusionEvolver (
+			return new org.drip.measure.realization.DiffusionEvolver (
 				new org.drip.measure.dynamics.DiffusionEvaluator (
 					driftEvaluator,
 					volatilityEvaluator

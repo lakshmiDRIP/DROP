@@ -7,12 +7,18 @@ DROP Measure Realization implements the Stochastic Jump Diffusion Vertex Edge.
 
 ## Class Components
 
+ * [***DiffusionEvolver***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/realization/DiffusionEvolver.java)
+ <i>DiffusionEvolver</i> implements the Functionality that guides the Single Factor R<sup>1</sup> Diffusion Random Process Variable Evolution.
+
  * [***JumpDiffusionEdge***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/realization/JumpDiffusionEdge.java)
  <i>JumpDiffusionEdge</i> implements the Deterministic and the Stochastic Components of a R<sup>d</sup>
  Marginal Random Increment Edge as well the Original Marginal Random Variate.
 
  * [***JumpDiffusionEdgeUnit***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/realization/JumpDiffusionEdgeUnit.java)
  <i>JumpDiffusionEdgeUnit</i> holds the Jump Diffusion R<sup>d</sup> Unit Edge Realizations.
+
+ * [***JumpDiffusionEvolver***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/realization/JumpDiffusionEvolver.java)
+ <i>JumpDiffusionEvolver</i> implements the Functionality that guides the Single Factor R<sup>1</sup> Jump Diffusion Random Process Variable Evolution.
 
  * [***JumpDiffusionVertex***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/realization/JumpDiffusionVertex.java)
  <i>JumpDiffusionVertex</i> holds the Snapshot Values of the Realized R<sup>d</sup> Variable - its Value,

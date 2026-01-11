@@ -127,7 +127,7 @@ public class MarketVertexGenerator
 	private org.drip.exposure.evolver.PrimarySecurityDynamicsContainer _primarySecurityDynamicsContainer =
 		null;
 
-	private org.drip.measure.process.DiffusionEvolver evolver (
+	private org.drip.measure.realization.DiffusionEvolver evolver (
 		final org.drip.state.identifier.LatentStateLabel latentStateLabel)
 	{
 		org.drip.exposure.evolver.TerminalLatentState terminalLatentState =
@@ -157,7 +157,7 @@ public class MarketVertexGenerator
 
 		for (org.drip.state.identifier.LatentStateLabel latentStateLabel : latentStateLabelList)
 		{
-			org.drip.measure.process.DiffusionEvolver latentStateDiffusionEvolver = evolver
+			org.drip.measure.realization.DiffusionEvolver latentStateDiffusionEvolver = evolver
 				(latentStateLabel);
 
 			if (null == latentStateDiffusionEvolver)
@@ -453,7 +453,7 @@ public class MarketVertexGenerator
 		final org.drip.exposure.universe.LatentStateWeiner latentStateWeiner,
 		final int terminalDate)
 	{
-		org.drip.measure.process.DiffusionEvolver dealerSubordinateRecoveryRateEvolver =
+		org.drip.measure.realization.DiffusionEvolver dealerSubordinateRecoveryRateEvolver =
 			_entityDynamicsContainer.dealerSubordinateRecoveryRateEvolver();
 
 		if (null == dealerSubordinateRecoveryRateEvolver)

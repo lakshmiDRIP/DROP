@@ -4,7 +4,7 @@ package org.drip.simm.product;
 import java.util.Map;
 import java.util.TreeMap;
 
-import org.drip.measure.identifier.LabelledVertexCorrelation;
+import org.drip.measure.state.LabelledRdCorrelation;
 import org.drip.simm.foundation.CurvatureEstimator;
 import org.drip.simm.foundation.MarginEstimationSettings;
 import org.drip.simm.margin.BucketAggregateIR;
@@ -219,7 +219,7 @@ public class RiskMeasureSensitivityIR
 		Map<String, BucketSensitivitySettingsIR> bucketSensitivitySettingsMap =
 			riskMeasureSensitivitySettings.bucketSensitivitySettingsMap();
 
-		LabelledVertexCorrelation crossBucketCorrelation = riskMeasureSensitivitySettings.crossBucketCorrelation();
+		LabelledRdCorrelation crossBucketCorrelation = riskMeasureSensitivitySettings.crossBucketCorrelation();
 
 		for (Map.Entry<String, BucketSensitivityIR> bucketSensitivityMapEntry :
 			_bucketSensitivityMap.entrySet()
@@ -323,7 +323,7 @@ public class RiskMeasureSensitivityIR
 		Map<String, BucketSensitivitySettingsIR> bucketSensitivitySettingsMap =
 			riskMeasureSensitivitySettings.bucketSensitivitySettingsMap();
 
-		LabelledVertexCorrelation crossBucketCorrelation = riskMeasureSensitivitySettings.crossBucketCorrelation();
+		LabelledRdCorrelation crossBucketCorrelation = riskMeasureSensitivitySettings.crossBucketCorrelation();
 
 		CurvatureEstimator curvatureEstimator = marginEstimationSettings.curvatureEstimator();
 

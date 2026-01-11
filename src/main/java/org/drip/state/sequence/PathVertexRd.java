@@ -7,7 +7,7 @@ import org.drip.analytics.daycount.ActActDCParams;
 import org.drip.analytics.daycount.Convention;
 import org.drip.analytics.support.Helper;
 import org.drip.measure.crng.CorrelatedFactorsPathVertexRealization;
-import org.drip.measure.process.DiffusionEvolver;
+import org.drip.measure.realization.DiffusionEvolver;
 import org.drip.measure.realization.JumpDiffusionEdgeUnit;
 import org.drip.measure.realization.JumpDiffusionVertex;
 import org.drip.measure.realization.VertexRdSequence;
@@ -138,14 +138,14 @@ public class PathVertexRd
 
 	public static final PathVertexRd Standard (
 		final org.drip.measure.crng.CorrelatedFactorsPathVertexRealization cpvd,
-		final org.drip.measure.process.DiffusionEvolver de)
+		final org.drip.measure.realization.DiffusionEvolver de)
 	{
 		if (null == cpvd || null == de) return null;
 
 		int iNumDimension = cpvd.dimensionCount();
 
-		org.drip.measure.process.DiffusionEvolver[] aDE = new
-			org.drip.measure.process.DiffusionEvolver[iNumDimension];
+		org.drip.measure.realization.DiffusionEvolver[] aDE = new
+			org.drip.measure.realization.DiffusionEvolver[iNumDimension];
 
 		for (int iDimension = 0; iDimension < iNumDimension; ++iDimension)
 			aDE[iDimension] = de;

@@ -1,7 +1,8 @@
 
-package org.drip.measure.distribution;
+package org.drip.measure.state;
 
 import org.drip.function.definition.RdToR1;
+import org.drip.measure.distribution.RdContinuous;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -90,8 +91,8 @@ import org.drip.function.definition.RdToR1;
  */
 
 /**
- * <i>MetaRdContinuous</i> contains the Generalized R<sup>1</sup> Multivariate Distributions. It provides the
- *  following Functionality:
+ * <i>LabelledRdContinuousDistribution</i> contains the Generalized, Labelled R<sup>1</sup> Multivariate
+ *  Distributions. It provides the following Functionality:
  *
  *  <ul>
  * 		<li>Retrieve the Multivariate Meta Instance</li>
@@ -118,40 +119,40 @@ import org.drip.function.definition.RdToR1;
  * @author Lakshmi Krishnamurthy
  */
 
-public abstract class MetaRdContinuous
+public abstract class LabelledRdContinuousDistribution
 	extends RdContinuous
 {
-	private MetaRd _multivariateMeta = null;
+	private LabelledRd _stateLabels = null;
 
-	protected MetaRdContinuous (
-		final MetaRd multivariateMeta)
+	protected LabelledRdContinuousDistribution (
+		final LabelledRd stateLabels)
 		throws Exception
 	{
-		if (null == (_multivariateMeta = multivariateMeta)) {
-			throw new Exception ("MetaRdContinuous Constructor => Invalid Inputs");
+		if (null == (_stateLabels = stateLabels)) {
+			throw new Exception ("LabelledRdContinuousDistribution Constructor => Invalid Inputs");
 		}
 	}
 
 	/**
-	 * Retrieve the Multivariate Meta Instance
+	 * Retrieve the Multivariate Distribution State Labels
 	 * 
-	 * @return The Multivariate Meta Instance
+	 * @return The Multivariate Distribution State Labels
 	 */
 
-	public MetaRd meta()
+	public LabelledRd stateLabels()
 	{
-		return _multivariateMeta;
+		return _stateLabels;
 	}
 
 	/**
-	 * Retrieve the Left Edge Bounding Multivariate
+	 * Retrieve the Array of Left Edge Bounding Multivariate
 	 * 
-	 * @return The Left Edge Bounding Multivariate
+	 * @return The Array of Left Edge Bounding Multivariate
 	 */
 
-	public double[] leftEdge()
+	public double[] leftEdgeArray()
 	{
-		int variateCount = _multivariateMeta.numVariable();
+		int variateCount = _stateLabels.count();
 
 		double[] leftEdgeArray = new double[variateCount];
 
@@ -163,14 +164,14 @@ public abstract class MetaRdContinuous
 	}
 
 	/**
-	 * Retrieve the Right Edge Bounding Multivariate
+	 * Retrieve the Array of Right Edge Bounding Multivariate
 	 * 
-	 * @return The Right Edge Bounding Multivariate
+	 * @return The Array of Right Edge Bounding Multivariate
 	 */
 
-	public double[] rightEdge()
+	public double[] rightEdgeArray()
 	{
-		int variateCount = _multivariateMeta.numVariable();
+		int variateCount = _stateLabels.count();
 
 		double[] rightEdgeArray = new double[variateCount];
 
@@ -189,10 +190,11 @@ public abstract class MetaRdContinuous
 
 	public RdToR1 densityRdToR1()
 	{
-		return new RdToR1 (null) {
+		return new RdToR1 (null)
+		{
 			@Override public int dimension()
 			{
-				return _multivariateMeta.numVariable();
+				return _stateLabels.count();
 			}
 
 			@Override public double evaluate (
@@ -218,7 +220,7 @@ public abstract class MetaRdContinuous
 		final double[] variateArray)
 		throws Exception
 	{
-		return densityRdToR1().integrate (leftEdge(), variateArray);
+		return densityRdToR1().integrate (leftEdgeArray(), variateArray);
 	}
 
 	/**
@@ -255,13 +257,14 @@ public abstract class MetaRdContinuous
 		throws Exception
 	{
 		if (null == rdToR1) {
-			throw new Exception ("MetaRdContinuous::expectation => Invalid Inputs");
+			throw new Exception ("LabelledRdContinuousDistribution::expectation => Invalid Inputs");
 		}
 
-		return new RdToR1 (null) {
+		return new RdToR1 (null)
+		{
 			@Override public int dimension()
 			{
-				return _multivariateMeta.numVariable();
+				return _stateLabels.count();
 			}
 
 			@Override public double evaluate (
@@ -270,7 +273,7 @@ public abstract class MetaRdContinuous
 			{
 				return density (variateArray) * rdToR1.evaluate (variateArray);
 			}
-		}.integrate (leftEdge(), rightEdge());
+		}.integrate (leftEdgeArray(), rightEdgeArray());
 	}
 
 	/**
@@ -281,7 +284,7 @@ public abstract class MetaRdContinuous
 
 	public double[] mean()
 	{
-		int variateCount = _multivariateMeta.numVariable();
+		int variateCount = _stateLabels.count();
 
 		double[] meanArray = new double[variateCount];
 
@@ -290,10 +293,11 @@ public abstract class MetaRdContinuous
 
 			try {
 				meanArray[variateIndex] = expectation (
-					new RdToR1 (null) {
+					new RdToR1 (null)
+					{
 						@Override public int dimension()
 						{
-							return _multivariateMeta.numVariable();
+							return _stateLabels.count();
 						}
 
 						@Override public double evaluate (
@@ -336,10 +340,11 @@ public abstract class MetaRdContinuous
 
 			try {
 				varianceArray[variateIndex] = expectation (
-					new RdToR1 (null) {
+					new RdToR1 (null)
+					{
 						@Override public int dimension()
 						{
-							return _multivariateMeta.numVariable();
+							return _stateLabels.count();
 						}
 
 						@Override public double evaluate (

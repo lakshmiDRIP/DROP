@@ -7,6 +7,9 @@ DROP Measure CRNG implements the Continuous Random Number Stream Generator.
 
 ## Class Components
 
+ * [***CorrelatedFactorsPathVertexRealization***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/crng/CorrelatedFactorsPathVertexRealization.java)
+ <i>CorrelatedFactorsPathVertexRealization</i> generates Correlated R<sup>d</sup> Random Numbers at the specified Vertexes, over the Specified Paths.
+
  * [***LinearCongruentialGenerator***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/crng/LinearCongruentialGenerator.java)
  <i>LinearCongruentialGenerator</i> implements a RNG based on Recurrence Based on Modular Integer Arithmetic.
 
@@ -21,6 +24,9 @@ DROP Measure CRNG implements the Continuous Random Number Stream Generator.
  * [***MultiStreamGenerator***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/crng/MultiStreamGenerator.java)
  <i>MultiStreamGenerator</i> helps generate Multiple Independent (i.e., Non-Overlapping) Streams of Random
  Numbers.
+
+ * [***QuadraticResampler***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/crng/QuadraticResampler.java)
+ <i>QuadraticResampler</i> Quadratically Re-samples the Input Points to Convert it to a Standard Normal.
 
  * [***RandomMatrixGenerator***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/crng/RandomMatrixGenerator.java)
  <i>RandomMatrixGenerator</i> provides Functionality for generating different Kinds of Random Matrices.

@@ -4,7 +4,7 @@ package org.drip.sample.simmsettings;
 import java.util.List;
 import java.util.Set;
 
-import org.drip.measure.identifier.LabelledVertexCorrelation;
+import org.drip.measure.state.LabelledRdCorrelation;
 import org.drip.service.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 import org.drip.simm.credit.CRBucket;
@@ -262,7 +262,7 @@ public class CreditQualifyingParameters24
 	private static final void CrossBucketCorrelation()
 		throws Exception
 	{
-		LabelledVertexCorrelation crossBucketCorrelation = CRQSettingsContainer24.CrossBucketCorrelation();
+		LabelledRdCorrelation crossBucketCorrelation = CRQSettingsContainer24.CrossBucketCorrelation();
 
 		List<String> bucketList = crossBucketCorrelation.idList();
 

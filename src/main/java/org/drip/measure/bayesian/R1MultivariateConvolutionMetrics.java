@@ -1,7 +1,7 @@
 
 package org.drip.measure.bayesian;
 
-import org.drip.measure.distribution.MetaRdContinuous;
+import org.drip.measure.state.LabelledRdContinuousDistribution;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -116,11 +116,11 @@ import org.drip.measure.distribution.MetaRdContinuous;
 
 public class R1MultivariateConvolutionMetrics
 {
-	private MetaRdContinuous _jointDistribution = null;
-	private MetaRdContinuous _priorDistribution = null;
-	private MetaRdContinuous _posteriorDistribution = null;
-	private MetaRdContinuous _conditionalDistribution = null;
-	private MetaRdContinuous _unconditionalDistribution = null;
+	private LabelledRdContinuousDistribution _jointDistribution = null;
+	private LabelledRdContinuousDistribution _priorDistribution = null;
+	private LabelledRdContinuousDistribution _posteriorDistribution = null;
+	private LabelledRdContinuousDistribution _conditionalDistribution = null;
+	private LabelledRdContinuousDistribution _unconditionalDistribution = null;
 
 	/**
 	 * <i>R1MultivariateConvolutionMetrics</i> Constructor
@@ -135,11 +135,11 @@ public class R1MultivariateConvolutionMetrics
 	 */
 
 	public R1MultivariateConvolutionMetrics (
-		final MetaRdContinuous priorDistribution,
-		final MetaRdContinuous unconditionalDistribution,
-		final MetaRdContinuous conditionalDistribution,
-		final MetaRdContinuous jointDistribution,
-		final MetaRdContinuous posteriorDistribution)
+		final LabelledRdContinuousDistribution priorDistribution,
+		final LabelledRdContinuousDistribution unconditionalDistribution,
+		final LabelledRdContinuousDistribution conditionalDistribution,
+		final LabelledRdContinuousDistribution jointDistribution,
+		final LabelledRdContinuousDistribution posteriorDistribution)
 		throws Exception
 	{
 		if (null == (_priorDistribution = priorDistribution) ||
@@ -158,7 +158,7 @@ public class R1MultivariateConvolutionMetrics
 	 * @return The Prior Distribution
 	 */
 
-	public MetaRdContinuous priorDistribution()
+	public LabelledRdContinuousDistribution priorDistribution()
 	{
 		return _priorDistribution;
 	}
@@ -169,7 +169,7 @@ public class R1MultivariateConvolutionMetrics
 	 * @return The Unconditional Distribution
 	 */
 
-	public MetaRdContinuous unconditionalDistribution()
+	public LabelledRdContinuousDistribution unconditionalDistribution()
 	{
 		return _unconditionalDistribution;
 	}
@@ -180,7 +180,7 @@ public class R1MultivariateConvolutionMetrics
 	 * @return The Conditional Distribution
 	 */
 
-	public MetaRdContinuous conditionalDistribution()
+	public LabelledRdContinuousDistribution conditionalDistribution()
 	{
 		return _conditionalDistribution;
 	}
@@ -191,7 +191,7 @@ public class R1MultivariateConvolutionMetrics
 	 * @return The Joint Distribution
 	 */
 
-	public MetaRdContinuous jointDistribution()
+	public LabelledRdContinuousDistribution jointDistribution()
 	{
 		return _jointDistribution;
 	}
@@ -202,7 +202,7 @@ public class R1MultivariateConvolutionMetrics
 	 * @return The Posterior Distribution
 	 */
 
-	public MetaRdContinuous posteriorDistribution()
+	public LabelledRdContinuousDistribution posteriorDistribution()
 	{
 		return _posteriorDistribution;
 	}

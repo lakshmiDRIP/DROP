@@ -16489,7 +16489,7 @@ public class BondComponent extends org.drip.product.definition.Bond implements
 		final org.drip.param.valuation.ValuationCustomizationParams vcp,
 		final double dblCleanPrice,
 		final org.drip.state.sequence.GovvieBuilderSettings gbs,
-		final org.drip.measure.process.DiffusionEvolver deGovvieForward,
+		final org.drip.measure.realization.DiffusionEvolver deGovvieForward,
 		final int iNumPath)
 	{
 		if (null == valParams || null == csqc || null == gbs) return null;
@@ -16660,7 +16660,7 @@ public class BondComponent extends org.drip.product.definition.Bond implements
 		final org.drip.param.valuation.ValuationCustomizationParams vcp,
 		final double dblCleanPrice,
 		final org.drip.state.sequence.GovvieBuilderSettings gbs,
-		final org.drip.measure.process.DiffusionEvolver deGovvieForward,
+		final org.drip.measure.realization.DiffusionEvolver deGovvieForward,
 		final int iNumPath)
 	{
 		if (null == valParams || null == csqc || null == gbs) return null;

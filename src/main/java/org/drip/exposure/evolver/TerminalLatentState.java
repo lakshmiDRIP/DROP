@@ -131,7 +131,7 @@ public class TerminalLatentState extends org.drip.exposure.evolver.ScalingNumera
 
 	public TerminalLatentState (
 		final org.drip.state.identifier.LatentStateLabel label,
-		final org.drip.measure.process.DiffusionEvolver diffusionEvolver)
+		final org.drip.measure.realization.DiffusionEvolver diffusionEvolver)
 		throws java.lang.Exception
 	{
 		super (diffusionEvolver);

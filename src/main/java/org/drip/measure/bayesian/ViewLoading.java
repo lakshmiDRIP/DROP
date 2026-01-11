@@ -1,10 +1,10 @@
 
 package org.drip.measure.bayesian;
 
-import org.drip.measure.distribution.MetaRd;
-import org.drip.measure.distribution.MetaRdContinuous;
 import org.drip.measure.gaussian.JointVariance;
 import org.drip.measure.gaussian.R1MultivariateNormal;
+import org.drip.measure.state.LabelledRd;
+import org.drip.measure.state.LabelledRdContinuousDistribution;
 import org.drip.numerical.common.NumberUtil;
 import org.drip.numerical.linearalgebra.R1MatrixUtil;
 
@@ -123,7 +123,7 @@ import org.drip.numerical.linearalgebra.R1MatrixUtil;
 public class ViewLoading
 {
 	private double[][] _projectionScopingLoadingMatrix = null;
-	private MetaRdContinuous _projectionDistribution = null;
+	private LabelledRdContinuousDistribution _projectionDistribution = null;
 
 	/**
 	 * Generate the Projection Co-variance Matrix from the Confidence Level
@@ -186,7 +186,7 @@ public class ViewLoading
 	 */
 
 	public static final ViewLoading FromConfidence (
-		final MetaRd metaRd,
+		final LabelledRd metaRd,
 		final double[] meanArray,
 		final double[][] scopingCovarianceMatrix,
 		final double[][] scopingLoadingMatrix,
@@ -220,7 +220,7 @@ public class ViewLoading
 	 */
 
 	public ViewLoading (
-		final MetaRdContinuous projectionDistribution,
+		final LabelledRdContinuousDistribution projectionDistribution,
 		final double[][] projectionScopingLoadingMatrix)
 		throws Exception
 	{
@@ -230,7 +230,7 @@ public class ViewLoading
 			throw new Exception ("ViewLoading Constructor => Invalid Inputs!");
 		}
 
-		int projectionViewCount = _projectionDistribution.meta().numVariable();
+		int projectionViewCount = _projectionDistribution.stateLabels().count();
 
 		if (projectionViewCount != _projectionScopingLoadingMatrix.length) {
 			throw new Exception ("ViewLoading Constructor => Invalid Inputs!");
@@ -252,7 +252,7 @@ public class ViewLoading
 	 * @return The Projection Distribution
 	 */
 
-	public MetaRdContinuous projectionDistribution()
+	public LabelledRdContinuousDistribution projectionDistribution()
 	{
 		return _projectionDistribution;
 	}

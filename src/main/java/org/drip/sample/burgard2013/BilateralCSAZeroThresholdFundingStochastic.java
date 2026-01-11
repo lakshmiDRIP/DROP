@@ -7,7 +7,6 @@ import org.drip.exposure.universe.*;
 import org.drip.measure.crng.CorrelatedFactorsPathVertexRealization;
 import org.drip.measure.crng.RandomNumberGenerator;
 import org.drip.measure.dynamics.*;
-import org.drip.measure.process.DiffusionEvolver;
 import org.drip.measure.realization.*;
 import org.drip.measure.statistics.UnivariateDiscreteThin;
 import org.drip.numerical.linearalgebra.R1MatrixUtil;

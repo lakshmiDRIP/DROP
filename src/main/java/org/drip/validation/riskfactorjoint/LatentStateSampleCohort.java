@@ -3,7 +3,7 @@ package org.drip.validation.riskfactorjoint;
 
 import java.util.List;
 
-import org.drip.measure.identifier.LabelledVertexRd;
+import org.drip.measure.state.LabelledRdRealizationSequence;
 import org.drip.validation.evidence.R1Sample;
 
 /*
@@ -141,7 +141,7 @@ public interface LatentStateSampleCohort
 	 * @return The Vertex R<sup>d</sup> Multi-Factor Realizations
 	 */
 
-	public abstract LabelledVertexRd vertexRd();
+	public abstract LabelledRdRealizationSequence vertexRd();
 
 	/**
 	 * Reduce the Joint Realizations for the Pair of State Labels to a Single Risk Factor Sample

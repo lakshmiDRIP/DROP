@@ -5,4 +5,4 @@
  * @author Lakshmi Krishnamurthy
  */
 
-package org.drip.measure.identifier;
+package org.drip.measure.state;

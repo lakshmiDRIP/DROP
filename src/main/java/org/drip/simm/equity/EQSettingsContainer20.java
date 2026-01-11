@@ -7,7 +7,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 
-import org.drip.measure.identifier.LabelledVertexCorrelation;
+import org.drip.measure.state.LabelledRdCorrelation;
 import org.drip.simm.credit.SectorSystemics;
 import org.drip.simm.foundation.RiskGroupPrincipalCovariance;
 
@@ -146,7 +146,7 @@ import org.drip.simm.foundation.RiskGroupPrincipalCovariance;
 
 public class EQSettingsContainer20
 {
-	private static LabelledVertexCorrelation s_CrossBucketCorrelation = null;
+	private static LabelledRdCorrelation s_CrossBucketCorrelation = null;
 
 	private static final Map<Integer, EQBucket> s_BucketMap = new TreeMap<Integer, EQBucket>();
 
@@ -179,7 +179,7 @@ public class EQSettingsContainer20
 		bucketList.add ("12");
 
 		try {
-			s_CrossBucketCorrelation = new LabelledVertexCorrelation (
+			s_CrossBucketCorrelation = new LabelledRdCorrelation (
 				bucketList,
 				new double[][] {
 					{1.00, 0.15, 0.14, 0.16, 0.10, 0.12, 0.10, 0.11, 0.13, 0.09, 0.17, 0.17}, // #01
@@ -436,7 +436,7 @@ public class EQSettingsContainer20
 	 * @return The Cross Bucket Correlation
 	 */
 
-	public static final LabelledVertexCorrelation CrossBucketCorrelation()
+	public static final LabelledRdCorrelation CrossBucketCorrelation()
 	{
 		return s_CrossBucketCorrelation;
 	}

@@ -3,7 +3,6 @@ package org.drip.sample.numeraire;
 
 import org.drip.measure.crng.RandomSequenceGenerator;
 import org.drip.measure.dynamics.*;
-import org.drip.measure.process.JumpDiffusionEvolver;
 import org.drip.measure.realization.*;
 import org.drip.service.common.FormatUtil;
 import org.drip.service.env.EnvManager;

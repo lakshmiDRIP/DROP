@@ -5,10 +5,10 @@ import java.util.List;
 
 import org.drip.measure.crng.CorrelatedFactorsPathVertexRealization;
 import org.drip.measure.crng.RandomNumberGenerator;
-import org.drip.measure.identifier.LabelledVertexCorrelation;
-import org.drip.measure.identifier.LabelledVertexCovariance;
-import org.drip.measure.identifier.LabelledVertexRd;
 import org.drip.measure.realization.VertexRdSequence;
+import org.drip.measure.state.LabelledRdCorrelation;
+import org.drip.measure.state.LabelledRdCovariance;
+import org.drip.measure.state.LabelledRdRealizationSequence;
 import org.drip.numerical.common.NumberUtil;
 import org.drip.validation.evidence.R1Sample;
 
@@ -135,8 +135,8 @@ public class NormalLatentStateSampleCohort
 	implements LatentStateSampleCohort
 {
 	private double _horizon = Double.NaN;
-	private LabelledVertexRd _labelRdVertex = null;
-	private LabelledVertexCovariance _labelCovariance = null;
+	private LabelledRdRealizationSequence _labelRdVertex = null;
+	private LabelledRdCovariance _labelCovariance = null;
 
 	/**
 	 * Generate a Correlated <i>NormalLatentStateSampleCohort</i>
@@ -204,8 +204,8 @@ public class NormalLatentStateSampleCohort
 
 		try {
 			return new NormalLatentStateSampleCohort (
-				new LabelledVertexRd (labelList, realization),
-				new LabelledVertexCovariance (labelList, annualMeanArray, annualVolatilityArray, correlationMatrix),
+				new LabelledRdRealizationSequence (labelList, realization),
+				new LabelledRdCovariance (labelList, annualMeanArray, annualVolatilityArray, correlationMatrix),
 				horizon
 			);
 		} catch (Exception e) {
@@ -226,8 +226,8 @@ public class NormalLatentStateSampleCohort
 	 */
 
 	public NormalLatentStateSampleCohort (
-		final LabelledVertexRd labelRdVertex,
-		final LabelledVertexCovariance labelCovariance,
+		final LabelledRdRealizationSequence labelRdVertex,
+		final LabelledRdCovariance labelCovariance,
 		final double horizon)
 		throws Exception
 	{
@@ -245,7 +245,7 @@ public class NormalLatentStateSampleCohort
 	 * @return The Latent State Label Covariance
 	 */
 
-	public LabelledVertexCorrelation labelCovariance()
+	public LabelledRdCorrelation labelCovariance()
 	{
 		return _labelCovariance;
 	}
@@ -266,7 +266,7 @@ public class NormalLatentStateSampleCohort
 		return _labelCovariance.idList();
 	}
 
-	@Override public LabelledVertexRd vertexRd()
+	@Override public LabelledRdRealizationSequence vertexRd()
 	{
 		return _labelRdVertex;
 	}

@@ -1,8 +1,8 @@
 
 package org.drip.measure.gaussian;
 
-import org.drip.measure.distribution.MetaRd;
-import org.drip.measure.distribution.MetaRdContinuous;
+import org.drip.measure.state.LabelledRdContinuousDistribution;
+import org.drip.measure.state.LabelledRd;
 import org.drip.numerical.common.NumberUtil;
 
 /*
@@ -118,7 +118,7 @@ import org.drip.numerical.common.NumberUtil;
  */
 
 public class R1MultivariateNormal
-	extends MetaRdContinuous
+	extends LabelledRdContinuousDistribution
 {
 	private double[] _meanArray = null;
 	private JointVariance _jointVariance = null;
@@ -134,7 +134,7 @@ public class R1MultivariateNormal
 	 */
 
 	public static final R1MultivariateNormal Standard (
-		final MetaRd metaRd,
+		final LabelledRd metaRd,
 		final double[] meanArray,
 		final double[][] covarianceMatrix)
 	{
@@ -164,7 +164,7 @@ public class R1MultivariateNormal
 	{
 		try {
 			return new R1MultivariateNormal (
-				new MetaRd (variateIDArray),
+				LabelledRd.FromArray (variateIDArray),
 				meanArray,
 				new JointVariance (covarianceMatrix)
 			);
@@ -186,7 +186,7 @@ public class R1MultivariateNormal
 	 */
 
 	public R1MultivariateNormal (
-		final MetaRd metaRd,
+		final LabelledRd metaRd,
 		final double[] meanArray,
 		final JointVariance jointVariance)
 		throws Exception
@@ -197,7 +197,7 @@ public class R1MultivariateNormal
 			throw new Exception ("R1MultivariateNormal Constructor => Invalid Inputs!");
 		}
 
-		int variateCount = metaRd.numVariable();
+		int variateCount = metaRd.count();
 
 		if (variateCount != _meanArray.length ||
 			variateCount != _jointVariance.variateCount() ||

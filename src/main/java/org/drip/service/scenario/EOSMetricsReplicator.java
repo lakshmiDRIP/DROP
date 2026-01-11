@@ -3,7 +3,7 @@ package org.drip.service.scenario;
 
 import org.drip.analytics.output.BondEOSMetrics;
 import org.drip.measure.dynamics.DiffusionEvaluatorLogarithmic;
-import org.drip.measure.process.DiffusionEvolver;
+import org.drip.measure.realization.DiffusionEvolver;
 import org.drip.numerical.common.NumberUtil;
 import org.drip.param.market.CurveSurfaceQuoteContainer;
 import org.drip.param.valuation.ValuationParams;

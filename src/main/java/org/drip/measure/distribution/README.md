@@ -1,20 +1,14 @@
-# DROP Measure Continuous Package
+# DROP Measure Distribution Package
 
 <p align="center"><img src="https://github.com/lakshmiDRIP/DROP/blob/master/DRIP_Logo.gif?raw=true" width="100"></p>
 
-DROP Measure Continuous implements the R<sup>1</sup> R<sup>d</sup> Continuous Random Measure.
+DROP Measure Distribution implements the R<sup>1</sup> R<sup>d</sup> Continuous Random Measure.
 
 
 ## Class Components
 
- * [***I1UniformDistribution***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/distribution/I1UniformDistribution.java)
- <i>I1UniformDistribution</i> implements the Univariate Bounded Uniform Integer Distribution, with the Integer being generated between a (n inclusive) lower and an upper Bound.
-
- * [***MetaRd***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/distribution/MetaRd.java)
- <i>MetaRd</i> holds a Group of Variable Names - each of which separately is a Valid Single R<sup>1</sup>/R<sup>d</sup> Variable.
-
- * [***MetaRdContinuous***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/distribution/MetaRdContinuous.java)
- <i>MetaRdContinuous</i> contains the Generalized R<sup>1</sup> Multivariate Distributions.
+ * [***I1ContinuousUniform***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/distribution/I1ContinuousUniform.java)
+ <i>I1ContinuousUniform</i> implements the Univariate Bounded Uniform Integer Distribution, with the Integer being generated between a (n inclusive) lower and an upper Bound.
 
  * [***R1Continuous***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/distribution/R1Continuous.java)
  <i>R1Continuous</i> exposes the Base Abstract Class behind continuous R<sup>1</sup> Distributions. It exports the Methods for incremental, cumulative, and inverse cumulative distribution densities.

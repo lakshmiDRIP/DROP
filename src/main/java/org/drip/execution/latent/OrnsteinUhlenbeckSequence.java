@@ -122,7 +122,7 @@ public class OrnsteinUhlenbeckSequence {
 	private int _iCount = 0;
 	private org.drip.execution.latent.MarketState[] _aMS = null;
 	private double _dblGenerationInterval = java.lang.Double.NaN;
-	private org.drip.measure.process.OrnsteinUhlenbeck _ou = null;
+	private org.drip.measure.dynamics.OrnsteinUhlenbeck _ou = null;
 
 	/**
 	 * Construct a Standard Systemic Instance of OrnsteinUhlenbeckSequence
@@ -152,7 +152,7 @@ public class OrnsteinUhlenbeckSequence {
 		try {
 			aMSS[0] = new org.drip.execution.latent.MarketStateSystemic (dblInitialMarketState);
 
-			org.drip.measure.process.DiffusionEvolver de = new org.drip.measure.process.DiffusionEvolver
+			org.drip.measure.realization.DiffusionEvolver de = new org.drip.measure.realization.DiffusionEvolver
 				(deou);
 
 			for (int i = 0; i < iCount - 1; ++i) {
@@ -187,7 +187,7 @@ public class OrnsteinUhlenbeckSequence {
 	 */
 
 	public static final OrnsteinUhlenbeckSequence Correlated (
-		final org.drip.measure.process.OrnsteinUhlenbeckPair oup2D,
+		final org.drip.measure.dynamics.OrnsteinUhlenbeckPair oup2D,
 		final double dblGenerationInterval,
 		final double dblInitialLiquidityMarketState,
 		final double dblInitialVolatilityMarketState,
@@ -224,7 +224,7 @@ public class OrnsteinUhlenbeckSequence {
 	}
 
 	private OrnsteinUhlenbeckSequence (
-		final org.drip.measure.process.OrnsteinUhlenbeck ou,
+		final org.drip.measure.dynamics.OrnsteinUhlenbeck ou,
 		final org.drip.execution.latent.MarketState[] aMS,
 		final double dblGenerationInterval)
 	{
@@ -273,7 +273,7 @@ public class OrnsteinUhlenbeckSequence {
 	 * @return The Ornstein-Uhlenbeck Generator Scheme Parameters
 	 */
 
-	public org.drip.measure.process.OrnsteinUhlenbeck scheme()
+	public org.drip.measure.dynamics.OrnsteinUhlenbeck scheme()
 	{
 		return _ou;
 	}

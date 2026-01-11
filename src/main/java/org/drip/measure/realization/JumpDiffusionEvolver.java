@@ -1,8 +1,9 @@
 
-package org.drip.measure.identifier;
+package org.drip.measure.realization;
 
-import java.util.List;
-
+import org.drip.measure.dynamics.DiffusionEvaluator;
+import org.drip.measure.dynamics.HazardJumpEvaluator;
+import org.drip.measure.dynamics.LocalEvaluator;
 import org.drip.numerical.common.NumberUtil;
 
 /*
@@ -22,6 +23,8 @@ import org.drip.numerical.common.NumberUtil;
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
  * Copyright (C) 2019 Lakshmi Krishnamurthy
+ * Copyright (C) 2018 Lakshmi Krishnamurthy
+ * Copyright (C) 2017 Lakshmi Krishnamurthy
  * 
  *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
  *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
@@ -89,41 +92,13 @@ import org.drip.numerical.common.NumberUtil;
  */
 
 /**
- * <i>LabelledVertexRd</i> holds the Labeled R<sup>d</sup> Multi-Factor Latent State Vertex Realizations. The
- * 	References are:
- * 
- * <br><br>
- * 	<ul>
- * 		<li>
- *  		Andersen, L. B. G., M. Pykhtin, and A. Sokol (2017): Credit Exposure in the Presence of Initial
- *  			Margin https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2806156 <b>eSSRN</b>
- * 		</li>
- * 		<li>
- *  		Albanese, C., S. Caenazzo, and O. Frankel (2017): Regression Sensitivities for Initial Margin
- *  			Calculations https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2763488 <b>eSSRN</b>
- * 		</li>
- * 		<li>
- *  		Anfuso, F., D. Aziz, P. Giltinan, and K. Loukopoulus (2017): A Sound Modeling and Back-testing
- *  			Framework for Forecasting Initial Margin Requirements
- *  			https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2716279 <b>eSSRN</b>
- * 		</li>
- * 		<li>
- *  		Caspers, P., P. Giltinan, R. Lichters, and N. Nowaczyk (2017): Forecasting Initial Margin
- *  			Requirements - A Model Evaluation https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2911167
- *  			<b>eSSRN</b>
- * 		</li>
- * 		<li>
- *  		International Swaps and Derivatives Association (2017): SIMM v2.0 Methodology
- *  			https://www.isda.org/a/oFiDE/isda-simm-v2.pdf
- * 		</li>
- * 	</ul>
- *
- * 	It provides the following Functionality:
+ * <i>JumpDiffusionEvolver</i> implements the Functionality that guides the Single Factor R<sup>1</sup> Jump
+ * 	Diffusion Random Process Variable Evolution. It provides the following Functionality:
  *
  *  <ul>
- * 		<li><i>LabelledVertexRd</i> Constructor</li>
- * 		<li>Retrieve the Vertex R<sup>d</sup> Values</li>
- * 		<li>Retrieve the Vertex R<sup>1</sup> Array for the Specified Label</li>
+ * 		<li><i>JumpDiffusionEvolver</i> Constructor</li>
+ * 		<li>Retrieve the Hazard Point Event Indicator Instance</li>
+ * 		<li>Generate the <i>JumpDiffusionEdge</i> Instance from the specified Jump Diffusion Instance</li>
  *  </ul>
  *
  *	<br>
@@ -131,91 +106,133 @@ import org.drip.numerical.common.NumberUtil;
  *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
  *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md">Numerical Analysis Library</a></td></tr>
  *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/README.md">R<sup>d</sup> Continuous/Discrete Probability Measures</a></td></tr>
- *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/identifier/README.md">Labels for Latent State Identifiers</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/realization/README.md">Stochastic Jump Diffusion Vertex Edge</a></td></tr>
  *  </table>
  *	<br>
- * 
+ *
  * @author Lakshmi Krishnamurthy
  */
 
-public class LabelledVertexRd
-	extends LabelledVertex
+public class JumpDiffusionEvolver
+	extends DiffusionEvolver
 {
-	private double[][] _realizationGrid = null;
+	private HazardJumpEvaluator _eventIndicationEvaluator = null;
 
 	/**
-	 * <i>LabelledVertexRd</i> Constructor
+	 * <i>JumpDiffusionEvolver</i> Constructor
 	 * 
-	 * @param labelList The List of Labels
-	 * @param realizationGrid The R<sup>d</sup> Vertex Realizations
+	 * @param diffusionEvaluator The Diffusion Evaluator Instance
+	 * @param eventIndicationEvaluator The Hazard Point Event Indicator Function Instance
 	 * 
 	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
-	public LabelledVertexRd (
-		final List<String> labelList,
-		final double[][] realizationGrid)
+	public JumpDiffusionEvolver (
+		final DiffusionEvaluator diffusionEvaluator,
+		final HazardJumpEvaluator eventIndicationEvaluator)
 		throws Exception
 	{
-		super (labelList);
+		super (diffusionEvaluator);
 
-		if (null == (_realizationGrid = realizationGrid)) {
-			throw new Exception ("LabelledVertexRd Constructor => Invalid Inputs");
-		}
-
-		int labelCount = labelList.size();
-
-		if (null == _realizationGrid[0] || labelCount != _realizationGrid[0].length) {
-			throw new Exception ("LabelledVertexRd Constructor => Invalid Inputs");
-		}
-
-		int vertexCount = _realizationGrid.length;
-
-		for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex) {
-			if (null == _realizationGrid[vertexIndex] ||
-				labelCount != _realizationGrid[vertexIndex].length ||
-				!NumberUtil.IsValid (_realizationGrid[vertexIndex]))
-			{
-				throw new Exception ("LabelledVertexRd Constructor => Invalid Inputs");
-			}
+		if (null == (_eventIndicationEvaluator = eventIndicationEvaluator)) {
+			throw new Exception ("JumpDiffusionEvolver Constructor => Invalid Inputs");
 		}
 	}
 
 	/**
-	 * Retrieve the Vertex R<sup>d</sup> Values
+	 * Retrieve the Hazard Point Event Indicator Instance
 	 * 
-	 * @return The Vertex R<sup>d</sup> Values
+	 * @return The Hazard Point Event Indicator Instance
 	 */
 
-	public double[][] realizationGrid()
+	public HazardJumpEvaluator eventIndicationEvaluator()
 	{
-		return _realizationGrid;
+		return _eventIndicationEvaluator;
 	}
 
 	/**
-	 * Retrieve the Vertex R<sup>1</sup> Array for the Specified Label
+	 * Generate the <i>JumpDiffusionEdge</i> Instance from the specified Jump Diffusion Instance
 	 * 
-	 * @param label The Label
+	 * @param jumpDiffusionVertex The <i>JumpDiffusionVertex</i> Instance
+	 * @param jumpDiffusionEdgeUnit The Random Unit Realization
+	 * @param timeIncrement The Time Increment Evolution Unit
 	 * 
-	 * @return The Vertex R<sup>1</sup> Array
+	 * @return The <i>JumpDiffusionEdge</i> Instance
 	 */
 
-	public double[] vertexR1 (
-		final String label)
+	@Override public JumpDiffusionEdge increment (
+		final JumpDiffusionVertex jumpDiffusionVertex,
+		final JumpDiffusionEdgeUnit jumpDiffusionEdgeUnit,
+		final double timeIncrement)
 	{
-		if (null == label || !_idList.contains (label)) {
+		if (null == jumpDiffusionVertex ||
+			null == jumpDiffusionEdgeUnit ||
+			!NumberUtil.IsValid (timeIncrement))
+		{
 			return null;
 		}
 
-		int vertexCount = _realizationGrid.length;
-		double[] vertexR1 = new double[vertexCount];
+		double previousValue = jumpDiffusionVertex.value();
 
-		int labelIndex = _idMap.get (label);
+		try {
+			if (jumpDiffusionVertex.jumpOccurred()) {
+				return JumpDiffusionEdge.Standard (
+					previousValue,
+					0.,
+					0.,
+					new StochasticEdgeJump (false, 0., 0., previousValue),
+					jumpDiffusionEdgeUnit
+				);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
 
-		for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex) {
-			vertexR1[vertexIndex] = _realizationGrid[vertexIndex][labelIndex];
+			return null;
 		}
 
-		return vertexR1;
+		double hazardRate = _eventIndicationEvaluator.rate();
+
+		DiffusionEvaluator diffusionEvaluator = evaluator();
+
+		double levelHazardIntegral = hazardRate * timeIncrement;
+
+		boolean eventOccurred = Math.exp (
+			-1. * (jumpDiffusionVertex.cumulativeHazardIntegral() + levelHazardIntegral)
+		) <= jumpDiffusionEdgeUnit.jump();
+
+		try {
+			StochasticEdgeJump stochasticEdgeJump = new StochasticEdgeJump (
+				eventOccurred,
+				hazardRate,
+				levelHazardIntegral,
+				_eventIndicationEvaluator.magnitudeEvaluator().value (jumpDiffusionVertex)
+			);
+
+			if (eventOccurred) {
+				return JumpDiffusionEdge.Standard (
+					previousValue,
+					0.,
+					0.,
+					stochasticEdgeJump,
+					jumpDiffusionEdgeUnit
+				);
+			}
+
+			LocalEvaluator localVolatilityEvaluator = diffusionEvaluator.localVolatilityEvaluator();
+
+			return JumpDiffusionEdge.Standard (
+				previousValue,
+				diffusionEvaluator.localDriftEvaluator().value (jumpDiffusionVertex) * timeIncrement,
+				null == localVolatilityEvaluator ? 0. : localVolatilityEvaluator.value (
+					jumpDiffusionVertex
+				) * jumpDiffusionEdgeUnit.diffusion() * Math.sqrt (Math.abs (timeIncrement)),
+				stochasticEdgeJump,
+				jumpDiffusionEdgeUnit
+			);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return null;
 	}
 }

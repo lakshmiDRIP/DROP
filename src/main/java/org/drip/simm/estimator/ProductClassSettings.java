@@ -3,7 +3,7 @@ package org.drip.simm.estimator;
 
 import java.util.List;
 
-import org.drip.measure.identifier.LabelledVertexCorrelation;
+import org.drip.measure.state.LabelledRdCorrelation;
 import org.drip.simm.common.CrossRiskClassCorrelation20;
 import org.drip.simm.common.CrossRiskClassCorrelation21;
 import org.drip.simm.parameters.RiskClassSensitivitySettings;
@@ -149,7 +149,7 @@ import org.drip.simm.parameters.RiskClassSensitivitySettingsIR;
 
 public class ProductClassSettings
 {
-	private LabelledVertexCorrelation _labelCorrelation = null;
+	private LabelledRdCorrelation _labelCorrelation = null;
 	private RiskClassSensitivitySettings _fxRiskClassSensitivitySettings = null;
 	private RiskClassSensitivitySettingsIR _irRiskClassSensitivitySettings = null;
 	private RiskClassSensitivitySettings _equityRiskClassSensitivitySettings = null;
@@ -277,7 +277,7 @@ public class ProductClassSettings
 		final RiskClassSensitivitySettingsIR irRiskClassSensitivitySettings,
 		final RiskClassSensitivitySettingsCR creditQualifyingRiskClassSensitivitySettings,
 		final RiskClassSensitivitySettingsCR creditNonQualifyingRiskClassSensitivitySettings,
-		final LabelledVertexCorrelation labelCorrelation)
+		final LabelledRdCorrelation labelCorrelation)
 		throws Exception
 	{
 		if (
@@ -369,7 +369,7 @@ public class ProductClassSettings
 	 * @return The Cross Risk Class Label Correlation
 	 */
 
-	public LabelledVertexCorrelation labelCorrelation()
+	public LabelledRdCorrelation labelCorrelation()
 	{
 		return _labelCorrelation;
 	}

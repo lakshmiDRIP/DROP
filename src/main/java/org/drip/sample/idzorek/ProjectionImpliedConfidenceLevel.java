@@ -2,8 +2,8 @@
 package org.drip.sample.idzorek;
 
 import org.drip.measure.bayesian.ViewLoading;
-import org.drip.measure.distribution.MetaRd;
 import org.drip.measure.gaussian.*;
+import org.drip.measure.state.LabelledRd;
 import org.drip.portfolioconstruction.allocator.ForwardReverseHoldingsAllocation;
 import org.drip.portfolioconstruction.asset.Portfolio;
 import org.drip.portfolioconstruction.bayesian.*;
@@ -235,7 +235,7 @@ public class ProjectionImpliedConfidenceLevel
 		};
 
 		R1MultivariateNormal viewDistribution = R1MultivariateNormal.Standard (
-			new MetaRd (
+			LabelledRd.FromArray (
 				new String[] {
 					"PROJECTION #1",
 					"PROJECTION #2",

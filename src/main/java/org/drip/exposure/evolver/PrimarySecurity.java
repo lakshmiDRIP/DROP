@@ -139,7 +139,7 @@ public class PrimarySecurity extends org.drip.exposure.evolver.TerminalLatentSta
 	public PrimarySecurity (
 		final java.lang.String id,
 		final org.drip.state.identifier.LatentStateLabel label,
-		final org.drip.measure.process.DiffusionEvolver evolver,
+		final org.drip.measure.realization.DiffusionEvolver evolver,
 		final double repoRate)
 		throws java.lang.Exception
 	{

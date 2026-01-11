@@ -138,7 +138,7 @@ public class Equity extends org.drip.exposure.evolver.PrimarySecurity
 	public Equity (
 		final java.lang.String id,
 		final org.drip.state.identifier.LatentStateLabel label,
-		final org.drip.measure.process.DiffusionEvolver evolver,
+		final org.drip.measure.realization.DiffusionEvolver evolver,
 		final double dblRepoRate,
 		final double dividendRate)
 		throws java.lang.Exception

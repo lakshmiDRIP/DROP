@@ -201,7 +201,7 @@ public class EntityDynamicsContainer extends org.drip.exposure.evolver.DynamicsC
 	 * @return The Dealer Hazard Rate Evolver
 	 */
 
-	public org.drip.measure.process.DiffusionEvolver dealerHazardRateEvolver()
+	public org.drip.measure.realization.DiffusionEvolver dealerHazardRateEvolver()
 	{
 		return terminalLatentStateContainer().entityHazard (_dealerHazardLabel).evolver();
 	}
@@ -212,7 +212,7 @@ public class EntityDynamicsContainer extends org.drip.exposure.evolver.DynamicsC
 	 * @return The Dealer Senior Recovery Rate Evolver
 	 */
 
-	public org.drip.measure.process.DiffusionEvolver dealerSeniorRecoveryRateEvolver()
+	public org.drip.measure.realization.DiffusionEvolver dealerSeniorRecoveryRateEvolver()
 	{
 		return terminalLatentStateContainer().entityRecovery (_dealerSeniorRecoveryLabel).evolver();
 	}
@@ -223,7 +223,7 @@ public class EntityDynamicsContainer extends org.drip.exposure.evolver.DynamicsC
 	 * @return The Dealer Subordinate Recovery Rate Evolver
 	 */
 
-	public org.drip.measure.process.DiffusionEvolver dealerSubordinateRecoveryRateEvolver()
+	public org.drip.measure.realization.DiffusionEvolver dealerSubordinateRecoveryRateEvolver()
 	{
 		org.drip.exposure.evolver.TerminalLatentState terminalLatentStateDealerSubordinateRecovery =
 			terminalLatentStateContainer().entityRecovery (_dealerSubordinateRecoveryLabel);
@@ -238,7 +238,7 @@ public class EntityDynamicsContainer extends org.drip.exposure.evolver.DynamicsC
 	 * @return The Client Hazard Rate Evolver
 	 */
 
-	public org.drip.measure.process.DiffusionEvolver clientHazardRateEvolver()
+	public org.drip.measure.realization.DiffusionEvolver clientHazardRateEvolver()
 	{
 		return terminalLatentStateContainer().entityHazard (_clientHazardLabel).evolver();
 	}
@@ -249,7 +249,7 @@ public class EntityDynamicsContainer extends org.drip.exposure.evolver.DynamicsC
 	 * @return The Client Recovery Rate Evolver
 	 */
 
-	public org.drip.measure.process.DiffusionEvolver clientRecoveryRateEvolver()
+	public org.drip.measure.realization.DiffusionEvolver clientRecoveryRateEvolver()
 	{
 		return terminalLatentStateContainer().entityRecovery (_clientRecoveryLabel).evolver();
 	}

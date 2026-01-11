@@ -249,7 +249,7 @@ public class BlackLittermanCombinationEngine
 		org.drip.portfolioconstruction.allocator.ForwardReverseHoldingsAllocation
 			forwardReverseOptimizationOutputAdjusted =
 				org.drip.portfolioconstruction.allocator.ForwardReverseHoldingsAllocation.Forward (
-					_forwardReverseOptimizationOutputUnadjusted.optimalPortfolio().meta().names(),
+					_forwardReverseOptimizationOutputUnadjusted.optimalPortfolio().meta().idArray(),
 					_forwardReverseOptimizationOutputUnadjusted.expectedAssetExcessReturnsArray(),
 					assetBayesianExcessReturnsCovarianceMatrix,
 					_forwardReverseOptimizationOutputUnadjusted.riskAversion()
@@ -285,7 +285,7 @@ public class BlackLittermanCombinationEngine
 		double[][] assetExcessReturnsCovarianceMatrix =
 			_forwardReverseOptimizationOutputUnadjusted.assetExcessReturnsCovarianceMatrix();
 
-		org.drip.measure.distribution.MetaRd portfolioMeta =
+		org.drip.measure.state.LabelledRd portfolioMeta =
 			_forwardReverseOptimizationOutputUnadjusted.optimalPortfolio().meta();
 
 		org.drip.measure.bayesian.ScopingContainer scopingProjectionVariateDistribution =
@@ -312,12 +312,12 @@ public class BlackLittermanCombinationEngine
 			return null;
 		}
 
-		org.drip.measure.distribution.MetaRdContinuous r1mPosterior = jointPosteriorMetrics.posteriorDistribution();
+		org.drip.measure.state.LabelledRdContinuousDistribution r1mPosterior = jointPosteriorMetrics.posteriorDistribution();
 
 		org.drip.portfolioconstruction.allocator.ForwardReverseHoldingsAllocation
 			forwardReverseOptimizationOutputAdjusted =
 				org.drip.portfolioconstruction.allocator.ForwardReverseHoldingsAllocation.Forward (
-					portfolioMeta.names(),
+					portfolioMeta.idArray(),
 					r1mPosterior.mean(),
 					_priorControlSpecification.useAlternateReferenceModel() ?
 						assetExcessReturnsCovarianceMatrix :
@@ -357,7 +357,7 @@ public class BlackLittermanCombinationEngine
 
 	public org.drip.portfolioconstruction.bayesian.BlackLittermanOutput fullConfidenceRun()
 	{
-		org.drip.measure.distribution.MetaRd portfolioMeta =
+		org.drip.measure.state.LabelledRd portfolioMeta =
 			_forwardReverseOptimizationOutputUnadjusted.optimalPortfolio().meta();
 
 		double[][] assetExcessReturnsCovarianceMatrix =
@@ -365,7 +365,7 @@ public class BlackLittermanCombinationEngine
 
 		double riskAversion = _forwardReverseOptimizationOutputUnadjusted.riskAversion();
 
-		java.lang.String[] assetIDArray = portfolioMeta.names();
+		java.lang.String[] assetIDArray = portfolioMeta.idArray();
 
 		org.drip.measure.bayesian.ScopingContainer scopingProjectionVariateDistribution =
 			scopingProjectionVariateDistribution();
@@ -450,11 +450,11 @@ public class BlackLittermanCombinationEngine
 
 		boolean useAlternateReferenceModel = _priorControlSpecification.useAlternateReferenceModel();
 
-		org.drip.measure.distribution.MetaRd portfolioMeta = unadjustedPortfolio.meta();
+		org.drip.measure.state.LabelledRd portfolioMeta = unadjustedPortfolio.meta();
 
 		double riskAversion = _forwardReverseOptimizationOutputUnadjusted.riskAversion();
 
-		java.lang.String[] assetIDArray = portfolioMeta.names();
+		java.lang.String[] assetIDArray = portfolioMeta.idArray();
 
 		if (null == scopingProjectionVariateDistribution)
 		{
@@ -477,7 +477,7 @@ public class BlackLittermanCombinationEngine
 			return null;
 		}
 
-		org.drip.measure.distribution.MetaRdContinuous posteriorDistribution = jointPosteriorMetrics.posteriorDistribution();
+		org.drip.measure.state.LabelledRdContinuousDistribution posteriorDistribution = jointPosteriorMetrics.posteriorDistribution();
 
 		org.drip.portfolioconstruction.allocator.ForwardReverseHoldingsAllocation
 			forwardReverseOptimizationOutputCustomConfidence =
@@ -770,7 +770,7 @@ public class BlackLittermanCombinationEngine
 		org.drip.measure.gaussian.R1MultivariateNormal projectionDistribution =
 			org.drip.measure.gaussian.R1MultivariateNormal.Standard (
 				new java.lang.String[] {
-					totalExcessReturnsDistribution.meta().names()[projectionIndex]
+					totalExcessReturnsDistribution.stateLabels().idArray()[projectionIndex]
 				},
 				new double[] {
 					totalExcessReturnsDistribution.mean()[projectionIndex]

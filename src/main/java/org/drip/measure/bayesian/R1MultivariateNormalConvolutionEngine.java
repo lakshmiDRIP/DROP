@@ -1,10 +1,10 @@
 
 package org.drip.measure.bayesian;
 
-import org.drip.measure.distribution.MetaRd;
-import org.drip.measure.distribution.MetaRdContinuous;
 import org.drip.measure.gaussian.JointVariance;
 import org.drip.measure.gaussian.R1MultivariateNormal;
+import org.drip.measure.state.LabelledRd;
+import org.drip.measure.state.LabelledRdContinuousDistribution;
 import org.drip.numerical.linearalgebra.R1MatrixUtil;
 
 /*
@@ -138,9 +138,9 @@ public class R1MultivariateNormalConvolutionEngine
 	 */
 
 	@Override public R1MultivariateConvolutionMetrics process (
-		final MetaRdContinuous priorDistribution,
-		final MetaRdContinuous unconditionalDistribution,
-		final MetaRdContinuous conditionalDistribution)
+		final LabelledRdContinuousDistribution priorDistribution,
+		final LabelledRdContinuousDistribution unconditionalDistribution,
+		final LabelledRdContinuousDistribution conditionalDistribution)
 	{
 		if (null == priorDistribution || !(priorDistribution instanceof R1MultivariateNormal) ||
 			null == conditionalDistribution || !(conditionalDistribution instanceof R1MultivariateNormal) ||
@@ -209,7 +209,7 @@ public class R1MultivariateNormalConvolutionEngine
 		double[][] unconditionalCovarianceMatrix =
 			multivariateUnconditionalDistribution.covariance().covarianceMatrix();
 
-		MetaRd meta = multivariatePriorDistribution.meta();
+		LabelledRd meta = multivariatePriorDistribution.stateLabels();
 
 		for (int variateIndexI = 0; variateIndexI < conditionalPrecisionMatrix.length; ++variateIndexI) {
 			for (int variateIndexJ = 0; variateIndexJ < conditionalPrecisionMatrix.length; ++variateIndexJ) {

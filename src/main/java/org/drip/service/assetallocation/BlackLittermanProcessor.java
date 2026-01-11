@@ -2,9 +2,9 @@
 package org.drip.service.assetallocation;
 
 import org.drip.measure.bayesian.R1MultivariateConvolutionMetrics;
-import org.drip.measure.distribution.MetaRd;
-import org.drip.measure.distribution.MetaRdContinuous;
 import org.drip.measure.gaussian.R1MultivariateNormal;
+import org.drip.measure.state.LabelledRdContinuousDistribution;
+import org.drip.measure.state.LabelledRd;
 import org.drip.portfolioconstruction.allocator.ForwardReverseHoldingsAllocation;
 import org.drip.portfolioconstruction.asset.Portfolio;
 import org.drip.portfolioconstruction.bayesian.BlackLittermanCombinationEngine;
@@ -159,7 +159,7 @@ public class BlackLittermanProcessor
 			riskFreeRate = Converter.DoubleEntry (jsonParameter, "RiskFreeRate");
 
 			viewDistribution = R1MultivariateNormal.Standard (
-				new MetaRd (projectionNameArray),
+				LabelledRd.FromArray (projectionNameArray),
 				projectionExpectedExcessReturnsArray,
 				Converter.DualDoubleArrayEntry (jsonParameter, "ProjectionExcessReturnsCovariance")
 			);
@@ -192,11 +192,11 @@ public class BlackLittermanProcessor
 		R1MultivariateConvolutionMetrics jointPosteriorConvolutionMetrics =
 			blackLittermanCustomConfidenceOutput.jointPosteriorMetrics();
 
-		MetaRdContinuous priorMultivariate = jointPosteriorConvolutionMetrics.priorDistribution();
+		LabelledRdContinuousDistribution priorMultivariate = jointPosteriorConvolutionMetrics.priorDistribution();
 
-		MetaRdContinuous posteriorMultivariate = jointPosteriorConvolutionMetrics.posteriorDistribution();
+		LabelledRdContinuousDistribution posteriorMultivariate = jointPosteriorConvolutionMetrics.posteriorDistribution();
 
-		MetaRdContinuous jointPosteriorMultivariate = jointPosteriorConvolutionMetrics.jointDistribution();
+		LabelledRdContinuousDistribution jointPosteriorMultivariate = jointPosteriorConvolutionMetrics.jointDistribution();
 
 		if (null == priorMultivariate || !(priorMultivariate instanceof R1MultivariateNormal) ||
 			null == jointPosteriorMultivariate ||

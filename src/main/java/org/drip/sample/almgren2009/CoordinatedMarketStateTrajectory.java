@@ -3,7 +3,6 @@ package org.drip.sample.almgren2009;
 
 import org.drip.execution.tradingtime.*;
 import org.drip.measure.dynamics.DiffusionEvaluatorOrnsteinUhlenbeck;
-import org.drip.measure.process.DiffusionEvolver;
 import org.drip.measure.realization.*;
 import org.drip.service.common.FormatUtil;
 import org.drip.service.env.EnvManager;

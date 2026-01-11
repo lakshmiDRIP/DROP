@@ -2,7 +2,7 @@
 
 <p align="center"><img src="https://github.com/lakshmiDRIP/DROP/blob/master/DRIP_Logo.gif?raw=true" width="100"></p>
 
-DROP Measure Gaussian implements R<sup>1</sup> R<sup>d</sup> Covariant Gaussian Quadrature.
+DROP Measure Gaussian implements R<sup>1</sup> Covariant Gaussian Distributions.
 
 
 ## Class Components

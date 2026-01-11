@@ -3,7 +3,7 @@ package org.drip.simm.margin;
 
 import java.util.Map;
 
-import org.drip.measure.identifier.LabelledVertexCorrelation;
+import org.drip.measure.state.LabelledRdCorrelation;
 import org.drip.numerical.common.NumberUtil;
 import org.drip.simm.parameters.BucketSensitivitySettingsIR;
 
@@ -521,7 +521,7 @@ public class RiskFactorAggregateIR
 			);
 		}
 
-		LabelledVertexCorrelation tenorCorrelation = bucketSensitivitySettingsIR.crossTenorCorrelation();
+		LabelledRdCorrelation tenorCorrelation = bucketSensitivitySettingsIR.crossTenorCorrelation();
 
 		double linearMarginCovariance_OIS_OIS = 0.;
 
@@ -567,7 +567,7 @@ public class RiskFactorAggregateIR
 
 		double curvatureMarginCovariance_OIS_OIS = 0.;
 
-		LabelledVertexCorrelation tenorCorrelation = bucketSensitivitySettingsIR.crossTenorCorrelation();
+		LabelledRdCorrelation tenorCorrelation = bucketSensitivitySettingsIR.crossTenorCorrelation();
 
 		for (Map.Entry<String, Double> oisSensitivityMarginOuterEntry : _oisSensitivityMargin.entrySet()) {
 			String outerTenor = oisSensitivityMarginOuterEntry.getKey();
@@ -612,7 +612,7 @@ public class RiskFactorAggregateIR
 
 		double linearMarginCovariance_LIBOR1M_LIBOR1M = 0.;
 
-		LabelledVertexCorrelation tenorCorrelation = bucketSensitivitySettingsIR.crossTenorCorrelation();
+		LabelledRdCorrelation tenorCorrelation = bucketSensitivitySettingsIR.crossTenorCorrelation();
 
 		for (Map.Entry<String, Double> libor1MSensitivityMarginOuterEntry :
 			_libor1MSensitivityMargin.entrySet())
@@ -659,7 +659,7 @@ public class RiskFactorAggregateIR
 
 		double linearMarginCovariance_LIBOR1M_LIBOR1M = 0.;
 
-		LabelledVertexCorrelation tenorCorrelation = bucketSensitivitySettingsIR.crossTenorCorrelation();
+		LabelledRdCorrelation tenorCorrelation = bucketSensitivitySettingsIR.crossTenorCorrelation();
 
 		for (Map.Entry<String, Double> libor1MSensitivityMarginOuterEntry :
 			_libor1MSensitivityMargin.entrySet())
@@ -707,7 +707,7 @@ public class RiskFactorAggregateIR
 
 		double linearMarginCovariance_LIBOR3M_LIBOR3M = 0.;
 
-		LabelledVertexCorrelation tenorCorrelation = bucketSensitivitySettingsIR.crossTenorCorrelation();
+		LabelledRdCorrelation tenorCorrelation = bucketSensitivitySettingsIR.crossTenorCorrelation();
 
 		for (Map.Entry<String, Double> libor3MSensitivityMarginOuterEntry :
 			_libor3MSensitivityMargin.entrySet())
@@ -754,7 +754,7 @@ public class RiskFactorAggregateIR
 
 		double curvatureMarginCovariance_LIBOR3M_LIBOR3M = 0.;
 
-		LabelledVertexCorrelation tenorCorrelation = bucketSensitivitySettingsIR.crossTenorCorrelation();
+		LabelledRdCorrelation tenorCorrelation = bucketSensitivitySettingsIR.crossTenorCorrelation();
 
 		for (Map.Entry<String, Double> libor3MSensitivityMarginOuterEntry :
 			_libor3MSensitivityMargin.entrySet())
@@ -802,7 +802,7 @@ public class RiskFactorAggregateIR
 
 		double linearMarginCovariance_LIBOR6M_LIBOR6M = 0.;
 
-		LabelledVertexCorrelation tenorCorrelation = bucketSensitivitySettingsIR.crossTenorCorrelation();
+		LabelledRdCorrelation tenorCorrelation = bucketSensitivitySettingsIR.crossTenorCorrelation();
 
 		for (Map.Entry<String, Double> libor6MSensitivityMarginOuterEntry :
 			_libor6MSensitivityMargin.entrySet())
@@ -849,7 +849,7 @@ public class RiskFactorAggregateIR
 
 		double curvatureMarginCovariance_LIBOR6M_LIBOR6M = 0.;
 
-		LabelledVertexCorrelation tenorCorrelation = bucketSensitivitySettingsIR.crossTenorCorrelation();
+		LabelledRdCorrelation tenorCorrelation = bucketSensitivitySettingsIR.crossTenorCorrelation();
 
 		for (Map.Entry<String, Double> libor6MSensitivityMarginOuterEntry :
 			_libor6MSensitivityMargin.entrySet())
@@ -897,7 +897,7 @@ public class RiskFactorAggregateIR
 
 		double linearMarginCovariance_LIBOR12M_LIBOR12M = 0.;
 
-		LabelledVertexCorrelation tenorCorrelation = bucketSensitivitySettingsIR.crossTenorCorrelation();
+		LabelledRdCorrelation tenorCorrelation = bucketSensitivitySettingsIR.crossTenorCorrelation();
 
 		for (Map.Entry<String, Double> libor12MSensitivityMarginOuterEntry :
 			_libor12MSensitivityMargin.entrySet())
@@ -944,7 +944,7 @@ public class RiskFactorAggregateIR
 
 		double curvatureMarginCovariance_LIBOR12M_LIBOR12M = 0.;
 
-		LabelledVertexCorrelation tenorCorrelation = bucketSensitivitySettingsIR.crossTenorCorrelation();
+		LabelledRdCorrelation tenorCorrelation = bucketSensitivitySettingsIR.crossTenorCorrelation();
 
 		for (Map.Entry<String, Double> libor12MSensitivityMarginOuterEntry :
 			_libor12MSensitivityMargin.entrySet())
@@ -992,7 +992,7 @@ public class RiskFactorAggregateIR
 
 		double linearMarginCovariance_PRIME_PRIME = 0.;
 
-		LabelledVertexCorrelation tenorCorrelation = bucketSensitivitySettingsIR.crossTenorCorrelation();
+		LabelledRdCorrelation tenorCorrelation = bucketSensitivitySettingsIR.crossTenorCorrelation();
 
 		for (Map.Entry<String, Double> primeSensitivityMarginOuterEntry :
 			_primeSensitivityMargin.entrySet())
@@ -1039,7 +1039,7 @@ public class RiskFactorAggregateIR
 
 		double curvatureMarginCovariance_PRIME_PRIME = 0.;
 
-		LabelledVertexCorrelation tenorCorrelation = bucketSensitivitySettingsIR.crossTenorCorrelation();
+		LabelledRdCorrelation tenorCorrelation = bucketSensitivitySettingsIR.crossTenorCorrelation();
 
 		for (Map.Entry<String, Double> primeSensitivityMarginOuterEntry :
 			_primeSensitivityMargin.entrySet())
@@ -1087,7 +1087,7 @@ public class RiskFactorAggregateIR
 
 		double linearMarginCovariance_MUNICIPAL_MUNICIPAL = 0.;
 
-		LabelledVertexCorrelation tenorCorrelation = bucketSensitivitySettingsIR.crossTenorCorrelation();
+		LabelledRdCorrelation tenorCorrelation = bucketSensitivitySettingsIR.crossTenorCorrelation();
 
 		for (Map.Entry<String, Double> municipalSensitivityMarginOuterEntry :
 			_municipalSensitivityMargin.entrySet())
@@ -1134,7 +1134,7 @@ public class RiskFactorAggregateIR
 
 		double curvatureMarginCovariance_MUNICIPAL_MUNICIPAL = 0.;
 
-		LabelledVertexCorrelation tenorCorrelation = bucketSensitivitySettingsIR.crossTenorCorrelation();
+		LabelledRdCorrelation tenorCorrelation = bucketSensitivitySettingsIR.crossTenorCorrelation();
 
 		for (Map.Entry<String, Double> municipalSensitivityMarginOuterEntry :
 			_municipalSensitivityMargin.entrySet())
@@ -1182,7 +1182,7 @@ public class RiskFactorAggregateIR
 
 		double linearMarginCovariance_OIS_LIBOR1M = 0.;
 
-		LabelledVertexCorrelation tenorCorrelation = bucketSensitivitySettingsIR.crossTenorCorrelation();
+		LabelledRdCorrelation tenorCorrelation = bucketSensitivitySettingsIR.crossTenorCorrelation();
 
 		for (Map.Entry<String, Double> oisSensitivityMarginEntry :
 			_oisSensitivityMargin.entrySet())
@@ -1229,7 +1229,7 @@ public class RiskFactorAggregateIR
 
 		double curvatureMarginCovariance_OIS_LIBOR1M = 0.;
 
-		LabelledVertexCorrelation tenorCorrelation = bucketSensitivitySettingsIR.crossTenorCorrelation();
+		LabelledRdCorrelation tenorCorrelation = bucketSensitivitySettingsIR.crossTenorCorrelation();
 
 		for (Map.Entry<String, Double> oisSensitivityMarginEntry : _oisSensitivityMargin.entrySet()) {
 			String oisTenor = oisSensitivityMarginEntry.getKey();
@@ -1275,7 +1275,7 @@ public class RiskFactorAggregateIR
 
 		double linearMarginCovariance_OIS_LIBOR3M = 0.;
 
-		LabelledVertexCorrelation tenorCorrelation = bucketSensitivitySettingsIR.crossTenorCorrelation();
+		LabelledRdCorrelation tenorCorrelation = bucketSensitivitySettingsIR.crossTenorCorrelation();
 
 		for (Map.Entry<String, Double> oisSensitivityMarginEntry :
 			_oisSensitivityMargin.entrySet())
@@ -1322,7 +1322,7 @@ public class RiskFactorAggregateIR
 
 		double curvatureMarginCovariance_OIS_LIBOR3M = 0.;
 
-		LabelledVertexCorrelation tenorCorrelation = bucketSensitivitySettingsIR.crossTenorCorrelation();
+		LabelledRdCorrelation tenorCorrelation = bucketSensitivitySettingsIR.crossTenorCorrelation();
 
 		for (Map.Entry<String, Double> oisSensitivityMarginEntry :
 			_oisSensitivityMargin.entrySet())
@@ -1370,7 +1370,7 @@ public class RiskFactorAggregateIR
 
 		double linearMarginCovariance_OIS_LIBOR6M = 0.;
 
-		LabelledVertexCorrelation tenorCorrelation = bucketSensitivitySettingsIR.crossTenorCorrelation();
+		LabelledRdCorrelation tenorCorrelation = bucketSensitivitySettingsIR.crossTenorCorrelation();
 
 		for (Map.Entry<String, Double> oisSensitivityMarginEntry :
 			_oisSensitivityMargin.entrySet())
@@ -1417,7 +1417,7 @@ public class RiskFactorAggregateIR
 
 		double curvatureMarginCovariance_OIS_LIBOR6M = 0.;
 
-		LabelledVertexCorrelation tenorCorrelation = bucketSensitivitySettingsIR.crossTenorCorrelation();
+		LabelledRdCorrelation tenorCorrelation = bucketSensitivitySettingsIR.crossTenorCorrelation();
 
 		for (Map.Entry<String, Double> oisSensitivityMarginEntry :
 			_oisSensitivityMargin.entrySet())
@@ -1465,7 +1465,7 @@ public class RiskFactorAggregateIR
 
 		double linearMarginCovariance_OIS_LIBOR12M = 0.;
 
-		LabelledVertexCorrelation tenorCorrelation = bucketSensitivitySettingsIR.crossTenorCorrelation();
+		LabelledRdCorrelation tenorCorrelation = bucketSensitivitySettingsIR.crossTenorCorrelation();
 
 		for (Map.Entry<String, Double> oisSensitivityMarginEntry : _oisSensitivityMargin.entrySet()) {
 			double oisSensitivity = oisSensitivityMarginEntry.getValue();
@@ -1510,7 +1510,7 @@ public class RiskFactorAggregateIR
 
 		double curvatureMarginCovariance_OIS_LIBOR12M = 0.;
 
-		LabelledVertexCorrelation tenorCorrelation = bucketSensitivitySettingsIR.crossTenorCorrelation();
+		LabelledRdCorrelation tenorCorrelation = bucketSensitivitySettingsIR.crossTenorCorrelation();
 
 		for (Map.Entry<String, Double> oisSensitivityMarginEntry : _oisSensitivityMargin.entrySet()) {
 			double oisSensitivity = oisSensitivityMarginEntry.getValue();
@@ -1556,7 +1556,7 @@ public class RiskFactorAggregateIR
 
 		double linearMarginCovariance_OIS_PRIME = 0.;
 
-		LabelledVertexCorrelation tenorCorrelation = bucketSensitivitySettingsIR.crossTenorCorrelation();
+		LabelledRdCorrelation tenorCorrelation = bucketSensitivitySettingsIR.crossTenorCorrelation();
 
 		for (Map.Entry<String, Double> oisSensitivityMarginEntry : _oisSensitivityMargin.entrySet()) {
 			double oisSensitivityMargin = oisSensitivityMarginEntry.getValue();
@@ -1599,7 +1599,7 @@ public class RiskFactorAggregateIR
 
 		double curvatureMarginCovariance_OIS_PRIME = 0.;
 
-		LabelledVertexCorrelation tenorCorrelation = bucketSensitivitySettingsIR.crossTenorCorrelation();
+		LabelledRdCorrelation tenorCorrelation = bucketSensitivitySettingsIR.crossTenorCorrelation();
 
 		for (Map.Entry<String, Double> oisSensitivityMarginEntry :_oisSensitivityMargin.entrySet()) {
 			double oisSensitivityMargin = oisSensitivityMarginEntry.getValue();
@@ -1644,7 +1644,7 @@ public class RiskFactorAggregateIR
 
 		double linearMarginCovariance_OIS_MUNICIPAL = 0.;
 
-		LabelledVertexCorrelation tenorCorrelation = bucketSensitivitySettingsIR.crossTenorCorrelation();
+		LabelledRdCorrelation tenorCorrelation = bucketSensitivitySettingsIR.crossTenorCorrelation();
 
 		for (Map.Entry<String, Double> oisSensitivityMarginEntry : _oisSensitivityMargin.entrySet()) {
 			double oisSensitivityMargin = oisSensitivityMarginEntry.getValue();
@@ -1690,7 +1690,7 @@ public class RiskFactorAggregateIR
 
 		double curvatureMarginCovariance_OIS_MUNICIPAL = 0.;
 
-		LabelledVertexCorrelation tenorCorrelation = bucketSensitivitySettingsIR.crossTenorCorrelation();
+		LabelledRdCorrelation tenorCorrelation = bucketSensitivitySettingsIR.crossTenorCorrelation();
 
 		for (Map.Entry<String, Double> oisSensitivityMarginEntry : _oisSensitivityMargin.entrySet()) {
 			String oisTenor = oisSensitivityMarginEntry.getKey();
@@ -1736,7 +1736,7 @@ public class RiskFactorAggregateIR
 
 		double linearMarginCovariance_LIBOR1M_LIBOR3M = 0.;
 
-		LabelledVertexCorrelation tenorCorrelation = bucketSensitivitySettingsIR.crossTenorCorrelation();
+		LabelledRdCorrelation tenorCorrelation = bucketSensitivitySettingsIR.crossTenorCorrelation();
 
 		for (Map.Entry<String, Double> libor1MSensitivityMarginEntry : _libor1MSensitivityMargin.entrySet())
 		{
@@ -1782,7 +1782,7 @@ public class RiskFactorAggregateIR
 
 		double curvatureMarginCovariance_LIBOR1M_LIBOR3M = 0.;
 
-		LabelledVertexCorrelation tenorCorrelation = bucketSensitivitySettingsIR.crossTenorCorrelation();
+		LabelledRdCorrelation tenorCorrelation = bucketSensitivitySettingsIR.crossTenorCorrelation();
 
 		for (Map.Entry<String, Double> libor1MSensitivityMarginEntry : _libor1MSensitivityMargin.entrySet())
 		{
@@ -1830,7 +1830,7 @@ public class RiskFactorAggregateIR
 
 		double linearMarginCovariance_LIBOR1M_LIBOR6M = 0.;
 
-		LabelledVertexCorrelation tenorCorrelation = bucketSensitivitySettingsIR.crossTenorCorrelation();
+		LabelledRdCorrelation tenorCorrelation = bucketSensitivitySettingsIR.crossTenorCorrelation();
 
 		for (Map.Entry<String, Double> libor1MSensitivityMarginEntry : _libor1MSensitivityMargin.entrySet())
 		{
@@ -1876,7 +1876,7 @@ public class RiskFactorAggregateIR
 
 		double curvatureMarginCovariance_LIBOR1M_LIBOR6M = 0.;
 
-		LabelledVertexCorrelation tenorCorrelation = bucketSensitivitySettingsIR.crossTenorCorrelation();
+		LabelledRdCorrelation tenorCorrelation = bucketSensitivitySettingsIR.crossTenorCorrelation();
 
 		for (Map.Entry<String, Double> libor1MSensitivityMarginEntry : _libor1MSensitivityMargin.entrySet())
 		{
@@ -1924,7 +1924,7 @@ public class RiskFactorAggregateIR
 
 		double linearMarginCovariance_LIBOR1M_LIBOR12M = 0.;
 
-		LabelledVertexCorrelation tenorCorrelation = bucketSensitivitySettingsIR.crossTenorCorrelation();
+		LabelledRdCorrelation tenorCorrelation = bucketSensitivitySettingsIR.crossTenorCorrelation();
 
 		for (Map.Entry<String, Double> libor1MSensitivityMarginEntry : _libor1MSensitivityMargin.entrySet())
 		{
@@ -1970,7 +1970,7 @@ public class RiskFactorAggregateIR
 
 		double curvatureMarginCovariance_LIBOR1M_LIBOR12M = 0.;
 
-		LabelledVertexCorrelation tenorCorrelation = bucketSensitivitySettingsIR.crossTenorCorrelation();
+		LabelledRdCorrelation tenorCorrelation = bucketSensitivitySettingsIR.crossTenorCorrelation();
 
 		for (Map.Entry<String, Double> libor1MSensitivityMarginEntry :
 			_libor1MSensitivityMargin.entrySet())
@@ -2019,7 +2019,7 @@ public class RiskFactorAggregateIR
 
 		double linearMarginCovariance_LIBOR1M_PRIME = 0.;
 
-		LabelledVertexCorrelation tenorCorrelation = bucketSensitivitySettingsIR.crossTenorCorrelation();
+		LabelledRdCorrelation tenorCorrelation = bucketSensitivitySettingsIR.crossTenorCorrelation();
 
 		for (Map.Entry<String, Double> libor1MSensitivityMarginEntry : _libor1MSensitivityMargin.entrySet())
 		{
@@ -2064,7 +2064,7 @@ public class RiskFactorAggregateIR
 
 		double curvatureMarginCovariance_LIBOR1M_PRIME = 0.;
 
-		LabelledVertexCorrelation tenorCorrelation = bucketSensitivitySettingsIR.crossTenorCorrelation();
+		LabelledRdCorrelation tenorCorrelation = bucketSensitivitySettingsIR.crossTenorCorrelation();
 
 		for (Map.Entry<String, Double> libor1MSensitivityMarginEntry : _libor1MSensitivityMargin.entrySet())
 		{
@@ -2111,7 +2111,7 @@ public class RiskFactorAggregateIR
 
 		double linearMarginCovariance_LIBOR1M_MUNICIPAL = 0.;
 
-		LabelledVertexCorrelation tenorCorrelation = bucketSensitivitySettingsIR.crossTenorCorrelation();
+		LabelledRdCorrelation tenorCorrelation = bucketSensitivitySettingsIR.crossTenorCorrelation();
 
 		for (Map.Entry<String, Double> libor1MSensitivityMarginEntry : _libor1MSensitivityMargin.entrySet())
 		{
@@ -2158,7 +2158,7 @@ public class RiskFactorAggregateIR
 
 		double curvatureMarginCovariance_LIBOR1M_MUNICIPAL = 0.;
 
-		LabelledVertexCorrelation tenorCorrelation = bucketSensitivitySettingsIR.crossTenorCorrelation();
+		LabelledRdCorrelation tenorCorrelation = bucketSensitivitySettingsIR.crossTenorCorrelation();
 
 		for (Map.Entry<String, Double> libor1MSensitivityMarginEntry : _libor1MSensitivityMargin.entrySet())
 		{
@@ -2206,7 +2206,7 @@ public class RiskFactorAggregateIR
 
 		double linearMarginCovariance_LIBOR3M_LIBOR6M = 0.;
 
-		LabelledVertexCorrelation tenorCorrelation = bucketSensitivitySettingsIR.crossTenorCorrelation();
+		LabelledRdCorrelation tenorCorrelation = bucketSensitivitySettingsIR.crossTenorCorrelation();
 
 		for (Map.Entry<String, Double> libor3MSensitivityMarginEntry : _libor3MSensitivityMargin.entrySet())
 		{
@@ -2252,7 +2252,7 @@ public class RiskFactorAggregateIR
 
 		double curvatureMarginCovariance_LIBOR3M_LIBOR6M = 0.;
 
-		LabelledVertexCorrelation tenorCorrelation = bucketSensitivitySettingsIR.crossTenorCorrelation();
+		LabelledRdCorrelation tenorCorrelation = bucketSensitivitySettingsIR.crossTenorCorrelation();
 
 		for (Map.Entry<String, Double> libor3MSensitivityMarginEntry : _libor3MSensitivityMargin.entrySet())
 		{
@@ -2300,7 +2300,7 @@ public class RiskFactorAggregateIR
 
 		double linearMarginCovariance_LIBOR3M_LIBOR12M = 0.;
 
-		LabelledVertexCorrelation tenorCorrelation = bucketSensitivitySettingsIR.crossTenorCorrelation();
+		LabelledRdCorrelation tenorCorrelation = bucketSensitivitySettingsIR.crossTenorCorrelation();
 
 		for (Map.Entry<String, Double> libor3MSensitivityMarginEntry : _libor3MSensitivityMargin.entrySet())
 		{
@@ -2346,7 +2346,7 @@ public class RiskFactorAggregateIR
 
 		double curvatureMarginCovariance_LIBOR3M_LIBOR12M = 0.;
 
-		LabelledVertexCorrelation tenorCorrelation = bucketSensitivitySettingsIR.crossTenorCorrelation();
+		LabelledRdCorrelation tenorCorrelation = bucketSensitivitySettingsIR.crossTenorCorrelation();
 
 		for (Map.Entry<String, Double> libor3MSensitivityMarginEntry : _libor3MSensitivityMargin.entrySet())
 		{
@@ -2394,7 +2394,7 @@ public class RiskFactorAggregateIR
 
 		double linearMarginCovariance_LIBOR3M_PRIME = 0.;
 
-		LabelledVertexCorrelation tenorCorrelation = bucketSensitivitySettingsIR.crossTenorCorrelation();
+		LabelledRdCorrelation tenorCorrelation = bucketSensitivitySettingsIR.crossTenorCorrelation();
 
 		for (Map.Entry<String, Double> libor3MSensitivityMarginEntry : _libor3MSensitivityMargin.entrySet())
 		{
@@ -2440,7 +2440,7 @@ public class RiskFactorAggregateIR
 
 		double curvatureMarginCovariance_LIBOR3M_PRIME = 0.;
 
-		LabelledVertexCorrelation tenorCorrelation = bucketSensitivitySettingsIR.crossTenorCorrelation();
+		LabelledRdCorrelation tenorCorrelation = bucketSensitivitySettingsIR.crossTenorCorrelation();
 
 		for (Map.Entry<String, Double> libor3MSensitivityMarginEntry : _libor3MSensitivityMargin.entrySet())
 		{
@@ -2487,7 +2487,7 @@ public class RiskFactorAggregateIR
 
 		double linearMarginCovariance_LIBOR3M_MUNICIPAL = 0.;
 
-		LabelledVertexCorrelation tenorCorrelation = bucketSensitivitySettingsIR.crossTenorCorrelation();
+		LabelledRdCorrelation tenorCorrelation = bucketSensitivitySettingsIR.crossTenorCorrelation();
 
 		for (Map.Entry<String, Double> libor3MSensitivityMarginEntry : _libor3MSensitivityMargin.entrySet())
 		{
@@ -2534,7 +2534,7 @@ public class RiskFactorAggregateIR
 
 		double curvatureMarginCovariance_LIBOR3M_MUNICIPAL = 0.;
 
-		LabelledVertexCorrelation tenorCorrelation = bucketSensitivitySettingsIR.crossTenorCorrelation();
+		LabelledRdCorrelation tenorCorrelation = bucketSensitivitySettingsIR.crossTenorCorrelation();
 
 		for (Map.Entry<String, Double> libor3MSensitivityMarginEntry : _libor3MSensitivityMargin.entrySet())
 		{
@@ -2582,7 +2582,7 @@ public class RiskFactorAggregateIR
 
 		double linearMarginCovariance_LIBOR6M_LIBOR12M = 0.;
 
-		LabelledVertexCorrelation tenorCorrelation = bucketSensitivitySettingsIR.crossTenorCorrelation();
+		LabelledRdCorrelation tenorCorrelation = bucketSensitivitySettingsIR.crossTenorCorrelation();
 
 		for (Map.Entry<String, Double> libor6MSensitivityMarginEntry : _libor6MSensitivityMargin.entrySet())
 		{
@@ -2628,7 +2628,7 @@ public class RiskFactorAggregateIR
 
 		double curvatureMarginCovariance_LIBOR6M_LIBOR12M = 0.;
 
-		LabelledVertexCorrelation tenorCorrelation = bucketSensitivitySettingsIR.crossTenorCorrelation();
+		LabelledRdCorrelation tenorCorrelation = bucketSensitivitySettingsIR.crossTenorCorrelation();
 
 		for (Map.Entry<String, Double> libor6MSensitivityMarginEntry : _libor6MSensitivityMargin.entrySet())
 		{
@@ -2676,7 +2676,7 @@ public class RiskFactorAggregateIR
 
 		double linearMarginCovariance_LIBOR6M_PRIME = 0.;
 
-		LabelledVertexCorrelation tenorCorrelation = bucketSensitivitySettingsIR.crossTenorCorrelation();
+		LabelledRdCorrelation tenorCorrelation = bucketSensitivitySettingsIR.crossTenorCorrelation();
 
 		for (Map.Entry<String, Double> libor6MSensitivityMarginEntry : _libor6MSensitivityMargin.entrySet())
 		{
@@ -2721,7 +2721,7 @@ public class RiskFactorAggregateIR
 
 		double curvatureMarginCovariance_LIBOR6M_PRIME = 0.;
 
-		LabelledVertexCorrelation tenorCorrelation = bucketSensitivitySettingsIR.crossTenorCorrelation();
+		LabelledRdCorrelation tenorCorrelation = bucketSensitivitySettingsIR.crossTenorCorrelation();
 
 		for (Map.Entry<String, Double> libor6MSensitivityMarginEntry : _libor6MSensitivityMargin.entrySet())
 		{
@@ -2767,7 +2767,7 @@ public class RiskFactorAggregateIR
 
 		double linearMarginCovariance_LIBOR6M_MUNICIPAL = 0.;
 
-		LabelledVertexCorrelation tenorCorrelation = bucketSensitivitySettingsIR.crossTenorCorrelation();
+		LabelledRdCorrelation tenorCorrelation = bucketSensitivitySettingsIR.crossTenorCorrelation();
 
 		for (Map.Entry<String, Double> libor6MSensitivityMarginEntry : _libor6MSensitivityMargin.entrySet())
 		{
@@ -2814,7 +2814,7 @@ public class RiskFactorAggregateIR
 
 		double curvatureMarginCovariance_LIBOR6M_MUNICIPAL = 0.;
 
-		LabelledVertexCorrelation tenorCorrelation = bucketSensitivitySettingsIR.crossTenorCorrelation();
+		LabelledRdCorrelation tenorCorrelation = bucketSensitivitySettingsIR.crossTenorCorrelation();
 
 		for (Map.Entry<String, Double> libor6MSensitivityMarginEntry : _libor6MSensitivityMargin.entrySet())
 		{
@@ -2862,7 +2862,7 @@ public class RiskFactorAggregateIR
 
 		double linearMarginCovariance_LIBOR12M_PRIME = 0.;
 
-		LabelledVertexCorrelation tenorCorrelation = bucketSensitivitySettingsIR.crossTenorCorrelation();
+		LabelledRdCorrelation tenorCorrelation = bucketSensitivitySettingsIR.crossTenorCorrelation();
 
 		for (Map.Entry<String, Double> libor12MSensitivityMarginEntry :
 			_libor12MSensitivityMargin.entrySet())
@@ -2908,7 +2908,7 @@ public class RiskFactorAggregateIR
 
 		double curvatureMarginCovariance_LIBOR12M_PRIME = 0.;
 
-		LabelledVertexCorrelation tenorCorrelation = bucketSensitivitySettingsIR.crossTenorCorrelation();
+		LabelledRdCorrelation tenorCorrelation = bucketSensitivitySettingsIR.crossTenorCorrelation();
 
 		for (Map.Entry<String, Double> libor12MSensitivityMarginEntry :
 			_libor12MSensitivityMargin.entrySet())
@@ -2956,7 +2956,7 @@ public class RiskFactorAggregateIR
 
 		double linearMarginCovariance_LIBOR12M_MUNICIPAL = 0.;
 
-		LabelledVertexCorrelation tenorCorrelation = bucketSensitivitySettingsIR.crossTenorCorrelation();
+		LabelledRdCorrelation tenorCorrelation = bucketSensitivitySettingsIR.crossTenorCorrelation();
 
 		for (Map.Entry<String, Double> libor12MSensitivityMarginEntry :
 			_libor12MSensitivityMargin.entrySet())
@@ -3004,7 +3004,7 @@ public class RiskFactorAggregateIR
 
 		double curvatureMarginCovariance_LIBOR12M_MUNICIPAL = 0.;
 
-		LabelledVertexCorrelation tenorCorrelation = bucketSensitivitySettingsIR.crossTenorCorrelation();
+		LabelledRdCorrelation tenorCorrelation = bucketSensitivitySettingsIR.crossTenorCorrelation();
 
 		for (Map.Entry<String, Double> libor12MSensitivityMarginEntry :
 			_libor12MSensitivityMargin.entrySet())
@@ -3053,7 +3053,7 @@ public class RiskFactorAggregateIR
 
 		double linearMarginCovariance_PRIME_MUNICIPAL = 0.;
 
-		LabelledVertexCorrelation tenorCorrelation = bucketSensitivitySettingsIR.crossTenorCorrelation();
+		LabelledRdCorrelation tenorCorrelation = bucketSensitivitySettingsIR.crossTenorCorrelation();
 
 		for (Map.Entry<String, Double> primeSensitivityMarginEntry : _primeSensitivityMargin.entrySet()) {
 			String primeTenor = primeSensitivityMarginEntry.getKey();
@@ -3098,7 +3098,7 @@ public class RiskFactorAggregateIR
 
 		double curvatureMarginCovariance_PRIME_MUNICIPAL = 0.;
 
-		LabelledVertexCorrelation tenorCorrelation = bucketSensitivitySettingsIR.crossTenorCorrelation();
+		LabelledRdCorrelation tenorCorrelation = bucketSensitivitySettingsIR.crossTenorCorrelation();
 
 		for (Map.Entry<String, Double> primeSensitivityMarginEntry : _primeSensitivityMargin.entrySet()) {
 			String primeTenor = primeSensitivityMarginEntry.getKey();

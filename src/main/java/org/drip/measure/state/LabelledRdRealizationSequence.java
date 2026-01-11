@@ -1,9 +1,8 @@
 
-package org.drip.measure.identifier;
+package org.drip.measure.state;
 
 import java.util.List;
 
-import org.drip.measure.gaussian.JointVariance;
 import org.drip.numerical.common.NumberUtil;
 
 /*
@@ -90,8 +89,8 @@ import org.drip.numerical.common.NumberUtil;
  */
 
 /**
- * <i>LabelledVertexCovariance</i> holds the Covariance between any Stochastic Variates identified by their
- * 	Labels, as well as their Means. The References are:
+ * <i>LabelledRdRealizationSequence</i> holds the Labeled R<sup>d</sup> Multi-Factor Latent State Vertex
+ * 	Realizations. The References are:
  * 
  * <br><br>
  * 	<ul>
@@ -122,14 +121,9 @@ import org.drip.numerical.common.NumberUtil;
  * 	It provides the following Functionality:
  *
  *  <ul>
- * 		<li><i>LabelledVertexCovariance</i> Constructor</li>
- * 		<li>Retrieve the Array of Variate Means</li>
- * 		<li>Retrieve the Array of Variate Volatilities</li>
- * 		<li>Retrieve the Correlation Matrix</li>
- * 		<li>Retrieve the Covariance Matrix</li>
- * 		<li>Retrieve the Precision Matrix</li>
- * 		<li>Retrieve the Mean of the Latent State</li>
- * 		<li>Retrieve the Volatility of the Latent State</li>
+ * 		<li><i>LabelledRdRealizationSequence</i> Constructor</li>
+ * 		<li>Retrieve the Vertex R<sup>d</sup> Values</li>
+ * 		<li>Retrieve the Vertex R<sup>1</sup> Array for the Specified Label</li>
  *  </ul>
  *
  *	<br>
@@ -137,163 +131,91 @@ import org.drip.numerical.common.NumberUtil;
  *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
  *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md">Numerical Analysis Library</a></td></tr>
  *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/README.md">R<sup>d</sup> Continuous/Discrete Probability Measures</a></td></tr>
- *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/identifier/README.md">Labels for Latent State Identifiers</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/state/README.md">Labels for Latent State Identifiers</a></td></tr>
  *  </table>
  *	<br>
  * 
  * @author Lakshmi Krishnamurthy
  */
 
-public class LabelledVertexCovariance
-	extends LabelledVertexCorrelation
+public class LabelledRdRealizationSequence
+	extends LabelledRd
 {
-	private double[] _meanArray = null;
-	private JointVariance _covariance = null;
-	private double[] _volatilityArray = null;
+	private double[][] _vertexValueArray = null;
 
 	/**
-	 * <i>LabelledVertexCovariance</i> Constructor
+	 * <i>LabelledRdRealizationSequence</i> Constructor
 	 * 
 	 * @param labelList The List of Labels
-	 * @param meanArray Array of Variate Means
-	 * @param volatilityArray Array of Variate Volatilities
-	 * @param correlationMatrix The Correlation Matrix
+	 * @param vertexValueArray The R<sup>d</sup> Vertex Realizations
 	 * 
 	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
-	public LabelledVertexCovariance (
+	public LabelledRdRealizationSequence (
 		final List<String> labelList,
-		final double[] meanArray,
-		final double[] volatilityArray,
-		final double[][] correlationMatrix)
+		final double[][] vertexValueArray)
 		throws Exception
 	{
-		super (labelList, correlationMatrix);
+		super (labelList);
 
-		if (null == (_meanArray = meanArray) || null == (_volatilityArray = volatilityArray)) {
-			throw new Exception ("LabelledVertexCovariance Constructor => Invalid Inputs");
+		if (null == (_vertexValueArray = vertexValueArray)) {
+			throw new Exception ("LabelledRdRealizationSequence Constructor => Invalid Inputs");
 		}
 
-		int variateCount = correlationMatrix.length;
-		double[][] covarianceMatrix = new double[variateCount][variateCount];
+		int labelCount = labelList.size();
 
-		if (variateCount != _meanArray.length || variateCount != _volatilityArray.length) {
-			throw new Exception ("LabelledVertexCovariance Constructor => Invalid Inputs");
+		if (null == _vertexValueArray[0] || labelCount != _vertexValueArray[0].length) {
+			throw new Exception ("LabelledRdRealizationSequence Constructor => Invalid Inputs");
 		}
 
-		for (int variateIndexI = 0; variateIndexI < variateCount; ++variateIndexI) {
-			if (!NumberUtil.IsValid (_meanArray[variateIndexI]) ||
-				!NumberUtil.IsValid (_volatilityArray[variateIndexI]) ||
-				0. > _volatilityArray[variateIndexI])
+		int vertexCount = _vertexValueArray.length;
+
+		for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex) {
+			if (null == _vertexValueArray[vertexIndex] ||
+				labelCount != _vertexValueArray[vertexIndex].length ||
+				!NumberUtil.IsValid (_vertexValueArray[vertexIndex]))
 			{
-				throw new Exception ("LabelledVertexCovariance Constructor => Invalid Inputs");
-			}
-
-			for (int variateIndexJ = 0; variateIndexJ < variateCount; ++variateIndexJ) {
-				covarianceMatrix[variateIndexI][variateIndexJ] =
-					correlationMatrix[variateIndexI][variateIndexJ] * _volatilityArray[variateIndexI] *
-					_volatilityArray[variateIndexJ];
+				throw new Exception ("LabelledRdRealizationSequence Constructor => Invalid Inputs");
 			}
 		}
-
-		_covariance = new JointVariance (covarianceMatrix);
 	}
 
 	/**
-	 * Retrieve the Array of Variate Means
+	 * Retrieve the Vertex R<sup>d</sup> Values
 	 * 
-	 * @return The Array of Variate Means
+	 * @return The Vertex R<sup>d</sup> Values
 	 */
 
-	public double[] meanArray()
+	public double[][] vertexValueArray()
 	{
-		return _meanArray;
+		return _vertexValueArray;
 	}
 
 	/**
-	 * Retrieve the Array of Variate Volatilities
+	 * Retrieve the Vertex R<sup>1</sup> Array for the Specified Label
 	 * 
-	 * @return The Array of Variate Volatilities
+	 * @param label The Label
+	 * 
+	 * @return The Vertex R<sup>1</sup> Array
 	 */
 
-	public double[] volatilityArray()
-	{
-		return _volatilityArray;
-	}
-
-	/**
-	 * Retrieve the Correlation Matrix
-	 * 
-	 * @return The Correlation Matrix
-	 */
-
-	public double[][] correlationMatrix()
-	{
-		return _matrix;
-	}
-
-	/**
-	 * Retrieve the Covariance Matrix
-	 * 
-	 * @return The Covariance Matrix
-	 */
-
-	public double[][] covarianceMatrix()
-	{
-		return _covariance.covarianceMatrix();
-	}
-
-	/**
-	 * Retrieve the Precision Matrix
-	 * 
-	 * @return The Precision Matrix
-	 */
-
-	public double[][] precisionMatrix()
-	{
-		return _covariance.precisionMatrix();
-	}
-
-	/**
-	 * Retrieve the Mean of the Latent State
-	 * 
-	 * @param label Latent State Label
-	 * 
-	 * @return Mean of the Latent State
-	 * 
-	 * @throws Exception Thrown if the Inputs are Invalid
-	 */
-
-	public double mean (
+	public double[] vertexR1 (
 		final String label)
-		throws Exception
 	{
 		if (null == label || !_idList.contains (label)) {
-			throw new Exception ("LabelledVertexCovariance::mean => Invalid Inputs");
+			return null;
 		}
 
-		return _meanArray[_idMap.get (label)];
-	}
+		int vertexCount = _vertexValueArray.length;
+		double[] vertexR1 = new double[vertexCount];
 
-	/**
-	 * Retrieve the Volatility of the Latent State
-	 * 
-	 * @param label Latent State Label
-	 * 
-	 * @return Volatility of the Latent State
-	 * 
-	 * @throws Exception Thrown if the Inputs are Invalid
-	 */
+		int labelIndex = _idMap.get (label);
 
-	public double volatility (
-		final String label)
-		throws Exception
-	{
-		if (null == label || !_idList.contains (label)) {
-			throw new Exception ("LabelledVertexCovariance::volatility => Invalid Inputs");
+		for (int vertexIndex = 0; vertexIndex < vertexCount; ++vertexIndex) {
+			vertexR1[vertexIndex] = _vertexValueArray[vertexIndex][labelIndex];
 		}
 
-		return _volatilityArray[_idMap.get (label)];
+		return vertexR1;
 	}
 }

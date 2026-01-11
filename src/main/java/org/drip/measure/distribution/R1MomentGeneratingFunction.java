@@ -11,16 +11,6 @@ package org.drip.measure.distribution;
  * Copyright (C) 2028 Lakshmi Krishnamurthy
  * Copyright (C) 2027 Lakshmi Krishnamurthy
  * Copyright (C) 2026 Lakshmi Krishnamurthy
- * Copyright (C) 2025 Lakshmi Krishnamurthy
- * Copyright (C) 2024 Lakshmi Krishnamurthy
- * Copyright (C) 2023 Lakshmi Krishnamurthy
- * Copyright (C) 2022 Lakshmi Krishnamurthy
- * Copyright (C) 2021 Lakshmi Krishnamurthy
- * Copyright (C) 2020 Lakshmi Krishnamurthy
- * Copyright (C) 2019 Lakshmi Krishnamurthy
- * Copyright (C) 2018 Lakshmi Krishnamurthy
- * Copyright (C) 2017 Lakshmi Krishnamurthy
- * Copyright (C) 2016 Lakshmi Krishnamurthy
  * 
  *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
  *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
@@ -88,14 +78,11 @@ package org.drip.measure.distribution;
  */
 
 /**
- * <i>MetaRd</i> holds a Group of Variable Names - each of which separately is a Valid Single
- * 	R<sup>1</sup>/R<sup>d</sup> Variable. It provides the following Functionality:
+ * <i>R1MomentGeneratingFunction</i> implements the <i>R1ToR1</i> Moment Generating Function. It provides the
+ * 	following Functionality:
  *
  *  <ul>
- * 		<li><i>MetaRd</i> Constructor</li>
- * 		<li>Retrieve the Number of Variate</li>
- * 		<li>Retrieve the Array of the Variate Names</li>
- * 		<li>Retrieve the Index of the Named Variate</li>
+ * 		<li>Construct a Univariate Bounded Uniform Integer Distribution</li>
  *  </ul>
  *
  *	<br>
@@ -110,82 +97,7 @@ package org.drip.measure.distribution;
  * @author Lakshmi Krishnamurthy
  */
 
-public class MetaRd
+public class R1MomentGeneratingFunction
 {
-	private String[] _nameArray = null;
 
-	/**
-	 * <i>MetaRd</i> Constructor
-	 * 
-	 * @param nameArray Array of the Variate Names
-	 * 
-	 * @throws Exception Thrown if the Inputs are Invalid
-	 */
-
-	public MetaRd (
-		final String[] nameArray)
-		throws Exception
-	{
-		if (null == (_nameArray = nameArray)) {
-			throw new Exception ("MetaRd Constructor => Invalid Inputs");
-		}
-
-		int variableCount = _nameArray.length;
-
-		if (0 >= variableCount) {
-			throw new Exception ("MetaRd Constructor => Invalid Inputs");
-		}
-
-		for (int variableIndex = 0; variableIndex < variableCount; ++variableIndex) {
-			if (null == _nameArray[variableIndex] || _nameArray[variableIndex].isEmpty()) {
-				throw new Exception ("MetaRd Constructor => Invalid Inputs");
-			}
-		}
-	}
-
-	/**
-	 * Retrieve the Number of Variate
-	 * 
-	 * @return The Number of Variate
-	 */
-
-	public int numVariable()
-	{
-		return _nameArray.length;
-	}
-
-	/**
-	 * Retrieve the Array of the Variate Names
-	 * 
-	 * @return The Array of the Variate Names
-	 */
-
-	public String[] names()
-	{
-		return _nameArray;
-	}
-
-	/**
-	 * Retrieve the Index of the Named Variate
-	 * 
-	 * @param variateName The Named Variate
-	 * 
-	 * @return Index of the Named Variate
-	 */
-
-	public int variateIndex (
-		final String variateName)
-	{
-		if (null == variateName || variateName.isEmpty()) {
-			return -1;
-		}
-
-		for (int variateIndex = 0; variateIndex < numVariable(); ++variateIndex) {
-			if (variateName.equalsIgnoreCase (_nameArray[variateIndex])) {
-				return variateIndex;
-			}
-		}
-
-		return -1;
-	}
 }
