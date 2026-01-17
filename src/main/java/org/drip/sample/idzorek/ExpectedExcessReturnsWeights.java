@@ -11,6 +11,14 @@ import org.drip.service.env.EnvManager;
  */
 
 /*!
+ * Copyright (C) 2030 Lakshmi Krishnamurthy
+ * Copyright (C) 2029 Lakshmi Krishnamurthy
+ * Copyright (C) 2028 Lakshmi Krishnamurthy
+ * Copyright (C) 2027 Lakshmi Krishnamurthy
+ * Copyright (C) 2026 Lakshmi Krishnamurthy
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -99,15 +107,15 @@ import org.drip.service.env.EnvManager;
  *  			Specified Confidence Levels, Ibbotson Associates, Chicago
  *  	</li>
  *  </ul>
- *  
- * <br><br>
- *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md">Portfolio Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/AssetAllocationAnalyticsLibrary.md">Asset Allocation Analytics</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/README.md">DROP API Construction and Usage</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/idzorek/README.md">Idzorek (2005) User Confidence Tilt</a></li>
- *  </ul>
- * <br><br>
+ *
+ *	<br>
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md">Numerical Analysis Library</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/README.md">R<sup>d</sup> Continuous/Discrete Probability Measures</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/idzorek/README.md">Idzorek (2005) User Confidence Tilt</a></td></tr>
+ *  </table>
+ *	<br>
  *
  * @author Lakshmi Krishnamurthy
  */
@@ -116,21 +124,21 @@ public class ExpectedExcessReturnsWeights
 {
 
 	private static final void ForwardOptimizationWeights (
-		final ForwardReverseHoldingsAllocation forwardReverseOptimizationOutput,
+		final ForwardReverseHoldingsAllocation forwardReverseHoldingsAllocation,
 		final double[] weightReconcilerArray,
 		final int preDecimalDigits,
 		final int postDecimalDigits,
 		final String header)
 	{
-		Portfolio optimalPortfolio = forwardReverseOptimizationOutput.optimalPortfolio();
-
-		String[] assetIDArray = optimalPortfolio.assetIDArray();
-
-		double[] weightArray = optimalPortfolio.weightArray();
+		Portfolio optimalPortfolio = forwardReverseHoldingsAllocation.optimalPortfolio();
 
 		AssetComponent highestWeightAsset = optimalPortfolio.highestWeightAsset();
 
 		AssetComponent lowestWeightAsset = optimalPortfolio.lowestWeightAsset();
+
+		String[] assetIDArray = optimalPortfolio.assetIDArray();
+
+		double[] weightArray = optimalPortfolio.weightArray();
 
 		System.out.println ("\t|------------------------------------------------------||");
 
@@ -142,17 +150,18 @@ public class ExpectedExcessReturnsWeights
 
 		System.out.println ("\t|------------------------------------------------------||");
 
-		for (int assetIndex = 0;
-			assetIndex < weightArray.length;
-			++assetIndex)
-		{
+		for (int assetIndex = 0; assetIndex < weightArray.length; ++assetIndex) {
 			System.out.println (
-				"\t| [" + assetIDArray[assetIndex] + "] => " +
-				FormatUtil.FormatDouble (
-					weightArray[assetIndex], preDecimalDigits, postDecimalDigits, 100.
-				) + "% | " +
-				FormatUtil.FormatDouble (
-					weightReconcilerArray[assetIndex], preDecimalDigits, postDecimalDigits, 100.
+				"\t| [" + assetIDArray[assetIndex] + "] => " + FormatUtil.FormatDouble (
+					weightArray[assetIndex],
+					preDecimalDigits,
+					postDecimalDigits,
+					100.
+				) + "% | " + FormatUtil.FormatDouble (
+					weightReconcilerArray[assetIndex],
+					preDecimalDigits,
+					postDecimalDigits,
+					100.
 				) + "% ||"
 			);
 		}
@@ -160,14 +169,20 @@ public class ExpectedExcessReturnsWeights
 		System.out.println ("\t|------------------------------------------------------||");
 
 		System.out.println (
-			"\t| HIGH : " + highestWeightAsset.id() + " => "+ FormatUtil.FormatDouble (
-				highestWeightAsset.amount(), preDecimalDigits, postDecimalDigits, 100.
+			"\t| HIGH : " + highestWeightAsset.id() + " => " + FormatUtil.FormatDouble (
+				highestWeightAsset.amount(),
+				preDecimalDigits,
+				postDecimalDigits,
+				100.
 			) + "%     ||"
 		);
 
 		System.out.println (
 			"\t| LOW  : " + lowestWeightAsset.id() + " => "+ FormatUtil.FormatDouble (
-				lowestWeightAsset.amount(), preDecimalDigits, postDecimalDigits, 100.
+				lowestWeightAsset.amount(),
+				preDecimalDigits,
+				postDecimalDigits,
+				100.
 			) + "%     ||"
 		);
 
@@ -189,8 +204,7 @@ public class ExpectedExcessReturnsWeights
 		EnvManager.InitEnv ("");
 
 		double riskAversion = 3.07;
-		String[] assetIDArray = new String[]
-		{
+		String[] assetIDArray = new String[] {
 			"US BONDS                       ",
 			"INTERNATIONAL BONDS            ",
 			"US LARGE GROWTH                ",
@@ -200,8 +214,7 @@ public class ExpectedExcessReturnsWeights
 			"INTERNATIONAL DEVELOPED EQUITY ",
 			"INTERNATIONAL EMERGING EQUITY  "
 		};
-		double[] assetEquilibriumWeightArray = new double[]
-		{
+		double[] assetEquilibriumWeightArray = new double[] {
 			0.1934,
 			0.2613,
 			0.1209,
@@ -211,8 +224,7 @@ public class ExpectedExcessReturnsWeights
 			0.2418,
 			0.0349
 		};
-		double[][] assetExcessReturnsCovarianceMatrix = new double[][]
-		{
+		double[][] assetExcessReturnsCovarianceMatrix = new double[][] {
 			{ 0.001005,  0.001328, -0.000579, -0.000675,  0.000121,  0.000128, -0.000445, -0.000437},
 			{ 0.001328,  0.007277, -0.001307, -0.000610, -0.002237, -0.000989,  0.001442, -0.001535},
 			{-0.000579, -0.001307,  0.059582,  0.027588,  0.063497,  0.023036,  0.032967,  0.048039},
@@ -222,8 +234,7 @@ public class ExpectedExcessReturnsWeights
 			{-0.000445,  0.001442,  0.032967,  0.020697,  0.039943,  0.019881,  0.028355,  0.035064},
 			{-0.000437, -0.001535,  0.048039,  0.029854,  0.065994,  0.032235,  0.035064,  0.079958}
 		};
-		double[] assetSpaceHistoricalReturnsArray = new double[]
-		{
+		double[] assetSpaceHistoricalReturnsArray = new double[] {
 			 0.0315,
 			 0.0175,
 			-0.0639,
@@ -233,8 +244,7 @@ public class ExpectedExcessReturnsWeights
 			-0.0675,
 			-0.0526
 		};
-		double[] assetSpaceCAPMReturnsArray = new double[]
-		{
+		double[] assetSpaceCAPMReturnsArray = new double[] {
 			0.0008,
 			0.0067,
 			0.0641,
@@ -244,8 +254,7 @@ public class ExpectedExcessReturnsWeights
 			0.0480,
 			0.0660
 		};
-		double[] assetSpaceGSMIReturnsArray = new double[]
-		{
+		double[] assetSpaceGSMIReturnsArray = new double[] {
 			 0.0002,
 			 0.0018,
 			 0.0557,
@@ -255,8 +264,7 @@ public class ExpectedExcessReturnsWeights
 			 0.0392,
 			 0.0560
 		};
-		double[] historicalPortfolioWeightReconcilerArray = new double[]
-		{
+		double[] historicalPortfolioWeightReconcilerArray = new double[] {
 			 11.4432,
 			 -1.0459,
 			  0.5459,
@@ -266,8 +274,7 @@ public class ExpectedExcessReturnsWeights
 			 -1.0436,
 			  0.1459
 		};
-		double[] capmGSMIPortfolioWeightReconcilerArray = new double[]
-		{
+		double[] capmGSMIPortfolioWeightReconcilerArray = new double[] {
 			  0.2133,
 			  0.0519,
 			  0.1080,
@@ -279,10 +286,7 @@ public class ExpectedExcessReturnsWeights
 		};
 
 		double[] impliedEquilibriumExcessReturnsArray = ForwardReverseHoldingsAllocation.Reverse (
-			Portfolio.Standard (
-				assetIDArray,
-				assetEquilibriumWeightArray
-			),
+			Portfolio.Standard (assetIDArray, assetEquilibriumWeightArray),
 			assetExcessReturnsCovarianceMatrix,
 			riskAversion
 		).expectedAssetExcessReturnsArray();
@@ -297,17 +301,28 @@ public class ExpectedExcessReturnsWeights
 
 		System.out.println ("\t|---------------------------------------------------------------------||");
 
-		for (int assetIndex = 0;
-			assetIndex < impliedEquilibriumExcessReturnsArray.length;
-			++assetIndex)
-		{
+		for (int assetIndex = 0; assetIndex < impliedEquilibriumExcessReturnsArray.length; ++assetIndex) {
 			System.out.println (
-				"\t| [" + assetIDArray[assetIndex] + "] => " +
-				FormatUtil.FormatDouble (assetSpaceHistoricalReturnsArray[assetIndex], 1, 2, 100.) + "% |" +
-				FormatUtil.FormatDouble (assetSpaceGSMIReturnsArray[assetIndex], 1, 2, 100.) + "% |" +
-				FormatUtil.FormatDouble (assetSpaceCAPMReturnsArray[assetIndex], 1, 2, 100.) + "% |" +
-				FormatUtil.FormatDouble (
-					riskAversion * impliedEquilibriumExcessReturnsArray[assetIndex], 1, 2, 100.
+				"\t| [" + assetIDArray[assetIndex] + "] => " + FormatUtil.FormatDouble (
+					assetSpaceHistoricalReturnsArray[assetIndex],
+					1,
+					2,
+					100.
+				) + "% |" + FormatUtil.FormatDouble (
+					assetSpaceGSMIReturnsArray[assetIndex],
+					1,
+					2,
+					100.
+				) + "% |" + FormatUtil.FormatDouble (
+					assetSpaceCAPMReturnsArray[assetIndex],
+					1,
+					2,
+					100.
+				) + "% |" + FormatUtil.FormatDouble (
+					riskAversion * impliedEquilibriumExcessReturnsArray[assetIndex],
+					1,
+					2,
+					100.
 				) + "% ||"
 			);
 		}

@@ -15,6 +15,14 @@ import org.drip.service.env.EnvManager;
  */
 
 /*!
+ * Copyright (C) 2030 Lakshmi Krishnamurthy
+ * Copyright (C) 2029 Lakshmi Krishnamurthy
+ * Copyright (C) 2028 Lakshmi Krishnamurthy
+ * Copyright (C) 2027 Lakshmi Krishnamurthy
+ * Copyright (C) 2026 Lakshmi Krishnamurthy
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -103,15 +111,15 @@ import org.drip.service.env.EnvManager;
  *  			Specified Confidence Levels, Ibbotson Associates, Chicago
  *  	</li>
  *  </ul>
- *  
- * <br><br>
- *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/PortfolioCore.md">Portfolio Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/AssetAllocationAnalyticsLibrary.md">Asset Allocation Analytics</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/README.md">DROP API Construction and Usage</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/idzorek/README.md">Idzorek (2005) User Confidence Tilt</a></li>
- *  </ul>
- * <br><br>
+ *
+ *	<br>
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md">Numerical Analysis Library</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/README.md">R<sup>d</sup> Continuous/Discrete Probability Measures</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/idzorek/README.md">Idzorek (2005) User Confidence Tilt</a></td></tr>
+ *  </table>
+ *	<br>
  *
  * @author Lakshmi Krishnamurthy
  */
@@ -136,8 +144,7 @@ public class PortfolioAndBenchmarkMetrics
 		double tau = 0.025;
 		double riskAversion = 3.07;
 		double riskFreeRate = 0.00;
-		String[] assetIDArray = new String[]
-		{
+		String[] assetIDArray = new String[] {
 			"US BONDS                       ",
 			"INTERNATIONAL BONDS            ",
 			"US LARGE GROWTH                ",
@@ -147,8 +154,7 @@ public class PortfolioAndBenchmarkMetrics
 			"INTERNATIONAL DEVELOPED EQUITY ",
 			"INTERNATIONAL EMERGING EQUITY  "
 		};
-		double[] assetEquilibriumWeightArray = new double[]
-		{
+		double[] assetEquilibriumWeightArray = new double[] {
 			0.1934,
 			0.2613,
 			0.1209,
@@ -158,8 +164,7 @@ public class PortfolioAndBenchmarkMetrics
 			0.2418,
 			0.0349
 		};
-		double[][] assetExcessReturnsCovarianceMatrix = new double[][]
-		{
+		double[][] assetExcessReturnsCovarianceMatrix = new double[][] {
 			{ 0.001005,  0.001328, -0.000579, -0.000675,  0.000121,  0.000128, -0.000445, -0.000437},
 			{ 0.001328,  0.007277, -0.001307, -0.000610, -0.002237, -0.000989,  0.001442, -0.001535},
 			{-0.000579, -0.001307,  0.059582,  0.027588,  0.063497,  0.023036,  0.032967,  0.048039},
@@ -169,14 +174,12 @@ public class PortfolioAndBenchmarkMetrics
 			{-0.000445,  0.001442,  0.032967,  0.020697,  0.039943,  0.019881,  0.028355,  0.035064},
 			{-0.000437, -0.001535,  0.048039,  0.029854,  0.065994,  0.032235,  0.035064,  0.079958}
 		};
-		double[][] assetSpaceViewProjectionMatrix = new double[][]
-		{
+		double[][] assetSpaceViewProjectionMatrix = new double[][] {
 			{  0.00,  0.00,  0.00,  0.00,  0.00,  0.00,  1.00,  0.00},
 			{ -1.00,  1.00,  0.00,  0.00,  0.00,  0.00,  0.00,  0.00},
 			{  0.00,  0.00,  0.90, -0.90,  0.10, -0.10,  0.00,  0.00}
 		};
-		double[] projectionExpectedExcessReturnsArray = new double[]
-		{
+		double[] projectionExpectedExcessReturnsArray = new double[] {
 			0.0525,
 			0.0025,
 			0.0200
@@ -191,8 +194,7 @@ public class PortfolioAndBenchmarkMetrics
 
 		R1MultivariateNormal viewDistribution = R1MultivariateNormal.Standard (
 			LabelledRd.FromArray (
-				new String[]
-				{
+				new String[] {
 					"PROJECTION #1",
 					"PROJECTION #2",
 					"PROJECTION #3"
@@ -204,32 +206,20 @@ public class PortfolioAndBenchmarkMetrics
 
 		R1MultivariateConvolutionMetrics jointPosteriorMetrics = new BlackLittermanCombinationEngine (
 			ForwardReverseHoldingsAllocation.Reverse (
-				Portfolio.Standard (
-					assetIDArray,
-					assetEquilibriumWeightArray
-				),
+				Portfolio.Standard (assetIDArray, assetEquilibriumWeightArray),
 				assetExcessReturnsCovarianceMatrix,
 				riskAversion
 			),
-			new PriorControlSpecification (
-				false,
-				riskFreeRate,
-				tau
-			),
-			new ProjectionSpecification (
-				viewDistribution,
-				assetSpaceViewProjectionMatrix
-			)
+			new PriorControlSpecification (false, riskFreeRate, tau),
+			new ProjectionSpecification (viewDistribution, assetSpaceViewProjectionMatrix)
 		).customConfidenceRun().jointPosteriorMetrics();
 
-		R1MultivariateNormal jointDistribution = (R1MultivariateNormal) jointPosteriorMetrics.jointDistribution();
+		R1MultivariateNormal jointDistribution =
+			(R1MultivariateNormal) jointPosteriorMetrics.jointDistribution();
 
 		ForwardReverseHoldingsAllocation priorForwardReverseOptimizationOutput =
 			ForwardReverseHoldingsAllocation.Reverse (
-				Portfolio.Standard (
-					assetIDArray,
-					assetEquilibriumWeightArray
-				),
+				Portfolio.Standard (assetIDArray, assetEquilibriumWeightArray),
 				assetExcessReturnsCovarianceMatrix,
 				riskAversion
 			);
@@ -237,7 +227,7 @@ public class PortfolioAndBenchmarkMetrics
 		PortfolioMetrics optimalPriorPortfolioMetrics =
 			priorForwardReverseOptimizationOutput.optimalMetrics();
 
-		ForwardReverseHoldingsAllocation posteriorForwardReverseOptimizationOutput =
+		ForwardReverseHoldingsAllocation posteriorForwardReverseHoldingsAllocation =
 			ForwardReverseHoldingsAllocation.Forward (
 				assetIDArray,
 				jointDistribution.mean(),
@@ -246,49 +236,62 @@ public class PortfolioAndBenchmarkMetrics
 			);
 
 		PortfolioMetrics optimalPosteriorPortfolioMetrics =
-			posteriorForwardReverseOptimizationOutput.optimalMetrics();
+			posteriorForwardReverseHoldingsAllocation.optimalMetrics();
 
 		PortfolioBenchmarkMetrics posteriorPortfolioBenchmarkMetrics =
-			posteriorForwardReverseOptimizationOutput.benchmarkMetrics (
-				optimalPriorPortfolioMetrics
-			);
+			posteriorForwardReverseHoldingsAllocation.benchmarkMetrics (optimalPriorPortfolioMetrics);
 
 		System.out.println ("\n\t|---------------------------------------------------------||");
 
-		System.out.println ("\t| EXCESS RETURN MEAN               => " +
-			FormatUtil.FormatDouble (
-				optimalPriorPortfolioMetrics.excessReturnsMean(), 1, 3, 100.
-			) + "%  | " +
-			FormatUtil.FormatDouble (
-				optimalPosteriorPortfolioMetrics.excessReturnsMean(), 1, 3, 100.
+		System.out.println (
+			"\t| EXCESS RETURN MEAN               => " + FormatUtil.FormatDouble (
+				optimalPriorPortfolioMetrics.excessReturnsMean(),
+				1,
+				3,
+				100.
+			) + "%  | " + FormatUtil.FormatDouble (
+				optimalPosteriorPortfolioMetrics.excessReturnsMean(),
+				1,
+				3,
+				100.
 			) + "%  ||"
 		);
 
-		System.out.println ("\t| EXCESS RETURN VARIANCE           => " +
-			FormatUtil.FormatDouble (
-				optimalPriorPortfolioMetrics.excessReturnsVariance(), 1, 5, 1.
-			) + " | " +
-			FormatUtil.FormatDouble (
-				optimalPosteriorPortfolioMetrics.excessReturnsVariance(), 1, 5, 1.
+		System.out.println (
+			"\t| EXCESS RETURN VARIANCE           => " + FormatUtil.FormatDouble (
+				optimalPriorPortfolioMetrics.excessReturnsVariance(),
+				1,
+				5,
+				1.
+			) + " | " + FormatUtil.FormatDouble (
+				optimalPosteriorPortfolioMetrics.excessReturnsVariance(),
+				1,
+				5,
+				1.
 			) + " ||"
 		);
 
-		System.out.println ("\t| EXCESS RETURN STANDARD DEVIATION => " +
-			FormatUtil.FormatDouble (
-				optimalPriorPortfolioMetrics.excessReturnsStandardDeviation(), 1, 3, 100.
-			) + "%  |" +
-			FormatUtil.FormatDouble (
-				optimalPosteriorPortfolioMetrics.excessReturnsStandardDeviation(), 2, 3, 100.
+		System.out.println (
+			"\t| EXCESS RETURN STANDARD DEVIATION => " + FormatUtil.FormatDouble (
+				optimalPriorPortfolioMetrics.excessReturnsStandardDeviation(),
+				1,
+				3,
+				100.
+			) + "%  |" + FormatUtil.FormatDouble (
+				optimalPosteriorPortfolioMetrics.excessReturnsStandardDeviation(),
+				2,
+				3,
+				100.
 			) + "%  ||"
 		);
 
-		System.out.println ("\t| BETA                             => " +
-			FormatUtil.FormatDouble (
-				priorForwardReverseOptimizationOutput.benchmarkMetrics (
-					optimalPriorPortfolioMetrics
-				).beta(), 1, 5, 1.
-			) + " | " +
-			FormatUtil.FormatDouble (posteriorPortfolioBenchmarkMetrics.beta(), 1, 5, 1.) + " ||"
+		System.out.println (
+			"\t| BETA                             => " + FormatUtil.FormatDouble (
+				priorForwardReverseOptimizationOutput.benchmarkMetrics (optimalPriorPortfolioMetrics).beta(),
+				1,
+				5,
+				1.
+			) + " | " + FormatUtil.FormatDouble (posteriorPortfolioBenchmarkMetrics.beta(), 1, 5, 1.) + " ||"
 		);
 
 		System.out.println ("\t| ACTIVE BETA                      => " +
@@ -302,24 +305,25 @@ public class PortfolioAndBenchmarkMetrics
 				+ "%  ||"
 		);
 
-		System.out.println ("\t| RESIDUAL RISK                    => " +
-			FormatUtil.FormatDouble (0., 1, 3, 100.) + "%  | " +
+		System.out.println (
+			"\t| RESIDUAL RISK                    => " + FormatUtil.FormatDouble (0., 1, 3, 100.) + "%  | " +
 			FormatUtil.FormatDouble (posteriorPortfolioBenchmarkMetrics.residualRisk(), 1, 3, 100.) + "%  ||"
 		);
 
-		System.out.println ("\t| ACTIVE RETURN                    => " +
-			FormatUtil.FormatDouble (0., 1, 3, 100.) + "%  | " +
+		System.out.println (
+			"\t| ACTIVE RETURN                    => " + FormatUtil.FormatDouble (0., 1, 3, 100.) + "%  | " +
 			FormatUtil.FormatDouble (posteriorPortfolioBenchmarkMetrics.activeReturn(), 1, 3, 100.) + "%  ||"
 		);
 
-		System.out.println ("\t| ACTIVE RISK                      => " +
-			FormatUtil.FormatDouble (0., 1, 3, 100.) + "%  | " +
+		System.out.println (
+			"\t| ACTIVE RISK                      => " + FormatUtil.FormatDouble (0., 1, 3, 100.) + "%  | " +
 			FormatUtil.FormatDouble (posteriorPortfolioBenchmarkMetrics.activeRisk(), 1, 3, 100.) + "%  ||"
 		);
 
-		System.out.println ("\t| SHARPE RATIO                     => " +
-			FormatUtil.FormatDouble (optimalPriorPortfolioMetrics.sharpeRatio(), 1, 5, 1.) + " | " +
-			FormatUtil.FormatDouble (optimalPosteriorPortfolioMetrics.sharpeRatio(), 1, 5, 1.) + " ||"
+		System.out.println (
+			"\t| SHARPE RATIO                     => " +
+				FormatUtil.FormatDouble (optimalPriorPortfolioMetrics.sharpeRatio(), 1, 5, 1.) + " | " +
+				FormatUtil.FormatDouble (optimalPosteriorPortfolioMetrics.sharpeRatio(), 1, 5, 1.) + " ||"
 		);
 
 		System.out.println ("\t|---------------------------------------------------------||\n");

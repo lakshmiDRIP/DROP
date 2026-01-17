@@ -123,21 +123,18 @@ public class OToole2013
 	/**
 	 * Entry Point
 	 * 
-	 * @param astArgs Command Line Argument Array
+	 * @param argumentArray Command Line Argument Array
 	 * 
 	 * @throws Exception Thrown on Error/Exception Situation
 	 */
 
 	public static final void main (
-		final String[] astArgs)
+		final String[] argumentArray)
 		throws Exception
 	{
-		EnvManager.InitEnv (
-			"",
-			true
-		);
+		EnvManager.InitEnv ("", true);
 
-		String[] astrG7 = new String[] {
+		String[] g7Array = new String[] {
 			"Australia                ",
 			"Canada                   ",
 			"France                   ",
@@ -147,7 +144,7 @@ public class OToole2013
 			"United States of America "
 		};
 
-		double[][] aadblG7ExcessReturnsCorrelation = new double[][] {
+		double[][] g7ExcessReturnsCorrelationMatrix = new double[][] {
 			{1.000, 0.488, 0.478, 0.515, 0.439, 0.512, 0.491},
 			{0.488, 1.000, 0.664, 0.655, 0.310, 0.608, 0.779},
 			{0.478, 0.664, 1.000, 0.861, 0.355, 0.783, 0.668},
@@ -157,7 +154,7 @@ public class OToole2013
 			{0.491, 0.779, 0.668, 0.653, 0.306, 0.652, 1.000}
 		};
 
-		double[] adblG7ExcessReturnsVolatility = new double[] {
+		double[] g7ExcessReturnsVolatilityArray = new double[] {
 			0.160,
 			0.203,
 			0.248,
@@ -167,7 +164,7 @@ public class OToole2013
 			0.187
 		};
 
-		double[] adblG7BenchmarkWeight = new double[] {
+		double[] g7BenchmarkWeightArray = new double[] {
 			0.016,
 			0.022,
 			0.052,
@@ -177,7 +174,7 @@ public class OToole2013
 			0.615
 		};
 
-		double[] adblG7ImpliedReturnsReconciler = new double[] {
+		double[] g7ImpliedReturnsReconcilerArray = new double[] {
 			0.0394,
 			0.0692,
 			0.0836,
@@ -187,52 +184,84 @@ public class OToole2013
 			0.0756
 		};
 
-		double dblDelta = 2.5;
-		double[][] aadblG7Covariance = new double[astrG7.length][astrG7.length];
+		double delta = 2.5;
+		double[][] g7ExcessReturnsCovarianceMatrix = new double[g7Array.length][g7Array.length];
 
-		for (int i = 0; i < astrG7.length; ++i) {
-			for (int j = 0; j < astrG7.length; ++j)
-				aadblG7Covariance[i][j] = aadblG7ExcessReturnsCorrelation[i][j] * adblG7ExcessReturnsVolatility[i] * adblG7ExcessReturnsVolatility[j];
+		for (int g7IndexI = 0; g7IndexI < g7Array.length; ++g7IndexI) {
+			for (int g7IndexJ = 0; g7IndexJ < g7Array.length; ++g7IndexJ) {
+				g7ExcessReturnsCovarianceMatrix[g7IndexI][g7IndexJ] =
+					g7ExcessReturnsCorrelationMatrix[g7IndexI][g7IndexJ] *
+					g7ExcessReturnsVolatilityArray[g7IndexI] *
+					g7ExcessReturnsVolatilityArray[g7IndexJ];
+			}
 		}
 
-		double[] adblG7ImpliedReturns = R1MatrixUtil.Product (
-			aadblG7Covariance,
-			adblG7BenchmarkWeight
+		double[] g7ImpliedReturnsArray = R1MatrixUtil.Product (
+			g7ExcessReturnsCovarianceMatrix,
+			g7BenchmarkWeightArray
 		);
 
-		System.out.println ("\n\t|-----------------------------------------------------------------------------------||");
+		System.out.println (
+			"\n\t|-----------------------------------------------------------------------------------||"
+		);
 
-		System.out.println ("\t|                         G7 CORRELATION MATRIX INPUT                               ||");
+		System.out.println (
+			"\t|                         G7 CORRELATION MATRIX INPUT                               ||"
+		);
 
-		System.out.println ("\t|-----------------------------------------------------------------------------------||");
+		System.out.println (
+			"\t|-----------------------------------------------------------------------------------||"
+		);
 
-		for (int i = 0; i < astrG7.length; ++i) {
-			String strDump = "\t| " + astrG7[i] + " ";
+		for (int g7IndexI = 0; g7IndexI < g7Array.length; ++g7IndexI) {
+			String dump = "\t| " + g7Array[g7IndexI] + " ";
 
-			for (int j = 0; j < astrG7.length; ++j)
-				strDump += "|" + FormatUtil.FormatDouble (aadblG7ExcessReturnsCorrelation[i][j], 1, 3, 1.) + " ";
+			for (int g7IndexJ = 0; g7IndexJ < g7Array.length; ++g7IndexJ) {
+				dump += "|" + FormatUtil.FormatDouble (
+					g7ExcessReturnsCorrelationMatrix[g7IndexI][g7IndexJ],
+					1,
+					3,
+					1.
+				) + " ";
+			}
 
-			System.out.println (strDump + "||");
+			System.out.println (dump + "||");
 		}
 
-		System.out.println ("\t|-----------------------------------------------------------------------------------||\n");
+		System.out.println (
+			"\t|-----------------------------------------------------------------------------------||\n"
+		);
 
-		System.out.println ("\t|-----------------------------------------------------------------------------------||");
+		System.out.println (
+			"\t|-----------------------------------------------------------------------------------||"
+		);
 
-		System.out.println ("\t|                         G7 COVARIANCE MATRIX INPUT                                ||");
+		System.out.println (
+			"\t|                         G7 COVARIANCE MATRIX INPUT                                ||"
+		);
 
-		System.out.println ("\t|-----------------------------------------------------------------------------------||");
+		System.out.println (
+			"\t|-----------------------------------------------------------------------------------||"
+		);
 
-		for (int i = 0; i < astrG7.length; ++i) {
-			String strDump = "\t| " + astrG7[i] + " ";
+		for (int g7IndexI = 0; g7IndexI < g7Array.length; ++g7IndexI) {
+			String dump = "\t| " + g7Array[g7IndexI] + " ";
 
-			for (int j = 0; j < astrG7.length; ++j)
-				strDump += "|" + FormatUtil.FormatDouble (aadblG7Covariance[i][j], 1, 3, 1.) + " ";
+			for (int g7IndexJ = 0; g7IndexJ < g7Array.length; ++g7IndexJ) {
+				dump += "|" + FormatUtil.FormatDouble (
+					g7ExcessReturnsCovarianceMatrix[g7IndexI][g7IndexJ],
+					1,
+					3,
+					1.
+				) + " ";
+			}
 
-			System.out.println (strDump + "||");
+			System.out.println (dump + "||");
 		}
 
-		System.out.println ("\t|-----------------------------------------------------------------------------------||\n");
+		System.out.println (
+			"\t|-----------------------------------------------------------------------------------||\n"
+		);
 
 		System.out.println ("\t||----------------------------------------------||");
 
@@ -244,12 +273,13 @@ public class OToole2013
 
 		System.out.println ("\t||----------------------------------------------||");
 
-		for (int i = 0; i < astrG7.length; ++i)
+		for (int g7Index = 0; g7Index < g7Array.length; ++g7Index) {
 			System.out.println (
-				"\t|| " + astrG7[i] + " => " +
-				FormatUtil.FormatDouble (adblG7BenchmarkWeight[i], 2, 1, 100.) + "% | " +
-				FormatUtil.FormatDouble (adblG7ExcessReturnsVolatility[i], 2, 1, 100.) + "% ||"
+				"\t|| " + g7Array[g7Index] + " => " +
+				FormatUtil.FormatDouble (g7BenchmarkWeightArray[g7Index], 2, 1, 100.) + "% | " +
+				FormatUtil.FormatDouble (g7ExcessReturnsVolatilityArray[g7Index], 2, 1, 100.) + "% ||"
 			);
+		}
 
 		System.out.println ("\t||----------------------------------------------||\n");
 
@@ -263,12 +293,13 @@ public class OToole2013
 
 		System.out.println ("\t||----------------------------------------------||");
 
-		for (int i = 0; i < adblG7ImpliedReturns.length; ++i)
+		for (int g7Index = 0; g7Index < g7ImpliedReturnsArray.length; ++g7Index) {
 			System.out.println (
-				"\t|| " + astrG7[i] + " => " +
-				FormatUtil.FormatDouble (dblDelta * adblG7ImpliedReturns[i], 1, 2, 100.) + "% | " +
-				FormatUtil.FormatDouble (adblG7ImpliedReturnsReconciler[i], 1, 2, 100.) + "% ||"
+				"\t|| " + g7Array[g7Index] + " => " +
+				FormatUtil.FormatDouble (delta * g7ImpliedReturnsArray[g7Index], 1, 2, 100.) + "% | " +
+				FormatUtil.FormatDouble (g7ImpliedReturnsReconcilerArray[g7Index], 1, 2, 100.) + "% ||"
 			);
+		}
 
 		System.out.println ("\t||----------------------------------------------||\n");
 

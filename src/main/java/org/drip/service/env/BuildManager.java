@@ -120,13 +120,14 @@ public class BuildManager
 
 		try {
 			_buildRecordArray = new BuildRecord[] {
-				new BuildRecord ("7.52.0", "15.0.1+9-18", "Fri Jan 16 19:31:56 EST 2025"),
-				new BuildRecord ("7.51.0", "15.0.1+9-18", "Sun Jan 11 16:03:44 EST 2025"),
-				new BuildRecord ("7.50.0", "15.0.1+9-18", "Sat Jan 10 02:07:21 EST 2025"),
-				new BuildRecord ("7.49.0", "15.0.1+9-18", "Sun Jan 04 16:48:00 EST 2025"),
-				new BuildRecord ("7.48.0", "15.0.1+9-18", "Sat Jan 03 20:11:51 EST 2025"),
-				new BuildRecord ("7.47.0", "15.0.1+9-18", "Thu Jan 01 12:31:49 EST 2025"),
-				new BuildRecord ("7.46.0", "15.0.1+9-18", "Thu Jan 01 00:09:09 EST 2025"),
+				new BuildRecord ("7.53.0", "15.0.1+9-18", "Sat Jan 17 12:43:22 EST 2026"),
+				new BuildRecord ("7.52.0", "15.0.1+9-18", "Fri Jan 16 19:31:56 EST 2026"),
+				new BuildRecord ("7.51.0", "15.0.1+9-18", "Sun Jan 11 16:03:44 EST 2026"),
+				new BuildRecord ("7.50.0", "15.0.1+9-18", "Sat Jan 10 02:07:21 EST 2026"),
+				new BuildRecord ("7.49.0", "15.0.1+9-18", "Sun Jan 04 16:48:00 EST 2026"),
+				new BuildRecord ("7.48.0", "15.0.1+9-18", "Sat Jan 03 20:11:51 EST 2026"),
+				new BuildRecord ("7.47.0", "15.0.1+9-18", "Thu Jan 01 12:31:49 EST 2026"),
+				new BuildRecord ("7.46.0", "15.0.1+9-18", "Thu Jan 01 00:09:09 EST 2026"),
 				new BuildRecord ("7.45.0", "15.0.1+9-18", "Wed Dec 31 18:55:32 EST 2025"),
 				new BuildRecord ("7.44.0", "15.0.1+9-18", "Wed Dec 31 09:14:46 EST 2025"),
 				new BuildRecord ("7.43.0", "15.0.1+9-18", "Tue Dec 30 12:11:16 EST 2025"),
