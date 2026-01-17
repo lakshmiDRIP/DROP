@@ -10,6 +10,14 @@ import org.drip.service.env.EnvManager;
  */
 
 /*!
+ * Copyright (C) 2030 Lakshmi Krishnamurthy
+ * Copyright (C) 2029 Lakshmi Krishnamurthy
+ * Copyright (C) 2028 Lakshmi Krishnamurthy
+ * Copyright (C) 2027 Lakshmi Krishnamurthy
+ * Copyright (C) 2026 Lakshmi Krishnamurthy
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -98,39 +106,36 @@ import org.drip.service.env.EnvManager;
  *  			https://faculty.fuqua.duke.edu/~charvey/Teaching/BA453_2005/Black%20Litterman.pdf
  *  	</li>
  *  </ul>
- *  
- * <br><br>
- *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/TransactionCostAnalyticsLibrary.md">Transaction Cost Analytics</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/README.md">DROP API Construction and Usage</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/blacklitterman/README.md">Canonical Black Litterman and Extensions</a></li>
- *  </ul>
- * <br><br>
+ *
+ *	<br>
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md">Numerical Analysis Library</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/README.md">R<sup>d</sup> Continuous/Discrete Probability Measures</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/blacklitterman/README.md">Canonical Black Litterman and Extensions</a></td></tr>
+ *  </table>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class IdzorekAndrogue2003 {
+public class IdzorekAndrogue2003
+{
 
 	/**
 	 * Entry Point
 	 * 
-	 * @param astArgs Command Line Argument Array
+	 * @param argumentArray Command Line Argument Array
 	 * 
 	 * @throws Exception Thrown on Error/Exception Situation
 	 */
 
 	public static final void main (
-		final String[] astArgs)
+		final String[] argumentArray)
 		throws Exception
 	{
-		EnvManager.InitEnv (
-			"",
-			true
-		);
+		EnvManager.InitEnv ("", true);
 
-		String[] astrAssetClass = new String[] {
+		String[] assetClassArray = new String[] {
 			"US Bonds            ",
 			"Global Bonds xUSD   ",
 			"World Equity xUS    ",
@@ -141,7 +146,7 @@ public class IdzorekAndrogue2003 {
 			"US Small Cap Value  "
 		};
 
-		double[] adblMarketCapitalizationEstimate = new double[] {
+		double[] marketCapitalizationEstimateArray = new double[] {
 			 8360741000000.,
 			11583275710000.,
 			 9212460000000.,
@@ -152,9 +157,9 @@ public class IdzorekAndrogue2003 {
 			  459897061500.
 		};
 
-		double dblDelta = 3.37;
+		double delta = 3.37;
 
-		double[][] aadblAssetExcessReturnsCorrelation = new double[][] {
+		double[][] excessAssetReturnsCorrelationMatrix = new double[][] {
 			{ 0.0014,  0.0015, -0.0008, -0.0017, -0.0010, -0.0007, -0.0015, -0.0006},
 			{ 0.0015,  0.0076,  0.0026, -0.0006, -0.0013, -0.0003, -0.0002,  0.0005},
 			{-0.0008,  0.0026,  0.0251,  0.0292,  0.0208,  0.0147,  0.0248,  0.0134},
@@ -165,7 +170,7 @@ public class IdzorekAndrogue2003 {
 			{-0.0006,  0.0005,  0.0134,  0.0268,  0.0260,  0.0215,  0.0411,  0.0276}
 		};
 
-		double[] adblMarketCapitalizationWeightReconciler = new double[] {
+		double[] marketCapitalizationWeightReconcilerArray = new double[] {
 			0.2016,
 			0.2793,
 			0.2221,
@@ -176,7 +181,7 @@ public class IdzorekAndrogue2003 {
 			0.0111
 		};
 
-		double[] adblImpliedReturnsReconciler = new double[] {
+		double[] impliedReturnsReconcilerArray = new double[] {
 			0.0008,
 			0.0094,
 			0.0395,
@@ -187,36 +192,59 @@ public class IdzorekAndrogue2003 {
 			0.0349
 		};
 
-		double dblTotalMarketCapitalization = 0.;
-		double[] adblMarketCapitalizationWeight = new double[adblMarketCapitalizationEstimate.length];
+		double totalMarketCapitalization = 0.;
+		double[] marketCapitalizationWeightArray = new double[marketCapitalizationEstimateArray.length];
 
-		for (int i = 0; i < adblMarketCapitalizationEstimate.length; ++i)
-			dblTotalMarketCapitalization += adblMarketCapitalizationEstimate[i];
-
-		for (int i = 0; i < adblMarketCapitalizationEstimate.length; ++i)
-			adblMarketCapitalizationWeight[i] = adblMarketCapitalizationEstimate[i] / dblTotalMarketCapitalization;
-
-		double[] adblImpliedReturns = R1MatrixUtil.Product (
-			aadblAssetExcessReturnsCorrelation,
-			adblMarketCapitalizationWeight
-		);
-
-		System.out.println ("\n\t|------------------------------------------------------------------------------------------------------||");
-
-		System.out.println ("\t|                                          CO-VARIANCE MATRIX                                          ||");
-
-		System.out.println ("\t|------------------------------------------------------------------------------------------------------||");
-
-		for (int i = 0; i < astrAssetClass.length; ++i) {
-			String strDump = "\t| " + astrAssetClass[i] + " ";
-
-			for (int j = 0; j < astrAssetClass.length; ++j)
-				strDump += "| " + FormatUtil.FormatDouble (aadblAssetExcessReturnsCorrelation[i][j], 1, 4, 1.) + " ";
-
-			System.out.println (strDump + "||");
+		for (int marketCapitalizationIndex = 0;
+			marketCapitalizationIndex < marketCapitalizationEstimateArray.length;
+			++marketCapitalizationIndex)
+		{
+			totalMarketCapitalization += marketCapitalizationEstimateArray[marketCapitalizationIndex];
 		}
 
-		System.out.println ("\t|------------------------------------------------------------------------------------------------------||");
+		for (int marketCapitalizationIndex = 0;
+			marketCapitalizationIndex < marketCapitalizationEstimateArray.length;
+			++marketCapitalizationIndex)
+		{
+			marketCapitalizationWeightArray[marketCapitalizationIndex] =
+				marketCapitalizationEstimateArray[marketCapitalizationIndex] / totalMarketCapitalization;
+		}
+
+		double[] impliedReturnsArray = R1MatrixUtil.Product (
+			excessAssetReturnsCorrelationMatrix,
+			marketCapitalizationWeightArray
+		);
+
+		System.out.println (
+			"\n\t|------------------------------------------------------------------------------------------------------||"
+		);
+
+		System.out.println (
+			"\t|                                          CO-VARIANCE MATRIX                                          ||"
+		);
+
+		System.out.println (
+			"\t|------------------------------------------------------------------------------------------------------||"
+		);
+
+		for (int assetClassIndexI = 0; assetClassIndexI < assetClassArray.length; ++assetClassIndexI) {
+			String dump = "\t| " + assetClassArray[assetClassIndexI] + " ";
+
+			for (int assetClassIndexJ = 0; assetClassIndexJ < assetClassArray.length; ++assetClassIndexJ) {
+				dump += "| " + FormatUtil.FormatDouble (
+					excessAssetReturnsCorrelationMatrix[assetClassIndexI][assetClassIndexJ],
+					1,
+					4,
+					1.
+				) + " ";
+			}
+
+			System.out.println (dump + "||");
+		}
+
+		System.out.println (
+			"\t|------------------------------------------------------------------------------------------------------||"
+		);
 
 		System.out.println ("\n\t||-------------------------------------------------------------||");
 
@@ -228,13 +256,29 @@ public class IdzorekAndrogue2003 {
 
 		System.out.println ("\t||-------------------------------------------------------------||");
 
-		for (int i = 0; i < adblMarketCapitalizationEstimate.length; ++i)
+		for (int marketCapitalizationIndex = 0;
+			marketCapitalizationIndex < marketCapitalizationEstimateArray.length;
+			++marketCapitalizationIndex)
+		{
 			System.out.println (
-				"\t|| " + astrAssetClass[i] + " => " +
-				FormatUtil.FormatDouble (adblMarketCapitalizationEstimate[i], 14, 0, 1.) + " | " +
-				FormatUtil.FormatDouble (adblMarketCapitalizationWeight[i], 2, 2, 100.) + "% | " +
-				FormatUtil.FormatDouble (adblMarketCapitalizationWeightReconciler[i], 2, 2, 100.) + "% ||"
+				"\t|| " + assetClassArray[marketCapitalizationIndex] + " => " + FormatUtil.FormatDouble (
+					marketCapitalizationEstimateArray[marketCapitalizationIndex],
+					14,
+					0,
+					1.
+				) + " | " + FormatUtil.FormatDouble (
+					marketCapitalizationWeightArray[marketCapitalizationIndex],
+					2,
+					2,
+					100.
+				) + "% | " + FormatUtil.FormatDouble (
+					marketCapitalizationWeightReconcilerArray[marketCapitalizationIndex],
+					2,
+					2,
+					100.
+				) + "% ||"
 			);
+		}
 
 		System.out.println ("\t||-------------------------------------------------------------||\n");
 
@@ -248,12 +292,24 @@ public class IdzorekAndrogue2003 {
 
 		System.out.println ("\t||-------------------------------------------||");
 
-		for (int i = 0; i < adblImpliedReturns.length; ++i)
+		for (int impliedReturnsIndex = 0;
+			impliedReturnsIndex < impliedReturnsArray.length;
+			++impliedReturnsIndex)
+		{
 			System.out.println (
-				"\t|| " + astrAssetClass[i] + " => " +
-				FormatUtil.FormatDouble (dblDelta * adblImpliedReturns[i], 2, 2, 100.) + "% | " +
-				FormatUtil.FormatDouble (adblImpliedReturnsReconciler[i], 2, 2, 100.) + "% ||"
+				"\t|| " + assetClassArray[impliedReturnsIndex] + " => " + FormatUtil.FormatDouble (
+					delta * impliedReturnsArray[impliedReturnsIndex],
+					2,
+					2,
+					100.
+				) + "% | " + FormatUtil.FormatDouble (
+					impliedReturnsReconcilerArray[impliedReturnsIndex],
+					2,
+					2,
+					100.
+				) + "% ||"
 			);
+		}
 
 		System.out.println ("\t||-------------------------------------------||\n");
 

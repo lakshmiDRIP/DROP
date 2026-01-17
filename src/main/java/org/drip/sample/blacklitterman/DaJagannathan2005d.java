@@ -14,6 +14,14 @@ import org.drip.service.env.EnvManager;
  */
 
 /*!
+ * Copyright (C) 2030 Lakshmi Krishnamurthy
+ * Copyright (C) 2029 Lakshmi Krishnamurthy
+ * Copyright (C) 2028 Lakshmi Krishnamurthy
+ * Copyright (C) 2027 Lakshmi Krishnamurthy
+ * Copyright (C) 2026 Lakshmi Krishnamurthy
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -100,39 +108,36 @@ import org.drip.service.env.EnvManager;
  *  			<b>Goldman Sachs Asset Management</b>
  *  	</li>
  *  </ul>
- *  
- * <br><br>
- *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/TransactionCostAnalyticsLibrary.md">Transaction Cost Analytics</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/README.md">DROP API Construction and Usage</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/blacklitterman/README.md">Canonical Black Litterman and Extensions</a></li>
- *  </ul>
- * <br><br>
+ *
+ *	<br>
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md">Numerical Analysis Library</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/README.md">R<sup>d</sup> Continuous/Discrete Probability Measures</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/blacklitterman/README.md">Canonical Black Litterman and Extensions</a></td></tr>
+ *  </table>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class DaJagannathan2005d {
+public class DaJagannathan2005d
+{
 
 	/**
 	 * Entry Point
 	 * 
-	 * @param astArgs Command Line Argument Array
+	 * @param argumentArray Command Line Argument Array
 	 * 
 	 * @throws Exception Thrown on Error/Exception Situation
 	 */
 
 	public static final void main (
-		final String[] astArgs)
+		final String[] argumentArray)
 		throws Exception
 	{
-		EnvManager.InitEnv (
-			"",
-			true
-		);
+		EnvManager.InitEnv ("", true);
 
-		String[] astrID = new String[] {
+		String[] sectorIDArray = new String[] {
 			"CORPORATE BOND     ",
 			"LONG TERM GOVVIE   ",
 			"MEDIUM TERM GOVVIE ",
@@ -143,7 +148,7 @@ public class DaJagannathan2005d {
 			"STRONG SELL EQUITY "
 		};
 
-		double[][] aadblHistoricalCovariance = new double[][] {
+		double[][] historicalCovarianceMatrix = new double[][] {
 			{0.0050, 0.0047, 0.0024, 0.0036, 0.0023, 0.0031, 0.0032, 0.0030},
 			{0.0047, 0.0062, 0.0030, 0.0033, 0.0016, 0.0024, 0.0026, 0.0020},
 			{0.0024, 0.0030, 0.0020, 0.0015, 0.0006, 0.0009, 0.0012, 0.0008},
@@ -154,7 +159,7 @@ public class DaJagannathan2005d {
 			{0.0030, 0.0020, 0.0008, 0.0414, 0.0371, 0.0364, 0.0384, 0.0498}
 		};
 
-		double[] adblHistoricalReturn = new double[] {
+		double[] historicalReturnsArray = new double[] {
 			0.0595,
 			0.0553,
 			0.0545,
@@ -165,7 +170,7 @@ public class DaJagannathan2005d {
 			0.1220
 		};
 
-		double[] adblHistoricalOptimalWeight = new double[] {
+		double[] historicalOptimalWeightArray = new double[] {
 			 0.2154,
 			-0.5434,
 			 1.1976,
@@ -176,7 +181,7 @@ public class DaJagannathan2005d {
 			-0.0149
 		};
 
-		double[] adblMarketWeight = new double[] {
+		double[] marketWeightArray = new double[] {
 			0.1667,
 			0.0833,
 			0.0833,
@@ -187,7 +192,7 @@ public class DaJagannathan2005d {
 			0.1622
 		};
 
-		double[] adblMarketImpliedReturnReconciler = new double[] {
+		double[] impliedMarketReturnsReconcilerArray = new double[] {
 			0.0335,
 			0.0332,
 			0.0315,
@@ -198,50 +203,67 @@ public class DaJagannathan2005d {
 			0.0585
 		};
 
-		double dblRiskFreeRate = 0.03;
-		double[] adblAdjustedHistoricalReturn = new double[adblHistoricalReturn.length];
+		double riskFreeRate = 0.03;
+		double[] adjustedHistoricalReturnsArray = new double[historicalReturnsArray.length];
 
-		for (int i = 0; i < adblHistoricalReturn.length; ++i)
-			adblAdjustedHistoricalReturn[i] = adblHistoricalReturn[i] - dblRiskFreeRate;
+		for (int historicalReturnsIndex = 0;
+			historicalReturnsIndex < historicalReturnsArray.length;
+			++historicalReturnsIndex)
+		{
+			adjustedHistoricalReturnsArray[historicalReturnsIndex] =
+				historicalReturnsArray[historicalReturnsIndex] - riskFreeRate;
+		}
 
-		HoldingsAllocation op = new QuadraticMeanVarianceOptimizer().allocate (
+		AssetComponent[] assetComponentArray = new QuadraticMeanVarianceOptimizer().allocate (
 			new HoldingsAllocationControl (
-				astrID,
+				sectorIDArray,
 				CustomRiskUtilitySettings.RiskTolerant (0.078),
 				EqualityConstraintSettings.FullyInvested()
 			),
 			AssetUniverseStatisticalProperties.FromMultivariateMetrics (
 				MultivariateMoments.Standard (
-					astrID,
-					adblAdjustedHistoricalReturn,
-					aadblHistoricalCovariance
+					sectorIDArray,
+					adjustedHistoricalReturnsArray,
+					historicalCovarianceMatrix
 				)
 			)
+		).optimalPortfolio().assetComponentArray();
+
+		double[] marketImpliedReturnsArray = R1MatrixUtil.Product (
+			historicalCovarianceMatrix,
+			marketWeightArray
 		);
 
-		AssetComponent[] aAC = op.optimalPortfolio().assetComponentArray();
-
-		double[] adblMarketImpliedReturn = R1MatrixUtil.Product (
-			aadblHistoricalCovariance,
-			adblMarketWeight
+		System.out.println (
+			"\n\t|---------------------------------------------------------------------------------------------||"
 		);
 
-		System.out.println ("\n\t|---------------------------------------------------------------------------------------------||");
+		System.out.println (
+			"\t|                                HISTORICAL COVARIANCE MATRIX                                 ||"
+		);
 
-		System.out.println ("\t|                                HISTORICAL COVARIANCE MATRIX                                 ||");
+		System.out.println (
+			"\t|---------------------------------------------------------------------------------------------||"
+		);
 
-		System.out.println ("\t|---------------------------------------------------------------------------------------------||");
+		for (int sectorIndexI = 0; sectorIndexI < sectorIDArray.length; ++sectorIndexI) {
+			String dump = "\t| " + sectorIDArray[sectorIndexI] + " ";
 
-		for (int i = 0; i < astrID.length; ++i) {
-			String strDump = "\t| " + astrID[i] + " ";
+			for (int sectorIndexJ = 0; sectorIndexJ < sectorIDArray.length; ++sectorIndexJ) {
+				dump += "|" + FormatUtil.FormatDouble (
+					historicalCovarianceMatrix[sectorIndexI][sectorIndexJ],
+					1,
+					4,
+					1.
+				) + " ";
+			}
 
-			for (int j = 0; j < astrID.length; ++j)
-				strDump += "|" + FormatUtil.FormatDouble (aadblHistoricalCovariance[i][j], 1, 4, 1.) + " ";
-
-			System.out.println (strDump + "||");
+			System.out.println (dump + "||");
 		}
 
-		System.out.println ("\t|---------------------------------------------------------------------------------------------||\n");
+		System.out.println (
+			"\t|---------------------------------------------------------------------------------------------||\n"
+		);
 
 		System.out.println ("\t||---------------------------------||");
 
@@ -249,11 +271,12 @@ public class DaJagannathan2005d {
 
 		System.out.println ("\t||---------------------------------||");
 
-		for (int i = 0; i < adblMarketWeight.length; ++i)
+		for (int sectorIndex = 0; sectorIndex < marketWeightArray.length; ++sectorIndex) {
 			System.out.println (
-				"\t||  " + astrID[i] + " => " +
-				FormatUtil.FormatDouble (adblMarketWeight[i], 2, 2, 100.) + "% ||"
+				"\t||  " + sectorIDArray[sectorIndex] + " => " +
+				FormatUtil.FormatDouble (marketWeightArray[sectorIndex], 2, 2, 100.) + "% ||"
 			);
+		}
 
 		System.out.println ("\t||---------------------------------||\n");
 
@@ -263,11 +286,12 @@ public class DaJagannathan2005d {
 
 		System.out.println ("\t||---------------------------------||");
 
-		for (int i = 0; i < adblHistoricalReturn.length; ++i)
+		for (int sectorIndex = 0; sectorIndex < historicalReturnsArray.length; ++sectorIndex) {
 			System.out.println (
-				"\t||  " + astrID[i] + " => " +
-				FormatUtil.FormatDouble (adblHistoricalReturn[i], 2, 2, 100.) + "% ||"
+				"\t||  " + sectorIDArray[sectorIndex] + " => " +
+				FormatUtil.FormatDouble (historicalReturnsArray[sectorIndex], 2, 2, 100.) + "% ||"
 			);
+		}
 
 		System.out.println ("\t||---------------------------------||");
 
@@ -281,12 +305,24 @@ public class DaJagannathan2005d {
 
 		System.out.println ("\t||---------------------------------------------||");
 
-		for (int i = 0; i < aAC.length; ++i)
+		for (int assetComponentIndex = 0;
+			assetComponentIndex < assetComponentArray.length;
+			++assetComponentIndex)
+		{
 			System.out.println (
-				"\t||  " + astrID[i] + " => " +
-				FormatUtil.FormatDouble (adblHistoricalOptimalWeight[i], 3, 2, 100.) + "% | " +
-				FormatUtil.FormatDouble (aAC[i].amount(), 3, 2, 100.) + "% ||"
+				"\t||  " + sectorIDArray[assetComponentIndex] + " => " + FormatUtil.FormatDouble (
+					historicalOptimalWeightArray[assetComponentIndex],
+					3,
+					2,
+					100.
+				) + "% | " + FormatUtil.FormatDouble (
+					assetComponentArray[assetComponentIndex].amount(),
+					3,
+					2,
+					100.
+				) + "% ||"
 			);
+		}
 
 		System.out.println ("\t||---------------------------------------------||");
 
@@ -300,12 +336,24 @@ public class DaJagannathan2005d {
 
 		System.out.println ("\t||----------------------------------------||");
 
-		for (int i = 0; i < aAC.length; ++i)
+		for (int assetComponentIndex = 0;
+			assetComponentIndex < assetComponentArray.length;
+			++assetComponentIndex)
+		{
 			System.out.println (
-				"\t||  " + astrID[i] + " => " +
-				FormatUtil.FormatDouble (adblMarketImpliedReturn[i] + dblRiskFreeRate, 1, 2, 100.) + "% |" +
-				FormatUtil.FormatDouble (adblMarketImpliedReturnReconciler[i], 1, 2, 100.) + "% ||"
+				"\t||  " + sectorIDArray[assetComponentIndex] + " => " + FormatUtil.FormatDouble (
+					marketImpliedReturnsArray[assetComponentIndex] + riskFreeRate,
+					1,
+					2,
+					100.
+				) + "% |" + FormatUtil.FormatDouble (
+					impliedMarketReturnsReconcilerArray[assetComponentIndex],
+					1,
+					2,
+					100.
+				) + "% ||"
 			);
+		}
 
 		System.out.println ("\t||----------------------------------------||\n");
 

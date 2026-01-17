@@ -15,6 +15,14 @@ import org.drip.service.env.EnvManager;
  */
 
 /*!
+ * Copyright (C) 2030 Lakshmi Krishnamurthy
+ * Copyright (C) 2029 Lakshmi Krishnamurthy
+ * Copyright (C) 2028 Lakshmi Krishnamurthy
+ * Copyright (C) 2027 Lakshmi Krishnamurthy
+ * Copyright (C) 2026 Lakshmi Krishnamurthy
+ * Copyright (C) 2025 Lakshmi Krishnamurthy
+ * Copyright (C) 2024 Lakshmi Krishnamurthy
+ * Copyright (C) 2023 Lakshmi Krishnamurthy
  * Copyright (C) 2022 Lakshmi Krishnamurthy
  * Copyright (C) 2021 Lakshmi Krishnamurthy
  * Copyright (C) 2020 Lakshmi Krishnamurthy
@@ -101,43 +109,40 @@ import org.drip.service.env.EnvManager;
  *  			<b>Goldman Sachs Asset Management</b>
  *  	</li>
  *  </ul>
- *  
- * <br><br>
- *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ProductCore.md">Product Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/TransactionCostAnalyticsLibrary.md">Transaction Cost Analytics</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/README.md">DROP API Construction and Usage</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/blacklitterman/README.md">Canonical Black Litterman and Extensions</a></li>
- *  </ul>
- * <br><br>
+ *
+ *	<br>
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md">Numerical Analysis Library</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/README.md">R<sup>d</sup> Continuous/Discrete Probability Measures</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/blacklitterman/README.md">Canonical Black Litterman and Extensions</a></td></tr>
+ *  </table>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class DaJagannathan2005e {
+public class DaJagannathan2005e
+{
 
 	/**
 	 * Entry Point
 	 * 
-	 * @param astArgs Command Line Argument Array
+	 * @param argumentArray Command Line Argument Array
 	 * 
 	 * @throws Exception Thrown on Error/Exception Situation
 	 */
 
 	public static final void main (
-		final String[] astArgs)
+		final String[] argumentArray)
 		throws Exception
 	{
-		EnvManager.InitEnv (
-			"",
-			true
-		);
+		EnvManager.InitEnv ("", true);
 
-		double dblTau = 0.0025;
-		double dblRiskAversion = 1.0;
-		double dblRiskFreeRate = 0.03;
+		double tau = 0.0025;
+		double riskAversion = 1.0;
+		double riskFreeRate = 0.03;
 
-		String[] astrAssetID = new String[] {
+		String[] assetIDArray = new String[] {
 			"CORPORATE BOND     ",
 			"LONG TERM GOVVIE   ",
 			"MEDIUM TERM GOVVIE ",
@@ -148,7 +153,7 @@ public class DaJagannathan2005e {
 			"STRONG SELL EQUITY "
 		};
 
-		double[] adblAssetEquilibriumWeight = new double[] {
+		double[] assetEquilibriumWeightArray = new double[] {
 			0.1667,
 			0.0833,
 			0.0833,
@@ -159,7 +164,7 @@ public class DaJagannathan2005e {
 			0.1622
 		};
 
-		double[][] aadblAssetExcessReturnsCovariance = new double[][] {
+		double[][] excessAssetReturnsCovarianceMatrix = new double[][] {
 			{0.0050, 0.0047, 0.0024, 0.0036, 0.0023, 0.0031, 0.0032, 0.0030},
 			{0.0047, 0.0062, 0.0030, 0.0033, 0.0016, 0.0024, 0.0026, 0.0020},
 			{0.0024, 0.0030, 0.0020, 0.0015, 0.0006, 0.0009, 0.0012, 0.0008},
@@ -170,7 +175,7 @@ public class DaJagannathan2005e {
 			{0.0030, 0.0020, 0.0008, 0.0414, 0.0371, 0.0364, 0.0384, 0.0498}
 		};
 
-		double[][] aadblAssetSpaceViewProjection = new double[][] {
+		double[][] assetSpaceViewProjectionMatrix = new double[][] {
 			{  0.00,  0.00,  0.00,  0.33,  0.18,  0.16,  0.09,  0.24},
 			{ -0.50, -0.25, -0.25,  0.33,  0.18,  0.16,  0.09,  0.24},
 			{  0.00,  0.00,  0.00,  1.00,  0.00,  0.00,  0.00,  0.00},
@@ -179,7 +184,7 @@ public class DaJagannathan2005e {
 			{  0.00,  0.00,  0.00,  0.00,  0.00,  0.00,  0.00,  1.00}
 		};
 
-		double[] adblProjectionExpectedExcessReturns = new double[] {
+		double[] expectedExcessProjectionReturnsArray = new double[] {
 			0.0634,
 			0.0400,
 			0.0834,
@@ -188,7 +193,7 @@ public class DaJagannathan2005e {
 			0.0434
 		};
 
-		double[][] aadblProjectionExcessReturnsCovariance = new double[][] {
+		double[][] excessProjectionReturnsCovarianceMatrix = new double[][] {
 			{0.0012, 0.0000, 0.0000, 0.0000, 0.0000, 0.0000},
 			{0.0000, 0.0009, 0.0000, 0.0000, 0.0000, 0.0000},
 			{0.0000, 0.0000, 0.0009, 0.0000, 0.0000, 0.0000},
@@ -208,11 +213,11 @@ public class DaJagannathan2005e {
 					"PROJECTION #6"
 				}
 			),
-			adblProjectionExpectedExcessReturns,
-			aadblProjectionExcessReturnsCovariance
+			expectedExcessProjectionReturnsArray,
+			excessProjectionReturnsCovarianceMatrix
 		);
 
-		double[] adblAssetSpaceJointReturnsReconciler = new double[] {
+		double[] assetSpaceJointReturnsReconcilerArray = new double[] {
 			0.0336,
 			0.0333,
 			0.0315,
@@ -223,166 +228,253 @@ public class DaJagannathan2005e {
 			0.0608
 		};
 
-		BlackLittermanCombinationEngine blce = new BlackLittermanCombinationEngine (
+		R1MultivariateConvolutionMetrics convolutionMetrics = new BlackLittermanCombinationEngine (
 			ForwardReverseHoldingsAllocation.Reverse (
-				Portfolio.Standard (
-					astrAssetID,
-					adblAssetEquilibriumWeight
-				),
-				aadblAssetExcessReturnsCovariance,
-				dblRiskAversion
+				Portfolio.Standard (assetIDArray, assetEquilibriumWeightArray),
+				excessAssetReturnsCovarianceMatrix,
+				riskAversion
 			),
-			new PriorControlSpecification (
-				false,
-				dblRiskFreeRate,
-				dblTau
-			),
-			new ProjectionSpecification (
-				viewDistribution,
-				aadblAssetSpaceViewProjection
-			)
-		);
+			new PriorControlSpecification (false, riskFreeRate, tau),
+			new ProjectionSpecification (viewDistribution, assetSpaceViewProjectionMatrix)
+		).customConfidenceRun().jointPosteriorMetrics();
 
-		R1MultivariateConvolutionMetrics jpm = blce.customConfidenceRun().jointPosteriorMetrics();
+		R1MultivariateNormal jointDistribution =
+			(R1MultivariateNormal) convolutionMetrics.jointDistribution();
 
-		R1MultivariateNormal jointDistribution = (R1MultivariateNormal) jpm.jointDistribution();
+		R1MultivariateNormal posteriorDistribution =
+			(R1MultivariateNormal) convolutionMetrics.posteriorDistribution();
 
-		R1MultivariateNormal posteriorDistribution = (R1MultivariateNormal) jpm.posteriorDistribution();
+		double[] assetSpaceJointReturnsArray = jointDistribution.mean();
 
-		double[] adblAssetSpaceJointReturns = jointDistribution.mean();
+		double[][] assetSpaceJointCovarianceMatrix = jointDistribution.covariance().covarianceMatrix();
 
-		double[][] aadblAssetSpaceJointCovariance = jointDistribution.covariance().covarianceMatrix();
-
-		double[][] aadblAssetSpacePosteriorCovariance = posteriorDistribution.covariance().covarianceMatrix();
+		double[][] assetSpacePosteriorCovarianceMatrix =
+			posteriorDistribution.covariance().covarianceMatrix();
 
 		System.out.println ("\n\t|------------------------||");
 
-		System.out.println ("\t| TAU   => " + FormatUtil.FormatDouble (dblTau, 1, 8, 1.) + "   ||");
+		System.out.println ("\t| TAU   => " + FormatUtil.FormatDouble (tau, 1, 8, 1.) + "   ||");
 
-		System.out.println ("\t| DELTA => " + FormatUtil.FormatDouble (dblRiskAversion, 1, 8, 1.) + "   ||");
+		System.out.println ("\t| DELTA => " + FormatUtil.FormatDouble (riskAversion, 1, 8, 1.) + "   ||");
 
 		System.out.println ("\t|------------------------||");
 
-		System.out.println ("\n\t|------------------------------------------------------------------------------------------------||");
+		System.out.println (
+			"\n\t|------------------------------------------------------------------------------------------------||"
+		);
 
 		System.out.println ("\t|                           PRIOR CROSS ASSET COVARIANCE MATRIX                                  ||");
 
-		System.out.println ("\t|------------------------------------------------------------------------------------------------||");
+		System.out.println (
+			"\t|------------------------------------------------------------------------------------------------||"
+		);
 
-		String strHeader = "\t|     |";
+		String header = "\t|     |";
 
-		for (int i = 0; i < astrAssetID.length; ++i)
-			strHeader += "    " + astrAssetID[i] + "     |";
+		for (int assetIDIndex = 0; assetIDIndex < assetIDArray.length; ++assetIDIndex) {
+			header += "    " + assetIDArray[assetIDIndex] + "     |";
+		}
 
-		System.out.println (strHeader + "|");
+		System.out.println (header + "|");
 
-		System.out.println ("\t|------------------------------------------------------------------------------------------------||");
+		System.out.println (
+			"\t|------------------------------------------------------------------------------------------------||"
+		);
 
-		for (int i = 0; i < astrAssetID.length; ++i) {
-			String strDump = "\t| " + astrAssetID[i] + " ";
+		for (int assetIDIndexI = 0; assetIDIndexI < assetIDArray.length; ++assetIDIndexI) {
+			String dump = "\t| " + assetIDArray[assetIDIndexI] + " ";
 
-			for (int j = 0; j < astrAssetID.length; ++j)
-				strDump += "|" + FormatUtil.FormatDouble (aadblAssetExcessReturnsCovariance[i][j], 1, 8, 1.) + " ";
+			for (int assetIDIndexJ = 0; assetIDIndexJ < assetIDArray.length; ++assetIDIndexJ) {
+				dump += "|" + FormatUtil.FormatDouble (
+					excessAssetReturnsCovarianceMatrix[assetIDIndexI][assetIDIndexJ],
+					1,
+					8,
+					1.
+				) + " ";
+			}
+
+			System.out.println (dump + "||");
+		}
+
+		System.out.println (
+			"\t|------------------------------------------------------------------------------------------------||"
+		);
+
+		System.out.println (
+			"\n\t|------------------------------------------------------------------------------------------------||"
+		);
+
+		System.out.println (
+			"\t|                          VIEW SCOPING ASSET PROJECTION LOADING                                 ||"
+		);
+
+		System.out.println (
+			"\t|------------------------------------------------------------------------------------------------||"
+		);
+
+		header = "\t|     |";
+
+		for (int assetIDIndex = 0; assetIDIndex < assetIDArray.length; ++assetIDIndex) {
+			header += "    " + assetIDArray[assetIDIndex] + "     |";
+		}
+
+		System.out.println (header + "|");
+
+		System.out.println (
+			"\t|------------------------------------------------------------------------------------------------||"
+		);
+
+		for (int assetSpaceViewProjectionIndex = 0;
+			assetSpaceViewProjectionIndex < assetSpaceViewProjectionMatrix.length;
+			++assetSpaceViewProjectionIndex)
+		{
+			String strDump = "\t|  #" + assetSpaceViewProjectionIndex + " ";
+
+			for (int assetIDIndex = 0; assetIDIndex < assetIDArray.length; ++assetIDIndex) {
+				strDump += "|" + FormatUtil.FormatDouble (
+					assetSpaceViewProjectionMatrix[assetSpaceViewProjectionIndex][assetIDIndex],
+					1,
+					8,
+					1.
+				) + " ";
+			}
 
 			System.out.println (strDump + "||");
 		}
 
-		System.out.println ("\t|------------------------------------------------------------------------------------------------||");
+		System.out.println (
+			"\t|------------------------------------------------------------------------------------------------||"
+		);
 
-		System.out.println ("\n\t|------------------------------------------------------------------------------------------------||");
+		System.out.println (
+			"\n\t|------------------------------------------------------------------------------------------------||"
+		);
 
-		System.out.println ("\t|                          VIEW SCOPING ASSET PROJECTION LOADING                                 ||");
+		System.out.println (
+			"\t|------------------------------------------------------------------------------------------------||"
+		);
 
-		System.out.println ("\t|------------------------------------------------------------------------------------------------||");
+		for (int assetSpaceViewProjectionIndexI = 0;
+			assetSpaceViewProjectionIndexI < assetSpaceViewProjectionMatrix.length;
+			++assetSpaceViewProjectionIndexI)
+		{
+			String strDump = "\t|  #" + assetSpaceViewProjectionIndexI + " ";
 
-		strHeader = "\t|     |";
+			for (int assetSpaceViewProjectionIndexJ = 0;
+				assetSpaceViewProjectionIndexJ < assetSpaceViewProjectionMatrix.length;
+				++assetSpaceViewProjectionIndexJ)
+			{
+				strDump += "|" + FormatUtil.FormatDouble (
+					excessProjectionReturnsCovarianceMatrix[assetSpaceViewProjectionIndexI][assetSpaceViewProjectionIndexJ],
+					1,
+					8,
+					1.
+				) + " ";
+			}
 
-		for (int i = 0; i < astrAssetID.length; ++i)
-			strHeader += "    " + astrAssetID[i] + "     |";
-
-		System.out.println (strHeader + "|");
-
-		System.out.println ("\t|------------------------------------------------------------------------------------------------||");
-
-		for (int i = 0; i < aadblAssetSpaceViewProjection.length; ++i) {
-			String strDump = "\t|  #" + i + " ";
-
-			for (int j = 0; j < astrAssetID.length; ++j)
-				strDump += "|" + FormatUtil.FormatDouble (aadblAssetSpaceViewProjection[i][j], 1, 8, 1.) + " ";
-
-			System.out.println (strDump + "||");
+			System.out.println (
+				strDump + "|" + FormatUtil.FormatDouble (
+					expectedExcessProjectionReturnsArray[assetSpaceViewProjectionIndexI],
+					1,
+					2,
+					100.
+				) + "%"
+			);
 		}
 
-		System.out.println ("\t|------------------------------------------------------------------------------------------------||");
+		System.out.println (
+			"\t|------------------------------------------------------------------------------------------------||"
+		);
 
-		System.out.println ("\n\t|------------------------------------------------------------------------------------------------||");
+		System.out.println (
+			"\t|------------------------------------------------------------------------------------------------||"
+		);
 
-		System.out.println ("\t|------------------------------------------------------------------------------------------------||");
+		System.out.println (
+			"\n\t|------------------------------------------------------------------------------------------------||"
+		);
 
-		for (int i = 0; i < aadblAssetSpaceViewProjection.length; ++i) {
-			String strDump = "\t|  #" + i + " ";
+		System.out.println (
+			"\t|                           JOINT CROSS ASSET COVARIANCE MATRIX                                  ||"
+		);
 
-			for (int j = 0; j < aadblAssetSpaceViewProjection.length; ++j)
-				strDump += "|" + FormatUtil.FormatDouble (aadblProjectionExcessReturnsCovariance[i][j], 1, 8, 1.) + " ";
+		System.out.println (
+			"\t|------------------------------------------------------------------------------------------------||"
+		);
 
-			System.out.println (strDump + "|" + FormatUtil.FormatDouble (adblProjectionExpectedExcessReturns[i], 1, 2, 100.) + "%");
+		header = "\t|     |";
+
+		for (int assetIDIndex = 0; assetIDIndex < assetIDArray.length; ++assetIDIndex) {
+			header += "    " + assetIDArray[assetIDIndex] + "     |";
 		}
 
-		System.out.println ("\t|------------------------------------------------------------------------------------------------||");
+		System.out.println (header + "|");
 
-		System.out.println ("\t|------------------------------------------------------------------------------------------------||");
+		System.out.println (
+			"\t|------------------------------------------------------------------------------------------------||"
+		);
 
-		System.out.println ("\n\t|------------------------------------------------------------------------------------------------||");
+		for (int assetIDIndexI = 0; assetIDIndexI < assetIDArray.length; ++assetIDIndexI) {
+			String dump = "\t| " + assetIDArray[assetIDIndexI] + " ";
 
-		System.out.println ("\t|                           JOINT CROSS ASSET COVARIANCE MATRIX                                  ||");
+			for (int assetIDIndexJ = 0; assetIDIndexJ < assetIDArray.length; ++assetIDIndexJ) {
+				dump += "|" + FormatUtil.FormatDouble (
+					assetSpaceJointCovarianceMatrix[assetIDIndexI][assetIDIndexJ],
+					1,
+					8,
+					1.
+				) + " ";
+			}
 
-		System.out.println ("\t|------------------------------------------------------------------------------------------------||");
-
-		strHeader = "\t|     |";
-
-		for (int i = 0; i < astrAssetID.length; ++i)
-			strHeader += "    " + astrAssetID[i] + "     |";
-
-		System.out.println (strHeader + "|");
-
-		System.out.println ("\t|------------------------------------------------------------------------------------------------||");
-
-		for (int i = 0; i < astrAssetID.length; ++i) {
-			String strDump = "\t| " + astrAssetID[i] + " ";
-
-			for (int j = 0; j < astrAssetID.length; ++j)
-				strDump += "|" + FormatUtil.FormatDouble (aadblAssetSpaceJointCovariance[i][j], 1, 8, 1.) + " ";
-
-			System.out.println (strDump + "||");
+			System.out.println (dump + "||");
 		}
 
-		System.out.println ("\t|------------------------------------------------------------------------------------------------||");
+		System.out.println (
+			"\t|------------------------------------------------------------------------------------------------||"
+		);
 
-		System.out.println ("\n\t|------------------------------------------------------------------------------------------------||");
+		System.out.println (
+			"\n\t|------------------------------------------------------------------------------------------------||"
+		);
 
-		System.out.println ("\t|                         POSTERIOR CROSS ASSET COVARIANCE MATRIX                                ||");
+		System.out.println (
+			"\t|                         POSTERIOR CROSS ASSET COVARIANCE MATRIX                                ||"
+		);
 
-		System.out.println ("\t|------------------------------------------------------------------------------------------------||");
+		System.out.println (
+			"\t|------------------------------------------------------------------------------------------------||"
+		);
 
-		strHeader = "\t|     |";
+		header = "\t|     |";
 
-		for (int i = 0; i < astrAssetID.length; ++i)
-			strHeader += "    " + astrAssetID[i] + "     |";
-
-		System.out.println (strHeader + "|");
-
-		System.out.println ("\t|------------------------------------------------------------------------------------------------||");
-
-		for (int i = 0; i < astrAssetID.length; ++i) {
-			String strDump = "\t| " + astrAssetID[i] + " ";
-
-			for (int j = 0; j < astrAssetID.length; ++j)
-				strDump += "|" + FormatUtil.FormatDouble (aadblAssetSpacePosteriorCovariance[i][j], 1, 8, 1.) + " ";
-
-			System.out.println (strDump + "||");
+		for (int assetIDIndex = 0; assetIDIndex < assetIDArray.length; ++assetIDIndex) {
+			header += "    " + assetIDArray[assetIDIndex] + "     |";
 		}
 
-		System.out.println ("\t|------------------------------------------------------------------------------------------------||\n");
+		System.out.println (header + "|");
+
+		System.out.println (
+			"\t|------------------------------------------------------------------------------------------------||"
+		);
+
+		for (int assetIDIndexI = 0; assetIDIndexI < assetIDArray.length; ++assetIDIndexI) {
+			String dump = "\t| " + assetIDArray[assetIDIndexI] + " ";
+
+			for (int assetIDIndexJ = 0; assetIDIndexJ < assetIDArray.length; ++assetIDIndexJ) {
+				dump += "|" + FormatUtil.FormatDouble (
+					assetSpacePosteriorCovarianceMatrix[assetIDIndexI][assetIDIndexJ],
+					1,
+					8,
+					1.
+				) + " ";
+			}
+
+			System.out.println (dump + "||");
+		}
+
+		System.out.println (
+			"\t|------------------------------------------------------------------------------------------------||\n"
+		);
 
 		System.out.println ("\t|------------------------||");
 
@@ -394,11 +486,22 @@ public class DaJagannathan2005e {
 
 		System.out.println ("\t|------------------------||");
 
-		for (int i = 0; i < adblAssetSpaceJointReturnsReconciler.length; ++i) {
+		for (int assetSpaceJointReturnsIndex = 0;
+			assetSpaceJointReturnsIndex < assetSpaceJointReturnsReconcilerArray.length;
+			++assetSpaceJointReturnsIndex)
+		{
 			System.out.println (
-				"\t| [" + astrAssetID[i] + "] =>" +
-				FormatUtil.FormatDouble (adblAssetSpaceJointReturns[i], 2, 2, 100.) + "% |" +
-				FormatUtil.FormatDouble (adblAssetSpaceJointReturnsReconciler[i], 2, 2, 100.) + "% ||"
+				"\t| [" + assetIDArray[assetSpaceJointReturnsIndex] + "] =>" + FormatUtil.FormatDouble (
+					assetSpaceJointReturnsArray[assetSpaceJointReturnsIndex],
+					2,
+					2,
+					100.
+				) + "% |" + FormatUtil.FormatDouble (
+					assetSpaceJointReturnsReconcilerArray[assetSpaceJointReturnsIndex],
+					2,
+					2,
+					100.
+				) + "% ||"
 			);
 		}
 
