@@ -11,7 +11,7 @@ Fixed Income Analytics Library contains the Valuation and Risk Functionality of 
 
  |        Document         | Link |
  |-------------------------|------|
- | Technical Specification | [*Latest*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/FixedIncome/FixedIncomeAnalytics_v7.09.pdf) [*Previous*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/FixedIncome) |
+ | Technical Specification | [*Latest*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/FixedIncome/FixedIncomeAnalytics_v7.51.pdf) [*Previous*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/FixedIncome) |
  | User Guide              |  |
  | API                     | [*Javadoc*](https://lakshmidrip.github.io/DROP/Javadoc/index.html)|
 
@@ -68,6 +68,9 @@ Fixed Income Analytics Library contains the Valuation and Risk Functionality of 
 	* Constant Maturity Swaps
 	* Swap Indexes
 	* Overnight Index Swaps
+	* TED Spread
+	* SOFR
+	* SOFR Lookback
 	* Swaptions
 	* Forex and Forward Swaps
  * Exchange Traded Instruments

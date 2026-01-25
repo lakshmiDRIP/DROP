@@ -138,7 +138,6 @@ import org.drip.numerical.common.NumberUtil;
  * 		<li>Retrieve the Skewness of the Distribution</li>
  * 		<li>Retrieve the Excess Kurtosis of the Distribution</li>
  * 		<li>Retrieve the Differential Entropy of the Distribution</li>
- * 		<li>Retrieve the Moment Generating Function of the Distribution</li>
  * 		<li>Retrieve the Central Limit Theorem Equivalent Normal Distribution Proxy</li>
  * 		<li>Compute the Logarithmic Expectation</li>
  * 		<li>Compute the Banneheke-Ekayanake Approximation for the Median when k gte 1</li>
@@ -550,7 +549,7 @@ public class R1ShapeScaleDistribution
 	 * @throws Exception Thrown if the Moment Generating Function cannot be estimated
 	 */
 
-	@Override public R1ToR1 momentGeneratingFunction()
+	/* @Override public R1ToR1 momentGeneratingFunction()
 	{
 		final double scale = _shapeScaleParameters.scale();
 
@@ -568,7 +567,7 @@ public class R1ShapeScaleDistribution
 				return Math.pow (1. - scale * t, -1. * _shapeScaleParameters.shape());
 			}
 		};
-	}
+	} */
 
 	/**
 	 * Retrieve the Central Limit Theorem Equivalent Normal Distribution Proxy

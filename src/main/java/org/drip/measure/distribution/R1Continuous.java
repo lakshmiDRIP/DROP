@@ -7,7 +7,9 @@ import org.drip.function.r1tor1solver.FixedPointFinderOutput;
 import org.drip.measure.statistics.PopulationCentralMeasures;
 import org.drip.numerical.common.Array2D;
 import org.drip.numerical.common.NumberUtil;
+import org.drip.numerical.integration.GaussKronrodQuadratureGenerator;
 import org.drip.numerical.integration.NewtonCotesQuadratureGenerator;
+import org.drip.numerical.integration.QuadratureEstimator;
 import org.drip.numerical.integration.R1ToR1Integrator;
 
 /*
@@ -105,13 +107,13 @@ import org.drip.numerical.integration.R1ToR1Integrator;
  * 	provides the following Functionality:
  *
  *  <ul>
+ * 		<li>Retrieve the <i>QuadratureEstimator</i> Instance for the Support</li>
  * 		<li>Retrieve the Quantile Variate of the Distribution</li>
  * 		<li>Retrieve the Mode of the Distribution</li>
  * 		<li>Retrieve the Variance of the Distribution</li>
  * 		<li>Retrieve the Skewness of the Distribution</li>
  * 		<li>Retrieve the Excess Kurtosis of the Distribution</li>
  * 		<li>Retrieve the Differential Entropy of the Distribution</li>
- * 		<li>Construct the Moment Generating Function</li>
  * 		<li>Construct the Probability Generating Function</li>
  * 		<li>Retrieve the Fisher Information of the Distribution</li>
  * 		<li>Compute the Kullback-Leibler Divergence against the other R<sup>1</sup> Distribution</li>
@@ -151,6 +153,7 @@ import org.drip.numerical.integration.R1ToR1Integrator;
 
 public abstract class R1Continuous
 {
+	private static final int INTERMEDIATE_POINT_COUNT = 50;
 
 	/**
 	 * Lay out the Support of the PDF Range
@@ -204,9 +207,27 @@ public abstract class R1Continuous
 	 * @throws Exception Thrown if the inputs are invalid
 	 */
 
-	public abstract double cumulative (
+	public double cumulative (
 		final double x)
-		throws Exception;
+		throws Exception
+	{
+		double leftSupport = support()[0];
+
+		QuadratureEstimator quadratureEstimator = Double.NEGATIVE_INFINITY == leftSupport ?
+			NewtonCotesQuadratureGenerator.GaussLaguerreRightDefinite (x, INTERMEDIATE_POINT_COUNT) :
+			GaussKronrodQuadratureGenerator.K15 (leftSupport, x);
+
+		return quadratureEstimator.integrate (
+			new R1ToR1 (null) {
+				@Override public double evaluate (
+					final double u)
+					throws Exception
+				{
+					return density (u);
+				}
+			}
+		);
+	}
 
 	/**
 	 * Compute the Incremental under the Distribution between the 2 variates
@@ -224,7 +245,16 @@ public abstract class R1Continuous
 		final double xRight)
 		throws Exception
 	{
-		return cumulative (xRight) - cumulative (xLeft);
+		return GaussKronrodQuadratureGenerator.K15 (xLeft, xRight).integrate (
+			new R1ToR1 (null) {
+				@Override public double evaluate (
+					final double u)
+					throws Exception
+				{
+					return density (u);
+				}
+			}
+		);
 	}
 
 	/**
@@ -266,6 +296,70 @@ public abstract class R1Continuous
 	}
 
 	/**
+	 * Retrieve the <i>QuadratureEstimator</i> Instance for the Support
+	 * 
+	 * @return <i>QuadratureEstimator</i> Instance for the Support
+	 */
+
+	public QuadratureEstimator quadratureEstimator()
+	{
+		double[] leftRightSupportArray = support();
+
+		double leftSupport = leftRightSupportArray[0];
+		double rightSupport = leftRightSupportArray[1];
+
+		if (Double.NEGATIVE_INFINITY == leftSupport && Double.POSITIVE_INFINITY == rightSupport) {
+			return NewtonCotesQuadratureGenerator.GaussHermite (INTERMEDIATE_POINT_COUNT);
+		}
+
+		if (Double.NEGATIVE_INFINITY == leftSupport && Double.isFinite (rightSupport)) {
+			return NewtonCotesQuadratureGenerator.GaussLaguerreRightDefinite (
+				rightSupport,
+				INTERMEDIATE_POINT_COUNT
+			);
+		}
+
+		if (Double.isFinite (leftSupport) && Double.POSITIVE_INFINITY == rightSupport) {
+			return NewtonCotesQuadratureGenerator.GaussLaguerreLeftDefinite (
+				leftSupport,
+				INTERMEDIATE_POINT_COUNT
+			);
+		}
+
+		if (Double.NEGATIVE_INFINITY == leftSupport && Double.POSITIVE_INFINITY == rightSupport) {
+			return NewtonCotesQuadratureGenerator.GaussHermite (INTERMEDIATE_POINT_COUNT);
+		}
+
+		return GaussKronrodQuadratureGenerator.K15 (leftSupport, rightSupport);
+	}
+
+	/**
+	 * Retrieve the n<sup>th</sup> Non-central Moment
+	 * 
+	 * @param n Moment Number
+	 * 
+	 * @return The n<sup>th</sup> Non-central Moment
+	 * 
+	 * @throws Exception Thrown if the n<sup>th</sup> Non-central Moment cannot be estimated
+	 */
+
+	public double nonCentralMoment (
+		final int n)
+		throws Exception
+	{
+		return quadratureEstimator().integrate (
+			new R1ToR1 (null) {
+				@Override public double evaluate (
+					final double t)
+					throws Exception
+				{
+					return density (t) * Math.pow (t, n);
+				}
+			}
+		);
+	}
+
+	/**
 	 * Retrieve the Mean of the Distribution
 	 * 
 	 * @return The Mean of the Distribution
@@ -273,8 +367,39 @@ public abstract class R1Continuous
 	 * @throws Exception Thrown if the Mean cannot be estimated
 	 */
 
-	public abstract double mean()
-		throws Exception;
+	public double mean()
+		throws Exception
+	{
+		return nonCentralMoment (1);
+	}
+
+	/**
+	 * Retrieve the n<sup>th</sup> Central Moment
+	 * 
+	 * @param n Moment Number
+	 * 
+	 * @return The n<sup>th</sup> Central Moment
+	 * 
+	 * @throws Exception Thrown if the n<sup>th</sup> Central Moment cannot be estimated
+	 */
+
+	public double centralMoment (
+		final int n)
+		throws Exception
+	{
+		final double mean = nonCentralMoment (1);
+
+		return quadratureEstimator().integrate (
+			new R1ToR1 (null) {
+				@Override public double evaluate (
+					final double t)
+					throws Exception
+				{
+					return density (t) * Math.pow (t - mean, n);
+				}
+			}
+		);
+	}
 
 	/**
 	 * Retrieve the Median of the Distribution
@@ -355,8 +480,11 @@ public abstract class R1Continuous
 	 * @throws Exception Thrown if the Variance cannot be estimated
 	 */
 
-	public abstract double variance()
-		throws Exception;
+	public double variance()
+		throws Exception
+	{
+		return centralMoment (2);
+	}
 
 	/**
 	 * Retrieve the Skewness of the Distribution
@@ -409,17 +537,6 @@ public abstract class R1Continuous
 				}
 			}
 		);
-	}
-
-	/**
-	 * Construct the Moment Generating Function
-	 * 
-	 * @return The Moment Generating Function
-	 */
-
-	public R1ToR1 momentGeneratingFunction()
-	{
-		return null;
 	}
 
 	/**
@@ -572,40 +689,6 @@ public abstract class R1Continuous
 		}
 
 		return 1. - fixedPointFinderOutput.getRoot();
-	}
-
-	/**
-	 * Retrieve the n<sup>th</sup> Non-central Moment
-	 * 
-	 * @param n Moment Number
-	 * 
-	 * @return The n<sup>th</sup> Non-central Moment
-	 * 
-	 * @throws Exception Thrown if the n<sup>th</sup> Non-central Moment cannot be estimated
-	 */
-
-	public double nonCentralMoment (
-		final int n)
-		throws Exception
-	{
-		throw new Exception ("R1Continuous::nonCentralMoment => Not implemented");
-	}
-
-	/**
-	 * Retrieve the n<sup>th</sup> Central Moment
-	 * 
-	 * @param n Moment Number
-	 * 
-	 * @return The n<sup>th</sup> Central Moment
-	 * 
-	 * @throws Exception Thrown if the n<sup>th</sup> Central Moment cannot be estimated
-	 */
-
-	public double centralMoment (
-		final int n)
-		throws Exception
-	{
-		throw new Exception ("R1Continuous::centralMoment => Not implemented");
 	}
 
 	/**

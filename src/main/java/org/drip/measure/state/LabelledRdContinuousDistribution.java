@@ -96,6 +96,7 @@ import org.drip.measure.distribution.RdContinuous;
  *
  *  <ul>
  * 		<li>Retrieve the Multivariate Meta Instance</li>
+ * 		<li>Retrieve the State Dimension</li>
  * 		<li>Retrieve the Left Edge Bounding Multivariate</li>
  * 		<li>Retrieve the Right Edge Bounding Multivariate</li>
  * 		<li>Convert the Multivariate Density into an R<sup>d</sup> To R<sup>1</sup> Function Instance</li>
@@ -142,6 +143,17 @@ public abstract class LabelledRdContinuousDistribution
 	public LabelledRd stateLabels()
 	{
 		return _stateLabels;
+	}
+
+	/**
+	 * Retrieve the State Dimension
+	 * 
+	 * @return The State Dimension
+	 */
+
+	public int dimension()
+	{
+		return _stateLabels.count();
 	}
 
 	/**

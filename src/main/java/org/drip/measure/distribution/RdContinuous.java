@@ -94,6 +94,7 @@ package org.drip.measure.distribution;
  * 	following Functionality:
  *
  *  <ul>
+ * 		<li>Retrieve the State Dimension</li>
  * 		<li>Compute the Cumulative under the Distribution to the given Variate Array</li>
  * 		<li>Compute the Incremental under the Distribution between the 2 Variate Arrays</li>
  * 		<li>Compute the Density under the Distribution at the given Variate Array</li>
@@ -113,6 +114,14 @@ package org.drip.measure.distribution;
 
 public abstract class RdContinuous
 {
+
+	/**
+	 * Retrieve the State Dimension
+	 * 
+	 * @return The State Dimension
+	 */
+
+	public abstract int dimension();
 
 	/**
 	 * Compute the Cumulative under the Distribution to the given Variate Array

@@ -141,7 +141,6 @@ import org.drip.numerical.common.NumberUtil;
  * 		<li>Retrieve the Skewness of the Distribution</li>
  * 		<li>Retrieve the Excess Kurtosis of the Distribution</li>
  * 		<li>Retrieve the Differential Entropy of the Distribution</li>
- * 		<li>Construct the Moment Generating Function</li>
  * 		<li>Construct the Probability Generating Function</li>
  * 		<li>Generate a Random Variable corresponding to the Distribution</li>
  * 		<li>Retrieve the Normalizer</li>
@@ -462,7 +461,7 @@ public class R1Central
 	 * @return The Moment Generating Function
 	 */
 
-	@Override public R1ToR1 momentGeneratingFunction()
+	/* @Override public R1ToR1 momentGeneratingFunction()
 	{
 		return new R1ToR1 (null) {
 			@Override public double evaluate (
@@ -476,7 +475,7 @@ public class R1Central
 				return Math.pow (1. - 2. * t, -0.5 * _degreesOfFreedom);
 			}
 		};
-	}
+	} */
 
 	/**
 	 * Construct the Probability Generating Function

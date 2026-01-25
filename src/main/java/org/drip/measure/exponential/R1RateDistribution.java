@@ -1,7 +1,6 @@
 
 package org.drip.measure.exponential;
 
-import org.drip.function.definition.R1ToR1;
 import org.drip.measure.distribution.R1Continuous;
 import org.drip.numerical.common.NumberUtil;
 
@@ -130,7 +129,6 @@ import org.drip.numerical.common.NumberUtil;
  * 		<li>Retrieve the Variance of the Distribution</li>
  * 		<li>Retrieve the Skewness of the Distribution</li>
  * 		<li>Retrieve the Excess Kurtosis of the Distribution</li>
- * 		<li>Construct the Moment Generating Function</li>
  * 		<li>Retrieve the Fisher Information of the Distribution</li>
  * 		<li>Compute the Kullback-Leibler Divergence against the other R<sup>1</sup> Distribution</li>
  * 		<li>Retrieve the Quantile CVaR (Conditional Value-at-Risk) of the Distribution</li>
@@ -399,7 +397,7 @@ public class R1RateDistribution
 	 * @return The Moment Generating Function
 	 */
 
-	@Override public R1ToR1 momentGeneratingFunction()
+	/* @Override public R1ToR1 momentGeneratingFunction()
 	{
 		return new R1ToR1 (null) {
 			@Override public double evaluate (
@@ -415,7 +413,7 @@ public class R1RateDistribution
 				return t >= _lambda ? 0. : _lambda / (_lambda - t);
 			}
 		};
-	}
+	} */
 
 	/**
 	 * Retrieve the Fisher Information of the Distribution

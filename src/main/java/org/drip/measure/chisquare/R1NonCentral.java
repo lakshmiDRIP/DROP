@@ -135,7 +135,6 @@ import org.drip.specialfunction.definition.ModifiedBesselFirstKindEstimator;
  * 		<li>Retrieve the Variance of the Distribution</li>
  * 		<li>Retrieve the Skewness of the Distribution</li>
  * 		<li>Retrieve the Excess Kurtosis of the Distribution</li>
- * 		<li>Construct the Moment Generating Function</li>
  * 		<li>Compute the Cumulant</li>
  * 		<li>Compute the Leading Non-central Moments</li>
  * 		<li>Compute the Leading Central Moments</li>
@@ -481,7 +480,7 @@ public class R1NonCentral
 	 * @return The Moment Generating Function
 	 */
 
-	@Override public R1ToR1 momentGeneratingFunction()
+	/* @Override public R1ToR1 momentGeneratingFunction()
 	{
 		return new R1ToR1 (null) {
 			@Override public double evaluate (
@@ -500,7 +499,7 @@ public class R1NonCentral
 					Math.pow (oneMinusTwoT, 0.5 * _parameters.degreesOfFreedom());
 			}
 		};
-	}
+	} */
 
 	/**
 	 * Compute the Cumulant

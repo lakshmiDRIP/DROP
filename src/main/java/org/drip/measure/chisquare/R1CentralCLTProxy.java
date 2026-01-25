@@ -329,17 +329,6 @@ public class R1CentralCLTProxy
 	}
 
 	/**
-	 * Construct the Moment Generating Function
-	 * 
-	 * @return The Moment Generating Function
-	 */
-
-	@Override public R1ToR1 momentGeneratingFunction()
-	{
-		return _r1UnivariateNormal.momentGeneratingFunction();
-	}
-
-	/**
 	 * Construct the Probability Generating Function
 	 * 
 	 * @return The Probability Generating Function
