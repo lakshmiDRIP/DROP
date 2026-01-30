@@ -1,15 +1,14 @@
 
 package org.drip.numerical.integration;
 
+import org.drip.numerical.common.NumberUtil;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
- * Copyright (C) 2022 Lakshmi Krishnamurthy
- * Copyright (C) 2021 Lakshmi Krishnamurthy
- * Copyright (C) 2020 Lakshmi Krishnamurthy
- * Copyright (C) 2019 Lakshmi Krishnamurthy
+ * Copyright (C) 2026 Lakshmi Krishnamurthy
  * 
  *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
  *  	asset liability management analytics, capital, exposure, and margin analytics, valuation adjustment
@@ -77,129 +76,154 @@ package org.drip.numerical.integration;
  */
 
 /**
- * <i>QuadratureEstimator</i> estimates an Integrand Quadrature using the Array of Transformed Quadrature
- * Abscissa and their corresponding Weights. The References are:
+ * <i>RdToR1MonteCarloRun</i> holds the Results of a R<sup>d</sup> To R<sup>1</sup> Monte-Carlo Integration.
+ * 	The References are:
  * 
  * <br><br>
  * 	<ul>
  * 		<li>
- * 			Briol, F. X., C. J. Oates, M. Girolami, and M. A. Osborne (2015): <i>Frank-Wolfe Bayesian
- * 				Quadrature: Probabilistic Integration with Theoretical Guarantees</i> <b>arXiv</b>
+ * 			Kroese, D. P., T. Taimre, and Z. I. Botev (2011): <i>Handbook of Monte Carlo Methods</i>
+ * 				<b>John Wiley and Sons</b> Hoboken NJ
  * 		</li>
  * 		<li>
- * 			Forsythe, G. E., M. A. Malcolm, and C. B. Moler (1977): <i>Computer Methods for Mathematical
- * 				Computation</i> <b>Prentice Hall</b> Englewood Cliffs NJ
+ * 			MacKay, D. (2003): <i>Information Theory, Inference, and Learning Algorithms</i> <b>Cambridge
+ * 				University Press</b> New York NY
  * 		</li>
  * 		<li>
- * 			Leader, J. J. (2004): <i>Numerical Analysis and Scientific Computation</i> <b>Addison Wesley</b>
+ * 			Newman, M. E. J., and G. T. Barkema (1999): <i>Monte Carlo Methods in Statistical Physics</i>
+ * 				<b>Oxford University Press</b> Oxford UK
  * 		</li>
  * 		<li>
- * 			Stoer, J., and R. Bulirsch (1980): <i>Introduction to Numerical Analysis</i>
- * 				<b>Springer-Verlag</b> New York
+ * 			Press, W. H., S. A. Teukolsky, W. T. Vetterling, B. P. Flannery (2007): <i>Numerical Recipes: The
+ * 				Art of Scientific Computing 3<sup>rd</sup> Edition</i> <b>Cambridge University Press</b> New
+ * 				York NY
  * 		</li>
  * 		<li>
- * 			Wikipedia (2019): Numerical Integration https://en.wikipedia.org/wiki/Numerical_integration
+ * 			Wikipedia (2025): Monte Carlo Integration https://en.wikipedia.org/wiki/Monte_Carlo_integration
  * 		</li>
  * 	</ul>
- *
- *	<br><br>
+ * 
+ * <br><br>
  *  <ul>
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md">Numerical Analysis Library</a></li>
  *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/numerical/README.md">Numerical Quadrature, Differentiation, Eigenization, Linear Algebra, and Utilities</a></li>
  *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/numerical/integration/README.md">R<sup>1</sup> R<sup>d</sup> Numerical Integration Schemes</a></li>
  *  </ul>
+ * <br><br>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class QuadratureEstimator
+public class RdToR1MonteCarloRun
 {
-	private org.drip.numerical.common.Array2D _nodeWeightArray = null;
-	private org.drip.numerical.integration.AbscissaTransform _abscissaTransform = null;
+	private int _samplingPointCount = 0;
+	private double _integrandMean = Double.NaN;
+	private double _integrandVolume = Double.NaN;
+	private double _unbiasedIntegrandVariance = Double.NaN;
 
 	/**
-	 * QuadratureEstimator Constructor
+	 * <i>RdToR1MonteCarloRun</i> Constructor
 	 * 
-	 * @param abscissaTransform The Abscissa Transform
-	 * @param nodeWeightArray Array of the Nodes and Weights
+	 * @param samplingPointCount Count of Sampling Points
+	 * @param integrandMean Mean Integrand Value over the Volume
+	 * @param integrandVolume Integrand Volume
+	 * @param unbiasedIntegrandVariance Unbiased Integrand Variance
 	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
-	public QuadratureEstimator (
-		final org.drip.numerical.integration.AbscissaTransform abscissaTransform,
-		final org.drip.numerical.common.Array2D nodeWeightArray)
-		throws java.lang.Exception
+	public RdToR1MonteCarloRun (
+		final int samplingPointCount,
+		final double integrandMean,
+		final double integrandVolume,
+		final double unbiasedIntegrandVariance)
+		throws Exception
 	{
-		if (null == (_abscissaTransform = abscissaTransform) ||
-			null == (_nodeWeightArray = nodeWeightArray))
+		if (0 >= (_samplingPointCount = samplingPointCount) ||
+			!NumberUtil.IsValid (_integrandMean = integrandMean) ||
+			!NumberUtil.IsValid (_integrandVolume = integrandVolume) || 0. >= _integrandVolume ||
+			!NumberUtil.IsValid (_unbiasedIntegrandVariance = unbiasedIntegrandVariance) ||
+				0. >= _unbiasedIntegrandVariance)
 		{
-			throw new java.lang.Exception ("QuadratureEstimator Constructor => Invalid Inputs");
+			throw new Exception ("RdToR1MonteCarloRun Constructor => Invalid Inputs");
 		}
 	}
 
 	/**
-	 * Retrieve the Abscissa Transform
+	 * Retrieve the Count of Sampling Points
 	 * 
-	 * @return The Abscissa Transform
+	 * @return Count of Sampling Points
 	 */
 
-	public org.drip.numerical.integration.AbscissaTransform abscissaTransform()
+	public int samplingPointCount()
 	{
-		return _abscissaTransform;
+		return _samplingPointCount;
 	}
 
 	/**
-	 * Retrieve the 2D Array of Nodes and Weights
+	 * Retrieve the Mean Integrand Value
 	 * 
-	 * @return 2D Array of Nodes and Weights
+	 * @return Mean Integrand Value
 	 */
 
-	public org.drip.numerical.common.Array2D nodeWeightArray()
+	public double integrandMean()
 	{
-		return _nodeWeightArray;
+		return _integrandMean;
 	}
 
 	/**
-	 * Integrate the Specified Integrand over the Nodes
+	 * Retrieve the Integrand Volume
 	 * 
-	 * @param r1ToR1Integrand The R<sup>1</sup> To R<sup>1</sup> Integrand
-	 * 
-	 * @return The Integrand Quadrature
-	 * 
-	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 * @return Integrand Volume
 	 */
 
-	public double integrate (
-		final org.drip.function.definition.R1ToR1 r1ToR1Integrand)
-		throws java.lang.Exception
+	public double integrandVolume()
 	{
-		if (null == r1ToR1Integrand)
-		{
-			throw new java.lang.Exception ("QuadratureEstimator::integrate => Invalid Inputs");
-		}
+		return _integrandVolume;
+	}
 
-		double[] weightArray = _nodeWeightArray.y();
+	/**
+	 * Retrieve the Unbiased Integrand Variance
+	 * 
+	 * @return Unbiased Integrand Variance
+	 */
 
-		double[] abscissaArray = _nodeWeightArray.x();
+	public double unbiasedIntegrandVariance()
+	{
+		return _unbiasedIntegrandVariance;
+	}
 
-		double quadrature = 0.;
-		int nodeCount = abscissaArray.length;
+	/**
+	 * Retrieve the Quadrature Value
+	 * 
+	 * @return Quadrature Value
+	 */
 
-		double quadratureScale = _abscissaTransform.quadratureScale();
+	public double quadratureValue()
+	{
+		return _integrandVolume * _integrandMean;
+	}
 
-		org.drip.function.definition.R1ToR1 r1PointValueScale = _abscissaTransform.pointValueScale();
+	/**
+	 * Retrieve the Quadrature Variance
+	 * 
+	 * @return Quadrature Variance
+	 */
 
-		org.drip.function.definition.R1ToR1 r1ToR1VariateChange = _abscissaTransform.variateChange();
+	public double quadratureVariance()
+	{
+		return _integrandVolume * _integrandVolume * _unbiasedIntegrandVariance / _samplingPointCount;
+	}
 
-		for (int nodeIndex = 0; nodeIndex < nodeCount; ++nodeIndex)
-		{
-			quadrature = quadrature + quadratureScale * weightArray[nodeIndex] *
-				r1PointValueScale.evaluate (abscissaArray[nodeIndex]) *
-				r1ToR1Integrand.evaluate (r1ToR1VariateChange.evaluate (abscissaArray[nodeIndex]));
-		}
+	/**
+	 * Retrieve the Quadrature Error
+	 * 
+	 * @return Quadrature Error
+	 */
 
-		return quadrature;
+	public double quadratureError()
+	{
+		return Math.sqrt (quadratureVariance());
 	}
 }

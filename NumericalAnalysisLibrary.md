@@ -11,7 +11,7 @@ Numerical Analysis Library contains the supporting Functionality for Numerical M
 
  |        Document         | Link |
  |-------------------------|------|
- | Technical Specification | [*Latest*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/NumericalAnalysis/NumericalAnalysis_v7.45.pdf) [*Previous*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/NumericalAnalysis) |
+ | Technical Specification | [*Latest*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/NumericalAnalysis/NumericalAnalysis_v7.54.pdf) [*Previous*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/NumericalAnalysis) |
  | User Guide              |  |
  | API                     | [*Javadoc*](https://lakshmidrip.github.io/DROP/Javadoc/index.html)|
 
@@ -118,6 +118,19 @@ Numerical Analysis Library contains the supporting Functionality for Numerical M
 	* Description
 	* Example
 	* Implementation
+	* References
+ * Monte-Carlo Integration
+	* Introduction
+	* Overview
+		* Example
+		* C/C++ Example
+		* Python Example
+		* Wolfram Mathematica Example
+	* Recursive Stratified Sampling
+		* MISER Monte Carlo
+	* Importance Sampling
+		* Algorithm
+		* VEGAS Monte Carlo
 	* References
  * Gamma Distribution
 	* Overview

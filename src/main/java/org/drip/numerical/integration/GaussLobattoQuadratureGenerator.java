@@ -125,12 +125,12 @@ public class GaussLobattoQuadratureGenerator
 	 * @return The Three Point Gauss Lobatto Quadrature over [-1, +1]
 	 */
 
-	public static final org.drip.numerical.integration.QuadratureEstimator ThreePoint (
-		final org.drip.numerical.integration.AbscissaTransform abscissaTransformer)
+	public static final org.drip.numerical.integration.R1QuadratureEstimator ThreePoint (
+		final org.drip.numerical.integration.R1AbscissaTransform abscissaTransformer)
 	{
 		try
 		{
-			return new org.drip.numerical.integration.QuadratureEstimator (
+			return new org.drip.numerical.integration.R1QuadratureEstimator (
 				abscissaTransformer,
 				org.drip.numerical.common.Array2D.FromArray (
 					new double[]
@@ -164,14 +164,14 @@ public class GaussLobattoQuadratureGenerator
 	 * @return The Four Point Gauss Lobatto Quadrature over [-1, +1]
 	 */
 
-	public static final org.drip.numerical.integration.QuadratureEstimator FourPoint (
-		final org.drip.numerical.integration.AbscissaTransform abscissaTransformer)
+	public static final org.drip.numerical.integration.R1QuadratureEstimator FourPoint (
+		final org.drip.numerical.integration.R1AbscissaTransform abscissaTransformer)
 	{
 		double sqrt_1Over5_ = java.lang.Math.sqrt (0.2);
 
 		try
 		{
-			return new org.drip.numerical.integration.QuadratureEstimator (
+			return new org.drip.numerical.integration.R1QuadratureEstimator (
 				abscissaTransformer,
 				org.drip.numerical.common.Array2D.FromArray (
 					new double[]
@@ -207,14 +207,14 @@ public class GaussLobattoQuadratureGenerator
 	 * @return The Five Point Gauss Lobatto Quadrature over [-1, +1]
 	 */
 
-	public static final org.drip.numerical.integration.QuadratureEstimator FivePoint (
-		final org.drip.numerical.integration.AbscissaTransform abscissaTransformer)
+	public static final org.drip.numerical.integration.R1QuadratureEstimator FivePoint (
+		final org.drip.numerical.integration.R1AbscissaTransform abscissaTransformer)
 	{
 		double sqrt_3Over7_ = java.lang.Math.sqrt (3. / 7.);
 
 		try
 		{
-			return new org.drip.numerical.integration.QuadratureEstimator (
+			return new org.drip.numerical.integration.R1QuadratureEstimator (
 				abscissaTransformer,
 				org.drip.numerical.common.Array2D.FromArray (
 					new double[]
@@ -252,8 +252,8 @@ public class GaussLobattoQuadratureGenerator
 	 * @return The Six Point Gauss Lobatto Quadrature over [-1, +1]
 	 */
 
-	public static final org.drip.numerical.integration.QuadratureEstimator SixPoint (
-		final org.drip.numerical.integration.AbscissaTransform abscissaTransformer)
+	public static final org.drip.numerical.integration.R1QuadratureEstimator SixPoint (
+		final org.drip.numerical.integration.R1AbscissaTransform abscissaTransformer)
 	{
 		double sqrt7 = java.lang.Math.sqrt (7.);
 
@@ -267,7 +267,7 @@ public class GaussLobattoQuadratureGenerator
 
 		try
 		{
-			return new org.drip.numerical.integration.QuadratureEstimator (
+			return new org.drip.numerical.integration.R1QuadratureEstimator (
 				abscissaTransformer,
 				org.drip.numerical.common.Array2D.FromArray (
 					new double[]
@@ -307,8 +307,8 @@ public class GaussLobattoQuadratureGenerator
 	 * @return The Seven Point Gauss Lobatto Quadrature over [-1, +1]
 	 */
 
-	public static final org.drip.numerical.integration.QuadratureEstimator SevenPoint (
-		final org.drip.numerical.integration.AbscissaTransform abscissaTransformer)
+	public static final org.drip.numerical.integration.R1QuadratureEstimator SevenPoint (
+		final org.drip.numerical.integration.R1AbscissaTransform abscissaTransformer)
 	{
 		double twoOver11Sqrt_5Over3_ = 2. / 11. * java.lang.Math.sqrt (5. / 3.);
 
@@ -323,7 +323,7 @@ public class GaussLobattoQuadratureGenerator
 
 		try
 		{
-			return new org.drip.numerical.integration.QuadratureEstimator (
+			return new org.drip.numerical.integration.R1QuadratureEstimator (
 				abscissaTransformer,
 				org.drip.numerical.common.Array2D.FromArray (
 					new double[]
@@ -366,12 +366,12 @@ public class GaussLobattoQuadratureGenerator
 	 * @return The Three Point Gauss Legendre Quadrature over [a, b] onto [-1, +1]
 	 */
 
-	public static final org.drip.numerical.integration.QuadratureEstimator ThreePoint (
+	public static final org.drip.numerical.integration.R1QuadratureEstimator ThreePoint (
 		final double left,
 		final double right)
 	{
 		return ThreePoint (
-			org.drip.numerical.integration.AbscissaTransform.DisplaceAndScaleMinusOne_PlusOne (
+			org.drip.numerical.integration.R1AbscissaTransform.DisplaceAndScaleMinusOne_PlusOne (
 				left,
 				right
 			)
@@ -387,12 +387,12 @@ public class GaussLobattoQuadratureGenerator
 	 * @return The Four Point Gauss Legendre Quadrature over [a, b] onto [-1, +1]
 	 */
 
-	public static final org.drip.numerical.integration.QuadratureEstimator FourPoint (
+	public static final org.drip.numerical.integration.R1QuadratureEstimator FourPoint (
 		final double left,
 		final double right)
 	{
 		return FourPoint (
-			org.drip.numerical.integration.AbscissaTransform.DisplaceAndScaleMinusOne_PlusOne (
+			org.drip.numerical.integration.R1AbscissaTransform.DisplaceAndScaleMinusOne_PlusOne (
 				left,
 				right
 			)
@@ -408,12 +408,12 @@ public class GaussLobattoQuadratureGenerator
 	 * @return The Five Point Gauss Legendre Quadrature over [a, b] onto [-1, +1]
 	 */
 
-	public static final org.drip.numerical.integration.QuadratureEstimator FivePoint (
+	public static final org.drip.numerical.integration.R1QuadratureEstimator FivePoint (
 		final double left,
 		final double right)
 	{
 		return FivePoint (
-			org.drip.numerical.integration.AbscissaTransform.DisplaceAndScaleMinusOne_PlusOne (
+			org.drip.numerical.integration.R1AbscissaTransform.DisplaceAndScaleMinusOne_PlusOne (
 				left,
 				right
 			)
@@ -429,12 +429,12 @@ public class GaussLobattoQuadratureGenerator
 	 * @return The Six Point Gauss Legendre Quadrature over [a, b] onto [-1, +1]
 	 */
 
-	public static final org.drip.numerical.integration.QuadratureEstimator SixPoint (
+	public static final org.drip.numerical.integration.R1QuadratureEstimator SixPoint (
 		final double left,
 		final double right)
 	{
 		return SixPoint (
-			org.drip.numerical.integration.AbscissaTransform.DisplaceAndScaleMinusOne_PlusOne (
+			org.drip.numerical.integration.R1AbscissaTransform.DisplaceAndScaleMinusOne_PlusOne (
 				left,
 				right
 			)
@@ -450,12 +450,12 @@ public class GaussLobattoQuadratureGenerator
 	 * @return The Seven Point Gauss Legendre Quadrature over [a, b] onto [-1, +1]
 	 */
 
-	public static final org.drip.numerical.integration.QuadratureEstimator SevenPoint (
+	public static final org.drip.numerical.integration.R1QuadratureEstimator SevenPoint (
 		final double left,
 		final double right)
 	{
 		return SevenPoint (
-			org.drip.numerical.integration.AbscissaTransform.DisplaceAndScaleMinusOne_PlusOne (
+			org.drip.numerical.integration.R1AbscissaTransform.DisplaceAndScaleMinusOne_PlusOne (
 				left,
 				right
 			)

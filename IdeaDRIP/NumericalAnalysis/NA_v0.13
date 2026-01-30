@@ -1,0 +1,427 @@
+
+ --------------------------
+ #1 - Successive Over-Relaxation
+ --------------------------
+ --------------------------
+ 1.1) Successive Over-Relaxation Method for A.x = b; A - n x n square matrix, x - unknown vector, b - RHS vector
+ 1.2) Decompose A into Diagonal, Lower, and upper Triangular Matrices; A = D + L + U
+ 1.3) SOR Scheme uses omega input
+ 1.4) Forward subsitution scheme to iteratively determine the x_i's
+ 1.5) SOR Scheme Linear System Convergence: Inputs A and D, Jacobi Iteration Matrix Spectral Radius, omega
+	- Construct Jacobi Iteration Matrix: C_Jacobian = I - (Inverse D) A
+	- Convergence Verification #1: Ensure that Jacobi Iteration Matrix Spectral Radius is < 1
+	- Convergence Verification #2: Ensure omega between 0 and 2
+	- Optimal Relaxation Parameter Expression in terms of Jacobi Iteration Matrix Spectral Radius
+	- Omega Based Convergence Rate Expression
+	- Gauss-Seidel omega = 1; corresponding Convergence Rate
+	- Optimal Omega Convergence Rate
+ 1.6) Generic Iterative Solver Method:
+	- Inputs: Iterator Function(x) and omega
+	- Unrelaxed Iterated variable: x_n+1 = f(x_n)
+	- SOR Based Iterated variable: x_n+1 = (1-omega).x_n + omega.f(x_n)
+	- SOR Based Iterated variable for Unknown Vector x: x_n+1 = (1-omega).x_n + omega.(L_star inverse)(b - U.x_n)
+ --------------------------
+
+ --------------------------
+ #2 - Successive Over-Relaxation
+ --------------------------
+ --------------------------
+ 2.1) SSOR Algorithm - Inputs; A, omega, and gamma
+	- Decompose into D and L
+	- Pre-conditioner Matrix: Expression from SSOR 
+	- Finally SSOR Iteration Formula
+ --------------------------
+
+ ----------------------------
+ #7 - Tridiagonal matrix algorithm
+ ----------------------------
+ ----------------------------
+ 7.1) Is Tridiagonal Check
+ 7.2) Core Algorithm:
+	- C Prime's and D Prime's Calculation
+	- Back Substitution for the Result
+	- Modified better Book-keeping algorithm
+ 7.3) Sherman-Morrison Algorithm:
+	- Choice of gamma
+	- Construct Tridiagonal B from A and gamma
+	- u Column from gamma and c_n
+	- v Column from a_1 and gamma
+	- Solve for y from By=d
+	- Solve for q from Bq=u
+	- Use Sherman Morrison Formula to extract x
+ 7.4) Alternate Boundary Condition Algorithm:
+	- Solve Au=d for u
+	- Solve Av={-a_2, 0, ..., -c_n} for v
+	- Full solution is x_i = u_i + x_1 * v_i
+	- x_1 if computed using formula
+ ----------------------------
+
+ ----------------------------
+ #8 - Triangular Matrix
+ ----------------------------
+ ----------------------------
+ 8.1) Description:
+	- Lower/Left Triangular Verification
+	- Upper/Right Triangular Verification
+	- Diagonal Matrix Verification
+	- Upper/Lower Trapezoidal Verification
+ 8.2) Forward/Back Substitution:
+	- Inputs => L and b
+		- Forward Substitution
+	- Inputs => U and b
+		- Back Substitution
+ 8.3) Properties:
+	- Is Matrix Normal, i.e.,  A times A transpose = A transpose times A
+	- Characteristic Polynomial
+	- Determinant/Permanent
+ 8.4) Special Forms:
+	- Upper/Lower Unitriangular Matrix Verification
+	- Upper/Lower Strictly Matrix Verification
+	- Upper/Lower Atomic Matrix Verification
+ ----------------------------
+
+ ----------------------------
+ #9 - Sylvester Equation
+ ----------------------------
+ ----------------------------
+ 9.1) Matrix Form:
+	- Inputs: A, B, and C
+	- Size Constraints Verification
+ 9.2) Solution Criteria:
+	- Co-joint EigenSpectrum between A and B
+ 9.3) Numerical Solution:
+	- Decomposition of A/B using Schur Decomposition into Triangular Form
+	- Forward/Back Substitution
+ ----------------------------
+
+ ----------------------------
+ #10 - Bartels-Stewart Algorithm
+ ----------------------------
+ ----------------------------
+ 10.1) Matrix Form:
+	- Inputs: A, B, and C
+	- Size Constraints Verification
+ 10.2) Schur Decompositions:
+	- R = U^T A U - emits U and R
+	- S = V^T B^T V - emits V and S
+	- F = U^T C V
+	- Y = U^T X V
+	- Solution to R.Y - Y.S^T = F
+	- Finally X = U.Y.V^T
+ 10.3) Computational Costs:
+	- Flops cost for Schur decomposition
+	- Flops cost overall
+ 10.4) Hessenberg-Schur Decompositions:
+	- R = U^T A U becomes H = Q^T A Q - thus emits Q and H (Upper Hessenberg)
+	- Computational Costs
+ ----------------------------
+
+ ----------------------------
+ #11 - Gershgorin Circle Theorem
+ ----------------------------
+ ----------------------------
+ 11.1) Gershgorin Disc:
+	- Diagonal Entry
+	- Radius
+	- One disc per Row/Column in Square Matrix
+	- Optimal Disc based on Row/Column
+ 11.2) Tolerance based Gershgorin Convergence Criterion
+ 11.3) Joint and Disjoint Discs
+ 11.4) Gershgorin Strengthener
+ 11.5) Row/Column Diagonal Dominance
+ ----------------------------
+
+ ----------------------------
+ #12 - Condition Number
+ ----------------------------
+ ----------------------------
+ 12.1) Condition Number Calculation:
+	- Absolute Error
+	- Relative Error
+	- Absolute Condition Number
+	- Relative Condition Number
+ 12.2) Matrix Condition Number Calculation:
+	- Condition Number as a Product of Regular and Inverse Norms
+	- L2 Norm
+	- L2 Norm for Normal Matrix
+	- L2 Norm for Unitary Matrix
+	- Default Condition Number
+	- L Infinity Norm
+	- L Infinity Norm Triangular Matrix
+ 12.3) Non-linear
+	- One Variable
+		- Basic Formula
+		- Condition Numbers for Common Functions
+	- Multi Variables
+ ----------------------------
+
+ ----------------------------
+ #13 - Unitary Matrix
+ ----------------------------
+ ----------------------------
+ 13.1) Properties:
+	- U.U conjugate = I defines unitary matrix
+	- U.U conjugate = U conjugate.U = I
+	- det U = 1
+	- Eigenvectors are orthogonal
+	- U conjugate = U inverse
+	- Norm (U.x) = Norm (x)
+	- Normal Matrix U
+ 13.2) 2x2 Elementary Matrices
+	- Wiki Representation #1
+	- Wiki Representation #2
+	- Wiki Representation #3
+	- Wiki Representation #4
+ ----------------------------
+
+ ----------------------------
+ #14 - Matrix Norm
+ ----------------------------
+ ----------------------------
+ 14.1) Properties:
+	- ||A|| >= 0
+	- ||A|| = 0 only if every element is zero
+	- ||cA|| = |c|.||A||
+	- ||A + B|| <= ||A|| + ||B||
+	- ||A . B|| <= ||A|| . ||B||
+ 14.2) Matrix norms induced by vector p-norms
+	- p = 1, ∞
+		- p = 1 => maximum absolute column sum
+		- p = ∞ => maximum absolute row sum
+	- Spectral norm (p = 2)
+		- ‖A‖_2=√(λ_max (A^* A) )=σ_max (A)
+		- Properties:
+			- ‖A‖_2=sup⁡{x^* Ay∶x∈K^m; y∈K^n  with ‖x‖_2=‖y‖_2=1}
+			- ‖A^* A‖_2=‖AA^* ‖_2=‖A‖_2^2
+			- ‖A‖_2=σ_max (A)≤‖A‖_F=√(∑_i▒〖σ_i^2 (A) 〗)
+			- ‖A‖_2=√(ρ(A^* A) )≤√(‖A^* A‖_∞ )≤√(‖A‖_1∙‖A‖_∞ )
+	- Matrix Norms Induced by Vector α- and β- Norms
+		- ‖A‖_(2,∞)=■(max@1≤i≤m) ‖A_(i:) ‖_2
+		- ‖A‖_(1,2)=■(max@1≤j≤n) ‖A_(:j) ‖_2
+	- Properties Verification
+	- Square Matrix Verification
+	- Consistent and Compatible Norms Verification
+	- "Entry-wise" matrix norms
+		- ‖A‖_(p,p)=‖vec (A)‖_p=(∑_(i=1)^n▒∑_(j=1)^n▒|a_ij |^p )^(1/p)
+	- Entry-wise L_(2,1) and L_(p,q) Matrix Norms
+		- ‖A‖_(2,1)=∑_(j=1)^n▒‖a_j ‖_2 =∑_(j=1)^n▒√(∑_(i=1)^n▒|a_ij |^2 )
+		- ‖A‖_(p,q)=[(∑_(i=1)^m▒|a_ij |^p )^(q/p) ]^(1/q)
+	- Frobenius norm (check the wiki elements)
+	- Max norm (check the wiki elements)
+	- Schatten norms
+		- ‖A‖_p=[∑_(i=1)^min⁡(m,n)▒〖σ_i (A)〗^p ]^(1/p)
+		- Ky-Fan - ‖A‖_*=trace (√(A^* A))=∑_(i=1)^min⁡(m,n)▒〖σ_i (A) 〗
+		- Holder's Inequality
+		- SChatten Inequality
+	- Monotone norms
+	- Cut norms (check the wiki elements)
+	- Equivalence of Norms (check the wiki elements)
+		- Examples of Norm Equivalence (check the wiki elements)
+ ----------------------------
+
+ ----------------------------
+ #15 - Spectral Radius
+ ----------------------------
+ ----------------------------
+ 15.1) Definition - Matrix:
+	- Spectral Radius - Max of the Eigenvalues
+ 15.2) Definition - Bounded Complex Linear Operators:
+	- Spectral Radius - Max of the Spectrum
+	- Gelfand Formula applies to Bounded Complex Linear Operators
+ 15.3) Definition - Graph:
+	- Function on Graph Vertex
+	- Square Integrability of Function across Vertexes
+	- Graph Function Map - Square Integrability Function Space across Vertexes 1 -> 2
+	- Graph Adjacency Operator - Function Sum over edges of a vertex
+ 15.4)Upper bounds
+	- Upper bounds on the spectral radius of a matrix <= Power (Norm (A^k), 1/k)
+	- Upper bounds for spectral radius of a graph
+ 15.5) Jordan Normal Power Sequence
+	- J (m_i, lambda_i)
+	- J (m_i, lambda_i) power k
+	- Jordan Normal J Matrix
+	- Jordan Normal J Matrix power k
+	- A = V.J.V^-1
+	- A^k = V.J^k.V^-1
+ 15.6) Gelfand's formula
+	- The Formula
+	- Gelfand's formula for Commuting Matrices
+ ----------------------------
+
+ --------------------------
+ #16 - Crank–Nicolson method
+ --------------------------
+ --------------------------
+ 16.1) von Neumann Stability Validator - Inputs; time-step, diffusivity, space step
+	- 1D => time step * diffusivity / space step ^2 < 0.5
+	- nD => time step * diffusivity / (space step hypotenuse) ^ 2 < 0.5
+ 16.2) Set up:
+	- Input: Spatial variable x
+	- Input: Time variable t
+	- Inputs: State variable u, du/dx, d2u/dx2 - all at time t
+	- Second Order, 1D => du/dt = F (u, x, t, du/dx, d2u/dx2)
+ 16.3) Finite Difference Evolution Scheme:
+	- Time Step delta_t, space step delta_x
+	- Forward Difference: F calculated at x
+	- Backward Difference: F calculated at x + delta_x
+	- Crank Nicolson: Average of Forward/Backward
+ 16.4) 1D Diffusion:
+	- Inputs: 1D von Neumann Stability Validator, Number of time/space steps
+	- Time Index n, Space Index i
+	- Explicit Tridiagonal form for the discretization - State concentration at n+1 given state concentration at n
+	- Non-linear diffusion coefficient:
+		- Linearization across x_i and x_i+1
+		- Quasi-explicit forms accommodation
+ 16.5) 2D Diffusion:
+	- Inputs: 2D von Neumann Stability Validator, Number of time/space steps
+	- Time Index n, Space Index i, j
+	- Explicit Tridiagonal form for the discretization - State concentration at n+1 given state concentration at n
+	- Explicit Solution using the Alternative Difference Implicit Scheme
+ 16.6) Extension to Iterative Solver Schemes above:
+	- Input: State Space "velocity" dF/du
+	- Input: State "Step Size" delta_u
+	- Fixed Point Iterative Location Scheme
+	- Relaxation Scheme based Robustness => Input: Relaxation Parameter
+ --------------------------
+
+ --------------------------
+ #17 - Moment-generating Function
+ --------------------------
+ --------------------------
+ 17.1) Expressions
+	- M_X (t)=E[e^tX ]=1+tE[X]+(t^2 E[X^2 ])/2!+(t^3 E[X^3 ])/3!+⋯+(t^n E[X^n ])/n!+⋯=1+tm_1+(t^2 m_2)/2!+(t^3 m_3)/3!+⋯+(t^n m_n)/n!+⋯
+	- i^th Moment about Zero: Differentiating M_X (t) i times with respect to t and setting t=0 => i^th moment about the origin m_i
+	- MGF as a 2-sided Laplace Transform:
+		- 2-sided Laplace transform of its probability density function f_X (x) vs. M_X (t): M_X (t)=L{f_X }(-t)
+		- 2-sided Laplace transform: L{f_X }(s)=∫_(-∞)^(+∞)▒〖e^(-sx) f_X (x)dx〗
+		- M_X (t)=E[e^tX ]=∫_(-∞)^(+∞)▒〖e^tx f_X (x)dx〗
+ 17.2) Bounds:
+	- Jensen’s MGF Lower Bound: M_X (t)≥e^μt where μ is the mean of X
+	- Chernoff Tail Upper Bound: P[X≥a]=P[e^tX≥e^ta ]≤e^(-ta) E[e^tX ]=e^(-at) M_X (t) for t>0
+	- Moments Bound for X≥0: E[X^m ]≤(m/te)^m M_X (t) for any X,m≥0 and t>0
+ --------------------------
+
+ --------------------------
+ #18 - Monte-Carlo Integration
+ --------------------------
+ --------------------------
+ 18.1) Overview
+	- V[Q_N ] using V[f]
+		- V[f]=E[〖σ_N〗^2 ]=1/(N-1) E[{f((x_i ) ̅ )-E[f]}^2 ]
+		- V[Q_N ]=V^2/N^2  ∑_(i=1)^N▒V[f] =V^2  V[f]/N=V^2  E[〖σ_N〗^2 ]/N
+	- Asymptotic Sequential Decline V[Q_N ]
+		- {E[〖σ_1〗^2 ],E[〖σ_2〗^2 ],E[〖σ_3〗^2 ],⋯} is bounded due to being identically equal to V[f]
+			- Asymptotically decreases to zero as 1/N
+	- Error of Q_N
+		- δQ_N=√(V[Q_N ] )=V√(V[f]/N) which decreases as 1/√N
+		- Errors Independent of Dimension Count
+ 18.2) Recursive Stratified Sampling
+	- Recursive Approach for Error Reduction:
+		- On each recursion step the integral and the error are estimated using a plain Monte Carlo scheme.
+	- Sub-division of the Sampling Volume:
+		- Error estimate larger than required accuracy -> the integration volume divided into sub-volumes and recursively applied
+	- Choosing the Error Reduction Dimension: Dimension along which a sub-division brings the most dividends
+	- Variance Proxy as a Dimension Determiner:
+		- Concentrates sampling the points in the regions where the variance of the functions is largest
+		- Reducing the grand variance and making the sampling more effective
+ 18.3) Recursive Stratified Sampling – MISER Monte Carlo
+	- Aggregate Variance Estimate - Formulation: Disjoint regions a and b
+		- E[f]=1/2 (E_a [f]+E_b [f])
+		- V[f]=(σ_a^2 (f))/(4N_a )+(σ_b^2 (f))/(4N_b )
+	- Sampling Distribution among the Sub-regions according to (N_a+N_b)/N_a =(σ_a+σ_b)/σ_a 
+	- Steps:
+		- Bisecting the Target Region
+		- Choosing Target Direction: Selecting which minimizes the combined variance of the two sub-sections
+		- Sampling for Target Variance: Variance in sub-regions estimated with a fraction of points available to current step
+		- Recursively Applying Bisection: Recursively for each of the two-half-spaces from the best bisection
+		- Reallocating Sampling over Sub-regions:
+		- Integration using Uniform MC
+		- Local Quadratures and Errors
+ 18.4) Importance Sampling Algorithm
+	- Expression for Importance Sampling: Q_N≡1/N ∑_(i=1)^N▒f(x ̿_i )/p(x ̿_i ) 
+	- Metropolis-Hastings Algorithm: Used to generate x ̿ from p(x ̿ )
+ --------------------------
+
+ --------------------------
+ #19 - Fokker-Planck Equation
+ --------------------------
+ --------------------------
+ 19.1) PDE of time evolution of PDF of an entity under the drag and random forces
+ 19.2) One Dimension: SDE ∆x=μ(x,t)∆t+σ(x,t)∆W_t
+	- ∂p(x,t)/∂t=-∂[μ(x,t)p(x,t)]/∂x+(∂^2 [D(x,t)p(x,t)])/(∂x^2 )
+ 19.3) One Dimension – Link between the Ito SDE and the Fokker-Planck Equation:
+	- Fokker-Planck used with where the initial distribution is known
+	- If final point is fixed, Feynman-Kac formula used to calculate values such as mean first-passage times
+	- Reverse-time Fokker-Planck: Distribution at previous times, starting from the known distribution at later times
+	- Ito SDE using Stratonovich Convention:
+		- ∆X_t=[μ(X_t,t)-1/2  ∂D(X_t,t)/(∂X_t )]∆t+√(2D(X_t,t) )°∆W_t
+ 19.4) Classical Brownian Motion: ∂p(x,t)/∂t=D_0  (∂^2 p(x,t))/(∂x^2 )
+	- Fixed Boundary Conditions for {0≤x≤L}
+	- p(0,t)=p(L,t)=0
+	- p(x,t)=p_0 (x)
+	- Uncertainty Relation for the Phase Volume => ∆x∆v≥D_0
+		- D_0 is a minimal value of a corresponding diffusion spectrum D_j
+ 19.5) Higher Dimensions:
+	- Multi-dimensional Ito Fokker-Planck:
+		- ∂p(x,t)/∂t=-∑_(i=1)^N▒∂[μ_i (x,t)p(x,t)]/(∂x_i )+∑_(i=1)^N▒∑_(j=1)^N▒(∂^2 [D(x,t)p(x,t)])/(∂x_i ∂x_j )
+		- μ=(μ_1,⋯,μ_N )
+		- D=1/2 σσ^T => D_ij (x,t)=1/2 ∑_(k=1)^M▒〖σ_ik (x,t) σ_jk (x,t) 〗
+	- Multi-dimensional Stratonovich Fokker Planck:
+		- ∂p(x,t)/∂t=-∑_(i=1)^N▒∂[μ_i (x,t)p(x,t)]/(∂x_i )+∑_(k=1)^M▒∑_(i=1)^N▒〖∂/(∂x_i ) {σ_ik (x,t) ∑_(j=1)^N▒∂[σ_jk (x,t)p(x,t)]/(∂x_j )} 〗
+ 19.6) Generalization: ∂_t p=A^* p
+	- Linear operator A^* is the Hermitian adjoint to the infinitesimal generator for the Markov process
+ 19.7) Examples – Wiener: ∆X_t=∆W_t
+	- ∂p(x,t)/∂t=1/2  (∂^2 p(x,t))/(∂x^2 )
+	- Closed Form for Initial Delta Distribution
+		- p(x,0)=δ_0 (x)
+		- p(x,t)=1/√2πt e^(-x^2/2t)
+ 19.8) Examples – Boltzmann Distribution at the Thermodynamic Equilibrium
+	- The Overdamped Langevin Stochastic Evolution Equation
+		- ∆x_t=-1/(k_B T) (∇_x U)∆t+∆W_t
+		- Fokker Planck: ∂_t p=1/2 ∇.(p/(k_B T) ∇U+∇p)
+	- Equilibrium Distribution for Langevin Evolver - p(x)=e^(-U(x)/(k_B T))
+		- U(x) grows sufficiently rapidly:
+			- The potential well is deep enough to confine the particle
+			- The Boltzmann distribution is the unique equilibrium
+ 19.9) Example – Ornstein-Uhlenbeck Process - ∆X_t=-aX_t ∆t+σ∆W_t; a>0
+	- Fokker-Planck => ∂p(x,t)/∂t=a ∂[xp(x,t)]/∂x+σ^2/2  (∂^2 p(x,t))/(∂x^2 )
+	- Stationary Solution => ∂p(x,t)/∂t=0 => p_SS (x)=√(a/(πσ^2 )) e^(-(ax^2)/σ^2 )
+ 19.10) Example – Plasma Physics
+	- Distribution Function for Particle Species p_s (x,v,t)
+	- Plasma Physics Boltzmann Distribution Evolver:
+		- (∂p_s)/∂t+v.∇p_s+(Z_s e)/m_S  (E+v×B).∇_v p_s=∂(p_s 〈∇v_i 〉)/(∂v_i )+(∂^2 (p_s 〈∇v_i ∇v_j 〉))/(∂v_i ∂v_j )
+	- Velocity Change First/Second Moments
+		- 〈∇v_i 〉 and 〈∇v_i ∇v_j 〉 => average change in the velocity of a particle of type s due to collisions with others in unit time
+ 19.11) Smoluchowski Diffusion Equation
+	- Overdamped Brownian under External Force: mr ̈=-γr ̇+F(r)+σξ(t)
+	- Overdamped Brownian – Steady-State Dynamics: γΔr=F(r)Δt+σΔW_t
+	- Overdamped Brownian Fokker Planck Equation: ∂P(r,t|r_0,t_0 )/∂t=∇.{D[∇-βF(r)]P(r,t|r_0,t_0 )}
+	- Explicit Dependence on Temperature/Spatial Diffusion: β=1/(k_B T)
+ 19.12) Computational Considerations – 1D Linear Potential Example; Theory
+	- Linear Potential Based on Position: U(x)=cx
+		- ∂p(x,t|x_0,t_0 )/∂t=∂/∂x [(D ∂/∂x+c/(k_B T))p(x,t|x_0,t_0 )]
+	- Boundary Conditions of the PDF: x→±∞
+		= ∂p(x,t|x_0,t_0 )/∂x=δ(x-x_0 )
+	- Transformation Variables: τ=Dt and b=c/(k_B T)
+		- y=x+τb
+	- Transformed Smoluchowski Equation: p(x,t|x_0,t_0 )=q(y,τ|y_0,τ_0 )
+		- ∂q(y,τ|y_0,τ_0 )/∂τ=(∂^2 q(y,τ|y_0,τ_0 ))/(∂y^2 )
+		- q(y,τ|y_0,τ_0 )=1/√(4π(τ-τ_0 ) ) e^(-(y-y_0 )^2/4(τ-τ_0 ) )
+	- Transformation Back to Original Coordinates:
+		- p(x,t|x_0,t_0 )=1/√(4π(τ-τ_0 ) ) e^(-(x-x_0+Dc/(k_B T) [t-t_0 ])^2/4D(t-t_0 ) )
+ 19.13) Fokker-Planck Equation and Path Integral
+	- Deriving the Path Integral:
+		- ∂p(x^',t)/∂t
+			=-∂[D_1 (x^',t)p(x^',t)]/(∂x^' )+(∂^2 [D_2 (x^',t)p(x^',t)])/(∂〖x^'〗^2 )
+			=∫_(-∞)^(+∞)▒{[D_1 (x,t)  ∂/∂x+D_2 (x,t)  ∂^2/(∂x^2 )]δ(x^'-x)}p(x,t)dx+O(ε^2 )
+	- Expression for p(x^',t+ε):
+		- p(x^',t+ε)=∫_(-∞)^(+∞)▒{[1+ε(D_1 (x,t)  ∂/∂x+D_2 (x,t)  ∂^2/(∂x^2 )) ̅ ]δ(x^'-x)}p(x,t)dx+O(ε^2 )
+	- Use of the Fourier Integral:
+		- δ(x^'-x)=∫_(-i∞)^(+i∞)▒〖e^(x ̃(x-x^' ) )  (dx ̃)/2πi〗
+		- p(x^',t+ε)
+			=∫_(-∞)^(+∞)▒{∫_(-i∞)^(+i∞)▒[1+ε(D_1 (x,t)  ∂/∂x+D_2 (x,t)  ∂^2/(∂x^2 )) ̅ ]  e^(x ̃(x-x^' ) )  (dx ̃)/2πi}p(x,t)dx+O(ε^2 )
+			=∫_(-∞)^(+∞)▒〖∫_(-i∞)^(+i∞)▒{e^ε[-x ̃ (x^'-x)/ε+x ̃D_1 (x,t)+x ̃^2 D_2 (x,t)]   (dx ̃)/2πi}  p(x,t)dx〗+O(ε^2 )
+	- Path Integral Action:
+		- Iterating (t^'-t)/ε times and performing the limit ε→0
+			- Action S=∫▒[x ̃D_1 (x,t)+x ̃^2 D_2 (x,t)-x ̃ ∂x/∂t]dt
+ --------------------------

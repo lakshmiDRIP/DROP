@@ -126,12 +126,12 @@ public class GaussKronrodQuadratureGenerator
 	 * @return The Nested/Embedded G7 Gaussian Quadrature over (0, +1)
 	 */
 
-	public static final org.drip.numerical.integration.QuadratureEstimator G7 (
-		final org.drip.numerical.integration.AbscissaTransform abscissaTransformer)
+	public static final org.drip.numerical.integration.R1QuadratureEstimator G7 (
+		final org.drip.numerical.integration.R1AbscissaTransform abscissaTransformer)
 	{
 		try
 		{
-			return new org.drip.numerical.integration.QuadratureEstimator (
+			return new org.drip.numerical.integration.R1QuadratureEstimator (
 				abscissaTransformer,
 				org.drip.numerical.common.Array2D.FromArray (
 					new double[]
@@ -173,12 +173,12 @@ public class GaussKronrodQuadratureGenerator
 	 * @return The K15 Gaussian Quadrature over (0, +1)
 	 */
 
-	public static final org.drip.numerical.integration.QuadratureEstimator K15 (
-		final org.drip.numerical.integration.AbscissaTransform abscissaTransformer)
+	public static final org.drip.numerical.integration.R1QuadratureEstimator K15 (
+		final org.drip.numerical.integration.R1AbscissaTransform abscissaTransformer)
 	{
 		try
 		{
-			return new org.drip.numerical.integration.QuadratureEstimator (
+			return new org.drip.numerical.integration.R1QuadratureEstimator (
 				abscissaTransformer,
 				org.drip.numerical.common.Array2D.FromArray (
 					new double[]
@@ -237,12 +237,12 @@ public class GaussKronrodQuadratureGenerator
 	 * @return The Nested/Embedded G7 Gaussian Quadrature over (a, b) onto (-1, +1)
 	 */
 
-	public static final org.drip.numerical.integration.QuadratureEstimator G7 (
+	public static final org.drip.numerical.integration.R1QuadratureEstimator G7 (
 		final double left,
 		final double right)
 	{
 		return G7 (
-			org.drip.numerical.integration.AbscissaTransform.DisplaceAndScaleMinusOne_PlusOne (
+			org.drip.numerical.integration.R1AbscissaTransform.DisplaceAndScaleMinusOne_PlusOne (
 				left,
 				right
 			)
@@ -258,12 +258,12 @@ public class GaussKronrodQuadratureGenerator
 	 * @return The K15 Gaussian Quadrature over (a, b) onto (-1, +1)
 	 */
 
-	public static final org.drip.numerical.integration.QuadratureEstimator K15 (
+	public static final org.drip.numerical.integration.R1QuadratureEstimator K15 (
 		final double left,
 		final double right)
 	{
 		return K15 (
-			org.drip.numerical.integration.AbscissaTransform.DisplaceAndScaleMinusOne_PlusOne (
+			org.drip.numerical.integration.R1AbscissaTransform.DisplaceAndScaleMinusOne_PlusOne (
 				left,
 				right
 			)
@@ -286,7 +286,7 @@ public class GaussKronrodQuadratureGenerator
 		try
 		{
 			return new org.drip.numerical.integration.NestedQuadratureEstimator (
-				org.drip.numerical.integration.AbscissaTransform.DisplaceAndScaleMinusOne_PlusOne (
+				org.drip.numerical.integration.R1AbscissaTransform.DisplaceAndScaleMinusOne_PlusOne (
 					left,
 					right
 				),

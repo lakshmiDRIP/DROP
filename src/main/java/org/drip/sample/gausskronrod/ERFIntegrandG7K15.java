@@ -7,7 +7,7 @@ import org.drip.function.definition.R1ToR1;
 import org.drip.function.e2erf.BuiltInEntry;
 import org.drip.function.e2erf.ErrorFunction;
 import org.drip.numerical.integration.GaussKronrodQuadratureGenerator;
-import org.drip.numerical.integration.QuadratureEstimate;
+import org.drip.numerical.integration.R1QuadratureEstimate;
 import org.drip.service.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 
@@ -173,7 +173,7 @@ public class ERFIntegrandG7K15
 
 			double erfTable = builtInTableEntry.getValue().erf();
 
-			QuadratureEstimate quadratureEstimate = GaussKronrodQuadratureGenerator.G7K15 (
+			R1QuadratureEstimate quadratureEstimate = GaussKronrodQuadratureGenerator.G7K15 (
 				0.,
 				x
 			).estimate (erfIntegrand);

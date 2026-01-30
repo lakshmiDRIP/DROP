@@ -9,7 +9,7 @@ import org.drip.numerical.common.Array2D;
 import org.drip.numerical.common.NumberUtil;
 import org.drip.numerical.integration.GaussKronrodQuadratureGenerator;
 import org.drip.numerical.integration.NewtonCotesQuadratureGenerator;
-import org.drip.numerical.integration.QuadratureEstimator;
+import org.drip.numerical.integration.R1QuadratureEstimator;
 import org.drip.numerical.integration.R1ToR1Integrator;
 
 /*
@@ -213,7 +213,7 @@ public abstract class R1Continuous
 	{
 		double leftSupport = support()[0];
 
-		QuadratureEstimator quadratureEstimator = Double.NEGATIVE_INFINITY == leftSupport ?
+		R1QuadratureEstimator quadratureEstimator = Double.NEGATIVE_INFINITY == leftSupport ?
 			NewtonCotesQuadratureGenerator.GaussLaguerreRightDefinite (x, INTERMEDIATE_POINT_COUNT) :
 			GaussKronrodQuadratureGenerator.K15 (leftSupport, x);
 
@@ -301,7 +301,7 @@ public abstract class R1Continuous
 	 * @return <i>QuadratureEstimator</i> Instance for the Support
 	 */
 
-	public QuadratureEstimator quadratureEstimator()
+	public R1QuadratureEstimator quadratureEstimator()
 	{
 		double[] leftRightSupportArray = support();
 

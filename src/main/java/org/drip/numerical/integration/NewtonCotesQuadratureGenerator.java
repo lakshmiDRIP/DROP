@@ -125,8 +125,8 @@ public class NewtonCotesQuadratureGenerator
 	 * @return The Newton-Cotes of Equally Spaced Quadrature over (0, +1)
 	 */
 
-	public static final org.drip.numerical.integration.QuadratureEstimator Zero_PlusOne (
-		final org.drip.numerical.integration.AbscissaTransform abscissaTransformer,
+	public static final org.drip.numerical.integration.R1QuadratureEstimator Zero_PlusOne (
+		final org.drip.numerical.integration.R1AbscissaTransform abscissaTransformer,
 		final int intermediatePointCount)
 	{
 		if (0 >= intermediatePointCount)
@@ -152,7 +152,7 @@ public class NewtonCotesQuadratureGenerator
 
 		try
 		{
-			return new org.drip.numerical.integration.QuadratureEstimator (
+			return new org.drip.numerical.integration.R1QuadratureEstimator (
 				abscissaTransformer,
 				org.drip.numerical.common.Array2D.FromArray (
 					abscissaArray,
@@ -178,8 +178,8 @@ public class NewtonCotesQuadratureGenerator
 	 * @return The Newton-Cotes of Equally Spaced Quadrature over (1, +1)
 	 */
 
-	public static final org.drip.numerical.integration.QuadratureEstimator MinusOne_PlusOne (
-		final org.drip.numerical.integration.AbscissaTransform abscissaTransformer,
+	public static final org.drip.numerical.integration.R1QuadratureEstimator MinusOne_PlusOne (
+		final org.drip.numerical.integration.R1AbscissaTransform abscissaTransformer,
 		final int intermediatePointCount)
 	{
 		if (0 >= intermediatePointCount)
@@ -205,7 +205,7 @@ public class NewtonCotesQuadratureGenerator
 
 		try
 		{
-			return new org.drip.numerical.integration.QuadratureEstimator (
+			return new org.drip.numerical.integration.R1QuadratureEstimator (
 				abscissaTransformer,
 				org.drip.numerical.common.Array2D.FromArray (
 					abscissaArray,
@@ -231,13 +231,13 @@ public class NewtonCotesQuadratureGenerator
 	 * @return The Newton-Cotes of Equally Spaced Quadrature over (a, b) onto (0, +1)
 	 */
 
-	public static final org.drip.numerical.integration.QuadratureEstimator Zero_PlusOne (
+	public static final org.drip.numerical.integration.R1QuadratureEstimator Zero_PlusOne (
 		final double left,
 		final double right,
 		final int intermediatePointCount)
 	{
 		return Zero_PlusOne (
-			org.drip.numerical.integration.AbscissaTransform.DisplaceAndScaleZero_PlusOne (
+			org.drip.numerical.integration.R1AbscissaTransform.DisplaceAndScaleZero_PlusOne (
 				left,
 				right
 			),
@@ -255,13 +255,13 @@ public class NewtonCotesQuadratureGenerator
 	 * @return The Newton-Cotes of Equally Spaced Quadrature over (a, b) onto (-1, +1)
 	 */
 
-	public static final org.drip.numerical.integration.QuadratureEstimator MinusOne_PlusOne (
+	public static final org.drip.numerical.integration.R1QuadratureEstimator MinusOne_PlusOne (
 		final double left,
 		final double right,
 		final int intermediatePointCount)
 	{
 		return MinusOne_PlusOne (
-			org.drip.numerical.integration.AbscissaTransform.DisplaceAndScaleMinusOne_PlusOne (
+			org.drip.numerical.integration.R1AbscissaTransform.DisplaceAndScaleMinusOne_PlusOne (
 				left,
 				right
 			),
@@ -278,12 +278,12 @@ public class NewtonCotesQuadratureGenerator
 	 * @return The Newton-Cotes Quadrature for the Gauss-Laguerre Left-Definite Integral over (a, +Infinity)
 	 */
 
-	public static final org.drip.numerical.integration.QuadratureEstimator GaussLaguerreLeftDefinite (
+	public static final org.drip.numerical.integration.R1QuadratureEstimator GaussLaguerreLeftDefinite (
 		final double left,
 		final int intermediatePointCount)
 	{
 		return Zero_PlusOne (
-			org.drip.numerical.integration.AbscissaTransform.GaussLaguerreLeftDefinite (left),
+			org.drip.numerical.integration.R1AbscissaTransform.GaussLaguerreLeftDefinite (left),
 			intermediatePointCount
 		);
 	}
@@ -297,12 +297,12 @@ public class NewtonCotesQuadratureGenerator
 	 * @return The Newton-Cotes Quadrature for the Gauss-Laguerre Left-Definite Integral over (-Infinity, a)
 	 */
 
-	public static final org.drip.numerical.integration.QuadratureEstimator GaussLaguerreRightDefinite (
+	public static final org.drip.numerical.integration.R1QuadratureEstimator GaussLaguerreRightDefinite (
 		final double right,
 		final int intermediatePointCount)
 	{
 		return Zero_PlusOne (
-			org.drip.numerical.integration.AbscissaTransform.GaussLaguerreRightDefinite (right),
+			org.drip.numerical.integration.R1AbscissaTransform.GaussLaguerreRightDefinite (right),
 			intermediatePointCount
 		);
 	}
@@ -317,11 +317,11 @@ public class NewtonCotesQuadratureGenerator
 	 * 		(-Infinity, +Infinity)
 	 */
 
-	public static final org.drip.numerical.integration.QuadratureEstimator GaussHermite (
+	public static final org.drip.numerical.integration.R1QuadratureEstimator GaussHermite (
 		final int intermediatePointCount)
 	{
 		return MinusOne_PlusOne (
-			org.drip.numerical.integration.AbscissaTransform.GaussHermite(),
+			org.drip.numerical.integration.R1AbscissaTransform.GaussHermite(),
 			intermediatePointCount
 		);
 	}

@@ -77,8 +77,8 @@ package org.drip.numerical.integration;
  */
 
 /**
- * <i>QuadratureEstimate</i> contains the Estimate of the Integrand Quadrature and its corresponding Error.
- * The References are:
+ * <i>R1QuadratureEstimator</i> estimates an Integrand Quadrature using the Array of Transformed Quadrature
+ * Abscissa and their corresponding Weights. The References are:
  * 
  * <br><br>
  * 	<ul>
@@ -113,51 +113,93 @@ package org.drip.numerical.integration;
  * @author Lakshmi Krishnamurthy
  */
 
-public class QuadratureEstimate
+public class R1QuadratureEstimator
 {
-	private double _error = java.lang.Double.NaN;
-	private double _baseline = java.lang.Double.NaN;
+	private org.drip.numerical.common.Array2D _nodeWeightArray = null;
+	private org.drip.numerical.integration.R1AbscissaTransform _abscissaTransform = null;
 
 	/**
-	 * QuadratureEstimate Constructor
+	 * R1QuadratureEstimator Constructor
 	 * 
-	 * @param baseline Baseline Quadrature Estimate
-	 * @param error Quadrature Error Estimate
+	 * @param abscissaTransform The Abscissa Transform
+	 * @param nodeWeightArray Array of the Nodes and Weights
 	 * 
 	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
 	 */
 
-	public QuadratureEstimate (
-		final double baseline,
-		final double error)
+	public R1QuadratureEstimator (
+		final org.drip.numerical.integration.R1AbscissaTransform abscissaTransform,
+		final org.drip.numerical.common.Array2D nodeWeightArray)
 		throws java.lang.Exception
 	{
-		if (!org.drip.numerical.common.NumberUtil.IsValid (_baseline = baseline) ||
-			!org.drip.numerical.common.NumberUtil.IsValid (_error = error) || 0. > _error)
+		if (null == (_abscissaTransform = abscissaTransform) ||
+			null == (_nodeWeightArray = nodeWeightArray))
 		{
-			throw new java.lang.Exception ("QuadratureEstimate Constructor => Invalid Inputs");
+			throw new java.lang.Exception ("R1QuadratureEstimator Constructor => Invalid Inputs");
 		}
 	}
 
 	/**
-	 * Retrieve the Baseline Quadrature Estimate
+	 * Retrieve the Abscissa Transform
 	 * 
-	 * @return The Baseline Quadrature Estimate
+	 * @return The Abscissa Transform
 	 */
 
-	public double baseline()
+	public org.drip.numerical.integration.R1AbscissaTransform abscissaTransform()
 	{
-		return _baseline;
+		return _abscissaTransform;
 	}
 
 	/**
-	 * Retrieve the Quadrature Error Estimate
+	 * Retrieve the 2D Array of Nodes and Weights
 	 * 
-	 * @return The Quadrature Error Estimate
+	 * @return 2D Array of Nodes and Weights
 	 */
 
-	public double error()
+	public org.drip.numerical.common.Array2D nodeWeightArray()
 	{
-		return _error;
+		return _nodeWeightArray;
+	}
+
+	/**
+	 * Integrate the Specified Integrand over the Nodes
+	 * 
+	 * @param r1ToR1Integrand The R<sup>1</sup> To R<sup>1</sup> Integrand
+	 * 
+	 * @return The Integrand Quadrature
+	 * 
+	 * @throws java.lang.Exception Thrown if the Inputs are Invalid
+	 */
+
+	public double integrate (
+		final org.drip.function.definition.R1ToR1 r1ToR1Integrand)
+		throws java.lang.Exception
+	{
+		if (null == r1ToR1Integrand)
+		{
+			throw new java.lang.Exception ("R1QuadratureEstimator::integrate => Invalid Inputs");
+		}
+
+		double[] weightArray = _nodeWeightArray.y();
+
+		double[] abscissaArray = _nodeWeightArray.x();
+
+		double quadrature = 0.;
+		int nodeCount = abscissaArray.length;
+
+		double quadratureScale = _abscissaTransform.quadratureScale();
+
+		org.drip.function.definition.R1ToR1 r1PointValueScale = _abscissaTransform.pointValueScale();
+
+		org.drip.function.definition.R1ToR1 r1ToR1VariateChange = _abscissaTransform.variateChange();
+
+		for (int nodeIndex = 0; nodeIndex < nodeCount; ++nodeIndex)
+		{
+			quadrature = quadrature + quadratureScale * weightArray[nodeIndex] *
+				r1PointValueScale.evaluate (abscissaArray[nodeIndex]) *
+				r1ToR1Integrand.evaluate (r1ToR1VariateChange.evaluate (abscissaArray[nodeIndex]));
+		}
+
+		return quadrature;
 	}
 }

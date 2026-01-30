@@ -113,9 +113,9 @@ package org.drip.numerical.integration;
  * @author Lakshmi Krishnamurthy
  */
 
-public class NestedQuadratureEstimator extends org.drip.numerical.integration.QuadratureEstimator
+public class NestedQuadratureEstimator extends org.drip.numerical.integration.R1QuadratureEstimator
 {
-	private org.drip.numerical.integration.QuadratureEstimator _embeddedQuadratureEstimator = null;
+	private org.drip.numerical.integration.R1QuadratureEstimator _embeddedQuadratureEstimator = null;
 
 	/**
 	 * NestedQuadratureEstimator Constructor
@@ -128,9 +128,9 @@ public class NestedQuadratureEstimator extends org.drip.numerical.integration.Qu
 	 */
 
 	public NestedQuadratureEstimator (
-		final org.drip.numerical.integration.AbscissaTransform abscissaTransformer,
+		final org.drip.numerical.integration.R1AbscissaTransform abscissaTransformer,
 		final org.drip.numerical.common.Array2D nodeWeightArray,
-		final org.drip.numerical.integration.QuadratureEstimator embeddedQuadratureEstimator)
+		final org.drip.numerical.integration.R1QuadratureEstimator embeddedQuadratureEstimator)
 		throws java.lang.Exception
 	{
 		super (
@@ -150,7 +150,7 @@ public class NestedQuadratureEstimator extends org.drip.numerical.integration.Qu
 	 * @return The Embedded Quadrature Estimator
 	 */
 
-	public org.drip.numerical.integration.QuadratureEstimator embeddedQuadratureEstimator()
+	public org.drip.numerical.integration.R1QuadratureEstimator embeddedQuadratureEstimator()
 	{
 		return _embeddedQuadratureEstimator;
 	}
@@ -163,14 +163,14 @@ public class NestedQuadratureEstimator extends org.drip.numerical.integration.Qu
 	 * @return The Quadrature and its Error
 	 */
 
-	public org.drip.numerical.integration.QuadratureEstimate estimate (
+	public org.drip.numerical.integration.R1QuadratureEstimate estimate (
 		final org.drip.function.definition.R1ToR1 r1ToR1Integrand)
 	{
 		try
 		{
 			double baseline = integrate (r1ToR1Integrand);
 
-			return new org.drip.numerical.integration.QuadratureEstimate (
+			return new org.drip.numerical.integration.R1QuadratureEstimate (
 				baseline,
 				java.lang.Math.abs (baseline - _embeddedQuadratureEstimator.integrate (r1ToR1Integrand))
 			);
