@@ -155,7 +155,7 @@ public abstract class R1ToR1IntegrandLimitEstimator extends org.drip.numerical.e
 		final double x)
 		throws java.lang.Exception
 	{
-		return org.drip.numerical.integration.NewtonCotesQuadratureGenerator.Zero_PlusOne (
+		return org.drip.numerical.r1integration.NewtonCotesQuadratureGenerator.Zero_PlusOne (
 			_leftLimit,
 			x,
 			100

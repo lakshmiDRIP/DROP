@@ -7,10 +7,10 @@ import org.drip.function.r1tor1solver.FixedPointFinderOutput;
 import org.drip.measure.statistics.PopulationCentralMeasures;
 import org.drip.numerical.common.Array2D;
 import org.drip.numerical.common.NumberUtil;
-import org.drip.numerical.integration.GaussKronrodQuadratureGenerator;
-import org.drip.numerical.integration.NewtonCotesQuadratureGenerator;
-import org.drip.numerical.integration.R1QuadratureEstimator;
-import org.drip.numerical.integration.R1ToR1Integrator;
+import org.drip.numerical.r1integration.GaussKronrodQuadratureGenerator;
+import org.drip.numerical.r1integration.Integrator;
+import org.drip.numerical.r1integration.NewtonCotesQuadratureGenerator;
+import org.drip.numerical.r1integration.QuadratureEstimator;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -213,7 +213,7 @@ public abstract class R1Continuous
 	{
 		double leftSupport = support()[0];
 
-		R1QuadratureEstimator quadratureEstimator = Double.NEGATIVE_INFINITY == leftSupport ?
+		QuadratureEstimator quadratureEstimator = Double.NEGATIVE_INFINITY == leftSupport ?
 			NewtonCotesQuadratureGenerator.GaussLaguerreRightDefinite (x, INTERMEDIATE_POINT_COUNT) :
 			GaussKronrodQuadratureGenerator.K15 (leftSupport, x);
 
@@ -301,7 +301,7 @@ public abstract class R1Continuous
 	 * @return <i>QuadratureEstimator</i> Instance for the Support
 	 */
 
-	public R1QuadratureEstimator quadratureEstimator()
+	public QuadratureEstimator quadratureEstimator()
 	{
 		double[] leftRightSupportArray = support();
 
@@ -594,7 +594,7 @@ public abstract class R1Continuous
 		double[] leftRight = support();
 
 		if (Double.isFinite (leftRight[0]) && Double.isFinite (leftRight[1])) {
-			return R1ToR1Integrator.Boole (pdfDifferentialFunction, leftRight[0], leftRight[1]);
+			return Integrator.Boole (pdfDifferentialFunction, leftRight[0], leftRight[1]);
 		}
 
 		if (Double.isFinite (leftRight[0])) {
@@ -626,7 +626,7 @@ public abstract class R1Continuous
 		final double p)
 		throws Exception
 	{
-		return R1ToR1Integrator.Boole (
+		return Integrator.Boole (
 			new R1ToR1 (null) {
 				@Override public double evaluate (
 					final double t)

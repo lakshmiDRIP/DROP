@@ -2,7 +2,7 @@
 package org.drip.sample.gaussquadrature;
 
 import org.drip.function.definition.R1ToR1;
-import org.drip.numerical.integration.GaussLegendreQuadratureGenerator;
+import org.drip.numerical.r1integration.GaussLegendreQuadratureGenerator;
 import org.drip.service.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 

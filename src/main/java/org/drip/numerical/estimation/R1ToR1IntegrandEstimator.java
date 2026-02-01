@@ -218,7 +218,7 @@ public class R1ToR1IntegrandEstimator extends org.drip.numerical.estimation.R1To
 		if (INTEGRAND_LIMITS_SETTING_ZERO_ONE == _limitsSetting)
 		{
 			return _integrandOffset.evaluate (z) + _integrandScale *
-				org.drip.numerical.integration.NewtonCotesQuadratureGenerator.Zero_PlusOne (
+				org.drip.numerical.r1integration.NewtonCotesQuadratureGenerator.Zero_PlusOne (
 					0.,
 					1.,
 					_quadratureCount
@@ -228,7 +228,7 @@ public class R1ToR1IntegrandEstimator extends org.drip.numerical.estimation.R1To
 		if (INTEGRAND_LIMITS_SETTING_ZERO_INFINITY == _limitsSetting)
 		{
 			return _integrandOffset.evaluate (z) + _integrandScale *
-				org.drip.numerical.integration.NewtonCotesQuadratureGenerator.GaussLaguerreLeftDefinite (
+				org.drip.numerical.r1integration.NewtonCotesQuadratureGenerator.GaussLaguerreLeftDefinite (
 					0.,
 					_quadratureCount
 				).integrate (_integrandGenerator.integrand (z));

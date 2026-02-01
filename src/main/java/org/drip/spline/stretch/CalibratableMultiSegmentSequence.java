@@ -6,7 +6,7 @@ import org.drip.function.r1tor1solver.FixedPointFinderOutput;
 import org.drip.function.r1tor1solver.FixedPointFinderZheng;
 import org.drip.numerical.common.NumberUtil;
 import org.drip.numerical.differentiation.WengertJacobian;
-import org.drip.numerical.integration.R1ToR1Integrator;
+import org.drip.numerical.r1integration.Integrator;
 import org.drip.spline.params.SegmentBasisFlexureConstraint;
 import org.drip.spline.params.SegmentCustomBuilderControl;
 import org.drip.spline.params.SegmentPredictorResponseDerivative;
@@ -594,7 +594,7 @@ public class CalibratableMultiSegmentSequence
 		final double end)
 		throws Exception
 	{
-		return R1ToR1Integrator.Boole (this, begin, end);
+		return Integrator.Boole (this, begin, end);
 	}
 
 	@Override public boolean setLeftNode (

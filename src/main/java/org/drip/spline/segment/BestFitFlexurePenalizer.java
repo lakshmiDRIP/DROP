@@ -2,7 +2,7 @@
 package org.drip.spline.segment;
 
 import org.drip.function.definition.R1ToR1;
-import org.drip.numerical.integration.R1ToR1Integrator;
+import org.drip.numerical.r1integration.Integrator;
 import org.drip.spline.params.SegmentBestFitResponse;
 import org.drip.spline.params.SegmentFlexurePenaltyControl;
 
@@ -196,7 +196,7 @@ public class BestFitFlexurePenalizer
 				final double end)
 				throws Exception
 			{
-				return R1ToR1Integrator.Boole (this, begin, end);
+				return Integrator.Boole (this, begin, end);
 			}
 		};
 
@@ -242,7 +242,7 @@ public class BestFitFlexurePenalizer
 				final double end)
 				throws java.lang.Exception
 			{
-				return R1ToR1Integrator.Boole (this, begin, end);
+				return Integrator.Boole (this, begin, end);
 			}
 		};
 

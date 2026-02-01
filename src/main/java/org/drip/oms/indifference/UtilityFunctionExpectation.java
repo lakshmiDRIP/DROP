@@ -8,7 +8,7 @@ import org.drip.function.r1tor1solver.InitializationHeuristics;
 import org.drip.measure.distribution.R1Continuous;
 import org.drip.measure.distribution.R1Discrete;
 import org.drip.numerical.common.NumberUtil;
-import org.drip.numerical.integration.NewtonCotesQuadratureGenerator;
+import org.drip.numerical.r1integration.NewtonCotesQuadratureGenerator;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-

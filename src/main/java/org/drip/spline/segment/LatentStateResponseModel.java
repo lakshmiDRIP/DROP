@@ -9,9 +9,9 @@ import org.drip.function.r1tor1solver.InitializationHeuristics;
 import org.drip.numerical.common.NumberUtil;
 import org.drip.numerical.differentiation.Differential;
 import org.drip.numerical.differentiation.WengertJacobian;
-import org.drip.numerical.integration.R1ToR1Integrator;
 import org.drip.numerical.linearalgebra.LinearizationOutput;
 import org.drip.numerical.linearsolver.LinearSystem;
+import org.drip.numerical.r1integration.Integrator;
 import org.drip.service.common.CollectionUtil;
 import org.drip.spline.basis.FunctionSet;
 import org.drip.spline.params.PreceedingManifestSensitivityControl;
@@ -2058,7 +2058,7 @@ public class LatentStateResponseModel
 				final double end)
 				throws java.lang.Exception
 			{
-				return R1ToR1Integrator.Boole (this, begin, end);
+				return Integrator.Boole (this, begin, end);
 			}
 		};
 

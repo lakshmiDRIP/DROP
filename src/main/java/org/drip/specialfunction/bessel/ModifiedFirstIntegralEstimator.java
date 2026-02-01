@@ -3,7 +3,7 @@ package org.drip.specialfunction.bessel;
 
 import org.drip.function.definition.R1ToR1;
 import org.drip.numerical.common.NumberUtil;
-import org.drip.numerical.integration.NewtonCotesQuadratureGenerator;
+import org.drip.numerical.r1integration.NewtonCotesQuadratureGenerator;
 import org.drip.specialfunction.definition.ModifiedBesselFirstKindEstimator;
 
 /*

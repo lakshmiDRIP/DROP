@@ -2,7 +2,7 @@
 package org.drip.spline.bspline;
 
 import org.drip.numerical.common.NumberUtil;
-import org.drip.numerical.integration.R1ToR1Integrator;
+import org.drip.numerical.r1integration.Integrator;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -162,7 +162,7 @@ public class SegmentMulticBasisFunction
 		final double end)
 		throws Exception
 	{
-		return R1ToR1Integrator.Simpson (this, begin, end);
+		return Integrator.Simpson (this, begin, end);
 	}
 
 	@Override public double normalizer()

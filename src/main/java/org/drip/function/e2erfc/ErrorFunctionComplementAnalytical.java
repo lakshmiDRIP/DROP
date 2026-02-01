@@ -464,7 +464,7 @@ public class ErrorFunctionComplementAnalytical
 						return 2. - evaluate (-1. * z);
 					}
 
-					return org.drip.numerical.integration.NewtonCotesQuadratureGenerator.Zero_PlusOne (
+					return org.drip.numerical.r1integration.NewtonCotesQuadratureGenerator.Zero_PlusOne (
 						0.,
 						z,
 						100

@@ -4,7 +4,7 @@ package org.drip.specialfunction.hypergeometric;
 import org.drip.function.definition.R1ToR1;
 import org.drip.function.definition.R2ToR1;
 import org.drip.numerical.common.NumberUtil;
-import org.drip.numerical.integration.NewtonCotesQuadratureGenerator;
+import org.drip.numerical.r1integration.NewtonCotesQuadratureGenerator;
 import org.drip.specialfunction.definition.HypergeometricParameters;
 import org.drip.specialfunction.definition.RegularHypergeometricEstimator;
 

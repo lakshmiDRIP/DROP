@@ -1,7 +1,7 @@
 
 package org.drip.sample.gammaincomplete;
 
-import org.drip.numerical.integration.NewtonCotesQuadratureGenerator;
+import org.drip.numerical.r1integration.NewtonCotesQuadratureGenerator;
 import org.drip.service.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 import org.drip.specialfunction.incompletegamma.UpperLimitPowerIntegrand;

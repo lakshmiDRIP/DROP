@@ -4,7 +4,7 @@ package org.drip.sample.numerical;
 import org.drip.function.definition.R1ToR1;
 import org.drip.function.r1tor1solver.*;
 import org.drip.numerical.differentiation.*;
-import org.drip.numerical.integration.R1ToR1Integrator;
+import org.drip.numerical.r1integration.Integrator;
 import org.drip.service.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 
@@ -471,7 +471,7 @@ public class FixedPointSearch {
 				final double dblEnd)
 				throws Exception
 			{
-				return R1ToR1Integrator.Boole (this, dblBegin, dblEnd);
+				return Integrator.Boole (this, dblBegin, dblEnd);
 			}
 		};
 

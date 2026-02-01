@@ -3,7 +3,7 @@ package org.drip.sample.numerical;
 
 import org.drip.function.definition.R1ToR1;
 import org.drip.function.r1tor1.*;
-import org.drip.numerical.integration.R1ToR1Integrator;
+import org.drip.numerical.r1integration.Integrator;
 import org.drip.service.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 
@@ -129,7 +129,7 @@ public class IntegrandQuadrature {
 
 		System.out.println ("\t\tLinear      : " +
 			FormatUtil.FormatDouble (
-				R1ToR1Integrator.LinearQuadrature (
+				Integrator.LinearQuadrature (
 					au,
 					dblStart,
 					dblEnd
@@ -142,7 +142,7 @@ public class IntegrandQuadrature {
 
 		System.out.println ("\t\tMidPoint     : " +
 			FormatUtil.FormatDouble (
-				R1ToR1Integrator.MidPoint (
+				Integrator.MidPoint (
 					au,
 					dblStart,
 					dblEnd
@@ -155,7 +155,7 @@ public class IntegrandQuadrature {
 
 		System.out.println ("\t\tTrapezoidal  : " +
 			FormatUtil.FormatDouble (
-				R1ToR1Integrator.Trapezoidal (
+				Integrator.Trapezoidal (
 					au,
 					dblStart,
 					dblEnd
@@ -168,7 +168,7 @@ public class IntegrandQuadrature {
 
 		System.out.println ("\t\tSimpson      : " +
 			FormatUtil.FormatDouble (
-				R1ToR1Integrator.Simpson (
+				Integrator.Simpson (
 					au,
 					dblStart,
 					dblEnd
@@ -181,7 +181,7 @@ public class IntegrandQuadrature {
 
 		System.out.println ("\t\tSimpson 38   : " +
 			FormatUtil.FormatDouble (
-				R1ToR1Integrator.Simpson38 (
+				Integrator.Simpson38 (
 					au,
 					dblStart,
 					dblEnd
@@ -194,7 +194,7 @@ public class IntegrandQuadrature {
 
 		System.out.println ("\t\tBoole        : " +
 			FormatUtil.FormatDouble (
-				R1ToR1Integrator.Boole (
+				Integrator.Boole (
 					au,
 					dblStart,
 					dblEnd

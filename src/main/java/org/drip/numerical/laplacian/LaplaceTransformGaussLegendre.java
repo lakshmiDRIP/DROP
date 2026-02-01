@@ -138,7 +138,7 @@ public class LaplaceTransformGaussLegendre extends org.drip.function.definition.
 			throw new java.lang.Exception ("LaplaceTransformGaussLegendre::evaluate => Invalid Inputs");
 		}
 
-		return org.drip.numerical.integration.NewtonCotesQuadratureGenerator.GaussLaguerreLeftDefinite (
+		return org.drip.numerical.r1integration.NewtonCotesQuadratureGenerator.GaussLaguerreLeftDefinite (
 			0.,
 			100
 		).integrate (

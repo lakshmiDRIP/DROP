@@ -5,7 +5,7 @@ import org.drip.function.definition.PoleResidue;
 import org.drip.function.definition.R1ToR1;
 import org.drip.numerical.common.NumberUtil;
 import org.drip.numerical.differentiation.DerivativeControl;
-import org.drip.numerical.integration.NewtonCotesQuadratureGenerator;
+import org.drip.numerical.r1integration.NewtonCotesQuadratureGenerator;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-

@@ -8,7 +8,7 @@ import org.drip.numerical.differentiation.DerivativeControl;
 import org.drip.numerical.estimation.R1Estimate;
 import org.drip.numerical.estimation.R1ToR1Estimator;
 import org.drip.numerical.estimation.R1ToR1Series;
-import org.drip.numerical.integration.NewtonCotesQuadratureGenerator;
+import org.drip.numerical.r1integration.NewtonCotesQuadratureGenerator;
 import org.drip.specialfunction.gamma.Definitions;
 import org.drip.specialfunction.gamma.NemesAnalytic;
 

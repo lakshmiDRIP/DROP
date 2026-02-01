@@ -141,7 +141,7 @@ public class CompoundBracketingRegressorSet implements org.drip.regression.core.
 				final double dblEnd)
 				throws java.lang.Exception
 			{
-				return org.drip.numerical.integration.R1ToR1Integrator.Boole (this, dblBegin, dblEnd);
+				return org.drip.numerical.r1integration.Integrator.Boole (this, dblBegin, dblEnd);
 			}
 		};
 	}

@@ -3,8 +3,8 @@ package org.drip.measure.exponential;
 
 import org.drip.function.definition.R1ToR1;
 import org.drip.measure.distribution.R1Continuous;
-import org.drip.numerical.integration.NewtonCotesQuadratureGenerator;
-import org.drip.numerical.integration.R1ToR1Integrator;
+import org.drip.numerical.r1integration.Integrator;
+import org.drip.numerical.r1integration.NewtonCotesQuadratureGenerator;
 import org.drip.specialfunction.digamma.BinetFirstIntegral;
 import org.drip.specialfunction.gamma.Definitions;
 
@@ -341,7 +341,7 @@ public class TwoIIDSum
 			throw new Exception ("TwoIIDSum::cumulative => Invalid Upper Variate");
 		}
 
-		return R1ToR1Integrator.Boole (
+		return Integrator.Boole (
 			new R1ToR1 (null) {
 				@Override public double evaluate (
 					final double z)

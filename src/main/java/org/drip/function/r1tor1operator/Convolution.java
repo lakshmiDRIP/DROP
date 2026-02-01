@@ -154,6 +154,6 @@ public class Convolution extends org.drip.function.definition.R1ToR1 {
 			(dblEnd))
 			throw new java.lang.Exception ("Convolution::integrate => Invalid Inputs");
 
-		return org.drip.numerical.integration.R1ToR1Integrator.Boole (this, dblBegin, dblEnd);
+		return org.drip.numerical.r1integration.Integrator.Boole (this, dblBegin, dblEnd);
 	}
 }

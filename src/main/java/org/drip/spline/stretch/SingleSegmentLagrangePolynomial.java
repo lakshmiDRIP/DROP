@@ -7,7 +7,7 @@ import org.drip.function.r1tor1solver.FixedPointFinderOutput;
 import org.drip.function.r1tor1solver.InitializationHeuristics;
 import org.drip.numerical.common.NumberUtil;
 import org.drip.numerical.differentiation.WengertJacobian;
-import org.drip.numerical.integration.R1ToR1Integrator;
+import org.drip.numerical.r1integration.Integrator;
 import org.drip.spline.params.SegmentResponseValueConstraint;
 import org.drip.spline.params.StretchBestFitResponse;
 import org.drip.spline.segment.Monotonocity;
@@ -426,7 +426,7 @@ public class SingleSegmentLagrangePolynomial
 						final double end)
 						throws Exception
 					{
-						return R1ToR1Integrator.Boole (this, begin, end);
+						return Integrator.Boole (this, begin, end);
 					}
 				},
 				true
