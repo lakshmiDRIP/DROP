@@ -1,6 +1,12 @@
 
 package org.drip.numerical.rdintegration;
 
+import java.util.List;
+
+import org.drip.function.definition.RdToR1;
+import org.drip.service.common.FormatUtil;
+import org.drip.service.env.EnvManager;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
@@ -117,17 +123,17 @@ package org.drip.numerical.rdintegration;
  * @author Lakshmi Krishnamurthy
  */
 
-public abstract class RecursiveStratifiedSamplingIntegrator
-	extends MonteCarloIntegrator
+public class RecursiveStratifiedSamplingIntegrator
+	extends UniformSamplingIntegrator
 {
-	private int _varianceSamplingPointCount = 0;
+	private VarianceSamplingZoneExtractor _varianceSamplingZoneExtractor = null;
 
 	/**
 	 * <i>RecursiveStratifiedSamplingIntegrator</i> Constructor
 	 * 
 	 * @param integratorSetting Underlying <i>RdToR1IntegratorSetting</i> Instance
+	 * @param varianceSamplingSetting Variance Sampling Setting Instance
 	 * @param samplingPointCount Sampling Points Count
-	 * @param varianceSamplingPointCount Count of Variance Sampling Points
 	 * @param diagnosticsOn TRUE - Diagnostics are turned on
 	 * 
 	 * @throws Exception Thrown if the Inputs are Invalid
@@ -135,26 +141,227 @@ public abstract class RecursiveStratifiedSamplingIntegrator
 
 	public RecursiveStratifiedSamplingIntegrator (
 		final QuadratureSetting integratorSetting,
+		final VarianceSamplingSetting varianceSamplingSetting,
 		final int samplingPointCount,
-		final int varianceSamplingPointCount,
 		final boolean diagnosticsOn)
 		throws Exception
 	{
 		super (integratorSetting, samplingPointCount, diagnosticsOn);
 
-		if (0 >= (_varianceSamplingPointCount = varianceSamplingPointCount)) {
-			throw new Exception ("RecursiveStratifiedSamplingIntegrator Constructor => Invalid Inputs");
-		}
+		_varianceSamplingZoneExtractor = new VarianceSamplingZoneExtractor (
+			integratorSetting,
+			varianceSamplingSetting
+		);
 	}
 
 	/**
-	 * Retrieve the Count of Variance Sampling Points
+	 * Retrieve the Variance Sampling Zone Extractor Instance
 	 * 
-	 * @return Count of Variance Sampling Points
+	 * @return Variance Sampling Zone Extractor Instance
 	 */
 
-	public int varianceSamplingPointCount()
+	public VarianceSamplingZoneExtractor varianceSamplingZoneExtractor()
 	{
-		return _varianceSamplingPointCount;
+		return _varianceSamplingZoneExtractor;
+	}
+
+	/**
+	 * Compute the <i>MonteCarloRun</i> Stratified Sampling Run
+	 * 
+	 * @return <i>MonteCarloRun</i> Stratified Sampling Run
+	 */
+
+	@Override public MonteCarloRun quadratureRun()
+	{
+		boolean diagnosticsOn = diagnosticsOn();
+
+		RdToR1 integrand = integratorSetting().integrand();
+
+		MonteCarloRun monteCarloRun = diagnosticsOn ?
+			new MonteCarloRunStratifiedDiagnostics() : new MonteCarloRun();
+
+		List<QuadratureZone> optimalQuadratureZoneList =
+			_varianceSamplingZoneExtractor.optimalQuadratureZoneList (monteCarloRun);
+
+		if (null == optimalQuadratureZoneList) {
+			return null;
+		}
+
+		int quadratureZoneCount = optimalQuadratureZoneList.size();
+
+		int zoneSamplingPointCount = samplingPointCount() / quadratureZoneCount;
+
+		for (int zoneIndex = 0; zoneIndex < quadratureZoneCount; ++zoneIndex) {
+			MonteCarloRun zoneMonteCarloRun = null;
+
+			try {
+				zoneMonteCarloRun = new UniformSamplingIntegrator (
+					new QuadratureSetting (integrand, optimalQuadratureZoneList.get (zoneIndex)),
+					zoneSamplingPointCount,
+					diagnosticsOn
+				).quadratureRun();
+			} catch (Exception e) {
+				e.printStackTrace();
+
+				return null;
+			}
+
+			if (null == zoneMonteCarloRun) {
+				return null;
+			}
+
+			if (0 == zoneIndex) {
+				if (!monteCarloRun.setSamplingPointCount (zoneMonteCarloRun.samplingPointCount()) ||
+					!monteCarloRun.setIntegrandMean (zoneMonteCarloRun.integrandMean()) ||
+					!monteCarloRun.setIntegrandVolume (zoneMonteCarloRun.integrandVolume()) ||
+					!monteCarloRun.setUnbiasedIntegrandVariance (
+						zoneMonteCarloRun.unbiasedIntegrandVariance()
+					)
+				)
+				{
+					return null;
+				}
+			} else {
+				if (!MonteCarloRun.Merge (monteCarloRun, zoneMonteCarloRun)) {
+					return null;
+				}
+			}
+
+			if (diagnosticsOn) {
+				if (!((MonteCarloRunStratifiedDiagnostics) monteCarloRun).setIntegrandSampleArray (
+					zoneIndex,
+					((MonteCarloRunUniformDiagnostics) zoneMonteCarloRun).integrandSampleArray()
+				))
+				{
+					return null;
+				}
+			}
+		}
+
+		return monteCarloRun;
+	}
+
+	public static final void main (
+		final String[] argumentArray)
+		throws Exception
+	{
+		EnvManager.InitEnv ("");
+
+		int zoneIterationCount = 2;
+		int samplingPointCount = 10000;
+		int inDimensionEstimationPointCount = 5;
+		int outOfDimensionEstimationPointCount = 5;
+
+		double[] leftBoundArray = new double[] {
+			0.,
+			0.,
+			0.
+		};
+
+		double[] rightBoundArray = new double[] {
+			1.,
+			9.,
+			4.
+		};
+
+		RdToR1 integrand = new RdToR1 (null)
+		{
+			@Override public int dimension()
+			{
+				return 3;
+			}
+
+			@Override public double evaluate (
+				final double[] variateArray)
+				throws Exception
+			{
+				return variateArray[0] *
+					variateArray[1] * variateArray[1] * variateArray[1] *
+					variateArray[2] * variateArray[2];
+			}
+		};
+
+		QuadratureZone masterQuadratureZone = new QuadratureZone (leftBoundArray, rightBoundArray);
+
+		RecursiveStratifiedSamplingIntegrator recursiveStratifiedSamplingIntegrator =
+			new RecursiveStratifiedSamplingIntegrator (
+				new QuadratureSetting (integrand, masterQuadratureZone),
+				new VarianceSamplingSetting (
+					zoneIterationCount,
+					inDimensionEstimationPointCount,
+					outOfDimensionEstimationPointCount
+				),
+				samplingPointCount,
+				true
+			);
+
+		MonteCarloRun recursiveStratifiedSamplingRunDiagnostics =
+			recursiveStratifiedSamplingIntegrator.quadratureRun();
+
+		System.out.println ("\n\t|-------------------------------------------------|");
+
+		System.out.println ("\t| 2D MONTE CARLO UNIFORM SAMPLING INTEGRATION RUN |");
+
+		System.out.println ("\t|-------------------------------------------------|");
+
+		System.out.println (
+			"\t| Integrand Mean              => " + FormatUtil.FormatDouble (
+				recursiveStratifiedSamplingRunDiagnostics.integrandMean(),
+				1,
+				4,
+				1.
+			)
+		);
+
+		System.out.println (
+			"\t| Integrand Volume            => " + FormatUtil.FormatDouble (
+				recursiveStratifiedSamplingRunDiagnostics.integrandVolume(),
+				1,
+				4,
+				1.
+			)
+		);
+
+		System.out.println (
+			"\t| Unbiased Integrand Variance => " + FormatUtil.FormatDouble (
+				recursiveStratifiedSamplingRunDiagnostics.integrandVolume(),
+				1,
+				4,
+				1.
+			)
+		);
+
+		System.out.println (
+			"\t| Quadrature Value (Estimate) => " + FormatUtil.FormatDouble (
+				recursiveStratifiedSamplingRunDiagnostics.quadratureValue(),
+				1,
+				4,
+				1.
+			)
+		);
+
+		System.out.println ("\t| Quadrature Value (Actual)   =>  17496");
+
+		System.out.println (
+			"\t| Quadrature Variance         => " + FormatUtil.FormatDouble (
+				recursiveStratifiedSamplingRunDiagnostics.quadratureVariance(),
+				1,
+				9,
+				1.
+			)
+		);
+
+		System.out.println (
+			"\t| Quadrature Error            => " + FormatUtil.FormatDouble (
+				recursiveStratifiedSamplingRunDiagnostics.quadratureError(),
+				1,
+				9,
+				1.
+			)
+		);
+
+		System.out.println ("\t|-------------------------------------------------|");
+
+		EnvManager.TerminateEnv();
 	}
 }

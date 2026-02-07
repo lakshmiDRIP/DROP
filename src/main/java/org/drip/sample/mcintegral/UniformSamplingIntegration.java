@@ -4,7 +4,7 @@ package org.drip.sample.mcintegral;
 import org.drip.function.definition.RdToR1;
 import org.drip.numerical.rdintegration.QuadratureSetting;
 import org.drip.numerical.rdintegration.QuadratureZone;
-import org.drip.numerical.rdintegration.MonteCarloRunDiagnostics;
+import org.drip.numerical.rdintegration.MonteCarloRunUniformDiagnostics;
 import org.drip.numerical.rdintegration.UniformSamplingIntegrator;
 import org.drip.service.common.FormatUtil;
 import org.drip.service.env.EnvManager;
@@ -197,8 +197,8 @@ public class UniformSamplingIntegration
 			true
 		);
 
-		MonteCarloRunDiagnostics rdToR1MonteCarloRunDiagnostics =
-			(MonteCarloRunDiagnostics) uniformSamplingIntegrator.quadratureRun();
+		MonteCarloRunUniformDiagnostics rdToR1MonteCarloRunDiagnostics =
+			(MonteCarloRunUniformDiagnostics) uniformSamplingIntegrator.quadratureRun();
 
 		System.out.println ("\n\t|-------------------------------------------------|");
 

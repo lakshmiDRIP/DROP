@@ -11,7 +11,7 @@ Numerical Analysis Library contains the supporting Functionality for Numerical M
 
  |        Document         | Link |
  |-------------------------|------|
- | Technical Specification | [*Latest*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/NumericalAnalysis/NumericalAnalysis_v7.54.pdf) [*Previous*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/NumericalAnalysis) |
+ | Technical Specification | [*Latest*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/NumericalAnalysis/NumericalAnalysis_v7.56.pdf) [*Previous*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/NumericalAnalysis) |
  | User Guide              |  |
  | API                     | [*Javadoc*](https://lakshmidrip.github.io/DROP/Javadoc/index.html)|
 
@@ -391,6 +391,22 @@ Numerical Analysis Library contains the supporting Functionality for Numerical M
 	* Example: 2D Diffusion
 	* Crank–Nicolson for nonlinear problems
 	* Application in financial mathematics
+	* References
+ * Alternating Direction Implicit Method
+	* Overview
+	* ADI for Matrix Equations
+		* The Method
+		* When to use ADI
+		* Shift-parameter Selection and the ADI Error Equation
+			* Near-optimal Shift Parameters
+			* Heuristic Shift-parameter Strategies
+		* Factored ADI
+	* ADI for Parabolic Equations
+		* Example: 2D Diffusion Equation
+		* Generalizations
+	* Fundamental ADI FADI
+		* Simplification of ADI to FADI
+		* Relation to Other Implicit Methods
 	* References
  * Sylvester Equation
 	* Existence and uniqueness of the solutions

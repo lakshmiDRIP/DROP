@@ -5266,6 +5266,26 @@ public class ArrayUtil
     	return remainderSet.contains (0);
     }
 
+	/**
+	 * Duplicate the Specified Array
+	 * 
+	 * @param array Specified Array
+	 * 
+	 * @return The Duplicated Array
+	 */
+
+	public static final double[] Duplicate (
+		final double[] array)
+	{
+		double[] duplicateArray = new double[array.length];
+
+		for (int index = 0; index < array.length; ++index) {
+			duplicateArray[index] = array[index];
+		}
+
+		return duplicateArray;
+	}
+
     public static final void main (
 		final String[] argumentArray)
     	throws Exception

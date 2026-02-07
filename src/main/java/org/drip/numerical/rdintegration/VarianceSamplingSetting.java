@@ -120,24 +120,28 @@ package org.drip.numerical.rdintegration;
 public class VarianceSamplingSetting
 {
 	private int _zoneIterationCount = 0;
-	private int _estimationPointCount = 0;
+	private int _inDimensionEstimationPointCount = 0;
+	private int _outOfDimensionEstimationPointCount = 0;
 
 	/**
 	 * VarianceSamplingSetting Constructor
 	 * 
 	 * @param zoneIterationCount Count of Variance Iteration Zones
-	 * @param estimationPointCount Count of Variance Sampling Estimate Points
+	 * @param inDimensionEstimationPointCount Count of In-dimension Variance Sampling Estimate Points
+	 * @param outOfDimensionEstimationPointCount Count of Out-of-dimension Variance Sampling Estimate Points
 	 * 
 	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public VarianceSamplingSetting (
 		final int zoneIterationCount,
-		final int estimationPointCount)
+		final int inDimensionEstimationPointCount,
+		final int outOfDimensionEstimationPointCount)
 		throws Exception
 	{
 		if (0 >= (_zoneIterationCount = zoneIterationCount) ||
-			0 >= (_estimationPointCount = estimationPointCount))
+			1 >= (_inDimensionEstimationPointCount = inDimensionEstimationPointCount) ||
+			1 >= (_outOfDimensionEstimationPointCount = outOfDimensionEstimationPointCount))
 		{
 			throw new Exception ("VarianceSamplingSetting Constructor => Invalid Inputs");
 		}
@@ -155,13 +159,24 @@ public class VarianceSamplingSetting
 	}
 
 	/**
-	 * Retrieve the Count of Variance Sampling Estimate Points
+	 * Retrieve the Count of Variance In-dimension Sampling Estimate Points
 	 * 
-	 * @return Count of Variance Sampling Estimate Points
+	 * @return Count of Variance In-dimension Sampling Estimate Points
 	 */
 
-	public int estimationPointCount()
+	public int inDimensionEstimationPointCount()
 	{
-		return _estimationPointCount;
+		return _inDimensionEstimationPointCount;
+	}
+
+	/**
+	 * Retrieve the Count of Variance Out-of-dimension Sampling Estimate Points
+	 * 
+	 * @return Count of Variance Out-of-dimension Sampling Estimate Points
+	 */
+
+	public int outOfDimensionEstimationPointCount()
+	{
+		return _outOfDimensionEstimationPointCount;
 	}
 }

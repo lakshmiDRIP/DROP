@@ -1,6 +1,7 @@
 
 package org.drip.numerical.rdintegration;
 
+import org.drip.service.common.ArrayUtil;
 import org.drip.service.common.FormatUtil;
 
 /*
@@ -125,18 +126,6 @@ public class QuadratureZone
 	private double[] _rightBoundArray = null;
 	private double _integrandVolume = Double.NaN;
 
-	private static final double[] DuplicateArray (
-		final double[] array)
-	{
-		double[] duplicateArray = new double[array.length];
-
-		for (int index = 0; index < array.length; ++index) {
-			duplicateArray[index] = array[index];
-		}
-
-		return duplicateArray;
-	}
-
 	/**
 	 * <i>QuadratureZone</i> Constructor
 	 * 
@@ -225,9 +214,9 @@ public class QuadratureZone
 			return null;
 		}
 
-		double[] adjustedLeftBoundArray = DuplicateArray (_leftBoundArray);
+		double[] adjustedLeftBoundArray = ArrayUtil.Duplicate (_leftBoundArray);
 
-		double[] adjustedRightBoundArray = DuplicateArray (_rightBoundArray);
+		double[] adjustedRightBoundArray = ArrayUtil.Duplicate (_rightBoundArray);
 
 		double midDimensionBound = 0.5 *
 			(_leftBoundArray[splitDimensionIndex] + _rightBoundArray[splitDimensionIndex]);

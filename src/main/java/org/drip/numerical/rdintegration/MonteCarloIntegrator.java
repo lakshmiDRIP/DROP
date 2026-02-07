@@ -123,44 +123,6 @@ public abstract class MonteCarloIntegrator
 	private boolean _diagnosticsOn = false;
 	private QuadratureSetting _integratorSetting = null;
 
-	private MonteCarloRun quadratureRun (
-		final double[] integrandValueArray)
-	{
-		double cumulativeIntegrandValue = 0.;
-		double cumulativeIntegrandSquaredValue = 0.;
-
-		for (int integrandValueIndex = 0;
-			integrandValueIndex < integrandValueArray.length;
-			++integrandValueIndex)
-		{
-			cumulativeIntegrandValue += integrandValueArray[integrandValueIndex];
-			cumulativeIntegrandSquaredValue +=
-				integrandValueArray[integrandValueIndex] * integrandValueArray[integrandValueIndex];
-		}
-
-		double integrandMean = cumulativeIntegrandValue / _samplingPointCount;
-
-		try {
-			return _diagnosticsOn ? MonteCarloRunDiagnostics.Standard (
-				_samplingPointCount,
-				integrandMean,
-				_integratorSetting.zone().integrandVolume(),
-				(cumulativeIntegrandSquaredValue - (_samplingPointCount * integrandMean * integrandMean)) /
-					(_samplingPointCount - 1)
-			) : MonteCarloRun.Standard (
-				_samplingPointCount,
-				integrandMean,
-				_integratorSetting.zone().integrandVolume(),
-				(cumulativeIntegrandSquaredValue - (_samplingPointCount * integrandMean * integrandMean)) /
-					(_samplingPointCount - 1)
-			);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-		return null;
-	}
-
 	/**
 	 * <i>MonteCarloIntegrator</i> Constructor
 	 * 
@@ -220,39 +182,10 @@ public abstract class MonteCarloIntegrator
 	}
 
 	/**
-	 * Generate the Array of Integrand Sampling Points needed for computing the Quadrature
-	 * 
-	 * @return Array of Integrand Sampling Points needed for computing the Quadrature
-	 */
-
-	public abstract double[] integrandSampleArray();
-
-	/**
 	 * Compute the <i>RdToR1MonteCarloRun</i> Uniform Sampling Run
 	 * 
 	 * @return <i>RdToR1MonteCarloRun</i> Uniform Sampling Run
 	 */
 
-	public MonteCarloRun quadratureRun()
-	{
-		double[] integrandSampleArray = integrandSampleArray();
-
-		if (null == integrandSampleArray) {
-			return null;
-		}
-
-		MonteCarloRun monteCarloRun = quadratureRun (integrandSampleArray);
-
-		if (null == monteCarloRun) {
-			return null;
-		}
-
-		if (monteCarloRun instanceof MonteCarloRunDiagnostics) {
-			if (!((MonteCarloRunDiagnostics) monteCarloRun).setIntegrandSampleArray (integrandSampleArray)) {
-				return null;
-			}
-		}
-
-		return monteCarloRun;
-	}
+	public abstract MonteCarloRun quadratureRun();
 }

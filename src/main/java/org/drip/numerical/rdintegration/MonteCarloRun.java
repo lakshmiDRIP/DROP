@@ -127,32 +127,53 @@ public class MonteCarloRun
 	private double _unbiasedIntegrandVariance = Double.NaN;
 
 	/**
-	 * Construct a Standard Instance of <i>MonteCarloRun</i>
+	 * Merge the Target Monte Carlo onto the Main
 	 * 
-	 * @param samplingPointCount Count of Sampling Points
-	 * @param integrandMean Mean Integrand Value over the Volume
-	 * @param integrandVolume Integrand Volume
-	 * @param unbiasedIntegrandVariance Unbiased Integrand Variance
+	 * @param monteCarloRunMain Main Monte Carlo Run
+	 * @param monteCarloRunTarget Target Monte Carlo Run
 	 * 
-	 * return Standard Instance of <i>MonteCarloRun</i>
+	 * @return Merged Monte Carlo Run
 	 */
 
-	public static MonteCarloRun Standard (
-		final int samplingPointCount,
-		final double integrandMean,
-		final double integrandVolume,
-		final double unbiasedIntegrandVariance)
+	public static final boolean Merge (
+		final MonteCarloRun monteCarloRunMain,
+		final MonteCarloRun monteCarloRunTarget)
 	{
-		MonteCarloRun monteCarloRun = new MonteCarloRun();
+		if (null == monteCarloRunMain) {
+			return false;
+		}
 
-		return monteCarloRun.setSamplingPointCount (samplingPointCount) &&
-			monteCarloRun.setIntegrandMean (integrandMean) &&
-			monteCarloRun.setIntegrandVolume (integrandVolume) &&
-			monteCarloRun.setUnbiasedIntegrandVariance (unbiasedIntegrandVariance) ?
-			monteCarloRun : null;
+		if (null == monteCarloRunTarget) {
+			return true;
+		}
+
+		double mainIntegrandVolume = monteCarloRunMain.integrandVolume();
+
+		double targetIntegrandVolume = monteCarloRunTarget.integrandVolume();
+
+		double integrandVolume = mainIntegrandVolume + targetIntegrandVolume;
+		double inverseIntegrandVolume = 1. / integrandVolume;
+
+		return monteCarloRunMain.setSamplingPointCount (
+			monteCarloRunMain.samplingPointCount() + monteCarloRunTarget.samplingPointCount()
+		) && monteCarloRunMain.setIntegrandMean (
+			inverseIntegrandVolume * (
+				monteCarloRunMain.integrandMean() * mainIntegrandVolume +
+				monteCarloRunTarget.integrandMean() * targetIntegrandVolume
+			)
+		) && monteCarloRunMain.setUnbiasedIntegrandVariance (
+			inverseIntegrandVolume * (
+				monteCarloRunMain.unbiasedIntegrandVariance() * mainIntegrandVolume +
+				monteCarloRunTarget.unbiasedIntegrandVariance() * targetIntegrandVolume
+			)
+		) && monteCarloRunMain.setIntegrandVolume (integrandVolume);
 	}
 
-	protected MonteCarloRun()
+	/**
+	 * Empty MonteCarloRun Constructor
+	 */
+
+	public MonteCarloRun()
 	{
 	}
 

@@ -169,6 +169,46 @@ public class FormatUtil
 	}
 
 	/**
+	 * Format the R<sup>d</sup> Array into a Delimited String
+	 * 
+	 * @param rdArray R<sup>d</sup> Array
+	 * @param leftJustificationZeroes Integer representing the number of left justifying zeros
+	 * @param rightJustificationZeroes Integer representing the number of right justifying zeros
+	 * @param multiplier Double representing the multiplier
+	 * @param leadingSpaceForPositive TRUE - A Leading Space will be emitted for Adjusted Positive Numbers.
+	 * 	For Adjusted Negatives this will be the '-' sign.
+	 * 
+	 * @return R<sup>d</sup> Array into a Delimited String
+	 */
+
+	public static final String FormatRd (
+		final double[] rdArray,
+		final int leftJustificationZeroes,
+		final int rightJustificationZeroes,
+		final double multiplier,
+		final String delimiter,
+		final boolean leadingSpaceForPositive)
+	{
+		String formattedRd = "";
+
+		for (int i = 0; i < rdArray.length; ++i) {
+			if (0 != i) {
+				formattedRd += delimiter;
+			}
+
+			formattedRd += FormatDouble (
+				rdArray[i],
+				leftJustificationZeroes,
+				rightJustificationZeroes,
+				multiplier,
+				leadingSpaceForPositive
+			);
+		}
+
+		return formattedRd;
+	}
+
+	/**
 	 * Format the double input by multiplying, and then adding left and right adjustments
 	 * 
 	 * @param doubleValue Double representing the input
@@ -192,5 +232,42 @@ public class FormatUtil
 			multiplier,
 			true
 		);
+	}
+
+	/**
+	 * Format the R<sup>d</sup> Array into a Delimited String
+	 * 
+	 * @param rdArray R<sup>d</sup> Array
+	 * @param leftJustificationZeroes Integer representing the number of left justifying zeros
+	 * @param rightJustificationZeroes Integer representing the number of right justifying zeros
+	 * @param multiplier Double representing the multiplier
+	 * 
+	 * @return R<sup>d</sup> Array into a Delimited String
+	 */
+
+	public static final String FormatRd (
+		final double[] rdArray,
+		final int leftJustificationZeroes,
+		final int rightJustificationZeroes,
+		final double multiplier,
+		final String delimiter)
+	{
+		String formattedRd = "";
+
+		for (int i = 0; i < rdArray.length; ++i) {
+			if (0 != i) {
+				formattedRd += delimiter + " ";
+			}
+
+			formattedRd += FormatDouble (
+				rdArray[i],
+				leftJustificationZeroes,
+				rightJustificationZeroes,
+				multiplier,
+				true
+			);
+		}
+
+		return formattedRd;
 	}
 }

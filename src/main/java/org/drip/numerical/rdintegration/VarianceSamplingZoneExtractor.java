@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.drip.function.definition.RdToR1;
+import org.drip.service.common.ArrayUtil;
 import org.drip.service.env.EnvManager;
 
 /*
@@ -128,71 +129,199 @@ public class VarianceSamplingZoneExtractor
 	private QuadratureSetting _quadratureSetting = null;
 	private VarianceSamplingSetting _varianceSamplingSetting = null;
 
+	private double[] inDimensionIntegrandSampleArray (
+		final MonteCarloRunStratifiedDiagnostics monteCarloRunDiagnostics,
+		final double leftEdgeInDimensionBound,
+		final double rightEdgeInDimensionBound,
+		final int inDimensionIndex,
+		final double[] variateArray)
+	{
+		RdToR1 integrand = _quadratureSetting.integrand();
+
+		int inDimensionEstimationPointCount = _varianceSamplingSetting.inDimensionEstimationPointCount();
+
+		double[] inDimensionIntegrandSampleArray = new double[inDimensionEstimationPointCount + 1];
+
+		double inDimensionRange = (rightEdgeInDimensionBound - leftEdgeInDimensionBound) /
+			inDimensionEstimationPointCount;
+
+		for (int inDimensionPointIndex = 0;
+			inDimensionPointIndex <= inDimensionEstimationPointCount;
+			++inDimensionPointIndex)
+		{
+			variateArray[inDimensionIndex] =
+				leftEdgeInDimensionBound + inDimensionPointIndex * inDimensionRange;
+
+			try {
+				inDimensionIntegrandSampleArray[inDimensionPointIndex] = integrand.evaluate (variateArray);
+			} catch (Exception e) {
+				e.printStackTrace();
+
+				return null;
+			}
+
+			if (null != monteCarloRunDiagnostics) {
+				if (!monteCarloRunDiagnostics.setRdValue (
+					variateArray,
+					inDimensionIntegrandSampleArray[inDimensionPointIndex]
+				))
+				{
+					return null;
+				}
+			}
+		}
+
+		return inDimensionIntegrandSampleArray;
+	}
+
+	private double outOfDimensionAnchorVarianceProxy (
+		final MonteCarloRunStratifiedDiagnostics monteCarloRunDiagnostics,
+		final double leftEdgeInDimensionBound,
+		final double rightEdgeInDimensionBound,
+		final int inDimensionIndex,
+		final double[] variateArray)
+		throws Exception
+	{
+		double[] inDimensionIntegrandSampleArray = inDimensionIntegrandSampleArray (
+			monteCarloRunDiagnostics,
+			leftEdgeInDimensionBound,
+			rightEdgeInDimensionBound,
+			inDimensionIndex,
+			ArrayUtil.Duplicate (variateArray)
+		);
+
+		if (null == inDimensionIntegrandSampleArray) {
+			throw new Exception (
+				"VarianceSamplingZoneExtractor::outOfDimensionAnchorVarianceProxy => Cannot calculate in-dimension Integrand Sample Array"
+			);
+		}
+
+		double outOfDimensionAnchorMean = 0.;
+		double outOfDimensionVarianceProxy = 0.;
+
+		for (int inDimensionSampleIndex = 0;
+			inDimensionSampleIndex < inDimensionIntegrandSampleArray.length;
+			++inDimensionSampleIndex)
+		{
+			outOfDimensionAnchorMean += inDimensionIntegrandSampleArray[inDimensionSampleIndex];
+		}
+
+		outOfDimensionAnchorMean /= inDimensionIntegrandSampleArray.length;
+
+		for (int inDimensionSampleIndex = 0;
+			inDimensionSampleIndex < inDimensionIntegrandSampleArray.length;
+			++inDimensionSampleIndex)
+		{
+			double sampleGap =
+				inDimensionIntegrandSampleArray[inDimensionSampleIndex] - outOfDimensionAnchorMean;
+			outOfDimensionVarianceProxy += sampleGap * sampleGap;
+		}
+
+		if (null != monteCarloRunDiagnostics) {
+			if (!monteCarloRunDiagnostics.setOutOfDimensionAnchorMeanAndVarianceProxy (
+				variateArray,
+				inDimensionIndex,
+				outOfDimensionAnchorMean,
+				outOfDimensionVarianceProxy
+			))
+			{
+				throw new Exception (
+					"VarianceSamplingZoneExtractor::outOfDimensionAnchorVarianceProxy => Cannot set out of Dimension Anchor Diagnostics"
+				);
+			}
+		}
+
+		return outOfDimensionVarianceProxy;
+	}
+
+	private double inDimensionVarianceProxy (
+		final MonteCarloRun monteCarloRun,
+		final double[] leftBoundArray,
+		final double[] rightBoundArray,
+		final int inDimensionIndex)
+		throws Exception
+	{
+		QuadratureZone zone = _quadratureSetting.zone();
+
+		int outOfDimensionEstimationPointCount =
+			_varianceSamplingSetting.outOfDimensionEstimationPointCount();
+
+		double[] variateGapArray = new double[_quadratureSetting.integrand().dimension()];
+
+		double[] rightEdgeArray = zone.rightBoundArray();
+
+		double[] leftEdgeArray = zone.leftBoundArray();
+
+		for (int dimensionIndex = 0; dimensionIndex < variateGapArray.length; ++dimensionIndex) {
+			variateGapArray[dimensionIndex] = (
+				rightEdgeArray[dimensionIndex] - leftEdgeArray[dimensionIndex]
+			) / outOfDimensionEstimationPointCount;
+		}
+
+		double[] variateArray = ArrayUtil.Duplicate (leftEdgeArray);
+
+		double varianceProxy = outOfDimensionAnchorVarianceProxy (
+			null == monteCarloRun || !(monteCarloRun instanceof MonteCarloRunStratifiedDiagnostics) ?
+				null : (MonteCarloRunStratifiedDiagnostics) monteCarloRun,
+			leftBoundArray[inDimensionIndex],
+			rightBoundArray[inDimensionIndex],
+			inDimensionIndex,
+			variateArray
+		);
+
+		for (int outOfDimensionIndex = 1;
+			outOfDimensionIndex <= outOfDimensionEstimationPointCount;
+			++outOfDimensionIndex)
+		{
+			for (int dimensionIndex = 0; dimensionIndex < variateGapArray.length; ++dimensionIndex) {
+				variateArray[dimensionIndex] += variateGapArray[dimensionIndex];
+			}
+
+			varianceProxy += outOfDimensionAnchorVarianceProxy (
+				null == monteCarloRun || !(monteCarloRun instanceof MonteCarloRunStratifiedDiagnostics) ?
+					null : (MonteCarloRunStratifiedDiagnostics) monteCarloRun,
+				leftBoundArray[inDimensionIndex],
+				rightBoundArray[inDimensionIndex],
+				inDimensionIndex,
+				variateArray
+			);
+		}
+
+		return varianceProxy;
+	}
+
 	private QuadratureZoneOptimizationMetric optimizationMetric (
+		final MonteCarloRun monteCarloRun,
 		final double[] leftBoundArray,
 		final double[] rightBoundArray)
 	{
-		double leftEdgeValue = Double.NaN;
-		double rightEdgeValue = Double.NaN;
-		int maximumSwingDimensionIndex = -1;
-		double maximumSwingMetric = Double.NEGATIVE_INFINITY;
-
-		RdToR1 integrand = _quadratureSetting.integrand();
+		int maximumSwingDimensionIndex = 0;
 
 		try {
-			leftEdgeValue = integrand.evaluate (leftBoundArray);
+			double maximumSwingMetric = inDimensionVarianceProxy (
+				monteCarloRun,
+				leftBoundArray,
+				rightBoundArray,
+				0
+			);
 
-			rightEdgeValue = integrand.evaluate (rightBoundArray);
-		} catch (Exception e) {
-			e.printStackTrace();
+			for (int dimensionIndex = 1;
+				dimensionIndex < _quadratureSetting.integrand().dimension();
+				++dimensionIndex)
+			{
+				double swingMetric = inDimensionVarianceProxy (
+					monteCarloRun,
+					leftBoundArray,
+					rightBoundArray,
+					dimensionIndex
+				);
 
-			return null;
-		}
-
-		for (int dimensionIndex = 0; dimensionIndex < integrand.dimension(); ++dimensionIndex) {
-			double midPointBound = 0.5 * (leftBoundArray[dimensionIndex] + rightBoundArray[dimensionIndex]);
-			double originalLeftBound = leftBoundArray[dimensionIndex];
-			leftBoundArray[dimensionIndex] = midPointBound;
-			double rightEdgeAdjustedValue = Double.NaN;
-			double leftEdgeAdjustedValue = Double.NaN;
-
-			try {
-				leftEdgeAdjustedValue = integrand.evaluate (leftBoundArray);
-			} catch (Exception e) {
-				e.printStackTrace();
-
-				return null;
+				if (swingMetric > maximumSwingMetric) {
+					maximumSwingMetric = swingMetric;
+					maximumSwingDimensionIndex = dimensionIndex;
+				}
 			}
 
-			leftBoundArray[dimensionIndex] = originalLeftBound;
-			double originalRightBound = rightBoundArray[dimensionIndex];
-			rightBoundArray[dimensionIndex] = midPointBound;
-
-			try {
-				rightEdgeAdjustedValue = integrand.evaluate (rightBoundArray);
-			} catch (Exception e) {
-				e.printStackTrace();
-
-				return null;
-			}
-
-			rightBoundArray[dimensionIndex] = originalRightBound;
-			double meanDimensionValue = 0.25 *
-				(leftEdgeValue + rightEdgeValue + leftEdgeAdjustedValue + rightEdgeAdjustedValue);
-			double adjustedRightEdgeGap = rightEdgeAdjustedValue - meanDimensionValue;
-			double adjustedLeftEdgeGap = leftEdgeAdjustedValue - meanDimensionValue;
-			double rightEdgeGap = rightEdgeValue - meanDimensionValue;
-			double leftEdgeGap = leftEdgeValue - meanDimensionValue;
-			double maximumSwingDimensionMetric = leftEdgeGap * leftEdgeGap + rightEdgeGap * rightEdgeGap +
-				adjustedLeftEdgeGap * adjustedLeftEdgeGap + adjustedRightEdgeGap * adjustedRightEdgeGap;
-
-			if (maximumSwingDimensionMetric > maximumSwingMetric) {
-				maximumSwingMetric = maximumSwingDimensionMetric;
-				maximumSwingDimensionIndex = dimensionIndex;
-			}
-		}
-
-		try {
 			return new QuadratureZoneOptimizationMetric (maximumSwingDimensionIndex, maximumSwingMetric);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -247,14 +376,18 @@ public class VarianceSamplingZoneExtractor
 	/**
 	 * Sub-divide the Variance Zones
 	 * 
+	 * @param monteCarloRun <i>MonteCarloRun</i> Stratified Sampling Run
+	 * 
 	 * @return Array of Divided Variance Zones
 	 */
 
-	public QuadratureZone[] subDivideVarianceZones()
+	public QuadratureZone[] subDivideVarianceZones (
+		final MonteCarloRun monteCarloRun)
 	{
 		QuadratureZone quadratureZone = _quadratureSetting.zone();
 
 		QuadratureZoneOptimizationMetric quadratureOptimizationMetric = optimizationMetric (
+			monteCarloRun,
 			quadratureZone.leftBoundArray(),
 			quadratureZone.rightBoundArray()
 		);
@@ -267,12 +400,14 @@ public class VarianceSamplingZoneExtractor
 	/**
 	 * Compute the List of Optimized Quadrature Zones
 	 * 
+	 * @param monteCarloRun <i>MonteCarloRun</i> Stratified Sampling Run
 	 * @param quadratureZoneList List of Input Quadrature Zones
 	 * 
 	 * @return List of Optimized Quadrature Zones
 	 */
 
 	public List<QuadratureZone> subDivideVarianceZones (
+		final MonteCarloRun monteCarloRun,
 		final List<QuadratureZone> quadratureZoneList)
 	{
 		if (null == quadratureZoneList || 0 == quadratureZoneList.size()) {
@@ -290,6 +425,7 @@ public class VarianceSamplingZoneExtractor
 		QuadratureZone quadratureZone = quadratureZoneList.get (0);
 
 		QuadratureZoneOptimizationMetric optimalQuadratureOptimizationMetric = optimizationMetric (
+			monteCarloRun,
 			quadratureZone.leftBoundArray(),
 			quadratureZone.rightBoundArray()
 		);
@@ -302,6 +438,7 @@ public class VarianceSamplingZoneExtractor
 			quadratureZone = quadratureZoneList.get (quadratureZoneIndex);
 
 			QuadratureZoneOptimizationMetric quadratureOptimizationMetric = optimizationMetric (
+				monteCarloRun,
 				quadratureZone.leftBoundArray(),
 				quadratureZone.rightBoundArray()
 			);
@@ -321,6 +458,7 @@ public class VarianceSamplingZoneExtractor
 
 			if (optimalQuadratureZoneIndex == quadratureZoneIndex) {
 				QuadratureZoneOptimizationMetric quadratureOptimizationMetric = optimizationMetric (
+					monteCarloRun,
 					originalQuadratureZone.leftBoundArray(),
 					originalQuadratureZone.rightBoundArray()
 				);
@@ -348,6 +486,39 @@ public class VarianceSamplingZoneExtractor
 		return subDividedQuadratureZoneList;
 	}
 
+	/**
+	 * Extract the List of "Optimal" Quadrature Zones
+	 * 
+	 * @param monteCarloRun <i>MonteCarloRun</i> Stratified Sampling Run
+	 * 
+	 * @return List of "Optimal" Quadrature Zones
+	 */
+
+	public List<QuadratureZone> optimalQuadratureZoneList (
+		final MonteCarloRun monteCarloRun)
+	{
+		List<QuadratureZone> optimalQuadratureZoneList = new ArrayList<QuadratureZone>();
+
+		int zoneIterationCount = _varianceSamplingSetting.zoneIterationCount();
+
+		optimalQuadratureZoneList.add (_quadratureSetting.zone());
+
+		while (0 <= --zoneIterationCount) {
+			List<QuadratureZone> augmentedQuadratureZoneList = subDivideVarianceZones (
+				monteCarloRun,
+				optimalQuadratureZoneList
+			);
+
+			if (null == augmentedQuadratureZoneList) {
+				return null;
+			}
+
+			optimalQuadratureZoneList = augmentedQuadratureZoneList;
+		}
+
+		return optimalQuadratureZoneList;
+	}
+
 	public static final void main (
 		final String[] argumentArray)
 		throws Exception
@@ -355,7 +526,8 @@ public class VarianceSamplingZoneExtractor
 		EnvManager.InitEnv ("");
 
 		int zoneIterationCount = 5;
-		int estimationPointCount = 100;
+		int inDimensionEstimationPointCount = 5;
+		int outOfDimensionEstimationPointCount = 5;
 
 		double[] leftBoundArray = new double[] {
 			0.,
@@ -386,19 +558,62 @@ public class VarianceSamplingZoneExtractor
 			}
 		};
 
+		QuadratureZone masterQuadratureZone = new QuadratureZone (leftBoundArray, rightBoundArray);
+
 		VarianceSamplingZoneExtractor varianceSamplingZoneExtractor = new VarianceSamplingZoneExtractor (
-			new QuadratureSetting (integrand, new QuadratureZone (leftBoundArray, rightBoundArray)),
-			new VarianceSamplingSetting (zoneIterationCount, estimationPointCount)
+			new QuadratureSetting (integrand, masterQuadratureZone),
+			new VarianceSamplingSetting (
+				zoneIterationCount,
+				inDimensionEstimationPointCount,
+				outOfDimensionEstimationPointCount
+			)
 		);
+
+		double masterVolume = masterQuadratureZone.integrandVolume();
+
+		List<QuadratureZone> quadratureZoneList = new ArrayList<QuadratureZone>();
+
+		quadratureZoneList.add (masterQuadratureZone);
+
+		List<QuadratureZone> augmentedQuadratureZoneList =
+			varianceSamplingZoneExtractor.subDivideVarianceZones (null, quadratureZoneList);
+
+		System.out.println (augmentedQuadratureZoneList.get (0));
+
+		System.out.println (augmentedQuadratureZoneList.get (1));
+
+		double[] integrandSampleArray = varianceSamplingZoneExtractor.inDimensionIntegrandSampleArray (
+			null,
+			leftBoundArray[1],
+			rightBoundArray[1],
+			1,
+			rightBoundArray
+		);
+
+		for (int i = 0; i < integrandSampleArray.length; ++i) {
+			System.out.println (integrandSampleArray[i]);
+		}
 
 		System.out.println (
-			varianceSamplingZoneExtractor.optimizationMetric (leftBoundArray, rightBoundArray)
+			"\t\t\t" + varianceSamplingZoneExtractor.inDimensionVarianceProxy (
+				null,
+				leftBoundArray,
+				rightBoundArray,
+				1
+			)
 		);
 
-		QuadratureZone[] spitQuadratureZoneArray = varianceSamplingZoneExtractor.subDivideVarianceZones();
+		List<QuadratureZone> optimalQuadratureZoneList =
+			varianceSamplingZoneExtractor.optimalQuadratureZoneList (null);
 
-		System.out.println (spitQuadratureZoneArray[0]);
+		System.out.println (optimalQuadratureZoneList);
 
-		System.out.println (spitQuadratureZoneArray[1]);
+		double quadratureVolumeSum = 0.;
+
+		for (QuadratureZone quadratureZone : optimalQuadratureZoneList) {
+			quadratureVolumeSum += quadratureZone.integrandVolume();
+		}
+
+		System.out.println ("\t\t" + masterVolume + " | " + quadratureVolumeSum);
 	}
 }
