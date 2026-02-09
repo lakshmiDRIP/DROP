@@ -4,9 +4,6 @@ package org.drip.numerical.rdintegration;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.drip.service.common.ArrayUtil;
-import org.drip.service.common.FormatUtil;
-
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
@@ -85,7 +82,8 @@ import org.drip.service.common.FormatUtil;
 
 /**
  * <i>MonteCarloRunStratifiedDiagnostics</i> holds the Results and Diagnostics of a R<sup>d</sup> To
- * 	R<sup>1</sup> Stratified Monte-Carlo Integration. The References are:
+ * 	R<sup>1</sup> Stratified Monte-Carlo Integration Run across Component Quadratures Zones. The References
+ * 	are:
  * 
  * <br><br>
  * 	<ul>
@@ -126,10 +124,8 @@ import org.drip.service.common.FormatUtil;
 public class MonteCarloRunStratifiedDiagnostics
 	extends MonteCarloRun
 {
-	private Map<String, Double> _rdToValueMap = null;
-	private Map<String, Double> _outOfDimensionAnchorMeanMap = null;
 	private Map<Integer, double[]> _integrandSampleArrayZoneMap = null;
-	private Map<String, Double> _outOfDimensionAnchorVarianceProxyMap = null;
+	private Map<String, MonteCarloRunManifoldDiagnostics> _manifoldMap = null;
 
 	/**
 	 * Empty MonteCarloRunStratifiedDiagnostics Constructor
@@ -137,13 +133,20 @@ public class MonteCarloRunStratifiedDiagnostics
 
 	public MonteCarloRunStratifiedDiagnostics()
 	{
-		_rdToValueMap = new HashMap<String, Double>();
-
-		_outOfDimensionAnchorMeanMap = new HashMap<String, Double>();
-
 		_integrandSampleArrayZoneMap = new HashMap<Integer, double[]>();
 
-		_outOfDimensionAnchorVarianceProxyMap = new HashMap<String, Double>();
+		_manifoldMap = new HashMap<String, MonteCarloRunManifoldDiagnostics>();
+	}
+
+	/**
+	 * Retrieve the Monte Carlo Run Manifold Diagnostics Map
+	 * 
+	 * @return Monte Carlo Run Manifold Diagnostics Map
+	 */
+
+	public Map<String, MonteCarloRunManifoldDiagnostics> manifoldMap()
+	{
+		return _manifoldMap;
 	}
 
 	/**
@@ -158,36 +161,38 @@ public class MonteCarloRunStratifiedDiagnostics
 	}
 
 	/**
-	 * Retrieve the R<sup>d</sup> Point to Value Map
+	 * Add the Manifold Diagnostics
 	 * 
-	 * @return R<sup>d</sup> Point to Value Map
+	 * @param monteCarloRunManifoldDiagnostics Manifold Diagnostics
+	 * 
+	 * @return TRUE - Manifold Diagnostics successfully added
 	 */
 
-	public Map<String, Double> rdToValueMap()
+	public boolean addManifold (
+		final MonteCarloRunManifoldDiagnostics monteCarloRunManifoldDiagnostics)
 	{
-		return _rdToValueMap;
+		if (null == monteCarloRunManifoldDiagnostics) {
+			return false;
+		}
+
+		_manifoldMap.put (monteCarloRunManifoldDiagnostics.manifoldName(), monteCarloRunManifoldDiagnostics);
+
+		return true;
 	}
 
 	/**
-	 * Retrieve the R<sup>d</sup> Point to Out-Of-Dimension Anchor Mean Map
+	 * Retrieve the Manifold Diagnostics corresponding to the Manifold Name
 	 * 
-	 * @return R<sup>d</sup> Point to Out-Of-Dimension Anchor Mean Map
+	 * @param manifoldName Manifold Name
+	 * 
+	 * @return The Manifold Diagnostics
 	 */
 
-	public Map<String, Double> outOfDimensionAnchorMeanMap()
+	public MonteCarloRunManifoldDiagnostics manifold (
+		final String manifoldName)
 	{
-		return _outOfDimensionAnchorMeanMap;
-	}
-
-	/**
-	 * Retrieve the R<sup>d</sup> Point to Out-Of-Dimension Anchor Variance Proxy Map
-	 * 
-	 * @return R<sup>d</sup> Point to Out-Of-Dimension Anchor Variance Proxy Map
-	 */
-
-	public Map<String, Double> outOfDimensionAnchorVarianceProxyMap()
-	{
-		return _outOfDimensionAnchorVarianceProxyMap;
+		return null == manifoldName || !_manifoldMap.containsKey (manifoldName) ?
+			null : _manifoldMap.get (manifoldName);
 	}
 
 	/**
@@ -208,70 +213,6 @@ public class MonteCarloRunStratifiedDiagnostics
 		}
 
 		_integrandSampleArrayZoneMap.put (zoneIndex, integrandSampleArray);
-
-		return true;
-	}
-
-	/**
-	 * Set the R<sup>d</sup> Point Value
-	 * 
-	 * @param rdArray R<sup>d</sup> Point
-	 * @param value Value
-	 * 
-	 * @return TRUE - R<sup>d</sup> Point Value successfully Set
-	 */
-
-	public boolean setRdValue (
-		final double[] rdArray,
-		final double value)
-	{
-		if (null == rdArray || 0 == rdArray.length) {
-			return false;
-		}
-
-		_rdToValueMap.put (FormatUtil.FormatRd (rdArray, 0, 4, 1., ","), value);
-
-		return true;
-	}
-
-	/**
-	 * Set the Out-Of-Dimension Anchor Variance Proxy
-	 * 
-	 * @param rdArray R<sup>d</sup> Point
-	 * @param inDimensionIndex In-dimension Index
-	 * @param outOfDimensionAnchorMean Out-Of-Dimension Anchor Mean
-	 * @param outOfDimensionAnchorVarianceProxy Out-Of-Dimension Anchor Variance Proxy
-	 * 
-	 * @return TRUE - Out-Of-Dimension Anchor Variance Proxy successfully Set
-	 */
-
-	public boolean setOutOfDimensionAnchorMeanAndVarianceProxy (
-		final double[] rdArray,
-		final int inDimensionIndex,
-		final double outOfDimensionAnchorMean,
-		final double outOfDimensionAnchorVarianceProxy)
-	{
-		if (null == rdArray || 0 == rdArray.length) {
-			return false;
-		}
-
-		double[] rdOutOfDimensionAnchor = ArrayUtil.Duplicate (rdArray);
-
-		if (null == rdOutOfDimensionAnchor) {
-			return false;
-		}
-
-		rdOutOfDimensionAnchor[inDimensionIndex] = Double.NaN;
-
-		String outOfDimensionAnchorKey =
-			FormatUtil.FormatRd (rdArray, 0, 4, 1., ",") + "::" + inDimensionIndex;
-
-		_outOfDimensionAnchorMeanMap.put (outOfDimensionAnchorKey, outOfDimensionAnchorMean);
-
-		_outOfDimensionAnchorVarianceProxyMap.put (
-			outOfDimensionAnchorKey,
-			outOfDimensionAnchorVarianceProxy
-		);
 
 		return true;
 	}

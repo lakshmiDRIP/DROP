@@ -256,7 +256,7 @@ public class FormatUtil
 
 		for (int i = 0; i < rdArray.length; ++i) {
 			if (0 != i) {
-				formattedRd += delimiter + " ";
+				formattedRd += delimiter;
 			}
 
 			formattedRd += FormatDouble (

@@ -1,7 +1,14 @@
 
-package org.drip.numerical.rdintegration;
+package org.drip.sample.mcintegral;
 
-import org.drip.numerical.common.NumberUtil;
+import org.drip.function.definition.RdToR1;
+import org.drip.numerical.rdintegration.MonteCarloRun;
+import org.drip.numerical.rdintegration.QuadratureSetting;
+import org.drip.numerical.rdintegration.QuadratureZone;
+import org.drip.numerical.rdintegration.RecursiveStratifiedSamplingIntegrator;
+import org.drip.numerical.rdintegration.VarianceSamplingSetting;
+import org.drip.service.common.FormatUtil;
+import org.drip.service.env.EnvManager;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -80,8 +87,8 @@ import org.drip.numerical.common.NumberUtil;
  */
 
 /**
- * <i>QuadratureZoneOptimizationMetric</i> holds the Optimization Metric of a Quadrature Zone corresponding
- *  to an Integration of R<sup>d</sup> To R<sup>1</sup> Objective Function. The References are:
+ * <i>StratifiedSamplingAsymptotics</i> illustrates the Asymptotics of Stratified Sampling Monte-Carlo
+ *  Integration of R<sup>d</sup> to R<sup>1</sup> Objective Function. The References are:
  * 
  * <br><br>
  * 	<ul>
@@ -111,59 +118,116 @@ import org.drip.numerical.common.NumberUtil;
  *  <ul>
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md">Numerical Analysis Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/numerical/README.md">Numerical Quadrature, Differentiation, Eigenization, Linear Algebra, and Utilities</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/numerical/rdintegration/README.md">R<sup>d</sup> to R<sup>1</sup> Numerical Integration Schemes</a></li>
+ *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/README.md">DROP API Construction and Usage</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/mcintegral/README.md">R<sup>d</sup> to R<sup>1</sup> Numerical Monte-Carlo Integration</a></li>
  *  </ul>
  * <br><br>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class QuadratureZoneOptimizationMetric
+public class StratifiedSamplingAsymptotics
 {
-	private double _varianceProxy = Double.NaN;
-	private int _maximumSwingDimensionIndex = -1;
 
 	/**
-	 * QuadratureZoneOptimizationMetric Constructor
+	 * Entry Point
 	 * 
-	 * @param maximumSwingDimensionIndex Maximum Swing Dimension Index
-	 * @param varianceProxy Variance Proxy
+	 * @param argumentArray Command Line Argument Array
 	 * 
-	 * @throws Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown on Error/Exception Situation
 	 */
 
-	public QuadratureZoneOptimizationMetric (
-		final int maximumSwingDimensionIndex,
-		final double varianceProxy)
+	public static final void main (
+		final String[] argumentArray)
 		throws Exception
 	{
-		if (-1 >= (_maximumSwingDimensionIndex = maximumSwingDimensionIndex) ||
-			!NumberUtil.IsValid (_varianceProxy = varianceProxy))
+		EnvManager.InitEnv ("");
+
+		int zoneIterationCount = 5;
+		int inDimensionEstimationPointCount = 5;
+		int outOfDimensionEstimationPointCount = 5;
+
+		double[] leftBoundArray = new double[] {
+			0.,
+			0.,
+			0.
+		};
+
+		double[] rightBoundArray = new double[] {
+			1.,
+			9.,
+			4.
+		};
+
+		RdToR1 integrand = new RdToR1 (null)
 		{
-			throw new Exception ("QuadratureZoneOptimizationMetric Constructor => Invalid Inputs");
+			@Override public int dimension()
+			{
+				return 3;
+			}
+
+			@Override public double evaluate (
+				final double[] variateArray)
+				throws Exception
+			{
+				return variateArray[0] *
+					variateArray[1] * variateArray[1] * variateArray[1] *
+					variateArray[2] * variateArray[2];
+			}
+		};
+
+		int[] samplingPointCountArray = {
+			100,
+			1000,
+			10000,
+			100000,
+			1000000
+		};
+
+		QuadratureSetting quadratureSetting = new QuadratureSetting (
+			integrand,
+			new QuadratureZone (leftBoundArray, rightBoundArray)
+		);
+
+		VarianceSamplingSetting varianceSamplingSetting = new VarianceSamplingSetting (
+			zoneIterationCount,
+			inDimensionEstimationPointCount,
+			outOfDimensionEstimationPointCount
+		);
+
+		System.out.println ("\t|-----------------------------||");
+
+		System.out.println ("\t| STRATIFIED SAMPLE ASYMPTOTE ||");
+
+		System.out.println ("\t|-----------------------------||");
+
+		System.out.println ("\t| L -> R:                     ||");
+
+		System.out.println ("\t|   - Sample Size             ||");
+
+		System.out.println ("\t|   - Integrand Value         ||");
+
+		System.out.println ("\t|   - Integrand Error         ||");
+
+		System.out.println ("\t|-----------------------------||");
+
+		for (int samplingPointCount : samplingPointCountArray) {
+			MonteCarloRun monteCarloRun = new RecursiveStratifiedSamplingIntegrator (
+				quadratureSetting,
+				varianceSamplingSetting,
+				samplingPointCount,
+				false
+			).quadratureRun();
+
+			System.out.println (
+				"\t|" + FormatUtil.FormatDouble (samplingPointCount, 7, 0, 1.) + " =>" +
+					FormatUtil.FormatDouble (monteCarloRun.quadratureValue(), 5, 1, 1.) + " |" +
+					FormatUtil.FormatDouble (monteCarloRun.quadratureErrorPercent(), 2, 2, 100) + "% ||"
+			);
 		}
-	}
 
-	/**
-	 * Retrieve the Maximum Swing Dimension Index
-	 * 
-	 * @return Maximum Swing Dimension Index
-	 */
+		System.out.println ("\t|-----------------------------||");
 
-	public int maximumSwingDimensionIndex()
-	{
-		return _maximumSwingDimensionIndex;
-	}
-
-	/**
-	 * Retrieve the Variance Proxy
-	 * 
-	 * @return Variance Proxy
-	 */
-
-	public double varianceProxy()
-	{
-		return _varianceProxy;
+		EnvManager.TerminateEnv();
 	}
 }

@@ -329,4 +329,15 @@ public class MonteCarloRun
 	{
 		return Math.sqrt (quadratureVariance());
 	}
+
+	/**
+	 * Retrieve the Quadrature Error Percent
+	 * 
+	 * @return Quadrature Error Percent
+	 */
+
+	public double quadratureErrorPercent()
+	{
+		return Math.sqrt (quadratureVariance()) / (_integrandVolume * _integrandMean);
+	}
 }
