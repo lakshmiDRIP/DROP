@@ -2,9 +2,10 @@
 package org.drip.sample.mcintegral;
 
 import org.drip.function.definition.RdToR1;
+import org.drip.measure.distribution.RdContinuousUniform;
 import org.drip.numerical.rdintegration.MonteCarloRun;
 import org.drip.numerical.rdintegration.QuadratureSetting;
-import org.drip.numerical.rdintegration.QuadratureZone;
+import org.drip.numerical.rdintegration.RectangularManifold;
 import org.drip.numerical.rdintegration.RecursiveStratifiedSamplingIntegrator;
 import org.drip.numerical.rdintegration.VarianceSamplingSetting;
 import org.drip.service.common.FormatUtil;
@@ -186,13 +187,16 @@ public class StratifiedSamplingAsymptotics
 
 		QuadratureSetting quadratureSetting = new QuadratureSetting (
 			integrand,
-			new QuadratureZone (leftBoundArray, rightBoundArray)
+			new RectangularManifold (leftBoundArray, rightBoundArray)
 		);
+
+		RdContinuousUniform rdContinuousUniform = new RdContinuousUniform (leftBoundArray, rightBoundArray);
 
 		VarianceSamplingSetting varianceSamplingSetting = new VarianceSamplingSetting (
 			zoneIterationCount,
 			inDimensionEstimationPointCount,
-			outOfDimensionEstimationPointCount
+			outOfDimensionEstimationPointCount,
+			VarianceSamplingSetting.EQUI_QUADRATURE_ZONE_SAMPLING
 		);
 
 		System.out.println ("\t|-----------------------------||");
@@ -216,6 +220,7 @@ public class StratifiedSamplingAsymptotics
 				quadratureSetting,
 				varianceSamplingSetting,
 				samplingPointCount,
+				rdContinuousUniform,
 				false
 			).quadratureRun();
 

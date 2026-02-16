@@ -94,10 +94,13 @@ package org.drip.measure.distribution;
  * 	following Functionality:
  *
  *  <ul>
+ * 		<li>Lay out the Support of the PDF Range</li>
  * 		<li>Retrieve the State Dimension</li>
  * 		<li>Compute the Cumulative under the Distribution to the given Variate Array</li>
  * 		<li>Compute the Incremental under the Distribution between the 2 Variate Arrays</li>
  * 		<li>Compute the Density under the Distribution at the given Variate Array</li>
+ * 		<li>Generate a Random Variable corresponding to the Distribution</li>
+ * 		<li>Indicate if the Variate Array is inside the Supported Range</li>
  *  </ul>
  *
  *	<br>
@@ -116,12 +119,20 @@ public abstract class RdContinuous
 {
 
 	/**
-	 * Retrieve the State Dimension
+	 * Lay out the Left Support of the PDF Range
 	 * 
-	 * @return The State Dimension
+	 * @return Left Support of the PDF Range
 	 */
 
-	public abstract int dimension();
+	public abstract double[] leftSupport();
+
+	/**
+	 * Lay out the Right Support of the PDF Range
+	 * 
+	 * @return Right Support of the PDF Range
+	 */
+
+	public abstract double[] rightSupport();
 
 	/**
 	 * Compute the Cumulative under the Distribution to the given Variate Array
@@ -166,4 +177,54 @@ public abstract class RdContinuous
 	public abstract double density (
 		final double[] xArray)
 		throws Exception;
+
+	/**
+	 * Generate a Random Variable corresponding to the Distribution
+	 * 
+	 * @return Random Variable corresponding to the Distribution
+	 */
+
+	public abstract double[] random();
+
+	/**
+	 * Retrieve the State Dimension
+	 * 
+	 * @return The State Dimension
+	 */
+
+	public int dimension()
+	{
+		return rightSupport().length;
+	}
+
+	/**
+	 * Indicate if the Variate Array is inside the Supported Range
+	 * 
+	 * @param variateArray Variate Array
+	 * 
+	 * @return TRUE - Variate Array is inside of the Supported Range
+	 */
+
+	public boolean supported (
+		final double[] variateArray)
+	{
+		if (null == variateArray || variateArray.length != dimension()) {
+			return false;
+		}
+
+		double[] leftSupportArray = leftSupport();
+
+		double[] rightSupportArray = rightSupport();
+
+		for (int dimensionIndex = 0; dimensionIndex < dimension(); ++dimensionIndex) {
+			if (Double.isNaN (variateArray[dimensionIndex]) ||
+				leftSupportArray[dimensionIndex] > variateArray[dimensionIndex] ||
+				variateArray[dimensionIndex] > rightSupportArray[dimensionIndex])
+			{
+				return false;
+			}
+		}
+
+		return true;
+	}
 }

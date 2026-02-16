@@ -5,10 +5,11 @@ import java.util.Map;
 import java.util.Set;
 
 import org.drip.function.definition.RdToR1;
+import org.drip.measure.distribution.RdContinuousUniform;
 import org.drip.numerical.rdintegration.MonteCarloRunManifoldDiagnostics;
 import org.drip.numerical.rdintegration.MonteCarloRunStratifiedDiagnostics;
 import org.drip.numerical.rdintegration.QuadratureSetting;
-import org.drip.numerical.rdintegration.QuadratureZone;
+import org.drip.numerical.rdintegration.RectangularManifold;
 import org.drip.numerical.rdintegration.RecursiveStratifiedSamplingIntegrator;
 import org.drip.numerical.rdintegration.VarianceSamplingSetting;
 import org.drip.service.common.FormatUtil;
@@ -181,7 +182,7 @@ public class StratifiedSamplingIntegration
 			}
 		};
 
-		QuadratureZone masterQuadratureZone = new QuadratureZone (leftBoundArray, rightBoundArray);
+		RectangularManifold masterQuadratureZone = new RectangularManifold (leftBoundArray, rightBoundArray);
 
 		RecursiveStratifiedSamplingIntegrator recursiveStratifiedSamplingIntegrator =
 			new RecursiveStratifiedSamplingIntegrator (
@@ -189,9 +190,11 @@ public class StratifiedSamplingIntegration
 				new VarianceSamplingSetting (
 					zoneIterationCount,
 					inDimensionEstimationPointCount,
-					outOfDimensionEstimationPointCount
+					outOfDimensionEstimationPointCount,
+					VarianceSamplingSetting.EQUI_QUADRATURE_ZONE_SAMPLING
 				),
 				samplingPointCount,
+				new RdContinuousUniform (leftBoundArray, rightBoundArray),
 				true
 			);
 
@@ -224,7 +227,7 @@ public class StratifiedSamplingIntegration
 
 		System.out.println (
 			"\t| Unbiased Integrand Variance => " + FormatUtil.FormatDouble (
-				stratifiedSamplingRunDiagnostics.integrandVolume(),
+				stratifiedSamplingRunDiagnostics.unbiasedIntegrandVariance(),
 				1,
 				4,
 				1.

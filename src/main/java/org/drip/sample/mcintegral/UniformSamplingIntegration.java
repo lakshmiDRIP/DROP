@@ -2,8 +2,9 @@
 package org.drip.sample.mcintegral;
 
 import org.drip.function.definition.RdToR1;
+import org.drip.measure.distribution.RdContinuousUniform;
 import org.drip.numerical.rdintegration.QuadratureSetting;
-import org.drip.numerical.rdintegration.QuadratureZone;
+import org.drip.numerical.rdintegration.RectangularManifold;
 import org.drip.numerical.rdintegration.MonteCarloRunUniformDiagnostics;
 import org.drip.numerical.rdintegration.UniformSamplingIntegrator;
 import org.drip.service.common.FormatUtil;
@@ -192,8 +193,9 @@ public class UniformSamplingIntegration
 		System.out.println ("\t|----------------------------------------------------|");
 
 		UniformSamplingIntegrator uniformSamplingIntegrator = new UniformSamplingIntegrator (
-			new QuadratureSetting (integrand, new QuadratureZone (leftBoundArray, rightBoundArray)),
+			new QuadratureSetting (integrand, new RectangularManifold (leftBoundArray, rightBoundArray)),
 			samplingPointCount,
+			new RdContinuousUniform (leftBoundArray, rightBoundArray),
 			true
 		);
 

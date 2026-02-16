@@ -119,7 +119,21 @@ package org.drip.numerical.rdintegration;
 
 public class VarianceSamplingSetting
 {
+
+	/**
+	 * Equal Quadrature Zone Sampling
+	 */
+
+	public static final int EQUI_QUADRATURE_ZONE_SAMPLING = 1;
+
+	/**
+	 * MISER Quadrature Zone Sampling
+	 */
+
+	public static final int MISER_QUADRATURE_ZONE_SAMPLING = 2;
+
 	private int _zoneIterationCount = 0;
+	private int _quadratureZoneSamplingScheme = -1;
 	private int _inDimensionEstimationPointCount = 0;
 	private int _outOfDimensionEstimationPointCount = 0;
 
@@ -129,6 +143,7 @@ public class VarianceSamplingSetting
 	 * @param zoneIterationCount Count of Variance Iteration Zones
 	 * @param inDimensionEstimationPointCount Count of In-dimension Variance Sampling Estimate Points
 	 * @param outOfDimensionEstimationPointCount Count of Out-of-dimension Variance Sampling Estimate Points
+	 * @param quadratureZoneSamplingScheme Quadrature Zone Sampling Scheme
 	 * 
 	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
@@ -136,12 +151,14 @@ public class VarianceSamplingSetting
 	public VarianceSamplingSetting (
 		final int zoneIterationCount,
 		final int inDimensionEstimationPointCount,
-		final int outOfDimensionEstimationPointCount)
+		final int outOfDimensionEstimationPointCount,
+		final int quadratureZoneSamplingScheme)
 		throws Exception
 	{
 		if (0 >= (_zoneIterationCount = zoneIterationCount) ||
 			1 >= (_inDimensionEstimationPointCount = inDimensionEstimationPointCount) ||
-			1 >= (_outOfDimensionEstimationPointCount = outOfDimensionEstimationPointCount))
+			1 >= (_outOfDimensionEstimationPointCount = outOfDimensionEstimationPointCount) ||
+			0 >= (_quadratureZoneSamplingScheme = quadratureZoneSamplingScheme))
 		{
 			throw new Exception ("VarianceSamplingSetting Constructor => Invalid Inputs");
 		}
@@ -178,5 +195,16 @@ public class VarianceSamplingSetting
 	public int outOfDimensionEstimationPointCount()
 	{
 		return _outOfDimensionEstimationPointCount;
+	}
+
+	/**
+	 * Retrieve the Quadrature Zone Sampling Scheme
+	 * 
+	 * @return Quadrature Zone Sampling Scheme
+	 */
+
+	public int quadratureZoneSamplingScheme()
+	{
+		return _quadratureZoneSamplingScheme;
 	}
 }

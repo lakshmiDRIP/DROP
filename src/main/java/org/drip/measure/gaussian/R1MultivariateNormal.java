@@ -4,6 +4,7 @@ package org.drip.measure.gaussian;
 import org.drip.measure.state.LabelledRdContinuousDistribution;
 import org.drip.measure.state.LabelledRd;
 import org.drip.numerical.common.NumberUtil;
+import org.drip.numerical.linearalgebra.R1MatrixUtil;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -103,6 +104,7 @@ import org.drip.numerical.common.NumberUtil;
  * 		<li>Compute the Density under the Distribution at the given Variate Array</li>
  * 		<li>Compute the Mean of the Distribution</li>
  * 		<li>Compute the Variance of the Distribution</li>
+ * 		<li>Generate a Random Variable corresponding to the Distribution</li>
  *  </ul>
  *
  *	<br>
@@ -219,6 +221,40 @@ public class R1MultivariateNormal
 	}
 
 	/**
+	 * Lay out the Left Support of the PDF Range
+	 * 
+	 * @return Left Support of the PDF Range
+	 */
+
+	@Override public double[] leftSupport()
+	{
+		double[] leftSupportArray = new double[dimension()];
+
+		for (int dimensionIndex = 0; dimensionIndex < leftSupportArray.length; ++dimensionIndex) {
+			leftSupportArray[dimensionIndex] = Double.NEGATIVE_INFINITY;
+		}
+
+		return leftSupportArray;
+	}
+
+	/**
+	 * Lay out the Right Support of the PDF Range
+	 * 
+	 * @return Right Support of the PDF Range
+	 */
+
+	@Override public double[] rightSupport()
+	{
+		double[] rightSupportArray = new double[dimension()];
+
+		for (int dimensionIndex = 0; dimensionIndex < rightSupportArray.length; ++dimensionIndex) {
+			rightSupportArray[dimensionIndex] = Double.POSITIVE_INFINITY;
+		}
+
+		return rightSupportArray;
+	}
+
+	/**
 	 * Compute the Density under the Distribution at the given Variate Array
 	 * 
 	 * @param variateArray Variate Array at which the Density needs to be computed
@@ -280,5 +316,46 @@ public class R1MultivariateNormal
 	@Override public double[] variance()
 	{
 		return _jointVariance.varianceArray();
+	}
+
+	/**
+	 * Generate a Random Variable corresponding to the Distribution
+	 * 
+	 * @return Random Variable corresponding to the Distribution
+	 */
+
+	@Override public double[] random()
+	{
+		int dimension = dimension();
+
+		double[] jointVarianceArray = _jointVariance.varianceArray();
+
+		double[] uncorrelatedRandomArray = R1UnivariateNormal.Standard().randomArray (dimension);
+
+		double[][] choleskyMatrix = R1MatrixUtil.CholeskyBanachiewiczFactorization
+			(_jointVariance.correlationMatrix());
+
+		if (null == choleskyMatrix) {
+			return null;
+		}
+
+		double[] correlatedRandomArray = new double[dimension];
+
+		for (int dimensionI = 0; dimensionI < dimension; ++dimensionI) {
+			correlatedRandomArray[dimensionI] = 0.;
+
+			for (int dimensionJ = 0; dimensionJ < dimension; ++dimensionJ) {
+				correlatedRandomArray[dimensionI] +=
+					choleskyMatrix[dimensionI][dimensionJ] * uncorrelatedRandomArray[dimensionJ];
+			}
+		}
+
+		for (int dimensionIndex = 0; dimensionIndex < dimension; ++dimensionIndex) {
+			correlatedRandomArray[dimensionIndex] =
+				correlatedRandomArray[dimensionIndex] * _meanArray[dimensionIndex] +
+				jointVarianceArray[dimensionIndex];
+		}
+
+		return correlatedRandomArray;
 	}
 }

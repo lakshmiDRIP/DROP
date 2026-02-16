@@ -1,6 +1,8 @@
 
 package org.drip.numerical.rdintegration;
 
+import org.drip.measure.distribution.RdContinuous;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
@@ -121,6 +123,7 @@ public abstract class MonteCarloIntegrator
 {
 	private int _samplingPointCount = 0;
 	private boolean _diagnosticsOn = false;
+	private RdContinuous _rdContinuous = null;
 	private QuadratureSetting _integratorSetting = null;
 
 	/**
@@ -128,6 +131,7 @@ public abstract class MonteCarloIntegrator
 	 * 
 	 * @param integratorSetting Underlying <i>RdToR1IntegratorSetting</i> Instance
 	 * @param samplingPointCount Sampling Points Count
+	 * @param rdContinuous Underlying R<sup>d</sup> Continuous Distribution
 	 * @param diagnosticsOn TRUE - Diagnostics are turned on
 	 * 
 	 * @throws Exception Thrown if the Inputs are Invalid
@@ -136,11 +140,13 @@ public abstract class MonteCarloIntegrator
 	public MonteCarloIntegrator (
 		final QuadratureSetting integratorSetting,
 		final int samplingPointCount,
+		final RdContinuous rdContinuous,
 		final boolean diagnosticsOn)
 		throws Exception
 	{
 		if (null == (_integratorSetting = integratorSetting) ||
-			0 >= (_samplingPointCount = samplingPointCount))
+			1 >= (_samplingPointCount = samplingPointCount) ||
+			null == (_rdContinuous = rdContinuous))
 		{
 			throw new Exception ("MonteCarloIntegrator Constructor => Invalid Inputs");
 		}
@@ -168,6 +174,17 @@ public abstract class MonteCarloIntegrator
 	public int samplingPointCount()
 	{
 		return _samplingPointCount;
+	}
+
+	/**
+	 * Retrieve the Underlying R<sup>d</sup> Distribution
+	 * 
+	 * @return Underlying R<sup>d</sup> Distribution
+	 */
+
+	public RdContinuous rdContinuous()
+	{
+		return _rdContinuous;
 	}
 
 	/**

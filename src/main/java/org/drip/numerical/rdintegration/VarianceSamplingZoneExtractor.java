@@ -3,8 +3,10 @@ package org.drip.numerical.rdintegration;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.drip.function.definition.RdToR1;
+import org.drip.measure.distribution.RdContinuous;
 import org.drip.service.common.ArrayUtil;
 
 /*
@@ -229,57 +231,42 @@ public class VarianceSamplingZoneExtractor
 			}
 		}
 
-		return outOfDimensionAnchorVariance;
+		return outOfDimensionAnchorVariance / inDimensionIntegrandSampleArray.length;
 	}
 
 	private double inDimensionVarianceProxy (
 		final MonteCarloRunManifoldDiagnostics monteCarloRunManifoldDiagnostics,
+		final BoundedManifold boundedManifold,
+		final RdContinuous rdContinuous,
 		final double inDimensionLeftBound,
 		final double inDimensionRightBound,
 		final int inDimensionIndex)
 		throws Exception
 	{
-		QuadratureZone zone = _quadratureSetting.zone();
-
 		int outOfDimensionEstimationPointCount =
 			_varianceSamplingSetting.outOfDimensionEstimationPointCount();
-
-		double[] variateGapArray = new double[_quadratureSetting.integrand().dimension()];
-
-		double[] zonalRightEdgeArray = zone.rightBoundArray();
-
-		double[] zonalLeftEdgeArray = zone.leftBoundArray();
-
-		for (int dimensionIndex = 0; dimensionIndex < variateGapArray.length; ++dimensionIndex) {
-			variateGapArray[dimensionIndex] = (
-				zonalRightEdgeArray[dimensionIndex] - zonalLeftEdgeArray[dimensionIndex]
-			) / outOfDimensionEstimationPointCount;
-		}
-
-		double[] variateArray = ArrayUtil.Duplicate (zonalLeftEdgeArray);
 
 		double inDimensionVarianceProxy = outOfDimensionAnchorVariance (
 			monteCarloRunManifoldDiagnostics,
 			inDimensionLeftBound,
 			inDimensionRightBound,
 			inDimensionIndex,
-			variateArray
+			boundedManifold.randomRd (UniformSamplingIntegrator.VALID_BOUNDED_VARIATE_TRIAL, rdContinuous)
 		);
 
 		for (int outOfDimensionIndex = 1;
 			outOfDimensionIndex <= outOfDimensionEstimationPointCount;
 			++outOfDimensionIndex)
 		{
-			for (int dimensionIndex = 0; dimensionIndex < variateGapArray.length; ++dimensionIndex) {
-				variateArray[dimensionIndex] += variateGapArray[dimensionIndex];
-			}
-
 			inDimensionVarianceProxy += outOfDimensionAnchorVariance (
 				monteCarloRunManifoldDiagnostics,
 				inDimensionLeftBound,
 				inDimensionRightBound,
 				inDimensionIndex,
-				variateArray
+				boundedManifold.randomRd (
+					UniformSamplingIntegrator.VALID_BOUNDED_VARIATE_TRIAL,
+					rdContinuous
+				)
 			);
 		}
 
@@ -300,29 +287,39 @@ public class VarianceSamplingZoneExtractor
 
 	private QuadratureZoneDecomposerMetric quadratureZoneDecomposerMetric (
 		final MonteCarloRunManifoldDiagnostics monteCarloRunManifoldDiagnostics,
-		final double[] leftBoundArray,
-		final double[] rightBoundArray)
+		final BoundedManifold boundedManifold,
+		final RdContinuous rdContinuous)
 	{
+		double grossVarianceProxy = 0.;
 		int peakVarianceProxyDimension = 0;
+
+		double[] leftBoundArray = boundedManifold.leftCartesianBoundArray();
+
+		double[] rightBoundArray = boundedManifold.rightCartesianBoundArray();
 
 		try {
 			double peakVarianceProxy = inDimensionVarianceProxy (
 				monteCarloRunManifoldDiagnostics,
+				boundedManifold,
+				rdContinuous,
 				leftBoundArray[0],
 				rightBoundArray[0],
 				0
 			);
 
-			for (int dimensionIndex = 1;
-				dimensionIndex < _quadratureSetting.integrand().dimension();
-				++dimensionIndex)
-			{
+			grossVarianceProxy += peakVarianceProxy;
+
+			for (int dimensionIndex = 1; dimensionIndex < leftBoundArray.length; ++dimensionIndex) {
 				double inDimensionVarianceProxy = inDimensionVarianceProxy (
 					monteCarloRunManifoldDiagnostics,
+					boundedManifold,
+					rdContinuous,
 					leftBoundArray[dimensionIndex],
 					rightBoundArray[dimensionIndex],
 					dimensionIndex
 				);
+
+				grossVarianceProxy += inDimensionVarianceProxy;
 
 				if (inDimensionVarianceProxy > peakVarianceProxy) {
 					peakVarianceProxy = inDimensionVarianceProxy;
@@ -331,7 +328,11 @@ public class VarianceSamplingZoneExtractor
 			}
 
 			QuadratureZoneDecomposerMetric quadratureZoneDecomposerMetric =
-				new QuadratureZoneDecomposerMetric (peakVarianceProxyDimension, peakVarianceProxy);
+				new QuadratureZoneDecomposerMetric (
+					peakVarianceProxyDimension,
+					peakVarianceProxy,
+					grossVarianceProxy
+				);
 
 			if (null != monteCarloRunManifoldDiagnostics) {
 				if (!monteCarloRunManifoldDiagnostics.setQuadratureZoneDecomposerMetric (
@@ -397,14 +398,18 @@ public class VarianceSamplingZoneExtractor
 	 * Compute the List of Optimized Quadrature Zones
 	 * 
 	 * @param monteCarloRunStratifiedDiagnostics <i>MonteCarloRun</i> Stratified Diagnostics
+	 * @param quadratureZoneDecomposerMetricMap Map of Quadrature Zone Decomposer Metrics
 	 * @param quadratureZoneList List of Input Quadrature Zones
+	 * @param rdContinuous Sampling R<sup>d</sup> Continuous Distribution
 	 * 
 	 * @return List of Optimized Quadrature Zones
 	 */
 
-	public List<QuadratureZone> subDivideVarianceZones (
+	public List<BoundedManifold> subDivideVarianceZones (
 		final MonteCarloRunStratifiedDiagnostics monteCarloRunStratifiedDiagnostics,
-		final List<QuadratureZone> quadratureZoneList)
+		final Map<String, QuadratureZoneDecomposerMetric> quadratureZoneDecomposerMetricMap,
+		final List<BoundedManifold> quadratureZoneList,
+		final RdContinuous rdContinuous)
 	{
 		if (null == quadratureZoneList || 0 == quadratureZoneList.size()) {
 			return null;
@@ -418,14 +423,17 @@ public class VarianceSamplingZoneExtractor
 
 		int optimalQuadratureZoneIndex = 0;
 		MonteCarloRunManifoldDiagnostics monteCarloRunSubManifoldDiagnostics = null;
+		QuadratureZoneDecomposerMetric optimalQuadratureZoneDecomposerMetric = null;
 
-		QuadratureZone quadratureZone = quadratureZoneList.get (0);
+		BoundedManifold quadratureZone = quadratureZoneList.get (0);
+
+		String quadratureZoneName = quadratureZone.toString();
 
 		if (null != monteCarloRunStratifiedDiagnostics) {
 			try {
 				if (!monteCarloRunStratifiedDiagnostics.addManifold (
 					monteCarloRunSubManifoldDiagnostics =
-						new MonteCarloRunManifoldDiagnostics (quadratureZone.toString())
+						new MonteCarloRunManifoldDiagnostics (quadratureZoneName)
 				))
 				{
 					return null;
@@ -437,27 +445,38 @@ public class VarianceSamplingZoneExtractor
 			}
 		}
 
-		QuadratureZoneDecomposerMetric optimalQuadratureZoneDecomposerMetric =
-			quadratureZoneDecomposerMetric (
+		if (quadratureZoneDecomposerMetricMap.containsKey (quadratureZoneName)) {
+			optimalQuadratureZoneDecomposerMetric =
+				quadratureZoneDecomposerMetricMap.get (quadratureZoneName);
+		} else {
+			QuadratureZoneDecomposerMetric quadratureZoneDecomposerMetric = quadratureZoneDecomposerMetric (
 				monteCarloRunSubManifoldDiagnostics,
-				quadratureZone.leftBoundArray(),
-				quadratureZone.rightBoundArray()
+				quadratureZone,
+				rdContinuous
 			);
 
-		if (null == optimalQuadratureZoneDecomposerMetric) {
-			return null;
+			if (null == quadratureZoneDecomposerMetric) {
+				return null;
+			}
+
+			quadratureZoneDecomposerMetricMap.put (quadratureZoneName, quadratureZoneDecomposerMetric);
+
+			optimalQuadratureZoneDecomposerMetric = quadratureZoneDecomposerMetric;
 		}
 
 		for (int quadratureZoneIndex = 1; quadratureZoneIndex < quadratureZoneSize; ++quadratureZoneIndex) {
 			monteCarloRunSubManifoldDiagnostics = null;
+			QuadratureZoneDecomposerMetric quadratureZoneDecomposerMetric = null;
 
 			quadratureZone = quadratureZoneList.get (quadratureZoneIndex);
+
+			quadratureZoneName = quadratureZone.toString();
 
 			if (null != monteCarloRunStratifiedDiagnostics) {
 				try {
 					if (!monteCarloRunStratifiedDiagnostics.addManifold (
 						monteCarloRunSubManifoldDiagnostics =
-							new MonteCarloRunManifoldDiagnostics (quadratureZone.toString())
+							new MonteCarloRunManifoldDiagnostics (quadratureZoneName)
 					))
 					{
 						return null;
@@ -469,27 +488,38 @@ public class VarianceSamplingZoneExtractor
 				}
 			}
 
-			QuadratureZoneDecomposerMetric quadratureOptimizationMetric = quadratureZoneDecomposerMetric (
-				monteCarloRunSubManifoldDiagnostics,
-				quadratureZone.leftBoundArray(),
-				quadratureZone.rightBoundArray()
-			);
+			if (quadratureZoneDecomposerMetricMap.containsKey (quadratureZoneName)) {
+				quadratureZoneDecomposerMetric =
+					quadratureZoneDecomposerMetricMap.get (quadratureZoneName);
+			} else {
+				quadratureZoneDecomposerMetric = quadratureZoneDecomposerMetric (
+					monteCarloRunSubManifoldDiagnostics,
+					quadratureZone,
+					rdContinuous
+				);
 
-			if (quadratureOptimizationMetric.peakVarianceProxy() >
+				if (null == quadratureZoneDecomposerMetric) {
+					return null;
+				}
+
+				quadratureZoneDecomposerMetricMap.put (quadratureZoneName, quadratureZoneDecomposerMetric);
+			}
+
+			if (quadratureZoneDecomposerMetric.peakVarianceProxy() >
 				optimalQuadratureZoneDecomposerMetric.peakVarianceProxy())
 			{
 				optimalQuadratureZoneIndex = quadratureZoneIndex;
-				optimalQuadratureZoneDecomposerMetric = quadratureOptimizationMetric;
+				optimalQuadratureZoneDecomposerMetric = quadratureZoneDecomposerMetric;
 			}
 		}
 
-		List<QuadratureZone> subDividedQuadratureZoneList = new ArrayList<QuadratureZone>();
+		List<BoundedManifold> subDividedQuadratureZoneList = new ArrayList<BoundedManifold>();
 
 		for (int quadratureZoneIndex = 0; quadratureZoneIndex < quadratureZoneSize; ++quadratureZoneIndex) {
-			QuadratureZone originalQuadratureZone = quadratureZoneList.get (quadratureZoneIndex);
+			BoundedManifold originalQuadratureZone = quadratureZoneList.get (quadratureZoneIndex);
 
 			if (optimalQuadratureZoneIndex == quadratureZoneIndex) {
-				QuadratureZone[] quadratureZoneArray = originalQuadratureZone.evenlySplitAcrossDimension (
+				BoundedManifold[] quadratureZoneArray = originalQuadratureZone.evenlySplitAcrossDimension (
 					optimalQuadratureZoneDecomposerMetric.peakVarianceProxyDimension()
 				);
 
@@ -499,7 +529,37 @@ public class VarianceSamplingZoneExtractor
 
 				subDividedQuadratureZoneList.add (quadratureZoneArray[0]);
 
+				QuadratureZoneDecomposerMetric quadratureZoneDecomposerMetric = quadratureZoneDecomposerMetric (
+					monteCarloRunSubManifoldDiagnostics,
+					quadratureZoneArray[0],
+					rdContinuous
+				);
+
+				if (null == quadratureZoneDecomposerMetric) {
+					return null;
+				}
+
+				quadratureZoneDecomposerMetricMap.put (
+					quadratureZoneArray[0].toString(),
+					quadratureZoneDecomposerMetric
+				);
+
 				subDividedQuadratureZoneList.add (quadratureZoneArray[1]);
+
+				quadratureZoneDecomposerMetric = quadratureZoneDecomposerMetric (
+					monteCarloRunSubManifoldDiagnostics,
+					quadratureZoneArray[1],
+					rdContinuous
+				);
+
+				if (null == quadratureZoneDecomposerMetric) {
+					return null;
+				}
+
+				quadratureZoneDecomposerMetricMap.put (
+					quadratureZoneArray[1].toString(),
+					quadratureZoneDecomposerMetric
+				);
 
 				if (null != monteCarloRunStratifiedDiagnostics) {
 					MonteCarloRunManifoldDiagnostics manifoldDiagnostics =
@@ -529,26 +589,30 @@ public class VarianceSamplingZoneExtractor
 	 * Extract the List of "Optimal" Quadrature Zones
 	 * 
 	 * @param monteCarloRun <i>MonteCarloRun</i> Stratified Diagnostics
+	 * @param quadratureZoneDecomposerMetricMap Quadrature Zone Decomposer Metric Map
+	 * @param rdContinuous Sampling R<sup>d</sup> Continuous Distribution
 	 * 
 	 * @return List of "Optimal" Quadrature Zones
 	 */
 
-	public List<QuadratureZone> optimalQuadratureZoneList (
-		final MonteCarloRun monteCarloRun)
+	public List<BoundedManifold> optimalQuadratureZoneList (
+		final MonteCarloRun monteCarloRun,
+		final Map<String, QuadratureZoneDecomposerMetric> quadratureZoneDecomposerMetricMap,
+		final RdContinuous rdContinuous)
 	{
-		List<QuadratureZone> optimalQuadratureZoneList = new ArrayList<QuadratureZone>();
+		List<BoundedManifold> optimalQuadratureZoneList = new ArrayList<BoundedManifold>();
 
 		int zoneIterationCount = _varianceSamplingSetting.zoneIterationCount();
 
-		QuadratureZone zone = _quadratureSetting.zone();
-
-		optimalQuadratureZoneList.add (zone);
+		optimalQuadratureZoneList.add (_quadratureSetting.boundedManifold());
 
 		while (0 <= --zoneIterationCount) {
-			List<QuadratureZone> augmentedQuadratureZoneList = subDivideVarianceZones (
+			List<BoundedManifold> augmentedQuadratureZoneList = subDivideVarianceZones (
 				monteCarloRun instanceof MonteCarloRunStratifiedDiagnostics ?
 					(MonteCarloRunStratifiedDiagnostics) monteCarloRun : null,
-				optimalQuadratureZoneList
+				quadratureZoneDecomposerMetricMap,
+				optimalQuadratureZoneList,
+				rdContinuous
 			);
 
 			if (null == augmentedQuadratureZoneList) {

@@ -1,8 +1,15 @@
 
-package org.drip.numerical.rdintegration;
+package org.drip.sample.mcintegral;
 
-import org.drip.service.common.ArrayUtil;
+import org.drip.function.definition.RdToR1;
+import org.drip.measure.distribution.RdContinuousUniform;
+import org.drip.numerical.rdintegration.MonteCarloRun;
+import org.drip.numerical.rdintegration.QuadratureSetting;
+import org.drip.numerical.rdintegration.RectangularManifold;
+import org.drip.numerical.rdintegration.RecursiveStratifiedSamplingIntegrator;
+import org.drip.numerical.rdintegration.VarianceSamplingSetting;
 import org.drip.service.common.FormatUtil;
+import org.drip.service.env.EnvManager;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -81,8 +88,9 @@ import org.drip.service.common.FormatUtil;
  */
 
 /**
- * <i>QuadratureZone</i> holds the Quadrature Zone corresponding to an Integration of R<sup>d</sup> To
- * 	R<sup>1</sup> Objective Function. The References are:
+ * <i>StratifiedSamplingAsymptoticsMISER</i> illustrates the Asymptotics of Stratified Sampling Monte-Carlo
+ *  Integration of R<sup>d</sup> to R<sup>1</sup> Objective Function using the MISER Sample Allocation
+ *  Scheme. The References are:
  * 
  * <br><br>
  * 	<ul>
@@ -112,157 +120,120 @@ import org.drip.service.common.FormatUtil;
  *  <ul>
  *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
  *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md">Numerical Analysis Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/numerical/README.md">Numerical Quadrature, Differentiation, Eigenization, Linear Algebra, and Utilities</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/numerical/rdintegration/README.md">R<sup>d</sup> to R<sup>1</sup> Numerical Integration Schemes</a></li>
+ *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/README.md">DROP API Construction and Usage</a></li>
+ *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/sample/mcintegral/README.md">R<sup>d</sup> to R<sup>1</sup> Numerical Monte-Carlo Integration</a></li>
  *  </ul>
  * <br><br>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class QuadratureZone
+public class StratifiedSamplingAsymptoticsMISER
 {
-	private double[] _leftBoundArray = null;
-	private double[] _rightBoundArray = null;
-	private double _integrandVolume = Double.NaN;
 
 	/**
-	 * <i>QuadratureZone</i> Constructor
+	 * Entry Point
 	 * 
-	 * @param leftBoundArray Array of Left Bounds
-	 * @param rightBoundArray Array of Right Bounds
+	 * @param argumentArray Command Line Argument Array
 	 * 
-	 * @throws Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown on Error/Exception Situation
 	 */
 
-	public QuadratureZone (
-		final double[] leftBoundArray,
-		final double[] rightBoundArray)
+	public static final void main (
+		final String[] argumentArray)
 		throws Exception
 	{
-		if (null == (_leftBoundArray = leftBoundArray) ||
-			null == (_rightBoundArray = rightBoundArray) ||
-			0 == _leftBoundArray.length ||
-			_rightBoundArray.length != _leftBoundArray.length)
+		EnvManager.InitEnv ("");
+
+		int zoneIterationCount = 5;
+		int inDimensionEstimationPointCount = 5;
+		int outOfDimensionEstimationPointCount = 5;
+
+		double[] leftBoundArray = new double[] {
+			0.,
+			0.,
+			0.
+		};
+
+		double[] rightBoundArray = new double[] {
+			1.,
+			9.,
+			4.
+		};
+
+		RdToR1 integrand = new RdToR1 (null)
 		{
-			throw new Exception ("QuadratureZone Constructor => Invalid Inputs");
-		}
-
-		_integrandVolume = 1.;
-
-		for (int variateIndex = 0; variateIndex < _leftBoundArray.length; ++variateIndex) {
-			_integrandVolume *= (_rightBoundArray[variateIndex] - _leftBoundArray[variateIndex]);
-		}
-	}
-
-	/**
-	 * Retrieve the Array of Left Bounds
-	 * 
-	 * @return Array of Left Bounds
-	 */
-
-	public double[] leftBoundArray()
-	{
-		return _leftBoundArray;
-	}
-
-	/**
-	 * Retrieve the Array of Right Bounds
-	 * 
-	 * @return Array of Right Bounds
-	 */
-
-	public double[] rightBoundArray()
-	{
-		return _rightBoundArray;
-	}
-
-	/**
-	 * Retrieve the Integrand Quadrature Volume
-	 * 
-	 * @return Integrand Quadrature Volume
-	 */
-
-	public double integrandVolume()
-	{
-		return _integrandVolume;
-	}
-
-	/**
-	 * Retrieve the Zone Dimension
-	 * 
-	 * @return Zone Dimension
-	 */
-
-	public int dimension()
-	{
-		return _rightBoundArray.length;
-	}
-
-	/**
-	 * Divide the Quadrature Zones by 2 across the specified Dimension Index
-	 * 
-	 * @param splitDimensionIndex Divide Dimension Index
-	 * 
-	 * @return Array of the Divided Quadrature Zones
-	 */
-
-	public QuadratureZone[] evenlySplitAcrossDimension (
-		final int splitDimensionIndex)
-	{
-		if (splitDimensionIndex >= _rightBoundArray.length) {
-			return null;
-		}
-
-		double[] adjustedLeftBoundArray = ArrayUtil.Duplicate (_leftBoundArray);
-
-		double[] adjustedRightBoundArray = ArrayUtil.Duplicate (_rightBoundArray);
-
-		double midDimensionBound = 0.5 *
-			(_leftBoundArray[splitDimensionIndex] + _rightBoundArray[splitDimensionIndex]);
-		adjustedRightBoundArray[splitDimensionIndex] = midDimensionBound;
-		adjustedLeftBoundArray[splitDimensionIndex] = midDimensionBound;
-
-		try {
-			return new QuadratureZone[] {
-				new QuadratureZone (_leftBoundArray, adjustedRightBoundArray),
-				new QuadratureZone (adjustedLeftBoundArray, _rightBoundArray)
-			};
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-		return null;
-	}
-
-	/**
-	 * Convert the State to a JSON-lite Form
-	 * 
-	 * @return State to a JSON-lite Form
-	 */
-
-	@Override public String toString()
-	{
-		String display = "{";
-
-		for (int i = 0; i < _leftBoundArray.length; ++i) {
-			if (0 != i) {
-				display += ",";
+			@Override public int dimension()
+			{
+				return 3;
 			}
 
-			display += FormatUtil.FormatDouble (_leftBoundArray[i], 1, 4, 1.);
-		}
-
-		display += "} => {";
-
-		for (int i = 0; i < _rightBoundArray.length; ++i) {
-			if (0 != i) {
-				display += ",";
+			@Override public double evaluate (
+				final double[] variateArray)
+				throws Exception
+			{
+				return variateArray[0] *
+					variateArray[1] * variateArray[1] * variateArray[1] *
+					variateArray[2] * variateArray[2];
 			}
+		};
 
-			display += FormatUtil.FormatDouble (_rightBoundArray[i], 1, 4, 1.);
+		int[] samplingPointCountArray = {
+			// 100,
+			1000,
+			10000,
+			100000,
+			1000000
+		};
+
+		QuadratureSetting quadratureSetting = new QuadratureSetting (
+			integrand,
+			new RectangularManifold (leftBoundArray, rightBoundArray)
+		);
+
+		RdContinuousUniform rdContinuousUniform = new RdContinuousUniform (leftBoundArray, rightBoundArray);
+
+		VarianceSamplingSetting varianceSamplingSetting = new VarianceSamplingSetting (
+			zoneIterationCount,
+			inDimensionEstimationPointCount,
+			outOfDimensionEstimationPointCount,
+			VarianceSamplingSetting.MISER_QUADRATURE_ZONE_SAMPLING
+		);
+
+		System.out.println ("\t|-----------------------------||");
+
+		System.out.println ("\t| STRATIFIED SAMPLE ASYMPTOTE ||");
+
+		System.out.println ("\t|-----------------------------||");
+
+		System.out.println ("\t| L -> R:                     ||");
+
+		System.out.println ("\t|   - Sample Size             ||");
+
+		System.out.println ("\t|   - Integrand Value         ||");
+
+		System.out.println ("\t|   - Integrand Error         ||");
+
+		System.out.println ("\t|-----------------------------||");
+
+		for (int samplingPointCount : samplingPointCountArray) {
+			MonteCarloRun monteCarloRun = new RecursiveStratifiedSamplingIntegrator (
+				quadratureSetting,
+				varianceSamplingSetting,
+				samplingPointCount,
+				rdContinuousUniform,
+				false
+			).quadratureRun();
+
+			System.out.println (
+				"\t|" + FormatUtil.FormatDouble (samplingPointCount, 7, 0, 1.) + " =>" +
+					FormatUtil.FormatDouble (monteCarloRun.quadratureValue(), 5, 1, 1.) + " |" +
+					FormatUtil.FormatDouble (monteCarloRun.quadratureErrorPercent(), 2, 2, 100) + "% ||"
+			);
 		}
 
-		return display + "}";
+		System.out.println ("\t|-----------------------------||");
+
+		EnvManager.TerminateEnv();
 	}
 }

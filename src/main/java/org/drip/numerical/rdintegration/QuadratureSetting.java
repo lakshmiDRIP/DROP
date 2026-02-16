@@ -122,25 +122,25 @@ import org.drip.function.definition.RdToR1;
 public class QuadratureSetting
 {
 	private RdToR1 _integrand = null;
-	private QuadratureZone _zone = null;
+	private BoundedManifold _boundedManifold = null;
 
 	/**
 	 * <i>QuadratureSetting</i> Constructor
 	 * 
 	 * @param integrand <i>RdToR1</i> Integrand
-	 * @param zone Quadrature Zone
+	 * @param boundedManifold Bounded Quadrature Manifold
 	 * 
 	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public QuadratureSetting (
 		final RdToR1 integrand,
-		final QuadratureZone zone)
+		final BoundedManifold boundedManifold)
 		throws Exception
 	{
 		if (null == (_integrand = integrand) ||
-			null == (_zone = zone) ||
-			_zone.dimension() != _integrand.dimension())
+			null == (_boundedManifold = boundedManifold) ||
+			_boundedManifold.dimension() != _integrand.dimension())
 		{
 			throw new Exception ("QuadratureSetting Constructor => Invalid Inputs");
 		}
@@ -158,13 +158,13 @@ public class QuadratureSetting
 	}
 
 	/**
-	 * Retrieve the Quadrature Zone
+	 * Retrieve the Quadrature Manifold
 	 * 
-	 * @return Quadrature Zone
+	 * @return Quadrature Manifold
 	 */
 
-	public QuadratureZone zone()
+	public BoundedManifold boundedManifold()
 	{
-		return _zone;
+		return _boundedManifold;
 	}
 }

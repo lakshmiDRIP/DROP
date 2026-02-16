@@ -2,6 +2,7 @@
 package org.drip.numerical.rdintegration;
 
 import org.drip.function.definition.RdToR1;
+import org.drip.measure.distribution.RdContinuous;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -123,6 +124,12 @@ public class UniformSamplingIntegrator
 	extends MonteCarloIntegrator
 {
 
+	/**
+	 * Valid Random Variate Generation Attempts
+	 */
+
+	public static final int VALID_BOUNDED_VARIATE_TRIAL = 15;
+
 	private boolean quadratureRun (
 		final MonteCarloRun monteCarloRun,
 		final double[] integrandValueArray)
@@ -145,7 +152,7 @@ public class UniformSamplingIntegrator
 
 		return monteCarloRun.setSamplingPointCount (samplingPointCount) &&
 			monteCarloRun.setIntegrandMean (integrandMean) &&
-			monteCarloRun.setIntegrandVolume (integratorSetting().zone().integrandVolume()) &&
+			monteCarloRun.setIntegrandVolume (integratorSetting().boundedManifold().hyperVolume()) &&
 			monteCarloRun.setUnbiasedIntegrandVariance (
 				(cumulativeIntegrandSquaredValue - (samplingPointCount * integrandMean * integrandMean)) /
 					(samplingPointCount - 1)
@@ -157,6 +164,7 @@ public class UniformSamplingIntegrator
 	 * 
 	 * @param integratorSetting Underlying <i>RdToR1IntegratorSetting</i> Instance
 	 * @param samplingPointCount Sampling Points Count
+	 * @param rdContinuous Underlying R<sup>d</sup> Continuous Distribution
 	 * @param diagnosticsOn TRUE - Diagnostics are turned on
 	 * 
 	 * @throws Exception Thrown if the Inputs are Invalid
@@ -165,46 +173,39 @@ public class UniformSamplingIntegrator
 	public UniformSamplingIntegrator (
 		final QuadratureSetting integratorSetting,
 		final int samplingPointCount,
+		final RdContinuous rdContinuous,
 		final boolean diagnosticsOn)
 		throws Exception
 	{
-		super (integratorSetting, samplingPointCount, diagnosticsOn);
+		super (integratorSetting, samplingPointCount, rdContinuous, diagnosticsOn);
 	}
 
 	/**
 	 * Generate the Sampling Points using Uniform Sampling needed for computing the Quadrature
 	 * 
+	 * @param rdContinuousDistribution Sampling R<sup>d</sup> Continuous Distribution
+	 * 
 	 * @return Sampling Points needed for computing the Quadrature
 	 */
 
-	public double[] integrandSampleArray()
+	public double[] integrandSampleArray (
+		final RdContinuous rdContinuousDistribution)
 	{
 		QuadratureSetting rdToR1IntegratorSetting = integratorSetting();
 
-		QuadratureZone quadratureZone = rdToR1IntegratorSetting.zone();
-
-		double[] rightBoundArray = quadratureZone.rightBoundArray();
-
-		double[] leftBoundArray = quadratureZone.leftBoundArray();
+		BoundedManifold boundedManifold = rdToR1IntegratorSetting.boundedManifold();
 
 		RdToR1 integrand = rdToR1IntegratorSetting.integrand();
 
 		int samplingPointCount = samplingPointCount();
 
-		int dimension = integrand.dimension();
-
 		double[] integrandValueArray = new double[samplingPointCount];
 
 		for (int samplingIndex = 0; samplingIndex < samplingPointCount; ++samplingIndex) {
-			double[] variateArray = new double[dimension];
-
-			for (int variateIndex = 0; variateIndex < dimension; ++variateIndex) {
-				variateArray[variateIndex] = leftBoundArray[variateIndex] +
-					(rightBoundArray[variateIndex] - leftBoundArray[variateIndex]) * Math.random();
-			}
-
 			try {
-				integrandValueArray[samplingIndex] = integrand.evaluate (variateArray);
+				integrandValueArray[samplingIndex] = integrand.evaluate (
+					boundedManifold.randomRd (VALID_BOUNDED_VARIATE_TRIAL, rdContinuousDistribution)
+				);
 			} catch (Exception e) {
 				e.printStackTrace();
 
@@ -223,20 +224,24 @@ public class UniformSamplingIntegrator
 
 	@Override public MonteCarloRun quadratureRun()
 	{
-		double[] integrandSampleArray = integrandSampleArray();
+		double[] integrandSampleArray = integrandSampleArray (rdContinuous());
 
 		if (null == integrandSampleArray) {
 			return null;
 		}
 
-		MonteCarloRun monteCarloRun = diagnosticsOn() ? new MonteCarloRunUniformDiagnostics() : new MonteCarloRun();
+		MonteCarloRun monteCarloRun = diagnosticsOn() ?
+			new MonteCarloRunUniformDiagnostics() : new MonteCarloRun();
 
 		if (!quadratureRun (monteCarloRun, integrandSampleArray)) {
 			return null;
 		}
 
 		if (diagnosticsOn()) {
-			if (!((MonteCarloRunUniformDiagnostics) monteCarloRun).setIntegrandSampleArray (integrandSampleArray)) {
+			if (!((MonteCarloRunUniformDiagnostics) monteCarloRun).setIntegrandSampleArray (
+				integrandSampleArray
+			))
+			{
 				return null;
 			}
 		}

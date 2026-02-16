@@ -4,6 +4,11 @@ package org.drip.measure.generators;
 import org.drip.function.definition.RdToR1;
 import org.drip.measure.distribution.RdContinuous;
 import org.drip.numerical.common.NumberUtil;
+import org.drip.numerical.rdintegration.MonteCarloRun;
+import org.drip.numerical.rdintegration.QuadratureSetting;
+import org.drip.numerical.rdintegration.RectangularManifold;
+import org.drip.numerical.rdintegration.RecursiveStratifiedSamplingIntegrator;
+import org.drip.numerical.rdintegration.VarianceSamplingSetting;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -191,29 +196,47 @@ public class RdMomentGeneratingFunction
 			return 1.;
 		}
 
-		throw new Exception ("R1MomentGeneratingFunction::evaluate => Not implemented");
-
-		/* return _distribution.quadratureEstimator().integrate (
-			new RdToR1 (null)
-			{
-				@Override public int dimension()
+		MonteCarloRun monteCarloRun = new RecursiveStratifiedSamplingIntegrator (
+			new QuadratureSetting (
+				new RdToR1 (null)
 				{
-					return _distribution.dimension();
-				}
-
-				@Override public double evaluate (
-					final double[] xArray)
-					throws Exception
-				{
-					double tDotX = 0.;
-
-					for (int i = 0; i < tArray.length; ++i) {
-						tDotX += tArray[i] * xArray[i];
+					@Override public int dimension()
+					{
+						return _distribution.dimension();
 					}
 
-					return _distribution.density (xArray) * Math.exp (tDotX);
-				}
-			}
-		); */
+					@Override public double evaluate (
+						final double[] xArray)
+						throws Exception
+					{
+						double tDotX = 0.;
+
+						for (int i = 0; i < tArray.length; ++i) {
+							tDotX += tArray[i] * xArray[i];
+						}
+
+						return _distribution.density (xArray) * Math.exp (tDotX);
+					}
+				},
+				new RectangularManifold (_distribution.leftSupport(), _distribution.rightSupport())
+			),
+			new VarianceSamplingSetting (
+				5, // zoneIterationCount,
+				5, // inDimensionEstimationPointCount,
+				5, // outOfDimensionEstimationPointCount,
+				VarianceSamplingSetting.EQUI_QUADRATURE_ZONE_SAMPLING
+			),
+			10000, // samplingPointCount,
+			_distribution,
+			false
+		).quadratureRun();
+
+		if (null == monteCarloRun) {
+			throw new Exception (
+				"R1MomentGeneratingFunction::evaluate => Cannot evaluate Monte Carlo Quadrature"
+			);
+		}
+
+		return monteCarloRun.quadratureValue();
 	}
 }

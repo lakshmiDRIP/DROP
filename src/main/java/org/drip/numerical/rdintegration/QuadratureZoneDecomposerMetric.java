@@ -122,25 +122,29 @@ import org.drip.service.common.FormatUtil;
 
 public class QuadratureZoneDecomposerMetric
 {
-	private double _peakVarianceProxy = Double.NaN;
 	private int _peakVarianceProxyDimension = -1;
+	private double _peakVarianceProxy = Double.NaN;
+	private double _grossVarianceProxy = Double.NaN;
 
 	/**
 	 * QuadratureZoneDecomposerMetric Constructor
 	 * 
 	 * @param peakVarianceProxyDimension Peak Variance Proxy Dimension
 	 * @param peakVarianceProxy Peak Variance Proxy
+	 * @param grossVarianceProxy Peak Variance Proxy
 	 * 
 	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public QuadratureZoneDecomposerMetric (
 		final int peakVarianceProxyDimension,
-		final double peakVarianceProxy)
+		final double peakVarianceProxy,
+		final double grossVarianceProxy)
 		throws Exception
 	{
 		if (-1 >= (_peakVarianceProxyDimension = peakVarianceProxyDimension) ||
-			!NumberUtil.IsValid (_peakVarianceProxy = peakVarianceProxy))
+			!NumberUtil.IsValid (_peakVarianceProxy = peakVarianceProxy) ||
+			!NumberUtil.IsValid (_grossVarianceProxy = grossVarianceProxy))
 		{
 			throw new Exception ("QuadratureZoneDecomposerMetric Constructor => Invalid Inputs");
 		}
@@ -169,6 +173,17 @@ public class QuadratureZoneDecomposerMetric
 	}
 
 	/**
+	 * Retrieve the Gross Variance Proxy
+	 * 
+	 * @return Gross Variance Proxy
+	 */
+
+	public double grossVarianceProxy()
+	{
+		return _grossVarianceProxy;
+	}
+
+	/**
 	 * Convert the State to a JSON-lite Form using a Prefix
 	 * 
 	 * @param prefix Prefix
@@ -181,7 +196,8 @@ public class QuadratureZoneDecomposerMetric
 	{
 		return prefix + "{Quadrature Zone Decomposer Metric => Peak Variance Proxy Dimension:" +
 			FormatUtil.FormatDouble (_peakVarianceProxyDimension, 1, 0, 1.) + "; " +
-			"Peak Variance Proxy:" + FormatUtil.FormatDouble (_peakVarianceProxy, 1, 2, 1.) + "}";
+			"Peak Variance Proxy:" + FormatUtil.FormatDouble (_peakVarianceProxy, 1, 2, 1.) +
+			"Gross Variance Proxy:" + FormatUtil.FormatDouble (_grossVarianceProxy, 1, 2, 1.) + "}";
 	}
 
 	/**

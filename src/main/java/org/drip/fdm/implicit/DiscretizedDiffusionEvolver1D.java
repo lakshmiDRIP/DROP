@@ -1,17 +1,21 @@
 
-package org.drip.fdm.cranknicolson;
+package org.drip.fdm.implicit;
 
 import org.drip.fdm.definition.EvolutionGrid1D;
 import org.drip.fdm.definition.R1EvolutionSnapshot;
 import org.drip.function.definition.RdToR1;
 import org.drip.numerical.common.NumberUtil;
-import org.drip.numerical.linearsolver.NonPeriodicTridiagonalScheme;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
 
 /*!
+ * Copyright (C) 2030 Lakshmi Krishnamurthy
+ * Copyright (C) 2029 Lakshmi Krishnamurthy
+ * Copyright (C) 2028 Lakshmi Krishnamurthy
+ * Copyright (C) 2027 Lakshmi Krishnamurthy
+ * Copyright (C) 2026 Lakshmi Krishnamurthy
  * Copyright (C) 2025 Lakshmi Krishnamurthy
  * 
  *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
@@ -80,8 +84,8 @@ import org.drip.numerical.linearsolver.NonPeriodicTridiagonalScheme;
  */
 
 /**
- * <i>CNDiscretizedEvolver1D</i> implements the 1D Crank-Nicolson Discretized State-Space Evolution Scheme.
- *  The References are:
+ * <i>DiscretizedDiffusionEvolver1D</i> implements the 1D Discretized Diffusion State-Space Evolution Scheme.
+ * 	The References are:
  * 
  * <br><br>
  * 	<ul>
@@ -110,36 +114,50 @@ import org.drip.numerical.linearsolver.NonPeriodicTridiagonalScheme;
  * 				https://en.wikipedia.org/wiki/Crank%E2%80%93Nicolson_method
  * 		</li>
  * 	</ul>
- * 
- * <br><br>
+ *
+ * It provides the following Functionality:
+ *
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md">Numerical Analysis Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/pde/README.md">Numerical Solution Schemes for PDEs</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/fdm/cranknicolson/README.md">Finite Difference Crank-Nicolson Discretizer</a></li>
+ * 		<li>Set up the State Transition Matrix for the Factor Index</li>
+ * 		<li>Update the State Response Array</li>
+ * 		<li><i>DiscretizedDiffusionEvolver1D</i> Constructor</li>
+ * 		<li>Retrieve the 1D Evolution Grid</li>
+ * 		<li>Retrieve the R<sup>d</sup> to R<sup>1</sup> Diffusion Function</li>
+ * 		<li>Retrieve the "Diagnostics On" Mode</li>
+ * 		<li>Compute the von Neumann Stability Number</li>
+ * 		<li>Indicate if the Step Sizes enable Stable Usage of the Crank-Nicolson Scheme</li>
+ * 		<li>Evolve the State Response from the Starting Value</li>
  *  </ul>
- * <br><br>
+ * 
+ *	<br>
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md">Numerical Analysis Library</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/fdm/README.md">Multi-dimensional Finite Difference Evolution Schemes</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/fdm/implicit/README.md">Finite Difference Implicit Evolution Schemes</a></td></tr>
+ *  </table>
+ *	<br>
  *
  * @author Lakshmi Krishnamurthy
  */
 
-public class CNDiscretizedEvolver1D
+public abstract class DiscretizedDiffusionEvolver1D
 {
 	private boolean _diagnosticsOn = false;
 	private RdToR1 _diffusionFunction = null;
 	private EvolutionGrid1D _evolutionGrid1D = null;
 
-	private final double[] rhsArray()
+	private final double[] zeroRHSArray()
 	{
 		int factorPredictorCount = _evolutionGrid1D.factorPredictorArray().length;
 
-		double[] rhsArray = new double[factorPredictorCount];
+		double[] zeroRHSArray = new double[factorPredictorCount];
 
-		for (int i = 0; i < factorPredictorCount; ++i) {
-			rhsArray[i] = 0.;
+		for (int factorIndex = 0; factorIndex < factorPredictorCount; ++factorIndex) {
+			zeroRHSArray[factorIndex] = 0.;
 		}
 
-		return rhsArray;
+		return zeroRHSArray;
 	}
 
 	private final double[][] zeroStateResponseTransitionMatrix()
@@ -149,9 +167,9 @@ public class CNDiscretizedEvolver1D
 		double[][] zeroStateResponseTransitionMatrix =
 			new double[factorPredictorCount][factorPredictorCount];
 
-		for (int i = 0; i < factorPredictorCount; ++i) {
-			for (int j = 0; j < factorPredictorCount; ++j) {
-				zeroStateResponseTransitionMatrix[i][j] = 0.;
+		for (int factorIndexI = 0; factorIndexI < factorPredictorCount; ++factorIndexI) {
+			for (int factorIndexJ = 0; factorIndexJ < factorPredictorCount; ++factorIndexJ) {
+				zeroStateResponseTransitionMatrix[factorIndexI][factorIndexJ] = 0.;
 			}
 		}
 
@@ -159,7 +177,7 @@ public class CNDiscretizedEvolver1D
 	}
 
 	/**
-	 * <i>CNDiscretizedEvolver1D</i> Constructor
+	 * <i>DiscretizedDiffusionEvolver1D</i> Constructor
 	 * 
 	 * @param evolutionGrid1D R<sup>1</sup> Evolution Increment
 	 * @param diffusionFunction Diffusion Function
@@ -168,7 +186,7 @@ public class CNDiscretizedEvolver1D
 	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
-	public CNDiscretizedEvolver1D (
+	protected DiscretizedDiffusionEvolver1D (
 		final EvolutionGrid1D evolutionGrid1D,
 		final RdToR1 diffusionFunction,
 		final boolean diagnosticsOn)
@@ -176,11 +194,47 @@ public class CNDiscretizedEvolver1D
 	{
 		if (null == (_evolutionGrid1D = evolutionGrid1D) || null == (_diffusionFunction = diffusionFunction))
 		{
-			throw new Exception ("CNDiscretizedEvolver1D Constructor => Invalid Inputs");
+			throw new Exception ("DiscretizedDiffusionEvolver1D Constructor => Invalid Inputs");
 		}
 
 		_diagnosticsOn = diagnosticsOn;
 	}
+
+	/**
+	 * Set up the State Transition Matrix for the Factor Index
+	 * 
+	 * @param stateResponseTransitionMatrix State Response Transition Matrix
+	 * @param rhsArray RHS Array
+	 * @param stateResponseArray Array of State Responses
+	 * @param factorPredictorArray Array of Factor Predictors
+	 * @param factorIndex Factor Index
+	 * @param vonNeumannStabilityNumber von-Neumann Stability Number for the Time-step
+	 * 
+	 * @return TRUE - The State Transition Matrix successfully set up for the Factor Index
+	 */
+
+	protected abstract boolean setUpStateTransition (
+		final double[][] stateResponseTransitionMatrix,
+		final double[] rhsArray,
+		final double[] stateResponseArray,
+		final double[] factorPredictorArray,
+		final int factorIndex,
+		final double vonNeumannStabilityNumber
+	);
+
+	/**
+	 * Update the State Response Array
+	 * 
+	 * @param stateResponseTransitionMatrix State Response Transition Matrix
+	 * @param rhsArray RHS Array
+	 * 
+	 * @return State Response Array
+	 */
+
+	protected abstract double[] updateStateResponse (
+		final double[][] stateResponseTransitionMatrix,
+		final double[] rhsArray
+	);
 
 	/**
 	 * Retrieve the 1D Evolution Grid
@@ -314,7 +368,7 @@ public class CNDiscretizedEvolver1D
 				timeArray[0],
 				startingStateResponseArray,
 				zeroStateResponseTransitionMatrix(),
-				rhsArray(),
+				zeroRHSArray(),
 				vonNeumannStabilityMetricArray
 			))
 			{
@@ -326,22 +380,22 @@ public class CNDiscretizedEvolver1D
 			}
 		}
 
-		for (int i = 1; i < timeArray.length; ++i) {
-			double[] rhsArray = rhsArray();
+		for (int timeIndex = 1; timeIndex < timeArray.length; ++timeIndex) {
+			double[] rhsArray = zeroRHSArray();
 
 			double[][] stateResponseTransitionMatrix = zeroStateResponseTransitionMatrix();
 
-			for (int n = 0; n < factorPredictorArray.length; ++n) {
+			for (int factorIndex = 0; factorIndex < factorPredictorArray.length; ++factorIndex) {
 				double vonNeumannStabilityNumber = Double.NaN;
 
 				try {
 					if (!NumberUtil.IsValid (
 						vonNeumannStabilityNumber = vonNeumannStabilityNumber (
-							timeArray[i],
-							timeArray[i] - timeArray[i - 1],
-							factorPredictorArray[n],
-							0 == n ? factorPredictorArray[1] - factorPredictorArray[0] :
-								factorPredictorArray[n] - factorPredictorArray[n - 1]
+							timeArray[timeIndex],
+							timeArray[timeIndex] - timeArray[timeIndex - 1],
+							factorPredictorArray[factorIndex],
+							0 == factorIndex ? factorPredictorArray[1] - factorPredictorArray[0] :
+								factorPredictorArray[factorIndex] - factorPredictorArray[factorIndex - 1]
 						)
 					))
 					{
@@ -354,48 +408,32 @@ public class CNDiscretizedEvolver1D
 				}
 
 				if (_diagnosticsOn) {
-					vonNeumannStabilityMetricArray[n] = vonNeumannStabilityNumber;
+					vonNeumannStabilityMetricArray[factorIndex] = vonNeumannStabilityNumber;
 				}
 
-				if (0 != n && factorPredictorArray.length - 1 != n) {
-					stateResponseTransitionMatrix[n][n - 1] = -1. * vonNeumannStabilityNumber;
-					stateResponseTransitionMatrix[n][n] = 1. + 2. * vonNeumannStabilityNumber;
-					stateResponseTransitionMatrix[n][n + 1] = -1. * vonNeumannStabilityNumber;
-					rhsArray[n] = vonNeumannStabilityNumber * stateResponseArray[n - 1] +
-						(1. - 2. * vonNeumannStabilityNumber) * stateResponseArray[n] +
-						vonNeumannStabilityNumber * stateResponseArray[n + 1];
-				} else if (factorPredictorArray.length - 1 == n) {
-					stateResponseTransitionMatrix[n][n - 1] = -1. * vonNeumannStabilityNumber;
-					stateResponseTransitionMatrix[n][n] = 1. + 2. * vonNeumannStabilityNumber;
-					rhsArray[n] = vonNeumannStabilityNumber * stateResponseArray[n - 1] +
-						(1. - 2. * vonNeumannStabilityNumber) * stateResponseArray[n];
-				} else {
-					stateResponseTransitionMatrix[n][n] = 1. + 2. * vonNeumannStabilityNumber;
-					stateResponseTransitionMatrix[n][n + 1] = -1. * vonNeumannStabilityNumber;
-					rhsArray[n] = (1. - 2. * vonNeumannStabilityNumber) * stateResponseArray[n] +
-						vonNeumannStabilityNumber * stateResponseArray[n + 1];
-				}
-			}
-
-			try {
-				if (null == (
-					stateResponseArray = NonPeriodicTridiagonalScheme.Standard (
-						stateResponseTransitionMatrix,
-						rhsArray
-					).forwardSweepBackSubstitution()
+				if (!setUpStateTransition (
+					stateResponseTransitionMatrix,
+					rhsArray,
+					stateResponseArray,
+					factorPredictorArray,
+					factorIndex,
+					vonNeumannStabilityNumber
 				))
 				{
 					return null;
-				};
-			} catch (Exception e) {
-				e.printStackTrace();
+				}
+			}
 
+			if (null == (
+				stateResponseArray = updateStateResponse (stateResponseTransitionMatrix, rhsArray)
+			))
+			{
 				return null;
 			}
 
 			if (_diagnosticsOn) {
 				if (!r1EvolutionSnapshot.addStateResponse (
-					timeArray[i],
+					timeArray[timeIndex],
 					stateResponseArray,
 					stateResponseTransitionMatrix,
 					rhsArray,
@@ -405,7 +443,7 @@ public class CNDiscretizedEvolver1D
 					return null;
 				}
 			} else {
-				if (!r1EvolutionSnapshot.addStateResponse (timeArray[i], stateResponseArray)) {
+				if (!r1EvolutionSnapshot.addStateResponse (timeArray[timeIndex], stateResponseArray)) {
 					return null;
 				}
 			}

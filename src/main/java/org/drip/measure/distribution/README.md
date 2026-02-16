@@ -37,6 +37,9 @@ DROP Measure Distribution implements the R<sup>1</sup> R<sup>d</sup> Continuous 
  * [***RdContinuous***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/distribution/RdContinuous.java)
  <i>RdContinuous</i> implements the Base Abstract Class behind R<sup>d</sup> Distributions. It exports Methods for incremental, cumulative, and inverse cumulative Distribution Densities.
 
+ * [***RdContinuousUniform***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/distribution/RdContinuousUniform.java)
+ <i>RdContinuousUniform</i> contains the R<sup>d</sup> Continuous Uniform Distribution inside a Fixed Support.
+
  * [***RdR1Continuous***](https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/measure/distribution/RdR1Continuous.java)
  <i>RdR1Continuous</i> implements the Base Abstract Class behind R<sup>d</sup> X R<sup>1</sup> Distributions. It exports Methods for incremental, cumulative, and inverse cumulative Distribution Densities.
 

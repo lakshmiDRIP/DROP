@@ -2,9 +2,10 @@
 package org.drip.sample.mcintegral;
 
 import org.drip.function.definition.RdToR1;
+import org.drip.measure.distribution.RdContinuousUniform;
 import org.drip.numerical.rdintegration.MonteCarloRun;
 import org.drip.numerical.rdintegration.QuadratureSetting;
-import org.drip.numerical.rdintegration.QuadratureZone;
+import org.drip.numerical.rdintegration.RectangularManifold;
 import org.drip.numerical.rdintegration.RecursiveStratifiedSamplingIntegrator;
 import org.drip.numerical.rdintegration.UniformSamplingIntegrator;
 import org.drip.numerical.rdintegration.VarianceSamplingSetting;
@@ -187,61 +188,88 @@ public class SamplingAsymptoticsComparison
 
 		QuadratureSetting quadratureSetting = new QuadratureSetting (
 			integrand,
-			new QuadratureZone (leftBoundArray, rightBoundArray)
+			new RectangularManifold (leftBoundArray, rightBoundArray)
 		);
 
-		VarianceSamplingSetting varianceSamplingSetting = new VarianceSamplingSetting (
+		RdContinuousUniform rdContinuousUniform = new RdContinuousUniform (leftBoundArray, rightBoundArray);
+
+		VarianceSamplingSetting equiVarianceSamplingSetting = new VarianceSamplingSetting (
 			zoneIterationCount,
 			inDimensionEstimationPointCount,
-			outOfDimensionEstimationPointCount
+			outOfDimensionEstimationPointCount,
+			VarianceSamplingSetting.EQUI_QUADRATURE_ZONE_SAMPLING
 		);
 
-		System.out.println ("\t|------------------------------------------------||");
+		VarianceSamplingSetting miserVarianceSamplingSetting = new VarianceSamplingSetting (
+			zoneIterationCount,
+			inDimensionEstimationPointCount,
+			outOfDimensionEstimationPointCount,
+			VarianceSamplingSetting.MISER_QUADRATURE_ZONE_SAMPLING
+		);
 
-		System.out.println ("\t|    UNIFORM VS. STRATIFIED SAMPLE ASYMPTOTE     ||");
+		System.out.println ("\t|-------------------------------------------------------------------||");
 
-		System.out.println ("\t|------------------------------------------------||");
+		System.out.println ("\t|             UNIFORM VS. STRATIFIED SAMPLE ASYMPTOTE               ||");
 
-		System.out.println ("\t| L -> R:                                        ||");
+		System.out.println ("\t|-------------------------------------------------------------------||");
 
-		System.out.println ("\t|   - Sample Size                                ||");
+		System.out.println ("\t| L -> R:                                                           ||");
 
-		System.out.println ("\t|   - Uniform Integrand Value                    ||");
+		System.out.println ("\t|   - Sample Size                                                   ||");
 
-		System.out.println ("\t|   - Stratified Integrand Value                 ||");
+		System.out.println ("\t|   - Uniform Integrand Value                                       ||");
 
-		System.out.println ("\t|   - Uniform Integrand Error                    ||");
+		System.out.println ("\t|   - EQUI Stratified Integrand Value                               ||");
 
-		System.out.println ("\t|   - Stratified Integrand Error                 ||");
+		System.out.println ("\t|   - MISER Stratified Integrand Value                              ||");
 
-		System.out.println ("\t|------------------------------------------------||");
+		System.out.println ("\t|   - Uniform Integrand Error                                       ||");
+
+		System.out.println ("\t|   - EQUI Stratified Integrand Error                               ||");
+
+		System.out.println ("\t|   - MISER Stratified Integrand Error                              ||");
+
+		System.out.println ("\t|-------------------------------------------------------------------||");
 
 		for (int samplingPointCount : samplingPointCountArray) {
 			MonteCarloRun uniformMonteCarloRun = new UniformSamplingIntegrator (
 				quadratureSetting,
 				samplingPointCount,
+				rdContinuousUniform,
 				false
 			).quadratureRun();
 
-			MonteCarloRun stratifiedMonteCarloRun = new RecursiveStratifiedSamplingIntegrator (
+			MonteCarloRun equiStratifiedMonteCarloRun = new RecursiveStratifiedSamplingIntegrator (
 				quadratureSetting,
-				varianceSamplingSetting,
+				equiVarianceSamplingSetting,
 				samplingPointCount,
+				rdContinuousUniform,
+				false
+			).quadratureRun();
+
+			MonteCarloRun miserStratifiedMonteCarloRun = new RecursiveStratifiedSamplingIntegrator (
+				quadratureSetting,
+				miserVarianceSamplingSetting,
+				samplingPointCount,
+				rdContinuousUniform,
 				false
 			).quadratureRun();
 
 			System.out.println (
 				"\t|" + FormatUtil.FormatDouble (samplingPointCount, 7, 0, 1.) + " =>" +
 					FormatUtil.FormatDouble (uniformMonteCarloRun.quadratureValue(), 5, 1, 1.) + " |" +
-					FormatUtil.FormatDouble (stratifiedMonteCarloRun.quadratureValue(), 5, 1, 1.) + " |" +
+					FormatUtil.FormatDouble (equiStratifiedMonteCarloRun.quadratureValue(), 5, 1, 1.) + " |" +
+					FormatUtil.FormatDouble (miserStratifiedMonteCarloRun.quadratureValue(), 5, 1, 1.) + " |" +
 					FormatUtil.FormatDouble (uniformMonteCarloRun.quadratureErrorPercent(), 2, 2, 100) +
 						"% |" +
-					FormatUtil.FormatDouble (stratifiedMonteCarloRun.quadratureErrorPercent(), 2, 2, 100) +
+					FormatUtil.FormatDouble (equiStratifiedMonteCarloRun.quadratureErrorPercent(), 2, 2, 100) +
+						"% |" +
+					FormatUtil.FormatDouble (miserStratifiedMonteCarloRun.quadratureErrorPercent(), 2, 2, 100) +
 						"% ||"
 			);
 		}
 
-		System.out.println ("\t|------------------------------------------------||");
+		System.out.println ("\t|-------------------------------------------------------------------||");
 
 		EnvManager.TerminateEnv();
 	}

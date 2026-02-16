@@ -9,6 +9,11 @@ import org.drip.function.definition.RdToR1;
  */
 
 /*!
+ * Copyright (C) 2030 Lakshmi Krishnamurthy
+ * Copyright (C) 2029 Lakshmi Krishnamurthy
+ * Copyright (C) 2028 Lakshmi Krishnamurthy
+ * Copyright (C) 2027 Lakshmi Krishnamurthy
+ * Copyright (C) 2026 Lakshmi Krishnamurthy
  * Copyright (C) 2025 Lakshmi Krishnamurthy
  * 
  *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
@@ -78,7 +83,7 @@ import org.drip.function.definition.RdToR1;
 
 /**
  * <i>SecondOrder1DPDE</i> implements the Evolution of R<sup>1</sup> State Factor Space Response using a
- *  Second Order PDE. The References are:
+ *  Second Order 1D PDE. The References are:
  * 
  * <br><br>
  * 	<ul>
@@ -107,15 +112,24 @@ import org.drip.function.definition.RdToR1;
  * 				https://en.wikipedia.org/wiki/Crank%E2%80%93Nicolson_method
  * 		</li>
  * 	</ul>
- * 
- * <br><br>
+ *
+ * It provides the following Functionality:
+ *
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md">Numerical Analysis Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/pde/README.md">Numerical Solution Schemes for PDEs</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/fdm/definition/README.md">Finite Difference PDE Evolver Schemes</a></li>
+ * 		<li><i>SecondOrder1DPDE</i> Constructor</li>
+ * 		<li>Retrieve the R<sup>1</sup> to R<sup>1</sup> State Response Function</li>
+ * 		<li>Retrieve the R<sup>d</sup> to R<sup>1</sup> State Response Evolution Function</li>
+ * 		<li>Compute the State Response Increment at the factor value and the time</li>
  *  </ul>
- * <br><br>
+ * 
+ *	<br>
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md">Numerical Analysis Library</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/fdm/README.md">Numerical Solution Schemes for PDEs</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/fdm/definition/README.md">Finite Difference PDE Evolver Schemes</a></td></tr>
+ *  </table>
+ *	<br>
  *
  * @author Lakshmi Krishnamurthy
  */

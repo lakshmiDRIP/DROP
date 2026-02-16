@@ -372,7 +372,10 @@ public class MonteCarloRunManifoldDiagnostics
 			"\n\t" + prefix + "{Out-of-Dimension Anchor Variance Map => " + _outOfDimensionAnchorVarianceMap
 				+ "}" +
 			"\n\t" + prefix + "{In Dimension Variance Proxy Map => " + _inDimensionVarianceProxyMap + "}" +
-			"\n\t" + _quadratureZoneDecomposerMetric.toString (prefix) +
+			"\n\t" + (
+				null == _quadratureZoneDecomposerMetric ?
+					"" : _quadratureZoneDecomposerMetric.toString (prefix)
+			) +
 			"\n\t" + prefix + "{Child Zone => " +
 				(null == _childZoneArray ? "" : _childZoneArray[0] + "," + _childZoneArray[1]) + "}";
 	}

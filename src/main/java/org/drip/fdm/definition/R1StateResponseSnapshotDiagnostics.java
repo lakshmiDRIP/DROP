@@ -6,6 +6,11 @@ package org.drip.fdm.definition;
  */
 
 /*!
+ * Copyright (C) 2030 Lakshmi Krishnamurthy
+ * Copyright (C) 2029 Lakshmi Krishnamurthy
+ * Copyright (C) 2028 Lakshmi Krishnamurthy
+ * Copyright (C) 2027 Lakshmi Krishnamurthy
+ * Copyright (C) 2026 Lakshmi Krishnamurthy
  * Copyright (C) 2025 Lakshmi Krishnamurthy
  * 
  *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
@@ -105,15 +110,24 @@ package org.drip.fdm.definition;
  * 				https://en.wikipedia.org/wiki/Crank%E2%80%93Nicolson_method
  * 		</li>
  * 	</ul>
- * 
- * <br><br>
+ *
+ * It provides the following Functionality:
+ *
  *  <ul>
- *		<li><b>Module </b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></li>
- *		<li><b>Library</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md">Numerical Analysis Library</a></li>
- *		<li><b>Project</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/pde/README.md">Numerical Solution Schemes for PDEs</a></li>
- *		<li><b>Package</b> = <a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/fdm/definition/README.md">Finite Difference PDE Evolver Schemes</a></li>
+ * 		<li><i>R1StateResponseSnapshotDiagnostics</i> Constructor</li>
+ * 		<li>Retrieve the State Response Factor Node Time Shift Jacobian Matrix</li>
+ * 		<li>Retrieve the Weighted Node Value Constraint Array</li>
+ * 		<li>Retrieve the von-Neumann Stability Metric Array</li>
  *  </ul>
- * <br><br>
+ * 
+ *	<br>
+ *  <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+ *		<tr><td><b>Module </b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/ComputationalCore.md">Computational Core Module</a></td></tr>
+ *		<tr><td><b>Library</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/NumericalAnalysisLibrary.md">Numerical Analysis Library</a></td></tr>
+ *		<tr><td><b>Project</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/fdm/README.md">Numerical Solution Schemes for PDEs</a></td></tr>
+ *		<tr><td><b>Package</b></td> <td><a href = "https://github.com/lakshmiDRIP/DROP/tree/master/src/main/java/org/drip/fdm/definition/README.md">Finite Difference PDE Evolver Schemes</a></td></tr>
+ *  </table>
+ *	<br>
  *
  * @author Lakshmi Krishnamurthy
  */
@@ -125,7 +139,7 @@ public class R1StateResponseSnapshotDiagnostics extends R1StateResponseSnapshot
 	private double[] _weightedNodeValueConstraintArray = null;
 
 	/**
-	 * Construct an Instance of <i>R1StateResponseSnapshotDiagnostics</i> from the Inputs
+	 * <i>R1StateResponseSnapshotDiagnostics</i> Constructor
 	 * 
 	 * @param realizationArray Array of State Response Realizations
 	 * @param timeShiftJacobian State Response Factor Node Time Shift Jacobian Matrix

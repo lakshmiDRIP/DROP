@@ -1,9 +1,12 @@
 
 package org.drip.numerical.rdintegration;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.drip.function.definition.RdToR1;
+import org.drip.measure.distribution.RdContinuous;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -126,12 +129,55 @@ public class RecursiveStratifiedSamplingIntegrator
 {
 	private VarianceSamplingZoneExtractor _varianceSamplingZoneExtractor = null;
 
+	private Map<String, Integer> quadratureZoneEquiSamplingMap (
+		final Map<String, QuadratureZoneDecomposerMetric> quadratureZoneDecomposerMetricMap)
+	{
+		Map<String, Integer> quadratureZoneSamplingMap = new HashMap<String, Integer>();
+
+		int zoneSamplingPointCount = samplingPointCount() / quadratureZoneDecomposerMetricMap.size();
+
+		for (String quadratureZoneName : quadratureZoneDecomposerMetricMap.keySet()) {
+			quadratureZoneSamplingMap.put (quadratureZoneName, zoneSamplingPointCount);
+		}
+
+		return quadratureZoneSamplingMap;
+	}
+
+	private Map<String, Integer> quadratureZoneMISERSamplingMap (
+		final Map<String, QuadratureZoneDecomposerMetric> quadratureZoneDecomposerMetricMap)
+	{
+		Map<String, Integer> quadratureZoneSamplingMap = new HashMap<String, Integer>();
+
+		double cumulativeGrossVarianceProxy = 0.;
+
+		for (String quadratureZoneName : quadratureZoneDecomposerMetricMap.keySet()) {
+			cumulativeGrossVarianceProxy +=
+				quadratureZoneDecomposerMetricMap.get (quadratureZoneName).grossVarianceProxy();
+		}
+
+		int samplingPointCount = samplingPointCount();
+
+		for (String quadratureZoneName : quadratureZoneDecomposerMetricMap.keySet()) {
+			quadratureZoneSamplingMap.put (
+				quadratureZoneName,
+				(int) (
+					samplingPointCount * quadratureZoneDecomposerMetricMap.get (
+						quadratureZoneName
+					).grossVarianceProxy() / cumulativeGrossVarianceProxy
+				)
+			);
+		}
+
+		return quadratureZoneSamplingMap;
+	}
+
 	/**
 	 * <i>RecursiveStratifiedSamplingIntegrator</i> Constructor
 	 * 
 	 * @param integratorSetting Underlying <i>RdToR1IntegratorSetting</i> Instance
 	 * @param varianceSamplingSetting Variance Sampling Setting Instance
 	 * @param samplingPointCount Sampling Points Count
+	 * @param rdContinuous Underlying R<sup>d</sup> Continuous Distribution
 	 * @param diagnosticsOn TRUE - Diagnostics are turned on
 	 * 
 	 * @throws Exception Thrown if the Inputs are Invalid
@@ -141,10 +187,11 @@ public class RecursiveStratifiedSamplingIntegrator
 		final QuadratureSetting integratorSetting,
 		final VarianceSamplingSetting varianceSamplingSetting,
 		final int samplingPointCount,
+		final RdContinuous rdContinuous,
 		final boolean diagnosticsOn)
 		throws Exception
 	{
-		super (integratorSetting, samplingPointCount, diagnosticsOn);
+		super (integratorSetting, samplingPointCount, rdContinuous, diagnosticsOn);
 
 		_varianceSamplingZoneExtractor = new VarianceSamplingZoneExtractor (
 			integratorSetting,
@@ -178,24 +225,38 @@ public class RecursiveStratifiedSamplingIntegrator
 		MonteCarloRun monteCarloRun = diagnosticsOn ?
 			new MonteCarloRunStratifiedDiagnostics() : new MonteCarloRun();
 
-		List<QuadratureZone> optimalQuadratureZoneList =
-			_varianceSamplingZoneExtractor.optimalQuadratureZoneList (monteCarloRun);
+		Map<String, QuadratureZoneDecomposerMetric> quadratureZoneDecomposerMetricMap =
+			new HashMap<String, QuadratureZoneDecomposerMetric>();
 
-		if (null == optimalQuadratureZoneList) {
+		List<BoundedManifold> optimalQuadratureZoneList =
+			_varianceSamplingZoneExtractor.optimalQuadratureZoneList (
+				monteCarloRun,
+				quadratureZoneDecomposerMetricMap,
+				rdContinuous()
+			);
+
+		if (null == optimalQuadratureZoneList || null == quadratureZoneDecomposerMetricMap) {
 			return null;
 		}
 
-		int quadratureZoneCount = optimalQuadratureZoneList.size();
+		Map<String, Integer> quadratureZoneSamplingMap =
+			VarianceSamplingSetting.EQUI_QUADRATURE_ZONE_SAMPLING ==
+				_varianceSamplingZoneExtractor.varianceSamplingSetting().quadratureZoneSamplingScheme() ?
+					quadratureZoneEquiSamplingMap (quadratureZoneDecomposerMetricMap) :
+					quadratureZoneMISERSamplingMap (quadratureZoneDecomposerMetricMap);
 
-		int zoneSamplingPointCount = samplingPointCount() / quadratureZoneCount;
-
-		for (int zoneIndex = 0; zoneIndex < quadratureZoneCount; ++zoneIndex) {
+		for (int zoneIndex = 0; zoneIndex < optimalQuadratureZoneList.size(); ++zoneIndex) {
 			MonteCarloRun zoneMonteCarloRun = null;
+
+			BoundedManifold quadratureZone = optimalQuadratureZoneList.get (zoneIndex);
+
+			int samplingPointCount = quadratureZoneSamplingMap.get (quadratureZone.toString());
 
 			try {
 				zoneMonteCarloRun = new UniformSamplingIntegrator (
-					new QuadratureSetting (integrand, optimalQuadratureZoneList.get (zoneIndex)),
-					zoneSamplingPointCount,
+					new QuadratureSetting (integrand, quadratureZone),
+					1 >= samplingPointCount ? 2 : samplingPointCount,
+					rdContinuous(),
 					diagnosticsOn
 				).quadratureRun();
 			} catch (Exception e) {
