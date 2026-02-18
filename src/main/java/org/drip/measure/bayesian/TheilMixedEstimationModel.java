@@ -6,6 +6,7 @@ import org.drip.measure.gaussian.R1MultivariateNormal;
 import org.drip.measure.state.LabelledRd;
 import org.drip.measure.state.LabelledRdContinuousDistribution;
 import org.drip.numerical.linearalgebra.R1MatrixUtil;
+import org.drip.numerical.rdintegration.BoundedManifold;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -273,17 +274,21 @@ public class TheilMixedEstimationModel
 			}
 		}
 
+		BoundedManifold boundedManifold = unconditionalDistribution.boundedManifold();
+
 		try {
 			return new R1MultivariateConvolutionMetrics (
 				multivariateNormalProjectionDistribution1,
 				unconditionalDistribution,
 				multivariateNormalProjectionDistribution2,
 				new R1MultivariateNormal (
+					boundedManifold,
 					multivariateMeta,
 					jointPosteriorMeanArray,
 					new JointVariance (jointCovarianceMatrix)
 				),
 				new R1MultivariateNormal (
+					boundedManifold,
 					multivariateMeta,
 					jointPosteriorMeanArray,
 					new JointVariance (posteriorCovarianceMatrix)
@@ -907,6 +912,7 @@ public class TheilMixedEstimationModel
 
 		try {
 			return new R1MultivariateNormal (
+				unconditionalDistribution.boundedManifold(),
 				unconditionalDistribution.stateLabels(),
 				projectionInducedScopingMeanArray,
 				new JointVariance (

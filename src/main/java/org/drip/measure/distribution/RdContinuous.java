@@ -1,6 +1,8 @@
 
 package org.drip.measure.distribution;
 
+import org.drip.numerical.rdintegration.BoundedManifold;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
@@ -94,12 +96,15 @@ package org.drip.measure.distribution;
  * 	following Functionality:
  *
  *  <ul>
- * 		<li>Lay out the Support of the PDF Range</li>
- * 		<li>Retrieve the State Dimension</li>
+ * 		<li>RdContinuous Constructor</li>
+ * 		<li>Retrieve the Bounded Manifold</li>
  * 		<li>Compute the Cumulative under the Distribution to the given Variate Array</li>
  * 		<li>Compute the Incremental under the Distribution between the 2 Variate Arrays</li>
  * 		<li>Compute the Density under the Distribution at the given Variate Array</li>
+ * 		<li>Re-zone the Domain using the specified Bounded Manifold</li>
+ * 		<li>Generate a Random Variable corresponding to the Distribution within Cartesian Bounds</li>
  * 		<li>Generate a Random Variable corresponding to the Distribution</li>
+ * 		<li>Retrieve the State Dimension</li>
  * 		<li>Indicate if the Variate Array is inside the Supported Range</li>
  *  </ul>
  *
@@ -117,27 +122,40 @@ package org.drip.measure.distribution;
 
 public abstract class RdContinuous
 {
+	private BoundedManifold _boundedManifold = null;
 
 	/**
-	 * Lay out the Left Support of the PDF Range
+	 * RdContinuous Constructor
 	 * 
-	 * @return Left Support of the PDF Range
+	 * @param boundedManifold The Manifold
+	 * 
+	 * @throws Exception Thrown if the Manifold is Invalid
 	 */
 
-	public abstract double[] leftSupport();
+	public RdContinuous (
+		final BoundedManifold boundedManifold)
+		throws Exception
+	{
+		if (null == (_boundedManifold = boundedManifold)) {
+			throw new Exception ("RdContinuous Constructor - Invalid Manifold");
+		}
+	}
 
 	/**
-	 * Lay out the Right Support of the PDF Range
+	 * Retrieve the Bounded Manifold
 	 * 
-	 * @return Right Support of the PDF Range
+	 * @return Bounded Manifold
 	 */
 
-	public abstract double[] rightSupport();
+	public BoundedManifold boundedManifold()
+	{
+		return _boundedManifold;
+	}
 
 	/**
 	 * Compute the Cumulative under the Distribution to the given Variate Array
 	 * 
-	 * @param xArray Variate Array to which the Cumulative is to be computed
+	 * @param variateArray Variate Array to which the Cumulative is to be computed
 	 * 
 	 * @return The Cumulative
 	 * 
@@ -145,14 +163,14 @@ public abstract class RdContinuous
 	 */
 
 	public abstract double cumulative (
-		final double[] xArray)
+		final double[] variateArray)
 		throws Exception;
 
 	/**
 	 * Compute the Incremental under the Distribution between the 2 Variate Arrays
 	 * 
-	 * @param leftXArray Left Variate Array to which the Cumulative is to be computed
-	 * @param rightXArray Right Variate Array to which the Cumulative is to be computed
+	 * @param leftVariateArray Left Variate Array to which the Cumulative is to be computed
+	 * @param rightVariateArray Right Variate Array to which the Cumulative is to be computed
 	 * 
 	 * @return The Incremental
 	 * 
@@ -160,14 +178,14 @@ public abstract class RdContinuous
 	 */
 
 	public abstract double incremental (
-		final double[] leftXArray,
-		final double[] rightXArray)
+		final double[] leftVariateArray,
+		final double[] rightVariateArray)
 		throws Exception;
 
 	/**
 	 * Compute the Density under the Distribution at the given Variate Array
 	 * 
-	 * @param xArray Variate Array at which the Density needs to be computed
+	 * @param variateArray Variate Array at which the Density needs to be computed
 	 * 
 	 * @return The Density
 	 * 
@@ -175,16 +193,50 @@ public abstract class RdContinuous
 	 */
 
 	public abstract double density (
-		final double[] xArray)
+		final double[] variateArray)
 		throws Exception;
+
+	/**
+	 * Re-zone the Domain using the specified Bounded Manifold
+	 * 
+	 * @param boundedManifold Bounded Manifold
+	 * 
+	 * @return TRUE - The Domain successfully re-zoned with the specified Bounded Manifold
+	 */
+
+	public abstract RdContinuous rezone (
+		final BoundedManifold boundedManifold
+	);
+
+	/**
+	 * Generate a Random Variable corresponding to the Distribution within Cartesian Bounds
+	 * 
+	 * @return Random Variable corresponding to the Distribution within Cartesian Bounds
+	 */
+
+	public abstract double[] nonBoundingRandom();
 
 	/**
 	 * Generate a Random Variable corresponding to the Distribution
 	 * 
+	 * @param validVariateTrial Valid Random Variate Generation Attempts
+	 * 
 	 * @return Random Variable corresponding to the Distribution
 	 */
 
-	public abstract double[] random();
+	public double[] random (
+		int validVariateTrial)
+	{
+		while (0 <= --validVariateTrial) {
+			double[] randomRd = nonBoundingRandom();
+
+			if (_boundedManifold.in11 (randomRd)) {
+				return randomRd;
+			}
+		}
+
+		return null;
+	}
 
 	/**
 	 * Retrieve the State Dimension
@@ -194,7 +246,7 @@ public abstract class RdContinuous
 
 	public int dimension()
 	{
-		return rightSupport().length;
+		return _boundedManifold.dimension();
 	}
 
 	/**
@@ -208,23 +260,6 @@ public abstract class RdContinuous
 	public boolean supported (
 		final double[] variateArray)
 	{
-		if (null == variateArray || variateArray.length != dimension()) {
-			return false;
-		}
-
-		double[] leftSupportArray = leftSupport();
-
-		double[] rightSupportArray = rightSupport();
-
-		for (int dimensionIndex = 0; dimensionIndex < dimension(); ++dimensionIndex) {
-			if (Double.isNaN (variateArray[dimensionIndex]) ||
-				leftSupportArray[dimensionIndex] > variateArray[dimensionIndex] ||
-				variateArray[dimensionIndex] > rightSupportArray[dimensionIndex])
-			{
-				return false;
-			}
-		}
-
-		return true;
+		return _boundedManifold.in11 (variateArray);
 	}
 }

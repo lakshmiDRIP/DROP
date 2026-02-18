@@ -4,6 +4,7 @@ package org.drip.sample.idzorek;
 import org.drip.measure.bayesian.ViewLoading;
 import org.drip.measure.gaussian.*;
 import org.drip.measure.state.LabelledRd;
+import org.drip.numerical.rdintegration.RectangularManifold;
 import org.drip.portfolioconstruction.allocator.ForwardReverseHoldingsAllocation;
 import org.drip.portfolioconstruction.asset.Portfolio;
 import org.drip.portfolioconstruction.bayesian.*;
@@ -225,6 +226,9 @@ public class ProjectionImpliedConfidenceTilt
 			0.65
 		};
 
+		RectangularManifold rectangularManifold =
+			RectangularManifold.SpanningCartesian (projectionExpectedExcessReturnsArray.length);
+
 		double[][] projectionTiltArray = new BlackLittermanCombinationEngine (
 			ForwardReverseHoldingsAllocation.Reverse (
 				Portfolio.Standard (
@@ -241,6 +245,7 @@ public class ProjectionImpliedConfidenceTilt
 			),
 			new ProjectionSpecification (
 				R1MultivariateNormal.Standard (
+					rectangularManifold,
 					LabelledRd.FromArray (
 						new String[]
 						{
@@ -259,6 +264,7 @@ public class ProjectionImpliedConfidenceTilt
 				assetSpaceViewProjectionMatrix
 			)
 		).userConfidenceProjectionTitMatrix (
+			rectangularManifold,
 			userSpecifiedProjectionConfidenceArray
 		);
 

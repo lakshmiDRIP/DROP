@@ -5,6 +5,7 @@ import org.drip.measure.bayesian.R1MultivariateConvolutionMetrics;
 import org.drip.measure.gaussian.*;
 import org.drip.measure.state.LabelledRd;
 import org.drip.measure.statistics.MultivariateMoments;
+import org.drip.numerical.rdintegration.RectangularManifold;
 import org.drip.portfolioconstruction.allocator.*;
 import org.drip.portfolioconstruction.asset.*;
 import org.drip.portfolioconstruction.bayesian.*;
@@ -225,7 +226,11 @@ public class Table6Reconciler
 			{0.000 * tau, 0.017 * tau}
 		};
 
+		RectangularManifold rectangularManifold =
+			RectangularManifold.SpanningCartesian (projectionExpectedExcessReturnsArray.length);
+
 		R1MultivariateNormal viewDistribution = R1MultivariateNormal.Standard (
+			rectangularManifold,
 			LabelledRd.FromArray (
 				new String[]
 				{
@@ -276,7 +281,9 @@ public class Table6Reconciler
 			);
 
 		R1MultivariateConvolutionMetrics jointPosteriorMetrics =
-			blackLittermanCombinationEngine.customConfidenceRun().jointPosteriorMetrics();
+			blackLittermanCombinationEngine.customConfidenceRun (
+				rectangularManifold
+			).jointPosteriorMetrics();
 
 		R1MultivariateNormal jointDistribution = (R1MultivariateNormal) jointPosteriorMetrics.jointDistribution();
 
@@ -306,7 +313,9 @@ public class Table6Reconciler
 		).optimalPortfolio().assetComponentArray();
 
 		ProjectionExposure projectionExposure =
-			blackLittermanCombinationEngine.projectionExposureAttribution();
+			blackLittermanCombinationEngine.projectionExposureAttribution (
+				rectangularManifold
+			);
 
 		double[] interViewComponentArray = projectionExposure.interViewComponentArray();
 

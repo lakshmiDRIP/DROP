@@ -174,7 +174,7 @@ public class RecursiveStratifiedSamplingIntegrator
 	/**
 	 * <i>RecursiveStratifiedSamplingIntegrator</i> Constructor
 	 * 
-	 * @param integratorSetting Underlying <i>RdToR1IntegratorSetting</i> Instance
+	 * @param integrand <i>RdToR1</i> Integrand
 	 * @param varianceSamplingSetting Variance Sampling Setting Instance
 	 * @param samplingPointCount Sampling Points Count
 	 * @param rdContinuous Underlying R<sup>d</sup> Continuous Distribution
@@ -184,17 +184,17 @@ public class RecursiveStratifiedSamplingIntegrator
 	 */
 
 	public RecursiveStratifiedSamplingIntegrator (
-		final QuadratureSetting integratorSetting,
+		final RdToR1 integrand,
 		final VarianceSamplingSetting varianceSamplingSetting,
 		final int samplingPointCount,
 		final RdContinuous rdContinuous,
 		final boolean diagnosticsOn)
 		throws Exception
 	{
-		super (integratorSetting, samplingPointCount, rdContinuous, diagnosticsOn);
+		super (integrand, samplingPointCount, rdContinuous, diagnosticsOn);
 
 		_varianceSamplingZoneExtractor = new VarianceSamplingZoneExtractor (
-			integratorSetting,
+			integrand,
 			varianceSamplingSetting
 		);
 	}
@@ -218,9 +218,9 @@ public class RecursiveStratifiedSamplingIntegrator
 
 	@Override public MonteCarloRun quadratureRun()
 	{
-		boolean diagnosticsOn = diagnosticsOn();
+		RdToR1 integrand = integrand();
 
-		RdToR1 integrand = integratorSetting().integrand();
+		boolean diagnosticsOn = diagnosticsOn();
 
 		MonteCarloRun monteCarloRun = diagnosticsOn ?
 			new MonteCarloRunStratifiedDiagnostics() : new MonteCarloRun();
@@ -245,6 +245,8 @@ public class RecursiveStratifiedSamplingIntegrator
 					quadratureZoneEquiSamplingMap (quadratureZoneDecomposerMetricMap) :
 					quadratureZoneMISERSamplingMap (quadratureZoneDecomposerMetricMap);
 
+		RdContinuous rdContinuous = rdContinuous();
+
 		for (int zoneIndex = 0; zoneIndex < optimalQuadratureZoneList.size(); ++zoneIndex) {
 			MonteCarloRun zoneMonteCarloRun = null;
 
@@ -254,9 +256,9 @@ public class RecursiveStratifiedSamplingIntegrator
 
 			try {
 				zoneMonteCarloRun = new UniformSamplingIntegrator (
-					new QuadratureSetting (integrand, quadratureZone),
+					integrand,
 					1 >= samplingPointCount ? 2 : samplingPointCount,
-					rdContinuous(),
+					rdContinuous.rezone (quadratureZone),
 					diagnosticsOn
 				).quadratureRun();
 			} catch (Exception e) {

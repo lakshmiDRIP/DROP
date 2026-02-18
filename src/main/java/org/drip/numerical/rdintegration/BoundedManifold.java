@@ -1,8 +1,6 @@
 
 package org.drip.numerical.rdintegration;
 
-import org.drip.measure.distribution.RdContinuous;
-
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
@@ -223,38 +221,5 @@ public abstract class BoundedManifold
 	public int dimension()
 	{
 		return rightCartesianBoundArray().length;
-	}
-
-	/**
-	 * Locate a Random R<sup>d</sup> Point inside the Manifold
-	 * 
-	 * @param validVariateTrial Valid Random Variate Generation Attempts
-	 * @param rdContinuousDistribution Sampling R<sup>d</sup> Continuous Distribution
-	 * 
-	 * @return Random R<sup>d</sup> Point inside the Manifold
-	 */
-
-	public double[] randomRd (
-		int validVariateTrial,
-		final RdContinuous rdContinuousDistribution)
-	{
-		double[] leftCartesianBoundArray = leftCartesianBoundArray();
-
-		double[] rightCartesianBoundArray = rightCartesianBoundArray();
-
-		while (0 <= --validVariateTrial) {
-			/* for (int dimensionIndex = 0; dimensionIndex < randomRd.length; ++dimensionIndex) {
-				randomRd[dimensionIndex] = leftCartesianBoundArray[dimensionIndex] + Math.random() *
-					(rightCartesianBoundArray[dimensionIndex] - leftCartesianBoundArray[dimensionIndex]);
-			} */
-
-			double[] randomRd = rdContinuousDistribution.random();
-
-			if (in11 (randomRd)) {
-				return randomRd;
-			}
-		}
-
-		return null;
 	}
 }

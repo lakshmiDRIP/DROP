@@ -102,6 +102,7 @@ import org.drip.numerical.common.NumberUtil;
  * 		<li><i>R1MomentGeneratingFunction</i> Constructor</li>
  * 		<li>Retrieve the Underlying R<sup>1</sup> Distribution</li>
  * 		<li>Evaluate the Moment Generating Function at t</li>
+ * 		<li>Retrieve the n<sup>th</sup> Non-central Moment</li>
  *  </ul>
  *
  *	<br>
@@ -184,5 +185,28 @@ public class R1MomentGeneratingFunction
 				}
 			}
 		);
+	}
+
+	/**
+	 * Retrieve the n<sup>th</sup> Non-central Moment
+	 * 
+	 * @param momentIndex Non-central Moment Index
+	 * 
+	 * @return n<sup>th</sup> Non-central Moment
+	 * 
+	 * @throws Exception Thrown if the Non-central Moment cannot be calculated
+	 */
+
+	public double nonCentralMoment (
+		final int momentIndex)
+		throws Exception
+	{
+		if (0 >= momentIndex) {
+			throw new Exception (
+				"R1MomentGeneratingFunction::nonCentralMoment - Invalid Moment Index"
+			);
+		}
+
+		return derivative (0., momentIndex);
 	}
 }

@@ -5277,6 +5277,10 @@ public class ArrayUtil
 	public static final double[] Duplicate (
 		final double[] array)
 	{
+		if (null == array || 0 == array.length) {
+			return null;
+		}
+
 		double[] duplicateArray = new double[array.length];
 
 		for (int index = 0; index < array.length; ++index) {

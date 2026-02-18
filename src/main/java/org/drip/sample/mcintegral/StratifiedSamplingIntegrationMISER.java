@@ -8,7 +8,6 @@ import org.drip.function.definition.RdToR1;
 import org.drip.measure.distribution.RdContinuousUniform;
 import org.drip.numerical.rdintegration.MonteCarloRunManifoldDiagnostics;
 import org.drip.numerical.rdintegration.MonteCarloRunStratifiedDiagnostics;
-import org.drip.numerical.rdintegration.QuadratureSetting;
 import org.drip.numerical.rdintegration.RectangularManifold;
 import org.drip.numerical.rdintegration.RecursiveStratifiedSamplingIntegrator;
 import org.drip.numerical.rdintegration.VarianceSamplingSetting;
@@ -183,11 +182,11 @@ public class StratifiedSamplingIntegrationMISER
 			}
 		};
 
-		RectangularManifold masterQuadratureZone = new RectangularManifold (leftBoundArray, rightBoundArray);
+		RectangularManifold rectangularManifold = new RectangularManifold (leftBoundArray, rightBoundArray);
 
 		RecursiveStratifiedSamplingIntegrator recursiveStratifiedSamplingIntegrator =
 			new RecursiveStratifiedSamplingIntegrator (
-				new QuadratureSetting (integrand, masterQuadratureZone),
+				integrand,
 				new VarianceSamplingSetting (
 					zoneIterationCount,
 					inDimensionEstimationPointCount,
@@ -195,7 +194,7 @@ public class StratifiedSamplingIntegrationMISER
 					VarianceSamplingSetting.MISER_QUADRATURE_ZONE_SAMPLING
 				),
 				samplingPointCount,
-				new RdContinuousUniform (leftBoundArray, rightBoundArray),
+				new RdContinuousUniform (rectangularManifold),
 				true
 			);
 

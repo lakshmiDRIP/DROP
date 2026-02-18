@@ -132,7 +132,8 @@ public class UniformSamplingIntegrator
 
 	private boolean quadratureRun (
 		final MonteCarloRun monteCarloRun,
-		final double[] integrandValueArray)
+		final double[] integrandValueArray,
+		final double manifoldVolume)
 	{
 		double cumulativeIntegrandValue = 0.;
 		double cumulativeIntegrandSquaredValue = 0.;
@@ -152,7 +153,7 @@ public class UniformSamplingIntegrator
 
 		return monteCarloRun.setSamplingPointCount (samplingPointCount) &&
 			monteCarloRun.setIntegrandMean (integrandMean) &&
-			monteCarloRun.setIntegrandVolume (integratorSetting().boundedManifold().hyperVolume()) &&
+			monteCarloRun.setIntegrandVolume (manifoldVolume) &&
 			monteCarloRun.setUnbiasedIntegrandVariance (
 				(cumulativeIntegrandSquaredValue - (samplingPointCount * integrandMean * integrandMean)) /
 					(samplingPointCount - 1)
@@ -162,7 +163,7 @@ public class UniformSamplingIntegrator
 	/**
 	 * <i>UniformSamplingIntegrator</i> Constructor
 	 * 
-	 * @param integratorSetting Underlying <i>RdToR1IntegratorSetting</i> Instance
+	 * @param integrand <i>RdToR1</i> Integrand
 	 * @param samplingPointCount Sampling Points Count
 	 * @param rdContinuous Underlying R<sup>d</sup> Continuous Distribution
 	 * @param diagnosticsOn TRUE - Diagnostics are turned on
@@ -171,13 +172,13 @@ public class UniformSamplingIntegrator
 	 */
 
 	public UniformSamplingIntegrator (
-		final QuadratureSetting integratorSetting,
+		final RdToR1 integrand,
 		final int samplingPointCount,
 		final RdContinuous rdContinuous,
 		final boolean diagnosticsOn)
 		throws Exception
 	{
-		super (integratorSetting, samplingPointCount, rdContinuous, diagnosticsOn);
+		super (integrand, samplingPointCount, rdContinuous, diagnosticsOn);
 	}
 
 	/**
@@ -191,11 +192,7 @@ public class UniformSamplingIntegrator
 	public double[] integrandSampleArray (
 		final RdContinuous rdContinuousDistribution)
 	{
-		QuadratureSetting rdToR1IntegratorSetting = integratorSetting();
-
-		BoundedManifold boundedManifold = rdToR1IntegratorSetting.boundedManifold();
-
-		RdToR1 integrand = rdToR1IntegratorSetting.integrand();
+		RdToR1 integrand = integrand();
 
 		int samplingPointCount = samplingPointCount();
 
@@ -204,7 +201,7 @@ public class UniformSamplingIntegrator
 		for (int samplingIndex = 0; samplingIndex < samplingPointCount; ++samplingIndex) {
 			try {
 				integrandValueArray[samplingIndex] = integrand.evaluate (
-					boundedManifold.randomRd (VALID_BOUNDED_VARIATE_TRIAL, rdContinuousDistribution)
+					rdContinuousDistribution.random (VALID_BOUNDED_VARIATE_TRIAL)
 				);
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -233,7 +230,12 @@ public class UniformSamplingIntegrator
 		MonteCarloRun monteCarloRun = diagnosticsOn() ?
 			new MonteCarloRunUniformDiagnostics() : new MonteCarloRun();
 
-		if (!quadratureRun (monteCarloRun, integrandSampleArray)) {
+		if (!quadratureRun (
+			monteCarloRun,
+			integrandSampleArray,
+			rdContinuous().boundedManifold().hyperVolume()
+		))
+		{
 			return null;
 		}
 

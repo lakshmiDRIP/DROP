@@ -127,7 +127,7 @@ import org.drip.service.common.ArrayUtil;
 
 public class VarianceSamplingZoneExtractor
 {
-	private QuadratureSetting _quadratureSetting = null;
+	private RdToR1 _integrand = null;
 	private VarianceSamplingSetting _varianceSamplingSetting = null;
 
 	private double[] inDimensionIntegrandSampleArray (
@@ -137,7 +137,7 @@ public class VarianceSamplingZoneExtractor
 		final int inDimensionIndex,
 		final double[] variateArray)
 	{
-		RdToR1 integrand = _quadratureSetting.integrand();
+		RdToR1 integrand = integrand();
 
 		int inDimensionEstimationPointCount = _varianceSamplingSetting.inDimensionEstimationPointCount();
 
@@ -251,7 +251,7 @@ public class VarianceSamplingZoneExtractor
 			inDimensionLeftBound,
 			inDimensionRightBound,
 			inDimensionIndex,
-			boundedManifold.randomRd (UniformSamplingIntegrator.VALID_BOUNDED_VARIATE_TRIAL, rdContinuous)
+			rdContinuous.random (UniformSamplingIntegrator.VALID_BOUNDED_VARIATE_TRIAL)
 		);
 
 		for (int outOfDimensionIndex = 1;
@@ -263,10 +263,7 @@ public class VarianceSamplingZoneExtractor
 				inDimensionLeftBound,
 				inDimensionRightBound,
 				inDimensionIndex,
-				boundedManifold.randomRd (
-					UniformSamplingIntegrator.VALID_BOUNDED_VARIATE_TRIAL,
-					rdContinuous
-				)
+				rdContinuous.random (UniformSamplingIntegrator.VALID_BOUNDED_VARIATE_TRIAL)
 			);
 		}
 
@@ -287,11 +284,12 @@ public class VarianceSamplingZoneExtractor
 
 	private QuadratureZoneDecomposerMetric quadratureZoneDecomposerMetric (
 		final MonteCarloRunManifoldDiagnostics monteCarloRunManifoldDiagnostics,
-		final BoundedManifold boundedManifold,
 		final RdContinuous rdContinuous)
 	{
 		double grossVarianceProxy = 0.;
 		int peakVarianceProxyDimension = 0;
+
+		BoundedManifold boundedManifold = rdContinuous.boundedManifold();
 
 		double[] leftBoundArray = boundedManifold.leftCartesianBoundArray();
 
@@ -354,18 +352,18 @@ public class VarianceSamplingZoneExtractor
 	/**
 	 * VarianceSamplingZoneExtractor Constructor
 	 * 
-	 * @param quadratureSetting Underlying Quadrature Setting Instance
+	 * @param integrand <i>RdToR1</i> Integrand
 	 * @param varianceSamplingSetting <i>VarianceSamplingSetting</i> Instance
 	 * 
 	 * @throws Exception Thrown if the Inputs are Invalid
 	 */
 
 	public VarianceSamplingZoneExtractor (
-		final QuadratureSetting quadratureSetting,
+		final RdToR1 integrand,
 		final VarianceSamplingSetting varianceSamplingSetting)
 		throws Exception
 	{
-		if (null == (_quadratureSetting = quadratureSetting) ||
+		if (null == (_integrand = integrand) ||
 			null == (_varianceSamplingSetting = varianceSamplingSetting))
 		{
 			throw new Exception ("VarianceSamplingZoneExtractor Constructor => Invalid Inputs");
@@ -373,14 +371,14 @@ public class VarianceSamplingZoneExtractor
 	}
 
 	/**
-	 * Retrieve the Underlying Quadrature Setting Instance
+	 * Retrieve the <i>RdToR1</i> Integrand
 	 * 
-	 * @return Underlying Quadrature Setting Instance
+	 * @return <i>RdToR1</i> Integrand
 	 */
 
-	public QuadratureSetting quadratureSetting()
+	public RdToR1 integrand()
 	{
-		return _quadratureSetting;
+		return _integrand;
 	}
 
 	/**
@@ -451,8 +449,7 @@ public class VarianceSamplingZoneExtractor
 		} else {
 			QuadratureZoneDecomposerMetric quadratureZoneDecomposerMetric = quadratureZoneDecomposerMetric (
 				monteCarloRunSubManifoldDiagnostics,
-				quadratureZone,
-				rdContinuous
+				rdContinuous.rezone (quadratureZone)
 			);
 
 			if (null == quadratureZoneDecomposerMetric) {
@@ -494,8 +491,7 @@ public class VarianceSamplingZoneExtractor
 			} else {
 				quadratureZoneDecomposerMetric = quadratureZoneDecomposerMetric (
 					monteCarloRunSubManifoldDiagnostics,
-					quadratureZone,
-					rdContinuous
+					rdContinuous.rezone (quadratureZone)
 				);
 
 				if (null == quadratureZoneDecomposerMetric) {
@@ -531,8 +527,7 @@ public class VarianceSamplingZoneExtractor
 
 				QuadratureZoneDecomposerMetric quadratureZoneDecomposerMetric = quadratureZoneDecomposerMetric (
 					monteCarloRunSubManifoldDiagnostics,
-					quadratureZoneArray[0],
-					rdContinuous
+					rdContinuous.rezone (quadratureZoneArray[0])
 				);
 
 				if (null == quadratureZoneDecomposerMetric) {
@@ -548,8 +543,7 @@ public class VarianceSamplingZoneExtractor
 
 				quadratureZoneDecomposerMetric = quadratureZoneDecomposerMetric (
 					monteCarloRunSubManifoldDiagnostics,
-					quadratureZoneArray[1],
-					rdContinuous
+					rdContinuous.rezone (quadratureZoneArray[1])
 				);
 
 				if (null == quadratureZoneDecomposerMetric) {
@@ -604,7 +598,7 @@ public class VarianceSamplingZoneExtractor
 
 		int zoneIterationCount = _varianceSamplingSetting.zoneIterationCount();
 
-		optimalQuadratureZoneList.add (_quadratureSetting.boundedManifold());
+		optimalQuadratureZoneList.add (rdContinuous.boundedManifold());
 
 		while (0 <= --zoneIterationCount) {
 			List<BoundedManifold> augmentedQuadratureZoneList = subDivideVarianceZones (

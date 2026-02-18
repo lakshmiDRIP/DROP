@@ -4,6 +4,7 @@ package org.drip.sample.idzorek;
 import org.drip.measure.bayesian.*;
 import org.drip.measure.gaussian.*;
 import org.drip.measure.state.LabelledRd;
+import org.drip.numerical.rdintegration.RectangularManifold;
 import org.drip.portfolioconstruction.allocator.ForwardReverseHoldingsAllocation;
 import org.drip.portfolioconstruction.asset.*;
 import org.drip.portfolioconstruction.bayesian.*;
@@ -299,7 +300,11 @@ public class PriorPosteriorMetricsComparison
 				tau
 			);
 
+		RectangularManifold rectangularManifold =
+			RectangularManifold.SpanningCartesian (projectionExpectedExcessReturnsArray.length);
+
 		R1MultivariateNormal viewDistribution = R1MultivariateNormal.Standard (
+			rectangularManifold,
 			LabelledRd.FromArray (
 				new String[]
 				{
@@ -330,7 +335,9 @@ public class PriorPosteriorMetricsComparison
 				viewDistribution,
 				assetSpaceViewProjectionMatrix
 			)
-		).customConfidenceRun().jointPosteriorMetrics();
+		).customConfidenceRun (
+			rectangularManifold
+		).jointPosteriorMetrics();
 
 		R1MultivariateNormal priorDistribution = (R1MultivariateNormal) jointPosteriorMetrics.priorDistribution();
 

@@ -4,7 +4,6 @@ package org.drip.sample.mcintegral;
 import org.drip.function.definition.RdToR1;
 import org.drip.measure.distribution.RdContinuousUniform;
 import org.drip.numerical.rdintegration.MonteCarloRun;
-import org.drip.numerical.rdintegration.QuadratureSetting;
 import org.drip.numerical.rdintegration.RectangularManifold;
 import org.drip.numerical.rdintegration.RecursiveStratifiedSamplingIntegrator;
 import org.drip.numerical.rdintegration.VarianceSamplingSetting;
@@ -186,12 +185,7 @@ public class StratifiedSamplingAsymptoticsMISER
 			1000000
 		};
 
-		QuadratureSetting quadratureSetting = new QuadratureSetting (
-			integrand,
-			new RectangularManifold (leftBoundArray, rightBoundArray)
-		);
-
-		RdContinuousUniform rdContinuousUniform = new RdContinuousUniform (leftBoundArray, rightBoundArray);
+		RectangularManifold rectangularManifold = new RectangularManifold (leftBoundArray, rightBoundArray);
 
 		VarianceSamplingSetting varianceSamplingSetting = new VarianceSamplingSetting (
 			zoneIterationCount,
@@ -218,10 +212,10 @@ public class StratifiedSamplingAsymptoticsMISER
 
 		for (int samplingPointCount : samplingPointCountArray) {
 			MonteCarloRun monteCarloRun = new RecursiveStratifiedSamplingIntegrator (
-				quadratureSetting,
+				integrand,
 				varianceSamplingSetting,
 				samplingPointCount,
-				rdContinuousUniform,
+				new RdContinuousUniform (rectangularManifold),
 				false
 			).quadratureRun();
 

@@ -5,8 +5,6 @@ import org.drip.function.definition.RdToR1;
 import org.drip.measure.distribution.RdContinuous;
 import org.drip.numerical.common.NumberUtil;
 import org.drip.numerical.rdintegration.MonteCarloRun;
-import org.drip.numerical.rdintegration.QuadratureSetting;
-import org.drip.numerical.rdintegration.RectangularManifold;
 import org.drip.numerical.rdintegration.RecursiveStratifiedSamplingIntegrator;
 import org.drip.numerical.rdintegration.VarianceSamplingSetting;
 
@@ -108,6 +106,7 @@ import org.drip.numerical.rdintegration.VarianceSamplingSetting;
  * 		<li>Retrieve the Underlying R<sup>d</sup> Distribution</li>
  * 		<li>Retrieve the State Dimension</li>
  * 		<li>Evaluate the Moment Generating Function at t</li>
+ * 		<li>Retrieve the n<sup>th</sup> Non-central Moment</li>
  *  </ul>
  *
  *	<br>
@@ -197,29 +196,26 @@ public class RdMomentGeneratingFunction
 		}
 
 		MonteCarloRun monteCarloRun = new RecursiveStratifiedSamplingIntegrator (
-			new QuadratureSetting (
-				new RdToR1 (null)
+			new RdToR1 (null)
+			{
+				@Override public int dimension()
 				{
-					@Override public int dimension()
-					{
-						return _distribution.dimension();
+					return _distribution.dimension();
+				}
+
+				@Override public double evaluate (
+					final double[] xArray)
+					throws Exception
+				{
+					double tDotX = 0.;
+
+					for (int i = 0; i < tArray.length; ++i) {
+						tDotX += tArray[i] * xArray[i];
 					}
 
-					@Override public double evaluate (
-						final double[] xArray)
-						throws Exception
-					{
-						double tDotX = 0.;
-
-						for (int i = 0; i < tArray.length; ++i) {
-							tDotX += tArray[i] * xArray[i];
-						}
-
-						return _distribution.density (xArray) * Math.exp (tDotX);
-					}
-				},
-				new RectangularManifold (_distribution.leftSupport(), _distribution.rightSupport())
-			),
+					return _distribution.density (xArray) * Math.exp (tDotX);
+				}
+			},
 			new VarianceSamplingSetting (
 				5, // zoneIterationCount,
 				5, // inDimensionEstimationPointCount,
@@ -238,5 +234,36 @@ public class RdMomentGeneratingFunction
 		}
 
 		return monteCarloRun.quadratureValue();
+	}
+
+	/**
+	 * Retrieve the n<sup>th</sup> Non-central Moment
+	 * 
+	 * @param variateIndex Index of the Variate whose Moment is to be computed
+	 * @param momentIndex Non-central Moment Index
+	 * 
+	 * @return n<sup>th</sup> Non-central Moment
+	 * 
+	 * @throws Exception Thrown if the Non-central Moment cannot be calculated
+	 */
+
+	public double nonCentralMoment (
+		final int variateIndex,
+		final int momentIndex)
+		throws Exception
+	{
+		if (0 > variateIndex || 0 >= momentIndex) {
+			throw new Exception (
+				"R1MomentGeneratingFunction::nonCentralMoment - Invalid Moment Index"
+			);
+		}
+
+		double[] tArray = new double[_distribution.dimension()];
+
+		for (int tIndex = 0; tIndex < tArray.length; ++tIndex) {
+			tArray[tIndex] = 0.;
+		}
+
+		return derivative (tArray, variateIndex, momentIndex);
 	}
 }

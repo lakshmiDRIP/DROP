@@ -128,6 +128,34 @@ public class RectangularManifold
 	private double _integrandVolume = Double.NaN;
 
 	/**
+	 * Construct a n-dimensional [-Inf, +Inf] Cartesian Manfold
+	 * 
+	 * @param dimension Number of Dimensions
+	 * 
+	 * @return n-dimensional [-Inf, +Inf] Cartesian Manfold
+	 */
+
+	public static final RectangularManifold SpanningCartesian (
+		final int dimension)
+	{
+		double[] leftBoundArray = new double[dimension];
+		double[] rightBoundArray = new double[dimension];
+
+		for (int dimensionIndex = 0; dimensionIndex < dimension; ++dimensionIndex) {
+			leftBoundArray[dimensionIndex] = Double.NEGATIVE_INFINITY;
+			rightBoundArray[dimensionIndex] = Double.POSITIVE_INFINITY;
+		}
+
+		try {
+			return new RectangularManifold (leftBoundArray, rightBoundArray);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/**
 	 * <i>RectangularManifold</i> Constructor
 	 * 
 	 * @param leftBoundArray Array of Left Bounds
@@ -143,8 +171,7 @@ public class RectangularManifold
 	{
 		if (null == (_leftBoundArray = leftBoundArray) ||
 			null == (_rightBoundArray = rightBoundArray) ||
-			0 == _leftBoundArray.length ||
-			_rightBoundArray.length != _leftBoundArray.length)
+			0 == _leftBoundArray.length || _rightBoundArray.length != _leftBoundArray.length)
 		{
 			throw new Exception ("RectangularManifold Constructor => Invalid Inputs");
 		}

@@ -5,6 +5,7 @@ import org.drip.measure.bayesian.R1MultivariateConvolutionMetrics;
 import org.drip.measure.gaussian.*;
 import org.drip.measure.state.LabelledRd;
 import org.drip.numerical.linearalgebra.R1MatrixUtil;
+import org.drip.numerical.rdintegration.RectangularManifold;
 import org.drip.portfolioconstruction.allocator.*;
 import org.drip.portfolioconstruction.asset.Portfolio;
 import org.drip.portfolioconstruction.bayesian.*;
@@ -258,7 +259,11 @@ public class Soontornkit2010
 			0.0608
 		};
 
+		RectangularManifold rectangularManifold =
+			RectangularManifold.SpanningCartesian (expectedExcessProjectionReturnsArray.length);
+
 		R1MultivariateNormal viewDistribution = R1MultivariateNormal.Standard (
+			rectangularManifold,
 			LabelledRd.FromArray (
 				new String[] {
 					"PROJECTION #1",
@@ -318,7 +323,9 @@ public class Soontornkit2010
 			),
 			new PriorControlSpecification (false, riskFreeRate, tau),
 			new ProjectionSpecification (viewDistribution, assetSpaceViewProjectionMatrix)
-		).customConfidenceRun().jointPosteriorMetrics();
+		).customConfidenceRun (
+			rectangularManifold
+		).jointPosteriorMetrics();
 
 		R1MultivariateNormal jointDistribution =
 			(R1MultivariateNormal) convolutionMetrics.jointDistribution();

@@ -4,6 +4,8 @@ package org.drip.service.assetallocation;
 import org.drip.measure.bayesian.R1MultivariateConvolutionMetrics;
 import org.drip.measure.gaussian.R1MultivariateNormal;
 import org.drip.measure.state.LabelledRdContinuousDistribution;
+import org.drip.numerical.rdintegration.BoundedManifold;
+import org.drip.numerical.rdintegration.RectangularManifold;
 import org.drip.measure.state.LabelledRd;
 import org.drip.portfolioconstruction.allocator.ForwardReverseHoldingsAllocation;
 import org.drip.portfolioconstruction.asset.Portfolio;
@@ -151,6 +153,9 @@ public class BlackLittermanProcessor
 			projectionNameArray[i] = "PROJECTION #" + i;
 		}
 
+		BoundedManifold boundedManifold =
+			RectangularManifold.SpanningCartesian (assetSpaceViewProjectionMatrix[0].length);
+
 		try {
 			tau = Converter.DoubleEntry (jsonParameter, "Tau");
 
@@ -159,6 +164,7 @@ public class BlackLittermanProcessor
 			riskFreeRate = Converter.DoubleEntry (jsonParameter, "RiskFreeRate");
 
 			viewDistribution = R1MultivariateNormal.Standard (
+				boundedManifold,
 				LabelledRd.FromArray (projectionNameArray),
 				projectionExpectedExcessReturnsArray,
 				Converter.DualDoubleArrayEntry (jsonParameter, "ProjectionExcessReturnsCovariance")
@@ -183,7 +189,7 @@ public class BlackLittermanProcessor
 		}
 
 		BlackLittermanCustomConfidenceOutput blackLittermanCustomConfidenceOutput =
-			blackLittermanCombinationEngine.customConfidenceRun();
+			blackLittermanCombinationEngine.customConfidenceRun (boundedManifold);
 
 		if (null == blackLittermanCustomConfidenceOutput) {
 			return null;

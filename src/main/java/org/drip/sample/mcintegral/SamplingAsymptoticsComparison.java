@@ -4,7 +4,6 @@ package org.drip.sample.mcintegral;
 import org.drip.function.definition.RdToR1;
 import org.drip.measure.distribution.RdContinuousUniform;
 import org.drip.numerical.rdintegration.MonteCarloRun;
-import org.drip.numerical.rdintegration.QuadratureSetting;
 import org.drip.numerical.rdintegration.RectangularManifold;
 import org.drip.numerical.rdintegration.RecursiveStratifiedSamplingIntegrator;
 import org.drip.numerical.rdintegration.UniformSamplingIntegrator;
@@ -186,12 +185,9 @@ public class SamplingAsymptoticsComparison
 			1000000
 		};
 
-		QuadratureSetting quadratureSetting = new QuadratureSetting (
-			integrand,
-			new RectangularManifold (leftBoundArray, rightBoundArray)
-		);
+		RectangularManifold rectangularManifold = new RectangularManifold (leftBoundArray, rightBoundArray);
 
-		RdContinuousUniform rdContinuousUniform = new RdContinuousUniform (leftBoundArray, rightBoundArray);
+		RdContinuousUniform rdContinuousUniform = new RdContinuousUniform (rectangularManifold);
 
 		VarianceSamplingSetting equiVarianceSamplingSetting = new VarianceSamplingSetting (
 			zoneIterationCount,
@@ -233,14 +229,14 @@ public class SamplingAsymptoticsComparison
 
 		for (int samplingPointCount : samplingPointCountArray) {
 			MonteCarloRun uniformMonteCarloRun = new UniformSamplingIntegrator (
-				quadratureSetting,
+				integrand,
 				samplingPointCount,
 				rdContinuousUniform,
 				false
 			).quadratureRun();
 
 			MonteCarloRun equiStratifiedMonteCarloRun = new RecursiveStratifiedSamplingIntegrator (
-				quadratureSetting,
+				integrand,
 				equiVarianceSamplingSetting,
 				samplingPointCount,
 				rdContinuousUniform,
@@ -248,7 +244,7 @@ public class SamplingAsymptoticsComparison
 			).quadratureRun();
 
 			MonteCarloRun miserStratifiedMonteCarloRun = new RecursiveStratifiedSamplingIntegrator (
-				quadratureSetting,
+				integrand,
 				miserVarianceSamplingSetting,
 				samplingPointCount,
 				rdContinuousUniform,

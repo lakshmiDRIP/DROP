@@ -2,9 +2,12 @@
 package org.drip.measure.gaussian;
 
 import org.drip.measure.state.LabelledRdContinuousDistribution;
+import org.drip.measure.distribution.RdContinuous;
 import org.drip.measure.state.LabelledRd;
 import org.drip.numerical.common.NumberUtil;
 import org.drip.numerical.linearalgebra.R1MatrixUtil;
+import org.drip.numerical.rdintegration.BoundedManifold;
+import org.drip.numerical.rdintegration.RectangularManifold;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -105,6 +108,7 @@ import org.drip.numerical.linearalgebra.R1MatrixUtil;
  * 		<li>Compute the Mean of the Distribution</li>
  * 		<li>Compute the Variance of the Distribution</li>
  * 		<li>Generate a Random Variable corresponding to the Distribution</li>
+ * 		<li>Re-zone the Domain using the specified Bounded Manifold</li>
  *  </ul>
  *
  *	<br>
@@ -128,6 +132,7 @@ public class R1MultivariateNormal
 	/**
 	 * Construct a Standard <i>R1MultivariateNormal</i> Instance #1
 	 * 
+	 * @param boundedManifold Bounded Manifold
 	 * @param metaRd The R<sup>1</sup> Multivariate Meta Headers
 	 * @param meanArray Array of the Univariate Means
 	 * @param covarianceMatrix The Covariance Matrix
@@ -136,12 +141,18 @@ public class R1MultivariateNormal
 	 */
 
 	public static final R1MultivariateNormal Standard (
+		final BoundedManifold boundedManifold,
 		final LabelledRd metaRd,
 		final double[] meanArray,
 		final double[][] covarianceMatrix)
 	{
 		try {
-			return new R1MultivariateNormal (metaRd, meanArray, new JointVariance (covarianceMatrix));
+			return new R1MultivariateNormal (
+				boundedManifold,
+				metaRd,
+				meanArray,
+				new JointVariance (covarianceMatrix)
+			);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -152,6 +163,7 @@ public class R1MultivariateNormal
 	/**
 	 * Construct a Standard <i>R1MultivariateNormal</i> Instance #2
 	 * 
+	 * @param boundedManifold Bounded Manifold
 	 * @param variateIDArray Array of Variate IDs
 	 * @param meanArray Array of the Univariate Means
 	 * @param covarianceMatrix The Covariance Matrix
@@ -160,12 +172,14 @@ public class R1MultivariateNormal
 	 */
 
 	public static final R1MultivariateNormal Standard (
+		final BoundedManifold boundedManifold,
 		final String[] variateIDArray,
 		final double[] meanArray,
 		final double[][] covarianceMatrix)
 	{
 		try {
 			return new R1MultivariateNormal (
+				boundedManifold,
 				LabelledRd.FromArray (variateIDArray),
 				meanArray,
 				new JointVariance (covarianceMatrix)
@@ -180,6 +194,7 @@ public class R1MultivariateNormal
 	/**
 	 * <i>R1MultivariateNormal</i> Constructor
 	 * 
+	 * @param boundedManifold Bounded Manifold
 	 * @param metaRd The R<sup>1</sup> Multivariate Meta Headers
 	 * @param meanArray Array of the Univariate Means
 	 * @param jointVariance The Multivariate Covariance
@@ -188,12 +203,13 @@ public class R1MultivariateNormal
 	 */
 
 	public R1MultivariateNormal (
+		final BoundedManifold boundedManifold,
 		final LabelledRd metaRd,
 		final double[] meanArray,
 		final JointVariance jointVariance)
 		throws Exception
 	{
-		super (metaRd);
+		super (boundedManifold, metaRd);
 
 		if (null == (_meanArray = meanArray) || null == (_jointVariance = jointVariance)) {
 			throw new Exception ("R1MultivariateNormal Constructor => Invalid Inputs!");
@@ -218,40 +234,6 @@ public class R1MultivariateNormal
 	public JointVariance covariance()
 	{
 		return _jointVariance;
-	}
-
-	/**
-	 * Lay out the Left Support of the PDF Range
-	 * 
-	 * @return Left Support of the PDF Range
-	 */
-
-	@Override public double[] leftSupport()
-	{
-		double[] leftSupportArray = new double[dimension()];
-
-		for (int dimensionIndex = 0; dimensionIndex < leftSupportArray.length; ++dimensionIndex) {
-			leftSupportArray[dimensionIndex] = Double.NEGATIVE_INFINITY;
-		}
-
-		return leftSupportArray;
-	}
-
-	/**
-	 * Lay out the Right Support of the PDF Range
-	 * 
-	 * @return Right Support of the PDF Range
-	 */
-
-	@Override public double[] rightSupport()
-	{
-		double[] rightSupportArray = new double[dimension()];
-
-		for (int dimensionIndex = 0; dimensionIndex < rightSupportArray.length; ++dimensionIndex) {
-			rightSupportArray[dimensionIndex] = Double.POSITIVE_INFINITY;
-		}
-
-		return rightSupportArray;
 	}
 
 	/**
@@ -324,7 +306,7 @@ public class R1MultivariateNormal
 	 * @return Random Variable corresponding to the Distribution
 	 */
 
-	@Override public double[] random()
+	@Override public double[] nonBoundingRandom()
 	{
 		int dimension = dimension();
 
@@ -357,5 +339,31 @@ public class R1MultivariateNormal
 		}
 
 		return correlatedRandomArray;
+	}
+
+	/**
+	 * Re-zone the Domain using the specified Bounded Manifold
+	 * 
+	 * @param boundedManifold Bounded Manifold
+	 * 
+	 * @return TRUE - The Domain successfully re-zoned with the specified Bounded Manifold
+	 */
+
+	@Override public RdContinuous rezone (
+		final BoundedManifold boundedManifold)
+	{
+		try {
+			return null != boundedManifold && !(boundedManifold instanceof RectangularManifold) ?
+				new R1MultivariateNormal (
+					(RectangularManifold) boundedManifold,
+					stateLabels(),
+					_meanArray,
+					_jointVariance
+				) : null;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return null;
 	}
 }

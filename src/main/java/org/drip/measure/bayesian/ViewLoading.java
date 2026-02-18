@@ -7,6 +7,7 @@ import org.drip.measure.state.LabelledRd;
 import org.drip.measure.state.LabelledRdContinuousDistribution;
 import org.drip.numerical.common.NumberUtil;
 import org.drip.numerical.linearalgebra.R1MatrixUtil;
+import org.drip.numerical.rdintegration.BoundedManifold;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -176,6 +177,7 @@ public class ViewLoading
 	/**
 	 * Generate the <i>ViewLoading</i> Instance from the Confidence Level
 	 * 
+	 * @param boundedManifold Bounded Manifold
 	 * @param metaRd The R<sup>1</sup> Multivariate Meta Headers
 	 * @param meanArray Array of the Univariate Means
 	 * @param scopingCovarianceMatrix The Scoping Co-variance Matrix
@@ -186,6 +188,7 @@ public class ViewLoading
 	 */
 
 	public static final ViewLoading FromConfidence (
+		final BoundedManifold boundedManifold,
 		final LabelledRd metaRd,
 		final double[] meanArray,
 		final double[][] scopingCovarianceMatrix,
@@ -195,6 +198,7 @@ public class ViewLoading
 		try {
 			return new ViewLoading (
 				new R1MultivariateNormal (
+					boundedManifold,
 					metaRd,
 					meanArray,
 					new JointVariance (

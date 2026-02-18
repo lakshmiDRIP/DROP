@@ -4,6 +4,7 @@ package org.drip.sample.blacklitterman;
 import org.drip.measure.bayesian.R1MultivariateConvolutionMetrics;
 import org.drip.measure.gaussian.*;
 import org.drip.measure.state.LabelledRd;
+import org.drip.numerical.rdintegration.RectangularManifold;
 import org.drip.portfolioconstruction.allocator.ForwardReverseHoldingsAllocation;
 import org.drip.portfolioconstruction.asset.Portfolio;
 import org.drip.portfolioconstruction.bayesian.*;
@@ -202,7 +203,11 @@ public class DaJagannathan2005e
 			{0.0000, 0.0000, 0.0000, 0.0000, 0.0000, 0.0009}
 		};
 
+		RectangularManifold rectangularManifold =
+			RectangularManifold.SpanningCartesian (assetIDArray.length);
+
 		R1MultivariateNormal viewDistribution = R1MultivariateNormal.Standard (
+			rectangularManifold,
 			LabelledRd.FromArray (
 				new String[] {
 					"PROJECTION #1",
@@ -236,7 +241,7 @@ public class DaJagannathan2005e
 			),
 			new PriorControlSpecification (false, riskFreeRate, tau),
 			new ProjectionSpecification (viewDistribution, assetSpaceViewProjectionMatrix)
-		).customConfidenceRun().jointPosteriorMetrics();
+		).customConfidenceRun (rectangularManifold).jointPosteriorMetrics();
 
 		R1MultivariateNormal jointDistribution =
 			(R1MultivariateNormal) convolutionMetrics.jointDistribution();

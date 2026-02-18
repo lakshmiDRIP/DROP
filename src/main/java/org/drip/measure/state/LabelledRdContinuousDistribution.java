@@ -3,6 +3,7 @@ package org.drip.measure.state;
 
 import org.drip.function.definition.RdToR1;
 import org.drip.measure.distribution.RdContinuous;
+import org.drip.numerical.rdintegration.BoundedManifold;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -126,9 +127,12 @@ public abstract class LabelledRdContinuousDistribution
 	private LabelledRd _stateLabels = null;
 
 	protected LabelledRdContinuousDistribution (
+		final BoundedManifold boundedManifold,
 		final LabelledRd stateLabels)
 		throws Exception
 	{
+		super (boundedManifold);
+
 		if (null == (_stateLabels = stateLabels)) {
 			throw new Exception ("LabelledRdContinuousDistribution Constructor => Invalid Inputs");
 		}

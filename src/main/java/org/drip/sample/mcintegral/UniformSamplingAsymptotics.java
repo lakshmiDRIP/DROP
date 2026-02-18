@@ -4,7 +4,6 @@ package org.drip.sample.mcintegral;
 import org.drip.function.definition.RdToR1;
 import org.drip.measure.distribution.RdContinuousUniform;
 import org.drip.numerical.rdintegration.MonteCarloRun;
-import org.drip.numerical.rdintegration.QuadratureSetting;
 import org.drip.numerical.rdintegration.RectangularManifold;
 import org.drip.numerical.rdintegration.UniformSamplingIntegrator;
 import org.drip.service.common.FormatUtil;
@@ -193,16 +192,13 @@ public class UniformSamplingAsymptotics
 
 		System.out.println ("\t|----------------------------||");
 
-		QuadratureSetting quadratureSetting = new QuadratureSetting (
-			integrand,
-			new RectangularManifold (leftBoundArray, rightBoundArray)
-		);
+		RectangularManifold rectangularManifold = new RectangularManifold (leftBoundArray, rightBoundArray);
 
-		RdContinuousUniform rdContinuousUniform = new RdContinuousUniform (leftBoundArray, rightBoundArray);
+		RdContinuousUniform rdContinuousUniform = new RdContinuousUniform (rectangularManifold);
 
 		for (int samplingPointCount : samplingPointCountArray) {
 			MonteCarloRun monteCarloRun = new UniformSamplingIntegrator (
-				quadratureSetting,
+				integrand,
 				samplingPointCount,
 				rdContinuousUniform,
 				false

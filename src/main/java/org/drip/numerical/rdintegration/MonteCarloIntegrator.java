@@ -1,6 +1,7 @@
 
 package org.drip.numerical.rdintegration;
 
+import org.drip.function.definition.RdToR1;
 import org.drip.measure.distribution.RdContinuous;
 
 /*
@@ -121,15 +122,15 @@ import org.drip.measure.distribution.RdContinuous;
 
 public abstract class MonteCarloIntegrator
 {
+	private RdToR1 _integrand = null;
 	private int _samplingPointCount = 0;
 	private boolean _diagnosticsOn = false;
 	private RdContinuous _rdContinuous = null;
-	private QuadratureSetting _integratorSetting = null;
 
 	/**
 	 * <i>MonteCarloIntegrator</i> Constructor
 	 * 
-	 * @param integratorSetting Underlying <i>RdToR1IntegratorSetting</i> Instance
+	 * @param integrand <i>RdToR1</i> Integrand
 	 * @param samplingPointCount Sampling Points Count
 	 * @param rdContinuous Underlying R<sup>d</sup> Continuous Distribution
 	 * @param diagnosticsOn TRUE - Diagnostics are turned on
@@ -138,13 +139,13 @@ public abstract class MonteCarloIntegrator
 	 */
 
 	public MonteCarloIntegrator (
-		final QuadratureSetting integratorSetting,
+		final RdToR1 integrand,
 		final int samplingPointCount,
 		final RdContinuous rdContinuous,
 		final boolean diagnosticsOn)
 		throws Exception
 	{
-		if (null == (_integratorSetting = integratorSetting) ||
+		if (null == (_integrand = integrand) ||
 			1 >= (_samplingPointCount = samplingPointCount) ||
 			null == (_rdContinuous = rdContinuous))
 		{
@@ -155,14 +156,14 @@ public abstract class MonteCarloIntegrator
 	}
 
 	/**
-	 * Retrieve the Underlying <i>RdToR1IntegratorSetting</i> Instance
+	 * Retrieve the <i>RdToR1</i> Integrand
 	 * 
-	 * @return Underlying <i>RdToR1IntegratorSetting</i> Instance
+	 * @return <i>RdToR1</i> Integrand
 	 */
 
-	public QuadratureSetting integratorSetting()
+	public RdToR1 integrand()
 	{
-		return _integratorSetting;
+		return _integrand;
 	}
 
 	/**

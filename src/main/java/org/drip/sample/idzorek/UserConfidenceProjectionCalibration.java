@@ -5,6 +5,7 @@ import org.drip.function.definition.R1ToR1;
 import org.drip.measure.bayesian.ViewLoading;
 import org.drip.measure.gaussian.R1MultivariateNormal;
 import org.drip.measure.state.LabelledRd;
+import org.drip.numerical.rdintegration.RectangularManifold;
 import org.drip.portfolioconstruction.allocator.ForwardReverseHoldingsAllocation;
 import org.drip.portfolioconstruction.asset.Portfolio;
 import org.drip.portfolioconstruction.bayesian.*;
@@ -142,14 +143,19 @@ public class UserConfidenceProjectionCalibration
 
 		System.out.println ("\t|-----------------------------||");
 
+		RectangularManifold rectangularManifold =
+			RectangularManifold.SpanningCartesian (impliedTiltArray.length);
+
 		R1ToR1 tiltDepartureFunction = blackLittermanCombinationEngine.tiltDepartureR1ToR1 (
 			impliedTiltArray,
+			rectangularManifold,
 			viewIndex,
 			false
 		);
 
 		R1ToR1 tiltDepartureFunctionDerivative = blackLittermanCombinationEngine.tiltDepartureR1ToR1 (
 			impliedTiltArray,
+			rectangularManifold,
 			viewIndex,
 			true
 		);
@@ -245,6 +251,9 @@ public class UserConfidenceProjectionCalibration
 			0.65
 		};
 
+		RectangularManifold rectangularManifold =
+			RectangularManifold.SpanningCartesian (assetIDArray.length);
+
 		BlackLittermanCombinationEngine blackLittermanCombinationEngine =
 			new BlackLittermanCombinationEngine (
 				ForwardReverseHoldingsAllocation.Reverse (
@@ -262,6 +271,7 @@ public class UserConfidenceProjectionCalibration
 				),
 				new ProjectionSpecification (
 					R1MultivariateNormal.Standard (
+						rectangularManifold,
 						LabelledRd.FromArray (
 							new String[]
 							{
@@ -282,6 +292,7 @@ public class UserConfidenceProjectionCalibration
 			);
 
 		double[][] projectionTiltArray = blackLittermanCombinationEngine.userConfidenceProjectionTitMatrix (
+			rectangularManifold,
 			userSpecifiedProjectionConfidenceArray
 		);
 

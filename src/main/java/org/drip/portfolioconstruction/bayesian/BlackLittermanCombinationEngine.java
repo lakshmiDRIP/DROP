@@ -1,6 +1,9 @@
 
 package org.drip.portfolioconstruction.bayesian;
 
+import org.drip.measure.bayesian.ScopingContainer;
+import org.drip.numerical.rdintegration.BoundedManifold;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
@@ -115,8 +118,8 @@ public class BlackLittermanCombinationEngine
 	private org.drip.portfolioconstruction.allocator.ForwardReverseHoldingsAllocation
 		_forwardReverseOptimizationOutputUnadjusted = null;
 
-	private org.drip.measure.bayesian.ScopingContainer
-		scopingProjectionVariateDistribution()
+	private ScopingContainer scopingProjectionVariateDistribution (
+		final BoundedManifold boundedManifold)
 	{
 		double[][] assetExcessReturnsCovarianceMatrix =
 			_forwardReverseOptimizationOutputUnadjusted.assetExcessReturnsCovarianceMatrix();
@@ -149,6 +152,7 @@ public class BlackLittermanCombinationEngine
 				scopingProjectionVariateDistribution =
 					new org.drip.measure.bayesian.ScopingContainer (
 						org.drip.measure.gaussian.R1MultivariateNormal.Standard (
+							boundedManifold,
 							_forwardReverseOptimizationOutputUnadjusted.optimalPortfolio().meta(),
 							priorExpectedAssetReturnsArray,
 							priorCovarianceMatrix
@@ -277,10 +281,13 @@ public class BlackLittermanCombinationEngine
 	 * Conduct a Black Litterman Run using a Theil-like Mixed Model Estimator Using the specified Confidence
 	 * 	Level
 	 * 
+	 * @param boundedManifold Bounded Manifold
+	 * 
 	 * @return Output of the Black Litterman Run
 	 */
 
-	public org.drip.portfolioconstruction.bayesian.BlackLittermanCustomConfidenceOutput customConfidenceRun()
+	public BlackLittermanCustomConfidenceOutput customConfidenceRun (
+		final BoundedManifold boundedManifold)
 	{
 		double[][] assetExcessReturnsCovarianceMatrix =
 			_forwardReverseOptimizationOutputUnadjusted.assetExcessReturnsCovarianceMatrix();
@@ -289,7 +296,7 @@ public class BlackLittermanCombinationEngine
 			_forwardReverseOptimizationOutputUnadjusted.optimalPortfolio().meta();
 
 		org.drip.measure.bayesian.ScopingContainer scopingProjectionVariateDistribution =
-			scopingProjectionVariateDistribution();
+			scopingProjectionVariateDistribution (boundedManifold);
 
 		if (null == scopingProjectionVariateDistribution)
 		{
@@ -301,6 +308,7 @@ public class BlackLittermanCombinationEngine
 				scopingProjectionVariateDistribution,
 				"VIEW",
 				org.drip.measure.gaussian.R1MultivariateNormal.Standard (
+					boundedManifold,
 					portfolioMeta,
 					scopingProjectionVariateDistribution.projectionDistribution().mean(),
 					assetExcessReturnsCovarianceMatrix
@@ -352,10 +360,13 @@ public class BlackLittermanCombinationEngine
 	 * Conduct a Black Litterman Run using a Theil-like Mixed Model Estimator For 100% Confidence in the
 	 * 	Projection
 	 * 
+	 * @param boundedManifold Bounded Manifold
+	 * 
 	 * @return Output of the Black Litterman Run
 	 */
 
-	public org.drip.portfolioconstruction.bayesian.BlackLittermanOutput fullConfidenceRun()
+	public org.drip.portfolioconstruction.bayesian.BlackLittermanOutput fullConfidenceRun (
+		final BoundedManifold boundedManifold)
 	{
 		org.drip.measure.state.LabelledRd portfolioMeta =
 			_forwardReverseOptimizationOutputUnadjusted.optimalPortfolio().meta();
@@ -368,7 +379,7 @@ public class BlackLittermanCombinationEngine
 		java.lang.String[] assetIDArray = portfolioMeta.idArray();
 
 		org.drip.measure.bayesian.ScopingContainer scopingProjectionVariateDistribution =
-			scopingProjectionVariateDistribution();
+			scopingProjectionVariateDistribution (boundedManifold);
 
 		if (null == scopingProjectionVariateDistribution)
 		{
@@ -398,6 +409,7 @@ public class BlackLittermanCombinationEngine
 					scopingProjectionVariateDistribution,
 					"VIEW",
 					org.drip.measure.gaussian.R1MultivariateNormal.Standard (
+						boundedManifold,
 						portfolioMeta,
 						scopingProjectionVariateDistribution.projectionDistribution().mean(),
 						assetExcessReturnsCovarianceMatrix
@@ -434,10 +446,13 @@ public class BlackLittermanCombinationEngine
 	/**
 	 * Compute the Idzorek Implied Projection Confidence Level
 	 * 
+	 * @param boundedManifold Bounded Manifold
+	 * 
 	 * @return The Idzorek Implied Projection Confidence Level
 	 */
 
-	public org.drip.portfolioconstruction.bayesian.ProjectionImpliedConfidenceOutput impliedConfidenceRun()
+	public org.drip.portfolioconstruction.bayesian.ProjectionImpliedConfidenceOutput impliedConfidenceRun (
+		final BoundedManifold boundedManifold)
 	{
 		double[][] assetExcessReturnsCovarianceMatrix =
 			_forwardReverseOptimizationOutputUnadjusted.assetExcessReturnsCovarianceMatrix();
@@ -446,7 +461,7 @@ public class BlackLittermanCombinationEngine
 			_forwardReverseOptimizationOutputUnadjusted.optimalPortfolio();
 
 		org.drip.measure.bayesian.ScopingContainer scopingProjectionVariateDistribution =
-			scopingProjectionVariateDistribution();
+			scopingProjectionVariateDistribution (boundedManifold);
 
 		boolean useAlternateReferenceModel = _priorControlSpecification.useAlternateReferenceModel();
 
@@ -466,6 +481,7 @@ public class BlackLittermanCombinationEngine
 				scopingProjectionVariateDistribution,
 				"VIEW",
 				org.drip.measure.gaussian.R1MultivariateNormal.Standard (
+					boundedManifold,
 					portfolioMeta,
 					scopingProjectionVariateDistribution.projectionDistribution().mean(),
 					assetExcessReturnsCovarianceMatrix
@@ -518,6 +534,7 @@ public class BlackLittermanCombinationEngine
 					scopingProjectionVariateDistribution,
 					"VIEW",
 					org.drip.measure.gaussian.R1MultivariateNormal.Standard (
+						boundedManifold,
 						portfolioMeta,
 						scopingProjectionVariateDistribution.projectionDistribution().mean(),
 						assetExcessReturnsCovarianceMatrix
@@ -562,13 +579,16 @@ public class BlackLittermanCombinationEngine
 	/**
 	 * Compute the Exposure Loadings Attribution on a per-Projection Basis
 	 * 
+	 * @param boundedManifold Bounded Manifold
+	 * 
 	 * @return The Exposure Loadings Attribution on a per-Projection Basis
 	 */
 
-	public org.drip.portfolioconstruction.bayesian.ProjectionExposure projectionExposureAttribution()
+	public org.drip.portfolioconstruction.bayesian.ProjectionExposure projectionExposureAttribution (
+		final BoundedManifold boundedManifold)
 	{
 		org.drip.measure.bayesian.ScopingContainer scopingProjectionVariateDistribution =
-			scopingProjectionVariateDistribution();
+			scopingProjectionVariateDistribution (boundedManifold);
 
 		if (null == scopingProjectionVariateDistribution)
 		{
@@ -689,12 +709,14 @@ public class BlackLittermanCombinationEngine
 	/**
 	 * Compute the Idzorek Implied Tilt Matrix from the User Projection Confidence Level
 	 * 
+	 * @param boundedManifold Bounded Manifold
 	 * @param userSpecifiedProjectionConfidenceArray Array of User-specified Projection Confidence
 	 * 
 	 * @return The Idzorek Implied Tilt Matric from the Projection Confidence Level
 	 */
 
 	public double[][] userConfidenceProjectionTitMatrix (
+		final BoundedManifold boundedManifold,
 		final double[] userSpecifiedProjectionConfidenceArray)
 	{
 		if (null == userSpecifiedProjectionConfidenceArray)
@@ -714,7 +736,7 @@ public class BlackLittermanCombinationEngine
 		}
 
 		org.drip.portfolioconstruction.bayesian.BlackLittermanOutput fullConfidenceOutput =
-			fullConfidenceRun();
+			fullConfidenceRun (boundedManifold);
 
 		if (null == fullConfidenceOutput)
 		{
@@ -741,6 +763,7 @@ public class BlackLittermanCombinationEngine
 	 * Compute the Mismatch between the User Specified Projection and the Custom Confidence Implied Tilts
 	 * 
 	 * @param userConfidenceProjectionTiltArray Array of the User Confidence induced Projection Tilts
+	 * @param boundedManifold Bounded Manifold
 	 * @param projectionIndex The Index into the Projection Meta
 	 * @param projectionVariance The Projection Variance
 	 * 
@@ -751,6 +774,7 @@ public class BlackLittermanCombinationEngine
 
 	public double tiltMismatchSquared (
 		final double[] userConfidenceProjectionTiltArray,
+		final BoundedManifold boundedManifold,
 		final int projectionIndex,
 		final double projectionVariance)
 		throws java.lang.Exception
@@ -769,6 +793,7 @@ public class BlackLittermanCombinationEngine
 
 		org.drip.measure.gaussian.R1MultivariateNormal projectionDistribution =
 			org.drip.measure.gaussian.R1MultivariateNormal.Standard (
+				boundedManifold,
 				new java.lang.String[] {
 					totalExcessReturnsDistribution.stateLabels().idArray()[projectionIndex]
 				},
@@ -803,7 +828,7 @@ public class BlackLittermanCombinationEngine
 			);
 
 		org.drip.portfolioconstruction.bayesian.BlackLittermanCustomConfidenceOutput customConfidenceOuput =
-			projectionEngine.customConfidenceRun();
+			projectionEngine.customConfidenceRun (boundedManifold);
 
 		if (null == customConfidenceOuput)
 		{
@@ -844,6 +869,7 @@ public class BlackLittermanCombinationEngine
 	 * Generate the Squared Tilt Departure R<sup>1</sup> To R<sup>1</sup>
 	 * 
 	 * @param userConfidenceProjectionTiltArray Array of the User Confidence induced Projection Tilts
+	 * @param boundedManifold Bounded Manifold
 	 * @param projectionIndex The Index into the Projection Meta
 	 * @param generateDerivative TRUE - Generate the Derivative of the Tilt Departure
 	 * 
@@ -852,6 +878,7 @@ public class BlackLittermanCombinationEngine
 
 	public org.drip.function.definition.R1ToR1 tiltDepartureR1ToR1 (
 		final double[] userConfidenceProjectionTiltArray,
+		final BoundedManifold boundedManifold,
 		final int projectionIndex,
 		final boolean generateDerivative)
 	{
@@ -866,6 +893,7 @@ public class BlackLittermanCombinationEngine
 			{
 				return tiltMismatchSquared (
 					userConfidenceProjectionTiltArray,
+					boundedManifold,
 					projectionIndex,
 					projectionVariance
 				);

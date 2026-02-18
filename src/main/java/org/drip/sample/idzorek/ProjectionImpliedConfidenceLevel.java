@@ -4,6 +4,7 @@ package org.drip.sample.idzorek;
 import org.drip.measure.bayesian.ViewLoading;
 import org.drip.measure.gaussian.*;
 import org.drip.measure.state.LabelledRd;
+import org.drip.numerical.rdintegration.RectangularManifold;
 import org.drip.portfolioconstruction.allocator.ForwardReverseHoldingsAllocation;
 import org.drip.portfolioconstruction.asset.Portfolio;
 import org.drip.portfolioconstruction.bayesian.*;
@@ -234,7 +235,11 @@ public class ProjectionImpliedConfidenceLevel
 			0.0200
 		};
 
+		RectangularManifold rectangularManifold =
+			RectangularManifold.SpanningCartesian (projectionExpectedExcessReturnsArray.length);
+
 		R1MultivariateNormal viewDistribution = R1MultivariateNormal.Standard (
+			rectangularManifold,
 			LabelledRd.FromArray (
 				new String[] {
 					"PROJECTION #1",
@@ -269,7 +274,9 @@ public class ProjectionImpliedConfidenceLevel
 					viewDistribution,
 					aAssetSpaceViewProjectionMatrix
 				)
-			).impliedConfidenceRun();
+			).impliedConfidenceRun (
+				rectangularManifold
+			);
 
 		double[] customConfidenceReturnsArray =
 			projectionImpliedConfidenceOutput.customConfidenceOutput().adjustedOptimizationOutput().expectedAssetExcessReturnsArray();

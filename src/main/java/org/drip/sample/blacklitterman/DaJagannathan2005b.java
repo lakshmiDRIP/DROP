@@ -4,6 +4,7 @@ package org.drip.sample.blacklitterman;
 import org.drip.measure.bayesian.*;
 import org.drip.measure.gaussian.*;
 import org.drip.measure.state.LabelledRd;
+import org.drip.numerical.rdintegration.RectangularManifold;
 import org.drip.service.common.FormatUtil;
 import org.drip.service.env.EnvManager;
 
@@ -174,13 +175,18 @@ public class DaJagannathan2005b
 			0.0290
 		};
 
+		RectangularManifold rectangularManifold =
+			RectangularManifold.SpanningCartesian (assetIDArray.length);
+
 		R1MultivariateNormal viewDistribution = R1MultivariateNormal.Standard (
+			rectangularManifold,
 			LabelledRd.FromArray (new String[] {"DJVIEW"}),
 			expectedExcessProjectionReturnsArray,
 			excessProjectionReturnsCovariance
 		);
 
 		R1MultivariateNormal scopingDstribution = R1MultivariateNormal.Standard (
+			rectangularManifold,
 			LabelledRd.FromArray (assetIDArray),
 			excessAssetReturnsArray,
 			excessAssetReturnsCovarianceMatrix

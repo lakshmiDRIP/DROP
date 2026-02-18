@@ -1,6 +1,9 @@
 
 package org.drip.measure.distribution;
 
+import org.drip.numerical.rdintegration.BoundedManifold;
+import org.drip.numerical.rdintegration.RectangularManifold;
+
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
  */
@@ -83,8 +86,6 @@ package org.drip.measure.distribution;
  *
  *  <ul>
  * 		<li>RdContinuousUniform Constructor</li>
- * 		<li>Lay out the Left Support of the PDF Range</li>
- * 		<li>Lay out the Right Support of the PDF Range</li>
  * 		<li>Compute the Density under the Distribution at the given Variate Array</li>
  * 		<li>Compute the Cumulative under the Distribution to the given Variate Array</li>
  * 		<li>Compute the Incremental under the Distribution to the given Variate Array</li>
@@ -106,58 +107,20 @@ package org.drip.measure.distribution;
 public class RdContinuousUniform
 	extends RdContinuous
 {
-	private double[] _leftSupportArray = null;
-	private double[] _rightSupportArray = null;
 
 	/**
 	 * RdContinuousUniform Constructor
 	 * 
-	 * @param leftSupportArray Left Support of the PDF Range
-	 * @param rightSupportArray Right Support of the PDF Range
+	 * @param rectangularManifold The Rectangular Manifold
 	 * 
-	 * @throws Exception Thrown if the Inputs are Invalid
+	 * @throws Exception Thrown if the Manifold is Invalid
 	 */
 
 	public RdContinuousUniform (
-		final double[] leftSupportArray,
-		final double[] rightSupportArray)
+		final RectangularManifold rectangularManifold)
 		throws Exception
 	{
-		if (null == leftSupportArray || null == rightSupportArray ||
-			0 == leftSupportArray.length || leftSupportArray.length != rightSupportArray.length)
-		{
-			throw new Exception ("RdContinuousUniform Constructor => Invalid Inputs");
-		}
-
-		_leftSupportArray = new double[leftSupportArray.length];
-		_rightSupportArray = new double[rightSupportArray.length];
-
-		for (int variateIndex = 0; variateIndex < rightSupportArray.length; ++variateIndex) {
-			_leftSupportArray[variateIndex] = leftSupportArray[variateIndex];
-			_rightSupportArray[variateIndex] = rightSupportArray[variateIndex];
-		}
-	}
-
-	/**
-	 * Lay out the Left Support of the PDF Range
-	 * 
-	 * @return Left Support of the PDF Range
-	 */
-
-	@Override public double[] leftSupport()
-	{
-		return _leftSupportArray;
-	}
-
-	/**
-	 * Lay out the Right Support of the PDF Range
-	 * 
-	 * @return Right Support of the PDF Range
-	 */
-
-	@Override public double[] rightSupport()
-	{
-		return _rightSupportArray;
+		super (rectangularManifold);
 	}
 
 	/**
@@ -180,8 +143,14 @@ public class RdContinuousUniform
 
 		double density = 1.;
 
+		BoundedManifold boundedManifold = boundedManifold();
+
+		double[] leftSupportArray = boundedManifold.leftCartesianBoundArray();
+
+		double[] rightSupportArray = boundedManifold.rightCartesianBoundArray();
+
 		for (int dimensionIndex = 0; dimensionIndex < dimension(); ++dimensionIndex) {
-			density /= (_rightSupportArray[dimensionIndex] - _leftSupportArray[dimensionIndex]);
+			density /= (rightSupportArray[dimensionIndex] - leftSupportArray[dimensionIndex]);
 		}
 
 		return density;
@@ -197,7 +166,7 @@ public class RdContinuousUniform
 	 * @throws Exception Thrown if the inputs are invalid
 	 */
 
-	public double cumulative (
+	@Override public double cumulative (
 		final double[] variateArray)
 		throws Exception
 	{
@@ -207,8 +176,12 @@ public class RdContinuousUniform
 
 		double cumulative = 1.;
 
+		BoundedManifold boundedManifold = boundedManifold();
+
+		double[] leftSupportArray = boundedManifold.leftCartesianBoundArray();
+
 		for (int dimensionIndex = 0; dimensionIndex < dimension(); ++dimensionIndex) {
-			cumulative /= (variateArray[dimensionIndex] - _leftSupportArray[dimensionIndex]);
+			cumulative /= (variateArray[dimensionIndex] - leftSupportArray[dimensionIndex]);
 		}
 
 		return cumulative;
@@ -225,7 +198,7 @@ public class RdContinuousUniform
 	 * @throws Exception Thrown if the inputs are invalid
 	 */
 
-	public double incremental (
+	@Override public double incremental (
 		final double[] variateArrayFrom,
 		final double[] variateArrayTo)
 		throws Exception
@@ -249,15 +222,44 @@ public class RdContinuousUniform
 	 * @return Random Variable corresponding to the Distribution
 	 */
 
-	public double[] random()
+	@Override public double[] nonBoundingRandom()
 	{
-		double[] randomVariateArray = new double[dimension()];
+		int dimension = dimension();
 
-		for (int dimensionIndex = 0; dimensionIndex < randomVariateArray.length; ++dimensionIndex) {
-			randomVariateArray[dimensionIndex] = _leftSupportArray[dimensionIndex] +
-				Math.random() * (_rightSupportArray[dimensionIndex] - _leftSupportArray[dimensionIndex]);
+		BoundedManifold boundedManifold = boundedManifold();
+
+		double[] randomVariateArray = new double[dimension];
+
+		double[] leftSupportArray = boundedManifold.leftCartesianBoundArray();
+
+		double[] rightSupportArray = boundedManifold.rightCartesianBoundArray();
+
+		for (int dimensionIndex = 0; dimensionIndex < dimension; ++dimensionIndex) {
+			randomVariateArray[dimensionIndex] = leftSupportArray[dimensionIndex] +
+				Math.random() * (rightSupportArray[dimensionIndex] - leftSupportArray[dimensionIndex]);
 		}
 
 		return randomVariateArray;
+	}
+
+	/**
+	 * Re-zone the Domain using the specified Bounded Manifold
+	 * 
+	 * @param boundedManifold Bounded Manifold
+	 * 
+	 * @return TRUE - The Domain successfully re-zoned with the specified Bounded Manifold
+	 */
+
+	@Override public RdContinuous rezone (
+		final BoundedManifold boundedManifold)
+	{
+		try {
+			return null != boundedManifold && boundedManifold instanceof RectangularManifold ?
+				new RdContinuousUniform ((RectangularManifold) boundedManifold) : null;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return null;
 	}
 }

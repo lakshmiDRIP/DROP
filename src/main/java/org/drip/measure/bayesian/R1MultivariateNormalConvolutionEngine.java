@@ -6,6 +6,7 @@ import org.drip.measure.gaussian.R1MultivariateNormal;
 import org.drip.measure.state.LabelledRd;
 import org.drip.measure.state.LabelledRdContinuousDistribution;
 import org.drip.numerical.linearalgebra.R1MatrixUtil;
+import org.drip.numerical.rdintegration.BoundedManifold;
 
 /*
  * -*- mode: java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
@@ -219,17 +220,21 @@ public class R1MultivariateNormalConvolutionEngine
 			}
 		}
 
+		BoundedManifold boundedManifold = unconditionalDistribution.boundedManifold();
+
 		try {
 			return new R1MultivariateConvolutionMetrics (
 				priorDistribution,
 				unconditionalDistribution,
 				conditionalDistribution,
 				new R1MultivariateNormal (
+					boundedManifold,
 					meta,
 					jointPosteriorMeanArray,
 					new JointVariance (jointCovarianceMatrix)
 				),
 				new R1MultivariateNormal (
+					boundedManifold,
 					meta,
 					jointPosteriorMeanArray,
 					new JointVariance (posteriorCovarianceMatrix)
