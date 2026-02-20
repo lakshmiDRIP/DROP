@@ -10,6 +10,10 @@ import org.drip.numerical.common.NumberUtil;
  */
 
 /*!
+ * Copyright (C) 2030 Lakshmi Krishnamurthy
+ * Copyright (C) 2029 Lakshmi Krishnamurthy
+ * Copyright (C) 2028 Lakshmi Krishnamurthy
+ * Copyright (C) 2027 Lakshmi Krishnamurthy
  * Copyright (C) 2026 Lakshmi Krishnamurthy
  * 
  *  This file is part of DROP, an open-source library targeting analytics/risk, transaction cost analytics,
@@ -208,5 +212,35 @@ public class R1MomentGeneratingFunction
 		}
 
 		return derivative (0., momentIndex);
+	}
+
+	/**
+	 * Compute the Mean of the Underlying Distribution
+	 * 
+	 * @return Mean of the Underlying Distribution
+	 * 
+	 * @throws Exception Thrown if the Mean cannot be estimated
+	 */
+
+	public double mean()
+		throws Exception
+	{
+		return nonCentralMoment (1);
+	}
+
+	/**
+	 * Compute the Mean of the Underlying Distribution
+	 * 
+	 * @return Mean of the Underlying Distribution
+	 * 
+	 * @throws Exception Thrown if the Mean cannot be estimated
+	 */
+
+	public double variance()
+		throws Exception
+	{
+		double mean = mean();
+
+		return nonCentralMoment (2) - mean * mean;
 	}
 }
