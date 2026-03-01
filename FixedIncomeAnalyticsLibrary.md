@@ -11,7 +11,7 @@ Fixed Income Analytics Library contains the Valuation and Risk Functionality of 
 
  |        Document         | Link |
  |-------------------------|------|
- | Technical Specification | [*Latest*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/FixedIncome/FixedIncomeAnalytics_v7.51.pdf) [*Previous*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/FixedIncome) |
+ | Technical Specification | [*Latest*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/FixedIncome/FixedIncomeAnalytics_v7.65.pdf) [*Previous*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/FixedIncome) |
  | User Guide              |  |
  | API                     | [*Javadoc*](https://lakshmidrip.github.io/DROP/Javadoc/index.html)|
 
@@ -204,11 +204,20 @@ Fixed Income Analytics Library contains the Valuation and Risk Functionality of 
  * Convexity Correction Associated with Margining
  * Hedging Considerations
  * Product Curve Effect Attribution
-	* Market Value Change Explain Componentsd
+	* Market Value Change Explain Components
 	* Coupon Accrual Intrinsic
 	* Market Parameters Intrinsic
 	* Market Parameters Extrinsic
 	* Market Value Change Effects Formulation
+ * PnL Explain
+	* Attribution Steps – EOD Revaluation
+	* PnL Attribution Steps
+	* Model Based Valuations
+	* PnL Attribution Steps – Time Decay - V_θ (T+1B) and 〖PnL〗_θ
+	* Start-of-Day - V_SOD (T+1B) and 〖PnL〗_SOD
+	* Risk-Based Valuations V ̃_PRED (T+1B) and PnL_∆
+	* Theta Breakdown
+	* Implementation Steps
  * Inference Based Curve Construction
 	* Curve Smoothing in Finance
 	* Bayesian Curve Calibration

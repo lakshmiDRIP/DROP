@@ -11,7 +11,7 @@ Numerical Analysis Library contains the supporting Functionality for Numerical M
 
  |        Document         | Link |
  |-------------------------|------|
- | Technical Specification | [*Latest*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/NumericalAnalysis/NumericalAnalysis_v7.60.pdf) [*Previous*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/NumericalAnalysis) |
+ | Technical Specification | [*Latest*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/NumericalAnalysis/NumericalAnalysis_v7.64.pdf) [*Previous*](https://github.com/lakshmiDRIP/DROP/blob/master/Docs/Internal/NumericalAnalysis) |
  | User Guide              |  |
  | API                     | [*Javadoc*](https://lakshmidrip.github.io/DROP/Javadoc/index.html)|
 
@@ -136,6 +136,19 @@ Numerical Analysis Library contains the supporting Functionality for Numerical M
 	* Introduction
 	* Constant Random Variable
 	* Higher Dimensions
+	* References
+ * Bernoulli Distribution
+	* Introduction
+	* Properties
+	* Mean
+	* Variance
+	* Skewness
+	* Higher Moments and Cumulants
+	* Entropy and Fisher's Information
+		* Entropy
+		* Fisher's Information
+			* Proof
+	* Related Distributions
 	* References
  * Gamma Distribution
 	* Overview
